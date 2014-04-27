@@ -343,7 +343,7 @@ class Survey_Common_Action extends CAction
             Yii::app()->getController()->_loadEndScripts();
 
         if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
-            Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+            Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
         
         $out = ob_get_contents();
         ob_clean();
@@ -383,7 +383,7 @@ class Survey_Common_Action extends CAction
         $sumresult1 = Survey::model()->findByPk($iSurveyID);
         if (is_null($sumresult1))
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
@@ -525,7 +525,7 @@ class Survey_Common_Action extends CAction
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
@@ -561,11 +561,11 @@ class Survey_Common_Action extends CAction
         // TEST BUTTON
         if (!$activated)
         {
-            $aData['icontext'] = $clang->gT("Test this survey");
+            $aData['icontext'] = gT("Test this survey");
         }
         else
         {
-            $aData['icontext'] = $clang->gT("Execute this survey");
+            $aData['icontext'] = gT("Execute this survey");
         }
 
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
@@ -639,7 +639,7 @@ class Survey_Common_Action extends CAction
         }
         else
         {
-            $aData['groups'] = "<option>" . $clang->gT("None") . "</option>";
+            $aData['groups'] = "<option>" . gT("None") . "</option>";
         }
 
         $aData['GidPrev'] = $GidPrev = getGidPrevious($iSurveyID, $gid);
@@ -682,70 +682,70 @@ class Survey_Common_Action extends CAction
         $surveysummary2 = "";
         if ($aSurveyInfo['anonymized'] != "N")
         {
-            $surveysummary2 .= $clang->gT("Responses to this survey are anonymized.") . "<br />";
+            $surveysummary2 .= gT("Responses to this survey are anonymized.") . "<br />";
         }
         else
         {
-            $surveysummary2 .= $clang->gT("Responses to this survey are NOT anonymized.") . "<br />";
+            $surveysummary2 .= gT("Responses to this survey are NOT anonymized.") . "<br />";
         }
         if ($aSurveyInfo['format'] == "S")
         {
-            $surveysummary2 .= $clang->gT("It is presented question by question.") . "<br />";
+            $surveysummary2 .= gT("It is presented question by question.") . "<br />";
         }
         elseif ($aSurveyInfo['format'] == "G")
         {
-            $surveysummary2 .= $clang->gT("It is presented group by group.") . "<br />";
+            $surveysummary2 .= gT("It is presented group by group.") . "<br />";
         }
         else
         {
-            $surveysummary2 .= $clang->gT("It is presented on one single page.") . "<br />";
+            $surveysummary2 .= gT("It is presented on one single page.") . "<br />";
         }
         if ($aSurveyInfo['questionindex'] > 0)
         {
             if ($aSurveyInfo['format'] == 'A')
             {
-                $surveysummary2 .= $clang->gT("No question index will be shown with this format.") . "<br />";
+                $surveysummary2 .= gT("No question index will be shown with this format.") . "<br />";
             }
             elseif ($aSurveyInfo['questionindex'] == 1)
             {
-                $surveysummary2 .= $clang->gT("A question index will be shown; participants will be able to jump between viewed questions.") . "<br />";
+                $surveysummary2 .= gT("A question index will be shown; participants will be able to jump between viewed questions.") . "<br />";
             }
             elseif ($aSurveyInfo['questionindex'] == 2)
             {
-                $surveysummary2 .= $clang->gT("A full question index will be shown; participants will be able to jump between relevant questions.") . "<br />";
+                $surveysummary2 .= gT("A full question index will be shown; participants will be able to jump between relevant questions.") . "<br />";
             }
         }
         if ($aSurveyInfo['datestamp'] == "Y")
         {
-            $surveysummary2 .= $clang->gT("Responses will be date stamped.") . "<br />";
+            $surveysummary2 .= gT("Responses will be date stamped.") . "<br />";
         }
         if ($aSurveyInfo['ipaddr'] == "Y")
         {
-            $surveysummary2 .= $clang->gT("IP Addresses will be logged") . "<br />";
+            $surveysummary2 .= gT("IP Addresses will be logged") . "<br />";
         }
         if ($aSurveyInfo['refurl'] == "Y")
         {
-            $surveysummary2 .= $clang->gT("Referrer URL will be saved.") . "<br />";
+            $surveysummary2 .= gT("Referrer URL will be saved.") . "<br />";
         }
         if ($aSurveyInfo['usecookie'] == "Y")
         {
-            $surveysummary2 .= $clang->gT("It uses cookies for access control.") . "<br />";
+            $surveysummary2 .= gT("It uses cookies for access control.") . "<br />";
         }
         if ($aSurveyInfo['allowregister'] == "Y")
         {
-            $surveysummary2 .= $clang->gT("If tokens are used, the public may register for this survey") . "<br />";
+            $surveysummary2 .= gT("If tokens are used, the public may register for this survey") . "<br />";
         }
         if ($aSurveyInfo['allowsave'] == "Y" && $aSurveyInfo['tokenanswerspersistence'] == 'N')
         {
-            $surveysummary2 .= $clang->gT("Participants can save partially finished surveys") . "<br />\n";
+            $surveysummary2 .= gT("Participants can save partially finished surveys") . "<br />\n";
         }
         if ($aSurveyInfo['emailnotificationto'] != '')
         {
-            $surveysummary2 .= $clang->gT("Basic email notification is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
+            $surveysummary2 .= gT("Basic email notification is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
         }
         if ($aSurveyInfo['emailresponseto'] != '')
         {
-            $surveysummary2 .= $clang->gT("Detailed email notification with response data is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
+            $surveysummary2 .= gT("Detailed email notification with response data is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -828,11 +828,11 @@ class Survey_Common_Action extends CAction
 
         if ($activated == "N")
         {
-            $aData['activatedlang'] = $clang->gT("No");
+            $aData['activatedlang'] = gT("No");
         }
         else
         {
-            $aData['activatedlang'] = $clang->gT("Yes");
+            $aData['activatedlang'] = gT("Yes");
         }
 
         $aData['activated'] = $activated;
@@ -843,14 +843,14 @@ class Survey_Common_Action extends CAction
         $aData['warnings'] = "";
         if ($activated == "N" && $sumcount3 == 0)
         {
-            $aData['warnings'] = $clang->gT("Survey cannot be activated yet.") . "<br />\n";
+            $aData['warnings'] = gT("Survey cannot be activated yet.") . "<br />\n";
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create'))
             {
-                $aData['warnings'] .= "<span class='statusentryhighlight'>[" . $clang->gT("You need to add question groups") . "]</span><br />";
+                $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add question groups") . "]</span><br />";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create'))
             {
-                $aData['warnings'] .= "<span class='statusentryhighlight'>[" . $clang->gT("You need to add questions") . "]</span><br />";
+                $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add questions") . "]</span><br />";
             }
         }
         $aData['hints'] = $surveysummary2;
@@ -974,14 +974,14 @@ class Survey_Common_Action extends CAction
                         {
                             $aErrorFilesInfo[] = Array(
                             "filename" => $direntry,
-                            "status" => $clang->gT("Copy failed")
+                            "status" => gT("Copy failed")
                             );
                         }
                         else
                         {
                             $aImportedFilesInfo[] = Array(
                             "filename" => $direntry,
-                            "status" => $clang->gT("OK")
+                            "status" => gT("OK")
                             );
                         }
                     }
@@ -990,7 +990,7 @@ class Survey_Common_Action extends CAction
                         // Extension forbidden
                         $aErrorFilesInfo[] = Array(
                         "filename" => $direntry,
-                        "status" => $clang->gT("Forbidden Extension")
+                        "status" => gT("Forbidden Extension")
                         );
                     }
                     unlink($extractdir . "/" . $direntry);

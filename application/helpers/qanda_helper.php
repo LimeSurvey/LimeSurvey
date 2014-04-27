@@ -140,8 +140,8 @@ function retrieveAnswers($ia)
             if ($aQuestionAttributes['hide_tip']==0)
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . $clang->gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = $clang->gT('Choose one of the following answers');
+                . gT('Choose one of the following answers').'</span>';
+                $question_text['help'] = gT('Choose one of the following answers');
             }
             break;
         case '!': //List - dropdown
@@ -149,8 +149,8 @@ function retrieveAnswers($ia)
             if ($aQuestionAttributes['hide_tip']==0)
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . $clang->gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = $clang->gT('Choose one of the following answers');
+                . gT('Choose one of the following answers').'</span>';
+                $question_text['help'] = gT('Choose one of the following answers');
             }
             break;
         case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -158,15 +158,15 @@ function retrieveAnswers($ia)
             if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . $clang->gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = $clang->gT('Choose one of the following answers');
+                . gT('Choose one of the following answers').'</span>';
+                $question_text['help'] = gT('Choose one of the following answers');
             }
             break;
         case 'R': //RANKING STYLE
             $values=do_ranking($ia);
             if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
-                $question_text['help'] = $clang->gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.");
+                $question_text['help'] = gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.");
             }
             break;
         case 'M': //Multiple choice checkbox
@@ -178,21 +178,21 @@ function retrieveAnswers($ia)
                 if (!($maxansw || $minansw))
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . $clang->gT('Check any that apply').'</span>';
-                    $question_text['help'] = $clang->gT('Check any that apply');
+                    . gT('Check any that apply').'</span>';
+                    $question_text['help'] = gT('Check any that apply');
                 }
                 //                else
                 //                {
                 //                    if ($maxansw && $minansw)
                 //                    {
                 //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw)."</span>";
-                //                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw);
+                //                        . sprintf(gT("Check between %d and %d answers"), $minansw, $maxansw)."</span>";
+                //                        $question_text['help'] = sprintf(gT("Check between %d and %d answers"), $minansw, $maxansw);
                 //                    } elseif ($maxansw)
                 //                    {
                 //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                        . sprintf($clang->gT("Check at most %d answers"), $maxansw)."</span>";
-                //                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw);
+                //                        . sprintf(gT("Check at most %d answers"), $maxansw)."</span>";
+                //                        $question_text['help'] = sprintf(gT("Check at most %d answers"), $maxansw);
                 //                    } else
                 //                    {
                 //                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
@@ -208,8 +208,8 @@ function retrieveAnswers($ia)
             if (count($values[1]) > 1)
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . $clang->gT('Choose your language').'</span>';
-                $question_text['help'] = $clang->gT('Choose your language');
+                . gT('Choose your language').'</span>';
+                $question_text['help'] = gT('Choose your language');
             }
             break;
         case 'P': //Multiple choice with comments checkbox + text
@@ -221,8 +221,8 @@ function retrieveAnswers($ia)
                 if (!($maxansw || $minansw))
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . $clang->gT('Check any that apply').'</span>';
-                    $question_text['help'] = $clang->gT('Check any that apply');
+                    . gT('Check any that apply').'</span>';
+                    $question_text['help'] = gT('Check any that apply');
                 }
             }
             break;
@@ -294,8 +294,8 @@ function retrieveAnswers($ia)
 
     if ($ia[6] == 'Y')
     {
-        $qtitle = '<span class="asterisk">'.$clang->gT('*').'</span>'.$qtitle;
-        $question_text['mandatory'] = $clang->gT('*');
+        $qtitle = '<span class="asterisk">'.gT('*').'</span>'.$qtitle;
+        $question_text['mandatory'] = gT('*');
     }
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
@@ -426,7 +426,7 @@ function validation_message($ia,$show)
     return array($tip,$isValid);
     //    if (!$qinfo['valid']) {
     //        if (strlen($tip) == 0) {
-    //            $help = $clang->gT('This question must be answered correctly');
+    //            $help = gT('This question must be answered correctly');
     //        }
     //        else {
     //            $tip =' <span class="questionhelp">'.$tip.'</span>';
@@ -452,7 +452,7 @@ function file_validation_message($ia)
         foreach ($filenotvalidated as $k => $v)
         {
             if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1));
-            $qtitle .= '<br /><span class="errormandatory">'.$clang->gT($filenotvalidated[$k]).'</span><br />';
+            $qtitle .= '<br /><span class="errormandatory">'.gT($filenotvalidated[$k]).'</span><br />';
         }
     }
     return $qtitle;
@@ -471,11 +471,11 @@ function mandatory_popup($ia, $notanswered=null)
         //POPUP WARNING
         if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U'))
         {
-            $popup=$clang->gT("You cannot proceed until you enter some text for one or more questions.");
+            $popup=gT("You cannot proceed until you enter some text for one or more questions.");
             $mandatorypopup="Y";
         }else
         {
-            $popup=$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
+            $popup=gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
             $mandatorypopup="Y";
         }
         return array($mandatorypopup, $popup);
@@ -500,7 +500,7 @@ function validation_popup($ia, $notvalidated=null)
         //POPUP WARNING
         if (!isset($validationpopup))
         {
-            $vpopup=$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
+            $vpopup=gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
             $validationpopup="Y";
         }
         return array($validationpopup, $vpopup);
@@ -522,7 +522,7 @@ function file_validation_popup($ia, $filenotvalidated = null)
 
         if (!isset($filevalidationpopup))
         {
-            $fpopup=$clang->gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
+            $fpopup=gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
             $filevalidationpopup = "Y";
         }
         return array($filevalidationpopup, $fpopup);
@@ -568,14 +568,14 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     $disable_prev=trim($aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
     $time_limit_action=trim($aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
     $time_limit_message_delay=trim($aQuestionAttributes['time_limit_message_delay']) != '' ? $aQuestionAttributes['time_limit_message_delay']*1000 : 1000;
-    $time_limit_message=trim($aQuestionAttributes['time_limit_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has expired");
+    $time_limit_message=trim($aQuestionAttributes['time_limit_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has expired");
     $time_limit_warning=trim($aQuestionAttributes['time_limit_warning']) != '' ? $aQuestionAttributes['time_limit_warning'] : 0;
     $time_limit_warning_2=trim($aQuestionAttributes['time_limit_warning_2']) != '' ? $aQuestionAttributes['time_limit_warning_2'] : 0;
-    $time_limit_countdown_message=trim($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : $clang->gT("Time remaining");
-    $time_limit_warning_message=trim($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_countdown_message=trim($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Time remaining");
+    $time_limit_warning_message=trim($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
     $time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
     $time_limit_warning_display_time=trim($aQuestionAttributes['time_limit_warning_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_display_time']+1 : 0;
-    $time_limit_warning_2_message=trim($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_warning_2_message=trim($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
     $time_limit_warning_2_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning_2'> </div>", $time_limit_warning_2_message);
     $time_limit_warning_2_display_time=trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time']+1 : 0;
     $time_limit_message_style=trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "position: absolute;
@@ -727,9 +727,9 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
             var dhours='';
             var dsecs='';
             if (whours < 10) whours = '0' + whours;
-            if (whours > 0) dhours = whours + ' ".$clang->gT('hours').", ';
-            if (wmins > 0) dmins = wmins + ' ".$clang->gT('mins').", ';
-            if (wsecs > 0) dsecs = wsecs + ' ".$clang->gT('seconds')."';
+            if (whours > 0) dhours = whours + ' ".gT('hours').", ';
+            if (wmins > 0) dmins = wmins + ' ".gT('mins').", ';
+            if (wsecs > 0) dsecs = wsecs + ' ".gT('seconds')."';
             $('#'+warningtimedisplay).html(dhours+dmins+dsecs);
             $('#'+warningdisplay).show();
             if(warninghide > 0 ) {
@@ -747,9 +747,9 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
             var d2hours='';
             var d2secs='';
             if (w2hours < 10) w2hours = '0' + w2hours;
-            if (w2hours > 0) d2hours = w2hours + ' ".$clang->gT('hours').", ';
-            if (w2mins > 0) d2mins = w2mins + ' ".$clang->gT('mins').", ';
-            if (w2secs > 0) d2secs = w2secs + ' ".$clang->gT('seconds')."';
+            if (w2hours > 0) d2hours = w2hours + ' ".gT('hours').", ';
+            if (w2mins > 0) d2mins = w2mins + ' ".gT('mins').", ';
+            if (w2secs > 0) d2secs = w2secs + ' ".gT('seconds')."';
             $('#'+warning2timedisplay).html(dhours+dmins+dsecs);
             $('#'+warning2display).show();
             if(warning2hide > 0 ) {
@@ -766,10 +766,10 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
         var d2hours='';
         var d2mins='';
         var d2secs='';
-        if (hours > 0) d2hours = hours+' ".$clang->gT('hours').": ';
-        if (mins > 0) d2mins = mins+' ".$clang->gT('mins').": ';
-        if (secs > 0) d2secs = secs+' ".$clang->gT('seconds')."';
-        if (secs < 1) d2secs = '0 ".$clang->gT('seconds')."';
+        if (hours > 0) d2hours = hours+' ".gT('hours').": ';
+        if (mins > 0) d2mins = mins+' ".gT('mins').": ';
+        if (secs > 0) d2secs = secs+' ".gT('seconds')."';
+        if (secs < 1) d2secs = '0 ".gT('seconds')."';
         $('#'+timerdisplay).html('".$time_limit_countdown_message."<br />'+d2hours + d2mins + d2secs);
         if (timeleft>0){
             var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warning2+', '+warninghide+', '+warning2hide+', \"'+disable+'\")';
@@ -934,7 +934,7 @@ function do_5pointchoice($ia)
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$ia[1]."NANS\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$ia[1]."NANS\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
 
     }
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
@@ -970,8 +970,8 @@ function do_date($ia)
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $sDateLangvarJS=" translt = {
-         alertInvalidDate: '" . $clang->gT('Date entered is invalid!','js') . "',
-         infoCompleteAll: '" . $clang->gT('Please complete all parts of the date!','js') . "'
+         alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
+         infoCompleteAll: '" . gT('Please complete all parts of the date!','js') . "'
         };";
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
@@ -1065,8 +1065,8 @@ function do_date($ia)
             {
                 // Show day select box
                 case 'j':
-                case 'd':   $answer .= '<label for="day'.$ia[1].'" class="hide">'.$clang->gT('Day').'</label><select id="day'.$ia[1].'" name="day'.$ia[1].'" class="day">
-                    <option value="">'.$clang->gT('Day')."</option>\n";
+                case 'd':   $answer .= '<label for="day'.$ia[1].'" class="hide">'.gT('Day').'</label><select id="day'.$ia[1].'" name="day'.$ia[1].'" class="day">
+                    <option value="">'.gT('Day')."</option>\n";
                     for ($i=1; $i<=31; $i++) {
                         if ($i == $currentdate)
                         {
@@ -1082,39 +1082,39 @@ function do_date($ia)
                     break;
                     // Show month select box
                 case 'n':
-                case 'm':   $answer .= '<label for="month'.$ia[1].'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month">
-                    <option value="">'.$clang->gT('Month')."</option>\n";
+                case 'm':   $answer .= '<label for="month'.$ia[1].'" class="hide">'.gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month">
+                    <option value="">'.gT('Month')."</option>\n";
                     switch ((int)trim($aQuestionAttributes['dropdown_dates_month_style']))
                     {
                         case 0: 
                             $montharray=array(
-                             $clang->gT('Jan'),
-                             $clang->gT('Feb'),
-                             $clang->gT('Mar'),
-                             $clang->gT('Apr'),
-                             $clang->gT('May'),
-                             $clang->gT('Jun'),
-                             $clang->gT('Jul'),
-                             $clang->gT('Aug'),
-                             $clang->gT('Sep'),
-                             $clang->gT('Oct'),
-                             $clang->gT('Nov'),
-                             $clang->gT('Dec'));
+                             gT('Jan'),
+                             gT('Feb'),
+                             gT('Mar'),
+                             gT('Apr'),
+                             gT('May'),
+                             gT('Jun'),
+                             gT('Jul'),
+                             gT('Aug'),
+                             gT('Sep'),
+                             gT('Oct'),
+                             gT('Nov'),
+                             gT('Dec'));
                              break;
                         case 1: 
                             $montharray=array(
-                             $clang->gT('January'),
-                             $clang->gT('February'),
-                             $clang->gT('March'),
-                             $clang->gT('April'),
-                             $clang->gT('May'),
-                             $clang->gT('June'),
-                             $clang->gT('July'),
-                             $clang->gT('August'),
-                             $clang->gT('September'),
-                             $clang->gT('October'),
-                             $clang->gT('November'),
-                             $clang->gT('December'));
+                             gT('January'),
+                             gT('February'),
+                             gT('March'),
+                             gT('April'),
+                             gT('May'),
+                             gT('June'),
+                             gT('July'),
+                             gT('August'),
+                             gT('September'),
+                             gT('October'),
+                             gT('November'),
+                             gT('December'));
                              break;
                         case 2: 
                             $montharray=array('01','02','03','04','05','06','07','08','09','10','11','12');
@@ -1136,8 +1136,8 @@ function do_date($ia)
                     break;
                     // Show year select box
                 case 'y':
-                case 'Y':   $answer .= '<label for="year'.$ia[1].'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year">
-                    <option value="">'.$clang->gT('Year').'</option>';
+                case 'Y':   $answer .= '<label for="year'.$ia[1].'" class="hide">'.gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year">
+                    <option value="">'.gT('Year').'</option>';
 
                     /*
                     * yearmin = Minimum year value for dropdown list, if not set default is 1900
@@ -1194,7 +1194,7 @@ function do_date($ia)
                 case 'h':
                 case 'g':
                 case 'G':
-                    $answer .= '<label for="hour'.$ia[1].'" class="hide">'.$clang->gT('Hour').'</label><select id="hour'.$ia[1].'" name="hour'.$ia[1].'" class="hour"><option value="">'.$clang->gT('Hour').'</option>';
+                    $answer .= '<label for="hour'.$ia[1].'" class="hide">'.gT('Hour').'</label><select id="hour'.$ia[1].'" name="hour'.$ia[1].'" class="hour"><option value="">'.gT('Hour').'</option>';
                     for ($i=0; $i<24; $i++) {
                         if ($i === (int)$currenthour && is_numeric($currenthour))
                         {
@@ -1217,8 +1217,8 @@ function do_date($ia)
                     $answer .= '</select>';
 
                     break;
-                case 'i':   $answer .= '<label for="minute'.$ia[1].'" class="hide">'.$clang->gT('Minute').'</label><select id="minute'.$ia[1].'" name="minute'.$ia[1].'" class="minute">
-                    <option value="">'.$clang->gT('Minute').'</option>';
+                case 'i':   $answer .= '<label for="minute'.$ia[1].'" class="hide">'.gT('Minute').'</label><select id="minute'.$ia[1].'" name="minute'.$ia[1].'" class="minute">
+                    <option value="">'.gT('Minute').'</option>';
 
                     for ($i=0; $i<60; $i+=$aQuestionAttributes['dropdown_dates_minute_step']) {
                         if ($i === (int)$currentminute && is_numeric($currentminute))
@@ -1254,7 +1254,7 @@ function do_date($ia)
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
-        $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8').'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" title="'.sprintf($clang->gT('Date in the format : %s'),$dateformatdetails['dateformat']).'" />
+        $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8').'" maxlength="10" alt="'.gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" title="'.sprintf(gT('Date in the format : %s'),$dateformatdetails['dateformat']).'" />
         </p>';
         $answer .= '
         <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" value="'.$ia[1].'"/>
@@ -1293,8 +1293,8 @@ function do_date($ia)
 
 
         // HTML for date question using datepicker
-        $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
-        <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" title='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+        $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{gT('Date picker')}</label>
+        <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" title='".sprintf(gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
         <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$mindate}\"    />
@@ -1347,7 +1347,7 @@ function do_date($ia)
         }
         
         if (trim($aQuestionAttributes['hide_tip'])==1) {
-            $answer.="<p class=\"tip\">".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
+            $answer.="<p class=\"tip\">".sprintf(gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
         }
         //App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]})",CClientScript::POS_END);// Beter if just afetre answers part
         $answer .= "<script type='text/javascript'>\n"
@@ -1372,9 +1372,9 @@ function do_language($ia)
     $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     $answer = "\n\t<p class=\"question answer-item dropdown-item langage-item\">\n"
-    ."<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Choose your language')}</label>"
+    ."<label for='answer{$ia[1]}' class='hide label'>{gT('Choose your language')}</label>"
     ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
-    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
+    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
         $answer .= "\t<option value=\"{$ansrow}\"";
@@ -1412,7 +1412,7 @@ function do_list_dropdown($ia)
     }
     else
     {
-        $othertext=$clang->gT('Other:');
+        $othertext=gT('Other:');
     }
 
     if (trim($aQuestionAttributes['category_separator'])!='')
@@ -1554,7 +1554,7 @@ function do_list_dropdown($ia)
 
     if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
     {
-        $answer = '                    <option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
+        $answer = '                    <option value=""'.SELECTED.'>'.gT('Please choose...').'</option>'."\n".$answer;
     }
 
     if (isset($other) && $other=='Y')
@@ -1578,7 +1578,7 @@ function do_list_dropdown($ia)
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
         }
-        $answer .= '<option class="noanswer-item" value="">'.$_prefix.$clang->gT('No answer')."</option>\n";
+        $answer .= '<option class="noanswer-item" value="">'.$_prefix.gT('No answer')."</option>\n";
     }
     $answer .= '                </select>
     <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" />';
@@ -1592,7 +1592,7 @@ function do_list_dropdown($ia)
         $sselect_show_hide = '';
     }
     $sselect = '
-    <p class="question answer-item dropdown-item"><label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Please choose').'</label>
+    <p class="question answer-item dropdown-item"><label for="answer'.$ia[1].'" class="hide label">'.gT('Please choose').'</label>
     <select name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
     ';
     $answer = $sselect.$answer;
@@ -1632,7 +1632,7 @@ function do_list_dropdown($ia)
         //        // --> END BUG FIX
 
         // --> START NEW FEATURE - SAVE
-        $answer .= "  alt='".$clang->gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";
+        $answer .= "  alt='".gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";
         $thisfieldname="$ia[1]other";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES)."' ";}
         $answer .= ' />';
@@ -1656,7 +1656,7 @@ function do_list_dropdown($ia)
     //        . "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
     //        . "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
     //        . "\tif (otherval == '-oth-' && othercommentval == '') {\n"
-    //        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
+    //        . "alert('".sprintf(gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
     //        . "return false;\n"
     //        . "\t}\n"
     //        . "\telse {\n"
@@ -1737,7 +1737,7 @@ function do_list_radio($ia)
     }
     else
     {
-        $othertext=$clang->gT('Other:');
+        $othertext=gT('Other:');
     }
 
     if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
@@ -1851,7 +1851,7 @@ function do_list_radio($ia)
         $answer .= '        <input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
         <label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
         <label for="answer'.$ia[1].'othertext">
-        <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').click(); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
+        <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').click(); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
         </label>
         '.$wrapper['item-end'];
 
@@ -1885,7 +1885,7 @@ function do_list_radio($ia)
         }
 
         $answer .= $wrapper['item-start-noanswer'].'        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
+        <label for="answer'.$ia[1].'NANS" class="answertext">'.gT('No answer').'</label>
         '.$wrapper['item-end'];
         // --> END NEW FEATURE - SAVE
 
@@ -1957,7 +1957,7 @@ function do_listwithcomment($ia)
     $anscount = count($ansresult);
 
 
-    $hint_comment = $clang->gT('Please enter your comment here');
+    $hint_comment = gT('Please enter your comment here');
     if ($aQuestionAttributes['use_dropdown']!=1 && $anscount <= $dropdownthreshold)
     {
         $answer .= '<div class="list">
@@ -1990,7 +1990,7 @@ function do_listwithcomment($ia)
             }
             $answer .= '        <li class="answer-item radio-item noanswer-item">
             <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
-            <label for="answer'.$ia[1].'" class="answertext">'.$clang->gT('No answer').'</label>
+            <label for="answer'.$ia[1].'" class="answertext">'.gT('No answer').'</label>
             </li>
             ';
         }
@@ -2053,7 +2053,7 @@ function do_listwithcomment($ia)
             {
                 $check_ans = '';
             }
-            $answer .= '<option class="noanswer-item" value=""'.$check_ans.'>'.$clang->gT('No answer')."</option>\n";
+            $answer .= '<option class="noanswer-item" value=""'.$check_ans.'>'.gT('No answer')."</option>\n";
         }
         $answer .= '    </select>
         </p>
@@ -2135,15 +2135,15 @@ function do_ranking($ia)
         $answer .= "\n<li class=\"select-item\">";
         $answer .="<label for=\"answer{$myfname}\">";
         if($i==1){
-            $answer .=$clang->gT('First choice');
+            $answer .=gT('First choice');
         }else{
-            $answer .=sprintf($clang->gT('Choice of rank %s'),$i);
+            $answer .=sprintf(gT('Choice of rank %s'),$i);
         }
         $answer .= "</label>";
         $answer .= "<select name=\"{$myfname}\" id=\"answer{$myfname}\">\n";
         if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
         {
-            $answer .= "\t<option value=\"\"".SELECTED.">".$clang->gT('Please choose...')."</option>\n";
+            $answer .= "\t<option value=\"\"".SELECTED.">".gT('Please choose...')."</option>\n";
         }
         foreach ($answers as $ansrow)
         {
@@ -2184,7 +2184,7 @@ function do_ranking($ia)
     }
     else
     {
-        $choice_title=$clang->gT("Your Choices",'js');
+        $choice_title=gT("Your Choices",'js');
     }
     if(trim($aQuestionAttributes['rank_title'][$clang->langcode]) != '')
     {
@@ -2192,7 +2192,7 @@ function do_ranking($ia)
     }
     else
     {
-        $rank_title=$clang->gT("Your Ranking",'js');
+        $rank_title=gT("Your Ranking",'js');
     }
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
@@ -2252,7 +2252,7 @@ function do_multiplechoice($ia)
     }
     else
     {
-        $othertext=$clang->gT('Other:');
+        $othertext=gT('Other:');
     }
 
     if (trim($aQuestionAttributes['display_columns'])!='')
@@ -2408,7 +2408,7 @@ function do_multiplechoice($ia)
         }
         $answer .= $startitem;
         $answer .= $hiddenfield.'
-        <input class="checkbox other-checkbox" style="visibility:hidden" type="checkbox" name="'.$myfname.'cbox" title="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
+        <input class="checkbox other-checkbox" style="visibility:hidden" type="checkbox" name="'.$myfname.'cbox" title="'.gT('Other').'" id="answer'.$myfname.'cbox"';
         // othercbox can be not display, because only input text goes to database
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])!='')
@@ -2492,7 +2492,7 @@ function do_multiplechoice($ia)
     //        $maxanswscript .= "
     //        if (count > max)
     //        {
-    //            alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
+    //            alert('".sprintf(gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
     //            if (me.type == 'checkbox') { me.checked = false; }
     //            if (me.type == 'text') {
     //                me.value = '';
@@ -2513,7 +2513,7 @@ function do_multiplechoice($ia)
     //    {
     //        $minanswscript .=
     //        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-    //        . "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),
+    //        . "alert('".sprintf(gT("Please choose at least %d answer(s) for question \"%s\"","js"),
     //        $minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
     //        . "return false;\n"
     //        . "\t} else {\n"
@@ -2550,7 +2550,7 @@ function do_multiplechoice($ia)
 #        . "}\n"
 #        . "\t}\n"
 #        . "\telse {\n"
-#        . "alert('".sprintf($clang->gT("You've marked the 'Other:' field for question '%s'. Please also fill in the accompanying comment field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
+#        . "alert('".sprintf(gT("You've marked the 'Other:' field for question '%s'. Please also fill in the accompanying comment field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
 #        . "return false;\n"
 #        . "\t}\n"
 #        . "}\n"
@@ -2620,7 +2620,7 @@ function do_multiplechoice_withcomments($ia)
     }
     else
     {
-        $othertext=$clang->gT('Other:');
+        $othertext=gT('Other:');
     }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
@@ -2689,7 +2689,7 @@ function do_multiplechoice_withcomments($ia)
         }
         $answer_main .= "' />\n";
         $fn++;
-        $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide \">".$clang->gT('Make a comment on your choice here:')."</label>\n"
+        $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide \">".gT('Make a comment on your choice here:')."</label>\n"
         ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
         $answer_main .= "' onkeyup='$checkconditionFunction(this.value,this.name,this.type);' />\n</span>\n"
@@ -2705,7 +2705,7 @@ function do_multiplechoice_withcomments($ia)
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
-        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".gT('Other').'" size="10"';
         $answer_main .= " onkeyup='$oth_checkconditionFunction(this.value, this.name, this.type);'";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
@@ -2719,10 +2719,10 @@ function do_multiplechoice_withcomments($ia)
         $fn++;
         // --> START NEW FEATURE - SAVE
         $answer_main .= " />\n\t</label>\n</span>\n"
-        . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".$clang->gT('Make a comment on your choice here:')."\t</label>\n"
+        . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".gT('Make a comment on your choice here:')."\t</label>\n"
         . '<input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'"'
         . " onkeyup='$checkconditionFunction(this.value,this.name,this.type);'"
-        . ' title="'.$clang->gT('Make a comment on your choice here:').'" value="';
+        . ' title="'.gT('Make a comment on your choice here:').'" value="';
         // --> END NEW FEATURE - SAVE
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
@@ -2784,7 +2784,7 @@ function do_file_upload($ia)
 
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' ";
     $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
-    $uploadbutton .=">" .$clang->gT('Upload files'). "</a></h2>";
+    $uploadbutton .=">" .gT('Upload files'). "</a></h2>";
 
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
@@ -2796,11 +2796,11 @@ function do_file_upload($ia)
             $('#upload_$ia[1]').attr('href',uploadurl);
         }
         var translt = {
-             title: '" . $clang->gT('Upload your files','js') . "',
-             returnTxt: '" . $clang->gT('Return to survey','js') . "',
-             headTitle: '" . $clang->gT('Title','js') . "',
-             headComment: '" . $clang->gT('Comment','js') . "',
-             headFileName: '" . $clang->gT('File name','js') . "'
+             title: '" . gT('Upload your files','js') . "',
+             returnTxt: '" . gT('Return to survey','js') . "',
+             headTitle: '" . gT('Title','js') . "',
+             headComment: '" . gT('Comment','js') . "',
+             headFileName: '" . gT('File name','js') . "'
             };
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
         var uploadurl =  '".$scriptloc."';
@@ -2978,7 +2978,7 @@ function do_multipleshorttext($ia)
     if ($anscount==0)
     {
         $inputnames=array();
-        $answer_main .= '    <li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
+        $answer_main .= '    <li>'.gT('Error: This question has no answers.')."</li>\n";
     }
     else
     {
@@ -3219,7 +3219,7 @@ function do_multiplenumeric($ia)
     if ($anscount==0)
     {
         $inputnames=array();
-        $answer_main .= '    <li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
+        $answer_main .= '    <li>'.gT('Error: This question has no answers.')."</li>\n";
     }
     else
     {
@@ -3257,7 +3257,7 @@ function do_multiplenumeric($ia)
                 $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
 
-                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".$clang->gT('Only numbers may be entered in this field.')."\" value=\"";                
+                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".gT('Only numbers may be entered in this field.')."\" value=\"";                
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
                     $dispVal = str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
@@ -3278,7 +3278,7 @@ function do_multiplenumeric($ia)
             if (trim($aQuestionAttributes['equals_num_value']) != '')
             {
                 $answer_main .= "\t<li class='multiplenumerichelp help-item'>\n"
-                . "<span class=\"label\">".$clang->gT('Remaining: ')."</span>\n"
+                . "<span class=\"label\">".gT('Remaining: ')."</span>\n"
                 . "<span id=\"remainingvalue_{$ia[0]}\" class=\"dynamic_remaining\">$prefix\n"
                 . "{" . $qinfo['sumRemainingEqn'] . "}\n"
                 . "$suffix</span>\n"
@@ -3286,7 +3286,7 @@ function do_multiplenumeric($ia)
             }
 
             $answer_main .= "\t<li class='multiplenumerichelp  help-item'>\n"
-            . "<span class=\"label\">".$clang->gT('Total: ')."</span>\n"
+            . "<span class=\"label\">".gT('Total: ')."</span>\n"
             . "<span id=\"totalvalue_{$ia[0]}\" class=\"dynamic_sum\">$prefix\n"
             . "{" . $qinfo['sumEqn'] . "}\n"
             . "$suffix</span>\n"
@@ -3317,8 +3317,8 @@ function do_multiplenumeric($ia)
         $slider_showminmax=($aQuestionAttributes['slider_showminmax']==1)?1:0;
         //some var for slider
         $aJsLang=array(
-            'reset' => $clang->gT('Reset'),
-            'tip' => $clang->gT('Please click and drag the slider handles to enter your answer.'),
+            'reset' => gT('Reset'),
+            'tip' => gT('Please click and drag the slider handles to enter your answer.'),
             );
         $aJsVar=array(
             'slider_showminmax'=>$slider_showminmax,
@@ -3432,8 +3432,8 @@ function do_numerical($ia)
     }
     // --> START NEW FEATURE - SAVE
     $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
-    . " <label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t"
-    . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".$clang->gT('Only numbers may be entered in this field.')."\" "
+    . " <label for='answer{$ia[1]}' class='hide label'>{gT('Answer')}</label>\n$prefix\t"
+    . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".gT('Only numbers may be entered in this field.')."\" "
     . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
     // --> END NEW FEATURE - SAVE
@@ -3532,7 +3532,7 @@ function do_shortfreetext($ia)
         //NEW: textarea instead of input=text field
 
         // --> START NEW FEATURE - SAVE
-        $answer ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>"
+        $answer ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>{gT('Answer')}</label>"
         . '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
         .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
         // --> END NEW FEATURE - SAVE
@@ -3617,15 +3617,15 @@ function do_shortfreetext($ia)
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
             $answer .= "<div class=\"questionhelp\">"
-            . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
-            $question_text['help'] = $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
+            . gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
+            $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
     }
     else
     {
         //no question attribute set, use common input text field
         $answer = "<p class=\"question answer-item text-item {$extraclass}\">\n"
-        ."<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>"
+        ."<label for='answer{$ia[1]}' class='hide label'>{gT('Answer')}</label>"
         ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
 
         $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
@@ -3724,8 +3724,8 @@ function do_longfreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>";
-    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    $answer = "<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>{gT('Answer')}</label>";
+    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.gT('Answer').'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
@@ -3799,7 +3799,7 @@ function do_hugefreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question answer-item text-item {$extraclass}\"><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>";
+    $answer = "<p class=\"question answer-item text-item {$extraclass}\"><label for='answer{$ia[1]}' class='hide label'>{gT('Answer')}</label>";
     $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
@@ -3831,7 +3831,7 @@ function do_yesno($ia)
         $answer .= CHECKED;
     }
     // --> START NEW FEATURE - SAVE
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t".$clang->gT('Yes')."\n</label>\n\t</li>\n"
+    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t".gT('Yes')."\n</label>\n\t</li>\n"
     . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
     // --> END NEW FEATURE - SAVE
 
@@ -3840,7 +3840,7 @@ function do_yesno($ia)
         $answer .= CHECKED;
     }
     // --> START NEW FEATURE - SAVE
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".$clang->gT('No')."\n</label>\n\t</li>\n";
+    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".gT('No')."\n</label>\n\t</li>\n";
     // --> END NEW FEATURE - SAVE
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -3851,7 +3851,7 @@ function do_yesno($ia)
             $answer .= CHECKED;
         }
         // --> START NEW FEATURE - SAVE
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}\" class=\"answertext\">\n\t".$clang->gT('No answer')."\n</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}\" class=\"answertext\">\n\t".gT('No answer')."\n</label>\n\t</li>\n";
         // --> END NEW FEATURE - SAVE
     }
 
@@ -3877,7 +3877,7 @@ function do_gender($ia)
         $answer .= CHECKED;
     }
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-    . '        <label for="answer'.$ia[1].'F" class="answertext">'.$clang->gT('Female')."</label>\n\t</li>\n";
+    . '        <label for="answer'.$ia[1].'F" class="answertext">'.gT('Female')."</label>\n\t</li>\n";
 
     $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
 
@@ -3885,7 +3885,7 @@ function do_gender($ia)
     {
         $answer .= CHECKED;
     }
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]M\" class=\"answertext\">".$clang->gT('Male')."</label>\n\t</li>\n";
+    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]M\" class=\"answertext\">".gT('Male')."</label>\n\t</li>\n";
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
@@ -3895,7 +3895,7 @@ function do_gender($ia)
             $answer .= CHECKED;
         }
         // --> START NEW FEATURE - SAVE
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
         // --> END NEW FEATURE - SAVE
 
     }
@@ -3921,7 +3921,7 @@ function do_array_5point($ia)
     global $notanswered, $thissurvey;
     $extraclass ="";
     $clang = Yii::app()->lang;
-    $caption=$clang->gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "); 
+    $caption=gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
@@ -3993,7 +3993,7 @@ function do_array_5point($ia)
     if ($right_exists) {$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";}
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
+        $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
     $answer .= "</tr></thead>\n";
 
@@ -4056,7 +4056,7 @@ function do_array_5point($ia)
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            ."<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>"
+            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
@@ -4090,7 +4090,7 @@ function do_array_10point($ia)
     global $notanswered, $thissurvey;
     $extraclass ="";
     $clang = Yii::app()->lang;
-    $caption=$clang->gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "); 
+    $caption=gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -4109,7 +4109,7 @@ function do_array_10point($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
-        $caption.=$clang->gT("The last cell are for no answer. "); 
+        $caption.=gT("The last cell are for no answer. "); 
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -4149,7 +4149,7 @@ function do_array_10point($ia)
     }
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
+        $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
     $answer .= "</tr>\n</thead>";
     $answer_t_content = '<tbody>';
@@ -4195,7 +4195,7 @@ function do_array_10point($ia)
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            ."<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>"
+            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
@@ -4219,7 +4219,7 @@ function do_array_yesnouncertain($ia)
     global $notanswered, $thissurvey;
     $extraclass ="";
     $clang = Yii::app()->lang;
-    $caption=$clang->gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "); 
+    $caption=gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -4239,7 +4239,7 @@ function do_array_yesnouncertain($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
-        $caption.=$clang->gT("The last cell are for no answer. "); 
+        $caption.=gT("The last cell are for no answer. "); 
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -4271,19 +4271,19 @@ function do_array_yesnouncertain($ia)
     $answer .= "\t</colgroup>\n\n"
     . "\t<thead>\n<tr class=\"array1\">\n"
     . "\t<td>&nbsp;</td>\n"
-    . "\t<th class=\"dontread\">".$clang->gT('Yes')."</th>\n"
-    . "\t<th class=\"dontread\">".$clang->gT('Uncertain')."</th>\n"
-    . "\t<th class=\"dontread\">".$clang->gT('No')."</th>\n";
+    . "\t<th class=\"dontread\">".gT('Yes')."</th>\n"
+    . "\t<th class=\"dontread\">".gT('Uncertain')."</th>\n"
+    . "\t<th class=\"dontread\">".gT('No')."</th>\n";
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $answer .= "\t<th class=\"dontread\">".$clang->gT('No answer')."</th>\n";
+        $answer .= "\t<th class=\"dontread\">".gT('No answer')."</th>\n";
     }
     $answer .= "</tr>\n\t</thead>";
     $answer_t_content = '<tbody>';
     if ($anscount==0)
     {
         $inputnames=array();
-        $answer.="<tr>\t<th class=\"answertext\">".$clang->gT('Error: This question has no answers.')."</th>\n</tr>\n";
+        $answer.="<tr>\t<th class=\"answertext\">".gT('Error: This question has no answers.')."</th>\n</tr>\n";
     }
     else
     {
@@ -4309,7 +4309,7 @@ function do_array_yesnouncertain($ia)
             . $hiddenfield
             . "\t\t\t\t$answertext</th>\n"
             . "\t<td class=\"answer_cell_Y answer-item radio-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-Y\">".$clang->gT('Yes')."</label>\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-Y\">".gT('Yes')."</label>\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" ";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
@@ -4318,7 +4318,7 @@ function do_array_yesnouncertain($ia)
             // --> START NEW FEATURE - SAVE
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n"
             . "\t<td class=\"answer_cell_U answer-item radio-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-U\">".$clang->gT('Uncertain')."</label>\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-U\">".gT('Uncertain')."</label>\n"
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" ";
             // --> END NEW FEATURE - SAVE
 
@@ -4329,7 +4329,7 @@ function do_array_yesnouncertain($ia)
             // --> START NEW FEATURE - SAVE
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n"
             . "\t<td class=\"answer_cell_N answer-item radio-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-N\">".$clang->gT('No')."</label>\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-N\">".gT('No')."</label>\n"
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" ";
             // --> END NEW FEATURE - SAVE
 
@@ -4350,7 +4350,7 @@ function do_array_yesnouncertain($ia)
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-                . "\t<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>\n"
+                . "\t<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
@@ -4376,7 +4376,7 @@ function do_array_increasesamedecrease($ia)
     global $notanswered;
     $extraclass ="";
     $clang = Yii::app()->lang;
-    $caption=$clang->gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "); 
+    $caption=gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -4394,7 +4394,7 @@ function do_array_increasesamedecrease($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
-        $caption.=$clang->gT("The last cell are for no answer. "); 
+        $caption.=gT("The last cell are for no answer. "); 
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
@@ -4434,12 +4434,12 @@ function do_array_increasesamedecrease($ia)
     . "\t<thead>\n"
     . "<tr class=\"dontread\">\n"
     . "\t<td>&nbsp;</td>\n"
-    . "\t<th>".$clang->gT('Increase')."</th>\n"
-    . "\t<th>".$clang->gT('Same')."</th>\n"
-    . "\t<th>".$clang->gT('Decrease')."</th>\n";
+    . "\t<th>".gT('Increase')."</th>\n"
+    . "\t<th>".gT('Same')."</th>\n"
+    . "\t<th>".gT('Decrease')."</th>\n";
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
-        $answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
+        $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
     $answer .= "</tr>\n"
     ."\t</thead>\n";
@@ -4475,7 +4475,7 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= "\" />\n\t</th>\n";
 
         $answer_body .= "\t<td class=\"answer_cell_I answer-item radio-item\">\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-I\">".$clang->gT('Increase')."</label>\n"
+        . "<label class=\"hide read\" for=\"answer$myfname-I\">".gT('Increase')."</label>\n"
         ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I')
         {
@@ -4484,7 +4484,7 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
         . "\t</td>\n"
         . "\t<td class=\"answer_cell_S answer-item radio-item\">\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-S\">".$clang->gT('Same')."</label>\n"
+        . "<label class=\"hide read\" for=\"answer$myfname-S\">".gT('Same')."</label>\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" ";
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S')
@@ -4495,7 +4495,7 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
         . "\t</td>\n"
         . "\t<td class=\"answer_cell_D answer-item radio-item\">\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-D\">".$clang->gT('Decrease')."</label>\n"
+        . "<label class=\"hide read\" for=\"answer$myfname-D\">".gT('Decrease')."</label>\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D')
@@ -4512,7 +4512,7 @@ function do_array_increasesamedecrease($ia)
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
@@ -4559,12 +4559,12 @@ function do_array($ia)
     {
         $useDropdownLayout = true;
         $extraclass .=" dropdown-list";
-        $caption=$clang->gT("An array with sub-question on each line. You have to select your answer."); 
+        $caption=gT("An array with sub-question on each line. You have to select your answer."); 
     }
     else
     {
         $useDropdownLayout = false;
-        $caption=$clang->gT("An array with sub-question on each line. The answers are contained in the table header. "); 
+        $caption=gT("An array with sub-question on each line. The answers are contained in the table header. "); 
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -4610,12 +4610,12 @@ function do_array($ia)
         if ($right_exists)
         {
             ++$numrows;
-            $caption.=$clang->gT("After answers, a cell give some information. "); 
+            $caption.=gT("After answers, a cell give some information. "); 
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             ++$numrows;
-            $caption.=$clang->gT("The last cell are for no answer. "); 
+            $caption.=gT("The last cell are for no answer. "); 
         }
         $cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
@@ -4628,7 +4628,7 @@ function do_array($ia)
             if ($right_exists) {$answer_head_line .= "\t<td>&nbsp;</td>\n";}
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
             {
-                $answer_head_line .= "\t<th>".$clang->gT('No answer')."</th>\n";
+                $answer_head_line .= "\t<th>".gT('No answer')."</th>\n";
             }
         $answer_head = "\t<thead><tr class=\"dontread\">\n".$answer_head_line."</tr></thead>\n\t\n";
 
@@ -4710,7 +4710,7 @@ function do_array($ia)
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-                ."<label class=\"hide read\" for=\"answer$myfname-\">".$clang->gT('No answer')."</label>\n"
+                ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
@@ -4830,11 +4830,11 @@ function do_array($ia)
             // Dropdown representation is en exception - even if mandatory or  SHOW_NO_ANSWER is disable a neutral option needs to be shown where the mandatory case asks actively
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
-                $sOptionText=$clang->gT('No answer');
+                $sOptionText=gT('No answer');
             }
             else
             {
-                $sOptionText=$clang->gT('Please choose...');
+                $sOptionText=gT('Please choose...');
             }
             $answer .= "\t<option value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
@@ -4873,7 +4873,7 @@ function do_array($ia)
     }
     else
     {
-        $answer = "\n<p class=\"error\">".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+        $answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames='';
     }
     return array($answer, $inputnames);
@@ -4892,7 +4892,7 @@ function do_array_multitext($ia)
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $clang = Yii::app()->lang;
-    $caption=$clang->gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "); 
+    $caption=gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "); 
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
@@ -4953,7 +4953,7 @@ function do_array_multitext($ia)
         }
         $num_class = ' numbers-only';
         $extraclass.=" numberonly";
-        $caption.=$clang->gT("Each answers are number. "); 
+        $caption.=gT("Each answers are number. "); 
         switch ($aQuestionAttributes['show_totals'])
         {
             case 'R':
@@ -4975,7 +4975,7 @@ function do_array_multitext($ia)
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
                 };
-                $caption.=$clang->gT("The last row show the total for the column. "); 
+                $caption.=gT("The last row show the total for the column. "); 
                 break;
             case 'C':
                 $totals_class = $show_totals = 'col';
@@ -4995,7 +4995,7 @@ function do_array_multitext($ia)
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
                 };
-                $caption.=$clang->gT("The last column show the total for the row. "); 
+                $caption.=gT("The last column show the total for the row. "); 
                 break;
             case 'B':
                 $totals_class = $show_totals = 'both';
@@ -5023,7 +5023,7 @@ function do_array_multitext($ia)
                     $grand_total = '
                     <td>&nbsp;</td>';
                 };
-                $caption.=$clang->gT("The last row show the total for the column and the last column show the total for the row. "); 
+                $caption.=gT("The last row show the total for the column and the last column show the total for the row. "); 
                 break;
         };
         if(!empty($totals_class))
@@ -5084,7 +5084,7 @@ function do_array_multitext($ia)
         {
             $right_exists=true;
             $answerwidth=$answerwidth/2;
-            $caption.=$clang->gT("The last cell give some information. "); 
+            $caption.=gT("The last cell give some information. "); 
         }
         else
         {
@@ -5262,7 +5262,7 @@ EOD;
     }
     else
     {
-        $answer = "\n<p class=\"error\">".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+        $answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames='';
     }
     return array($answer, $inputnames);
@@ -5279,7 +5279,7 @@ function do_array_multiflexi($ia)
     $extraclass ="";
     $answertypeclass = "";
     $clang = Yii::app()->lang;
-    $caption=$clang->gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "); 
+    $caption=gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "); 
     $checkconditionFunction = "fixnum_checkconditions";
     //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
@@ -5338,19 +5338,19 @@ function do_array_multiflexi($ia)
         $maxvalue=1;
         $checkboxlayout=true;
         $answertypeclass =" checkbox";
-        $caption.=$clang->gT("Check or uncheck the answer for each subquestion. ");
+        $caption.=gT("Check or uncheck the answer for each subquestion. ");
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
         $inputboxlayout=true;
         $answertypeclass .=" numeric-item text";
         $extraclass .= " numberonly";
-        $caption.=$clang->gT("Each answers are a number. "); 
+        $caption.=gT("Each answers are a number. "); 
     }
     else
     {
         $answertypeclass =" dropdown";
-        $caption.=$clang->gT("Select the answer for each subquestion. "); 
+        $caption.=gT("Select the answer for each subquestion. "); 
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -5412,7 +5412,7 @@ function do_array_multiflexi($ia)
         if ($iCount>0) {
             $right_exists=true;
             $answerwidth=$answerwidth/2;
-            $caption.=$clang->gT("The last cell give some information. "); 
+            $caption.=gT("The last cell give some information. "); 
         } else {
             $right_exists=false;
         }
@@ -5548,7 +5548,7 @@ function do_array_multiflexi($ia)
                         $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
                         . HTMLEscape($labelans[$thiskey]).'"'
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
-                        . "<option value=\"\">".$clang->gT('...')."</option>\n";
+                        . "<option value=\"\">".gT('...')."</option>\n";
 
                         for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
                             $answer .= '<option value="'.str_replace('.',$sSeparator,$ii).'"';
@@ -5627,7 +5627,7 @@ function do_array_multiflexi($ia)
     }
     else
     {
-        $answer = "\n<p class=\"error\">".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+        $answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames = '';
     }
     return array($answer, $inputnames);
@@ -5642,7 +5642,7 @@ function do_arraycolumns($ia)
     $clang = Yii::app()->lang;
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
-    $caption=$clang->gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
+    $caption=gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -5665,8 +5665,8 @@ function do_arraycolumns($ia)
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $labelcode[]='';
-            $labelans[]=$clang->gT('No answer');
-            $labels[]=array('answer'=>$clang->gT('No answer'), 'code'=>'');
+            $labelans[]=gT('No answer');
+            $labels[]=array('answer'=>gT('No answer'), 'code'=>'');
         }
         if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
@@ -5774,13 +5774,13 @@ function do_arraycolumns($ia)
         }
         else
         {
-            $answer = '<p class="error">'.$clang->gT('Error: There are no answers defined for this question.')."</p>";
+            $answer = '<p class="error">'.gT('Error: There are no answers defined for this question.')."</p>";
             $inputnames="";
         }
     }
     else
     {
-        $answer = "<p class='error'>".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+        $answer = "<p class='error'>".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames = '';
     }
     return array($answer, $inputnames);
@@ -5827,7 +5827,7 @@ function do_array_dual($ia)
         $extraclass .=" dropdown-list";
         $answertypeclass .=" dropdown";
         $doDualScaleFunction="doDualScaleDropDown";// javascript funtion to lauch at end of answers
-        $caption=$clang->gT("An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."); 
+        $caption=gT("An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."); 
     }
     else
     {
@@ -5835,7 +5835,7 @@ function do_array_dual($ia)
         $extraclass .=" radio-list";
         $answertypeclass .=" radio";
         $doDualScaleFunction="doDualScaleRadio";
-        $caption=$clang->gT("An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "); 
+        $caption=gT("An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "); 
     }
     if(ctype_digit(trim($aQuestionAttributes['repeat_headings'])) && trim($aQuestionAttributes['repeat_headings']!=""))
     {
@@ -5909,7 +5909,7 @@ function do_array_dual($ia)
             $shownoanswer=($ia[6] != "Y" && SHOW_NO_ANSWER == 1);
             if($shownoanswer) {
                 $numrows++;
-                $caption.=$clang->gT("The last cell are for no answer. "); 
+                $caption.=gT("The last cell are for no answer. "); 
             }
             if($rightexists) {$numrows++;}
             if($centerexists) {$numrows++;}
@@ -5951,7 +5951,7 @@ function do_array_dual($ia)
             if($shownoanswer)
             {
                 $mycolumns .=  "\t<col class=\"col-no-answer\"  width=\"$cellwidth%\" />\n";
-                $answer_head_line .= "\n\t<th class=\"header_no_answer\">".$clang->gT('No answer')."</th>\n";
+                $answer_head_line .= "\n\t<th class=\"header_no_answer\">".gT('No answer')."</th>\n";
             }
             $answer_head2 = "\n<tr class=\"array1 header_row dontread\">\n"
             . $answer_head_line
@@ -6081,7 +6081,7 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"dual_scale_separator information-item\">";
                     if ($shownoanswer)// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                     {
-                        $answer .=  "<label for='answer$myfid0-' class= \"hide read\">".$clang->gT("No answer")."</label>"
+                        $answer .=  "<label for='answer$myfid0-' class= \"hide read\">".gT("No answer")."</label>"
                         . "\t<input class='radio jshide read' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
@@ -6115,7 +6115,7 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"dual_scale_no_answer answer-item radio-item noanswer-item\">\n";
                     if (count($labelans1)>0)
                     {
-                        $answer .= "<label class='hide read' for='answer$myfid1-'>".$clang->gT("No answer")."</label>"
+                        $answer .= "<label class='hide read' for='answer$myfid1-'>".gT("No answer")."</label>"
                         . "\t<input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "")
                         {
@@ -6126,7 +6126,7 @@ function do_array_dual($ia)
                     }
                     else
                     {
-                        $answer .= "<label class='hide read' for='answer$myfid0-'>".$clang->gT("No answer")."<label>\n"
+                        $answer .= "<label class='hide read' for='answer$myfid0-'>".gT("No answer")."<label>\n"
                         . "\t<input class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
@@ -6281,11 +6281,11 @@ function do_array_dual($ia)
                     $answer .='>';
                     if ($ia[6] != 'Y')
                     {
-                        $answer .=$clang->gT('No answer');
+                        $answer .=gT('No answer');
                     }
                     else
                     {
-                        $answer .=$clang->gT('Please choose...');
+                        $answer .=gT('Please choose...');
                     }
                     
                     $answer .="</option>\n";
@@ -6329,11 +6329,11 @@ function do_array_dual($ia)
                     $answer .='>';
                     if ($ia[6] != 'Y')
                     {
-                        $answer .=$clang->gT('No answer');
+                        $answer .=gT('No answer');
                     }
                     else
                     {
-                        $answer .=$clang->gT('Please choose...');
+                        $answer .=gT('Please choose...');
                     }
                     
                     $answer .="</option>\n";
@@ -6363,7 +6363,7 @@ function do_array_dual($ia)
     }
     else
     {
-        $answer = "<p class='error'>".$clang->gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
+        $answer = "<p class='error'>".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames="";
     }
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js");

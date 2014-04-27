@@ -12,7 +12,7 @@
             <?php
                 $this->widget('ext.bootstrap.widgets.TbButton', array(
                     'url' => $this->createUrl("/admin"),
-                    'label' => $clang->gT("Administration")
+                    'label' => gT("Administration")
                 ));
             ?>
         </div>

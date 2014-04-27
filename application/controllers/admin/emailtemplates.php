@@ -146,7 +146,7 @@ class emailtemplates extends Survey_Common_Action {
                 );
                 $usquery = SurveyLanguageSetting::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
             }
-            Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
+            Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
         }
         if($save=='saveclose')
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));

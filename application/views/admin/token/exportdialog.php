@@ -7,7 +7,7 @@
                 <?php
                 if ($thissurvey['anonymized'] == 'N')
                 {
-                    echo "<option value='3'>" . $clang->gT('Started but not yet completed') . "</option>";
+                    echo "<option value='3'>" . gT('Started but not yet completed') . "</option>";
                 }
                 ?>
             </select></li>

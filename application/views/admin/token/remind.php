@@ -15,7 +15,7 @@
             echo '<li><a href="#tabpage_' . $language . '">' . getLanguageNameFromCode($language, false);
             if ($language == $baselang)
             {
-                echo "(" . $clang->gT("Base language") . ")";
+                echo "(" . gT("Base language") . ")";
             }
             echo "</a></li>";
         }
@@ -29,12 +29,12 @@
             //GET SURVEY DETAILS
             if (!$thissurvey[$language]['email_remind'])
             {
-                $thissurvey[$language]['email_remind'] = str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}") . "\n\n" . $clang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"));
+                $thissurvey[$language]['email_remind'] = str_replace("\n", "\r\n", gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}") . "\n\n" . gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"));
             }
             echo "<div id='tabpage_{$language}'><ul>"
-            . "<li><label for='from_$language' >" . $clang->gT("From") . ":</label>\n"
+            . "<li><label for='from_$language' >" . gT("From") . ":</label>\n"
             . "<input type='text' size='50' name='from_$language' id='from_$language' value=\"".htmlspecialchars($thissurvey['adminname'],ENT_QUOTES,'UTF-8')." <".htmlspecialchars($thissurvey['adminemail'],ENT_QUOTES,'UTF-8').">\" /></li>\n"
-            . "<li><label for='subject_$language' >" . $clang->gT("Subject") . ":</label>";
+            . "<li><label for='subject_$language' >" . gT("Subject") . ":</label>";
 
             $fieldsarray["{ADMINNAME}"] = $thissurvey['adminname'];
             $fieldsarray["{ADMINEMAIL}"] = $thissurvey['adminemail'];
@@ -50,13 +50,13 @@
             }
 
             echo "<input type='text' size='83' id='subject_$language' name='subject_$language' value=\"$subject\" /></li><li>\n"
-            . "<label for='message_$language'>" . $clang->gT("Message") . ":</label>\n"
+            . "<label for='message_$language'>" . gT("Message") . ":</label>\n"
             . "<div  class='htmleditor'>\n"
             . "<textarea name='message_$language' id='message_$language' rows='20' cols='80' >";
             echo htmlspecialchars($textarea);
             echo "</textarea>"
             . "</div>\n"
-            . getEditor("email-rem", "message_$language", "[" . $clang->gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens")
+            . getEditor("email-rem", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens")
             . "</li>\n"
             . "</ul></div>";
         }

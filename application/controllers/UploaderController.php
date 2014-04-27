@@ -117,10 +117,10 @@ class UploaderController extends SurveyController {
             // Return some json to do a beautiful text
             if (@unlink($sFileDir.$sFileName))
             {
-               echo sprintf($clang->gT('File %s deleted'), $sOriginalFileName);
+               echo sprintf(gT('File %s deleted'), $sOriginalFileName);
             }
             else
-                echo $clang->gT('Oops, There was an error deleting the file');
+                echo gT('Oops, There was an error deleting the file');
             Yii::app()->end();
         }
 
@@ -160,7 +160,7 @@ class UploaderController extends SurveyController {
             {
                 $return = array(
                                 "success" => false,
-                                "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$ext)
+                                "msg" => sprintf(gT("Sorry, this file extension (%s) is not allowed!"),$ext)
                             );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -174,7 +174,7 @@ class UploaderController extends SurveyController {
                 {
                     $return = array(
                         "success" => false,
-                        "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                        "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
@@ -191,7 +191,7 @@ class UploaderController extends SurveyController {
                                 "name"          => rawurlencode(basename($filename)),
                                 "ext"           => $ext,
                                 "filename"      => $randfilename,
-                                "msg"           => $clang->gT("The file has been successfuly uploaded.")
+                                "msg"           => gT("The file has been successfuly uploaded.")
                             );
                     // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
                     // Maybe use a javascript 'onunload' on preview question/group
@@ -209,7 +209,7 @@ class UploaderController extends SurveyController {
                 {
                     $return = array(
                         "success" => false,
-                         "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $maxfilesize)
+                         "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $maxfilesize)
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
@@ -219,7 +219,7 @@ class UploaderController extends SurveyController {
                 {
                     $return = array(
                         "success" => false,
-                         "msg" => $clang->gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",'unescaped')
+                         "msg" => gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",'unescaped')
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
@@ -233,7 +233,7 @@ class UploaderController extends SurveyController {
                         "name"    => rawurlencode(basename($filename)),
                         "ext"     => $ext,
                         "filename"      => $randfilename,
-                        "msg"     => $clang->gT("The file has been successfuly uploaded.")
+                        "msg"     => gT("The file has been successfuly uploaded.")
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
@@ -247,7 +247,7 @@ class UploaderController extends SurveyController {
                     {
                         $return = array(
                                         "success" => false,
-                                        "msg" => $clang->gT("Sorry, there was an error uploading your file")
+                                        "msg" => gT("Sorry, there was an error uploading your file")
                                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
@@ -258,7 +258,7 @@ class UploaderController extends SurveyController {
                     {
                         $return = array(
                                         "success" => false,
-                                        "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                                        "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
                                     );
                         //header('Content-Type: application/json');
                         echo ls_json_encode($return);
@@ -268,7 +268,7 @@ class UploaderController extends SurveyController {
                     {
                         $return = array(
                                     "success" => false,
-                                    "msg" => $clang->gT("Unknown error")
+                                    "msg" => gT("Unknown error")
                                 );
                         //header('Content-Type: application/json');
                         echo ls_json_encode($return);
@@ -292,17 +292,17 @@ class UploaderController extends SurveyController {
         ';
         $sLangScriptVar="
                 translt = {
-                     titleFld: '" . $clang->gT('Title','js') . "',
-                     commentFld: '" . $clang->gT('Comment','js') . "',
-                     errorNoMoreFiles: '" . $clang->gT('Sorry, no more files can be uploaded!','js') . "',
-                     errorOnlyAllowed: '" . $clang->gT('Sorry, only %s files can be uploaded for this question!','js') . "',
-                     uploading: '" . $clang->gT('Uploading','js') . "',
-                     selectfile: '" . $clang->gT('Select file','js') . "',
-                     errorNeedMore: '" . $clang->gT('Please upload %s more file(s).','js') . "',
-                     errorMoreAllowed: '" . $clang->gT('If you wish, you may upload %s more file(s); else you may return back to survey.','js') . "',
-                     errorMaxReached: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
-                     errorTooMuch: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
-                     errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "'
+                     titleFld: '" . gT('Title','js') . "',
+                     commentFld: '" . gT('Comment','js') . "',
+                     errorNoMoreFiles: '" . gT('Sorry, no more files can be uploaded!','js') . "',
+                     errorOnlyAllowed: '" . gT('Sorry, only %s files can be uploaded for this question!','js') . "',
+                     uploading: '" . gT('Uploading','js') . "',
+                     selectfile: '" . gT('Select file','js') . "',
+                     errorNeedMore: '" . gT('Please upload %s more file(s).','js') . "',
+                     errorMoreAllowed: '" . gT('If you wish, you may upload %s more file(s); else you may return back to survey.','js') . "',
+                     errorMaxReached: '" . gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
+                     errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
+                     errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "'
                     };
         ";
         $aSurveyInfo=getSurveyInfo($surveyid, $sLanguage);
@@ -359,10 +359,10 @@ class UploaderController extends SurveyController {
 
                 <!-- The upload button -->
                 <div class="upload-div">
-                    <button id="button1" class="button upload-button" type="button" >'.$clang->gT("Select file").'</button>
+                    <button id="button1" class="button upload-button" type="button" >'.gT("Select file").'</button>
                 </div>
 
-                <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each.",'js'),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
+                <p class="uploadmsg">'.sprintf(gT("You can upload %s under %s KB each.",'js'),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
                 <div class="uploadstatus" id="uploadstatus"></div>
 
                 <!-- The list of uploaded files -->

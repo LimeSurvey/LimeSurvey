@@ -37,7 +37,7 @@ if (isset($strlen) && $strlen < 1)
 if (isset($result2))
 {
 ?>
-<script type="text/javascript">alert("<?php printf($clang->gT("Question in language %s could not be created.", 'js'), $alang); ?>")</script><br />
+<script type="text/javascript">alert("<?php printf(gT("Question in language %s could not be created.", 'js'), $alang); ?>")</script><br />
 <?php
 }
 if (isset($result3))

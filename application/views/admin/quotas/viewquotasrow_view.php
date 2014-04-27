@@ -7,9 +7,9 @@
     <td>
         <?php if ($quotalisting['active'] == 1)
             {
-                echo '<font color="#48B150">'.$clang->gT("Active").'</font>';
+                echo '<font color="#48B150">'.gT("Active").'</font>';
             } else {
-                echo '<font color="#B73838">'.$clang->gT("Not Active").'</font>';
+                echo '<font color="#B73838">'.gT("Not Active").'</font>';
             }
         ?>
     </td>

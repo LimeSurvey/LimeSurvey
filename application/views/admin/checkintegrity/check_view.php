@@ -11,7 +11,7 @@
             <li><?php $clang->eT("The following conditions should be deleted:"); ?></li>
             <?php
                 foreach ($conditions as $condition) {?>
-                CID:<?php echo $condition['cid'].' '.$clang->gT("Reason:")." {$condition['reason']}";?><br /><?php
+                CID:<?php echo $condition['cid'].' '.gT("Reason:")." {$condition['reason']}";?><br /><?php
             }?>
             <br />
             <?php
@@ -23,7 +23,7 @@
 
         <?php
             if (isset($questionattributes)) { ?>
-            <li><?php printf($clang->gT("There are %s orphaned question attributes."),count($questionattributes)); ?> </li>
+            <li><?php printf(gT("There are %s orphaned question attributes."),count($questionattributes)); ?> </li>
             <?php }
             else
             { ?>
@@ -32,7 +32,7 @@
 
         <?php
             if ($defaultvalues) { ?>
-            <li><?php printf($clang->gT("There are %s orphaned default value entries which can be deleted."),$defaultvalues); ?> </li>
+            <li><?php printf(gT("There are %s orphaned default value entries which can be deleted."),$defaultvalues); ?> </li>
             <?php }
             else
             { ?>
@@ -41,7 +41,7 @@
 
         <?php
             if ($quotas) { ?>
-            <li><?php printf($clang->gT("There are %s orphaned quota entries which can be deleted."),$quotas); ?> </li>
+            <li><?php printf(gT("There are %s orphaned quota entries which can be deleted."),$quotas); ?> </li>
             <?php }
             else
             { ?>
@@ -50,7 +50,7 @@
 
         <?php
             if ($quotals) { ?>
-            <li><?php printf($clang->gT("There are %s orphaned quota language settings which can be deleted."),$quotals); ?> </li>
+            <li><?php printf(gT("There are %s orphaned quota language settings which can be deleted."),$quotals); ?> </li>
             <?php }
             else
             { ?>
@@ -59,7 +59,7 @@
 
         <?php
             if ($quotamembers) { ?>
-            <li><?php printf($clang->gT("There are %s orphaned quota members which can be deleted."),$quotamembers); ?> </li>
+            <li><?php printf(gT("There are %s orphaned quota members which can be deleted."),$quotamembers); ?> </li>
             <?php }
             else
             { ?>

@@ -1,4 +1,4 @@
-<div class="header ui-widget-header"><?php sprintf($clang->gT('ComfortUpdate step %s'),'3'); ?></div>
+<div class="header ui-widget-header"><?php sprintf(gT('ComfortUpdate step %s'),'3'); ?></div>
 <div class="updater-background">
 <h3><?php $clang->eT('Creating DB & file backup')?></h3>
 <div class='messagebox ui-corner-all'>
@@ -29,7 +29,7 @@
     <p class="<?php echo $aSQLBackup['class']; ?>"><?php echo $aSQLBackup['text']; ?></p>
     <p class="information"><?php $clang->eT('Please check any problems above and then proceed to the final step.'); ?>
     <?php echo "<p><a class='button' href='".Yii::app()->getController()->createUrl("admin/update/sa/step4/")."'>
-     ".sprintf($clang->gT('Proceed to step %s'),'4') ."</a></p>";
+     ".sprintf(gT('Proceed to step %s'),'4') ."</a></p>";
      ?>
 </div>
 </div>

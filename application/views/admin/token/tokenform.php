@@ -145,7 +145,7 @@
                         $datetimeobj = new Date_Time_Converter($validuntil, "Y-m-d H:i:s");
                         echo $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
                     }
-                ?>" /> <span class='annotation'><?php echo sprintf($clang->gT('Format: %s'), $dateformatdetails['dateformat'] . ' ' . $clang->gT('hh:mm')); ?></span>
+                ?>" /> <span class='annotation'><?php echo sprintf(gT('Format: %s'), $dateformatdetails['dateformat'] . ' ' . gT('hh:mm')); ?></span>
         </li>
 
         <?php

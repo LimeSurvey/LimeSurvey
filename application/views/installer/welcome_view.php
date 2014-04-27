@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="span6">
                     <?php
-                        echo CHtml::label($clang->gT('Please select your preferred language:'), 'installerLang');
+                        echo CHtml::label(gT('Please select your preferred language:'), 'installerLang');
                     ?>
                 </div>
                 <div class="span3">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <?php
-            echo CHtml::tag('p', array(), $clang->gT('Your preferred language will be used through out the installation process.'));
+            echo CHtml::tag('p', array(), gT('Your preferred language will be used through out the installation process.'));
             ?>
             </fieldset>
             <div class="row navigator">

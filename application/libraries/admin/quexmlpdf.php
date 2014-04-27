@@ -1612,7 +1612,7 @@ class quexmlpdf extends pdf {
     {
       $stmp = array();
       $sl = $this->numberToLetter($scount);
-      $stmp['title'] = $clang->gT("Section") . " " . $sl;
+      $stmp['title'] = gT("Section") . " " . $sl;
       $stmp['info'] = "";
       $stmp['text'] = "";
       $bfc = 0;  

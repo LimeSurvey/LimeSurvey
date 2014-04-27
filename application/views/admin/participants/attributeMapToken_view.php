@@ -23,7 +23,7 @@
             {
                 foreach ($tokenattribute as $key => $value)
                 {
-                    echo "<div title='".$clang->gT("Drag this attribute to another column to map it to the central participants database")."' id='t_" . $value . "' data-name=\"$key\" class=\"token-attribute attribute-item draggable\">" . $key . "</div>"; 
+                    echo "<div title='".gT("Drag this attribute to another column to map it to the central participants database")."' id='t_" . $value . "' data-name=\"$key\" class=\"token-attribute attribute-item draggable\">" . $key . "</div>"; 
                 }
             }
             ?>
@@ -70,7 +70,7 @@
                 <?php
                 foreach ($alreadymappedattributename as $key => $value)
                 {
-                    echo "<div title='".$clang->gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute attribute-item\" >" . $alreadymappedattdescription[$value] . "</div>";
+                    echo "<div title='".gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute attribute-item\" >" . $alreadymappedattdescription[$value] . "</div>";
                 }
                 ?>
                 </div>

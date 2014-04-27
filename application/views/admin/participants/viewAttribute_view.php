@@ -6,7 +6,7 @@
 <div class='header ui-widget-header'><strong><?php $clang->eT("Attribute settings"); ?></strong></div><br/>
 <?php
     $aOptions = array();
-    $aOptions[''] = $clang->gT('Select...');
+    $aOptions[''] = gT('Select...');
     foreach (getLanguageData(false, Yii::app()->session['adminlang']) as $langkey2 => $langname)
     {
         $aOptions[$langkey2] = $langname['description'];
@@ -50,26 +50,26 @@
                 <td class='actions'>
                     <?php
                         $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'cancel_16.png',
-                            'alt' => $clang->gT("Cancel editing"),
+                            'alt' => gT("Cancel editing"),
                             'width' => '16',
                             'class' => 'cancel',
                             'height' => '16',
-                            'title' => $clang->gT("Cancel editing"));
+                            'title' => gT("Cancel editing"));
                         echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
                         $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'edit_16.png',
-                            'alt' => $clang->gT("Edit value"),
+                            'alt' => gT("Edit value"),
                             'width' => '15',
                             'class' => 'edit',
                             'name' => $value['value_id'],
                             'height' => '15',
-                            'title' => $clang->gT("Edit value"));
+                            'title' => gT("Edit value"));
                         echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
                         $del = array('src' => Yii::app()->getConfig('adminimageurl') . 'delete.png',
-                            'alt' => $clang->gT("Delete value"),
+                            'alt' => gT("Delete value"),
                             'width' => '15',
                             'height' => '15',
                             'class'=> 'delete',
-                            'title' => $clang->gT("Delete value"));
+                            'title' => gT("Delete value"));
                         echo CHtml::link(CHtml::image($del['src'], $del['alt'], array_slice($del, 2)), $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']));
                 ?></td>
             </tr>
@@ -100,8 +100,8 @@
             <td class='data'>
                 <?php
                     $plus = array('src' => Yii::app()->getConfig('adminimageurl') . "plus.png",
-                        'alt' => $clang->gT('Add language'),
-                        'title' => $clang->gT('Add language'),
+                        'alt' => gT('Add language'),
+                        'title' => gT('Add language'),
                         'id' => 'add',
                         'hspace' => 2,
                         'vspace' => -6);
@@ -168,7 +168,7 @@
 <br/>
 <p>
     <?php
-        echo CHtml::submitButton('submit', array('value' => $clang->gT('Save')));
+        echo CHtml::submitButton('submit', array('value' => gT('Save')));
         echo CHtml::endForm();
     ?>
 </p>

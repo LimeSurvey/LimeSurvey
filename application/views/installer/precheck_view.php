@@ -7,20 +7,20 @@ function dirReport($dir, $write, $clang)
 
     if ($dir == "Found")
     {
-       $a = $clang->gT("Found");
+       $a = gT("Found");
     } else
     {
        $error = 1;
-       $a = $clang->gT("Not found");
+       $a = gT("Not found");
     }
 
     if ($write == "Writable")
     {
-       $b = $clang->gT("Writable");
+       $b = gT("Writable");
     } else
     {
        $error = 1;
-       $b = $clang->gT("Unwritable");
+       $b = gT("Unwritable");
     }
 
     if ($error)

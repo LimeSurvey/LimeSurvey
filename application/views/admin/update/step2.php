@@ -1,6 +1,6 @@
 <?php
 
-echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'2').'</div><div class="updater-background"><br />';
+echo '<div class="header ui-widget-header">'.sprintf(gT('ComfortUpdate step %s'),'2').'</div><div class="updater-background"><br />';
 if(!($error=="")) {
 	print( $error );
 }
@@ -13,14 +13,14 @@ if (isset($updateinfo['error']))
 if (!isset($updateinfo['files']))
 {
     echo "<div class='messagebox ui-corner-all'>
-        <div class='warningheader'>".$clang->gT('Update server busy')."</div>
-        <p>".$clang->gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.')."<br /><br />
-           ".$clang->gT('Please be patient and try again in about 10 minutes.')."</p></div>
-        <p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\">".sprintf($clang->gT('Back to global settings'),'4')."</button></p>";
+        <div class='warningheader'>".gT('Update server busy')."</div>
+        <p>".gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.')."<br /><br />
+           ".gT('Please be patient and try again in about 10 minutes.')."</p></div>
+        <p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\">".sprintf(gT('Back to global settings'),'4')."</button></p>";
 }
 else
 {
-	echo '<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>';
+	echo '<h3>'.gT('Checking existing LimeSurvey files...').'</h3>';
 	if (count($readonlyfiles)>0)
     { ?>
         
@@ -67,15 +67,15 @@ else
 
     if (count($readonlyfiles)>0)
     {
-        echo '<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
+        echo '<br />'.gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
         echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step2/")."', '_top')\"";
-        echo ">".$clang->gT('Check again')."</button></p>";
+        echo ">".gT('Check again')."</button></p>";
     }
     else
     {
         $clang->eT('Please check any problems above and then proceed to the next step.').'<br />';
         echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step3/")."', '_top')\" ";
-        echo ">".sprintf($clang->gT('Proceed to step %s'),'3')."</button></p>";
+        echo ">".sprintf(gT('Proceed to step %s'),'3')."</button></p>";
 
     }
 }

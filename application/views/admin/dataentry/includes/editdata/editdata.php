@@ -21,7 +21,7 @@
 	<tr>
 		<td align='left'>
 			<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' />
-			<label for='closerecord'>".$clang->gT("Finalize response submission")."</label>
+			<label for='closerecord'>".gT("Finalize response submission")."</label>
 		</td>
 	</tr>
     <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')); ?>' />

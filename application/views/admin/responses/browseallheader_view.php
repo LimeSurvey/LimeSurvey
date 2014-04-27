@@ -48,9 +48,9 @@
                     &nbsp;&nbsp; <input type='submit' value='<?php $clang->eT("Show"); ?>' />
                     &nbsp;&nbsp; <?php $clang->eT("Display:"); ?>
                     <?php echo CHtml::dropDownList('completionstate',$sCompletionStateValue,
-                        array('all'=> $clang->gT("All responses"),
-                        'complete'=> $clang->gT("Completed responses only"),
-                        'incomplete'=> $clang->gT("Incomplete responses only"))
+                        array('all'=> gT("All responses"),
+                        'complete'=> gT("Completed responses only"),
+                        'incomplete'=> gT("Incomplete responses only"))
                     ); ?>
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='action' value='browse' />

@@ -72,7 +72,7 @@
 
             case "1": // multi scale^ ?>
 
-            <table><tr><td></td><th><?php echo sprintf($clang->gT('Label %s'),'1').'</th><th>'.sprintf($clang->gT('Label %s'),'2'); ?></th></tr>
+            <table><tr><td></td><th><?php echo sprintf(gT('Label %s'),'1').'</th><th>'.sprintf(gT('Label %s'),'2'); ?></th></tr>
 
             <?php foreach ($dearesult as $dearow)
                 {
@@ -179,8 +179,8 @@
         <script type='text/javascript'>
             <!--
             var aRankingTranslations = {
-                choicetitle: '<?php echo $clang->gT("Your Choices",'js') ?>',
-                ranktitle: '<?php echo $clang->gT("Your Ranking",'js') ?>'
+                choicetitle: '<?php echo gT("Your Choices",'js') ?>',
+                ranktitle: '<?php echo gT("Your Ranking",'js') ?>'
             };
             function checkconditions(){};
             $(function() {
@@ -374,7 +374,7 @@
                 $acomma = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $acomma = $acomma['separator'];
             }
-            $title = $clang->gT('Only numbers may be entered in this field.');
+            $title = gT('Only numbers may be entered in this field.');
 
             echo $prefix; ?><input type='text' name='<?php echo $fieldname; ?>' size='<?php echo $tiwidth; ?>' title='<?php echo $title; ?>' <?php echo $maxlength; ?> onkeypress="return goodchars(event,'-0123456789<?php echo $acomma; ?>')" /><?php echo $suffix;
             break;

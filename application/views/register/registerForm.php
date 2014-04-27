@@ -36,7 +36,7 @@
         </td>
     </tr>
     <?php } ?>
-    <tr><td></td><td><?php echo CHtml::submitButton($clang->gT("Continue"),array('class'=>'button submit','id'=>'register','name'=>'register')); ?></td></tr>
+    <tr><td></td><td><?php echo CHtml::submitButton(gT("Continue"),array('class'=>'button submit','id'=>'register','name'=>'register')); ?></td></tr>
     </tbody>
     </table>
 <?php echo CHtml::endForm(); ?>

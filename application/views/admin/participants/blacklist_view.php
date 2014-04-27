@@ -20,7 +20,7 @@
         {
             $attribute = array('class' => 'form44');
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
-            $options = array('Y' => $clang->gT('Yes'), 'N' => $clang->gT('No'));
+            $options = array('Y' => gT('Yes'), 'N' => gT('No'));
             ?>
             <ul>
                 <li>
@@ -62,7 +62,7 @@
             </ul>
             <p>
                 <?php
-                echo CHtml::submitButton('submit', array('value' => $clang->gT('Save')));
+                echo CHtml::submitButton('submit', array('value' => gT('Save')));
                 ?>
             </p>
             <?php
@@ -70,7 +70,7 @@
         }
         else
         {
-            echo "<div class='messagebox ui-corner-all'>" . $clang->gT("You don't have sufficient permissions.") . "</div>";
+            echo "<div class='messagebox ui-corner-all'>" . gT("You don't have sufficient permissions.") . "</div>";
         }
         ?>
     </div>

@@ -32,8 +32,8 @@
                 <?php $clang->eT("Separator used:"); ?>
             </label>
             <?php
-            $separatorused = array("comma" => $clang->gT("Comma")
-                , "semicolon" => $clang->gT("Semicolon"));
+            $separatorused = array("comma" => gT("Comma")
+                , "semicolon" => gT("Semicolon"));
             ?>
 
             <select name="separatorused">
@@ -64,7 +64,7 @@
 </form>
 <div class="messagebox ui-corner-all">
     <div class="header ui-widget-header">
-        <?php $clang->gT("CSV input format") ?>
+        <?php gT("CSV input format") ?>
     </div>
     <p>
         <?php $clang->eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."); ?>

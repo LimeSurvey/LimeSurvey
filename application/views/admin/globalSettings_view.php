@@ -78,7 +78,7 @@
                         <option value='30'
                             <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
                             ><?php echo $clang->eT("Every month"); ?></option>
-                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/sa/updatecheck"); ?>', '_top')" value='<?php $clang->eT("Check now"); ?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck); ?></span>
+                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/sa/updatecheck"); ?>', '_top')" value='<?php $clang->eT("Check now"); ?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf(gT("Last check: %s"),$updatelastcheck); ?></span>
                 </li>
                 <li><label for='updatenotification'><?php echo $clang->eT("Show update notifications:"); ?></label>
                     <select name='updatenotification' id='updatenotification'>
@@ -96,7 +96,7 @@
                 <?php
                     if (isset($updateavailable) && $updateavailable==1 && is_array($aUpdateVersions))
                     { ?>
-                    <li><label><span style="font-weight: bold;"><?php echo $clang->gT('The following LimeSurvey updates are available:');?></span></label><table>
+                    <li><label><span style="font-weight: bold;"><?php echo gT('The following LimeSurvey updates are available:');?></span></label><table>
                         <?php 
                         foreach ($aUpdateVersions as $aUpdateVersion)
                         {?>
@@ -112,10 +112,10 @@
                         };?>
                         </table>
                     </ul>
-                    <p><?php echo sprintf($clang->gT('You can %s download and update manually %s or use the %s.'),"<a href='http://manual.limesurvey.org//Upgrading_from_a_previous_version'>","</a>","<a href='http://manual.limesurvey.org/ComfortUpdate'>".$clang->gT('3-Click ComfortUpdate').'</a>'); ?></p>
+                    <p><?php echo sprintf(gT('You can %s download and update manually %s or use the %s.'),"<a href='http://manual.limesurvey.org//Upgrading_from_a_previous_version'>","</a>","<a href='http://manual.limesurvey.org/ComfortUpdate'>".gT('3-Click ComfortUpdate').'</a>'); ?></p>
                     <?php }
                     elseif (isset($updateinfo['errorcode']))
-                    { echo sprintf($clang->gT('There was an error on update check (%s)'),$updateinfo['errorcode']); ?><br />
+                    { echo sprintf(gT('There was an error on update check (%s)'),$updateinfo['errorcode']); ?><br />
                     <textarea readonly='readonly' style='width:35%; height:60px; overflow: auto;'><?php echo strip_tags($updateinfo['errorhtml']); ?></textarea>
 
                     <?php }
@@ -125,7 +125,7 @@
                     }
                     else
                     {
-                        printf($clang->gT('This is an unstable version and cannot be updated using ComfortUpdate. Please check %sour website%s regularly for a newer version.'),"<a href='http://www.limesurvey.org'>","</a>");
+                        printf(gT('This is an unstable version and cannot be updated using ComfortUpdate. Please check %sour website%s regularly for a newer version.'),"<a href='http://www.limesurvey.org'>","</a>");
                     }
 
                 ?>
@@ -211,7 +211,7 @@
                 <?php $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); ?>
                 <li><label for='timeadjust'><?php $clang->eT("Time difference (in hours):"); ?></label>
                     <span><input type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60); ?>" />
-                        <?php echo $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time:").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
+                        <?php echo gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". gT("Corrected time:").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                     </span></li>
 
                 <li <?php if( ! isset(Yii::app()->session->connectionID)) echo 'style="display: none"';?>><label for='iSessionExpirationTime'><?php $clang->eT("Session lifetime for surveys (seconds):"); ?></label>
@@ -359,9 +359,9 @@
 
                 <?php $thisforce_ssl = getGlobalSetting('force_ssl');
                     $opt_force_ssl_on = $opt_force_ssl_off = $opt_force_ssl_neither = '';
-                    $warning_force_ssl = sprintf($clang->gT('Warning: Before turning on HTTPS,%s check if this link works.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" title="'. $clang->gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
+                    $warning_force_ssl = sprintf(gT('Warning: Before turning on HTTPS,%s check if this link works.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" title="'. gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
                     .'<br/> '
-                    . $clang->gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
+                    . gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
                     switch($thisforce_ssl)
                     {
                         case 'on':

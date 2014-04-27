@@ -9,28 +9,28 @@
         $errfiles = 0;
         if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) > 0)
         {
-            $status = $clang->gT("Success");
+            $status = gT("Success");
             $statusClass = 'successheader';
             $okfiles = count($aImportedFilesInfo);
         }
         elseif (count($aErrorFilesInfo) > 0 && count($aImportedFilesInfo) > 0)
         {
-            $status = $clang->gT("Partial");
+            $status = gT("Partial");
             $statusClass = 'partialheader';
             $okfiles = count($aImportedFilesInfo);
             $errfiles = count($aErrorFilesInfo);
         }
         else
         {
-            $status = $clang->gT("Error");
+            $status = gT("Error");
             $statusClass = 'warningheader';
             $errfiles = count($aErrorFilesInfo);
         }
     ?>
     <div class="<?php echo $statusClass ?>"><?php echo $status ?></div><br />
     <strong><u><?php $clang->eT("Resources import summary") ?></u></strong><br />
-    <?php echo $clang->gT("Total files imported") . ": $okfiles" ?><br />
-    <?php echo $clang->gT("Total errors") . ": $errfiles" ?><br />
+    <?php echo gT("Total files imported") . ": $okfiles" ?><br />
+    <?php echo gT("Total errors") . ": $errfiles" ?><br />
     <?php
         if (count($aImportedFilesInfo) > 0)
         {
@@ -42,12 +42,12 @@
                 {
                     if ($entry['is_folder']){
                     ?> 
-                    <li><?php echo $clang->gT("Folder") . ": " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
+                    <li><?php echo gT("Folder") . ": " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
                     <?php
                     }
                     else
                     { ?>
-                    <li><?php echo $clang->gT("File") . ": " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
+                    <li><?php echo gT("File") . ": " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
 
 
                     <?php
@@ -64,7 +64,7 @@
                 foreach ($aErrorFilesInfo as $entry)
                 {
                 ?>
-                <li><?php echo $clang->gT("File") . ": " . $entry["filename"] ?></li>
+                <li><?php echo gT("File") . ": " . $entry["filename"] ?></li>
                 <?php
                 }
             }
@@ -79,12 +79,12 @@
         <?php
             if(!$templateFixes['success'])
             {
-                $status = $clang->gT("Error");
+                $status = gT("Error");
                 $statusClass = 'warningheader';
             }
             else
             {
-                $status = $clang->gT("Success");
+                $status = gT("Success");
                 $statusClass = 'successheader';
             }
         ?>

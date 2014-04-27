@@ -7,7 +7,7 @@
                     $sTabTitle = getLanguageNameFromCode($sLanguage, false);
                     if ($sLanguage == Survey::model()->findByPk($iSurveyID)->language)
                     {
-                        $sTabTitle .= '(' . $clang->gT("Base language") . ')';
+                        $sTabTitle .= '(' . gT("Base language") . ')';
                     }
                 ?>
                 <li><a href="#language_<?php echo $sLanguage ?>"><?php echo $sTabTitle; ?></a></li>
@@ -74,7 +74,7 @@
                             }
                             else
                             {
-                                $clang->gT('<no data>');
+                                gT('<no data>');
                             }
                             echo "</td>";
                             echo "</tr>";
@@ -93,14 +93,14 @@
     <br /><br />
     <?php } ?>
 <div class='header ui-widget-header'><?php $clang->eT("Add or delete token attributes"); ?></div>
-<p><?php echo sprintf($clang->gT('There are %s user attribute fields in this token table'), $nrofattributes); ?></p>
+<p><?php echo sprintf(gT('There are %s user attribute fields in this token table'), $nrofattributes); ?></p>
 <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
 <p>
     <label for="addnumber"><?php $clang->eT('Number of attribute fields to add:'); ?></label>
     <input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
 </p>
 <p>
-    <?php echo CHtml::submitButton($clang->gT('Add fields')); ?>
+    <?php echo CHtml::submitButton(gT('Add fields')); ?>
     <?php echo CHtml::hiddenField('action','tokens'); ?>
     <?php echo CHtml::hiddenField('subaction','updatetokenattributes'); ?>
     <?php echo CHtml::hiddenField('sid',$surveyid); ?>
@@ -110,10 +110,10 @@
     <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'attributenumber')); ?>
     <p>
         <label for="deleteattribute"><?php $clang->eT('Delete this attribute:'); ?></label>
-        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => $clang->gT('none'))); ?>
+        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => gT('none'))); ?>
     </p>
     <p>
-        <?php echo CHtml::submitButton($clang->gT('Delete attribute')); ?>
+        <?php echo CHtml::submitButton(gT('Delete attribute')); ?>
         <?php echo CHtml::hiddenField('action','tokens'); ?>
         <?php echo CHtml::hiddenField('subaction','deletetokenattributes'); ?>
         <?php echo CHtml::hiddenField('sid',$surveyid); ?>

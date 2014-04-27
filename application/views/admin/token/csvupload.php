@@ -15,7 +15,7 @@
         <li>
             <label for='separator'><?php $clang->eT("Separator used:"); ?> </label>
             <?php
-                $aSeparator = array('auto' => $clang->gT("(Autodetect)"), 'comma' => $clang->gT("Comma"), 'semicolon' => $clang->gT("Semicolon"));
+                $aSeparator = array('auto' => gT("(Autodetect)"), 'comma' => gT("Comma"), 'semicolon' => gT("Semicolon"));
                 echo CHtml::dropDownList('separator', returnGlobal('separator'), $aSeparator, array('size' => '1'));
             ?>
         </li>

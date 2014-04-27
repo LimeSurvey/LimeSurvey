@@ -8,7 +8,7 @@
     <br /><br />
     <?php echo $resultnum; ?>
     <?php $clang->eT("Results from LDAP Query."); ?><br />
-    <?php printf($clang->gT("%s records met minimum requirements"),$xv); ?><br />
+    <?php printf(gT("%s records met minimum requirements"),$xv); ?><br />
     <?php echo $xz; ?> <?php $clang->eT("Records imported"); ?>.<br />
     <?php echo $xy; ?> <?php $clang->eT("Duplicate records removed"); ?>
     [<a href='#' onclick='$("#duplicateslist").toggle();'><?php $clang->eT("List"); ?></a>]
@@ -18,7 +18,7 @@
     <?php } ?>
     </div>
     <br />
-    <?php printf($clang->gT("%s records with invalid email address removed"), $invalidemailcount); ?>
+    <?php printf(gT("%s records with invalid email address removed"), $invalidemailcount); ?>
      [<a href='#' onclick='$("#invalidemaillist").toggle();'><?php $clang->eT("List"); ?></a>]
     <div class='badtokenlist' id='invalidemaillist' style='display: none;'>
     <?php foreach ($invalidemaillist as $aData) { ?>

@@ -24,12 +24,12 @@
             <?php
                 $error = '';
                 if (!function_exists("gd_info")) {
-                    $error .= '<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
-                    $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+                    $error .= '<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+                    $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
                 }
                 else if (!function_exists("imageftbbox")) {
-                    $error .= '<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
-                    $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+                    $error .= '<br />'.gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+                    $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
                 }
             ?>
             <fieldset style='clear:both;'>
@@ -173,7 +173,7 @@
                             <strong>
                                 <?php echo $flt[4]; ?>
                             </strong>
-                            (<?php echo $clang->gT("Question group").$flt[1]; ?>)
+                            (<?php echo gT("Question group").$flt[1]; ?>)
                         </span>
                     </div>
                 </td>
@@ -329,7 +329,7 @@
                         echo " />&nbsp;";
                         echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))
                         ."<br />\n"
-                        ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n";
+                        ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n";
                         echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array())
                         ."\t</td>\n";
                         $counter2++;
@@ -355,7 +355,7 @@
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n" 
+                    ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n" 
                     .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'80'))
                     ."\t</td>\n";
                     break;
@@ -374,7 +374,7 @@
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
+                    ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                     .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array())
                     ."\t</td>\n";
                     break;
@@ -386,10 +386,10 @@
                     //textfields for greater and less than X
                     $myfield2="{$myfield}G";
                     $myfield3="{$myfield}L";
-                    echo "\t<span class='smalltext'>".$clang->gT("Number greater than").":</span><br />\n"
+                    echo "\t<span class='smalltext'>".gT("Number greater than").":</span><br />\n"
                     .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                     ."\t<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Number less than").":</span><br />\n"
+                    ."\t<span class='smalltext'>".gT("Number less than").":</span><br />\n"
                     .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                     ."\t<br />\n";
 
@@ -403,10 +403,10 @@
                     // Number of files uploaded for greater and less than X
                     $myfield2 = "{$myfield}G";
                     $myfield3 = "{$myfield}L";
-                    echo "\t<span class='smalltext'>".$clang->gT("Number of files greater than").":</span><br />\n"
+                    echo "\t<span class='smalltext'>".gT("Number of files greater than").":</span><br />\n"
                     .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Number of files less than").":</span><br />\n"
+                    ."\t<span class='smalltext'>".gT("Number of files less than").":</span><br />\n"
                     .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                     ."<br />\n";
                     break;
@@ -444,13 +444,13 @@
                     echo _showSpeaker($niceqtext)
                     ."<br />\n"
 
-                    ."\t<span class='smalltext'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
+                    ."\t<span class='smalltext'>".gT("Date (YYYY-MM-DD) equals").":<br />\n"
                     .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array() )
                     ."<br />\n"
-                    ."\t&nbsp;&nbsp;".$clang->gT("Date is")." >=<br />\n"
+                    ."\t&nbsp;&nbsp;".gT("Date is")." >=<br />\n"
                     .CHtml::textField($myfield4,isset($_POST[$myfield4])?$_POST[$myfield4]:'',array() )
                     ."<br />"
-                    .$clang->gT("AND/OR Date is")." <= <br />"
+                    .gT("AND/OR Date is")." <= <br />"
                     .CHtml::textField($myfield5,isset($_POST[$myfield5])?$_POST[$myfield5]:'',array() )
                     ."</span>\n";
                     break;
@@ -483,13 +483,13 @@
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {echo " selected";}
 
-                    echo ">".$clang->gT("Female")."</option>\n";
+                    echo ">".gT("Female")."</option>\n";
                     echo "\t<option value='M'";
 
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {echo " selected";}
 
-                    echo ">".$clang->gT("Male")."</option>\n\t</select>\n";
+                    echo ">".gT("Male")."</option>\n\t</select>\n";
                     echo "\t</td>\n";
                     break;
 
@@ -501,13 +501,13 @@
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {echo " selected";}
 
-                    echo ">".$clang->gT("Yes")."</option>\n"
+                    echo ">".gT("Yes")."</option>\n"
                     ."\t<option value='N'";
 
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {echo " selected";}
 
-                    echo ">".$clang->gT("No")."</option></select>\n";
+                    echo ">".gT("No")."</option></select>\n";
                     break;
 
 
@@ -633,7 +633,7 @@
 
 
 
-                case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+                case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
                     echo "\t</tr>\n\t<tr>\n";
 
                     $counter2=0;
@@ -666,19 +666,19 @@
                         //pre-select "yes"
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Yes")."</option>\n"
+                        echo ">".gT("Yes")."</option>\n"
                         ."\t<option value='U'";
 
                         //pre-select "uncertain"
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("U", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Uncertain")."</option>\n"
+                        echo ">".gT("Uncertain")."</option>\n"
                         ."\t<option value='N'";
 
                         //pre-select "no"
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("No")."</option>\n"
+                        echo ">".gT("No")."</option>\n"
                         ."\t</select>\n\t</td>\n";
                         $counter2++;
 
@@ -722,17 +722,17 @@
 
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Increase")."</option>\n"
+                        echo ">".gT("Increase")."</option>\n"
                         ."\t<option value='S'";
 
                         if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("S", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Same")."</option>\n"
+                        echo ">".gT("Same")."</option>\n"
                         ."\t<option value='D'";
 
                         if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Decrease")."</option>\n"
+                        echo ">".gT("Decrease")."</option>\n"
                         ."\t</select>\n\t</td>\n";
                         $counter2++;
                     }
@@ -763,7 +763,7 @@
                             ._showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
                             ."</strong><br />\n";
                             //echo $fquery;
-                            echo "\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
+                            echo "\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                             .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array() )
                             ."</td>\n";
                             $counter2++;
@@ -1055,7 +1055,7 @@
                         }
 
                         echo " />&nbsp;<strong>"
-                        ._showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle)
+                        ._showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".gT("Label").": ".$labeltitle)
                         ."</strong><br />\n";
 
                         /* get labels
@@ -1140,7 +1140,7 @@
                         }
 
                         echo " />&nbsp;<strong>"
-                        ._showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle2)
+                        ._showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".gT("Label").": ".$labeltitle2)
                         ."</strong><br />\n";
                         $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 
@@ -1283,10 +1283,10 @@ flush(); //Let's give the user something to look at while they wait for the pret
 
             //output with hoover effect
             $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."' "
-            ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\">"
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\">"
             ." \"$shortstring...\" </span>"
             ."<img style='cursor: pointer' src='$sImageURL/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
-            ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
         }
         else
         {

@@ -14,7 +14,7 @@
             <?php } ?>
     </ul>
     <div id='neweditlblset0'>
-        <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form30','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')")); ?>
+        <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form30','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
             <ul>
                 <li><label for='label_name'><?php $clang->eT("Set name:"); ?></label>
                     <input type='hidden' name='languageids' id='languageids' value='<?php echo $langids; ?>' />

@@ -71,7 +71,7 @@
 
 		<?php if(isset($thisid)): ?>
 			<div class='successheader'><?php $clang->eT("Success"); ?></div>
-			<?php echo $clang->gT("The entry was assigned the following record id: ")."{$thisid}"; ?> <br /><br />
+			<?php echo gT("The entry was assigned the following record id: ")."{$thisid}"; ?> <br /><br />
 		<?php endif; ?>
 
 		<?php echo $errormsg; ?>

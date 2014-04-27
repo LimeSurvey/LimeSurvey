@@ -1,5 +1,5 @@
 <div id='import'>
-    <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'importsurvey', 'name'=>'importsurvey', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.$clang->gT('Please select a file to import!', 'js').'");')); ?>
+    <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'importsurvey', 'name'=>'importsurvey', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
         <ul>
             <li><label for='the_file'><?php $clang->eT("Select survey structure file (*.lss, *.csv, *.txt) or survey archive (*.lsa):");  ?> </label>
                 <input id='the_file' name="the_file" type="file" /></li>

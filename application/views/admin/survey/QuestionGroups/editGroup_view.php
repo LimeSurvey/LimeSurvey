@@ -19,7 +19,7 @@
                     <li><label for='description_<?php echo $aGroupData[$i]['language']; ?>'><?php $clang->eT("Description:"); ?></label>
                         <div class="htmleditor">
                             <textarea cols='70' rows='8' id='description_<?php echo $aGroupData[$i]['language']; ?>' name='description_<?php echo $aGroupData[$i]['language']; ?>'><?php echo htmlspecialchars($aGroupData[$i]['description']); ?></textarea>
-                            <?php echo getEditor("group-desc","description_".$aGroupData[$i]['language'], "[".$clang->gT("Description:", "js")."](".$aGroupData[$i]['language'].")",$surveyid,$gid,'',$action); ?>
+                            <?php echo getEditor("group-desc","description_".$aGroupData[$i]['language'], "[".gT("Description:", "js")."](".$aGroupData[$i]['language'].")",$surveyid,$gid,'',$action); ?>
                         </div>
                     </li>
                 </ul>

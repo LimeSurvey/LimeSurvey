@@ -100,7 +100,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
     {
 	    $position=0;
 	    echo '<li class="ui-state-default ui-corner-top" style="clear: none;"><a href="#tablang'.$assessmentlang.'">'.getLanguageNameFromCode($assessmentlang, false);
-	    if ($assessmentlang==$baselang) {echo ' ('.$clang->gT("Base language").')';}
+	    if ($assessmentlang==$baselang) {echo ' ('.gT("Base language").')';}
 	    echo '</a></li>';
     } ?>
     </ul>
@@ -121,14 +121,14 @@ else {echo "<tr class='evenrow'>\n";} ?>
 	    <input type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/></li>
 	    <li><label for='assessmentmessage_<?php echo $assessmentlang;?>'><?php $clang->eT("Message");?>:</label>
 	    <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea>
-        <?php echo getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
+        <?php echo getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
         </li>
         <li style="text-align:center;"><input type='submit' value='<?php $clang->eT("Save");?>'/></li></ul>
 	    </div>
     <?php } ?>
     </div>
     <div>
-    <?php if ($action == "assessmentedit") echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Cancel")."' onclick=\"document.assessmentsform.action.value='assessments'\" />\n ";?>
+    <?php if ($action == "assessmentedit") echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".gT("Cancel")."' onclick=\"document.assessmentsform.action.value='assessments'\" />\n ";?>
     <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
     <input type='hidden' name='action' value='<?php echo $actionvalue;?>' />
     <input type='hidden' name='id' value='<?php echo $editId;?>' />

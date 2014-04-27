@@ -1,7 +1,7 @@
 <div class='menubar surveybar'>
     <div class='menubar-title ui-widget-header'>
         <strong><?php $clang->eT("Survey"); ?></strong>
-        <span class='basic'><?php echo $surveyinfo['surveyls_title']."(".$clang->gT("ID").":".$surveyid.")"; ?></span>
+        <span class='basic'><?php echo $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")"; ?></span>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>

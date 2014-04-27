@@ -40,7 +40,7 @@
             <?php foreach ($anslangs as $anslang)
                 { ?>
                 <li><a href='#tabpage_<?php echo $anslang; ?>'><?php echo getLanguageNameFromCode($anslang, false); ?>
-                        <?php if ($anslang==Survey::model()->findByPk($surveyid)->language) { ?> (<?php echo $clang->gT("Base language"); ?>) <?php } ?></a>
+                        <?php if ($anslang==Survey::model()->findByPk($surveyid)->language) { ?> (<?php echo gT("Base language"); ?>) <?php } ?></a>
                 </li>
                 <?php } ?>
         </ul>
@@ -125,7 +125,7 @@
 
                                     </td><td>
                                         <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php $clang->eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
-                                        <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".$clang->gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
+                                        <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
                                     </td>
                                     <td>
 

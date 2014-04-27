@@ -54,12 +54,12 @@ class responses extends Survey_Common_Action
         $thissurvey=getSurveyInfo($iSurveyId);
         if(!$thissurvey)// Already done in Survey_Common_Action
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Invalid survey ID");
+            Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
         }
         elseif($thissurvey['active'] != 'Y')
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("This survey has not been activated. There are no results to browse.");
+            Yii::app()->session['flashmessage'] = gT("This survey has not been activated. There are no results to browse.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
@@ -107,13 +107,13 @@ class responses extends Survey_Common_Action
             //add token to top of list if survey is not private
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
-                $fnames[] = array("token", $clang->gT("Token ID"), 'code'=>'token');
-                $fnames[] = array("firstname", $clang->gT("First name"), 'code'=>'firstname');// or token:firstname ?
-                $fnames[] = array("lastname", $clang->gT("Last name"), 'code'=>'lastname');
-                $fnames[] = array("email", $clang->gT("Email"), 'code'=>'email');
+                $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
+                $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname');// or token:firstname ?
+                $fnames[] = array("lastname", gT("Last name"), 'code'=>'lastname');
+                $fnames[] = array("email", gT("Email"), 'code'=>'email');
             }
-            $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D','code'=>'submitdate');
-            $fnames[] = array("completed", $clang->gT("Completed"), "0");
+            $fnames[] = array("submitdate", gT("Submission date"), gT("Completed"), "0", 'D','code'=>'submitdate');
+            $fnames[] = array("completed", gT("Completed"), "0");
 
             foreach ($fieldmap as $field)
             {
@@ -139,22 +139,22 @@ class responses extends Survey_Common_Action
 
                     for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {
-                        $filenum=sprintf($clang->gT("File %s"),$i + 1);
+                        $filenum=sprintf(gT("File %s"),$i + 1);
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('Title').")",'code'=>viewHelper::getFieldCode($field).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Title').")",'code'=>viewHelper::getFieldCode($field).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
 
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('File size').")",'code'=>viewHelper::getFieldCode($field).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".gT('File size').")",'code'=>viewHelper::getFieldCode($field).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
                 }
                 else
                 {
-                    $fnames[] = array($field['fieldname'], $clang->gT("File count"));
+                    $fnames[] = array($field['fieldname'], gT("File count"));
                 }
             }
 
@@ -261,7 +261,7 @@ class responses extends Survey_Common_Action
             }
             else
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("This response ID is invalid.");
+                Yii::app()->session['flashmessage'] = gT("This response ID is invalid.");
             }
 
             $aViewUrls[] = 'browseidfooter_view';
@@ -273,8 +273,8 @@ class responses extends Survey_Common_Action
             $clang = $this->getController()->lang;
             $aData['surveyid'] = $iSurveyID;
             App()->getClientScript()->registerPackage('jquery-superfish');
-            $message['title']= $clang->gT('Access denied!');
-            $message['message']= $clang->gT('You do not have sufficient rights to access this page.');
+            $message['title']= gT('Access denied!');
+            $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
@@ -334,11 +334,11 @@ class responses extends Survey_Common_Action
                 if($aData['surveyinfo']['savetimings'] == "Y"){
                     SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                 }
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("Response ID %s was successfully deleted."),$iResponseID);
+                Yii::app()->session['flashmessage'] = sprintf(gT("Response ID %s was successfully deleted."),$iResponseID);
             }
             else
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("Access denied!",'js');
+                Yii::app()->session['flashmessage'] = gT("Access denied!",'js');
             }
         }
         // Marked responses -> deal with the whole batch of marked responses
@@ -363,7 +363,7 @@ class responses extends Survey_Common_Action
                 }
                 else
                 {
-                    Yii::app()->session['flashmessage'] = $clang->gT("Access denied!",'js');
+                    Yii::app()->session['flashmessage'] = gT("Access denied!",'js');
                 }
             }
             // Download all files for all marked responses  - checked
@@ -440,14 +440,14 @@ class responses extends Survey_Common_Action
             {
                 if(Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
-                    $fnames[] = array("token", $clang->gT("Token ID"), 'code'=>'token');
-                    $fnames[] = array("firstname", $clang->gT("First name"), 'code'=>'firstname');// or token:firstname ?
-                    $fnames[] = array("lastname", $clang->gT("Last name"), 'code'=>'lastname');
-                    $fnames[] = array("email", $clang->gT("Email"), 'code'=>'email');
+                    $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
+                    $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname');// or token:firstname ?
+                    $fnames[] = array("lastname", gT("Last name"), 'code'=>'lastname');
+                    $fnames[] = array("email", gT("Email"), 'code'=>'email');
                 }
             }
 
-            $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
+            $fnames[] = array("submitdate", gT("Completed"), gT("Completed"), "0", 'D');
             $fields = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
 
             foreach ($fields as $fielddetails)
@@ -475,21 +475,21 @@ class responses extends Survey_Common_Action
                     $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
                     for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {
-                        $filenum=sprintf($clang->gT("File %s"),$i + 1);
+                        $filenum=sprintf(gT("File %s"),$i + 1);
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('Title').")",'code'=>viewHelper::getFieldCode($fielddetails).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".gT('Title').")",'code'=>viewHelper::getFieldCode($fielddetails).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('Comment').")",'code'=>viewHelper::getFieldCode($fielddetails).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".gT('Comment').")",'code'=>viewHelper::getFieldCode($fielddetails).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('File name').")",'code'=>viewHelper::getFieldCode($fielddetails).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('File size').")",'code'=>viewHelper::getFieldCode($fielddetails).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
+                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".gT('File name').")",'code'=>viewHelper::getFieldCode($fielddetails).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".gT('File size').")",'code'=>viewHelper::getFieldCode($fielddetails).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
                 }
                 else
                 {
-                    $fnames[] = array($fielddetails['fieldname'], $clang->gT("File count"));
+                    $fnames[] = array($fielddetails['fieldname'], gT("File count"));
                 }
             }
 
@@ -604,8 +604,8 @@ class responses extends Survey_Common_Action
             $clang = $this->getController()->lang;
             $aData['surveyid'] = $iSurveyID;
             App()->getClientScript()->registerPackage('jquery-superfish');
-            $message['title']= $clang->gT('Access denied!');
-            $message['message']= $clang->gT('You do not have sufficient rights to access this page.');
+            $message['title']= gT('Access denied!');
+            $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
@@ -651,11 +651,11 @@ class responses extends Survey_Common_Action
             if ($fielddetails['type'] == 'id')
                 $fnames[] = array($fielddetails['fieldname'], $fielddetails['question']);
             if ($fielddetails['type'] == 'interview_time')
-                $fnames[] = array($fielddetails['fieldname'], $clang->gT('Total time'));
+                $fnames[] = array($fielddetails['fieldname'], gT('Total time'));
             if ($fielddetails['type'] == 'page_time')
-                $fnames[] = array($fielddetails['fieldname'], $clang->gT('Group') . ": " . $fielddetails['group_name']);
+                $fnames[] = array($fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']);
             if ($fielddetails['type'] == 'answer_time')
-                $fnames[] = array($fielddetails['fieldname'], $clang->gT('Question') . ": " . $fielddetails['title']);
+                $fnames[] = array($fielddetails['fieldname'], gT('Question') . ": " . $fielddetails['title']);
         }
         $fncount = count($fnames);
 

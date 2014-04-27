@@ -110,7 +110,7 @@
                         <br />
                         <font color='orange'><?php $clang->eT("Some Question have been disabled");?></font>
                         <br />
-                        <?php echo sprintf($clang->gT("Survey Format is %s:"), $clang->gT("All in one"));?>
+                        <?php echo sprintf(gT("Survey Format is %s:"), gT("All in one"));?>
                         <br />
                         <i><?php $clang->eT("Only Previous pages answers are available");?></i>
                         <br />
@@ -124,7 +124,7 @@
                     <td>
                         <br />
                         <font color='orange'><?php $clang->eT("Some Question have been disabled");?></font>
-                        <br /><?php echo sprintf($clang->gT("Survey mode is set to %s:"), $clang->gT("Group by Group"));?>
+                        <br /><?php echo sprintf(gT("Survey mode is set to %s:"), gT("Group by Group"));?>
                         <br/><i><?php $clang->eT("Only Previous pages answers are available");?>
                         </i><br />
                     </td></tr>

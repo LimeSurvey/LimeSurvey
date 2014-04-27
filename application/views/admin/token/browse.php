@@ -159,7 +159,7 @@
 
 <div id ="search" style="display:none">
     <?php
-        $aOptionSearch = array('' => $clang->gT('Select...'));
+        $aOptionSearch = array('' => gT('Select...'));
         foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
         {
             if($aTokenInformation['search'])
@@ -167,13 +167,13 @@
                 $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
             }
         }
-        $aOptionCondition = array('' => $clang->gT('Select...'),
-        'equal' => $clang->gT("Equals"),
-        'contains' => $clang->gT("Contains"),
-        'notequal' => $clang->gT("Not equal"),
-        'notcontains' => $clang->gT("Not contains"),
-        'greaterthan' => $clang->gT("Greater than"),
-        'lessthan' => $clang->gT("Less than"));
+        $aOptionCondition = array('' => gT('Select...'),
+        'equal' => gT("Equals"),
+        'contains' => gT("Contains"),
+        'notequal' => gT("Not equal"),
+        'notcontains' => gT("Not contains"),
+        'greaterthan' => gT("Greater than"),
+        'lessthan' => gT("Less than"));
     ?>
     <table id='searchtable'>
         <tr>

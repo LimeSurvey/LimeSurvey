@@ -11,7 +11,7 @@
                 echo "
                 <li><a href='#neweditlblset$i'>" . getLanguageNameFromCode($language, false) . "</a></li>";
             echo "
-            <li><a href='#up_resmgmt'>" . $clang->gT("Uploaded resources management") . "</a></li>";
+            <li><a href='#up_resmgmt'>" . gT("Uploaded resources management") . "</a></li>";
         ?>
     </ul>
 
@@ -84,7 +84,7 @@
                                 <td>
                                     <input type='text' name='title_<?php echo $row['language'] ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php echo HTMLEscape($row['title']) ?>" />
                                     <?php
-                                        echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . $clang->gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action);
+                                        echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action);
                                     ?>
                                 </td>
                                 <td style='text-align:center;'>
@@ -122,7 +122,7 @@
                 <ul>
                     <li>
                         <label>&nbsp;</label>
-                        <?php echo CHtml::dropDownList('type', 'files', array('files' => $clang->gT('Files'), 'flash' => $clang->gT('Flash'), 'images' => $clang->gT('Images'))); ?>
+                        <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files'), 'flash' => gT('Flash'), 'images' => gT('Images'))); ?>
                         <input type='submit' value="<?php $clang->eT("Browse uploaded resources") ?>" />
                     </li>
                     <li>
@@ -138,7 +138,7 @@
                                                                                       'class'=>'form30', 
                                                                                       'name'=>'importlabelresources', 
                                                                                       'enctype'=>'multipart/form-data',
-                                                                                      'onsubmit'=>'return validatefilename(this, "'.$clang->gT('Please select a file to import!', 'js').'");')); ?>
+                                                                                      'onsubmit'=>'return validatefilename(this, "'.gT('Please select a file to import!', 'js').'");')); ?>
                 <ul>
                     <li>
                         <label for='the_file'><?php $clang->eT("Select ZIP file:") ?></label>
@@ -147,7 +147,7 @@
                     <li>
                         <label>&nbsp;</label>
                         <input type='button' value='<?php $clang->eT("Import resources ZIP archive") ?>'
-                            <?php echo !function_exists("zip_open") ? "onclick='alert(\"" . $clang->gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'" : "onclick='if (validatefilename(this.form,\"" . $clang->gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" ?>/>
+                            <?php echo !function_exists("zip_open") ? "onclick='alert(\"" . gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'" : "onclick='if (validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" ?>/>
                     </li>
                 </ul>
                 <input type='hidden' name='lid' value='<?php echo $lid; ?>' />

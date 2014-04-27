@@ -9,9 +9,9 @@
         <li>
             <label for='completionstate'><?php $clang->eT("Export");?>:</label>
             <?php  echo CHtml::dropDownList('completionstate', $selectincansstate, array(
-                    'complete' => $clang->gT("Completed responses only"), 
-                    'all' => $clang->gT("All responses"),
-                    'incomplete' => $clang->gT("Incomplete responses only"),
+                    'complete' => gT("Completed responses only"), 
+                    'all' => gT("All responses"),
+                    'incomplete' => gT("Incomplete responses only"),
                     )); ?>
         </li>
         <li>
@@ -21,13 +21,13 @@
         <li>
             <label for='vvversion' title='<?php $clang->eT("If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated).");?>'><?php $clang->eT("VV export version");?>: </label>
             <?php  echo CHtml::dropDownList('vvversion', $vvversionseleted, array(
-                '2' => $clang->gT("Last VV version"), 
-                '1' => $clang->gT("Old VV version"),
+                '2' => gT("Last VV version"), 
+                '1' => gT("Old VV version"),
                 ));; ?>
         <li>
     </ul>
     <p>
-        <?php echo CHtml::submitButton($clang->gT('Export results')); ?>
+        <?php echo CHtml::submitButton(gT('Export results')); ?>
         <?php echo CHtml::hiddenField('subaction','export'); ?>
     </p>
 <form>

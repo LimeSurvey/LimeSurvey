@@ -2,7 +2,7 @@
 $aReplacementData=array();
 ?>
 <div class='menubar-title ui-widget-header'>
-    <strong><?php $clang->eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
+    <strong><?php $clang->eT("Question"); ?></strong> <span class='basic'><?php echo ellipsize(FlattenText($qrrow['question']),200); ?> (<?php echo gT("ID").":".$qid; ?>)</span>
 </div>
 <div class='menubar-main'>
     <div class='menubar-left'>

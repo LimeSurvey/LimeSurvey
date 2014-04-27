@@ -55,7 +55,7 @@
                     $position=1;
                     if ($scalecount>1)
                     { ?>
-                    <div class='header ui-widget-header' style='margin-top:5px;'><?php echo sprintf($clang->gT("Answer scale %s"),$scale_id+1); ?></div>
+                    <div class='header ui-widget-header' style='margin-top:5px;'><?php echo sprintf(gT("Answer scale %s"),$scale_id+1); ?></div>
                     <?php } ?>
 
 
@@ -130,7 +130,7 @@
 
                             </td><td>
                                 <input type='text' class='answer' id='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' size='100' placeholder='<?php $clang->eT("Some example answer option","js") ?>' value="<?php echo $row['answer']; ?>" />
-                                <?php echo  getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
+                                <?php echo  getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
 
 
                             </td><td><?php if ($first) { ?>

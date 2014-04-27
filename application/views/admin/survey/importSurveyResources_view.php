@@ -7,28 +7,28 @@
     $ImportListHeader = '';
     if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo))
     {
-        $status = $clang->gT("Success");
+        $status = gT("Success");
         $statusClass = 'successheader';
         $okfiles = count($aImportedFilesInfo);
         $errfiles=0;
-        $ImportListHeader .= "<br /><strong><u>" . $clang->gT("Imported Files List") . ":</u></strong><br />\n";
+        $ImportListHeader .= "<br /><strong><u>" . gT("Imported Files List") . ":</u></strong><br />\n";
     }
     elseif (count($aErrorFilesInfo) &&count($aImportedFilesInfo))
     {
-        $status = $clang->gT("Partial");
+        $status = gT("Partial");
         $statusClass = 'partialheader';
         $okfiles = count($aImportedFilesInfo);
         $errfiles = count($aErrorFilesInfo);
-        $ErrorListHeader = "<br /><strong><u>" . $clang->gT("Error Files List") . ":</u></strong><br />\n";
-        $ImportListHeader .= "<br /><strong><u>" . $clang->gT("Imported Files List") . ":</u></strong><br />\n";
+        $ErrorListHeader = "<br /><strong><u>" . gT("Error Files List") . ":</u></strong><br />\n";
+        $ImportListHeader .= "<br /><strong><u>" . gT("Imported Files List") . ":</u></strong><br />\n";
     }
     else
     {
         $okfiles = 0;
-        $status = $clang->gT("Error");
+        $status = gT("Error");
         $statusClass = 'warningheader';
         $errfiles = count($aErrorFilesInfo);
-        $ErrorListHeader = "<br /><strong><u>" . $clang->gT("Error Files List") . ":</u></strong><br />\n";
+        $ErrorListHeader = "<br /><strong><u>" . gT("Error Files List") . ":</u></strong><br />\n";
     }
 ?>
     <strong><?php $clang->eT("Imported Resources for"); ?>" SID:</strong> <?php echo $surveyid; ?><br /><br />
@@ -51,7 +51,7 @@ if (!empty($aImportedFilesInfo))
 <?php
     foreach ($aImportedFilesInfo as $entry)
     {
-        echo CHtml::tag('li', array(), $clang->gT("File") . ': ' . $entry["filename"]);
+        echo CHtml::tag('li', array(), gT("File") . ': ' . $entry["filename"]);
     }
 ?>
     </ul>
@@ -64,7 +64,7 @@ if (!empty($aErrorFilesInfo))
     echo $ErrorListHeader;
     foreach ($aErrorFilesInfo as $entry)
     {
-        echo CHtml::tag('li', array(), $clang->gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
+        echo CHtml::tag('li', array(), gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
     }
 ?>
     </ul>

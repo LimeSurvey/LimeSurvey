@@ -27,7 +27,7 @@
                             <li>
                                 <label for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                     <?php
-                                        $qtproperties[$questionrow['type']]['answerscales'] > 1 ? printf($clang->gT('Default answer for scale %s:'), $scale_id) : printf($clang->gT('Default answer value:'), $scale_id) ?>
+                                        $qtproperties[$questionrow['type']]['answerscales'] > 1 ? printf(gT('Default answer for scale %s:'), $scale_id) : printf(gT('Default answer value:'), $scale_id) ?>
                                 </label>
 
                                 <select name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>' id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
@@ -71,7 +71,7 @@
                                 {
                                 ?>
                                 <div class='header ui-widget-header'>
-                                    <?php echo sprintf($clang->gT('Default answer for scale %s:'), $scale_id) ?>
+                                    <?php echo sprintf(gT('Default answer for scale %s:'), $scale_id) ?>
                                 </div>
                                 <?php
                                 }

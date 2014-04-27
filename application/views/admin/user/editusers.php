@@ -22,7 +22,7 @@
                 </form>
 
                 <?php if ($usrhimself['parent_id'] != 0 && Permission::model()->hasGlobalPermission('users','delete') ) { ?>
-                <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('onsubmit'=>'return confirm("'.$clang->gT("Are you sure you want to delete this entry?","js").'")') );?>            
+                <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('onsubmit'=>'return confirm("'.gT("Are you sure you want to delete this entry?","js").'")') );?>            
                         <input type='image' src='<?php echo $imageurl;?>token_delete.png' alt='<?php $clang->eT("Delete this user");?>' />
                         <input type='hidden' name='action' value='deluser' />
                         <input type='hidden' name='user' value='<?php echo htmlspecialchars($usrhimself['user']);?>' />

@@ -4,12 +4,12 @@
             <strong><?php $clang->eT("Title");?>:</strong>
         </td>
         <td class='settingentryhighlight'>
-            <?php echo flattenText($surveyinfo['surveyls_title'])." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?>
+            <?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?>
         </td>
     </tr>
     <tr>
         <td>
-            <strong><?php echo $clang->gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
+            <strong><?php echo gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
         </td>
         <td>
         <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$surveyinfo['language']}"); ?>

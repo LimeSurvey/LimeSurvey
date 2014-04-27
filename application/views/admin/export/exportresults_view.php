@@ -4,9 +4,9 @@
     var sMsgColumnCount = '<?php $clang->eT("%s of %s columns selected",'js'); ?>';
 </script>
 <div class='header ui-widget-header'><?php $clang->eT("Export results");?>
-    <?php     if (isset($_POST['sql'])) {echo" - ".$clang->gT("Filtered from statistics script");}
+    <?php     if (isset($_POST['sql'])) {echo" - ".gT("Filtered from statistics script");}
         if ($SingleResponse) {
-            echo " - ".sprintf($clang->gT("Single response: ID %s"),$SingleResponse);} 
+            echo " - ".sprintf(gT("Single response: ID %s"),$SingleResponse);} 
     ?>
 </div>
 <div class='wrap2columns'>
@@ -121,13 +121,13 @@
                 <br />
                 <?php 
                 echo CHtml::listBox('colselect[]',array_keys($aFields),$aFields,array('multiple'=>'multiple','size'=>'20','style'=>'width:370px;'));
-                echo "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\"".$clang->gT("Please note: The export to Excel is currently limited to loading no more than 255 columns.","js")."\")'>";?>
+                echo "\t<img src='$imageurl/help.gif' alt='".gT("Help")."' onclick='javascript:alert(\"".gT("Please note: The export to Excel is currently limited to loading no more than 255 columns.","js")."\")'>";?>
                 <span id='columncount'>&nbsp;</span>
                 </fieldset>
             <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')) { ?>
                 <fieldset><legend><?php $clang->eT("Token control");?></legend>
                     <?php $clang->eT("Choose token fields");?>:
-                    <img src='<?php echo $imageurl;?>/help.gif' alt='<?php $clang->eT("Help");?>' onclick='javascript:alert("<?php $clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js");?>")' /><br />
+                    <img src='<?php echo $imageurl;?>/help.gif' alt='<?php $clang->eT("Help");?>' onclick='javascript:alert("<?php gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js");?>")' /><br />
                     <select name='attribute_select[]' multiple size='20'>
                         <option value='first_name' id='first_name'><?php $clang->eT("First name");?></option>
                         <option value='last_name' id='last_name'><?php $clang->eT("Last name");?></option>

@@ -58,13 +58,13 @@ if ($adding || $copying) {
                         <div class="htmleditor">
                         <textarea cols='50' rows='4' id='question_<?php echo $eqrow['language']; ?>' name='question_<?php echo $eqrow['language']; ?>'><?php echo $eqrow['question']; ?></textarea>
                         </div>
-                        <?php echo getEditor("question-text","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
+                        <?php echo getEditor("question-text","question_".$eqrow['language'], "[".gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
                     </li><li>
                         <label for='help_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Help:"); ?></label>
                         <div class="htmleditor">
                         <textarea cols='50' rows='4' id='help_<?php echo $eqrow['language']; ?>' name='help_<?php echo $eqrow['language']; ?>'><?php echo $eqrow['help']; ?></textarea>
                         </div>
-                        <?php echo getEditor("question-help","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
+                        <?php echo getEditor("question-help","help_".$eqrow['language'], "[".gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
                     </li>
                 </ul>
             </div>
@@ -86,13 +86,13 @@ if ($adding || $copying) {
                             <div class="htmleditor">
                             <textarea cols='50' rows='4' id='question_<?php echo $aqrow['language']; ?>' name='question_<?php echo $aqrow['language']; ?>'><?php echo $aqrow['question']; ?></textarea>
                             </div>
-                            <?php echo getEditor("question-text","question_".$aqrow['language'], "[".$clang->gT("Question:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
+                            <?php echo getEditor("question-text","question_".$aqrow['language'], "[".gT("Question:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
                         </li><li>
                             <label for='help_<?php echo $aqrow['language']; ?>'><?php $clang->eT("Help:"); ?></label>
                             <div class="htmleditor">
                             <textarea cols='50' rows='4' id='help_<?php echo $aqrow['language']; ?>' name='help_<?php echo $aqrow['language']; ?>'><?php echo $aqrow['help']; ?></textarea>
                             </div>
-                            <?php echo getEditor("question-help","help_".$aqrow['language'], "[".$clang->gT("Help:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
+                            <?php echo getEditor("question-help","help_".$aqrow['language'], "[".gT("Help:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
                         </li>
 
                     </ul>
@@ -112,13 +112,13 @@ if ($adding || $copying) {
                             <textarea cols='50' rows='4' id='question_<?php echo $addlanguage; ?>' name='question_<?php echo $addlanguage; ?>'></textarea>
                             </div>
 
-                            <?php echo getEditor("question-text","question_".$addlanguage, "[".$clang->gT("Question:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action); ?>
+                            <?php echo getEditor("question-text","question_".$addlanguage, "[".gT("Question:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action); ?>
                         </li><li>
                             <label for='help_<?php echo $addlanguage; ?>'><?php $clang->eT("Help:"); ?></label>
                             <div class="htmleditor">
                             <textarea cols='50' rows='4' id='help_<?php echo $addlanguage; ?>' name='help_<?php echo $addlanguage; ?>'></textarea>
                             </div>
-                            <?php echo getEditor("question-help","help_".$addlanguage, "[".$clang->gT("Help:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action); ?>
+                            <?php echo getEditor("question-help","help_".$addlanguage, "[".gT("Help:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action); ?>
                         </li></ul>
                 </div>
                 <?php }
@@ -171,7 +171,7 @@ if ($adding || $copying) {
                         else
                         {
                             $qtypelist=getQuestionTypeList('','array');
-                            echo "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
+                            echo "{$qtypelist[$eqrow['type']]['description']} - ".gT("Cannot be changed (survey is active)"); ?>
                             <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
                         <?php } ?>
 
@@ -192,7 +192,7 @@ if ($adding || $copying) {
                     { ?>
                     <li>
                         <label><?php $clang->eT("Question group:"); ?></label>
-                        <?php echo $eqrow['group_name']." - ".$clang->gT("Cannot be changed (survey is active)"); ?>
+                        <?php echo $eqrow['group_name']." - ".gT("Cannot be changed (survey is active)"); ?>
                         <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
                     </li>
                     <?php } ?>
@@ -215,7 +215,7 @@ if ($adding || $copying) {
                         else
                         {
                             if($eqrow['other']=='Y') $clang->eT("Yes"); else $clang->eT("No");
-                            echo " - ".$clang->gT("Cannot be changed (survey is active)"); ?>
+                            echo " - ".gT("Cannot be changed (survey is active)"); ?>
                         <input type='hidden' name='other' value="<?php echo $eqrow['other']; ?>" />
                         <?php } ?>
                 </li>
@@ -326,7 +326,7 @@ if ($adding || $copying) {
         if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <br /><div class='header ui-widget-header'><?php $clang->eT("...or import a question"); ?></div>
-        <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".$clang->gT("Please select a file to import!",'js')."');")); ?>
+        <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".gT("Please select a file to import!",'js')."');")); ?>
             <ul>
                 <li>
                     <label for='the_file'><?php $clang->eT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>

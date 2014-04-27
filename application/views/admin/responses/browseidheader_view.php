@@ -5,7 +5,7 @@
 </form>
 
 <div class='menubar'>
-    <div class='menubar-title ui-widget-header'><strong><?php echo sprintf($clang->gT("View response ID %d"), $id); ?></strong></div>
+    <div class='menubar-title ui-widget-header'><strong><?php echo sprintf(gT("View response ID %d"), $id); ?></strong></div>
     <div class='menubar-main'>
         <div class='menubar-left'>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='16' alt=''>
@@ -14,7 +14,7 @@
                 <?php if (isset($rlanguage))
                     { ?>
                     <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' title='<?php $clang->eT("Edit this entry"); ?>'>
-                        <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->gT("Edit this entry"); ?>' /></a>
+                        <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php gT("Edit this entry"); ?>' /></a>
                     <?php }
                     if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage))
                     { ?>

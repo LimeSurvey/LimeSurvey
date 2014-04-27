@@ -3,7 +3,7 @@
         <ul>
             <li>
                 <label>&nbsp;</label>
-                <?php echo CHtml::dropDownList('type', 'files', array('files' => $clang->gT('Files'), 'flash' => $clang->gT('Flash'), 'images' => $clang->gT('Images'))); ?>
+                <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files'), 'flash' => gT('Flash'), 'images' => gT('Images'))); ?>
                 <input type='submit' value="<?php $clang->eT("Browse Uploaded Resources") ?>" />
             </li>
             <li>
@@ -14,7 +14,7 @@
             </li>
         </ul>
     </form>
-    <?php echo CHtml::form(array('admin/survey/sa/importsurveyresources'), 'post', array('id'=>'importsurveyresources', 'name'=>'importsurveyresources', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.$clang->gT('Please select a file to import!', 'js').'");')); ?>
+    <?php echo CHtml::form(array('admin/survey/sa/importsurveyresources'), 'post', array('id'=>'importsurveyresources', 'name'=>'importsurveyresources', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
         <input type='hidden' name='surveyid' value='<?php echo $surveyid; ?>' />
         <input type='hidden' name='action' value='importsurveyresources' />
         <ul>

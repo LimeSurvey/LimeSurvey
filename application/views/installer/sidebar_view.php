@@ -4,7 +4,7 @@
  */
 ?>
 <h2 class="maintitle"><?php $clang->eT("Progress"); ?></h2>
-<p><?php printf($clang->gT("%s%% completed"),$progressValue); ?></p>
+<p><?php printf(gT("%s%% completed"),$progressValue); ?></p>
 <?php
     Yii::app()->bootstrap->init();
     $this->widget('ext.bootstrap.widgets.TbProgress', array(

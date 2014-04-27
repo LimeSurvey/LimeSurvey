@@ -6,7 +6,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         App()->getClientScript()->registerPackage('jquery-ace');
     ?>
     <div class='header'>
-        <?php echo sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?>
+        <?php echo sprintf(gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?>
     </div>
     <div id='templateleft' style="float:left;width:12%;">
         <div style="padding-left:1em;">
@@ -99,7 +99,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
     <?php if(isset($filenotwritten) && $filenotwritten==true)
         { ?>
         <p>
-        <span class ='errortitle'><?php echo sprintf($clang->gT("Please change the directory permissions of the folder %s in order to preview templates."), $tempdir); ?></span>
+        <span class ='errortitle'><?php echo sprintf(gT("Please change the directory permissions of the folder %s in order to preview templates."), $tempdir); ?></span>
     </div>
     <?php }
     else

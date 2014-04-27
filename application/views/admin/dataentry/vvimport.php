@@ -16,10 +16,10 @@
             <li>
                 <label for='insertmethod'><?php $clang->eT("When an imported record matches an existing record ID:"); ?></label>
                 <?php  echo CHtml::dropDownList('insertmethod', 'ignore', array(
-                        'skip' => $clang->gT("Report and skip the new record."), 
-                        'renumber' => $clang->gT("Renumber the new record."),
-                        'replace' => $clang->gT("Replace the existing record."),
-                        'replaceanswers' => $clang->gT("Replace answers in file in the existing record."),
+                        'skip' => gT("Report and skip the new record."), 
+                        'renumber' => gT("Renumber the new record."),
+                        'replace' => gT("Replace the existing record."),
+                        'replaceanswers' => gT("Replace answers in file in the existing record."),
                         ),array('disabled'=>'disabled')); ?>
             </li>
             <li>
@@ -28,7 +28,7 @@
             </li>
             <li>
                 <label for='vvcharset'><?php $clang->eT("Character set of the file:"); ?></label>
-                <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('empty' => $clang->gT('Automatic (UTF-8)'))); ?>
+                <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('empty' => gT('Automatic (UTF-8)'))); ?>
             </li>
             <li>
                 <label for='dontdeletefirstline' title='<?php $clang->eT("With real vv file : questions code are in second line"); ?>'><?php $clang->eT("First line contains the code of questions:"); ?></label>

@@ -49,14 +49,14 @@ class questions extends Survey_Common_Action
             $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-                $fatalerror = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
+                $fatalerror = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
 
             // validate that we have a SID and GID
             if (!$surveyid)
-                $fatalerror .= $clang->gT("No SID (Survey) has been provided. Cannot import question.");
+                $fatalerror .= gT("No SID (Survey) has been provided. Cannot import question.");
 
             if (!$gid)
-                $fatalerror .= $clang->gT("No GID (Group) has been provided. Cannot import question");
+                $fatalerror .= gT("No GID (Group) has been provided. Cannot import question");
 
             if (isset($fatalerror))
             {
@@ -72,7 +72,7 @@ class questions extends Survey_Common_Action
             elseif (strtolower($sExtension) == 'lsq')
                 $aImportResults = XMLImportQuestion($sFullFilepath, $surveyid, $gid);
             else
-                $this->getController()->error($clang->gT('Unknown file extension'));
+                $this->getController()->error(gT('Unknown file extension'));
 
             fixLanguageConsistency($surveyid);
 
@@ -189,7 +189,7 @@ class questions extends Survey_Common_Action
 
                     $options = array();
                     if ($questionrow['type'] == 'M' || $questionrow['type'] == 'P')
-                        $options = array('' => $clang->gT('<No default value>'), 'Y' => $clang->gT('Checked'));
+                        $options = array('' => gT('<No default value>'), 'Y' => gT('Checked'));
 
                     foreach ($sqresult as $aSubquestion)
                     {
@@ -868,8 +868,8 @@ class questions extends Survey_Common_Action
                 }
                 if (isset($qidarray))
                     $qidlist = implode(", ", $qidarray);
-                $message =$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
-                $message .="<br /><a href='". $this->getController()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}")."' >".$clang->gT("Look at survey logic files")."</a>.";
+                $message =gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
+                $message .="<br /><a href='". $this->getController()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}")."' >".gT("Look at survey logic files")."</a>.";
                 $this->getController()->error(
                     $message,
                     $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}")
@@ -902,13 +902,13 @@ class questions extends Survey_Common_Action
                 $_GET['qid'] = "";
             }
 
-            Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully deleted.");
+            Yii::app()->session['flashmessage'] = gT("Question was successfully deleted.");
 
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
         else
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("You are not authorized to delete questions.");
+            Yii::app()->session['flashmessage'] = gT("You are not authorized to delete questions.");
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }

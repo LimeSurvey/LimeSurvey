@@ -192,24 +192,24 @@ echo $colModels;
 <script src="<?php echo Yii::app()->getConfig('generalscripts') . "admin/participantdisplay.js" ?>" type="text/javascript"></script>
 <div id ="search" style="display:none">
     <?php
-    $optionsearch = array('' => $clang->gT("Select..."),
-        'firstname' => $clang->gT("First name"),
-        'lastname' => $clang->gT("Last name"),
-        'email' => $clang->gT("Email"),
-        'blacklisted' => $clang->gT("Blacklisted"),
-        'surveys' => $clang->gT("Survey links"),
-        'survey' => $clang->gT("Survey name"),
-        'language' => $clang->gT("Language"),
-        'owner_uid' => $clang->gT("Owner ID"),
-        'owner_name' => $clang->gT("Owner name"));
-    $optioncontition = array('' =>  $clang->gT("Select..."),
-        'equal' =>$clang->gT("Equals"),
-        'contains' =>$clang->gT("Contains"),
-        'beginswith' =>$clang->gT("Begins with"),
-        'notequal' => $clang->gT("Not equal"),
-        'notcontains' => $clang->gT("Does not contain"),
-        'greaterthan' => $clang->gT("Greater than"),
-        'lessthan' => $clang->gT("Less than"));
+    $optionsearch = array('' => gT("Select..."),
+        'firstname' => gT("First name"),
+        'lastname' => gT("Last name"),
+        'email' => gT("Email"),
+        'blacklisted' => gT("Blacklisted"),
+        'surveys' => gT("Survey links"),
+        'survey' => gT("Survey name"),
+        'language' => gT("Language"),
+        'owner_uid' => gT("Owner ID"),
+        'owner_name' => gT("Owner name"));
+    $optioncontition = array('' =>  gT("Select..."),
+        'equal' =>gT("Equals"),
+        'contains' =>gT("Contains"),
+        'beginswith' =>gT("Begins with"),
+        'notequal' => gT("Not equal"),
+        'notcontains' => gT("Does not contain"),
+        'greaterthan' => gT("Greater than"),
+        'lessthan' => gT("Less than"));
     if (isset($allattributes) && count($allattributes) > 0) // Add attribute names to select box
     {
         echo "<script type='text/javascript'> optionstring = '";
@@ -257,7 +257,7 @@ echo $colModels;
 <?php $clang->eT("User with whom the participants are to be shared"); ?></p>
     <p>
         <?php
-        $options[''] = $clang->gT("Select...");
+        $options[''] = gT("Select...");
         foreach ($names as $row)
         {
             if (!(Yii::app()->session['loginID'] == $row['uid']))
@@ -305,7 +305,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
             <?php
             if (!empty($tokensurveynames))
             {
-                //$option[''] = $clang->gT("Select...");
+                //$option[''] = gT("Select...");
                 foreach ($tokensurveynames as $row)
                 {
                     $option[$row['surveyls_survey_id']] = $row['surveyls_title'];

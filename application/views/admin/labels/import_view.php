@@ -39,8 +39,8 @@
         <div class='successheader'><?php $clang->eT("Success") ?></div><br />
         <strong><u><?php $clang->eT("Label set import summary") ?></u></strong><br />
         <ul style="text-align:left;">
-            <li><?php echo $clang->gT("Label sets") . ": {$aImportResults['labelsets']}" ?></li>
-            <li><?php echo $clang->gT("Labels") . ": {$aImportResults['labels']}" ?></li>
+            <li><?php echo gT("Label sets") . ": {$aImportResults['labelsets']}" ?></li>
+            <li><?php echo gT("Labels") . ": {$aImportResults['labels']}" ?></li>
         </ul>
         <strong><?php $clang->eT("Import of label set(s) is completed.") ?></strong><br /><br />
         <?php

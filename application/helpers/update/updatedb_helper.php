@@ -2302,15 +2302,15 @@ function replaceTemplateJS(){
     }
     if($counterror)
     {
-        echo $clang->gT("Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually.");
+        echo gT("Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually.");
         echo "<br />";
-        echo $clang->gT("Template(s) to be verified :");
+        echo gT("Template(s) to be verified :");
         echo implode(",",$errortemplate);
     }
     else
     {
         if($countstartpage){
-            echo sprintf($clang->gT("All %s user templates updated."),$countstartpage);
+            echo sprintf(gT("All %s user templates updated."),$countstartpage);
         }
     }
     if($counterror){

@@ -29,7 +29,7 @@
                     <li><label for='description_<?php echo $grouplang; ?>'><?php $clang->eT("Description:"); ?></label>
                         <div class="htmleditor">
                             <textarea cols='80' rows='8' id='description_<?php echo $grouplang; ?>' name='description_<?php echo $grouplang; ?>'></textarea>
-                            <?php echo getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action); ?>
+                            <?php echo getEditor("group-desc","description_".$grouplang, "[".gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action); ?>
                         </div>
                     </li>
                     <?php if ($grouplang==$baselang){?>
@@ -49,7 +49,7 @@
     <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <div id="import">
-            <?php echo CHtml::form(array("admin/questiongroups/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.$clang->gT('Please select a file to import!','js').'");')); ?>
+            <?php echo CHtml::form(array("admin/questiongroups/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!','js').'");')); ?>
                 <ul>
                     <li>
                         <label for='the_file'><?php $clang->eT("Select question group file (*.lsg/*.csv):"); ?></label>

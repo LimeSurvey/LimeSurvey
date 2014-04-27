@@ -56,7 +56,7 @@ class Assessments extends Survey_Common_Action
             $clang = $this->getController()->lang;
 
             if ($iSurveyID == '') {
-                show_error($clang->gT("No SID Provided"));
+                show_error(gT("No SID Provided"));
                 die();
             }
 
@@ -85,8 +85,8 @@ class Assessments extends Survey_Common_Action
     {
         $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
         $aData = $this->_collectGroupData($iSurveyID);
-        $aHeadings = array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
-        $aData['actiontitle'] = $clang->gT("Add");
+        $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
+        $aData['actiontitle'] = gT("Add");
         $aData['actionvalue'] = "assessmentadd";
         $aData['editId'] = '';
 
@@ -108,7 +108,7 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
         if ($surveyinfo['assessments']!='Y')
-            $urls['message'] = array('title' => $clang->gT("Assessments mode not activated"), 'message' => sprintf($clang->gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
+            $urls['message'] = array('title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
         $urls['assessments_view'][]= $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
     }
@@ -132,7 +132,7 @@ class Assessments extends Survey_Common_Action
         foreach ($assessments as $assessment) {
             $editData = $assessment->attributes;
         }
-        $aData['actiontitle'] = $clang->gT("Edit");
+        $aData['actiontitle'] = gT("Edit");
         $aData['actionvalue'] = "assessmentupdate";
         $aData['editId'] = $editData['id'];
         $aData['editdata'] = $editData;

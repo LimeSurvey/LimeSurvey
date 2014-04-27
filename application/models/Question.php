@@ -106,7 +106,7 @@
                                         ':scale_id' => $this->scale_id
                                         )
                                     ),
-                                'message' => $clang->gT('Subquestion codes must be unique.'));
+                                'message' => gT('Subquestion codes must be unique.'));
             }
             if($this->qid && $this->language)
             {
@@ -125,12 +125,12 @@
                                         ':sid' => $this->sid
                                         )
                                     ),
-                                'message' => $clang->gT('Question codes must be unique.'), 'except' => 'archiveimport');
-                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => $clang->gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
+                                'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport');
+                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
             }
             else
             {
-                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => $clang->gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
+                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
             }
 
             return $aRules;

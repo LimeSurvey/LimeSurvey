@@ -15,7 +15,7 @@
                     echo '<li><a href="#' . $language . '">' . getLanguageNameFromCode($language, false);
                     if ($language == $baselang)
                     {
-                        echo "(" . $clang->gT("Base language") . ")";
+                        echo "(" . gT("Base language") . ")";
                     }
                     echo "</a></li>";
                 }
@@ -75,7 +75,7 @@
                         <li><label for='message_<?php echo $language; ?>'><?php $clang->eT("Message"); ?>:</label>
                             <div class="htmleditor">
                             <textarea name='message_<?php echo $language; ?>' id='message_<?php echo $language; ?>' rows='20' cols='80'><?php echo htmlspecialchars($textarea); ?></textarea>
-                            <?php echo getEditor("email-inv", "message_$language", "[" . $clang->gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                            <?php echo getEditor("email-inv", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                             </div>
                         </li>
                     </ul></div>

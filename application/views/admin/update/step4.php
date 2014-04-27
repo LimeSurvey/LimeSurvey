@@ -1,5 +1,5 @@
 <div class="header ui-widget-header">
-<?php echo sprintf($clang->gT('ComfortUpdate step %s'),'4');?>
+<?php echo sprintf(gT('ComfortUpdate step %s'),'4');?>
 
 </div><div class="updater-background"><br />
 <?php
@@ -27,11 +27,11 @@ else
 <?php
 if (!$downloaderror)
 {
-	echo sprintf($clang->gT('Buildnumber was successfully updated to %s.'),Yii::app()->session['updateinfo']['toversion']).'<br />';
+	echo sprintf(gT('Buildnumber was successfully updated to %s.'),Yii::app()->session['updateinfo']['toversion']).'<br />';
     $clang->eT('The update is now complete!'); ?> <br /> <?php
     $clang->eT('As a last step you should clear your browser cache now.');?> <br /> <?php
 }
 
-echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\" >".$clang->gT('Back to main menu'); ?>
+echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\" >".gT('Back to main menu'); ?>
 </button></p>
 </div>

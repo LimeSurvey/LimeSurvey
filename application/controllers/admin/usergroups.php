@@ -91,7 +91,7 @@ class Usergroups extends Survey_Common_Action
                     //$debug = (isset($debug)) ? $debug : 9;
                     //$maildebugbody = (isset($maildebugbody)) ? $maildebugbody : 'an unknown error accourd';
                     $headercfg["type"] = "warning";
-                    $headercfg["message"] = sprintf($clang->gT("Email to %s failed. Error Message:"), $to) . " " . $maildebug;
+                    $headercfg["message"] = sprintf(gT("Email to %s failed. Error Message:"), $to) . " " . $maildebug;
                     list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
                 }
             }
@@ -136,17 +136,17 @@ class Usergroups extends Survey_Common_Action
 
                     if ($delquery_result) //Checked)
                     {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => $clang->gT("Success!")));
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => gT("Success!")));
                     }
                     else
                     {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Could not delete user group.")));
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Could not delete user group.")));
                     }
                 }
             }
             else
             {
-                list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Could not delete user group. No group selected.")));
+                list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => gT("Could not delete user group. No group selected.")));
             }
         }
 
@@ -169,21 +169,21 @@ class Usergroups extends Survey_Common_Action
 
                 if (isset($db_group_name) && strlen($db_group_name) > 0) {
                     if (strlen($db_group_name) > 21) {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group name length more than 20 characters.")));
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group name length more than 20 characters.")));
                     }
                     elseif (UserGroup::model()->find("name=:groupName", array(':groupName'=>$db_group_name))) {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group already exists.")));
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group already exists.")));
                     }
                     else
                     {
                         $ugid = UserGroup::model()->addGroup($db_group_name, $db_group_description);
-                        Yii::app()->session['flashmessage'] = $clang->gT("User group successfully added!");
+                        Yii::app()->session['flashmessage'] = gT("User group successfully added!");
                         list($aViewUrls, $aData) = $this->index($ugid, true);
                     }
                 }
                 else
                 {
-                    list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group Name was not supplied.")));
+                    list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group Name was not supplied.")));
                 }
             }
             else
@@ -214,13 +214,13 @@ class Usergroups extends Survey_Common_Action
                 $db_name = $_POST['name'];
                 $db_description = $_POST['description'];
                 if (UserGroup::model()->updateGroup($db_name, $db_description, $ugid)) {
-                    Yii::app()->session['flashmessage'] = $clang->gT("User group successfully saved!");
+                    Yii::app()->session['flashmessage'] = gT("User group successfully saved!");
 					$aData['ugid'] = $ugid;
                     $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
                 }
                 else
                 {
-                    Yii::app()->session['flashmessage'] = $clang->gT("Failed to edit user group!");
+                    Yii::app()->session['flashmessage'] = gT("Failed to edit user group!");
                     $this->getController()->redirect(array('admin/usergroups/sa/edit/ugid/'.$ugid));
                 }
 
@@ -341,7 +341,7 @@ class Usergroups extends Survey_Common_Action
 
         if (empty($group))
         {
-            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('Group not found.')));
+            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('Group not found.')));
         }
         else
         {
@@ -349,7 +349,7 @@ class Usergroups extends Survey_Common_Action
             {
                 if ($group->owner_id == $uid)
                 {
-                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('You can not add or remove the group owner from the group.')));
+                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('You can not add or remove the group owner from the group.')));
                 }
 
                 $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
@@ -359,22 +359,22 @@ class Usergroups extends Survey_Common_Action
                     case 'add' :
                         if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
                         {
-                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User added.')));
+                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => gT('User added.')));
                         }
                         else
                         {
-                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed to add user.') . '<br />' . $clang->gT('User already exists in the group.')));
+                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to add user.') . '<br />' . gT('User already exists in the group.')));
                         }
 
                         break;
                     case 'remove' :
                         if (!empty($user_in_group) && UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
                         {
-                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User removed.')));
+                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => gT('User removed.')));
                         }
                         else
                         {
-                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed to remove user.') . '<br />' . $clang->gT('User does not exist in the group.')));
+                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to remove user.') . '<br />' . gT('User does not exist in the group.')));
                         }
 
                         break;
@@ -382,7 +382,7 @@ class Usergroups extends Survey_Common_Action
             }
             else
             {
-                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('User not found.')));
+                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('User not found.')));
             }
         }
 

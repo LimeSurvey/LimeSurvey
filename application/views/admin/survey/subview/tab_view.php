@@ -26,7 +26,7 @@
         <?php
             if (isset($pluginSettings))
             {
-                echo "<li><a href='#pluginsettings'>" . $clang->gT("Plugins") ."</a></li>";
+                echo "<li><a href='#pluginsettings'>" . gT("Plugins") ."</a></li>";
             }
 
         } ?>

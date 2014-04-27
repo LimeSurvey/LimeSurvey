@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php echo sprintf($clang->gT("Editing user group (Owner: %s)"), Yii::app()->session['user']); ?></div>
+<div class='header ui-widget-header'><?php echo sprintf(gT("Editing user group (Owner: %s)"), Yii::app()->session['user']); ?></div>
     <?php echo CHtml::form(array("admin/usergroups/sa/edit/ugid/{$ugid}"), 'post', array('class'=>'form30', 'id'=>'usergroupform', 'name'=>'usergroupform')); ?>
         <ul>
         <li><label for='name'><?php $clang->eT("Name:"); ?></label>

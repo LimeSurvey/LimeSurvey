@@ -110,7 +110,7 @@
         <?php if ($activated == "Y")
             { ?>
             <a href='#'>
-                <img src='<?php echo $imageurl; ?>add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled").' - '.$clang->gT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
+                <img src='<?php echo $imageurl; ?>add_disabled.png' title='' alt='<?php echo gT("Disabled").' - '.gT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
             <?php }
             elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>

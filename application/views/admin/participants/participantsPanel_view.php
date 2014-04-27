@@ -17,57 +17,57 @@
     </div>
     <?php
         $home = array('src' => $sImageURL.'home.png',
-            'alt' => $clang->gT("Main admin screen"), 
-            'title' => $clang->gT("Main admin screen"),  
+            'alt' => gT("Main admin screen"), 
+            'title' => gT("Main admin screen"),  
             'style' => 'margin-left:2px');
 
         $information = array('src' => $sImageURL.'summary.png',
-            'alt' => $clang->gT("Information"),  
-            'title' => $clang->gT("Information"), 
+            'alt' => gT("Information"),  
+            'title' => gT("Information"), 
             'style' => 'margin-left:2px');
 
         $import = array('src' => $sImageURL.'importcsv.png',
-            'alt' => $clang->gT("Import from CSV file"), 
-            'title' => $clang->gT("Import from CSV file"), 
+            'alt' => gT("Import from CSV file"), 
+            'title' => gT("Import from CSV file"), 
             'style' => 'margin-left:0px',
             'style' => 'margin-right:1px');
 
         $export = array('src' => $sImageURL.'exportcsv.png',
-            'alt' => $clang->gT("Export to CSV file"), 
-            'title' => $clang->gT("Export to CSV file"),
+            'alt' => gT("Export to CSV file"), 
+            'title' => gT("Export to CSV file"),
             'name' => 'export',
             'id' => 'export',
             'style' => 'margin-left:0px',
             'style' => 'margin-right:1px');
 
         $display = array('src' => $sImageURL.'document.png',
-            'alt' => $clang->gT("Display participants"),
-            'title' => $clang->gT("Display participants"),
+            'alt' => gT("Display participants"),
+            'title' => gT("Display participants"),
             'style' => 'margin-left:5px');
 
         $blacklist = array('src' => $sImageURL.'trafficred.png',
-            'alt' => $clang->gT("Blacklist control"),
-            'title' => $clang->gT("Blacklist control"),
+            'alt' => gT("Blacklist control"),
+            'title' => gT("Blacklist control"),
             'style' => 'margin-left:1px',
             'style' => 'margin-right:1px');
 
         $globalsettings = array('src' => $sImageURL.'global.png',
-            'alt' => $clang->gT("Global participant settings"),
-            'title' => $clang->gT("Global participant settings"),
+            'alt' => gT("Global participant settings"),
+            'title' => gT("Global participant settings"),
             'style' => 'margin-left:5px',
             'style' => 'margin-right:1px');
 
         $attributecontrol = array('src' => $sImageURL.'tag.png',
-            'alt' => $clang->gT("Attribute management"),
-            'title' => $clang->gT("Attribute management"),
+            'alt' => gT("Attribute management"),
+            'title' => gT("Attribute management"),
             'width' => 50,
             'height' => 35,
             'style' => 'margin-left:0px',
             'style' => 'margin-right:1px');
 
         $sharepanel = array('src' => $sImageURL.'share.png',
-            'alt' => $clang->gT("Share panel"), 
-            'title' => $clang->gT("Share panel"),
+            'alt' => gT("Share panel"), 
+            'title' => gT("Share panel"),
             'height' => 35,
             'width' => 35,
             'style' => 'margin-left:5px');

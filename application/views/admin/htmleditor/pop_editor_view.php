@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
     <head>
-        <title><?php printf($clang->gT('Editing %s'), $sFieldText); ?></title>
+        <title><?php printf(gT('Editing %s'), $sFieldText); ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="noindex, nofollow" />
         <?php

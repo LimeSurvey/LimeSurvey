@@ -389,9 +389,9 @@ class participantsaction extends Survey_Common_Action
         $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
         $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll(array('order'=>'attribute_name'));
         $attribute_types = array(
-            'DD' => $clang->gT("Drop-down list"),
-            'DP' => $clang->gT("Date"),
-            'TB' => $clang->gT("Text box")
+            'DD' => gT("Drop-down list"),
+            'DP' => gT("Date"),
+            'TB' => gT("Text box")
         );
         $aData = new stdClass();
         $aData->page = $page;
@@ -1056,7 +1056,7 @@ class participantsaction extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if ($_FILES['the_file']['name']=='')
         {                                                                                                                     
-            Yii::app()->setFlashMessage($clang->gT('Please select a file to import!'),'error');
+            Yii::app()->setFlashMessage(gT('Please select a file to import!'),'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
         }
         $sRandomFileName=randomChars(20);
@@ -1071,7 +1071,7 @@ class participantsaction extends Survey_Common_Action
         }
         else
         {
-            $templateData['errorinupload']['error'] = $clang->gT("This is not a .csv file.");
+            $templateData['errorinupload']['error'] = gT("This is not a .csv file.");
             $templateData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
             $templateData['aGlobalErrors'] = array();
           //  $errorinupload = array('error' => $this->upload->display_errors());
@@ -1083,7 +1083,7 @@ class participantsaction extends Survey_Common_Action
 
         if (!$bMoveFileResult)
         {
-            $templateData['error_msg'] = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
+            $templateData['error_msg'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
             $errorinupload = array('error' => $this->upload->display_errors());
             Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
             $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->getAllAttributes()));
@@ -1128,12 +1128,12 @@ class participantsaction extends Survey_Common_Action
                         ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
                         ."var mapCSVcancelled = '".App()->createUrl("admin/participants/sa/mapCSVcancelled")."';\n"
                         ."var characterset = '".sanitize_paranoid_string($_POST['characterset'])."';\n"
-                        ."var okBtn = '".$clang->gT("OK")."';\n"
-                        ."var processed = '".$clang->gT("Summary")."';\n"
-                        ."var summary = '".$clang->gT("Upload summary")."';\n"
-                        ."var notPairedErrorTxt = '".$clang->gT("You have to pair this field with an existing attribute.")."';\n"
-                        ."var onlyOnePairedErrorTxt = '".$clang->gT("Only one CSV attribute is mapped with central attribute.")."';\n"
-                        ."var cannotAcceptErrorTxt='".$clang->gT("This list cannot accept token attributes.")."';\n"
+                        ."var okBtn = '".gT("OK")."';\n"
+                        ."var processed = '".gT("Summary")."';\n"
+                        ."var summary = '".gT("Upload summary")."';\n"
+                        ."var notPairedErrorTxt = '".gT("You have to pair this field with an existing attribute.")."';\n"
+                        ."var onlyOnePairedErrorTxt = '".gT("Only one CSV attribute is mapped with central attribute.")."';\n"
+                        ."var cannotAcceptErrorTxt='".gT("This list cannot accept token attributes.")."';\n"
                         ."var separator = '".sanitize_paranoid_string($_POST['separatorused'])."';\n"
                         ."var thefilepath = '".$sRandomFileName."';\n"
                         ."var filterblankemails = '".$filterblankemails."';\n";
@@ -1483,7 +1483,7 @@ class participantsaction extends Survey_Common_Action
             $i++;
         }
 
-        printf($clang->gT("%s participants have been shared"), $i);
+        printf(gT("%s participants have been shared"), $i);
     }
 
     /*
@@ -1503,10 +1503,10 @@ class participantsaction extends Survey_Common_Action
         $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
         $clang = $this->getController()->lang;
 
-        printf($clang->gT("%s participants have been copied to the central participants table"), $response['success']);
+        printf(gT("%s participants have been copied to the central participants table"), $response['success']);
         if($response['duplicate'] > 0) {
             echo "\r\n";
-            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
+            printf(gT("%s entries were not copied because they already existed"), $response['duplicate']);
         }
         if($response['overwriteman']=="true" || $response['overwriteauto']) {
             echo "\r\n";
@@ -1527,10 +1527,10 @@ class participantsaction extends Survey_Common_Action
                                                );
         $clang = $this->getController()->lang;
 
-        printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
+        printf(gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
             echo "\r\n";
-            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
+            printf(gT("%s entries were not copied because they already existed"), $response['duplicate']);
         }
         if($response['overwrite']=="true") {
             echo "\r\n";
@@ -1557,10 +1557,10 @@ class participantsaction extends Survey_Common_Action
 
         $response = Participant::model()->copyCPBDAttributesToTokens($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
 
-        printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
+        printf(gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
             echo "\r\n";
-            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
+            printf(gT("%s entries were not copied because they already existed"), $response['duplicate']);
         }
         if($response['overwriteauto']=="true" || $response['overwriteman']=="true") {
             echo "\r\n";
