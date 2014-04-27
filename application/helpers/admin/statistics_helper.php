@@ -1486,7 +1486,7 @@ class statistics_helper {
 
                 case "1":    //array (dual scale)
 
-                    $clang = Yii::app()->lang;
+                    
                     $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                     $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
                     $sSubquestion = flattenText($questionDesc['question']);
@@ -2819,7 +2819,7 @@ class statistics_helper {
         $imagedir = Yii::app()->getConfig("imagedir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
-        $clang = Yii::app()->lang;
+        
         $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
 
@@ -2831,7 +2831,6 @@ class statistics_helper {
         {
             $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
         }
-        $statlang = new Limesurvey_lang($statlangcode);
 
         /*
         * this variable is used in the function shortencode() which cuts off a question/answer title

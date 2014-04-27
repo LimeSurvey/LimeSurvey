@@ -32,7 +32,7 @@ class limereplacementfields extends Survey_Common_Action
             $action = $_GET['action'];
         }
 
-        $clang = Yii::app()->lang;
+        
 
         if (!Yii::app()->session['loginID']) {
             die ("Unauthenticated Access Forbiden");
@@ -196,7 +196,7 @@ class limereplacementfields extends Survey_Common_Action
 
     private function _getReplacementFields($fieldtype, $surveyid)
     {
-        $clang = Yii::app()->lang;
+        
         $replFields = array();
 
         switch ($fieldtype)

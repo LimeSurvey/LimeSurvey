@@ -53,7 +53,7 @@ class index extends CAction {
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
         global $clang;
-        $clang = Yii::app()->lang;
+        
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
         if(isset(Yii::app()->session->connectionID)) {
@@ -564,24 +564,6 @@ class index extends CAction {
         Yii::app()->loadHelper("surveytranslator");
     }
 
-    function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
-    {
-        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang))
-        {
-            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
-        }
-        elseif (!empty($mvSurveyIdOrBaseLang))
-        {
-            $baselang = $mvSurveyIdOrBaseLang;
-        }
-        else
-        {
-            $baselang = Yii::app()->getConfig('defaultlang');
-        }
-        Yii::import("application.libraries.Limesurvey_lang");
-        return new Limesurvey_lang($baselang);
-    }
-
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
@@ -640,7 +622,7 @@ class index extends CAction {
 
     function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
-        $clang = Yii::app()->lang;
+        
         killSurveySession($surveyid);
         $thissurvey=getSurveyInfo($surveyid);
         if($thissurvey)

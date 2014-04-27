@@ -58,7 +58,7 @@ class Permission extends LSActiveRecord
      */
     public static function getSurveyBasePermissions()
     {
-        $clang = Yii::app()->lang;
+        
         $aPermissions=array(
             'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("Assessments"),'description'=>gT("Permission to create/view/update/delete assessments rules for a survey"),'img'=>'assessments'),  
             'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("Quotas"),'description'=>gT("Permission to create/view/update/delete quota rules for a survey"),'img'=>'quota'),
@@ -87,7 +87,7 @@ class Permission extends LSActiveRecord
      */
     public static function getGlobalBasePermissions()
     {
-        $clang = Yii::app()->lang;
+        
         $aPermissions=array(
             'surveys'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>gT("Surveys"),'description'=>gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),'img'=>'survey'),
             'users'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("Users"),'description'=>gT("Permission to create, view, update and delete users"),'img'=>'security'),

@@ -407,7 +407,7 @@ class templates extends Survey_Common_Action
     public function templaterename()
     {
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
-            $clang = Yii::app()->lang;
+            
             $sOldName = sanitize_paranoid_string(returnGlobal('copydir'));
             $sNewName = sanitize_paranoid_string(returnGlobal('newname'));
             $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;

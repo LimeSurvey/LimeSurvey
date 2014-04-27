@@ -12,8 +12,6 @@ class PdfWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         $pdforientation=Yii::app()->getConfig('pdforientation');
-        $this->clang = new limesurvey_lang($sLanguageCode);
-
         if ($oOptions->output=='file') 
         {
             $this->pdfDestination = 'F';

@@ -9,7 +9,7 @@ if (count($_GET) > 0) {
     $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
 }
 
-$clang = Yii::app()->lang;
+
 Yii::app()->loadHelper('frontend');
 
 if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
@@ -103,7 +103,6 @@ EOD;
 
     SetSurveyLanguage($surveyid, $language);
     LimeExpressionManager::SetDirtyFlag();
-    Yii::app()->lang=new limesurvey_lang(Yii::app()->session['adminlang']);
     $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $gid, $qid,$LEMdebugLevel,$assessments);
     print $result['html'];
 

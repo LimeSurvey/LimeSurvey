@@ -38,7 +38,7 @@ class translate extends Survey_Common_Action {
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("adminscripts") . 'translation.js');
 
-        $clang = Yii::app()->lang;
+        
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
 
@@ -242,7 +242,7 @@ class translate extends Survey_Common_Action {
     */
     private function showTranslateAdminmenu($iSurveyID, $survey_title, $tolang)
     {
-        $clang = Yii::app()->lang;
+        
         $publicurl = Yii::app()->getConfig('publicurl');
 		$menuitem_url = "{$publicurl}/index.php?sid={$iSurveyID}&newtest=Y&lang=";
 
@@ -293,7 +293,7 @@ class translate extends Survey_Common_Action {
 		$survey_button = "";
 
         $imageurl = Yii::app()->getConfig("adminimageurl");
-        $clang = Yii::app()->lang;
+        
 
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -366,7 +366,7 @@ class translate extends Survey_Common_Action {
 	{
 		$language_list = "";
 
-        $clang = Yii::app()->lang;
+        
 
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
@@ -431,7 +431,7 @@ class translate extends Survey_Common_Action {
     */
     private function setupTranslateFields($type)
     {
-        $clang = Yii::app()->lang;
+        
 
 		$aData = array();
 
@@ -833,7 +833,7 @@ class translate extends Survey_Common_Action {
     */
     private function displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type)
     {
-        $clang = Yii::app()->lang;
+        
 		$translateoutput = "";
         $translateoutput .= CHtml::openTag('table', array('class'=>'translate'));
         $translateoutput .= CHtml::openTag('tr');

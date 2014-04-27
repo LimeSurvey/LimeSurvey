@@ -403,7 +403,7 @@ class SurveyAdmin extends Survey_Common_Action
     public function activate($iSurveyID)
     {
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die();
-        $clang = Yii::app()->lang;
+        
 
         $iSurveyID = (int) $iSurveyID;
 

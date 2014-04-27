@@ -20,8 +20,6 @@ class DocWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        $this->clang = new limesurvey_lang($sLanguageCode);
-
         if ($oOptions->output=='display')
         {
             header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");

@@ -63,7 +63,7 @@
                 $iSurveyID=0;
                 $sLanguage = Yii::app()->getConfig("defaultlang");
             }
-            $clang = SetSurveyLanguage($iSurveyID, $sLanguage);
+            SetSurveyLanguage($iSurveyID, $sLanguage);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             //SET THE TEMPLATE DIRECTORY
             if (!isset($aSurveyInfo['templatedir']) || !$aSurveyInfo['templatedir'])
@@ -107,7 +107,7 @@
                 //require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
                 Yii::import('application.libraries.admin.pdf', true);
                 Yii::import('application.helpers.pdfHelper');
-                $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($clang->langcode);
+                $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings(App()->language);
                 $oPDF = new pdf();
                 $oPDF->SetTitle(gT("Survey name (ID)",'unescaped').": {$sSurveyName} ({$iSurveyID})");
                 $oPDF->SetSubject($sSurveyName);

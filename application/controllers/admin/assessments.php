@@ -81,7 +81,7 @@ class Assessments extends Survey_Common_Action
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
-    private function _showAssessments($iSurveyID, $action, $surveyLanguage, Limesurvey_lang $clang)
+    private function _showAssessments($iSurveyID, $action, $surveyLanguage)
     {
         $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
         $aData = $this->_collectGroupData($iSurveyID);
@@ -125,7 +125,7 @@ class Assessments extends Survey_Common_Action
         return $aData;
     }
 
-    private function _collectEditData($surveyLanguage, array $aData, Limesurvey_lang $clang)
+    private function _collectEditData($surveyLanguage, array $aData)
     {
         $assessments = Assessment::model()->findAllByAttributes(array('id' => sanitize_int($_POST['id']), 'language' => $surveyLanguage));
 

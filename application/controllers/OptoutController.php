@@ -46,14 +46,10 @@ class OptoutController extends LSYii_Controller {
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-            Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($sBaseLanguage);
         }
         else
         {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
-            Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($sBaseLanguage);
         }
 
 
@@ -120,14 +116,10 @@ class OptoutController extends LSYii_Controller {
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-            Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($sBaseLanguage);
         }
         else
         {
             $sLanguageCode = sanitize_languagecode($sLanguageCode);
-            Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($sLanguageCode);
             $sBaseLanguage = $sLanguageCode;
         }
 

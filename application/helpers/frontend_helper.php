@@ -16,7 +16,7 @@ function loadanswers()
     global $surveyid;
     global $thissurvey, $thisstep;
     global $clienttoken;
-    $clang = Yii::app()->lang;
+    
 
     $scid=returnGlobal('scid',true);
     if (Yii::app()->request->getParam('loadall') == "reload")
@@ -141,7 +141,7 @@ function makegraph($currentstep, $total)
 {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'lime-progress.css');
     $size = intval(($currentstep-1)/$total*100);
 
@@ -210,7 +210,7 @@ function makegraph($currentstep, $total)
 function makeLanguageChangerSurvey($sSelectedLanguage)
 {
     $surveyid = Yii::app()->getConfig('surveyID');
-    $clang = Yii::app()->lang;
+    
     Yii::app()->loadHelper("surveytranslator");
 
     $aSurveyLangs = Survey::model()->findByPk($surveyid)->getAllLanguages();
@@ -296,7 +296,7 @@ function makeLanguageChanger($sSelectedLanguage)
 #            }
 #        }
 #        $sHTMLCode .= "</select>\n";
-        $clang = Yii::app()->lang;
+        
         $sClass= "languagechanger";
         foreach ($aLanguages as $sLangCode => $aLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT,'UTF-8').' - '.$aLanguage['description'];
@@ -324,7 +324,7 @@ function makeLanguageChanger($sSelectedLanguage)
 function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
-    $clang = Yii::app()->lang;
+    
 
     if (!isset($backok) || $backok != "Y")
     {
@@ -602,7 +602,7 @@ function sendSubmitNotifications($surveyid)
     }
     
     $homeurl=Yii::app()->createAbsoluteUrl('/admin');
-    $clang = Yii::app()->lang;
+    
     $sitename = Yii::app()->getConfig("sitename");
 
     $debug=Yii::app()->getConfig('debug');
@@ -797,7 +797,7 @@ function submitfailed($errormsg='')
     global $thissurvey;
     global $subquery, $surveyid;
 
-    $clang = Yii::app()->lang;
+    
 
     $completed = "<br /><strong><font size='2' color='red'>"
     . gT("Did Not Save")."</strong></font><br /><br />\n\n"
@@ -845,7 +845,7 @@ function buildsurveysession($surveyid,$preview=false)
     //global $surveyid;
     global $move, $rooturl;
 
-    $clang = Yii::app()->lang;
+    
     $sLangCode=$clang->langcode;
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
     if(!$preview)
@@ -1615,7 +1615,7 @@ function surveymover()
 {
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getSurveyInfo($surveyid);
-    $clang = Yii::app()->lang;
+    
 
     $sMoveNext="movenext";
     $sMovePrev="";
@@ -1688,7 +1688,7 @@ function surveymover()
 function doAssessment($surveyid, $returndataonly=false)
 {
 
-    $clang = Yii::app()->lang;
+    
     $baselang=Survey::model()->findByPk($surveyid)->language;
     if(Survey::model()->findByPk($surveyid)->assessments!="Y")
     {
@@ -1848,7 +1848,7 @@ function doAssessment($surveyid, $returndataonly=false)
 */
 function UpdateGroupList($surveyid, $language)
 {
-    $clang = Yii::app()->lang;
+    
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
     $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
     $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
@@ -1888,7 +1888,7 @@ function UpdateGroupList($surveyid, $language)
 function UpdateFieldArray()
 {
 	global $surveyid;
-	$clang = Yii::app()->lang;
+	
 
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray']))
     {
@@ -1929,7 +1929,7 @@ function checkQuota($checkaction,$surveyid)
     $quota_info = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
     $x=0;
 
-    $clang = Yii::app()->lang;
+    
 
     if(count($quota_info) > 0) // Quota's have to exist
     {
@@ -2164,7 +2164,7 @@ function GetReferringUrl()
 {
     global $clang;
 
-    $clang = Yii::app()->lang;
+    
 
     // read it from server variable
     if(isset($_SERVER["HTTP_REFERER"]))
@@ -2199,7 +2199,7 @@ function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
 	$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
-    $clang = Yii::app()->lang;
+    
 
     // Fill some necessary var for template
     $navigator = surveymover();
@@ -2298,8 +2298,6 @@ function SetSurveyLanguage($surveyid, $language)
         } else {
             $_SESSION['survey_'.$surveyid]['s_lang'] =  $language;
         }
-        Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new limesurvey_lang($_SESSION['survey_'.$surveyid]['s_lang']);
         $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
         $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat'],$_SESSION['survey_'.$surveyid]['s_lang']);
@@ -2312,13 +2310,7 @@ function SetSurveyLanguage($surveyid, $language)
             $language=$default_language;
         }
         $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
-        Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new Limesurvey_lang($language);
     }
-
-    $oApplication=Yii::app();
-    $oApplication->lang=$clang;
-    return $clang;
 }
 
 /**
@@ -2326,7 +2318,7 @@ function SetSurveyLanguage($surveyid, $language)
 **/
 function getMove()
 {
-#    $clang = Yii::app()->lang;
+#    
     $aAcceptedMove=array('default','movenext','movesubmit','moveprev','saveall','loadall','clearall','changelang');
     // We can control is save and load are OK : todo fix according to survey settings
     // Maybe allow $aAcceptedMove in Plugin

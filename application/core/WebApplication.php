@@ -24,11 +24,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 class WebApplication extends CWebApplication
 {
     protected $config = array();
-    /**
-     * @var Limesurvey_lang 
-     */
-    public $lang = null;
-
+    
     /**
      *
      * @var PluginManager

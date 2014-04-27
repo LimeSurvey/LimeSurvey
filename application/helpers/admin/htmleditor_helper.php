@@ -109,7 +109,7 @@
 
     function PrepareEditorScript($load=false, $controller = null)
     {
-        $clang = Yii::app()->lang;
+        
         $data['clang'] = $clang;
 
         App()->getClientScript()->registerCoreScript('ckeditor');
@@ -184,7 +184,7 @@
 
     function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
-        $clang = Yii::app()->lang;
+        
         $htmlcode = '';
         $imgopts = '';
         $toolbarname = 'Basic';

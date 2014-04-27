@@ -1484,7 +1484,7 @@ class dataentry extends Survey_Common_Action
     */
     public function insert()
     {
-        $clang = Yii::app()->lang;
+        
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
@@ -1875,7 +1875,7 @@ class dataentry extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
         {
-            $clang = Yii::app()->lang;
+            
 
             $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
             $surveyinfo=getSurveyInfo($surveyid);
@@ -1887,10 +1887,7 @@ class dataentry extends Survey_Common_Action
             if(is_null($lang) || !in_array($lang,$slangs))
             {
                 $sDataEntryLanguage = $baselang;
-                $blang = $clang;
             } else {
-                Yii::app()->loadLibrary('Limesurvey_lang',array($lang));
-                $blang = new Limesurvey_lang($lang);
                 $sDataEntryLanguage = $lang;
             }
 
@@ -1904,7 +1901,6 @@ class dataentry extends Survey_Common_Action
             $aData['thissurvey'] = $thissurvey;
             $aData['langlistbox'] = $langlistbox;
             $aData['surveyid'] = $surveyid;
-            $aData['blang'] = $blang;
             $aData['site_url'] = Yii::app()->homeUrl;
 
             LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);  // means that all variables are on the same page
@@ -1958,19 +1954,19 @@ class dataentry extends Survey_Common_Action
                         $showme = '';
                         if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
                         if ($relevance != '' && $relevance != '1') {
-                            $showme = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
+                            $showme = "[".gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
                         }
                         if ($showme != '' && $validation != '') {
                             $showme .= '<br/>';
                         }
                         if ($validation != '') {
-                            $showme .= "[".$blang->gT("The answer(s) must meet these validation criteria:")."]<br />$validation\n";
+                            $showme .= "[".gT("The answer(s) must meet these validation criteria:")."]<br />$validation\n";
                         }
                         if ($showme != '' && $array_filter_help != '') {
                             $showme .= '<br/>';
                         }
                         if ($array_filter_help != '') {
-                            $showme .= "[".$blang->gT("The answer(s) must meet these array_filter criteria:")."]<br />$array_filter_help\n";
+                            $showme .= "[".gT("The answer(s) must meet these array_filter criteria:")."]<br />$array_filter_help\n";
                         }
                         $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
                     }
@@ -1991,15 +1987,13 @@ class dataentry extends Survey_Common_Action
                     $cdata['clang'] = $clang;
 
                     //DIFFERENT TYPES OF DATA FIELD HERE
-                    $cdata['blang'] = $blang;
-
                     $cdata['thissurvey'] = $thissurvey;
                     if ($deqrow['help'])
                     {
                         $hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                         $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
                         $cdata['hh'] = $hh;
-                        //$aDataentryoutput .= "\t<img src='$imageurl/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+                        //$aDataentryoutput .= "\t<img src='$imageurl/help.gif' alt='".gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
                     }
                     switch($deqrow['type'])
                     {

@@ -120,7 +120,6 @@ class InstallerController extends CController {
         $this->loadHelper('surveytranslator');
         Yii::app()->session->remove('configFileWritten');
 
-        $aData['clang'] = $clang = $this->lang;
         $aData['title'] = gT('Welcome');
         $aData['descp'] = gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep'] = array('on','off','off','off','off','off');
@@ -146,7 +145,6 @@ class InstallerController extends CController {
     */
     private function stepLicense()
     {
-        $aData['clang'] = $clang = $this->lang;
         // $aData array contain all the information required by view.
         $aData['title'] = gT('License');
         $aData['descp'] = gT('GNU General Public License:');
@@ -178,7 +176,6 @@ class InstallerController extends CController {
     */
     private function stepPreInstallationCheck()
     {
-        $aData['clang'] = $clang = $this->lang;
         $oModel = new InstallerConfigForm();
         //usual data required by view
         $aData['title'] = gT('Pre-installation check');
@@ -214,7 +211,6 @@ class InstallerController extends CController {
     {
         $this->loadHelper('surveytranslator');
 
-        $aData['clang'] = $clang = $this->lang;
         // usual data required by view
         $aData['title'] = gT('Database configuration');
         $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
@@ -379,7 +375,6 @@ class InstallerController extends CController {
                         else {$aValues['adminoutput'].=$output;}
                         $aValues['adminoutput'].= "<br />" . sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
                     }
-                    $aValues['clang'] = $clang;
                     $this->render('/installer/dbsettings_view', $aValues);
                 } else {
                     $this->render('/installer/dbconfig_view', $aData);
@@ -404,7 +399,6 @@ class InstallerController extends CController {
             $this->redirect(array('installer/welcome'));
         }
 
-        $aData['clang'] = $clang = $this->lang;
         $aData['model'] = $model = new InstallerConfigForm;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -526,7 +520,6 @@ class InstallerController extends CController {
             $this->redirect(array('installer/welcome'));
         }
 
-        $aData['clang'] = $clang = $this->lang;
         $aData['model'] = $model = new InstallerConfigForm;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -594,7 +587,6 @@ class InstallerController extends CController {
     */
     private function stepOptionalConfiguration()
     {
-        $aData['clang'] = $clang = $this->lang;
         $aData['confirmation'] = Yii::app()->session['optconfig_message'];
         $aData['title'] = gT("Optional settings");
         $aData['descp'] = gT("Optional settings to give you a head start");
@@ -972,7 +964,6 @@ class InstallerController extends CController {
     */
     function _writeConfigFile()
     {
-        $aData['clang'] = $clang = $this->lang;
         //write config.php if database exists and has been populated.
         if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist'])
         {

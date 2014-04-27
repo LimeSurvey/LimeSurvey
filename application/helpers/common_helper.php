@@ -62,7 +62,7 @@ function eT($string, $params = array())
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
-    $clang = Yii::app()->lang;
+    
 
     $group['Arrays'] = gT('Arrays');
     $group['MaskQuestions'] = gT("Mask questions");
@@ -325,8 +325,6 @@ function getSurveyList($returnarray=false, $surveyid=false)
     static $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
-    $clang = new Limesurvey_lang(isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en');
-
     if(is_null($cached)) {
         $args = array('order'=>'surveyls_title');
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
@@ -504,7 +502,7 @@ function getAdminThemeList()
 */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-   $clang = Yii::app()->lang;
+   
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
 
@@ -556,7 +554,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 */
 function getGidPrevious($surveyid, $gid)
 {
-    $clang = Yii::app()->lang;
+    
 
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
@@ -587,7 +585,7 @@ function getGidPrevious($surveyid, $gid)
 */
 function getQidPrevious($surveyid, $gid, $qid)
 {
-    $clang = Yii::app()->lang;
+    
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid'=>0),array('order'=>'question_order'));
 
@@ -620,7 +618,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 */
 function getGidNext($surveyid, $gid)
 {
-    $clang = Yii::app()->lang;
+    
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
@@ -653,7 +651,7 @@ function getGidNext($surveyid, $gid)
 */
 function getQidNext($surveyid, $gid, $qid)
 {
-    $clang = Yii::app()->lang;
+    
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0), array('order'=>'question_order'));
@@ -1100,7 +1098,7 @@ function longestString( $new_string , $longest_length )
 */
 function getNotificationList($notificationcode)
 {
-    $clang = Yii::app()->lang;
+    
     $ntypes = array(
     "0"=>gT("No email notification"),
     "1"=>gT("Basic email notification"),
@@ -1127,7 +1125,7 @@ function getNotificationList($notificationcode)
 */
 function getGroupList($gid,$surveyid)
 {
-    $clang = Yii::app()->lang;
+    
     $groupselecter="";
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
@@ -1154,7 +1152,7 @@ function getGroupList($gid,$surveyid)
 
 function getGroupList3($gid,$surveyid)
 {
-    //$clang = Yii::app()->lang;
+    //
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
 
@@ -1188,7 +1186,7 @@ function getGroupList3($gid,$surveyid)
 function getGroupListLang($gid, $language, $surveyid)
 {
 
-    $clang = Yii::app()->lang;
+    
 
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
@@ -1223,7 +1221,7 @@ function getGroupListLang($gid, $language, $surveyid)
 
 function getUserList($outputformat='fullinfoarray')
 {
-    $clang = Yii::app()->lang;
+    
 
     if (!empty(Yii::app()->session['loginID']))
     {
@@ -1389,10 +1387,10 @@ function getSurveyInfo($surveyid, $languagecode='')
 * @param string $mode Escape mode for the translation function
 * @return array
 */
-function templateDefaultTexts($oLanguage, $mode='html', $sNewlines='text'){
+function templateDefaultTexts($mode='html', $sNewlines='text'){
     $aDefaultTexts=array(
-    'admin_detailed_notification_subject'=>$oLanguage->gT("Response submission for survey {SURVEYNAME} with results",$mode),
-    'admin_detailed_notification'=>$oLanguage->gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}",$mode),
+    'admin_detailed_notification_subject'=> gT("Response submission for survey {SURVEYNAME} with results",$mode),
+    'admin_detailed_notification'=> gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}",$mode),
     'admin_detailed_notification_css'=>'<style type="text/css">
     .printouttable {
     margin:1em auto;
@@ -1429,16 +1427,16 @@ function templateDefaultTexts($oLanguage, $mode='html', $sNewlines='text'){
     padding-top:1em;
     }
     </style>',
-    'admin_notification_subject'=>$oLanguage->gT("Response submission for survey {SURVEYNAME}",$mode),
-    'admin_notification'=>$oLanguage->gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}",$mode),
-    'confirmation_subject'=>$oLanguage->gT("Confirmation of your participation in our survey"),
-    'confirmation'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",$mode),
-    'invitation_subject'=>$oLanguage->gT("Invitation to participate in a survey",$mode),
-    'invitation'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nyou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".$oLanguage->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode)."\n\n".$oLanguage->gT("If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n{OPTINURL}",$mode),
-    'reminder_subject'=>$oLanguage->gT("Reminder to participate in a survey",$mode),
-    'reminder'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".$oLanguage->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode),
-    'registration_subject'=>$oLanguage->gT("Survey registration confirmation",$mode),
-    'registration'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",$mode)
+    'admin_notification_subject'=>gT("Response submission for survey {SURVEYNAME}",$mode),
+    'admin_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}",$mode),
+    'confirmation_subject'=>gT("Confirmation of your participation in our survey"),
+    'confirmation'=>gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",$mode),
+    'invitation_subject'=>gT("Invitation to participate in a survey",$mode),
+    'invitation'=>gT("Dear {FIRSTNAME},\n\nyou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode)."\n\n".gT("If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n{OPTINURL}",$mode),
+    'reminder_subject'=>gT("Reminder to participate in a survey",$mode),
+    'reminder'=>gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode),
+    'registration_subject'=>gT("Survey registration confirmation",$mode),
+    'registration'=>gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",$mode)
     );
     if ($sNewlines=='html')
     {
@@ -1625,10 +1623,9 @@ function sendCacheHeaders()
 * @param type $iSurveyID The Survey ID
 * @param type $sFieldCode Field code of the particular field
 * @param type $sValue The stored response value
-* @param object $oLanguage Initialized limesurvey_lang object for the resulting response data
 * @return string
 */
-function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
+function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue)
 {
     if ($sValue==null || $sValue=='') return '';
     $sLanguage = $oLanguage->langcode;
@@ -1684,7 +1681,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 } // while
                 if ($sValue == "-oth-")
                 {
-                    $this_answer=$oLanguage->gT("Other");
+                    $this_answer=gT("Other");
                 }
                 break;
             case "M":
@@ -1692,39 +1689,39 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case "P":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
+                case "Y": $this_answer=gT("Yes"); break;
             }
             break;
             case "Y":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-                case "N": $this_answer=$oLanguage->gT("No"); break;
-                default: $this_answer=$oLanguage->gT("No answer");
+                case "Y": $this_answer=gT("Yes"); break;
+                case "N": $this_answer=gT("No"); break;
+                default: $this_answer=gT("No answer");
             }
             break;
             case "G":
             switch($sValue)
             {
-                case "M": $this_answer=$oLanguage->gT("Male"); break;
-                case "F": $this_answer=$oLanguage->gT("Female"); break;
-                default: $this_answer=$oLanguage->gT("No answer");
+                case "M": $this_answer=gT("Male"); break;
+                case "F": $this_answer=gT("Female"); break;
+                default: $this_answer=gT("No answer");
             }
             break;
             case "C":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-                case "N": $this_answer=$oLanguage->gT("No"); break;
-                case "U": $this_answer=$oLanguage->gT("Uncertain"); break;
+                case "Y": $this_answer=gT("Yes"); break;
+                case "N": $this_answer=gT("No"); break;
+                case "U": $this_answer=gT("Uncertain"); break;
             }
             break;
             case "E":
             switch($sValue)
             {
-                case "I": $this_answer=$oLanguage->gT("Increase"); break;
-                case "D": $this_answer=$oLanguage->gT("Decrease"); break;
-                case "S": $this_answer=$oLanguage->gT("Same"); break;
+                case "I": $this_answer=gT("Increase"); break;
+                case "D": $this_answer=gT("Decrease"); break;
+                case "S": $this_answer=gT("Same"); break;
             }
             break;
             case "F":
@@ -1746,12 +1743,12 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 } // while
                 if ($sValue == "-oth-")
                 {
-                    $this_answer=$oLanguage->gT("Other");
+                    $this_answer=gT("Other");
                 }
                 break;
             case "|": //File upload
                 if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = $oLanguage->gT("File count");
+                    $this_answer = gT("File count");
                 } else {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue);
@@ -2188,7 +2185,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
-    $clang = new Limesurvey_lang($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
@@ -2781,8 +2777,6 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
-    $clang = new Limesurvey_lang($sLanguage);
-
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
         return $timingsFieldMap[$surveyid][$style][$clang->langcode];
@@ -3027,7 +3021,7 @@ function questionAttributes($returnByName=false)
     // Use some static
     static $qattributes=false;
     static $qat=false;
-    $clang = Yii::app()->lang;
+    
 
     if (!$qattributes)
     {
@@ -4341,7 +4335,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     global $maildebug, $maildebugbody;
 
-    $clang = Yii::app()->lang;
+    
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
     $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
@@ -5384,7 +5378,7 @@ function getTokenConditionsFieldNames($surveyid)
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 {
-    $clang = Yii::app()->lang;
+    
 
     $aBasicTokenFields=array('firstname'=>array(
         'description'=>gT('First name'),
@@ -5638,7 +5632,7 @@ function getUpdateInfo()
 function updateCheck()
 {
     $aUpdateVersions=getUpdateInfo();
-    $clang = Yii::app()->lang;
+    
 
     if (isset($aUpdateVersions['errorcode'])) 
     {
@@ -5928,8 +5922,6 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=true)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
-    $oLanguage = new Limesurvey_lang($sLanguageCode);
-
     //Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
@@ -6027,7 +6019,7 @@ function isNumericInt($mStr)
 */
 function includeKeypad()
 {
-    $clang = Yii::app()->lang;
+    
 
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
     $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.$clang->langcode.'.js';
@@ -6390,7 +6382,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
 */
 function accessDenied($action,$sid='')
 {
-    $clang = Yii::app()->lang;
+    
     if (Yii::app()->session['loginID'])
     {
         $ugid = Yii::app()->getConfig('ugid');
@@ -6535,7 +6527,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 {
 
     Yii::app()->loadHelper('database');
-    //$clang = Yii::app()->lang;
+    //
     $sid=sanitize_int($sid);
     $baselang = Survey::model()->findByPk($sid)->language;
 
@@ -6588,7 +6580,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 function fixLanguageConsistency($sid, $availlangs='')
 {
     $sid=sanitize_int($sid);
-    $clang = Yii::app()->lang;
+    
 
     if (trim($availlangs)!='')
     {
@@ -6949,7 +6941,7 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 */
 function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
 {
-    $clang = Yii::app()->lang;
+    
     $condarray = Array();
 
     $baselang = Survey::model()->findByPk($sid)->language;
@@ -7017,7 +7009,7 @@ function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 */
 function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 {
-    $clang = Yii::app()->lang;
+    
     $resarray=Array();
     $resarray['notAbove']=null; // defaults to no constraint
     $resarray['notBelow']=null; // defaults to no constraint
@@ -7115,7 +7107,7 @@ function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 
 function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 {
-    $clang = Yii::app()->lang;
+    
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (!Permission::model()->hasGlobalPermission('superadmin','read'))
@@ -7166,7 +7158,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 function getGroupUserList($ugid)
 {
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+    
 
     $ugid=sanitize_int($ugid);
     $surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
@@ -7208,7 +7200,7 @@ function getGroupUserList($ugid)
 function modifyDatabase($sqlfile='', $sqlstring='')
 {
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+    
 
     global $siteadminemail;
     global $siteadminname;
@@ -7284,7 +7276,7 @@ function modifyDatabase($sqlfile='', $sqlstring='')
 function getLabelSets($languages = null)
 {
 
-    $clang = Yii::app()->lang;
+    
     $languagesarray = array();
     if ($languages)
     {
@@ -7544,7 +7536,7 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 */
 function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surveyid)
 {
-    $clang = Yii::app()->lang;
+    
     $surveyid=sanitize_int($surveyid);
 
     $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
@@ -7584,7 +7576,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
 
 function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 {
-    $clang = Yii::app()->lang;
+    
     $surveyid=sanitize_int($surveyid);
 
     $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
@@ -7685,7 +7677,7 @@ function json_decode_ls($jsonString)
  */
 function aEncodingsArray()
     {
-        $clang = Yii::app()->lang;
+        
         return array(
         "armscii8" => gT("ARMSCII-8 Armenian"),
         "ascii" => gT("US ASCII"),

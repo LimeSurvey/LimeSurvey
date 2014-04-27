@@ -29,7 +29,7 @@ class surveypermission extends Survey_Common_Action {
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
-        $clang = Yii::app()->lang;
+        
         $imageurl = Yii::app()->getConfig('adminimageurl');
             
         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','read'))
@@ -214,7 +214,7 @@ class surveypermission extends Survey_Common_Action {
         $aViewUrls = array();
 
         $action = $_POST['action'];
-        $clang = Yii::app()->lang;
+        
 
         $imageurl = Yii::app()->getConfig('imageurl');
 
@@ -301,7 +301,7 @@ class surveypermission extends Survey_Common_Action {
 
         $action = $_POST['action'];
 
-        $clang = Yii::app()->lang;
+        
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = $_POST['uid'];
 
@@ -372,7 +372,7 @@ class surveypermission extends Survey_Common_Action {
 
         $action = $_POST['action'];
 
-        $clang = Yii::app()->lang;
+        
         $imageurl = Yii::app()->getConfig('adminimageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : null;
         $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : null;
@@ -501,7 +501,7 @@ class surveypermission extends Survey_Common_Action {
 
         $action = $_POST['action'];
 
-        $clang = Yii::app()->lang;
+        
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
         $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;// Not used
@@ -558,7 +558,7 @@ class surveypermission extends Survey_Common_Action {
         $aViewUrls = array();
 
         $action = $_POST['action'];
-        $clang = Yii::app()->lang;
+        
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
         $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : false;

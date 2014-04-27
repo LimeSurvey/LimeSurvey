@@ -1492,8 +1492,6 @@ function upgradeSurveys156()
     foreach ( $oSurveyResult as $aSurveyRow )
     {
 
-        Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
-        $oLanguage = Yii::app()->lang;
         $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
 
@@ -1605,10 +1603,7 @@ function upgradeSurveys145()
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
-        $oLanguage = new Limesurvey_lang($aSurveyRow['surveyls_language']);
-        $oLanguage = Yii::app()->lang;
-        $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
-        unset($oLanguage);
+        $aDefaultTexts=templateDefaultTexts('unescaped');
         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
         $sSurveyUpdateQuery = "update {{surveys_languagesettings}} set
         email_admin_responses_subj=".$aDefaultTexts['admin_detailed_notification_subject'].",
@@ -2266,7 +2261,7 @@ function setVarchar($sDBDriverName=null) {
 
 function replaceTemplateJS(){
     $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-    $clang = Yii::app()->lang;
+    
     if (!$usertemplaterootdir) {return false;}
     $countstartpage=0;
     $counterror=0;

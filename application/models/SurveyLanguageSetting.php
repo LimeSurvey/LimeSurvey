@@ -118,7 +118,6 @@ class SurveyLanguageSetting extends LSActiveRecord
     */
     public function lsdefault($attribute,$params)
     {
-        $oLanguageTranslator = new Limesurvey_lang($this->surveyls_language);
         $oSurvey=Survey::model()->findByPk($this->surveyls_survey_id);
         $sEmailFormat=$oSurvey->htmlemail=='Y'?'html':'';
         $aDefaultTexts=templateDefaultTexts($oLanguageTranslator,'unescaped', $sEmailFormat);

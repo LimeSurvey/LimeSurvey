@@ -77,7 +77,7 @@
         */
         public function rules()
         {
-            $clang = Yii::app()->lang;
+            
             $aRules= array(
                         array('title','required','on' => 'update, insert'),// 140207 : Before was commented, put only on update/insert ?
                         array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),

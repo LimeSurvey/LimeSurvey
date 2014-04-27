@@ -44,7 +44,7 @@ class CheckIntegrity extends Survey_Common_Action
 
     public function fixredundancy()
     {
-        $clang = Yii::app()->lang;
+        
         $oldsmultidelete=Yii::app()->request->getPost('oldsmultidelete', array());
         $aData['messages'] = array();
         if ( Permission::model()->hasGlobalPermission('settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
@@ -80,7 +80,7 @@ class CheckIntegrity extends Survey_Common_Action
     public function fixintegrity()
     {
         $aData = array();
-        $clang = Yii::app()->lang;
+        
         if (Permission::model()->hasGlobalPermission('settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
 
@@ -146,7 +146,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
     }
 
-    private function _deleteOrphanTokenTables(array $tokenTables, array $aData, Limesurvey_lang $clang)
+    private function _deleteOrphanTokenTables(array $tokenTables, array $aData)
     {
         foreach ($tokenTables as $aTokenTable)
         {
@@ -156,7 +156,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _dropOrphanSurveyTables(array $surveyTables, array $aData, Limesurvey_lang $clang)
+    private function _dropOrphanSurveyTables(array $surveyTables, array $aData)
     {
         foreach ($surveyTables as $aSurveyTable)
         {
@@ -166,7 +166,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _deleteGroups(array $groups, array $aData, Limesurvey_lang $clang)
+    private function _deleteGroups(array $groups, array $aData)
     {
         foreach ($groups as $group) $gids[] = $group['gid'];
 
@@ -178,7 +178,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _deleteQuestions(array $questions, array $aData, Limesurvey_lang $clang)
+    private function _deleteQuestions(array $questions, array $aData)
     {
         foreach ($questions as $question) $qids[] = $question['qid'];
 
@@ -190,7 +190,7 @@ class CheckIntegrity extends Survey_Common_Action
         return array($criteria, $aData);
     }
 
-    private function _deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData, Limesurvey_lang $clang)
+    private function _deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData)
     {
         foreach ($surveyLanguageSettings as $surveylanguagesetting) $surveyls_survey_ids[] = $surveylanguagesetting['slid'];
 
@@ -202,7 +202,7 @@ class CheckIntegrity extends Survey_Common_Action
         return array($criteria, $aData);
     }
 
-    private function _deleteSurveys(array $surveys, array $aData, Limesurvey_lang $clang)
+    private function _deleteSurveys(array $surveys, array $aData)
     {
         foreach ($surveys as $survey)
         {
@@ -214,7 +214,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _deleteAnswers(array $answers, array $aData, Limesurvey_lang $clang)
+    private function _deleteAnswers(array $answers, array $aData)
     {
         foreach ($answers as $aAnswer) {
             Answer::model()->deleteAll('qid=:qid AND code=:code',array(':qid'=>$aAnswer['qid'],':code'=>$aAnswer['code']));
@@ -224,7 +224,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _deleteAssessments(array $assessments, array $aData, Limesurvey_lang $clang)
+    private function _deleteAssessments(array $assessments, array $aData)
     {
         foreach ($assessments as $assessment) $assessments_ids[] = $assessment['id'];
 
@@ -235,7 +235,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _deleteQuotaMembers(array $aData, Limesurvey_lang $clang)
+    private function _deleteQuotaMembers(array $aData)
     {
         $quota_ids = array();
         $quotas = Quota::model()->findAll();
@@ -270,7 +270,7 @@ class CheckIntegrity extends Survey_Common_Action
         if (QuotaLanguageSetting::model()->hasErrors()) safeDie(QuotaLanguageSetting::model()->getError());
     }
 
-    private function _deleteQuotas(array $aData, Limesurvey_lang $clang)
+    private function _deleteQuotas(array $aData)
     {
         $sids = array();
         $surveys = Survey::model()->findAll();
@@ -284,7 +284,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _deleteDefaultValues(array $aData, Limesurvey_lang $clang)
+    private function _deleteDefaultValues(array $aData)
     {
         $qids = array();
         $questions = Question::model()->findAll();
@@ -298,7 +298,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _deleteQuestionAttributes(array $questionAttributes, array $aData, Limesurvey_lang $clang)
+    private function _deleteQuestionAttributes(array $questionAttributes, array $aData)
     {
         $qids = array();
         foreach ($questionAttributes as $questionattribute) $qids[] = $questionattribute['qid'];
@@ -311,7 +311,7 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
-    private function _deleteConditions(array $conditions, array $aData, Limesurvey_lang $clang)
+    private function _deleteConditions(array $conditions, array $aData)
     {
         $cids = array();
         foreach ($conditions as $condition) $cids[] = $condition['cid'];
@@ -330,7 +330,7 @@ class CheckIntegrity extends Survey_Common_Action
      */
     protected function _checkintegrity()
     {
-        $clang = Yii::app()->lang;
+        
 
         /*** Plainly delete survey permissions if the survey or user does not exist ***/
         $users = User::model()->findAll();

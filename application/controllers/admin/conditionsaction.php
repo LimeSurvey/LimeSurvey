@@ -2070,7 +2070,7 @@ class conditionsaction extends Survey_Common_Action {
     private function _showSpeaker($hinttext)
     {
         global $max;
-        $clang = Yii::app()->lang;
+        
         $imageurl = Yii::app()->getConfig("adminimageurl");
 
         if(!isset($max))

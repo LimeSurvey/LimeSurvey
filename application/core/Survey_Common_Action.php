@@ -220,7 +220,6 @@ class Survey_Common_Action extends CAction
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
         // Gather the data
-        $aData['clang'] = $clang = Yii::app()->lang;
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
 
         $aData = $this->_addPseudoParams($aData);
@@ -360,7 +359,6 @@ class Survey_Common_Action extends CAction
     */
     function _questionbar($iSurveyID, $gid, $qid, $action = null)
     {
-        $clang = $this->getController()->lang;
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
 
         //Show Question Details
@@ -407,7 +405,6 @@ class Survey_Common_Action extends CAction
         $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
         $aData['gid'] = $gid;
-        $aData['clang'] = $clang;
         $aData['qrrow'] = $qrrow;
         $aData['baselang'] = $baselang;
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
@@ -451,7 +448,6 @@ class Survey_Common_Action extends CAction
     */
     function _questiongroupbar($iSurveyID, $gid, $qid=null, $action = null)
     {
-        $clang = $this->getController()->lang;
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
 
         Yii::app()->loadHelper('replacements');
@@ -498,7 +494,6 @@ class Survey_Common_Action extends CAction
             $aData['surveyid'] = $iSurveyID;
             $aData['gid'] = $gid;
             $aData['grow'] = $grow;
-            $aData['clang'] = $clang;
             $aData['condarray'] = $condarray;
             $aData['sumcount4'] = $sumcount4;
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
@@ -518,7 +513,6 @@ class Survey_Common_Action extends CAction
     */
     function _surveybar($iSurveyID, $gid=null)
     {
-        $clang = $this->getController()->lang;
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
@@ -539,7 +533,6 @@ class Survey_Common_Action extends CAction
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveytoolbar.js');
 
         //Parse data to send to view
-        $aData['clang'] = $clang;
         $aData['surveyinfo'] = $surveyinfo;
         $aData['surveyid'] = $iSurveyID;
 
@@ -658,7 +651,6 @@ class Survey_Common_Action extends CAction
     */
     function _surveysummary($iSurveyID, $action=null, $gid=null)
     {
-        $clang = $this->getController()->lang;
         //$surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $aSurveyInfo=getSurveyInfo($iSurveyID);
@@ -879,7 +871,6 @@ class Survey_Common_Action extends CAction
 
         $aData['showstyle'] = $showstyle;
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
-        $aData['clang'] = $clang;
         $aData['surveyinfo'] = $aSurveyInfo;
 
         $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData);
@@ -947,7 +938,6 @@ class Survey_Common_Action extends CAction
 
     protected function _filterImportedResources($extractdir, $destdir)
     {
-        $clang = $this->getController()->lang;
         $aErrorFilesInfo = array();
         $aImportedFilesInfo = array();
 

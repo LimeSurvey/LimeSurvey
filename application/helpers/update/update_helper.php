@@ -50,7 +50,7 @@ function CheckForDBUpgrades($subaction = null)
 
 function ShowDBUpgradeNotice() {
     //$error=false;
-	$clang = Yii::app()->lang;
+	
 	//$sitename = Yii::app()->getConfig('sitename');
 	return '<div class="messagebox">'
     ."<div class='header'>".gT('Database upgrade').'</div><p>'

@@ -59,8 +59,6 @@ class AdminController extends LSYii_Controller
     */
     public function error($message, $sURL = array())
     {
-        $clang = $this->lang;
-
         $this->_getAdminHeader();
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
         $sOutput .= '<div class="warningheader">'.gT('Error').'</div><br />'."\n";
@@ -292,9 +290,6 @@ class AdminController extends LSYii_Controller
     */
     public function _getAdminFooter($url, $explanation, $return = false)
     {
-        $clang = $this->lang;
-        $aData['clang'] = $clang;
-
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
         $aData['buildtext'] = "";
@@ -354,11 +349,7 @@ class AdminController extends LSYii_Controller
     */
     public function _showadminmenu($surveyid = false)
     {
-
-        $clang = $this->lang;
-        $aData['clang']= $clang;
-
-        if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
+            if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
             Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 

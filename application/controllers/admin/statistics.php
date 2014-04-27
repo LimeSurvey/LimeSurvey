@@ -524,9 +524,7 @@ class statistics extends Survey_Common_Action {
         $MyCache = new pCache($tempdir.'/');
 	    $aData['success'] = 1;
         $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
-        $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);  
-
-	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
+        if (isset($_POST['cmd']) && isset($_POST['id'])) {
 	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
             if(!is_numeric(substr($qsid,0,1))) {
                 // Strip first char when not numeric (probably T or D)

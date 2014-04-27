@@ -95,10 +95,8 @@ class responses extends Survey_Common_Action
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
-            $oBrowseLanguage = new Limesurvey_lang($aData['language']);
-
             extract($aData);
-            $clang = Yii::app()->lang;
+            
             $aViewUrls = array();
 
             $fncount = 0;
@@ -285,8 +283,6 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
-
         /**
          * fnames is used as informational array
          * it containts
@@ -316,8 +312,6 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
-
         $tokenRequest = Yii::app()->request->getParam('token', null);
 
         //Delete Individual answer using inrow delete buttons/links - checked

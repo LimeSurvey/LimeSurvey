@@ -383,7 +383,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttributeInfo_json()
     {
-        $clang = Yii::app()->lang;
+        
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
@@ -418,7 +418,7 @@ class participantsaction extends Survey_Common_Action
      */
     function editAttributeInfo()
     {    
-        $clang = Yii::app()->lang;
+        
         $operation = Yii::app()->request->getPost('oper');
 
         if ($operation == 'del' && Yii::app()->request->getPost('id'))
@@ -1721,7 +1721,6 @@ class participantsaction extends Survey_Common_Action
         $this->load->model('participants_model');
         $iParticipantId = $this->uri->segment(4);
         $iSurveyId = $this->uri->segment(5);
-        $clang = $this->limesurvey_lang;
         if (!is_numeric($iSurveyId))
         {
             $blacklist = $this->uri->segment(5);

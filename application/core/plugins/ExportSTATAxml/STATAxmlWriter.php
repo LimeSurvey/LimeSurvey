@@ -84,8 +84,6 @@ class STATAxmlWriter extends Writer
      */
     function createStataFieldmap($survey, $sLanguage, $oOptions)
     {
-        $clang = new Limesurvey_lang($sLanguage); // get survey language...eg. for value labels
-        
         $yvalue = $oOptions->convertY ? $oOptions->yValue : '1'; // set value for Y if it is set in export settings (needed for correct value label)
         $nvalue = $oOptions->convertN ? $oOptions->nValue : '2'; // set value for N if it is set in export settings (needed for correct value label)
         

@@ -72,7 +72,7 @@ function fixNumbering($fixnumbering, $iSurveyID)
 */
 function checkGroup($postsid)
 {
-    $clang = Yii::app()->lang;
+    
 
     $baselang = Survey::model()->findByPk($postsid)->language;
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
@@ -98,7 +98,7 @@ function checkGroup($postsid)
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {
-    $clang = Yii::app()->lang;
+    
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:

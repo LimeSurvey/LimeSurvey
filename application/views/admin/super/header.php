@@ -33,7 +33,6 @@
 <?php if(isset($formatdata)) { ?>
     <script type='text/javascript'>
         var userdateformat='<?php echo $formatdata['jsdate']; ?>';
-        var userlanguage='<?php echo $adminlang; ?>';
     </script>
     <?php } ?>
 <div class='wrapper'>

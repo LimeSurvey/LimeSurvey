@@ -77,8 +77,8 @@ function retrieveAnswers($ia)
     //globalise required config variables
     global $thissurvey; //These are set by index.php
 
-    //$clang = Yii::app()->lang;
-    $clang = Yii::app()->lang;
+    //
+    
 
     //DISPLAY
     $display = $ia[7];
@@ -443,7 +443,7 @@ function file_validation_message($ia)
 {
     global $filenotvalidated;
 
-    $clang = Yii::app()->lang;
+    
     $qtitle = "";
     if (isset($filenotvalidated) && is_array($filenotvalidated) && $ia[4] == "|")
     {
@@ -461,7 +461,7 @@ function file_validation_message($ia)
 // TMSW Validation -> EM
 function mandatory_popup($ia, $notanswered=null)
 {
-    $clang = Yii::app()->lang;
+    
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {unset($notanswered);}
@@ -489,7 +489,7 @@ function mandatory_popup($ia, $notanswered=null)
 // TMSW Validation -> EM
 function validation_popup($ia, $notvalidated=null)
 {
-    $clang = Yii::app()->lang;
+    
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {unset($notvalidated);}
@@ -514,7 +514,7 @@ function validation_popup($ia, $notvalidated=null)
 // TMSW Validation -> EM
 function file_validation_popup($ia, $filenotvalidated = null)
 {
-    $clang = Yii::app()->lang;
+    
     if ($filenotvalidated === null) { unset($filenotvalidated); }
     if (isset($filenotvalidated) && is_array($filenotvalidated))
     {
@@ -534,7 +534,7 @@ function file_validation_popup($ia, $filenotvalidated = null)
 function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js');
 
     /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
@@ -1365,7 +1365,7 @@ function do_date($ia)
 function do_language($ia)
 {
 
-    $clang = Yii::app()->lang;
+    
 
     $checkconditionFunction = "checkconditions";
 
@@ -2213,7 +2213,7 @@ function do_multiplechoice($ia)
 {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
@@ -2571,7 +2571,7 @@ function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
     $inputnames= array();
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -2752,7 +2752,7 @@ function do_file_upload($ia)
 {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
 
     $checkconditionFunction = "checkconditions";
 
@@ -2891,7 +2891,7 @@ function do_multipleshorttext($ia)
 {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
     $extraclass ="";
     $answer='';
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
@@ -3084,7 +3084,7 @@ function do_multiplenumeric($ia)
 {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
     $extraclass ="";
     $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
@@ -3354,7 +3354,7 @@ function do_numerical($ia)
 {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
     $extraclass ="";
     $answertypeclass = "numeric";
     $checkconditionFunction = "fixnum_checkconditions";
@@ -3451,7 +3451,7 @@ function do_shortfreetext($ia)
 {
     global $thissurvey;
 
-    $clang = Yii::app()->lang;
+    
     $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
     if ($sGoogleMapsAPIKey!='')
     {
@@ -3819,7 +3819,7 @@ function do_hugefreetext($ia)
 // ---------------------------------------------------------------
 function do_yesno($ia)
 {
-    $clang = Yii::app()->lang;
+    
 
     $checkconditionFunction = "checkconditions";
 
@@ -3863,7 +3863,7 @@ function do_yesno($ia)
 // ---------------------------------------------------------------
 function do_gender($ia)
 {
-    $clang = Yii::app()->lang;
+    
 
     $checkconditionFunction = "checkconditions";
 
@@ -3920,7 +3920,7 @@ function do_array_5point($ia)
 {
     global $notanswered, $thissurvey;
     $extraclass ="";
-    $clang = Yii::app()->lang;
+    
     $caption=gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
@@ -4089,7 +4089,7 @@ function do_array_10point($ia)
 {
     global $notanswered, $thissurvey;
     $extraclass ="";
-    $clang = Yii::app()->lang;
+    
     $caption=gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
@@ -4218,7 +4218,7 @@ function do_array_yesnouncertain($ia)
 {
     global $notanswered, $thissurvey;
     $extraclass ="";
-    $clang = Yii::app()->lang;
+    
     $caption=gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
@@ -4375,7 +4375,7 @@ function do_array_increasesamedecrease($ia)
     global $thissurvey;
     global $notanswered;
     $extraclass ="";
-    $clang = Yii::app()->lang;
+    
     $caption=gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "); 
     $checkconditionFunction = "checkconditions";
 
@@ -4538,7 +4538,7 @@ function do_array($ia)
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
-    $clang = Yii::app()->lang;
+    
     $caption="";// Just leave empty, are replaced after
     $checkconditionFunction = "checkconditions";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -4891,7 +4891,7 @@ function do_array_multitext($ia)
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
-    $clang = Yii::app()->lang;
+    
     $caption=gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "); 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -5278,7 +5278,7 @@ function do_array_multiflexi($ia)
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
     $answertypeclass = "";
-    $clang = Yii::app()->lang;
+    
     $caption=gT("An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "); 
     $checkconditionFunction = "fixnum_checkconditions";
     //echo '<pre>'; print_r($_POST); echo '</pre>';
@@ -5639,7 +5639,7 @@ function do_array_multiflexi($ia)
 function do_arraycolumns($ia)
 {
     global $notanswered;
-    $clang = Yii::app()->lang;
+    
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
     $caption=gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
@@ -5789,7 +5789,7 @@ function do_arraycolumns($ia)
 // ---------------------------------------------------------------
 function do_array_dual($ia)
 {
-    $clang = Yii::app()->lang;
+    
     global $thissurvey;
     global $notanswered;
     $repeatheadings = Yii::app()->getConfig("repeatheadings");

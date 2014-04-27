@@ -26,15 +26,14 @@
                 foreach ($surveylangs as $language)
                 {
                     //GET SURVEY DETAILS
-                    $bplang = new limesurvey_lang($language);
-
+                    
                     if ($ishtml === true)
                     {
-                        $aDefaultTexts = templateDefaultTexts($bplang);
+                        $aDefaultTexts = templateDefaultTexts();
                     }
                     else
                     {
-                        $aDefaultTexts = templateDefaultTexts($bplang, 'unescaped');
+                        $aDefaultTexts = templateDefaultTexts('unescaped');
                     }
                     if (!$thissurvey[$language]['email_invite'])
                     {

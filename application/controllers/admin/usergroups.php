@@ -34,7 +34,7 @@ class Usergroups extends Survey_Common_Action
     {
 
         $ugid = sanitize_int($ugid);
-        $clang = Yii::app()->lang;
+        
 
         $action = Yii::app()->request->getPost("action");
 
@@ -123,7 +123,7 @@ class Usergroups extends Survey_Common_Action
      */
     public function delete($ugid)
     {
-        $clang = Yii::app()->lang;
+        
         $aViewUrls = array();
         $aData = array();
 
@@ -156,7 +156,7 @@ class Usergroups extends Survey_Common_Action
 
     public function add()
     {
-        $clang = Yii::app()->lang;
+        
 
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
@@ -204,7 +204,7 @@ class Usergroups extends Survey_Common_Action
     function edit($ugid)
     {
         $ugid = (int)$ugid;
-        $clang = Yii::app()->lang;
+        
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         if (Permission::model()->hasGlobalPermission('usergroups','update')) {
             if ($action == "editusergroupindb") {
@@ -257,7 +257,7 @@ class Usergroups extends Survey_Common_Action
         $aViewUrls = array();
         $aData['ugid'] = $ugid;
         $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
-        $clang = Yii::app()->lang;
+        
 
         if (Yii::app()->session['loginID']) {
 
@@ -334,7 +334,7 @@ class Usergroups extends Survey_Common_Action
             die('access denied');
         }
 
-        $clang = Yii::app()->lang;
+        
         $uid = (int) Yii::app()->request->getPost('uid');
 
         $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
