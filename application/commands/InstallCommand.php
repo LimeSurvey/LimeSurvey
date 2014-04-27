@@ -103,7 +103,6 @@
                             $this->connection->createCommand($sCommand)->execute();
                         } catch(Exception $e) {
                             $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
-                            var_dump($e); die();
                         }
 
                         $sCommand = '';
@@ -117,14 +116,16 @@
 
         }
 
-        function getDBConnectionStringProperty($sProperty)
+        function getDBConnectionStringProperty($sProperty, $connectionString = null)
         {
-            // Yii doesn't give us a good way to get the database name
-            preg_match('/'.$sProperty.'=([^;]*)/', $this->connection->connectionString, $aMatches);
-            if ( count($aMatches) === 0 ) {
-                return null;
+            if (!isset($connectionString))
+            {
+                $connectionString = $this->connection->connectionString;
             }
-            return $aMatches[1];
+            // Yii doesn't give us a good way to get the database name
+            if ( preg_match('/'.$sProperty.'=([^;]*)/', $connectionString, $aMatches) == 1 ) {
+                return $aMatches[1];
+            }
         }
 
 
@@ -137,10 +138,10 @@
                 $this->connection->active=true;
             }
             catch(Exception $e){
-                echo "Invalid access data. Check your config.php db access data"; die();
+                throw new CException("Invalid access data. Check your config.php db access data");
             }
 
-            $sDatabaseName= $this->getDBConnectionStringProperty('dbname');
+            $sDatabaseName= $this->getDBConnectionStringProperty('dbname', $connectionString);
             try {
                 switch ($this->connection->driverName)
                 {
