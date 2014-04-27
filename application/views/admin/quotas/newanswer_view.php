@@ -1,4 +1,4 @@
-<div class="header ui-widget-header"><?php $clang->eT("Survey quota");?>: <?php $clang->eT("Add answer");?></div><br />
+<div class="header ui-widget-header"><?php eT("Survey quota");?>: <?php eT("Add answer");?></div><br />
 <div class="messagebox ui-corner-all" style="width: 600px">
     <?php echo CHtml::form(array("admin/quotas/sa/new_answer/surveyid/{$iSurveyId}/subaction/new_answer_two"), 'post'); ?>
         <table class="addquotaanswer">
@@ -13,7 +13,7 @@
                     <td align="center">&nbsp;</td>
                 </tr>
                 <tr class="evenrow">
-                    <td width="30%" align="center" valign="top"><strong><?php $clang->eT("Select question");?>:</strong></td>
+                    <td width="30%" align="center" valign="top"><strong><?php eT("Select question");?>:</strong></td>
                     <td align="left">
                         <select name="quota_qid" size="15">
                             <?php foreach ($newanswer_result as $questionlisting) { ?>
@@ -30,7 +30,7 @@
                 <tr align="left" class="evenrow">
                     <td>&nbsp;</td>
                     <td>
-                        <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Next");?>" />
+                        <input name="submit" type="submit" class="submit" value="<?php eT("Next");?>" />
                         <input type="hidden" name="sid" value="'.$iSurveyId.'" />
                         <input type="hidden" name="action" value="quotas" />
                         <input type="hidden" name="subaction" value="new_answer_two" />

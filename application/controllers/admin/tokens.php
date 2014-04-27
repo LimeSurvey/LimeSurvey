@@ -75,21 +75,21 @@ class tokens extends Survey_Common_Action
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
-            $clang->eT("No token table.");
+            eT("No token table.");
             return;
         }
         $thissurvey = getSurveyInfo($iSurveyId);
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
-            $clang->eT("We are sorry but you don't have permissions to do this.");
+            eT("We are sorry but you don't have permissions to do this.");
             return;
         }
         if ($thissurvey['bounceprocessing'] != 'N' ||  ($thissurvey['bounceprocessing'] == 'G' && getGlobalSetting('bounceaccounttype') != 'off'))
         {
             if (!function_exists('imap_open'))
             {
-                   $clang->eT("The imap PHP library is not installed. Please contact your system administrator.");
+                   eT("The imap PHP library is not installed. Please contact your system administrator.");
                    return;
             }
             $bouncetotal = 0;
@@ -240,12 +240,12 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $clang->eT("Please check your settings");
+                eT("Please check your settings");
             }
         }
         else
         {
-            $clang->eT("Bounce processing is deactivated either application-wide or for this survey in particular.");
+            eT("Bounce processing is deactivated either application-wide or for this survey in particular.");
             return;
         }
 
@@ -348,13 +348,13 @@ class tokens extends Survey_Common_Action
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
-            $clang->eT("No token table.");// return json ? error not treated in js.
+            eT("No token table.");// return json ? error not treated in js.
             return;
         }
         $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read'))
         {
-            $clang->eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
+            eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
             return;
         }
         $page  = Yii::app()->request->getPost('page', 1);
@@ -507,7 +507,7 @@ class tokens extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
         {
-            $clang->eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
+            eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
             return;
         }
 
@@ -606,7 +606,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $clang->eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
+            eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
             return;
         }
     }

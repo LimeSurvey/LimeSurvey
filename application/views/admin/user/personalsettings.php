@@ -1,5 +1,5 @@
 <div class='header'>
-    <?php $clang->eT("Your personal settings"); ?>
+    <?php eT("Your personal settings"); ?>
 </div>
 <br />
 <div>
@@ -9,7 +9,7 @@
                 <?php echo CHtml::label(gT("Interface language"), 'lang'); ?>:
                 <select id='lang' name='lang'>
                     <option value='auto'<?php if ($sSavedLanguage == 'auto') { echo " selected='selected'"; } ?>>
-                        <?php $clang->eT("(Autodetect)"); ?>
+                        <?php eT("(Autodetect)"); ?>
                     </option>
                     <?php foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
                     { ?>

@@ -19,8 +19,8 @@
         }
     });    
 
-    var sReplacementFieldTitle = '<?php $clang->eT('LimeSurvey replacement field properties','js');?>';
-    var sReplacementFieldButton = '<?php $clang->eT('Insert/edit LimeSurvey replacement field','js');?>';
+    var sReplacementFieldTitle = '<?php eT('LimeSurvey replacement field properties','js');?>';
+    var sReplacementFieldButton = '<?php eT('Insert/edit LimeSurvey replacement field','js');?>';
     var editorwindowsHash = new Object();
     function find_popup_editor(fieldname)
     {

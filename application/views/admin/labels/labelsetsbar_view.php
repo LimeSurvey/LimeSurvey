@@ -1,25 +1,25 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php $clang->eT("Label set administration"); ?></strong>
+        <strong><?php eT("Label set administration"); ?></strong>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
             <a href='<?php echo $this->createUrl("/admin/index"); ?>'>
-                <img src='<?php echo $sImageURL; ?>home.png' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>home.png' alt='<?php eT("Return to survey administration"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='11' height='20' alt='' />
             <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='76' height='20' alt='' />
             <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
             <a href='<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>'>
-                <img src='<?php echo $sImageURL; ?>dumplabelmulti.png' alt='<?php $clang->eT("Export multiple label sets"); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>dumplabelmulti.png' alt='<?php eT("Export multiple label sets"); ?>' /></a>
         </div>
         <div class='menubar-right'>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='5' height='20' alt='' />
-            <label for='labelsetchanger'><?php $clang->eT("Label sets:");?> </label>
+            <label for='labelsetchanger'><?php eT("Label sets:");?> </label>
             <select id='labelsetchanger' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
                 <option value=''
                     <?php if (!isset($lid) || $lid<1) { ?> selected='selected' <?php } ?>
-                    ><?php $clang->eT("Please choose..."); ?></option>
+                    ><?php eT("Please choose..."); ?></option>
 
                 <?php if (count($labelsets)>0)
                     {
@@ -33,15 +33,15 @@
 
             </select>
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/newlabelset") ?>', '_top')">
-                <img src='<?php echo $sImageURL; ?>add.png' alt='<?php $clang->eT("Create or import new label set(s)"); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>add.png' alt='<?php eT("Create or import new label set(s)"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>separator.gif'  alt='' />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='5' height='20' alt='' />
 
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/sa/logout");?>', '_top')">
-                <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php $clang->eT("Logout"); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php eT("Logout"); ?>' /></a>
 
             <a href="#" onclick="showhelp('show')">
-                <img src='<?php echo $sImageURL; ?>showhelp.png' alt='<?php $clang->eT("Show help"); ?>' /></a>
+                <img src='<?php echo $sImageURL; ?>showhelp.png' alt='<?php eT("Show help"); ?>' /></a>
         </div>
     </div>
 </div>

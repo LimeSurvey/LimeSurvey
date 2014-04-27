@@ -451,7 +451,7 @@ class participantsaction extends Survey_Common_Action
                 'visible' => Yii::app()->request->getPost('visible','FALSE') != 'FALSE' ? 'TRUE' : 'FALSE'
             );
             ParticipantAttributeName::model()->saveAttribute($aData);
-            $clang->eT("Attribute display setting updated");
+            eT("Attribute display setting updated");
         }
 
     }
@@ -1510,7 +1510,7 @@ class participantsaction extends Survey_Common_Action
         }
         if($response['overwriteman']=="true" || $response['overwriteauto']) {
             echo "\r\n";
-            $clang->eT("Attribute values for existing participants have been updated from the token records");
+            eT("Attribute values for existing participants have been updated from the token records");
         }
     }
 
@@ -1534,7 +1534,7 @@ class participantsaction extends Survey_Common_Action
         }
         if($response['overwrite']=="true") {
             echo "\r\n";
-            $clang->eT("Attribute values for existing participants have been updated from the participants records");
+            eT("Attribute values for existing participants have been updated from the participants records");
         }
     }
 
@@ -1564,7 +1564,7 @@ class participantsaction extends Survey_Common_Action
         }
         if($response['overwriteauto']=="true" || $response['overwriteman']=="true") {
             echo "\r\n";
-            $clang->eT("Attribute values for existing participants have been updated from the participants records");
+            eT("Attribute values for existing participants have been updated from the participants records");
         }
     }
 

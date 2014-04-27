@@ -3,7 +3,7 @@
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
 ?>
 <script type='text/javascript'>
-    var sReplaceTextConfirmation='<?php $clang->eT("This will replace the existing text. Continue?","js"); ?>';
+    var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
     var sKCFinderLanguage='<?php echo sTranslateLangCode2CK($clang->getlangcode()) ?>';
     
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
 </script>
 
 <div class='header ui-widget-header'>
-    <?php $clang->eT("Edit email templates"); ?>
+    <?php eT("Edit email templates"); ?>
 </div>
 <?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'form30newtabs'));?>
 

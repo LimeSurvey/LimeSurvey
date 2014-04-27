@@ -1,9 +1,9 @@
-<div class='header ui-widget-header'><?php $clang->eT("Import question group") ?></div>
+<div class='header ui-widget-header'><?php eT("Import question group") ?></div>
 <div class='messagebox ui-corner-all'>
-    <div class='successheader'><?php $clang->eT("Success") ?></div>&nbsp;<br />
-    <?php $clang->eT("File upload succeeded.") ?><br /><br />
-    <?php $clang->eT("Reading file..") ?> <br />
-    <div class='successheader'><?php $clang->eT("Success") ?></div><br />
+    <div class='successheader'><?php eT("Success") ?></div>&nbsp;<br />
+    <?php eT("File upload succeeded.") ?><br /><br />
+    <?php eT("Reading file..") ?> <br />
+    <div class='successheader'><?php eT("Success") ?></div><br />
     <strong><u><?php gT("Question group import summary") ?></u></strong><br />
     <ul style="text-align:left;">
         <li><?php echo gT("Question groups") .": " .$aImportResults['groups'] ?></li>
@@ -19,6 +19,6 @@
     }?>
         <li><?php echo gT("Question attributes:") . $aImportResults['question_attributes'] ?></li>
      </ul><br/>
-     <p><strong><?php $clang->eT("Question group import is complete.") ?></strong></p><br />
-     <input type='submit' value="<?php $clang->eT("Go to question group") ?>" onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$aImportResults['newgid']) ?>', '_top')" />
+     <p><strong><?php eT("Question group import is complete.") ?></strong></p><br />
+     <input type='submit' value="<?php eT("Go to question group") ?>" onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$aImportResults['newgid']) ?>', '_top')" />
 </div><br />

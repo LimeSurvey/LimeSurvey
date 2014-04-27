@@ -2616,7 +2616,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         }
         else
         {
-            $clang->eT("Import of this survey file failed")."\n".gT("File does not contain LimeSurvey data in the correct format.")."\n";
+            eT("Import of this survey file failed")."\n".gT("File does not contain LimeSurvey data in the correct format.")."\n";
             return;
         }
     }

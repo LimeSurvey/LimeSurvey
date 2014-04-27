@@ -2,7 +2,7 @@
 <div class='header ui-widget-header'>
     <strong>
         <?php
-        $clang->eT("Global participant settings");
+        eT("Global participant settings");
         ?>
     </strong>
 </div>
@@ -10,7 +10,7 @@
     <ul>
         <li>
             <a href='#usercontrol'><?php
-        $clang->eT("User control");
+        eT("User control");
         ?></a>
         </li>
     </ul>
@@ -25,7 +25,7 @@
             <ul>
                 <li>
                     <label for='userideditable' id='userideditable'>
-                        <?php $clang->eT('User ID editable:'); ?>
+                        <?php eT('User ID editable:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('userideditable', $userideditable, $options); ?>
                 </li>

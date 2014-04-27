@@ -1,9 +1,9 @@
 <?php echo PrepareEditorScript(true, $this); ?>
 <div class='header ui-widget-header'>
-    <?php $clang->eT("Send email reminder"); ?></div><br />
+    <?php eT("Send email reminder"); ?></div><br />
 
 <?php if ($thissurvey['active'] != 'Y') { ?>
-    <div class='messagebox ui-corner-all'><div class='warningheader'><?php $clang->eT('Warning!'); ?></div><?php $clang->eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?></div>
+    <div class='messagebox ui-corner-all'><div class='warningheader'><?php eT('Warning!'); ?></div><?php eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?></div>
 <?php } ?>
 
 <div id='tabs'>
@@ -67,24 +67,24 @@
     if (count($tokenids)>0)
     { ?>
         <li>
-            <label><?php $clang->eT("Send reminder to token ID(s):"); ?></label>
+            <label><?php eT("Send reminder to token ID(s):"); ?></label>
         <?php echo implode(", ", (array) $tokenids); ?></li>
     <?php } ?>
     <li><label for='bypassbademails'>
-            <?php $clang->eT("Bypass token with failing email addresses"); ?>:</label>
+            <?php eT("Bypass token with failing email addresses"); ?>:</label>
         <select id='bypassbademails' name='bypassbademails'>
-            <option value='Y'><?php $clang->eT("Yes"); ?></option>
-            <option value='N'><?php $clang->eT("No"); ?></option>
+            <option value='Y'><?php eT("Yes"); ?></option>
+            <option value='N'><?php eT("No"); ?></option>
         </select></li>
     <li><label for='minreminderdelay'>
-<?php $clang->eT("Min days between reminders"); ?>:</label>
+<?php eT("Min days between reminders"); ?>:</label>
         <input type='text' value='' name='minreminderdelay' id='minreminderdelay' /></li>
 
     <li><label for='maxremindercount'>
-<?php $clang->eT("Max reminders"); ?>:</label>
+<?php eT("Max reminders"); ?>:</label>
         <input type='text' value='' name='maxremindercount' id='maxremindercount' /></li>
 </ul><p>
-    <input type='submit' value='<?php $clang->eT("Send Reminders"); ?>' />
+    <input type='submit' value='<?php eT("Send Reminders"); ?>' />
     <input type='hidden' name='ok' value='absolutely' />
     <input type='hidden' name='subaction' value='remind' />
 

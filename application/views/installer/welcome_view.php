@@ -7,7 +7,7 @@
 
         <?php echo CHtml::form(array("installer/welcome"), 'post'); ?>
             <fieldset>
-            <legend><?php $clang->eT('Language selection'); ?></legend>
+            <legend><?php eT('Language selection'); ?></legend>
             <div class="row">
                 <div class="span6">
                     <?php
@@ -28,7 +28,7 @@
                 <div class="span3"></div>
                 <div class="span3"></div>
                 <div class="span3">
-                    <input class='btn' type="submit" value="<?php $clang->eT('Start installation'); ?>" />
+                    <input class='btn' type="submit" value="<?php eT('Start installation'); ?>" />
                 </div>
             </div>
         <?php echo CHtml::endForm(); ?>

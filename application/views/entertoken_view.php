@@ -5,14 +5,14 @@
 } ?>
 <div id="wrapper">
     <p id="tokenmessage">
-        <?php $clang->eT("This is a controlled survey. You need a valid token to participate.");?><br />
-        <?php $clang->eT("If you have been issued a token, please enter it in the box below and click continue."); ?>
+        <?php eT("This is a controlled survey. You need a valid token to participate.");?><br />
+        <?php eT("If you have been issued a token, please enter it in the box below and click continue."); ?>
     </p>
     <script type='text/javascript'>var focus_element='#token';</script>
     <?php echo CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform'));?>
         <ul>
             <li>
-                <label for='token'><? $clang->eT("Token");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />";
+                <label for='token'><? eT("Token");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />";
 
                 <input type='hidden' name='sid' value='<?php echo $surveyid;?>' id='sid' />
                 <input type='hidden' name='lang' value='<?php echo $templang;?>' id='lang' />
@@ -38,14 +38,14 @@
                 if ($bCaptchaEnabled)
                 {?>
                 <li>
-                    <label for='captchaimage'><?php $clang->eT("Security question");?></label>
+                    <label for='captchaimage'><?php eT("Security question");?></label>
                     <img id='captchaimage' src='<?php echo Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)?>' alt='captcha' />
                     <input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                 </li>
                 <?php
             }?>
             <li>
-                <input class='submit' type='submit' value='<?php $clang->eT("Continue");?>' />
+                <input class='submit' type='submit' value='<?php eT("Continue");?>' />
             </li>
         </ul>
     </form></div>";

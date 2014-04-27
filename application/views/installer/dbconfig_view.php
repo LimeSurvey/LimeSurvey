@@ -9,9 +9,9 @@
         <div style="color:red; font-size:12px;">
             <?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
         </div>
-        <?php $clang->eT("Note: All fields marked with (*) are required."); ?>
+        <?php eT("Note: All fields marked with (*) are required."); ?>
         <fieldset>
-            <legend><?php $clang->eT("Database configuration"); ?></legend>
+            <legend><?php eT("Database configuration"); ?></legend>
             <?php
                 $rows = array();
                 $rows[] = array(
@@ -58,7 +58,7 @@
         </fieldset>
         <div class="row">
             <div class="span3" >
-                <input class="btn" type="button" value="<?php $clang->eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input class="btn" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
             <div class="span3" style="text-align: center;">
             </div>

@@ -1,5 +1,5 @@
 <?php if( count($tokenfieldlist)) { ?>
-    <div class='header ui-widget-header'><?php $clang->eT("Manage token attribute fields"); ?></div>
+    <div class='header ui-widget-header'><?php eT("Manage token attribute fields"); ?></div>
     <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
     <div id="tabs">
         <ul>
@@ -17,13 +17,13 @@
             <div id="language_<?php echo $sLanguage ?>">
                 <table class='listtokenattributes'>
                     <thead> <tr>
-                        <th><?php $clang->eT("Attribute field"); ?></th>
-                        <th><?php $clang->eT("Field description"); ?></th>
-                        <th><?php $clang->eT("Mandatory?"); ?></th>
-                        <th><?php $clang->eT("Show during registration?") ?></th>
-                        <th><?php $clang->eT("Field caption"); ?></th>
-                        <th><?php $clang->eT("CPDB mapping"); ?></th>
-                        <th><?php $clang->eT("Example data"); ?></th>
+                        <th><?php eT("Attribute field"); ?></th>
+                        <th><?php eT("Field description"); ?></th>
+                        <th><?php eT("Mandatory?"); ?></th>
+                        <th><?php eT("Show during registration?") ?></th>
+                        <th><?php eT("Field caption"); ?></th>
+                        <th><?php eT("CPDB mapping"); ?></th>
+                        <th><?php eT("Example data"); ?></th>
                     </tr> </thead>
                     <tbody>
                     <?php $nrofattributes = 0;
@@ -52,8 +52,8 @@
                             {
                                 echo "
                                 <td>", htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
-                                <td>", $tokenvalues['mandatory'] == 'Y' ? $clang->eT('Yes') : $clang->eT('No'), "</td>
-                                <td>", $tokenvalues['show_register'] == 'Y' ? $clang->eT('Yes') : $clang->eT('No'), "</td>";
+                                <td>", $tokenvalues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
+                                <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
                             }; ?>
                         <td><input type='text' name='caption_<?php echo $sTokenField; ?>_<?php echo $sLanguage; ?>' value='<?php echo htmlspecialchars(!empty($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '', ENT_QUOTES, 'UTF-8'); ?>' /></td>
                         <td><?php 
@@ -84,7 +84,7 @@
             <?php } ?>
     </div>
     <p>
-        <input type="submit" value="<?php $clang->eT('Save'); ?>" />
+        <input type="submit" value="<?php eT('Save'); ?>" />
         <input type='hidden' name='action' value='tokens' />
         <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
     </p>
@@ -92,11 +92,11 @@
 
     <br /><br />
     <?php } ?>
-<div class='header ui-widget-header'><?php $clang->eT("Add or delete token attributes"); ?></div>
+<div class='header ui-widget-header'><?php eT("Add or delete token attributes"); ?></div>
 <p><?php echo sprintf(gT('There are %s user attribute fields in this token table'), $nrofattributes); ?></p>
 <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
 <p>
-    <label for="addnumber"><?php $clang->eT('Number of attribute fields to add:'); ?></label>
+    <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>
     <input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
 </p>
 <p>
@@ -109,7 +109,7 @@
 <?php if( count($tokenfieldlist)) { ?>
     <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'attributenumber')); ?>
     <p>
-        <label for="deleteattribute"><?php $clang->eT('Delete this attribute:'); ?></label>
+        <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
         <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => gT('none'))); ?>
     </p>
     <p>

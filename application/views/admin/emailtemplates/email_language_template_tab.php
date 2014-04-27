@@ -8,7 +8,7 @@
         
         <input 
             type='button' 
-            value='<?php $clang->eT("Reset"); ?>' 
+            value='<?php eT("Reset"); ?>' 
             class="fillin"
             data-target="<?php echo "email_{$tab}_subj_{$grouplang}"; ?>"
             data-value="<?php echo $details['default']['subject']; ?>"
@@ -21,7 +21,7 @@
        ?>
         <input 
             type='button' 
-            value='<?php $clang->eT("Reset"); ?>' 
+            value='<?php eT("Reset"); ?>' 
             class="fillin"
             data-target="<?php echo "email_{$tab}_{$grouplang}"; ?>"
             data-value="<?php echo htmlspecialchars(conditionalNewlineToBreak($details['default']['body'],$ishtml),ENT_QUOTES); ?>"
@@ -30,14 +30,14 @@
     <li>
         <label for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
         <div style="float: left; width: 60%;">
-        <button class="add-attachment" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php $clang->eT("Add file"); ?></button>
+        <button class="add-attachment" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button>
         
         <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments" style="width: 500px">
             <tr>
-                <th><?php $clang->eT("Action"); ?></th>
-                <th><?php $clang->eT("File name"); ?></th>
-                <th><?php $clang->eT("Size"); ?></th>
-                <th><?php $clang->eT("Relevance"); ?></th>
+                <th><?php eT("Action"); ?></th>
+                <th><?php eT("File name"); ?></th>
+                <th><?php eT("Size"); ?></th>
+                <th><?php eT("Relevance"); ?></th>
             </tr>
             <?php
             

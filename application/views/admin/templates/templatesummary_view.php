@@ -10,13 +10,13 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
     </div>
     <div id='templateleft' style="float:left;width:12%;">
         <div style="padding-left:1em;">
-            <?php $clang->eT("Standard files:"); ?><br>
+            <?php eT("Standard files:"); ?><br>
             <select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($files, "name", "name", $editfile); ?>
             </select>
         </div>
         <div style='margin-top:1em;padding-left:1em;'>
-            <?php $clang->eT("CSS & Javascript files:"); ?>
+            <?php eT("CSS & Javascript files:"); ?>
             <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                 <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
             </select>
@@ -36,15 +36,15 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 } ?></textarea>
             <p>
                 <?php if (is_writable($templates[$templatename])) { ?>
-                    <input type='submit' value='<?php $clang->eT("Save changes"); ?>'
+                    <input type='submit' value='<?php eT("Save changes"); ?>'
                         <?php if (!is_template_editable($templatename)) { ?>
-                            disabled='disabled' alt='<?php $clang->eT("Changes cannot be saved to a standard template."); ?>'
+                            disabled='disabled' alt='<?php eT("Changes cannot be saved to a standard template."); ?>'
                             <?php } ?>
                         />
                     <?php }
                     else
                     { ?>
-                    <span class="flashmessage"><?php $clang->eT("You can't save changes because the template directory is not writable."); ?></span>
+                    <span class="flashmessage"><?php eT("You can't save changes because the template directory is not writable."); ?></span>
                     <?php } ?>
             </p>
         </form>
@@ -52,12 +52,12 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
     <div style="float:left;width:12%;">
         <div>
-            <?php $clang->eT("Other files:"); ?>
+            <?php eT("Other files:"); ?>
             <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
                 <select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>
                     <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
                 </select><br>
-                <input type='submit' value='<?php $clang->eT("Delete"); ?>' onclick="javascript:return confirm('<?php $clang->eT("Are you sure you want to delete this file?","js"); ?>')"/>
+                <input type='submit' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT("Are you sure you want to delete this file?","js"); ?>')"/>
                 <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                 <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                 <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
@@ -66,8 +66,8 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         </div>
         <div style='margin-top:1em;'>
             <?php echo CHtml::form(array('admin/templates/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
-                <?php $clang->eT("Upload a file:"); ?><br><input name='upload_file' id="upload_file" type="file" required="required"/><br />
-                <input type='submit' value='<?php $clang->eT("Upload"); ?>'
+                <?php eT("Upload a file:"); ?><br><input name='upload_file' id="upload_file" type="file" required="required"/><br />
+                <input type='submit' value='<?php eT("Upload"); ?>'
                     <?php if (!is_template_editable($templatename))  { ?>
                         disabled='disabled'
                         <?php } ?>
@@ -85,12 +85,12 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
 
 <div class='header ui-widget-header' style='clear:both;'>
-    <?php $clang->eT("Preview:"); ?>
+    <?php eT("Preview:"); ?>
     <input type='button' value='iPhone' id='iphone' />
     <input type='button' value='640x480' id='x640' />
     <input type='button' value='800x600' id='x800' />
     <input type='button' value='1024x768' id='x1024' />
-    <input type='button' value='<?php $clang->eT("Full"); ?>' id='full' />
+    <input type='button' value='<?php eT("Full"); ?>' id='full' />
 </div>
 <div style='width:90%; margin:0 auto;'>
 

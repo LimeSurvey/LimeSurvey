@@ -13,7 +13,7 @@
     <?php  ?>
     <fieldset>
     <legend><?php 
-        $clang->eT("You can leave these settings blank and change them later");
+        eT("You can leave these settings blank and change them later");
         ?>
 
     </legend>
@@ -77,7 +77,7 @@
     </fieldset>
         <div class="row navigator">
             <div class="span3">
-                <input class="btn" type="button" value="<?php $clang->eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
+                <input class="btn" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
             </div>
             <div class="span3"></div>
             <div class="span3">

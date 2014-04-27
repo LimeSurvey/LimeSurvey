@@ -2,18 +2,18 @@
 <script type="text/javascript">
     var exporttocsvcountall = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/exporttocsvcountAll"); ?>";
     var exporttocsvall = "<?php echo Yii::app()->getController()->createUrl("exporttocsvAll"); ?>";
-    var okBtn = "<?php $clang->eT("OK", 'js') ?>";
-    var error = "<?php $clang->eT("Error", 'js') ?>";
-    var exportBtn = "<?php $clang->eT("Export", 'js') ?>";
-    var cancelBtn = "<?php $clang->eT("Cancel", 'js') ?>";
-    var sSelectAllText = "<?php $clang->eT("Select all", 'js') ?>";
-    var sNonSelectedText = "<?php $clang->eT("None selected", 'js') ?>";
-    var sNSelectedText = "<?php $clang->eT("selected", 'js') ?>";
+    var okBtn = "<?php eT("OK", 'js') ?>";
+    var error = "<?php eT("Error", 'js') ?>";
+    var exportBtn = "<?php eT("Export", 'js') ?>";
+    var cancelBtn = "<?php eT("Cancel", 'js') ?>";
+    var sSelectAllText = "<?php eT("Select all", 'js') ?>";
+    var sNonSelectedText = "<?php eT("None selected", 'js') ?>";
+    var sNSelectedText = "<?php eT("selected", 'js') ?>";
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
 </script>
 <div class="menubar">
     <div class='menubar-title ui-widget-header'>
-        <strong><?php $clang->eT("Participant panel"); ?> </strong>
+        <strong><?php eT("Participant panel"); ?> </strong>
     </div>
     <?php
         $home = array('src' => $sImageURL.'home.png',
@@ -108,10 +108,10 @@
         <?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
     </div>
     <div id='exportcsvallnorow' title='exportcsvallnorow' style='display:none'>
-        <?php $clang->eT("There are no participants to be exported."); ?>
+        <?php eT("There are no participants to be exported."); ?>
     </div>
     <div id="exportcsv" title="exportcsv" style="display:none" class='form30'>
-        <ul><li><label for='attributes'><?php $clang->eT("Attributes to export:"); ?></label>
+        <ul><li><label for='attributes'><?php eT("Attributes to export:"); ?></label>
                 <select id="attributes" name="attributes" multiple="multiple" style='width: 350px' size=7>
                     <?php
                         foreach ($aAttributes as $value)

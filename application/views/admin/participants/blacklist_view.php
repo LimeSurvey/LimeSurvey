@@ -2,7 +2,7 @@
 <div class='header ui-widget-header'>
     <strong>
         <?php
-        $clang->eT("Blacklist settings");
+        eT("Blacklist settings");
         ?>
     </strong>
 </div>
@@ -10,7 +10,7 @@
     <ul>
         <li>
             <a href='#usercontrol'><?php
-        $clang->eT("Blacklist control");
+        eT("Blacklist control");
         ?></a>
         </li>
     </ul>
@@ -25,37 +25,37 @@
             <ul>
                 <li>
                     <label for='blacklistallsurveys' id='blacklistallsurveys'>
-                        <?php $clang->eT('Blacklist all current surveys for participant once the global field is set:'); ?>
+                        <?php eT('Blacklist all current surveys for participant once the global field is set:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('blacklistallsurveys', $blacklistallsurveys, $options); ?>
                 </li>
                 <li>
                     <label for='blacklistnewsurveys' id='blacklistnewsurveys'>
-                        <?php $clang->eT('Blacklist participant for any new added survey once the global field is set:'); ?>
+                        <?php eT('Blacklist participant for any new added survey once the global field is set:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('blacklistnewsurveys', $blacklistnewsurveys, $options); ?>
                 </li>
                 <li>
                     <label for='blockaddingtosurveys' id='blockaddingtosurveys'>
-                        <?php $clang->eT('Don\'t allow blacklisted participants to be added to new survey:'); ?>
+                        <?php eT('Don\'t allow blacklisted participants to be added to new survey:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('blockaddingtosurveys', $blockaddingtosurveys, $options); ?>
                 </li>
                 <li>
                     <label for='hideblacklisted' id='hideblacklisted'>
-                        <?php $clang->eT('Don\'t show blacklisted participants:'); ?>
+                        <?php eT('Don\'t show blacklisted participants:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('hideblacklisted', $hideblacklisted, $options); ?>
                 </li>
                 <li>
                     <label for='deleteblacklisted' id='deleteblacklisted'>
-                        <?php $clang->eT('Delete globally blacklisted participant from the database:'); ?>
+                        <?php eT('Delete globally blacklisted participant from the database:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('deleteblacklisted', $deleteblacklisted, $options); ?>
                 </li>
                 <li>
                     <label for='allowunblacklist' id='allowunblacklist'>
-                        <?php $clang->eT('Allow participant to unblacklist himself/herself:'); ?>
+                        <?php eT('Allow participant to unblacklist himself/herself:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('allowunblacklist', $allowunblacklist, $options); ?>
                 </li>

@@ -14,7 +14,7 @@
                 if (!in_array($selectedAuth, $pluginNames)) {
                     $selectedAuth = $defaultAuth;
                 }
-          ?><li><label for='authMethod'><?php $clang->eT("Authentication method"); ?></label><?php
+          ?><li><label for='authMethod'><?php eT("Authentication method"); ?></label><?php
                 $possibleAuthMethods = array();
                 foreach($pluginNames as $plugin) {
                     $info = App()->getPluginManager()->getPluginInfo($plugin);
@@ -63,13 +63,13 @@
             ?>
         </ul>
         <p><input type='hidden' name='action' value='login' />
-            <input class='action' type='submit' name='login_submit' value='<?php $clang->eT("Login"); ?>' /><br />
+            <input class='action' type='submit' name='login_submit' value='<?php eT("Login"); ?>' /><br />
             <br/>
             <?php
             if (Yii::app()->getConfig("display_user_password_in_email") === true)
             {
                 ?>
-                <a href='<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php $clang->eT("Forgot your password?"); ?></a><br />
+                <a href='<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php eT("Forgot your password?"); ?></a><br />
                 <?php
             }
             ?>

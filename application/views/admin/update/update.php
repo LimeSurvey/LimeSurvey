@@ -1,4 +1,4 @@
-<div class="header ui-widget-header"><?php $clang->eT('Welcome to the ComfortUpdate');?></div><div class="updater-background"><br />
+<div class="header ui-widget-header"><?php eT('Welcome to the ComfortUpdate');?></div><div class="updater-background"><br />
 <?php
     echo gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br /><br />';
     echo gT('The following steps will be done by this update:').'<br /><ul>';
@@ -6,7 +6,7 @@
     echo '<li>'.gT('Your DB and any changed files will be backed up.').'</li>';
     echo '<li>'.gT('New files will be downloaded and installed.').'</li>';
     echo '<li>'.gT('If necessary the database will be updated.').'</li></ul><br>';?>
-<h3><?php $clang->eT('Checking basic requirements...'); ?></h3>
+<h3><?php eT('Checking basic requirements...'); ?></h3>
 <ul>
 <?php
     if (!is_writable($tempdir))

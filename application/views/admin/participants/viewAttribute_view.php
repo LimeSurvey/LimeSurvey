@@ -1,9 +1,9 @@
 <script type="text/javascript">
     var url = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttributeBox"); ?>";
-    var attname = "<?php $clang->eT("Attribute name:"); ?>";
+    var attname = "<?php eT("Attribute name:"); ?>";
     removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
-<div class='header ui-widget-header'><strong><?php $clang->eT("Attribute settings"); ?></strong></div><br/>
+<div class='header ui-widget-header'><strong><?php eT("Attribute settings"); ?></strong></div><br/>
 <?php
     $aOptions = array();
     $aOptions[''] = gT('Select...');
@@ -14,10 +14,10 @@
     echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>'form44'));
 ?>
 <ul>
-    <li><label for="atttype"><?php $clang->eT('Default attribute name:'); ?></label>
+    <li><label for="atttype"><?php eT('Default attribute name:'); ?></label>
         <?php echo CHtml::textField('defaultname', $attributes['defaultname'],array('required'=>'required')); ?>
     </li>
-    <li><label for="atttype"><?php $clang->eT('Attribute type:'); ?></label>
+    <li><label for="atttype"><?php eT('Attribute type:'); ?></label>
         <?php 
             echo CHtml::dropDownList('attribute_type', $attributes['attribute_type'], array(
                 'TB' => 'Text box',
@@ -25,7 +25,7 @@
                 'DP' => 'Date'));
         ?>
     </li>
-    <li><label for='attvisible' id='attvisible'><?php $clang->eT('Attribute visible:') ?></label>
+    <li><label for='attvisible' id='attvisible'><?php eT('Attribute visible:') ?></label>
         <?php  echo CHtml::checkbox('visible', ($attributes['visible'] == "TRUE"),array('value'=>'TRUE','uncheckValue'=>'FALSE')); ?>
     </li>
 </ul>
@@ -33,7 +33,7 @@
 <div id='ddtable' style='display: none'>
     <table class='hovertable'>
         <tr>
-            <th colspan='2'><?php $clang->eT('Values:'); ?></th>
+            <th colspan='2'><?php eT('Values:'); ?></th>
         </tr>
         <?php
             foreach ($attributevalues as $row => $value)
@@ -82,7 +82,7 @@
             <td></td>
             <td class='actions'>
                 <a href='#' class='add'>
-                    <img src = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>plus.png" alt='<?php $clang->eT("Add value") ?>' title='<?php $clang->eT("Add value") ?>' id='addsign' name='addsign'>
+                    <img src = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>plus.png" alt='<?php eT("Add value") ?>' title='<?php eT("Add value") ?>' id='addsign' name='addsign'>
                 </a>
             </td>
         </tr>
@@ -93,7 +93,7 @@
     <table width='400' >
         <tr>
             <th colspan='2'>
-                <?php $clang->eT('Add a language:'); ?>
+                <?php eT('Add a language:'); ?>
             </th>
         </tr>
         <tr>
@@ -145,7 +145,7 @@
                     <tr>
                         <th>
                             <label for='attname' id='attname'>
-                                <?php $clang->eT('Attribute name:'); ?>
+                                <?php eT('Attribute name:'); ?>
                             </label>
                         </th>
                     </tr>

@@ -4,14 +4,14 @@
 <?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post');?>
 <table style='margin:0 auto;' class='userpermissions activecell'><thead>
 
-        <tr><th></th><th><?php $clang->eT("Permission");?></th>
+        <tr><th></th><th><?php eT("Permission");?></th>
             <th><input type='button' id='btnToggleAdvanced' value='<<' /></th>
-            <th class='extended'><?php $clang->eT("Create");?></th>
-            <th class='extended'><?php $clang->eT("View/read");?></th>
-            <th class='extended'><?php $clang->eT("Update");?></th>
-            <th class='extended'><?php $clang->eT("Delete");?></th>
-            <th class='extended'><?php $clang->eT("Import");?></th>
-            <th class='extended'><?php $clang->eT("Export");?></th>
+            <th class='extended'><?php eT("Create");?></th>
+            <th class='extended'><?php eT("View/read");?></th>
+            <th class='extended'><?php eT("Update");?></th>
+            <th class='extended'><?php eT("Delete");?></th>
+            <th class='extended'><?php eT("Import");?></th>
+            <th class='extended'><?php eT("Export");?></th>
         </tr></thead>
 
     <?php
@@ -48,7 +48,7 @@
     } ?>
 
     </table>
-    <p><input type='submit' value='<?php $clang->eT("Save");?>' />
+    <p><input type='submit' value='<?php eT("Save");?>' />
     <input type='hidden' name='action' value='surveyrights' />
     <input type='hidden' name='uid' value='<?php echo $oUser->uid;?>' />
 </form>

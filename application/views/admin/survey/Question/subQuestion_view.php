@@ -1,31 +1,31 @@
 <script type='text/javascript'>
-    var sLabelSetName='<?php $clang->eT('Label set name','js'); ?>';
+    var sLabelSetName='<?php eT('Label set name','js'); ?>';
     var languagecount=<?php echo count($anslangs); ?>;
-    var newansweroption_text='<?php $clang->eT('New subquestion','js'); ?>';
-    var strcode='<?php $clang->eT('Code','js'); ?>';
-    var strlabel='<?php $clang->eT('Label','js'); ?>';
-    var strCantDeleteLastAnswer='<?php $clang->eT('You cannot delete the last subquestion.','js'); ?>';
-    var lsbrowsertitle='<?php $clang->eT('Label set browser','js'); ?>';
-    var quickaddtitle='<?php $clang->eT('Quick-add subquestions','js'); ?>';
-    var duplicatesubquestioncode='<?php $clang->eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
-    var strNoLabelSet='<?php $clang->eT('There are no label sets which match the survey default language','js'); ?>';
+    var newansweroption_text='<?php eT('New subquestion','js'); ?>';
+    var strcode='<?php eT('Code','js'); ?>';
+    var strlabel='<?php eT('Label','js'); ?>';
+    var strCantDeleteLastAnswer='<?php eT('You cannot delete the last subquestion.','js'); ?>';
+    var lsbrowsertitle='<?php eT('Label set browser','js'); ?>';
+    var quickaddtitle='<?php eT('Quick-add subquestions','js'); ?>';
+    var duplicatesubquestioncode='<?php eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
+    var strNoLabelSet='<?php eT('There are no label sets which match the survey default language','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
-    var otherisreserved='<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>';
+    var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.",'js'); ?>';
     var sImageURL ='<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
-    var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
+    var saveaslabletitle  = '<?php eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
     var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
     var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
     var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
     var check = true;
-    var lasuccess = '<?php $clang->eT('The records have been saved successfully!'); ?>';
-    var lafail = '<?php $clang->eT('Sorry, the request failed!'); ?>';
-    var ok = '<?php $clang->eT('Ok'); ?>';
-    var cancel = '<?php $clang->eT('Cancel'); ?>';
+    var lasuccess = '<?php eT('The records have been saved successfully!'); ?>';
+    var lafail = '<?php eT('Sorry, the request failed!'); ?>';
+    var ok = '<?php eT('Ok'); ?>';
+    var cancel = '<?php eT('Cancel'); ?>';
 </script>
 <?php echo PrepareEditorScript(); ?>
 <div class='header ui-widget-header'>
-    <?php $clang->eT("Edit subquestions"); ?>
+    <?php eT("Edit subquestions"); ?>
 </div>
 <?php echo CHtml::form(array("admin/database"), 'post', array('id'=>'editsubquestionsform', 'name'=>'editsubquestionsform')); ?>
 
@@ -61,12 +61,12 @@
                             if ($scale_id==0)
                             { ?>
                             <div class='header ui-widget-header'>
-                            <?php $clang->eT("Y-Scale"); ?></div>
+                            <?php eT("Y-Scale"); ?></div>
                             <?php }
                             else
                             { ?>
                             <div class='header ui-widget-header'>
-                            <?php $clang->eT("X-Scale"); ?></div>
+                            <?php eT("X-Scale"); ?></div>
                             <?php }
                         }
                         $result = $results[$anslang][$scale_id];
@@ -75,11 +75,11 @@
                     <table class='answertable' id='answertable_<?php echo $anslang; ?>_<?php echo $scale_id; ?>'>
                         <thead>
                             <tr><th>&nbsp;</th>
-                                <th><?php $clang->eT("Code"); ?></th>
-                                <th><?php $clang->eT("Subquestion"); ?></th>
+                                <th><?php eT("Code"); ?></th>
+                                <th><?php eT("Subquestion"); ?></th>
                                 <?php if ($activated != 'Y' && $first)
                                     { ?>
-                                    <th><?php $clang->eT("Action"); ?></th>
+                                    <th><?php eT("Action"); ?></th>
                                     <?php } ?>
                             </tr></thead>
                         <tbody>
@@ -124,7 +124,7 @@
                                             <?php } ?>
 
                                     </td><td>
-                                        <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php $clang->eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                                        <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' placeholder='<?php eT("Some example subquestion","js") ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                                         <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
                                     </td>
                                     <td>
@@ -132,8 +132,8 @@
 
                                         <?php if ($activated != 'Y' && $first)
                                             { ?>
-                                            <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php $clang->eT("Insert a new subquestion after this one") ?>' />
-                                            <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php $clang->eT("Delete this subquestion") ?>' />
+                                            <img src='<?php echo $sImageURL; ?>addanswer.png' class='btnaddanswer' alt='<?php eT("Insert a new subquestion after this one") ?>' />
+                                            <img src='<?php echo $sImageURL; ?>deleteanswer.png' class='btndelanswer' alt='<?php eT("Delete this subquestion") ?>' />
                                             <?php } ?>
 
                                     </td></tr>
@@ -147,10 +147,10 @@
                             $disabled="disabled='disabled'";
                     } ?>
                     <div class="action-buttons">
-                        <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
-                        <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Quick add...'); ?></button>
+                        <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php eT('Predefined label sets...'); ?></button>
+                        <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php eT('Quick add...'); ?></button>
                         <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')){ ?>
-                        <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php $clang->eT('Save as label set'); ?></button>
+                        <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php eT('Save as label set'); ?></button>
                         <?php } ?>
                     </div>
 
@@ -161,12 +161,12 @@
             <?php } ?>
         <div id='labelsetbrowser' class='labelsets-update' style='display:none;'>
             <div style='float:left; width:260px;'>
-                <label for='labelsets'><?php $clang->eT('Available label sets:'); ?></label>
+                <label for='labelsets'><?php eT('Available label sets:'); ?></label>
                 <select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
                 <p class='button-list'>
-                    <button id='btnlsreplace' type='button'><?php $clang->eT('Replace'); ?></button>
-                    <button id='btnlsinsert' type='button'><?php $clang->eT('Add'); ?></button>
-                    <button id='btncancel' type='button'><?php $clang->eT('Cancel'); ?></button>
+                    <button id='btnlsreplace' type='button'><?php eT('Replace'); ?></button>
+                    <button id='btnlsinsert' type='button'><?php eT('Add'); ?></button>
+                    <button id='btncancel' type='button'><?php eT('Cancel'); ?></button>
                 </p>
             </div>
             <div id='labelsetpreview' style='float:right;width:500px;'>
@@ -174,48 +174,48 @@
         </div>
         <div id='quickadd' class='labelsets-update' style='display:none;'>
             <div style='float:left;'>
-                <label for='quickaddarea'><?php $clang->eT('Enter your subquestions:'); ?></label>
-                <textarea id='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
+                <label for='quickaddarea'><?php eT('Enter your subquestions:'); ?></label>
+                <textarea id='quickaddarea' class='tipme' title='<?php eT('Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
                 <p class='button-list'>
-                    <button id='btnqareplace' type='button'><?php $clang->eT('Replace'); ?></button>
-                    <button id='btnqainsert' type='button'><?php $clang->eT('Add'); ?></button>
-                    <button id='btnqacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
+                    <button id='btnqareplace' type='button'><?php eT('Replace'); ?></button>
+                    <button id='btnqainsert' type='button'><?php eT('Add'); ?></button>
+                    <button id='btnqacancel' type='button'><?php eT('Cancel'); ?></button>
                 </p>
             </div>
         </div>
         <div id="saveaslabel" style='display:none;'>
             <p>
                 <input type="radio" name="savelabeloption" id="newlabel">
-                <label for="newlabel"><?php $clang->eT('New label set'); ?></label>
+                <label for="newlabel"><?php eT('New label set'); ?></label>
             </p>
             <p>
                 <input type="radio" name="savelabeloption" id="replacelabel">
-                <label for="replacelabel"><?php $clang->eT('Replace existing label set'); ?></label>
+                <label for="replacelabel"><?php eT('Replace existing label set'); ?></label>
             </p>
             <p class='button-list'>
-                <button id='btnsave' type='button'><?php $clang->eT('Save'); ?></button>
-                <button id='btnlacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
+                <button id='btnsave' type='button'><?php eT('Save'); ?></button>
+                <button id='btnlacancel' type='button'><?php eT('Cancel'); ?></button>
             </p>
         </div>
-        <div id="dialog-confirm-replace" title="<?php $clang->eT('Replace label set?'); ?>" style='display:none;'>
-            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT('You are about to replace a given label set with the labels of this subquestions. Continue?'); ?></p>
+        <div id="dialog-confirm-replace" title="<?php eT('Replace label set?'); ?>" style='display:none;'>
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php eT('You are about to replace a given label set with the labels of this subquestions. Continue?'); ?></p>
         </div>
 
-        <div id="dialog-duplicate" title="<?php $clang->eT('Duplicate label set name'); ?>" style='display:none;'>
-            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?></p>
+        <div id="dialog-duplicate" title="<?php eT('Duplicate label set name'); ?>" style='display:none;'>
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?></p>
         </div>
 
         <div id="dialog-result" title="Query Result" style='display:none;'>
 
         </div>
         <p>
-            <input type='submit' id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php $clang->eT("Save changes"); ?>' />
+            <input type='submit' id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
             <?php $position=sprintf("%05d", $position); ?>
             <?php if ($activated == 'Y')
                 { ?>
                 <br />
                 <font color='red' size='1'><i><strong>
-                        <?php $clang->eT("Warning"); ?></strong>: <?php $clang->eT("You cannot add/remove subquestions or edit their codes because the survey is active."); ?></i></font>
+                        <?php eT("Warning"); ?></strong>: <?php eT("You cannot add/remove subquestions or edit their codes because the survey is active."); ?></i></font>
                 <?php } ?>
         </p>
     </div>
