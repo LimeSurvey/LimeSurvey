@@ -57,8 +57,6 @@ class OptinController extends LSYii_Controller {
             $sBaseLanguage = $sLanguageCode;
         }
 
-        Yii::app()->lang = $clang;
-
         $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
         if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))

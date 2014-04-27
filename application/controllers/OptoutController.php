@@ -56,7 +56,6 @@ class OptoutController extends LSYii_Controller {
             $clang = new Limesurvey_lang($sBaseLanguage);
         }
 
-        Yii::app()->lang = $clang;
 
         $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
@@ -132,7 +131,6 @@ class OptoutController extends LSYii_Controller {
             $sBaseLanguage = $sLanguageCode;
         }
 
-        Yii::app()->lang = $clang;
 
         $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 

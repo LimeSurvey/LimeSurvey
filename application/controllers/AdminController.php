@@ -103,27 +103,6 @@ class AdminController extends LSYii_Controller
     */
     protected function _sessioncontrol()
     {
-        Yii::import('application.libraries.Limesurvey_lang');
-        // From personal settings
-        if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
-            if (Yii::app()->request->getPost('lang')=='auto')
-            {
-                $sLanguage= getBrowserLanguage();
-            }
-            else
-            {
-                $sLanguage=Yii::app()->request->getPost('lang');
-            }
-            Yii::app()->session['adminlang'] = $sLanguage;
-        }
-
-        if (empty(Yii::app()->session['adminlang']))
-            Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-
-        global $clang; // Needed so EM can localize equation hints until a better solution is found
-        $this->lang = $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
-        Yii::app()->setLang($this->lang);
-
         if (!empty($this->user_id))
             $this->_GetSessionUserRights($this->user_id);
     }
@@ -264,25 +243,11 @@ class AdminController extends LSYii_Controller
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
         $aData = array();
-        $aData['adminlang'] = Yii::app()->session['adminlang'];
-
-        //$data['admin'] = getLanguageRTL;
         $aData['test'] = "t";
         $aData['languageRTL']="";
         $aData['styleRTL']="";
 
         Yii::app()->loadHelper("surveytranslator");
-
-        if (getLanguageRTL(Yii::app()->session["adminlang"]))
-        {
-            $aData['languageRTL'] = " dir=\"rtl\" ";
-            $aData['bIsRTL']=true;
-        }
-        else
-        {
-            $aData['languageRTL'] = " dir=\"ltr\" ";
-            $aData['bIsRTL']=false;
-        }
 
         $aData['meta']="";
         if ($meta)

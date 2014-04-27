@@ -21,7 +21,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 * Implements global  config
 * @property CLogRouter $log Log router component.
 */
-class LSYii_Application extends CWebApplication
+class WebApplication extends CWebApplication
 {
     protected $config = array();
     /**
@@ -120,7 +120,10 @@ class LSYii_Application extends CWebApplication
             'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'   // Enable to activate cookie protection
         ));
 
+
         parent::__construct($config);
+
+
         Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.
         $ls_config = require(__DIR__ . '/../config/config-defaults.php');
@@ -144,11 +147,21 @@ class LSYii_Application extends CWebApplication
         // Now initialize the plugin manager
         $this->initPluginManager(); 
         
+        
+
     }
 
 
 	public function init() {
 		parent::init();
+        // Set language to use.
+        if ($this->request->getParam('lang') !== null)
+        {
+//            var_dump($this->request->getParam('lang'));
+            $this->setLanguage($this->request->getParam('lang'));
+        }
+        
+        // These take care of dynamically creating a class for each token / response table.
 		Yii::import('application.helpers.ClassFactory');
 		ClassFactory::registerClass('Token_', 'Token');
 		ClassFactory::registerClass('Response_', 'Response');
@@ -219,7 +232,7 @@ class LSYii_Application extends CWebApplication
      * 
      * @param string $message
      * @param string $type
-     * @return LSYii_Application Provides a fluent interface
+     * @return WebApplication Provides a fluent interface
      */
     public function setFlashMessage($message,$type='default')
     {
@@ -259,19 +272,6 @@ class LSYii_Application extends CWebApplication
         return isset($this->config[$name]) ? $this->config[$name] : $default;
     }
 
-
-    /**
-    * For future use, cache the language app wise as well.
-    *
-    * @access public
-    * @param Limesurvey_lang
-    * @return void
-    */
-    public function setLang(Limesurvey_lang $lang)
-    {
-        $this->lang = $lang;
-    }
-    
     /**
      * Get the Api object.
      */

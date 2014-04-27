@@ -169,7 +169,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                      }
                 }
             }
-            elseif (getLanguageRTL($language))
+            elseif (App()->getLocale($language)->orientation == 'rtl')
             {
                 foreach($lbl as $kkey => $kval){
                     $lblout[]= UTF8Strrev($kkey.' )'.$kval.'(');
@@ -263,7 +263,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                      }
                 }
             }
-            elseif (getLanguageRTL($language))
+            elseif (App()->getLocale($language)->orientation == 'rtl')
             {
                 foreach($lbl as $kkey => $kval){
                     $lblout[]= UTF8Strrev(html_entity_decode($kkey,null,'UTF-8').' )'.$kval.'(');

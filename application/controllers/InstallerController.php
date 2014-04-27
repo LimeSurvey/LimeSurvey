@@ -107,22 +107,6 @@ class InstallerController extends CController {
     }
 
     /**
-    * Load and set session vars
-    *
-    * @access protected
-    * @return void
-    */
-    protected function _sessioncontrol()
-    {
-        if (empty(Yii::app()->session['installerLang']))
-            Yii::app()->session['installerLang'] = 'en';
-
-        Yii::import('application.libraries.Limesurvey_lang');
-        $this->lang = new Limesurvey_lang(Yii::app()->session['installerLang']);
-        Yii::app()->setLang($this->lang);
-    }
-
-    /**
     * welcome and language selection install step
     */
     private function stepWelcome()

@@ -127,8 +127,6 @@ class UploaderController extends SurveyController {
 
         if($sMode == "upload")
         {
-            $clang = Yii::app()->lang;
-
             $sTempUploadDir = $tempdir.'/upload/';
             // Check if exists and is writable
             if (!file_exists($sTempUploadDir)) {
@@ -280,7 +278,6 @@ class UploaderController extends SurveyController {
             }
         return;
         }
-        $clang = Yii::app()->lang;
         $meta = '';
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-superfish');

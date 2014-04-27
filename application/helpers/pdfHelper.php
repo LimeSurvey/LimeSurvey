@@ -52,17 +52,9 @@ class pdfHelper
         }
         $lg=array();
         $lg['a_meta_charset'] = 'UTF-8';
-        if (getLanguageRTL($language))
-        {
-            $lg['a_meta_dir'] = 'rtl';
-        }
-        else
-        {
-            $lg['a_meta_dir'] = 'ltr';
-        }
+        $lg['a_meta_dir'] = App()->getLocale($language)->orientation == 'rtl';
         $lg['a_meta_language'] = $language;
-        $pdflang = new Limesurvey_lang($language);
-        $lg['w_page']=$pdflang->gT("page");
+        $lg['w_page']= gT("page");
 
         return array('pdffont'=>$pdffont,'pdffontsize'=>$pdffontsize,'lg'=>$lg);
     }

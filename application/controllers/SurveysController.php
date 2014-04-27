@@ -19,14 +19,8 @@
 
 
 
-        public function actionPublicList($lang = null)
+        public function actionPublicList()
         {
-            $this->sessioncontrol();
-            if (isset($lang))
-            {
-                App()->setLang(new Limesurvey_lang($lang));
-            }
-
             $this->render('publicSurveyList', array(
                 'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
                 'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
@@ -35,19 +29,6 @@
         }
 
 
-        /**
-         * Load and set session vars
-         * @todo Remove this ugly code. Language settings should be moved to Application instead of Controller.
-         * @access protected
-         * @return void
-         */
-        protected function sessioncontrol()
-        {
-            if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
-                Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-
-            Yii::import('application.libraries.Limesurvey_lang');
-            Yii::app()->setLang(new Limesurvey_lang(Yii::app()->session['adminlang']));
-        }
+        
     }
 ?>

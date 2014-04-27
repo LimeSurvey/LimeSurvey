@@ -33,22 +33,14 @@ function comparePermission($aPermissionA,$aPermissionB)
  * @param string $string
  * @param string $escapemode
  */
-function gT($string, $escapemode = 'html')
+function gT($string, $params = array())
 {
-    Yii::import('application.libraries.Limesurvey_lang');
-    if (isset(App()->lang))
-    {
-        return App()->lang->gT($string, $escapemode);
-    }
-    else
-    {
-        return $string;
-    }
+    return Yii::t('', $string, $params);
 }
 
-function eT($string, $escapemode = 'html')
+function eT($string, $params = array())
 {
-    echo gT($string, $escapemode);
+    echo gT($string, $params);
 }
 
 /**
@@ -7341,13 +7333,14 @@ function getHeader($meta = false)
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
 
-    $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-    . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
-    if (getLanguageRTL($languagecode))
-    {
-        $header.=" dir=\"rtl\" ";
-    }
-    $header.= ">\n\t<head>\n";
+    $header =  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
+    $header .= CHtml::openTag('html', array(
+        'xmlns' => 'http://www.w3.org/1999/xhtml',
+        'xml:lang' => $languagecode,
+        'lang' => $languagecode,
+        'dir' => App()->getLocale($languagecode)->orientation
+    ));
+    $header.= "\n\t<head>\n";
 
     if ($meta)
         $header .= $meta;
