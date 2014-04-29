@@ -14,7 +14,6 @@ class Translator
         $library = null;
         if (!array_key_exists($sLanguageCode, $this->translations))
         {
-            $library = new limesurvey_lang($sLanguageCode);
             $this->translations[$sLanguageCode] = $library;
         }
         else

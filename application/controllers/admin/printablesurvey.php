@@ -34,8 +34,8 @@ class printablesurvey extends Survey_Common_Action
             $clang = $this->getController()->lang;
             $aData['surveyid'] = $surveyid;
             App()->getClientScript()->registerPackage('jquery-superfish');
-            $message['title']= $clang->gT('Access denied!');
-            $message['message']= $clang->gT('You do not have sufficient rights to access this page.');
+            $message['title']= gT('Access denied!');
+            $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
@@ -47,9 +47,6 @@ class printablesurvey extends Survey_Common_Action
             // Be sure to have a valid language
             $surveyprintlang=$aSurveyInfo['surveyls_language'];
             
-            // Setting the selected language for printout
-            $clang = new limesurvey_lang($surveyprintlang);
-
             $templatename = validateTemplateDir($aSurveyInfo['templatedir']);
             $welcome = $aSurveyInfo['surveyls_welcometext'];
             $end = $aSurveyInfo['surveyls_endtext'];
@@ -77,7 +74,7 @@ class printablesurvey extends Survey_Common_Action
                 {
                     $surveyexpirydate .= ' &ndash; '.$expirytimeofday_h.':'.$expirytimeofday_m;
                 };            
-                sprintf($clang->gT("Please submit by %s"), $surveyexpirydate);
+                sprintf(gT("Please submit by %s"), $surveyexpirydate);
             }
             else
             {
@@ -119,7 +116,7 @@ class printablesurvey extends Survey_Common_Action
             $showsgqacode = Yii::app()->getConfig("showsgqacode");
             if(isset($showsgqacode) && $showsgqacode == true)
             {
-                $surveyname =  $surveyname."<br />[".$clang->gT('Database')." ".$clang->gT('table').": $surveytable]";
+                $surveyname =  $surveyname."<br />[".gT('Database')." ".gT('table').": $surveytable]";
             }
             else
             {
@@ -133,9 +130,9 @@ class printablesurvey extends Survey_Common_Action
             ,'WELCOME' => $welcome
             ,'END' => $end
             ,'THEREAREXQUESTIONS' => 0
-            ,'SUBMIT_TEXT' => $clang->gT("Submit Your Survey.")
+            ,'SUBMIT_TEXT' => gT("Submit Your Survey.")
             ,'SUBMIT_BY' => $surveyexpirydate
-            ,'THANKS' => $clang->gT("Thank you for completing this survey.")
+            ,'THANKS' => gT("Thank you for completing this survey.")
             ,'HEADELEMENTS' => $headelements
             ,'TEMPLATEURL' => PRINT_TEMPLATE_URL
             ,'FAXTO' => $surveyfaxto
@@ -146,7 +143,7 @@ class printablesurvey extends Survey_Common_Action
             $survey_output['FAX_TO'] ='';
             if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
             {
-                $survey_output['FAX_TO'] = $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
+                $survey_output['FAX_TO'] = gT("Please fax your completed survey to:")." $surveyfaxto";
             }
 
 
@@ -228,7 +225,7 @@ class printablesurvey extends Survey_Common_Action
                         }
                         if($s > 0)
                         {
-                            $sExplanation .= '<p class="scenario">'.' -------- '.$clang->gT("or")." Scenario {$scenariorow['scenario']} --------</p>\n\n";
+                            $sExplanation .= '<p class="scenario">'.' -------- '.gT("or")." Scenario {$scenariorow['scenario']} --------</p>\n\n";
                         }
 
                         $x=0;
@@ -244,7 +241,7 @@ class printablesurvey extends Survey_Common_Action
 
                             if($x > 0)
                             {
-                                $sExplanation .= ' <em class="scenario-and-separator">'.$clang->gT('and').'</em> ';
+                                $sExplanation .= ' <em class="scenario-and-separator">'.gT('and').'</em> ';
                             }
                             if(trim($distinctrow['method'])=='') //If there is no method chosen assume "equals"
                             {
@@ -254,35 +251,35 @@ class printablesurvey extends Survey_Common_Action
                             if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
                                 if($distinctrow['method']=='==')
                                 {
-                                    $sExplanation .= $clang->gT("Answer was")." ";
+                                    $sExplanation .= gT("Answer was")." ";
                                 }
                                 elseif($distinctrow['method']=='!=')
                                 {
-                                    $sExplanation .= $clang->gT("Answer was NOT")." ";
+                                    $sExplanation .= gT("Answer was NOT")." ";
                                 }
                                 elseif($distinctrow['method']=='<')
                                 {
-                                    $sExplanation .= $clang->gT("Answer was less than")." ";
+                                    $sExplanation .= gT("Answer was less than")." ";
                                 }
                                 elseif($distinctrow['method']=='<=')
                                 {
-                                    $sExplanation .= $clang->gT("Answer was less than or equal to")." ";
+                                    $sExplanation .= gT("Answer was less than or equal to")." ";
                                 }
                                 elseif($distinctrow['method']=='>=')
                                 {
-                                    $sExplanation .= $clang->gT("Answer was greater than or equal to")." ";
+                                    $sExplanation .= gT("Answer was greater than or equal to")." ";
                                 }
                                 elseif($distinctrow['method']=='>')
                                 {
-                                    $sExplanation .= $clang->gT("Answer was greater than")." ";
+                                    $sExplanation .= gT("Answer was greater than")." ";
                                 }
                                 elseif($distinctrow['method']=='RX')
                                 {
-                                    $sExplanation .= $clang->gT("Answer matched (regexp)")." ";
+                                    $sExplanation .= gT("Answer matched (regexp)")." ";
                                 }
                                 else
                                 {
-                                    $sExplanation .= $clang->gT("Answer was")." ";
+                                    $sExplanation .= gT("Answer was")." ";
                                 }
                             }
                             if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
@@ -291,35 +288,35 @@ class printablesurvey extends Survey_Common_Action
                                 $sExplanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]['description']." ";
                                 if($distinctrow['method']=='==')
                                 {
-                                    $sExplanation .= $clang->gT("is")." ";
+                                    $sExplanation .= gT("is")." ";
                                 }
                                 elseif($distinctrow['method']=='!=')
                                 {
-                                    $sExplanation .= $clang->gT("is NOT")." ";
+                                    $sExplanation .= gT("is NOT")." ";
                                 }
                                 elseif($distinctrow['method']=='<')
                                 {
-                                    $sExplanation .= $clang->gT("is less than")." ";
+                                    $sExplanation .= gT("is less than")." ";
                                 }
                                 elseif($distinctrow['method']=='<=')
                                 {
-                                    $sExplanation .= $clang->gT("is less than or equal to")." ";
+                                    $sExplanation .= gT("is less than or equal to")." ";
                                 }
                                 elseif($distinctrow['method']=='>=')
                                 {
-                                    $sExplanation .= $clang->gT("is greater than or equal to")." ";
+                                    $sExplanation .= gT("is greater than or equal to")." ";
                                 }
                                 elseif($distinctrow['method']=='>')
                                 {
-                                    $sExplanation .= $clang->gT("is greater than")." ";
+                                    $sExplanation .= gT("is greater than")." ";
                                 }
                                 elseif($distinctrow['method']=='RX')
                                 {
-                                    $sExplanation .= $clang->gT("is matched (regexp)")." ";
+                                    $sExplanation .= gT("is matched (regexp)")." ";
                                 }
                                 else
                                 {
-                                    $sExplanation .= $clang->gT("is")." ";
+                                    $sExplanation .= gT("is")." ";
                                 }
                                 $answer_section = ' '.$distinctrow['value'].' ';
                             }
@@ -337,15 +334,15 @@ class printablesurvey extends Survey_Common_Action
                                     case "Y":
                                     switch ($conrow['value'])
                                     {
-                                        case "Y": $conditions[]=$clang->gT("Yes"); break;
-                                        case "N": $conditions[]=$clang->gT("No"); break;
+                                        case "Y": $conditions[]=gT("Yes"); break;
+                                        case "N": $conditions[]=gT("No"); break;
                                     }
                                     break;
                                     case "G":
                                     switch($conrow['value'])
                                     {
-                                        case "M": $conditions[]=$clang->gT("Male"); break;
-                                        case "F": $conditions[]=$clang->gT("Female"); break;
+                                        case "M": $conditions[]=gT("Male"); break;
+                                        case "F": $conditions[]=gT("Female"); break;
                                     } // switch
                                     break;
                                     case "A":
@@ -358,17 +355,17 @@ class printablesurvey extends Survey_Common_Action
                                     case "C":
                                     switch($conrow['value'])
                                     {
-                                        case "Y": $conditions[]=$clang->gT("Yes"); break;
-                                        case "U": $conditions[]=$clang->gT("Uncertain"); break;
-                                        case "N": $conditions[]=$clang->gT("No"); break;
+                                        case "Y": $conditions[]=gT("Yes"); break;
+                                        case "U": $conditions[]=gT("Uncertain"); break;
+                                        case "N": $conditions[]=gT("No"); break;
                                     } // switch
                                     break;
                                     case "E":
                                     switch($conrow['value'])
                                     {
-                                        case "I": $conditions[]=$clang->gT("Increase"); break;
-                                        case "D": $conditions[]=$clang->gT("Decrease"); break;
-                                        case "S": $conditions[]=$clang->gT("Same"); break;
+                                        case "I": $conditions[]=gT("Increase"); break;
+                                        case "D": $conditions[]=gT("Decrease"); break;
+                                        case "S": $conditions[]=gT("Same"); break;
                                     }
                                     case "1":
                                         $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
@@ -408,7 +405,7 @@ class printablesurvey extends Survey_Common_Action
                                             $conditions[]=$ansrow['answer'];
                                         }
                                         if($conrow['value'] == "-oth-") {
-                                            $conditions[]=$clang->gT("Other");
+                                            $conditions[]=gT("Other");
                                         }
                                         $conditions = array_unique($conditions);
                                         break;
@@ -472,7 +469,7 @@ class printablesurvey extends Survey_Common_Action
                                         if ($labelIndex == 0)
                                         {
                                             if (trim($cqidattributes['dualscale_headerA'][$surveyprintlang]) != '') {
-                                                $header = $clang->gT($cqidattributes['dualscale_headerA'][$surveyprintlang]);
+                                                $header = gT($cqidattributes['dualscale_headerA'][$surveyprintlang]);
                                             } else {
                                                 $header = '1';
                                             }
@@ -480,14 +477,14 @@ class printablesurvey extends Survey_Common_Action
                                         elseif ($labelIndex == 1)
                                         {
                                             if (trim($cqidattributes['dualscale_headerB'][$surveyprintlang]) != '') {
-                                                $header = $clang->gT($cqidattributes['dualscale_headerB'][$surveyprintlang]);
+                                                $header = gT($cqidattributes['dualscale_headerB'][$surveyprintlang]);
                                             } else {
                                                 $header = '2';
                                             }
                                         }
                                         foreach ($ansresult as $ansrow)
                                         {
-                                            $answer_section=" (".$ansrow->question." ".sprintf($clang->gT("Label %s"),$header).")";
+                                            $answer_section=" (".$ansrow->question." ".sprintf(gT("Label %s"),$header).")";
                                         }
                                         break;
                                     case ":":
@@ -510,7 +507,7 @@ class printablesurvey extends Survey_Common_Action
                                     case "R": // (Rank 1), (Rank 2)... TIBO
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                         $rankid=$thiscquestion['aid'];
-                                        $answer_section=" (".$clang->gT("RANK")." $rankid)";
+                                        $answer_section=" (".gT("RANK")." $rankid)";
                                         break;
                                     default: // nothing to add
                                         break;
@@ -519,7 +516,7 @@ class printablesurvey extends Survey_Common_Action
 
                             if (count($conditions) > 1)
                             {
-                                $sExplanation .=  "'".implode("' <em class='scenario-or-separator'>".$clang->gT("or")."</em> '", $conditions)."'";
+                                $sExplanation .=  "'".implode("' <em class='scenario-or-separator'>".gT("or")."</em> '", $conditions)."'";
                             }
                             elseif (count($conditions) == 1)
                             {
@@ -527,9 +524,9 @@ class printablesurvey extends Survey_Common_Action
                             }
                             unset($conditions);
                             // Following line commented out because answer_section  was lost, but is required for some question types
-                            //$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
+                            //$explanation .= " ".gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
                             if($distinctrow['cqid']){
-                                $sExplanation .= " <span class='scenario-at-separator'>".$clang->gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+                                $sExplanation .= " <span class='scenario-at-separator'>".gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
                             }
                             else{
                                 $sExplanation .= " ".$distinctrow['value'] ;
@@ -555,7 +552,7 @@ class printablesurvey extends Survey_Common_Action
                                 $sExplanation=$sEquation;
                                 $sEquation='&nbsp;'; // No need to show it twice
                             }
-                            $sExplanation = "<b>".$clang->gT('Only answer this question if the following conditions are met:')."</b><br/> ".$sExplanation;
+                            $sExplanation = "<b>".gT('Only answer this question if the following conditions are met:')."</b><br/> ".$sExplanation;
                             if (Yii::app()->getConfig('showrelevance')) 
                             {
                                 $sExplanation.="<span class='printable_equation'><br>".$sEquation."</span>";
@@ -577,8 +574,8 @@ class printablesurvey extends Survey_Common_Action
 
                         if(isset($showsgqacode) && $showsgqacode == true)
                         {
-                            $deqrow['question'] = $deqrow['question']."<br />".$clang->gT("ID:")." $fieldname <br />".
-                                                  $clang->gT("Question code:")." ".$deqrow['title'];
+                            $deqrow['question'] = $deqrow['question']."<br />".gT("ID:")." $fieldname <br />".
+                                                  gT("Question code:")." ".$deqrow['title'];
                         }
 
                         $question = array(
@@ -613,7 +610,7 @@ class printablesurvey extends Survey_Common_Action
 
                         if ($deqrow['mandatory'] == 'Y')
                         {
-                            $question['QUESTION_MANDATORY'] = $clang->gT('*');
+                            $question['QUESTION_MANDATORY'] = gT('*');
                             $question['QUESTION_CLASS'] .= ' mandatory';
                         }
 
@@ -639,7 +636,7 @@ class printablesurvey extends Survey_Common_Action
                         {
                             // ==================================================================
                             case "5":    //5 POINT CHOICE
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT('Please choose *only one* of the following:');
+                                $question['QUESTION_TYPE_HELP'] .= gT('Please choose *only one* of the following:');
                                 $question['ANSWER'] .= "\n\t<ul>\n";
                                 for ($i=1; $i<=5; $i++)
                                 {
@@ -651,17 +648,17 @@ class printablesurvey extends Survey_Common_Action
 
                                 // ==================================================================
                             case "D":  //DATE
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT('Please enter a date:');
+                                $question['QUESTION_TYPE_HELP'] .= gT('Please enter a date:');
                                 $question['ANSWER'] .= "\t".self::_input_type_image('text',$question['QUESTION_TYPE_HELP'],30,1);
                                 break;
 
                                 // ==================================================================
                             case "G":  //GENDER
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose *only one* of the following:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose *only one* of the following:");
 
                                 $question['ANSWER'] .= "\n\t<ul>\n";
-                                $question['ANSWER'] .= "\t\t<li>\n\t\t\t".self::_input_type_image('radio',$clang->gT("Female"))."\n\t\t\t".$clang->gT("Female")." ".self::_addsgqacode("(F)")."\n\t\t</li>\n";
-                                $question['ANSWER'] .= "\t\t<li>\n\t\t\t".self::_input_type_image('radio',$clang->gT("Male"))."\n\t\t\t".$clang->gT("Male")." ".self::_addsgqacode("(M)")."\n\t\t</li>\n";
+                                $question['ANSWER'] .= "\t\t<li>\n\t\t\t".self::_input_type_image('radio',gT("Female"))."\n\t\t\t".gT("Female")." ".self::_addsgqacode("(F)")."\n\t\t</li>\n";
+                                $question['ANSWER'] .= "\t\t<li>\n\t\t\t".self::_input_type_image('radio',gT("Male"))."\n\t\t\t".gT("Male")." ".self::_addsgqacode("(M)")."\n\t\t</li>\n";
                                 $question['ANSWER'] .= "\t</ul>\n";
                                 break;
 
@@ -686,7 +683,7 @@ class printablesurvey extends Survey_Common_Action
                                     unset($optCategorySeparator);
                                 }
 
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose *only one* of the following:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose *only one* of the following:");
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $dearesult=Answer::model()->getAllRecords(" qid='{$deqrow['qid']}' AND language='{$surveyprintlang}' ", array('sortorder','answer'));
@@ -739,8 +736,8 @@ class printablesurvey extends Survey_Common_Action
                                 {
                                     if(trim($qidattributes["other_replace_text"][$surveyprintlang])=='')
                                     {$qidattributes["other_replace_text"][$surveyprintlang]="Other";}
-                                    //                    $printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-                                    $question['ANSWER']  .= $wrapper['item-start-other'].self::_input_type_image('radio',$clang->gT($qidattributes["other_replace_text"][$surveyprintlang])).' '.$clang->gT($qidattributes["other_replace_text"][$surveyprintlang]).self::_addsgqacode(" (-oth-)")."\n\t\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."other)")."\n".$wrapper['item-end'];
+                                    //                    $printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio' , gT("Other"))."\n\t\t\t".gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
+                                    $question['ANSWER']  .= $wrapper['item-start-other'].self::_input_type_image('radio',gT($qidattributes["other_replace_text"][$surveyprintlang])).' '.gT($qidattributes["other_replace_text"][$surveyprintlang]).self::_addsgqacode(" (-oth-)")."\n\t\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."other)")."\n".$wrapper['item-end'];
                                 }
                                 $question['ANSWER'] .= $wrapper['whole-end'];
                                 //Let's break the presentation into columns.
@@ -748,7 +745,7 @@ class printablesurvey extends Survey_Common_Action
 
                                 // ==================================================================
                             case "O":  //LIST WITH COMMENT
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose *only one* of the following:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose *only one* of the following:");
                                 $dearesult=Answer::model()->getAllRecords(" qid='{$deqrow['qid']}' AND language='{$surveyprintlang}'", array('sortorder', 'answer') );
 
                                 $question['ANSWER'] = "\t<ul>\n";
@@ -758,8 +755,8 @@ class printablesurvey extends Survey_Common_Action
                                 }
                                 $question['ANSWER'] .= "\t</ul>\n";
 
-                                $question['ANSWER'] .= "\t<p class=\"comment\">\n\t\t".$clang->gT("Make a comment on your choice here:")."\n";
-                                $question['ANSWER'] .= "\t\t".self::_input_type_image('textarea',$clang->gT("Make a comment on your choice here:"),50,8).self::_addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."comment)")."\n\t</p>\n";
+                                $question['ANSWER'] .= "\t<p class=\"comment\">\n\t\t".gT("Make a comment on your choice here:")."\n";
+                                $question['ANSWER'] .= "\t\t".self::_input_type_image('textarea',gT("Make a comment on your choice here:"),50,8).self::_addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."comment)")."\n\t</p>\n";
                                 break;
 
                                 // ==================================================================
@@ -767,7 +764,7 @@ class printablesurvey extends Survey_Common_Action
                                 $rearesult=Answer::model()->getAllRecords(" qid='{$deqrow['qid']}' AND language='{$surveyprintlang}'", array('sortorder', 'answer'));
                                 $rearesult = $rearesult->readAll();
                                 $reacount = count($rearesult);
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please number each box in order of preference from 1 to")." $reacount";
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please number each box in order of preference from 1 to")." $reacount";
                                 $question['QUESTION_TYPE_HELP'] .= self::_min_max_answers_help($qidattributes, $surveyprintlang, $surveyid);
                                 $question['ANSWER'] = "\n<ul>\n";
                                 foreach ($rearesult as $rearow)
@@ -788,7 +785,7 @@ class printablesurvey extends Survey_Common_Action
                                 {
                                     $dcols=0;
                                 }
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose *all* that apply:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose *all* that apply:");
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $mearesult = Question::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' AND language='{$surveyprintlang}' ", array('question_order'));
@@ -827,7 +824,7 @@ class printablesurvey extends Survey_Common_Action
                                         $qidattributes["other_replace_text"][$surveyprintlang]="Other";
                                     }
                                     if(!isset($mearow['answer'])) $mearow['answer']="";
-                                    $question['ANSWER'] .= $wrapper['item-start-other'].self::_input_type_image('checkbox',$mearow['answer']).$clang->gT($qidattributes["other_replace_text"][$surveyprintlang]).":\n\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$fieldname."other) ").$wrapper['item-end'];
+                                    $question['ANSWER'] .= $wrapper['item-start-other'].self::_input_type_image('checkbox',$mearow['answer']).gT($qidattributes["other_replace_text"][$surveyprintlang]).":\n\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$fieldname."other) ").$wrapper['item-end'];
                                 }
                                 $question['ANSWER'] .= $wrapper['whole-end'];
                                 //                }
@@ -835,11 +832,11 @@ class printablesurvey extends Survey_Common_Action
 
                                  // ==================================================================
                             case "P":  //Multiple choice with comments
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose all that apply and provide a comment:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose all that apply and provide a comment:");
 
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
                                 $mearesult=Question::model()->getAllRecords("parent_qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}'", array('question_order'));
-                                //                $printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
+                                //                $printablesurveyoutput .="\t\t\t<u>".gT("Please choose all that apply and provide a comment:")."</u><br />\n";
                                 $j=0;
                                 $longest_string = 0;
                                 foreach ($mearesult->readAll() as $mearow)
@@ -850,7 +847,7 @@ class printablesurvey extends Survey_Common_Action
                                 }
                                 if ($deqrow['other'] == "Y")
                                 {
-                                    $question['ANSWER'] .= "\t<li class=\"other\">\n\t\t<div class=\"other-replacetext\">".$clang->gT('Other:').self::_input_type_image('other','',1)."</div>".self::_input_type_image('othercomment','comment box',50).self::_addsgqacode(" (".$fieldname."other) ")."\n\t</li>\n";
+                                    $question['ANSWER'] .= "\t<li class=\"other\">\n\t\t<div class=\"other-replacetext\">".gT('Other:').self::_input_type_image('other','',1)."</div>".self::_input_type_image('othercomment','comment box',50).self::_addsgqacode(" (".$fieldname."other) ")."\n\t</li>\n";
                                     $j++;
                                 }
 
@@ -869,18 +866,18 @@ class printablesurvey extends Survey_Common_Action
 
     //                            if (!empty($qidattributes['equals_num_value']))
     //                            {
-    //                                $question['QUESTION_TYPE_HELP'] .= "* ".sprintf($clang->gT('Total of all entries must equal %d'),$qidattributes['equals_num_value'])."<br />\n";
+    //                                $question['QUESTION_TYPE_HELP'] .= "* ".sprintf(gT('Total of all entries must equal %d'),$qidattributes['equals_num_value'])."<br />\n";
     //                            }
     //                            if (!empty($qidattributes['max_num_value']))
     //                            {
-    //                                $question['QUESTION_TYPE_HELP'] .= sprintf($clang->gT('Total of all entries must not exceed %d'), $qidattributes['max_num_value'])."<br />\n";
+    //                                $question['QUESTION_TYPE_HELP'] .= sprintf(gT('Total of all entries must not exceed %d'), $qidattributes['max_num_value'])."<br />\n";
     //                            }
     //                            if (!empty($qidattributes['min_num_value']))
     //                            {
-    //                                $question['QUESTION_TYPE_HELP'] .= sprintf($clang->gT('Total of all entries must be at least %s'),$qidattributes['min_num_value'])."<br />\n";
+    //                                $question['QUESTION_TYPE_HELP'] .= sprintf(gT('Total of all entries must be at least %s'),$qidattributes['min_num_value'])."<br />\n";
     //                            }
 
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer(s) here:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please write your answer(s) here:");
 
 
                                 $longest_string = 0;
@@ -901,21 +898,21 @@ class printablesurvey extends Survey_Common_Action
 
                                 // ==================================================================
                             case "S":  //SHORT TEXT
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer here:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please write your answer here:");
                                 $question['ANSWER'] = self::_input_type_image('text',$question['QUESTION_TYPE_HELP'], 50);
                                 break;
 
 
                                 // ==================================================================
                             case "T":  //LONG TEXT
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer here:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please write your answer here:");
                                 $question['ANSWER'] = self::_input_type_image('textarea',$question['QUESTION_TYPE_HELP'], '100%' , 8);
                                 break;
 
 
                                 // ==================================================================
                             case "U":  //HUGE TEXT
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer here:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please write your answer here:");
                                 $question['ANSWER'] = self::_input_type_image('textarea',$question['QUESTION_TYPE_HELP'], '100%' , 30);
                                 break;
 
@@ -930,22 +927,22 @@ class printablesurvey extends Survey_Common_Action
                                 if($qidattributes['suffix'][$surveyprintlang] != "") {
                                     $suffix=$qidattributes['suffix'][$surveyprintlang];
                                 }
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer here:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please write your answer here:");
                                 $question['ANSWER'] = "<ul>\n\t<li>\n\t\t<span>$prefix</span>\n\t\t".self::_input_type_image('text',$question['QUESTION_TYPE_HELP'],20)."\n\t\t<span>$suffix</span>\n\t\t</li>\n\t</ul>";
                                 break;
 
                                 // ==================================================================
                             case "Y":  //YES/NO
-                                  $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose *only one* of the following:");
-                                $question['ANSWER'] = "\n<ul>\n\t<li>\n\t\t".self::_input_type_image('radio',$clang->gT('Yes'))."\n\t\t".$clang->gT('Yes').self::_addsgqacode(" (Y)")."\n\t</li>\n";
-                                $question['ANSWER'] .= "\n\t<li>\n\t\t".self::_input_type_image('radio',$clang->gT('No'))."\n\t\t".$clang->gT('No').self::_addsgqacode(" (N)")."\n\t</li>\n</ul>\n";
+                                  $question['QUESTION_TYPE_HELP'] .= gT("Please choose *only one* of the following:");
+                                $question['ANSWER'] = "\n<ul>\n\t<li>\n\t\t".self::_input_type_image('radio',gT('Yes'))."\n\t\t".gT('Yes').self::_addsgqacode(" (Y)")."\n\t</li>\n";
+                                $question['ANSWER'] .= "\n\t<li>\n\t\t".self::_input_type_image('radio',gT('No'))."\n\t\t".gT('No').self::_addsgqacode(" (N)")."\n\t</li>\n</ul>\n";
                                 break;
 
 
                                 // ==================================================================
                             case "A":  //ARRAY (5 POINT CHOICE)
                                 $condition = "parent_qid = '{$deqrow['qid']}'  AND language= '{$surveyprintlang}'";
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose the appropriate response for each item:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose the appropriate response for each item:");
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $question['ANSWER'] = "
@@ -1003,7 +1000,7 @@ class printablesurvey extends Survey_Common_Action
                                 // ==================================================================
                             case "B":  //ARRAY (10 POINT CHOICE)
 
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose the appropriate response for each item:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose the appropriate response for each item:");
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
@@ -1034,7 +1031,7 @@ class printablesurvey extends Survey_Common_Action
                                 // ==================================================================
                             case "C":  //ARRAY (YES/UNCERTAIN/NO)
 
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose the appropriate response for each item:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose the appropriate response for each item:");
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $question['ANSWER'] = '
@@ -1042,9 +1039,9 @@ class printablesurvey extends Survey_Common_Action
                 <thead>
                     <tr>
                         <td>&nbsp;</td>
-                        <th>'.$clang->gT("Yes").self::_addsgqacode(" (Y)").'</th>
-                        <th>'.$clang->gT("Uncertain").self::_addsgqacode(" (U)").'</th>
-                        <th>'.$clang->gT("No").self::_addsgqacode(" (N)").'</th>
+                        <th>'.gT("Yes").self::_addsgqacode(" (Y)").'</th>
+                        <th>'.gT("Uncertain").self::_addsgqacode(" (U)").'</th>
+                        <th>'.gT("No").self::_addsgqacode(" (N)").'</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1058,9 +1055,9 @@ class printablesurvey extends Survey_Common_Action
                                 {
                                     $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                                     $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['question']}".self::_addsgqacode(" (".$fieldname.$mearow['title'].")")."</th>\n";
-                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$clang->gT("Yes"))."</td>\n";
-                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$clang->gT("Uncertain"))."</td>\n";
-                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$clang->gT("No"))."</td>\n";
+                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',gT("Yes"))."</td>\n";
+                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',gT("Uncertain"))."</td>\n";
+                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',gT("No"))."</td>\n";
                                     $question['ANSWER'] .= "\t\t</tr>\n";
 
                                     $j++;
@@ -1070,7 +1067,7 @@ class printablesurvey extends Survey_Common_Action
                                 break;
 
                             case "E":  //ARRAY (Increase/Same/Decrease)
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose the appropriate response for each item:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose the appropriate response for each item:");
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $question['ANSWER'] = '
@@ -1078,9 +1075,9 @@ class printablesurvey extends Survey_Common_Action
                 <thead>
                     <tr>
                         <td>&nbsp;</td>
-                        <th>'.$clang->gT("Increase").self::_addsgqacode(" (I)").'</th>
-                        <th>'.$clang->gT("Same").self::_addsgqacode(" (S)").'</th>
-                        <th>'.$clang->gT("Decrease").self::_addsgqacode(" (D)").'</th>
+                        <th>'.gT("Increase").self::_addsgqacode(" (I)").'</th>
+                        <th>'.gT("Same").self::_addsgqacode(" (S)").'</th>
+                        <th>'.gT("Decrease").self::_addsgqacode(" (D)").'</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1093,9 +1090,9 @@ class printablesurvey extends Survey_Common_Action
                                 {
                                     $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                                     $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['question']}".self::_addsgqacode(" (".$fieldname.$mearow['title'].")")."</th>\n";
-                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$clang->gT("Increase"))."</td>\n";
-                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$clang->gT("Same"))."</td>\n";
-                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$clang->gT("Decrease"))."</td>\n";
+                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',gT("Increase"))."</td>\n";
+                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',gT("Same"))."</td>\n";
+                                    $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',gT("Decrease"))."</td>\n";
                                     $question['ANSWER'] .= "\t\t</tr>\n";
                                     $j++;
                                     $rowclass = alternation($rowclass,'row');
@@ -1254,7 +1251,7 @@ class printablesurvey extends Survey_Common_Action
 
                                 // ==================================================================
                             case "F": //ARRAY (Flexible Labels)
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose the appropriate response for each item:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose the appropriate response for each item:");
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $fresult=Answer::model()->getAllRecords(" scale_id=0 AND qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}'", array('sortorder','code'));
@@ -1349,7 +1346,7 @@ class printablesurvey extends Survey_Common_Action
                                 $rightheader= $qidattributes['dualscale_headerB'][$surveyprintlang];
 
                                 $headstyle = 'style="padding-left: 20px; padding-right: 7px"';
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose the appropriate response for each item:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose the appropriate response for each item:");
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $question['ANSWER'] .= "\n<table>\n\t<thead>\n";
@@ -1458,7 +1455,7 @@ class printablesurvey extends Survey_Common_Action
                                 $condition = "parent_qid= '{$deqrow['qid']}'  AND language= '{$surveyprintlang}'";
                                 $fresult= Question::model()->getAllRecords( $condition, array('question_order', 'title'));
                                 $fresult = $fresult->readAll();
-                                $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please choose the appropriate response for each item:");
+                                $question['QUESTION_TYPE_HELP'] .= gT("Please choose the appropriate response for each item:");
                                 $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
 
                                 $fcount = count($fresult);
@@ -1508,7 +1505,7 @@ class printablesurvey extends Survey_Common_Action
                     }
             }
 
-            $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
+            $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
             
             // START recursive tag stripping.
             // PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression.
@@ -1657,10 +1654,10 @@ class printablesurvey extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $output = "";
         if(!empty($qidattributes['min_answers'])) {
-            $output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least %s items."), $qidattributes['min_answers'])."</p>\n";
+            $output .= "\n<p class='extrahelp'>".sprintf(gT("Please choose at least %s items."), $qidattributes['min_answers'])."</p>\n";
         }
         if(!empty($qidattributes['max_answers'])) {
-            $output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than %s items."),$qidattributes['max_answers'])."</p>\n";
+            $output .= "\n<p class='extrahelp'>".sprintf(gT("Please choose no more than %s items."),$qidattributes['max_answers'])."</p>\n";
         }
         return $output;
     }
@@ -1748,7 +1745,7 @@ class printablesurvey extends Survey_Common_Action
         {
             $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
             $output .= "\n<p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext)))."
+                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext)))."
             </p>\n";
         }
         if(!empty($qidattributes['array_filter_exclude']))
@@ -1756,7 +1753,7 @@ class printablesurvey extends Survey_Common_Action
             $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
 
             $output .= "\n    <p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
+                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
             </p>\n";
         }
         return $output;

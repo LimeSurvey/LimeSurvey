@@ -72,7 +72,7 @@ function fixNumbering($fixnumbering, $iSurveyID)
 */
 function checkGroup($postsid)
 {
-    $clang = Yii::app()->lang;
+    
 
     $baselang = Survey::model()->findByPk($postsid)->language;
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
@@ -81,7 +81,7 @@ function checkGroup($postsid)
     { //TIBO
         if ($row['count'] == 0)
         {
-            $failedgroupcheck[]=array($row['gid'], $row['group_name'], ": ".$clang->gT("This group does not contain any question(s)."));
+            $failedgroupcheck[]=array($row['gid'], $row['group_name'], ": ".gT("This group does not contain any question(s)."));
         }
     }
     if(isset($failedgroupcheck))
@@ -98,7 +98,7 @@ function checkGroup($postsid)
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {
-    $clang = Yii::app()->lang;
+    
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
@@ -125,7 +125,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             $chacount=count($charesult);
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no subquestions."), $chkrow['gid']);
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question has no subquestions."), $chkrow['gid']);
             }
         }
         if ($qtypes[$chkrow['type']]['answerscales']>0)
@@ -135,7 +135,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             $chacount=count($charesult);
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no answers."), $chkrow['gid']);
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question has no answers."), $chkrow['gid']);
             }
         }
     }
@@ -145,7 +145,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow)
     {
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'type' set."), $chkrow['gid']);
+        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
     }
 
 
@@ -155,14 +155,14 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach($chkresult as $chkrow){
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires answers, but none are set."), $chkrow['gid']);
+        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
     } // while
 
     //CHECK THAT DUAL Array has answers set
     $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow){
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second answer set but none is set."), $chkrow['gid']);
+        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
@@ -207,7 +207,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             }
             if ($qidfound == 1)
             {
-                $failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".$clang->gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
+                $failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
             }
             $b++;
         }

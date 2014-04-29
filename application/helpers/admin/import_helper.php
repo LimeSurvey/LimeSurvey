@@ -20,7 +20,7 @@
 */
 function CSVImportGroup($sFullFilePath, $iNewSID)
 {
-    $clang = Yii::app()->lang;
+    
 
     $aLIDReplacements=array();
     $aQIDReplacements = array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
@@ -35,7 +35,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
 
     if (substr($bigarray[0], 0, 23) != "# LimeSurvey Group Dump")
     {
-        $results['fatalerror'] = $clang->gT("This file is not a LimeSurvey question file. Import failed.");
+        $results['fatalerror'] = gT("This file is not a LimeSurvey question file. Import failed.");
         $importversion=0;
     }
     else
@@ -45,7 +45,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
 
     if  ((int)$importversion<112)
     {
-        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
+        $results['fatalerror'] = gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
     }
 
     for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
@@ -226,7 +226,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
         $groupssupportbaselang = doesImportArraySupportLanguage($grouparray,Array($gidfieldnum),$langfieldnum,$sBaseLanguage,true);
         if (!$groupssupportbaselang)
         {
-            $results['fatalerror']=$clang->gT("You can't import a group which doesn't support at least the survey base language.");
+            $results['fatalerror']=gT("You can't import a group which doesn't support at least the survey base language.");
             return $results;
         }
     }
@@ -238,7 +238,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
         $questionssupportbaselang = doesImportArraySupportLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$sBaseLanguage,true);
         if (!$questionssupportbaselang)
         {
-            $results['fatalerror']=$clang->gT("You can't import a question which doesn't support at least the survey base language.");
+            $results['fatalerror']=gT("You can't import a question which doesn't support at least the survey base language.");
             return $results;
         }
     }
@@ -252,7 +252,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
         $answerssupportbaselang = doesImportArraySupportLanguage($answerarray,$answercodekeysarr,$langfieldnum,$sBaseLanguage);
         if (!$answerssupportbaselang)
         {
-            $results['fatalerror']=$clang->gT("You can't import answers which doesn't support at least the survey base language.");
+            $results['fatalerror']=gT("You can't import answers which doesn't support at least the survey base language.");
             return $results;
 
         }
@@ -267,7 +267,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
         $labelsetssupportbaselang = doesImportArraySupportLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$sBaseLanguage,true);
         if (!$labelsetssupportbaselang)
         {
-            $results['fatalerror']=$clang->gT("You can't import label sets which don't support the current survey's base language");
+            $results['fatalerror']=gT("You can't import label sets which don't support the current survey's base language");
             return $results;
         }
     }
@@ -537,7 +537,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
                             {
                                 $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value)
                                 VALUES ({$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."','".$labelrow['assessment_value']."')";
-                                $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie($clang->gT("Error").": Failed to insert answer (lid1) <br />\n$qinsert<br />\n");
+                                $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie(gT("Error").": Failed to insert answer (lid1) <br />\n$qinsert<br />\n");
                             }
                             else
                             {
@@ -553,7 +553,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
 
                                 $qinsert = "insert INTO {{questions}} ($fieldname parent_qid,title,question,question_order,language,scale_id,type, sid, gid)
                                 VALUES ($data{$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."',1,'{$questionrowdata['type']}',{$questionrowdata['sid']},{$questionrowdata['gid']})";
-                                $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
+                                $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie (gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                                 if ($fieldname=='')
                                 {
                                     $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=getLastInsertID('{{questions}}');
@@ -569,7 +569,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
                         {
                             $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value,scale_id)
                             VALUES ({$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."','".$labelrow['assessment_value']."',1)";
-                            $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert answer (lid2)<br />\n$qinsert<br />\n");
+                            $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie (gT("Error").": Failed to insert answer (lid2)<br />\n$qinsert<br />\n");
                         }
                     }
                 }
@@ -586,7 +586,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
                 $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
                 if ($answerrowdata===false)
                 {
-                    $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
+                    $importquestion.='<br />'.gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
                 }
                 // Skip not supported languages
                 if (!in_array($answerrowdata['language'],$aLanguagesSupported))
@@ -776,7 +776,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
 */
 function XMLImportGroup($sFullFilePath, $iNewSID)
 {
-    $clang = Yii::app()->lang;
+    
 
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
@@ -803,7 +803,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
     if (!in_array($sBaseLanguage,$importlanguages))
     {
-        $results['fatalerror'] = $clang->gT("The languages of the imported group file must at least include the base language of this survey.");
+        $results['fatalerror'] = gT("The languages of the imported group file must at least include the base language of this survey.");
         return $results;
     }
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
@@ -1104,7 +1104,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 */
 function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
 {
-    $clang = Yii::app()->lang;
+    
 
     $aLIDReplacements=array();
     $aQIDReplacements=array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
@@ -1131,13 +1131,13 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
     }
     else    // unknown file - show error message
     {
-        $results['fatalerror'] = $clang->gT("This file is not a LimeSurvey question file. Import failed.");
+        $results['fatalerror'] = gT("This file is not a LimeSurvey question file. Import failed.");
         return  $results;
     }
 
     if  ((int)$importversion<112)
     {
-        $results['fatalerror'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
+        $results['fatalerror'] = gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
         return  $results;
     }
 
@@ -1275,7 +1275,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
         $questionssupportbaselang = doesImportArraySupportLanguage($questionarray, array($qidfieldnum), $langfieldnum, $sBaseLanguage);
         if (!$questionssupportbaselang)
         {
-            $results['fatalerror']=$clang->gT("You can't import a question which doesn't support at least the survey base language.");
+            $results['fatalerror']=gT("You can't import a question which doesn't support at least the survey base language.");
             return $results;
         }
     }
@@ -1289,7 +1289,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
         $answerssupportbaselang = doesImportArraySupportLanguage($answerarray,$answercodekeysarr,$langfieldnum,$sBaseLanguage);
         if (!$answerssupportbaselang)
         {
-            $results['fatalerror']=$clang->gT("You can't import answers which doesn't support at least the survey base language.");
+            $results['fatalerror']=gT("You can't import answers which doesn't support at least the survey base language.");
             return $results;
 
         }
@@ -1304,7 +1304,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
         $labelsetssupportbaselang = doesImportArraySupportLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$sBaseLanguage,true);
         if (!$labelsetssupportbaselang)
         {
-            $results['fatalerror']=$clang->gT("You can't import label sets which don't support the current survey's base language");
+            $results['fatalerror']=gT("You can't import label sets which don't support the current survey's base language");
             return $results;
         }
     }
@@ -1556,7 +1556,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
                     if (in_array($labelrow['language'],$aLanguagesSupported)){
                         $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value,scale_id)
                         VALUES ($newqid,'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."','".$labelrow['assessment_value']."',1)";
-                        $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie($clang->gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n");
+                        $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie(gT("Error").": Failed to insert answer <br />\n$qinsert<br />\n");
                     }
                 }
             }
@@ -1571,7 +1571,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
                 $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
                 if ($answerrowdata===false)
                 {
-                    $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
+                    $importquestion.='<br />'.gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
                 }
                 // Skip not supported languages
                 if (!in_array($answerrowdata['language'],$aLanguagesSupported))
@@ -1698,7 +1698,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
 */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
 {
-    $clang = Yii::app()->lang;
+    
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
@@ -1723,7 +1723,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
 
     if (!in_array($sBaseLanguage,$importlanguages))
     {
-        $results['fatalerror'] = $clang->gT("The languages of the imported question file must at least include the base language of this survey.");
+        $results['fatalerror'] = gT("The languages of the imported question file must at least include the base language of this survey.");
         return $results;
     }
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
@@ -1784,7 +1784,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
         $result = $ques->save();
         if (!$result)
         {
-            $results['fatalerror'] = CHtml::errorSummary($ques,$clang->gT("The question could not be imported for the following reasons:"));
+            $results['fatalerror'] = CHtml::errorSummary($ques,gT("The question could not be imported for the following reasons:"));
             return $results;
         }
         if (!isset($aQIDReplacements[$oldqid]))
@@ -1950,7 +1950,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
 */
 function CSVImportLabelset($sFullFilePath, $options)
 {
-    $clang = Yii::app()->lang;
+    
     $results['labelsets']=0;
     $results['labels']=0;
     $results['warnings']=array();
@@ -1966,7 +1966,7 @@ function CSVImportLabelset($sFullFilePath, $options)
     fclose($handle);
     if (substr($bigarray[0], 0, 27) != "# LimeSurvey Label Set Dump" && substr($bigarray[0], 0, 28) != "# PHPSurveyor Label Set Dump")
     {
-        $results['fatalerror']=$clang->gT("This file is not a LimeSurvey label set file. Import failed.");
+        $results['fatalerror']=gT("This file is not a LimeSurvey label set file. Import failed.");
         return $results;
     }
 
@@ -2105,7 +2105,7 @@ function CSVImportLabelset($sFullFilePath, $options)
                     $query = "DELETE FROM {{labelsets}} WHERE lid=$newlid";
                     $result = Yii::app()->db->createCommand($query)->execute() or safeDie("Couldn't delete labelset<br />$query<br />");
                     $newlid=$lsmatch;
-                    $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
+                    $results['warnings'][]=gT("Label set was not imported because the same label set already exists.")." ".sprintf(gT("Existing LID: %s"),$newlid);
 
                 }
                 //END CHECK FOR DUPLICATES
@@ -2126,7 +2126,7 @@ function CSVImportLabelset($sFullFilePath, $options)
 */
 function XMLImportLabelsets($sFullFilePath, $options)
 {
-    $clang = Yii::app()->lang;
+    
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml->LimeSurveyDocType!='Label set') safeDie('This is not a valid LimeSurvey label set structure XML file.');
@@ -2221,7 +2221,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
 
                 $results['labelsets']--;
                 $newlid=$lsmatch;
-                $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
+                $results['warnings'][]=gT("Label set was not imported because the same label set already exists.")." ".sprintf(gT("Existing LID: %s"),$newlid);
 
             }
         }
@@ -2241,7 +2241,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
 function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=true)
 {
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+    
 
     $handle = fopen($sFullFilePath, "r");
     while (!feof($handle))
@@ -2278,13 +2278,13 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     }
     else    // unknown file - show error message
     {
-        $importresults['error'] = $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
+        $importresults['error'] = gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
         return $importresults;
     }
 
     if  ((int)$importversion<112)
     {
-        $importresults['error'] = $clang->gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
+        $importresults['error'] = gT("This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported.");
         return $importresults;
     }
 
@@ -2606,17 +2606,17 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     {
         if ($importingfrom == "http")
         {
-            $importsurvey .= "<br /><div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
-            $importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
-            $importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br /><br />\n"; //Couldn't find the SID - cannot continue
-            $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+            $importsurvey .= "<br /><div class='warningheader'>".gT("Error")."</div><br />\n";
+            $importsurvey .= gT("Import of this survey file failed")."<br />\n";
+            $importsurvey .= gT("File does not contain LimeSurvey data in the correct format.")."<br /><br />\n"; //Couldn't find the SID - cannot continue
+            $importsurvey .= "<input type='submit' value='".gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
             $importsurvey .= "</div>\n";
             unlink($sFullFilePath); //Delete the uploaded file
             return;
         }
         else
         {
-            $clang->eT("Import of this survey file failed")."\n".$clang->gT("File does not contain LimeSurvey data in the correct format.")."\n";
+            eT("Import of this survey file failed")."\n".gT("File does not contain LimeSurvey data in the correct format.")."\n";
             return;
         }
     }
@@ -2640,7 +2640,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $surveyrowdata['sid']=$iNewSID;
     $surveyrowdata['active']='N';
 
-    if (validateTemplateDir($surveyrowdata['template'])!==$surveyrowdata['template']) $importresults['importwarnings'][] = sprintf($clang->gT('Template %s not found, please review when activating.'),$surveyrowdata['template']);
+    if (validateTemplateDir($surveyrowdata['template'])!==$surveyrowdata['template']) $importresults['importwarnings'][] = sprintf(gT('Template %s not found, please review when activating.'),$surveyrowdata['template']);
 
     //if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated'] = $connect->BindTimeStamp($surveyrowdata['datecreated']);}
     unset($surveyrowdata['attribute1']);
@@ -2659,7 +2659,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
     if (empty($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated'] = new CDbExpression('NOW()'); }
 
-    $iNewSID = Survey::model()->insertNewSurvey($surveyrowdata) or safeDie ("<br />".$clang->gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
+    $iNewSID = Survey::model()->insertNewSurvey($surveyrowdata) or safeDie ("<br />".gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
 
     // Now import the survey language settings
     $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
@@ -2687,7 +2687,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         unset($surveylsrowdata['surveyls_attributecaptions']);
         $surveylsrowdata['surveyls_survey_id']=$iNewSID;
 
-        $lsiresult = SurveyLanguageSetting::model()->insertNewSurvey($surveylsrowdata) or safeDie("<br />".$clang->gT("Import of this survey file failed")."<br />");
+        $lsiresult = SurveyLanguageSetting::model()->insertNewSurvey($surveylsrowdata) or safeDie("<br />".gT("Import of this survey file failed")."<br />");
 
     }
 
@@ -2825,7 +2825,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             //Now an additional integrity check if there are any groups not belonging into this survey
             if ($grouprowdata['sid'] != $iOldSID)
             {
-                $results['fatalerror'] = $clang->gT("A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped.")."<br />\n";
+                $results['fatalerror'] = gT("A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped.")."<br />\n";
                 return $results;
             }
             $grouprowdata['sid']=$iNewSID;
@@ -2851,7 +2851,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             if (isset($grouprowdata['gid'])) switchMSSQLIdentityInsert('groups',true);
 
 
-            $sInsertID = QuestionGroup::model()->insertRecords($grouprowdata) or safeDie($clang->gT('Error').": Failed to insert group<br />\<br />\n");
+            $sInsertID = QuestionGroup::model()->insertRecords($grouprowdata) or safeDie(gT('Error').": Failed to insert group<br />\<br />\n");
 
             if (isset($grouprowdata['gid'])) switchMSSQLIdentityInsert('groups',false);
             if (!isset($grouprowdata['gid']))
@@ -2956,12 +2956,12 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 $attempts++;
                 if ($attempts > 10)
                 {
-                    safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
                 }
             }
             if (!$oQuestion->save())
             {
-                // safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));  
+                // safeDie(gT("Error while saving: "). print_r($oQuestion->errors, true));  
                 //
                 // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                 // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -2972,7 +2972,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             // Set a warning if question title was updated
             if(isset($sNewTitle))
             {
-                $importresults['importwarnings'][] = sprintf($clang->gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
+                $importresults['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
                 $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                 unset($sNewTitle);
                 unset($sOldTitle);
@@ -3001,7 +3001,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                         if ($qtypes[$questionrowdata['type']]['subquestions']<2)
                         {
                             $aInsertData=array('qid'=>$aQIDReplacements[$oldqid],'code'=>$labelrow['code'],'answer'=>$labelrow['title'],'sortorder'=>$labelrow['sortorder'],'language'=>$labelrow['language'],'assessment_value'=>$labelrow['assessment_value']);
-                            Answer::model()->insertRecords($aInsertData) or safeDie($clang->gT("Error").": Failed to insert data [4]<br />");
+                            Answer::model()->insertRecords($aInsertData) or safeDie(gT("Error").": Failed to insert data [4]<br />");
                         }
                         else
                         {
@@ -3016,7 +3016,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
                             $qinsert = "insert INTO {{questions}} ($fieldname parent_qid,title,question,question_order,language,scale_id,type, sid, gid)
                             VALUES ($data{$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."',1,'{$questionrowdata['type']}',{$questionrowdata['sid']},{$questionrowdata['gid']})";
-                            $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
+                            $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie (gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                             if ($fieldname=='')
                             {
                                 $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=getLastInsertID('{{questions}}');
@@ -3034,7 +3034,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                     {
                         $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value,scale_id)
                         VALUES ({$aQIDReplacements[$oldqid]},'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."','".$labelrow['assessment_value']."',1)";
-                        $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie ($clang->gT("Error").": Failed to insert answer (lid2)<br />\n$qinsert<br />\n");
+                        $qres = Yii::app()->db->createCommand($qinsert)->query() or safeDie (gT("Error").": Failed to insert answer (lid2)<br />\n$qinsert<br />\n");
                     }
                 }
             }
@@ -3059,7 +3059,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             }
             if ($answerrowdata===false)
             {
-                $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
+                $importquestion.='<br />'.gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
             }
             // Skip not supported languages
             if (!in_array($answerrowdata['language'],$aLanguagesSupported))
@@ -3148,12 +3148,12 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                     $attempts++;
                     if ($attempts > 10)
                     {
-                        safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                        safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$question->save())
                 {
-                    // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));  
+                    // safeDie(gT("Error while saving: "). print_r($question->errors, true));  
                     //
                     // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                     // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -3164,7 +3164,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 // Set a warning if question title was updated
                 if(isset($sNewTitle))
                 {
-                    $importresults['importwarnings'][] = sprintf($clang->gT("Title of subquestion %s was updated to %s."),$sOldTitle,$sNewTitle);// Maybe add the question title ?
+                    $importresults['importwarnings'][] = sprintf(gT("Title of subquestion %s was updated to %s."),$sOldTitle,$sNewTitle);// Maybe add the question title ?
                     $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                     unset($sNewTitle);
                     unset($sOldTitle);
@@ -3342,7 +3342,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $asrowdata=array("quotals_quota_id" => $newquotaid,
             "quotals_language" => $defaultsurveylanguage,
             "quotals_name" => $quotadata[$i]["name"],
-            "quotals_message" => $clang->gT("Sorry your responses have exceeded a quota on this survey."),
+            "quotals_message" => gT("Sorry your responses have exceeded a quota on this survey."),
             "quotals_url" => "",
             "quotals_urldescrip" => "");
             $i++;
@@ -3504,7 +3504,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true, $bConvertInvalidQuestionCodes=true)
 {
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+    
 
     $aGIDReplacements = array();
     if ($sXMLdata == NULL)
@@ -3515,7 +3515,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     if (!$xml || $xml->LimeSurveyDocType!='Survey')
     {
-        $results['error'] = $clang->gT("This is not a valid LimeSurvey survey structure XML file.");
+        $results['error'] = gT("This is not a valid LimeSurvey survey structure XML file.");
         return $results;
     }
 
@@ -3611,10 +3611,10 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         // Fill a optionnal array of error
         foreach($aBadData as $key=>$value)
         {
-            $results['importwarnings'][]=sprintf($clang->gT("This survey setting has not been imported: %s => %s"),$key,$value);
+            $results['importwarnings'][]=sprintf(gT("This survey setting has not been imported: %s => %s"),$key,$value);
         }
         
-        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [1]<br />");
+        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie(gT("Error").": Failed to insert data [1]<br />");
 
         $results['surveys']++;
     }
@@ -3658,7 +3658,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         
 
 
-        $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [2]<br />");
+        $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or safeDie(gT("Error").": Failed to insert data [2]<br />");
     }
 
 
@@ -3691,7 +3691,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 switchMSSQLIdentityInsert('groups',true);
                 $insertdata['gid']=$aGIDReplacements[$oldgid];
             }
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [3]<br />");
+            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
             $results['groups']++;
 
             if (!isset($aGIDReplacements[$oldgid]))
@@ -3782,12 +3782,12 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $attempts++;
                 if ($attempts > 10)
                 {
-                    safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
                 }
             }
             if (!$oQuestion->save())
             {
-                // safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));  
+                // safeDie(gT("Error while saving: "). print_r($oQuestion->errors, true));  
                 //
                 // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                 // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -3798,7 +3798,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // Set a warning if question title was updated
             if(isset($sNewTitle))
             {
-                $results['importwarnings'][] = sprintf($clang->gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
+                $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
                 $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                 unset($sNewTitle);
                 unset($sOldTitle);
@@ -3890,12 +3890,12 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $attempts++;
                 if ($attempts > 10)
                 {
-                    safeDie($clang->gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
                 }
             }
             if (!$question->save())
             {
-                // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));  
+                // safeDie(gT("Error while saving: "). print_r($question->errors, true));  
                 //
                 // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                 // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -3906,7 +3906,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // Set a warning if question title was updated
             if(isset($sNewTitle))
             {
-                $results['importwarnings'][] = sprintf($clang->gT("Title of subquestion %s was updated to %s."),$sOldTitle,$sNewTitle);// Maybe add the question title ?
+                $results['importwarnings'][] = sprintf(gT("Title of subquestion %s was updated to %s."),$sOldTitle,$sNewTitle);// Maybe add the question title ?
                 $aQuestionCodeReplacements[$sOldTitle]=$sNewTitle;
                 unset($sNewTitle);
                 unset($sOldTitle);
@@ -3991,12 +3991,12 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                     $insertdata['language']=$sLanguage;
                     if ($insertdata)
                         XSSFilterArray($insertdata);
-                    $result=QuestionAttribute::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[7]<br />");
+                    $result=QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[7]<br />");
                 }
             }
             else
             {
-                $result=QuestionAttribute::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[8]<br />");
+                $result=QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[8]<br />");
             }
             $results['question_attributes']++;
         }
@@ -4020,7 +4020,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if ($insertdata)
                 XSSFilterArray($insertdata);
             // now translate any links
-            $result=DefaultValue::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[9]<br />");
+            $result=DefaultValue::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[9]<br />");
             $results['defaultvalues']++;
         }
     }
@@ -4097,7 +4097,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
 
             // now translate any links
-            $result=Condition::model()->insertRecords($insertdata) or safeDie ($clang->gT("Error").": Failed to insert data[10]<br />");
+            $result=Condition::model()->insertRecords($insertdata) or safeDie (gT("Error").": Failed to insert data[10]<br />");
             $results['conditions']++;
         }
     }
@@ -4123,7 +4123,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['sid']=$iNewSID; // remap the survey id
             unset($insertdata['id']);
             // now translate any links
-            $result=Assessment::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[11]<br />");
+            $result=Assessment::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[11]<br />");
             $results['assessments']++;
         }
     }
@@ -4144,7 +4144,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $oldid=$insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result=Quota::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[12]<br />");
+            $result=Quota::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[12]<br />");
             $aQuotaReplacements[$oldid] = getLastInsertID('{{quota}}');
             $results['quota']++;
         }
@@ -4166,7 +4166,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['quota_id']=$aQuotaReplacements[(int)$insertdata['quota_id']]; // remap the qid
             unset($insertdata['id']);
             // now translate any links
-            $result=QuotaMember::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[13]<br />");
+            $result=QuotaMember::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[13]<br />");
             $results['quotamembers']++;
         }
     }
@@ -4184,7 +4184,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             $insertdata['quotals_quota_id']=$aQuotaReplacements[(int)$insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            $result=QuotaLanguageSetting::model()->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data<br />");
+            $result=QuotaLanguageSetting::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data<br />");
             $results['quotals']++;
         }
     }
@@ -4210,7 +4210,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['targetqid'] =$aQIDReplacements[(int)$insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result=SurveyURLParameter::model()->insertRecord($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[14]<br />");
+            $result=SurveyURLParameter::model()->insertRecord($insertdata) or safeDie(gT("Error").": Failed to insert data[14]<br />");
             $results['survey_url_parameters']++;
         }
     }
@@ -4223,7 +4223,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     translateInsertansTags($iNewSID,$iOldSID,$aOldNewFieldmap);
     replaceExpressionCodes($iNewSID,$aQuestionCodeReplacements);
     if (count($aQuestionCodeReplacements)) {
-          array_unshift($results['importwarnings'] , "<span class='warningtitle'>".$clang->gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span)>');
+          array_unshift($results['importwarnings'] , "<span class='warningtitle'>".gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span)>');
     }
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
@@ -4267,13 +4267,13 @@ function GetNewSurveyID($iOldSID)
 function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeFields=true)
 {
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+    
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     $results['warnings']=array();
     if ($xml->LimeSurveyDocType!='Tokens')
     {
-        $results['error'] = $clang->gT("This is not a valid token data XML file.");
+        $results['error'] = gT("This is not a valid token data XML file.");
         return $results;
     }
 
@@ -4323,7 +4323,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
 		$token->setAttributes($insertdata, false);
         if (!$token->save())
         {                   
-            $results['warnings'][]=$clang->gT("Skipped tokens entry:").' '. implode('. ',$token->errors['token']);
+            $results['warnings'][]=gT("Skipped tokens entry:").' '. implode('. ',$token->errors['token']);
         };
         $results['tokens']++;
     }
@@ -4336,7 +4336,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
 function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 {
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+    
 
     switchMSSQLIdentityInsert('survey_'.$iSurveyID, true);
     $results['responses']=0;
@@ -4349,7 +4349,7 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
             $oXMLReader->read();
             if ($oXMLReader->value!='Responses')
             {
-                $results['error'] = $clang->gT("This is not a valid response data XML file.");
+                $results['error'] = gT("This is not a valid response data XML file.");
                 return $results;
             }
         }
@@ -4380,7 +4380,7 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
                         }
                     }
                     
-                    $result = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie($clang->gT("Error").": Failed to insert data[16]<br />");
+                    $result = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie(gT("Error").": Failed to insert data[16]<br />");
                     $results['responses']++;
                 }
             }
@@ -4403,7 +4403,7 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 */
 function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
 {
-    $clang = Yii::app()->lang;
+    
     // Default optional
     if(!isset($aOptions['bDeleteFistLine'])){$aOptions['bDeleteFistLine']=true;} // By default delete first line (vvimport)
     if(!isset($aOptions['sExistingId'])){$aOptions['sExistingId']="ignore";} // By default exclude existing id
@@ -4437,7 +4437,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     $aLemFieldNames=LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
     $aKeyForFieldNames=array();// An array assicated each fieldname with corresponding responses key
     if(!$aCsvHeader){
-        $CSVImportResult['errors'][]=$clang->gT("File seems empty or has only one line");
+        $CSVImportResult['errors'][]=gT("File seems empty or has only one line");
         return $CSVImportResult;
     }
     // Assign fieldname with $aFileResponses[] key
@@ -4485,7 +4485,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     }
     // check if forced error failed
     if(isset($force_import_failed)){
-        $CSVImportResult['errors'][]=$clang->gT("Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey.");
+        $CSVImportResult['errors'][]=gT("Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey.");
         return $CSVImportResult;
     }
 
@@ -4497,7 +4497,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
         }
     }
     if( ! isset($import_ok)){
-        $CSVImportResult['errors'][]=$clang->gT("Import failed: No answers could be mapped.");
+        $CSVImportResult['errors'][]=gT("Import failed: No answers could be mapped.");
         return $CSVImportResult;
     }
 
@@ -4630,23 +4630,23 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     // End of import
     // Construction of returned information
     if($iNbResponseLine){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s response lines in your file."),$iNbResponseLine);
+        $CSVImportResult['success'][]=sprintf(gT("%s response lines in your file."),$iNbResponseLine);
     }else{
-        $CSVImportResult['errors'][]=$clang->gT("No response lines in your file.");
+        $CSVImportResult['errors'][]=gT("No response lines in your file.");
     }
     if(count($aResponsesInserted)){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses were inserted."),count($aResponsesInserted));
+        $CSVImportResult['success'][]=sprintf(gT("%s responses were inserted."),count($aResponsesInserted));
         // Maybe add implode aResponsesInserted array
     }
     if(count($aResponsesUpdated)){
-        $CSVImportResult['success'][]=sprintf($clang->gT("%s responses were updated."),count($aResponsesUpdated));
+        $CSVImportResult['success'][]=sprintf(gT("%s responses were updated."),count($aResponsesUpdated));
     }
     if(count($aResponsesError)){
-        $CSVImportResult['errors'][]=sprintf($clang->gT("%s responses cannot be inserted or updated."),count($aResponsesError));
+        $CSVImportResult['errors'][]=sprintf(gT("%s responses cannot be inserted or updated."),count($aResponsesError));
     }
     if(count($aExistingsId) && ($aOptions['sExistingId']=='skip' || $aOptions['sExistingId']=='ignore'))
     {
-        $CSVImportResult['warnings'][]=sprintf($clang->gT("%s responses already exist."),count($aExistingsId));
+        $CSVImportResult['warnings'][]=sprintf(gT("%s responses already exist."),count($aExistingsId));
     }
     return $CSVImportResult;
 }
@@ -4656,12 +4656,12 @@ function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 {
 
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+    
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     if ($xml->LimeSurveyDocType!='Timings')
     {
-        $results['error'] = $clang->gT("This is not a valid timings data XML file.");
+        $results['error'] = gT("This is not a valid timings data XML file.");
         return $results;
     }
 
@@ -4693,7 +4693,7 @@ function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
             $insertdata[$key]=(string)$value;
         }
 
-        $result = SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or safeDie($clang->gT("Error").": Failed to insert data[17]<br />");
+        $result = SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[17]<br />");
 
         $results['responses']++;
     }
@@ -4732,7 +4732,7 @@ function XSSFilterArray(&$array)
 */
 function TSVImportSurvey($sFullFilePath)
 {
-    $clang = Yii::app()->lang;
+    
 
     $insertdata=array();
     $results=array();
@@ -4850,7 +4850,7 @@ function TSVImportSurvey($sFullFilePath)
     $surveyinfo['active']='N';
    // unset($surveyinfo['datecreated']);
     switchMSSQLIdentityInsert('surveys',true);
-    $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) ; //or safeDie($clang->gT("Error").": Failed to insert survey<br />");
+    $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) ; //or safeDie(gT("Error").": Failed to insert survey<br />");
     if ($iNewSID==false)
     {
         $results['error'] = Survey::model()->getErrors();
@@ -4887,7 +4887,7 @@ function TSVImportSurvey($sFullFilePath)
 
         $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata);//
         if(!$result){
-            $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Failed to insert survey language");
+            $results['error'][] = gT("Error")." : ".gT("Failed to insert survey language");
             break;
         }
         $results['languages']++;
@@ -4943,7 +4943,7 @@ function TSVImportSurvey($sFullFilePath)
                 }
                 $newgid = QuestionGroup::model()->insertRecords($insertdata);
                 if(!$newgid){
-                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Failed to insert group").". ".$clang->gT("Text file row number ").$rownumber." (".$gname.")";
+                    $results['error'][] = gT("Error")." : ".gT("Failed to insert group").". ".gT("Text file row number ").$rownumber." (".$gname.")";
                     break;
                 }
                 if (!isset($ginfo[$sGroupseq]))
@@ -4991,7 +4991,7 @@ function TSVImportSurvey($sFullFilePath)
                 // Insert question and keep the qid for multi language survey
                 $result = Question::model()->insertRecords($insertdata);
                 if(!$result){
-                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert question").". ".$clang->gT("Text file row number ").$rownumber." (".$qname.")";
+                    $results['error'][] = gT("Error")." : ".gT("Could not insert question").". ".gT("Text file row number ").$rownumber." (".$qname.")";
                     break;
                 }
                 $newqid = $result;
@@ -5040,7 +5040,7 @@ function TSVImportSurvey($sFullFilePath)
                                 $insertdata['value'] = $val;
                                 $result=QuestionAttribute::model()->insertRecords($insertdata);//
                                 if(!$result){
-                                    $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert question attribute").". ".$clang->gT("Text file row number ").$rownumber." ({$key})";
+                                    $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert question attribute").". ".gT("Text file row number ").$rownumber." ({$key})";
                                     break;
                                 }
                                 $results['question_attributes']++;
@@ -5058,7 +5058,7 @@ function TSVImportSurvey($sFullFilePath)
                     $insertdata['defaultvalue'] = $row['default'];
                     $result = DefaultValue::model()->insertRecords($insertdata);
                     if(!$result){
-                        $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Text file row number ").$rownumber;
+                        $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                         break;
                     }
                     $results['defaultvalues']++;
@@ -5084,7 +5084,7 @@ function TSVImportSurvey($sFullFilePath)
                             $insertdata['defaultvalue'] = $row['default'];
                             $result = DefaultValue::model()->insertRecords($insertdata);
                             if(!$result){
-                                $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Text file row number ").$rownumber;
+                                $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                                 break;
                             }
                             $results['defaultvalues']++;
@@ -5122,7 +5122,7 @@ function TSVImportSurvey($sFullFilePath)
                     // Insert sub question and keep the sqid for multi language survey
                     $newsqid = Question::model()->insertRecords($insertdata);
                     if(!$newsqid){
-                        $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert subquestion").". ".$clang->gT("Text file row number ").$rownumber." (".$qname.")";
+                        $results['error'][] = gT("Error")." : ".gT("Could not insert subquestion").". ".gT("Text file row number ").$rownumber." (".$qname.")";
                         break;
                     }
                     if (!isset($sqinfo[$fullsqname]))
@@ -5144,7 +5144,7 @@ function TSVImportSurvey($sFullFilePath)
                         $insertdata['defaultvalue'] = $row['default'];
                         $result = DefaultValue::model()->insertRecords($insertdata);
                         if(!$result){
-                            $results['importwarnings'][] = $clang->gT("Warning")." : ".$clang->gT("Failed to insert default value").". ".$clang->gT("Text file row number ").$rownumber;
+                            $results['importwarnings'][] = gT("Warning")." : ".gT("Failed to insert default value").". ".gT("Text file row number ").$rownumber;
                             break;
                         }
                         $results['defaultvalues']++;
@@ -5162,7 +5162,7 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['sortorder'] = ++$aseq;
                 $result = Answer::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
                 if(!$result){
-                    $results['error'][] = $clang->gT("Error")." : ".$clang->gT("Could not insert answer").". ".$clang->gT("Text file row number ").$rownumber;
+                    $results['error'][] = gT("Error")." : ".gT("Could not insert answer").". ".gT("Text file row number ").$rownumber;
                 }
                 $results['answers']++;
                 break;

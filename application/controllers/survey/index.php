@@ -53,7 +53,7 @@ class index extends CAction {
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
         global $clang;
-        $clang = Yii::app()->lang;
+        
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
         if(isset(Yii::app()->session->connectionID)) {
@@ -95,9 +95,9 @@ class index extends CAction {
         {
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>$clang->langcode,'newtest'=>'Y'));
             $asMessage = array(
-            $clang->gT('Token mismatch'),
-            $clang->gT('The token you provided doesn\'t match the one in your session.'),
-            "<a class='reloadlink newsurvey' href={$sReloadUrl}>".$clang->gT("Click here to start the survey.")."</a>"
+            gT('Token mismatch'),
+            gT('The token you provided doesn\'t match the one in your session.'),
+            "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
             );
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
@@ -108,9 +108,9 @@ class index extends CAction {
             if($clienttoken){$aReloadUrlParam['token']=$clienttoken;}
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam);
             $asMessage = array(
-            $clang->gT('Previous session is set to be finished.'),
-            $clang->gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
-            "<a class='reloadlink newsurvey' href={$sReloadUrl}>".$clang->gT("Click here to start the survey.")."</a>"
+            gT('Previous session is set to be finished.'),
+            gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
+            "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
             );
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
@@ -121,8 +121,8 @@ class index extends CAction {
             if(!$this->_canUserPreviewSurvey($surveyid))
             {
                 $asMessage = array(
-                    $clang->gT('Error'),
-                    $clang->gT("We are sorry but you don't have permissions to do this.")
+                    gT('Error'),
+                    gT("We are sorry but you don't have permissions to do this.")
                 );
                 $this->_niceExit($redata, __LINE__, null, $asMessage);
             }
@@ -140,9 +140,9 @@ class index extends CAction {
             if ($bPreviewRight === false)
             {
                 $asMessage = array(
-                $clang->gT("Error"),
-                $clang->gT("We are sorry but you don't have permissions to do this."),
-                sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                gT("Error"),
+                gT("We are sorry but you don't have permissions to do this."),
+                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
                 $this->_niceExit($redata, __LINE__, null, $asMessage);
             }
@@ -164,10 +164,10 @@ class index extends CAction {
         {
             // @TODO is this still required ?
             $asMessage = array(
-                $clang->gT("Error"),
-                $clang->gT("We are sorry but your session has expired."),
-                $clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
-                sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                gT("Error"),
+                gT("We are sorry but your session has expired."),
+                gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
+                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
             $this->_niceExit($redata, __LINE__, null, $asMessage);
         };
@@ -247,9 +247,9 @@ class index extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-            $clang->gT("Error"),
-            $clang->gT("This survey is no longer available."),
-            sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            gT("Error"),
+            gT("This survey is no longer available."),
+            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
@@ -260,9 +260,9 @@ class index extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-            $clang->gT("Error"),
-            $clang->gT("This survey is not yet started."),
-            sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            gT("Error"),
+            gT("This survey is not yet started."),
+            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
@@ -275,9 +275,9 @@ class index extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-            $clang->gT("Error"),
-            $clang->gT("You have already completed this survey."),
-            sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            gT("Error"),
+            gT("You have already completed this survey."),
+            sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
             );
 
             $this->_niceExit($redata, __LINE__, $thissurvey['templatedir'], $asMessage);
@@ -291,11 +291,11 @@ class index extends CAction {
             $sLoadPass=Yii::app()->request->getParam('loadpass');
             if ( isset($sLoadName) && !$sLoadName)
             {
-                $errormsg .= $clang->gT("You did not provide a name")."<br />\n";
+                $errormsg .= gT("You did not provide a name")."<br />\n";
             }
             if ( isset($sLoadPass) && !$sLoadPass)
             {
-                $errormsg .= $clang->gT("You did not provide a password")."<br />\n";
+                $errormsg .= gT("You did not provide a password")."<br />\n";
             }
 
             // if security question answer is incorrect
@@ -305,11 +305,11 @@ class index extends CAction {
                 $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
                 if(empty($sLoadSecurity))
                 {
-                    $errormsg .= $clang->gT("You did not answer to the security question.")."<br />\n";
+                    $errormsg .= gT("You did not answer to the security question.")."<br />\n";
                 }
                 elseif ( (!isset($_SESSION['survey_'.$surveyid]['secanswer']) || $sLoadSecurity != $_SESSION['survey_'.$surveyid]['secanswer']) )
                 {
-                    $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
+                    $errormsg .= gT("The answer to the security question is incorrect.")."<br />\n";
                 }
             }
 
@@ -323,7 +323,7 @@ class index extends CAction {
                     Yii::app()->setConfig('move','movenext');
                     $move = "movenext";// 140113 : deprecated ?
                 } else {
-                    $errormsg .= $clang->gT("There is no matching saved survey");
+                    $errormsg .= gT("There is no matching saved survey");
                 }
             }
             if ($errormsg) {
@@ -361,8 +361,8 @@ class index extends CAction {
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
                 $asMessage = array(
                 null,
-                $clang->gT("This is a controlled survey. You need a valid token to participate."),
-                sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
+                gT("This is a controlled survey. You need a valid token to participate."),
+                sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                 );
 
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
@@ -381,9 +381,9 @@ class index extends CAction {
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
                 $asMessage = array(
                 null,
-                $clang->gT("We are sorry but you are not allowed to enter this survey."),
-                $clang->gT("Your token is invalid, was already used or can only be used during a certain time period."),
-                sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
+                gT("We are sorry but you are not allowed to enter this survey."),
+                gT("Your token is invalid, was already used or can only be used during a certain time period."),
+                sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                 );
 
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
@@ -532,7 +532,7 @@ class index extends CAction {
 
         if (isset($_POST['saveall']) || isset($flashmessage))
         {
-            echo "<script type='text/javascript'> $(document).ready( function() { alert('".$clang->gT("Your responses were successfully saved.","js")."');}) </script>";
+            echo "<script type='text/javascript'> $(document).ready( function() { alert('".gT("Your responses were successfully saved.","js")."');}) </script>";
         }
     }
 
@@ -562,24 +562,6 @@ class index extends CAction {
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("frontend");
         Yii::app()->loadHelper("surveytranslator");
-    }
-
-    function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
-    {
-        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang))
-        {
-            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
-        }
-        elseif (!empty($mvSurveyIdOrBaseLang))
-        {
-            $baselang = $mvSurveyIdOrBaseLang;
-        }
-        else
-        {
-            $baselang = Yii::app()->getConfig('defaultlang');
-        }
-        Yii::import("application.libraries.Limesurvey_lang");
-        return new Limesurvey_lang($baselang);
     }
 
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
@@ -640,7 +622,7 @@ class index extends CAction {
 
     function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
-        $clang = Yii::app()->lang;
+        
         killSurveySession($surveyid);
         $thissurvey=getSurveyInfo($surveyid);
         if($thissurvey)

@@ -137,8 +137,7 @@ class remotecontrol_handle
                     $sTitle = html_entity_decode($sSurveyTitle, ENT_QUOTES, "UTF-8");
 
                     // Load default email templates for the chosen language
-                    $oLanguage = new Limesurvey_lang($sSurveyLanguage);
-                    $aDefaultTexts = templateDefaultTexts($oLanguage, 'unescaped');
+                    $aDefaultTexts = templateDefaultTexts('unescaped');
                     unset($oLanguage);
 
                     $bIsHTMLEmail = false;

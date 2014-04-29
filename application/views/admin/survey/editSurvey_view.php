@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php $clang->eT("Edit survey settings");?></div>
+<div class='header ui-widget-header'><?php eT("Edit survey settings");?></div>
 <?php
     $data['clang'] = $clang;
     $data['action'] = $action;
@@ -31,16 +31,16 @@
 <?php
     if (Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update'))
     {?>
-    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) {$('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save"); ?></button></p>
-    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) { document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; $('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save & edit survey text elements");?> >></button></p><br /><?php
+    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) {$('#addnewsurvey').submit();}" class='standardbtn' ><?php eT("Save"); ?></button></p>
+    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) { document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; $('#addnewsurvey').submit();}" class='standardbtn' ><?php eT("Save & edit survey text elements");?> >></button></p><br /><?php
 }?>
 <div id='dlgEditParameter'>
     <div id='dlgForm' class='form30'>
         <ul>
-            <li><label for='paramname'><?php $clang->eT('Parameter name:'); ?></label><input name='paramname' id='paramname' type='text' size='20' />
+            <li><label for='paramname'><?php eT('Parameter name:'); ?></label><input name='paramname' id='paramname' type='text' size='20' />
             </li>
-            <li><label for='targetquestion'><?php $clang->eT('Target (sub-)question:'); ?></label><select name='targetquestion' id='targetquestion' size='1'>
-                    <option value=''><?php $clang->eT('(No target question)'); ?></option>
+            <li><label for='targetquestion'><?php eT('Target (sub-)question:'); ?></label><select name='targetquestion' id='targetquestion' size='1'>
+                    <option value=''><?php eT('(No target question)'); ?></option>
                     <?php foreach ($questions as $question){?>
                         <option value='<?php echo $question['qid'].'-'.$question['sqid'];?>'><?php echo $question['title'].': '.ellipsize(flattenText($question['question'],true,true),43,.70);
                                 if ($question['sqquestion']!='')
@@ -53,5 +53,5 @@
             </li>
         </ul>
     </div>
-    <p><button id='btnSaveParams'><?php $clang->eT('Save'); ?></button> <button id='btnCancelParams'><?php $clang->eT('Cancel'); ?></button> </p>
+    <p><button id='btnSaveParams'><?php eT('Save'); ?></button> <button id='btnCancelParams'><?php eT('Cancel'); ?></button> </p>
 </div>

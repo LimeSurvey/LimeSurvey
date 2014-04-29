@@ -149,7 +149,7 @@ class Authdb extends AuthPluginBase
             case 'xls':
                 $label = gT("Microsoft Excel");
                 if (!function_exists('iconv')) {
-                    $label .= '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>';
+                    $label .= '<font class="warningtitle">'.gT("(Iconv Library not installed)").'</font>';
                 }
                 $event->set('label', $label);
                 break;

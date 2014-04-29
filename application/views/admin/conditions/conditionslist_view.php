@@ -18,13 +18,13 @@
 
         <?php if ($scenariocount > 0)
             { // show the Delete all conditions for this question button ?>
-            <a href='#' onclick="if ( confirm('<?php $clang->eT("Are you sure you want to delete all conditions set to the questions you have selected?","js");?>')) { document.getElementById('deleteallconditions').submit();}">
-                <img src='<?php echo $sImageURL;?>conditions_deleteall_16.png'  alt='<?php $clang->eT("Delete all conditions");?>' /></a>
+            <a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to delete all conditions set to the questions you have selected?","js");?>')) { document.getElementById('deleteallconditions').submit();}">
+                <img src='<?php echo $sImageURL;?>conditions_deleteall_16.png'  alt='<?php eT("Delete all conditions");?>' /></a>
             <?php }
             if ($scenariocount > 1)
             { // show the renumber scenario button for this question ?>
-            <a href='#' onclick="if ( confirm('<?php $clang->eT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js");?>')) { document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}">
-                <img src='<?php echo $sImageURL;?>scenario_renumber.png'  alt='<?php $clang->eT("Renumber scenario automatically");?>' /></a>
+            <a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js");?>')) { document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}">
+                <img src='<?php echo $sImageURL;?>scenario_renumber.png'  alt='<?php eT("Renumber scenario automatically");?>' /></a>
             <?php }
         }
         else

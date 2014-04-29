@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo $adminlang; ?>"<?php echo $languageRTL;?>>
+<html lang="<?= App()->language; ?>" <?= App()->locale->orientation; ?>>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -15,8 +15,8 @@
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
-        if (getLanguageRTL($_SESSION['adminlang']))
-        {        
+        if (App()->locale->orientation == 'rtl')
+        {
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
         }
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
@@ -33,7 +33,6 @@
 <?php if(isset($formatdata)) { ?>
     <script type='text/javascript'>
         var userdateformat='<?php echo $formatdata['jsdate']; ?>';
-        var userlanguage='<?php echo $adminlang; ?>';
     </script>
     <?php } ?>
 <div class='wrapper'>

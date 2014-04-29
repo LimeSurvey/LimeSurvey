@@ -137,7 +137,7 @@ class export extends Survey_Common_Action {
         if ( ! isset($convertyto) ) { $convertyto = returnGlobal('convertyto'); }
         if ( ! isset($convertnto) ) { $convertnto = returnGlobal('convertnto'); }
         if ( ! isset($convertspacetous) ) { $convertspacetous = returnGlobal('convertspacetous'); }
-        $clang = Yii::app()->lang;
+        
 
         if ( ! Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export') )
         {
@@ -206,7 +206,7 @@ class export extends Survey_Common_Action {
             $data['surveyid'] = $iSurveyID;
             $data['imageurl'] = Yii::app()->getConfig('imageurl');
             $data['thissurvey'] = $thissurvey;
-            $data['display']['menu_bars']['browse'] = $clang->gT("Export results");
+            $data['display']['menu_bars']['browse'] = gT("Export results");
             
             // Export plugins, leave out all entries that are not plugin
             $exports = array_filter($exports);
@@ -237,7 +237,6 @@ class export extends Survey_Common_Action {
         // In the future it might be possible to 'post' the 'export language' from
         // the exportresults form
         $explang = $surveybaselang;
-        $elang = new limesurvey_lang($explang);
 
         //Get together our FormattingOptions and then call into the exportSurvey
         //function.
@@ -386,7 +385,7 @@ class export extends Survey_Common_Action {
             $data['selectshow'] = $selectshow;
             $data['spssver'] = $spssver;
             $data['surveyid'] = $iSurveyID;
-            $data['display']['menu_bars']['browse'] = $clang->gT('Export results');
+            $data['display']['menu_bars']['browse'] = gT('Export results');
 
             $this->_renderWrappedTemplate('export', 'spss_view', $data);
             return;
@@ -394,7 +393,6 @@ class export extends Survey_Common_Action {
         
         // Get Base language:
         $language = Survey::model()->findByPk($iSurveyID)->language;
-        $clang = new limesurvey_lang($language);
         Yii::app()->loadHelper("admin/exportresults");
         viewHelper::disableHtmlLogging();
 
@@ -619,7 +617,7 @@ class export extends Survey_Common_Action {
 
         if ( ! Permission::model()->hasSurveyPermission($iSurveyId, 'responses','export') )
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
+            Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
@@ -627,7 +625,7 @@ class export extends Survey_Common_Action {
         {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
-            $aData['display']['menu_bars']['browse'] = $clang->gT("Export VV file");
+            $aData['display']['menu_bars']['browse'] = gT("Export VV file");
             $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
 
             Survey::model()->findByPk($iSurveyId)->language;
@@ -776,9 +774,6 @@ class export extends Survey_Common_Action {
             $surveyprintlang=Survey::model()->findByPk($iSurveyID)->language;
         }
 
-        // Setting the selected language for printout
-        $clang = new limesurvey_lang($surveyprintlang);
-
         Yii::import("application.libraries.admin.quexmlpdf", TRUE);
         $quexmlpdf = new quexmlpdf($this->getController());
 
@@ -805,7 +800,7 @@ class export extends Survey_Common_Action {
         file_put_contents($f1, $quexmlpdf->getLayout());
         file_put_contents($f2, $quexmlpdf->Output("quexml_$qid.pdf", 'S'));
         file_put_contents($f3, $quexml);
-        file_put_contents($f4, $clang->gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
+        file_put_contents($f4, gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
 
         Yii::app()->loadLibrary('admin.pclzip');
         $zipfile="$tempdir/quexmlpdf_{$qid}_{$surveyprintlang}.zip";

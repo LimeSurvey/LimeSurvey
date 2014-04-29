@@ -11,17 +11,17 @@
     var participant_id = "<?php echo $participant_id; ?>";
 
     /* SCRIPT TEXT */
-    var attributesMappedText = "<?php $clang->eT("All the attributes are automatically mapped") ?>";
-    var mustPairAttributeText= "<?php $clang->eT("You have to pair it with one attribute of the token table") ?>";
-    var onlyOneAttributeMappedText="<?php $clang->eT("Only one central attribute is mapped with token attribute") ?>";
-    var cannotAcceptTokenAttributesText="<?php $clang->eT("This list cannot accept token attributes.") ?>";
+    var attributesMappedText = "<?php eT("All the attributes are automatically mapped") ?>";
+    var mustPairAttributeText= "<?php eT("You have to pair it with one attribute of the token table") ?>";
+    var onlyOneAttributeMappedText="<?php eT("Only one central attribute is mapped with token attribute") ?>";
+    var cannotAcceptTokenAttributesText="<?php eT("This list cannot accept token attributes.") ?>";
 
     </script>
 </head>
 <body>
     <div class='header ui-widget-header'>
         <strong>
-            <?php $clang->eT("Map your participant attributes to an existing token attribute or create a new one"); ?>
+            <?php eT("Map your participant attributes to an existing token attribute or create a new one"); ?>
         </strong>
     </div>
 <?php
@@ -34,7 +34,7 @@
 ?>
 
     <div id="centralattribute" class="<?php echo $columnstyle ?>">
-        <div class="heading"><?php $clang->eT("Unmapped participant attributes"); ?></div>
+        <div class="heading"><?php eT("Unmapped participant attributes"); ?></div>
         <ul id="cpdbatt">
             <?php
             foreach ($selectedcentralattribute as $key => $value)
@@ -47,13 +47,13 @@
         </ul>
     </div>
     <div id="newcreated" class="<?php echo $columnstyle ?>">
-        <div class="heading"><?php $clang->eT("Token attributes to create"); ?></div>
+        <div class="heading"><?php eT("Token attributes to create"); ?></div>
         <ul class="newcreate" id="sortable" style ="height:40px">
         </ul>
     </div>
     <div id="tokenattribute" class="<?php echo $columnstyle ?>">
         <div class="heading">
-            <?php $clang->eT("Existing token attributes"); ?>
+            <?php eT("Existing token attributes"); ?>
         </div>
         <ul class="tokenatt">
             <?php
@@ -66,15 +66,15 @@
         <?php if(!empty($selectedtokenattribute)) { ?>
         <br />
         <div class='explanation'>
-            <input type='checkbox' id='overwriteman' name='overwriteman' /> <label for='overwriteman'><?php $clang->eT("Overwrite existing token attribute values if a participant already exists?") ?></label>
-            <br /><input type='checkbox' id='createautomap' name='createautomap' /> <label for='createautomap'><?php $clang->eT("Make these mappings automatic in future") ?></label><br />&nbsp;
+            <input type='checkbox' id='overwriteman' name='overwriteman' /> <label for='overwriteman'><?php eT("Overwrite existing token attribute values if a participant already exists?") ?></label>
+            <br /><input type='checkbox' id='createautomap' name='createautomap' /> <label for='createautomap'><?php eT("Make these mappings automatic in future") ?></label><br />&nbsp;
         </div>
         <?php
         } else {echo "<br />&nbsp;";}
         if(!empty($alreadymappedattributename)) {
         ?>
         <br />
-        <div class='heading'><?php $clang->eT("Pre-mapped attributes") ?></div><br />
+        <div class='heading'><?php eT("Pre-mapped attributes") ?></div><br />
         <ul class="notsortable">
             <?php
             foreach ($alreadymappedattributename as $key => $value)
@@ -86,25 +86,25 @@
             ?>
         </ul>
         <div class='explanation'>
-            <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?></label>
+            <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php eT("Overwrite existing auto mapped attribute values if a participant already exists?") ?></label>
         </div>
         <?php
         }
         ?>
-        <div class='heading'><?php $clang->eT("Standard token fields") ?></div><br />
+        <div class='heading'><?php eT("Standard token fields") ?></div><br />
         <ul class="standardfields">
-            <li id='t_token'><?php $clang->eT("Token") ?></li>
+            <li id='t_token'><?php eT("Token") ?></li>
         </ul>
         <div class='explanation'>
-            <input type='checkbox' id='overwritest' name='overwritest' /> <label for='overwritest'><?php $clang->eT("Overwrite existing standard field values if a participant already exists?") ?></label>
-            <br /><?php $clang->eT("Note: Standard token fields cannot be automatically mapped") ?>
+            <input type='checkbox' id='overwritest' name='overwritest' /> <label for='overwritest'><?php eT("Overwrite existing standard field values if a participant already exists?") ?></label>
+            <br /><?php eT("Note: Standard token fields cannot be automatically mapped") ?>
         </div>
 
     </div>
 	<p>
-		<input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
-        <input type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php $clang->eT('Reset') ?>" />
-        <input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue')?>" />
+		<input type="button" name="goback" onclick="history.back();" id="back" value="<?php eT('Back')?>" />
+        <input type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php eT('Reset') ?>" />
+        <input type="button" name="attmap" id="attmap" value="<?php eT('Continue')?>" />
    	</p>
     <?php
     $ajaxloader = array(
@@ -113,7 +113,7 @@
         'title' => 'Ajax loader'
     );
     ?>
-    <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
+    <div id="processing" title="<?php eT("Processing...") ?>" style="display:none">
     <?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
     </div>
 

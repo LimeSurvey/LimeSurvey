@@ -63,7 +63,7 @@
                 $iSurveyID=0;
                 $sLanguage = Yii::app()->getConfig("defaultlang");
             }
-            $clang = SetSurveyLanguage($iSurveyID, $sLanguage);
+            SetSurveyLanguage($iSurveyID, $sLanguage);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             //SET THE TEMPLATE DIRECTORY
             if (!isset($aSurveyInfo['templatedir']) || !$aSurveyInfo['templatedir'])
@@ -79,9 +79,9 @@
                 doHeader();
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array());
                 echo "<center><br />\n"
-                ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
-                ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-                ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
+                ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
+                ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
+                ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array());
                 doFooter();
@@ -101,15 +101,15 @@
             //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
             //SHOW HEADER
             $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
-            ."<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+            ."<center><input type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
             if($sExportType == 'pdf')
             {
                 //require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
                 Yii::import('application.libraries.admin.pdf', true);
                 Yii::import('application.helpers.pdfHelper');
-                $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($clang->langcode);
+                $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings(App()->language);
                 $oPDF = new pdf();
-                $oPDF->SetTitle($clang->gT("Survey name (ID)",'unescaped').": {$sSurveyName} ({$iSurveyID})");
+                $oPDF->SetTitle(gT("Survey name (ID)",'unescaped').": {$sSurveyName} ({$iSurveyID})");
                 $oPDF->SetSubject($sSurveyName);
                 $oPDF->SetDisplayMode('fullpage', 'two');
                 $oPDF->setLanguageArray($aPdfLanguageSettings['lg']);
@@ -117,9 +117,9 @@
                 $oPDF->setFooterFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_DATA));
                 $oPDF->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
                 $oPDF->AddPage();
-                $oPDF->titleintopdf($clang->gT("Survey name (ID)",'unescaped').": {$sSurveyName} ({$iSurveyID})");
+                $oPDF->titleintopdf(gT("Survey name (ID)",'unescaped').": {$sSurveyName} ({$iSurveyID})");
             }
-            $sOutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
+            $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
             LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
             // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
             LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);

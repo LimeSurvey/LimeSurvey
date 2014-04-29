@@ -221,7 +221,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     $length_vallabel = 120;
-    $clang = Yii::app()->lang;
+    
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
     $answers=array();
@@ -280,30 +280,30 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         }
     } elseif ($field['LStype'] == 'M' && substr($field['code'],-5) != 'other' && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
-        $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
+        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+        $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
     } elseif ($field['LStype'] == "P" && substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment')
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
-        $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
+        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+        $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
     } elseif ($field['LStype'] == "G" && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Female'));
-        $answers[] = array('code'=>2, 'value'=>$clang->gT('Male'));
+        $answers[] = array('code'=>1, 'value'=>gT('Female'));
+        $answers[] = array('code'=>2, 'value'=>gT('Male'));
     } elseif ($field['LStype'] == "Y" && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
-        $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
+        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+        $answers[] = array('code'=>2, 'value'=>gT('No'));
     } elseif ($field['LStype'] == "C" && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
-        $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
-        $answers[] = array('code'=>3, 'value'=>$clang->gT('Uncertain'));
+        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+        $answers[] = array('code'=>2, 'value'=>gT('No'));
+        $answers[] = array('code'=>3, 'value'=>gT('Uncertain'));
     } elseif ($field['LStype'] == "E" && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Increase'));
-        $answers[] = array('code'=>2, 'value'=>$clang->gT('Same'));
-        $answers[] = array('code'=>3, 'value'=>$clang->gT('Decrease'));
+        $answers[] = array('code'=>1, 'value'=>gT('Increase'));
+        $answers[] = array('code'=>2, 'value'=>gT('Same'));
+        $answers[] = array('code'=>3, 'value'=>gT('Decrease'));
     }
     if (count($answers)>0) {
         //check the max width of the answers
@@ -905,7 +905,6 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
     global $dom;
 
     global $quexmllang;
-    $qlang = new limesurvey_lang($quexmllang);
 
     if ($labels)
         $Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
@@ -1000,8 +999,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
     global $dom;
     global $quexmllang ;
     global $iSurveyID;
-    $qlang = new limesurvey_lang($quexmllang);
-
+    
 
     $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
     if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
@@ -1123,8 +1121,6 @@ function quexml_export($surveyi, $quexmllan)
     global $dom, $quexmllang, $iSurveyID;
     $quexmllang = $quexmllan;
     $iSurveyID = $surveyi;
-
-    $qlang = new limesurvey_lang($quexmllang);
 
     $dom = new DOMDocument('1.0','UTF-8');
 

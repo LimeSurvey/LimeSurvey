@@ -2,17 +2,17 @@
 <div class='messagebox ui-corner-all'>
     <?php
         if ($bFailed){ ?>
-        <div class='errorheader'><?php $clang->eT("Error");?></div>
+        <div class='errorheader'><?php eT("Error");?></div>
         <?php echo $sErrorMessage; ?><br /><br />
-		<input type='submit' value='<?php $clang->eT("Main Admin Screen");?>' onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')"> 
-        <input type='submit' value='<?php $clang->eT("Import again");?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/newsurvey#import');?>', '_top')"><br /><br /></div>
+		<input type='submit' value='<?php eT("Main Admin Screen");?>' onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')"> 
+        <input type='submit' value='<?php eT("Import again");?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/newsurvey#import');?>', '_top')"><br /><br /></div>
     <?php } else
     {?>
-    <div class='successheader'><?php $clang->eT("Success");?></div>&nbsp;<br />
-    <?php $clang->eT("File upload succeeded.");?> <?php $clang->eT("Reading file..");?><br />
+    <div class='successheader'><?php eT("Success");?></div>&nbsp;<br />
+    <?php eT("File upload succeeded.");?> <?php eT("Reading file..");?><br />
     <?php if (isset($aImportResults['error']) && $aImportResults['error']!=false)
         {?>
-        <div class='warningheader'><?php $clang->eT("Error");?></div><br />
+        <div class='warningheader'><?php eT("Error");?></div><br />
         <?php
         	if(is_array($aImportResults['error']))
         	{
@@ -23,57 +23,57 @@
 	        	echo $aImportResults['error'];
         	} 
     		?><br /><br />
-        <input type='submit' value='<?php $clang->eT("Main Admin Screen");?>' onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')" />
+        <input type='submit' value='<?php eT("Main Admin Screen");?>' onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')" />
         <?php } else
         {?>
 
-        <br /><div class='successheader'><?php $clang->eT("Success");?></div>
+        <br /><div class='successheader'><?php eT("Success");?></div>
         <strong><?php echo $sSummaryHeader; ?></strong><br />
 
         <ul style="text-align:left;">
-            <li><?php $clang->eT("Surveys");?>: <?php echo $aImportResults['surveys'];?></li>
-            <li><?php $clang->eT("Languages");?>: <?php echo $aImportResults['languages'];?></li>
-            <li><?php $clang->eT("Question groups");?>: <?php echo $aImportResults['groups'];?></li>
-            <li><?php $clang->eT("Questions");?>: <?php echo $aImportResults['questions'];?></li>
-            <li><?php $clang->eT("Question attributes");?>: <?php echo $aImportResults['question_attributes'];?></li>
-            <li><?php $clang->eT("Answers");?>: <?php echo $aImportResults['answers'];?></li>
+            <li><?php eT("Surveys");?>: <?php echo $aImportResults['surveys'];?></li>
+            <li><?php eT("Languages");?>: <?php echo $aImportResults['languages'];?></li>
+            <li><?php eT("Question groups");?>: <?php echo $aImportResults['groups'];?></li>
+            <li><?php eT("Questions");?>: <?php echo $aImportResults['questions'];?></li>
+            <li><?php eT("Question attributes");?>: <?php echo $aImportResults['question_attributes'];?></li>
+            <li><?php eT("Answers");?>: <?php echo $aImportResults['answers'];?></li>
             <?php if (isset($aImportResults['subquestions']))
                 {?>
-                <li><?php $clang->eT("Subquestions");?>: <?php echo $aImportResults['subquestions'];?></li>
+                <li><?php eT("Subquestions");?>: <?php echo $aImportResults['subquestions'];?></li>
                 <?php }
                 if (isset($aImportResults['defaultvalues']))
                 {?>
-                <li><?php $clang->eT("Default answers");?>: <?php echo $aImportResults['defaultvalues'];?></li>
+                <li><?php eT("Default answers");?>: <?php echo $aImportResults['defaultvalues'];?></li>
                 <?php }
                 if (isset($aImportResults['conditions']))
                 {?>
-                <li><?php $clang->eT("Condition");?>: <?php echo $aImportResults['conditions'];?></li>
+                <li><?php eT("Condition");?>: <?php echo $aImportResults['conditions'];?></li>
                 <?php }
                 if (isset($aImportResults['labelsets']))
                 {?>
-                <li><?php $clang->eT("Label sets");?>: <?php echo $aImportResults['labelsets'];?></li>
+                <li><?php eT("Label sets");?>: <?php echo $aImportResults['labelsets'];?></li>
                 <?php }
                 if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls']>0)
                 {?>
-                <li><?php $clang->eT("Not imported label sets");?>: <?php echo $aImportResults['deniedcountls'];?> <?php $clang->eT("(Label sets were not imported since you do not have the permission to create new label sets.)"); ?> </li>
+                <li><?php eT("Not imported label sets");?>: <?php echo $aImportResults['deniedcountls'];?> <?php eT("(Label sets were not imported since you do not have the permission to create new label sets.)"); ?> </li>
                 <?php }?>
-            <li><?php $clang->eT("Assessments");?>: <?php echo $aImportResults['assessments'];?></li>
-            <li><?php $clang->eT("Quotas");?>: <?php echo $aImportResults['quota'];?> (<?php echo $aImportResults['quotamembers']?> <?php $clang->eT("quota members");?> <?php $clang->eT("and");?> <?php echo $aImportResults['quotals']?> <?php $clang->eT("quota language settings"); ?></li>
+            <li><?php eT("Assessments");?>: <?php echo $aImportResults['assessments'];?></li>
+            <li><?php eT("Quotas");?>: <?php echo $aImportResults['quota'];?> (<?php echo $aImportResults['quotamembers']?> <?php eT("quota members");?> <?php eT("and");?> <?php echo $aImportResults['quotals']?> <?php eT("quota language settings"); ?></li>
 
         </ul>
         <?php
             if (isset($aImportResults['responses']))
             {?>
-            <strong><?php $clang->eT("Response import summary"); ?></strong><br />
+            <strong><?php eT("Response import summary"); ?></strong><br />
             <ul>
-                <li><?php $clang->eT("Responses");?>: <?php echo $aImportResults['responses'];?></li>
+                <li><?php eT("Responses");?>: <?php echo $aImportResults['responses'];?></li>
                 <?php }?>
         </ul>
         <br />
         <?php
             if (count($aImportResults['importwarnings'])>0)
             { ?>
-            <div class='warningheader'><?php $clang->eT("Warnings");?>:</div>
+            <div class='warningheader'><?php eT("Warnings");?>:</div>
             <ul style="text-align:left;">
                 <?php
                     foreach ($aImportResults['importwarnings'] as $warning)
@@ -85,14 +85,14 @@
             <?php }
             if ($action == 'importsurvey')
             {?>
-            <strong><?php $clang->eT("Import of survey is completed.");?></strong><br />
+            <strong><?php eT("Import of survey is completed.");?></strong><br />
             <?php }
             elseif($action == 'copysurvey')
             {?>
-            <strong><?php $clang->eT("Copy of survey is completed.");?></strong><br />
+            <strong><?php eT("Copy of survey is completed.");?></strong><br />
             <?php } ?>
 			<br>
-        <input type='submit' value='<?php $clang->eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />
+        <input type='submit' value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />
         <?php } ?>
     </div><br />
     <?php }?>

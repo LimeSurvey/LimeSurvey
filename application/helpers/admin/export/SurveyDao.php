@@ -16,7 +16,7 @@ class SurveyDao
     public function loadSurveyById($id, $lang = null)
     {
         $survey = new SurveyObj();
-        $clang = Yii::app()->lang;
+        
 
         $intId = sanitize_int($id);
         $survey->id = $intId;
@@ -28,7 +28,6 @@ class SurveyDao
             $lang = Survey::model()->findByPk($intId)->language;
         }
 
-        $clang = new limesurvey_lang($lang);
         $survey->fieldMap = createFieldMap($intId,'full',true,false,$lang);
         // Check to see if timings are present and add to fieldmap if needed
         if ($survey->info['savetimings']=="Y") {

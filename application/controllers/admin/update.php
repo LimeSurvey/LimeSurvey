@@ -264,10 +264,10 @@ class update extends Survey_Common_Action
         $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
         if ($v_list == 0) {
-            $aFileBackup= array('class'=>'error','text'=>sprintf($clang->gT("Error on file backup: %s"),$archive->errorInfo(true)));
+            $aFileBackup= array('class'=>'error','text'=>sprintf(gT("Error on file backup: %s"),$archive->errorInfo(true)));
         }
         else{
-            $aFileBackup= array('class'=>'success','text'=>sprintf($clang->gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
+            $aFileBackup= array('class'=>'success','text'=>sprintf(gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
         }
         $aData['aFileBackup']=$aFileBackup;
 
@@ -289,22 +289,22 @@ class update extends Survey_Common_Action
                     $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
                     unlink($sfilename);
                     if ($v_list == 0) {// Unknow reason because backup of DB work ?
-                        $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                        $aSQLBackup=array('class'=>'warning','text'=>gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                     }
                     else
                     {
-                        $aSQLBackup=array('class'=>'success','text'=>sprintf($clang->gT('DB backup created: %s'),htmlspecialchars($dfilename)));
+                        $aSQLBackup=array('class'=>'success','text'=>sprintf(gT('DB backup created: %s'),htmlspecialchars($dfilename)));
                     }
                 }
                 else
                 {
-                    $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                    $aSQLBackup=array('class'=>'warning','text'=>gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                 }
             }
         }
         else
         {
-            $aSQLBackup=array('class'=>'warning','text'=>$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
+            $aSQLBackup=array('class'=>'warning','text'=>gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
         }
         $aData['aSQLBackup']=$aSQLBackup;
         if($aFileBackup['class']=="success" && $aSQLBackup['class']=="success") {
@@ -444,9 +444,6 @@ class update extends Survey_Common_Action
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversions','');
-        // We create this new language object here because the language files might have been overwritten earlier
-        // and the pointers to the file from the application language are not valid anymore 
-        Yii::app()->lang = $aData['clang'] = new Limesurvey_lang(Yii::app()->session['adminlang'],true);
         $this->_renderWrappedTemplate('update', 'step4', $aData);
     }
 

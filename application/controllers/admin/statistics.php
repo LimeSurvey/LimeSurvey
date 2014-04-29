@@ -118,7 +118,7 @@ class statistics extends Survey_Common_Action {
 		App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'statistics.js');
 		App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'json-js/json2.min.js');
 
-		$aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
+		$aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
 		//Select public language file
 		$row  = Survey::model()->find('sid = :sid', array(':sid' => $surveyid));
@@ -180,13 +180,13 @@ class statistics extends Survey_Common_Action {
         $error = '';
 		if (!function_exists("gd_info")) {
 			$grapherror = true;
-            $error.='<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
-            $error.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+            $error.='<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+            $error.='<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
 		}
 		elseif (!function_exists("imageftbbox")) {
 		    $grapherror = true;
-            $error.='<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
-            $error.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+            $error.='<br />'.gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+            $error.='<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
 		}
 
 		if ($grapherror)
@@ -326,7 +326,7 @@ class statistics extends Survey_Common_Action {
 
 
 
-		        case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+		        case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
 		            //get answers
 		            $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] AND language = '{$language}'", 'question_order');
 		            $aData['result'][$key1] = $result;
@@ -524,9 +524,7 @@ class statistics extends Survey_Common_Action {
         $MyCache = new pCache($tempdir.'/');
 	    $aData['success'] = 1;
         $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
-        $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);  
-
-	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
+        if (isset($_POST['cmd']) && isset($_POST['id'])) {
 	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);
             if(!is_numeric(substr($qsid,0,1))) {
                 // Strip first char when not numeric (probably T or D)

@@ -101,7 +101,7 @@ class database extends Survey_Common_Action
                     }
                 }
             }
-            Yii::app()->session['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
+            Yii::app()->session['flashmessage'] = gT("Default value settings were successfully saved.");
             LimeExpressionManager::SetDirtyFlag();
 
             if ($sDBOutput != '')
@@ -159,7 +159,7 @@ class database extends Survey_Common_Action
                         'scale_id'=>$iScaleID));
                         if (!$iInsertCount) // Checked
                         {
-                            Yii::app()->setFlashMessage($clang->gT("Failed to update answers"),'error');
+                            Yii::app()->setFlashMessage(gT("Failed to update answers"),'error');
                         }
                     } // foreach ($alllanguages as $language)
                     if(isset($sOldCode) && $sCode !== $sOldCode) {
@@ -171,11 +171,11 @@ class database extends Survey_Common_Action
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
             if (!Yii::app()->request->getPost('bFullPOST'))
             {
-                Yii::app()->setFlashMessage($clang->gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."));
+                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."));
             }
             else
             {
-                Yii::app()->session['flashmessage']= $clang->gT("Answer options were successfully saved.");
+                Yii::app()->session['flashmessage']= gT("Answer options were successfully saved.");
             }
             LimeExpressionManager::SetDirtyFlag();
             if ($sDBOutput != '')
@@ -212,7 +212,7 @@ class database extends Survey_Common_Action
                     $iInsertCount = Question::model()->deleteAllByAttributes(array('qid'=>$iDeletedQID));
                     if (!$iInsertCount)
                     {
-                        Yii::app()->setFlashMessage($clang->gT("Failed to delete answer"),'error');
+                        Yii::app()->setFlashMessage(gT("Failed to delete answer"),'error');
                     }
                 }
             }
@@ -300,16 +300,16 @@ class database extends Survey_Common_Action
                             $aErrors=$oSubQuestion->getErrors();
                             if(count($aErrors))
                             {
-                                //$sErrorMessage=$clang->gT("Question could not be updated with this errors:");
+                                //$sErrorMessage=gT("Question could not be updated with this errors:");
                                 foreach($aErrors as $sAttribute=>$aStringErrors)
                                 {
                                     foreach($aStringErrors as $sStringErrors)
-                                        Yii::app()->setFlashMessage(sprintf($clang->gT("Error on %s for subquestion %s: %s"), $sAttribute,$aCodes[$iScaleID][$iPosition],$sStringErrors),'error');
+                                        Yii::app()->setFlashMessage(sprintf(gT("Error on %s for subquestion %s: %s"), $sAttribute,$aCodes[$iScaleID][$iPosition],$sStringErrors),'error');
                                 }
                             }
                             else
                             {
-                                Yii::app()->setFlashMessage(sprintf($clang->gT("Subquestions %s could not be updated."),$aCodes[$iScaleID][$iPosition]),'error');
+                                Yii::app()->setFlashMessage(sprintf(gT("Subquestions %s could not be updated."),$aCodes[$iScaleID][$iPosition]),'error');
                             }
                         }
                         $iPosition++;
@@ -323,11 +323,11 @@ class database extends Survey_Common_Action
             {
                 if (!Yii::app()->request->getPost('bFullPOST'))
                 {
-                    Yii::app()->session['flashmessage'] = $clang->gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+                    Yii::app()->session['flashmessage'] = gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
                 }
                 else
                 {
-                    Yii::app()->session['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
+                    Yii::app()->session['flashmessage'] = gT("Subquestions were successfully saved.");
                 }
             }
             //$action='editsubquestions';
@@ -347,7 +347,7 @@ class database extends Survey_Common_Action
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
             {
-                Yii::app()->setFlashMessage($clang->gT("The question could not be added. You must enter at least a question code."),'error');
+                Yii::app()->setFlashMessage(gT("The question could not be added. You must enter at least a question code."),'error');
             }
             else
             {
@@ -392,7 +392,7 @@ class database extends Survey_Common_Action
                     foreach($aErrors as $sAttribute=>$aStringErrors)
                     {
                         foreach($aStringErrors as $sStringErrors)
-                            Yii::app()->setFlashMessage(sprintf($clang->gT("Question could not be created with error on %s: %s"), $sAttribute,$sStringErrors),'error');
+                            Yii::app()->setFlashMessage(sprintf(gT("Question could not be created with error on %s: %s"), $sAttribute,$sStringErrors),'error');
                     }
                 }
                 // Add other languages
@@ -431,12 +431,12 @@ class database extends Survey_Common_Action
                                 foreach($aErrors as $sAttribute=>$aStringErrors)
                                 {
                                     foreach($aStringErrors as $sStringErrors)
-                                        Yii::app()->setFlashMessage(sprintf($clang->gT("Question in language %s could not be created with error on %s: %s"), $alang, $sAttribute,$sStringErrors),'error');
+                                        Yii::app()->setFlashMessage(sprintf(gT("Question in language %s could not be created with error on %s: %s"), $alang, $sAttribute,$sStringErrors),'error');
                                 }
                             }
 #                            if (!$langqid)
 #                            {
-#                                Yii::app()->setFlashMessage($clang->gT("Question in language %s could not be created."),'error');
+#                                Yii::app()->setFlashMessage(gT("Question in language %s could not be created."),'error');
 #                            }
                         }
                     }
@@ -445,7 +445,7 @@ class database extends Survey_Common_Action
 
                 if (!$iQuestionID)
                 {
-                    Yii::app()->setFlashMessage($clang->gT("Question could not be created."),'error');
+                    Yii::app()->setFlashMessage(gT("Question could not be created."),'error');
 
                 } else {
                     if ($sAction == 'copyquestion') {
@@ -570,7 +570,7 @@ class database extends Survey_Common_Action
 
                     }
                     Question::model()->updateQuestionOrder($iQuestionGroupID, $iSurveyID);
-                    Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");
+                    Yii::app()->session['flashmessage'] =  gT("Question was successfully added.");
 
                 }
 
@@ -717,7 +717,7 @@ class database extends Survey_Common_Action
             }
             if (isset($cccount) && $cccount)
             {
-                Yii::app()->setFlashMessage($clang->gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."),'error');
+                Yii::app()->setFlashMessage(gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."),'error');
             }
             else
             {
@@ -790,12 +790,12 @@ class database extends Survey_Common_Action
                                     foreach($aErrors as $sAttribute=>$aStringErrors)
                                     {
                                         foreach($aStringErrors as $sStringErrors)
-                                            Yii::app()->setFlashMessage(sprintf($clang->gT("Question could not be updated with error on %s: %s"), $sAttribute,$sStringErrors),'error');
+                                            Yii::app()->setFlashMessage(sprintf(gT("Question could not be updated with error on %s: %s"), $sAttribute,$sStringErrors),'error');
                                     }
                                 }
                                 else
                                 {
-                                    Yii::app()->setFlashMessage($clang->gT("Question could not be updated."),'error');
+                                    Yii::app()->setFlashMessage(gT("Question could not be updated."),'error');
                                 }
                             }
                         }
@@ -823,7 +823,7 @@ class database extends Survey_Common_Action
                     // Remove old subquestion scales
                     Question::model()->deleteAllByAttributes(array('parent_qid' => $iQuestionID), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
                     if(!isset($bOnError) || !$bOnError)// This really a quick hack and need a better system
-                        Yii::app()->setFlashMessage($clang->gT("Question was successfully saved."));
+                        Yii::app()->setFlashMessage(gT("Question was successfully saved."));
                     //                    }
                     //                    else
                     //                    {
@@ -832,9 +832,9 @@ class database extends Survey_Common_Action
                     //                        $errormsg="";
                     //                        if (!is_null($array_result['notAbove']))
                     //                        {
-                    //                            $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
-                    //                            . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
-                    //                            . $clang->gT("See conditions:")."\\n";
+                    //                            $errormsg.=gT("This question relies on other question's answers and can't be moved above groupId:","js")
+                    //                            . " " . $array_result['notAbove'][0][0] . " " . gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
+                    //                            . gT("See conditions:")."\\n";
                     //
                     //                            foreach ($array_result['notAbove'] as $notAboveCond)
                     //                            {
@@ -844,9 +844,9 @@ class database extends Survey_Common_Action
                     //                        }
                     //                        if (!is_null($array_result['notBelow']))
                     //                        {
-                    //                            $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
-                    //                            . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
-                    //                            . $clang->gT("See conditions:")."\\n";
+                    //                            $errormsg.=gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
+                    //                            . " " . $array_result['notBelow'][0][0] . " " . gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
+                    //                            . gT("See conditions:")."\\n";
                     //
                     //                            foreach ($array_result['notBelow'] as $notBelowCond)
                     //                            {
@@ -860,7 +860,7 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    Yii::app()->setFlashMessage($clang->gT("Question could not be updated"),'error');
+                    Yii::app()->setFlashMessage(gT("Question could not be updated"),'error');
                 }
             }
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
@@ -928,7 +928,7 @@ class database extends Survey_Common_Action
 
                 }
             }
-            Yii::app()->session['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
+            Yii::app()->session['flashmessage'] = gT("Survey text elements successfully saved.");
 
             if ($sDBOutput != '')
             {
@@ -1078,14 +1078,14 @@ class database extends Survey_Common_Action
                 || validateEmailAddress(Yii::app()->request->getPost('adminemail'))) {
                 $updatearray['adminemail'] = Yii::app()->request->getPost('adminemail');
             } else {
-                $warning .= $clang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
+                $warning .= gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
             }
             // make sure we only update bounce email if it is valid
             if (Yii::app()->request->getPost('bounce_email', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
                 $updatearray['bounce_email'] = Yii::app()->request->getPost('bounce_email');
             } else {
-                $warning .= $clang->gT("Warning! Bounce email was not updated because it was not valid.").'<br/>'; 
+                $warning .= gT("Warning! Bounce email was not updated because it was not valid.").'<br/>'; 
             }
 
             // use model
@@ -1135,11 +1135,11 @@ class database extends Survey_Common_Action
 
             if ($usresult)
             {
-                Yii::app()->session['flashmessage'] = $warning.$clang->gT("Survey settings were successfully saved.");
+                Yii::app()->session['flashmessage'] = $warning.gT("Survey settings were successfully saved.");
             }
             else
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("Error:").'<br>'.$clang->gT("Survey could not be updated.");
+                Yii::app()->session['flashmessage'] = gT("Error:").'<br>'.gT("Survey could not be updated.");
             }
 
             if (Yii::app()->request->getPost('action') == "updatesurveysettingsandeditlocalesettings")

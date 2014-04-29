@@ -2,12 +2,12 @@
     <table class='browsetable' style='margin:0 auto; width:60%'>
         <thead>
             <tr>
-                <th><?php $clang->eT('ID'); ?></th>
-                <th><?php $clang->eT('Actions'); ?></th>
-                <th><?php $clang->eT('Identifier'); ?></th>
-                <th><?php $clang->eT('IP address'); ?></th>
-                <th><?php $clang->eT('Date Saved'); ?></th>
-                <th><?php $clang->eT('Email address'); ?></th>
+                <th><?php eT('ID'); ?></th>
+                <th><?php eT('Actions'); ?></th>
+                <th><?php eT('Identifier'); ?></th>
+                <th><?php eT('IP address'); ?></th>
+                <th><?php eT('Date Saved'); ?></th>
+                <th><?php eT('Email address'); ?></th>
             </tr>
         </thead>
 
@@ -21,12 +21,12 @@
                         <?php if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','update'))
                             { ?>
                             <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $sImageURL; ?>edit_16.png'
-                                title='<?php $clang->eT('Edit entry'); ?>' onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" />
+                                title='<?php eT('Edit entry'); ?>' onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" />
                             <?php }
                             if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
                             { ?>
                             <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $sImageURL; ?>token_delete.png'
-                                title='<?php $clang->eT('Delete entry'); ?>' onclick="if (confirm('<?php $clang->eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" />
+                                title='<?php eT('Delete entry'); ?>' onclick="if (confirm('<?php eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" />
                             <?php } ?>
 
                     </td>

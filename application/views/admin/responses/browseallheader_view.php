@@ -1,26 +1,26 @@
 <script type='text/javascript'>
-    var strdeleteconfirm='<?php $clang->eT('Do you really want to delete this response?', 'js'); ?>';
-    var strDeleteAllConfirm='<?php $clang->eT('Do you really want to delete all marked responses?', 'js'); ?>';
-    var noFilesSelectedForDeletion = '<?php $clang->eT('Please select at least one file for deletion', 'js'); ?>';
-    var noFilesSelectedForDnld = '<?php $clang->eT('Please select at least one file for download', 'js'); ?>';
+    var strdeleteconfirm='<?php eT('Do you really want to delete this response?', 'js'); ?>';
+    var strDeleteAllConfirm='<?php eT('Do you really want to delete all marked responses?', 'js'); ?>';
+    var noFilesSelectedForDeletion = '<?php eT('Please select at least one file for deletion', 'js'); ?>';
+    var noFilesSelectedForDnld = '<?php eT('Please select at least one file for download', 'js'); ?>';
 </script>
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php $clang->eT("Data view control"); ?></strong></div>
+        <strong><?php eT("Data view control"); ?></strong></div>
     <div class='menubar-main'>
         <div class='menubar-left'>
             <?php if (!isset($_POST['sql']))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>0,'limit'=>$limit)); ?>'>
-                    <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' /></a>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$last,'limit'=>$limit)); ?>'>
-                    <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' alt='' />
 
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$next,'limit'=>$limit)); ?>'>
-                    <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' /></a>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid", array('start' =>$end,'limit'=>$limit)); ?>'>
-                    <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
+                    <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' /></a>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <?php
                 }
@@ -43,14 +43,14 @@
             ?>
             <?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post', array('id'=>'browseresults')); ?>
                     <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' alt='' />
-                    <?php $clang->eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
-                    &nbsp;&nbsp; <?php $clang->eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
-                    &nbsp;&nbsp; <input type='submit' value='<?php $clang->eT("Show"); ?>' />
-                    &nbsp;&nbsp; <?php $clang->eT("Display:"); ?>
+                    <?php eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
+                    &nbsp;&nbsp; <?php eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
+                    &nbsp;&nbsp; <input type='submit' value='<?php eT("Show"); ?>' />
+                    &nbsp;&nbsp; <?php eT("Display:"); ?>
                     <?php echo CHtml::dropDownList('completionstate',$sCompletionStateValue,
-                        array('all'=> $clang->gT("All responses"),
-                        'complete'=> $clang->gT("Completed responses only"),
-                        'incomplete'=> $clang->gT("Incomplete responses only"))
+                        array('all'=> gT("All responses"),
+                        'complete'=> gT("Completed responses only"),
+                        'incomplete'=> gT("Incomplete responses only"))
                     ); ?>
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='action' value='browse' />
@@ -71,7 +71,7 @@ echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post
 <thead>
     <tr>
         <th><input type='checkbox' id='selectall'></th>
-        <th><?php $clang->eT('Actions'); ?></th>
+        <th><?php eT('Actions'); ?></th>
         <?php
             foreach ($fnames as $fn)
             {
@@ -106,10 +106,10 @@ echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
 <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-<img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
+<img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php eT('Delete marked responses'); ?>' />
 <?php } ?>
 <?php if ($bHasFileUploadQuestion) { ?>
-<img id='imgDownloadMarkedFiles' src='<?php echo $sImageURL; ?>down_all.png' alt='<?php $clang->eT('Download marked files'); ?>' />
+<img id='imgDownloadMarkedFiles' src='<?php echo $sImageURL; ?>down_all.png' alt='<?php eT('Download marked files'); ?>' />
 <?php } ?>
 </td>
     </tr>

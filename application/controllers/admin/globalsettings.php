@@ -171,13 +171,13 @@ class GlobalSettings extends Survey_Common_Action
             || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))) {
             setGlobalSetting('siteadminbounce', strip_tags(Yii::app()->request->getPost('siteadminbounce')));
         } else {
-            $warning .= $clang->gT("Warning! Admin bounce email was not saved because it was not valid.").'<br/>';
+            $warning .= gT("Warning! Admin bounce email was not saved because it was not valid.").'<br/>';
         }
         if (Yii::app()->request->getPost('siteadminemail', '') == ''
             || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))) {
             setGlobalSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail')));
         } else {
-            $warning .= $clang->gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
+            $warning .= gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
         }
         setGlobalSetting('siteadminname', strip_tags($_POST['siteadminname']));
         setGlobalSetting('shownoanswer', sanitize_int($_POST['shownoanswer']));
@@ -207,7 +207,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('timeadjust', $savetime);
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
 
-        Yii::app()->session['flashmessage'] = $warning.$clang->gT("Global settings were saved.");
+        Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
 
         $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
         if($url){Yii::app()->getController()->redirect($url);}

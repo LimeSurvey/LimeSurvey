@@ -28,7 +28,12 @@ $internalConfig = array(
 			'rules' => require('routes.php'),
 			'showScriptName' => true,
 		),
-        
+        'messages' => array(
+            'class' => 'CGettextMessageSource',
+            'language' => 'en_us'
+//            'onMissingTranslation' => function() { throw new CException('Missing translation.'); }
+        ),
+
         'clientScript' => array(
             'packages' => require('third_party.php')
         ),

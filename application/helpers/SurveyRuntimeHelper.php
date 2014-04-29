@@ -306,13 +306,13 @@ class SurveyRuntimeHelper {
                     $LEMskipReprocessing=true;
                     $move = "movenext"; // so will re-display the survey
                     $invalidLastPage=true;
-                    $backpopup=$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
+                    $backpopup=gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
             if(isset($move) && $move=="clearcancel")
             {
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
-                //$backpopup=$clang->gT("Clear all need confirmation.");
+                //$backpopup=gT("Clear all need confirmation.");
             }
             if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
             {
@@ -422,7 +422,7 @@ class SurveyRuntimeHelper {
             //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
             if (
             (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['maxstep']) || $_SESSION[$LEMsessid]['prevstep'] == $_SESSION[$LEMsessid]['step'])) ||
-            (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far")))
+            (isset($_POST['saveall']) && $_POST['saveall'] == gT("Save your responses so far")))
             {
                 if (Yii::app()->getConfig('allowmandbackwards') == 1)
                 {
@@ -566,13 +566,13 @@ class SurveyRuntimeHelper {
                     */
                     // can't kill session before end message, otherwise INSERTANS doesn't work.
                     $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', false, NULL, array(), true );
-                    $completed .= "<br /><strong><font size='2' color='red'>" . $clang->gT("Did Not Save") . "</font></strong><br /><br />\n\n";
-                    $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
+                    $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
+                    $completed .= gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                     if ($thissurvey['printanswers'] == 'Y')
                     {
                         // 'Clear all' link is only relevant for survey with printanswers enabled
                         // in other cases the session is cleared at submit time
-                        $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . $clang->gT("Clear Responses") . "</a><br /><br />\n";
+                        $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . gT("Clear Responses") . "</a><br /><br />\n";
                     }
 
 
@@ -627,8 +627,8 @@ class SurveyRuntimeHelper {
 
                     if (trim(strip_tags($thissurvey['surveyls_endtext'])) == '')
                     {
-                        $completed = "<br /><span class='success'>" . $clang->gT("Thank you!") . "</span><br /><br />\n\n"
-                        . $clang->gT("Your survey responses have been recorded.") . "<br /><br />\n";
+                        $completed = "<br /><span class='success'>" . gT("Thank you!") . "</span><br /><br />\n\n"
+                        . gT("Your survey responses have been recorded.") . "<br /><br />\n";
                     }
                     else
                     {
@@ -641,14 +641,14 @@ class SurveyRuntimeHelper {
                         $url = Yii::app()->getController()->createUrl("/printanswers/view/surveyid/{$surveyid}");
                         $completed .= "<br /><br />"
                         . "<a class='printlink' href='$url'  target='_blank'>"
-                        . $clang->gT("Print your answers.")
+                        . gT("Print your answers.")
                         . "</a><br />\n";
                     }
                     //*****************************************
 
                     if ($thissurvey['publicstatistics'] == 'Y' && $thissurvey['printanswers'] == 'Y')
                     {
-                        $completed .='<br />' . $clang->gT("or");
+                        $completed .='<br />' . gT("or");
                     }
 
                     // Link to Public statistics  **********
@@ -657,7 +657,7 @@ class SurveyRuntimeHelper {
                         $url = Yii::app()->getController()->createUrl("/statistics_user/action/surveyid/{$surveyid}/language/".$_SESSION[$LEMsessid]['s_lang']);
                         $completed .= "<br /><br />"
                         . "<a class='publicstatisticslink' href='$url' target='_blank'>"
-                        . $clang->gT("View the statistics for this survey.")
+                        . gT("View the statistics for this survey.")
                         . "</a><br />\n";
                     }
                     //*****************************************
@@ -727,7 +727,7 @@ class SurveyRuntimeHelper {
             //SURVEY DOES NOT EXIST. POLITELY EXIT.
             echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
             echo "\t<center><br />\n";
-            echo "\t" . $clang->gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
+            echo "\t" . gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
             echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
             doFooter();
             exit;
@@ -744,13 +744,13 @@ class SurveyRuntimeHelper {
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
             if ($gseq == -1)
             {
-                echo $clang->gT('Invalid group number for this survey: ') . $_gid;
+                echo gT('Invalid group number for this survey: ') . $_gid;
                 exit;
             }
             $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true);
             if (is_null($moveResult))
             {
-                echo $clang->gT('This group contains no questions.  You must add questions to this group before you can preview it');
+                echo gT('This group contains no questions.  You must add questions to this group before you can preview it');
                 exit;
             }
             if (isset($moveResult))
@@ -768,8 +768,8 @@ class SurveyRuntimeHelper {
             if (($show_empty_group) || !isset($_SESSION[$LEMsessid]['grouplist']))
             {
                 $gid = -1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
-                $groupname = $clang->gT("Submit your answers");
-                $groupdescription = $clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
+                $groupname = gT("Submit your answers");
+                $groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
             }
             else if ($surveyMode != 'survey')
                 {
@@ -1004,19 +1004,19 @@ class SurveyRuntimeHelper {
         //Display the "mandatory" message on page if necessary
         if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
         {
-            echo "<p class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
+            echo "<p class='errormandatory'>" . gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
         }
 
         //Display the "validation" message on page if necessary
         if (!$showpopups && !$stepInfo['valid'] && $okToShowErrors)
         {
-            echo "<p class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
+            echo "<p class='errormandatory'>" . gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
         }
 
         //Display the "file validation" message on page if necessary
         if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
         {
-            echo "<p class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
+            echo "<p class='errormandatory'>" . gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
         }
 
         $_gseq = -1;
@@ -1155,7 +1155,7 @@ class SurveyRuntimeHelper {
 
             if ($thissurvey['active'] != "Y")
             {
-                echo "<p style='text-align:center' class='error'>" . $clang->gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
+                echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
             }
 
 

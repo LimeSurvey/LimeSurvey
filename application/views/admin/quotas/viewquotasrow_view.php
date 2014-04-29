@@ -7,17 +7,17 @@
     <td>
         <?php if ($quotalisting['active'] == 1)
             {
-                echo '<font color="#48B150">'.$clang->gT("Active").'</font>';
+                echo '<font color="#48B150">'.gT("Active").'</font>';
             } else {
-                echo '<font color="#B73838">'.$clang->gT("Not Active").'</font>';
+                echo '<font color="#B73838">'.gT("Not Active").'</font>';
             }
         ?>
     </td>
     <td>
         <?php if ($quotalisting['action'] == 1) {
-                $clang->eT("Terminate survey");
+                eT("Terminate survey");
             } elseif ($quotalisting['action'] == 2) {
-                $clang->eT("Terminate survey with warning");
+                eT("Terminate survey with warning");
         } ?>
     </td>
     <td <?php echo $highlight;?>><?php echo $completed;?></td>
@@ -25,7 +25,7 @@
     <td style="padding: 3px;">
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/editquota/surveyid/{$iSurveyId}"), 'post'); ?>
-                <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Edit");?>" />
+                <input name="submit" type="submit" class="submit" value="<?php eT("Edit");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                 <input type="hidden" name="action" value="quotas" />
                 <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
@@ -34,7 +34,7 @@
         <?php } ?>
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/delquota/surveyid/{$iSurveyId}"), 'post'); ?>
-                <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Remove");?>" />
+                <input name="submit" type="submit" class="submit" value="<?php eT("Remove");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                 <input type="hidden" name="action" value="quotas" />
                 <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
@@ -45,14 +45,14 @@
 
 <tr class="evenrow">
     <td>&nbsp;</td>
-    <td><strong><?php $clang->eT("Questions");?></strong></td>
-    <td><strong><?php $clang->eT("Answers");?></strong></td>
+    <td><strong><?php eT("Questions");?></strong></td>
+    <td><strong><?php eT("Answers");?></strong></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td style="padding: 3px;">
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/new_answer/surveyid/{$iSurveyId}"), 'post'); ?>
-                <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add answer");?>" />
+                <input name="submit" type="submit" class="quota_new" value="<?php eT("Add answer");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                 <input type="hidden" name="action" value="quotas" />
                 <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />

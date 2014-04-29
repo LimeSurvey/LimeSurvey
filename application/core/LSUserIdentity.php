@@ -154,11 +154,6 @@ class LSUserIdentity extends CUserIdentity {
         {
             $sLanguage=$user->lang;
         }
-
-        Yii::app()->session['adminlang'] = $sLanguage;
-        $lang = new limesurvey_lang($sLanguage);
-        App()->lang = $lang;
-        App()->getController()->lang= $lang;
     }
     
     public function setPlugin($name) {

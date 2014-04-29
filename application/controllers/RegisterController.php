@@ -48,9 +48,6 @@ class RegisterController extends LSYii_Controller {
         }
         // Don't test if survey allow registering .....
         $sLanguage = Yii::app()->request->getParam('lang',$oSurvey->language);
-        Yii::import('application.libraries.Limesurvey_lang');
-        Yii::app()->lang = new Limesurvey_lang($sLanguage);
-
         $thistpl=getTemplatePath(validateTemplateDir($oSurvey->template));
         $data['sid'] = $iSurveyId;
         $data['startdate'] = $oSurvey->startdate;
@@ -91,10 +88,6 @@ class RegisterController extends LSYii_Controller {
             $this->redirect(array('survey/index','sid'=>$iSurveyId,'lang'=>$sLanguage));
         }
 
-        Yii::import('application.libraries.Limesurvey_lang');
-        Yii::app()->lang = new Limesurvey_lang($sLanguage);
-        
-
         $event = new PluginEvent('beforeRegister');
         $event->set('surveyid', $iSurveyId);
         $event->set('lang', $sLanguage);
@@ -124,8 +117,7 @@ class RegisterController extends LSYii_Controller {
     * @return array of errors when try to register (empty array => no error)
     */
     public function getRegisterErrors($iSurveyId){
-        $clang = Yii::app()->lang;
-        $aSurveyInfo=getSurveyInfo($iSurveyId,$clang->langcode);
+        $aSurveyInfo=getSurveyInfo($iSurveyId);
 
         // Check the security question's answer
         if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen',$aSurveyInfo['usecaptcha']) )
@@ -134,7 +126,7 @@ class RegisterController extends LSYii_Controller {
             $sSecAnswer=(isset($_SESSION['survey_'.$iSurveyId]['secanswer']))?$_SESSION['survey_'.$iSurveyId]['secanswer']:"";
             if ($sLoadsecurity!=$sSecAnswer)
             {
-                $this->aRegisterErrors[] = $clang->gT("The answer to the security question is incorrect.");
+                $this->aRegisterErrors[] = gT("The answer to the security question is incorrect.");
             }
         }
 
@@ -143,22 +135,22 @@ class RegisterController extends LSYii_Controller {
 
         //Check that the email is a valid style address
         if($aFieldValue['sEmail']==""){
-            $this->aRegisterErrors[]= $clang->gT("You must enter a valid email. Please try again.");
+            $this->aRegisterErrors[]= gT("You must enter a valid email. Please try again.");
         }elseif (!validateEmailAddress($aFieldValue['sEmail'])){
-            $this->aRegisterErrors[]= $clang->gT("The email you used is not valid. Please try again.");
+            $this->aRegisterErrors[]= gT("The email you used is not valid. Please try again.");
         }
         //Check and validate attribute 
         foreach ($aRegisterAttributes as $key => $aAttribute)
         {
             if ($aAttribute['show_register'] == 'Y' && $aAttribute['mandatory'] == 'Y' && empty($aFieldValue['aAttribute'][$key]))
             {
-                $this->aRegisterErrors[]= sprintf($clang->gT("%s cannot be left empty").".", $aAttribute['caption']);
+                $this->aRegisterErrors[]= sprintf(gT("%s cannot be left empty").".", $aAttribute['caption']);
             }
         }
     }
 
     public function getRegisterForm($iSurveyId){
-        $clang = Yii::app()->lang;
+        
         $aSurveyInfo=getSurveyInfo($iSurveyId,$clang->langcode);
         $sTemplate=getTemplatePath(validateTemplateDir($aSurveyInfo['template']));
 
@@ -192,11 +184,11 @@ class RegisterController extends LSYii_Controller {
             $sRegisterError='';
 
         $aReplacement['REGISTERERROR'] = $sRegisterError;
-        $aReplacement['REGISTERMESSAGE1'] = $clang->gT("You must be registered to complete this survey");
+        $aReplacement['REGISTERMESSAGE1'] = gT("You must be registered to complete this survey");
         if($sStartDate=$this->getStartDate($iSurveyId))
-            $aReplacement['REGISTERMESSAGE2'] = sprintf($clang->gT("You may register for this survey but you have to wait for the %s before starting the survey."),$sStartDate)."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
+            $aReplacement['REGISTERMESSAGE2'] = sprintf(gT("You may register for this survey but you have to wait for the %s before starting the survey."),$sStartDate)."<br />\n".gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
         else
-            $aReplacement['REGISTERMESSAGE2'] = $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
+            $aReplacement['REGISTERMESSAGE2'] = gT("You may register for this survey if you wish to take part.")."<br />\n".gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
 
         $aData['thissurvey'] = $aSurveyInfo;
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
@@ -210,7 +202,7 @@ class RegisterController extends LSYii_Controller {
     * @return boolean : if email is set to sent (before SMTP problem)
     */
     public function sendRegistrationEmail($iSurveyId,$iTokenId){
-        $clang = Yii::app()->lang;
+        
         $sLanguage=$clang->langcode;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
 
@@ -286,17 +278,17 @@ class RegisterController extends LSYii_Controller {
             $oToken->sent=$today;
             $oToken->save();
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
-                . "<p>".$clang->gT("Thank you for registering to participate in this survey.")."</p>\n"
+                . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
                 . "<p>{$this->sMailMessage}</p>\n"
-                . "<p>".sprintf($clang->gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         else
         {
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
-                . "<p>".$clang->gT("Thank you for registering to participate in this survey.")."</p>\n"
-                . "<p>".$clang->gT("You are registred but an error happen when trying to send the email, please contact the survey administrator.")."</p>\n"
-                . "<p>".sprintf($clang->gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
+                . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
+                . "<p>".gT("You are registred but an error happen when trying to send the email, please contact the survey administrator.")."</p>\n"
+                . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
         // Allways return true : if we come here, we allways trye to send an email
@@ -310,7 +302,7 @@ class RegisterController extends LSYii_Controller {
     */
     public function getTokenId($iSurveyId)
     {
-        $clang = Yii::app()->lang;
+        
         $sLanguage=$clang->langcode;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
 
@@ -321,19 +313,19 @@ class RegisterController extends LSYii_Controller {
          {
             if($oToken->usesleft<1 && $aSurveyInfo['alloweditaftercompletion']!='Y')
             {
-                $this->aRegisterErrors[]=$clang->gt("The mail address you have entered is already registered an the survey has been completed.");
+                $this->aRegisterErrors[]=gT("The mail address you have entered is already registered an the survey has been completed.");
             }
             elseif(strtolower(substr(trim($oToken->emailstatus),0,6))==="optout")// And global blacklisting ?
             {
-                $this->aRegisterErrors[]=$clang->gt("This email address is already registered but someone ask to not receive new email again.");
+                $this->aRegisterErrors[]=gT("This email address is already registered but someone ask to not receive new email again.");
             }
             elseif(!$oToken->emailstatus && $oToken->emailstatus!="OK")
             {
-                $this->aRegisterErrors[]=$clang->gt("This email address is already registered but the email adress was bounced.");
+                $this->aRegisterErrors[]=gT("This email address is already registered but the email adress was bounced.");
             }
             else
             {
-                $this->sMailMessage=$clang->gt("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
+                $this->sMailMessage=gT("The address you have entered is already registered. An email has been sent to this address with a link that gives you access to the survey.");
                 return $oToken->tid;
             }
         }
@@ -358,7 +350,7 @@ class RegisterController extends LSYii_Controller {
             }
             $oToken->save();
             TokenDynamic::model($iSurveyId)->createToken($oToken->tid);// Review if really create a token
-            $this->sMailMessage=$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.");
+            $this->sMailMessage=gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.");
             return $oToken->tid;
         }
     }

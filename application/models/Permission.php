@@ -58,20 +58,20 @@ class Permission extends LSActiveRecord
      */
     public static function getSurveyBasePermissions()
     {
-        $clang = Yii::app()->lang;
+        
         $aPermissions=array(
-            'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Assessments"),'description'=>$clang->gT("Permission to create/view/update/delete assessments rules for a survey"),'img'=>'assessments'),  
-            'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Quotas"),'description'=>$clang->gT("Permission to create/view/update/delete quota rules for a survey"),'img'=>'quota'),
-            'responses'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Responses"),'description'=>$clang->gT("Permission to create(data entry)/view/update/delete/import/export responses"),'img'=>'browse'),
-            'statistics'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Statistics"),'description'=>$clang->gT("Permission to view statistics"),'img'=>'statistics'),   
-            'survey'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey deletion"),'description'=>$clang->gT("Permission to delete a survey"),'img'=>'delete'),   
-            'surveyactivation'=>array('create'=>false,'read'=>false,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey activation"),'description'=>$clang->gT("Permission to activate/deactivate a survey"),'img'=>'activate_deactivate'),  
-            'surveycontent'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Survey content"),'description'=>$clang->gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),'img'=>'add'),
-            'surveylocale'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey locale settings"),'description'=>$clang->gT("Permission to view/update the survey locale settings"),'img'=>'edit'),
-            'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey security"),'description'=>$clang->gT("Permission to modify survey security settings"),'img'=>'survey_security'),
-            'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey settings"),'description'=>$clang->gT("Permission to view/update the survey settings including token table creation"),'img'=>'survey_settings'),
-            'tokens'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create/update/delete/import/export token entries"),'img'=>'tokens'),
-            'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature"),'img'=>'translate')
+            'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("Assessments"),'description'=>gT("Permission to create/view/update/delete assessments rules for a survey"),'img'=>'assessments'),  
+            'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("Quotas"),'description'=>gT("Permission to create/view/update/delete quota rules for a survey"),'img'=>'quota'),
+            'responses'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>gT("Responses"),'description'=>gT("Permission to create(data entry)/view/update/delete/import/export responses"),'img'=>'browse'),
+            'statistics'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>gT("Statistics"),'description'=>gT("Permission to view statistics"),'img'=>'statistics'),   
+            'survey'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("Survey deletion"),'description'=>gT("Permission to delete a survey"),'img'=>'delete'),   
+            'surveyactivation'=>array('create'=>false,'read'=>false,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>gT("Survey activation"),'description'=>gT("Permission to activate/deactivate a survey"),'img'=>'activate_deactivate'),  
+            'surveycontent'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>gT("Survey content"),'description'=>gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),'img'=>'add'),
+            'surveylocale'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>gT("Survey locale settings"),'description'=>gT("Permission to view/update the survey locale settings"),'img'=>'edit'),
+            'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("Survey security"),'description'=>gT("Permission to modify survey security settings"),'img'=>'survey_security'),
+            'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>gT("Survey settings"),'description'=>gT("Permission to view/update the survey settings including token table creation"),'img'=>'survey_settings'),
+            'tokens'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>gT("Tokens"),'description'=>gT("Permission to create/update/delete/import/export token entries"),'img'=>'tokens'),
+            'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>gT("Quick translation"),'description'=>gT("Permission to view & update the translations using the quick-translation feature"),'img'=>'translate')
         );
         uasort($aPermissions,"comparePermission");
         return $aPermissions;
@@ -87,18 +87,18 @@ class Permission extends LSActiveRecord
      */
     public static function getGlobalBasePermissions()
     {
-        $clang = Yii::app()->lang;
+        
         $aPermissions=array(
-            'surveys'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Surveys"),'description'=>$clang->gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),'img'=>'survey'),
-            'users'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Users"),'description'=>$clang->gT("Permission to create, view, update and delete users"),'img'=>'security'),
-            'usergroups'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("User groups"),'description'=>$clang->gT("Permission to create, view, update and delete user groups"),'img'=>'usergroup'),
-            'templates'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Templates"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import templates"),'img'=>'templates'),
-            'labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Label sets"),'description'=>$clang->gT("Permission to create, view, update, delete, export and import label sets/labels"),'img'=>'labels'),
-            'settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>true,'export'=>false,'title'=>$clang->gT("Settings & Plugins"),'description'=>$clang->gT("Permission to view and update global settings & plugins and to delete and import plugins"),'img'=>'global'),
-            'participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>$clang->gT("Participant panel"),'description'=>$clang->gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),'img'=>'cpdb'),
+            'surveys'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>gT("Surveys"),'description'=>gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),'img'=>'survey'),
+            'users'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("Users"),'description'=>gT("Permission to create, view, update and delete users"),'img'=>'security'),
+            'usergroups'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>gT("User groups"),'description'=>gT("Permission to create, view, update and delete user groups"),'img'=>'usergroup'),
+            'templates'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>gT("Templates"),'description'=>gT("Permission to create, view, update, delete, export and import templates"),'img'=>'templates'),
+            'labelsets'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>gT("Label sets"),'description'=>gT("Permission to create, view, update, delete, export and import label sets/labels"),'img'=>'labels'),
+            'settings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>true,'export'=>false,'title'=>gT("Settings & Plugins"),'description'=>gT("Permission to view and update global settings & plugins and to delete and import plugins"),'img'=>'global'),
+            'participantpanel'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>true,'title'=>gT("Participant panel"),'description'=>gT("Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),'img'=>'cpdb'),
         );
         uasort($aPermissions,"comparePermission");
-        $aPermissions=array('superadmin'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Superadministrator"),'description'=>$clang->gT("Unlimited administration permissions"),'img'=>'superadmin'))+$aPermissions;
+        $aPermissions=array('superadmin'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>gT("Superadministrator"),'description'=>gT("Unlimited administration permissions"),'img'=>'superadmin'))+$aPermissions;
         return $aPermissions;
     }    
     

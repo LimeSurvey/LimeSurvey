@@ -50,12 +50,12 @@ class questiongroups extends Survey_Common_Action
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
             {
-                $fatalerror = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $this->config->item('tempdir'));
+                $fatalerror = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $this->config->item('tempdir'));
             }
 
             // validate that we have a SID
             if (!returnGlobal('sid'))
-                $fatalerror .= $clang->gT("No SID (Survey) has been provided. Cannot import question.");
+                $fatalerror .= gT("No SID (Survey) has been provided. Cannot import question.");
 
             if (isset($fatalerror))
             {
@@ -240,10 +240,10 @@ class questiongroups extends Survey_Common_Action
             if ($iGroupsDeleted > 0)
             {
                 fixSortOrderGroups($iSurveyId);
-                Yii::app()->setFlashMessage($clang->gT('The question group was deleted.'));
+                Yii::app()->setFlashMessage(gT('The question group was deleted.'));
             }
             else
-                Yii::app()->setFlashMessage($clang->gT('Group could not be deleted'),'error');
+                Yii::app()->setFlashMessage(gT('Group could not be deleted'),'error');
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyId));
         }
@@ -321,7 +321,7 @@ class questiongroups extends Survey_Common_Action
                 $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
                 if ($first)
                 {
-                    $aTabTitles[$sLanguage].= ' (' . $clang->gT("Base language") . ')';
+                    $aTabTitles[$sLanguage].= ' (' . gT("Base language") . ')';
                     $first = false;
                 }
             }

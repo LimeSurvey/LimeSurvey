@@ -1,28 +1,28 @@
 <?php echo CHtml::form(array("admin/user/sa/usertemplates"), 'post', array('name'=>'modtemplaterightsform', 'id'=>'modtemplaterightsform')); ?>
 
-	<div class='header ui-widget-header'><?php $clang->eT('Edit template permissions');?></div>
+	<div class='header ui-widget-header'><?php eT('Edit template permissions');?></div>
     <table id="user-template-permissions" class="activecell" style="margin:0 auto;">
 	<thead>
 	<tr>
 	<th colspan="2" class="header">
-    <?php $clang->eT('Set templates that this user may access');?>: <?php echo htmlspecialchars(sanitize_user($_POST['user']));?></th>
+    <?php eT('Set templates that this user may access');?>: <?php echo htmlspecialchars(sanitize_user($_POST['user']));?></th>
 	</tr>
 	<?php
     foreach ($list as $data)
     {
         ?>
         <tr><th>
-        <?php $clang->eT('Template name');?>
+        <?php eT('Template name');?>
         <br />&nbsp;</th><th>
-        <?php $clang->eT('Allowed');?>
-        <br /><input type='checkbox' alt='<?php $clang->eT("Check or uncheck all items");?>' class='tipme' id='checkall' />
+        <?php eT('Allowed');?>
+        <br /><input type='checkbox' alt='<?php eT("Check or uncheck all items");?>' class='tipme' id='checkall' />
         </th></tr>
         </thead>
 
         <tfoot>
             <tr>
                 <td colspan="3">
-                    <input type="submit" value="<?php $clang->eT('Save settings');?>" />
+                    <input type="submit" value="<?php eT('Save settings');?>" />
                     <input type="hidden" name="action" value="usertemplates" />
                     <input type="hidden" name="uid" value="<?php echo $postuserid; ?>" />
                 </td>

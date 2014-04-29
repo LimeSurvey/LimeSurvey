@@ -183,7 +183,7 @@
  *
  */
 require_once BASEPATH . 'yii' . EXT;
-require_once APPPATH . 'core/LSYii_Application' . EXT;
+require_once APPPATH . 'core/WebApplication' . EXT;
 
 $config = require_once(APPPATH . 'config/internal' . EXT);
 
@@ -197,7 +197,7 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
 }
 
 
-Yii::createApplication('LSYii_Application', $config)->run();
+Yii::createApplication('WebApplication', $config)->run();
 
 /* End of file index.php */
 /* Location: ./index.php */
