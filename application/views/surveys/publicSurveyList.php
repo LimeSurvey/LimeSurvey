@@ -28,6 +28,10 @@
             ));
         }
     }
+    if(empty($list))
+    {
+        $list=CHtml::openTag('li',array('class'=>'surveytitle')).gT("No available surveys").CHtml::closeTag('li');
+    }
     $data['surveylist'] = array(
         "nosid"=> "",
         "contact"=>sprintf(App()->lang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail"))),
