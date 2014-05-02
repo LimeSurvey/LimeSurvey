@@ -59,6 +59,27 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140422) to 2.05+ (build 140502) May 02, 2014
+-Changed feature: Added xslx and docx to allowed file extensions for resources (Carsten Schmitz)
+-Fixed issue #8997: XAMPP installer not working (Sam Mousa)
+-Fixed issue #9004: Cannot create new attributes with participant CSV import (Carsten Schmitz)
+-Fixed issue #9007: Crash when an user wants to create a new survey (Carsten Schmitz)
+-Fixed issue #9008: RPC call to export_statistics works only if you are the owner of the survey (Carsten Schmitz)
+-Fixed issue #9009: Unchecking "Allow this user to edit these participants" creates shares with edit privleges (Carsten Schmitz)
+-Fixed issue #9010: Survey list no longer reads "No active surveys" (Carsten Schmitz)
+-Fixed issue #9015: Wrong quote escaping for translated text in file upload processing (Carsten Schmitz)
+-Fixed issue #9016: Redundant "File count" text before actual value displayed in response records (Carsten Schmitz)
+-Fixed issue: SQLSRV database type not supported for install command (Carsten Schmitz)
+#Updated translation: Arabic by sessid
+#Updated translation: Catalan by jmontane, valdomir
+#Updated translation: Dutch by jurjenn, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Lithuanian by simasj
+#Updated translation: Romanian by christianC, filipguttman
+#Updated translation: Serbian by zlukovic, MilaVeljovic
+
 Changes from 2.05+ (build 140414) to 2.05+ (build 140422) Apr 22, 2014
 -Fixed issue #8513: ERROR: Invalid last group timing fieldname when reactivating a modified survey and using timings (Carsten Schmitz)
 -Fixed issue #8938: Showing inline text of text fields throws JS/AJAX error (Carsten Schmitz)
