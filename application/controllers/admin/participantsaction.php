@@ -1190,7 +1190,7 @@ class participantsaction extends Survey_Common_Action
                for each NEW attribute being created in this import process */
             foreach ($newarray as $key => $value)
             {
-                $aData = array('attribute_type' => 'TB', 'attribute_name' => $value, 'visible' => 'FALSE');
+                $aData = array('attribute_type' => 'TB', 'defaultname' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeName::model()->storeAttributeCSV($aData);
                 /* Keep a record of the attribute_id for this new attribute
                    in the $mappedarray string. For example, if the new attribute

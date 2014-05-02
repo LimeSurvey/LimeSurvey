@@ -469,12 +469,13 @@ class ParticipantAttributeName extends LSActiveRecord
     function storeAttributeCSV($data)
     {
         $insertnames = array('attribute_type' => $data['attribute_type'],
+                            'defaultname' => $data['defaultname'],
                             'visible' => $data['visible']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
 
         $insertid = getLastInsertID($this->tableName());
         $insertnameslang = array('attribute_id' => $insertid,
-                                 'attribute_name'=>$data['attribute_name'],
+                                 'attribute_name'=>$data['defaultname'],
                                  'lang' => Yii::app()->session['adminlang']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $insertnameslang);
         return $insertid;
