@@ -489,7 +489,7 @@ class responses extends Survey_Common_Action
                 }
                 else
                 {
-                    $fnames[] = array($fielddetails['fieldname'], $clang->gT("File count"));
+                    $fnames[] = array($fielddetails['fieldname'], $clang->gT("File count"), 'code'=>viewHelper::getFieldCode($fielddetails));
                 }
             }
 

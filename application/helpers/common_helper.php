@@ -1758,9 +1758,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 }
                 break;
             case "|": //File upload
-                if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = $oLanguage->gT("File count");
-                } else {
+                if (substr($sFieldCode, -9) != 'filecount') {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue);
                     $sValue = '';
