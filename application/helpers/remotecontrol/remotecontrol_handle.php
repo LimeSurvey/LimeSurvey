@@ -399,8 +399,9 @@ class remotecontrol_handle
         if (!isset($oSurvey))
             return array('status' => 'Error: Invalid survey ID');;
 
-        if(Survey::model()->findByPk($iSurveyID)->owner_id != $_SESSION['loginID'])
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read'))
             return array('status' => 'Error: No Permission');
+            
         $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
 
         if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
