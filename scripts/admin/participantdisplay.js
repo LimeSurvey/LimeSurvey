@@ -623,7 +623,7 @@ $(document).ready(function() {
         $("#shareform").load(shareUrl, {
             participantid:pid,
             shareuser:$("#shareuser").val(),
-            can_edit:$('#can_edit').attr('checked')
+            can_edit:$('#can_edit').prop('checked')
             }, function(msg){
                 $(this).dialog("close");
                 alert(msg+"."+shareMsg);
