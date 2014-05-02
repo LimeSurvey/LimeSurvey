@@ -33,8 +33,6 @@
                 $this->createDatabase();
             };
 
-
-
             $this->connection->charset = 'utf8';
             switch ($this->connection->driverName) {
                 case 'mysql':
@@ -50,10 +48,11 @@
                     break;
                 case 'dblib': 
                 case 'mssql':
+                case 'sqlsrv':
                     $sql_file = 'mssql';
                     break;
                 default:
-                    throw new Exception(sprintf('Unkown database type "%s".', $this->getDBConnectionStringProperty('dbname')));
+                    throw new Exception(sprintf('Unkown database type "%s".', $this->connection->driverName));
             }
             $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql');
             $this->connection->createCommand()->insert($this->connection->tablePrefix.'users', array(
