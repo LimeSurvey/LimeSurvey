@@ -137,27 +137,29 @@ $(document).ready(function() {
             });
         },
         ondblClickRow: function(id) {
-            var can_edit = ($('#displayparticipants').getCell(id, 'can_edit')=='true') && bEditPermission;
-            if(!can_edit) {
-                var dialog_buttons={};
-                dialog_buttons[okBtn]=function() {
-                    $( this ).dialog( "close" );
-                };
-                /* End of building array for button functions */
-                $('#notauthorised').dialog({
-                    modal: true,
-                    title: accessDeniedTxt,
-                    buttons: dialog_buttons
-                });
-            } else {
-                {
-                    if(id && id!==lastSel) {
-                        jQuery('#displayparticipants').saveRow(lastSel);
-                        lastSel=id;
+            if($('tr#'+id).closest('tr.ui-subgrid').length == 0) { // Only want this fired on main grid rows, subgrid rows use editModifier()
+                var can_edit = ($('#displayparticipants').getCell(id, 'can_edit')=='true') && bEditPermission;
+                if(!can_edit) {
+                    var dialog_buttons={};
+                    dialog_buttons[okBtn]=function() {
+                        $( this ).dialog( "close" );
+                    };
+                    /* End of building array for button functions */
+                    $('#notauthorised').dialog({
+                        modal: true,
+                        title: accessDeniedTxt,
+                        buttons: dialog_buttons
+                    });
+                } else {
+                    {
+                        if(id && id!==lastSel) {
+                            jQuery('#displayparticipants').saveRow(lastSel);
+                            lastSel=id;
+                        }
                     }
+                    jQuery('#displayparticipants').editRow(id,true);
                 }
-                jQuery('#displayparticipants').editRow(id,true);
-            }
+			}
         },
         pager: "#pager",
         pgtext: pageViewTxt,
@@ -684,7 +686,7 @@ $(document).ready(function() {
 				jQuery("tr#"+id+" .ui-inline-edit").hide();
 				jQuery("tr#"+id+" .ui-inline-save, tr#"+id+" .ui-inline-cancel").show();
             }
-            //jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
+            jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
         }
     }
 
