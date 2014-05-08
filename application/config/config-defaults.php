@@ -236,6 +236,15 @@ $config['usercontrolSameGroupPolicy'] = true;
 
 $config['demoMode'] = false;
 
+/**
+* Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated. 
+* Also a notice will be shown that the user knows that he can just login by using the Login button.
+* 
+* @var $config['demoModePrefill']  boolan  If set to true prefill the login mask
+*/
+$config['demoModePrefill'] = false;
+
+
 /** 
 * column_style
 * Because columns are tricky things, in terms of balancing visual
