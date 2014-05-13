@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 2.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-12 00:15+0200\n"
-"PO-Revision-Date: 2014-05-12 14:47-0600\n"
+"PO-Revision-Date: 2014-05-13 14:29-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2601,7 +2601,7 @@ msgstr ""
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/conditions/conditionslist_view.php:22
 msgid "Delete all conditions"
-msgstr "Eliminando todas las condiciones"
+msgstr "Eliminar todas las condiciones"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/conditions/conditionslist_view.php:26
 msgid ""
@@ -3020,7 +3020,7 @@ msgstr "Derivar simbolos con correos electrónicos incorrectos"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/token/remind.php:80
 msgid "Min days between reminders"
-msgstr "Minimo de dias entre recordatorios"
+msgstr "Mínimo de dias entre recordatorios"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/token/remind.php:84
 msgid "Max reminders"
@@ -3878,7 +3878,7 @@ msgstr ""
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/survey/subview/tabTokens_view.php:44
 msgid "Allow multiple responses or update responses with one token?"
-msgstr "¿Permitir múltiples respuestas o actualizar respuestas con un token?"
+msgstr "¿Permitir múltiples respuestas o actualizar respuestas con un tomen?"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/survey/subview/tabTokens_view.php:57
 msgid "Enable token-based response persistence?"
@@ -4974,7 +4974,7 @@ msgstr "Esta encuesta está actualmente activa."
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:118
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/extensions/Menu/MenuWidget.php:389
 msgid "Add new question to group"
-msgstr "Agregar nuevo grupo de preguntas"
+msgstr "Agregar nueva pregunta al grupo"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:123
 msgid "Hide details of this group"
@@ -7759,7 +7759,7 @@ msgstr ""
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/labels/labelsetsbar_view.php:14
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/labels/exportmulti_view.php:7
 msgid "Export multiple label sets"
-msgstr "Exportar Conjunto de Etiquetas"
+msgstr "Exportar múltiples conjuntos de etiquetas"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/views/admin/labels/labelsetsbar_view.php:18
 msgid "Label sets:"
@@ -10161,7 +10161,7 @@ msgstr "Lista (Radio)"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:161
 msgid "Multiple choice"
-msgstr "Multiple opción"
+msgstr "Opción múltiple"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:167
 msgid "Numerical Input"
@@ -10173,7 +10173,7 @@ msgstr "Lista con comentarios"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:179
 msgid "Multiple choice with comments"
-msgstr "Múltiples opciones con comentarios"
+msgstr "Opción múltiple con comentarios"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:185
 msgid "Multiple Short Text"
@@ -10605,7 +10605,7 @@ msgstr ""
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3148
 msgid "Array filter exclusion"
-msgstr "Filtro de exclusion"
+msgstr "Filtro de exclusión"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3155
 msgid "Hidden"
@@ -10996,7 +10996,7 @@ msgstr "Limitar el número de respuestas posibles"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3523
 msgid "Maximum answers"
-msgstr "Número máximo de preguntas"
+msgstr "Número máximo de respuestas"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3530
 msgid "Maximum sum value of multiple numeric input"
@@ -11029,7 +11029,7 @@ msgstr "Asegure un número mínimo de respuestas posibles (0=Sin límite)"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3563
 msgid "Minimum answers"
-msgstr "Número mínimo de preguntas"
+msgstr "Número mínimo de respuestas"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3570
 msgid "The sum of the multiple numeric inputs must be greater than this value"
@@ -11038,11 +11038,11 @@ msgstr ""
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3571
 msgid "Minimum sum value"
-msgstr "Valor de la suma mínimo"
+msgstr "Valor mínimo de la suma"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3578
 msgid "Minimum value of the numeric input"
-msgstr "Valor minimo de la entrada numérica"
+msgstr "Valor mínimo de la entrada numérica"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3579
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3603
@@ -11084,7 +11084,7 @@ msgstr "Restringir el ingreso de datos para valores enteros"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3653
 msgid "Integer only"
-msgstr "Enteros solamente"
+msgstr "Solo números enteros"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3665
 msgid "Allow only numerical input"
@@ -11092,7 +11092,7 @@ msgstr "Permitir sólo entrada numérica"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3666
 msgid "Numbers only"
-msgstr "Sólo números"
+msgstr "Solo números"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3676
 msgid "Rows"
@@ -11159,7 +11159,7 @@ msgstr ""
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3739
 msgid "Label for 'Other:' option"
-msgstr "Etiqueta para la opción 'Otros: '"
+msgstr "Etiqueta para la opción 'Otro:'"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3749
 msgid ""
@@ -11320,7 +11320,7 @@ msgstr ""
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3936
 msgid "Display min and max value under the slider"
-msgstr "Despliega los valores minimos y maximos de bajo del slider."
+msgstr "Despliega los valores mínimos y máximos debajo del deslizador."
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3937
 msgid "Display slider min and max value"
@@ -11346,11 +11346,11 @@ msgstr "Sufijo de respuesta"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3961
 msgid "Width of text input box"
-msgstr "Anchura de la caja de texto"
+msgstr "Ancho de la caja de entrada de texto"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3962
 msgid "Input box width"
-msgstr "Anchura de la caja de texto"
+msgstr "Ancho de la caja de entrada"
 
 #: /limeservice/git_checkouts/limesurvey_translationstatus/application/helpers/common_helper.php:3972
 msgid "Present dropdown control(s) instead of list of radio buttons"
