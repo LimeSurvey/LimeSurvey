@@ -3628,7 +3628,7 @@ function do_shortfreetext($ia)
             $question_text['help'] = $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
     }
-	////----------------------------------------------------------------------------------- Fred Maps
+	////----------------------------------------------------------------------------------- Leaflet Maps + geonames search
 	
 	elseif((int)($aQuestionAttributes['location_mapservice'])==100){
         $mapservice = $aQuestionAttributes['location_mapservice'];
@@ -3678,6 +3678,9 @@ function do_shortfreetext($ia)
 		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."typeahead.bundle.min.js");
 		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."leaflet.js");
 		//Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap.min.js");
+		
+		Yii::app()->getClientScript()->registerScriptFile("http://maps.google.com/maps/api/js?v=3&sensor=false");
+		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."Google.js");
 		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
 	
 		// css
@@ -3713,10 +3716,10 @@ function do_shortfreetext($ia)
 				</label>
 			</div>
 			<div class=\"geoname_search\" >
-				<form class=\"navbar-form navbar-right\" role=\"search\">
+				<form  role=\"search\">
 				  <div class=\"form-group has-feedback navbar-right\">
 					  <input id=\"searchbox\" type=\"text\" placeholder=\"Search\" class=\"form-control\">
-					  <span id=\"searchicon\" class=\"fa fa-search form-control-feedback\"></span>
+					  <span id=\"searchicon\" class=\"fa fa-search form-control-feedback\" style=\"top:-6px\"></span>
 				  </div>
 				</form>
 			</div>
@@ -3733,7 +3736,7 @@ function do_shortfreetext($ia)
             . $clang->gT('Click to set the location or drag and drop the pin. You may may also enter coordinates').'</div>';
             $question_text['help'] = $clang->gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
-		//----------------------------------------------------------------------------------- end fred maps
+		//----------------------------------------------------------------------------------- end leaflet+geonames
 	}
     else
     {

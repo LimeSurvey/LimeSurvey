@@ -51,34 +51,48 @@ function isvalidCoord(val){
 function OSGeoInitialize(question,latLng){
 		
 		// tiles layers def
+		
 		var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
 		  maxZoom: 19,
 		  subdomains: ["otile1", "otile2", "otile3", "otile4"],
 		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		});
 		var mapquestOAM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-		  maxZoom: 18,
+		  maxZoom: 10,
 		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
 		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		});
 		var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-		  maxZoom: 18,
+		  maxZoom: 10,
 		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
 		}), L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
 		  maxZoom: 19,
 		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
 		  attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		})]);
-	
+		
+		var gmap = new L.Google('HYBRID');
+		
+		var baseLayers = {
+		  "Street Map": mapquestOSM,
+		  "Aerial Imagery": mapquestOAM,
+		  "Imagery with Streets": mapquestHYB,
+		  "Google Maps": gmap
+		};
+		var overlays = {
+		};	
+		
 		var map = L.map("map", { 
 			zoom:1,
-			center: [15, 15],
+			minZoom:1,
+			center: [15, 15] ,
+			maxBounds: ([[-90, -180],[90, 180]]),
 			layers: [mapquestOSM]
 		});
 		
-		function zoomExtent(){ // todo: restrict to rect ?
-			map.setView([15, 15],1);
-		}
+		//function zoomExtent(){ // todo: restrict to rect ?
+		//	map.setView([15, 15],1);
+		//}
 		
 		var pt1 = latLng[0].split("@");
 		var pt2 = latLng[1].split("@");
@@ -92,6 +106,7 @@ function OSGeoInitialize(question,latLng){
 			maxLat = pt2[0];
 			maxLng = pt2[1];
 			map.fitBounds([[minLat, minLng],[maxLat, maxLng]]);
+			map.setMaxBounds([[minLat, minLng],[maxLat, maxLng]]);
 			UI_update("","");
 		} else { // is default marker position
 			var isRect = false;
@@ -105,20 +120,6 @@ function OSGeoInitialize(question,latLng){
 		
 		marker = new L.marker([lat,lng], {title:'Current Location',id:1,draggable:'true'});
 		map.addLayer(marker);
-
-		var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
-		  maxZoom: 19,
-		  subdomains: ["otile1", "otile2", "otile3", "otile4"],
-		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-		});
-
-		var baseLayers = {
-		  "Street Map": mapquestOSM,
-		  "Aerial Imagery": mapquestOAM,
-		  "Imagery with Streets": mapquestHYB
-		};	
-		var overlays = {
-		};	
 		
 		var layerControl = L.control.layers(baseLayers, overlays, {
 		  collapsed: true
