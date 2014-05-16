@@ -751,7 +751,16 @@ p.question {
   margin-top: 0;
   margin-top: -3px\9; /* IE9 and below */
 } 
-
+.multiple-opt .survey-question-answer ul.colstyle-css li label,.multiple-opt .survey-question-answer ul.colstyle-ul li label,.multiple-opt .survey-question-answer table.colstyle-table li label,
+.multiple-opt-comments .survey-question-answer ul.colstyle-css li label,.multiple-opt-comments .survey-question-answer ul.colstyle-ul li label,.multiple-opt-comments .survey-question-answer table.colstyle-table li label
+{
+    display: inline;
+}
+.list-radio .survey-question-answer ul.colstyle-css li label,.list-radio .survey-question-answer ul.colstyle-ul li label,.list-radio .survey-question-answer table.colstyle-table li label,
+.list-with-comment .survey-question-answer ul.colstyle-css li label,.list-with-comment .survey-question-answer ul.colstyle-ul li label,.list-with-comment .survey-question-answer table.colstyle-table li label
+{
+    display: inline;
+}
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
