@@ -179,12 +179,20 @@ class AuthLDAP extends AuthPluginBase
             return;
         }
 
+        if (empty($password))
+        {
+            // If password is null or blank reject login
+            // This is necessary because in simple bind ldap server authenticates with blank password
+            $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
+            return;
+        }
+
         // Get configuration settings:
         $ldapserver 		= $this->get('server');
         $ldapport   		= $this->get('ldapport');
         $ldapver    		= $this->get('ldapversion');
         $ldaptls    		= $this->get('ldaptls');
-        $ldapoptreferrals   = $this->get('ldapoptreferrals');
+        $ldapoptreferrals	= $this->get('ldapoptreferrals');
         $ldapmode    		= $this->get('ldapmode');
         $suffix     		= $this->get('domainsuffix');
         $prefix     		= $this->get('userprefix');
