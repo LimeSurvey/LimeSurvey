@@ -59,6 +59,45 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140502) to 2.05+ (build 140520) May 20, 2014
+-Fixed issue #8722: Template format Errorwith multicolumn checkboxes and radio buttons (Denis Chenu)
+-Fixed issue #8973: Editing attributes not properly working (tpartner)
+-Fixed issue #8996: Retrieving list of participants with additional token information not possible (Carsten Schmitz)
+-Fixed issue #9019: EM placeholders within label sets are not copied correctly (Carsten Schmitz)
+-Fixed issue #9024: Unable to access attribute management (Carsten Schmitz)
+-Fixed issue #9032: Permissions not enforced on template editor (Carsten Schmitz)
+-Fixed issue #9034: Authentication with blank password using LDAP (mfaber)
+-Fixed issue #9035: LDAP-search and bind not working with MS ActiveDirectory (mfaber)
+-Fixed issue #9037: Survey import from TSV file fails with PDOException (Carsten Schmitz)
+-Fixed issue #9041: Blacklist setting have no effect (Carsten Schmitz)
+-Fixed issue #9042: CSS vulnerability in 'Resume later' save screen (Carsten Schmitz)
+-Fixed issue: Error with templates when upgrading from version 1.90 (Carsten Schmitz)
+-New feature: Option to prefill credentials in demo mode (Carsten Schmitz)
+#Updated translation: Catalan by jmontane, valdomir
+#Updated translation: Catalan by valdomir
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by shrike
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by Mazi
+#Updated translation: Greek by kiolalis
+#Updated translation: Japanese by nomoto
+#Updated translation: Japanese by yamatt
+#Updated translation: Lithuanian by apklausos, simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by dariodallago, fabiomachado, helviobrito, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by algarvio, samarta
+#Updated translation: Russian by vipgroup
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Ukrainian by Rusya, c_schmitz
+
+
 Changes from 2.05+ (build 140422) to 2.05+ (build 140502) May 02, 2014
 -Changed feature: Added xslx and docx to allowed file extensions for resources (Carsten Schmitz)
 -Fixed issue #8997: XAMPP installer not working (Sam Mousa)
