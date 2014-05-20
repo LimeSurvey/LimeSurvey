@@ -77,7 +77,7 @@ $config['stringcomparizonoperators']   =   0;                // By default, Lime
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $config['blacklistallsurveys']     =  'N';          // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']     =  'N';          // Blacklist participant for any new added survey once the global field is set
-$config['blockaddingtosurveys']     =  'N';         // Don't allow blacklisted participants to be added to new survey
+$config['blockaddingtosurveys']     =  'Y';         // Don't allow blacklisted participants to be added to new survey
 $config['hideblacklisted']     =  'N';              // Don't show blacklisted participants
 $config['deleteblacklisted']     =  'N';            // Delete globally blacklisted participant from the database
 $config['allowunblacklist']     =  'N';             // Allow participant to unblacklist himself/herself

@@ -330,6 +330,10 @@ class Participant extends LSActiveRecord
              $aConditions[] = $aSearch['condition'];
              $aParams = $aSearch['params'];
         }
+        if (Yii::app()->getConfig('hideblacklisted')=='Y')
+        {
+            $aConditions[]="blacklisted<>'Y'";
+        }
         $condition = ''; // This will be the final condition
         foreach ($aConditions as $idx => $newCondition) {
             if ($idx>0) { 
@@ -337,7 +341,7 @@ class Participant extends LSActiveRecord
             }
             $condition .= '(' . $newCondition . ')';
         }
-                
+
         if (!empty($condition)) {
             $data->setWhere($condition);
         }
@@ -916,6 +920,7 @@ class Participant extends LSActiveRecord
         Yii::app()->loadHelper('common');
         $duplicate = 0;
         $sucessfull = 0;
+        $iBlacklistSkipped = 0;
         $participantid = explode(",", $participantid); //List of participant ids to add to tokens table
         if ($participantid[0] == "") { $participantid = array_slice($participantid, 1); }
         $number2add = sanitize_int(count($newcreate)); //Number of tokens being created
@@ -1021,6 +1026,13 @@ class Participant extends LSActiveRecord
             $writearray = array();
             $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = :pid')->from('{{participants}}')->bindParam(":pid", $participant, PDO::PARAM_INT);
             $tobeinserted = $participantdata->queryRow();
+            
+            if (Yii::app()->getConfig('blockaddingtosurveys')=='Y' && $tobeinserted=='Y')
+            {
+                $iBlacklistSkipped++;
+                continue;
+            }
+            
             /* Search for matching participant name/email in the survey token table */
             $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
                     ->where('firstname = :firstname AND lastname = :lastname AND email = :email')
@@ -1119,7 +1131,7 @@ class Participant extends LSActiveRecord
                 $sucessfull++;
             }
         }
-        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
+        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'blacklistskipped'=>$iBlacklistSkipped, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
         return $returndata;
     }
 
