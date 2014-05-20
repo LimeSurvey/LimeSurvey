@@ -23,6 +23,17 @@ if (!defined('BASEPATH'))
 */
 class templates extends Survey_Common_Action
 {
+    
+    public function runWithParams($params)
+    {
+        if (!Permission::model()->hasGlobalPermission('templates','read'))
+        {
+            die('No permission');
+        }
+        parent::runWithParams($params);
+    }
+
+    
 
     /**
     * Exports a template
@@ -33,7 +44,10 @@ class templates extends Survey_Common_Action
     */
     public function templatezip($templatename)
     {
-
+        if (!Permission::model()->hasGlobalPermission('templates','export'))
+        {
+            die('No permission');
+        }
         $templatedir = getTemplatePath($templatename) . DIRECTORY_SEPARATOR;
         $tempdir = Yii::app()->getConfig('tempdir');
 
@@ -81,6 +95,10 @@ class templates extends Survey_Common_Action
     */
     public function upload()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','import'))
+        {
+            die('No permission');
+        }
         $clang = $this->getController()->lang;
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
@@ -218,6 +236,11 @@ class templates extends Survey_Common_Action
     */
     public function uploadfile()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','import'))
+        {
+            die('No permission');
+        }
+        
         $clang = $this->getController()->lang;
         $action = returnGlobal('action');
         $editfile = returnGlobal('editfile');
@@ -380,6 +403,10 @@ class templates extends Survey_Common_Action
     */
     public function templatefiledelete()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         $clang = $this->getController()->lang;
         if (returnGlobal('action') == "templatefiledelete") {
             // This is where the temp file is
@@ -406,6 +433,10 @@ class templates extends Survey_Common_Action
     */
     public function templaterename()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
             $clang = Yii::app()->lang;
             $sOldName = sanitize_paranoid_string(returnGlobal('copydir'));
@@ -438,6 +469,10 @@ class templates extends Survey_Common_Action
     */
     public function templatecopy()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','create'))
+        {
+            die('No permission');
+        }
         $clang = $this->getController()->lang;
         $newname=sanitize_paranoid_string(Yii::app()->request->getPost("newname"));
         $copydir=sanitize_paranoid_string(Yii::app()->request->getPost("copydir"));
@@ -481,6 +516,10 @@ class templates extends Survey_Common_Action
     */
     public function delete($templatename)
     {
+        if (!Permission::model()->hasGlobalPermission('templates','delete'))
+        {
+            die('No permission');
+        }
         Yii::app()->loadHelper("admin/template");
         if (is_template_editable($templatename) == true) {
             $clang = $this->getController()->lang;
@@ -514,6 +553,10 @@ class templates extends Survey_Common_Action
     */
     public function templatesavechanges()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         if (returnGlobal('changes')) {
             $changedtext = returnGlobal('changes');
             $changedtext = str_replace('<?', '', $changedtext);
