@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-05-20 14:37:16+00:00\n"
+"POT-Creation-Date: 2014-05-25 23:05:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4158,22 +4158,30 @@ msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
 #: application/controllers/survey/index.php:365
-#: application/controllers/survey/index.php:386
+#: application/controllers/survey/index.php:402
 #: application/helpers/frontend_helper.php:1028
 #: application/helpers/frontend_helper.php:1070
 #: application/helpers/frontend_helper.php:1260
 msgid "For further information please contact %s"
 msgstr ""
 
-#: application/controllers/survey/index.php:384
+#: application/controllers/survey/index.php:387
+msgid "This invitation is not valid yet."
+msgstr ""
+
+#: application/controllers/survey/index.php:391
+msgid "This invitation is not valid anymore."
+msgstr ""
+
+#: application/controllers/survey/index.php:396
+msgid "This invitation has already been used."
+msgstr ""
+
+#: application/controllers/survey/index.php:400
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:385
-msgid "Your token is invalid, was already used or can only be used during a certain time period."
-msgstr ""
-
-#: application/controllers/survey/index.php:535
+#: application/controllers/survey/index.php:551
 msgid "Your responses were successfully saved."
 msgstr ""
 
