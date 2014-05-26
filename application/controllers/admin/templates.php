@@ -113,7 +113,7 @@ class templates extends Survey_Common_Action
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
         
             // Create temporary directory so that if dangerous content is unzipped it would be unaccessible
-            $sNewDirectoryName=str_replace('.', '', self::_strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
+            $sNewDirectoryName=str_replace('.', '', self::_strip_ext(sanitize_filename($_FILES['the_file']['name'])));
             $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
             if (!is_writeable(dirname($destdir)))
@@ -439,8 +439,8 @@ class templates extends Survey_Common_Action
         }
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
             $clang = Yii::app()->lang;
-            $sOldName = sanitize_paranoid_string(returnGlobal('copydir'));
-            $sNewName = sanitize_paranoid_string(returnGlobal('newname'));
+            $sOldName = sanitize_filename(returnGlobal('copydir'));
+            $sNewName = sanitize_filename(returnGlobal('newname'));
             $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
             $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
             if (isStandardTemplate(returnGlobal('newname')))
@@ -474,8 +474,8 @@ class templates extends Survey_Common_Action
             die('No permission');
         }
         $clang = $this->getController()->lang;
-        $newname=sanitize_paranoid_string(Yii::app()->request->getPost("newname"));
-        $copydir=sanitize_paranoid_string(Yii::app()->request->getPost("copydir"));
+        $newname=sanitize_filename(Yii::app()->request->getPost("newname"));
+        $copydir=sanitize_filename(Yii::app()->request->getPost("copydir"));
         $action=Yii::app()->request->getPost("action");
         if ($newname && $copydir) {
             // Copies all the files from one template directory to a new one
@@ -875,7 +875,7 @@ class templates extends Survey_Common_Action
         $file_version = "LimeSurvey template editor " . Yii::app()->getConfig('versionnumber');
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
-        $templatename = sanitize_paranoid_string($templatename);
+        $templatename = sanitize_filename($templatename);
         $screenname = autoUnescape($screenname);
 
         // Checks if screen name is in the list of allowed screen names
@@ -889,10 +889,10 @@ class templates extends Survey_Common_Action
             $subaction = sanitize_paranoid_string(returnGlobal('subaction'));
 
         if (!isset($newname))
-            $newname = sanitize_paranoid_string(returnGlobal('newname'));
+            $newname = sanitize_filename(returnGlobal('newname'));
 
         if (!isset($copydir))
-            $copydir = sanitize_paranoid_string(returnGlobal('copydir'));
+            $copydir = sanitize_filename(returnGlobal('copydir'));
 
         if (is_file(Yii::app()->getConfig('usertemplaterootdir') . '/' . $templatename . '/question_start.pstpl')) {
             $files[] = array('name' => 'question_start.pstpl');
