@@ -92,6 +92,16 @@ class STATAxmlWriter extends Writer
         //create fieldmap only with the columns (variables) selected
         $aFieldmap['questions'] = array_intersect_key($survey->fieldMap, array_flip($oOptions->selectedColumns));
         
+        //tokens need to be "smuggled" into the fieldmap as additional questions 
+        $aFieldmap['tokenFields'] = array_intersect_key($survey->tokenFields, array_flip($oOptions->selectedColumns));
+        foreach ($aFieldmap['tokenFields'] as $key=>$value)
+        {
+            $aFieldmap['questions'][$key] = $value;
+            $aFieldmap['questions'][$key]['qid'] = '';
+            $aFieldmap['questions'][$key]['question'] = $value['description'];
+            $aFieldmap['questions'][$key]['fieldname'] = $key;
+            $aFieldmap['questions'][$key]['type'] = 'S';
+        }
         // add only questions and answers to the fieldmap that are relevant to the selected columns (variables)
         foreach ($aFieldmap['questions'] as $question)
         {
@@ -118,7 +128,6 @@ class STATAxmlWriter extends Writer
                 }
             }
         }
-        
         
         // go through the questions array and create/modify vars for STATA-output
         foreach ($aFieldmap['questions'] as $sSGQAkey => $aQuestion)
