@@ -51,6 +51,7 @@
                 echo CHtml::closeTag('div');
             }
         }
+
         public function init() {
             parent::init();
 
@@ -183,19 +184,16 @@
         }
 
 
-
-        
-        /***********************************************************************
+         /***********************************************************************
          * Settings renderers.
          **********************************************************************/
-
 
 
         public function renderBoolean($name, array $metaData, $form = null)
         {
             $out = '';
             $id = $name;
-            $value = isset($metaData['current']) ? $metaData['current'] : '';
+            $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : NULL); // default value
             if (isset($metaData['label']))
             {
                 $out .= CHtml::label($metaData['label'], $id);
@@ -206,6 +204,8 @@
                 1 => 'True'
             ), array('id' => $id, 'form' => $form, 'container'=> false, 'separator' => ''));
             $out .= CHtml::closeTag('div');
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
 
             return $out;
         }
@@ -214,13 +214,14 @@
         {
             $out = '';
             $id = $name;
-            $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
+            $value = isset($metaData['current']) ? (bool) $metaData['current'] : FALSE;
             if (isset($metaData['label']))
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
             $out .= CHtml::checkBox($id, $value, array('id' => $id, 'form' => $form, 'container'=>'div', 'separator' => ''));
-            
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
             return $out;
         }
 
@@ -238,7 +239,8 @@
                 'form' => $form,
                 'pattern' => '\d+(\.\d+)?'
             ));
-
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
             return $out;
         }
 
@@ -246,7 +248,7 @@
         {
            $out = '';
             $id = $name;
-            $value = isset($metaData['current']) ? $metaData['current'] : '';
+            $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : NULL); // default value
             $metaData['class'][] = 'htmleditor';
             $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
             if (isset($metaData['label']))
@@ -264,6 +266,8 @@
 					)
 				), true)
 			);
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
             return $out;
         }
 
@@ -271,7 +275,7 @@
         {
             $out = '';
             $id = $name;
-            $value = isset($metaData['current']) ? $metaData['current'] : '';
+            $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : NULL); // default value
             if (is_array($value)) { throw new CException('wrong type' . $name); }
             if (isset($metaData['label']))
             {
@@ -283,7 +287,8 @@
                 'data-type' => 'int',
                 'pattern' => '\d+'
             ));
-
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
             return $out;
         }
 
@@ -306,7 +311,9 @@
                 'value' => $value,
                 'editorOptions' => $editorOptions
             ), true);
-			return $out;
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
+			      return $out;
         }
 
         public function renderLogo($name, array $metaData)
@@ -327,7 +334,8 @@
             $value = isset($metaData['current']) ? $metaData['current'] : '';
 
             $out .= CHtml::textArea($name, $value, array('id' => $id, 'form' => $form, 'class' => implode(' ', $metaData['class'])));
-
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
             return $out;
         }
 
@@ -335,7 +343,7 @@
         {
             $out = '';
             $id = $name;
-            $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
+            $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : NULL);
             if (isset($metaData['label']))
             {
                 $out .= CHtml::label($metaData['label'], $id);
@@ -359,6 +367,8 @@
             }
             
             $out .= App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', $properties, true);
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
             return $out;
         }
 
@@ -366,14 +376,15 @@
         {
             $out = '';
             $id = $name;
-            $value = isset($metaData['current']) ? $metaData['current'] : '';
+            $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : NULL); // default value
             $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
             if (isset($metaData['label']))
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
             $out .= CHtml::textField($id, $value, array('id' => $id, 'form' => $form, 'class' => implode(' ', $metaData['class']), 'readonly' => $readOnly));
-
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
             return $out;
         }
 
@@ -381,13 +392,15 @@
         {
             $out = '';
             $id = $name;
-            $value = isset($metaData['current']) ? $metaData['current'] : '';
+            $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : NULL); // default value
             $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
             if (isset($metaData['label']))
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
             $out .= CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly, 'style' => $metaData['style']));
+            // add a description to form fields - html-tag are possible
+            (isset ($metaData['description'])) ? $out .= CHtml::tag ('div', array ('class' => 'description help-block'), $metaData['description'], TRUE) : '';
             return $out;
         }
 
