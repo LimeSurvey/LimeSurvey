@@ -8,7 +8,12 @@
         ),
         'method' => 'post',
         'buttons' => array(
-            gT('Save plugin settings'),
+            gT('Save and close')=> array(
+                'name'=>'redirect',
+            ),
+            gT('Save')=> array(
+                'type'=>'submit',
+            ),
             gT('Cancel') => array(
                 'type' => 'link',
                 'href' => App()->createUrl('plugins/index')

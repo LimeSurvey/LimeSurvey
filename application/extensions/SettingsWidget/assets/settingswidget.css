@@ -1,24 +1,6 @@
-div.row {
-    border: 2px solid red;
-}
-
-.settingswidget * {
+.settingswidget *{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-}
-
-.settingswidget input[type^='button'], .settingswidget label{
-    height: 30px;
-    line-height: 30px;
-    margin-top: 0px;
-}
-
-.settingswidget textarea {
-    min-height: 100px;
-}
-
-.settingswidget .boolean label{
-    margin-right: 10px;
 }
 
 .settingswidget {
@@ -26,71 +8,110 @@ div.row {
     width: 80%;
 }
 
-/*
-    Special layout for list settings (inline).
-*/
-
-.settingswidget .settingslist input[data-type=int]{
-    width: 50px;
+.form-horizontal.col-sm-1,.form-horizontal .col-sm-2,.form-horizontal .col-sm-3,.form-horizontal .col-sm-4,.form-horizontal .col-sm-5,.form-horizontal .col-sm-6,.form-horizontal .col-sm-7,.form-horizontal .col-sm-8,.form-horizontal .col-sm-9,.form-horizontal .col-sm-10,.form-horizontal .col-sm-11,.form-horizontal .col-sm-12 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-left:0;/* Fix default margin left for boostrap 2.1 */
 }
-
-.settingswidget .settingslist table{
+.form-horizontal.col-sm-1,.form-horizontal .col-sm-2,.form-horizontal .col-sm-3,.form-horizontal .col-sm-4,.form-horizontal .col-sm-5,.form-horizontal .col-sm-6,.form-horizontal .col-sm-7,.form-horizontal .col-sm-8,.form-horizontal .col-sm-9,.form-horizontal .col-sm-10,.form-horizontal .col-sm-11,.form-horizontal .col-sm-12 {
+    float: left;
+}
+.form-horizontal .col-sm-12 {
+width: 100%;
+}
+.form-horizontal .col-sm-11 {
+width: 91.66666667%;
+}
+.form-horizontal .col-sm-10 {
+width: 83.33333333%;
+}
+.form-horizontal .col-sm-9 {
+width: 75%;
+}
+.form-horizontal .col-sm-8 {
+width: 66.66666667%;
+}
+.form-horizontal .col-sm-7 {
+width: 58.33333333%;
+}
+.form-horizontal .col-sm-6 {
+width: 50%;
+}
+.form-horizontal .col-sm-5 {
+width: 41.66666667%;
+}
+.form-horizontal .col-sm-4 {
+width: 33.33333333%;
+}
+.form-horizontal .col-sm-3 {
+width: 25%;
+}
+.form-horizontal .col-sm-2 {
+width: 16.66666667%;
+}
+.form-horizontal .col-sm-1 {
+width: 8.33333333%;
+}
+.form-horizontal input[type="text"],.form-horizontal input[type="password"]{
+    height:2.4em; /*bootstrap 3: 34px for 14px*/
+}
+.form-horizontal textarea {
+    height:auto;
+}
+.form-horizontal .default input[type="text"],.form-horizontal .default input[type="password"],
+.form-horizontal .default textarea,
+.form-horizontal .default .htmleditor,
+.form-horizontal .default .jsoneditor-wrapper
+{
     width: 100%;
 }
-.settingswidget .settingslist label{
-    width: auto;
-    margin-right: 5px;
+.form-horizontal .default textarea {
+    min-height:10em;
 }
-
-.settingswidget div.setting {
-    width: 100%;
-    display: inline-block;
-    text-align: left;
-    margin-bottom: 10px;
-}
-
-
-.settingswidget {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.settingswidget .setting > input,
-.settingswidget .setting > textarea {
-    width: 60%;
-}
-
-.settingswidget .setting > * {
-    display: inline-block;
-}
-
-.settingswidget .setting > label {
-    text-align: right;
-    padding-right: 10px;
-    width: 40%;
-    display: inline-block;
-}
-.settingswidget .setting > label:after{
+.form-horizontal .control-label:after{
     content: ':';
 }
-.settingswidget .setting input[type=checkbox]{
-    width: auto;
+
+.form-horizontal input + .help-block, .form-horizontal select + .help-block, .form-horizontal textarea + .help-block {
+    /* Set to 10px in 2.1, Removed in bootstrap 2.3 */
+    margin-top: 0;
+}
+.form-horizontal .buttons{text-align:center}
+
+.form-horizontal ul.wysihtml5-toolbar li {
+    overflow:visible;
+}
+#addnewsurvey ul.wysihtml5-toolbar li{
+    clear:none;
 }
 
-.settingswidget legend {
-    width: 100%;
-    margin: 0px 0px 10px 0px;
-}
-
-.settingswidget .buttons {
-    text-align: center;
-}
-
-.settingswidget ul.wysihtml5-toolbar li {
-    clear: none !important;
-}
-
-.settingswidget .jsoneditor-wrapper {
-    height: 400px;
+.settingswidget .jsoneditor-wrapper{
+    height:1em;/* set a heigth for heigth:100% on children*/
+    min-height:20em;/* set the min-height */
     vertical-align: middle;
+}
+/*
+    Special layout for list settings (in table).
+*/
+.settingswidget .setting-list table{
+    width: 100%;
+}
+.setting-list .settings .controls{
+    margin:0;
+    width:100%;
+    max-width:100%;
+}
+.setting-list .settings .setting{
+    text-align:center;
+    vertical-align:middle;
+    display:table-cell;
+}
+.setting-list .settings .setting:before, .setting-list .settings .setting:after {
+    content: none;
+    display: none;
+}
+.setting-list .settings .setting:after {
+    clear: none;
 }

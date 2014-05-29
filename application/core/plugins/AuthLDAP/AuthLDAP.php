@@ -17,11 +17,13 @@ class AuthLDAP extends AuthPluginBase
     protected $settings = array(
         'server' => array(
             'type' => 'string',
-            'label' => 'Ldap server e.g. ldap://ldap.mydomain.com or ldaps://ldap.mydomain.com'
+            'label' => 'Ldap server',
+            'help' => 'e.g. ldap://ldap.mydomain.com or ldaps://ldap.mydomain.com'
             ),
         'ldapport' => array(
             'type' => 'string',
-            'label' => 'Port number (default when omitted is 389)'
+            'label' => 'Port number',
+            'help' => 'Default when omitted is 389',
             ),
         'ldapversion' => array(
             'type' => 'select',
@@ -37,7 +39,8 @@ class AuthLDAP extends AuthPluginBase
             ),
         'ldaptls' => array(
             'type' => 'boolean',
-            'label' => 'Check to enable Start-TLS encryption When using LDAPv3',
+            'help' => 'Check to enable Start-TLS encryption, when using LDAPv3',
+            'label' => 'Enable Start-TLS',
             'default' => '0'
             ),
         'ldapmode' => array(
@@ -49,11 +52,13 @@ class AuthLDAP extends AuthPluginBase
             ),
         'userprefix' => array(
             'type' => 'string',
-            'label' => 'Username prefix cn= or uid=',
+            'label' => 'Username prefix',
+            'help' => 'e.g. cn= or uid=',
             ),
         'domainsuffix' => array(
                 'type' => 'string',
-                'label' => 'Username suffix e.g. @mydomain.com or remaining part of ldap query'
+                'label' => 'Username suffix',
+                'help' => 'e.g. @mydomain.com or remaining part of ldap query',
                 ),
         'searchuserattribute' => array(
                 'type' => 'string',

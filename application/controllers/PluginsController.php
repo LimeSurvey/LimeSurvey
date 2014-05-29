@@ -80,7 +80,7 @@ class PluginsController extends LSYii_Controller
         }
         
         // If post handle data, yt0 seems to be the submit button
-        if (App()->request->isPostRequest && App()->request->getPost('yt0'))
+        if (App()->request->isPostRequest)
         {
 
             $aSettings = $oPluginObject->getPluginSettings(false);
@@ -91,8 +91,11 @@ class PluginsController extends LSYii_Controller
             }
             $oPluginObject->saveSettings($aSave);
 
-            Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
-            $this->forward('plugins/index', true);
+            if(App()->request->getPost('redirect'))
+            {
+                Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
+                $this->forward('plugins/index', true);
+            }
         }
 
         $aSettings = $oPluginObject->getPluginSettings();

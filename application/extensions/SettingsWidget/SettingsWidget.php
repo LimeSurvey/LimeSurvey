@@ -32,7 +32,7 @@
             }
             else
             {
-                echo CHtml::openTag('div', array('class' => 'settingswidget', 'id' => $this->getId()));
+                echo CHtml::openTag('div', array('class' => $this->formHtmlOptions['class'], 'id' => $this->getId()));
             }
             if (isset($this->title))
             {
@@ -60,7 +60,7 @@
             Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/settingswidget.js'));
 
             // Add default form class.
-            $this->formHtmlOptions['class'] = isset($this->formHtmlOptions['class']) ? $this->formHtmlOptions['class'] . " settingswidget" : 'settingswidget';
+            $this->formHtmlOptions['class'] = isset($this->formHtmlOptions['class']) ? $this->formHtmlOptions['class'] . " settingswidget form-horizontal" : 'settingswidget form-horizontal';
 
 
             // Start form
@@ -74,91 +74,70 @@
                 $label = $htmlOptions;
                 $htmlOptions = array();
             }
-			if (isset($htmlOptions['type']) && $htmlOptions['type'] == 'link')
-			{
-				$htmlOptions['class'] = 'limebutton';
-				echo CHtml::linkButton($label, $htmlOptions);
-			}
-			else
-			{
-				echo CHtml::submitButton($label, $htmlOptions);
-			}
+            $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . " btn" : 'btn';
+            if (isset($htmlOptions['type']) && $htmlOptions['type'] == 'link')
+            {
+                $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . " btn-link button" : 'btn-link button';
+                //echo CHtml::link($label,$htmlOptions['href'],$htmlOptions); // This allow cancel without js
+                echo CHtml::linkButton($label,$htmlOptions);
+            }
+            elseif(isset($htmlOptions['type']))
+            {
+                echo CHtml::htmlButton($label, $htmlOptions);
+            }
+            else
+            {
+                echo CHtml::submitButton($label, $htmlOptions);
+            }
         }
 
         protected function renderButtons()
         {
-            echo CHtml::openTag('div', array('class' => 'buttons'));
+            echo CHtml::openTag('div', array('class' => 'buttons control-group'));
             foreach ($this->buttons as $label => $htmlOptions)
             {
+                $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . " inline" : 'inline';
                 $this->renderButton($label, $htmlOptions);
             }
             echo CHtml::closeTag('div');
         }
 
-        protected function renderSetting($name, $metaData, $form = null, $return = false)
+        protected function renderSetting($name, $metaData, $form = null, $return = false,$wrapper='div')
         {
-            $defaults = array(
-                'class' => array(),
-                'type' => 'string',
-                'labelOptions' => array(
-                    'class' => 'control-label'
-                )
-            );
-            $metaData = array_merge($defaults, $metaData);
-
+            // No type : invalid setting
+            if(!isset($metaData['type']))
+                return "";
+            // Fix $metaData
+            $metaData=$this->fixMetaData($name, $metaData);
+            // Fix $name
             if (isset($this->prefix))
             {
                 $name = "{$this->prefix}[$name]";
             }
-            
-            if (is_string($metaData['class']))
+            if ($metaData['localized'])
             {
-                $metaData['class'] = array($metaData['class']);
+                $name = "{$name}[{$metaData['language']}]";
             }
-            if (isset($metaData['type']))
-            {
-                $function = "render{$metaData['type']}";
+            // Find function
+            $function = "render{$metaData['type']}";
 
-                // Handle localization.
-                if (isset($metaData['localized']) && $metaData['localized'] == true)
-                {
-                    $name = "{$name}[{$metaData['language']}]";
-                    if (isset($metaData['current']) && is_array($metaData['current']) && isset($metaData['current'][$metaData['language']]))
-                    {
-                        $metaData['current'] = $metaData['current'][$metaData['language']];
-                    }
-                    else
-                    {
-                        unset($metaData['current']);
-                    }
-                }
+            // Construct the content
+            // The labels
+            $content  = $this->renderLabel($name, $metaData);
+            // The control
+            $content .= CHtml::openTag('div',$metaData['controlOptions']);
+            // The input
+            $content .= $this->$function($name, $metaData, $form);
+            // The help
+            $content .= $this->renderHelp($name, $metaData);
+            $content .= CHtml::closeTag('div');
 
-                // Handle styles
-                if (isset($metaData['style']) && is_array($metaData['style']))
-                {
-                    $style = '';
-                    foreach($metaData['style'] as $key => $value)
-                    {
-                        $style .= "$key : $value;";
-                    }
-                    $metaData['style'] = $style;
-                }
-                else
-                {
-                    $metaData['style'] = null;
-                }
+            $result=CHtml::tag($wrapper,array('class'=>"setting control-group setting-{$metaData['type']}", 'data-name' => $name),$content);
 
-                $result = CHtml::tag('div',array('class'=>'setting', 'data-name' => $name), $this->$function($name, $metaData, $form));     // render inside a div
-                
-                if ($return)
-                {
-                    return $result;
-                }
-                else
-                {
-                    echo $result;
-                }
-            }
+            if($return)
+                return $result;
+            else
+                echo $result;
         }
 
         protected function renderSettings()
@@ -183,30 +162,100 @@
         }
 
 
+        /**
+        * fix metaData for a setting : set default etc.
+        *
+        */
+        public function fixMetaData($name,$metaData){
 
-        
+            $defaults = array(
+                'class' => array(),
+                'type' => 'string',
+                'labelOptions' => array(
+                    'class' => ''
+                ),
+                'help'=> null,
+                'controlOptions'=> array(
+                    'class' => 'default col-sm-7'
+                ),
+                'localized'=>false,
+            );
+            $metaData = array_merge($defaults, $metaData);
+
+            // col-sm-X is here for bootsrap 3 when ready
+            $metaData['labelOptions']['class'].=" control-label col-sm-5";
+            $metaData['controlOptions']['class'].=" controls";
+
+            if (is_string($metaData['class']))
+            {
+                $metaData['class'] = array($metaData['class']);
+            }
+
+            // Handle localization.
+            if ($metaData['localized'])
+            {
+                $name = "{$name}[{$metaData['language']}]";
+                if (isset($metaData['current']) && is_array($metaData['current']) && isset($metaData['current'][$metaData['language']]))
+                {
+                    $metaData['current'] = $metaData['current'][$metaData['language']];
+                }
+                else
+                {
+                    unset($metaData['current']);
+                }
+            }
+
+            // Handle styles
+            if (isset($metaData['style']) && is_array($metaData['style']))
+            {
+                $style = '';
+                foreach($metaData['style'] as $key => $value)
+                {
+                    $style .= "$key : $value;";
+                }
+                $metaData['style'] = $style;
+            }
+            else
+            {
+                $metaData['style'] = null;
+            }
+            return $metaData;
+        }
+        /**
+        * render label according to type and $metaData['label']
+        *
+        */
+        public function renderLabel($name,$metaData){
+            if(!isset($metaData['label']))
+                return "";
+            if($metaData['type']!='list')
+                return CHtml::label($metaData['label'], $name, $metaData['labelOptions']);
+            else
+                return CHtml::tag('div',$metaData['labelOptions'], $metaData['label']);
+        }
+        /**
+        * render help/desscription according to type and $metaData['help']
+        *
+        */
+        public function renderHelp($name,$metaData){
+            if(!is_string($metaData['help']))
+                return "";
+            return CHtml::tag('div', array('class' => 'help-block'),$metaData['help']);// p is more clean but have class in adminstyle
+        }
+
         /***********************************************************************
          * Settings renderers.
          **********************************************************************/
-
-
 
         public function renderBoolean($name, array $metaData, $form = null)
         {
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id);
-            }
-            $out .= CHtml::openTag('div', array('class' => 'boolean'));
             $out .= CHtml::radioButtonList($id, $value, array(
                 0 => 'False',
                 1 => 'True'
             ), array('id' => $id, 'form' => $form, 'container'=> false, 'separator' => ''));
-            $out .= CHtml::closeTag('div');
-
             return $out;
         }
         
@@ -215,12 +264,8 @@
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id);
-            }
-            $out .= CHtml::checkBox($id, $value, array('id' => $id, 'form' => $form, 'container'=>'div', 'separator' => ''));
-            
+            $out .= CHtml::checkBox($id, $value, array('id' => $id, 'form' => $form));
+
             return $out;
         }
 
@@ -229,41 +274,32 @@
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
-            }
             $out .= CHtml::textField($id, $value, array(
                 'id' => $id,
                 'form' => $form,
                 'pattern' => '\d+(\.\d+)?'
             ));
-
             return $out;
         }
 
         public function renderHtml($name, array $metaData, $form = null)
         {
-           $out = '';
+            $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $metaData['class'][] = 'htmleditor';
             $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
-            }
+            $editorOptions = array_merge(array(
+                'html' => true,
+            ), isset($metaData['editorOptions']) ? $metaData['editorOptions'] : array());
             $out .= Chtml::tag('div', array('class' => implode(' ', $metaData['class'])),
-				$this->widget('bootstrap.widgets.TbHtml5Editor', array(
-					'name' => $id,
+                $this->widget('bootstrap.widgets.TbHtml5Editor', array(
+                    'name' => $id,
                     'value' => $value,
-					'width' => '100%',
-					'editorOptions' => array(
-						'html' => true,
-
-					)
-				), true)
-			);
+                    'width' => '100%',
+                    'editorOptions' =>  $editorOptions,
+                ), true)
+            );
             return $out;
         }
 
@@ -273,17 +309,12 @@
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             if (is_array($value)) { throw new CException('wrong type' . $name); }
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
-            }
             $out .= CHtml::textField($id, $value, array(
                 'id' => $id,
                 'form' => $form,
                 'data-type' => 'int',
                 'pattern' => '\d+'
             ));
-
             return $out;
         }
 
@@ -293,10 +324,6 @@
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
-            }
             $editorOptions = array_merge(array(
                 'mode' => 'form',
                 'modes' => array('form', 'code', 'tree', 'text')
@@ -306,7 +333,7 @@
                 'value' => $value,
                 'editorOptions' => $editorOptions
             ), true);
-			return $out;
+            return $out;
         }
 
         public function renderLogo($name, array $metaData)
@@ -319,13 +346,7 @@
             $metaData['class'][] = 'relevance';
             $id = $name;
 
-
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
-            }
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-
             $out .= CHtml::textArea($name, $value, array('id' => $id, 'form' => $form, 'class' => implode(' ', $metaData['class'])));
 
             return $out;
@@ -336,10 +357,6 @@
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id);
-            }
             $properties = array(
                 'data' => $metaData['options'],
                 'name' => $name,
@@ -357,7 +374,6 @@
 }'
                 );
             }
-            
             $out .= App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', $properties, true);
             return $out;
         }
@@ -368,12 +384,7 @@
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
-            }
             $out .= CHtml::textField($id, $value, array('id' => $id, 'form' => $form, 'class' => implode(' ', $metaData['class']), 'readonly' => $readOnly));
-
             return $out;
         }
 
@@ -383,10 +394,6 @@
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id);
-            }
             $out .= CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly, 'style' => $metaData['style']));
             return $out;
         }
@@ -396,34 +403,24 @@
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
-            }
-            $out .= CHtml::passwordField($id, $value, array('id' => $id, 'form' => $form));
-
+            $out .= CHtml::passwordField($id, $value, array('id' => $id,'autocomplete'=>'off', 'form' => $form));
             return $out;
         }
 
         public function renderList($name, array $metaData, $form = null)
         {
+            $out = '';
             $id = $name;
-            if (isset($metaData['label']))
-            {
-                $result = CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
-            }
-            else
-            {
-                $result = '';
-            }
-
             $headers = '';
             $cells = '';
             foreach ($metaData['items'] as $itemName => $itemMetaData)
             {
                 $headers .= CHtml::tag('th', array(), $itemMetaData['label']);
+                //$itemMetaData['title']=$itemMetaData['label'];
                 unset($itemMetaData['label']);
-                $cells .= CHtml::tag('td', array(), $this->renderSetting($itemName . '[]', $itemMetaData, $form, true));
+                $itemMetaData['controlOptions']['class']=(isset($itemMetaData['controlOptions']['class']))?$itemMetaData['controlOptions']['class']:'default';
+                //$cells .= CHtml::tag('td', array(), $this->renderSetting($itemName . '[]', $itemMetaData, $form, true,false));
+                $cells .= $this->renderSetting($itemName . '[]', $itemMetaData, $form, true,'td');
             }
             $headers .= CHtml::tag('th');
             $cells .= CHtml::tag('td', array(), $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -434,21 +431,22 @@
                 )
                 
             ), true));
-            $result .= CHtml::openTag('div', array('class' => 'settingslist'));
-            $result .= CHtml::openTag('table');
+            $out .= CHtml::openTag('table',array('class'=>'settings activecell'));
             // Create header row.
-            $result .= CHtml::openTag('thead');
-            $result .= $headers;
-            $result .= CHtml::closeTag('thead');
+            $out .= CHtml::openTag('thead');
+            $out .= CHtml::openTag('tr');
+            $out .= $headers;
+            $out .= CHtml::closeTag('tr');
+            $out .= CHtml::closeTag('thead');
             // Create cells.
-            $result .= CHtml::openTag('tbody');
-            $result .= CHtml::openTag('tr');
-            $result .= $cells;
-            $result .= CHtml::closeTag('tr');
-            $result .= CHtml::closeTag('tbody');
-            $result .= CHtml::closeTag('table');
-            $result .= CHtml::closeTag('div');
-            return $result;
+            $out .= CHtml::openTag('tbody');
+            $out .= CHtml::openTag('tr');
+            $out .= $cells;
+            $out .= CHtml::closeTag('tr');
+            $out .= CHtml::closeTag('tbody');
+            $out .= CHtml::closeTag('table');
+
+            return $out;
         }
     }
 
