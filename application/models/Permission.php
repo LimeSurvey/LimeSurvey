@@ -326,7 +326,20 @@ class Permission extends LSActiveRecord
     */
     function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD, $iUserID=null)
     {
-        static $aPermissionCache;
+        static $aPermissionStatic;
+
+        $oEvent=new PluginEvent('beforeHasPermission');
+        $oEvent->set('iEntityID',$iEntityID);
+        $oEvent->set('sEntityName',$sEntityName);
+        $oEvent->set('sPermission',$sPermission);
+        $oEvent->set('sCRUD',$sCRUD);
+        $oEvent->set('iUserID',$iUserID);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $pluginbPermission=$oEvent->get('bPermission');
+        // isset — Determine if a variable is set and is not NULL. And isset seems little speedest.
+        if (isset($pluginbPermission)) 
+             return $pluginbPermission;
+
         if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
         $sCRUD=$sCRUD.'_p';
 
@@ -345,7 +358,7 @@ class Permission extends LSActiveRecord
         }
 
         // Check if superadmin and cache it
-        if (!isset($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']))
+        if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']))
         {
             $aPermission = $this->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
             $bPermission = is_null($aPermission) ? array() : $aPermission->attributes;
@@ -357,11 +370,11 @@ class Permission extends LSActiveRecord
             {
                 $bPermission=true;
             }
-            $aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
+            $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
         }
-        
-        if ($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']) return true;
-        if (!isset($aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
+
+        if ($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) return true;
+        if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
         {
             $query = $this->findByAttributes(array("entity_id"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
             $bPermission = is_null($query) ? array() : $query->attributes;
@@ -373,9 +386,9 @@ class Permission extends LSActiveRecord
             {
                 $bPermission=true;
             }
-            $aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]=$bPermission;
+            $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]=$bPermission;
         }
-        return $aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD];
+        return $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD];
     }
     
     /**
