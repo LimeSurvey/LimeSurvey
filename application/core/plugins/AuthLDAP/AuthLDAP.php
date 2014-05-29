@@ -18,7 +18,7 @@ class AuthLDAP extends AuthPluginBase
         'server' => array(
             'type' => 'string',
             'label' => 'Ldap server',
-            'help' => 'e.g. ldap://ldap.mydomain.com or ldaps://ldap.mydomain.com'
+            'help' => 'e.g. ldap://ldap.example.com or ldaps://ldap.example.com'
             ),
         'ldapport' => array(
             'type' => 'string',
