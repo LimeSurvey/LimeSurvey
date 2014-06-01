@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-05-25 23:05:59+00:00\n"
+"POT-Creation-Date: 2014-06-01 23:06:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -365,10 +365,10 @@ msgstr ""
 #: application/controllers/admin/quotas.php:515
 #: application/controllers/admin/surveyadmin.php:656
 #: application/controllers/admin/tokens.php:2176
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:204
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:215
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:237
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:248
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:220
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:231
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:253
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:264
 #: application/core/Survey_Common_Action.php:835
 #: application/helpers/admin/statistics_helper.php:1331
 #: application/helpers/admin/statistics_helper.php:1464
@@ -578,7 +578,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:362
 #: application/controllers/admin/printablesurvey.php:1046
 #: application/controllers/admin/printablesurvey.php:1062
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:256
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:272
 #: application/helpers/admin/statistics_helper.php:1333
 #: application/helpers/common_helper.php:1727
 #: application/helpers/export_helper.php:301
@@ -604,8 +604,8 @@ msgstr ""
 #: application/controllers/admin/quotas.php:516
 #: application/controllers/admin/surveyadmin.php:660
 #: application/controllers/admin/tokens.php:2178
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:252
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:257
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:268
 #: application/core/Survey_Common_Action.php:831
 #: application/helpers/admin/statistics_helper.php:1332
 #: application/helpers/admin/statistics_helper.php:1465
@@ -714,7 +714,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:369
 #: application/controllers/admin/printablesurvey.php:1081
 #: application/controllers/admin/printablesurvey.php:1096
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:263
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:279
 #: application/helpers/admin/statistics_helper.php:1351
 #: application/helpers/common_helper.php:1733
 #: application/helpers/export_helper.php:304
@@ -731,7 +731,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:371
 #: application/controllers/admin/printablesurvey.php:1082
 #: application/controllers/admin/printablesurvey.php:1097
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:267
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:283
 #: application/helpers/admin/statistics_helper.php:1352
 #: application/helpers/common_helper.php:1735
 #: application/helpers/export_helper.php:305
@@ -748,7 +748,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:370
 #: application/controllers/admin/printablesurvey.php:1083
 #: application/controllers/admin/printablesurvey.php:1098
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:271
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:287
 #: application/helpers/admin/statistics_helper.php:1353
 #: application/helpers/common_helper.php:1734
 #: application/helpers/export_helper.php:306
@@ -831,7 +831,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:348
 #: application/controllers/admin/printablesurvey.php:663
 #: application/controllers/admin/quotas.php:473
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:226
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:242
 #: application/helpers/admin/statistics_helper.php:1457
 #: application/helpers/common_helper.php:1718
 #: application/helpers/export_helper.php:291
@@ -848,7 +848,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:347
 #: application/controllers/admin/printablesurvey.php:664
 #: application/controllers/admin/quotas.php:472
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:230
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:246
 #: application/helpers/admin/statistics_helper.php:1458
 #: application/helpers/common_helper.php:1717
 #: application/helpers/export_helper.php:292
@@ -4323,12 +4323,12 @@ msgstr ""
 msgid "R (data file)"
 msgstr ""
 
-#: application/core/plugins/ExportSTATAxml/ExportSTATAxml.php:27
+#: application/core/plugins/ExportSTATAxml/ExportSTATAxml.php:37
 msgid "STATA (.xml)"
 msgstr ""
 
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:208
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:219
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:224
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:235
 #: application/helpers/export_helper.php:284
 #: application/helpers/export_helper.php:288
 msgid "Not Selected"
@@ -10664,6 +10664,10 @@ msgstr ""
 
 #: application/views/admin/globalSettings_view.php:339
 msgid "Filter HTML for XSS:"
+msgstr ""
+
+#: application/views/admin/globalSettings_view.php:347
+msgid "(XSS filtering is always disabled for the superadministrator.)"
 msgstr ""
 
 #: application/views/admin/globalSettings_view.php:350
