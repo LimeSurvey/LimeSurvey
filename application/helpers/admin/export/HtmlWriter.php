@@ -81,12 +81,15 @@
                 'class' => 'response',
                 'data-srid' => $values[0]
             ));
+            
+              $group_description = $_POST['description_' . $grouplang];
+              
             //echo '<pre>'; var_dump($this->groupMap); echo '</pre>';
                 foreach ($this->groupMap as $gid => $questions)
                 {
                     if ($gid != 0)
                     {
-                        $this->tag('h2', gT("Group") . ": " . $questions[0]['group_name']);
+                        $this->tag('h2', gT("Group") . ": " . $questions[0]['group_description']);
                     }
                     $this->openTag('table', array(
                         'class' => 'group',
