@@ -4060,7 +4060,7 @@
             $this->q2subqInfo = $q2subqInfo;
 
             // Now set tokens
-            if (isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
+            if (tableExists('{{tokens_' . $this->sessid . '}}') && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
             {
                 //Gather survey data for tokenised surveys, for use in presenting questions
 				$this->knownVars['TOKEN:TOKEN'] = array(
@@ -8956,32 +8956,33 @@ EOD;
 
             if (is_null($gid) && is_null($qid))
             {
-                $description = templatereplace('{SURVEYDESCRIPTION}', array('SURVEYDESCRIPTION'=>$aSurveyInfo['surveyls_description']));
-                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
-                if ($description != '')
+                if ($aSurveyInfo['surveyls_description'] != '')
                 {
-                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Description:") . "</td><td colspan=2>" . $description . "</td></tr>";
+                    $LEM->ProcessString($aSurveyInfo['surveyls_description'],0);
+                    $sPrint= $LEM->GetLastPrettyPrintExpression();
+                    $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Description:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
-
-                $welcome = templatereplace('{WELCOME}', array('WELCOME'=>$aSurveyInfo['surveyls_welcometext']));
-                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
-                if ($welcome != '')
+                if ($aSurveyInfo['surveyls_welcometext'] != '')
                 {
-                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Welcome:") . "</td><td colspan=2>" . $welcome . "</td></tr>";
+                    $LEM->ProcessString($aSurveyInfo['surveyls_welcometext'],0);
+                    $sPrint= $LEM->GetLastPrettyPrintExpression();
+                    $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Welcome:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
-
-                $endmsg = templatereplace('{ENDTEXT}', array('ENDTEXT'=>$aSurveyInfo['surveyls_endtext']));
-                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
-                if ($endmsg != '')
+                if ($aSurveyInfo['surveyls_endtext'] != '')
                 {
-                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End message:") . "</td><td colspan=2>" . $endmsg . "</td></tr>";
+                    $LEM->ProcessString($aSurveyInfo['surveyls_endtext']);
+                    $sPrint= $LEM->GetLastPrettyPrintExpression();
+                    $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End message:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
-
-                $_linkreplace = templatereplace('{URL}', array('URL'=>$aSurveyInfo['surveyls_url']));
-                $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
-                if ($_linkreplace != '')
+                if ($aSurveyInfo['surveyls_url'] != '')
                 {
-                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End URL") . ":</td><td colspan=2>" . $_linkreplace . "</td></tr>";
+                    $LEM->ProcessString($aSurveyInfo['surveyls_urldescription']." - ".$aSurveyInfo['surveyls_url']);
+                    $sPrint= $LEM->GetLastPrettyPrintExpression();
+                    $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
+                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End URL:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
             }
 
