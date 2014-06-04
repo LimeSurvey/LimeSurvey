@@ -254,6 +254,12 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
     'hasdefaultvalues' => 0,
     'assessable' => 0,
     'answerscales' => 0),
+    "(" => array('description' => $clang->gT("Audio recording"),
+    'group' => $group['MaskQuestions'],
+    'subquestions' => 0,
+    'hasdefaultvalues' => 0,
+    'assessable' => 0,
+    'answerscales' => 0),
     );
     asort($qtypes);
 
@@ -863,6 +869,7 @@ function getQuestionClass($input)
         case ";": return 'array-multi-flexi-text';
         case "1": return 'array-flexible-duel-scale'; //    Array dual scale
         case "*": return 'equation';    // Equation
+        case "(": return 'audio-recording';    // Audio recording
         default:  return 'generic_question';    //  Should have a default fallback
     };
 };
@@ -3153,7 +3160,7 @@ function questionAttributes($returnByName=false)
         );
 
         $qattributes["statistics_showgraph"]=array(
-        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*(',
         'category'=>$clang->gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>101,
@@ -3245,7 +3252,7 @@ function questionAttributes($returnByName=false)
         "caption"=>$clang->gT('Hide tip'));
 
         $qattributes['hidden']=array(
-        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*(',
         'category'=>$clang->gT('Display'),
         'sortorder'=>101,
         'inputtype'=>'singleselect',
@@ -3535,7 +3542,7 @@ function questionAttributes($returnByName=false)
 
         /*
         $qattributes['relevance']=array(
-        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*(',
         'category'=>$clang->gT('Display'),
         'sortorder'=>1,
         'inputtype'=>'text',
@@ -4008,7 +4015,7 @@ function questionAttributes($returnByName=false)
         "caption"=>$clang->gT("Allowed file types"));
 
         $qattributes["random_group"]=array(
-        "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
+        "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|(",
         'category'=>$clang->gT('Logic'),
         'sortorder'=>180,
         'inputtype'=>'text',

@@ -3673,6 +3673,7 @@
                     case '*': //Equation
                     case 'I': //Language Question
                     case '|': //File Upload
+                    case '(': //Audio recording
                     case 'X': //BOILERPLATE QUESTION
                         $ansArray = NULL;
                         break;
@@ -3724,6 +3725,7 @@
                     case 'X': //BOILERPLATE QUESTION
                     case 'Y': //YES/NO radio-buttons
                     case '|': //File Upload
+                    case '(': //Audio recording
                     case '*': //Equation
                         $csuffix = '';
                         $sqsuffix = '';
@@ -3882,6 +3884,7 @@
                         $jsVarName_on = 'answer' . $sgqa;;
                         break;
                     case '|': //File Upload
+                    case '(': //Audio recording
                         $jsVarName = $sgqa;
                         $jsVarName_on = $jsVarName;
                         break;
@@ -3904,7 +3907,7 @@
                 }
 
                 if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
-                || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U' || $type == '|') {
+                || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U' || $type == '|' || $type == '(') {
                     if (!isset($q2subqInfo[$questionNum])) {
                         $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -4783,6 +4786,7 @@
                                 $value = sanitize_float($value);
                             }
                             break;
+                        case '(': //Audio recording
                         case '|': //File Upload
                             $value=NULL;  // can't upload a file via GET
                             break;

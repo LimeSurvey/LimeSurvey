@@ -363,6 +363,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
 ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
 '|'=>Array('name'=>'File upload','size'=>1,'SPSStype'=>'A'),
 '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
+'('=>Array('name'=>'Audio recording','size'=>1,'SPSStype'=>'A'),
 );
 
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));

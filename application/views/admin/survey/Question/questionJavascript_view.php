@@ -23,7 +23,7 @@
             document.getElementById('Validation').style.display = 'none';
             document.getElementById('MandatorySelection').style.display='';
         }
-        else if (QuestionType == '|')
+        else if (QuestionType == '|' || QuestionType == '(')
         {
             document.getElementById('OtherSelection').style.display = 'none';
             document.getElementById('Validation').style.display = 'none';

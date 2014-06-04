@@ -229,6 +229,9 @@ function retrieveAnswers($ia)
         case '|': //File Upload
             $values=do_file_upload($ia);
             break;
+        case '(': //Audio recording
+            $values=do_audio_recording($ia);
+            break;
         case 'Q': //MULTIPLE SHORT TEXT
             $values=do_multipleshorttext($ia);
             break;
@@ -2882,6 +2885,54 @@ function do_file_upload($ia)
 
     $inputnames[] = $ia[1];
     $inputnames[] = $ia[1]."_filecount";
+    return array($answer, $inputnames);
+}
+
+// ---------------------------------------------------------------
+function do_audio_recording($ia)
+{
+    global $thissurvey;
+
+    $clang = Yii::app()->lang;
+
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0]);
+
+    // Fetch question attributes
+    $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
+
+    $currentdir = getcwd();
+    $pos = stripos($currentdir, "admin");
+
+    if ($pos)
+    {
+        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1 ;
+        $questgrppreview = 1;   // Preview is launched from Question or group level
+
+    }
+    else if ($thissurvey['active'] != "Y")
+        {
+            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
+            $questgrppreview = 0;
+        }
+        else
+        {
+            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
+            $questgrppreview = 0;
+    }
+
+    $recordbutton   = "<h2><a id='recording_".$ia[1]."'";
+    $recordbutton   .= " href='#' onclick='toggleRecording(this);'";
+    $recordbutton   .= ">" .$clang->gT('Record audio'). "</a></h2>";
+    $savebutton     = "<h2><a id='save' href='#'>" .$clang->gT('Save audio'). "</a></h2>";
+    $canvas         = "<canvas id='analyser' width='512' height='125'></canvas>";
+
+    $answer = '';
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'audio-recorder/main.js');
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'audio-recorder/recorderjs/recorder.js');
+
+    $answer .= $recordbutton . $savebutton . $canvas;
+
+    $inputnames[] = $ia[1];
     return array($answer, $inputnames);
 }
 
