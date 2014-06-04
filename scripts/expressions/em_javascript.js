@@ -670,15 +670,13 @@ function LEMval(alias)
  */
 function LEMfixnum(value)
 {
-    var newval = String(value);
-    if (parseFloat(newval) != value) {
-        return value;   // unchanged
-    }
     if (LEMradix===',') {
-        newval = newval.split('.').join(',');
+        var newval = String(value);
         if (parseFloat(newval) != value) {
             return value;   // unchanged
         }
+        newval= newval.split('.').join(',');
+        return newval;
     }
     return value;
 }
