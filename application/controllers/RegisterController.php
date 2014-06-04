@@ -227,29 +227,20 @@ class RegisterController extends LSYii_Controller {
             $aReplacementFields["{".strtoupper($attribute)."}"]=$value;
         }
         $sToken=$oToken->token;
+        $useHtmlEmail = (getEmailFormat($iSurveyId) == 'html');
         $aMail['subject']=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$aMail['subject']);
         $aMail['message']=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$aMail['message']);
-        $surveylink = App()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}",array('lang'=>$sLanguage,'token'=>$sToken));
-        $optoutlink = App()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
-        $optinlink = App()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
-        if (getEmailFormat($iSurveyId) == 'html')
+        $aReplacementFields["{SURVEYURL}"] = App()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}",array('lang'=>$sLanguage,'token'=>$sToken));
+        $aReplacementFields["{OPTOUTURL}"] = App()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
+        $aReplacementFields["{OPTINURL}"] = App()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
+        foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
         {
-            $useHtmlEmail = true;
-            $aReplacementFields["{SURVEYURL}"]="<a href='$surveylink'>".$surveylink."</a>";
-            $aReplacementFields["{OPTOUTURL}"]="<a href='$optoutlink'>".$optoutlink."</a>";
-            $aReplacementFields["{OPTINURL}"]="<a href='$optinlink'>".$optinlink."</a>";
+            $url = $aReplacementFields["{{$key}URL}"];
+            if ($useHtmlEmail)
+                $aReplacementFields["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
+            $aMail['subject'] = str_replace("@@{$key}URL@@", $url, $aMail['subject']);
+            $aMail['message'] = str_replace("@@{$key}URL@@", $url, $aMail['message']);
         }
-        else
-        {
-            $useHtmlEmail = false;
-            $aReplacementFields["{SURVEYURL}"]= $surveylink;
-            $aReplacementFields["{OPTOUTURL}"]= $optoutlink;
-            $aReplacementFields["{OPTINURL}"]= $optinlink;
-        }
-        // Allow barebone link for all URL
-        $aMail['message'] = str_replace("@@SURVEYURL@@", $surveylink, $aMail['message']);
-        $aMail['message'] = str_replace("@@OPTOUTURL@@", $optoutlink, $aMail['message']);
-        $aMail['message'] = str_replace("@@OPTINURL@@", $optinlink, $aMail['message']);
         // Replace the fields
         $aMail['subject']=ReplaceFields($aMail['subject'], $aReplacementFields);
         $aMail['message']=ReplaceFields($aMail['message'], $aReplacementFields);

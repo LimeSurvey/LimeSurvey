@@ -1403,10 +1403,8 @@ class tokens extends Survey_Common_Action
                     {
                         $url = $fieldsarray["{{$key}URL}"];
                         if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
-                        if ($key == 'SURVEY')
-                        {
-                            $barebone_link = $url;
-                        }
+                        $modsubject = str_replace("@@{$key}URL@@", $url, $modsubject);
+                        $modmessage = str_replace("@@{$key}URL@@", $url, $modmessage);
                     }
 
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
@@ -1414,12 +1412,6 @@ class tokens extends Survey_Common_Action
                     global $maildebug;
                     $modsubject = Replacefields($sSubject[$emrow['language']], $fieldsarray);
                     $modmessage = Replacefields($sMessage[$emrow['language']], $fieldsarray);
-
-                    if (isset($barebone_link))
-                    {
-                        $modsubject = str_replace("@@SURVEYURL@@", $barebone_link, $modsubject);
-                        $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
-                    }
 
                     if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
