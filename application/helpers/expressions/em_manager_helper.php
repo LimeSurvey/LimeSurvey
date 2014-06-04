@@ -5925,7 +5925,6 @@
             {
                 $relevanceEqn = $qInfo['relevance'];
             }
-
             // cache results
             $relevanceEqn = htmlspecialchars_decode($relevanceEqn,ENT_QUOTES);  // TODO is this needed?
             if (isset($LEM->ParseResultCache[$relevanceEqn]))
@@ -6527,11 +6526,15 @@
                     $LEM->updatedValues[$sgqa] = NULL;
                 }
             }
-            else if ($qInfo['type'] == '*')
+            elseif ($qInfo['type'] == '*')
                 {
                     // Process relevant equations, even if hidden, and write the result to the database
-                    $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
+                    $result = $LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false,true);// Do a static replacement
                     $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
+                    if($LEM->knownVars[$sgqa]['onlynum'])
+                    {
+                        $result=(is_numeric($result)?$result:"");
+                    }
                     // Store the result of the Equation in the SESSION
                     $_SESSION[$LEM->sessid][$sgqa] = $result;
                     $_update = array(
