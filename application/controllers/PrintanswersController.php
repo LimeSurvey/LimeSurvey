@@ -100,12 +100,12 @@
             $sAnonymized = $aSurveyInfo['anonymized'];
             //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
             //SHOW HEADER
-			if (app()->getConfig("usepdfexport",1) == 0) {
-				$sOutput = "";
-			} else {
-                $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
-                ."<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
-			};
+	    if (app()->getConfig("usepdfexport",1) == 0) {
+	       $sOutput = "";
+	    } else {
+               $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
+               ."<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+	    };
             if($sExportType == 'pdf')
             {
                 //require (Yii::app()->getConfig('rootdir').'/application/config/tcpdf.php');
