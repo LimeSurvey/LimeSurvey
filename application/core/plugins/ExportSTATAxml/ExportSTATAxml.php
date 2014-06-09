@@ -17,6 +17,16 @@ class ExportSTATAxml extends PluginBase {
         $this->subscribe('newExport');
     }
     
+    protected $settings = array(
+        'statafileversion' => array(
+            'type' => 'select',
+            'label' => 'Export for Stata',
+            'options' => array('113' => 'version 8 through 12', '117'  => 'version 13 and up'),
+            'default' => '113',
+            'submitonchange'=> false
+            )
+        );
+
     public function listExportOptions()
     {
         $event = $this->getEvent();
@@ -56,8 +66,9 @@ class ExportSTATAxml extends PluginBase {
     {
         $event = $this->getEvent();
         $type = $event->get('type');
-                
-        $writer = new STATAxmlWriter();
+
+        $pluginsettings=$this->getPluginSettings(true);
+        $writer = new STATAxmlWriter($pluginsettings);
         $event->set('writer', $writer);
     }
 }

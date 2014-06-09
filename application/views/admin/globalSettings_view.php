@@ -344,7 +344,7 @@
                         <option value='0'
                             <?php if ( $thisfilterxsshtml == false) { echo " selected='selected'";}?>
                             ><?php $clang->eT("No"); ?></option>
-                    </select></li>
+			    </select>&nbsp;<span class='hint'><?php $clang->eT("(XSS filtering is always disabled for the superadministrator.)"); ?></span></li>
 
                 <?php $thisusercontrolSameGroupPolicy=getGlobalSetting('usercontrolSameGroupPolicy'); ?>
                 <li><label for='usercontrolSameGroupPolicy'><?php $clang->eT("Group member can only see own group:"); ?></label>

@@ -746,6 +746,10 @@ table.clearall-result td {
   *display:inline;
   width: 85%;
 }
+.list-radio .question-answer ul.colstyle-css li label, .list-radio .question-answer ul.colstyle-ul li label, .list-radio .question-answer table.colstyle-table li label, 
+.list-with-comment .question-answer ul.colstyle-css li label, .list-with-comment .question-answer ul.colstyle-ul li label, .list-with-comment .question-answer table.colstyle-table li label {
+    display: inline;
+}
 .list-radio .question-answer li.other-item label,
 .list-with-comment .question-answer li.other-item label {
   width: auto;
@@ -865,6 +869,10 @@ table.rank td.helptext {
   display: inline-block;
   *display:inline;
   width: 90%;
+}
+.multiple-opt .question-answer ul.colstyle-css li label, .multiple-opt .question-answer ul.colstyle-ul li label, .multiple-opt .question-answer table.colstyle-table li label,
+.multiple-opt-comments .question-answer ul.colstyle-css li label, .multiple-opt-comments .question-answer ul.colstyle-ul li label, .multiple-opt-comments .question-answer table.colstyle-table li label {
+    display: inline;
 }
 .multiple-opt .question-answer li.other-item label {
   width: auto;

@@ -496,13 +496,13 @@ class statistics extends Survey_Common_Action {
     {
         Yii::app()->loadHelper('admin/statistics');
         $helper = new statistics_helper();
-        $output = $helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
+        $aData['data']=$helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
         $aData['surveyid']=$surveyid;
-        $aData['data']=$output;
         $aData['column']=$column;
         $aData['sortby']=$sortby;
         $aData['sortmethod']=$sortmethod;
         $aData['sorttype']=$sorttype;
+        App()->getClientScript()->reset();
         $this->getController()->render('export/statistics_browse_view', $aData);    
     }
     

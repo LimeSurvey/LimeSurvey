@@ -365,7 +365,7 @@ class InstallerController extends CController {
 
                         $aValues['next'] =  array(
                             'action' => 'installer/createdb',
-                            'label' => 'Create database',
+                            'label' => $clang->gT('Create database'),
                             'name' => '',
                         );
                     }
@@ -1041,8 +1041,8 @@ class InstallerController extends CController {
                 $sConfig .="\t\t\t" . "'emulatePrepare' => true,"    . "\n";
 
             }
-            $sConfig .="\t\t\t" . "'username' => '".addslashes($sDatabaseUser)."',"  . "\n"
-            ."\t\t\t" . "'password' => '".addslashes($sDatabasePwd)."',"            . "\n"
+            $sConfig .="\t\t\t" . "'username' => '".addcslashes ($sDatabaseUser,"'")."',"  . "\n"
+            ."\t\t\t" . "'password' => '".addcslashes ($sDatabasePwd,"'")."',"            . "\n"
             ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
             ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n";
 

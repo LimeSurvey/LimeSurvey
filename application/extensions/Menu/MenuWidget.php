@@ -55,11 +55,14 @@
                 'image' => 'home.png',
             );
             $menu['items']['left'][] = 'separator';
-            $menu['items']['left'][] = array(
-                'href' => array('admin/user'),
-                'alt' => gT('Manage survey administrators'),
-                'image' => 'security.png',
-            );
+            if(Permission::model()->hasGlobalPermission('users','read'))
+            {
+                $menu['items']['left'][] = array(
+                    'href' => array('admin/user'),
+                    'alt' => gT('Manage survey administrators'),
+                    'image' => 'security.png',
+                );
+            }
 
             $menu['items']['left'][] = $this->userGroups();
             $menu['items']['left'][] = $this->globalSettings();

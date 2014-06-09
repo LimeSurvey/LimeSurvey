@@ -378,11 +378,27 @@ class index extends CAction {
             }
             if (!isset($tokenInstance))
             {
-                //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+                $tk = Token::model($surveyid)->findByAttributes(array('token' => $token));
+                if($tk->completed == 'N')
+                {
+                    $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
+                    if(strtotime($now) < strtotime($tk->validfrom))
+                    {
+                        $err = $clang->gT("This invitation is not valid yet.");
+                    }
+                    else
+                    {
+                        $err = $clang->gT("This invitation is not valid anymore.");
+                    }
+                }
+                else
+                {
+                    $err = $clang->gT("This invitation has already been used.");
+                }
                 $asMessage = array(
                 null,
                 $clang->gT("We are sorry but you are not allowed to enter this survey."),
-                $clang->gT("Your token is invalid, was already used or can only be used during a certain time period."),
+                $err,
                 sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                 );
 

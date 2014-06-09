@@ -30,6 +30,11 @@ class AuthLDAP extends AuthPluginBase
             'default' => '2',
             'submitonchange'=> true
             ),
+        'ldapoptreferrals' => array(
+            'type' => 'boolean',
+            'label' => 'Select true if referrals must be followed (use false for ActiveDirectory)',
+            'default' => '0'
+            ),
         'ldaptls' => array(
             'type' => 'boolean',
             'label' => 'Check to enable Start-TLS encryption When using LDAPv3',
@@ -152,6 +157,7 @@ class AuthLDAP extends AuthPluginBase
                 unset($aPluginSettings['extrauserfilter']);
                 unset($aPluginSettings['binddn']);
                 unset($aPluginSettings['bindpwd']);
+                unset($aPluginSettings['ldapoptreferrals']);
             }
         }
         
@@ -173,11 +179,20 @@ class AuthLDAP extends AuthPluginBase
             return;
         }
 
+        if (empty($password))
+        {
+            // If password is null or blank reject login
+            // This is necessary because in simple bind ldap server authenticates with blank password
+            $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
+            return;
+        }
+
         // Get configuration settings:
         $ldapserver 		= $this->get('server');
         $ldapport   		= $this->get('ldapport');
         $ldapver    		= $this->get('ldapversion');
         $ldaptls    		= $this->get('ldaptls');
+        $ldapoptreferrals	= $this->get('ldapoptreferrals');
         $ldapmode    		= $this->get('ldapmode');
         $suffix     		= $this->get('domainsuffix');
         $prefix     		= $this->get('userprefix');
@@ -207,6 +222,7 @@ class AuthLDAP extends AuthPluginBase
             $ldapver = 2;
         }
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
+        ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, $ldapoptreferrals);
 
         if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0 )
         {

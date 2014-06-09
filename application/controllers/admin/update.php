@@ -23,6 +23,19 @@ class update extends Survey_Common_Action
 {
 
     /**
+    * Returns the supported protocol extension (https/http)
+    *
+    */
+    private function getProtocol()
+    {
+        if(!function_exists("extension_loaded") || !extension_loaded("openssl"))
+        {
+            return 'http://';
+        }
+        return 'https://';
+    }
+    
+    /**
     * Default Controller Action
     */
     function index($sSubAction = null)
@@ -106,10 +119,12 @@ class update extends Survey_Common_Action
 
     private function _requestChangelog(httpRequestIt $http, $buildnumber, $updaterversion)
     {
+        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
-        $http->GetRequestArguments('https://update.limesurvey.org/updates/changelog/' . $buildnumber . '/' . $updaterversion , $arguments);
+        $http->GetRequestArguments($this->getProtocol().'update.limesurvey.org/updates/changelog/' . $buildnumber . '/' . $updaterversion , $arguments);
 
         $http->Open($arguments);
 
@@ -118,10 +133,12 @@ class update extends Survey_Common_Action
     
     private function _requestChangedFiles(httpRequestIt $http, $buildnumber, $updaterversion)
     {
+        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
-        $http->GetRequestArguments('https://update.limesurvey.org/updates/update/' . $buildnumber . '/' . $updaterversion , $arguments);
+        $http->GetRequestArguments($this->getProtocol().'update.limesurvey.org/updates/update/' . $buildnumber . '/' . $updaterversion , $arguments);
 
         $http->Open($arguments);
 
@@ -344,6 +361,9 @@ class update extends Survey_Common_Action
         $downloaderror=false;
         Yii::import('application.libraries.admin.http.httpRequestIt');
         $http=new httpRequestIt;
+        
+        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
         // Allow redirects
         $http->follow_redirect=1;
@@ -352,7 +372,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $http->data_timeout=0;
         $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $http->GetRequestArguments("https://update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
+        $http->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
         $http->RestoreCookies(Yii::app()->session['updatesession']);
 
         $error=$http->Open($arguments);
@@ -453,12 +473,15 @@ class update extends Survey_Common_Action
         Yii::import('application.libraries.admin.http.httpRequestIt');
         $oHTTPRequest=new httpRequestIt;
         
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+
         /* Connection timeout */
         $oHTTPRequest->timeout=0;
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments("https://update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
 
         $updateinfo=false;
         $error=$oHTTPRequest->Open($arguments);
@@ -505,6 +528,9 @@ class update extends Survey_Common_Action
         Yii::import('application.libraries.admin.http.httpRequestIt');
         $oHTTPRequest=new httpRequestIt;
 
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+
         // Allow redirects
         $oHTTPRequest->follow_redirect=1;
         /* Connection timeout */
@@ -512,7 +538,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments("https://update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
         $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);

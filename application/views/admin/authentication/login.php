@@ -62,6 +62,11 @@
             echo CHtml::closeTag('li');
             ?>
         </ul>
+        <?php   if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
+        { ?>
+        <p><?php $clang->eT("Demo mode: Login credentials are prefilled - just click the Login button."); ?></p>
+        <?php } ?>
+
         <p><input type='hidden' name='action' value='login' />
             <input class='action' type='submit' name='login_submit' value='<?php $clang->eT("Login"); ?>' /><br />
             <br/>

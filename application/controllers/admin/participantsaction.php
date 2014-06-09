@@ -681,13 +681,14 @@ class participantsaction extends Survey_Common_Action
      */
     function getSearchIDs()
     {
-        $searchcondition = basename(Yii::app()->request->getPost('searchcondition')); // get the search condition from the URL
+        $searchcondition = Yii::app()->request->getPost('searchcondition'); // get the search condition from the URL
+        $sSearchURL = basename(Yii::app()->request->getPost('searchURL')); // get the search condition from the URL
         /* a search contains posted data inside $_POST['searchcondition'].
         * Each separate query is made up of 3 fields, separated by double-pipes ("|")
         * EG: fname||eq||jason||lname||ct||c
         *
         */
-        if ($searchcondition != 'getParticipants_json') // if there is a search condition present
+        if ($sSearchURL != 'getParticipants_json') // if there is a search condition present
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);  // explode the condition to the array
@@ -735,7 +736,7 @@ class participantsaction extends Survey_Common_Action
     {
         if (Yii::app()->request->getPost('searchcondition','') != '') // if there is a search condition then only the participants that match the search criteria are counted
         {
-            $condition = explode("||", $searchcondition);
+            $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
             $search = null;
@@ -1189,7 +1190,7 @@ class participantsaction extends Survey_Common_Action
                for each NEW attribute being created in this import process */
             foreach ($newarray as $key => $value)
             {
-                $aData = array('attribute_type' => 'TB', 'attribute_name' => $value, 'visible' => 'FALSE');
+                $aData = array('attribute_type' => 'TB', 'defaultname' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeName::model()->storeAttributeCSV($aData);
                 /* Keep a record of the attribute_id for this new attribute
                    in the $mappedarray string. For example, if the new attribute
@@ -1554,12 +1555,17 @@ class participantsaction extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
+        debugbreak();
         $response = Participant::model()->copyCPBDAttributesToTokens($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
             echo "\r\n";
             printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
+        }
+        if($response['blacklistskipped']>0) {
+            echo "\r\n";
+            printf($clang->gT("%s entries were skipped because they are blacklisted"), $response['blacklistskipped']);
         }
         if($response['overwriteauto']=="true" || $response['overwriteman']=="true") {
             echo "\r\n";
