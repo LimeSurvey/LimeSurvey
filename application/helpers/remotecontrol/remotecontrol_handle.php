@@ -2378,11 +2378,10 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the survey that participants belong
-     * @param string $sToken unique token id of specific participant
-     * @param string $sLanguageCode The language to be used
+     * @param array|struct $aAttributeData - An array with the particular fieldnames as keys and their values used to fetch results
      * @return array Result of the change action
      */
-    public function delete_responses_by_token($sSessionKey, $iSurveyID, $sToken, $sLanguageCode=''){
+    public function delete_responses_by_attributes($sSessionKey, $iSurveyID, $aAttributeData){
         // check sessionKey is valid or not
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -2391,28 +2390,19 @@ class remotecontrol_handle
                 return array('status' => 'Error: Invalid survey ID');
             if($oSurvey['active']=='N')
                 return array('status' => 'Error:Survey is inactive');
-    
+            
                 if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
                 {
                     // get response id from response table using token
-                    $oResult = SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken));
-
-                    if($oResult){
+                    $oResults = SurveyDynamic::model($iSurveyID)->findAllByAttributes($aAttributeData);
+                    $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$iSurveyID}/files/";
+                    $fuqtquestions = Question::model()->findAllByAttributes(array('sid' => $iSurveyID,'type' => 'fileuploadquestiontype'));                                
+                    // get all questions using the uploaded files 
+                    if($oResults){
+                        foreach($oResults as $oResult){
                         // get survey info using surveyId
-                        $thissurvey=getSurveyInfo($iSurveyID,$sLanguageCode);
                             $iResponseID = (int) $oResult['id'];
-                            if($iResponseID){
                                 // delete the files 
-                                $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$iSurveyID}/files/";
-                                $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $sLanguageCode);
-                                $fuqtquestions = array();
-                                // find all fuqt questions
-                                foreach ($fieldmap as $field)
-                                {
-                                    if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
-                                        $fuqtquestions[] = $field['fieldname'];
-                                }
-
                                 if (!empty($fuqtquestions))
                                 {
                                     // find all responses (filenames) to the fuqt questions
@@ -2433,16 +2423,14 @@ class remotecontrol_handle
                                         }
                                     }
                                 }
-                                // delete the row
-                                SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                                // delete timings if savetimings is set
-                                if(isset( $thissurvey['savetimings'] ) && $thissurvey['savetimings'] == "Y"){
-                                    SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                                }
-                              return array('iSurveyID'=>$iSurveyID);
-                            }else{
-                             return array('status' => 'Response Id not found');   
+                            // delete timings if savetimings is set
+                            if(isset( $oSurvey['savetimings'] ) && $oSurvey['savetimings'] == "Y"){
+                                SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                             }
+                        }
+                        // delete the row
+                        SurveyDynamic::model($iSurveyID)->deleteAllByAttributes($aAttributeFields);
+                        return array('iSurveyID'=>$iSurveyID);
                     }else{
                         return array('status' => 'No responses for this token');
                     }
@@ -2450,7 +2438,7 @@ class remotecontrol_handle
                 else
                 {
                     return array('status' => 'No permission');
-                }
+                }    
         }
         else
             return array('status' => 'Invalid Session Key');
