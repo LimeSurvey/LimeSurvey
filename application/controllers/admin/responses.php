@@ -375,7 +375,7 @@ class responses extends Survey_Common_Action
                 {
                     // Now, zip all the files in the filelist
                     $zipfilename = "Responses_for_survey_{$iSurveyID}.zip";
-                    $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('markedresponses'), $zipfilename,$aData['language']);
+                    $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('markedresponses'), $zipfilename);
                 }
             }
         }
@@ -386,7 +386,7 @@ class responses extends Survey_Common_Action
             {
                 // Now, zip all the files in the filelist
                 $zipfilename = "Files_for_responses_" . Yii::app()->request->getPost('downloadfile') . ".zip";
-                $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename,$aData['language']);
+                $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename);
             }
         }
         elseif (Yii::app()->request->getParam('downloadindividualfile') != '')
@@ -790,63 +790,38 @@ class responses extends Survey_Common_Action
      * @param string $language
      * @return ZipArchive
      */
-    private function _zipFiles($iSurveyID, $responseIds, $zipfilename,$language)
+    private function _zipFiles($iSurveyID, $responseIds, $zipfilename)
     {
-
+        /**
+         * @todo Move this to model.
+         */
         Yii::app()->loadLibrary('admin/pclzip');
         
         $tmpdir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR."surveys". DIRECTORY_SEPARATOR . $iSurveyID . DIRECTORY_SEPARATOR."files".DIRECTORY_SEPARATOR;
 
         $filelist = array();
-        $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $language);
-
-        foreach ($fieldmap as $field)
+        $responses = Response::model($iSurveyID)->findAllByPk($responseIds);
+        $filecount = 0;
+        foreach ($responses as $response)
         {
-            if ($field['type'] == "|" && $field['aid'] !== 'filecount')
+            foreach ($response->getFiles() as $file)
             {
-                $filequestion[] = $field['fieldname'];
-            }
-        }
-
-        foreach ((array) $responseIds as $responseId)
-        {
-            $responseId = (int) $responseId; // sanitize the value
-
-            $filearray = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('id' => $responseId)) or die('Could not download response');
-            $metadata = array();
-            $filecount = 0;
-            foreach ($filearray as $metadata)
-            {
-                foreach ($metadata as $aData)
-                {
-                    $phparray = json_decode_ls($aData);
-                    if (is_array($phparray))
-                    {
-                        foreach ($phparray as $file)
-                        {
-                            $filecount++;
-                            $file['responseid'] = $responseId;
-                            $file['name'] = rawurldecode($file['name']);
-                            $file['index'] = $filecount;
-                            /*
-                             * Now add the file to the archive, prefix files with responseid_index to keep them
-                             * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
-                             * files from a different source with the same name.
-                             */
-                             if (file_exists($tmpdir . $file['filename']))
-                             {
-                                $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir . $file['filename'],
-                                    PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $file['responseid'], $file['index'], $file['name']));
-                             }
-                        }
-                    }
-                }
+                $filecount++;
+                /*
+                 * Now add the file to the archive, prefix files with responseid_index to keep them
+                 * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
+                 * files from a different source with the same name.
+                 */
+                 if (file_exists($tmpdir . basename($file['filename'])))
+                 {
+                    $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir . basename($file['filename']),
+                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, rawurldecode($file['name'])));
+                 }
             }
         }
 
         if (count($filelist) > 0)
         {
-            // TODO: to extend the yii app function loadLibrary to meet the app requirements
             $zip = new PclZip($tmpdir . $zipfilename);
             if ($zip->create($filelist) === 0)
             {
