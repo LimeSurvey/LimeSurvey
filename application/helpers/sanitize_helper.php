@@ -129,6 +129,22 @@ function sanitize_filename($string, $force_lowercase = true, $alphanumeric = fal
 }
 
 
+/**
+ * Function: sanitize_dirname
+ * sanitizes a string that will be used as a directory name
+ *
+ * Parameters:
+ *     $string - The string to sanitize.
+ *     $force_lowercase - Force the string to lowercase?
+ *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
+ */
+
+function sanitize_dirname($string, $force_lowercase = true, $alphanumeric = false) {
+    $string = str_replace(".", "", $string);
+    return sanitize_filename($string, $force_lowercase, $alphanumeric);
+}
+
+
 // paranoid sanitization -- only let the alphanumeric set through
 function sanitize_paranoid_string($string, $min='', $max='')
 {
