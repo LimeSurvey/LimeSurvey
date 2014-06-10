@@ -51,6 +51,11 @@ function eT($string, $escapemode = 'html')
     echo gT($string, $escapemode);
 }
 
+function ngT($single, $plural, $number, $escapemode = 'html')
+{
+    Yii::import('application.libraries.Limesurvey_lang');
+    return App()->lang->ngT($single, $plural, $number, $escapemode);
+}
 /**
 * getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
@@ -60,203 +65,12 @@ function eT($string, $escapemode = 'html')
 *
 * @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
 *
-* Explanation of questiontype array:
-*
-* description : Question description
-* subquestions : 0= Does not support subquestions x=Number of subquestion scales
-* answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-* assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
 */
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
-    $clang = Yii::app()->lang;
-
-    $group['Arrays'] = $clang->gT('Arrays');
-    $group['MaskQuestions'] = $clang->gT("Mask questions");
-    $group['SinChoiceQues'] = $clang->gT("Single choice questions");
-    $group['MulChoiceQues'] = $clang->gT("Multiple choice questions");
-    $group['TextQuestions'] = $clang->gT("Text questions");
-
-
-    $qtypes = array(
-    "1" => array('description' => $clang->gT("Array dual scale"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'assessable' => 1,
-    'hasdefaultvalues' => 0,
-    'answerscales' => 2),
-    "5" => array('description' => $clang->gT("5 Point Choice"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "A" => array('description' => $clang->gT("Array (5 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "B" => array('description' => $clang->gT("Array (10 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "C" => array('description' => $clang->gT("Array (Yes/No/Uncertain)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "D" => array('description' => $clang->gT("Date/Time"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "E" => array('description' => $clang->gT("Array (Increase/Same/Decrease)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "F" => array('description' => $clang->gT("Array"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "G" => array('description' => $clang->gT("Gender"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "H" => array('description' => $clang->gT("Array by column"),
-    'group' => $group['Arrays'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "I" => array('description' => $clang->gT("Language Switch"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "K" => array('description' => $clang->gT("Multiple Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 1,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "L" => array('description' => $clang->gT("List (Radio)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "M" => array('description' => $clang->gT("Multiple choice"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "N" => array('description' => $clang->gT("Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "O" => array('description' => $clang->gT("List with comment"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "P" => array('description' => $clang->gT("Multiple choice with comments"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "Q" => array('description' => $clang->gT("Multiple Short Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "R" => array('description' => $clang->gT("Ranking"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "S" => array('description' => $clang->gT("Short Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "T" => array('description' => $clang->gT("Long Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "U" => array('description' => $clang->gT("Huge Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "X" => array('description' => $clang->gT("Text display"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "Y" => array('description' => $clang->gT("Yes/No"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "!" => array('description' => $clang->gT("List (Dropdown)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    ":" => array('description' => $clang->gT("Array (Numbers)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    ";" => array('description' => $clang->gT("Array (Texts)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "|" => array('description' => $clang->gT("File upload"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "*" => array('description' => $clang->gT("Equation"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    );
-    asort($qtypes);
-
+    
+    $qtypes = Question::typeList();
     if ($ReturnType == "array")
         return $qtypes;
 
