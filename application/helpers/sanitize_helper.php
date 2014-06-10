@@ -117,6 +117,8 @@ function sanitize_filename($string, $force_lowercase = true, $alphanumeric = fal
     $lastdot=strrpos($string, ".");
     $clean = trim(str_replace($strip, "_", strip_tags($string)));
     $clean = preg_replace('/\s+/', "-", $clean);
+    // remove the leading dot if any, this prevents the creation of hidden files on unix platforms
+    $clean = preg_replace('/^\./', '', $clean);
     $clean = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
     if ($lastdot !== false) {
         $clean= substr_replace ( $clean , '.' , $lastdot , 1 );
