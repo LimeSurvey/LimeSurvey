@@ -1264,8 +1264,6 @@ class participantsaction extends Survey_Common_Action
             } else {
                 // After looking at the first line, we now import the actual values
                 $line = convertCSVRowToArray($buffer, $separator, '"');
-                // Discard empty lines
-                if (empty($line[0])) continue;
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line))
                 {
@@ -1274,7 +1272,6 @@ class participantsaction extends Survey_Common_Action
                     continue;
                 }
                 $writearray = array_combine($firstline, $line);
-
                 //kick out ignored columns
                 foreach ($ignoredcolumns as $column)
                 {
@@ -1371,7 +1368,7 @@ class participantsaction extends Survey_Common_Action
                         unset($writearray['validuntil']);
                     }
                     $dontimport=false;
-                    if (($filterblankemails == "accept" && $writearray['email'] == "") || $writearray['firstname'] == "" || $writearray['lastname'] == "") {
+                    if (($filterblankemails == "accept" && $writearray['email'] == "")) {
                         //The mandatory fields of email, firstname and lastname
                         //must be filled, but one or more are empty
                         $mandatory++;
