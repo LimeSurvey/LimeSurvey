@@ -129,9 +129,10 @@ class participantsaction extends Survey_Common_Action
         }    
 
         $fieldKeys = array_flip($fields);
+        $fieldNeededKeys=array_fill_keys($outputarray[0], '');
         foreach ($query as $field => $aData)
         {
-            $outputarray[] = array_intersect_key($aData, $fieldKeys);
+            $outputarray[] = array_merge($fieldNeededKeys,array_intersect_key($aData, $fieldKeys));
         }
         CPDBExport($outputarray, "central_" . time());
     }
