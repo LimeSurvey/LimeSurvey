@@ -2920,17 +2920,36 @@ function do_audio_recording($ia)
             $questgrppreview = 0;
     }
 
-    $recordbutton   = "<h2><a id='recording_".$ia[1]."'";
-    $recordbutton   .= " href='#' onclick='toggleRecording(this);'";
-    $recordbutton   .= ">" .$clang->gT('Record audio'). "</a></h2>";
+    $recordbutton   = "<h2><a href='#' onclick='toggleRecording(this);'>" .$clang->gT('Record audio'). "</a></h2>";
     $savebutton     = "<h2><a id='save' href='#'>" .$clang->gT('Save audio'). "</a></h2>";
     $canvas         = "<canvas id='analyser' width='512' height='125'></canvas>";
+    $js_upload      = "<script>
+        // Found on http://stackoverflow.com/questions/16616010/saving-wav-file-recorded-in-chrome-to-server/
+        function upload(blob, filename) {
+          var xhr = new XMLHttpRequest();
+          xhr.onload = function(e) {
+              if (this.readyState === 4) {
+                  //console.log('Server returned: ', e.target.responseText);
+              }
+          };          
+          var fd = new FormData();
+          fd.append(filename, blob);
+          fd.append('sid', '" . Yii::app()->getConfig('surveyID') . "');
+          fd.append('qid', '" . $ia[1] . "');
+          xhr.open('POST', '" . Yii::app()->getConfig('third_party').'audio-recorder/upload_wav.php' . "', true);
+          xhr.send(fd);
+          
+          // TODO: set resulting filename as a JSON string.
+          $('#" . $ia[1] . "').val('test');
+        }
+        </script>";
 
-    $answer = '';
+    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."'/>";
+
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'audio-recorder/main.js');
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'audio-recorder/recorderjs/recorder.js');
 
-    $answer .= $recordbutton . $savebutton . $canvas;
+    $answer .= $js_upload . $recordbutton . $savebutton . $canvas;
 
     $inputnames[] = $ia[1];
     return array($answer, $inputnames);

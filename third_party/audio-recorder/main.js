@@ -19,7 +19,8 @@ var audioContext = new AudioContext();
 var audioInput = null,
     realAudioInput = null,
     inputPoint = null,
-    audioRecorder = null;
+    audioRecorder = null,
+    Recorder = null;
 var rafID = null;
 var analyserContext = null;
 var canvasWidth, canvasHeight;
@@ -44,8 +45,9 @@ function gotBuffers( buffers ) {
 }
 
 function doneEncoding( blob ) {
-    Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
-    recIndex++;
+    // Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
+    // recIndex++;
+    Recorder.setupDownload( blob );
 }
 
 function toggleRecording( e ) {
@@ -119,7 +121,7 @@ function updateAnalysers(time) {
 }
 
 function toggleMono() {
-    if (audioInput != realAudioInput) {
+    if (audioInput !== realAudioInput) {
         audioInput.disconnect();
         realAudioInput.disconnect();
         audioInput = realAudioInput;

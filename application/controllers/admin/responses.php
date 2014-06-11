@@ -129,7 +129,11 @@ class responses extends Survey_Common_Action
                 //$question = $field['question'];
                 $question = viewHelper::getFieldText($field);
 
-                if ($field['type'] != "|")
+                if ($field['type'] == "(")
+                {
+                    $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field),'code'=>viewHelper::getFieldCode($field,array('LEMcompat'=>true)), 'type' => '|', 'metadata' => 'name', 'index' => $i);
+                }
+                else if ($field['type'] != "|")
                 {
                     $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field),'code'=>viewHelper::getFieldCode($field,array('LEMcompat'=>true)));
                 }
@@ -456,7 +460,11 @@ class responses extends Survey_Common_Action
                     continue;
 
                 $question = $fielddetails['question'];
-                if ($fielddetails['type'] != "|")
+                if ($fielddetails['type'] == '(')
+                {
+                    $fnames[] = array($fielddetails['fieldname'], viewHelper::getFieldText($fielddetails),'code'=>viewHelper::getFieldCode($fielddetails), "type" => "(", "metadata" => "name", "index" => 0);
+                }
+                else if ($fielddetails['type'] != "|")
                 {
                     if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
                         continue;
