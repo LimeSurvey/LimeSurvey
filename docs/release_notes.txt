@@ -59,6 +59,52 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140520) to 2.05+ (build 140611) June 11, 2014
+-Fixed issue #8302: Long strings truncated in stata-xml (mfaber)
+-Fixed issue #8462 : Unable to import contacts into Central Participant Database (Denis Chenu)
+-Fixed issue #9039: Custom tokenfields missing in Stata-xml export (mfaber)
+-Fixed issue #9041: Blacklist setting have no effect (Carsten Schmitz)
+-Fixed issue #9062: token table error if TOKEN:ATTRIBUTE is used (Denis Chenu)
+-Fixed issue #9064: Blank page/error on step 4 when updating from version 2.0 (Carsten Schmitz)
+-Fixed issue #9071: Language switch not working (Denis Chenu)
+-Fixed issue #9073: Data entered in quotation marks disappears in multiple text question type (Carsten Schmitz)
+-Fixed issue #9078: CSV export of particiapnt DB can make invalid CSV file (Denis Chenu)
+-Fixed issue: Added a hint next to the XSS filter setting to underline that it is always disabled for the superadministrator. (Alexis Bezverkhyy)
+-Fixed issue: Participant import not not working (Carsten Schmitz)
+-Fixed issue: Some legal filename characters like dashes were not allowed in template names. (Alexis Bezverkhyy)
+-Fixed issue: Upload button not working (Carsten Schmitz)
+-Updated feature: Display different error messages for different token related errors. (Alexis Bezverkhyy)
+#Updated translation: Albanian by c_schmitz
+#Updated translation: Catalan by valdomir
+#Updated translation: Croatian by Apach3, buzadovec, rovinj
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by Matti
+#Updated translation: French (France) by arnaud21
+#Updated translation: Georgian by larisa, c_schmitz
+#Updated translation: German by c_schmitz, hermann, actxcellence
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by yamatt, nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by dariodallago, rhnascimento, mauriciofurtado
+#Updated translation: Romanian by c_ionut2002
+#Updated translation: Russian by vipgroup
+#Updated translation: Slovak by Union
+#Updated translation: Spanish (Mexican) by rhernandez
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by heartjavac, adzpire
+#Updated translation: Turkish by kayazeren
+#Updated translation: Vietnamese by vietguitar
+
 Changes from 2.05+ (build 140502) to 2.05+ (build 140520) May 20, 2014
 -Fixed issue #8722: Template format Errorwith multicolumn checkboxes and radio buttons (Denis Chenu)
 -Fixed issue #8973: Editing attributes not properly working (tpartner)
