@@ -59,6 +59,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140611) to 2.05+ (build 140612) June 12, 2014
+Fixed issue #9064: Blank page/error on step 4 when updating from version 2.0
+
 Changes from 2.05+ (build 140520) to 2.05+ (build 140611) June 11, 2014
 -Fixed issue #8302: Long strings truncated in stata-xml (mfaber)
 -Fixed issue #8462 : Unable to import contacts into Central Participant Database (Denis Chenu)
