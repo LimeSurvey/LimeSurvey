@@ -460,7 +460,7 @@ class update extends Survey_Common_Action
         // We redirect here because the  files might have been overwritten earlier
         // and classes may have been changed that would be needed in the view
         Yii::app()->session['installlstep4b']=$aData;
-        $this->redirect(array('/admin/update/sa/step4b'));
+        Yii::app()->getController()->redirect(array('/admin/update/sa/step4b'));
     }
 
     
@@ -547,7 +547,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$updateinfo['UpdaterRevision']}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
         $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);
