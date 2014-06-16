@@ -40,6 +40,27 @@ class FormattingOptions
     public $headerSpacesToUnderscores;
 
     /**
+    * Indicates whether to ellipsize each text part to.
+    *
+    * @var integer
+    */
+    public $headingTextLength;
+
+    /**
+    * Indicates whether to use Expression Manager code
+    *
+    * @var bolean
+    */
+    public $useEMCode;
+
+    /**
+    * What is the caracters to separate code and text
+    *
+    * @var bolean
+    */
+    public $headCodeTextSeparator;
+
+    /**
     * Valid values are:
     * "short" = Answer codes
     * "long" = Full answers
