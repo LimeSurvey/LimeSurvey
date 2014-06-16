@@ -112,7 +112,7 @@ class AdminController extends LSYii_Controller
             }
             else
             {
-                $sLanguage=Yii::app()->request->getPost('lang');
+                $sLanguage=sanitize_languagecode(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
@@ -264,8 +264,7 @@ class AdminController extends LSYii_Controller
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
         $aData = array();
-        $aData['adminlang'] = Yii::app()->session['adminlang'];
-
+        $aData['adminlang'] = $this->lang->getlangcode();
         //$data['admin'] = getLanguageRTL;
         $aData['test'] = "t";
         $aData['languageRTL']="";
