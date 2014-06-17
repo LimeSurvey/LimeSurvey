@@ -38,7 +38,7 @@ abstract class Writer implements IWriter
 
     /**
     * Returns an abbreviated heading for the survey's question that matches
-    * the $fieldName parameter (or false if a match is not found).
+    * Force headingTextLength to be set, set to 15 if is not set (old behaviour)
     *
     * @param Survey $oSurvey
     * @param string $fieldName
@@ -52,12 +52,13 @@ abstract class Writer implements IWriter
 
     /**
     * Returns a full heading for the question that matches the $fieldName.
-    * False is returned if no matching question is found.
+    * Force headingTextLength to null (old behaviour)
     *
+    * @deprecated
     * @param Survey $oSurvey
     * @param FormattingOptions $oOptions
     * @param string $fieldName
-    * @return string (or false)
+    * @return string
     */
     public function getFullHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
@@ -65,6 +66,14 @@ abstract class Writer implements IWriter
         return $this->getHeadingText($oSurvey, $oOptions, $fieldName);
     }
 
+    /**
+    * Return the subquestion part, if not empty : add a space before it.
+    * 
+    * @param Survey $oSurvey
+    * @param FormattingOptions $oOptions
+    * @param string $fieldName
+    * @return string
+    */
     public function getFullFieldSubHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         if (isset($oSurvey->fieldMap[$fieldName]))
@@ -75,9 +84,17 @@ abstract class Writer implements IWriter
             if($subHeading)
                 return " {$subHeading}";
         }
-        return "";
+        return false;
     }
 
+    /**
+    * Return the question text part without any subquestion
+    * 
+    * @param Survey $oSurvey
+    * @param FormattingOptions $oOptions
+    * @param string $fieldName
+    * @return string
+    */
     public function getFullQuestionHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         if (isset($oSurvey->fieldMap[$fieldName]))
@@ -85,9 +102,17 @@ abstract class Writer implements IWriter
             $aField=$oSurvey->fieldMap[$fieldName];
             return viewHelper::flatEllipsizeText($aField['question'],true,$oOptions->headingTextLength,".. ");
         }
-        return "";
+        return false;
     }
 
+    /**
+    * Return the question code according to options
+    *
+    * @param Survey $oSurvey
+    * @param FormattingOptions $oOptions
+    * @param string $fieldName
+    * @return string
+    */
     public function getHeadingCode(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         if (isset($oSurvey->fieldMap[$fieldName]))
@@ -100,17 +125,8 @@ abstract class Writer implements IWriter
         }
     }
 
-    public function getCodeHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
-    {
-        return $this->getFullQuestionHeading($oSurvey,$oOptions,$fieldName).$this->getCodeFieldSubHeading($oSurvey,$oOptions,$fieldName);
-    }
-    public function getCodeFieldSubHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
-    {
-        $fieldName['question']="";
-        return $this->getFullFieldSubHeading($oSurvey,$oOptions,$fieldName);
-    }
     /**
-    * Return the text according to options
+    * Return the question text according to options
     *
     * @param Survey $oSurvey
     * @param FormattingOptions $oOptions
@@ -269,6 +285,26 @@ abstract class Writer implements IWriter
     {
         $string=str_replace('-oth-','',$string);
         return flattenText($string,false,true,'UTF-8',false);
+    }
+
+    /**
+    * Mimic old functionnality, leave it if some plugin use it
+    * No core plugin seems to use it, and function name seem broken (?)
+    * @deprecated
+    */
+    public function getCodeHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    {
+        return $this->getFullQuestionHeading($oSurvey,$oOptions,$fieldName).$this->getCodeFieldSubHeading($oSurvey,$oOptions,$fieldName);
+    }
+    /**
+    * Mimic old functionnality, leave it if some plugin use it
+    * No core plugin seems to use it, and function name seem broken (?)
+    * @deprecated
+    */
+    public function getCodeFieldSubHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    {
+        $fieldName['question']="";
+        return $this->getFullFieldSubHeading($oSurvey,$oOptions,$fieldName);
     }
 
     /**
