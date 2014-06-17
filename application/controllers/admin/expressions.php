@@ -18,7 +18,7 @@ class Expressions extends Survey_Common_Action {
         $needpermission=false;
         $aData['surveyid']=$surveyid=sanitize_int(Yii::app()->request->getQuery('sid'));
         $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
-	    if ($aData['sa']=='survey_logic_file' && $surveyid)
+	    if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $surveyid)
 	    {
 	        $needpermission=true;
 	    }
