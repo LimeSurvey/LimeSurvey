@@ -156,7 +156,7 @@ class Authdb extends AuthPluginBase
                 
             case 'doc':
                 $event->set('label', gT("Microsoft Word"));
-                $event->set('onclick', 'document.getElementById("ansfull").checked=true;document.getElementById("ansabbrev").disabled=true;');
+                $event->set('onclick', 'document.getElementById("answers-long").checked=true;document.getElementById("answers-short").disabled=true;');
                 break;
             
             case 'pdf':

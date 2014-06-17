@@ -66,46 +66,75 @@
             <?php } ?>
             ><legend><?php $clang->eT("General");?></legend>
 
-                <ul><li><label><?php $clang->eT("Range:");?></label><br> <?php $clang->eT("From");?> <input type='text' name='export_from' size='7' value='1' />
-                        <?php $clang->eT("to");?> <input type='text' name='export_to' size='7' value='<?php echo $max_datasets;?>' /></li>
+                <ul><li><?php $clang->eT("Range:");?><br>
+                        <?php echo CHTML::label(gT("From"),"export_from") . CHTML::numberField('export_from','1',array('min'=>1,'max'=>$max_datasets,'step'=>1,'style'=>'max-width:7em')) ?>
+                        <?php echo CHTML::label(gT("to"),"export_to") . CHTML::numberField('export_to',$max_datasets,array('min'=>1,'max'=>$max_datasets,'step'=>1,'style'=>'max-width:7em')) ?>
+                    </li>
 
-                    <li><br /><label for='completionstate'><?php $clang->eT("Completion state");?></label> <select id='completionstate' name='completionstate'>
+                    <li><label for='completionstate'><?php $clang->eT("Completion state");?></label> <select id='completionstate' name='completionstate'>
                             <option value='complete' <?php echo $selecthide;?>><?php $clang->eT("Completed responses only");?></option>
                             <option value='all' <?php echo $selectshow;?>><?php $clang->eT("All responses");?></option>
                             <option value='incomplete' <?php echo $selectinc;?>><?php $clang->eT("Incomplete responses only");?></option>
                         </select>
-                    </li></ul></fieldset>
+                    </li>
+                        <?php echo CHTML::label(gT("Export language"),"exportlang");
+                            echo CHtml::dropDownList('exportlang', null, $aLanguages);
+                        ?>
+                    </ul></fieldset>
 
             <fieldset><legend>
                 <?php $clang->eT("Headings");?></legend>
                 <ul>
-                    <li><input type='radio' class='radiobtn' name='exportstyle' value='code' id='headcodes' />
-                        <label for='headcodes'><?php $clang->eT("Question code");?></label></li>
-                    <li><input type='radio' class='radiobtn' name='exportstyle' value='abbreviated' id='headabbreviated' />
-                        <label for='headabbreviated'><?php $clang->eT("Abbreviated question text");?></label></li>
-                    <li><input type='radio' class='radiobtn' checked='checked' name='exportstyle' value='full' id='headfull'  />
-                        <label for='headfull'><?php $clang->eT("Full question text");?></label></li>
-                    <li><br /><input type='checkbox' value='Y' name='convertspacetous' id='convertspacetous' />
-                        <label for='convertspacetous'>
-                        <?php $clang->eT("Convert spaces in question text to underscores");?></label></li>
+                    <?php foreach($headexports as $type=>$label)
+                    {
+                        $content = CHTML::radioButton('headstyle',$selectedheadexports==$type,array('value'=>$type,'id'=>"headstyle-{$type}"))
+                                 . CHTML::label($label,"headstyle-{$type}");
+                        echo CHTML::tag('li',array(),$content);
+                    }
+                    ?>
+                        <!--<fieldset>
+                            <legend><?php $clang->eT("Heading option");?></legend>-->
+                            <ul>
+                                <li><?php echo CHTML::checkBox('headspacetounderscores',false,array('value'=>'1','id'=>'headspacetounderscores'));
+                                    echo CHTML::label($clang->gT("Convert spaces in question text to underscores"),'headspacetounderscores'); ?></li>
+                                <li><?php echo CHTML::checkBox('abbreviatedtext',false,array('value'=>'1','id'=>'abbreviatedtext'));
+                                    echo CHTML::label($clang->gT("Text abbreviated"),'abbreviatedtext');?>
+                                    <ul>
+                                    <li><?php echo CHTML::label($clang->gT("Number of caracters"),'abbreviatedtextto');
+                                    echo CHTML::numberField('abbreviatedtextto','15',array('id'=>'abbreviatedtextto','size'=>'4','min'=>'1','step'=>'1')); ?></li>
+                                    </ul>
+                                </li>
+                                <li><?php echo CHTML::checkBox('emcode',false,array('value'=>'emcode','id'=>'emcode'));
+                                    echo CHTML::label($clang->gT("Use expression manager code"),'emcode'); ?></li>
+                                <li><?php echo CHTML::label($clang->gT("Code an texte separator"),'codetextseparator');
+                                echo CHTML::textField('codetextseparator','. ',array('id'=>'codetextseparator','size'=>'4')); ?></li>
+                            </ul>
+                        <!--</fieldset>-->
+                    </li>
+                </ul>
+                <ul>
+                
                 </ul>
             </fieldset>
 
             <fieldset>
                 <legend><?php $clang->eT("Responses");?></legend>
                 <ul>
-                    <li><input type='radio' class='radiobtn' name='answers' value='short' id='ansabbrev' />
-                        <label for='ansabbrev'><?php $clang->eT("Answer codes");?></label></li>
-
-                    <li><input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px' />
-                        <label for='convertyto1'><?php $clang->eT("Convert Y to");?></label> <input type='text' name='convertyto' id='convertyto' size='3' value='1' maxlength='1' style='width:10px'  />
+                    <li><?php echo CHTML::radioButton('answers',false,array('value'=>'short','id'=>'answers-short'));
+                        echo CHTML::label($clang->gT("Answer codes"),'answers-short');?>
+                        <ul>
+                            <li><?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
+                                echo CHTML::label($clang->gT("Convert Y to"),'converty');?>
+                                <?php echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1')); ?>
+                            </li>
+                            <li><?php echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
+                                echo CHTML::label($clang->gT("Convert N to"),'convertn');?>
+                                <?php echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1')); ?>
+                            </li>
+                        </ul>
                     </li>
-                    <li><input type='checkbox' value='Y' name='convertnto2' id='convertnto2' style='margin-left: 25px' />
-                        <label for='convertnto2'><?php $clang->eT("Convert N to");?></label> <input type='text' name='convertnto' id='convertnto' size='3' value='2' maxlength='1' style='width:10px' />
-                    </li><li>
-                        <input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull' />
-                        <label for='ansfull'>
-                        <?php $clang->eT("Full answers");?></label></li>
+                    <li><?php echo CHTML::radioButton('answers',true,array('value'=>'long','id'=>'answers-long'));
+                        echo CHTML::label($clang->gT("Full answers"),'answers-long');?>
                 </ul></fieldset>
         </div>
         <div class='right'>

@@ -22,11 +22,11 @@ abstract class Writer implements IWriter
     * to any information about the survey, language, or formatting options they
     * may need for setup.
     *
-    * @param Survey $survey
+    * @param Survey $oSurvey
     * @param mixed $sLanguageCode
     * @param FormattingOptions $oOptions
     */
-    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
+    public function init(SurveyObj $oSurvey, $sLanguageCode, FormattingOptions $oOptions)
     {
         $this->languageCode = $sLanguageCode;
         $this->translator = new Translator();
@@ -40,265 +40,102 @@ abstract class Writer implements IWriter
     * Returns an abbreviated heading for the survey's question that matches
     * the $fieldName parameter (or false if a match is not found).
     *
-    * @param Survey $survey
+    * @param Survey $oSurvey
     * @param string $fieldName
     * @return string
     */
-    public function getAbbreviatedHeading(SurveyObj $survey, $fieldName)
+    public function getAbbreviatedHeading(SurveyObj $oSurvey, $fieldName)
     {
-        if (isset($survey->fieldMap[$fieldName])) {
-            $question = $survey->fieldMap[$fieldName];
-
-            $heading = $question['question'];
-            $heading = $this->stripTagsFull($heading);
-            $heading = mb_substr($heading, 0, 15).'.. ';
-            $aid = $survey->fieldMap[$fieldName]['aid'];
-            if (!empty($aid))
-            {
-                $heading .= '['.$this->stripTagsFull($aid).']';
-            }
-            return $heading;
-        } else {
-            // Token field
-            if (isset($survey->tokenFields[$fieldName])) {
-                return $survey->tokenFields[$fieldName]['description'];
-            }
-            return $fieldName;
-        }
+        $oOptions->headingTextLength=((int)$oOptions->headingTextLength)?(int)$oOptions->headingTextLength:15;
+        return $this->getHeadingText($oSurvey, $oOptions, $fieldName);
     }
 
     /**
     * Returns a full heading for the question that matches the $fieldName.
     * False is returned if no matching question is found.
     *
-    * @param Survey $survey
+    * @param Survey $oSurvey
     * @param FormattingOptions $oOptions
     * @param string $fieldName
     * @return string (or false)
     */
-    public function getFullHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
-    {                                
-        if (isset($survey->fieldMap[$fieldName])) {
-            $question = $survey->fieldMap[$fieldName];
+    public function getFullHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    {
+        $oOptions->headingTextLength=null;
+        return $this->getHeadingText($oSurvey, $oOptions, $fieldName);
+    }
 
-            $heading = $question['question'];
-            $heading = $this->stripTagsFull($heading);
-            $heading.=$this->getFullFieldSubHeading($survey, $oOptions, $fieldName);
-            return $heading;
-        } else {
-            // Token field
-            if (isset($survey->tokenFields[$fieldName])) {
-                return $survey->tokenFields[$fieldName]['description'];
-            }
+    public function getFullFieldSubHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    {
+        if (isset($oSurvey->fieldMap[$fieldName]))
+        {
+            $aField=$oSurvey->fieldMap[$fieldName];
+            $aField['question']='';
+            $subHeading = trim(viewHelper::getFieldText($aField,array('separator'=>array('[',']'),'abbreviated'=>$oOptions->headingTextLength,'ellipsis'=>".. ")));
+            if($subHeading)
+                return " {$subHeading}";
+        }
+        return "";
+    }
+
+    public function getFullQuestionHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    {
+        if (isset($oSurvey->fieldMap[$fieldName]))
+        {
+            $aField=$oSurvey->fieldMap[$fieldName];
+            return viewHelper::flatEllipsizeText($aField['question'],true,$oOptions->headingTextLength,".. ");
+        }
+        return "";
+    }
+
+    public function getHeadingCode(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    {
+        if (isset($oSurvey->fieldMap[$fieldName]))
+        {
+            return viewHelper::getFieldCode($oSurvey->fieldMap[$fieldName],array('separator'=>array('[',']'),'LEMcompat'=>$oOptions->useEMCode));
+        }
+        else
+        {
             return $fieldName;
-        }        
-    }
-
-    public function getCodeHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
-    {
-        $question = $survey->fieldMap[$fieldName];
-        
-        $heading = $question['title'];
-        $heading = $this->stripTagsFull($heading);
-        $heading.=$this->getCodeFieldSubHeading($survey, $oOptions, $fieldName);
-        return $heading;
-    }
-
-    public function getCodeFieldSubHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
-    {
-        $field = $survey->fieldMap[$fieldName];
-        $answerCode = $field['aid'];
-        $questionId = $field['qid'];
-        $fieldType = $field['type'];
-
-        $subHeading = '';
-        switch ($fieldType)
-        {
-            case 'R':
-                $subHeading .= ' ['.$this->translate('Ranking', $this->languageCode).' '.
-                $answerCode.']';
-                break;
-
-            case 'L':
-            case '!':
-                if ($answerCode == 'other')
-                {
-                    $subHeading .= ' '.$this->getOtherSubHeading();
-                }
-                break;
-
-            case 'O':
-                if ($answerCode == 'comment')
-                {
-                    $subHeading .= ' '.$this->getCommentSubHeading();
-                }
-                break;
-
-            case 'M':
-            case 'P':
-                //This section creates differing output from the old code base, but I do think
-                //that it is more correct than the old code.
-                $isOther = ($answerCode == 'other');
-                $isComment = (mb_substr($answerCode, -7, 7) == 'comment');
-
-                if ($isComment)
-                {
-                    $isOther = (mb_substr($answerCode, 0, -7) == 'other');
-                }
-
-                if ($isOther)
-                {
-                    $subHeading .= ' '.$this->getOtherSubHeading();
-                }
-                else
-                {
-                    $subHeading .= ' ['.$answerCode.']';
-                }
-                break;
-
-            case ':':
-            case ';':
-                list($scaleZeroTitle, $scaleOneTitle) = explode('_', $answerCode);
-                $subHeading .= ' ['.$scaleZeroTitle.']['.$scaleOneTitle.']';
-                break;
-
-            case '1':
-                $answerScale = substr($fieldName, -1) + 1;
-                $subQuestions = $survey->getSubQuestionArrays($questionId);
-                foreach ($subQuestions as $question)
-                {
-                    if ($question['title'] == $answerCode && $question['scale_id'] == 0)
-                    {
-                        $subHeading = ' ['.flattenText($question['title'], true,true).'][Scale '.$answerScale.']';
-                    }
-                }
-                break;
-
-            default:
-                if (!empty($answerCode))
-                {
-                    $subHeading .= ' ['.$answerCode.']';
-                }
         }
-
-        //rtrim the result since it could be an empty string ' ' which
-        //should be removed.                          
-        return rtrim($subHeading);
     }
 
-    public function getFullFieldSubHeading(SurveyObj $survey, FormattingOptions $oOptions, $fieldName)
+    public function getCodeHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
-        $field = $survey->fieldMap[$fieldName];
-        $answerCode = $field['aid'];
-        $questionId = $field['qid'];
-        $fieldType = $field['type'];
-
-        $subHeading = '';
-        switch ($fieldType)
+        return $this->getFullQuestionHeading($oSurvey,$oOptions,$fieldName).$this->getCodeFieldSubHeading($oSurvey,$oOptions,$fieldName);
+    }
+    public function getCodeFieldSubHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    {
+        $fieldName['question']="";
+        return $this->getFullFieldSubHeading($oSurvey,$oOptions,$fieldName);
+    }
+    /**
+    * Return the text according to options
+    *
+    * @param Survey $oSurvey
+    * @param FormattingOptions $oOptions
+    * @param string $fieldName
+    * @return string
+    */
+    public function getHeadingText(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    {
+        if (isset($oSurvey->fieldMap[$fieldName]))
         {
-            case 'R':
-                $subHeading .= ' ['.$this->translate('Ranking', $this->languageCode).' '.
-                $answerCode.']';
-                break;
-
-            case 'L':
-            case '!':
-                if ($answerCode == 'other')
-                {
-                    $subHeading .= ' '.$this->getOtherSubHeading();
-                }
-                break;
-
-            case 'O':
-                if ($answerCode == 'comment')
-                {
-                    $subHeading .= ' '.$this->getCommentSubHeading();
-                }
-                break;
-
-            case 'M':
-            case 'P':
-                //This section creates differing output from the old code base, but I do think
-                //that it is more correct than the old code.
-                $isOther = ($answerCode == 'other');
-                $isComment = (mb_substr($answerCode, -7, 7) == 'comment');
-
-                if ($isComment)
-                {
-                    $isOther = (mb_substr($answerCode, 0, -7) == 'other');
-                }
-
-                if ($isOther)
-                {
-                    $subHeading .= ' '.$this->getOtherSubHeading();
-                }
-                else
-                {
-                    $sqs = $survey->getSubQuestionArrays($questionId);
-                    foreach ($sqs as $sq)
-                    {
-                        if (!$isComment && $sq['title'] == $answerCode)
-                        {
-                            $value = $sq['question'];
-                        }
-                    }
-                    if (!empty($value))
-                    {
-                        $subHeading .= ' ['.$this->stripTagsFull($value).']';
-                    }
-                }
-                if (isset($isComment) && $isComment == true)
-                {
-                    $subHeading .= ' '.$this->getCommentSubHeading();
-                    $comment = false;
-                }
-
-                break;
-            case ':':
-            case ';':
-                $subHeading .= ' ['.$this->stripTagsFull($field['subquestion1']).']['.$this->stripTagsFull($field['subquestion2']).']';
-                break;
-            case '1':
-                $answerScale = substr($fieldName, -1) + 1;
-                $subQuestions = $survey->getSubQuestionArrays($questionId);
-                foreach ($subQuestions as $question)
-                {
-                    if ($question['title'] == $answerCode && $question['scale_id'] == 0)
-                    {
-                        $subHeading = ' ['.flattenText($question['question'], true,true).'][Scale '.$answerScale.']';
-                    }
-                }
-                break;
-
-            default:
-                $subQuestion = null;
-                $subQuestions = $survey->getSubQuestionArrays($questionId);
-                foreach ($subQuestions as $question)
-                {
-                    if ($question['title'] == $answerCode)
-                    {
-                        $subQuestion = $question;
-                    }
-                }
-                if (!empty($subQuestion) && !empty($subQuestion['question']))
-                {
-                    $subHeading .= ' ['.$this->stripTagsFull($subQuestion['question']).']';
-                }
+            $textHead = $this->getFullQuestionHeading($oSurvey,$oOptions,$fieldName).$this->getFullFieldSubHeading($oSurvey,$oOptions,$fieldName);
         }
-
-        //rtrim the result since it could be an empty string ' ' which
-        //should be removed.
-        return rtrim($subHeading);
-    }
-
-    private function getOtherSubHeading()
-    {
-        return '['.$this->translate('Other', $this->languageCode).']';
-    }
-
-    private function getCommentSubHeading()
-    {
-        return '- comment';
+        elseif(isset($oSurvey->tokenFields[$fieldName]))
+        {
+            $textHead = $oSurvey->tokenFields[$fieldName]['description'];
+        }
+        else
+        {
+            $textHead = $fieldName;
+        }
+        if ($oOptions->headerSpacesToUnderscores)
+        {
+            $textHead = str_replace(' ', '_', $textHead);
+        }
+        return $textHead;
     }
 
     /**
@@ -324,12 +161,10 @@ abstract class Writer implements IWriter
         {
             if (($value == 'N' || ($value == '' && !is_null($value)))  && $oOptions->convertN)
             {
-                //echo "Transforming 'N' to ".$oOptions->nValue.PHP_EOL;
                 return $oOptions->nValue;
             }
             else if ($value == 'Y' && $oOptions->convertY)
                 {
-                    //echo "Transforming 'Y' to ".$oOptions->yValue.PHP_EOL;
                     return $oOptions->yValue;
                 }
         }
@@ -350,43 +185,36 @@ abstract class Writer implements IWriter
     * All extending classes must implement the internalWrite function which is
     * the code that is called after all initialization is completed.
     *
-    * @param Survey $survey
+    * @param Survey $oSurvey
     * @param string $sLanguageCode
     * @param FormattingOptions $oOptions
     * @param boolean $bOutputHeaders Set if header should be given back
     */
-    final public function write(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions, $bOutputHeaders=true)
+    final public function write(SurveyObj $oSurvey, $sLanguageCode, FormattingOptions $oOptions, $bOutputHeaders=true)
     {
 
         //Output the survey.
         $headers = array();
         if ($bOutputHeaders)
         {
-            
-            foreach ($oOptions->selectedColumns as $column)
+            foreach ($oOptions->selectedColumns as $sColumn)
             {
                 //Survey question field, $column value is a field name from the getFieldMap function.
                 switch ($oOptions->headingFormat)
                 {
                     case 'abbreviated':
-                        $value = $this->getAbbreviatedHeading($survey, $column);
+                        $value = $this->getAbbreviatedHeading($oSurvey, $oOptions, $sColumn);
                         break;
                     case 'full':
-                        $value = $this->getFullHeading($survey, $oOptions, $column);
+                        $value = $this->getFullHeading($oSurvey, $oOptions, $sColumn);
                         break;
-                    default:
+                    case 'codetext':
+                        $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn).$oOptions->headCodeTextSeparator.$this->getHeadingText($oSurvey, $oOptions, $sColumn);
+                        break;
                     case 'code':
-                        if (isset($survey->fieldMap[$column])) {
-                            $value = viewHelper::getFieldCode($survey->fieldMap[$column]);
-                        } else {
-                            // Token field
-                            $value = $column;
-                        }
+                    default:
+                        $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn);
                         break;
-                }
-                if ($oOptions->headerSpacesToUnderscores)
-                {
-                    $value = str_replace(' ', '_', $value);
                 }
 
                 //$this->output.=$this->csvEscape($value).$this->separator;
@@ -395,20 +223,20 @@ abstract class Writer implements IWriter
         }
         //Output the results.
         $sFile='';
-        foreach($survey->responses as $response)
+        foreach($oSurvey->responses as $response)
         {
             $elementArray = array();
 
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];
-                if (isset($survey->fieldMap[$column]) && $survey->fieldMap[$column]['type']!='answer_time' && $survey->fieldMap[$column]['type']!='page_time' && $survey->fieldMap[$column]['type']!='interview_time')
+                if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type']!='answer_time' && $oSurvey->fieldMap[$column]['type']!='page_time' && $oSurvey->fieldMap[$column]['type']!='interview_time')
                 {
                     switch ($oOptions->answerFormat) {
                         case 'long':
                             $elementArray[] = $this->transformResponseValue(
-                                $survey->getFullAnswer($column, $value, $this->translator, $this->languageCode), 
-                                $survey->fieldMap[$column]['type'], 
+                                $oSurvey->getFullAnswer($column, $value, $this->translator, $this->languageCode), 
+                                $oSurvey->fieldMap[$column]['type'], 
                                 $oOptions,
                                 $column);
                             break;
@@ -416,7 +244,7 @@ abstract class Writer implements IWriter
                         case 'short':
                             $elementArray[] = $this->transformResponseValue(
                                 $value,
-                                $survey->fieldMap[$column]['type'], 
+                                $oSurvey->fieldMap[$column]['type'], 
                                 $oOptions,
                                 $column);
                             break;
