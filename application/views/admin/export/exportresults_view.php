@@ -85,37 +85,34 @@
             <fieldset><legend>
                 <?php $clang->eT("Headings");?></legend>
                 <ul>
-                    <?php foreach($headexports as $type=>$label)
+                    <?php foreach($headexports as $type=>$headexport)
                     {
-                        $content = CHTML::radioButton('headstyle',$selectedheadexports==$type,array('value'=>$type,'id'=>"headstyle-{$type}"))
-                                 . CHTML::label($label,"headstyle-{$type}");
+                        $content = CHTML::radioButton('headstyle',$headexport['checked'],array('value'=>$type,'id'=>"headstyle-{$type}"))
+                                 . CHTML::label($headexport['label'],"headstyle-{$type}",array('title'=>$headexport['help']));
                         echo CHTML::tag('li',array(),$content);
                     }
                     ?>
-                        <!--<fieldset>
-                            <legend><?php $clang->eT("Heading option");?></legend>-->
-                            <ul>
-                                <li><?php echo CHTML::checkBox('headspacetounderscores',false,array('value'=>'1','id'=>'headspacetounderscores'));
-                                    echo CHTML::label($clang->gT("Convert spaces in question text to underscores"),'headspacetounderscores'); ?></li>
-                                <li><?php echo CHTML::checkBox('abbreviatedtext',false,array('value'=>'1','id'=>'abbreviatedtext'));
-                                    echo CHTML::label($clang->gT("Text abbreviated"),'abbreviatedtext');?>
-                                    <ul>
-                                    <li><?php echo CHTML::label($clang->gT("Number of caracters"),'abbreviatedtextto');
-                                    echo CHTML::numberField('abbreviatedtextto','15',array('id'=>'abbreviatedtextto','size'=>'4','min'=>'1','step'=>'1')); ?></li>
-                                    </ul>
-                                </li>
-                                <li><?php echo CHTML::checkBox('emcode',false,array('value'=>'emcode','id'=>'emcode'));
-                                    echo CHTML::label($clang->gT("Use expression manager code"),'emcode'); ?></li>
-                                <li><?php echo CHTML::label($clang->gT("Code an texte separator"),'codetextseparator');
-                                echo CHTML::textField('codetextseparator','. ',array('id'=>'codetextseparator','size'=>'4')); ?></li>
-                            </ul>
-                        <!--</fieldset>-->
-                    </li>
-                </ul>
-                <ul>
-                
                 </ul>
             </fieldset>
+           <fieldset>
+                <legend><?php $clang->eT("Heading option");?></legend>
+                <ul>
+                    <li><?php echo CHTML::checkBox('headspacetounderscores',false,array('value'=>'1','id'=>'headspacetounderscores'));
+                        echo CHTML::label($clang->gT("Convert spaces in question text to underscores"),'headspacetounderscores'); ?></li>
+                    <li><?php echo CHTML::checkBox('abbreviatedtext',false,array('value'=>'1','id'=>'abbreviatedtext'));
+                        echo CHTML::label($clang->gT("Text abbreviated"),'abbreviatedtext');?>
+                        <ul>
+                        <li><?php echo CHTML::label($clang->gT("Number of caracters"),'abbreviatedtextto');
+                        echo CHTML::numberField('abbreviatedtextto','15',array('id'=>'abbreviatedtextto','size'=>'4','min'=>'1','step'=>'1')); ?></li>
+                        </ul>
+                    </li>
+                    <li><?php echo CHTML::checkBox('emcode',false,array('value'=>'emcode','id'=>'emcode'));
+                        echo CHTML::label($clang->gT("Use expression manager code"),'emcode'); ?></li>
+                    <li><?php echo CHTML::label($clang->gT("Code an texte separator"),'codetextseparator');
+                    echo CHTML::textField('codetextseparator','. ',array('id'=>'codetextseparator','size'=>'4')); ?></li>
+                </ul>
+            </fieldset>
+
 
             <fieldset>
                 <legend><?php $clang->eT("Responses");?></legend>
