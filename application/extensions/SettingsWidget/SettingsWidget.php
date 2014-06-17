@@ -228,7 +228,7 @@
         public function renderLabel($name,$metaData){
             if(!isset($metaData['label']))
                 return "";
-            if($metaData['type']!='list')
+            if(!in_array($metaData['type'],array('list','boolean')))
                 return CHtml::label($metaData['label'], $name, $metaData['labelOptions']);
             else
                 return CHtml::tag('div',$metaData['labelOptions'], $metaData['label']);
