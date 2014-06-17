@@ -166,4 +166,33 @@ class LSYii_Validators extends CValidator {
         $aValue=array_map("sanitize_languagecode",$aValue);
         return implode(" ",$aValue);
     }
+    
+    public function emailIDNA($value,$params){
+
+        if ($value='' && isset($params['allowEmpty']) && $params['allowEmpty']) 
+        {
+            return $value;    
+        }
+        
+        if (isset($params['allowMultiple']) && $params['allowMultiple'])
+        {
+                $aEmailAdresses=explode(';',$value);
+        }
+        else
+        {
+            $aEmailAdresses=array($value);
+        }
+        
+        foreach ($aEmailAdresses as $sEmailAddress)
+        {
+            if (!validateEmailAddress($value))
+            {
+                $this->addError($attribute, gT('Invalid email address.'));
+                return;
+            }
+            
+        }
+        return $value;
+    }
+    
 }
