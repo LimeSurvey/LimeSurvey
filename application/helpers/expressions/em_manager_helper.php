@@ -4060,7 +4060,7 @@
             $this->q2subqInfo = $q2subqInfo;
 
             // Now set tokens
-            if (Survey::model()->hasTokens($this->sessid) && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
+            if (Survey::model()->hasTokens($surveyid) && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
             {
                 //Gather survey data for tokenised surveys, for use in presenting questions
 				$this->knownVars['TOKEN:TOKEN'] = array(
