@@ -59,6 +59,39 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140612) to 2.05+ (build 140618) June 18, 2014
+-Fixed issue #9025: Error showing pie chart in statistics when using MS SQL server (Carsten Schmitz)
+-Fixed issue #9050: Template permissions for a user are lost after global permissions are saved (Carsten Schmitz)
+-Fixed issue #9077: CSS issue with Basic template when using Array filter (tpartner)
+-Fixed issue #9085: Vulnerable third party jQuery scripts (Carsten Schmitz)
+-Fixed issue #9087: XSS vulnerability (Carsten Schmitz)
+-Fixed issue #9088 : moduser is not filtered (Denis Chenu)
+-Fixed issue #9089: Mixed content in statistics (Carsten Schmitz)
+-Fixed issue #9090: Valid IDNA e-mail address is considered incorrect (Carsten Schmitz)
+-Fixed issue #9091 : navigation_test not filtered (Denis Chenu)
+-Fixed issue #9092 : lang is not filtered in personnal settings (Denis Chenu)
+-Fixed issue: Allow to use multiple email in same equation for notification (Denis Chenu)
+-Fixed issue: auth_webserver_autocreate_user option not properly setting template permission (Carsten Schmitz)
+-Fixed issue: TOKEN: replaced by empty string (Denis Chenu)
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by theej, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by metaworx, mfaber
+#Updated translation: German (Informal) by metaworx
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by metaworx, lfanfoni
+#Updated translation: Italian (Informal) by metaworx, lfanfoni
+#Updated translation: Japanese by yamatt, nomoto
+#Updated translation: Malay by astrasia
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by rhnascimento, mauriciofurtado
+#Updated translation: Thai by adzpire
+
 Changes from 2.05+ (build 140611) to 2.05+ (build 140612) June 12, 2014
 Fixed issue #9064: Blank page/error on step 4 when updating from version 2.0
 
