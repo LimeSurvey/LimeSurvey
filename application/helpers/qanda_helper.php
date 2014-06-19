@@ -2895,61 +2895,42 @@ function do_audio_recording($ia)
 
     $clang = Yii::app()->lang;
 
-    $aQuestionAttributes=getQuestionAttributeValues($ia[0]);
-
     // Fetch question attributes
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
 
-    $currentdir = getcwd();
-    $pos = stripos($currentdir, "admin");
-
-    if ($pos)
-    {
-        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1 ;
-        $questgrppreview = 1;   // Preview is launched from Question or group level
-
-    }
-    else if ($thissurvey['active'] != "Y")
-        {
-            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
-            $questgrppreview = 0;
-        }
-        else
-        {
-            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
-            $questgrppreview = 0;
-    }
-
-    $recordbutton   = "<h2><a href='#' onclick='toggleRecording(this);'>" .$clang->gT('Record audio'). "</a></h2>";
-    $savebutton     = "<h2><a id='save' href='#'>" .$clang->gT('Save audio'). "</a></h2>";
-    $canvas         = "<canvas id='analyser' width='512' height='125'></canvas>";
+    $rec_folder     = Yii::app()->getConfig('third_party') . 'audio-recorder/';
+    $record         = "<a id='record' class='". $ia[1]. "' href='#' onclick='toggleRecording(this);'>"
+            . "<img src='" . $rec_folder . "img/record.png' /></a>";
+    $download       = "<a id='save' class='". $ia[1]. "' href='#' style='display: none;'>"
+            . "<img src='" . $rec_folder . "img/download.png' /></a>";
+    $canvas         = "<canvas id='analyser' width='256' height='62'></canvas>";
     $js_upload      = "<script>
+        // Uploads the audio recording with an XMLHttpRequest
         // Found on http://stackoverflow.com/questions/16616010/saving-wav-file-recorded-in-chrome-to-server/
         function upload(blob, filename) {
-          var xhr = new XMLHttpRequest();
-          xhr.onload = function(e) {
-              if (this.readyState === 4) {
-                  //console.log('Server returned: ', e.target.responseText);
-              }
-          };          
-          var fd = new FormData();
-          fd.append(filename, blob);
-          fd.append('sid', '" . Yii::app()->getConfig('surveyID') . "');
-          fd.append('qid', '" . $ia[1] . "');
-          xhr.open('POST', '" . Yii::app()->getConfig('third_party').'audio-recorder/upload_wav.php' . "', true);
-          xhr.send(fd);
-          
-          // TODO: set resulting filename as a JSON string.
-          $('#" . $ia[1] . "').val('test');
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            fd.append(filename, blob);
+            fd.append('sid', '" . Yii::app()->getConfig('surveyID') . "');
+            fd.append('qid', '" . $ia[1] . "');
+            xhr.open('POST', '" . $rec_folder . 'upload_wav.php' . "', true);
+            xhr.send(fd);
+            
+            // Set result of request as the answer to the question
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    $('#" . $ia[1] . "').val(xhr.responseText);
+                }
+            };
         }
         </script>";
 
-    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."'/>";
+    Yii::app()->getClientScript()->registerScriptFile($rec_folder . 'main.js');
+    Yii::app()->getClientScript()->registerScriptFile($rec_folder . '/recorderjs/recorder.js');
 
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'audio-recorder/main.js');
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'audio-recorder/recorderjs/recorder.js');
-
-    $answer .= $js_upload . $recordbutton . $savebutton . $canvas;
+    $answer = "<input type='hidden' id='" . $ia[1] . "' name='" . $ia[1] . "'/>";
+    $answer .= $js_upload . $record . $download . $canvas;
 
     $inputnames[] = $ia[1];
     return array($answer, $inputnames);

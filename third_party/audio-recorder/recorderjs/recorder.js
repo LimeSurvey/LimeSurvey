@@ -19,10 +19,8 @@ DEALINGS IN THE SOFTWARE.
 
 (function(window){
 
-  var url = window.location.href;
-  var index = url.indexOf('index.php');
-  var folder = url.substring(0, index);
-  var WORKER_PATH = folder + 'third_party/audio-recorder/recorderjs/recorderWorker.js';
+  var folder = getFolder();
+  var WORKER_PATH = folder + 'recorderjs/recorderWorker.js';
 
   var Recorder = function(source, cfg){
     var config = cfg || {};
@@ -109,13 +107,14 @@ DEALINGS IN THE SOFTWARE.
     this.node.connect(this.context.destination);   // if the script node is not connected to an output the "onaudioprocess" event is not triggered in chrome.
   };
 
-  Recorder.setupDownload = function(blob, filename){
+  Recorder.setupDownload = function(blob, questionCode){
     var url = (window.URL || window.webkitURL).createObjectURL(blob);
-    var fn = filename || 'output.wav';
+    var fn = 'output.wav'; // TODO: how does this work?!
     
-    var link = document.getElementById("save");
-    link.href = url;
-    link.download = fn;
+    var link = $('#save.' + questionCode);
+    link.attr('href', url);
+    link.attr('download', fn);
+    link.show();
     
     upload(blob, fn);
   };

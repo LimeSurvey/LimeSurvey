@@ -25,6 +25,7 @@ var rafID = null;
 var analyserContext = null;
 var canvasWidth, canvasHeight;
 var recIndex = 0;
+var questionCode;
 
 /* TODO:
 
@@ -47,7 +48,7 @@ function gotBuffers( buffers ) {
 function doneEncoding( blob ) {
     // Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
     // recIndex++;
-    Recorder.setupDownload( blob );
+    Recorder.setupDownload( blob, questionCode );
 }
 
 function toggleRecording( e ) {
@@ -60,7 +61,9 @@ function toggleRecording( e ) {
         // start recording
         if (!audioRecorder)
             return;
+        questionCode = $(e).attr('class');
         e.classList.add("recording");
+        $('img', e).attr('src', getFolder() + 'img/stop.png');
         audioRecorder.clear();
         audioRecorder.record();
     }
@@ -168,6 +171,12 @@ function initAudio() {
             alert('Error getting audio');
             console.log(e);
         });
+}
+
+function getFolder() {
+    var url = window.location.href;
+    var index = url.indexOf('index.php');
+    return url.substring(0, index) + 'third_party/audio-recorder/';
 }
 
 window.addEventListener('load', initAudio );
