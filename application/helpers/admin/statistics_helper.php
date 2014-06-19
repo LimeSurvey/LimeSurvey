@@ -3198,7 +3198,11 @@ class statistics_helper {
                 {
                     $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
                 }
-                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
+                $sSSL='';
+                if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off"){
+                    $sSSL='s';
+                }
+                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
                 ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
                 return $statisticsoutput;
 

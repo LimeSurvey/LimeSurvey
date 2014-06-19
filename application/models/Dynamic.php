@@ -9,10 +9,10 @@
 		/**
 		 * @var int The dynamic part of the class name.
 		 */
-		protected $id;
+		protected $dynamicId;
 
 		public function __construct($scenario = 'insert') {
-            list(,$this->id)=explode('_', get_class($this));
+            list(,$this->dynamicId)=explode('_', get_class($this));
             parent::__construct($scenario);
 		}
 

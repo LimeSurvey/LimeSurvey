@@ -1376,7 +1376,7 @@ function do_language($ia)
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
     $answer = "\n\t<p class=\"question answer-item dropdown-item langage-item\">\n"
     ."<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Choose your language')}</label>"
-    ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
+    ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\" class=\"languagesurvey\">\n";
     if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
@@ -1384,16 +1384,25 @@ function do_language($ia)
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow)
         {
             $answer .= SELECTED;
+        }elseif($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'] == $ansrow)
+        {
+            $answer .= SELECTED;
         }
         $aLanguage=getLanguageNameFromCode($ansrow, true);
         $answer .= '>'.$aLanguage[1]."</option>\n";
     }
     $answer .= "</select>\n";
-    $answer .= "<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
-
+    $answer .= "<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
-    $answer .= "\n<input type=\"hidden\" name=\"lang\" id=\"lang\" value=\"\" />\n\t</p>\n";
-
+    
+    $answer .= "\n<input type=\"hidden\" name=\"lang\" value=\"\" />\n\t</p>\n";
+    $answer .= "<script type='text/javascript'>\n"
+    . "/*<![CDATA[*/\n"
+    ."$('#answer{$ia[1]}').change(function(){ "
+    ."$('input[name=\"lang\"]').val($(this).val());"
+    ." })\n"
+    ." /*]]>*/\n"
+    ."</script>\n";
     return array($answer, $inputnames);
 }
 
@@ -3109,7 +3118,7 @@ function do_multipleshorttext($ia)
                     {
                         $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
-                    $answer_main .= $dispVal;
+                    $answer_main .= htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
                 }
 
                 // --> START NEW FEATURE - SAVE

@@ -457,9 +457,18 @@ class update extends Survey_Common_Action
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversions','');
-        // We create this new language object here because the language files might have been overwritten earlier
-        // and the pointers to the file from the application language are not valid anymore 
-        Yii::app()->lang = $aData['clang'] = new Limesurvey_lang(Yii::app()->session['adminlang'],true);
+        // We redirect here because the  files might have been overwritten earlier
+        // and classes may have been changed that would be needed in the view
+        Yii::app()->session['installlstep4b']=$aData;
+        Yii::app()->getController()->redirect(array('/admin/update/sa/step4b'));
+    }
+
+    
+    function step4b()
+    {
+        if (!isset(Yii::app()->session['installlstep4b'])) die();
+        $aData=Yii::app()->session['installlstep4b'];
+        unset (Yii::app()->session['installlstep4b']);
         $this->_renderWrappedTemplate('update', 'step4', $aData);
     }
 
@@ -538,7 +547,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$updateinfo['UpdaterRevision']}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
         $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);

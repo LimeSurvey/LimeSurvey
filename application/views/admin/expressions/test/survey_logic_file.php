@@ -43,7 +43,7 @@ EOD;
 }
 else {
     $surveyInfo = (array) explode('|', $_REQUEST['sid']);
-    $surveyid = $surveyInfo[0];
+    $surveyid = sanitize_int($surveyInfo[0]);
     $thissurvey=getSurveyInfo($surveyid);
     if (isset($_REQUEST['assessments']))
     {

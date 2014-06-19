@@ -931,7 +931,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($action == 'copysurvey' && !$aData['bFailed'])
             {
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName,NULL,(isset($_POST['translinksfields'])));
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')) ,(isset($_POST['translinksfields'])));
                 if (isset($aExcludes['conditions']))
                 {
                     Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);

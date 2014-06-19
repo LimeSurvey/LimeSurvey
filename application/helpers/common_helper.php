@@ -51,6 +51,11 @@ function eT($string, $escapemode = 'html')
     echo gT($string, $escapemode);
 }
 
+function ngT($single, $plural, $number, $escapemode = 'html')
+{
+    Yii::import('application.libraries.Limesurvey_lang');
+    return App()->lang->ngT($single, $plural, $number, $escapemode);
+}
 /**
 * getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type

@@ -683,7 +683,7 @@ class tokens extends Survey_Common_Action
             $aData = array(
             'firstname' => Yii::app()->request->getPost('firstname'),
             'lastname' => Yii::app()->request->getPost('lastname'),
-            'email' => sanitize_email(Yii::app()->request->getPost('email')),
+            'email' => Yii::app()->request->getPost('email'),
             'emailstatus' => Yii::app()->request->getPost('emailstatus'),
             'token' => $sanitizedtoken,
             'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
@@ -784,7 +784,7 @@ class tokens extends Survey_Common_Action
 
             $aTokenData['firstname'] = Yii::app()->request->getPost('firstname');
             $aTokenData['lastname'] = Yii::app()->request->getPost('lastname');
-            $aTokenData['email'] = sanitize_email(Yii::app()->request->getPost('email'));
+            $aTokenData['email'] = Yii::app()->request->getPost('email');
             $aTokenData['emailstatus'] = Yii::app()->request->getPost('emailstatus');
             $santitizedtoken = sanitize_token(Yii::app()->request->getPost('token'));
             $aTokenData['token'] = $santitizedtoken;
@@ -919,7 +919,7 @@ class tokens extends Survey_Common_Action
 
             $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
             'lastname' => Yii::app()->request->getPost('lastname'),
-            'email' => sanitize_email(Yii::app()->request->getPost('email')),
+            'email' => Yii::app()->request->getPost('email'),
             'emailstatus' => 'OK',
             'token' => $santitizedtoken,
             'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
@@ -1744,7 +1744,7 @@ class tokens extends Survey_Common_Action
                                     if (isset($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]))
                                     {
                                         $myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
-                                        $myemail = sanitize_email($myemail);
+                                        $myemail = $myemail;
                                         ++$xv;
                                     }
                                     elseif ($filterblankemail !== true)
