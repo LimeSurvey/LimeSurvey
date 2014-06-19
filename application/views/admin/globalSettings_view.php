@@ -178,7 +178,7 @@
 
 
                 <?php $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode'); ?>
-                <li><label for='defaulthtmleditormode'><?php $clang->eT("Default HTML editor mode:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='defaulthtmleditormode'><?php $clang->eT("Default HTML editor mode:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
                     <select name='defaulthtmleditormode' id='defaulthtmleditormode'>
                         <option value='none'
                             <?php if ($thisdefaulthtmleditormode=='none') { echo "selected='selected'";} ?>
@@ -191,7 +191,7 @@
                             ><?php $clang->eT("Popup HTML editor"); ?></option>
                     </select></li>
                 <?php $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode'); ?>
-                <li><label for='defaultquestionselectormode'><?php $clang->eT("Question type selector:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='defaultquestionselectormode'><?php $clang->eT("Question type selector:"); echo((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
                     <select name='defaultquestionselectormode' id='defaultquestionselectormode'>
                         <option value='default'
                             <?php if ($thisdefaultquestionselectormode=='default') { echo "selected='selected'";} ?>
@@ -201,7 +201,7 @@
                             ><?php $clang->eT("Simple selector"); ?></option>
                     </select></li>
                 <?php $thisdefaulttemplateeditormode=getGlobalSetting('defaulttemplateeditormode'); ?>
-                <li><label for='defaulttemplateeditormode'><?php $clang->eT("Template editor:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='defaulttemplateeditormode'><?php $clang->eT("Template editor:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
                     <select name='defaulttemplateeditormode' id='defaulttemplateeditormode'>
                         <option value='default'
                             <?php if ($thisdefaulttemplateeditormode=='default') { echo "selected='selected'";} ?>
@@ -338,7 +338,7 @@
                     </select></li>
 
                 <?php $thisfilterxsshtml=getGlobalSetting('filterxsshtml'); ?>
-                <li><label for='filterxsshtml'><?php $clang->eT("Filter HTML for XSS:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='filterxsshtml'><?php $clang->eT("Filter HTML for XSS:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
                     <select id='filterxsshtml' name='filterxsshtml'>
                         <option value='1'
                             <?php if ( $thisfilterxsshtml == true) { echo " selected='selected'";}?>
@@ -460,7 +460,7 @@
         </div>
         <div id='language'>
             <ul>
-                <li><label for='defaultlang'><?php $clang->eT("Default site language:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='defaultlang'><?php $clang->eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
                     <select name='defaultlang' id='defaultlang'>
                         <?php
                             $actuallang=getGlobalSetting('defaultlang');
