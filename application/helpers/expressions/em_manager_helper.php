@@ -8417,6 +8417,7 @@ EOD;
 #                                }
                                 break;
                             case '|': //File Upload
+                            case '(': //Audio recording
                                 if (!preg_match('/_filecount$/', $sq))
                                 {
                                     $json = $value;
@@ -8434,7 +8435,8 @@ EOD;
                                         {
                                             if (file_exists($tmp . $phparray[$i]->filename))
                                             {
-                                                $sDestinationFileName = 'fu_' . randomChars(15);
+                                                $prefix = $type === '|' ? 'fu_' : 'rec_';
+                                                $sDestinationFileName = $prefix . randomChars(15);
                                                 if (!is_dir($LEM->surveyOptions['target']))
                                                 {
                                                     mkdir($LEM->surveyOptions['target'], 0777, true);
@@ -8449,7 +8451,7 @@ EOD;
                                         $value = ls_json_encode($phparray);  // so that EM doesn't try to parse it.
                                     }
                                 }
-                                break;
+                                break;   
                         }
                         $_SESSION[$LEM->sessid][$sq] = $value;
                         $_update = array (

@@ -2909,37 +2909,20 @@ function do_audio_recording($ia)
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
 
     $rec_folder     = Yii::app()->getConfig('third_party') . 'audio-recorder/';
-    $record         = "<a id='record' class='". $ia[1]. "' href='#' onclick='toggleRecording(this);'>"
-            . "<img src='" . $rec_folder . "img/record.png' /></a>";
-    $download       = "<a id='save' class='". $ia[1]. "' href='#' style='display: none;'>"
-            . "<img src='" . $rec_folder . "img/download.png' /></a>";
-    $canvas         = "<canvas id='analyser' width='256' height='62'></canvas>";
-    $js_upload      = "<script>
-        // Uploads the audio recording with an XMLHttpRequest
-        // Found on http://stackoverflow.com/questions/16616010/saving-wav-file-recorded-in-chrome-to-server/
-        function upload(blob, filename) {
-            var xhr = new XMLHttpRequest();
-            var fd = new FormData();
-            fd.append(filename, blob);
-            fd.append('sid', '" . Yii::app()->getConfig('surveyID') . "');
-            fd.append('qid', '" . $ia[1] . "');
-            xhr.open('POST', '" . $rec_folder . 'upload_wav.php' . "', true);
-            xhr.send(fd);
-            
-            // Set result of request as the answer to the question
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    $('#" . $ia[1] . "').val(xhr.responseText);
-                }
-            };
-        }
-        </script>";
+    $record         = "<a id='record" . $ia[1]. "' href='#' onclick='toggleRecording(this);'>"
+            . "<img src='" . $rec_folder . "img/record.png' style='margin: 3px;' /></a>";
+    $play           = "<audio id='play" . $ia[1]. "' controls style='display: none;'></audio>";
+    $download       = "<a id='save" . $ia[1]. "' href='#' style='display: none;'>"
+            . "<img src='" . $rec_folder . "img/download.png' style='margin: 3px;'/></a>";
+    $canvas         = "<canvas id='analyser' width='100' height='24' style='margin: 3px; float: right;'></canvas>";
 
     Yii::app()->getClientScript()->registerScriptFile($rec_folder . 'main.js');
     Yii::app()->getClientScript()->registerScriptFile($rec_folder . '/recorderjs/recorder.js');
 
     $answer = "<input type='hidden' id='" . $ia[1] . "' name='" . $ia[1] . "'/>";
-    $answer .= $js_upload . $record . $download . $canvas;
+    $answer .= "<div style='height:30px; background-color:ivory;'>";
+    $answer .= $record . $play . $download. $canvas;
+    $answer .= "</div>";
 
     $inputnames[] = $ia[1];
     return array($answer, $inputnames);

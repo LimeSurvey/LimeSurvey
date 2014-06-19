@@ -56,16 +56,24 @@ function toggleRecording( e ) {
         // stop recording
         audioRecorder.stop();
         e.classList.remove("recording");
+        e.firstElementChild.src = getFolder() + 'img/record.png';
         audioRecorder.getBuffers( gotBuffers );
     } else {
         // start recording
         if (!audioRecorder)
             return;
-        questionCode = $(e).attr('class');
+        questionCode = e.id.substring(6); // id of element is record + questioncode
         e.classList.add("recording");
-        $('img', e).attr('src', getFolder() + 'img/stop.png');
+        e.firstElementChild.src = getFolder() + 'img/stop.png';
         audioRecorder.clear();
         audioRecorder.record();
+        
+        // Hide the save and play elements
+        var save = document.getElementById('save' + questionCode);
+        save.style.display = 'none';
+        var play = document.getElementById('play' + questionCode);
+        play.style.display = 'none';
+        console.log(play);
     }
 }
 
@@ -171,6 +179,24 @@ function initAudio() {
             alert('Error getting audio');
             console.log(e);
         });
+}
+
+// Uploads the audio recording with an XMLHttpRequest
+// Found on http://stackoverflow.com/questions/16616010/saving-wav-file-recorded-in-chrome-to-server/
+function upload(blob) {
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+    fd.append('output.wav', blob);
+    fd.append('qid', questionCode);
+    xhr.open('POST', getFolder() + 'upload_wav.php', true);
+    xhr.send(fd);
+
+    // Set result of request as the answer to the question
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            $('#' + questionCode).val(xhr.responseText);
+        }
+    };
 }
 
 function getFolder() {

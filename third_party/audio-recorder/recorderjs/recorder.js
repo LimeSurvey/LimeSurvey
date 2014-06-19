@@ -109,14 +109,26 @@ DEALINGS IN THE SOFTWARE.
 
   Recorder.setupDownload = function(blob, questionCode){
     var url = (window.URL || window.webkitURL).createObjectURL(blob);
-    var fn = 'output.wav'; // TODO: how does this work?!
     
-    var link = $('#save.' + questionCode);
-    link.attr('href', url);
-    link.attr('download', fn);
-    link.show();
+    // Update the download link
+    var save = document.getElementById('save' + questionCode);
+    save.href = url;
+    save.download = 'recording.wav';
+    save.style.display = 'inline';
     
-    upload(blob, fn);
+    // Create the source element
+    var source = document.createElement('source');
+    source.src = url;
+    source.type = 'audio/wav';
+    
+    // Set the source element as child to the audio element
+    var play = document.getElementById('play' + questionCode);
+    if (play.firstChild) play.removeChild(play.firstChild);
+    play.appendChild(source);
+    play.style.display = 'inline';
+    
+    // Upload the blob via the upload function
+    upload(blob);
   };
 
   window.Recorder = Recorder;
