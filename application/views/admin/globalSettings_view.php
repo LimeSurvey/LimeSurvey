@@ -134,7 +134,7 @@
 
         <div id='general'>
             <ul>
-                <li><label for='sitename'><?php $clang->eT("Site name:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                <li><label for='sitename'><?php $clang->eT("Site name:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
                     <input type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(getGlobalSetting('sitename')); ?>" /></li>
                 <?php
 
@@ -143,7 +143,9 @@
 
                 ?>
 
-                <li><label for="defaulttemplate"><?php $clang->eT("Default template:"); ?></label>
+                <li><label for="defaulttemplate"><?php $clang->eT("Default template:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); 
+                
+                ?></label>
                     <select name="defaulttemplate" id="defaulttemplate">
                         <?php
                             foreach ($templatenames as $templatename)
