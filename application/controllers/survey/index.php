@@ -175,7 +175,7 @@ class index extends CAction {
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
         $sOldLang=isset($_SESSION['survey_'.$surveyid]['s_lang'])?$_SESSION['survey_'.$surveyid]['s_lang']:"";// Keep the old value, because SetSurveyLanguage update $_SESSION
-        if (!is_null($param['lang']) )
+        if (!empty($param['lang']))
         {
             $sDisplayLanguage = $param['lang'];// $param take lang from returnGlobal and returnGlobal sanitize langagecode
         }
