@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-06-18 14:29:42+00:00\n"
+"POT-Creation-Date: 2014-06-21 15:29:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -47,7 +47,7 @@ msgid "Maximum"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:89
-#: application/views/admin/globalSettings_view.php:490
+#: application/views/admin/globalSettings_view.php:492
 #: application/views/admin/labels/editlabel_view.php:34
 #: application/views/admin/labels/labelview_view.php:165
 #: application/views/admin/participants/displayParticipants_view.php:64
@@ -419,19 +419,19 @@ msgstr ""
 #: application/helpers/export_helper.php:1400
 #: application/helpers/expressions/em_manager_helper.php:3521
 #: application/helpers/expressions/em_manager_helper.php:3525
-#: application/helpers/qanda_helper.php:3843
-#: application/helpers/qanda_helper.php:4283
-#: application/helpers/qanda_helper.php:4321
+#: application/helpers/qanda_helper.php:3844
+#: application/helpers/qanda_helper.php:4284
+#: application/helpers/qanda_helper.php:4322
 #: application/views/admin/dataentry/content_view.php:496
 #: application/views/admin/dataentry/content_view.php:549
 #: application/views/admin/export/statistics_view.php:504
 #: application/views/admin/export/statistics_view.php:669
-#: application/views/admin/globalSettings_view.php:332
-#: application/views/admin/globalSettings_view.php:343
-#: application/views/admin/globalSettings_view.php:354
-#: application/views/admin/globalSettings_view.php:394
-#: application/views/admin/globalSettings_view.php:415
-#: application/views/admin/globalSettings_view.php:525
+#: application/views/admin/globalSettings_view.php:334
+#: application/views/admin/globalSettings_view.php:345
+#: application/views/admin/globalSettings_view.php:356
+#: application/views/admin/globalSettings_view.php:396
+#: application/views/admin/globalSettings_view.php:417
+#: application/views/admin/globalSettings_view.php:527
 #: application/views/admin/participants/blacklist_view.php:23
 #: application/views/admin/participants/userControl_view.php:23
 #: application/views/admin/survey/activateSurvey_view.php:66
@@ -584,8 +584,8 @@ msgstr ""
 #: application/helpers/export_helper.php:301
 #: application/helpers/export_helper.php:1400
 #: application/helpers/expressions/em_manager_helper.php:3527
-#: application/helpers/qanda_helper.php:4284
-#: application/helpers/qanda_helper.php:4330
+#: application/helpers/qanda_helper.php:4285
+#: application/helpers/qanda_helper.php:4331
 #: application/views/admin/dataentry/content_view.php:550
 #: application/views/admin/export/statistics_view.php:675
 msgid "Uncertain"
@@ -654,19 +654,19 @@ msgstr ""
 #: application/helpers/export_helper.php:1400
 #: application/helpers/expressions/em_manager_helper.php:3522
 #: application/helpers/expressions/em_manager_helper.php:3526
-#: application/helpers/qanda_helper.php:3852
-#: application/helpers/qanda_helper.php:4285
-#: application/helpers/qanda_helper.php:4341
+#: application/helpers/qanda_helper.php:3853
+#: application/helpers/qanda_helper.php:4286
+#: application/helpers/qanda_helper.php:4342
 #: application/views/admin/dataentry/content_view.php:497
 #: application/views/admin/dataentry/content_view.php:551
 #: application/views/admin/export/statistics_view.php:510
 #: application/views/admin/export/statistics_view.php:681
-#: application/views/admin/globalSettings_view.php:335
-#: application/views/admin/globalSettings_view.php:346
-#: application/views/admin/globalSettings_view.php:357
-#: application/views/admin/globalSettings_view.php:395
-#: application/views/admin/globalSettings_view.php:416
-#: application/views/admin/globalSettings_view.php:528
+#: application/views/admin/globalSettings_view.php:337
+#: application/views/admin/globalSettings_view.php:348
+#: application/views/admin/globalSettings_view.php:359
+#: application/views/admin/globalSettings_view.php:397
+#: application/views/admin/globalSettings_view.php:418
+#: application/views/admin/globalSettings_view.php:530
 #: application/views/admin/participants/blacklist_view.php:23
 #: application/views/admin/participants/userControl_view.php:23
 #: application/views/admin/survey/activateSurvey_view.php:71
@@ -720,8 +720,8 @@ msgstr ""
 #: application/helpers/export_helper.php:304
 #: application/helpers/export_helper.php:1405
 #: application/helpers/expressions/em_manager_helper.php:3530
-#: application/helpers/qanda_helper.php:4446
-#: application/helpers/qanda_helper.php:4487
+#: application/helpers/qanda_helper.php:4447
+#: application/helpers/qanda_helper.php:4488
 #: application/views/admin/dataentry/content_view.php:567
 #: application/views/admin/export/statistics_view.php:725
 msgid "Increase"
@@ -737,8 +737,8 @@ msgstr ""
 #: application/helpers/export_helper.php:305
 #: application/helpers/export_helper.php:1405
 #: application/helpers/expressions/em_manager_helper.php:3531
-#: application/helpers/qanda_helper.php:4447
-#: application/helpers/qanda_helper.php:4496
+#: application/helpers/qanda_helper.php:4448
+#: application/helpers/qanda_helper.php:4497
 #: application/views/admin/dataentry/content_view.php:568
 #: application/views/admin/export/statistics_view.php:730
 msgid "Same"
@@ -754,8 +754,8 @@ msgstr ""
 #: application/helpers/export_helper.php:306
 #: application/helpers/export_helper.php:1405
 #: application/helpers/expressions/em_manager_helper.php:3532
-#: application/helpers/qanda_helper.php:4448
-#: application/helpers/qanda_helper.php:4507
+#: application/helpers/qanda_helper.php:4449
+#: application/helpers/qanda_helper.php:4508
 #: application/views/admin/dataentry/content_view.php:569
 #: application/views/admin/export/statistics_view.php:735
 msgid "Decrease"
@@ -781,31 +781,31 @@ msgstr ""
 #: application/helpers/common_helper.php:1525
 #: application/helpers/common_helper.php:1533
 #: application/helpers/qanda_helper.php:937
-#: application/helpers/qanda_helper.php:1590
-#: application/helpers/qanda_helper.php:1897
-#: application/helpers/qanda_helper.php:2002
-#: application/helpers/qanda_helper.php:2065
-#: application/helpers/qanda_helper.php:3863
-#: application/helpers/qanda_helper.php:3907
-#: application/helpers/qanda_helper.php:4005
-#: application/helpers/qanda_helper.php:4068
-#: application/helpers/qanda_helper.php:4161
-#: application/helpers/qanda_helper.php:4207
-#: application/helpers/qanda_helper.php:4288
-#: application/helpers/qanda_helper.php:4362
-#: application/helpers/qanda_helper.php:4451
-#: application/helpers/qanda_helper.php:4524
-#: application/helpers/qanda_helper.php:4640
-#: application/helpers/qanda_helper.php:4722
-#: application/helpers/qanda_helper.php:4842
-#: application/helpers/qanda_helper.php:5677
+#: application/helpers/qanda_helper.php:1591
+#: application/helpers/qanda_helper.php:1898
+#: application/helpers/qanda_helper.php:2003
+#: application/helpers/qanda_helper.php:2066
+#: application/helpers/qanda_helper.php:3864
+#: application/helpers/qanda_helper.php:3908
+#: application/helpers/qanda_helper.php:4006
+#: application/helpers/qanda_helper.php:4069
+#: application/helpers/qanda_helper.php:4162
+#: application/helpers/qanda_helper.php:4208
+#: application/helpers/qanda_helper.php:4289
+#: application/helpers/qanda_helper.php:4363
+#: application/helpers/qanda_helper.php:4452
+#: application/helpers/qanda_helper.php:4525
+#: application/helpers/qanda_helper.php:4641
+#: application/helpers/qanda_helper.php:4723
+#: application/helpers/qanda_helper.php:4843
 #: application/helpers/qanda_helper.php:5678
-#: application/helpers/qanda_helper.php:5963
-#: application/helpers/qanda_helper.php:6093
-#: application/helpers/qanda_helper.php:6127
-#: application/helpers/qanda_helper.php:6138
-#: application/helpers/qanda_helper.php:6293
-#: application/helpers/qanda_helper.php:6341
+#: application/helpers/qanda_helper.php:5679
+#: application/helpers/qanda_helper.php:5964
+#: application/helpers/qanda_helper.php:6094
+#: application/helpers/qanda_helper.php:6128
+#: application/helpers/qanda_helper.php:6139
+#: application/helpers/qanda_helper.php:6294
+#: application/helpers/qanda_helper.php:6342
 #: application/views/admin/dataentry/content_view.php:29
 msgid "No answer"
 msgstr ""
@@ -837,7 +837,7 @@ msgstr ""
 #: application/helpers/export_helper.php:291
 #: application/helpers/export_helper.php:1385
 #: application/helpers/expressions/em_manager_helper.php:3518
-#: application/helpers/qanda_helper.php:3889
+#: application/helpers/qanda_helper.php:3890
 #: application/views/admin/dataentry/content_view.php:54
 #: application/views/admin/export/statistics_view.php:486
 msgid "Female"
@@ -854,7 +854,7 @@ msgstr ""
 #: application/helpers/export_helper.php:292
 #: application/helpers/export_helper.php:1385
 #: application/helpers/expressions/em_manager_helper.php:3517
-#: application/helpers/qanda_helper.php:3897
+#: application/helpers/qanda_helper.php:3898
 #: application/views/admin/dataentry/content_view.php:55
 #: application/views/admin/export/statistics_view.php:492
 msgid "Male"
@@ -886,9 +886,9 @@ msgstr ""
 #: application/helpers/export_helper.php:957
 #: application/helpers/export_helper.php:1056
 #: application/helpers/export_helper.php:1071
-#: application/helpers/qanda_helper.php:1863
-#: application/helpers/qanda_helper.php:2420
-#: application/helpers/qanda_helper.php:2717
+#: application/helpers/qanda_helper.php:1864
+#: application/helpers/qanda_helper.php:2421
+#: application/helpers/qanda_helper.php:2718
 #: application/views/admin/dataentry/content_view.php:103
 #: application/views/admin/dataentry/content_view.php:108
 #: application/views/admin/dataentry/content_view.php:123
@@ -1062,12 +1062,12 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:2002
 #: application/helpers/admin/statistics_helper.php:2007
 #: application/helpers/qanda_helper.php:1257
-#: application/helpers/qanda_helper.php:3444
-#: application/helpers/qanda_helper.php:3544
-#: application/helpers/qanda_helper.php:3637
-#: application/helpers/qanda_helper.php:3736
+#: application/helpers/qanda_helper.php:3445
+#: application/helpers/qanda_helper.php:3545
+#: application/helpers/qanda_helper.php:3638
 #: application/helpers/qanda_helper.php:3737
-#: application/helpers/qanda_helper.php:3811
+#: application/helpers/qanda_helper.php:3738
+#: application/helpers/qanda_helper.php:3812
 #: application/views/admin/templates/templateeditor_question_answer_view.php:5
 #: application/views/admin/templates/templateeditor_question_answer_view.php:6
 msgid "Answer"
@@ -1413,7 +1413,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:816
 #: application/controllers/admin/dataentry.php:952
 #: application/controllers/admin/dataentry.php:1069
-#: application/helpers/qanda_helper.php:1604
+#: application/helpers/qanda_helper.php:1605
 #: application/views/admin/dataentry/content_view.php:53
 #: application/views/admin/dataentry/content_view.php:118
 #: application/views/admin/dataentry/content_view.php:136
@@ -1428,7 +1428,7 @@ msgid "Please choose"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:857
-#: application/helpers/qanda_helper.php:2147
+#: application/helpers/qanda_helper.php:2148
 #: application/views/admin/dataentry/content_view.php:150
 #: application/views/admin/templates/templateeditor_printablesurvey_quesanswer_view.php:3
 msgid "First choice"
@@ -1456,14 +1456,14 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:891
 #: application/helpers/common_helper.php:3572
-#: application/helpers/qanda_helper.php:2196
+#: application/helpers/qanda_helper.php:2197
 #: application/views/admin/dataentry/content_view.php:182
 msgid "Your Choices"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:892
 #: application/helpers/common_helper.php:3582
-#: application/helpers/qanda_helper.php:2204
+#: application/helpers/qanda_helper.php:2205
 #: application/views/admin/dataentry/content_view.php:183
 msgid "Your Ranking"
 msgstr ""
@@ -1690,15 +1690,15 @@ msgstr ""
 msgid "Access denied!"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:174
+#: application/controllers/admin/globalsettings.php:177
 msgid "Warning! Admin bounce email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:180
+#: application/controllers/admin/globalsettings.php:183
 msgid "Warning! Admin email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:210
+#: application/controllers/admin/globalsettings.php:213
 msgid "Global settings were saved."
 msgstr ""
 
@@ -2131,9 +2131,9 @@ msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:761
 #: application/controllers/admin/printablesurvey.php:762
-#: application/helpers/qanda_helper.php:2701
-#: application/helpers/qanda_helper.php:2731
-#: application/helpers/qanda_helper.php:2734
+#: application/helpers/qanda_helper.php:2702
+#: application/helpers/qanda_helper.php:2732
+#: application/helpers/qanda_helper.php:2735
 msgid "Make a comment on your choice here:"
 msgstr ""
 
@@ -2154,10 +2154,10 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3265
 #: application/helpers/expressions/em_manager_helper.php:3651
 #: application/helpers/expressions/em_manager_helper.php:6248
-#: application/helpers/qanda_helper.php:1424
-#: application/helpers/qanda_helper.php:1749
-#: application/helpers/qanda_helper.php:2264
-#: application/helpers/qanda_helper.php:2632
+#: application/helpers/qanda_helper.php:1425
+#: application/helpers/qanda_helper.php:1750
+#: application/helpers/qanda_helper.php:2265
+#: application/helpers/qanda_helper.php:2633
 msgid "Other:"
 msgstr ""
 
@@ -2359,7 +2359,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:144
 #: application/controllers/admin/responses.php:482
 #: application/controllers/UploaderController.php:298
-#: application/helpers/qanda_helper.php:2810
+#: application/helpers/qanda_helper.php:2811
 #: application/views/admin/assessments_view.php:13
 #: application/views/admin/labels/labelview_view.php:41
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:16
@@ -2374,14 +2374,14 @@ msgstr ""
 #: application/controllers/UploaderController.php:299
 #: application/helpers/common_helper.php:2065
 #: application/helpers/common_helper.php:2278
-#: application/helpers/qanda_helper.php:2811
+#: application/helpers/qanda_helper.php:2812
 #: application/views/admin/dataentry/content_view.php:139
 msgid "Comment"
 msgstr ""
 
 #: application/controllers/admin/responses.php:149
 #: application/controllers/admin/responses.php:486
-#: application/helpers/qanda_helper.php:2812
+#: application/helpers/qanda_helper.php:2813
 #: application/views/admin/emailtemplates/email_language_template_tab.php:38
 msgid "File name"
 msgstr ""
@@ -3466,12 +3466,11 @@ msgstr ""
 #: application/helpers/common_helper.php:6806
 #: application/helpers/common_helper.php:7194
 #: application/helpers/common_helper.php:7234
-#: application/helpers/qanda_helper.php:1377
-#: application/helpers/qanda_helper.php:1566
-#: application/helpers/qanda_helper.php:2155
-#: application/helpers/qanda_helper.php:4846
-#: application/helpers/qanda_helper.php:6297
-#: application/helpers/qanda_helper.php:6345
+#: application/helpers/qanda_helper.php:1567
+#: application/helpers/qanda_helper.php:2156
+#: application/helpers/qanda_helper.php:4847
+#: application/helpers/qanda_helper.php:6298
+#: application/helpers/qanda_helper.php:6346
 #: application/views/admin/dataentry/content_view.php:84
 #: application/views/admin/dataentry/content_view.php:94
 #: application/views/admin/labels/labelsetsbar_view.php:22
@@ -5851,12 +5850,12 @@ msgstr ""
 #: application/helpers/common_helper.php:2996
 #: application/helpers/common_helper.php:3230
 #: application/helpers/common_helper.php:3342
-#: application/views/admin/globalSettings_view.php:261
-#: application/views/admin/globalSettings_view.php:274
-#: application/views/admin/globalSettings_view.php:295
-#: application/views/admin/globalSettings_view.php:316
-#: application/views/admin/globalSettings_view.php:381
-#: application/views/admin/globalSettings_view.php:511
+#: application/views/admin/globalSettings_view.php:263
+#: application/views/admin/globalSettings_view.php:276
+#: application/views/admin/globalSettings_view.php:297
+#: application/views/admin/globalSettings_view.php:318
+#: application/views/admin/globalSettings_view.php:383
+#: application/views/admin/globalSettings_view.php:513
 msgid "Off"
 msgstr ""
 
@@ -7333,8 +7332,8 @@ msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3050
 #: application/helpers/expressions/em_manager_helper.php:3235
-#: application/helpers/qanda_helper.php:3269
-#: application/helpers/qanda_helper.php:3445
+#: application/helpers/qanda_helper.php:3270
+#: application/helpers/qanda_helper.php:3446
 #: application/views/admin/dataentry/content_view.php:377
 msgid "Only numbers may be entered in this field."
 msgstr ""
@@ -7496,11 +7495,11 @@ msgid "Please upload between %s and %s files"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3218
-msgid "Only integer value may be entered in this field."
+msgid "Only an integer value may be entered in this field."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3222
-msgid "Only integer value may be entered in this fields."
+msgid "Only integer values may be entered in these fields."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3255
@@ -7802,7 +7801,7 @@ msgstr ""
 
 #: application/helpers/qanda_helper.php:211
 #: application/helpers/qanda_helper.php:212
-#: application/helpers/qanda_helper.php:1375
+#: application/helpers/qanda_helper.php:1381
 msgid "Choose your language"
 msgstr ""
 
@@ -7996,46 +7995,46 @@ msgstr ""
 msgid "Format: %s"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1644
+#: application/helpers/qanda_helper.php:1645
 msgid "Other answer"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1969
+#: application/helpers/qanda_helper.php:1970
 msgid "Please enter your comment here"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2149
+#: application/helpers/qanda_helper.php:2150
 msgid "Choice of rank %s"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2796
+#: application/helpers/qanda_helper.php:2797
 msgid "Upload files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2808
+#: application/helpers/qanda_helper.php:2809
 msgid "Upload your files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2809
+#: application/helpers/qanda_helper.php:2810
 #: application/helpers/replacements_helper.php:468
 msgid "Return to survey"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2990
-#: application/helpers/qanda_helper.php:3231
-#: application/helpers/qanda_helper.php:4295
+#: application/helpers/qanda_helper.php:2991
+#: application/helpers/qanda_helper.php:3232
+#: application/helpers/qanda_helper.php:4296
 msgid "Error: This question has no answers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3290
+#: application/helpers/qanda_helper.php:3291
 msgid "Remaining: "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3298
+#: application/helpers/qanda_helper.php:3299
 msgid "Total: "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3329
+#: application/helpers/qanda_helper.php:3330
 #: application/views/admin/emailtemplates/email_language_template_tab.php:11
 #: application/views/admin/emailtemplates/email_language_template_tab.php:24
 #: application/views/admin/participants/attributeControl_view.php:19
@@ -8050,114 +8049,114 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3330
+#: application/helpers/qanda_helper.php:3331
 msgid "Please click and drag the slider handles to enter your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3629
 #: application/helpers/qanda_helper.php:3630
+#: application/helpers/qanda_helper.php:3631
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3933
+#: application/helpers/qanda_helper.php:3934
 msgid "An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4102
+#: application/helpers/qanda_helper.php:4103
 msgid "An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4121
-#: application/helpers/qanda_helper.php:4251
-#: application/helpers/qanda_helper.php:4406
-#: application/helpers/qanda_helper.php:4627
-#: application/helpers/qanda_helper.php:5921
+#: application/helpers/qanda_helper.php:4122
+#: application/helpers/qanda_helper.php:4252
+#: application/helpers/qanda_helper.php:4407
+#: application/helpers/qanda_helper.php:4628
+#: application/helpers/qanda_helper.php:5922
 msgid "The last cell are for no answer. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4231
+#: application/helpers/qanda_helper.php:4232
 msgid "An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4388
+#: application/helpers/qanda_helper.php:4389
 msgid "An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4571
+#: application/helpers/qanda_helper.php:4572
 msgid "An array with sub-question on each line. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4576
+#: application/helpers/qanda_helper.php:4577
 msgid "An array with sub-question on each line. The answers are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4622
+#: application/helpers/qanda_helper.php:4623
 msgid "After answers, a cell give some information. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4885
-#: application/helpers/qanda_helper.php:5274
-#: application/helpers/qanda_helper.php:5639
-#: application/helpers/qanda_helper.php:5792
-#: application/helpers/qanda_helper.php:6375
+#: application/helpers/qanda_helper.php:4886
+#: application/helpers/qanda_helper.php:5275
+#: application/helpers/qanda_helper.php:5640
+#: application/helpers/qanda_helper.php:5793
+#: application/helpers/qanda_helper.php:6376
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4904
-#: application/helpers/qanda_helper.php:5291
+#: application/helpers/qanda_helper.php:4905
+#: application/helpers/qanda_helper.php:5292
 msgid "An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4965
+#: application/helpers/qanda_helper.php:4966
 msgid "Each answers are number. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4987
+#: application/helpers/qanda_helper.php:4988
 msgid "The last row show the total for the column. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5007
+#: application/helpers/qanda_helper.php:5008
 msgid "The last column show the total for the row. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5035
+#: application/helpers/qanda_helper.php:5036
 msgid "The last row show the total for the column and the last column show the total for the row. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5096
-#: application/helpers/qanda_helper.php:5424
+#: application/helpers/qanda_helper.php:5097
+#: application/helpers/qanda_helper.php:5425
 msgid "The last cell give some information. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5350
+#: application/helpers/qanda_helper.php:5351
 msgid "Check or uncheck the answer for each subquestion. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5357
+#: application/helpers/qanda_helper.php:5358
 msgid "Each answers are a number. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5362
+#: application/helpers/qanda_helper.php:5363
 msgid "Select the answer for each subquestion. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5560
+#: application/helpers/qanda_helper.php:5561
 msgid "..."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5654
+#: application/helpers/qanda_helper.php:5655
 msgid "An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5786
+#: application/helpers/qanda_helper.php:5787
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5839
+#: application/helpers/qanda_helper.php:5840
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5847
+#: application/helpers/qanda_helper.php:5848
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "
 msgstr ""
 
@@ -9622,7 +9621,7 @@ msgstr ""
 
 #: application/views/admin/dataentry/active_html_view.php:40
 #: application/views/admin/dataentry/insert.php:15
-#: application/views/admin/globalSettings_view.php:310
+#: application/views/admin/globalSettings_view.php:312
 #: application/views/admin/token/bounce.php:47
 msgid "Password:"
 msgstr ""
@@ -10474,257 +10473,257 @@ msgstr ""
 msgid "Default template:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:164
+#: application/views/admin/globalSettings_view.php:166
 msgid "Administration template:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:179
+#: application/views/admin/globalSettings_view.php:181
 msgid "Default HTML editor mode:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:183
+#: application/views/admin/globalSettings_view.php:185
 #: application/views/admin/user/personalsettings.php:32
 msgid "No HTML editor"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:186
+#: application/views/admin/globalSettings_view.php:188
 msgid "Inline HTML editor (default)"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:189
+#: application/views/admin/globalSettings_view.php:191
 #: application/views/admin/user/personalsettings.php:31
 msgid "Popup HTML editor"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:192
+#: application/views/admin/globalSettings_view.php:194
 msgid "Question type selector:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:196
+#: application/views/admin/globalSettings_view.php:198
 msgid "Full selector (default)"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:199
+#: application/views/admin/globalSettings_view.php:201
 #: application/views/admin/user/personalsettings.php:43
 msgid "Simple selector"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:202
+#: application/views/admin/globalSettings_view.php:204
 msgid "Template editor:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:206
+#: application/views/admin/globalSettings_view.php:208
 msgid "Full template editor (default)"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:209
+#: application/views/admin/globalSettings_view.php:211
 #: application/views/admin/user/personalsettings.php:54
 msgid "Simple template editor"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:212
+#: application/views/admin/globalSettings_view.php:214
 msgid "Time difference (in hours):"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:214
+#: application/views/admin/globalSettings_view.php:216
 msgid "Server time:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:214
+#: application/views/admin/globalSettings_view.php:216
 msgid "Corrected time:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:217
+#: application/views/admin/globalSettings_view.php:219
 msgid "Session lifetime for surveys (seconds):"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:219
+#: application/views/admin/globalSettings_view.php:221
 msgid "IP Info DB API Key:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:221
+#: application/views/admin/globalSettings_view.php:223
 msgid "Google Maps API key:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:223
+#: application/views/admin/globalSettings_view.php:225
 msgid "Google Analytics API key:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:225
+#: application/views/admin/globalSettings_view.php:227
 msgid "Google Translate API key:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:231
+#: application/views/admin/globalSettings_view.php:233
 msgid "Default site admin email:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:234
+#: application/views/admin/globalSettings_view.php:236
 msgid "Administrator name:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:236
+#: application/views/admin/globalSettings_view.php:238
 msgid "Email method:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:240
+#: application/views/admin/globalSettings_view.php:242
 msgid "PHP (default)"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:243
+#: application/views/admin/globalSettings_view.php:245
 msgid "SMTP"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:246
+#: application/views/admin/globalSettings_view.php:248
 msgid "Sendmail"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:249
+#: application/views/admin/globalSettings_view.php:251
 msgid "Qmail"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:251
+#: application/views/admin/globalSettings_view.php:253
 msgid "SMTP host:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:252
+#: application/views/admin/globalSettings_view.php:254
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:253
+#: application/views/admin/globalSettings_view.php:255
 msgid "SMTP username:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:255
+#: application/views/admin/globalSettings_view.php:257
 msgid "SMTP password:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:257
+#: application/views/admin/globalSettings_view.php:259
 msgid "SMTP SSL/TLS:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:264
-#: application/views/admin/globalSettings_view.php:319
+#: application/views/admin/globalSettings_view.php:266
+#: application/views/admin/globalSettings_view.php:321
 #: application/views/admin/token/bounce.php:62
 msgid "SSL"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:267
-#: application/views/admin/globalSettings_view.php:322
+#: application/views/admin/globalSettings_view.php:269
+#: application/views/admin/globalSettings_view.php:324
 #: application/views/admin/token/bounce.php:68
 msgid "TLS"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:269
+#: application/views/admin/globalSettings_view.php:271
 msgid "SMTP debug mode:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:277
+#: application/views/admin/globalSettings_view.php:279
 msgid "On errors"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:280
+#: application/views/admin/globalSettings_view.php:282
 msgid "Always"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:282
+#: application/views/admin/globalSettings_view.php:284
 msgid "Email batch size:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:289
+#: application/views/admin/globalSettings_view.php:291
 msgid "Default site bounce email:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:291
+#: application/views/admin/globalSettings_view.php:293
 #: application/views/admin/token/bounce.php:28
 msgid "Server type:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:298
+#: application/views/admin/globalSettings_view.php:300
 #: application/views/admin/token/bounce.php:35
 msgid "IMAP"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:301
+#: application/views/admin/globalSettings_view.php:303
 #: application/views/admin/token/bounce.php:41
 msgid "POP"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:304
+#: application/views/admin/globalSettings_view.php:306
 #: application/views/admin/token/bounce.php:43
 msgid "Server name & port:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:305
+#: application/views/admin/globalSettings_view.php:307
 #: application/views/admin/token/bounce.php:44
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:995"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:307
+#: application/views/admin/globalSettings_view.php:309
 #: application/views/admin/token/bounce.php:45
 msgid "User name:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:312
+#: application/views/admin/globalSettings_view.php:314
 #: application/views/admin/token/bounce.php:49
 msgid "Encryption type:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:328
+#: application/views/admin/globalSettings_view.php:330
 msgid "Survey preview only for administration users"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:339
+#: application/views/admin/globalSettings_view.php:341
 msgid "Filter HTML for XSS:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:347
+#: application/views/admin/globalSettings_view.php:349
 msgid "(XSS filtering is always disabled for the superadministrator.)"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:350
+#: application/views/admin/globalSettings_view.php:352
 msgid "Group member can only see own group:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:362
+#: application/views/admin/globalSettings_view.php:364
 msgid "Warning: Before turning on HTTPS,%s check if this link works.%s"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:362
+#: application/views/admin/globalSettings_view.php:364
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:364
+#: application/views/admin/globalSettings_view.php:366
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:378
+#: application/views/admin/globalSettings_view.php:380
 msgid "Force HTTPS:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:380
+#: application/views/admin/globalSettings_view.php:382
 msgid "On"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:382
+#: application/views/admin/globalSettings_view.php:384
 msgid "Don't force on or off"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:392
+#: application/views/admin/globalSettings_view.php:394
 msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:396
-#: application/views/admin/globalSettings_view.php:417
-#: application/views/admin/globalSettings_view.php:433
-#: application/views/admin/globalSettings_view.php:452
+#: application/views/admin/globalSettings_view.php:398
+#: application/views/admin/globalSettings_view.php:419
+#: application/views/admin/globalSettings_view.php:435
+#: application/views/admin/globalSettings_view.php:454
 msgid "Survey admin can choose"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:400
+#: application/views/admin/globalSettings_view.php:402
 msgid "Repeating headings in array questions every X subquestions:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:413
+#: application/views/admin/globalSettings_view.php:415
 #: application/views/admin/survey/subview/tabPresentation_view.php:209
 #: application/views/admin/survey/subview/tabPresentation_view.php:214
 #: application/views/admin/survey/subview/tabPresentation_view.php:219
@@ -10732,57 +10731,57 @@ msgstr ""
 msgid "Show \"There are X questions in this survey\""
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:427
+#: application/views/admin/globalSettings_view.php:429
 msgid "Show question group name and/or description"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:429
-#: application/views/admin/globalSettings_view.php:448
+#: application/views/admin/globalSettings_view.php:431
+#: application/views/admin/globalSettings_view.php:450
 #: application/views/admin/survey/subview/tabPresentation_view.php:284
 #: application/views/admin/survey/subview/tabPresentation_view.php:329
 msgid "Show both"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:430
+#: application/views/admin/globalSettings_view.php:432
 #: application/views/admin/survey/subview/tabPresentation_view.php:285
 msgid "Show group name only"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:431
+#: application/views/admin/globalSettings_view.php:433
 #: application/views/admin/survey/subview/tabPresentation_view.php:286
 msgid "Show group description only"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:432
-#: application/views/admin/globalSettings_view.php:451
+#: application/views/admin/globalSettings_view.php:434
+#: application/views/admin/globalSettings_view.php:453
 #: application/views/admin/survey/subview/tabPresentation_view.php:287
 #: application/views/admin/survey/subview/tabPresentation_view.php:332
 msgid "Hide both"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:446
+#: application/views/admin/globalSettings_view.php:448
 msgid "Show question number and/or question code"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:449
+#: application/views/admin/globalSettings_view.php:451
 #: application/views/admin/survey/subview/tabPresentation_view.php:330
 msgid "Show question number only"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:450
+#: application/views/admin/globalSettings_view.php:452
 #: application/views/admin/survey/subview/tabPresentation_view.php:331
 msgid "Show question code only"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:461
+#: application/views/admin/globalSettings_view.php:463
 msgid "Default site language:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:477
+#: application/views/admin/globalSettings_view.php:479
 msgid "Available languages:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:490
+#: application/views/admin/globalSettings_view.php:492
 #: application/views/admin/labels/editlabel_view.php:34
 #: application/views/admin/quotas/viewquotasrowsub_view.php:10
 #: application/views/admin/quotas/viewquotasrow_view.php:37
@@ -10790,34 +10789,34 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:507
+#: application/views/admin/globalSettings_view.php:509
 msgid "RPC interface enabled:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:514
+#: application/views/admin/globalSettings_view.php:516
 msgid "JSON-RPC"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:517
+#: application/views/admin/globalSettings_view.php:519
 msgid "XML-RPC"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:519
+#: application/views/admin/globalSettings_view.php:521
 msgid "URL:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:521
+#: application/views/admin/globalSettings_view.php:523
 msgid "Publish API on /admin/remotecontrol:"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:539
+#: application/views/admin/globalSettings_view.php:541
 #: application/views/admin/token/bounce.php:70
 #: application/views/admin/user/personalsettings.php:79
 #: application/views/admin/user/setusertemplates.php:25
 msgid "Save settings"
 msgstr ""
 
-#: application/views/admin/globalSettings_view.php:542
+#: application/views/admin/globalSettings_view.php:544
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr ""
 
