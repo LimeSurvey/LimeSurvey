@@ -3215,11 +3215,11 @@
                     {
                         case 'N':
                             $qtips['default']='';
-                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this field.");
+                            $qtips['value_integer']=$this->gT("Only an integer value may be entered in this field.");
                             break;
                         case 'K':
                             $qtips['default']='';
-                            $qtips['value_integer']=$this->gT("Only integer value may be entered in this fields.");
+                            $qtips['value_integer']=$this->gT("Only integer values may be entered in these fields.");
                             break;
                         default:
                             break;
