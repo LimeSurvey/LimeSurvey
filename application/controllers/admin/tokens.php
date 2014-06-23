@@ -1558,7 +1558,7 @@ class tokens extends Survey_Common_Action
                 }
                 else
                 {
-                    $aData['tokenoutput'].='<b>All emails were sent.</b>';
+                    $aData['tokenoutput'].="<strong class='result success text-success'>".gT("All emails were sent.")."<strong>";
                 }
 
                 $this->_renderWrappedTemplate('token', $aViewUrls, $aData);
