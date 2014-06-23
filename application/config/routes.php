@@ -18,7 +18,7 @@ $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/si
 $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>";
 $route['<_sid:\d+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/token/<_token>";
 $route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
-$route['<sid:\d+>/*'] = 'survey/index';
+$route['<sid:\d+>/*'] = array('survey/index','matchValue'=>true);
 
 //Admin Routes
 $route['admin/index'] = "admin";
@@ -34,10 +34,8 @@ $route['admin/expressions'] = "admin/expressions/index";
 
 //optout
 $route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
-$route['optout/<surveyid:\d+>/*'] = "optout/index";
-
-//Public statitics
-$route['statistics_user/<surveyid:\d+>/*'] = "statistics_user/action";
+$route['optout/<surveyid:\d+>/*'] = array('optout/index','matchValue'=>true);
+$route['statistics_user/<surveyid:\d+>/*'] =  array('statistics_user/action','matchValue'=>true);
 
 $route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 
