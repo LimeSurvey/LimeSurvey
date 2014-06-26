@@ -6322,7 +6322,7 @@ function do_array_dual($ia)
                 foreach ($labels1 as $lrow1)
                 {
                     $answer .= "\t<option value=\"".$lrow1['code'].'" ';
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $lrow1['code'])
+                    if ($sActualAnswer1 == $lrow1['code'])
                     {
                         $answer .= SELECTED;
                     }
