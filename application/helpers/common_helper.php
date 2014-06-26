@@ -2570,11 +2570,21 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
 /**
 * Returns true if the given survey has a File Upload Question Type
-* @param $surveyid The survey ID
+* @param $iSurveyID The survey ID
 * @return bool
 */
 function hasFileUploadQuestion($iSurveyID) {
     $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));    
+    return $iCount>0 ;
+}
+
+/**
+* Returns true if the given survey has a Audio Recording Question Type
+* @param $iSurveyID The survey ID
+* @return bool
+*/
+function hasAudioRecordingQuestion($iSurveyID) {
+    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='('", array(':surveyid' => $iSurveyID));    
     return $iCount>0 ;
 }
 

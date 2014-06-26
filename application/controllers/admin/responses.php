@@ -585,7 +585,8 @@ class responses extends Survey_Common_Action
             $aData['end'] = $end;
             $aData['fncount'] = $fncount;
             $aData['fnames'] = $fnames;
-            $aData['bHasFileUploadQuestion'] = hasFileUploadQuestion($iSurveyID);
+            // Check for both file upload and audio recording questions
+            $aData['bHasFileUploadQuestion'] = hasFileUploadQuestion($iSurveyID) || hasAudioRecordingQuestion($iSurveyID);
 
             $aViewUrls[] = 'browseallheader_view';
 
