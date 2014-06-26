@@ -29,7 +29,9 @@
 
         public function getFiles()
         {
-            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|'));
+            $questions = array_merge(
+                    Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|')), 
+                    Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '(')));
             $files = array();
             foreach ($questions as $question)
             {
