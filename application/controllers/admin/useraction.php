@@ -377,7 +377,7 @@ class UserAction extends Survey_Common_Action
                 $uresult = $oRecord->save();    // store result of save in uresult
 
                 if (empty($sPassword)) {
-                    $extra = $clang->gT("Username") . ": $users_name<br />" . $clang->gT("Password") . ": (" . $clang->gT("Unchanged") . ")<br />\n";
+                    $extra = $clang->gT("Username") . ": {$oRecord->users_name}<br />" . $clang->gT("Password") . ": (" . $clang->gT("Unchanged") . ")<br />\n";
                     $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
                 }
                 elseif ($uresult && !empty($sPassword)) // When saved successfully
@@ -388,14 +388,14 @@ class UserAction extends Survey_Common_Action
                         Yii::app()->session['pw_notify'] = TRUE;
 
                     if ($display_user_password_in_html === true) {
-                        $displayedPwd = $sPassword;
+                        $displayedPwd = htmlentities($sPassword);
                     }
                     else
                     {
                         $displayedPwd = preg_replace('/./', '*', $sPassword);
                     }
 
-                    $extra = $clang->gT("Username") . ": {$users_name}<br />" . $clang->gT("Password") . ": {$displayedPwd}<br />\n";
+                    $extra = $clang->gT("Username") . ": {$oRecord->users_name}<br />" . $clang->gT("Password") . ": {$displayedPwd}<br />\n";
                     $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
                 }
                 else
@@ -584,20 +584,19 @@ class UserAction extends Survey_Common_Action
                 $uresult = $oPermission->save();
             }
             if ($uresult !== false) {
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Template permissions were updated successfully."), "successheader");
+                Yii::app()->setFlashMessage($clang->gT("Template permissions were updated successfully."));
             }
             else
             {
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Error while updating usertemplates."), "warningheader");
+                Yii::app()->setFlashMessage($clang->gT("Error while updating template permissions."),'error');
             }
+            $this->getController()->redirect(array("admin/user/sa/index"));
         }
         else
         {
             Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
-
-        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     /**

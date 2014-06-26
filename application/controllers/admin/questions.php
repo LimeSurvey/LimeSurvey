@@ -998,7 +998,7 @@ class questions extends Survey_Common_Action
             $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
         }
         header('Content-type: application/json');
-        echo ls_json_encode($resultdata);
+        echo json_encode($resultdata);
     }
 
     /**

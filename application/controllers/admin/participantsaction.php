@@ -129,9 +129,10 @@ class participantsaction extends Survey_Common_Action
         }    
 
         $fieldKeys = array_flip($fields);
+        $fieldNeededKeys=array_fill_keys($outputarray[0], '');
         foreach ($query as $field => $aData)
         {
-            $outputarray[] = array_intersect_key($aData, $fieldKeys);
+            $outputarray[] = array_merge($fieldNeededKeys,array_intersect_key($aData, $fieldKeys));
         }
         CPDBExport($outputarray, "central_" . time());
     }
@@ -681,13 +682,14 @@ class participantsaction extends Survey_Common_Action
      */
     function getSearchIDs()
     {
-        $searchcondition = basename(Yii::app()->request->getPost('searchcondition')); // get the search condition from the URL
+        $searchcondition = Yii::app()->request->getPost('searchcondition'); // get the search condition from the URL
+        $sSearchURL = basename(Yii::app()->request->getPost('searchURL')); // get the search condition from the URL
         /* a search contains posted data inside $_POST['searchcondition'].
         * Each separate query is made up of 3 fields, separated by double-pipes ("|")
         * EG: fname||eq||jason||lname||ct||c
         *
         */
-        if ($searchcondition != 'getParticipants_json') // if there is a search condition present
+        if ($sSearchURL != 'getParticipants_json') // if there is a search condition present
         {
             $participantid = "";
             $condition = explode("||", $searchcondition);  // explode the condition to the array
@@ -735,7 +737,7 @@ class participantsaction extends Survey_Common_Action
     {
         if (Yii::app()->request->getPost('searchcondition','') != '') // if there is a search condition then only the participants that match the search criteria are counted
         {
-            $condition = explode("||", $searchcondition);
+            $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
         } else {
             $search = null;
@@ -1189,7 +1191,7 @@ class participantsaction extends Survey_Common_Action
                for each NEW attribute being created in this import process */
             foreach ($newarray as $key => $value)
             {
-                $aData = array('attribute_type' => 'TB', 'attribute_name' => $value, 'visible' => 'FALSE');
+                $aData = array('attribute_type' => 'TB', 'defaultname' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeName::model()->storeAttributeCSV($aData);
                 /* Keep a record of the attribute_id for this new attribute
                    in the $mappedarray string. For example, if the new attribute
@@ -1263,8 +1265,6 @@ class participantsaction extends Survey_Common_Action
             } else {
                 // After looking at the first line, we now import the actual values
                 $line = convertCSVRowToArray($buffer, $separator, '"');
-                // Discard empty lines
-                if (empty($line[0])) continue;
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line))
                 {
@@ -1273,7 +1273,6 @@ class participantsaction extends Survey_Common_Action
                     continue;
                 }
                 $writearray = array_combine($firstline, $line);
-
                 //kick out ignored columns
                 foreach ($ignoredcolumns as $column)
                 {
@@ -1370,7 +1369,7 @@ class participantsaction extends Survey_Common_Action
                         unset($writearray['validuntil']);
                     }
                     $dontimport=false;
-                    if (($filterblankemails == "accept" && $writearray['email'] == "") || $writearray['firstname'] == "" || $writearray['lastname'] == "") {
+                    if (($filterblankemails == "accept" && $writearray['email'] == "")) {
                         //The mandatory fields of email, firstname and lastname
                         //must be filled, but one or more are empty
                         $mandatory++;
@@ -1560,6 +1559,10 @@ class participantsaction extends Survey_Common_Action
         if($response['duplicate']>0) {
             echo "\r\n";
             printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
+        }
+        if($response['blacklistskipped']>0) {
+            echo "\r\n";
+            printf($clang->gT("%s entries were skipped because they are blacklisted"), $response['blacklistskipped']);
         }
         if($response['overwriteauto']=="true" || $response['overwriteman']=="true") {
             echo "\r\n";

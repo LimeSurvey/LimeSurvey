@@ -433,7 +433,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             $column[$field] = 'FLOAT';
         }
 
-        $tabname = "{{survey_{$iSurveyID}}}_timings";
+        $tabname = "{{survey_{$iSurveyID}_timings}}";
         try
         {
             $execresult = createTable($tabname,$column);

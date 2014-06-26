@@ -85,7 +85,6 @@ $(document).ready(function(){
     $('#searchbutton').click(function(){
 
     });
-    var lastSel,lastSel2;
     function returnColModel() {
         if($.cookie("detailedsurveycolumns")) {
             hidden=$.cookie("detailedsurveycolumns").split('|');

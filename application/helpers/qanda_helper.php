@@ -11,10 +11,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-// Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
-
-//if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
-
 /*
 * Let's explain what this strange $ia var means
 *
@@ -1375,14 +1371,19 @@ function do_language($ia)
 
     $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    // Get actual answer
+    $sLang=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
+    if(!in_array($sLang,$answerlangs))
+    {
+        $sLang=Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    }
     $answer = "\n\t<p class=\"question answer-item dropdown-item langage-item\">\n"
     ."<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Choose your language')}</label>"
-    ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
-    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
+    ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\" class=\"languagesurvey\">\n";
     foreach ($answerlangs as $ansrow)
     {
         $answer .= "\t<option value=\"{$ansrow}\"";
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow)
+        if ($sLang == $ansrow)
         {
             $answer .= SELECTED;
         }
@@ -1390,11 +1391,16 @@ function do_language($ia)
         $answer .= '>'.$aLanguage[1]."</option>\n";
     }
     $answer .= "</select>\n";
-    $answer .= "<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
-
+    $answer .= "<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{$sLang}\" />\n";
     $inputnames[]=$ia[1];
-    $answer .= "\n<input type=\"hidden\" name=\"lang\" id=\"lang\" value=\"\" />\n\t</p>\n";
 
+    $answer .= "<script type='text/javascript'>\n"
+    . "/*<![CDATA[*/\n"
+    ."$('#answer{$ia[1]}').change(function(){ "
+    ."$('<input type=\"hidden\">').attr('name','lang').val($(this).val()).appendTo($('form#limesurvey'));"
+    ." })\n"
+    ." /*]]>*/\n"
+    ."</script>\n";
     return array($answer, $inputnames);
 }
 
@@ -3062,7 +3068,7 @@ function do_multipleshorttext($ia)
                     {
                         $dispVal = str_replace('.',$sSeparator,$dispVal);
                     }
-                    $answer_main .= $dispVal;
+                    $answer_main .= htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
                 }
 
                 // --> START NEW FEATURE - SAVE

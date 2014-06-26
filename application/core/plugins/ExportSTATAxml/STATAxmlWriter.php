@@ -5,7 +5,7 @@
  * In contrast to importing a plain CSV or xls-file, the data is fully labelled with variable- and value labels.
  * Date and time strings are converted to STATAs time format (milliseconds since 1960/01/01), so they can be directly used in calculations
  * Limitations: 
- *  STATA only supports strings up to 244 bytes.....long answers (ie. text fields) will be cut.
+ *  STATA versions 8 through 12? only support strings up to 244 bytes, version 13 up to 2045 bytes.....longer answers (ie. text fields) will be cut.
  *  STATA only supports attaching value labels to numerical values. So to achieve short answers (usually one or two digits) and
  *  have these properly labelled, one should use numerical answer-codes in LimeSurvey (1=Totally agree). 
  *  If non-numerical answer codes are used (A=Totally agree), then the complete answer text will be used as answer (eg.: 'Totally agree').
@@ -16,12 +16,10 @@ class STATAxmlWriter extends Writer
     private $output;
     private $separator;
     private $hasOutputHeader;
-    private $maxStringLength = 244; // max length of STATA string fields
     private $maxByte = 100; // max value of STATA byte var
     private $minByte = -127; // min value of STATA byte var
     private $maxInt = 32740; // max value of STATA int var
     private $minInt = -32767; // min value of STATA int var
-    
     
     /**
      * The open filehandle
@@ -33,11 +31,20 @@ class STATAxmlWriter extends Writer
     protected $headersSGQA = array();
     protected $aQIDnonumericalAnswers = array();
     
-    function __construct()
+    function __construct($pluginsettings)
     {
         $this->output          = '';
         $this->separator       = ',';
         $this->hasOutputHeader = false;
+        $this->statafileversion = $pluginsettings['statafileversion']['current'];
+        if ($this->statafileversion>=117)  // 117 is the version number of the .dta/xml format for stata version 13 
+        {
+            $this->maxStringLength = 2045; // for Stata version 13 and above
+        }
+        else
+        {
+            $this->maxStringLength = 244; // for older Stata versions
+        }    
     }
     
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
@@ -92,6 +99,16 @@ class STATAxmlWriter extends Writer
         //create fieldmap only with the columns (variables) selected
         $aFieldmap['questions'] = array_intersect_key($survey->fieldMap, array_flip($oOptions->selectedColumns));
         
+        //tokens need to be "smuggled" into the fieldmap as additional questions 
+        $aFieldmap['tokenFields'] = array_intersect_key($survey->tokenFields, array_flip($oOptions->selectedColumns));
+        foreach ($aFieldmap['tokenFields'] as $key=>$value)
+        {
+            $aFieldmap['questions'][$key] = $value;
+            $aFieldmap['questions'][$key]['qid'] = '';
+            $aFieldmap['questions'][$key]['question'] = $value['description'];
+            $aFieldmap['questions'][$key]['fieldname'] = $key;
+            $aFieldmap['questions'][$key]['type'] = 'S';
+        }
         // add only questions and answers to the fieldmap that are relevant to the selected columns (variables)
         foreach ($aFieldmap['questions'] as $question)
         {
@@ -118,7 +135,6 @@ class STATAxmlWriter extends Writer
                 }
             }
         }
-        
         
         // go through the questions array and create/modify vars for STATA-output
         foreach ($aFieldmap['questions'] as $sSGQAkey => $aQuestion)
@@ -471,8 +487,9 @@ class STATAxmlWriter extends Writer
             if (in_array('string', $responses, true))
             {
                 $max                           = max($strlenarray[$variable]); // get maximum string length per string variable
-                $typelist[$variable]['type']   = 'str' . $max = $max > 244 ? 244 : $max; // cap str[length] at str244
-                $typelist[$variable]['format'] = '%' . $max = $max > 244 ? 244 : $max . 's';
+                // cap str[length] at $maxStringLength
+                $typelist[$variable]['type']   = 'str' . $max = $max > $this->maxStringLength ? $this->maxStringLength : $max; 
+                $typelist[$variable]['format'] = '%' . $max = $max > $this->maxStringLength ? $this->maxStringLength : $max . 's';
             }
             elseif (in_array('double', $responses, true)) // only used for dates/times (milliseconds passed since 1960)
             {
@@ -531,7 +548,7 @@ class STATAxmlWriter extends Writer
         $xml->startDocument('1.0', 'US-ASCII');
         $xml->startElement('dta');
         $xml->startElement('header');
-        $xml->writeElement('ds_format', 113);
+        $xml->writeElement('ds_format', $this->statafileversion);
         $xml->writeElement('byteorder', 'LOHI');
         $xml->writeElement('filetype', 1);
         $xml->writeElement('nvar', count($this->customFieldmap['questions']));

@@ -645,15 +645,12 @@ function sendSubmitNotifications($surveyid)
 
     if (!empty($thissurvey['emailnotificationto']))
     {
-        $aRecipient=explode(";", $thissurvey['emailnotificationto']);
+        $aRecipient=explode(";", ReplaceFields($thissurvey['emailnotificationto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
+        foreach($aRecipient as $sRecipient)
         {
-            foreach($aRecipient as $sRecipient)
+            if(validateEmailAddress($sRecipient))
             {
-                $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
-                if(validateEmailAddress($sRecipient))
-                {
-                    $aEmailNotificationTo[]=$sRecipient;
-                }
+                $aEmailNotificationTo[]=$sRecipient;
             }
         }
     }
@@ -666,15 +663,12 @@ function sendSubmitNotifications($surveyid)
             unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
         }
         //Make an array of email addresses to send to
-        $aRecipient=explode(";", $thissurvey['emailresponseto']);
+        $aRecipient=explode(";", ReplaceFields($thissurvey['emailresponseto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
+        foreach($aRecipient as $sRecipient)
         {
-            foreach($aRecipient as $sRecipient)
+            if(validateEmailAddress($sRecipient))
             {
-                $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
-                if(validateEmailAddress($sRecipient))
-                {
-                    $aEmailResponseTo[]=$sRecipient;
-                }
+                $aEmailResponseTo[]=$sRecipient;
             }
         }
 

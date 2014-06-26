@@ -536,17 +536,6 @@ CREATE TABLE [prefix_users] (
 
 
 --
--- Table structure for table templates_rights
---
-CREATE TABLE [prefix_templates_rights] (
-[uid] int NOT NULL,
-[folder] varchar(255) NOT NULL,
-[use] int NOT NULL,
-PRIMARY KEY  ([uid],[folder])
-);
-
-
---
 -- Table structure for table templates
 --
 CREATE TABLE [prefix_templates] (

@@ -365,7 +365,7 @@ class UploaderController extends SurveyController {
                     <button id="button1" class="button upload-button" type="button" >'.$clang->gT("Select file").'</button>
                 </div>
 
-                <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each.",'js'),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
+                <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
                 <div class="uploadstatus" id="uploadstatus"></div>
 
                 <!-- The list of uploaded files -->

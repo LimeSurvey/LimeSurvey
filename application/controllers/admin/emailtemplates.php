@@ -103,7 +103,7 @@ class emailtemplates extends Survey_Common_Action {
                         foreach ($attachments as  $index => &$attachment)
                         {
                             // We again take the real path.
-                            $localName = realpath(str_replace($uploadUrl, $uploadDir, $attachment['url']));
+                            $localName = realpath(urldecode(str_replace($uploadUrl, $uploadDir, $attachment['url'])));
                             if ($localName !== false)
                             {
                                 if (strpos($localName, $uploadDir) === 0)

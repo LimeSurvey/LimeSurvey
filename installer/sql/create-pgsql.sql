@@ -542,18 +542,6 @@ CREATE TABLE prefix_users (
     "modified" timestamp
 );
 
-
---
--- Table structure for table templates_rights
---
-CREATE TABLE prefix_templates_rights (
-  "uid" integer NOT NULL,
-  "folder" character varying(255) NOT NULL,
-  "use" integer NOT NULL,
-  CONSTRAINT prefix_templates_rights_pkey PRIMARY KEY ("uid","folder")
-);
-
-
 --
 -- Table structure for table templates
 --

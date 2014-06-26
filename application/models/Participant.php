@@ -284,10 +284,9 @@ class Participant extends LSActiveRecord
         {
             if(!is_null($search) && strpos($search->condition,'attribute'.$aAttribute['attribute_id'])!==false)
             {
-               $attid[]=$aAttribute; 
+               $attid[$aAttribute['attribute_id']]=$aAttribute; 
             }
         }
-        $attid=array_unique($attid);
         // Add survey count subquery
         $subQuery = Yii::app()->db->createCommand()
                 ->select('count(*) survey')
@@ -295,17 +294,16 @@ class Participant extends LSActiveRecord
                 ->where('sl.participant_id = p.participant_id');
         $selectValue[] = sprintf('(%s) survey',$subQuery->getText());
         array_push($joinValue,"left join {{users}} luser ON luser.uid=p.owner_uid");
-        foreach($attid as $key=>$attid)
+        foreach($attid as $iAttributeID=>$aAttributeDetails)
         {
-            $attid = $attid['attribute_id'];
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv" || $sDatabaseType == 'dblib')
             {
-                $selectValue[]= "cast(attribute".$attid.".value as varchar(max)) as a".$attid;
+                $selectValue[]= "cast(attribute".$iAttributeID.".value as varchar(max)) as a".$iAttributeID;
             } else {
-                $selectValue[]= "attribute".$attid.".value as a".$attid;
+                $selectValue[]= "attribute".$iAttributeID.".value as a".$iAttributeID;
             }
-            array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$attid." ON attribute".$attid.".participant_id=p.participant_id AND attribute".$attid.".attribute_id=".$attid);
+            array_push($joinValue,"LEFT JOIN {{participant_attribute}} attribute".$iAttributeID." ON attribute".$iAttributeID.".participant_id=p.participant_id AND attribute".$iAttributeID.".attribute_id=".$iAttributeID);
         }
         
         $aConditions = array(); // this wil hold all conditions
@@ -332,6 +330,10 @@ class Participant extends LSActiveRecord
              $aConditions[] = $aSearch['condition'];
              $aParams = $aSearch['params'];
         }
+        if (Yii::app()->getConfig('hideblacklisted')=='Y')
+        {
+            $aConditions[]="blacklisted<>'Y'";
+        }
         $condition = ''; // This will be the final condition
         foreach ($aConditions as $idx => $newCondition) {
             if ($idx>0) { 
@@ -339,7 +341,7 @@ class Participant extends LSActiveRecord
             }
             $condition .= '(' . $newCondition . ')';
         }
-                
+
         if (!empty($condition)) {
             $data->setWhere($condition);
         }
@@ -918,6 +920,7 @@ class Participant extends LSActiveRecord
         Yii::app()->loadHelper('common');
         $duplicate = 0;
         $sucessfull = 0;
+        $iBlacklistSkipped = 0;
         $participantid = explode(",", $participantid); //List of participant ids to add to tokens table
         if ($participantid[0] == "") { $participantid = array_slice($participantid, 1); }
         $number2add = sanitize_int(count($newcreate)); //Number of tokens being created
@@ -962,7 +965,7 @@ class Participant extends LSActiveRecord
             foreach ($newcreate as $key => $value)
             {
                 $newfieldname='attribute_'.$value;
-                $fields[$newfieldname] = array('type' => 'STRING');
+                $fields[$newfieldname] = array('type' => 'string');
                 $attname = Yii::app()->db
                                      ->createCommand()
                                      ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
@@ -1013,6 +1016,8 @@ class Participant extends LSActiveRecord
             {
                 addColumn("{{tokens_$surveyid}}", $key, $value['type']);
             }
+            Yii::app()->db->schema->getTable("{{tokens_$surveyid}}", true); // Refresh schema cache just
+            
         }
 
         //Write each participant to the survey token table
@@ -1021,6 +1026,13 @@ class Participant extends LSActiveRecord
             $writearray = array();
             $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = :pid')->from('{{participants}}')->bindParam(":pid", $participant, PDO::PARAM_INT);
             $tobeinserted = $participantdata->queryRow();
+            
+            if (Yii::app()->getConfig('blockaddingtosurveys')=='Y' && $tobeinserted=='Y')
+            {
+                $iBlacklistSkipped++;
+                continue;
+            }
+            
             /* Search for matching participant name/email in the survey token table */
             $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
                     ->where('firstname = :firstname AND lastname = :lastname AND email = :email')
@@ -1119,7 +1131,7 @@ class Participant extends LSActiveRecord
                 $sucessfull++;
             }
         }
-        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
+        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'blacklistskipped'=>$iBlacklistSkipped, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
         return $returndata;
     }
 

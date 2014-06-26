@@ -4849,7 +4849,6 @@ function TSVImportSurvey($sFullFilePath)
     $surveyinfo['startdate']=NULL;
     $surveyinfo['active']='N';
    // unset($surveyinfo['datecreated']);
-    switchMSSQLIdentityInsert('surveys',true);
     $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) ; //or safeDie($clang->gT("Error").": Failed to insert survey<br />");
     if ($iNewSID==false)
     {
@@ -4859,7 +4858,6 @@ function TSVImportSurvey($sFullFilePath)
     }
     $surveyinfo['sid']=$iNewSID;
     $results['surveys']++;
-    switchMSSQLIdentityInsert('surveys',false);
     $results['newsid']=$iNewSID;
 
     $gid=0;

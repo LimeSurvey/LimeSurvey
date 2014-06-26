@@ -37,13 +37,13 @@
                 </li>
                 <li>
                     <label for='blockaddingtosurveys' id='blockaddingtosurveys'>
-                        <?php $clang->eT('Don\'t allow blacklisted participants to be added to new survey:'); ?>
+                        <?php $clang->eT('Allow blacklisted participants to be added to a survey:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('blockaddingtosurveys', $blockaddingtosurveys, $options); ?>
                 </li>
                 <li>
                     <label for='hideblacklisted' id='hideblacklisted'>
-                        <?php $clang->eT('Don\'t show blacklisted participants:'); ?>
+                        <?php $clang->eT('Hide blacklisted participants:'); ?>
                     </label>
                     <?php echo CHtml::dropDownList('hideblacklisted', $hideblacklisted, $options); ?>
                 </li>

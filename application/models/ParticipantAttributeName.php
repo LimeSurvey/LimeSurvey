@@ -181,7 +181,7 @@ class ParticipantAttributeName extends LSActiveRecord
                 $language=$langs[0]->lang;
                 $attribute_name=$langs[0]->attribute_name;
             }
-            $output[]=array("attribute_id"=>$id->attribute_id,
+            $output[$id->attribute_id]=array("attribute_id"=>$id->attribute_id,
                           "attribute_type"=>$id->attribute_type,
                           "visible"=>$id->visible,
                           "attribute_name"=>$attribute_name,
@@ -342,6 +342,11 @@ class ParticipantAttributeName extends LSActiveRecord
         $insertnames = array('attribute_type' => $data['attribute_type'],
             'defaultname'=> $data['defaultname'],
             'visible' => $data['visible']);
+        // Do not allow more than 60 attributes because queries will break because of too many joins
+        if (ParticipantAttributeName::model()->count()>59) 
+        {
+            return false;
+        };
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}',$insertnames);
         $attribute_id = getLastInsertID($this->tableName());
         $insertnameslang = array('attribute_id' => intval($attribute_id),
@@ -469,12 +474,13 @@ class ParticipantAttributeName extends LSActiveRecord
     function storeAttributeCSV($data)
     {
         $insertnames = array('attribute_type' => $data['attribute_type'],
+                            'defaultname' => $data['defaultname'],
                             'visible' => $data['visible']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
 
         $insertid = getLastInsertID($this->tableName());
         $insertnameslang = array('attribute_id' => $insertid,
-                                 'attribute_name'=>$data['attribute_name'],
+                                 'attribute_name'=>$data['defaultname'],
                                  'lang' => Yii::app()->session['adminlang']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $insertnameslang);
         return $insertid;

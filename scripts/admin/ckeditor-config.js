@@ -8,6 +8,7 @@ CKEDITOR.editorConfig = function( config )
     config.filebrowserUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=files';
     config.filebrowserImageUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=images';
     config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=flash';
+    config.removeDialogTabs = 'link:upload;image:Upload';    
 
     config.skin = 'ls-office2003';
     config.toolbarCanCollapse = false;

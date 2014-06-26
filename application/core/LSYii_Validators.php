@@ -108,6 +108,7 @@ class LSYii_Validators extends CValidator {
             'HTML.SafeObject'=>true, // To allow including youtube
             'Output.FlashCompat'=>true,
             'Attr.EnableID'=>true, // Allow to set id
+            'Attr.AllowedFrameTargets'=>array('_blank','_self'),             
             'URI.AllowedSchemes'=>array(
                 'http' => true,
                 'https' => true,
@@ -165,4 +166,5 @@ class LSYii_Validators extends CValidator {
         $aValue=array_map("sanitize_languagecode",$aValue);
         return implode(" ",$aValue);
     }
+        
 }
