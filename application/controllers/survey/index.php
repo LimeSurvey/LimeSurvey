@@ -499,25 +499,46 @@ class index extends CAction {
         if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
             // load previous answers if any (dataentry with nosubmit)
-            //$oSurveyTokenInstance=SurveyDynamic::model($surveyid)->find(array('select'=>'id,submitdate,lastpage', 'condition'=>'token=:token', 'order'=>'id DESC','params'=>array('token' => $token)));
-            $oSurveyTokenInstance=SurveyDynamic::model($surveyid)->find(array('condition'=>'token=:token', 'order'=>'id DESC','params'=>array('token' => $token)));
-            if ( $oSurveyTokenInstance )
+             $oResponses  = Response::model($surveyid)->findAllByAttributes(array(
+                'token' => $token
+            ), array('order' => 'id DESC'));
+            if (!empty($oResponses))
             {
-                if((empty($oSurveyTokenInstance->submitdate) || $thissurvey['alloweditaftercompletion'] == 'Y' ) && $thissurvey['tokenanswerspersistence'] == 'Y')
+                /**
+                 * We fire the response selection event when at least 1 response was found.
+                 * If there is just 1 response the plugin still has to option to choose
+                 * NOT to use it.
+                 */
+                $event = new PluginEvent('beforeLoadResponse');
+                $event->set('responses', $oResponses);
+                App()->pluginManager->dispatchEvent($event);
+
+                $oResponse = $event->get('response');
+                // If $oResponse is false we act as if no response was found.
+                // This allows a plugin to deny continuing a response.
+                if ($oResponse !== false)
                 {
-                    $_SESSION['survey_'.$surveyid]['srid'] = $oSurveyTokenInstance->id;
-                    if (!empty($oSurveyTokenInstance->lastpage))
+                    // If plugin does not set a response we use the first one found, (this replicates pre-plugin behavior)
+                    if (!isset($oResponse) && (!isset($oResponses[0]->submitdate) || $thissurvey['alloweditaftercompletion'] == 'Y') && $thissurvey['tokenanswerspersistence'] == 'Y')
                     {
-                        $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
-                        $_SESSION['survey_'.$surveyid]['step'] = $oSurveyTokenInstance->lastpage;
+                        $oResponse = $oResponses[0];
+                    }
+                    if (isset($oResponse))
+                    {
+                        $_SESSION['survey_'.$surveyid]['srid'] = $oResponse->id;
+                        if (!empty($oResponse->lastpage))
+                        {
+                            $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
+                            $_SESSION['survey_'.$surveyid]['step'] = $oResponse->lastpage;
+                        }
+                        buildsurveysession($surveyid);
+                        if(!empty($oResponse->submitdate)) // alloweditaftercompletion
+                        {
+                            $_SESSION['survey_'.$surveyid]['maxstep'] = $_SESSION['survey_'.$surveyid]['totalsteps'];
+                        }
+                        loadanswers();
                     }
                 }
-                buildsurveysession($surveyid);
-                if(!empty($oSurveyTokenInstance->submitdate)) // alloweditaftercompletion
-                {
-                    $_SESSION['survey_'.$surveyid]['maxstep'] = $_SESSION['survey_'.$surveyid]['totalsteps'];
-                }
-                loadanswers();
             }
         }
         // Preview action : Preview right already tested before
