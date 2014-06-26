@@ -311,6 +311,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "T":  //LONG TEXT
             case ";":  //Multi Flexi
             case ":":  //Multi Flexi
+            case "(":  //Audio recording
                 $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "D":  //DATE
