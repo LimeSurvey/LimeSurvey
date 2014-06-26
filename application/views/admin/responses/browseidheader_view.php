@@ -25,7 +25,7 @@
                     { ?>
                     <img src='<?php echo $sImageURL; ?>delete_disabled.png' alt='<?php $clang->eT("You don't have permission to delete this entry."); ?>'/>
                     <?php }
-                    if (hasFileUploadQuestion($surveyid))
+                    if (hasFileUploadQuestion($surveyid) || hasAudioRecordingQuestion($surveyid))
                     { ?>
                     <a href='#' title='<?php $clang->eT("Download files for this entry"); ?>' >
                         <img id='downloadfile_<?php echo $id;?>' src='<?php echo $sImageURL; ?>download.png' alt='<?php $clang->eT("Download files for this entry"); ?>' class='downloadfile'></a>

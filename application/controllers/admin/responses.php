@@ -131,7 +131,7 @@ class responses extends Survey_Common_Action
 
                 if ($field['type'] == "(")
                 {
-                    $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field),'code'=>viewHelper::getFieldCode($field,array('LEMcompat'=>true)), 'type' => '|', 'metadata' => 'name', 'index' => $i);
+                    $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field),'code'=>viewHelper::getFieldCode($field), 'type' => '(', 'metadata' => 'name', 'index' => 0);
                 }
                 else if ($field['type'] != "|")
                 {
@@ -232,7 +232,7 @@ class responses extends Survey_Common_Action
                         }
                         else
                         {
-                            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|")
+                            if (isset($fnames[$i]['type']) && in_array($fnames[$i]['type'], array("|", "(")))
                             {
                                 $index = $fnames[$i]['index'];
                                 $metadata = $fnames[$i]['metadata'];
