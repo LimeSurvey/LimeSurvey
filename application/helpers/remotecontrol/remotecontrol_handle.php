@@ -2451,7 +2451,7 @@ class remotecontrol_handle
                             }
                         }
                         // delete the row
-                        SurveyDynamic::model($iSurveyID)->deleteAllByAttributes($aAttributeFields);
+                        SurveyDynamic::model($iSurveyID)->deleteAllByAttributes($aAttributeData);
                         return array('iSurveyID'=>$iSurveyID);
                     }else{
                         return array('status' => 'No responses for this token');
