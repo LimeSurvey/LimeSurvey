@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-06-21 15:29:41+00:00\n"
+"POT-Creation-Date: 2014-06-29 23:06:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -804,8 +804,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:6094
 #: application/helpers/qanda_helper.php:6128
 #: application/helpers/qanda_helper.php:6139
-#: application/helpers/qanda_helper.php:6294
-#: application/helpers/qanda_helper.php:6342
+#: application/helpers/qanda_helper.php:6297
+#: application/helpers/qanda_helper.php:6333
 #: application/views/admin/dataentry/content_view.php:29
 msgid "No answer"
 msgstr ""
@@ -3296,6 +3296,10 @@ msgstr ""
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr ""
 
+#: application/controllers/admin/tokens.php:1561
+msgid "All emails were sent."
+msgstr ""
+
 #: application/controllers/admin/tokens.php:1570
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr ""
@@ -3469,8 +3473,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1567
 #: application/helpers/qanda_helper.php:2156
 #: application/helpers/qanda_helper.php:4847
-#: application/helpers/qanda_helper.php:6298
-#: application/helpers/qanda_helper.php:6346
+#: application/helpers/qanda_helper.php:6284
+#: application/helpers/qanda_helper.php:6320
 #: application/views/admin/dataentry/content_view.php:84
 #: application/views/admin/dataentry/content_view.php:94
 #: application/views/admin/labels/labelsetsbar_view.php:22
@@ -4175,7 +4179,7 @@ msgstr ""
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:551
+#: application/controllers/survey/index.php:572
 msgid "Your responses were successfully saved."
 msgstr ""
 
@@ -8098,7 +8102,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:5275
 #: application/helpers/qanda_helper.php:5640
 #: application/helpers/qanda_helper.php:5793
-#: application/helpers/qanda_helper.php:6376
+#: application/helpers/qanda_helper.php:6351
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
