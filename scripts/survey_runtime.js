@@ -259,6 +259,7 @@ function activateLanguageChanger(){
                 }).appendTo(document.body).submit();
             }
         }else{
+            $("form#limesurvey [name='lang']").not($(this)).remove();// Remove other lang
             $('#changelangbtn').click();
         }
     });

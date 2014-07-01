@@ -1836,7 +1836,8 @@ function upgradeTables143()
     modifyDatabase("",$updatequery); echo $modifyoutput; flush();@ob_flush();
 
     // Now move all non-standard templates to the /upload dir
-    global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;
+    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
 
     if (!$usertemplaterootdir) {die("getTemplateList() no template directory");}
     if ($handle = opendir($standardtemplaterootdir))

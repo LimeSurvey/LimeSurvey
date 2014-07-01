@@ -146,7 +146,10 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
         setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string($_POST['defaultquestionselectormode']));
         setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string($_POST['defaulttemplateeditormode']));
-        setGlobalSetting('defaulttemplate', sanitize_paranoid_string($_POST['defaulttemplate']));
+        if (!Yii::app()->getConfig('demoMode'))
+        {
+            setGlobalSetting('defaulttemplate', sanitize_paranoid_string($_POST['defaulttemplate']));
+        }
         setGlobalSetting('admintheme', sanitize_paranoid_string($_POST['admintheme']));
         setGlobalSetting('adminthemeiconsize', trim(file_get_contents(Yii::app()->getConfig("styledir").DIRECTORY_SEPARATOR.sanitize_paranoid_string($_POST['admintheme']).DIRECTORY_SEPARATOR.'iconsize')));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));

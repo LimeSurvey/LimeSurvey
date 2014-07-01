@@ -23,6 +23,17 @@ if (!defined('BASEPATH'))
 */
 class templates extends Survey_Common_Action
 {
+    
+    public function runWithParams($params)
+    {
+        if (!Permission::model()->hasGlobalPermission('templates','read'))
+        {
+            die('No permission');
+        }
+        parent::runWithParams($params);
+    }
+
+    
 
     /**
     * Exports a template
@@ -33,7 +44,10 @@ class templates extends Survey_Common_Action
     */
     public function templatezip($templatename)
     {
-
+        if (!Permission::model()->hasGlobalPermission('templates','export'))
+        {
+            die('No permission');
+        }
         $templatedir = getTemplatePath($templatename) . DIRECTORY_SEPARATOR;
         $tempdir = Yii::app()->getConfig('tempdir');
 
@@ -81,6 +95,10 @@ class templates extends Survey_Common_Action
     */
     public function upload()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','import'))
+        {
+            die('No permission');
+        }
         $clang = $this->getController()->lang;
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
@@ -95,7 +113,7 @@ class templates extends Survey_Common_Action
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
         
             // Create temporary directory so that if dangerous content is unzipped it would be unaccessible
-            $sNewDirectoryName=str_replace('.', '', self::_strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
+            $sNewDirectoryName=sanitize_dirname($_FILES['the_file']['name']);
             $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
             if (!is_writeable(dirname($destdir)))
@@ -218,6 +236,11 @@ class templates extends Survey_Common_Action
     */
     public function uploadfile()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','import'))
+        {
+            die('No permission');
+        }
+        
         $clang = $this->getController()->lang;
         $action = returnGlobal('action');
         $editfile = returnGlobal('editfile');
@@ -380,6 +403,10 @@ class templates extends Survey_Common_Action
     */
     public function templatefiledelete()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         $clang = $this->getController()->lang;
         if (returnGlobal('action') == "templatefiledelete") {
             // This is where the temp file is
@@ -406,10 +433,14 @@ class templates extends Survey_Common_Action
     */
     public function templaterename()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
             $clang = Yii::app()->lang;
-            $sOldName = sanitize_paranoid_string(returnGlobal('copydir'));
-            $sNewName = sanitize_paranoid_string(returnGlobal('newname'));
+            $sOldName = sanitize_dirname(returnGlobal('copydir'));
+            $sNewName = sanitize_dirname(returnGlobal('newname'));
             $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
             $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
             if (isStandardTemplate(returnGlobal('newname')))
@@ -438,9 +469,13 @@ class templates extends Survey_Common_Action
     */
     public function templatecopy()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','create'))
+        {
+            die('No permission');
+        }
         $clang = $this->getController()->lang;
-        $newname=sanitize_paranoid_string(Yii::app()->request->getPost("newname"));
-        $copydir=sanitize_paranoid_string(Yii::app()->request->getPost("copydir"));
+        $newname=sanitize_dirname(Yii::app()->request->getPost("newname"));
+        $copydir=sanitize_dirname(Yii::app()->request->getPost("copydir"));
         $action=Yii::app()->request->getPost("action");
         if ($newname && $copydir) {
             // Copies all the files from one template directory to a new one
@@ -481,6 +516,10 @@ class templates extends Survey_Common_Action
     */
     public function delete($templatename)
     {
+        if (!Permission::model()->hasGlobalPermission('templates','delete'))
+        {
+            die('No permission');
+        }
         Yii::app()->loadHelper("admin/template");
         if (is_template_editable($templatename) == true) {
             $clang = $this->getController()->lang;
@@ -514,6 +553,10 @@ class templates extends Survey_Common_Action
     */
     public function templatesavechanges()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         if (returnGlobal('changes')) {
             $changedtext = returnGlobal('changes');
             $changedtext = str_replace('<?', '', $changedtext);
@@ -832,7 +875,7 @@ class templates extends Survey_Common_Action
         $file_version = "LimeSurvey template editor " . Yii::app()->getConfig('versionnumber');
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
-        $templatename = sanitize_paranoid_string($templatename);
+        $templatename = sanitize_dirname($templatename);
         $screenname = autoUnescape($screenname);
 
         // Checks if screen name is in the list of allowed screen names
@@ -846,10 +889,10 @@ class templates extends Survey_Common_Action
             $subaction = sanitize_paranoid_string(returnGlobal('subaction'));
 
         if (!isset($newname))
-            $newname = sanitize_paranoid_string(returnGlobal('newname'));
+            $newname = sanitize_dirname(returnGlobal('newname'));
 
         if (!isset($copydir))
-            $copydir = sanitize_paranoid_string(returnGlobal('copydir'));
+            $copydir = sanitize_dirname(returnGlobal('copydir'));
 
         if (is_file(Yii::app()->getConfig('usertemplaterootdir') . '/' . $templatename . '/question_start.pstpl')) {
             $files[] = array('name' => 'question_start.pstpl');

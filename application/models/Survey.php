@@ -356,7 +356,6 @@ class Survey extends LSActiveRecord
     * Creates a new survey - does some basic checks of the suppplied data
     *
     * @param array $aData Array with fieldname=>fieldcontents data
-    * @param boolean $xssfiltering Sets if the data for the new survey should be filtered for XSS
     * @return integer The new survey id
     */
     public function insertNewSurvey($aData)

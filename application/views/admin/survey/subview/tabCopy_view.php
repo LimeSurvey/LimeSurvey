@@ -7,6 +7,10 @@
             <li><label for='copysurveyname'><?php echo $clang->gT("New survey title:"); ?> </label>
                 <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' required="required" />
                 <span class='annotation'><?php echo $clang->gT("Required"); ?> </span></li>
+            <li><label for='copysurveyid'><?php echo $clang->gT("New survey id:"); ?> </label>
+                <input type='text' id='copysurveyid' size='82' maxlength='6' name='copysurveyid' value=''/>
+                <span class='annotation'><?php echo $clang->gT("Optional"); ?> </span></li>
+
             <li><label for='copysurveytranslinksfields'><?php echo $clang->gT("Convert resource links and INSERTANS fields?"); ?> </label>
                 <input id='copysurveytranslinksfields' name="copysurveytranslinksfields" type="checkbox" checked='checked'/></li>
             <li><label for='copysurveyexcludequotas'><?php $clang->eT("Exclude quotas?"); ?></label>

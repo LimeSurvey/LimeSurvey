@@ -17,7 +17,7 @@ class RDataWriter extends CsvWriter {
         // Change filename
         $this->csvFilename = 'survey_' . $survey->id .'_R_data_file.csv';
         // Skip the first line with headers
-        $this->doHeaders = false;
+        $this->doHeaders = true;
 
         $oOptions->answerFormat = "short";      // force answer codes
         

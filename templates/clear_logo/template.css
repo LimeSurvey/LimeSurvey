@@ -659,6 +659,10 @@ p.question {
   *display:inline;
   width: 85%;
 }
+.list-radio .answer ul.colstyle-css li label, .list-radio .answer ul.colstyle-ul li label, .list-radio .answer table.colstyle-table li label, 
+.list-with-comment .answer ul.colstyle-css li label, .list-with-comment .answer ul.colstyle-ul li label, .list-with-comment .answer table.colstyle-table li label {
+    display: inline;
+}
 .list-radio .answer li.other-item label,
 .list-with-comment .answer li.other-item label {
   width: auto;
@@ -767,6 +771,10 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   display: inline-block;
   *display:inline;
   width: 90%;
+}
+.multiple-opt .answer ul.colstyle-css li label, .multiple-opt .answer ul.colstyle-ul li label, .multiple-opt .answer table.colstyle-table li label,
+.multiple-opt-comments .answer ul.colstyle-css li label, .multiple-opt-comments .answer ul.colstyle-ul li label, .multiple-opt-comments .answer table.colstyle-table li label {
+    display: inline;
 }
 .multiple-opt .answer li.other-item label {
   width: auto;

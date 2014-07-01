@@ -83,7 +83,7 @@ class Save {
         //END
         echo "<input type='hidden' name='sid' value='$surveyid' />\n";
         echo "<input type='hidden' name='thisstep' value='$thisstep' />\n";
-        echo "<input type='hidden' name='token' value='$clienttoken' />\n";
+        echo CHtml::hiddenField('token',$clienttoken)."\n";
         echo "<input type='hidden' name='saveprompt' value='Y' />\n";
         echo "</form>";
 
@@ -201,7 +201,7 @@ class Save {
                 $message .= $clang->gT("Password").": ".$_POST['savepass']."\n\n";
                 $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($_POST['savename'])."/loadpass/".rawurlencode ($_POST['savepass'])."/lang/".rawurlencode ($clang->langcode));
-                if ($clienttoken) $message .= "/token/{$clienttoken}";
+                if ($clienttoken) $message .= "/token/".rawurlencode($clienttoken);
 
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
                 if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))

@@ -208,11 +208,11 @@ class Permission extends LSActiveRecord
         // Only the original superadmin may change the superadmin permissions
         if (Yii::app()->session['loginID']!=1)
         {
-            Permission::model()->deleteAllByAttributes($condition,"permission <> 'superadmin'");
+            Permission::model()->deleteAllByAttributes($condition,"permission <> 'superadmin' AND entity <> 'template'");
         }
         else
         {
-            Permission::model()->deleteAllByAttributes($condition);
+            Permission::model()->deleteAllByAttributes($condition,"entity <> 'template'");
         }
 
         foreach ($aFilteredPermissions as $sPermissionname=>$aPermission)
