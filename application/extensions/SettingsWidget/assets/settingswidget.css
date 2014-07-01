@@ -8,8 +8,7 @@ div.row {
 }
 
 .settingswidget input[type^='button'], .settingswidget label{
-    height: 30px;
-    line-height: 30px;
+    line-height: normal;
     margin-top: 0px;
 }
 
@@ -69,6 +68,7 @@ div.row {
     padding-right: 10px;
     width: 40%;
     display: inline-block;
+    vertical-align: top;
 }
 .settingswidget .setting > label:after{
     content: ':';
