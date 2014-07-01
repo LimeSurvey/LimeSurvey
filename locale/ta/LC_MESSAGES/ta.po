@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the LimeSurvey 2.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2014-01-07 07:23:43+0000\n"
+"PO-Revision-Date: 2014-07-01 04:48:23+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,60 +15,92 @@ msgstr ""
 "X-Poedit-Language: Tamil\n"
 "Project-Id-Version: LimeSurvey 2.x\n"
 
-#: application/helpers/expressions/em_manager_helper.php:2940
+#: application/controllers/admin/tokens.php:1561
+msgid "All emails were sent."
+msgstr "அனைத்து மின்னஞ்சல்கள் அனுப்பப்பட்டன."
+
+#: application/helpers/expressions/em_manager_helper.php:3222
+msgid "Only integer values may be entered in these fields."
+msgstr "முழு மதிப்புகள் மட்டுமே இந்த துறைகளில் உள்ளிட வேண்டும்."
+
+#: application/helpers/expressions/em_manager_helper.php:3218
+msgid "Only an integer value may be entered in this field."
+msgstr "ஒரே ஒரு முழு எண் மதிப்பை இந்த துறையில் உள்ளிட வேண்டும்."
+
+#: application/core/LSYii_EmailIDNAValidator.php:41
+msgid "Invalid email address."
+msgstr "செல்லாத மின்னஞ்சல் முகவரி."
+
+#: application/controllers/admin/useraction.php:591
+msgid "Error while updating template permissions."
+msgstr "பிழை வார்ப்புரு அனுமதிகள் மேம்படுத்தும் போது."
+
+#: application/views/admin/participants/importCSV_view.php:72
+msgid "Mandatory field:"
+msgstr "தேவையான புலம்:"
+
+#: application/views/installer/precheck_view.php:67
+msgid "Unlimited"
+msgstr "எண்ணற்ற"
+
+#: application/controllers/survey/index.php:308
+msgid "You did not answer to the security question."
+msgstr "நீங்கள் பாதுகாப்பு கேள்விக்கு பதிலளிக்கவில்லை."
+
+#: application/views/admin/labels/labelview_view.php:4
+msgid "Quick-add subquestion or answer items"
+msgstr "விரைவு சேர்க்க துணை கேள்வி பதில் உருப்படிகளை"
+
+#: application/helpers/expressions/em_manager_helper.php:3111
 msgid "Please fill in at least %s answers"
 msgstr "தயவு செய்து குறைந்தது %s பதில்களை நிரப்ப"
 
-#: application/helpers/expressions/em_manager_helper.php:2941
+#: application/helpers/expressions/em_manager_helper.php:3112
 msgid "Please fill in at least one answer"
 msgstr "குறைந்தபட்சம் ஒரு பதிலை பூர்த்தி செய்து"
 
-#: application/helpers/expressions/em_manager_helper.php:2942
+#: application/helpers/expressions/em_manager_helper.php:3113
 msgid "Please fill in at most %s answers"
 msgstr "தயவு செய்து %s அதிக பதில்களை நிரப்ப"
 
-#: application/helpers/expressions/em_manager_helper.php:2943
-#: application/helpers/expressions/em_manager_helper.php:2944
+#: application/helpers/expressions/em_manager_helper.php:3114
+#: application/helpers/expressions/em_manager_helper.php:3115
 msgid "Please fill in at most one answer"
 msgstr "அதிக ஒரு பதில் நிரப்பவும்"
 
-#: application/helpers/expressions/em_manager_helper.php:2946
+#: application/helpers/expressions/em_manager_helper.php:3117
 msgid "Please fill in between %s and %s answers"
 msgstr "%s மற்றும் %s பதில்களை இடையே நிரப்பவும்"
 
-#: application/helpers/expressions/em_manager_helper.php:2945
+#: application/helpers/expressions/em_manager_helper.php:3116
 msgid "Please fill in %s answers"
 msgstr "%s பதில்கள் பூர்த்தி செய்து"
 
-#: application/controllers/admin/participantsaction.php:163
+#: application/controllers/admin/participantsaction.php:164
 msgid "Export %s participant to CSV"
 msgid_plural "Export %s participants to CSV"
 msgstr[0] "%s பங்கு பெற்றவர் CSV ஏற்றுமதி"
 msgstr[1] "%s பங்கேற்பாளர்கள் CSV ஏற்றுமதி"
 
-#: application/views/admin/participants/attributeControl_view.php:25
-msgid "Attribute name (translation)"
-msgstr "பெயர் பண்பு (மொழிபெயர்ப்பு)"
-
 #: application/views/admin/participants/viewAttribute_view.php:17
 msgid "Default attribute name:"
 msgstr "இயல்புநிலை பண்பு பெயர்:"
 
-#: application/views/admin/participants/participantsPanel_view.php:107
+#: application/views/admin/participants/participantsPanel_view.php:111
 msgid "There are no participants to be exported."
 msgstr "ஏற்றுமதி செய்யப்படும் பங்கேற்பாளர்கள் இல்லை."
 
-#: application/views/admin/participants/participantsPanel_view.php:32
-#: application/views/admin/participants/participantsPanel_view.php:33
+#: application/views/admin/participants/participantsPanel_view.php:36
+#: application/views/admin/participants/participantsPanel_view.php:37
 msgid "Export to CSV file"
 msgstr "CSV கோப்பாக ஏற்றுமதி"
 
-#: application/views/admin/participants/participantsPanel_view.php:26
-#: application/views/admin/participants/participantsPanel_view.php:27
+#: application/views/admin/participants/participantsPanel_view.php:30
+#: application/views/admin/participants/participantsPanel_view.php:31
 msgid "Import from CSV file"
 msgstr "CSV கோப்பு இறக்குமதி"
 
-#: application/views/admin/participants/displayParticipants_view.php:118
+#: application/views/admin/participants/displayParticipants_view.php:121
 msgid "Export (filtered) participants to CSV"
 msgstr "CSV ஏற்றுமதி (வடிகட்டப்பட்ட) பங்கேற்பாளர்கள்"
 
@@ -76,11 +108,11 @@ msgstr "CSV ஏற்றுமதி (வடிகட்டப்பட்ட) �
 msgid "The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts."
 msgstr "எழுத்துருக்கள் %s <limesurvey root folder> / fonts அடைவு காணவில்லை தாக்கல். , வரைபடங்கள் உருவாக்க எழுத்துருக்கள் அடைவு உங்கள் மொழியில் txt கோப்பு பார்க்கவும்."
 
-#: application/helpers/expressions/em_manager_helper.php:8976
+#: application/helpers/expressions/em_manager_helper.php:9207
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr "2.05 இல் தொடங்கி, வேரியபில்களின் பெயரையும் மட்டுமே எழுத்துக்கள் மற்றும் எண்கள் கொண்டிருக்க வேண்டும்; மற்றும் பல தொடங்க முடியாது. இந்த வேரியபில் பெயரை நீக்கப்பட்டது."
 
-#: application/helpers/surveytranslator_helper.php:636
+#: application/helpers/surveytranslator_helper.php:650
 msgid "Zulu"
 msgstr "ஜுலூ"
 
@@ -88,39 +120,39 @@ msgstr "ஜுலூ"
 msgid "Database creation"
 msgstr "டேட்டாபேஸ் உருவாக்கம்"
 
-#: application/helpers/admin/import_helper.php:4305
+#: application/helpers/admin/import_helper.php:4440
 msgid "File seems empty or has only one line"
 msgstr "கோப்பு காலியாக இருக்கிறது அல்லது ஒரே ஒரு வரி உள்ளது"
 
-#: application/helpers/admin/import_helper.php:4365
+#: application/helpers/admin/import_helper.php:4500
 msgid "Import failed: No answers could be mapped."
 msgstr "இறக்குமதி தோல்வி: ஒப்பிடப்படுகிறது பதில் இல்லை"
 
-#: application/helpers/admin/import_helper.php:4353
+#: application/helpers/admin/import_helper.php:4488
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr "இறக்குமதி தோல்வி: கட்டாயம் இறக்குமதி கோரிய ஆனால் உள்ளீடு கோப்பு ஆய்வு நிரப்ப போதுமான பத்திகள் இல்லை."
 
-#: application/helpers/admin/import_helper.php:4480
+#: application/helpers/admin/import_helper.php:4633
 msgid "%s response lines in your file."
 msgstr "உங்கள் கோப்பில் %s பதில் வரிகள்."
 
-#: application/helpers/admin/import_helper.php:4482
+#: application/helpers/admin/import_helper.php:4635
 msgid "No response lines in your file."
 msgstr "உங்கள் கோப்பில் பதில் வரிகள் இல்லை."
 
-#: application/helpers/admin/import_helper.php:4485
+#: application/helpers/admin/import_helper.php:4638
 msgid "%s responses were inserted."
 msgstr "%s பதில்களை சேர்க்கப்பட்டது."
 
-#: application/helpers/admin/import_helper.php:4489
+#: application/helpers/admin/import_helper.php:4642
 msgid "%s responses were updated."
 msgstr "%s பதில்களை புதுப்பிக்கப்பட்டது."
 
-#: application/helpers/admin/import_helper.php:4492
+#: application/helpers/admin/import_helper.php:4645
 msgid "%s responses cannot be inserted or updated."
 msgstr "%s பதில்களை சேர்க்கப்பட அல்லது புதுப்பிக்கப்பட முடியாது"
 
-#: application/helpers/admin/import_helper.php:4973
+#: application/helpers/admin/import_helper.php:5123
 msgid "Could not insert subquestion"
 msgstr "துணை கேள்வி செருக முடியவில்லை"
 
@@ -132,11 +164,11 @@ msgstr "இந்த கேள்விக்குழு முன்பார�
 msgid "User ID"
 msgstr "பயனர் ஐடி"
 
-#: application/views/admin/token/managetokenattributes.php:87
+#: application/views/admin/token/managetokenattributes.php:95
 msgid "Add or delete token attributes"
 msgstr "டோக்கன் பண்புகளை சேர்க்க அல்லது நீக்க"
 
-#: application/views/admin/token/managetokenattributes.php:104
+#: application/views/admin/token/managetokenattributes.php:112
 msgid "Delete this attribute:"
 msgstr "இந்த பண்பு நீக்கு:"
 
@@ -153,7 +185,7 @@ msgstr "புதிய துணை கேள்வி"
 msgid "Condition"
 msgstr "நிபந்தனை"
 
-#: application/views/admin/survey/subview/tabCopy_view.php:20
+#: application/views/admin/survey/subview/tabCopy_view.php:24
 msgid "Reset start/end date/time?"
 msgstr "துவக்கம் / முடிவு நாள் / நேரம் மீட்டமை?"
 
@@ -161,11 +193,11 @@ msgstr "துவக்கம் / முடிவு நாள் / நேர�
 msgid "Incremental"
 msgstr "கூடும் முறை"
 
-#: application/views/admin/token/browse.php:145
+#: application/views/admin/token/browse.php:148
 msgid "Filter by"
 msgstr "மூலம் வடிகட்டி"
 
-#: application/views/admin/token/managetokenattributes.php:105
+#: application/views/admin/token/managetokenattributes.php:113
 msgid "none"
 msgstr "எதுவும் இல்லை"
 
@@ -185,16 +217,17 @@ msgstr "குறைந்தபட்ச நினைவகம் கிடை�
 msgid "Too low"
 msgstr "மிக குறைந்த"
 
-#: application/views/plugins/configure.php:4
+#: application/views/admin/survey/subview/tab_view.php:29
 #: application/views/plugins/index.php:1
 msgid "Plugins"
 msgstr "செருகுநிரல்கள்"
 
-#: application/views/plugins/configure.php:12
+#: application/views/admin/survey/subview/tabPluginSettings_view.php:10
+#: application/views/plugins/configure.php:5
 msgid "Settings for plugin %s"
 msgstr "%s சொருகி அமைப்புகள்"
 
-#: application/views/plugins/configure.php:22
+#: application/views/plugins/configure.php:11
 msgid "Save plugin settings"
 msgstr "சொருகி அமைப்புகள் காப்பாற்ற"
 
@@ -218,33 +251,33 @@ msgstr "விளக்கம்"
 msgid "Configure"
 msgstr "கட்டமைக்கவும்"
 
-#: application/helpers/common_helper.php:3199
+#: application/helpers/common_helper.php:2752
 msgid "Choose when user can add a comment"
 msgstr "பயனர் ஒரு கருத்துரை சேர்க்க முடியும் போது தேர்வு"
 
-#: application/views/admin/dataentry/import.php:20
+#: application/views/admin/dataentry/import.php:13
 msgid "Import responses"
 msgstr "பதில்களை இறக்குமதி"
 
-#: application/helpers/expressions/em_manager_helper.php:2904
+#: application/helpers/expressions/em_manager_helper.php:3075
 msgid "Comment only when you don't choose an answer."
 msgstr "நீங்கள் ஒரு பதில் தேர்வு செய்யாமல் மட்டுமே போது கருத்துரை."
 
-#: application/helpers/expressions/em_manager_helper.php:2901
+#: application/helpers/expressions/em_manager_helper.php:3072
 msgid "Comment only when you choose an answer."
 msgstr "நீங்கள் ஒரு பதில் தேர்ந்தெடுக்கவும் மட்டுமே கருத்துரை."
 
-#: application/views/admin/dataentry/import.php:36
+#: application/views/admin/dataentry/import.php:33
 msgid "Question is removed from target (result is ignored)."
 msgstr "கேள்வி இலக்கு (விளைவாக புறக்கணிக்கப்படுகிறது) இருந்து நீக்கப்பட்டது."
 
-#: application/helpers/expressions/em_manager_helper.php:2890
+#: application/helpers/expressions/em_manager_helper.php:3056
 msgid "All your answers must be different."
 msgstr "உங்கள் பதில்களை வேறு வேறு இருக்க வேண்டும்."
 
-#: application/helpers/expressions/em_manager_helper.php:2887
-#: application/helpers/expressions/em_manager_helper.php:2924
-#: application/helpers/expressions/em_manager_helper.php:3052
+#: application/helpers/expressions/em_manager_helper.php:3053
+#: application/helpers/expressions/em_manager_helper.php:3095
+#: application/helpers/expressions/em_manager_helper.php:3239
 msgid "Only numbers may be entered in these fields."
 msgstr "இந்த துறைகள் எண்கள் மட்டுமே உள்ளிட."
 
@@ -252,11 +285,24 @@ msgstr "இந்த துறைகள் எண்கள் மட்டும
 msgid "Only answer the following question if:"
 msgstr "பின்வரும் கேள்விக்கு பதில் என்றால் மட்டுமே:"
 
-#: application/helpers/qanda_helper.php:994
+#: application/helpers/qanda_helper.php:973
 msgid "Date entered is invalid!"
 msgstr "உள்ளிட்ட தேதி தவறானது!"
 
-#: application/controllers/admin/templates.php:418
+#: application/views/admin/limeReplacementFields_view.php:70
+msgid "Previous answer fields"
+msgstr "முந்தைய பதில் துறைகள்"
+
+#: application/views/admin/export/exportresults_view.php:3
+msgid "The number of selected columns was reduced automatically."
+msgstr "தேர்வு பத்திகள் எண்ணிக்கை தானாகவே குறைக்கப்பட்டது."
+
+#: application/views/admin/export/spss_view.php:25
+#: application/views/admin/survey/subview/tabCopy_view.php:12
+msgid "Optional"
+msgstr "கட்டாயமில்லை"
+
+#: application/controllers/admin/templates.php:449
 msgid "A template with that name already exists."
 msgstr "அந்த பெயரில் ஏற்கனவே ஒரு டெம்ப்ளேட் உள்ளது."
 
@@ -264,7 +310,7 @@ msgstr "அந்த பெயரில் ஏற்கனவே ஒரு ட�
 msgid "Creating database backup..."
 msgstr "தரவுத்தள காப்பு உருவாக்கப்படுகிறது ..."
 
-#: application/controllers/admin/update.php:292
+#: application/controllers/admin/update.php:309
 msgid "DB backup created: %s"
 msgstr "தரவுத்தள காப்பு உருவாக்கப்பட்ட நாள் : %s"
 
@@ -300,33 +346,33 @@ msgstr "தாரி"
 msgid "Armenian"
 msgstr "ஆர்மீனியன்"
 
-#: application/views/admin/globalSettings_view.php:214
+#: application/views/admin/globalSettings_view.php:216
 msgid "Corrected time:"
 msgstr "சரிசெய்யப்பட்ட  நேரம்:"
 
-#: application/helpers/common_helper.php:3795
+#: application/helpers/common_helper.php:3348
 msgid "Random order"
 msgstr "சீரற்ற வரிசை"
 
-#: application/helpers/common_helper.php:3794
+#: application/helpers/common_helper.php:3347
 msgid "Present subquestions/answer options in random order"
 msgstr "தற்போதுள்ள உப கேள்வி/பதில் விருப்பங்களை சீரற்ற வரிசையில் காட்டவும்"
 
-#: application/controllers/admin/globalsettings.php:180
+#: application/controllers/admin/globalsettings.php:183
 msgid "Warning! Admin email was not saved because it was not valid."
 msgstr "எச்சரிக்கை! தவறான மின்னஜல் என்பதால் நிர்வாக மின்னஞ்சலை சேமிக்க முடியாது"
 
-#: application/controllers/admin/globalsettings.php:174
+#: application/controllers/admin/globalsettings.php:177
 msgid "Warning! Admin bounce email was not saved because it was not valid."
 msgstr "எச்சரிக்கை! செல்லாத நிர்வாகம் பவுன்ஸ் மின்னஞ்சல்  என்பதால் அது சேமிக்கப்படவில்லை"
 
-#: application/controllers/admin/database.php:1109
-#: application/controllers/admin/surveyadmin.php:1555
+#: application/controllers/admin/database.php:1088
+#: application/controllers/admin/surveyadmin.php:1570
 msgid "Warning! Bounce email was not updated because it was not valid."
 msgstr "எச்சரிக்கை! செல்லாத பவுன்ஸ் மின்னஞ்சல் என்பதால் மேம்படுத்தப்படவில்லை"
 
-#: application/controllers/admin/database.php:1102
-#: application/controllers/admin/surveyadmin.php:1548
+#: application/controllers/admin/database.php:1081
+#: application/controllers/admin/surveyadmin.php:1563
 msgid "Warning! Notification email was not updated because it was not valid."
 msgstr "எச்சரிக்கை! செல்லாத அறிவிப்பு மின்னஞ்சல் என்பதால் மேம்படுத்தப்படவில்லை"
 
@@ -338,15 +384,15 @@ msgstr "லேபிள் தொகுப்பிணை அமைக்க�
 msgid "Sorry, but this question has no responses yet so a graph cannot be shown."
 msgstr "மன்னிக்கவும், ஆனால் இந்த கேள்விக்கு எந்த பதில்களும் இல்லை, ஆகையால்  வரைபடம் காட்ட முடியாது."
 
-#: application/helpers/surveytranslator_helper.php:537
+#: application/helpers/surveytranslator_helper.php:551
 msgid "Serbian (Cyrillic)"
 msgstr "செர்பியன் (சிரிலிக்)"
 
-#: application/helpers/surveytranslator_helper.php:544
+#: application/helpers/surveytranslator_helper.php:558
 msgid "Serbian (Latin)"
 msgstr "செர்பியன் (லத்தீன்)"
 
-#: application/views/admin/participants/displayParticipants_view.php:104
+#: application/views/admin/participants/displayParticipants_view.php:106
 msgid "Attribute ID"
 msgstr "அடையாள ID"
 
@@ -366,8 +412,8 @@ msgstr "மூன்று"
 msgid "Some text in this answer"
 msgstr "இந்த பதில் சில உரை"
 
-#: application/controllers/admin/templates.php:984
-#: application/controllers/admin/templates.php:985
+#: application/controllers/admin/templates.php:1037
+#: application/controllers/admin/templates.php:1038
 msgid "How many roads must a man walk down?"
 msgstr "ஒரு மனிதன் எத்தனை சாலைகள் நடந்து செல்ல வேண்டும்?"
 
@@ -396,7 +442,7 @@ msgstr "கேள்வி உதவி"
 msgid "Participant table is empty."
 msgstr "பங்கேற்பாளர் மேஜை காலியாக உள்ளது."
 
-#: application/helpers/replacements_helper.php:405
+#: application/helpers/replacements_helper.php:371
 msgid "Exit and clear survey"
 msgstr "வெளியேறி ஆய்வு அழிக்க"
 
@@ -404,22 +450,18 @@ msgstr "வெளியேறி ஆய்வு அழிக்க"
 msgid "Continue?"
 msgstr "தொடர்"
 
-#: application/views/admin/participants/displayParticipants_view.php:96
+#: application/views/admin/participants/displayParticipants_view.php:98
 msgid "Submitted"
 msgstr "சமர்ப்பிக்கப்பட்டது"
 
-#: application/helpers/qanda_helper.php:132
-#: application/helpers/qanda_helper.php:133
-#: application/helpers/qanda_helper.php:141
-#: application/helpers/qanda_helper.php:142
-#: application/helpers/qanda_helper.php:150
-#: application/helpers/qanda_helper.php:151
-msgid "Choose one of the following answers"
-msgstr "பின்வரும் பதில்களை ஒன்றை தேர்வு"
+#: application/controllers/admin/dataentry.php:859
+#: application/views/admin/dataentry/content_view.php:152
+msgid "Next choice"
+msgstr "அடுத்த தேர்வு"
 
-#: application/helpers/qanda_helper.php:200
-#: application/helpers/qanda_helper.php:201
-#: application/helpers/qanda_helper.php:1385
+#: application/helpers/qanda_helper.php:211
+#: application/helpers/qanda_helper.php:212
+#: application/helpers/qanda_helper.php:1381
 msgid "Choose your language"
 msgstr "உங்கள் மொழியை தேர்வு செய்யவும்"
 
@@ -431,21 +473,20 @@ msgstr "டோக்கன் துறைகள் தேர்வு"
 msgid "Choose the file to upload:"
 msgstr "பதிவேற்றுவதற்கு கோப்பு தேர்வு"
 
-#: application/helpers/expressions/em_manager_helper.php:6008
+#: application/helpers/expressions/em_manager_helper.php:6225
 msgid "This question is mandatory"
 msgstr "இந்த கேள்விக்கு கட்டாயமாகும் பதில் கொடுங்கள்"
 
-#: application/helpers/replacements_helper.php:336
+#: application/helpers/replacements_helper.php:308
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "இந்த ஆய்வில் {NUMBEROFQUESTIONS} கேள்விகளை உள்ளன."
 
-#: application/helpers/replacements_helper.php:332
+#: application/helpers/replacements_helper.php:304
 msgid "There is 1 question in this survey"
 msgstr "இந்த ஆய்வில் 1 கேள்வி உள்ளது"
 
-#: application/helpers/replacements_helper.php:915
-#: application/helpers/replacements_helper.php:930
-#: application/helpers/replacements_helper.php:934
+#: application/helpers/replacements_helper.php:881
+#: application/helpers/replacements_helper.php:896
 msgid "Resume later"
 msgstr "பின்னர் தொடங்கு"
 
@@ -453,10 +494,10 @@ msgstr "பின்னர் தொடங்கு"
 msgid "Participant may save and resume later?"
 msgstr "பங்கேற்பாளர் சேமித்து பின் தொடரும் முடியும்?"
 
-#: application/views/admin/globalSettings_view.php:490
+#: application/views/admin/globalSettings_view.php:492
 #: application/views/admin/labels/editlabel_view.php:34
-#: application/views/admin/quotas/viewquotasrow_view.php:37
 #: application/views/admin/quotas/viewquotasrowsub_view.php:10
+#: application/views/admin/quotas/viewquotasrow_view.php:37
 #: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:33
 msgid "Remove"
 msgstr "நீக்கு"
@@ -465,12 +506,12 @@ msgstr "நீக்கு"
 msgid "You cannot remove this item since you need at least one language in a labelset."
 msgstr "நீங்கள் ஒரு முத்திரை தொகுப்பில் குறைந்தது ஒரு மொழி வேண்டும் என்பதால் இந்த உருப்படியை நீக்க முடியாது."
 
-#: application/views/admin/participants/displayParticipants_view.php:137
+#: application/views/admin/participants/displayParticipants_view.php:140
 #: application/views/admin/token/browse.php:67
 msgid "Remove condition"
 msgstr "நிபந்தனை நீக்கு"
 
-#: application/views/admin/participants/displayParticipants_view.php:158
+#: application/views/admin/participants/displayParticipants_view.php:161
 msgid "Remove search condition"
 msgstr "தேடல் நிபந்தனை நீக்கு"
 
@@ -478,8 +519,63 @@ msgstr "தேடல் நிபந்தனை நீக்கு"
 msgid "%s duplicate records removed"
 msgstr "%s பிரதிகள் பதிவுகள் நீக்கப்பட்டது"
 
-#: application/controllers/AdminController.php:66
-#: application/controllers/PrintanswersController.php:82
+#: application/views/admin/survey/listSurveys_view.php:46
+msgid "Access"
+msgstr "அணுகல்"
+
+#: application/views/admin/assessments_view.php:9
+#: application/views/admin/participants/attributeControl_view.php:25
+#: application/views/admin/participants/displayParticipants_view.php:103
+#: application/views/admin/responses/browseallheader_view.php:74
+#: application/views/admin/responses/browsetimeheader_view.php:51
+#: application/views/admin/saved/savedlist_view.php:6
+#: application/views/admin/survey/Question/answerOptions_view.php:78
+msgid "Actions"
+msgstr "செயல்கள்"
+
+#: application/views/admin/participants/displayParticipants_view.php:123
+msgid "Access denied"
+msgstr "அணுகல் மறுக்கப்பட்டது"
+
+#: application/helpers/qanda_helper.php:143
+#: application/helpers/qanda_helper.php:144
+#: application/helpers/qanda_helper.php:152
+#: application/helpers/qanda_helper.php:153
+#: application/helpers/qanda_helper.php:161
+#: application/helpers/qanda_helper.php:162
+msgid "Choose one of the following answers"
+msgstr "பின்வரும் பதில்களில் ஒன்றினை தேர்வு செய்க"
+
+#: application/helpers/frontend_helper.php:1668
+#: application/views/admin/participants/displayParticipants_view.php:133
+#: application/views/admin/quotas/newanswertwo_view.php:45
+#: application/views/admin/quotas/newanswer_view.php:33
+#: application/views/admin/templates/templateeditor_navigator_view.php:9
+#: application/views/admin/token/browse.php:65
+#: application/views/installer/dbconfig_view.php:66
+#: application/views/installer/optconfig_view.php:84
+#: application/views/installer/precheck_view.php:158
+msgid "Next"
+msgstr "அடுத்தது"
+
+#: application/views/admin/responses/browseidheader_view.php:44
+#: application/views/admin/responses/browseidheader_view.php:45
+#: application/views/admin/responses/browsetimeheader_view.php:20
+msgid "Show next..."
+msgstr "அடுத்ததை காட்டு"
+
+#: application/views/admin/participants/displayParticipants_view.php:139
+msgid "Please choose either of the options"
+msgstr "விருப்பங்களில் ஒன்றை தெரிவு செய்க "
+
+#: application/helpers/common_helper.php:3046
+msgid "Zoom level"
+msgstr "அளவு நிலை"
+
+#: application/helpers/common_helper.php:3045
+msgid "Map zoom level"
+msgstr "வரைபடம் அளவு நிலை"
+
 #: application/controllers/admin/dataentry.php:205
 #: application/controllers/admin/dataentry.php:1554
 #: application/controllers/admin/dataentry.php:1559
@@ -487,54 +583,57 @@ msgstr "%s பிரதிகள் பதிவுகள் நீக்கப�
 #: application/controllers/admin/dataentry.php:1602
 #: application/controllers/admin/dataentry.php:1603
 #: application/controllers/admin/dataentry.php:1604
-#: application/controllers/survey/index.php:108
-#: application/controllers/survey/index.php:127
-#: application/controllers/survey/index.php:377
-#: application/controllers/survey/index.php:390
-#: application/controllers/survey/index.php:405
+#: application/controllers/AdminController.php:66
+#: application/controllers/PrintanswersController.php:82
+#: application/controllers/survey/index.php:124
+#: application/controllers/survey/index.php:143
+#: application/controllers/survey/index.php:167
+#: application/controllers/survey/index.php:250
+#: application/controllers/survey/index.php:263
+#: application/controllers/survey/index.php:278
 #: application/helpers/admin/import_helper.php:540
 #: application/helpers/admin/import_helper.php:556
 #: application/helpers/admin/import_helper.php:572
 #: application/helpers/admin/import_helper.php:1559
-#: application/helpers/admin/import_helper.php:2603
-#: application/helpers/admin/import_helper.php:2847
-#: application/helpers/admin/import_helper.php:2926
-#: application/helpers/admin/import_helper.php:2951
-#: application/helpers/admin/import_helper.php:2966
-#: application/helpers/admin/import_helper.php:2984
-#: application/helpers/admin/import_helper.php:3518
-#: application/helpers/admin/import_helper.php:3557
-#: application/helpers/admin/import_helper.php:3590
-#: application/helpers/admin/import_helper.php:3674
-#: application/helpers/admin/import_helper.php:3767
-#: application/helpers/admin/import_helper.php:3817
-#: application/helpers/admin/import_helper.php:3859
-#: application/helpers/admin/import_helper.php:3864
-#: application/helpers/admin/import_helper.php:3888
-#: application/helpers/admin/import_helper.php:3965
-#: application/helpers/admin/import_helper.php:3991
-#: application/helpers/admin/import_helper.php:4012
-#: application/helpers/admin/import_helper.php:4034
-#: application/helpers/admin/import_helper.php:4052
-#: application/helpers/admin/import_helper.php:4078
-#: application/helpers/admin/import_helper.php:4191
-#: application/helpers/admin/import_helper.php:4248
-#: application/helpers/admin/import_helper.php:4544
-#: application/helpers/admin/import_helper.php:4738
-#: application/helpers/admin/import_helper.php:4794
-#: application/helpers/admin/import_helper.php:4842
-#: application/helpers/admin/import_helper.php:4973
-#: application/helpers/admin/import_helper.php:5013
+#: application/helpers/admin/import_helper.php:2609
+#: application/helpers/admin/import_helper.php:2854
+#: application/helpers/admin/import_helper.php:2959
+#: application/helpers/admin/import_helper.php:3004
+#: application/helpers/admin/import_helper.php:3019
+#: application/helpers/admin/import_helper.php:3037
+#: application/helpers/admin/import_helper.php:3151
+#: application/helpers/admin/import_helper.php:3617
+#: application/helpers/admin/import_helper.php:3661
+#: application/helpers/admin/import_helper.php:3694
+#: application/helpers/admin/import_helper.php:3785
+#: application/helpers/admin/import_helper.php:3893
+#: application/helpers/admin/import_helper.php:3994
+#: application/helpers/admin/import_helper.php:3999
+#: application/helpers/admin/import_helper.php:4023
+#: application/helpers/admin/import_helper.php:4100
+#: application/helpers/admin/import_helper.php:4126
+#: application/helpers/admin/import_helper.php:4147
+#: application/helpers/admin/import_helper.php:4169
+#: application/helpers/admin/import_helper.php:4187
+#: application/helpers/admin/import_helper.php:4213
+#: application/helpers/admin/import_helper.php:4383
+#: application/helpers/admin/import_helper.php:4696
+#: application/helpers/admin/import_helper.php:4888
+#: application/helpers/admin/import_helper.php:4944
+#: application/helpers/admin/import_helper.php:4992
+#: application/helpers/admin/import_helper.php:5123
+#: application/helpers/admin/import_helper.php:5163
 #: application/views/admin/dataentry/active_html_view.php:93
 #: application/views/admin/dataentry/vvimport_result.php:13
 #: application/views/admin/error_view.php:3
-#: application/views/admin/labels/import_view.php:6
 #: application/views/admin/labels/importlabelresources_view.php:29
-#: application/views/admin/participants/displayParticipants_view.php:131
-#: application/views/admin/participants/displayParticipants_view.php:234
+#: application/views/admin/labels/import_view.php:6
+#: application/views/admin/participants/displayParticipants_view.php:134
 #: application/views/admin/participants/displayParticipants_view.php:239
 #: application/views/admin/participants/displayParticipants_view.php:244
+#: application/views/admin/participants/displayParticipants_view.php:249
 #: application/views/admin/participants/participantsPanel_view.php:6
+#: application/views/admin/participants/uploadSummary_view.php:83
 #: application/views/admin/survey/activateSurvey_view.php:6
 #: application/views/admin/survey/copySurvey_view.php:6
 #: application/views/admin/survey/deleteSurvey_view.php:8
@@ -544,27 +643,27 @@ msgstr "%s பிரதிகள் பதிவுகள் நீக்கப�
 #: application/views/admin/templates/importuploaded_view.php:25
 #: application/views/admin/templates/importuploaded_view.php:82
 #: application/views/admin/token/browse.php:66
-#: application/views/admin/token/browse.php:208
-#: application/views/admin/token/browse.php:213
-#: application/views/admin/token/browse.php:218
+#: application/views/admin/token/browse.php:211
+#: application/views/admin/token/browse.php:216
+#: application/views/admin/token/browse.php:221
 #: application/views/admin/token/ldapform.php:2
 msgid "Error"
 msgstr "பிழை"
 
+#: application/controllers/admin/useraction.php:366
 #: application/controllers/AdminController.php:70
 #: application/controllers/AdminController.php:80
-#: application/controllers/admin/useraction.php:366
 #: application/views/admin/labels/importlabelresources_view.php:71
-#: application/views/admin/participants/attributeMapToken_view.php:81
+#: application/views/admin/participants/attributeMapToken_view.php:90
 #: application/views/admin/participants/attributeMap_view.php:105
 #: application/views/admin/survey/importSurveyResources_view.php:74
 msgid "Back"
 msgstr "பின் பக்க"
 
+#: application/controllers/admin/surveyadmin.php:468
+#: application/controllers/admin/tokens.php:2258
 #: application/controllers/AdminController.php:86
-#: application/controllers/admin/surveyadmin.php:467
-#: application/controllers/admin/tokens.php:2220
-#: application/helpers/admin/import_helper.php:2606
+#: application/helpers/admin/import_helper.php:2612
 #: application/views/admin/authentication/forgotpassword.php:15
 #: application/views/admin/dataentry/active_html_view.php:95
 #: application/views/admin/error_view.php:5
@@ -576,6 +675,7 @@ msgid "Main Admin Screen"
 msgstr "முதன்மை நிர்வாகம் திரை"
 
 #: application/controllers/AdminController.php:348
+#: application/extensions/AdminFooter/AdminFooter.php:30
 msgid "Version"
 msgstr "பதிப்பு"
 
@@ -584,11 +684,11 @@ msgstr "பதிப்பு"
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "எச்சரிக்கை: நீங்கள் இன்னும் இயல்புநிலை கடவுச்சொல்லை ('password') பயன்படுத்தி வருகின்றனர். மீண்டும் உங்கள் கடவுச்சொல்லை மற்றும் மறு புகுபதிவு மாற்ற தயவு செய்து."
 
-#: application/controllers/AdminController.php:408
 #: application/controllers/admin/conditionsaction.php:1356
 #: application/controllers/admin/printablesurvey.php:231
 #: application/controllers/admin/printablesurvey.php:522
-#: application/helpers/SurveyRuntimeHelper.php:633
+#: application/controllers/AdminController.php:408
+#: application/helpers/SurveyRuntimeHelper.php:651
 msgid "or"
 msgstr "அல்லது"
 
@@ -596,14 +696,14 @@ msgstr "அல்லது"
 #: application/controllers/admin/dataentry.php:718
 #: application/controllers/admin/printablesurvey.php:348
 #: application/controllers/admin/printablesurvey.php:663
-#: application/controllers/admin/quotas.php:476
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:226
+#: application/controllers/admin/quotas.php:473
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:242
 #: application/helpers/admin/statistics_helper.php:1457
-#: application/helpers/common_helper.php:1775
+#: application/helpers/common_helper.php:1532
 #: application/helpers/export_helper.php:291
 #: application/helpers/export_helper.php:1385
-#: application/helpers/expressions/em_manager_helper.php:3331
-#: application/helpers/qanda_helper.php:3893
+#: application/helpers/expressions/em_manager_helper.php:3518
+#: application/helpers/qanda_helper.php:3890
 #: application/views/admin/dataentry/content_view.php:54
 #: application/views/admin/export/statistics_view.php:486
 msgid "Female"
@@ -613,14 +713,14 @@ msgstr "பெண்"
 #: application/controllers/admin/dataentry.php:719
 #: application/controllers/admin/printablesurvey.php:347
 #: application/controllers/admin/printablesurvey.php:664
-#: application/controllers/admin/quotas.php:475
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:230
+#: application/controllers/admin/quotas.php:472
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:246
 #: application/helpers/admin/statistics_helper.php:1458
-#: application/helpers/common_helper.php:1774
+#: application/helpers/common_helper.php:1531
 #: application/helpers/export_helper.php:292
 #: application/helpers/export_helper.php:1385
-#: application/helpers/expressions/em_manager_helper.php:3330
-#: application/helpers/qanda_helper.php:3901
+#: application/helpers/expressions/em_manager_helper.php:3517
+#: application/helpers/qanda_helper.php:3898
 #: application/views/admin/dataentry/content_view.php:55
 #: application/views/admin/export/statistics_view.php:492
 msgid "Male"
@@ -637,88 +737,88 @@ msgstr "ஆண்"
 #: application/controllers/admin/printablesurvey.php:940
 #: application/controllers/admin/printablesurvey.php:1045
 #: application/controllers/admin/printablesurvey.php:1061
-#: application/controllers/admin/quotas.php:518
-#: application/controllers/admin/surveyadmin.php:655
-#: application/controllers/admin/tokens.php:2137
+#: application/controllers/admin/quotas.php:515
+#: application/controllers/admin/surveyadmin.php:656
+#: application/controllers/admin/tokens.php:2176
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:220
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:231
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:253
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:264
 #: application/core/Survey_Common_Action.php:835
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:204
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:215
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:237
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:248
 #: application/helpers/admin/statistics_helper.php:1331
 #: application/helpers/admin/statistics_helper.php:1464
-#: application/helpers/common_helper.php:1760
-#: application/helpers/common_helper.php:1766
-#: application/helpers/common_helper.php:1782
-#: application/helpers/common_helper.php:3112
-#: application/helpers/common_helper.php:3209
-#: application/helpers/common_helper.php:3240
-#: application/helpers/common_helper.php:3350
-#: application/helpers/common_helper.php:3364
-#: application/helpers/common_helper.php:3376
-#: application/helpers/common_helper.php:3388
-#: application/helpers/common_helper.php:3400
-#: application/helpers/common_helper.php:3410
-#: application/helpers/common_helper.php:3421
-#: application/helpers/common_helper.php:3472
-#: application/helpers/common_helper.php:3503
-#: application/helpers/common_helper.php:3514
-#: application/helpers/common_helper.php:3621
-#: application/helpers/common_helper.php:3632
-#: application/helpers/common_helper.php:3652
-#: application/helpers/common_helper.php:3664
-#: application/helpers/common_helper.php:3694
-#: application/helpers/common_helper.php:3707
-#: application/helpers/common_helper.php:3718
-#: application/helpers/common_helper.php:3729
-#: application/helpers/common_helper.php:3749
-#: application/helpers/common_helper.php:3779
-#: application/helpers/common_helper.php:3816
-#: application/helpers/common_helper.php:3826
-#: application/helpers/common_helper.php:3836
-#: application/helpers/common_helper.php:3855
-#: application/helpers/common_helper.php:3898
-#: application/helpers/common_helper.php:3924
-#: application/helpers/common_helper.php:3936
-#: application/helpers/common_helper.php:3972
-#: application/helpers/common_helper.php:4060
-#: application/helpers/common_helper.php:4070
-#: application/helpers/common_helper.php:4218
-#: application/helpers/common_helper.php:4229
-#: application/helpers/common_helper.php:4289
+#: application/helpers/common_helper.php:1517
+#: application/helpers/common_helper.php:1523
+#: application/helpers/common_helper.php:1539
+#: application/helpers/common_helper.php:2665
+#: application/helpers/common_helper.php:2762
+#: application/helpers/common_helper.php:2793
+#: application/helpers/common_helper.php:2903
+#: application/helpers/common_helper.php:2917
+#: application/helpers/common_helper.php:2929
+#: application/helpers/common_helper.php:2941
+#: application/helpers/common_helper.php:2953
+#: application/helpers/common_helper.php:2963
+#: application/helpers/common_helper.php:2974
+#: application/helpers/common_helper.php:3025
+#: application/helpers/common_helper.php:3056
+#: application/helpers/common_helper.php:3067
+#: application/helpers/common_helper.php:3174
+#: application/helpers/common_helper.php:3185
+#: application/helpers/common_helper.php:3205
+#: application/helpers/common_helper.php:3217
+#: application/helpers/common_helper.php:3247
+#: application/helpers/common_helper.php:3260
+#: application/helpers/common_helper.php:3271
+#: application/helpers/common_helper.php:3282
+#: application/helpers/common_helper.php:3302
+#: application/helpers/common_helper.php:3332
+#: application/helpers/common_helper.php:3369
+#: application/helpers/common_helper.php:3379
+#: application/helpers/common_helper.php:3389
+#: application/helpers/common_helper.php:3408
+#: application/helpers/common_helper.php:3451
+#: application/helpers/common_helper.php:3477
+#: application/helpers/common_helper.php:3489
+#: application/helpers/common_helper.php:3525
+#: application/helpers/common_helper.php:3613
+#: application/helpers/common_helper.php:3623
+#: application/helpers/common_helper.php:3771
+#: application/helpers/common_helper.php:3782
+#: application/helpers/common_helper.php:3842
 #: application/helpers/export_helper.php:283
 #: application/helpers/export_helper.php:287
 #: application/helpers/export_helper.php:295
 #: application/helpers/export_helper.php:299
 #: application/helpers/export_helper.php:1381
 #: application/helpers/export_helper.php:1400
-#: application/helpers/expressions/em_manager_helper.php:3334
-#: application/helpers/expressions/em_manager_helper.php:3338
-#: application/helpers/qanda_helper.php:3847
-#: application/helpers/qanda_helper.php:4287
-#: application/helpers/qanda_helper.php:4325
+#: application/helpers/expressions/em_manager_helper.php:3521
+#: application/helpers/expressions/em_manager_helper.php:3525
+#: application/helpers/qanda_helper.php:3844
+#: application/helpers/qanda_helper.php:4284
+#: application/helpers/qanda_helper.php:4322
 #: application/views/admin/dataentry/content_view.php:496
 #: application/views/admin/dataentry/content_view.php:549
 #: application/views/admin/export/statistics_view.php:504
 #: application/views/admin/export/statistics_view.php:669
-#: application/views/admin/globalSettings_view.php:332
-#: application/views/admin/globalSettings_view.php:343
-#: application/views/admin/globalSettings_view.php:354
-#: application/views/admin/globalSettings_view.php:394
-#: application/views/admin/globalSettings_view.php:415
-#: application/views/admin/globalSettings_view.php:525
+#: application/views/admin/globalSettings_view.php:334
+#: application/views/admin/globalSettings_view.php:345
+#: application/views/admin/globalSettings_view.php:356
+#: application/views/admin/globalSettings_view.php:396
+#: application/views/admin/globalSettings_view.php:417
+#: application/views/admin/globalSettings_view.php:527
 #: application/views/admin/participants/blacklist_view.php:23
 #: application/views/admin/participants/userControl_view.php:23
-#: application/views/admin/survey/Question/editQuestion_view.php:197
-#: application/views/admin/survey/Question/editQuestion_view.php:210
-#: application/views/admin/survey/Question/editQuestion_view.php:218
-#: application/views/admin/survey/Question/questionbar_view.php:211
-#: application/views/admin/survey/Question/questionbar_view.php:226
 #: application/views/admin/survey/activateSurvey_view.php:66
 #: application/views/admin/survey/activateSurvey_view.php:81
 #: application/views/admin/survey/activateSurvey_view.php:98
 #: application/views/admin/survey/activateSurvey_view.php:114
 #: application/views/admin/survey/activateSurvey_view.php:127
+#: application/views/admin/survey/Question/editQuestion_view.php:204
+#: application/views/admin/survey/Question/editQuestion_view.php:217
+#: application/views/admin/survey/Question/editQuestion_view.php:225
+#: application/views/admin/survey/Question/questionbar_view.php:211
+#: application/views/admin/survey/Question/questionbar_view.php:226
 #: application/views/admin/survey/subview/tabNotification_view.php:32
 #: application/views/admin/survey/subview/tabNotification_view.php:59
 #: application/views/admin/survey/subview/tabNotification_view.php:87
@@ -737,56 +837,58 @@ msgstr "ஆண்"
 #: application/views/admin/survey/subview/tabPresentation_view.php:358
 #: application/views/admin/survey/subview/tabPublication_view.php:10
 #: application/views/admin/survey/subview/tabPublication_view.php:39
-#: application/views/admin/survey/subview/tabTokens_view.php:34
-#: application/views/admin/survey/subview/tabTokens_view.php:50
-#: application/views/admin/survey/subview/tabTokens_view.php:63
-#: application/views/admin/survey/subview/tabTokens_view.php:76
-#: application/views/admin/survey/subview/tabTokens_view.php:92
-#: application/views/admin/survey/subview/tabTokens_view.php:109
+#: application/views/admin/survey/subview/tabTokens_view.php:32
+#: application/views/admin/survey/subview/tabTokens_view.php:48
+#: application/views/admin/survey/subview/tabTokens_view.php:61
+#: application/views/admin/survey/subview/tabTokens_view.php:74
+#: application/views/admin/survey/subview/tabTokens_view.php:90
+#: application/views/admin/survey/subview/tabTokens_view.php:107
 #: application/views/admin/token/email.php:87
-#: application/views/admin/token/managetokenattributes.php:54
 #: application/views/admin/token/managetokenattributes.php:55
+#: application/views/admin/token/managetokenattributes.php:56
 #: application/views/admin/token/remind.php:76
 msgid "Yes"
 msgstr "ஆம்"
 
 #: application/controllers/admin/assessments.php:89
-#: application/views/admin/globalSettings_view.php:490
+#: application/views/admin/globalSettings_view.php:492
 #: application/views/admin/labels/editlabel_view.php:34
 #: application/views/admin/labels/labelview_view.php:165
 #: application/views/admin/participants/displayParticipants_view.php:64
 #: application/views/admin/survey/Question/answerOptions_view.php:170
 #: application/views/admin/survey/Question/answerOptions_view.php:182
-#: application/views/admin/survey/Question/subQuestion_view.php:169
-#: application/views/admin/survey/Question/subQuestion_view.php:182
+#: application/views/admin/survey/Question/subQuestion_view.php:168
+#: application/views/admin/survey/Question/subQuestion_view.php:181
 #: application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:33
 msgid "Add"
 msgstr "சேர்"
 
 #: application/controllers/admin/conditionsaction.php:149
-#: application/controllers/admin/tokens.php:1145
-#: application/controllers/admin/tokens.php:2203
+#: application/controllers/admin/tokens.php:1158
+#: application/controllers/admin/tokens.php:2242
 #: application/views/admin/assessments_view.php:131
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
+#: application/views/admin/dataentry/import.php:16
 #: application/views/admin/labels/labelview_view.php:166
 #: application/views/admin/participants/attributeControl_view.php:6
-#: application/views/admin/participants/attributeMapCSV_view.php:45
-#: application/views/admin/participants/displayParticipants_view.php:66
-#: application/views/admin/participants/displayParticipants_view.php:139
+#: application/views/admin/participants/attributeMapCSV_view.php:53
+#: application/views/admin/participants/displayParticipants_view.php:67
+#: application/views/admin/participants/displayParticipants_view.php:142
+#: application/views/admin/participants/participantsPanel_view.php:8
 #: application/views/admin/quotas/editquota_view.php:30
+#: application/views/admin/survey/deleteSurvey_view.php:36
+#: application/views/admin/survey/editSurvey_view.php:56
+#: application/views/admin/survey/listSurveys_view.php:37
 #: application/views/admin/survey/Question/answerOptions_view.php:37
 #: application/views/admin/survey/Question/answerOptions_view.php:171
 #: application/views/admin/survey/Question/answerOptions_view.php:183
 #: application/views/admin/survey/Question/answerOptions_view.php:198
 #: application/views/admin/survey/Question/subQuestion_view.php:24
-#: application/views/admin/survey/Question/subQuestion_view.php:170
-#: application/views/admin/survey/Question/subQuestion_view.php:183
-#: application/views/admin/survey/Question/subQuestion_view.php:198
-#: application/views/admin/survey/deleteSurvey_view.php:36
-#: application/views/admin/survey/editSurvey_view.php:50
-#: application/views/admin/survey/listSurveys_view.php:35
+#: application/views/admin/survey/Question/subQuestion_view.php:169
+#: application/views/admin/survey/Question/subQuestion_view.php:182
+#: application/views/admin/survey/Question/subQuestion_view.php:197
 #: application/views/admin/token/browse.php:68
-#: application/views/plugins/configure.php:23
+#: application/views/plugins/configure.php:12
 msgid "Cancel"
 msgstr "ரத்து"
 
@@ -800,84 +902,84 @@ msgstr "ரத்து"
 #: application/controllers/admin/printablesurvey.php:941
 #: application/controllers/admin/printablesurvey.php:1047
 #: application/controllers/admin/printablesurvey.php:1063
-#: application/controllers/admin/quotas.php:519
-#: application/controllers/admin/surveyadmin.php:659
-#: application/controllers/admin/tokens.php:2139
+#: application/controllers/admin/quotas.php:516
+#: application/controllers/admin/surveyadmin.php:660
+#: application/controllers/admin/tokens.php:2178
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:257
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:268
 #: application/core/Survey_Common_Action.php:831
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:252
 #: application/helpers/admin/statistics_helper.php:1332
 #: application/helpers/admin/statistics_helper.php:1465
-#: application/helpers/common_helper.php:1767
-#: application/helpers/common_helper.php:1783
-#: application/helpers/common_helper.php:3111
-#: application/helpers/common_helper.php:3208
-#: application/helpers/common_helper.php:3239
-#: application/helpers/common_helper.php:3349
-#: application/helpers/common_helper.php:3365
-#: application/helpers/common_helper.php:3377
-#: application/helpers/common_helper.php:3389
-#: application/helpers/common_helper.php:3401
-#: application/helpers/common_helper.php:3410
-#: application/helpers/common_helper.php:3421
-#: application/helpers/common_helper.php:3473
-#: application/helpers/common_helper.php:3502
-#: application/helpers/common_helper.php:3513
-#: application/helpers/common_helper.php:3620
-#: application/helpers/common_helper.php:3631
-#: application/helpers/common_helper.php:3651
-#: application/helpers/common_helper.php:3663
-#: application/helpers/common_helper.php:3693
-#: application/helpers/common_helper.php:3706
-#: application/helpers/common_helper.php:3717
-#: application/helpers/common_helper.php:3728
-#: application/helpers/common_helper.php:3748
-#: application/helpers/common_helper.php:3778
-#: application/helpers/common_helper.php:3815
-#: application/helpers/common_helper.php:3825
-#: application/helpers/common_helper.php:3835
-#: application/helpers/common_helper.php:3854
-#: application/helpers/common_helper.php:3897
-#: application/helpers/common_helper.php:3909
-#: application/helpers/common_helper.php:3923
-#: application/helpers/common_helper.php:3935
-#: application/helpers/common_helper.php:3971
-#: application/helpers/common_helper.php:4059
-#: application/helpers/common_helper.php:4069
-#: application/helpers/common_helper.php:4217
-#: application/helpers/common_helper.php:4228
-#: application/helpers/common_helper.php:4288
+#: application/helpers/common_helper.php:1524
+#: application/helpers/common_helper.php:1540
+#: application/helpers/common_helper.php:2664
+#: application/helpers/common_helper.php:2761
+#: application/helpers/common_helper.php:2792
+#: application/helpers/common_helper.php:2902
+#: application/helpers/common_helper.php:2918
+#: application/helpers/common_helper.php:2930
+#: application/helpers/common_helper.php:2942
+#: application/helpers/common_helper.php:2954
+#: application/helpers/common_helper.php:2963
+#: application/helpers/common_helper.php:2974
+#: application/helpers/common_helper.php:3026
+#: application/helpers/common_helper.php:3055
+#: application/helpers/common_helper.php:3066
+#: application/helpers/common_helper.php:3173
+#: application/helpers/common_helper.php:3184
+#: application/helpers/common_helper.php:3204
+#: application/helpers/common_helper.php:3216
+#: application/helpers/common_helper.php:3246
+#: application/helpers/common_helper.php:3259
+#: application/helpers/common_helper.php:3270
+#: application/helpers/common_helper.php:3281
+#: application/helpers/common_helper.php:3301
+#: application/helpers/common_helper.php:3331
+#: application/helpers/common_helper.php:3368
+#: application/helpers/common_helper.php:3378
+#: application/helpers/common_helper.php:3388
+#: application/helpers/common_helper.php:3407
+#: application/helpers/common_helper.php:3450
+#: application/helpers/common_helper.php:3462
+#: application/helpers/common_helper.php:3476
+#: application/helpers/common_helper.php:3488
+#: application/helpers/common_helper.php:3524
+#: application/helpers/common_helper.php:3612
+#: application/helpers/common_helper.php:3622
+#: application/helpers/common_helper.php:3770
+#: application/helpers/common_helper.php:3781
+#: application/helpers/common_helper.php:3841
 #: application/helpers/export_helper.php:296
 #: application/helpers/export_helper.php:300
 #: application/helpers/export_helper.php:1381
 #: application/helpers/export_helper.php:1400
-#: application/helpers/expressions/em_manager_helper.php:3335
-#: application/helpers/expressions/em_manager_helper.php:3339
-#: application/helpers/qanda_helper.php:3856
-#: application/helpers/qanda_helper.php:4289
-#: application/helpers/qanda_helper.php:4345
+#: application/helpers/expressions/em_manager_helper.php:3522
+#: application/helpers/expressions/em_manager_helper.php:3526
+#: application/helpers/qanda_helper.php:3853
+#: application/helpers/qanda_helper.php:4286
+#: application/helpers/qanda_helper.php:4342
 #: application/views/admin/dataentry/content_view.php:497
 #: application/views/admin/dataentry/content_view.php:551
 #: application/views/admin/export/statistics_view.php:510
 #: application/views/admin/export/statistics_view.php:681
-#: application/views/admin/globalSettings_view.php:335
-#: application/views/admin/globalSettings_view.php:346
-#: application/views/admin/globalSettings_view.php:357
-#: application/views/admin/globalSettings_view.php:395
-#: application/views/admin/globalSettings_view.php:416
-#: application/views/admin/globalSettings_view.php:528
+#: application/views/admin/globalSettings_view.php:337
+#: application/views/admin/globalSettings_view.php:348
+#: application/views/admin/globalSettings_view.php:359
+#: application/views/admin/globalSettings_view.php:397
+#: application/views/admin/globalSettings_view.php:418
+#: application/views/admin/globalSettings_view.php:530
 #: application/views/admin/participants/blacklist_view.php:23
 #: application/views/admin/participants/userControl_view.php:23
-#: application/views/admin/survey/Question/editQuestion_view.php:202
-#: application/views/admin/survey/Question/editQuestion_view.php:210
-#: application/views/admin/survey/Question/editQuestion_view.php:223
-#: application/views/admin/survey/Question/questionbar_view.php:214
-#: application/views/admin/survey/Question/questionbar_view.php:229
 #: application/views/admin/survey/activateSurvey_view.php:71
 #: application/views/admin/survey/activateSurvey_view.php:86
 #: application/views/admin/survey/activateSurvey_view.php:103
 #: application/views/admin/survey/activateSurvey_view.php:119
 #: application/views/admin/survey/activateSurvey_view.php:130
+#: application/views/admin/survey/Question/editQuestion_view.php:209
+#: application/views/admin/survey/Question/editQuestion_view.php:217
+#: application/views/admin/survey/Question/editQuestion_view.php:230
+#: application/views/admin/survey/Question/questionbar_view.php:214
+#: application/views/admin/survey/Question/questionbar_view.php:229
 #: application/views/admin/survey/subview/tabNotification_view.php:37
 #: application/views/admin/survey/subview/tabNotification_view.php:64
 #: application/views/admin/survey/subview/tabNotification_view.php:92
@@ -896,21 +998,21 @@ msgstr "ரத்து"
 #: application/views/admin/survey/subview/tabPresentation_view.php:359
 #: application/views/admin/survey/subview/tabPublication_view.php:15
 #: application/views/admin/survey/subview/tabPublication_view.php:44
-#: application/views/admin/survey/subview/tabTokens_view.php:39
-#: application/views/admin/survey/subview/tabTokens_view.php:53
-#: application/views/admin/survey/subview/tabTokens_view.php:68
-#: application/views/admin/survey/subview/tabTokens_view.php:81
-#: application/views/admin/survey/subview/tabTokens_view.php:98
-#: application/views/admin/survey/subview/tabTokens_view.php:114
+#: application/views/admin/survey/subview/tabTokens_view.php:37
+#: application/views/admin/survey/subview/tabTokens_view.php:51
+#: application/views/admin/survey/subview/tabTokens_view.php:66
+#: application/views/admin/survey/subview/tabTokens_view.php:79
+#: application/views/admin/survey/subview/tabTokens_view.php:96
+#: application/views/admin/survey/subview/tabTokens_view.php:112
 #: application/views/admin/token/email.php:88
-#: application/views/admin/token/managetokenattributes.php:54
 #: application/views/admin/token/managetokenattributes.php:55
+#: application/views/admin/token/managetokenattributes.php:56
 #: application/views/admin/token/remind.php:77
 msgid "No"
 msgstr "இல்லை"
 
 #: application/controllers/admin/assessments.php:135
-#: application/controllers/admin/surveyadmin.php:636
+#: application/controllers/admin/surveyadmin.php:637
 #: application/views/admin/assessments_view.php:24
 #: application/views/admin/quotas/viewquotasrow_view.php:28
 msgid "Edit"
@@ -922,11 +1024,11 @@ msgstr "திருத்து"
 msgid "Clear"
 msgstr "அழி"
 
-#: application/controllers/admin/templates.php:762
+#: application/controllers/admin/templates.php:816
 msgid "Clear All Page"
 msgstr "அனைத்து பக்கம் அழி"
 
-#: application/helpers/SurveyRuntimeHelper.php:557
+#: application/helpers/SurveyRuntimeHelper.php:575
 msgid "Clear Responses"
 msgstr "பதில்கள் அழி"
 
@@ -934,25 +1036,21 @@ msgstr "பதில்கள் அழி"
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "இந்த ஆய்வில் {NUMBEROFQUESTIONS} கேள்விகளை உள்ளன"
 
-#: application/controllers/survey/index.php:464
-#: application/controllers/survey/index.php:468
-#: application/helpers/replacements_helper.php:913
-#: application/helpers/replacements_helper.php:921
-#: application/helpers/replacements_helper.php:928
+#: application/helpers/replacements_helper.php:880
 msgid "Load unfinished survey"
 msgstr "முடிக்கப்படாத ஆய்வு ஏற்ற"
 
+#: application/helpers/frontend_helper.php:1665
+#: application/helpers/replacements_helper.php:343
 #: application/helpers/SurveyRuntimeHelper.php:159
-#: application/helpers/frontend_helper.php:1667
-#: application/helpers/replacements_helper.php:371
 #: application/views/admin/dataentry/active_html_view.php:67
 #: application/views/admin/dataentry/includes/editdata/editdata.php:57
 #: application/views/admin/dataentry/insert.php:41
 msgid "Submit"
 msgstr "சமர்ப்பிக்கவும்"
 
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:208
-#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:219
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:224
+#: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:235
 #: application/helpers/export_helper.php:284
 #: application/helpers/export_helper.php:288
 msgid "Not Selected"
@@ -962,15 +1060,88 @@ msgstr "தேர்வாகவில்லை"
 msgid "Absolute value"
 msgstr "தனிமதிப்பு"
 
-#: application/helpers/common_helper.php:6515
+#: application/helpers/common_helper.php:6125
 msgid "You are not allowed to perform this operation!"
 msgstr "இந்த செயலை செய்ய உங்களுக்கு அனுமதி இல்லை!"
 
-#: application/helpers/common_helper.php:6505
-#: application/helpers/common_helper.php:6510
+#: application/helpers/common_helper.php:6115
+#: application/helpers/common_helper.php:6120
 msgid "Security alert"
 msgstr "பாதுகாப்பு எச்சரிக்கை"
 
-#: application/helpers/common_helper.php:6491
+#: application/helpers/common_helper.php:6101
 msgid "You are not allowed to import a group!"
 msgstr "உங்களுக்கு ஒரு குழு இறக்குமதி செய்ய அனுமதி இல்லை!"
+
+#: application/controllers/admin/surveypermission.php:48
+#: application/views/admin/emailtemplates/email_language_template_tab.php:37
+#: application/views/admin/labels/labelview_view.php:42
+#: application/views/admin/quotas/viewquotas_view.php:19
+#: application/views/admin/survey/Question/subQuestion_view.php:82
+#: application/views/admin/survey/subview/tabPanelIntegration_view.php:8
+#: application/views/admin/token/browse.php:117
+#: application/views/admin/user/editusers.php:5
+#: application/views/admin/usergroup/viewUserGroup_view.php:33
+#: application/views/plugins/index.php:19
+msgid "Action"
+msgstr "செயல்"
+
+#: application/controllers/admin/expressions.php:29
+#: application/controllers/admin/printablesurvey.php:37
+#: application/controllers/admin/quotas.php:66
+#: application/controllers/admin/quotas.php:80
+#: application/controllers/admin/responses.php:276
+#: application/controllers/admin/responses.php:338
+#: application/controllers/admin/responses.php:368
+#: application/controllers/admin/responses.php:609
+#: application/helpers/common_helper.php:6013
+msgid "Access denied!"
+msgstr "அணுகல் மறுக்கப்பட்டது!"
+
+#: application/helpers/common_helper.php:3603
+msgid "Action to perform when time limit is up"
+msgstr "கால இருக்கும் போது செய்ய நடவடிக்கை"
+
+#: application/helpers/common_helper.php:3549
+msgid "Accelerator keys for list items"
+msgstr "பட்டியல் பொருட்கள் விரைவூக்கியான விசைகள்"
+
+#: application/controllers/admin/translate.php:395
+#: application/extensions/Menu/MenuWidget.php:493
+#: application/helpers/common_helper.php:245
+#: application/helpers/common_helper.php:361
+#: application/helpers/common_helper.php:969
+#: application/helpers/common_helper.php:1039
+#: application/helpers/common_helper.php:6769
+#: application/helpers/common_helper.php:6806
+#: application/helpers/common_helper.php:7194
+#: application/helpers/common_helper.php:7234
+#: application/helpers/qanda_helper.php:1567
+#: application/helpers/qanda_helper.php:2156
+#: application/helpers/qanda_helper.php:4847
+#: application/helpers/qanda_helper.php:6284
+#: application/helpers/qanda_helper.php:6320
+#: application/views/admin/dataentry/content_view.php:84
+#: application/views/admin/dataentry/content_view.php:94
+#: application/views/admin/labels/labelsetsbar_view.php:22
+msgid "Please choose..."
+msgstr "தெரிவு செய்க ..."
+
+#: application/controllers/admin/dataentry.php:717
+#: application/controllers/admin/dataentry.php:747
+#: application/controllers/admin/dataentry.php:816
+#: application/controllers/admin/dataentry.php:952
+#: application/controllers/admin/dataentry.php:1069
+#: application/helpers/qanda_helper.php:1605
+#: application/views/admin/dataentry/content_view.php:53
+#: application/views/admin/dataentry/content_view.php:118
+#: application/views/admin/dataentry/content_view.php:136
+#: application/views/admin/dataentry/content_view.php:238
+#: application/views/admin/dataentry/content_view.php:495
+#: application/views/admin/dataentry/content_view.php:509
+#: application/views/admin/dataentry/content_view.php:528
+#: application/views/admin/dataentry/content_view.php:548
+#: application/views/admin/dataentry/content_view.php:566
+#: application/views/admin/dataentry/content_view.php:689
+msgid "Please choose"
+msgstr "தெரிவு செய்க"
