@@ -39,7 +39,7 @@
             }
             else
             {
-                $streamer = new FileReader(getcwd().DIRECTORY_SEPARATOR.'locale'.DIRECTORY_SEPARATOR.$sLanguageCode.DIRECTORY_SEPARATOR.'LC_MESSAGES'.DIRECTORY_SEPARATOR.$sLanguageCode.'.mo');
+                $streamer = new FileReader(getcwd().DIRECTORY_SEPARATOR.'locale'.DIRECTORY_SEPARATOR.$sLanguageCode.'.mo');
                 $this->gettextclass = $aClassCache[$sLanguageCode] = new gettext_reader($streamer);
             }
             $this->langcode = $sLanguageCode;
