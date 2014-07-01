@@ -21,21 +21,21 @@
     // TODO: Merge columnNames and aTokenColumns : need more option (name,index,search, type, editable ...)
     $aTokenColumns=getTokenFieldsAndNames($surveyid,false);
     $aNotQuickFilter=array('tid','emailstatus','sent','remindersent','remindercount','completed','usesleft','validfrom','validuntil');
-    foreach($aTokenColumns as $aTokenColumn => &$aTokenInformation)
+    foreach($aTokenColumns as $aTokenColumn => $aTokenInformation)
     {
         if($aTokenColumn=="tid"){
-            $aTokenInformation['editable']=false;
-            $aTokenInformation['search']=false;
-            $aTokenInformation['add']=false;
+            $aTokenColumns[$aTokenColumn]['editable']=false;
+            $aTokenColumns[$aTokenColumn]['search']=false;
+            $aTokenColumns[$aTokenColumn]['add']=false;
         }else{
-            $aTokenInformation['editable']=true;
-            $aTokenInformation['search']=true;
-            $aTokenInformation['add']=true;
+            $aTokenColumns[$aTokenColumn]['editable']=true;
+            $aTokenColumns[$aTokenColumn]['search']=true;
+            $aTokenColumns[$aTokenColumn]['add']=true;
         }
         if(in_array($aTokenColumn,$aNotQuickFilter)){
-            $aTokenInformation['quickfilter']=false;
+            $aTokenColumns[$aTokenColumn]['quickfilter']=false;
         }else{
-            $aTokenInformation['quickfilter']=true;
+            $aTokenColumns[$aTokenColumn]['quickfilter']=true;
         }
     }
     // Build the columnNames for the extra attributes 
@@ -46,7 +46,7 @@
     {
         foreach ($attributes as $sFieldname=>$aData)
         {
-            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "width":75}';
+            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":75}';
             $aColumnHeaders[]=$aData['description'];
         }
         $columnNames='"'.implode('","',$aColumnHeaders).'"';
@@ -93,13 +93,14 @@
     var sFind= '<?php $clang->eT("Filter",'js');?>';
     var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}/tokenids/|"); ?>";
     var attMapUrl = "<?php echo $this->createUrl("admin/participants/sa/attributeMapToken/sid/");?>";
-    var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"
-    var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
+    var invitemsg = "<?php echo $clang->eT("Send an invitation email to the selected entries (if they have not yet been sent an invitation email)"); ?>"
+    var remindmsg = "<?php echo $clang->eT("Send a reminder email to the selected entries (if they have already received the invitation email)"); ?>"
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/invite/surveyid/{$surveyid}/tokenids/|"); ?>";
-    var showDelButton = <?php echo $showDelButton?>;
-    var showBounceButton = <?php echo $showBounceButton?>;
-    var showInviteButton = <?php echo $showInviteButton?>;
-    var showRemindButton = <?php echo $showRemindButton?>;
+    var sSummary =  '<?php $clang->eT("Summary",'js');?>';
+    var showDelButton = <?php echo $showDelButton; ?>;
+    var showBounceButton = <?php echo $showBounceButton; ?>;
+    var showInviteButton = <?php echo $showInviteButton; ?>;
+    var showRemindButton = <?php echo $showRemindButton; ?>;
     <?php if (!Permission::model()->hasGlobalPermission('participantpanel','read')){?>
     var bParticipantPanelPermission=false;
     <?php 
@@ -110,24 +111,26 @@
     var sBounceProcessing = "<?php $clang->eT("Start bounce processing") ?>";
     var sBounceProcessingURL = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/bounceprocessing/surveyid/{$surveyid}"); ?>";
     var participantlinkUrl="<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";
-    var searchtypes = ["<?php $clang->eT("Equals") ?>","<?php $clang->eT("Contains") ?>","<?php $clang->eT("Not equal") ?>","<?php $clang->eT("Not contains") ?>","<?php $clang->eT("Greater than") ?>","<?php $clang->eT("Less than") ?>"]
+    var andTxt="<?php $clang->eT("AND") ?>";
+    var orTxt="<?php $clang->eT("OR") ?>";
+    var searchtypes = ["<?php $clang->eT("Equals") ?>","<?php $clang->eT("Contains") ?>","<?php $clang->eT("Not equal") ?>","<?php $clang->eT("Not contains") ?>","<?php $clang->eT("Greater than") ?>","<?php $clang->eT("Less than") ?>"];
     var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>"<?php if (count($columnNames)) echo ','.$columnNames; ?>];
     var colModels = [
     { "name":"tid", "index":"tid", "width":30, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
     { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":120, "align":"center", "editable":false},
-    { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"center", "editable":true},
-    { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"center", "editable":true},
-    { "name":"email", "index":"email","align":"center","width":170, "sorttype":"string", "sortable": true, "editable":true},
-    { "name":"emailstatus", "index":"emailstatus","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true},
-    { "name":"token", "index":"token","align":"center", "sorttype":"int", "sortable": true,"width":150,"editable":true},
-    { "name":"language", "index":"language","align":"center", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $langnames; ?>"}},
-    { "name":"sent", "index":"sent","align":"center", "sorttype":"int", "sortable": true,"width":130,"editable":true},
-    { "name":"remindersent", "index":"remindersent","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-    { "name":"remindercount", "index":"remindercount","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-    { "name":"completed", "index":"completed","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-    { "name":"usesleft", "index":"usesleft","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-    { "name":"validfrom", "index":"validfrom","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true},
-    { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true}
+    { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"left", "editable":true},
+    { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"left", "editable":true},
+    { "name":"email", "index":"email","align":"left","width":170, "sorttype":"string", "sortable": true, "editable":true},
+    { "name":"emailstatus", "index":"emailstatus","align":"left","width":80,"sorttype":"string", "sortable": true, "editable":true},
+    { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":150,"editable":true},
+    { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $langnames; ?>"}},
+    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":130,"editable":true},
+    { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"usesleft", "index":"usesleft","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"validfrom", "index":"validfrom","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true},
+    { "name":"validuntil", "index":"validuntil","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true}
     <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
     var colInformation=<?php echo $sJsonColumnInformation ?>
 </script>
@@ -157,11 +160,11 @@
 <div id ="search" style="display:none">
     <?php
         $aOptionSearch = array('' => $clang->gT('Select...'));
-        foreach($aTokenColumns as $aTokenColumn => $aTokenInformation)
+        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
         {
             if($aTokenInformation['search'])
             {
-                $aOptionSearch[$aTokenColumn]=$aTokenInformation['description'];
+                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
             }
         }
         $aOptionCondition = array('' => $clang->gT('Select...'),

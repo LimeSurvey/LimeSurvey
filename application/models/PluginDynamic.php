@@ -27,10 +27,10 @@
         }
 
 
-        protected function instantiate($attributes)
+        protected function instantiate($attributes = null)
         {
             $class=get_class($this);
-            $model=new $class($this->tableName());
+            $model=new $class($this->tableName(), null);
             return $model;
         }
         /**

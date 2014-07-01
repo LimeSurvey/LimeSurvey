@@ -39,7 +39,7 @@
                                 }
                                 echo "</select>";
                                 break;
-                            case 'text':?> <input type='text' id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
+                            case 'text':?> <input type='text' id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo htmlspecialchars($aAttribute['value'],ENT_QUOTES, 'UTF-8');?>' />
                             <?php
                                 break;
                             case 'integer':?> <input type='text' id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />

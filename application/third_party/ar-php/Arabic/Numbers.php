@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -95,7 +95,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -118,7 +118,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -129,6 +129,8 @@ class I18N_Arabic_Numbers
     private $_complications = array();
     private $_arabicIndic   = array();
     private $_ordering      = array();
+    private $_currency      = array();
+    private $_spell         = array();
     private $_feminine      = 1;
     private $_format        = 1;
     private $_order         = 1;
@@ -191,7 +193,22 @@ class I18N_Arabic_Numbers
 
         foreach ($xml->xpath("//order/number[@gender='female']") as $num) {
             $this->_ordering["{$num['value']}"][2] = (string)$num;
+        }
+        
+        foreach ($xml->xpath("//individual/number[@value<11 or @value>19]") as $num) {
+            $str = str_replace(array('أ','إ','آ'), 'ا', (string)$num);
+            $this->_spell[$str] = (integer)$num['value'];
         } 
+        
+        $xml = simplexml_load_file(dirname(__FILE__).'/data/arab_countries.xml');
+        
+        foreach ($xml->xpath("//currency") as $info) {
+            $this->_currency["{$info->iso}"]['ar']['basic']    = $info->money->arabic->basic;
+            $this->_currency["{$info->iso}"]['ar']['fraction'] = $info->money->arabic->fraction;
+            $this->_currency["{$info->iso}"]['en']['basic']    = $info->money->english->basic;
+            $this->_currency["{$info->iso}"]['en']['fraction'] = $info->money->english->fraction;
+            $this->_currency["{$info->iso}"]['decimals']       = $info->money->decimals;
+        }
     }
     
     /**
@@ -320,6 +337,125 @@ class I18N_Arabic_Numbers
     }
     
     /**
+     * Spell number in Arabic idiom as money
+     *      
+     * @param integer $number The number you want to spell in Arabic idiom as money
+     * @param string  $iso    The three-letter Arabic country code defined in ISO 3166 standard
+     * @param string  $lang   The two-letter language code in ISO 639-1 standard [ar|en]
+     *                    
+     * @return string The Arabic idiom that spells inserted number as money
+     * @author Khaled Al-Sham'aa <khaled@ar-php.org>
+     */
+    public function money2str($number, $iso='SYP', $lang='ar')
+    {
+        $iso  = strtoupper($iso);
+        $lang = strtolower($lang);
+        
+        $number = sprintf("%01.{$this->_currency[$iso]['decimals']}f", $number);
+        $temp   = explode('.', $number);
+
+        $string  = $this->subInt2str($temp[0]);
+        $string .= ' ' . $this->_currency[$iso][$lang]['basic'];
+
+        if (!empty($temp[1])) {
+            if ($lang == 'ar') {
+                $string .= ' و ';
+            } else {
+                $string .= ' and ';
+            }
+            
+            $string .= $this->subInt2str((int)$temp[1]); 
+            $string .= ' ' . $this->_currency[$iso][$lang]['fraction'];
+        }
+        
+        return $string;
+    }
+    
+    /**
+     * Convert Arabic idiom number string into Integer
+     *      
+     * @param string $str The Arabic idiom that spells input number
+     *                    
+     * @return integer The number you spell it in the Arabic idiom
+     * @author Khaled Al-Sham'aa <khaled@ar-php.org>
+     */
+    public function str2int ($str) 
+    {
+        // Normalization phase
+        $str = str_replace(array('أ','إ','آ'), 'ا', $str);
+        $str = str_replace('ه', 'ة', $str);
+        $str = preg_replace('/\s+/', ' ', $str);
+        $str = str_replace(array('ـ', 'َ','ً','ُ','ٌ','ِ','ٍ','ْ','ّ'), '', $str);
+        $str = str_replace('مائة', 'مئة', $str);
+        $str = str_replace(array('احدى','احد'), 'واحد', $str);
+        $str = str_replace(array('اثنا','اثني','اثنتا', 'اثنتي'), 'اثنان', $str);
+        $str = trim($str);
+        
+        if (strpos($str, 'ناقص') === false && strpos($str, 'سالب') === false) {
+            $negative = false;
+        } else {
+            $negative = true;
+        }
+        
+        // Complications process
+        $segment = array();
+        $max     = count($this->_complications);
+        
+        for ($scale=$max; $scale>0; $scale--) {
+            $key = pow(1000, $scale);
+            
+            $format1 = str_replace(array('أ','إ','آ'), 'ا', $this->_complications[$scale][1]);
+            $format2 = str_replace(array('أ','إ','آ'), 'ا', $this->_complications[$scale][2]);
+            $format3 = str_replace(array('أ','إ','آ'), 'ا', $this->_complications[$scale][3]);
+            $format4 = str_replace(array('أ','إ','آ'), 'ا', $this->_complications[$scale][4]);
+            
+            if (strpos($str, $format1) !== false) {
+                list($temp, $str) = explode($format1, $str);
+                $segment[$key]    = 'اثنان';
+            } elseif (strpos($str, $format2) !== false) {
+                list($temp, $str) = explode($format2, $str);
+                $segment[$key]    = 'اثنان';
+            } elseif (strpos($str, $format3) !== false) {
+                list($segment[$key], $str) = explode($format3, $str);
+            } elseif (strpos($str, $format4) !== false) {
+                list($segment[$key], $str) = explode($format4, $str);
+                if ($segment[$key] == '') {
+                    $segment[$key] = 'واحد';
+                }
+            }
+            
+            if ($segment[$key] != '') {
+                $segment[$key] = trim($segment[$key]);
+            }
+        }
+        
+        $segment[1] = trim($str);
+
+        // Individual process
+        $total    = 0;
+        $subTotal = 0;
+        
+        foreach ($segment as $scale => $str) {
+            $str = " $str ";
+            foreach ($this->_spell as $word => $value) {
+                if (strpos($str, "$word ") !== false) {
+                    $str = str_replace("$word ", ' ', $str);
+                    $subTotal += $value;
+                }
+            }
+
+            $total   += $subTotal * $scale;
+            $subTotal = 0;
+        }
+        
+        if ($negative) {
+            $total = -1 * $total;
+        }
+        
+        return $total;
+    }
+    
+    /**
      * Spell integer number in Arabic idiom
      *      
      * @param integer $number The number you want to spell in Arabic idiom
@@ -428,7 +564,10 @@ class I18N_Arabic_Numbers
             }
             
             if ($hundred == 200) {
-                array_push($items, $pre.$this->_individual[$hundred][$this->_format]);
+                array_push(
+                    $items, 
+                    $pre.$this->_individual[$hundred][$this->_format]
+                );
             } else {
                 array_push($items, $pre.$this->_individual[$hundred]);
             }
@@ -453,26 +592,40 @@ class I18N_Arabic_Numbers
                     $ones = $number % 10;
                     $tens = floor($number / 10) * 10;
 
-                    array_push($items, 'ال' . $this->_ordering[$ones][$this->_feminine]);
-                    array_push($items, 'ال' . $this->_individual[$tens][$this->_format]);
+                    array_push(
+                        $items, 
+                        'ال' . $this->_ordering[$ones][$this->_feminine]
+                    );
+                    array_push(
+                        $items, 
+                        'ال' . $this->_individual[$tens][$this->_format]
+                    );
                 }
             } else {
                 if ($number == 2 || $number == 12) {
-                    array_push($items, $this->_individual[$number]
-                                                        [$this->_feminine]
-                                                        [$this->_format]);
+                    array_push(
+                        $items, 
+                        $this->_individual[$number][$this->_feminine][$this->_format]
+                    );
                 } elseif ($number < 20) {
-                    array_push($items, $this->_individual[$number][$this->_feminine]);
+                    array_push(
+                        $items, 
+                        $this->_individual[$number][$this->_feminine]
+                    );
                 } else {
                     $ones = $number % 10;
                     $tens = floor($number / 10) * 10;
                     
                     if ($ones == 2) {
-                        array_push($items, $this->_individual[$ones]
-                                                            [$this->_feminine]
-                                                            [$this->_format]);
+                        array_push(
+                            $items, 
+                            $this->_individual[$ones][$this->_feminine][$this->_format]
+                        );
                     } elseif ($ones > 0) {
-                        array_push($items, $this->_individual[$ones][$this->_feminine]);
+                        array_push(
+                            $items, 
+                            $this->_individual[$ones][$this->_feminine]
+                        );
                     }
                     
                     array_push($items, $this->_individual[$tens][$this->_format]);
@@ -493,8 +646,8 @@ class I18N_Arabic_Numbers
      * @param integer $number The number you want to present in Arabic-Indic digits
      *                        using HTML entities
      *                    
-     * @return string The Arabic-Indic digits represent inserted integer number using 
-     *                HTML entities
+     * @return string The Arabic-Indic digits represent inserted integer number 
+     *                using HTML entities
      * @author Khaled Al-Sham'aa <khaled@ar-php.org>
      */
     public function int2indic($number)

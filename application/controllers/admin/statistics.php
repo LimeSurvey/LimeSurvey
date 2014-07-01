@@ -496,13 +496,13 @@ class statistics extends Survey_Common_Action {
     {
         Yii::app()->loadHelper('admin/statistics');
         $helper = new statistics_helper();
-        $output = $helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
+        $aData['data']=$helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
         $aData['surveyid']=$surveyid;
-        $aData['data']=$output;
         $aData['column']=$column;
         $aData['sortby']=$sortby;
         $aData['sortmethod']=$sortmethod;
         $aData['sorttype']=$sorttype;
+        App()->getClientScript()->reset();
         $this->getController()->render('export/statistics_browse_view', $aData);    
     }
     
@@ -532,8 +532,9 @@ class statistics extends Survey_Common_Action {
                 // Strip first char when not numeric (probably T or D)
                 $qsid=substr($qsid,1);
             }
-            $oQuestion=Question::model()->findByAttributes(array('qid'=>$qqid,'language'=>$sStatisticsLanguage));
-	        $qtype = $oQuestion->type; 
+            $aFieldmap=createFieldMap($qsid,'full',false,false,$sStatisticsLanguage);
+            $qtype=$aFieldmap[$_POST['id']]['type'];
+            $qqid=$aFieldmap[$_POST['id']]['qid'];
             $aattr = getQuestionAttributeValues($qqid);
             $field = substr($_POST['id'], 1);
 

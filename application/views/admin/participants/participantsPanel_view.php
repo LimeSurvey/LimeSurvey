@@ -5,6 +5,10 @@
     var okBtn = "<?php $clang->eT("OK", 'js') ?>";
     var error = "<?php $clang->eT("Error", 'js') ?>";
     var exportBtn = "<?php $clang->eT("Export", 'js') ?>";
+    var cancelBtn = "<?php $clang->eT("Cancel", 'js') ?>";
+    var sSelectAllText = "<?php $clang->eT("Select all", 'js') ?>";
+    var sNonSelectedText = "<?php $clang->eT("None selected", 'js') ?>";
+    var sNSelectedText = "<?php $clang->eT("selected", 'js') ?>";
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
 </script>
 <div class="menubar">

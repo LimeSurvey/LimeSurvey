@@ -119,26 +119,30 @@
 		public function relations()
 		{
 			$result = array(
-				'responses' => array(self::HAS_MANY, 'Response_' . $this->id, array('token' => 'token')),
-				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->id}"),
-				'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->id}")
+				'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
+				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
+				'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
 			);
 			return $result;
 		}
 
 		public function rules()
 		{
-			
 			return array(
 				array('token', 'unique', 'allowEmpty' => true),
-				array(implode(',', $this->tableSchema->columnNames), 'safe')
+				array(implode(',', $this->tableSchema->columnNames), 'safe'),
+                array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+                array('email','filter','filter'=>'trim'),        
+                array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true), 
+                array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),     
+                array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
 			);
 		}
 
 		public function scopes()
 		{
-            $now = date('Y-m-d H:i:s');
-
+            $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
             return array(
                 'incomplete' => array(
                     'condition' => "completed = 'N'"
@@ -167,8 +171,8 @@
 
 		public function tableName()
 		{
-			return '{{tokens_' . $this->id . '}}';
-		}
+			return '{{tokens_' . $this->dynamicId . '}}';
+		}           
 	}
 
 ?>

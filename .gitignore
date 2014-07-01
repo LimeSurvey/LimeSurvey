@@ -8,6 +8,7 @@
 /tmp/*.lss
 /tmp/*.png
 /tmp/*.xls
+/tmp/*.lsa
 /tmp/upload/fu*
 /upload/.htaccess
 /nbproject

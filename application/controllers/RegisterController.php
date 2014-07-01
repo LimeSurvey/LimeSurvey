@@ -173,8 +173,8 @@ class RegisterController extends LSYii_Controller {
         $token=$oToken->token;
         
         
-        $message=$thissurvey['email_register'];
-        $subject=$thissurvey['email_register_subj'];
+        $message=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$thissurvey['email_register']);
+        $subject=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$thissurvey['email_register_subj']);
 
 
         $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";

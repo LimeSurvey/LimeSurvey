@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -66,7 +66,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org
@@ -89,7 +89,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -126,11 +126,14 @@ class I18N_Arabic_Gender
         $last       = mb_substr($str, -1, 1, 'UTF-8');
         $beforeLast = mb_substr($str, -2, 1, 'UTF-8');
 
-        if ($last == 'ة' || $last == 'ه' || $last == 'ى' ||
-            $last == 'ا' || ($last == 'ء' && $beforeLast == 'ا')) {
+        if ($last == 'ة' || $last == 'ه' || $last == 'ى' || $last == 'ا' 
+            || ($last == 'ء' && $beforeLast == 'ا')
+        ) {
 
             $female = true;
-        } elseif (preg_match("/^[اإ].{2}ا.$/u", $str) || preg_match("/^[إا].ت.ا.+$/u", $str)) {
+        } elseif (preg_match("/^[اإ].{2}ا.$/u", $str) 
+            || preg_match("/^[إا].ت.ا.+$/u", $str)
+        ) {
             // الأسماء على وزن إفتعال و إفعال
             $female = true;
         } else {

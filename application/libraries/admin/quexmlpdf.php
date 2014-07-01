@@ -353,7 +353,7 @@ class quexmlpdf extends pdf {
    * @var bool  Defaults to false. 
    * @since 2013-10-24
    */
-  protected $allowSplittingSingleChoiceVertical = false;
+  protected $allowSplittingSingleChoiceVertical = true;
 
   /**
    * If splitting is allowed for single choice vertical, only split if there is at
@@ -362,7 +362,7 @@ class quexmlpdf extends pdf {
    * @var int  Defaults to 5. 
    * @since 2013-12-13
    */
-  protected $minSplittingSingleChoiceVertical = 5;
+  protected $minSplittingSingleChoiceVertical = 25;
 
   /**
    * Allows multiple responses to the same question to be split over multiple pages/columns
@@ -1246,7 +1246,15 @@ class quexmlpdf extends pdf {
    */
   protected function setDefaultFont($size = 12,$style = '')
   {
-    $this->SetFont($this->defaultFont,$style);
+    $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
+    if(array_key_exists($this->language,$alternatepdffontfile))
+    {
+      $this->SetFont($alternatepdffontfile[$this->language],$style);
+    }
+    else
+    {
+      $this->SetFont($this->defaultFont,$style);
+    }
     $this->SetFontSize($size);
   }
 
@@ -1271,7 +1279,7 @@ class quexmlpdf extends pdf {
       $this->AddFont('freeserif','I');
       $this->AddFont('freeserif','BI');
       
-      $this->SetFont($this->defaultFont);
+      $this->setDefaultFont();
     }
     
     // set document information

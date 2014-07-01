@@ -540,17 +540,6 @@ CREATE TABLE `prefix_users` (
 
 
 --
--- Table structure for table templates_rights
---
-CREATE TABLE `prefix_templates_rights` (
-  `uid` int(11) NOT NULL,
-  `folder` varchar(255) NOT NULL,
-  `use` int(11) NOT NULL,
-  PRIMARY KEY  (`uid`,`folder`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-
---
 -- Table structure for table templates
 --
 CREATE TABLE `prefix_templates` (
@@ -582,4 +571,4 @@ CREATE INDEX `parent_qid_idx` ON `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '174');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '177');

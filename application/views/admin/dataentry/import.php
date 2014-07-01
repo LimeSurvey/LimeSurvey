@@ -2,27 +2,24 @@
     App()->getClientScript()->registerCssFile(Yii::app()->getBaseUrl() . '/styles/configure.css');
 ?>
 
-<div class="pluginsettings">
+<div class="pluginsettings messagebox">
 <?php
-
     echo CHtml::tag('div', array('class' => 'header ui-widget-header'), gT("Import responses from a deactivated survey table"));
-    Yii::import("application.helpers.PluginSettingsHelper");
-    $PluginSettings = new PluginSettingsHelper();
+    $this->widget('ext.SettingsWidget.SettingsWidget', array(
 
-    echo CHtml::beginForm('', 'post', array('id' => "importresponses"));
-    echo CHtml::openTag('ol');
-
-    foreach ($settings as $name => $setting)
-    {
-        echo CHtml::tag('li', array(), $PluginSettings->renderSetting($name, $setting, "importresponses", true));
-
-    }
-    echo CHtml::submitButton(gT('Import responses'), array('name'=>'ok'));
-
-    echo CHtml::closeTag('ol');
-    echo CHtml::endForm();
-
-    echo CHtml::openTag('div', array('class' => 'messagebox ui-corner-all'));
+            'settings' => $settings,
+            'method' => 'post',
+            'buttons' => array(
+                gT('Import responses') => array(
+                    'name' => 'ok'
+                ),
+                gT('Cancel') => array(
+					'type' => 'link',
+					'href' => App()->createUrl('plugins/index')
+				)
+            )
+        ));
+        echo CHtml::openTag('div', array('class' => 'messagebox ui-corner-all'));
         echo CHtml::tag('div', array('class' => 'warningheader'), gT("Warning"));
         eT("You can import all old responses that are compatible with your current survey. Compatibility is determined by comparing column types and names, the ID field is always ignored.");
 		echo '<br/>';

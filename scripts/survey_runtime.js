@@ -75,27 +75,24 @@ $(document).ready(function()
  * setJsVar : Get all global used var
  */
 function setJsVar(){
-    if (typeof LSvar!="undefined" && LSvar instanceof Object == false) {
-      bFixNumAuto=1;
-      bNumRealValue=0;
-      LEMradix=".";
-    }
-    else {
-      bFixNumAuto=LSvar.bFixNumAuto;
-      bNumRealValue=LSvar.bNumRealValue;
-      LEMradix=LSvar.sLEMradix;
-    }
+    bFixNumAuto=LSvar.bFixNumAuto;
+    bNumRealValue=LSvar.bNumRealValue;
+    LEMradix=LSvar.sLEMradix;
     numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
 }
 // Deactivate all other button on submit
 function limesurveySubmitHandler(){
-    $(document).on("click",".disabled",function(){return false;});
-    $(document).on('click',"button[type='submit'],a.button", function(event){
-        $("button[type='submit']").not($(this)).prop('disabled',true);
-        $("a.button").not($(this)).addClass('disabled');
+    // Return false disallow all other system
+    $(document).on("click",".disabled",function(){return false});
+    $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
+
+    $(document).on('click',".button", function(event){
+        $(this).prop('active',true).addClass('active');
+        $(".button.ui-button" ).not($(this)).button( "option", "disabled", true );
+        $(".button").not($(this)).prop('disabled',true).addClass('disabled');
     });
-    if('v'=='\v'){ // Quick hack for IE6/7/ Alternative ? http://tanalin.com/en/articles/ie-version-js/ ?
+    if (document.all && !document.querySelector) { // IE7 or lower
         $(function() { 
             $("#defaultbtn").css('display','inline').css('width','0').css('height','0').css('padding','0').css('margin','0').css('overflow','hidden');
             $("#limesurvey [type='submit']").not("#defaultbtn").first().before($("#defaultbtn"));
@@ -106,22 +103,16 @@ function limesurveySubmitHandler(){
 
 // Ask confirmation on click on .needconfirm
 function needConfirmHandler(){
-    $(document).on('click',".confirm-needed", function(event){
-        text=$(this).attr('title');
+    $(document).on('click',"[data-confirmedby]", function(event){
+        text=$("label[for='"+$(this).data('confirmedby')+"']").text();
         if (confirm(text)) {
+            $("#"+$(this).data('confirmedby')).prop('checked',true);
             return true;
         }
+        $(".button.ui-button" ).button( "option", "disabled", false );
+        $(".button").prop('disabled',false).removeClass('disabled');
+        $(this).prop('active',false).removeClass('active');
         return false;
-    });
-    /* 130712 IE7 need this */
-    $(function() {
-    $("a.confirm-needed").click(function(e){
-        text=$(this).attr('title');
-        if (confirm(text)) {
-            return true;
-        }
-        return false;
-        });
     });
 }
 /**
@@ -268,6 +259,7 @@ function activateLanguageChanger(){
                 }).appendTo(document.body).submit();
             }
         }else{
+            $("form#limesurvey [name='lang']").not($(this)).remove();// Remove other lang
             $('#changelangbtn').click();
         }
     });

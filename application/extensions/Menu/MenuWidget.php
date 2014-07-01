@@ -55,11 +55,14 @@
                 'image' => 'home.png',
             );
             $menu['items']['left'][] = 'separator';
-            $menu['items']['left'][] = array(
-                'href' => array('admin/user'),
-                'alt' => gT('Manage survey administrators'),
-                'image' => 'security.png',
-            );
+            if(Permission::model()->hasGlobalPermission('users','read'))
+            {
+                $menu['items']['left'][] = array(
+                    'href' => array('admin/user'),
+                    'alt' => gT('Manage survey administrators'),
+                    'image' => 'security.png',
+                );
+            }
 
             $menu['items']['left'][] = $this->userGroups();
             $menu['items']['left'][] = $this->globalSettings();
@@ -109,7 +112,7 @@
                 $surveyList = array_merge($surveyList, $tmpList['inactive']);
             }
             $menu['items']['right'][] = array(
-                'title' => 'Surveys:',
+                'title' => gT('Surveys:'),
                 'type' => 'select',
                 'name' => 'surveyid',
                 'route' => 'admin/survey/sa/view',

@@ -42,11 +42,11 @@ class Authdb extends AuthPluginBase
         // We can skip the login form here and set username/password etc.
         
         $request = $this->api->getRequest();
-        if ($request->getIsPostRequest() && !is_null($request->getQuery('onepass'))) {
+        if (!is_null($request->getParam('onepass'))) {
             // We have a one time password, skip the login form
-            $this->setOnePass($request()->getQuery('onepass'));
-            $this->setUsername($request()->getQuery('user'));
-            $this->setAuthPlugin(); // This plugin will handle authentication ans skips the login form
+            $this->setOnePass($request->getParam('onepass'));
+            $this->setUsername($request->getParam('user'));
+            $this->setAuthPlugin(); // This plugin will handle authentication and skips the login form
         }
     }
     
@@ -62,9 +62,18 @@ class Authdb extends AuthPluginBase
     
     public function newLoginForm()
     {
+        
+        $sUserName='';
+        $sPassword='';
+        if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
+        {
+            $sUserName=Yii::app()->getConfig("defaultuser");
+            $sPassword=Yii::app()->getConfig("defaultpass");
+        }
+
         $this->getEvent()->getContent($this)
-             ->addContent(CHtml::tag('li', array(), "<label for='user'>"  . gT("Username") . "</label><input name='user' id='user' type='text' size='40' maxlength='40' value='' />"))
-             ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label><input name='password' id='password' type='password' size='40' maxlength='40' value='' />"));
+             ->addContent(CHtml::tag('li', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user',$sUserName,array('size'=>40,'maxlength'=>40))))
+             ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password',$sPassword,array('size'=>40,'maxlength'=>40))));
     }
     
     public function afterLoginFormSubmit()

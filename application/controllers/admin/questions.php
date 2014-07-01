@@ -998,7 +998,7 @@ class questions extends Survey_Common_Action
             $resultdata[]=array($language=>array($labels,getLanguageNameFromCode($language,false)));
         }
         header('Content-type: application/json');
-        echo ls_json_encode($resultdata);
+        echo json_encode($resultdata);
     }
 
     /**
@@ -1253,7 +1253,49 @@ EOD;
 
         exit;
     }
+    public function ajaxValidate($surveyid,$qid=false){
+        $iSurveyId=$surveyid;
+        $iQid=$qid;
+        $oSurvey=Survey::model()->findByPk($surveyid);
+        if($oSurvey)
+        {
+            $sLanguage=$oSurvey->language;// Validate only on default language
+        }
+        else
+        {
+            Yii::app()->end();// Or throw error 500
+        }
+        if(!$iQid)
+        {
+            $oQuestion=new Question('insert');
+            $oQuestion->sid=$iSurveyId;
+            $oQuestion->language=$sLanguage;
+        }
+        else
+        {
+            $oQuestion=Question::model()->find('qid=:qid and language=:language',array(":qid"=>$iQid,":language"=>$sLanguage));
+            if(!$oQuestion){
+                 throw new Exception('Invalid question id.');
+            }
+        }
+        $oQuestion->title=App()->request->getParam('title');
+        $oQuestion->validate();
 
+        header('Content-type: application/json');
+        echo CJSON::encode($oQuestion->getErrors());
+        Yii::app()->end();
+    }
+    /**
+    * Todo : update whole view to use CActiveForm
+    */
+#    protected function performAjaxValidation($model)
+#    {
+#        if(trueYii::app()->request->getPost('ajax')=='user-form')
+#        {
+#            echo CActiveForm::validate($model);
+#            Yii::app()->end();
+#        }
+#    }
     /**
     * Renders template(s) wrapped in header and footer
     *

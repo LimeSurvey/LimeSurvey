@@ -51,6 +51,11 @@ function eT($string, $escapemode = 'html')
     echo gT($string, $escapemode);
 }
 
+function ngT($single, $plural, $number, $escapemode = 'html')
+{
+    Yii::import('application.libraries.Limesurvey_lang');
+    return App()->lang->ngT($single, $plural, $number, $escapemode);
+}
 /**
 * getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
@@ -60,203 +65,12 @@ function eT($string, $escapemode = 'html')
 *
 * @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
 *
-* Explanation of questiontype array:
-*
-* description : Question description
-* subquestions : 0= Does not support subquestions x=Number of subquestion scales
-* answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-* assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
 */
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
-    $clang = Yii::app()->lang;
-
-    $group['Arrays'] = $clang->gT('Arrays');
-    $group['MaskQuestions'] = $clang->gT("Mask questions");
-    $group['SinChoiceQues'] = $clang->gT("Single choice questions");
-    $group['MulChoiceQues'] = $clang->gT("Multiple choice questions");
-    $group['TextQuestions'] = $clang->gT("Text questions");
-
-
-    $qtypes = array(
-    "1" => array('description' => $clang->gT("Array dual scale"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'assessable' => 1,
-    'hasdefaultvalues' => 0,
-    'answerscales' => 2),
-    "5" => array('description' => $clang->gT("5 Point Choice"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "A" => array('description' => $clang->gT("Array (5 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "B" => array('description' => $clang->gT("Array (10 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "C" => array('description' => $clang->gT("Array (Yes/No/Uncertain)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "D" => array('description' => $clang->gT("Date/Time"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "E" => array('description' => $clang->gT("Array (Increase/Same/Decrease)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "F" => array('description' => $clang->gT("Array"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "G" => array('description' => $clang->gT("Gender"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "H" => array('description' => $clang->gT("Array by column"),
-    'group' => $group['Arrays'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "I" => array('description' => $clang->gT("Language Switch"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "K" => array('description' => $clang->gT("Multiple Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 1,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "L" => array('description' => $clang->gT("List (Radio)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "M" => array('description' => $clang->gT("Multiple choice"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "N" => array('description' => $clang->gT("Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "O" => array('description' => $clang->gT("List with comment"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "P" => array('description' => $clang->gT("Multiple choice with comments"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "Q" => array('description' => $clang->gT("Multiple Short Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "R" => array('description' => $clang->gT("Ranking"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "S" => array('description' => $clang->gT("Short Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "T" => array('description' => $clang->gT("Long Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "U" => array('description' => $clang->gT("Huge Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "X" => array('description' => $clang->gT("Text display"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "Y" => array('description' => $clang->gT("Yes/No"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "!" => array('description' => $clang->gT("List (Dropdown)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    ":" => array('description' => $clang->gT("Array (Numbers)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    ";" => array('description' => $clang->gT("Array (Texts)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "|" => array('description' => $clang->gT("File upload"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "*" => array('description' => $clang->gT("Equation"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    );
-    asort($qtypes);
-
+    
+    $qtypes = Question::typeList();
     if ($ReturnType == "array")
         return $qtypes;
 
@@ -1629,61 +1443,6 @@ function sendCacheHeaders()
     }
 }
 
-function getSIDGIDQIDAIDType($fieldcode)
-{
-    // use simple parsing to get {sid}, {gid}
-    // and what may be {qid} or {qid}{aid} combination
-    list($fsid, $fgid, $fqid) = explode('X', $fieldcode);
-    $fsid=sanitize_int($fsid);
-    $fgid=sanitize_int($fgid);
-    if (!$fqid) {$fqid=0;}
-    $fqid=sanitize_int($fqid);
-    // try a true parsing of fieldcode (can separate qid from aid)
-    // but fails for type M and type P multiple choice
-    // questions because the SESSION fieldcode is combined
-    // and we want here to pass only the sidXgidXqid for type M and P
-    $fields=arraySearchByKey($fieldcode, createFieldMap($fsid,'full',false,false,getBaseLanguageFromSurveyID($fsid)), "fieldname", 1);
-
-    if (count($fields) != 0)
-    {
-        $aRef['sid']=$fields['sid'];
-        $aRef['gid']=$fields['gid'];
-        $aRef['qid']=$fields['qid'];
-        $aRef['aid']=$fields['aid'];
-        $aRef['type']=$fields['type'];
-    }
-    else
-    {
-        // either the fielcode doesn't match a question
-        // or it is a type M or P question
-        $aRef['sid']=$fsid;
-        $aRef['gid']=$fgid;
-        $aRef['qid']=sanitize_int($fqid);
-
-        $s_lang = Survey::model()->findByPk($fsid)->language;
-        $fieldtoselect = array('type');
-        $condition = "qid = ".$fqid." AND language='".$s_lang."'";
-
-        $result = Question::model()->findAllByAttributes(array('qid' => $fqid, 'language' => $s_lang));
-
-        if ( count($result) == 0 )
-        { // question doesn't exist
-            return array();
-        }
-        else
-        {   // certainly is type M or P
-            foreach ($result as $row)
-            {
-                $aRef['type']=$row['type'];
-            }
-        }
-
-    }
-
-    //return array('sid'=>$fsid, "gid"=>$fgid, "qid"=>$fqid);
-    return $aRef;
-}
-
 /**
 * @param type $iSurveyID The Survey ID
 * @param type $sFieldCode Field code of the particular field
@@ -1813,9 +1572,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 }
                 break;
             case "|": //File upload
-                if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = $oLanguage->gT("File count");
-                } else {
+                if (substr($sFieldCode, -9) != 'filecount') {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue);
                     $sValue = '';
@@ -1836,9 +1593,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
     switch($sFieldCode)
     {
         case 'submitdate':
+        case 'startdate':
+        case 'datestamp':
             if (trim($sValue)!='')
             {
-                $dateformatdetails = getDateFormatDataForQID(array('date_format'=>''), $iSurveyID);
+                $dateformatdetails = getDateFormatDataForQID(null, $iSurveyID);
                 $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate'].' H:i:s');
             }
             break;
@@ -1853,227 +1612,23 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
     }
 }
 
-/*function validateEmailAddress($email)
-{
-// Create the syntactical validation regular expression
-// Validate the syntax
-
-// see http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-$maxrootdomainlength = 6;
-return ( ! preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,".$maxrootdomainlength."}))$/ix", $email)) ? FALSE : TRUE;
-}*/
-
-function validateEmailAddress($email){
-
-
-    $no_ws_ctl    = "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]";
-    $alpha        = "[\\x41-\\x5a\\x61-\\x7a]";
-    $digit        = "[\\x30-\\x39]";
-    $cr        = "\\x0d";
-    $lf        = "\\x0a";
-    $crlf        = "(?:$cr$lf)";
-
-
-    $obs_char    = "[\\x00-\\x09\\x0b\\x0c\\x0e-\\x7f]";
-    $obs_text    = "(?:$lf*$cr*(?:$obs_char$lf*$cr*)*)";
-    $text        = "(?:[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f]|$obs_text)";
-
-
-    $text        = "(?:$lf*$cr*$obs_char$lf*$cr*)";
-    $obs_qp        = "(?:\\x5c[\\x00-\\x7f])";
-    $quoted_pair    = "(?:\\x5c$text|$obs_qp)";
-
-
-    $wsp        = "[\\x20\\x09]";
-    $obs_fws    = "(?:$wsp+(?:$crlf$wsp+)*)";
-    $fws        = "(?:(?:(?:$wsp*$crlf)?$wsp+)|$obs_fws)";
-    $ctext        = "(?:$no_ws_ctl|[\\x21-\\x27\\x2A-\\x5b\\x5d-\\x7e])";
-    $ccontent    = "(?:$ctext|$quoted_pair)";
-    $comment    = "(?:\\x28(?:$fws?$ccontent)*$fws?\\x29)";
-    $cfws        = "(?:(?:$fws?$comment)*(?:$fws?$comment|$fws))";
-
-
-    $outer_ccontent_dull    = "(?:$fws?$ctext|$quoted_pair)";
-    $outer_ccontent_nest    = "(?:$fws?$comment)";
-    $outer_comment        = "(?:\\x28$outer_ccontent_dull*(?:$outer_ccontent_nest$outer_ccontent_dull*)+$fws?\\x29)";
-
-
-
-    $atext        = "(?:$alpha|$digit|[\\x21\\x23-\\x27\\x2a\\x2b\\x2d\\x2f\\x3d\\x3f\\x5e\\x5f\\x60\\x7b-\\x7e])";
-    $atext_domain     = "(?:$alpha|$digit|[\\x2b\\x2d\\x5f])";
-
-    $atom        = "(?:$cfws?(?:$atext)+$cfws?)";
-    $atom_domain       = "(?:$cfws?(?:$atext_domain)+$cfws?)";
-
-
-    $qtext        = "(?:$no_ws_ctl|[\\x21\\x23-\\x5b\\x5d-\\x7e])";
-    $qcontent    = "(?:$qtext|$quoted_pair)";
-    $quoted_string    = "(?:$cfws?\\x22(?:$fws?$qcontent)*$fws?\\x22$cfws?)";
-
-
-    $quoted_string    = "(?:$cfws?\\x22(?:$fws?$qcontent)+$fws?\\x22$cfws?)";
-    $word        = "(?:$atom|$quoted_string)";
-
-
-    $obs_local_part    = "(?:$word(?:\\x2e$word)*)";
-
-
-    $obs_domain    = "(?:$atom_domain(?:\\x2e$atom_domain)*)";
-
-    $dot_atom_text     = "(?:$atext+(?:\\x2e$atext+)*)";
-    $dot_atom_text_domain    = "(?:$atext_domain+(?:\\x2e$atext_domain+)*)";
-
-
-    $dot_atom           = "(?:$cfws?$dot_atom_text$cfws?)";
-    $dot_atom_domain   = "(?:$cfws?$dot_atom_text_domain$cfws?)";
-
-
-    $dtext        = "(?:$no_ws_ctl|[\\x21-\\x5a\\x5e-\\x7e])";
-    $dcontent    = "(?:$dtext|$quoted_pair)";
-    $domain_literal    = "(?:$cfws?\\x5b(?:$fws?$dcontent)*$fws?\\x5d$cfws?)";
-
-
-    $local_part    = "(($dot_atom)|($quoted_string)|($obs_local_part))";
-    $domain        = "(($dot_atom_domain)|($domain_literal)|($obs_domain))";
-    $addr_spec    = "$local_part\\x40$domain";
-
-
-    if (strlen($email) > 256) return FALSE;
-
-
-    $email = stripComments($outer_comment, $email, "(x)");
-
-
-
-    if (!preg_match("!^$addr_spec$!", $email, $m)){
-
-        return FALSE;
+/**
+* Validate an email address - also supports IDN email addresses 
+* @returns True/false for valid/invalid
+* 
+* @param mixed $sEmailAddress  Email address to check
+*/
+function validateEmailAddress($sEmailAddress){
+    require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
+    $oIdnConverter = new idna_convert();
+    $sEmailAddress=$oIdnConverter->encode($sEmailAddress);
+    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);   
+    if ($bResult!==false)
+    {
+        return true;
     }
-
-    $bits = array(
-    'local'            => isset($m[1]) ? $m[1] : '',
-    'local-atom'        => isset($m[2]) ? $m[2] : '',
-    'local-quoted'        => isset($m[3]) ? $m[3] : '',
-    'local-obs'        => isset($m[4]) ? $m[4] : '',
-    'domain'        => isset($m[5]) ? $m[5] : '',
-    'domain-atom'        => isset($m[6]) ? $m[6] : '',
-    'domain-literal'    => isset($m[7]) ? $m[7] : '',
-    'domain-obs'        => isset($m[8]) ? $m[8] : '',
-    );
-
-
-
-    $bits['local']    = stripComments($comment, $bits['local']);
-    $bits['domain']    = stripComments($comment, $bits['domain']);
-
-
-
-
-    if (strlen($bits['local']) > 64) return FALSE;
-    if (strlen($bits['domain']) > 255) return FALSE;
-
-
-
-    if (strlen($bits['domain-literal'])){
-
-        $Snum            = "(\d{1,3})";
-        $IPv4_address_literal    = "$Snum\.$Snum\.$Snum\.$Snum";
-
-        $IPv6_hex        = "(?:[0-9a-fA-F]{1,4})";
-
-        $IPv6_full        = "IPv6\:$IPv6_hex(:?\:$IPv6_hex){7}";
-
-        $IPv6_comp_part        = "(?:$IPv6_hex(?:\:$IPv6_hex){0,5})?";
-        $IPv6_comp        = "IPv6\:($IPv6_comp_part\:\:$IPv6_comp_part)";
-
-        $IPv6v4_full        = "IPv6\:$IPv6_hex(?:\:$IPv6_hex){5}\:$IPv4_address_literal";
-
-        $IPv6v4_comp_part    = "$IPv6_hex(?:\:$IPv6_hex){0,3}";
-        $IPv6v4_comp        = "IPv6\:((?:$IPv6v4_comp_part)?\:\:(?:$IPv6v4_comp_part\:)?)$IPv4_address_literal";
-
-
-
-        if (preg_match("!^\[$IPv4_address_literal\]$!", $bits['domain'], $m)){
-
-            if (intval($m[1]) > 255) return FALSE;
-            if (intval($m[2]) > 255) return FALSE;
-            if (intval($m[3]) > 255) return FALSE;
-            if (intval($m[4]) > 255) return FALSE;
-
-        }else{
-
-
-            while (1){
-
-                if (preg_match("!^\[$IPv6_full\]$!", $bits['domain'])){
-                    break;
-                }
-
-                if (preg_match("!^\[$IPv6_comp\]$!", $bits['domain'], $m)){
-                    list($a, $b) = explode('::', $m[1]);
-                    $folded = (strlen($a) && strlen($b)) ? "$a:$b" : "$a$b";
-                    $groups = explode(':', $folded);
-                    if (count($groups) > 6) return FALSE;
-                    break;
-                }
-
-                if (preg_match("!^\[$IPv6v4_full\]$!", $bits['domain'], $m)){
-
-                    if (intval($m[1]) > 255) return FALSE;
-                    if (intval($m[2]) > 255) return FALSE;
-                    if (intval($m[3]) > 255) return FALSE;
-                    if (intval($m[4]) > 255) return FALSE;
-                    break;
-                }
-
-                if (preg_match("!^\[$IPv6v4_comp\]$!", $bits['domain'], $m)){
-                    list($a, $b) = explode('::', $m[1]);
-                    $b = substr($b, 0, -1); # remove the trailing colon before the IPv4 address
-                    $folded = (strlen($a) && strlen($b)) ? "$a:$b" : "$a$b";
-                    $groups = explode(':', $folded);
-                    if (count($groups) > 4) return FALSE;
-                    break;
-                }
-
-                return FALSE;
-            }
-        }
-    }else{
-
-
-        $labels = explode('.', $bits['domain']);
-
-
-        if (count($labels) == 1) return FALSE;
-
-
-        foreach ($labels as $label){
-
-            if (strlen($label) > 63) return FALSE;
-            if (substr($label, 0, 1) == '-') return FALSE;
-            if (substr($label, -1) == '-') return FALSE;
-        }
-
-        if (preg_match('!^[0-9]+$!', array_pop($labels))) return FALSE;
-    }
-
-
-    return TRUE;
+    return false;
 }
-
-##################################################################################
-
-function stripComments($comment, $email, $replace=''){
-
-    while (1){
-        $new = preg_replace("!$comment!", $replace, $email);
-        if (strlen($new) == strlen($email)){
-            return $email;
-        }
-        $email = $new;
-    }
-}
-
 
 function validateTemplateDir($sTemplateName)
 {
@@ -3759,7 +3314,7 @@ function questionAttributes($returnByName=false)
         "caption"=>$clang->gT('Answer prefix'));
 
         $qattributes["printable_help"]=array(
-        "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
+        "types"=>"15ABCDEFGHKLMNOPRWYZ!:*",
         'category'=>$clang->gT('Display'),
         'sortorder'=>201,
         "inputtype"=>"text",
@@ -3823,8 +3378,8 @@ function questionAttributes($returnByName=false)
         'options'=>array(0=>$clang->gT('No'),
         1=>$clang->gT('Yes')),
         'default'=>1,
-        "caption"=>$clang->gT('Same height for all choice'),
-        "help"=>$clang->gT('Force each choice to have the same height'));
+        "caption"=>$clang->gT('Same height for all answer options'),
+        "help"=>$clang->gT('Force each answer option to have the same height'));
         $qattributes["samelistheight"]=array(
         "types"=>"R",
         'category'=>$clang->gT('Display'),
@@ -4565,7 +4120,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
     if ($emailsmtpdebug>0) {
-        $maildebug .= '<li>'.$clang->gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
+        $maildebug .= '<li>'. gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
@@ -5513,7 +5068,8 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             $aSavedExtraTokenFields[$sField]=array(
             'description'=>$sField,
             'mandatory'=>'N',
-            'showregister'=>'N'
+            'showregister'=>'N',
+            'cpdbmap'=>''
             );
         }
         elseif(empty($aSavedExtraTokenFields[$sField]['description']))
@@ -5547,8 +5103,8 @@ function getAttributeValue($surveyid,$attrName,$token)
         return null;
     }
 
-	$token = Token::model($surveyid)->findByAttributes(array("token"=>$token));
-	return isset($token->$attrName) ? $token->$attrName : null;
+    $token = Token::model($surveyid)->findByAttributes(array("token"=>$token));
+    return isset($token->$attrName) ? $token->$attrName : null;
 }
 
 /**
@@ -5654,6 +5210,8 @@ function getUpdateInfo()
     Yii::import('application.libraries.admin.http.httpRequestIt');
     $http=new httpRequestIt;
 
+    $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+    $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
     $http->timeout=0;
     $http->data_timeout=0;
     $http->user_agent="LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber");
@@ -5903,7 +5461,9 @@ function SSLRedirect($enforceSSLMode)
 */
 function enforceSSLMode()
 {
-    $bSSLActive = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off");
+    $bSSLActive = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")||
+    (isset($_SERVER['HTTP_FORWARDED_PROTO']) && $_SERVER['HTTP_FORWARDED_PROTO']=="https")||
+    (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO']=="https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
@@ -5932,9 +5492,10 @@ function enforceSSLMode()
 function getQuotaCompletedCount($iSurveyId, $quotaid)
 {
     $result = "N/A";
+    if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
+        return $result;
     $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $quota = $quota_info[0];
-
     if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
     count($quota['members']) > 0)
     {
@@ -6084,24 +5645,25 @@ function includeKeypad()
 {
     $clang = Yii::app()->lang;
 
-	Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/i18n/jquery.ui.keypad-'.$clang->langcode.'.js';
-	if ($clang->langcode != 'en' && file_exists($localefile))
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
+    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.$clang->langcode.'.js';
+    if ($clang->langcode != 'en' && file_exists($localefile))
     {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/i18n/jquery.ui.keypad-'.$clang->langcode.'.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.$clang->langcode.'.js');
     }
-    Yii::app()->getClientScript()->registerCssFile('jquery.keypad.alt.css');
+    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
 }
 
 /**
 * getQuotaInformation() returns quota information for the current survey
 * @param string $surveyid - Survey identification number
+* @param string $language - Language of the quota
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
 * @return array - nested array, Quotas->Members->Fields
 */
 function getQuotaInformation($surveyid,$language,$iQuotaID='all')
 {
-	Yii::log('getQuotaInformation');
+    Yii::log('getQuotaInformation');
     global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     $aAttributes=array('sid' => $surveyid);
@@ -6111,10 +5673,11 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
     }
 
     $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
+    
     $quota_info = array();
     $x=0;
 
-    $surveyinfo=getSurveyInfo($surveyid);
+    $surveyinfo=getSurveyInfo($surveyid,$language);
 
     // Check all quotas for the current survey
     //if ($result->RecordCount() > 0)
@@ -6123,10 +5686,10 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
         //while ($survey_quotas = $result->FetchRow())
         foreach ($result as $_survey_quotas)
         {
-            $survey_quotas = $_survey_quotas->attributes;
+            $survey_quotas = array_merge($_survey_quotas->attributes,$_survey_quotas->languagesettings[0]->attributes);// We have only one language, then we can use first only
             // !!! Doubting this
-            foreach ($_survey_quotas->defaultlanguage as $k => $v)
-                $survey_quotas[$k] = $v;
+#            foreach ($_survey_quotas->defaultlanguage as $k => $v)
+#                $survey_quotas[$k] = $v;
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],
             'Limit' => $survey_quotas['qlimit'],
@@ -6386,6 +5949,55 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
 }
 
 /**
+* Replaces EM variable codes in a current survey with a new one
+* 
+* @param mixed $iSurveyID The survey ID
+* @param mixed $aCodeMap The codemap array (old_code=>new_code)
+*/
+function replaceExpressionCodes ($iSurveyID, $aCodeMap)
+{
+   $arQuestions=Question::model()->findAll("sid=:sid",array(':sid'=>$iSurveyID));
+   foreach ($arQuestions as $arQuestion)
+   {
+        $bModified=false;
+        foreach ($aCodeMap as $sOldCode=>$sNewCode)
+        {
+            // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
+            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0])) 
+            {
+                $sOldCode=preg_quote($sOldCode,'/');
+                $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
+                $bModified = $bModified || $iCount;
+                $arQuestion->question=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->question,-1,$iCount);
+                $bModified = $bModified || $iCount;
+            }
+        }
+        if ($bModified)
+        {
+            $arQuestion->save();
+        }
+   }
+   $arGroups=QuestionGroup::model()->findAll("sid=:sid",array(':sid'=>$iSurveyID));
+   foreach ($arGroups as $arGroup)
+   {
+        $bModified=false;
+        foreach ($aCodeMap as $sOldCode=>$sNewCode)
+        {
+            $sOldCode=preg_quote($sOldCode,'/');
+            $arGroup->grelevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arGroup->grelevance,-1,$iCount);
+            $bModified = $bModified || $iCount;
+            $arGroup->description=preg_replace("/\b{$sOldCode}/",$sNewCode,$arGroup->description,-1,$iCount);
+            $bModified = $bModified || $iCount;
+        }
+        if ($bModified)
+        {
+            $arGroup->save();
+        }
+   }
+}
+
+
+/**
 * This function is a replacement of accessDenied.php which return appropriate error message which is then displayed.
 *
 * @params string $action - action for which acces denied error message is to be returned
@@ -6602,7 +6214,7 @@ function fixLanguageConsistency($sid, $availlangs='')
     } else {
         $langs=Survey::model()->findByPk($sid)->additionalLanguages;
     }
-
+    if (count($langs)==0) return true; // Survey only has one language
     $baselang = Survey::model()->findByPk($sid)->language;
     $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
     $result = Yii::app()->db->createCommand($query)->query();
@@ -7349,7 +6961,7 @@ function getHeader($meta = false)
         $header .= $meta;
 
 
-	if ( !$embedded )
+    if ( !$embedded )
     {
         return $header;
     }
@@ -7363,7 +6975,7 @@ function getHeader($meta = false)
 
 function doHeader()
 {
-	echo getHeader();
+    echo getHeader();
 }
 
 /**
@@ -7762,30 +7374,20 @@ function arraySwapAssoc($key1, $key2, $array) {
 * @param    string        ellipsis ; Default '...'
 * @return    string        ellipsized string
 */
-function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
+function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;')
 {
     // Strip tags
-    $str = trim(strip_tags($str));
-
+    $sString = trim(strip_tags($sString));
     // Is the string long enough to ellipsize?
-    if (strlen($str) <= $max_length+3)
+    if (mb_strlen($sString,'UTF-8') <= $iMaxLength+3)
     {
-        return $str;
+        return $sString;
     }
 
-    $beg = substr($str, 0, floor($max_length * $position));
-    $position = ($position > 1) ? 1 : $position;
-
-    if ($position === 1)
-    {
-        $end = substr($str, 0, -($max_length - strlen($beg)));
-    }
-    else
-    {
-        $end = substr($str, -($max_length - strlen($beg)));
-    }
-
-    return $beg.$ellipsis.$end;
+    $iStrLen=mb_strlen($sString,'UTF-8');
+    $sBegin = mb_substr($sString, 0, floor($iMaxLength * $fPosition),'UTF-8');
+    $sEnd = mb_substr($sString,$iStrLen-($iMaxLength-mb_strlen($sBegin,'UTF-8')),$iStrLen,'UTF-8');
+    return $sBegin.$sEllipsis.$sEnd;
 }
 
 /**
@@ -7796,19 +7398,27 @@ function getIPAddress()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
     {
-        return $_SERVER['HTTP_CLIENT_IP'];
+        $sIPAddress=$_SERVER['HTTP_CLIENT_IP'];
     }
     elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
     {
-        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $sIPAddress= $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
     elseif (!empty($_SERVER['REMOTE_ADDR']))
     {
-        return $_SERVER['REMOTE_ADDR'];
+        $sIPAddress= $_SERVER['REMOTE_ADDR'];
     }
     else
     {
-        return '127.0.0.1';
+        $sIPAddress= '127.0.0.1';
+    }
+    if (!filter_var($sIPAddress, FILTER_VALIDATE_IP))
+    {
+        return 'Invalid';
+    }
+    else
+    {
+       return $sIPAddress;
     }
 }
 
@@ -7855,5 +7465,33 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
     return $difference;
 }
+
+
+    function convertPHPSizeToBytes($sSize)  
+    {  
+        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)  
+        $sSuffix = substr($sSize, -1);  
+        $iValue = substr($sSize, 0, -1);  
+        switch(strtoupper($sSuffix)){  
+        case 'P':  
+            $iValue *= 1024;  
+        case 'T':  
+            $iValue *= 1024;  
+        case 'G':  
+            $iValue *= 1024;  
+        case 'M':  
+            $iValue *= 1024;  
+        case 'K':  
+            $iValue *= 1024;  
+            break;  
+        }  
+        return $iValue;  
+    }  
+      
+    function getMaximumFileUploadSize()  
+    {  
+        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));  
+    }  
+
 // Closing PHP tag intentionally omitted - yes, it is okay
 

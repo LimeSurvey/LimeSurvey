@@ -274,7 +274,6 @@ class uploader {
         $config = &$this->config;
         $file = &$this->file;
         $url = $message = "";
-
         if ($config['disabled'] || !$config['access']['files']['upload']) {
             if (isset($file['tmp_name'])) @unlink($file['tmp_name']);
             $message = $this->label("You don't have permissions to upload files.");
@@ -368,6 +367,11 @@ class uploader {
 
         if (!is_array($file) || !isset($file['name']))
             return $this->label("Unknown error");
+            
+        if (!isset($this->post['kcfinder_csrftoken']) || (isset($this->post['kcfinder_csrftoken']) && $this->post['kcfinder_csrftoken']!=$this->session['kcfinder_csrf_token']))
+        {
+            return $this->label("CSRF upload error");
+        }
 
         if (is_array($file['name'])) {
             foreach ($file['name'] as $i => $name) {
@@ -494,6 +498,33 @@ class uploader {
             ? $patt[1] : $path;
     }
 
+    protected function getCSRFToken() {
+        if (function_exists("hash_algos") and in_array("sha512",hash_algos()))
+        {
+            $token=hash("sha512",mt_rand(0,mt_getrandmax()));
+        }
+        else
+        {
+            $token=' ';
+            for ($i=0;$i<128;++$i)
+            {
+                $r=mt_rand(0,35);
+                if ($r<26)
+                {
+                    $c=chr(ord('a')+$r);
+                }
+                else
+                { 
+                    $c=chr(ord('0')+$r-26);
+                } 
+                $token.=$c;
+            }
+        }
+        $this->session['kcfinder_csrf_token']=$token;
+        return $token;
+    }
+    
+    
     protected function removeTypeFromPath($path) {
         return preg_match('/^[^\/]*\/(.*)$/', $path, $patt)
             ? $patt[1] : "";

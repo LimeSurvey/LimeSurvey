@@ -70,20 +70,19 @@ function loadanswers()
             }
             elseif ($column == "saved_thisstep" && $thissurvey['alloweditaftercompletion'] != 'Y' )
             {
-                $_SESSION['survey_'.$surveyid]['step']=$value;
-                $thisstep=$value-1;
+                $_SESSION['survey_'.$surveyid]['step']=($value>1? $value:1) ;
+                $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;
             }
             elseif ($column =='lastpage' && isset($_GET['token']))
             {
                 if(is_null($submitdate) || $submitdate=="N")
                 {
-                    if ($value<1) $value=1;
-                    $_SESSION['survey_'.$surveyid]['step']=$value;
-                    $thisstep=$value-1;
+                    $_SESSION['survey_'.$surveyid]['step']=($value>1? $value:1) ;
+                    $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;
                 }
                 else
                 {
-                    $_SESSION['survey_'.$surveyid]['maxstep']=$value;
+                    $_SESSION['survey_'.$surveyid]['maxstep']=($value>1? $value:1) ;
                 }
             }
             /*
@@ -258,7 +257,8 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
         }
         $sSelected=$clang->langcode;
-        $sHTMLCode=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
+        $sHTMLCode=CHtml::label($clang->gT("Choose another language"), 'lang',array('class'=>'hide label'));
+        $sHTMLCode.=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
         // We don't have to add this button if in previewmode
         $sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide'));
         return $sHTMLCode;
@@ -302,8 +302,8 @@ function makeLanguageChanger($sSelectedLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT,'UTF-8').' - '.$aLanguage['description'];
         $sSelected=$sSelectedLanguage;
 
-        $sHTMLCode= CHtml::beginForm(Yii::app()->getController()->createUrl('survey/index'),'get');
-        //$sHTMLCode="<pre>".var_export($test,true)."</pre>";
+        $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get');
+        $sHTMLCode.=CHtml::label($clang->gT("Choose another language"), 'lang',array('class'=>'hide label'));
         $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
         //$sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'jshide'));
         $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".$clang->gT("Change the language")."</button>";
@@ -507,8 +507,8 @@ function submittokens($quotaexit=false)
     {
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
         {
-            if($token->completed == "Y" || $token->completed == $today)
-            {
+         //   if($token->completed == "Y" || $token->completed == $today)
+//            {
                 $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
                 $to = $token->email;
                 $subject=$thissurvey['email_confirm_subj'];
@@ -581,9 +581,9 @@ function submittokens($quotaexit=false)
                 }
                 SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml, null, $aRelevantAttachments);
             }
-        } else {
+     //   } else {
                 // Leave it to send optional confirmation at closed token
-            }
+  //          }
         }
     }
 }
@@ -645,15 +645,12 @@ function sendSubmitNotifications($surveyid)
 
     if (!empty($thissurvey['emailnotificationto']))
     {
-        $aRecipient=explode(";", $thissurvey['emailnotificationto']);
+        $aRecipient=explode(";", ReplaceFields($thissurvey['emailnotificationto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
+        foreach($aRecipient as $sRecipient)
         {
-            foreach($aRecipient as $sRecipient)
+            if(validateEmailAddress($sRecipient))
             {
-                $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
-                if(validateEmailAddress($sRecipient))
-                {
-                    $aEmailNotificationTo[]=$sRecipient;
-                }
+                $aEmailNotificationTo[]=$sRecipient;
             }
         }
     }
@@ -666,15 +663,12 @@ function sendSubmitNotifications($surveyid)
             unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
         }
         //Make an array of email addresses to send to
-        $aRecipient=explode(";", $thissurvey['emailresponseto']);
+        $aRecipient=explode(";", ReplaceFields($thissurvey['emailresponseto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
+        foreach($aRecipient as $sRecipient)
         {
-            foreach($aRecipient as $sRecipient)
+            if(validateEmailAddress($sRecipient))
             {
-                $sRecipient=ReplaceFields($sRecipient, array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true); // Only need INSERTANS, ADMINMAIL and TOKEN
-                if(validateEmailAddress($sRecipient))
-                {
-                    $aEmailResponseTo[]=$sRecipient;
-                }
+                $aEmailResponseTo[]=$sRecipient;
             }
         }
 
@@ -859,9 +853,8 @@ function buildsurveysession($surveyid,$preview=false)
     $loadsecurity = returnGlobal('loadsecurity',true);
 
     // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
-    if ($tokensexist == 0 && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !$preview)
+    if ($tokensexist == 0 && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']) && !isset($_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen'])&& !$preview)
     {
-
         // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
         if (!isset($loadsecurity) ||
         !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
@@ -872,9 +865,9 @@ function buildsurveysession($surveyid,$preview=false)
             // No or bad answer to required security question
 
             $redata = compact(array_keys(get_defined_vars()));
-            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1525]');
+            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[875]');
             //echo makedropdownlist();
-            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1527]');
+            echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[877]');
 
             if (isset($loadsecurity))
             { // was a bad answer
@@ -917,6 +910,9 @@ function buildsurveysession($surveyid,$preview=false)
             echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"),array(),$redata,'frontend_helper[1567]');
             doFooter();
             exit;
+        }
+        else{
+            $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
         }
     }
 
@@ -987,7 +983,7 @@ function buildsurveysession($surveyid,$preview=false)
                 </li>";
             }
             echo "<li>
-            <input class='submit' type='submit' value='".$clang->gT("Continue")."' />
+            <input class='submit button' type='submit' value='".$clang->gT("Continue")."' />
             </li>
             </ul>
             </form></div>";
@@ -1041,7 +1037,7 @@ function buildsurveysession($surveyid,$preview=false)
         if (isset($loadsecurity) &&
         isset($_SESSION['survey_'.$surveyid]['secanswer']) &&
         $loadsecurity == $_SESSION['survey_'.$surveyid]['secanswer'])
-        {
+        {          
 			if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
                 $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=> $clienttoken));
@@ -2333,6 +2329,9 @@ function getMove()
     {
         if(Yii::app()->request->getParam($sAccepteMove))
             $move=$sAccepteMove;
+    }
+    if($move=='clearall' && App()->request->getPost('confirm-clearall')!='confirm'){
+            $move="clearcancel";
     }
     if($move=='default')
     {

@@ -21,6 +21,9 @@
  */
 class OptoutController extends LSYii_Controller {
 
+     public $layout = 'bare';
+     public $defaultAction = 'tokens';
+    
     /* This function is run when opting out of an individual token table. The other function /optout/participants
      * opts the user out of ALL survey invitations from the system
      *
@@ -48,10 +51,9 @@ class OptoutController extends LSYii_Controller {
         }
         else
         {
-            $sLanguageCode = sanitize_languagecode($sLanguageCode);
+            $sBaseLanguage = sanitize_languagecode($sLanguageCode);
             Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($sLanguageCode);
-            $sBaseLanguage = $sLanguageCode;
+            $clang = new Limesurvey_lang($sBaseLanguage);
         }
 
         Yii::app()->lang = $clang;
@@ -63,7 +65,7 @@ class OptoutController extends LSYii_Controller {
         }
         else
         {
-            $oToken = Token::model($iSurveyID)->findByAttributes($sToken);
+            $oToken = Token::model($iSurveyID)->findByAttributes(array('token'=>$sToken));
 
             if (!isset($oToken))
             {

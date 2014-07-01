@@ -15,7 +15,9 @@ function doFileUpload(){
     {
         var jsontext = window.parent.window.$('#'+fieldname).val();
         var json = eval('(' + jsontext + ')');
-
+        if( $('#field'+fieldname+'_listfiles').length==0){
+            $("<ul id='field"+fieldname+"_listfiles' class='files-list' />").insertAfter("#uploadstatus");
+        }
         var i;
         $('#'+fieldname+'_licount').val(filecount);
 
@@ -47,7 +49,7 @@ function doFileUpload(){
                     "</div></li>";
 
             // add file to the list
-            $('#'+fieldname+'_listfiles').append(previewblock);
+            $('#field'+fieldname+'_listfiles').append(previewblock);
         }
     }
 
@@ -134,6 +136,9 @@ function doFileUpload(){
             if (metadata.success)
             {
                 $('#notice').html('<p class="success">'+metadata.msg+'</p>');
+                if( $('#field'+fieldname+'_listfiles').length==0){
+                    $("<ul id='field"+fieldname+"_listfiles' class='files-list' />").insertAfter("#uploadstatus");
+                }
                 var previewblock =  "<li id='"+fieldname+"_li_"+count+"' class='previewblock'><div>"+
                                         "<table align='center'><tr>"+
                                             "<td  align='center' width='50%'>";
@@ -162,7 +167,7 @@ function doFileUpload(){
                                     "</div></li>";
 
                 // add file to the list
-                $('#'+fieldname+'_listfiles').prepend(previewblock);
+                $('#field'+fieldname+'_listfiles').prepend(previewblock);
                 var filecount = parseInt($('#'+fieldname+'_filecount').val());
                 var minfiles = parseInt($('#'+fieldname+'_minfiles').val());
                 filecount++;
@@ -212,16 +217,16 @@ function passJSON(fieldname, show_title, show_comment, pos) {
         {
             if (filecount > 0)
                 json += ",";
-            json += '{';
+            json += '{ ';
 
             if ($("#"+fieldname+"_show_title").val() == 1)
-                json += '"title":"' +escapeHtml($("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\"'))+'",';
+                json += '"title":"' +$("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\\"')+'",';
             if ($("#"+fieldname+"_show_comment").val() == 1)
-                json += '"comment":"'+escapeHtml($("#"+fieldname+"_comment_"+i).val().replace(/"/g, '\"'))+'",';
+                json += '"comment":"'+$("#"+fieldname+"_comment_"+i).val().replace(/"/g, '\\"')+'",';
             json += '"size":"'   +$("#"+fieldname+"_size_"   +i).val()+'",'+
-                '"name":"'   +escapeHtml($("#"+fieldname+"_name_"   +i).val())+'",'+
-                '"filename":"'   +escapeHtml($("#"+fieldname+"_filename_"   +i).val())+'",'+
-                '"ext":"'    +$("#"+fieldname+"_ext_"    +i).val()+'"}';
+                    '"name":"'   +$("#"+fieldname+"_name_"   +i).val()+'",'+
+                    '"filename":"'   +$("#"+fieldname+"_filename_"   +i).val()+'",'+
+                    '"ext":"'    +$("#"+fieldname+"_ext_"    +i).val()+'"}';
 
             filecount += 1;
         }

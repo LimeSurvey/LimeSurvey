@@ -83,7 +83,7 @@ class Save {
         //END
         echo "<input type='hidden' name='sid' value='$surveyid' />\n";
         echo "<input type='hidden' name='thisstep' value='$thisstep' />\n";
-        echo "<input type='hidden' name='token' value='$clienttoken' />\n";
+        echo CHtml::hiddenField('token',$clienttoken)."\n";
         echo "<input type='hidden' name='saveprompt' value='Y' />\n";
         echo "</form>";
 
@@ -201,7 +201,7 @@ class Save {
                 $message .= $clang->gT("Password").": ".$_POST['savepass']."\n\n";
                 $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($_POST['savename'])."/loadpass/".rawurlencode ($_POST['savepass'])."/lang/".rawurlencode ($clang->langcode));
-                if ($clienttoken) $message .= "/token/{$clienttoken}";
+                if ($clienttoken) $message .= "/token/".rawurlencode($clienttoken);
 
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
                 if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
@@ -219,48 +219,6 @@ class Save {
             }
             return $clang->gT('Your survey was successfully saved.');
         }
-    }
-
-    /**
-    * savesilent() saves survey responses when the "Resume later" button
-    * is press but has no interaction. i.e. it does not ask for email,
-    * username or password or capture.
-    *
-    * @return string confirming successful save.
-    */
-    function savedsilent()
-    {
-        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
-        submitanswer();
-        // Prepare email
-        $tokenentryquery = 'SELECT * from {{tokens_'.$surveyid.'}} WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
-        $tokenentryresult = dbExecuteAssoc($tokenentryquery);
-        $tokenentryarray = $tokenentryresult->read();
-
-        $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-        $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
-        $subject = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
-        $message = $clang->gT("Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey.")."\n\n";
-        $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):").":\n";
-        $language = $tokenentryarray['language'];
-
-        //$message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
-        $message .= "\n\n" . Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/lang/{$language}/token/{$clienttoken}");
-
-        if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
-        {
-            $emailsent = "Y";
-        }
-        else
-        {
-            $clang->eT('Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
-            if (trim($thissurvey['adminemail'])=='')
-            {
-                $clang->eT('(Reason: Admin email address empty)');    
-            }
-            
-        };
-        return  $clang->gT('Your survey was successfully saved.');
     }
 
     /**
@@ -285,7 +243,7 @@ class Save {
         {    
             $setField = $_POST['lastgroup'];
         }
-        $passedTime = round(microtime(true) - $_POST['start_time'],2);
+        $passedTime = str_replace(',','.',round(microtime(true) - $_POST['start_time'],2));
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
             $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
             ."interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime

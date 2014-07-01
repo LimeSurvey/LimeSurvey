@@ -53,7 +53,7 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
                     <?php }
                     else if ($metadata === "name")
                         { ?>
-                        <td><a href='#' onclick=" <?php echo convertGETtoPOST('?action=browse&amp;subaction=all&amp;downloadindividualfile=' . $phparray[$index][$metadata] . '&amp;fieldname=' . $fnames[$i][0] . '&amp;id=' . $dtrow['id'] . '&amp;sid=' . $surveyid); ?>" ><?php echo rawurldecode($phparray[$index][$metadata]); ?></a></td>
+                        <td><?php echo CHtml::link(htmlspecialchars(rawurldecode($phparray[$index][$metadata])), App()->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$dtrow['id']}/surveyid/{$surveyid}",array('downloadindividualfile'=>$phparray[$index][$metadata]))) ?></td>
                         <?php }
                         else
                         { ?>
@@ -79,6 +79,7 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
                 }
                 else
                 {
+                    // Never use purify : too long (X40)
                     $browsedatafield = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($surveyid, $fnames[$i][0], $dtrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
                 }
                 echo "<td><span>$browsedatafield</span></td>\n";

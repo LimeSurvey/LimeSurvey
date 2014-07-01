@@ -22,7 +22,14 @@
         elseif ($action == "editsurveysettings") { ?>
         <li><a href='#panelintegration'><?php $clang->eT("Panel integration"); ?></a></li>
         <li><a href='#resources'><?php $clang->eT("Resources"); ?></a></li>
-        <?php } ?>
+        
+        <?php
+            if (isset($pluginSettings))
+            {
+                echo "<li><a href='#pluginsettings'>" . $clang->gT("Plugins") ."</a></li>";
+            }
+
+        } ?>
     </ul>
     <?php
         if ($action == "editsurveysettings") $sURL="admin/database/index/updatesurveysettings";

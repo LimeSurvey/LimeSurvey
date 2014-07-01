@@ -49,8 +49,8 @@ $(document).ready(function() {
         }
         html = "<tr name='joincondition_"+conditionid+"' id='joincondition_"+conditionid+"'><td>\n\
         <select name='join_"+conditionid+"' id='join_"+conditionid+"'>\n\
-        <option value='and'>AND</option>\n\
-        <option value='or'>OR</option>\n\
+        <option value='and'>"+andTxt+"</option>\n\
+        <option value='or'>"+orTxt+"</option>\n\
         </td><td></td></tr><tr><td>\n\
         <select name='field_"+conditionid+"' id='field_"+conditionid+"'>\n\
         <option>"+selectTxt+"</option>\n\
@@ -103,6 +103,7 @@ $(document).ready(function() {
         postData: {searchcondition:searchconditions},
         colNames : jQuery.parseJSON(colNames),
         colModel: jQuery.parseJSON(colModels),
+        direction: $('html').attr('dir'),
         height: "100%",
         width: "100%",
         rowNum: 25,
@@ -136,27 +137,29 @@ $(document).ready(function() {
             });
         },
         ondblClickRow: function(id) {
-            var can_edit = $('#displayparticipants').getCell(id, 'can_edit');
-            if(can_edit == 'false') {
-                var dialog_buttons={};
-                dialog_buttons[okBtn]=function() {
-                    $( this ).dialog( "close" );
-                };
-                /* End of building array for button functions */
-                $('#notauthorised').dialog({
-                    modal: true,
-                    title: accessDeniedTxt,
-                    buttons: dialog_buttons
-                });
-            } else {
-                {
-                    if(id && id!==lastSel) {
-                        jQuery('#displayparticipants').saveRow(lastSel);
-                        lastSel=id;
+            if($('tr#'+id).closest('tr.ui-subgrid').length == 0) { // Only want this fired on main grid rows, subgrid rows use editModifier()
+                var can_edit = ($('#displayparticipants').getCell(id, 'can_edit')=='true') && bEditPermission;
+                if(!can_edit) {
+                    var dialog_buttons={};
+                    dialog_buttons[okBtn]=function() {
+                        $( this ).dialog( "close" );
+                    };
+                    /* End of building array for button functions */
+                    $('#notauthorised').dialog({
+                        modal: true,
+                        title: accessDeniedTxt,
+                        buttons: dialog_buttons
+                    });
+                } else {
+                    {
+                        if(id && id!==lastSel) {
+                            jQuery('#displayparticipants').saveRow(lastSel);
+                            lastSel=id;
+                        }
                     }
+                    jQuery('#displayparticipants').editRow(id,true);
                 }
-                jQuery('#displayparticipants').editRow(id,true);
-            }
+			}
         },
         pager: "#pager",
         pgtext: pageViewTxt,
@@ -174,6 +177,7 @@ $(document).ready(function() {
 
             /* Subgrid that displays survey links */
             jQuery("#"+second_subgrid_table_id).jqGrid( {
+                direction: $('html').attr('dir'),
                 datatype: "json",
                 url: surveylinkUrl+'/'+row_id,
                 height: "100%",
@@ -202,6 +206,7 @@ $(document).ready(function() {
             /* Subgrid that displays user attributes */
             jQuery("#"+subgrid_table_id).jqGrid( {
                 url: getAttribute_json+'/'+row_id,
+                direction: $('html').attr('dir'),
                 editurl:editAttributevalue,
                 datatype: "json",
                 mtype: "post",
@@ -210,16 +215,17 @@ $(document).ready(function() {
                 editable: true,
                 loadonce : true,
                 colNames: [actionsColTxt,participantIdColTxt,attributeTypeColTxt,attributeIdColTxt,attributeNameColTxt,attributeValueColTxt,attributePosValColTxt],
-                colModel: [ { name:'act',index:'act',width:55,align:'center',search: false,sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){
-                    var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
-                    editModifier(id,iRow, method='edit');
+                colModel: [ { name:'act',index:'act',width:65,align:'center',search: false,sortable:false, formatter:'actions',
+                    formatoptions : { keys:true,onEdit:function(id){
+                        var iRow = $('#' + $.jgrid.jqID(id))[0].rowIndex;
+                        editModifier(id,iRow, method='edit');
                     }}},
-                    { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                    { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:false,hidden:true},
-                    { name:'attid',index:'attid', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                    { name:'participant_id',index:'participant_id', width:10, sorttype:"string",align:"center",editable:true,hidden:true},
+                    { name:'atttype',index:'atttype', width:170, sorttype:"string",align:"center",editable:false,hidden:true},
+                    { name:'attid',index:'attid', width:170, sorttype:"string",align:"center",editable:true,hidden:true},
                     { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
-                    { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
-                    { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:false,hidden:true}],
+                    { name:'attvalue',index:'attvalue', width:170, sorttype:"string",align:"center",editable:true},
+                    { name:'attpvalues',index:'attpvalues', width:10, sorttype:"string",align:"center",editable:false,hidden:true}],
                 sortname: attributeNameColTxt,
                 sortorder: 'asc',
                 sortable: true,
@@ -235,6 +241,9 @@ $(document).ready(function() {
                     /* Removes the delete icon from the actions bar */
                     $('div.ui-inline-del').html('');
                     $("#gview_"+subgrid_table_id).css("margin-top", "20px"); //Some spacing after the subgrid
+                    $(".ui-inline-edit").attr('title',sEditAttributeValueMsg);
+                    $(".ui-inline-save").attr('title',sSubmit);
+                    $(".ui-inline-cancel").attr('title',sCancel);
                 },
                 ondblClickRow: function(id,subgrid_id) {
                     editModifier(id, subgrid_id, method='click');
@@ -243,7 +252,12 @@ $(document).ready(function() {
             });
 
             /* Pager for attribute subgrid */
-            jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{refresh: false, edit:false,add:false,del:false,search:false})
+            jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{
+                refresh: false, 
+                edit:false,
+                add:false,
+                del:false,
+                search:false})
             jQuery("#"+subgrid_table_id).jqGrid('filterToolbar', {searchOnEnter : false, defaultSearch: 'cn'});
         }
     });
@@ -277,6 +291,7 @@ $(document).ready(function() {
         }, //default settings for add
         {msg:deleteMsg, 
             bCancel: sCancel,
+            caption: sDeleteDialogCaption,
             bSubmit: sDeleteButtonCaption,
             width : 900,
             afterShowForm: function($form) {
@@ -445,7 +460,10 @@ $(document).ready(function() {
                             height : 300,
                             open: function(event, ui) {
                                 $('#attributes').multiselect({ includeSelectAllOption:true, 
-                                    selectAllText: 'Select all',
+                                    selectAllValue: '0',
+                                    selectAllText: sSelectAllText,
+                                    nonSelectedText: sNonSelectedText,
+                                    nSelectedText: sNSelectedText,
                                     maxHeight: 140 });
                             }
                         });
@@ -544,7 +562,10 @@ $(document).ready(function() {
                         if(rows=="") { /* All in grid */
                             $.post(
                                 getSearchIDs,
-                                { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
+                                { 
+                                    searchcondition: searchconditions,
+                                    searchURL: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')
+                                },                               
                                 function(data) {
                                     $('#count').val(totalitems);
                                     $('#participant_id').val(data);
@@ -604,7 +625,7 @@ $(document).ready(function() {
         $("#shareform").load(shareUrl, {
             participantid:pid,
             shareuser:$("#shareuser").val(),
-            can_edit:$('#can_edit').attr('checked')
+            can_edit:$('#can_edit').prop('checked')
             }, function(msg){
                 $(this).dialog("close");
                 alert(msg+"."+shareMsg);
@@ -625,85 +646,11 @@ $(document).ready(function() {
         return path.replace(/\\/g,'/').replace( /.*\//, '' );
     }
 
-    $('#addtosurvey').click(function() {
-        var selected = "";
-        var myGrid = $("#displayparticipants").jqGrid();
-        /* the rows variable will contain the UUID of individual items that been ticked in the jqGrid */
-        /* if it is empty, then no items have been ticked */
-        var rows = myGrid.getGridParam('selarrrow');
-
-        if(rows=="") {
-            var totalitems = myGrid.getGridParam('records');
-            $('#allinview').text(addAllInViewTxt.replace('%s', totalitems));
-            $('#allinview').show();
-            $('#selecteditems').hide();
-        } else {
-            var totalitems = rows.length;
-            $('#selecteditems').text(addSelectedItemsTxt.replace('%s', totalitems));
-            $('#selecteditems').show();
-            $('#allinview').hide();
-        }
-
-        var dialog_buttons={};
-        dialog_buttons[mapButton]=function(){
-            var survey_id=$('#survey_id').val();
-            var redirect ="";
-            if(survey_id===null) {
-                /* No survey has been selected */
-                alert(selectSurvey);
-            } else {
-                /* Check if user wants to see token table after adding new participants */
-                if(jQuery('#redirect').is(":checked")) {
-                    redirect = "redirect";
-                } else {
-                    redirect = "";
-                }
-                /* Submit the form with appropriate options depending on whether
-                individual users are selected, or the whole grid is to be copied */
-                if(rows=="") { /* All in grid */
-                    $.post(
-                        getSearchIDs,
-                        { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
-                        function(data) {
-                            $('#count').val(totalitems);
-                            $('#participant_id').val(data);
-                            $("#addsurvey").submit();
-                    });
-                } else { /* Add selected (checked) jqGrid items only */
-                    rows = myGrid.getGridParam('selarrrow');
-                    $('#count').val(totalitems);
-                    $('#participant_id').val(rows);
-                    $("#addsurvey").submit();
-                }
-            }
-        };
-        dialog_buttons[cancelBtn]=function(){
-            $(this).dialog("close");
-        };
-        /* End of building array containing button functions */
-
-        $("#addsurvey").dialog({
-            height: 500,
-            width: 500,
-            title : addsurvey,
-            modal: true,
-            open: function(event, ui) {
-                $('#addsurvey').dialog('option', 'title', addsurvey + ' ('+totalitems+')');
-            },
-            buttons: dialog_buttons
-        });
-
-        if (!($("#survey_id").length > 0)) {
-            $('#addsurvey').html(addpartErrorMsg);
-        }
-    });
-
     function editModifier(id, subgrid_id, method) {
         var parid = id.split('_');
         var participant_id = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'participant_id');
-        var lsel = parid[0];
-        var can_edit = $('#displayparticipants').getCell(participant_id,'can_edit');
-        if(can_edit == 'false') {
+        var can_edit = ($('#displayparticipants').getCell(parid[0],'can_edit')=='true' && bEditPermission);
+        if(!can_edit) {
             var dialog_buttons={};
             dialog_buttons[okBtn]=function(){
                 $( this ).dialog( "close" );
@@ -715,9 +662,13 @@ $(document).ready(function() {
                 buttons: dialog_buttons
             });
         } else {
+            if(id && id!==lastSel2) { //If there was already another row open for editin save it before editing this one
+                $('tr#'+lastSel2+' div.ui-inline-save').click();
+                lastSel2=id;
+            }
             var att_type = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'atttype');
             if(att_type=="DP") { //Date
-                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
+                $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text', editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
             }
             if(att_type=="DD") { //Dropdown
                 var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
@@ -727,19 +678,15 @@ $(document).ready(function() {
                 $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
                 $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
             }
-            var attap = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attap');
-            if(id && id!==lastSel2) { //If there was already another row open for editin save it before editing this one
-                jQuery("#displayparticipants_"+parid[0]+"_t").saveRow(lastSel2);
-                //jQuery.fn.fmatter.rowactions('97358ea2-8227-483b-a225-5d13a522402e_50','displayparticipants_97358ea2-8227-483b-a225-5d13a522402e_t','cancel',0);
-                lastSel2=id;
-            }
-            $.fn.fmatter.rowactions(id,'displayparticipants_'+parid[0]+'_t','edit',0);
             if(method=='edit') {
+             //   jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
+            }
+            if(method=='click') {
                 jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('restoreRow',id);
-                jQuery("#displayparticipants_"+parid[0]+"_t").restoreRow(id);
+				jQuery("tr#"+id+" .ui-inline-edit").hide();
+				jQuery("tr#"+id+" .ui-inline-save, tr#"+id+" .ui-inline-cancel").show();
             }
             jQuery("#displayparticipants_"+parid[0]+"_t").jqGrid('editRow',id,true);
-            jQuery("#displayparticipants_"+parid[0]+"_t").editRow(id,true);
         }
     }
 

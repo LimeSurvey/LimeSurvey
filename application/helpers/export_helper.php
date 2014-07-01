@@ -124,7 +124,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
                 if (isset($row[$fieldno]))
                 {
                     list( $year, $month, $day, $hour, $minute, $second ) = preg_split( '([^0-9])', $row[$fieldno] );
-                    if ($year != '' && (int)$year >= 1970)
+                    if ($year != '' && (int)$year >= 1900)
                     {
                         echo $q.date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) ).$q;
                     } else
@@ -341,7 +341,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
 'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
 'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
-'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
+'D'=>Array('name'=>'Date','size'=>20,'SPSStype'=>'DATETIME23.2'),
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
 'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),

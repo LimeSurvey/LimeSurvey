@@ -65,6 +65,21 @@ class Quota extends LSActiveRecord
 		);
 	}
 
+    /**
+    * Returns this model's validation rules
+    *
+    */
+    public function rules()
+    {
+        return array(
+            array('name','LSYii_Validators'),// Maybe more restrictive 
+            array('qlimit', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'allowEmpty'=>true), 
+            array('action', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'2', 'allowEmpty'=>true), // Default is null ?
+            array('active', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true), 
+            array('autoload_url', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true), 
+        );
+    }
+
     function insertRecords($data)
     {
         $quota = new self;

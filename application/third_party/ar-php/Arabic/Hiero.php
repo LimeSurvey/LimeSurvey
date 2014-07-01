@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -72,7 +72,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -95,7 +95,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -156,9 +156,9 @@ class I18N_Arabic_Hiero
     * @return resource Image resource identifier
     * @author Khaled Al-Sham'aa <khaled@ar-php.org>
     */
-    public function str2graph($word, $dir = 'ltr', $lang = 'en', 
-                                    $red = null, $green = null, $blue = null)
-    {
+    public function str2graph(
+        $word, $dir = 'ltr', $lang = 'en', $red = null, $green = null, $blue = null
+    ) {
         if ($this->_language == 'phoenician') {
             define(MAXH, 40);
             define(MAXW, 50);
@@ -236,8 +236,11 @@ class I18N_Arabic_Hiero
                 $char = $arabic[$char];
             }
 
-            if (file_exists(dirname(__FILE__)."/images/{$this->_language}/$char.gif")) {
-                list($width, $height) = getimagesize(dirname(__FILE__)."/images/{$this->_language}/$char.gif");
+            if (file_exists(dirname(__FILE__)."/images/{$this->_language}/$char.gif")
+            ) {
+                list($width, $height) = getimagesize(
+                    dirname(__FILE__)."/images/{$this->_language}/$char.gif"
+                );
             } else {
                 $width  = MAXW;
                 $height = MAXH;
@@ -282,8 +285,10 @@ class I18N_Arabic_Hiero
                     list($width, $height) = getimagesize($filename);
 
                     $image = imagecreatefromgif($filename);
-                    imagecopy($im, $image, $current_x, $max_h - $height, 
-                               0, 0, $width, $height);
+                    imagecopy(
+                        $im, $image, $current_x, $max_h - $height, 
+                        0, 0, $width, $height
+                    );
                 } else {
                     $width = MAXW;
                 }
@@ -294,8 +299,7 @@ class I18N_Arabic_Hiero
                     list($width, $height) = getimagesize($filename);
 
                     $image = imagecreatefromgif($filename);
-                    imagecopy($im, $image, 0, $current_y, 
-                               0, 0, $width, $height);
+                    imagecopy($im, $image, 0, $current_y, 0, 0, $width, $height);
                 } else {
                     $height = MAXH;
                 }

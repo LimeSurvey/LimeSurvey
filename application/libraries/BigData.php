@@ -196,19 +196,18 @@
             echo '</data>';
             echo '</array>';
         }
+        
         /**
          * Prints XMLRPC numeric types.
          * @param type $data
          */
         protected static function xmlrpc_echo_number($data)
         {
-            if (is_float($data))
-            {
-                self::tag('double', $data);
-            }
-            elseif (is_int($data))
-            {
+            if (floor($data) == $data){
                 self::tag('int', $data);
+            }
+            else {
+                self::tag('double', $data);
             }
         }
         
@@ -218,9 +217,7 @@
             foreach ($data as $key => $value)
             {
                 echo '<member>';
-                echo '<name>';
-                self::xmlrpc_echo_string($key);
-                echo '</name>';
+                echo self::tag('name', "<![CDATA[$key]]>");
                 echo '<value>';
                 self::xmlrpc_echo($value);
                 echo '</value>';
@@ -232,16 +229,13 @@
         
         protected static function xmlrpc_echo_stream($data)
         {
-            echo '<base64>';
-            stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ);
-
-            echo '</base64>';
+            $data->render();
         }
+
         protected static function xmlrpc_echo_string($data)
         {
             self::tag('string', "<![CDATA[$data]]>");
         }
-        
     }
 
     class BigFile {

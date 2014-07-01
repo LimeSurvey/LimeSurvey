@@ -15,6 +15,11 @@
 class LSYii_Validators extends CValidator {
 
     /**
+    * Filter attribute for fixCKeditor
+    * @var boolean
+    */
+    public $fixCKeditor=false;
+    /**
     * Filter attribute for XSS
     * @var boolean
     */
@@ -49,7 +54,7 @@ class LSYii_Validators extends CValidator {
         if($this->isUrl)
         {
             if ($object->$attribute== 'http://' || $object->$attribute=='https://') {$object->$attribute="";}
-            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
+            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"); // 140219 : Why not urlencode ?
         }
         if($this->isLanguage)
         {
@@ -60,16 +65,50 @@ class LSYii_Validators extends CValidator {
             $object->$attribute=$this->multiLanguageFilter($object->$attribute);
         }
     }
-    
+
     /**
-    * Defines the customs validation rule xssfilter
+    * Remove some empty characters put by CK editor
+    * Did we need to do if user don't use inline HTML editor ?
     * 
-    * @param mixed $value
+    * @param string $value
+    */
+    public function fixCKeditor($value)
+    {
+        // Actually don't use it in model : model apply too when import : needed or not ?
+        $value = str_replace('<br type="_moz" />','',$value);
+        if ($value == "<br />" || $value == " " || $value == "&nbsp;")
+        {
+            $value = "";
+        }
+        if (preg_match("/^[\s]+$/",$value))
+        {
+            $value='';
+        }
+        if ($value == "\n")
+        {
+            $value = "";
+        }
+        if (trim($value) == "&nbsp;" || trim($value)=='')
+        { // chrome adds a single &nbsp; element to empty fckeditor fields
+            $value = "";
+        }
+        return $value;
+    }
+    /**
+    * Remove any script or dangerous HTML 
+    * 
+    * @param string $value
     */
     public function xssFilter($value)
     {
         $filter = new CHtmlPurifier();
         $filter->options = array(
+            'AutoFormat.RemoveEmpty'=>false,
+            'CSS.AllowTricky'=>true, // Allow display:none; (and other)
+            'HTML.SafeObject'=>true, // To allow including youtube
+            'Output.FlashCompat'=>true,
+            'Attr.EnableID'=>true, // Allow to set id
+            'Attr.AllowedFrameTargets'=>array('_blank','_self'),             
             'URI.AllowedSchemes'=>array(
                 'http' => true,
                 'https' => true,
@@ -79,7 +118,32 @@ class LSYii_Validators extends CValidator {
                 'news' => true,
                 )
         );
-        return $filter->purify($value);
+        // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
+        Yii::import('application.helpers.expressions.em_core_helper');// Already imported in em_manager_helper.php ?
+        $oExpressionManager= new ExpressionManager;
+        $aValues=$oExpressionManager->asSplitStringOnExpressions($value);// Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
+        $sNewValue="";
+        foreach($aValues as $aValue){
+            if($aValue[2]=="STRING")
+                $sNewValue.=$filter->purify($aValue[0]);
+            else
+            {
+                $sExpression=trim($aValue[0], '{}');
+                $sNewValue.="{";
+                $aParsedExpressions=$oExpressionManager->Tokenize($sExpression,true);// Return array of array : 0=>the string,1=>string length,2=>string type 
+                foreach($aParsedExpressions as $aParsedExpression)
+                {
+                    if($aParsedExpression[2]=='DQ_STRING')
+                        $sNewValue.="\"".$filter->purify($aParsedExpression[0])."\"";
+                    elseif($aParsedExpression[2]=='SQ_STRING')
+                        $sNewValue.="'".$filter->purify($aParsedExpression[0])."'";
+                    else
+                        $sNewValue.=$aParsedExpression[0];
+                }
+                $sNewValue.="}";
+            }
+        }
+        return $sNewValue;
     }
     /**
     * Defines the customs validation rule for language string
@@ -102,4 +166,5 @@ class LSYii_Validators extends CValidator {
         $aValue=array_map("sanitize_languagecode",$aValue);
         return implode(" ",$aValue);
     }
+        
 }

@@ -155,6 +155,8 @@ function templateExtractFilter($p_event, &$p_header)
     $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedtemplateuploads'));    
     $aAllowExtensions[]='pstpl'; 
     $info = pathinfo($p_header['filename']);
+    // Deny files with multiple extensions in general
+    if (substr_count($info['basename'],'.')!=1) return 0;
     if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'],$aAllowExtensions)) {
         return 1;
     }

@@ -25,9 +25,13 @@
             <img src='<?php echo $sImageURL;?>blank.gif' alt='' width='11' />
             <img src='<?php echo $sImageURL;?>separator.gif' id='separator1' class='separator' alt='' />
 
-            <a href="<?php echo $this->createUrl("admin/user/sa/index"); ?>">
-                <img src='<?php echo $sImageURL;?>security.png' alt='<?php $clang->eT("Manage survey administrators");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
             <?php
+                if(Permission::model()->hasGlobalPermission('users','read'))
+                {?>
+                <a href="<?php echo $this->createUrl("admin/user/sa/index"); ?>">
+                    <img src='<?php echo $sImageURL;?>security.png' alt='<?php $clang->eT("Manage survey administrators");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
+                <?php
+                };
                 if(Permission::model()->hasGlobalPermission('usergroups','read'))
                 {?>
                 <a href="<?php echo $this->createUrl("admin/usergroups/sa/index"); ?>">

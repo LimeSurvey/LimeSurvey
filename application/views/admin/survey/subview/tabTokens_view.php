@@ -1,5 +1,4 @@
 <div id='tokens'><ul>
-
         <li><label for='anonymized'><?php $clang->eT("Anonymized responses?"); ?>
 
                 <script type="text/javascript"><!--
@@ -16,7 +15,6 @@
                         }
                     }
                     //--></script></label>
-
             <?php if ($esrow['active'] == "Y") {
                     if ($esrow['anonymized'] == "N") { ?>
                     <?php $clang->eT("Responses to this survey are NOT anonymized."); ?>
@@ -114,11 +112,8 @@
                     ><?php $clang->eT("No"); ?></option>
             </select>
         </li>
-
-
         <li><label for='tokenlength'><?php $clang->eT("Set token length to:"); ?></label>
-            <input type='text' value="<?php echo $esrow['tokenlength']; ?>" name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
+            <input type='text' value="<?php echo $esrow['tokenlength']; ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
         </li>
-
-
     </ul></div>
+    

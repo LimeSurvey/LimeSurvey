@@ -79,22 +79,31 @@
                 }
             }
         }
-
     } 
 
     function sTranslateLangCode2CK($sLanguageCode){
-
-        $aTranslationTable=array('de-informal'=>'de',
-        'nl-formal'=>'nl');
+        $aTranslationTable=array(
+        'ca-valencia'=>'ca',
+        'de-informal'=>'de',
+        'es-AR-informal'=>'es',
+        'es-AR'=>'es',
+        'es-CL'=>'es',
+        'es-MX'=>'es',
+        'it-informal'=>'it',
+        'nl-informal'=>'nl',
+        'nn'=>'no',
+        'zh-Hans'=>'zh-cn',
+        'zh-Hant-HK'=>'zh',
+        'zh-Hant-TW'=>'zh'
+        );
         if (isset($aTranslationTable[$sLanguageCode])) {
             $sResultCode=$aTranslationTable[$sLanguageCode];
         }
         else
         {
-            $sResultCode=$sLanguageCode;
+            $sResultCode=strtolower($sLanguageCode);
         }
         return $sResultCode;
-
     }
 
 
@@ -102,6 +111,7 @@
     {
         $clang = Yii::app()->lang;
         $data['clang'] = $clang;
+
         App()->getClientScript()->registerCoreScript('ckeditor');
         if ($controller == null)
         {
@@ -188,7 +198,7 @@
         }
 
         $htmlcode .= ""
-        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='editorLink'>\n"
+        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes($fieldtext)."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='editorLink'>\n"
         . "\t<img alt=\"".$clang->gT("Start HTML editor in a popup window")."\" id='".$fieldname."_popupctrlena' src='".Yii::app()->getConfig('adminimageurl')."edithtmlpopup.png' $imgopts class='btneditanswerena' />\n"
         . "\t<img alt=\"".$clang->gT("Give focus to the HTML editor popup window")."\" id='".$fieldname."_popupctrldis' src='".Yii::app()->getConfig('adminimageurl')."edithtmlpopup_disabled.png' style='display:none' $imgopts class='btneditanswerdis' />\n"
         . "</a>\n";
@@ -197,7 +207,7 @@
     }
 
     function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
-    {
+    {                         
         $htmlcode = '';
         $imgopts = '';
         $toolbarname = 'inline';
@@ -248,7 +258,8 @@
         
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
-        . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
+        . "$(document).ready(
+        function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
         customConfig : \"".Yii::app()->getConfig('adminscripts')."ckeditor-config.js\"
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsSID : \"".$surveyID."\"

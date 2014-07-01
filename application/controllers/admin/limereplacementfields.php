@@ -208,8 +208,8 @@ class limereplacementfields extends Survey_Common_Action
             case 'editdescription': // for translation
             case 'editwelcome': // for translation
             case 'editend': // for translation
-                $replFields[] = array('TOKEN:FIRSTNAME', $clang->gT("Firstname from token"));
-                $replFields[] = array('TOKEN:LASTNAME', $clang->gT("Lastname from token"));
+                $replFields[] = array('TOKEN:FIRSTNAME', $clang->gT("First name from token"));
+                $replFields[] = array('TOKEN:LASTNAME', $clang->gT("Last name from token"));
                 $replFields[] = array('TOKEN:EMAIL', $clang->gT("Email from the token"));
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
@@ -219,7 +219,8 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields[] = array('EXPIRY', $clang->gT("Survey expiration date"));
                 return array($replFields, false);
 
-            case 'email-admin-notification':
+            case 'email-admin_notification':
+			case 'email-admin_detailed_notification':
                 $replFields[] = array('RELOADURL', $clang->gT("Reload URL"));
                 $replFields[] = array('VIEWRESPONSEURL', $clang->gT("View response URL"));
                 $replFields[] = array('EDITRESPONSEURL', $clang->gT("Edit response URL"));
@@ -258,17 +259,17 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields[] = array('ADMINEMAIL', $clang->gT("Email address of the survey administrator"));
                 return array($replFields, false);
 
-            case 'email-inv':
-            case 'email-rem':
+            case 'email-invitation':
+            case 'email-reminder':
                 // these 2 fields are supported by email-inv and email-rem
                 // but not email-reg for the moment
                 $replFields[] = array('EMAIL', $clang->gT("Email from the token"));
                 $replFields[] = array('TOKEN', $clang->gT("Token code for this participant"));
-                $replFields[] = array('OPTOUTURL', $clang->gT("URL for a respondent to opt-out this survey"));
-                $replFields[] = array('OPTINURL', $clang->gT("URL for a respondent to opt-in this survey"));
-            case 'email-reg':
-                $replFields[] = array('FIRSTNAME', $clang->gT("Firstname from token"));
-                $replFields[] = array('LASTNAME', $clang->gT("Lastname from token"));
+                $replFields[] = array('OPTOUTURL', $clang->gT("URL for a respondent to opt-out of this survey"));
+                $replFields[] = array('OPTINURL', $clang->gT("URL for a respondent to opt-in to this survey"));
+            case 'email-registration':
+                $replFields[] = array('FIRSTNAME', $clang->gT("First name from token"));
+                $replFields[] = array('LASTNAME', $clang->gT("Last name from token"));
                 $replFields[] = array('SURVEYNAME', $clang->gT("Name of the survey"));
                 $replFields[] = array('SURVEYDESCRIPTION', $clang->gT("Description of the survey"));
                 $attributes = getTokenFieldsAndNames($surveyid, true);
@@ -282,10 +283,10 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields[] = array('EXPIRY', $clang->gT("Survey expiration date"));
                 return array($replFields, false);
 
-            case 'email-conf':
+            case 'email-confirmation':
                 $replFields[] = array('TOKEN', $clang->gT("Token code for this participant"));
-                $replFields[] = array('FIRSTNAME', $clang->gT("Firstname from token"));
-                $replFields[] = array('LASTNAME', $clang->gT("Lastname from token"));
+                $replFields[] = array('FIRSTNAME', $clang->gT("First name from token"));
+                $replFields[] = array('LASTNAME', $clang->gT("Last name from token"));
                 $replFields[] = array('SURVEYNAME', $clang->gT("Name of the survey"));
                 $replFields[] = array('SURVEYDESCRIPTION', $clang->gT("Description of the survey"));
                 $attributes = getTokenFieldsAndNames($surveyid, true);
@@ -314,8 +315,8 @@ class limereplacementfields extends Survey_Common_Action
             case 'editgroup_desc': // for translation
             case 'editquestion': // for translation
             case 'editquestion_help': // for translation
-                $replFields[] = array('TOKEN:FIRSTNAME', $clang->gT("Firstname from token"));
-                $replFields[] = array('TOKEN:LASTNAME', $clang->gT("Lastname from token"));
+                $replFields[] = array('TOKEN:FIRSTNAME', $clang->gT("First name from token"));
+                $replFields[] = array('TOKEN:LASTNAME', $clang->gT("Last name from token"));
                 $replFields[] = array('TOKEN:EMAIL', $clang->gT("Email from the token"));
                 $replFields[] = array('SID', $clang->gT("This question's survey ID number"));
                 $replFields[] = array('GID', $clang->gT("This question's group ID number"));

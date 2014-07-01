@@ -9,8 +9,26 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id: browse.js 10251 2011-06-10 17:33:49Z tpartner $
 */
+
+/* Tooltip only on mouseenter and only if there are no title
+ * This allow to set tooltip only when needed
+ */
+$(document).on("mouseenter",".browsetable thead th:not([title])",function(){
+  $(this).attr('title',$(this).find(".questiontext").text());
+  $(this).tooltip({ tooltipClass: "tooltip-text" });//,track: true allow to update always tooltip, but seems really annoying
+});
+$(document).on("mouseenter",".browsetable tbody td:not([title])",function(){
+  if($(this).text().length>20)// 20 seem a good value, maybe less (10 ?)
+  {
+    $(this).attr('title',$(this).text());
+    $(this).tooltip({ tooltipClass: "tooltip-text" });
+  }
+  else
+  {
+    $(this).attr('title',"");// Don't do this again
+  }
+});
 $(document).ready(function(){
     $('ul.sf-menu').superfish({
         speed:'fast'
@@ -23,50 +41,7 @@ $(document).ready(function(){
         $("#limit").val('');
         $("#browseresults").submit();
     });
-    
-    // Fix the heigh of the cell
-    $('.browsetable td').each(function(){
-        if ($.trim($(this).text()).length > 30){
-            $(this).html("<span class=\"content\" title=\""+htmlspecialchars(htmlspecialchars($(this).text(),'ENT_HTML_QUOTE_DOUBLE'),'ENT_QUOTES')+"\">"+$(this).html()+"</span>");
-        }
-    });
-    $('.browsetable th .questiontext').each(function(){
-        if ($.trim($(this).text()).length > 30){
-            $(this).addClass("content");
-            //$(this).attr("title",$(this).text());
-        }
-    });
 
-    $('.browsetable th .content').qtip({
-        content: {
-            text: function(api) {
-                return $(this).html();
-            }
-        },
-        style: {
-            classes: "qtip-light qtip-rounded"
-        },
-        position: {
-            viewport: $(window),
-            my: 'top right',
-            at: 'bottom right'
-        }
-    });
-    $('.browsetable td span.content').qtip({
-        content: {
-            text: function(api) {
-                return $(this).html();
-            }
-        },
-        style: {
-            classes: "qtip-light qtip-rounded"
-        },
-        position: {
-            viewport: $(window),
-            my: 'top right',
-            at: 'bottom right'
-        }
-    });
     // Delete individual file
     $(".deleteresponse").click(function(){
         thisid=removechars($(this).attr('id'));

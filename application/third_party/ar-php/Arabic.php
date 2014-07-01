@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Shamaa.
+ * Copyright (c) 2006-2013 Khaled Al-Shamaa.
  *  
  * http://www.ar-php.org
  *  
@@ -50,10 +50,10 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Shamaa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Shamaa
+ * @copyright 2006-2013 Khaled Al-Shamaa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
- * @version   3.0.0 released in Feb 5, 2012
+ * @version   3.6.0 released in Jan 20, 2013 with {@link http://bugs.limesurvey.org/view.php?id=7159 LimeSurvey fix}
  * @link      http://www.ar-php.org
  */
 
@@ -68,7 +68,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Shamaa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Shamaa
+ * @copyright 2006-2013 Khaled Al-Shamaa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org
@@ -136,9 +136,9 @@ class I18N_Arabic
      * @desc Load selected library/class you would like to use its functionality
      * @author Khaled Al-Shamaa <khaled@ar-php.org>
      */
-    public function __construct($library, $useAutoload=false, 
-                                $useException=false, $compatibleMode=true)
-    {
+    public function __construct(
+        $library, $useAutoload=false, $useException=false, $compatibleMode=true
+    ) {
         $this->_useAutoload    = $useAutoload;
         $this->_useException   = $useException;
         $this->_compatibleMode = $compatibleMode;
@@ -165,9 +165,9 @@ class I18N_Arabic
         }
         
         if ($library) {
-            if ($this->_compatibleMode && 
-                array_key_exists($library, $this->_compatible)) {
-                
+            if ($this->_compatibleMode 
+                && array_key_exists($library, $this->_compatible)
+            ) {
                 $library = $this->_compatible[$library];
             }
 
@@ -201,9 +201,12 @@ class I18N_Arabic
      */ 
     public static function myErrorHandler($errno, $errstr, $errfile, $errline)
     {
-        if ($errfile == __FILE__ || 
-            file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.'Arabic'.
-                                          DIRECTORY_SEPARATOR.basename($errfile))) {
+        if ($errfile == __FILE__ 
+            || file_exists(
+                dirname(__FILE__).DIRECTORY_SEPARATOR.'Arabic'.
+                DIRECTORY_SEPARATOR.basename($errfile)
+            )
+        ) {
             $msg  = '<b>Arabic Class Exception:</b> ';
             $msg .= $errstr;
             $msg .= " in <b>$errfile</b>";
@@ -226,8 +229,9 @@ class I18N_Arabic
      */ 
     public function load($library)
     {
-        if ($this->_compatibleMode && 
-            array_key_exists($library, $this->_compatible)) {
+        if ($this->_compatibleMode 
+            && array_key_exists($library, $this->_compatible)
+        ) {
             
             $library = $this->_compatible[$library];
         }
@@ -261,8 +265,9 @@ class I18N_Arabic
      */                                  
     public function __call($methodName, $arguments)
     {
-        if ($this->_compatibleMode && 
-            array_key_exists($methodName, $this->_compatible)) {
+        if ($this->_compatibleMode 
+            && array_key_exists($methodName, $this->_compatible)
+        ) {
             
             $methodName = $this->_compatible[$methodName];
         }
@@ -281,17 +286,20 @@ class I18N_Arabic
                 $value = $parameter->getDefaultValue();
             }
             
-            $params[$name] = $this->coreConvert($value, 
-                                                $this->getInputCharset(), 
-                                                'utf-8');
+            $params[$name] = $this->coreConvert(
+                $value, 
+                $this->getInputCharset(), 
+                'utf-8'
+            );
         }
 
         $value = call_user_func_array(array(&$this->myObject, $methodName), $params);
 
         if ($methodName == 'tagText') {
             foreach ($value as $key=>$text) {
-                $value[$key][0] = $this->coreConvert($text[0], 'utf-8', 
-                                                     $this->getOutputCharset());
+                $value[$key][0] = $this->coreConvert(
+                    $text[0], 'utf-8', $this->getOutputCharset()
+                );
             }
         } else {
             $value = $this->coreConvert($value, 'utf-8', $this->getOutputCharset());
@@ -476,7 +484,8 @@ class I18N_Arabic
      * @param string   $mode [http|html|mysql|mysqli|pdo|text_email|html_email]
      * @param resource $conn The MySQL connection handler/the link identifier
      *                                  
-     * @return string header formula if there is any (in cases of html, text_email, and html_email)
+     * @return string header formula if there is any (in cases of html, 
+     *                text_email, and html_email)
      * @author Khaled Al-Shamaa <khaled@ar-php.org>
      */
     public static function header($mode = 'http', $conn = null)
@@ -532,7 +541,6 @@ class I18N_Arabic
         return $head;
     }
 
-
     /**
      * Get web browser chosen/default language using ISO 639-1 codes (2-letter)
      *          
@@ -547,75 +555,21 @@ class I18N_Arabic
     }
 
     /**
-     * Renders regular expression pattern using an enhanced version of syntax and semantics 
-     * to support arabic version of some specifying generic character types
+     * There is still a lack of original, localized, high-quality content and 
+     * well-structured Arabic websites; This method help in tag HTML result pages 
+     * from Arabic forum to enable filter it in/out.
      *
-     * @param string  $pattern The pattern to search for, as a string using syntax and
-     *                         semantics of the regular expressions enhanced by arabic
-     *                         version of some specifying generic character types:
-     *                         \[ar]w    any Arabic letter (including Harakat and Tatweel if $vowels is true)
-     *                         \[ar]d    any decimal Arabic-Indic digit
-     *                         \[ar]v    any Arabic vowel character (i.e. Harakat including Tatweel)
-     *                         \[ar]p    any Arabic puncation character
-     *                         \[ar]W    any character that is not an  Arabic letter (including Harakat and Tatweel if $vowels is true)
-     *                         \[ar]D    any character that is not a decimal Arabic-Indic digit
-     *                         \[ar]V    any character that is not an Arabic vowel character (i.e. Harakat including Tatweel)
-     *                         \[ar]P    any character that is not an Arabic puncation character
-     * @param boolean $vowels  True will include Harakat and Tatweel to the Arabic
-     *                         letters set (default is true)
-     *
-     * @return string Rendered regular expression pattern
-     * @author Khaled Al-Shamaa <khaled@ar-php.org>
-     */
-    public static function pregPattern($pattern, $vowels=true)
-    {
-        /**
-         * PCRE Patterns - Pattern Modifiers: u (PCRE8) 
-         * This modifier turns on additional functionality of PCRE that is 
-         * incompatible with Perl. Pattern strings are treated as UTF-8.
-         * This modifier is available from PHP 4.1.0 or greater on Unix and 
-         * from PHP 4.2.3 on win32. UTF-8 validity of the pattern is checked 
-         * since PHP 4.3.5
-         */
-         
-        $arDigits    = '\x{0660}-\x{0669}'; // Arabic-Indic digits
-        $arVowels    = '\x{0640}\x{064B}-\x{0652}'; // Harakat including Tatweel
-        $arLetters   = '\x{0621}-\x{063A}\x{0641}-\x{064A}'; // Arabic letters
-        $arPuncation = '\x{060C}\x{060D}\x{061B}-\x{061F}\x{2E2E}\x{066A}-\x{066D}'; // Puncation
-    
-        if ($vowels === true) {
-            $arLetters .= $arVowels;
-        }
-        
-        $pattern = str_replace('\[ar]w', $arLetters, $pattern);
-        $pattern = str_replace('\[ar]d', $arDigits, $pattern);
-        $pattern = str_replace('\[ar]v', $arVowels, $pattern);
-        $pattern = str_replace('\[ar]p', $arPuncation, $pattern);
-        
-        $pattern = str_replace('\[ar]W', "[^$arLetters]", $pattern);
-        $pattern = str_replace('\[ar]D', "[^$arDigits]", $pattern);
-        $pattern = str_replace('\[ar]V', "[^$arVowels]", $pattern);
-        $pattern = str_replace('\[ar]P', "[^$arPuncation]", $pattern);
-        
-        return $pattern;
-    }
-    
-    /**
-     * There is still a lack of original, localized, high-quality content and well-structured 
-     * Arabic websites; This method help in tag HTML result pages from Arabic forum to enable 
-     * filter it in/out.
-     *
-     * @param string  $html The HTML content of the page in question
+     * @param string $html The HTML content of the page in question
      *
      * @return boolean True if the input HTML is belong to a forum page
      * @author Khaled Al-Shamaa <khaled@ar-php.org>
      */
     public static function isForum($html)
     {
-        $forum = FALSE;
+        $forum = false;
         
-        if (strpos($html, 'vBulletin_init();') !== FALSE) {
-            $forum = TRUE;
+        if (strpos($html, 'vBulletin_init();') !== false) {
+            $forum = true;
         }
         
         return $forum;
@@ -628,7 +582,7 @@ class I18N_Arabic
  * @category  I18N
  * @package   I18N_Arabic
  * @author    Khaled Al-Shamaa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Shamaa
+ * @copyright 2006-2013 Khaled Al-Shamaa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org

@@ -77,7 +77,7 @@ $config['stringcomparizonoperators']   =   0;                // By default, Lime
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $config['blacklistallsurveys']     =  'N';          // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']     =  'N';          // Blacklist participant for any new added survey once the global field is set
-$config['blockaddingtosurveys']     =  'N';         // Don't allow blacklisted participants to be added to new survey
+$config['blockaddingtosurveys']     =  'Y';         // Don't allow blacklisted participants to be added to new survey
 $config['hideblacklisted']     =  'N';              // Don't show blacklisted participants
 $config['deleteblacklisted']     =  'N';            // Delete globally blacklisted participant from the database
 $config['allowunblacklist']     =  'N';             // Allow participant to unblacklist himself/herself
@@ -86,7 +86,7 @@ $config['defaulttemplate']    =  'default';         // This setting specifys the
 
 $config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js';  // File types allowed to be uploaded in the templates section.
 
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 $config['memory_limit']        =  '32';   // This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
 
@@ -235,6 +235,15 @@ $config['usercontrolSameGroupPolicy'] = true;
 // * Disables the ability to save the following global settings: Site name, Default language, Default Htmleditor Mode, XSS filter
 
 $config['demoMode'] = false;
+
+/**
+* Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated. 
+* Also a notice will be shown that the user knows that he can just login by using the Login button.
+* 
+* @var $config['demoModePrefill']  boolan  If set to true prefill the login mask
+*/
+$config['demoModePrefill'] = false;
+
 
 /** 
 * column_style
@@ -551,6 +560,16 @@ $config['InsertansUnsupportedtypes'] = array();
 * @var string
 */
 $config['updatenotification'] = 'both';
+
+// Proxy settings for ComfortUpdate
+/**
+* Set these if you are behind a proxy and want to update LS using ComfortUpdate
+*
+* $proxy_host_name Your proxy server name (string)
+* $proxy_host_port Your proxy server port (int)
+*/
+$config['proxy_host_name'] = '';
+$config['proxy_host_port'] = 80;
 
 
 // === Advanced Setup

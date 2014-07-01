@@ -14,7 +14,7 @@
 
             <div id='editgrp_<?php echo $i;?>'>
                 <ul><li><label for='group_name_<?php echo $aGroupData[$i]['language']; ?>'><?php $clang->eT("Title"); ?>:</label>
-                        <input type='text' maxlength='100' size='80' name='group_name_<?php echo $aGroupData[$i]['language']; ?>' id='group_name_<?php echo $aGroupData[$i]['language']; ?>' value="<?php echo $aGroupData[$i]['group_name']; ?>" />
+                        <input type='text' maxlength='100' size='80' name='group_name_<?php echo $aGroupData[$i]['language']; ?>' id='group_name_<?php echo $aGroupData[$i]['language']; ?>' value="<?php echo htmlspecialchars($aGroupData[$i]['group_name']); ?>" />
                     </li>
                     <li><label for='description_<?php echo $aGroupData[$i]['language']; ?>'><?php $clang->eT("Description:"); ?></label>
                         <div class="htmleditor">

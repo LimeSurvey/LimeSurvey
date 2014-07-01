@@ -60,7 +60,6 @@
 //           functions specified in flags. flags can be bitwise
 //           combination of PARANOID, SQL, SYSTEM, HTML, INT, FLOAT, LDAP,
 //           UTF8
-// sanitize_email($email) -- input any string, all non-email chars will be removed
 // sanitize_user($string) -- total length check (and more ??)
 // sanitize_userfullname($string) -- total length check (and more ??)
 //
@@ -71,7 +70,6 @@
 //               in sanitize_sql_string() function, created rudimentary testing pages
 // 20031221 gz - added nice_addslashes and changed sanitize_sql_string to use it
 // 20070213 lemeur - marked sanitize_sql_string as obsolete, should use db_quote instead
-// 20071025 c_schmitz - added sanitize_email
 // 20071032 lemeur - added sanitize_user and sanitize_userfullname
 //
 /////////////////////////////////////////
@@ -117,6 +115,8 @@ function sanitize_filename($string, $force_lowercase = true, $alphanumeric = fal
     $lastdot=strrpos($string, ".");
     $clean = trim(str_replace($strip, "_", strip_tags($string)));
     $clean = preg_replace('/\s+/', "-", $clean);
+    // remove the leading dot if any, this prevents the creation of hidden files on unix platforms
+    $clean = preg_replace('/^\./', '', $clean);
     $clean = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
     if ($lastdot !== false) {
         $clean= substr_replace ( $clean , '.' , $lastdot , 1 );
@@ -126,6 +126,22 @@ function sanitize_filename($string, $force_lowercase = true, $alphanumeric = fal
             mb_strtolower($clean, 'UTF-8') :
             strtolower($clean) :
         $clean;
+}
+
+
+/**
+ * Function: sanitize_dirname
+ * sanitizes a string that will be used as a directory name
+ *
+ * Parameters:
+ *     $string - The string to sanitize.
+ *     $force_lowercase - Force the string to lowercase?
+ *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
+ */
+
+function sanitize_dirname($string, $force_lowercase = true, $alphanumeric = false) {
+    $string = str_replace(".", "", $string);
+    return sanitize_filename($string, $force_lowercase, $alphanumeric);
 }
 
 
@@ -152,16 +168,6 @@ function sanitize_cquestions($string, $min='', $max='')
         return FALSE;
         return $string;
     }
-}
-
-function sanitize_email($email) {
-    // Handles now emails separated with a semikolon
-    $emailarray=explode(';',$email);
-    for ($i = 0; $i <= count($emailarray)-1; $i++)
-    {
-        $emailarray[$i]=preg_replace("/[^`'a-zA-Z0-9;+_=|.$%&#!{*~?}^@-]/i", "", $emailarray[$i]);
-    }
-    return implode(';',$emailarray);
 }
 
 // sanitize a string in prep for passing a single argument to system() (or similar)

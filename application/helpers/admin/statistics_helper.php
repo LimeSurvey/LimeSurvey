@@ -71,8 +71,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     if (count($lbl)>72)
     {
         $DataSet = array(1=>array(1=>1));
-        if ($cache->IsInCache("graph".$language.$iSurveyID,$DataSet) && Yii::app()->getConfig('debug')<2) {
-            $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet));
+        if ($cache->IsInCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet) && Yii::app()->getConfig('debug')<2) {
+            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
         }
         else
         {
@@ -81,8 +81,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->drawTitle(0,0,$clang->gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
-            $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet,$graph);
-            $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet));
+            $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet,$graph);
+            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -90,8 +90,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     if (array_sum($gdata ) == 0)
     {
         $DataSet = array(1=>array(1=>1));
-        if ($cache->IsInCache("graph".$language.$iSurveyID,$DataSet) && Yii::app()->getConfig('debug')<2) {
-            $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet));
+        if ($cache->IsInCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet) && Yii::app()->getConfig('debug')<2) {
+            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
         }
         else
         {
@@ -100,8 +100,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->drawTitle(0,0,$clang->gT('Sorry, but this question has no responses yet so a graph cannot be shown.','unescaped'),30,30,30,690,200);
-            $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet,$graph);
-            $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet));
+            $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet,$graph);
+            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -189,8 +189,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $counter++;
             }
 
-            if ($cache->IsInCache("graph".$language.$iSurveyID,$DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
-                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
+            if ($cache->IsInCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
+                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
             }
             else
             {
@@ -219,8 +219,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
 
-                $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet->GetData(),$graph);
-                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
+                $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
                 unset($graph);
             }
         }	//end if (bar chart)
@@ -284,8 +284,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $DataSet->AddAllSeries();
             $DataSet->SetAbsciseLabelSerie("Serie2");
 
-            if ($cache->IsInCache("graph".$language.$iSurveyID, $DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
-                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
+            if ($cache->IsInCache("graph".$iSurveyID.$language.$iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
+                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
             }
             else
             {
@@ -301,8 +301,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
                 $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
                 $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
-                $cache->WriteToCache("graph".$language.$iSurveyID,$DataSet->GetData(),$graph);
-                $cachefilename=basename($cache->GetFileFromCache("graph".$language.$iSurveyID,$DataSet->GetData()));
+                $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
                 unset($graph);
             }
         }	//end else -> pie charts
@@ -3198,7 +3198,11 @@ class statistics_helper {
                 {
                     $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
                 }
-                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
+                $sSSL='';
+                if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off"){
+                    $sSSL='s';
+                }
+                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
                 ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
                 return $statisticsoutput;
 

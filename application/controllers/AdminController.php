@@ -112,7 +112,7 @@ class AdminController extends LSYii_Controller
             }
             else
             {
-                $sLanguage=Yii::app()->request->getPost('lang');
+                $sLanguage=sanitize_languagecode(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
@@ -264,8 +264,7 @@ class AdminController extends LSYii_Controller
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
         $aData = array();
-        $aData['adminlang'] = Yii::app()->session['adminlang'];
-
+        $aData['adminlang'] = $this->lang->getlangcode();
         //$data['admin'] = getLanguageRTL;
         $aData['test'] = "t";
         $aData['languageRTL']="";
@@ -273,13 +272,14 @@ class AdminController extends LSYii_Controller
 
         Yii::app()->loadHelper("surveytranslator");
 
-        if (getLanguageRTL(Yii::app()->session["adminlang"]))
+        if (getLanguageRTL($aData['adminlang']))
         {
             $aData['languageRTL'] = " dir=\"rtl\" ";
             $aData['bIsRTL']=true;
         }
         else
         {
+            $aData['languageRTL'] = " dir=\"ltr\" ";
             $aData['bIsRTL']=false;
         }
 
@@ -291,8 +291,8 @@ class AdminController extends LSYii_Controller
 
         $aData['baseurl'] = Yii::app()->baseUrl . '/';
         $aData['datepickerlang']="";
-        if (Yii::app()->session["adminlang"] != 'en')
-            Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-" . Yii::app()->session['adminlang'] .".js");
+        if ($aData['adminlang'] != 'en')
+            Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-" . $aData['adminlang'] .".js");
             
             
         $aData['sitename'] = Yii::app()->getConfig("sitename");

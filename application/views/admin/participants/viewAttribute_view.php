@@ -31,7 +31,7 @@
 </ul>
 
 <div id='ddtable' style='display: none'>
-    <table width='400' class='hovertable' style='margin:0 auto'>
+    <table class='hovertable'>
         <tr>
             <th colspan='2'><?php $clang->eT('Values:'); ?></th>
         </tr>
@@ -40,7 +40,7 @@
             {
             ?>
             <tr>
-                <td class='data'>
+                <td class='data' data-text='<?php echo $value['value']; ?>' data-id='<?php echo $value['value_id']; ?>'>
                     <div class=editable id="<?php echo $value['value_id']; ?>">
                         <?php
                             echo $value['value'];
@@ -49,6 +49,13 @@
                 </td>
                 <td class='actions'>
                     <?php
+                        $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'cancel_16.png',
+                            'alt' => $clang->gT("Cancel editing"),
+                            'width' => '16',
+                            'class' => 'cancel',
+                            'height' => '16',
+                            'title' => $clang->gT("Cancel editing"));
+                        echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
                         $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'edit_16.png',
                             'alt' => $clang->gT("Edit value"),
                             'width' => '15',
@@ -61,7 +68,7 @@
                             'alt' => $clang->gT("Delete value"),
                             'width' => '15',
                             'height' => '15',
-                            'class'=> 'edit',
+                            'class'=> 'delete',
                             'title' => $clang->gT("Delete value"));
                         echo CHtml::link(CHtml::image($del['src'], $del['alt'], array_slice($del, 2)), $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']));
                 ?></td>
@@ -70,7 +77,7 @@
             }
         ?>
     </table>
-    <table width='400' style='margin:0 auto'>
+    <table>
         <tr>
             <td></td>
             <td class='actions'>

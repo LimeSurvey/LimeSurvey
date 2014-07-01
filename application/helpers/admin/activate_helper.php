@@ -284,7 +284,8 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "lastpage":
                 $createsurvey[$arow['fieldname']] = "integer";
                 break;
-            case "N":  //NUMERICAL
+            case "N":  //Numerical
+            case "K":  //Multiple Numerical
                 $createsurvey[$arow['fieldname']] = "decimal (30,10)";
                 break;
             case "S":  //SHORT TEXT
@@ -304,9 +305,6 @@ function activateSurvey($iSurveyID, $simulate = false)
                 {
                     $createsurvey[$arow['fieldname']] = "text";
                 }
-                break;
-            case "K":  // Multiple Numerical
-                $createsurvey[$arow['fieldname']] = "float";
                 break;
             case "U":  //Huge text
             case "Q":  //Multiple short text
@@ -435,7 +433,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             $column[$field] = 'FLOAT';
         }
 
-        $tabname = "{{survey_{$iSurveyID}}}_timings";
+        $tabname = "{{survey_{$iSurveyID}_timings}}";
         try
         {
             $execresult = createTable($tabname,$column);

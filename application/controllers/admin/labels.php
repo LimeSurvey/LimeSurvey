@@ -61,7 +61,7 @@ class labels extends Survey_Common_Action
             $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
             $destdir = $basedestdir . "/$lid/";
 
-            Yii::app()->loadLibrary('admin.pclzip.pclzip');
+            Yii::app()->loadLibrary('admin.pclzip');
             $zip = new PclZip($zipfilename);
 
             if (!is_writeable($basedestdir))

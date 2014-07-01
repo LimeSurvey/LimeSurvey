@@ -10,16 +10,70 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-$(document).ready(function(){
-    $("body").delegate("#title", "keypress", function(e) {
-        key=e.which;
-        if ( key==null || key==0 || key==8 || key==9  || key==27 )
-            return true;
-        thischar=String.fromCharCode(key);
-        returnvalue=(thischar==thischar.replace(/['`~!@#$%^&*()|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,''));
-        return returnvalue;
-    });
-    $("body").delegate("#title", "keyup", function() {
-        $(this).val($(this).val().replace(/['`~!@#$%^&*()|+\-=?;:'",.<>\{\}\[\]\\\/]/gi,''));
-    });
+/**
+* Validate question object on blur on title element
+*/
+$(document).on('blur','#frmeditquestion :not(:hidden)[name="title"]',function(){
+    validateQuestion($(this));
 });
+/**
+* Validate question object before click on a submit button
+*/
+$(document).on('click','#frmeditquestion :submit',{validated:false},function(event,data){
+    data = data || event.data;
+    if(data.validated){
+        return true;
+    }else{
+        validateQuestion($(this));
+        return false;
+    }
+});
+/**
+* Validate question object before submit : actually only title need to be validated
+* This disallow submitting if Question code are not unique (else loose all fields)
+*/
+function validateQuestion(jqObject){
+    if(typeof jqObject=="undefined"){jqObject=$([]);}
+    $.post(
+        validateUrl,
+        { title: $('#frmeditquestion [name="title"]:first').val() },
+        function(data){
+                if($.isEmptyObject(data))
+                {
+                    if(hasFormValidation)
+                    {
+                        $('#frmeditquestion [type!=hidden][name="title"]').filter(":first")[0].setCustomValidity('');// Just title actually, more input needed after ($.each)
+                    }
+                    $('#frmeditquestion [type!=hidden][name="title"]').removeClass("has-error");
+                    $('#frmeditquestion [type!=hidden][name="title"]').next('.errorMessage').remove();
+                    if($(jqObject).is(":submit")){
+                        $(jqObject).trigger('click', { validated: true });
+                    }
+                }
+                else
+                {
+                    $.each(data, function(name, aError) {
+                        if($(jqObject).is(":submit")){
+                            $("#frmeditquestion").closest("#tabs").find(".ui-tabs-anchor:first").click();
+                            $('#frmeditquestion [type!=hidden][name="'+name+'"]').focus();// Focus on the first input
+                        }
+                        $('#frmeditquestion [type!=hidden][name="'+name+'"]').addClass("has-error");
+                        if(!$('#frmeditquestion [type!=hidden][name="'+name+'"]').next('.errorMessage').length)// $.each ?
+                        {
+                            $("<span class='errorMessage text-error' />").insertAfter('#frmeditquestion [type!=hidden][name="'+name+'"]');
+                        }
+                        $.each(aError,function(i,error){
+                            if(hasFormValidation)
+                            {
+                                $('#frmeditquestion [type!=hidden][name="'+name+'"]').each(function(){
+                                    $(this)[0].setCustomValidity(error);
+                                });
+                            }
+                            $('#frmeditquestion [type!=hidden][name="'+name+'"]').next('.errorMessage').text(error);
+                        });
+                    });
+                }
+            },
+        dataType="json"
+    )
+}

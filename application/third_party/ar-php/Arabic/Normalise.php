@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -67,7 +67,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Djihed Afifi <djihed@gmail.com>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -96,7 +96,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Djihed Afifi <djihed@gmail.com>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -203,13 +203,26 @@ class I18N_Arabic_Normalise
      */ 
     public function normaliseLamaleph ($text) 
     {
-        $text = str_replace($this->_chars['LAM_ALEPH'], $simple_LAM_ALEPH, $text);
-        $text = str_replace($this->_chars['LAM_ALEPH_HAMZA_ABOVE'], 
-                            $simple_LAM_ALEPH_HAMZA_ABOVE, $text);
-        $text = str_replace($this->_chars['LAM_ALEPH_HAMZA_BELOW'], 
-                            $simple_LAM_ALEPH_HAMZA_BELOW, $text);
-        $text = str_replace($this->_chars['LAM_ALEPH_MADDA_ABOVE'], 
-                            $simple_LAM_ALEPH_MADDA_ABOVE, $text);
+        $text = str_replace(
+            $this->_chars['LAM_ALEPH'], 
+            $simple_LAM_ALEPH, 
+            $text
+        );
+        $text = str_replace(
+            $this->_chars['LAM_ALEPH_HAMZA_ABOVE'], 
+            $simple_LAM_ALEPH_HAMZA_ABOVE, 
+            $text
+        );
+        $text = str_replace(
+            $this->_chars['LAM_ALEPH_HAMZA_BELOW'], 
+            $simple_LAM_ALEPH_HAMZA_BELOW, 
+            $text
+        );
+        $text = str_replace(
+            $this->_chars['LAM_ALEPH_MADDA_ABOVE'], 
+            $simple_LAM_ALEPH_MADDA_ABOVE, 
+            $text
+        );
         return $text;
     }
 
@@ -306,7 +319,8 @@ class I18N_Arabic_Normalise
     }
     
     /**
-     * Checks for Arabic Tashkeel marks (i.e. FATHA, DAMMA, KASRA, SUKUN, SHADDA, FATHATAN, DAMMATAN, KASRATAN).
+     * Checks for Arabic Tashkeel marks (i.e. FATHA, DAMMA, KASRA, SUKUN, 
+     * SHADDA, FATHATAN, DAMMATAN, KASRATAN).
      *
      * @param string $archar Arabic unicode char
      *      
@@ -390,7 +404,8 @@ class I18N_Arabic_Normalise
     }
     
     /**
-     * Checks for Arabic Ligatures like LamAlef (i.e. LAM ALEF, LAM ALEF HAMZA ABOVE, LAM ALEF HAMZA BELOW, LAM ALEF MADDA ABOVE).
+     * Checks for Arabic Ligatures like LamAlef (i.e. LAM ALEF, LAM ALEF HAMZA 
+     * ABOVE, LAM ALEF HAMZA BELOW, LAM ALEF MADDA ABOVE).
      *
      * @param string $archar Arabic unicode char
      *      
@@ -411,7 +426,8 @@ class I18N_Arabic_Normalise
     }
     
     /**
-     * Checks for Arabic Hamza forms (i.e. HAMZA, WAW HAMZA, YEH HAMZA, HAMZA ABOVE, HAMZA BELOW, ALEF HAMZA BELOW, ALEF HAMZA ABOVE).
+     * Checks for Arabic Hamza forms (i.e. HAMZA, WAW HAMZA, YEH HAMZA, HAMZA ABOVE, 
+     * HAMZA BELOW, ALEF HAMZA BELOW, ALEF HAMZA ABOVE).
      *
      * @param string $archar Arabic unicode char
      *      
@@ -432,7 +448,8 @@ class I18N_Arabic_Normalise
     }
     
     /**
-     * Checks for Arabic Alef forms (i.e. ALEF, ALEF MADDA, ALEF HAMZA ABOVE, ALEF HAMZA BELOW,ALEF WASLA, ALEF MAKSURA).
+     * Checks for Arabic Alef forms (i.e. ALEF, ALEF MADDA, ALEF HAMZA ABOVE, 
+     * ALEF HAMZA BELOW,ALEF WASLA, ALEF MAKSURA).
      *
      * @param string $archar Arabic unicode char
      *      

@@ -1,7 +1,7 @@
 
 /*** Start jQuery UI Theme Styles ***/
 
-button.ui-button::-moz-focus-inner {
+.ui-button::-moz-focus-inner {
 	border: 0; 
 	padding: 0;   /* Get rid of extra padding in focused button in FF */
 }
@@ -21,22 +21,19 @@ button.ui-button::-moz-focus-inner {
 	line-height: normal;
 }
 
-button.ui-state-default,
-input.ui-state-default {  
+.ui-state-default {  
 	color: #333333; 
 	background: #E0FCFF none;
     border: 1px solid #86B8BC;
 }
 
-button.ui-state-hover,
-input.ui-state-hover {  
+.ui-state-hover {  
 	color: #212121;
 	background: #C2F9FF none; 
 	border: 1px solid #00677D;
 }
 
-button.ui-state-active,
-input.ui-state-active {  
+.ui-state-active {  
 	color: #FFFFFF;
 	background: #7BBBCC none !important;  
 	border: 1px solid #00677D;
@@ -423,19 +420,14 @@ div#footer .rk-2 {
   text-align: justify;
 }
 
-.submit {
+.button {
   background-color: #e0fcff;
   border: 1px solid #86b8bc;
   cursor: pointer;
   font-size: 13px;
 }
 
-.submit:hover {
-  background: #c2f9ff;
-  border: 1px solid #00677d;
-}
-
-input.submit:hover {
+.button:hover {
   background: #c2f9ff;
   border: 1px solid #00677d;
 }
@@ -649,13 +641,13 @@ table.question tr.array2:hover {
 .assessments td{
 	text-align: center;
 }
-A:link,A:visited,A:active {
+a {
   text-decoration: none;
   color: #00677d;
   border-bottom: 1px dashed #00677d;
 }
 
-A:hover {
+a:hover {
   text-decoration: none;
   color: #004554;;
   border-bottom: 1px solid #004554;
@@ -990,6 +982,10 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   display: inline-block;
   *display:inline;
   width: 90%;
+}
+.multiple-opt .survey-question-answer ul.colstyle-css li label, .multiple-opt .survey-question-answer ul.colstyle-ul li label, .multiple-opt .survey-question-answer table.colstyle-table li label,
+.multiple-opt-comments .survey-question-answer ul.colstyle-css li label, .multiple-opt-comments .survey-question-answer ul.colstyle-ul li label, .multiple-opt-comments .survey-question-answer table.colstyle-table li label {
+    display: inline;
 }
 .multiple-opt .survey-question-answer li.other-item label,.multiple-opt-comments .survey-question-answer li.other-item .option label {
   width: auto;

@@ -593,12 +593,16 @@ a.optoutemail {
 .edituser,
 .users,
 .assessmentlist,
-.listsurveys,
+.listtokenattributes,
 .surveysecurity {
     text-align:center;
     margin:0 auto;
 }
 
+.listtokenattributes td{
+    text-align:center;
+   
+}
 
 .conditionlist table,
 #filterchoices
@@ -689,7 +693,7 @@ ul.assessmentscope li label:first-child {
     width:80%;
 }
 
-.listsurveys
+.listtokenattributes
 {
     width:70%;
 }
@@ -708,7 +712,7 @@ ul.assessmentscope li label:first-child {
 .edituser th,
 .surveysecurity th,
 .users th,
-.listsurveys th {
+.listtokenattributes th {
     background-color: #fff;
     text-align: center;
     font-size:0.8em;
@@ -742,7 +746,7 @@ ul.assessmentscope li label:first-child {
 
 .users td,
 .surveysecurity td,
-.listsurveys td {
+.listtokenattributes td {
     font-size:0.8em;
     padding:2px 6px;
 }
@@ -950,6 +954,7 @@ table.statisticstable, table.statisticssummary {
     border-style: none;
     margin: 0 auto;
     margin-bottom:20px;
+    min-width:270px;
 }
 
 .statisticssummary thead th
@@ -1493,6 +1498,15 @@ thead th
 .userpermissions th,
 .usersurveypermissions th{
     padding:0 2em;
+}
+.userpermissions td,
+.usersurveypermissions td {
+    padding: 0.2em 0.5em;
+    text-align:center;
+}
+.userpermissions input[type="checkbox"],
+.usersurveypermissions [type="checkbox"] {
+	margin: 0;
 }
 
 #responsedetail td{

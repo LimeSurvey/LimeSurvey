@@ -86,6 +86,8 @@ class TokenDynamic extends LSActiveRecord
     {
         return array(
         array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+        array('email','filter','filter'=>'trim'),        
+        array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true), 
         array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),     
         array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 

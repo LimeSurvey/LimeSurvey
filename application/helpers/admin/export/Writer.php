@@ -312,16 +312,17 @@ abstract class Writer implements IWriter
     * @param string $value
     * @param string $fieldType
     * @param FormattingOptions $oOptions
+    * @param string $column The name of the column
     * @return string
     */
-    protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions)
+    protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions, $column = null)
     {
         //The following if block handles transforms of Ys and Ns.
         if (($oOptions->convertN || $oOptions->convertY) &&
         isset($fieldType) &&
         ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y'))
         {
-            if ($value == 'N' && $oOptions->convertN)
+            if (($value == 'N' || ($value == '' && !is_null($value)))  && $oOptions->convertN)
             {
                 //echo "Transforming 'N' to ".$oOptions->nValue.PHP_EOL;
                 return $oOptions->nValue;
@@ -405,12 +406,19 @@ abstract class Writer implements IWriter
                 {
                     switch ($oOptions->answerFormat) {
                         case 'long':
-                            $elementArray[] = $this->transformResponseValue($survey->getFullAnswer($column, $value, $this->translator, $this->languageCode), $survey->fieldMap[$column]['type'], $oOptions);
+                            $elementArray[] = $this->transformResponseValue(
+                                $survey->getFullAnswer($column, $value, $this->translator, $this->languageCode), 
+                                $survey->fieldMap[$column]['type'], 
+                                $oOptions,
+                                $column);
                             break;
                         default:
                         case 'short':
-                            $elementArray[] = $this->transformResponseValue($value,
-                            $survey->fieldMap[$column]['type'], $oOptions);
+                            $elementArray[] = $this->transformResponseValue(
+                                $value,
+                                $survey->fieldMap[$column]['type'], 
+                                $oOptions,
+                                $column);
                             break;
                     }
                 }

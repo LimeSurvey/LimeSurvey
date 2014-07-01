@@ -3,12 +3,12 @@
 
 
         <li><label for='emailnotificationto'><?php $clang->eT("Send basic admin notification email to:"); ?></label>
-            <input size='70' type='email' value="<?php echo $esrow['emailnotificationto']; ?>" id='emailnotificationto' name='emailnotificationto' />
+            <input size='70' type='email' value="<?php echo htmlspecialchars($esrow['emailnotificationto']); ?>" id='emailnotificationto' name='emailnotificationto' />
         </li>
 
 
         <li><label for='emailresponseto'><?php $clang->eT("Send detailed admin notification email to:"); ?></label>
-            <input size='70' type='email' value="<?php echo $esrow['emailresponseto']; ?>" id='emailresponseto' name='emailresponseto' />
+            <input size='70' type='email' value="<?php echo htmlspecialchars($esrow['emailresponseto']); ?>" id='emailresponseto' name='emailresponseto' />
         </li>
 
 
@@ -147,7 +147,7 @@
             </select></li>
 
         <li><label for='googleanalyticsapikey'><?php $clang->eT("Google Analytics API key for this survey?"); ?></label>
-            <input type='text' value='<?php echo $esrow['googleanalyticsapikey']; ?>' name='googleanalyticsapikey' id='googleanalyticsapikey' size='20'/>
+            <input type='text' value='<?php echo htmlspecialchars($esrow['googleanalyticsapikey'],ENT_QUOTES); ?>' name='googleanalyticsapikey' id='googleanalyticsapikey' size='20'/>
         </li>
 
         <li><label for='googleanalyticsstyle'><?php $clang->eT("Google Analytics style for this survey?"); ?></label>

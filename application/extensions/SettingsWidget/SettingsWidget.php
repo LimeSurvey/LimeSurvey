@@ -10,20 +10,46 @@
          * @var array Buttons for the form.
          */
         public $buttons = array();
+
+        /**
+         * Set to false to render elements in an existing form.
+         * @var boolean
+         */
+        public $form = true;
         public $formHtmlOptions = array();
         public $method = 'post';
+        public $prefix;
         public $settings = array();
 
+        public $title;
 
 
         public function beginForm()
         {
-            echo CHtml::beginForm($this->action, $this->method, $this->formHtmlOptions);
+            if ($this->form)
+            {
+                echo CHtml::beginForm($this->action, $this->method, $this->formHtmlOptions);
+            }
+            else
+            {
+                echo CHtml::openTag('div', array('class' => 'settingswidget', 'id' => $this->getId()));
+            }
+            if (isset($this->title))
+            {
+                echo CHtml::tag('legend', array(), $this->title);
+            }
         }
 
         public function endForm()
         {
-            echo CHtml::endForm();
+            if ($this->form)
+            {
+                echo CHtml::endForm();
+            }
+            else
+            {
+                echo CHtml::closeTag('div');
+            }
         }
         public function init() {
             parent::init();
@@ -39,7 +65,6 @@
 
             // Start form
             $this->beginForm();
-
         }
 
         protected function renderButton($label, $htmlOptions)
@@ -62,10 +87,12 @@
 
         protected function renderButtons()
         {
+            echo CHtml::openTag('div', array('class' => 'buttons'));
             foreach ($this->buttons as $label => $htmlOptions)
             {
                 $this->renderButton($label, $htmlOptions);
             }
+            echo CHtml::closeTag('div');
         }
 
         protected function renderSetting($name, $metaData, $form = null, $return = false)
@@ -79,6 +106,11 @@
             );
             $metaData = array_merge($defaults, $metaData);
 
+            if (isset($this->prefix))
+            {
+                $name = "{$this->prefix}[$name]";
+            }
+            
             if (is_string($metaData['class']))
             {
                 $metaData['class'] = array($metaData['class']);
@@ -101,8 +133,22 @@
                     }
                 }
 
-                
-                $result = $this->$function($name, $metaData, $form);
+                // Handle styles
+                if (isset($metaData['style']) && is_array($metaData['style']))
+                {
+                    $style = '';
+                    foreach($metaData['style'] as $key => $value)
+                    {
+                        $style .= "$key : $value;";
+                    }
+                    $metaData['style'] = $style;
+                }
+                else
+                {
+                    $metaData['style'] = null;
+                }
+
+                $result = CHtml::tag('div',array('class'=>'setting', 'data-name' => $name), $this->$function($name, $metaData, $form));     // render inside a div
                 
                 if ($return)
                 {
@@ -117,7 +163,6 @@
 
         protected function renderSettings()
         {
-            //echo '<pre>'; var_dump($this->settings); echo ('</pre>'); return;
             foreach($this->settings as $name => $metaData)
             {
                 $this->renderSetting($name, $metaData);
@@ -155,11 +200,12 @@
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
+            $out .= CHtml::openTag('div', array('class' => 'boolean'));
             $out .= CHtml::radioButtonList($id, $value, array(
                 0 => 'False',
                 1 => 'True'
-            ), array('id' => $id, 'form' => $form, 'container'=>'div', 'separator' => ''));
-
+            ), array('id' => $id, 'form' => $form, 'container'=> false, 'separator' => ''));
+            $out .= CHtml::closeTag('div');
 
             return $out;
         }
@@ -207,7 +253,17 @@
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
-            $out .= Chtml::tag('div', array('class' => implode(' ', $metaData['class'])), CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly)));
+            $out .= Chtml::tag('div', array('class' => implode(' ', $metaData['class'])),
+				$this->widget('bootstrap.widgets.TbHtml5Editor', array(
+					'name' => $id,
+                    'value' => $value,
+					'width' => '100%',
+					'editorOptions' => array(
+						'html' => true,
+
+					)
+				), true)
+			);
             return $out;
         }
 
@@ -216,6 +272,7 @@
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
+            if (is_array($value)) { throw new CException('wrong type' . $name); }
             if (isset($metaData['label']))
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
@@ -228,6 +285,28 @@
             ));
 
             return $out;
+        }
+
+        public function renderJson($name, array $metaData, $form = null)
+        {
+            $out = '';
+            $id = $name;
+            $value = isset($metaData['current']) ? $metaData['current'] : '';
+            $readOnly = isset($metaData['readOnly']) ? $metaData['readOnly'] : false;
+            if (isset($metaData['label']))
+            {
+                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
+            }
+            $editorOptions = array_merge(array(
+                'mode' => 'form',
+                'modes' => array('form', 'code', 'tree', 'text')
+            ), isset($metaData['editorOptions']) ? $metaData['editorOptions'] : array());
+            $out .= $this->widget('ext.yii-jsoneditor.JsonEditor', array(
+                'name' => $id,
+                'value' => $value,
+                'editorOptions' => $editorOptions
+            ), true);
+			return $out;
         }
 
         public function renderLogo($name, array $metaData)
@@ -259,10 +338,27 @@
             $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
             if (isset($metaData['label']))
             {
-                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
+                $out .= CHtml::label($metaData['label'], $id);
             }
-            $out .= CHtml::dropDownList($name, $value, $metaData['options'], array('form' => $form));
-
+            $properties = array(
+                'data' => $metaData['options'],
+                'name' => $name,
+                'value' => $value,
+                'options' => array(
+                    'minimumResultsForSearch' => 1000
+                )
+            );
+            
+            // allow to submit the form when this element changes
+            if (isset($metaData['submitonchange']) && $metaData['submitonchange']) {
+                $properties['events'] = array(
+                    'change' => 'js: function(e) {
+        this.form.submit();
+}'
+                );
+            }
+            
+            $out .= App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', $properties, true);
             return $out;
         }
 
@@ -291,7 +387,7 @@
             {
                 $out .= CHtml::label($metaData['label'], $id);
             }
-            $out .= CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly));
+            $out .= CHtml::textArea($id, $value, array('id' => $id, 'form' => $form, 'readonly' => $readOnly, 'style' => $metaData['style']));
             return $out;
         }
 
@@ -314,11 +410,11 @@
             $id = $name;
             if (isset($metaData['label']))
             {
-                $label = CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
+                $result = CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
             else
             {
-                $label = '';
+                $result = '';
             }
 
             $headers = '';
@@ -338,21 +434,21 @@
                 )
                 
             ), true));
-            echo CHtml::openTag('div', array('class' => 'settingslist'));
-                echo CHtml::openTag('table');
-                    // Create header row.
-                    echo CHtml::openTag('thead');
-                        echo $headers;
-                    echo CHtml::closeTag('thead');
-
-                    // Create cells.
-                    echo CHtml::openTag('tbody');
-                        echo CHtml::openTag('tr');
-                        echo $cells;
-                        echo CHtml::closeTag('tr');
-                    echo CHtml::closeTag('tbody');
-                echo CHtml::closeTag('table');
-            echo CHtml::closeTag('div');
+            $result .= CHtml::openTag('div', array('class' => 'settingslist'));
+            $result .= CHtml::openTag('table');
+            // Create header row.
+            $result .= CHtml::openTag('thead');
+            $result .= $headers;
+            $result .= CHtml::closeTag('thead');
+            // Create cells.
+            $result .= CHtml::openTag('tbody');
+            $result .= CHtml::openTag('tr');
+            $result .= $cells;
+            $result .= CHtml::closeTag('tr');
+            $result .= CHtml::closeTag('tbody');
+            $result .= CHtml::closeTag('table');
+            $result .= CHtml::closeTag('div');
+            return $result;
         }
     }
 

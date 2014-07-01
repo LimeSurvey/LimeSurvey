@@ -1003,7 +1003,7 @@ class dataentry extends Survey_Common_Action
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
                                 $qAttributes = getQuestionAttributeValues($fname['qid']);
-                                for ($i = 0; $i < $qAttributes['max_num_of_files'], isset($metadata[$i]); $i++)
+                                for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
                                         $aDataentryoutput .= '<tr><td>Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
@@ -1825,9 +1825,10 @@ class dataentry extends Survey_Common_Action
                                     $message .= "\n\n".$thissurvey['name']."\n\n";
                                     $message .= $clang->gT("Name").": ".$saver['identifier']."\n";
                                     $message .= $clang->gT("Password").": ".$saver['password']."\n\n";
-                                    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):").":\n";
-                                    $message .= Yii::app()->getConfig('publicurl')."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&lang=".urlencode($saver['language'])."&loadname=".urlencode($saver['identifier'])."&loadpass=".urlencode($saver['password']);
-                                    if (isset($tokendata['token'])) { $message .= "&token=".$tokendata['token']; }
+                                    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
+                                    $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($saver['identifier'])."/loadpass/".rawurlencode ($saver['password'])."/lang/".rawurlencode($saver['language']));
+                                    if (isset($tokendata['token'])) { $message .= "/token/".rawurlencode($tokendata['token']); }
+                                    
                                     $from = $thissurvey['adminemail'];
 
                                     if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))

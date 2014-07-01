@@ -5,7 +5,7 @@
  * Do not change these unless you know what you are doing.
  * 
  */
-date_default_timezone_set('UTC');
+@date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
 	'basePath' => dirname(dirname(__FILE__)),
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',

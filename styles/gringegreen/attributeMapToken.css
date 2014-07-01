@@ -2,103 +2,163 @@ html, body{
     height: 100%;
 }
 
-.newcreate li {
-
+.draggable-container {
+	min-height: 300px;
 }
 
-.newcreate ul{
-    padding : 100px;
-}
-
-.centralatt {
-   margin-top: -5px;
-}
-
-.centralatt li {
-    margin-top: 10px;
-    border-bottom: 0px;
-    min-height: 35px;
-}
-
-.newcreate, .csvatt, .cpdbatt {
-    min-height: 100px;
-    padding-bottom: 50px;
-}
-
-#tokenatt {
-    min-height: 100px;
-}
-
-#tokenatt li {
-    margin-top: 10px;
-}
-
-.newcreate li {
-    margin-top: 10px;
-}
-
-#newcreated,#tokenattribute,#centralattribute{
+#newcreated,
+#tokenattribute,
+#centralattribute {
     float: left;
     background-color: #EFFBDB;
     height: 100%;
     margin-top:10px;
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-left: 0.75%;
+    margin-right: 0.75%;
     margin-bottom: 20px;
     border-color: #85BD00;
     border-style:solid;
     border-radius: 10px;
     border-width: 1px;
-    overflow : auto;
     text-align:center;
-    width:27%;
+    width: 30.5%;
 }
 
-#newcreated ul, #centralattribute ul, #tokenattribute ul{
-    margin-left: -35px;
+#tokenattribute {
+    margin-left: 1.5%;
 }
 
-#newcreated, #tokenattribute{
+#centralattribute {
+    margin-right: 1.5%;
+}
+
+#tokenatt,
+#newcreated .newcreate {
+    border: 1px solid #EFFBDB;
+    border-radius: 0 0 10px 10px;
+}
+
+#centralattribute .centralatt {
+    padding-bottom: 15px;
+}
+
+#newcreated .attribute-item,
+#centralattribute .mappable-attribute-wrapper.paired div {
+	color: #FFFFFF;
+	background-color: #878787;
+}
+
+#newcreated  .attribute-item input {
+	display: block;
+	margin: 2px auto;
+	width: 80%;
+}
+
+#centralattribute div.centralatt div.token-attribute {
+	margin-top: -5px;
+	border-top: 0;
+	min-height: 20px;
+}
+
+#centralattribute div.centralatt div.paired {
+	border-bottom: 0 none;
+}
+
+#newcreated, 
+#tokenattribute {
     height: 100%;
 }
 
- .heading{
+.heading{
     background: #8CCE00;
     text-decoration: none;
-    color: #EFFBDB;
-    border-width: 1px;
-    vertical-align: middle;
-    height: 23px;
+    color:#EFFBDB;
+    border: 1px solid #8CCE00;
+    border-radius: 10px 10px 0 0;
+    height: auto;
     padding-top: 7px;
     font-weight: bold;
 }
-li{
-        border:solid 2px #DEDEDE;
-        background:#FFFFFF ;
-        color:#222222;
-        width : 200px;
-        margin-top: 2px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 2px;
-        list-style: none;
-        padding:4px;
-        text-align:center;
+
+div.mappable-attribute-wrapper {
+	width : 90%;
+	margin: 2px auto;
+	padding:2px;
 }
-.notsortable li{
-        background:#696565;
-        color: white;
+
+div.attribute-item {
+	border:solid 2px #DEDEDE;
+	background:#FFFFFF ;
+	color:#222222;
+	width : 80%;
+	margin: 6px auto;
+	padding:4px;
+	text-align:center;
 }
-.explanation {
-    font-size: 0.8em;
-    width: 75%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-    padding: 5px 0px 5px 15px;
+
+div.mappable-attribute-wrapper div.attribute-item {
+	width : 88.88888888888889%;
+	margin: 0 auto;
+	padding:4px;
+	text-align:center;
 }
-.explanation input {
-    position: relative;
-    margin-left: -20px;
-    top: 3px;
+
+
+.notsortable div.attribute-item{
+	background:#878787;
+	color: white;
 }
+
+#centralattribute .explanation {
+	width:90%;
+	margin: 0 auto;
+	text-align: left;
+}
+
+#centralattribute .explanation-row {
+	display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+	display: table-cell;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+	padding-left: 8px;
+}
+
+.attribute-item.draggable {
+	cursor: move;
+}
+
+.droppable.target-hover {
+	background-color: #E0EACC;
+}
+
+#tokenatt.target-hover,
+#newcreated .newcreate.target-hover {
+    border-color: #E0EACC;
+}
+
+div.mappable-attribute-wrapper.target-hover {
+	padding-bottom: 27px;
+}
+
+div.mappable-attribute-wrapper.paired.target-hover {
+	padding-bottom: 4px;
+}
+
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+    opacity: 1;
+	filter:alpha(opacity=100);
+}
+
+.draggable-container .attribute-column .ui-draggable-dragging {
+	z-index:100;
+	color: #222222 !important;
+	background-color: #FFFFFF !important;
+}
+

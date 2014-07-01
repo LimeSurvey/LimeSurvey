@@ -268,28 +268,30 @@ class ExpressionManager {
             $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-        // Set bothnumeric only if set to numeric
-        // Not sure if needed to test if [2] is set. : TODO review
-        $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
-        $bNumericArg1 = ((is_numeric($arg1[0]) || $arg1[0] == '') && (!isset($arg1[2]) || !in_array($arg1[2],$aForceStringArray)) );
-        $bNumericArg2 = ((is_numeric($arg2[0]) || $arg2[0] == '') && (!isset($arg2[2]) || !in_array($arg2[2],$aForceStringArray)) );
 
-        $bStringArg1 = !$bNumericArg1 || $arg1[0] == '';
-        $bStringArg2 = !$bNumericArg2 || $arg2[0] == '';
+        $bNumericArg1 = (is_numeric($arg1[0]) || $arg1[0] == '');
+        $bNumericArg2 = (is_numeric($arg2[0]) || $arg2[0] == '');
+
+        $bStringArg1 = (!$bNumericArg1 || $arg1[0] == '');
+        $bStringArg2 = (!$bNumericArg2 || $arg2[0] == '');
+
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
-
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType=(!$bBothNumeric && !$bBothString);
-        // In javascript : qCode are forced to numeric if possible: then compare code A3 with 3 allways return false. Mimic this in PHP
-#        if($bMismatchType){// If mismatch type : test if arg1 and arg2 is forced to be a number (entred by user, numeric question return)
-#            if(!((isset($arg2[2]) && $arg2[2]=='NUMBER') || (isset($arg1[2]) && $arg1[2]=='NUMBER')))
-#            {
-#                $bBothString=true;
-#                $bMismatchType=false;
-#                $arg1[0]=strval($arg1[0]);
-#                $arg2[0]=strval($arg2[0]);
-#            }
-#        }
+
+        // Set bBothString if one is forced to be string, only if bith can be numeric. Mimic JS and PHO
+        // Not sure if needed to test if [2] is set. : TODO review
+        if($bBothNumeric){
+            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
+            if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
+            {
+                $bBothNumeric=false;
+                $bBothString=true;
+                $bMismatchType=false;
+                $arg1[0]=strval($arg1[0]);
+                $arg2[0]=strval($arg2[0]);
+            }
+        }
         switch(strtolower($token[0]))
         {
             case 'or':
@@ -2375,43 +2377,57 @@ class ExpressionManager {
     }
 
     /**
-     * Split the source string into tokens, removing whitespace, and categorizing them by type.
-     *
-     * @param $src
-     * @return array
-     */
-
-    private function RDP_Tokenize($src)
+    * Public call of RDP_Tokenize
+    * 
+    * @param string $sSource : the string to tokenize
+    * @param bool $bOnEdit : on edition, actually don't remove space
+    * @return array
+    */
+    public function Tokenize($sSource,$bOnEdit)
     {
-        // $tokens0 = array of tokens from equation, showing value and offset position.  Will include SPACE, which should be removed
-        $tokens0 = preg_split($this->RDP_TokenizerRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        return $this->RDP_Tokenize($sSource,$bOnEdit);
+    }
 
-        // $tokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE, but will contain OTHER
-        $tokens = array();
+    /**
+    * Split the source string into tokens, removing whitespace, and categorizing them by type.
+    *
+    * @param string $sSource : the string to tokenize
+    * @param bool $bOnEdit : on edition, actually don't remove space
+    * @return array
+    */
+    private function RDP_Tokenize($sSource,$bOnEdit=false)
+    {
+        // $aInitTokens = array of tokens from equation, showing value and offset position.  Will include SPACE.
+        if($bOnEdit)
+            $aInitTokens = preg_split($this->RDP_TokenizerRegex,$sSource,-1,(PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        else
+            $aInitTokens = preg_split($this->RDP_TokenizerRegex,$sSource,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+
+        // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
+        $aTokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
-        for ($j=0;$j<count($tokens0);++$j)
+        for ($j=0;$j<count($aInitTokens);++$j)
         {
             for ($i=0;$i<count($this->RDP_CategorizeTokensRegex);++$i)
             {
-                $token = $tokens0[$j][0];
-                if (preg_match($this->RDP_CategorizeTokensRegex[$i],$token))
+                $sToken = $aInitTokens[$j][0];
+                if (preg_match($this->RDP_CategorizeTokensRegex[$i],$sToken))
                 {
-                    if ($this->RDP_TokenType[$i] !== 'SPACE') {
-                        $tokens0[$j][2] = $this->RDP_TokenType[$i];
+                    if ($this->RDP_TokenType[$i] !== 'SPACE' || $bOnEdit) {
+                        $aInitTokens[$j][2] = $this->RDP_TokenType[$i];
                         if ($this->RDP_TokenType[$i] == 'DQ_STRING' || $this->RDP_TokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
-//                            $unquotedToken = str_replace(array('\"',"\'","\\\\",'\n','\r','\t'),array('"',"'",'\\',"\n","\n","\t"),substr($token,1,-1));
-                            $unquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($token,1,-1));
-                            $tokens0[$j][0] = $unquotedToken;
+                            $sUnquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($sToken,1,-1));
+                            $aInitTokens[$j][0] = $sUnquotedToken;
                         }
-                        $tokens[] = $tokens0[$j];   // get first matching non-SPACE token type and push onto $tokens array
+                        $aTokens[] = $aInitTokens[$j];   // get first matching non-SPACE token type and push onto $tokens array
                     }
                     break;  // only get first matching token type
                 }
             }
         }
-        return $tokens;
+        return $aTokens;
     }
 
 

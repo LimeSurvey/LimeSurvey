@@ -52,7 +52,7 @@
         */
         public function beforeParticipantSave()
         {
-            $oNewParticipant=$this->getEvent()->getSender();
+            $oNewParticipant=$this->getEvent()->get('model');
             if ($oNewParticipant->isNewRecord)
             {
                 return;
@@ -82,7 +82,7 @@
         */
         public function beforeParticipantDelete()
         {
-            $oNewParticipant=$this->getEvent()->getSender();
+            $oNewParticipant=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
 
             $aValues=$oNewParticipant->getAttributes();
@@ -104,27 +104,30 @@
         */
         public function beforeUserSave()
         {
-            $oUserData=$this->getEvent()->getSender();
+            $oUserData=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
-            $oOldUser=$this->api->getUser($oUserData->uid);
-            if (!$oOldUser)
+            
+            $aNewValues=$oUserData->getAttributes();
+            if (!isset($oUserData->uid))
             {
                 $sAction='create';
                 $aOldValues=array();
+                // Indicate the password has changed but assign fake hash
+                $aNewValues['password']=hash('md5','67890');
             }
             else
             {                
+                $oOldUser=$this->api->getUser($oUserData->uid);
                 $sAction='update';
                 $aOldValues=$oOldUser->getAttributes();
+                
+                // If the password has changed then indicate that it has changed but assign fake hashes
+                if ($aNewValues['password']!=$aOldValues['password'])
+                {
+                    $aOldValues['password']=hash('md5','12345');
+                    $aNewValues['password']=hash('md5','67890');
+                };
             }
-            $aNewValues=$oUserData->getAttributes();
-                        
-            // If the password has changed then indicate that it has changed but assign fake hashes
-            if ($aNewValues['password']!=$aOldValues['password'])
-            {
-                $aOldValues['password']=hash('md5','12345');
-                $aNewValues['password']=hash('md5','67890');
-            };
             
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
@@ -142,7 +145,7 @@
                                                             
         public function beforeUserDelete()
         {
-            $oUserData=$this->getEvent()->getSender();
+            $oUserData=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
             $oOldUser=$this->api->getUser($oUserData->uid);
             if ($oOldUser)
@@ -196,7 +199,7 @@
                         'default'=>0,             
                         'tab'=>'notification', // @todo: Setting no used yet
                         'category'=>'Auditing for person-related data', // @todo: Setting no used yet
-                        'label' => 'Audit log for this survey:',
+                        'label' => 'Audit log for this survey',
                         'current' => $this->get('auditing', 'Survey', $event->get('survey'))
                     )
                 )

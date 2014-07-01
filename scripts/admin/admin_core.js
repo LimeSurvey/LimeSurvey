@@ -14,6 +14,11 @@
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
+/* Set a variable to test if browser have HTML5 form ability
+ * Need to be replaced by some polyfills see #8009
+ */
+hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
+
 $(document).ready(function(){
     initializeAjaxProgress();
     tableCellAdapters();
@@ -101,17 +106,17 @@ $(document).ready(function(){
         */
        qTypeDropdownInit();
         $("#question_type").change(function(event){
-            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
-            OtherSelection(selected_value);
+            OtherSelection(this.value);
         });
+        $("#question_type").change();
     }
-    $("#question_type.none").change(function(event){
-        var selected_value = $("#question_type").val();
-        OtherSelection(selected_value);
-    });
-
-
-
+    else
+    {
+        $("#question_type.none").change(function(event){
+            OtherSelection(this.value);
+        });
+        $("#question_type.none").change();
+    }
 });
 
 function qTypeDropdownInit()
@@ -139,9 +144,9 @@ function qTypeDropdownInit()
     });
     $(document).ready(function() {
         $('body').on('mouseenter mouseleave', 'li.questionType', function(e) {
-            if (e.type = 'mouseenter')
+            if (e.type == 'mouseenter')
             {
-                // Hide all others if we show a new one.
+				// Hide all others if we show a new one.
                 $('#question_type option').qtip('hide');
                 $($(e.currentTarget).data().select2Data.element).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
             }
@@ -151,6 +156,9 @@ function qTypeDropdownInit()
             }
             
             
+        });
+        $('#question_type').on('close', function(e) {
+            $('#question_type option').qtip('hide');
         });
     });
 }
@@ -192,8 +200,7 @@ function updatequestionattributes()
     if (selected_value==undefined) selected_value = $("#question_type").val();
     $('#advancedquestionsettings').load(attr_url,{qid:$('#qid').val(),
         question_type:selected_value,
-        sid:$('#sid').val(),
-        'YII_CSRF_TOKEN':yii_csrf
+        sid:$('#sid').val()
     }, function(){
         // Loads the tooltips for the toolbars
 
@@ -251,7 +258,7 @@ function doToolTip()
     $(".sf-menu a > img[alt]").removeAttr("alt");
     $("a").each(function() {
         tipcontent=$(this).children("img").attr('alt');
-        if(!tipcontent){tipcontent=$(this).attr('title');}
+        if(!tipcontent){tipcontent=htmlEncode($(this).attr('title'));}
         if(tipcontent && tipcontent!=""){
             $(this).qtip({
                 content: {
@@ -353,7 +360,10 @@ function doToolTip()
     });
 
 }
-
+// A function to encode any HTML for qtip
+function htmlEncode(html){
+  return $('<div/>').text(html).html();
+}
 // If the length of the element's string is 0 then display helper message
 function isEmpty(elem, helperMsg)
 {
@@ -624,6 +634,11 @@ function htmlspecialchars (string, quote_style, charset, double_encode) {
     if (typeof quote_style === 'undefined' || quote_style === null) {
         quote_style = 2;
     }
+    // Not form phpjs: added because in some condition : subquestion can send null for string
+    // subquestion js use inline javascript function
+    if (typeof string === 'undefined' || string === null) {
+        string="";
+    }
     string = string.toString();    if (double_encode !== false) { // Put this first to avoid double-encoding
         string = string.replace(/&/g, '&amp;');
     }
@@ -665,6 +680,7 @@ jQuery.fn.center = function () {
 }
 
 // Fix broken substr function with negative start value (in older IE)
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
 if ('ab'.substr(-1) != 'b') {
 	String.prototype.substr = function(substr) {
 		return function(start, length) {
@@ -677,13 +693,13 @@ if ('ab'.substr(-1) != 'b') {
 /**
 * Yii CSRF protection divs breaks this script so this function moves the 
 * hidden CSRF field out of the div and remove it if needed
-* 
+* 140207 : Why this function is needed ? Where is the script broken ?
 */
 function removeCSRFDivs()
 {
     $('input[name=YII_CSRF_TOKEN]').each(function(){
-       parent = $(this).parent();
-       grandfather = $(parent).parent();
+       var parent = $(this).parent();
+       var grandfather = $(parent).parent();
        $(grandfather).append(this);
        $(parent).remove();
     });
@@ -757,4 +773,8 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
 // @license-end

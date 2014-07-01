@@ -365,7 +365,7 @@ class InstallerController extends CController {
 
                         $aValues['next'] =  array(
                             'action' => 'installer/createdb',
-                            'label' => 'Create database',
+                            'label' => $clang->gT('Create database'),
                             'name' => '',
                         );
                     }
@@ -380,7 +380,7 @@ class InstallerController extends CController {
 
                         $aValues['next'] =  array(
                             'action' => 'installer/populatedb',
-                            'label' => 'Populate database',
+                            'label' => $clang->gT("Populate database"),
                             'name' => 'createdbstep2',
                         );
                     }
@@ -499,7 +499,7 @@ class InstallerController extends CController {
             .$clang->gT("Please continue with populating the database.")."<br /><br />\n";
             $aData['next'] =  array(
                 'action' => 'installer/populatedb',
-                'label' => 'Populate database',
+                'label' => $clang->gT("Populate database"),
                 'name' => 'createdbstep2',
             );
         }
@@ -832,7 +832,7 @@ class InstallerController extends CController {
         }
 
         //  version check
-        if (version_compare(PHP_VERSION, '5.1.6', '<'))
+        if (version_compare(PHP_VERSION, '5.3.0', '<'))
             $bProceed = !$aData['verror'] = true;
 
         if ($this->return_bytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
@@ -1041,8 +1041,8 @@ class InstallerController extends CController {
                 $sConfig .="\t\t\t" . "'emulatePrepare' => true,"    . "\n";
 
             }
-            $sConfig .="\t\t\t" . "'username' => '".addslashes($sDatabaseUser)."',"  . "\n"
-            ."\t\t\t" . "'password' => '".addslashes($sDatabasePwd)."',"            . "\n"
+            $sConfig .="\t\t\t" . "'username' => '".addcslashes ($sDatabaseUser,"'")."',"  . "\n"
+            ."\t\t\t" . "'password' => '".addcslashes ($sDatabasePwd,"'")."',"            . "\n"
             ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
             ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n";
 

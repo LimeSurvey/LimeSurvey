@@ -1,5 +1,5 @@
 <div id='resources'>
-    <?php echo CHtml::form(Yii::app()->getConfig('publicurl') . "third_party/kcfinder/browse.php", 'get', array('id'=>'browsesurveyresources', 'name'=>'browsesurveyresources', 'target'=>'_blank', 'class'=>'form30')); ?>
+    <?php echo CHtml::form(Yii::app()->getConfig('publicurl') . "third_party/kcfinder/browse.php?language=".sTranslateLangCode2CK($clang->getlangcode()), 'get', array('id'=>'browsesurveyresources', 'name'=>'browsesurveyresources', 'target'=>'_blank', 'class'=>'form30')); ?>
         <ul>
             <li>
                 <label>&nbsp;</label>

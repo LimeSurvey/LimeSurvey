@@ -4,6 +4,7 @@ class DocWriter extends Writer
     private $output;
     private $separator;
     private $isBeginning;
+    private $clang;
     /**
      * The open filehandle
      */
@@ -19,6 +20,7 @@ class DocWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
+        $this->clang = new limesurvey_lang($sLanguageCode);
 
         if ($oOptions->output=='display')
         {
@@ -70,12 +72,18 @@ class DocWriter extends Writer
             {
                 $this->output .= "<br clear='all' style='page-break-before:always'>";
             }
-            $this->output .= "<table><tr><th colspan='2'>".$this->translate('New Record', $this->languageCode)."</td></tr>".PHP_EOL;
+            $this->output .= "<table><tr><th colspan='2'>".$this->clang->gT("Survey response")."</td></tr>".PHP_EOL;
 
             $counter = 0;
             foreach ($headers as $header)
             {
-                $this->output .= "<tr><td>".$header."</td><td>".$values[$counter]."</td></tr>".PHP_EOL;
+                //if cell empty, output a space instead, otherwise the cell will be in 2pt font
+                $value = "&nbsp;";
+                if($values[$counter] != "")
+                {
+                    $value = $values[$counter];
+                }
+                $this->output .= "<tr><td>".$header."</td><td>".$value."</td></tr>".PHP_EOL;
                 $counter++;
             }
             $this->output .= "</table>".PHP_EOL;           

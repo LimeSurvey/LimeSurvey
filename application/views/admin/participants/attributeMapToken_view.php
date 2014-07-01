@@ -6,82 +6,92 @@
 
     /* LANGUAGE */
     var attributesMappedText = "<?php $clang->eT("There are no unmapped attributes") ?>";
-    var mustPairAttributeText= "<?php $clang->eT("You have to pair it with one attribute of the token table") ?>";
-    var onlyOneAttributeMappedText="<?php $clang->eT("Only one central attribute is mapped with token attribute") ?>";
     var cannotAcceptTokenAttributesText="<?php $clang->eT("This list cannot accept token attributes.") ?>";
-    var addElementBelowText="<?php $clang->eT("You have to add the element below the list") ?>";
 
 </script>
-</head>
-<body>
     <div class='header ui-widget-header'>
         <strong>
             <?php $clang->eT("Map your token attributes to an existing participant attribute or create a new one"); ?>
         </strong>
     </div>
-
-    <div id="tokenattribute">
-        <div class="heading"><?php $clang->eT("Unmapped token attributes") ?></div>
-            <ul id="tokenatt">
+    <div class="draggable-container">
+        <div id="tokenattribute" class="attribute-column">
+            <div class="heading"><?php $clang->eT("Unmapped token attributes") ?></div>
+            <div id="tokenatt" class="tokenatt droppable">
             <?php
             if (!empty($tokenattribute))
             {
                 foreach ($tokenattribute as $key => $value)
                 {
-                    echo "<li title='".$clang->gT("Drag this attribute to another column to map it to the central participants database")."' id='t_" . $value . "' name=\"$key\">" . $key . "</li>"; //Passing attribute description as name of the attribute
+                    echo "<div title='".$clang->gT("Drag this attribute to another column to map it to the central participants database")."' id='t_" . $value . "' data-name=\"$key\" class=\"token-attribute attribute-item draggable\">" . $key . "</div>"; 
                 }
             }
             ?>
-            </ul>
+            </div>
 
         </div>
-        <div id="newcreated"><div class="heading"><?php $clang->eT("Participant attributes to create") ?></div>
-            <ul class="newcreate" id="sortable" style ="height: 40px">
-            </ul>
+        <div id="newcreated" class="attribute-column">
+            <div class="heading"><?php $clang->eT("Participant attributes to create") ?></div>
+            <div class="newcreate droppable" style ="height: 40px">
+            </div>
         </div>
-        <div id="centralattribute"><div class="heading"><?php $clang->eT("Existing participant attributes")?></div><br />
-            <ul class="centralatt">
+        <div id="centralattribute" class="attribute-column">
+            <div class="heading"><?php $clang->eT("Existing participant attributes")?></div>
+            <div class="centralatt">
                 <?php
                 if (!empty($attribute))
                 {
                     foreach ($attribute as $key => $value)
                     {
-                        echo "<li id='c_" . $key . "' name='c_" . $key . "' >" . $value . "</li>";
+                        echo "<div class=\"mappable-attribute-wrapper droppable\"><div id='c_" . $key . "' data-name='c_" . $key . "' class=\"mappable-attribute attribute-item\" >" . $value . "</div></div>";
                     }
                 }
                 ?>
-            </ul>
+            </div>
+            
             <?php if (!empty($attribute)) { ?>
             <div class='explanation'>
-                <input type='checkbox' id='overwriteman' name='overwriteman' /> <label for='overwriteman'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
-                <br /><input type='checkbox' id='createautomap' name='createautomap' /> <label for='createautomap'><?php $clang->eT("Make these mappings automatic in future") ?></label><br />&nbsp;
+                <div class="explanation-row">
+                    <input type='checkbox' id='overwriteman' name='overwriteman' />
+                    <label for='overwriteman'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+                </div>
+                <div class="explanation-row">
+                    <input type='checkbox' id='createautomap' name='createautomap' />
+                    <label for='createautomap'><?php $clang->eT("Make these mappings automatic in future") ?></label>
+                </div>
             </div>
             <?php } else { ?>
-            <br />&nbsp;
+            
             <?php }
             if(!empty($alreadymappedattributename)) {
                 ?>
                 <div class='heading'><?php $clang->eT("Pre-mapped attributes") ?></div><br />
-                <ul class="notsortable">
+                <div class="notsortable">
                 <?php
                 foreach ($alreadymappedattributename as $key => $value)
                 {
-                    echo "<li title='".$clang->gT("This attribute is automatically mapped")."' id='' name='$value' >" . $alreadymappedattdescription[$value] . "</li>";
+                    echo "<div title='".$clang->gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute attribute-item\" >" . $alreadymappedattdescription[$value] . "</div>";
                 }
                 ?>
-                </ul>
+                </div>
                 <div class='explanation'>
-                    <input type='checkbox' id='overwrite' name='overwrite' /> <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+                    <div class="explanation-row">
+                        <input type='checkbox' id='overwrite' name='overwrite' />
+                        <label for='overwrite'><?php $clang->eT("Overwrite existing attribute values if a participant already exists?") ?></label>
+                    </div>
                 </div>
                 <?php
             }
             ?>
         </div>
+        <div style="clear: both;"></div>
+    </div>
     <p>
-        <input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
+        <input type="button" name="goback" id="back" value="<?php $clang->eT('Back')?>" />
         <input type='button' name='reset' onClick='window.location.reload();' id='reset' value="<?php $clang->eT('Reset') ?>" />
-        <input type="button" name="attmap" id="attmap" value="Continue" />
+        <input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue') ?>" />
     </p>
+    
     <?php
     $ajaxloader = array(
         'src' => Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif',
@@ -92,5 +102,3 @@
     <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
 <?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
     </div>
-</body>
-</html>

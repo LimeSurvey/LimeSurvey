@@ -35,17 +35,10 @@ class database extends Survey_Common_Action
         $iQuestionGroupID=returnGlobal('gid');
         $iQuestionID=returnGlobal('qid');
         $sDBOutput = '';
-        if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
-            $oPurifier = new CHtmlPurifier();
-            $oPurifier->options = array('URI.AllowedSchemes'=>array(
-            'http' => true,
-            'https' => true,
-            ));
-            $bXSSFilter = true;
-        }
-        else
-            $bXSSFilter = false;
+
+        $oFixCKeditor= new LSYii_Validators;
+        $oFixCKeditor->fixCKeditor=true;
+        $oFixCKeditor->xssfilter=false;
 
         if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
         {
@@ -154,16 +147,8 @@ class database extends Survey_Common_Action
                     {
                         $sAnswerText=Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
 
-                        if ($bXSSFilter)
-                        {
-                            $sAnswerText=$oPurifier->purify($sAnswerText);
-                        }
-                        else
-                        {
-                            $sAnswerText=html_entity_decode($sAnswerText, ENT_QUOTES, "UTF-8");
-                        }
                         // Fix bug with FCKEditor saving strange BR types
-                        $sAnswerText=fixCKeditorText($sAnswerText);
+                        $sAnswerText=$oFixCKeditor->fixCKeditor($sAnswerText);
                         // Now we insert the answers
                         $iInsertCount=Answer::model()->insertRecords(array('code'=>$sCode,
                         'answer'=>$sAnswerText,
@@ -284,8 +269,11 @@ class database extends Survey_Common_Action
                             }
                             else
                             {
-                                $oSubQuestion=Question::model()->find("qid=:qid AND language:=language",array(":qid"=>$aInsertQID[$iScaleID][$iPosition],':language'=>$sLanguage));
+                                $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$aInsertQID[$iScaleID][$iPosition],':language'=>$sLanguage));
+                                if(!$oSubQuestion)
+                                    $oSubQuestion=new Question;
                                 $oSubQuestion->sid=$iSurveyID;
+                                $oSubQuestion->qid=$aInsertQID[$iScaleID][$iPosition];
                                 $oSubQuestion->gid=$iQuestionGroupID;
                                 $oSubQuestion->question_order=$iPosition+1;
                                 $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
@@ -373,13 +361,11 @@ class database extends Survey_Common_Action
                     $iQuestionOrder=(getMaxQuestionOrder($iQuestionGroupID,$iSurveyID));
                     $iQuestionOrder++;
                 }
-                $_POST['title'] = html_entity_decode(Yii::app()->request->getPost('title'), ENT_QUOTES, "UTF-8");
-                $_POST['question_'.$sBaseLanguage] = html_entity_decode(Yii::app()->request->getPost('question_'.$sBaseLanguage), ENT_QUOTES, "UTF-8");
-                $_POST['help_'.$sBaseLanguage] = html_entity_decode(Yii::app()->request->getPost('help_'.$sBaseLanguage), ENT_QUOTES, "UTF-8");
-
-                $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
-                $_POST['question_'.$sBaseLanguage]=fixCKeditorText(Yii::app()->request->getPost('question_'.$sBaseLanguage));
-                $_POST['help_'.$sBaseLanguage]=fixCKeditorText(Yii::app()->request->getPost('help_'.$sBaseLanguage));
+                $sQuestionText=Yii::app()->request->getPost('question_'.$sBaseLanguage,'');
+                $sQuestionHelp=Yii::app()->request->getPost('help_'.$sBaseLanguage,'');
+                // Fix bug with FCKEditor saving strange BR types : in rules ?
+                $sQuestionText=$oFixCKeditor->fixCKeditor($sQuestionText);
+                $sQuestionHelp=$oFixCKeditor->fixCKeditor($sQuestionHelp);
 
                 $iQuestionID=0;
                 $oQuestion= new Question;
@@ -387,9 +373,9 @@ class database extends Survey_Common_Action
                 $oQuestion->gid = $iQuestionGroupID;
                 $oQuestion->type = Yii::app()->request->getPost('type');
                 $oQuestion->title = Yii::app()->request->getPost('title');
-                $oQuestion->question = Yii::app()->request->getPost('question_'.$sBaseLanguage);
+                $oQuestion->question = $sQuestionText;
                 $oQuestion->preg = Yii::app()->request->getPost('preg');
-                $oQuestion->help = Yii::app()->request->getPost('help_'.$sBaseLanguage);
+                $oQuestion->help = $sQuestionHelp;
                 $oQuestion->other = Yii::app()->request->getPost('other');
                 $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
                 $oQuestion->relevance = Yii::app()->request->getPost('relevance');
@@ -419,7 +405,7 @@ class database extends Survey_Common_Action
                         {
                             $langqid=0;
                             $oQuestion= new Question;
-                            $oQuestion->sid = $iQuestionID;
+                            $oQuestion->qid = $iQuestionID;
                             $oQuestion->sid = $iSurveyID;
                             $oQuestion->gid = $iQuestionGroupID;
                             $oQuestion->type = Yii::app()->request->getPost('type');
@@ -445,7 +431,7 @@ class database extends Survey_Common_Action
                                 foreach($aErrors as $sAttribute=>$aStringErrors)
                                 {
                                     foreach($aStringErrors as $sStringErrors)
-                                        Yii::app()->setFlashMessage(sprintf($clang->gT("Question in language %s could not be cretaed with error on %s: %s"), $alang, $sAttribute,$sStringErrors),'error');
+                                        Yii::app()->setFlashMessage(sprintf($clang->gT("Question in language %s could not be created with error on %s: %s"), $alang, $sAttribute,$sStringErrors),'error');
                                 }
                             }
 #                            if (!$langqid)
@@ -495,6 +481,7 @@ class database extends Survey_Common_Action
                                 'qid' => $iQuestionID,
                                 'code' => $qr1['code'],
                                 'answer' => $qr1['answer'],
+                                'assessment_value' => $qr1['assessment_value'],
                                 'sortorder' => $qr1['sortorder'],
                                 'language' => $qr1['language'],
                                 'scale_id' => $qr1['scale_id']
@@ -745,38 +732,22 @@ class database extends Survey_Common_Action
                     $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
                     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
                     array_push($aSurveyLanguages,$sBaseLanguage);
-                    if ($bXSSFilter)
-                        $_POST['title'] = $oPurifier->purify($_POST['title']);
-                    else
-                        $_POST['title'] = html_entity_decode(Yii::app()->request->getPost('title'), ENT_QUOTES, "UTF-8");
-
-                    // Fix bug with FCKEditor saving strange BR types
-                    $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
                     foreach ($aSurveyLanguages as $qlang)
                     {
-                        if ($bXSSFilter)
-                        {
-                            $_POST['question_'.$qlang] = $oPurifier->purify($_POST['question_'.$qlang]);
-                            $_POST['help_'.$qlang] = $oPurifier->purify($_POST['help_'.$qlang]);
-                        }
-                        else
-                        {
-                            $_POST['question_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('question_'.$qlang), ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$qlang] = html_entity_decode(Yii::app()->request->getPost('help_'.$qlang), ENT_QUOTES, "UTF-8");
-                        }
-
-                        // Fix bug with FCKEditor saving strange BR types : in rules ?
-                        $_POST['question_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$qlang));
-                        $_POST['help_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$qlang));
-
                         if (isset($qlang) && $qlang != "")
                         {
+                            // &eacute; to é and &amp; to & : really needed ? Why not for answers ? (130307)
+                            $sQuestionText=Yii::app()->request->getPost('question_'.$qlang,'');
+                            $sQuestionHelp=Yii::app()->request->getPost('help_'.$qlang,'');
+                            // Fix bug with FCKEditor saving strange BR types : in rules ?
+                            $sQuestionText=$oFixCKeditor->fixCKeditor($sQuestionText);
+                            $sQuestionHelp=$oFixCKeditor->fixCKeditor($sQuestionHelp);
                             $udata = array(
                             'type' => Yii::app()->request->getPost('type'),
                             'title' => Yii::app()->request->getPost('title'),
-                            'question' => Yii::app()->request->getPost('question_'.$qlang),
+                            'question' => $sQuestionText,
                             'preg' => Yii::app()->request->getPost('preg'),
-                            'help' => Yii::app()->request->getPost('help_'.$qlang),
+                            'help' => $sQuestionHelp,
                             'gid' => $iQuestionGroupID,
                             'other' => Yii::app()->request->getPost('other'),
                             'mandatory' => Yii::app()->request->getPost('mandatory'),
@@ -900,7 +871,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                if(Yii::app()->request->getPost('newpage') == "return") {
+                if(Yii::app()->request->getPost('redirection') == "edit") {
                     $this->getController()->redirect(array('admin/questions/sa/editquestion/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
                 } else {
                     $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
@@ -936,10 +907,10 @@ class database extends Survey_Common_Action
                     $welcome = Yii::app()->request->getPost('welcome_'.$langname);
                     $endtext = Yii::app()->request->getPost('endtext_'.$langname);
 
-                    $short_title=fixCKeditorText($short_title);
-                    $description=fixCKeditorText($description);
-                    $welcome=fixCKeditorText($welcome);
-                    $endtext=fixCKeditorText($endtext);
+                    $short_title=$oFixCKeditor->fixCKeditor($short_title);
+                    $description=$oFixCKeditor->fixCKeditor($description);
+                    $welcome=$oFixCKeditor->fixCKeditor($welcome);
+                    $endtext=$oFixCKeditor->fixCKeditor($endtext);
 
                     $data = array(
                     'surveyls_title' => $short_title,
@@ -1016,14 +987,22 @@ class database extends Survey_Common_Action
             {
                 $tokenlength = 15;
             }
+            if($tokenlength > 36)
+            {
+                $tokenlength = 36;
+            }
 
             cleanLanguagesFromSurvey($iSurveyID,Yii::app()->request->getPost('languageids'));
 
             fixLanguageConsistency($iSurveyID,Yii::app()->request->getPost('languageids'));
+            $Survey=Survey::model()->findByPk($iSurveyID);
+            // Validate template : accepted: user have rigth to read template OR template are not updated : else set to the default from config
             $template = Yii::app()->request->getPost('template');
 
-            if(!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
-
+            if(!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $template) && $template!=$Survey->template)
+            {
+                $template = Yii::app()->getConfig('defaulttemplate');
+            }
             $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
             if(isset($aURLParams))
@@ -1110,7 +1089,7 @@ class database extends Survey_Common_Action
             }
 
             // use model
-            $Survey=Survey::model()->findByPk($iSurveyID);
+
             foreach ($updatearray as $k => $v)
                 $Survey->$k = $v;
             $Survey->save();

@@ -52,6 +52,13 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
         try{
             Yii::app()->db->createCommand()->createIndex("idx_token_token_{$iSurveyID}_".rand(1,50000),"{{tokens_".intval($iSurveyID)."}}",'token');
         } catch(Exception $e) {}
+        // create fields for the custom token attributes associated with this survey
+        $tokenattributefieldnames = Survey::model()->findByPk($iSurveyID)->tokenAttributes;
+        foreach($tokenattributefieldnames as $attrname=>$attrdetails)
+        {
+            if (isset($fields[$attrname])) continue; // Field was already created
+            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyID)."}}", $attrname, 'VARCHAR(255)'))->execute();
+        }
         Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         return true;
     } catch(Exception $e) {
@@ -142,7 +149,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		$fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
 		$fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/" . trim($aTokenRow['language']) . "/");
 	
-		if($bEmail ==  true)
+		if($bHtml)
 		{
 			foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
 			{

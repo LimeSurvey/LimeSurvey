@@ -127,6 +127,26 @@ pre-defined Arabic lexical rules
       <search>/(ظ|ض)/</search> 
       <replace>(ظ|ض)</replace> 
     </pair> 
+    <pair>
+      <search>/ڨ/</search> 
+      <replace>(ف|ڨ)</replace> 
+    </pair> 
+    <pair>
+      <search>/پ/</search> 
+      <replace>(ب|پ)</replace> 
+    </pair> 
+    <pair>
+      <search>/چ/</search> 
+      <replace>(ج|چ)</replace> 
+    </pair> 
+    <pair>
+      <search>/ژ/</search> 
+      <replace>(ز|ژ)</replace> 
+    </pair> 
+    <pair>
+      <search>/(ڪ|گ)/</search> 
+      <replace>(ڪ|ك|گ)</replace> 
+    </pair> 
 
     <!-- Normalization -->
     <pair> 

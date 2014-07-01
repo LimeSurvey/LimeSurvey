@@ -30,8 +30,7 @@ h4{font-size:1.1em}
 ul,ol{margin:.75em 0 .75em 32px;padding:0}
 address{font-style:italic;margin:.75em 0}
 a{text-decoration:underline}
-a:link,a:visited{color:#11C}
-a:visited{color:#339}
+a{color:#11C}
 a:hover,a:focus,a:active{color:#00F}
 a:active{outline:none}
 a img{border:none}
@@ -72,8 +71,7 @@ input, button, select {vertical-align: middle;}
 /* Colors and themes                             */
 
 body {background:#FEFEFE;color:#444;font-size:.85em;font-family:Verdana, "DejaVu Sans", "Bitstream Vera Sans", Geneva, sans-serif;}
-a:link {color: #5670A1;} 
-a:visited {color: #5670A1;} 
+a {color: #5670A1;} 
 a:hover, a:focus, a:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
 
 /* Head decoration */
@@ -148,8 +146,9 @@ input[type="text"]:focus, input.text:focus,textarea:focus{
 }
 input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
 /* survey tool decoration */
-.tools select,.tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input,.navigator button
+.tools select,.button
   {
+    line-height:1.5;
     border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
     -moz-box-shadow: 2px 2px 5px #ccc;-webkit-box-shadow: 2px 2px 5px #ccc;box-shadow: 2px 2px 5px #ccc;
     font-family:Tahoma, Geneva, Kalimati, sans-serif;font-size:1em;vertical-align:middle;
@@ -158,24 +157,24 @@ input.checkbox[disabled],input.radio[disabled]{opacity: 0.3;}
   }
 .tools select
   {padding:1px 2px;}
-.tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input,.navigator button
-    {box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
-.tools select:hover,.tools input:hover,.tools a:hover,.navigator input:hover,.navigator button:hover,input.submit:hover,input#savebutton:hover,input#loadbutton:hover,input#registercontinue:hover,
- .tools select:focus,.tools input:focus,.tools a:focus,.navigator input:focus,.navigator button:focus,input.submit:focus,input#savebutton:focus,input#loadbutton:focus,input#registercontinue:focus
+.button
+    {display:inline-block;
+    box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
+.tools select:hover,.button:hover,.button:focus
   {
     border-color:#ABB8D1;color:#415479;background:#f0f0f0;
     -moz-box-shadow: 2px 2px 5px #415479;-webkit-box-shadow: 2px 2px 5px #415479;box-shadow: 2px 2px 5px #415479;
   }
 .tools select:hover option{background:#FEFEFE;}
 /* for disabled tools */
-.tools input[disabled],.navigator input[disabled],.navigator button[disabled],input.submit[disabled],input#savebutton[disabled],input#loadbutton[disabled],input#registercontinue[disabled],.tools select[disabled]
+.btoon[disabled],.tools select[disabled]
   {
     border:1px solid #dbdbdb;background:#FEFEFE;color:#dbdbdb;cursor:inherit;
   }
-.tools *,.navigator,.tools :active,.navigator :active,.tools :focus,.navigator :focus{ outline: 0 none; }
-.tools ::-moz-focus-inner,.navigator ::-moz-focus-inner {border:0;}
+.tools *,.navigator *,.button{ outline: 0 none; }
+.tools ::-moz-focus-inner,.navigator ::-moz-focus-inner,.button::-moz-focus-inner {border:0;}
 /* ie specific: maybe some lt ? */
-.ie .tools input,.ie .tools a,.ie .navigator input,.ie .navigator button,.ie input#savebutton,.ie input#loadbutton
+.ielt7 .button
   {height:2em}
 /* movenext, moveprev specific */
 #movenextbtn{background-image:url(go-east.png);background-repeat:no-repeat;background-position:right center;padding:3px 26px 3px 6px;}

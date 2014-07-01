@@ -107,12 +107,12 @@ class responses extends Survey_Common_Action
             //add token to top of list if survey is not private
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
             {
-                $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-                $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-                $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-                $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
+                $fnames[] = array("token", $clang->gT("Token ID"), 'code'=>'token');
+                $fnames[] = array("firstname", $clang->gT("First name"), 'code'=>'firstname');// or token:firstname ?
+                $fnames[] = array("lastname", $clang->gT("Last name"), 'code'=>'lastname');
+                $fnames[] = array("email", $clang->gT("Email"), 'code'=>'email');
             }
-            $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D');
+            $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D','code'=>'submitdate');
             $fnames[] = array("completed", $clang->gT("Completed"), "0");
 
             foreach ($fieldmap as $field)
@@ -131,13 +131,7 @@ class responses extends Survey_Common_Action
 
                 if ($field['type'] != "|")
                 {
-#                    if (isset($field['subquestion']) && $field['subquestion'] != '')
-#                        $question .=' (' . $field['subquestion'] . ')';
-#                    if (isset($field['subquestion1']) && isset($field['subquestion2']))
-#                        $question .=' (' . $field['subquestion1'] . ':' . $field['subquestion2'] . ')';
-#                    if (isset($field['scale_id']))
-#                        $question .='[' . $field['scale'] . ']';
-                    $fnames[] = array($field['fieldname'], $question,'code'=>viewHelper::getFieldCode($field));
+                    $fnames[] = array($field['fieldname'], viewHelper::getFieldText($field),'code'=>viewHelper::getFieldCode($field,array('LEMcompat'=>true)));
                 }
                 elseif ($field['aid'] !== 'filecount')
                 {
@@ -147,13 +141,13 @@ class responses extends Survey_Common_Action
                     {
                         $filenum=sprintf($clang->gT("File %s"),$i + 1);
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('Title').")",'code'=>viewHelper::getFieldCode($field).'[title]', "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('Title').")",'code'=>viewHelper::getFieldCode($field).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
 
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'[comment]', "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('Comment').")",'code'=>viewHelper::getFieldCode($field).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('File name').")",'code'=>viewHelper::getFieldCode($field).'[name]', "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('File size').")",'code'=>viewHelper::getFieldCode($field).'[size]', "type" => "|", "metadata" => "size", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('File name').")",'code'=>viewHelper::getFieldCode($field).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($field['fieldname'], "{$filenum} - {$question} (".$clang->gT('File size').")",'code'=>viewHelper::getFieldCode($field).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
@@ -181,6 +175,7 @@ class responses extends Survey_Common_Action
             $aViewUrls[] = 'browseidheader_view';
             if($exist)
             {
+                $oPurifier=new CHtmlPurifier();
                 //SHOW INDIVIDUAL RECORD
                 $oCriteria = new CDbCriteria();
                 if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
@@ -244,7 +239,7 @@ class responses extends Survey_Common_Action
                                     if ($metadata === "size")
                                         $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                                     else if ($metadata === "name")
-                                        $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyID}",array('downloadindividualfile'=>$phparray[$index][$metadata])));
+                                        $answervalue = CHtml::link($oPurifier->purify(rawurldecode($phparray[$index][$metadata])), $this->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyID}",array('downloadindividualfile'=>$phparray[$index][$metadata])));
                                     else
                                         $answervalue = rawurldecode($phparray[$index][$metadata]);
                                 }
@@ -331,19 +326,16 @@ class responses extends Survey_Common_Action
             if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
             {
                 $iResponseID = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
-                // delete the files 
-                $this->_deleteFiles($iSurveyID,array($iResponseID),$aData['language']);
-                // delete the row
-                SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                Response::model($iSurveyID)->findByPk($iResponseID)->delete(true);
                 // delete timings if savetimings is set
                 if($aData['surveyinfo']['savetimings'] == "Y"){
                     SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                 }
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("Response ID %s was successfully deleted."),$iResponseID);
+                Yii::app()->session['flashmessage'] = sprintf(gT("Response ID %s was successfully deleted."),$iResponseID);
             }
             else
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("Access denied!",'js');
+                Yii::app()->session['flashmessage'] = gT("Access denied!",'js');
             }
         }
         // Marked responses -> deal with the whole batch of marked responses
@@ -354,17 +346,22 @@ class responses extends Survey_Common_Action
             {
                 if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
                 {
-                    $this->_deleteFiles($iSurveyID,Yii::app()->request->getPost('markedresponses'),$aData['language']);
-                    foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
+                    foreach (Response::model($iSurveyID)->findAllByPk(Yii::app()->request->getPost('markedresponses')) as $response)
                     {
-                        $iResponseID= (int) $iResponseID;
-                        SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                        $response->deleteFiles();
                         // delete timings if savetimings is set
+                        /**
+                         * @todo Move this to the Response model.
+                         */
                         if($aData['surveyinfo']['savetimings'] == "Y"){
                             SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
                         }
                     }
-                    Yii::app()->session['flashmessage'] = sprintf($clang->ngT("%s response was successfully deleted.","%s responses were successfully deleted.",count(Yii::app()->request->getPost('markedresponses'))),count(Yii::app()->request->getPost('markedresponses')),'js');
+
+                    Response::model($iSurveyID)->deleteByPk(Yii::app()->request->getPost('markedresponses'));
+                        
+                    
+                    Yii::app()->session['flashmessage'] = sprintf(ngT("%s response was successfully deleted.","%s responses were successfully deleted.",count(Yii::app()->request->getPost('markedresponses'))),count(Yii::app()->request->getPost('markedresponses')),'js');
                 }
                 else
                 {
@@ -378,7 +375,7 @@ class responses extends Survey_Common_Action
                 {
                     // Now, zip all the files in the filelist
                     $zipfilename = "Responses_for_survey_{$iSurveyID}.zip";
-                    $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('markedresponses'), $zipfilename,$aData['language']);
+                    $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('markedresponses'), $zipfilename);
                 }
             }
         }
@@ -389,7 +386,7 @@ class responses extends Survey_Common_Action
             {
                 // Now, zip all the files in the filelist
                 $zipfilename = "Files_for_responses_" . Yii::app()->request->getPost('downloadfile') . ".zip";
-                $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename,$aData['language']);
+                $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename);
             }
         }
         elseif (Yii::app()->request->getParam('downloadindividualfile') != '')
@@ -445,10 +442,10 @@ class responses extends Survey_Common_Action
             {
                 if(Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
                 {
-                    $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-                    $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-                    $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-                    $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
+                    $fnames[] = array("token", $clang->gT("Token ID"), 'code'=>'token');
+                    $fnames[] = array("firstname", $clang->gT("First name"), 'code'=>'firstname');// or token:firstname ?
+                    $fnames[] = array("lastname", $clang->gT("Last name"), 'code'=>'lastname');
+                    $fnames[] = array("email", $clang->gT("Email"), 'code'=>'email');
                 }
             }
 
@@ -473,13 +470,7 @@ class responses extends Survey_Common_Action
                         continue;
                     if ($fielddetails['type'] == 'answer_time')
                         continue;
-                    if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
-                        $question .=' (' . $fielddetails['subquestion'] . ')';
-                    if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-                        $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
-                    if (isset($fielddetails['scale_id']))
-                        $question .='[' . $fielddetails['scale'] . ']';
-                    $fnames[] = array($fielddetails['fieldname'], flattenText($question,true));
+                    $fnames[] = array($fielddetails['fieldname'], viewHelper::getFieldText($fielddetails),'code'=>viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true)));
                 }
                 elseif ($fielddetails['aid'] !== 'filecount')
                 {
@@ -488,19 +479,19 @@ class responses extends Survey_Common_Action
                     {
                         $filenum=sprintf($clang->gT("File %s"),$i + 1);
                         if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('Title').")",'code'=>viewHelper::getFieldCode($fielddetails).'[title]', "type" => "|", "metadata" => "title", "index" => $i);
+                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('Title').")",'code'=>viewHelper::getFieldCode($fielddetails).'(title)', "type" => "|", "metadata" => "title", "index" => $i);
                         if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('Comment').")",'code'=>viewHelper::getFieldCode($fielddetails).'[comment]', "type" => "|", "metadata" => "comment", "index" => $i);
+                            $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('Comment').")",'code'=>viewHelper::getFieldCode($fielddetails).'(comment)', "type" => "|", "metadata" => "comment", "index" => $i);
 
-                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('File name').")",'code'=>viewHelper::getFieldCode($fielddetails).'[name]', "type" => "|", "metadata" => "name", "index" => $i);
-                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('File size').")",'code'=>viewHelper::getFieldCode($fielddetails).'[size]', "type" => "|", "metadata" => "size", "index" => $i);
+                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('File name').")",'code'=>viewHelper::getFieldCode($fielddetails).'(name)', "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($fielddetails['fieldname'], "{$filenum} - {$question} (".$clang->gT('File size').")",'code'=>viewHelper::getFieldCode($fielddetails).'(size)', "type" => "|", "metadata" => "size", "index" => $i);
 
                         //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
                     }
                 }
                 else
                 {
-                    $fnames[] = array($fielddetails['fieldname'], $clang->gT("File count"));
+                    $fnames[] = array($fielddetails['fieldname'], $clang->gT("File count"), 'code'=>viewHelper::getFieldCode($fielddetails));
                 }
             }
 
@@ -791,50 +782,6 @@ class responses extends Survey_Common_Action
     }
 
     /**
-     * Supply an array with the responseIds and all files of this responses was deleted
-     *
-     * @param array $responseIds
-     * @param string $language
-     */
-    private function _deleteFiles($iSurveyID, $responseIds,$language)
-    {
-        $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$iSurveyID}/files/";
-        $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $language);
-        $fuqtquestions = array();
-        // find all fuqt questions
-        foreach ($fieldmap as $field)
-        {
-            if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
-                $fuqtquestions[] = $field['fieldname'];
-        }
-
-        foreach ($responseIds as $responseId)
-        {
-            $responseId = (int) $responseId; // sanitize the value
-
-            if (!empty($fuqtquestions))
-            {
-                // find all responses (filenames) to the fuqt questions
-                $filearray = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('id' => $responseId));
-                $filecount = 0;
-                foreach ($filearray as $metadata)
-                {
-                    foreach ($metadata as $aData)
-                    {
-                        $phparray = json_decode_ls($aData);
-                        if (is_array($phparray))
-                        {
-                            foreach ($phparray as $file)
-                            {
-                                @unlink($uploaddir . $file['filename']);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    /**
      * Supply an array with the responseIds and all files will be added to the zip
      * and it will be be spit out on success
      *
@@ -843,63 +790,38 @@ class responses extends Survey_Common_Action
      * @param string $language
      * @return ZipArchive
      */
-    private function _zipFiles($iSurveyID, $responseIds, $zipfilename,$language)
+    private function _zipFiles($iSurveyID, $responseIds, $zipfilename)
     {
-
-        Yii::app()->loadLibrary('admin/pclzip/pclzip');
+        /**
+         * @todo Move this to model.
+         */
+        Yii::app()->loadLibrary('admin/pclzip');
         
         $tmpdir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR."surveys". DIRECTORY_SEPARATOR . $iSurveyID . DIRECTORY_SEPARATOR."files".DIRECTORY_SEPARATOR;
 
         $filelist = array();
-        $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $language);
-
-        foreach ($fieldmap as $field)
+        $responses = Response::model($iSurveyID)->findAllByPk($responseIds);
+        $filecount = 0;
+        foreach ($responses as $response)
         {
-            if ($field['type'] == "|" && $field['aid'] !== 'filecount')
+            foreach ($response->getFiles() as $file)
             {
-                $filequestion[] = $field['fieldname'];
-            }
-        }
-
-        foreach ((array) $responseIds as $responseId)
-        {
-            $responseId = (int) $responseId; // sanitize the value
-
-            $filearray = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('id' => $responseId)) or die('Could not download response');
-            $metadata = array();
-            $filecount = 0;
-            foreach ($filearray as $metadata)
-            {
-                foreach ($metadata as $aData)
-                {
-                    $phparray = json_decode_ls($aData);
-                    if (is_array($phparray))
-                    {
-                        foreach ($phparray as $file)
-                        {
-                            $filecount++;
-                            $file['responseid'] = $responseId;
-                            $file['name'] = rawurldecode($file['name']);
-                            $file['index'] = $filecount;
-                            /*
-                             * Now add the file to the archive, prefix files with responseid_index to keep them
-                             * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
-                             * files from a different source with the same name.
-                             */
-                             if (file_exists($tmpdir . $file['filename']))
-                             {
-                                $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir . $file['filename'],
-                                    PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $file['responseid'], $file['index'], $file['name']));
-                             }
-                        }
-                    }
-                }
+                $filecount++;
+                /*
+                 * Now add the file to the archive, prefix files with responseid_index to keep them
+                 * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
+                 * files from a different source with the same name.
+                 */
+                 if (file_exists($tmpdir . basename($file['filename'])))
+                 {
+                    $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir . basename($file['filename']),
+                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, rawurldecode($file['name'])));
+                 }
             }
         }
 
         if (count($filelist) > 0)
         {
-            // TODO: to extend the yii app function loadLibrary to meet the app requirements
             $zip = new PclZip($tmpdir . $zipfilename);
             if ($zip->create($filelist) === 0)
             {

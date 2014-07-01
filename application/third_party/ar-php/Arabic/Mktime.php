@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -100,7 +100,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -123,15 +123,13 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
  */ 
 class I18N_Arabic_Mktime
 {
-    private static $_islamicEpoch = 1948439.5;
-
     /**
      * Loads initialize values
      *
@@ -158,9 +156,9 @@ class I18N_Arabic_Mktime
      *                seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)
      * @author Khaled Al-Sham'aa <khaled@ar-php.org>
      */
-    public function mktime($hour, $minute, $second, 
-                          $hj_month, $hj_day, $hj_year, $correction = 0)
-    {
+    public function mktime(
+        $hour, $minute, $second, $hj_month, $hj_day, $hj_year, $correction = 0
+    ) {
         list($year, $month, $day) = $this->convertDate($hj_year, $hj_month, $hj_day);
 
         $unixTimeStamp = mktime($hour, $minute, $second, $month, $day, $year);
@@ -182,15 +180,11 @@ class I18N_Arabic_Mktime
      */
     protected function convertDate($Y, $M, $D)
     {
-        // Converts Julian Day Count to a string containing the
-        // Gregorian date in the format of "month/day/year".
-        
-        // To get these functions to work, you have to compile PHP 
-        // with --enable-calendar 
-        // http://www.php.net/manual/en/calendar.installation.php
-        //$str = JDToGregorian($this->islamic_to_jd($Y, $M, $D));
-        
-        $str = $this->jdToGreg($this->islamicToJd($Y, $M, $D));
+        if (function_exists('GregorianToJD')) {
+            $str = JDToGregorian($this->islamicToJd($Y, $M, $D));
+        } else {
+            $str = $this->jdToGreg($this->islamicToJd($Y, $M, $D));
+        }
         
         list($month, $day, $year) = explode('/', $str);
         
@@ -209,10 +203,9 @@ class I18N_Arabic_Mktime
      */
     protected function islamicToJd($year, $month, $day)
     {
-        $temp = ($day + ceil(29.5 * ($month - 1)) + ($year - 1) * 354 + 
-                 floor((3 + (11 * $year)) / 30) + self::$_islamicEpoch) - 1;
-
-        return $temp; 
+        $jd = (int)((11 * $year + 3) / 30) + (int)(354 * $year) + (int)(30 * $month) 
+            - (int)(($month - 1) / 2) + $day + 1948440 - 385;
+        return $jd;
     }
     
     /**
@@ -246,6 +239,17 @@ class I18N_Arabic_Mktime
             $month = $month - 9;
             $year  = $year + 1;
         }
+        
+        /* 
+        Just to mimic the PHP JDToGregorian output
+        If year is less than 1, subtract one to convert from
+        a zero based date system to the common era system in
+        which the year -1 (1 B.C.E) is followed by year 1 (1 C.E.)
+        */
+        
+        if ($year < 1) {
+            $year--;
+        }
 
         return $month.'/'.$day.'/'.$year;
     }
@@ -254,7 +258,7 @@ class I18N_Arabic_Mktime
      * Calculate Hijri calendar correction using Um-Al-Qura calendar information
      *      
      * @param integer $m Hijri month (Islamic calendar)
-     * @param integer $y Hijri year  (Islamic calendar)
+     * @param integer $y Hijri year  (Islamic calendar), valid range [1420-1459]
      *       
      * @return integer Correction factor to fix Hijri calendar calculation using
      *                 Um-Al-Qura calendar information     
@@ -262,21 +266,68 @@ class I18N_Arabic_Mktime
      */
     public function mktimeCorrection ($m, $y)
     {
-        $calc = $this->mktime(0, 0, 0, $m, 1, $y);
-        
-        $file = dirname(__FILE__).'/data/um_alqoura.txt';
+        if ($y >= 1420 && $y < 1460) {
+            $calc = $this->mktime(0, 0, 0, $m, 1, $y);
+            $file = dirname(__FILE__).'/data/um_alqoura.txt';
 
-        $content = file_get_contents($file);
-        $offset  = (($y-1420) * 12 + $m) * 11;
-        
-        $d = substr($content, $offset, 2);
-        $m = substr($content, $offset+3, 2);
-        $y = substr($content, $offset+6, 4);
-        
-        $real = mktime(0, 0, 0, $m, $d, $y);
-        
-        $diff = (int)(($real - $calc) / (3600 * 24));
+            $content = file_get_contents($file);
+            $offset  = (($y-1420) * 12 + $m) * 11;
+
+            $d = substr($content, $offset, 2);
+            $m = substr($content, $offset+3, 2);
+            $y = substr($content, $offset+6, 4);
+            
+            $real = mktime(0, 0, 0, $m, $d, $y);
+            
+            $diff = (int)(($real - $calc) / (3600 * 24));
+        } else {
+            $diff = 0;
+        }
         
         return $diff;
+    }
+    
+    /**
+     * Calculate how many days in a given Hijri month
+     *      
+     * @param integer $m         Hijri month (Islamic calendar)
+     * @param integer $y         Hijri year  (Islamic calendar), valid 
+     *                           range[1320-1459]
+     * @param boolean $umAlqoura Should we implement Um-Al-Qura calendar correction
+     *                           in this calculation (default value is true)
+     *       
+     * @return integer Days in a given Hijri month     
+     * @author Khaled Al-Sham'aa <khaled@ar-php.org>
+     */
+    public function hijriMonthDays ($m, $y, $umAlqoura = true)
+    {
+        if ($y >= 1320 && $y < 1460) {
+            $begin = $this->mktime(0, 0, 0, $m, 1, $y);
+            
+            if ($m == 12) {
+                $m2 = 1;
+                $y2 = $y + 1;
+            } else {
+                $m2 = $m + 1;
+                $y2 = $y;
+            }
+            
+            $end = $this->mktime(0, 0, 0, $m2, 1, $y2);
+            
+            if ($umAlqoura === true) {
+                $c1 = $this->mktimeCorrection($m, $y);
+                $c2 = $this->mktimeCorrection($m2, $y2);
+            } else {
+                $c1 = 0;
+                $c2 = 0;
+            }
+            
+            $days = ($end - $begin) / (3600 * 24);
+            $days = $days - $c1 + $c2;
+        } else {
+            $days = false;
+        }
+        
+        return $days;
     }
 }

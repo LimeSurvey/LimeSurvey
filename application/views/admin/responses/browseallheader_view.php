@@ -94,7 +94,10 @@ echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}/"), 'post
                 }
             ?>
             <th class='<?php echo $gbc; ?>'>
-                <strong><?php echo $fn[1]; ?></strong>
+                <?php if(isset($fn['code'])){ ?>
+                    <strong class="qcode">[<?php echo $fn['code']; ?>]</strong>
+                <?php }?>
+                <span class="questiontext"><?php echo $fn[1]; ?></span> 
             </th>
             <?php } ?>
     </tr>

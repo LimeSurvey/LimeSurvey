@@ -171,12 +171,20 @@ class SurveyRuntimeHelper {
     */
     function run($surveyid,$args) {
         global $errormsg;
-
         extract($args);
+
         if (!$thissurvey) {
             $thissurvey = getSurveyInfo($surveyid);
         }
         $LEMsessid = 'survey_' . $surveyid;
+        if (isset($_SESSION[$LEMsessid]['s_lang']))
+        {
+            $this->setJavascriptVar($surveyid, $_SESSION[$LEMsessid]['s_lang']);
+        }
+        else
+        {
+            $this->setJavascriptVar($surveyid, $thissurvey['language']);
+        }
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
         if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))
         {
@@ -243,7 +251,6 @@ class SurveyRuntimeHelper {
         }
         else
         {
-                                       
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION[$LEMsessid]['step'])) // || !$_SESSION[$LEMsessid]['step']) - don't do this for step0, else rebuild the session
             {
@@ -272,7 +279,7 @@ class SurveyRuntimeHelper {
             }
 
             $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
-            
+
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
             {
                 $_SESSION[$LEMsessid]['totalsteps'] = 0;
@@ -296,13 +303,17 @@ class SurveyRuntimeHelper {
                 else
                 {
                     // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
-					$LEMskipReprocessing=true;
+                    $LEMskipReprocessing=true;
                     $move = "movenext"; // so will re-display the survey
                     $invalidLastPage=true;
                     $backpopup=$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");
                 }
             }
-
+            if(isset($move) && $move=="clearcancel")
+            {
+                $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
+                //$backpopup=$clang->gT("Clear all need confirmation.");
+            }
             if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
             {
                 $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step'];
@@ -377,7 +388,7 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if (isset($moveResult))
+            if (isset($moveResult) && isset($moveResult['seq']) )// Reload at first page (welcome after click previous fill an empty $moveResult array
             {
                 if ($moveResult['finished'] == true)
                 {
@@ -431,17 +442,24 @@ class SurveyRuntimeHelper {
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
             }
-            if ($thissurvey['active'] == "Y" && isset($_POST['saveall']))
+           if ($thissurvey['active'] == "Y" && Yii::app()->request->getPost('saveall')) // Don't test if save is allowed
             {
+                $bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid);
                 // must do this here to process the POSTed values
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
-                if ($thissurvey['tokenanswerspersistence'] != 'Y' || !isset($surveyid) || !tableExists('tokens_'.$surveyid))
+                if (!isset($_SESSION[$LEMsessid]['scid']) && !$bTokenAnswerPersitance )
                 {
                     $cSave->showsaveform(); // generates a form and exits, awaiting input
                 }
-                else 
+                else
                 {
-                    // TODO : update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic
+                    // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
+                    // Now update lastpage to $_SESSION[$LEMsessid]['step'] in SurveyDynamic, otherwise we land on 
+                    // the previous page when we return.
+                    $iResponseID = $_SESSION[$LEMsessid]['srid'];
+                    $oResponse = SurveyDynamic::model($surveyid)->findByPk($iResponseID);
+                    $oResponse->lastpage = $_SESSION[$LEMsessid]['step'];
+                    $oResponse->save();
                 }
             }
 
@@ -824,7 +842,7 @@ class SurveyRuntimeHelper {
                 ++$qnumber;
                 $ia[9] = $qnumber; // incremental question count;
 
-                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))
+                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))// Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                 {
                     if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid'])
                     {
@@ -844,6 +862,11 @@ class SurveyRuntimeHelper {
                     {
                         $plus_qanda[] = $ia[4];
                         $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+                        // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
+                        if(isset($ia[10]))
+                            $plus_qanda['finalgroup']=$ia[10];
+                        else
+                            $plus_qanda['finalgroup']=$ia[5];
                         $qanda[] = $plus_qanda;
                     }
                     if ($plus_inputnames)
@@ -973,15 +996,9 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"), array(), $redata);
         }
 
-        // the runonce element has been changed from a hidden to a text/display:none one
-        // in order to workaround an not-reproduced issue #4453 (lemeur)
-        echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
-        
-#        // lemradix and var for LemRadix
-#        $sLemRadixVarScript=" LEMradix='" . $radix . "';\n"
-#                        ." numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');\n"
-#                        ." intRegex = new RegExp('[^-0-9]','g');\n";
-#        Yii::app()->clientScript->registerScript('LemRadixVarScript',$sLemRadixVarScript,CClientScript::POS_HEAD);
+        // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
+        // We don't need runonce actually (140228): the script was updated and replaced by EM see #08783 (grep show no other runonce)
+        // echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
 
         $showpopups=Yii::app()->getConfig('showpopups');
         //Display the "mandatory" message on page if necessary
@@ -1016,7 +1033,7 @@ class SurveyRuntimeHelper {
             }
 
             $redata = compact(array_keys(get_defined_vars()));
-
+            Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
             echo "\n\n<!-- START THE GROUP -->\n";
             echo "\n\n<div id='group-$_gseq'";
             $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($_gseq);
@@ -1038,10 +1055,10 @@ class SurveyRuntimeHelper {
 
             foreach ($qanda as $qa) // one entry per QID
             {
-                if ($gid != $qa[6]) {
+                // Test if finalgroup is in this qid (for all in one survey, else we do only qanda for needed question (in one by one or group by goup)
+                if ($gid != $qa['finalgroup']) {
                     continue;
                 }
-
                 $qid = $qa[4];
                 $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
                 $lastgrouparray = explode("X", $qa[7]);
@@ -1120,6 +1137,7 @@ class SurveyRuntimeHelper {
             echo "\n\n<!-- END THE GROUP -->\n";
             echo templatereplace(file_get_contents($sTemplatePath."endgroup.pstpl"), array(), $redata);
             echo "\n\n</div>\n";
+            Yii::app()->setConfig('gid','');
         }
 
         LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
@@ -1178,5 +1196,28 @@ class SurveyRuntimeHelper {
 
         doFooter();
 
+    }
+    /**
+     * setJavascriptVar
+     *
+     *
+     * @return @void
+     * @param integer $iSurveyId : the survey id for the script
+     * @param string $sLanguage : the actual language for the survey
+     */
+    public function setJavascriptVar($iSurveyId, $sLanguage)
+    {
+        $aSurveyinfo=getSurveyInfo($iSurveyId);
+        if(isset($aSurveyinfo['surveyls_numberformat']))
+        {
+            $aLSJavascriptVar=array();
+            $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
+            $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
+            $aRadix=getRadixPointData($aSurveyinfo['surveyls_numberformat']);
+            $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
+            $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
+            App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
+        }
+        // Don't update, because already set in index/run
     }
 }

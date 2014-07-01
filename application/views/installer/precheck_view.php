@@ -55,7 +55,7 @@ function dirReport($dir, $write, $clang)
         <tbody>        
         <tr>
                <td><?php $clang->eT("PHP version"); ?></td>
-               <td>5.1.6+</td>
+               <td>5.3.0+</td>
                <td><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Outdated"); ?>: <?php echo $phpVersion; ?></span>
                <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
         </tr>

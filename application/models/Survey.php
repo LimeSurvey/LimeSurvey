@@ -32,7 +32,6 @@ class Survey extends LSActiveRecord
      */
     public function getLocalizedTitle()
     {
-        return $this->languagesettings[$this->language]->surveyls_title;
         if (isset($this->languagesettings[App()->lang->langcode]))
         {
             return $this->languagesettings[App()->lang->langcode]->surveyls_title;
@@ -127,12 +126,15 @@ class Survey extends LSActiveRecord
     {
         return array(
             'active' => array('condition' => "active = 'Y'"),
-            'open' => array('condition' => '(startdate > :now OR startdate IS NULL) AND (expires < :now OR expires IS NULL)', 'params' => array(
-                ':now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
-            )),
+            'open' => array('condition' => '(startdate <= :now1 OR startdate IS NULL) AND (expires >= :now2 OR expires IS NULL)', 'params' => array(
+                ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+                )
+            ),
             'public' => array('condition' => "listpublic = 'Y'"),
-            'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now AND (expires < :now OR expires IS NULL)", 'params' => array(
-                ':now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
+            'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now3 AND (expires < :now4 OR expires IS NULL)", 'params' => array(
+                ':now3' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                ':now4' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
             ))
         );
     }
@@ -182,7 +184,7 @@ class Survey extends LSActiveRecord
         array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),
         array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true), 
         array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+        array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
         array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
       //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
@@ -266,13 +268,30 @@ class Survey extends LSActiveRecord
     */
     public function getTokenAttributes()
     {
-        // !!! Legacy records support
-        if (($attdescriptiondata = @unserialize($this->attributedescriptions)) === false)
+        $attdescriptiondata = @unserialize($this->attributedescriptions);
+        // checked for invalid data
+        if($attdescriptiondata == null)
+        {
+            return array();
+        }
+        // Catches malformed data
+        if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)),'attribute_')===false)
+        {
+            // don't know why yet but this breaks normal tokenAttributes functionning
+            //$attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
+        }
+        elseif (is_null($attdescriptiondata))
+        {
+            $attdescriptiondata=array();
+        }
+        // Legacy records support
+        if ($attdescriptiondata === false)
         {
             $attdescriptiondata = explode("\n", $this->attributedescriptions);
             $fields = array();
             $languagesettings = array();
             foreach ($attdescriptiondata as $attdescription)
+            {
                 if (trim($attdescription) != '')
                 {
                     $fieldname = substr($attdescription, 0, strpos($attdescription, '='));
@@ -281,16 +300,29 @@ class Survey extends LSActiveRecord
                     'description' => $desc,
                     'mandatory' => 'N',
                     'show_register' => 'N',
+                    'cpdbmap' =>''
                     );
                     $languagesettings[$fieldname] = $desc;
                 }
-                $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
+            }
+            $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
             self::model()->updateByPk($this->sid, array('attributedescriptions' => serialize($fields)));
             $ls->surveyls_attributecaptions = serialize($languagesettings);
             $ls->save();
             $attdescriptiondata = $fields;
         }
-        return $attdescriptiondata;
+        $aCompleteData=array();
+        foreach ($attdescriptiondata as $sKey=>$aValues)
+        {                                   
+            if (!is_array($aValues)) $aValues=array();
+            $aCompleteData[$sKey]= array_merge(array(
+                    'description' => '',
+                    'mandatory' => 'N',
+                    'show_register' => 'N',
+                    'cpdbmap' =>''
+                    ),$aValues);
+        }
+        return $aCompleteData;
     }
     
     /**
@@ -324,7 +356,6 @@ class Survey extends LSActiveRecord
     * Creates a new survey - does some basic checks of the suppplied data
     *
     * @param array $aData Array with fieldname=>fieldcontents data
-    * @param boolean $xssfiltering Sets if the data for the new survey should be filtered for XSS
     * @return integer The new survey id
     */
     public function insertNewSurvey($aData)

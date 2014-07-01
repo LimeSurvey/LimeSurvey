@@ -1,8 +1,15 @@
+<?php
+// Surely better in controller
+if ($adding || $copying) {
+    $sValidateUrl=$this->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid));
+}else{
+    $sValidateUrl=$this->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid,'qid'=>$qid));
+}
+?>
 <script type='text/javascript'>
     var attr_url = "<?php echo $this->createUrl('admin/questions', array('sa' => 'ajaxquestionattributes')); ?>";
     var imgurl = '<?php echo Yii::app()->getConfig('imageurl'); ?>';
-    var yii_csrf = "<?php echo Yii::app()->request->csrfToken; ?>";
-    
+    var validateUrl = "<?php echo $sValidateUrl; ?>";
 </script>
 <?php PrepareEditorScript(true, $this); ?>
 
@@ -35,9 +42,9 @@
             <?php }
         ?>
     </ul>
-    <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion','onsubmit'=>"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');")); ?>
+    <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
             <div id='questionactioncopy' class='extra-action'>
-                <input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+                <button type='submit' class="saveandreturn" name="redirection" value="edit"><?php $clang->eT("Save") ?> </button>
                 <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
             </div>
 
@@ -303,9 +310,8 @@
                     else
                     { ?>
                     <input type='hidden' name='action' value='updatequestion' />
-                    <input type='hidden' id='newpage' name='newpage' value='' />
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
-					<p><input type='submit' class="saveandreturn" value='<?php $clang->eT("Save") ?>' />
+					<p><button type='submit' class="saveandreturn" name="redirection" value="edit"><?php $clang->eT("Save") ?> </button>
                     <input type='submit' value='<?php $clang->eT("Save and close"); ?>' />
                     <?php } ?>
                 <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p><br />
@@ -324,7 +330,7 @@
             <ul>
                 <li>
                     <label for='the_file'><?php $clang->eT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>
-                    <input name='the_file' id='the_file' type="file"/>
+                    <input name='the_file' id='the_file' type="file" required="required" accept=".lsq,.csv" />
                 </li>
                 <li>
                     <label for='translinksfields'><?php $clang->eT("Convert resource links?"); ?></label>
