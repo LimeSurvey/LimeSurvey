@@ -763,9 +763,9 @@ class participantsaction extends Survey_Common_Action
     */
     function getParticipants_json($search = null)
     {
-        $page = Yii::app()->request->getPost('page');
-        $limit = Yii::app()->request->getPost('rows');
-        $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+        $page = (int) Yii::app()->request->getPost('page');
+        $limit = (int) Yii::app()->request->getPost('rows');
+        $limit = empty($limit) ? $limit : 50; //Stop division by zero errors
 
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
@@ -774,10 +774,11 @@ class participantsaction extends Survey_Common_Action
             array_push($participantfields, $value['attribute_id']);
         }
         $sidx = Yii::app()->request->getPost('sidx');
-        $sidx = !empty($sidx) ? $sidx : "lastname";
+        $sidx = in_array($sidx,$participantfields) ? $sidx : "lastname";
         $sord = Yii::app()->request->getPost('sord');
-        $sord = !empty($sord) ? $sord : "asc";
+        $sord = ($sord=='desc') ? 'desc' : 'asc';
         $order = $sidx. " ". $sord;
+                                                 
         
         $aData = new stdClass;
         
