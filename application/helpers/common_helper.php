@@ -5485,10 +5485,10 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
     $result = "N/A";
     if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
         return $result;
+    $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
     $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $quota = $quota_info[0];
-    if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
-    count($quota['members']) > 0)
+    if (count($quota['members']) > 0) // Existence of table alrady tested
     {
         // Keep a list of fields for easy reference
         $fields_list = array();
@@ -5498,25 +5498,32 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 
         foreach ($quota['members'] as $member)
         {
-            $criteria = new CDbCriteria;
-
             foreach ($member['fieldnames'] as $fieldname)
             {
-                if (!in_array($fieldname, $fields_list))
-                    $fields_list[] = $fieldname;
-
-                // Yii does not quote column names (duh!) so we have to do it.
-                $criteria->addColumnCondition(array(Yii::app()->db->quoteColumnName($fieldname) => $member['value']), 'OR');
+                if(in_array($fieldname,$aColumnName))
+                    $fields_list[$fieldname][] = $member['value'];
+                else
+                    return $result;
             }
-
-            $fields_query[$fieldname] = $criteria;
         }
 
         $criteria = new CDbCriteria;
-
-        foreach ($fields_list as $fieldname)
-            $criteria->mergeWith($fields_query[$fieldname]);
-        $criteria->mergeWith(array('condition'=>"submitdate IS NOT NULL"));
+        $criteria->condition="submitdate IS NOT NULL";
+        $aParams=array();
+        foreach ($fields_list as $fieldname=>$aValue)
+        {
+            if(count($aValue)==1)
+            {
+                $criteria->addCondition("{$fieldname} = :{$fieldname}");
+                $aParams[":{$fieldname}"]=$aValue[0];
+            }
+            else
+            {
+                $criteria->addInCondition($fieldname,$aValue); // NO need params : addInCondition bind automatically
+            }
+            // We can use directly addInCondition, but don't know what is speediest.
+        }
+        $criteria->params=$aParams;
         $result = SurveyDynamic::model($iSurveyId)->count($criteria);
     }
 
@@ -5697,42 +5704,43 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
                 foreach ($result_qe as $quota_entry)
                 {
                     $quota_entry = $quota_entry->attributes;
-                    $result_quest=Question::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
-                    $qtype=$result_quest->attributes;
-
-                    $fieldnames = "0";
-
-                    if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
+                    $oMemberQuestion=Question::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
+                    if($oMemberQuestion)
                     {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
+                        $fieldnames = "0";
 
-                    if($qtype['type'] == "L" || $qtype['type'] == "O" || $qtype['type'] =="!")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
+                        if ($oMemberQuestion->type == "I" || $oMemberQuestion->type == "G" || $oMemberQuestion->type == "Y")
+                        {
+                            $fieldnames=array(0 => $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid']);
+                            $value = $quota_entry['code'];
+                        }
 
-                    if($qtype['type'] == "M")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
-                        $value = "Y";
-                    }
+                        if($oMemberQuestion->type == "L" || $oMemberQuestion->type == "O" || $oMemberQuestion->type =="!")
+                        {
+                            $fieldnames=array(0 => $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid']);
+                            $value = $quota_entry['code'];
+                        }
 
-                    if($qtype['type'] == "A" || $qtype['type'] == "B")
-                    {
-                        $temp = explode('-',$quota_entry['code']);
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
-                        $value = $temp[1];
-                    }
+                        if($oMemberQuestion->type == "M")
+                        {
+                            $fieldnames=array(0 => $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'].$quota_entry['code']);
+                            $value = "Y";
+                        }
 
-                    array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],
-                    'type' => $qtype['type'],
-                    'code' => $quota_entry['code'],
-                    'value' => $value,
-                    'qid' => $quota_entry['qid'],
-                    'fieldnames' => $fieldnames));
+                        if($oMemberQuestion->type == "A" || $oMemberQuestion->type == "B")
+                        {
+                            $temp = explode('-',$quota_entry['code']);
+                            $fieldnames=array(0 => $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'].$temp[0]);
+                            $value = $temp[1];
+                        }
+
+                        array_push($quota_info[$x]['members'],array('Title' => $oMemberQuestion->title,
+                        'type' => $oMemberQuestion->type,
+                        'code' => $quota_entry['code'],
+                        'value' => $value,
+                        'qid' => $quota_entry['qid'],
+                        'fieldnames' => $fieldnames));
+                    }
                 }
             }
             $x++;
