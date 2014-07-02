@@ -835,7 +835,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttribute_json()
     {
-        $iParticipantId = Yii::app()->request->getQuery('pid');
+        $iParticipantId = strip_tags(Yii::app()->request->getQuery('pid'));
         $records = ParticipantAttributeName::model()->getParticipantVisibleAttribute($iParticipantId);
         $records = subval_sort($records, "attribute_name", "asc");
 
