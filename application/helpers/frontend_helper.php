@@ -29,7 +29,7 @@ function loadanswers()
         {
             $query .= "AND {{saved_control}}.scid={$scid}\n";
         }
-        $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
+        $query .="AND {{saved_control}}.identifier = '".Yii::app()->db->quoteValue($_SESSION['survey_'.$surveyid]['holdname'])."' ";
 
         if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
         {

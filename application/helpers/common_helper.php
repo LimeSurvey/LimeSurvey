@@ -3799,7 +3799,6 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Other'),
         'sortorder'=>130,
         "inputtype"=>"text",
-        'default'=>'1',
         "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
         "caption"=>$clang->gT("Max number of files"));
 
@@ -3883,14 +3882,6 @@ function categorySort($a, $b)
     return $result;
 }
 
-// make sure the given string (which comes from a POST or GET variable)
-// is safe to use in MySQL.  This does nothing if gpc_magic_quotes is on.
-function autoEscape($str) {
-    if (!get_magic_quotes_gpc()) {
-        return addslashes ($str);
-    }
-    return $str;
-}
 
 // the opposite of the above: takes a POST or GET variable which may or
 // may not have been 'auto-quoted', and return the *unquoted* version.
