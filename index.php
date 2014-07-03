@@ -10,7 +10,7 @@
  * as this file.
  *
  */
-	$system_path = "framework";
+	$system_path = "vendor/yiisoft/yii/framework";
 
 /*
  *---------------------------------------------------------------

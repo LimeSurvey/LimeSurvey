@@ -1,0 +1,8 @@
+{
+    "name": "limesurvey/limesurvey",
+    "description": "the open source survey application, refreshingly easy and free",
+    "require": {
+        "yiisoft/yii": "1.1.14"
+    },
+    "license": "GPL"
+}
