@@ -1288,8 +1288,9 @@ function do_date($ia)
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
+        // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
         // "+1" makes room for a trailing space in date/time values
-        $iLength=strlen($dateformatdetails['dateformat'])+1;
+        $iLength=strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
 
         // HTML for date question using datepicker
