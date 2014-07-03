@@ -59,6 +59,44 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140618) to 2.05+ (build 140703) July 3, 2014
+-Fixed issue #8028: File upload dialog function can be updated (Denis Chenu)
+-Fixed issue #9001: Gramar error in validation message (Carsten Schmitz)
+-Fixed issue #9071: Language switch not working when using move previous (Denis Chenu)
+-Fixed issue #9105: Unable to open popup email editor in French (Carsten Schmitz)
+-Fixed issue #9117: Array dual scale (dropdown) question : First answer is allways selected if don't show no answer (Denis Chenu)
+-Fixed issue #9127: Invalid quota broke quota view (Denis Chenu)
+-Fixed issue: Asterisks in global settings not visible for fixed settings (Carsten Schmitz)
+-Fixed issue: Miscalculation of completed quota for Multi Question type (Denis Chenu)
+-Fixed issue: Missing translation in token send email process (Denis Chenu)
+-Fixed issue: Search parameter vulnerability in CPDB (Carsten Schmitz)
+-Fixed issue: Untranslated text in multitext array question sum function (Carsten Schmitz)
+-Fixed issue: Vulnerable parameter on survey resume (Carsten Schmitz)
+-Fixed issue: XSS reflection in CPDB and global settings (Carsten Schmitz)
+-New feature : use shortest url with urlFormat path (Denis Chenu)
+#Updated translation: Albanian by florianika
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han, L191
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: German by c_schmitz, DLange
+#Updated translation: German (Informal) by c_schmitz, DLange
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Malay by astrasia
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, rhnascimento
+#Updated translation: Romanian by Borgie
+#Updated translation: Romanian by filipguttman, Borgie
+#Updated translation: Russian by vipgroup
+#Updated translation: Tamil by apmuthu
+#Updated translation: Thai by adzpire
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 140612) to 2.05+ (build 140618) June 18, 2014
 -Fixed issue #9025: Error showing pie chart in statistics when using MS SQL server (Carsten Schmitz)
 -Fixed issue #9050: Template permissions for a user are lost after global permissions are saved (Carsten Schmitz)
