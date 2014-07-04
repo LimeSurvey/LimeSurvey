@@ -1020,6 +1020,11 @@ class questions extends Survey_Common_Action
             $language=null;
         }
         $resultdata=getlabelsets($language);
+        // Label set title really don't need HTML
+        foreach($resultdata as &$aResult)
+        {
+            $aResult = array_map('flattenText', $aResult);
+        }
         header('Content-type: application/json');
         echo ls_json_encode($resultdata);
     }
