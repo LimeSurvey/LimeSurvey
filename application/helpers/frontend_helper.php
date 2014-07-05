@@ -2000,8 +2000,9 @@ function checkCompletedQuota($surveyid,$return=false)
     $sUrl=$event->get('url',$aMatchedQuota['quotals_url']);
     $sUrlDescription=$event->get('urldescrip',$aMatchedQuota['quotals_urldescrip']);
     $sAction=$event->get('action',$aMatchedQuota['action']);
+    $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
 
-    // Doing the acton and show the page
+    // Doing the action and show the page
     if ($sAction == "1" && $sClientToken)
         submittokens(true);
     // Construct the default message
@@ -2009,6 +2010,7 @@ function checkCompletedQuota($surveyid,$return=false)
     $sUrl = passthruReplace($sUrl, $thissurvey);
     $sUrl = templatereplace($sUrl,array(),$redata);
     $sUrlDescription = templatereplace($sUrlDescription,array(),$redata);
+
     // Construction of default message inside quotamessage class
     $quotaMessage = "<div class='quotamessage limesurveycore'>\n";
     $quotaMessage.= "\t".$sMessage."\n";
@@ -2032,6 +2034,12 @@ function checkCompletedQuota($surveyid,$return=false)
 
     // Send page to user and end.
     sendCacheHeaders();
+    if($sAutoloadUrl == 1 && $sUrl != "")
+    {
+        if ($sAction == "1")
+            killSurveySession($surveyid);
+        header("Location: ".$sUrl);
+    }
     doHeader();
     echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$redata);
     // Better to use completed.pstpl, but some template can need update , leave it for 2.06 #09133
