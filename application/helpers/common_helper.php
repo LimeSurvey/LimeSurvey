@@ -5488,7 +5488,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
     $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
     $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $quota = $quota_info[0];
-    if (count($quota['members']) > 0) // Existence of table alrady tested
+    if (count($quota['members']) > 0) // Existence of table already tested
     {
         // Keep a list of fields for easy reference
         $fields_list = array();
@@ -5498,13 +5498,10 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 
         foreach ($quota['members'] as $member)
         {
-            foreach ($member['fieldnames'] as $fieldname)
-            {
-                if(in_array($fieldname,$aColumnName))
-                    $fields_list[$fieldname][] = $member['value'];
-                else
-                    return $result;
-            }
+            if(in_array($member['fieldname'],$aColumnName))
+                $fields_list[$member['fieldname']][] = $member['value'];
+            else
+                return $result;// We return N/A even for activated survey
         }
 
         $criteria = new CDbCriteria;
@@ -5663,7 +5660,6 @@ function includeKeypad()
 function getQuotaInformation($surveyid,$language,$iQuotaID='all')
 {
     Yii::log('getQuotaInformation');
-    global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     $aAttributes=array('sid' => $surveyid);
     if ($iQuotaID != 'all')
@@ -5686,18 +5682,8 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
         foreach ($result as $_survey_quotas)
         {
             $survey_quotas = array_merge($_survey_quotas->attributes,$_survey_quotas->languagesettings[0]->attributes);// We have only one language, then we can use first only
-            // !!! Doubting this
-#            foreach ($_survey_quotas->defaultlanguage as $k => $v)
-#                $survey_quotas[$k] = $v;
 
-            array_push($quota_info,array('Name' => $survey_quotas['name'],
-            'Limit' => $survey_quotas['qlimit'],
-            'Action' => $survey_quotas['action'],
-            'Message' => $survey_quotas['quotals_message'],
-            'Url' => $survey_quotas['quotals_url'],
-            'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
-            'AutoloadUrl' => $survey_quotas['autoload_url']));
-
+            array_push($quota_info,$survey_quotas);
             $result_qe = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
             $quota_info[$x]['members'] = array();
             if (count($result_qe) > 0)
@@ -5708,39 +5694,43 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
                     $oMemberQuestion=Question::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
                     if($oMemberQuestion)
                     {
-                        $fieldnames = "0";
+                        $fieldname = "0";
 
                         if ($oMemberQuestion->type == "I" || $oMemberQuestion->type == "G" || $oMemberQuestion->type == "Y")
                         {
-                            $fieldnames=array(0 => $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid']);
+                            $fieldname= $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'];
                             $value = $quota_entry['code'];
                         }
 
                         if($oMemberQuestion->type == "L" || $oMemberQuestion->type == "O" || $oMemberQuestion->type =="!")
                         {
-                            $fieldnames=array(0 => $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid']);
+                            $fieldname=$surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'];
                             $value = $quota_entry['code'];
                         }
 
                         if($oMemberQuestion->type == "M")
                         {
-                            $fieldnames=array(0 => $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'].$quota_entry['code']);
+                            // Need to remove invalid $quota_entry['code']
+                            $fieldname=$surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'].$quota_entry['code'];
                             $value = "Y";
                         }
 
                         if($oMemberQuestion->type == "A" || $oMemberQuestion->type == "B")
                         {
                             $temp = explode('-',$quota_entry['code']);
-                            $fieldnames=array(0 => $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'].$temp[0]);
+                            $fieldname=$surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'].$temp[0];
                             $value = $temp[1];
                         }
 
-                        array_push($quota_info[$x]['members'],array('Title' => $oMemberQuestion->title,
-                        'type' => $oMemberQuestion->type,
-                        'code' => $quota_entry['code'],
-                        'value' => $value,
-                        'qid' => $quota_entry['qid'],
-                        'fieldnames' => $fieldnames));
+                        array_push($quota_info[$x]['members'],array(
+                            'Title' => $oMemberQuestion->title,
+                            'type' => $oMemberQuestion->type,
+                            'code' => $quota_entry['code'],
+                            'value' => $value,
+                            'qid' => $quota_entry['qid'],
+                            'fieldname' => $fieldname
+                            )
+                        );
                     }
                 }
             }
