@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-06-29 23:06:00+00:00\n"
+"POT-Creation-Date: 2014-07-02 19:13:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -410,7 +410,7 @@ msgstr ""
 #: application/helpers/common_helper.php:3623
 #: application/helpers/common_helper.php:3771
 #: application/helpers/common_helper.php:3782
-#: application/helpers/common_helper.php:3842
+#: application/helpers/common_helper.php:3841
 #: application/helpers/export_helper.php:283
 #: application/helpers/export_helper.php:287
 #: application/helpers/export_helper.php:295
@@ -647,7 +647,7 @@ msgstr ""
 #: application/helpers/common_helper.php:3622
 #: application/helpers/common_helper.php:3770
 #: application/helpers/common_helper.php:3781
-#: application/helpers/common_helper.php:3841
+#: application/helpers/common_helper.php:3840
 #: application/helpers/export_helper.php:296
 #: application/helpers/export_helper.php:300
 #: application/helpers/export_helper.php:1381
@@ -880,8 +880,8 @@ msgstr ""
 #: application/helpers/common_helper.php:3577
 #: application/helpers/common_helper.php:3790
 #: application/helpers/common_helper.php:3799
-#: application/helpers/common_helper.php:3808
-#: application/helpers/common_helper.php:3817
+#: application/helpers/common_helper.php:3807
+#: application/helpers/common_helper.php:3816
 #: application/helpers/export_helper.php:948
 #: application/helpers/export_helper.php:957
 #: application/helpers/export_helper.php:1056
@@ -1329,7 +1329,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:207
 #: application/controllers/admin/labels.php:100
 #: application/controllers/admin/labels.php:133
-#: application/controllers/admin/participantsaction.php:1087
+#: application/controllers/admin/participantsaction.php:1088
 #: application/controllers/admin/questiongroups.php:53
 #: application/controllers/admin/questions.php:52
 #: application/controllers/admin/surveyadmin.php:255
@@ -1913,7 +1913,7 @@ msgstr ""
 msgid "%s participant(s) are to be copied "
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1060
+#: application/controllers/admin/participantsaction.php:1061
 #: application/controllers/admin/surveyadmin.php:1329
 #: application/views/admin/labels/labelview_view.php:141
 #: application/views/admin/labels/labelview_view.php:150
@@ -1926,11 +1926,11 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1075
+#: application/controllers/admin/participantsaction.php:1076
 msgid "This is not a .csv file."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1132
+#: application/controllers/admin/participantsaction.php:1133
 #: application/controllers/admin/templates.php:146
 #: application/core/Survey_Common_Action.php:984
 #: application/views/admin/participants/displayParticipants_view.php:143
@@ -1940,58 +1940,58 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1133
+#: application/controllers/admin/participantsaction.php:1134
 #: application/views/admin/token/browse.php:99
 msgid "Summary"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1134
+#: application/controllers/admin/participantsaction.php:1135
 msgid "Upload summary"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1135
+#: application/controllers/admin/participantsaction.php:1136
 msgid "You have to pair this field with an existing attribute."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1136
+#: application/controllers/admin/participantsaction.php:1137
 msgid "Only one CSV attribute is mapped with central attribute."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1137
+#: application/controllers/admin/participantsaction.php:1138
 #: application/views/admin/participants/attributeMapToken_view.php:9
 #: application/views/admin/participants/attributeMap_view.php:17
 msgid "This list cannot accept token attributes."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1484
+#: application/controllers/admin/participantsaction.php:1485
 msgid "%s participants have been shared"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1504
+#: application/controllers/admin/participantsaction.php:1505
 msgid "%s participants have been copied to the central participants table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1507
-#: application/controllers/admin/participantsaction.php:1531
-#: application/controllers/admin/participantsaction.php:1561
+#: application/controllers/admin/participantsaction.php:1508
+#: application/controllers/admin/participantsaction.php:1532
+#: application/controllers/admin/participantsaction.php:1562
 msgid "%s entries were not copied because they already existed"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1511
+#: application/controllers/admin/participantsaction.php:1512
 msgid "Attribute values for existing participants have been updated from the token records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1528
-#: application/controllers/admin/participantsaction.php:1558
+#: application/controllers/admin/participantsaction.php:1529
+#: application/controllers/admin/participantsaction.php:1559
 msgid "%s participants have been copied to the survey token table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1535
-#: application/controllers/admin/participantsaction.php:1569
+#: application/controllers/admin/participantsaction.php:1536
+#: application/controllers/admin/participantsaction.php:1570
 msgid "Attribute values for existing participants have been updated from the participants records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1565
+#: application/controllers/admin/participantsaction.php:1566
 msgid "%s entries were skipped because they are blacklisted"
 msgstr ""
 
@@ -2299,7 +2299,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:111
 #: application/controllers/admin/responses.php:446
-#: application/helpers/common_helper.php:5006
+#: application/helpers/common_helper.php:4997
 #: application/helpers/replacements_helper.php:551
 #: application/models/Token.php:38
 #: application/views/admin/export/exportresults_view.php:132
@@ -2315,7 +2315,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:112
 #: application/controllers/admin/responses.php:447
-#: application/helpers/common_helper.php:5011
+#: application/helpers/common_helper.php:5002
 #: application/helpers/replacements_helper.php:558
 #: application/models/Token.php:39
 #: application/views/admin/export/exportresults_view.php:133
@@ -5410,7 +5410,7 @@ msgid "Start language"
 msgstr ""
 
 #: application/helpers/common_helper.php:1854
-#: application/helpers/common_helper.php:5026
+#: application/helpers/common_helper.php:5017
 #: application/helpers/frontend_helper.php:1121 application/models/Token.php:42
 #: application/views/admin/dataentry/caption_view.php:29
 #: application/views/admin/participants/attributeMap_view.php:96
@@ -5542,7 +5542,7 @@ msgstr ""
 #: application/helpers/common_helper.php:3114
 #: application/helpers/common_helper.php:3267
 #: application/helpers/common_helper.php:3278
-#: application/helpers/common_helper.php:3826
+#: application/helpers/common_helper.php:3825
 msgid "Logic"
 msgstr ""
 
@@ -5714,7 +5714,7 @@ msgstr ""
 #: application/helpers/common_helper.php:3200
 #: application/helpers/common_helper.php:3738
 #: application/helpers/common_helper.php:3746
-#: application/helpers/common_helper.php:3838
+#: application/helpers/common_helper.php:3837
 msgid "Input"
 msgstr ""
 
@@ -6573,55 +6573,55 @@ msgstr ""
 msgid "Maximum file size allowed (in KB)"
 msgstr ""
 
-#: application/helpers/common_helper.php:3803
+#: application/helpers/common_helper.php:3802
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3804
+#: application/helpers/common_helper.php:3803
 msgid "Max number of files"
 msgstr ""
 
-#: application/helpers/common_helper.php:3812
+#: application/helpers/common_helper.php:3811
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3813
+#: application/helpers/common_helper.php:3812
 msgid "Min number of files"
 msgstr ""
 
-#: application/helpers/common_helper.php:3821
+#: application/helpers/common_helper.php:3820
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: application/helpers/common_helper.php:3822
+#: application/helpers/common_helper.php:3821
 msgid "Allowed file types"
 msgstr ""
 
-#: application/helpers/common_helper.php:3829
+#: application/helpers/common_helper.php:3828
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr ""
 
-#: application/helpers/common_helper.php:3830
+#: application/helpers/common_helper.php:3829
 msgid "Randomization group name"
 msgstr ""
 
-#: application/helpers/common_helper.php:3844
+#: application/helpers/common_helper.php:3843
 msgid "Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"
 msgstr ""
 
-#: application/helpers/common_helper.php:3845
+#: application/helpers/common_helper.php:3844
 msgid "Value range allows missing"
 msgstr ""
 
-#: application/helpers/common_helper.php:3989
+#: application/helpers/common_helper.php:3980
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
-#: application/helpers/common_helper.php:4123
+#: application/helpers/common_helper.php:4114
 msgid "SMTP debug output:"
 msgstr ""
 
-#: application/helpers/common_helper.php:5016
+#: application/helpers/common_helper.php:5007
 #: application/helpers/replacements_helper.php:565
 #: application/models/Token.php:40
 #: application/views/admin/export/exportresults_view.php:134
@@ -6630,33 +6630,33 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:5021 application/models/Token.php:41
+#: application/helpers/common_helper.php:5012 application/models/Token.php:41
 #: application/views/admin/token/browse.php:117
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:5031 application/models/Token.php:43
+#: application/helpers/common_helper.php:5022 application/models/Token.php:43
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:5036 application/models/Token.php:45
+#: application/helpers/common_helper.php:5027 application/models/Token.php:45
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:5041 application/models/Token.php:46
+#: application/helpers/common_helper.php:5032 application/models/Token.php:46
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:5046 application/models/Token.php:47
+#: application/helpers/common_helper.php:5037 application/models/Token.php:47
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:5051 application/models/Token.php:49
+#: application/helpers/common_helper.php:5042 application/models/Token.php:49
 #: application/views/admin/token/browse.php:117
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:5261
+#: application/helpers/common_helper.php:5252
 msgid "Error when checking for new version: %s"
 msgstr ""
 
@@ -8112,19 +8112,31 @@ msgid "An array of sub-question on each cell. The sub-question text are in the t
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4966
-msgid "Each answers are number. "
+msgid "Each answer is a number. "
+msgstr ""
+
+#: application/helpers/qanda_helper.php:4976
+#: application/helpers/qanda_helper.php:5021
+#: application/views/admin/assessments_view.php:39
+#: application/views/admin/assessments_view.php:71
+#: application/views/admin/survey/listSurveys_view.php:46
+msgid "Total"
+msgstr ""
+
+#: application/helpers/qanda_helper.php:4980
+msgid "Grand total"
 msgstr ""
 
 #: application/helpers/qanda_helper.php:4988
-msgid "The last row show the total for the column. "
+msgid "The last row shows the total for the column. "
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5008
-msgid "The last column show the total for the row. "
+msgid "The last column shows the total for the row. "
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5036
-msgid "The last row show the total for the column and the last column show the total for the row. "
+msgid "The last row shows the total for the column and the last column shows the total for the row. "
 msgstr ""
 
 #: application/helpers/qanda_helper.php:5097
@@ -9276,12 +9288,6 @@ msgstr ""
 #: application/views/admin/token/email.php:75
 #: application/views/admin/token/remind.php:53
 msgid "Message"
-msgstr ""
-
-#: application/views/admin/assessments_view.php:39
-#: application/views/admin/assessments_view.php:71
-#: application/views/admin/survey/listSurveys_view.php:46
-msgid "Total"
 msgstr ""
 
 #: application/views/admin/assessments_view.php:89
