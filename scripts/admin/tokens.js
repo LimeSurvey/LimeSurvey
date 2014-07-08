@@ -394,13 +394,14 @@ $(document).ready(function() {
         if(sSearchString != ""){
             var aSearchConditions=new Array;
             for(col in colInformation){
-                if(colInformation[col]['quickfilter'])
-                    aSearchConditions.push(col+"||contains||"+sSearchString);
+                if(colInformation[col]['quickfilter']){
+                    aSearchConditions.push(col);aSearchConditions.push('contains');aSearchConditions.push(sSearchString);aSearchConditions.push("or");
+                }
             }
-            var sSearchConditions=aSearchConditions.join("||or||");
-            oGrid.jqGrid('setGridParam', {url: jsonSearchUrl+"/"+sSearchConditions}).trigger('reloadGrid', [{current: true, page: 1}]);
+            aSearchConditions.pop();// remove last 'or'
+            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { searcharray: aSearchConditions} }).trigger('reloadGrid', [{current: true, page: 1}]);
         }else{
-            oGrid.jqGrid('setGridParam', {url: jsonUrl}).trigger('reloadGrid', [{current: true, page: 1}]);
+            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { }}).trigger('reloadGrid', [{current: true, page: 1}]);
         }
     }, 500);
 
