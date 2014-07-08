@@ -155,6 +155,44 @@ abstract class Writer implements IWriter
     }
 
     /**
+    * Return the answer text according to options
+    *
+    * @param Survey $oSurvey
+    * @param FormattingOptions $oOptions
+    * @param string $fieldName
+    * @param string $sValue
+    * @return string
+    */
+    public function getLongAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
+    {
+        return $this->transformResponseValue(
+                $oSurvey->getFullAnswer($fieldName, $sValue, $this->translator, $this->languageCode);
+                $oSurvey->fieldMap[$column]['type'], 
+                $oOptions,
+                $fieldName,
+               );
+    }
+
+    /**
+    * Return the answer text according to options
+    *
+    * @param Survey $oSurvey
+    * @param FormattingOptions $oOptions
+    * @param string $fieldName
+    * @param string $sValue
+    * @return string
+    */
+    public function getShortAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
+    {
+        return $this->transformResponseValue(
+                $oSurvey->$sValue,
+                $oSurvey->fieldMap[$column]['type'], 
+                $oOptions,
+                $fieldName,
+               );
+    }
+
+    /**
     * Performs a transformation of the response value based on the value, the
     * type of field the value is a response for, and the FormattingOptions.
     * All transforms should be processed during the execution of this function!
@@ -232,8 +270,6 @@ abstract class Writer implements IWriter
                         $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn);
                         break;
                 }
-
-                //$this->output.=$this->csvEscape($value).$this->separator;
                 $headers[] = $value;
             }
         }
@@ -250,19 +286,11 @@ abstract class Writer implements IWriter
                 {
                     switch ($oOptions->answerFormat) {
                         case 'long':
-                            $elementArray[] = $this->transformResponseValue(
-                                $oSurvey->getFullAnswer($column, $value, $this->translator, $this->languageCode), 
-                                $oSurvey->fieldMap[$column]['type'], 
-                                $oOptions,
-                                $column);
+                            $elementArray[] = $this->getLongAnswer($oSurvey, $oOptions, $column,$value);
                             break;
                         default:
                         case 'short':
-                            $elementArray[] = $this->transformResponseValue(
-                                $value,
-                                $oSurvey->fieldMap[$column]['type'], 
-                                $oOptions,
-                                $column);
+                            $elementArray[] = $this->getShortAnswer($oSurvey, $oOptions, $column,$value);
                             break;
                     }
                 }
