@@ -18,39 +18,47 @@ function loadanswers()
     global $clienttoken;
     $clang = Yii::app()->lang;
 
-    $scid=returnGlobal('scid',true);
+    $scid=Yii::app()->request->getQuery('scid');
     if (Yii::app()->request->getParam('loadall') == "reload")
     {
-        $query = "SELECT * FROM {{saved_control}} INNER JOIN {$thissurvey['tablename']}
-        ON {{saved_control}}.srid = {$thissurvey['tablename']}.id
-        WHERE {{saved_control}}.sid=$surveyid\n";
-        if (isset($scid)) //Would only come from email
-
+        $sLoadName=Yii::app()->request->getParam('loadname');
+        $sLoadPass=Yii::app()->request->getParam('loadpass');
+        $oCriteria= new CDbCriteria;
+        $oCriteria->join="LEFT JOIN {{saved_control}} ON t.id={{saved_control}}.srid";
+        $oCriteria->condition="{{saved_control}}.sid=:sid";
+        $aParams=array(':sid'=>$surveyid);
+        if (isset($scid)) //Would only come from email : we don't need it ....
         {
-            $query .= "AND {{saved_control}}.scid={$scid}\n";
+            $oCriteria->addCondition("{{saved_control}}.scid=:scid");
+            $aParams[':scid']=$scid;
         }
-        $query .="AND {{saved_control}}.identifier = '".Yii::app()->db->quoteValue($_SESSION['survey_'.$surveyid]['holdname'])."' ";
+        $oCriteria->addCondition("{{saved_control}}.identifier=:identifier");
+        $aParams[':identifier']=$sLoadName;
 
         if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
         {
-            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5($_SESSION['survey_'.$surveyid]['holdpass'])."'\n";
+            // To be validated with mssql, think it's not needed
+            $oCriteria->addCondition(" CAST({{saved_control}}.access_code as varchar(32))=:access_code");
         }
         else
         {
-            $query .="AND {{saved_control}}.access_code = '".md5($_SESSION['survey_'.$surveyid]['holdpass'])."'\n";// md5 don't need to be escaped
+            $oCriteria->addCondition("{{saved_control}}.access_code=:access_code");
         }
+        $aParams[':access_code']=md5($sLoadPass);
     }
     elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
     {
-        $query = "SELECT * FROM {$thissurvey['tablename']}
-        WHERE {$thissurvey['tablename']}.id=".$_SESSION['survey_'.$surveyid]['srid']."\n";
+        $oCriteria= new CDbCriteria;
+        $oCriteria->condition="id=:id";
+        $aParams=array(':id'=>$_SESSION['survey_'.$surveyid]['srid']);
     }
     else
     {
         return;
     }
-    $aRow = Yii::app()->db->createCommand($query)->queryRow();// TODO : use Yii for query
-    if (!$aRow)
+    $oCriteria->params=$aParams;
+    $oResponses=SurveyDynamic::model($surveyid)->find($oCriteria);
+    if (!$oResponses)
     {
         return false;
     }
@@ -60,7 +68,8 @@ function loadanswers()
         //If this is from an email, build surveysession first
         $_SESSION['survey_'.$surveyid]['LEMtokenResume']=true;
         // Get if survey is been answered
-        $submitdate=$aRow['submitdate'];
+        $submitdate=$oResponses->submitdate;
+        $aRow=$oResponses->attributes;
         foreach ($aRow as $column => $value)
         {
             if ($column == "token")
@@ -133,8 +142,8 @@ function loadanswers()
                 }  // if (in_array(
             }  // else
         } // foreach
+        return true;
     }
-    return true;
 }
 
 function makegraph($currentstep, $total)
