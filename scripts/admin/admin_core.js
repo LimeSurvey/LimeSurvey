@@ -253,6 +253,7 @@ function doToolTip()
                     at: "top right"
                 }
             });
+            $(this).children("a").children("img").removeAttr('title');
         }
     });
     $(".sf-menu a > img[alt]").data("hasqtip", true ).parent("a").data("hasqtip", true );
@@ -277,7 +278,7 @@ function doToolTip()
             }
         }
     });
-    $("a > img[alt]").data("hasqtip", true );
+    $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
     
     // Call the popuptip hover rel attribute
     $('.popuptip').each(function(){
@@ -302,7 +303,7 @@ function doToolTip()
                     event: "mouseout"
                 }
             });
-            $("#"+$(this).attr('rel')).find("img").data("hasqtip", true );
+            $("#"+$(this).attr('rel')).find("img").data("hasqtip", true ).removeAttr('title');
         }
     });
     // On label
