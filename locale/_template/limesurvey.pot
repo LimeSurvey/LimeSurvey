@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-07-06 23:06:00+00:00\n"
+"POT-Creation-Date: 2014-07-13 23:06:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -136,21 +136,21 @@ msgstr ""
 #: application/controllers/admin/responses.php:610
 #: application/controllers/admin/tokens.php:39
 #: application/controllers/admin/tokens.php:266
-#: application/controllers/admin/tokens.php:624
-#: application/controllers/admin/tokens.php:746
-#: application/controllers/admin/tokens.php:851
-#: application/controllers/admin/tokens.php:882
-#: application/controllers/admin/tokens.php:1032
-#: application/controllers/admin/tokens.php:1083
-#: application/controllers/admin/tokens.php:1132
-#: application/controllers/admin/tokens.php:1187
-#: application/controllers/admin/tokens.php:1239
-#: application/controllers/admin/tokens.php:1590
-#: application/controllers/admin/tokens.php:1627
-#: application/controllers/admin/tokens.php:1896
-#: application/controllers/admin/tokens.php:2158
-#: application/controllers/admin/tokens.php:2215
-#: application/controllers/admin/tokens.php:2271
+#: application/controllers/admin/tokens.php:629
+#: application/controllers/admin/tokens.php:751
+#: application/controllers/admin/tokens.php:856
+#: application/controllers/admin/tokens.php:887
+#: application/controllers/admin/tokens.php:1037
+#: application/controllers/admin/tokens.php:1088
+#: application/controllers/admin/tokens.php:1137
+#: application/controllers/admin/tokens.php:1192
+#: application/controllers/admin/tokens.php:1244
+#: application/controllers/admin/tokens.php:1595
+#: application/controllers/admin/tokens.php:1632
+#: application/controllers/admin/tokens.php:1901
+#: application/controllers/admin/tokens.php:2163
+#: application/controllers/admin/tokens.php:2220
+#: application/controllers/admin/tokens.php:2276
 #: application/controllers/admin/useraction.php:82
 #: application/controllers/admin/useraction.php:177
 #: application/controllers/admin/useraction.php:241
@@ -364,7 +364,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1061
 #: application/controllers/admin/quotas.php:515
 #: application/controllers/admin/surveyadmin.php:656
-#: application/controllers/admin/tokens.php:2176
+#: application/controllers/admin/tokens.php:2181
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:220
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:231
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:253
@@ -476,8 +476,8 @@ msgid "Yes"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:149
-#: application/controllers/admin/tokens.php:1158
-#: application/controllers/admin/tokens.php:2242
+#: application/controllers/admin/tokens.php:1163
+#: application/controllers/admin/tokens.php:2247
 #: application/views/admin/assessments_view.php:131
 #: application/views/admin/conditions/includes/conditions_scenario.php:13
 #: application/views/admin/dataentry/import.php:16
@@ -517,7 +517,7 @@ msgid "Continue?"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:159
-#: application/controllers/admin/tokens.php:1569
+#: application/controllers/admin/tokens.php:1574
 #: application/controllers/admin/useraction.php:154
 #: application/helpers/admin/import_helper.php:5041
 #: application/helpers/admin/import_helper.php:5059
@@ -603,7 +603,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1063
 #: application/controllers/admin/quotas.php:516
 #: application/controllers/admin/surveyadmin.php:660
-#: application/controllers/admin/tokens.php:2178
+#: application/controllers/admin/tokens.php:2183
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:257
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:268
 #: application/core/Survey_Common_Action.php:831
@@ -1500,8 +1500,8 @@ msgid "Save"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1469
-#: application/controllers/admin/tokens.php:820
-#: application/controllers/admin/tokens.php:990
+#: application/controllers/admin/tokens.php:825
+#: application/controllers/admin/tokens.php:995
 #: application/controllers/admin/useraction.php:146
 #: application/views/admin/dataentry/insert.php:73
 #: application/views/admin/dataentry/iteratesurvey.php:5
@@ -2471,7 +2471,7 @@ msgid "Database error!!"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:468
-#: application/controllers/admin/tokens.php:2258
+#: application/controllers/admin/tokens.php:2263
 #: application/controllers/AdminController.php:86
 #: application/helpers/admin/import_helper.php:2612
 #: application/views/admin/authentication/forgotpassword.php:15
@@ -2696,7 +2696,7 @@ msgid "Delete"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:115
-#: application/controllers/admin/tokens.php:456
+#: application/controllers/admin/tokens.php:461
 #: application/views/admin/assessments_view.php:32
 #: application/views/admin/responses/browseidheader_view.php:21
 #: application/views/admin/saved/savedlist_view.php:29
@@ -2753,8 +2753,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:346
 #: application/controllers/admin/surveypermission.php:535
 #: application/controllers/admin/surveypermission.php:638
-#: application/controllers/admin/tokens.php:2398
-#: application/controllers/admin/tokens.php:2442
+#: application/controllers/admin/tokens.php:2403
+#: application/controllers/admin/tokens.php:2447
 #: application/controllers/admin/useraction.php:741
 #: application/helpers/common_helper.php:6009
 #: application/helpers/common_helper.php:6014
@@ -2779,9 +2779,9 @@ msgstr ""
 #: application/helpers/common_helper.php:6118
 #: application/helpers/common_helper.php:6122
 #: application/helpers/common_helper.php:6126
-#: application/helpers/frontend_helper.php:906
-#: application/helpers/frontend_helper.php:986
-#: application/helpers/frontend_helper.php:1150
+#: application/helpers/frontend_helper.php:915
+#: application/helpers/frontend_helper.php:995
+#: application/helpers/frontend_helper.php:1159
 #: application/helpers/replacements_helper.php:587
 #: application/views/admin/authentication/message.php:3
 #: application/views/admin/participants/attributeMapCSV_view.php:55
@@ -3119,14 +3119,14 @@ msgstr ""
 
 #: application/controllers/admin/tokens.php:78
 #: application/controllers/admin/tokens.php:351
-#: application/controllers/admin/tokens.php:1127
+#: application/controllers/admin/tokens.php:1132
 msgid "No token table."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:85
 #: application/controllers/admin/tokens.php:357
-#: application/controllers/admin/tokens.php:510
-#: application/controllers/admin/tokens.php:609
+#: application/controllers/admin/tokens.php:515
+#: application/controllers/admin/tokens.php:614
 #: application/controllers/survey/index.php:125
 #: application/controllers/survey/index.php:144
 msgid "We are sorry but you don't have permissions to do this."
@@ -3152,274 +3152,274 @@ msgstr ""
 msgid "Bounce processing is deactivated either application-wide or for this survey in particular."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:444
+#: application/controllers/admin/tokens.php:449
 #: application/views/admin/responses/browseallrow_view.php:4
 #: application/views/admin/responses/browsetimerow_view.php:4
 msgid "View response details"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:451
+#: application/controllers/admin/tokens.php:456
 msgid "Do survey"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:457
+#: application/controllers/admin/tokens.php:462
 msgid "Delete token entry"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:462
+#: application/controllers/admin/tokens.php:467
 msgid "Send invitation email to this person (if they have not yet been sent an invitation email)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:464
+#: application/controllers/admin/tokens.php:469
 msgid "Send reminder email to this person (if they have already received the invitation email)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:473
+#: application/controllers/admin/tokens.php:478
 #: application/views/admin/token/tokenform.php:5
 msgid "Edit token entry"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:475
+#: application/controllers/admin/tokens.php:480
 msgid "View this person in the central participants database"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:564
-#: application/controllers/admin/tokens.php:595
-#: application/controllers/admin/tokens.php:707
-#: application/controllers/admin/tokens.php:810
-#: application/controllers/admin/tokens.php:939
+#: application/controllers/admin/tokens.php:569
+#: application/controllers/admin/tokens.php:600
+#: application/controllers/admin/tokens.php:712
+#: application/controllers/admin/tokens.php:815
+#: application/controllers/admin/tokens.php:944
 #: application/controllers/RegisterController.php:102
 msgid "%s cannot be left empty"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:821
+#: application/controllers/admin/tokens.php:826
 msgid "The token entry was successfully updated."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:822
-#: application/controllers/admin/tokens.php:992
-#: application/controllers/admin/tokens.php:1003
+#: application/controllers/admin/tokens.php:827
+#: application/controllers/admin/tokens.php:997
+#: application/controllers/admin/tokens.php:1008
 #: application/views/admin/token/addtokenpost.php:7
 #: application/views/admin/token/addtokenpost.php:14
 #: application/views/admin/token/tokenbar.php:15
 msgid "Display tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:828
-#: application/controllers/admin/tokens.php:999
+#: application/controllers/admin/tokens.php:833
+#: application/controllers/admin/tokens.php:1004
 #: application/views/admin/token/addtokenpost.php:12
 #: application/views/admin/token/ldappost.php:5
 #: application/views/admin/update/step3.php:23
 msgid "Failed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:829
+#: application/controllers/admin/tokens.php:834
 #: application/views/admin/token/addtokenpost.php:13
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:830
+#: application/controllers/admin/tokens.php:835
 msgid "Show this token entry"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:991
+#: application/controllers/admin/tokens.php:996
 msgid "New dummy tokens were added."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1000
+#: application/controllers/admin/tokens.php:1005
 msgid "Only %s new dummy tokens were added after %s trials."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1001
+#: application/controllers/admin/tokens.php:1006
 msgid "Try with a bigger token length."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1054
+#: application/controllers/admin/tokens.php:1059
 msgid "Attribute %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1066
+#: application/controllers/admin/tokens.php:1071
 msgid "(none)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1111
+#: application/controllers/admin/tokens.php:1116
 msgid "%s field(s) were successfully added."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1152
+#: application/controllers/admin/tokens.php:1157
 msgid "Delete token attribute %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1153
+#: application/controllers/admin/tokens.php:1158
 msgid "If you remove this attribute, you will lose all information."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1157
+#: application/controllers/admin/tokens.php:1162
 #: application/views/admin/participants/attributeControl_view.php:9
 #: application/views/admin/token/managetokenattributes.php:116
 msgid "Delete attribute"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1168
+#: application/controllers/admin/tokens.php:1173
 msgid "Attribute %s was deleted."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1173
+#: application/controllers/admin/tokens.php:1178
 msgid "The selected attribute was invalid."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1224
+#: application/controllers/admin/tokens.php:1229
 msgid "Token attribute descriptions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1225
+#: application/controllers/admin/tokens.php:1230
 msgid "Back to attribute field management."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1426
+#: application/controllers/admin/tokens.php:1431
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1430
+#: application/controllers/admin/tokens.php:1435
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1507
+#: application/controllers/admin/tokens.php:1512
 msgid "Invitation sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1512
+#: application/controllers/admin/tokens.php:1517
 msgid "Reminder sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1534
+#: application/controllers/admin/tokens.php:1539
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1561
+#: application/controllers/admin/tokens.php:1566
 msgid "All emails were sent."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1570
+#: application/controllers/admin/tokens.php:1575
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1571
+#: application/controllers/admin/tokens.php:1576
 msgid "having a valid email address"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1572
+#: application/controllers/admin/tokens.php:1577
 msgid "not having been sent an invitation already"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1573
+#: application/controllers/admin/tokens.php:1578
 msgid "having already completed the survey"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1574
+#: application/controllers/admin/tokens.php:1579
 msgid "having a token"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1661
+#: application/controllers/admin/tokens.php:1666
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1874
+#: application/controllers/admin/tokens.php:1879
 msgid "Can't bind to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1881
+#: application/controllers/admin/tokens.php:1886
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2173
-#: application/controllers/admin/tokens.php:2200
+#: application/controllers/admin/tokens.php:2178
+#: application/controllers/admin/tokens.php:2205
 msgid "Create tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2174
+#: application/controllers/admin/tokens.php:2179
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2191
+#: application/controllers/admin/tokens.php:2196
 msgid "Only %s token has been created."
 msgid_plural "Only %s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2192
+#: application/controllers/admin/tokens.php:2197
 msgid "Need %s token."
 msgid_plural "Need %s tokens."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2197
+#: application/controllers/admin/tokens.php:2202
 msgid "%s token has been created."
 msgid_plural "%s tokens have been created."
 msgstr[0] ""
 msgstr[1] ""
 
-#: application/controllers/admin/tokens.php:2236
-#: application/controllers/admin/tokens.php:2254
+#: application/controllers/admin/tokens.php:2241
+#: application/controllers/admin/tokens.php:2259
 msgid "Delete Tokens Table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2237
+#: application/controllers/admin/tokens.php:2242
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2237
+#: application/controllers/admin/tokens.php:2242
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2240
+#: application/controllers/admin/tokens.php:2245
 msgid "Delete Tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2255
+#: application/controllers/admin/tokens.php:2260
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2255
+#: application/controllers/admin/tokens.php:2260
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2305
+#: application/controllers/admin/tokens.php:2310
 #: application/views/admin/globalSettings_view.php:14
 #: application/views/admin/token/bounce.php:1
 #: application/views/admin/token/tokenbar.php:65
 msgid "Bounce settings"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2306
+#: application/controllers/admin/tokens.php:2311
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2379
+#: application/controllers/admin/tokens.php:2384
 #: application/views/admin/token/tokenwarning.php:6
 msgid "Tokens have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2385
+#: application/controllers/admin/tokens.php:2390
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2395
+#: application/controllers/admin/tokens.php:2400
 #: application/views/admin/export/exportresults_view.php:128
 #: application/views/admin/token/tokenbar.php:5
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2396
+#: application/controllers/admin/tokens.php:2401
 msgid "A token table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2439
+#: application/controllers/admin/tokens.php:2444
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2440
+#: application/controllers/admin/tokens.php:2445
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr ""
 
@@ -4055,8 +4055,8 @@ msgstr ""
 
 #: application/controllers/RegisterController.php:83
 #: application/controllers/survey/index.php:312
-#: application/helpers/frontend_helper.php:874
-#: application/helpers/frontend_helper.php:1098
+#: application/helpers/frontend_helper.php:883
+#: application/helpers/frontend_helper.php:1107
 #: application/libraries/Save.php:130
 msgid "The answer to the security question is incorrect."
 msgstr ""
@@ -4142,44 +4142,44 @@ msgstr ""
 msgid "You did not answer to the security question."
 msgstr ""
 
-#: application/controllers/survey/index.php:326
+#: application/controllers/survey/index.php:323
 msgid "There is no matching saved survey"
 msgstr ""
 
-#: application/controllers/survey/index.php:364
-#: application/helpers/frontend_helper.php:951
-#: application/helpers/frontend_helper.php:1020
-#: application/helpers/frontend_helper.php:1062
-#: application/helpers/frontend_helper.php:1101
+#: application/controllers/survey/index.php:361
+#: application/helpers/frontend_helper.php:960
+#: application/helpers/frontend_helper.php:1029
+#: application/helpers/frontend_helper.php:1071
+#: application/helpers/frontend_helper.php:1110
 #: application/views/entertoken_view.php:8
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:365
-#: application/controllers/survey/index.php:402
-#: application/helpers/frontend_helper.php:1022
-#: application/helpers/frontend_helper.php:1064
-#: application/helpers/frontend_helper.php:1254
+#: application/controllers/survey/index.php:362
+#: application/controllers/survey/index.php:399
+#: application/helpers/frontend_helper.php:1031
+#: application/helpers/frontend_helper.php:1073
+#: application/helpers/frontend_helper.php:1263
 msgid "For further information please contact %s"
 msgstr ""
 
-#: application/controllers/survey/index.php:387
+#: application/controllers/survey/index.php:384
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/index.php:391
+#: application/controllers/survey/index.php:388
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:396
+#: application/controllers/survey/index.php:393
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:400
+#: application/controllers/survey/index.php:397
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:572
+#: application/controllers/survey/index.php:569
 msgid "Your responses were successfully saved."
 msgstr ""
 
@@ -5411,7 +5411,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:1854
 #: application/helpers/common_helper.php:5017
-#: application/helpers/frontend_helper.php:1121 application/models/Token.php:42
+#: application/helpers/frontend_helper.php:1130 application/models/Token.php:42
 #: application/views/admin/dataentry/caption_view.php:29
 #: application/views/admin/participants/attributeMap_view.php:96
 #: application/views/admin/token/browse.php:117
@@ -7640,110 +7640,110 @@ msgstr ""
 msgid "This question, by itself, does not contain any syntax errors"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:166
+#: application/helpers/frontend_helper.php:175
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:260
-#: application/helpers/frontend_helper.php:306
+#: application/helpers/frontend_helper.php:269
+#: application/helpers/frontend_helper.php:315
 msgid "Choose another language"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:263
-#: application/helpers/frontend_helper.php:309
+#: application/helpers/frontend_helper.php:272
+#: application/helpers/frontend_helper.php:318
 msgid "Change the language"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:371
+#: application/helpers/frontend_helper.php:380
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:384
-#: application/helpers/frontend_helper.php:390
+#: application/helpers/frontend_helper.php:393
+#: application/helpers/frontend_helper.php:399
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:402
+#: application/helpers/frontend_helper.php:411
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:797
+#: application/helpers/frontend_helper.php:806
 #: application/helpers/SurveyRuntimeHelper.php:569
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:798
+#: application/helpers/frontend_helper.php:807
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:801
+#: application/helpers/frontend_helper.php:810
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:806
+#: application/helpers/frontend_helper.php:815
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:807
+#: application/helpers/frontend_helper.php:816
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:812
+#: application/helpers/frontend_helper.php:821
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:814
+#: application/helpers/frontend_helper.php:823
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:816
+#: application/helpers/frontend_helper.php:825
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:823
+#: application/helpers/frontend_helper.php:832
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:877
+#: application/helpers/frontend_helper.php:886
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:901
+#: application/helpers/frontend_helper.php:910
 msgid "Security question:"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:952
-#: application/helpers/frontend_helper.php:1106
+#: application/helpers/frontend_helper.php:961
+#: application/helpers/frontend_helper.php:1115
 #: application/views/entertoken_view.php:9
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:957
-#: application/helpers/frontend_helper.php:1139
+#: application/helpers/frontend_helper.php:966
+#: application/helpers/frontend_helper.php:1148
 msgid "Token:"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:982
-#: application/helpers/frontend_helper.php:1147
+#: application/helpers/frontend_helper.php:991
+#: application/helpers/frontend_helper.php:1156
 #: application/helpers/replacements_helper.php:585
 msgid "Security Question"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1021
-#: application/helpers/frontend_helper.php:1063
+#: application/helpers/frontend_helper.php:1030
+#: application/helpers/frontend_helper.php:1072
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1125
+#: application/helpers/frontend_helper.php:1134
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1253
+#: application/helpers/frontend_helper.php:1262
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1656
-#: application/helpers/frontend_helper.php:2023
+#: application/helpers/frontend_helper.php:1665
+#: application/helpers/frontend_helper.php:2032
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:61
 #: application/views/installer/dbsettings_view.php:13
@@ -7753,7 +7753,7 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1665
+#: application/helpers/frontend_helper.php:1674
 #: application/helpers/replacements_helper.php:343
 #: application/helpers/SurveyRuntimeHelper.php:159
 #: application/views/admin/dataentry/active_html_view.php:67
@@ -7762,7 +7762,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1668
+#: application/helpers/frontend_helper.php:1677
 #: application/views/admin/participants/displayParticipants_view.php:133
 #: application/views/admin/quotas/newanswertwo_view.php:45
 #: application/views/admin/quotas/newanswer_view.php:33
@@ -7774,7 +7774,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2160
+#: application/helpers/frontend_helper.php:2169
 #: application/helpers/SurveyRuntimeHelper.php:1158
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
