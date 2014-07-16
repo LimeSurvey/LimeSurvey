@@ -3799,6 +3799,7 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Other'),
         'sortorder'=>130,
         "inputtype"=>"text",
+        'default'=>'1',
         "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
         "caption"=>$clang->gT("Max number of files"));
 
@@ -3816,7 +3817,7 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Other'),
         'sortorder'=>134,
         "inputtype"=>"text",
-        'default'=>"png, gif, doc, odt",
+        'default'=>"png, gif, jpg, doc, odt",
         "help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
         "caption"=>$clang->gT("Allowed file types"));
 
