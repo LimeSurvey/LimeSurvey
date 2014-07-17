@@ -106,7 +106,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
 <div class='header ui-widget-header' style='clear:both;'>
     <?php $clang->eT("Preview:"); ?>
-    <input type='button' value='iPhone' id='iphone' />
+    <input type='button' value='<?php $clang->eT("Mobile"); ?>' id='iphone' />
     <input type='button' value='640x480' id='x640' />
     <input type='button' value='800x600' id='x800' />
     <input type='button' value='1024x768' id='x1024' />
