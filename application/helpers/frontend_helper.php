@@ -67,6 +67,18 @@ function loadanswers()
         //A match has been found. Let's load the values!
         //If this is from an email, build surveysession first
         $_SESSION['survey_'.$surveyid]['LEMtokenResume']=true;
+
+        // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
+        if (Yii::app()->request->getParam('loadall') == "reload")
+        {
+            $oSavedSurvey=SavedControl::model()->find("identifier=:identifier AND access_code=:access_code",array(":identifier"=>$sLoadName,":access_code"=>md5($sLoadPass)));
+            // We don't need to control if we have one, because we do the test before
+            $_SESSION['survey_'.$surveyid]['scid'] = $oSavedSurvey->scid;
+            $_SESSION['survey_'.$surveyid]['step'] = ($oSavedSurvey->saved_thisstep>1)?$oSavedSurvey->saved_thisstep:1;
+            $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;// deprecated ?
+            $_SESSION['survey_'.$surveyid]['srid'] = $oSavedSurvey->srid;// Seems OK without
+        }
+
         // Get if survey is been answered
         $submitdate=$oResponses->submitdate;
         $aRow=$oResponses->attributes;
@@ -77,12 +89,7 @@ function loadanswers()
                 $clienttoken=$value;
                 $token=$value;
             }
-            elseif ($column == "saved_thisstep" && $thissurvey['alloweditaftercompletion'] != 'Y' )
-            {
-                $_SESSION['survey_'.$surveyid]['step']=($value>1? $value:1) ;
-                $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;
-            }
-            elseif ($column =='lastpage' && isset($_GET['token']))
+            elseif ($column =='lastpage' && !isset($_SESSION['survey_'.$surveyid]['step']))
             {
                 if(is_null($submitdate) || $submitdate=="N")
                 {
@@ -104,14 +111,6 @@ function loadanswers()
             UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
             UpdateFieldArray();        // to refresh question titles and question text
             }*/
-            elseif ($column == "scid")
-            {
-                $_SESSION['survey_'.$surveyid]['scid']=$value;
-            }
-            elseif ($column == "srid")
-            {
-                $_SESSION['survey_'.$surveyid]['srid']=$value;
-            }
             elseif ($column == "datestamp")
             {
                 $_SESSION['survey_'.$surveyid]['datestamp']=$value;
