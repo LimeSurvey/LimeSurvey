@@ -51,11 +51,14 @@ function eT($string, $escapemode = 'html')
     echo gT($string, $escapemode);
 }
 
-function ngT($single, $plural, $number, $escapemode = 'html')
+function ngT($single, $plural, $number)
 {
-    Yii::import('application.libraries.Limesurvey_lang');
-    return App()->lang->ngT($single, $plural, $number, $escapemode);
+    // Temporary fix for old translation styles.
+    $s = Yii::t('', $single);
+    $p = Yii::t('', $plural);
+    return Yii::t('', "$single|$plural", $number);
 }
+
 /**
 * getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
@@ -2400,8 +2403,8 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     $clang = new Limesurvey_lang($sLanguage);
 
     //checks to see if fieldmap has already been built for this page.
-    if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+    if (isset($timingsFieldMap[$surveyid][$style][App()->language]) && $force_refresh==false) {
+        return $timingsFieldMap[$surveyid][$style][App()->language];
     }
 
     //do something
@@ -2425,8 +2428,8 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
         }
     }
 
-    $timingsFieldMap[$surveyid][$style][$clang->langcode] = $fieldmap;
-    return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+    $timingsFieldMap[$surveyid][$style][App()->language] = $fieldmap;
+    return $timingsFieldMap[$surveyid][$style][App()->language];
 }
 
 /**
@@ -5646,10 +5649,10 @@ function includeKeypad()
     $clang = Yii::app()->lang;
 
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.$clang->langcode.'.js';
-    if ($clang->langcode != 'en' && file_exists($localefile))
+    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
+    if (App()->language != 'en' && file_exists($localefile))
     {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.$clang->langcode.'.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.App()->language.'.js');
     }
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
 }

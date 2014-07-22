@@ -25,8 +25,6 @@ class SurveyController extends LSYii_Controller
     {
         parent::_init();
 
-        $this->_sessioncontrol();
-
         unset(Yii::app()->session['FileManagerContext']);
 
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID

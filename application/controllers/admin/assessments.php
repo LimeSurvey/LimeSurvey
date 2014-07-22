@@ -53,14 +53,12 @@ class Assessments extends Survey_Common_Action
              $this->_delete($iSurveyID, $_POST['id']);
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
-            $clang = $this->getController()->lang;
-
             if ($iSurveyID == '') {
                 show_error($clang->gT("No SID Provided"));
                 die();
             }
 
-            $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage, $clang);
+            $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
         }
 
     }
@@ -81,7 +79,7 @@ class Assessments extends Survey_Common_Action
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
-    private function _showAssessments($iSurveyID, $action, $surveyLanguage, Limesurvey_lang $clang)
+    private function _showAssessments($iSurveyID, $action)
     {
         $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
         $aData = $this->_collectGroupData($iSurveyID);
@@ -91,7 +89,7 @@ class Assessments extends Survey_Common_Action
         $aData['editId'] = '';
 
         if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
-            $aData = $this->_collectEditData($surveyLanguage, $aData, $clang);
+            $aData = $this->_collectEditData($aData);
         }
 
         $surveyinfo = getSurveyInfo($iSurveyID);
@@ -125,9 +123,12 @@ class Assessments extends Survey_Common_Action
         return $aData;
     }
 
-    private function _collectEditData($surveyLanguage, array $aData, Limesurvey_lang $clang)
+    private function _collectEditData(array $aData)
     {
-        $assessments = Assessment::model()->findAllByAttributes(array('id' => sanitize_int($_POST['id']), 'language' => $surveyLanguage));
+        $assessments = Assessment::model()->findAllByAttributes(array(
+            'id' => sanitize_int($_POST['id'])
+            'language' => App()->language
+        ));
 
         foreach ($assessments as $assessment) {
             $editData = $assessment->attributes;

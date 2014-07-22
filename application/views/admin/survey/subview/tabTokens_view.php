@@ -6,12 +6,12 @@
                     {
                         if (document.getElementById('tokenanswerspersistence').value == 'Y')
                             {
-                            alert('<?php $clang->eT("You can't use Anonymized responses when Token-based answers persistence is enabled.","js"); ?>');
+                            alert(<?=json_encode(gT("You can't use Anonymized responses when Token-based answers persistence is enabled.")); ?>);
                             document.getElementById('anonymized').value = 'N';
                         }
                         else if (document.getElementById('anonymized').value == 'Y')
                             {
-                            alert('<?php $clang->eT("Warning"); ?>: <?php $clang->eT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js"); ?>');
+                            alert(<?=json_encode(gT("Warning: If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")); ?>);
                         }
                     }
                     //--></script></label>

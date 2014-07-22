@@ -222,7 +222,7 @@ class SurveyRuntimeHelper {
         'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : NULL),
         'savetimings' => ($thissurvey['savetimings'] == "Y"),
         'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
-        'startlanguage'=>(isset($clang->langcode) ? $clang->langcode : $thissurvey['language']),
+        'startlanguage'=>(isset(App()->language) ? App()->language : $thissurvey['language']),
         'target' => Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
         'tempdir' => Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
         'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),

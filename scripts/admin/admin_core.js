@@ -32,14 +32,14 @@ $(document).ready(function(){
                 changeYear: true,
                 changeMonth: true,
                 duration: 'fast'
-            }, $.datepicker.regional[userlanguage]);
+            }, $.datepicker.regional[LS.data.language]);
         });
         $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',
             showOn: 'button',
             changeYear: true,
             changeMonth: true,
             duration: 'fast'
-        }, $.datepicker.regional[userlanguage]);
+        }, $.datepicker.regional[LS.data.language]);
     }
     $(".sf-menu").superfish({speed: 'fast'});
     doToolTip();

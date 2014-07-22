@@ -1014,7 +1014,7 @@ class tokens extends Survey_Common_Action
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
             $aData['tokenlength'] = $tokenlength;
-            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],$clang->langcode);
+            $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],App()->language);
             $aData['aAttributeFields']=GetParticipantAttributes($iSurveyId);
             $this->_renderWrappedTemplate('token', array('tokenbar', 'dummytokenform'), $aData);
         }
@@ -2184,13 +2184,13 @@ class tokens extends Survey_Common_Action
             if($neededtokencount>$newtokencount)
             {
                 $aData['success'] = false;
-                $message = sprintf($clang->ngT('Only %s token has been created.','Only %s tokens have been created.',$newtokencount),$newtokencount)
-                         .sprintf($clang->ngT('Need %s token.','Need %s tokens.',$neededtokencount),$neededtokencount);
+                $message = sprintf(ngT('Only %s token has been created.','Only %s tokens have been created.',$newtokencount),$newtokencount)
+                         .sprintf(ngT('Need %s token.','Need %s tokens.',$neededtokencount),$neededtokencount);
             }
             else
             {
                 $aData['success'] = true;
-                $message = sprintf($clang->ngT('%s token has been created.','%s tokens have been created.',$newtokencount),$newtokencount);
+                $message = sprintf(ngT('%s token has been created.','%s tokens have been created.',$newtokencount),$newtokencount);
             }
             $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT("Create tokens"),

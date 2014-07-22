@@ -158,14 +158,14 @@ class RegisterController extends LSYii_Controller {
     }
 
     public function getRegisterForm($iSurveyId){
-        $clang = Yii::app()->lang;
-        $aSurveyInfo=getSurveyInfo($iSurveyId,$clang->langcode);
+        
+        $aSurveyInfo=getSurveyInfo($iSurveyId,App()->language);
         $sTemplate=getTemplatePath(validateTemplateDir($aSurveyInfo['template']));
 
         // Event to replace register form
         $event = new PluginEvent('beforeRegisterForm');
         $event->set('surveyid', $iSurveyId);
-        $event->set('lang', $clang->langcode);
+        $event->set('lang', App()->language);
         $event->set('aRegistersErrors', $this->aRegisterErrors);
         App()->getPluginManager()->dispatchEvent($event);
         // Allow adding error or replace error with plugin ?
@@ -176,8 +176,7 @@ class RegisterController extends LSYii_Controller {
         $aFieldValue=$this->getFieldValue($iSurveyId);
         $aRegisterAttributes=$this->getExtraAttributeInfo($iSurveyId);
         $aData['iSurveyId'] = $iSurveyId;
-        $aData['sLanguage'] = $clang->langcode;
-        $aData['clang'] = $clang;
+        $aData['sLanguage'] = App()->language;
         $aData['sFirstName'] = $aFieldValue['sFirstName'];
         $aData['sLastName'] = $aFieldValue['sLastName'];
         $aData['sEmail'] = $aFieldValue['sEmail'];
@@ -200,7 +199,7 @@ class RegisterController extends LSYii_Controller {
 
         $aData['thissurvey'] = $aSurveyInfo;
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
-        $aData['languagechanger'] = makeLanguageChangerSurvey($clang->langcode);
+        $aData['languagechanger'] = makeLanguageChangerSurvey(App()->language);
         return templatereplace(file_get_contents("$sTemplate/register.pstpl"),$aReplacement,$aData);
     }
 
@@ -210,8 +209,8 @@ class RegisterController extends LSYii_Controller {
     * @return boolean : if email is set to sent (before SMTP problem)
     */
     public function sendRegistrationEmail($iSurveyId,$iTokenId){
-        $clang = Yii::app()->lang;
-        $sLanguage=$clang->langcode;
+        
+        $sLanguage=App()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
 
         $aMail['subject']=$aSurveyInfo['email_register_subj'];
@@ -301,8 +300,8 @@ class RegisterController extends LSYii_Controller {
     */
     public function getTokenId($iSurveyId)
     {
-        $clang = Yii::app()->lang;
-        $sLanguage=$clang->langcode;
+        
+        $sLanguage=App()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
 
         $aFieldValue=$this->getFieldValue($iSurveyId);

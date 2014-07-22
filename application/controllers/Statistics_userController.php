@@ -151,10 +151,6 @@ class Statistics_userController extends LSYii_Controller {
             $language = Survey::model()->findByPk($iSurveyID)->language;
 
 
-		//set survey language for translations
-		$clang = SetSurveyLanguage($iSurveyID, $language);
-
-
 		//Create header (fixes bug #3097)
 		$surveylanguage= $language;
 		sendCacheHeaders();
@@ -410,7 +406,6 @@ class Statistics_userController extends LSYii_Controller {
 		}
 		$data['thisSurveyTitle'] = $thisSurveyTitle;
 		$data['totalrecords'] = $totalrecords;
-		$data['clang'] = $clang;
 		$data['summary'] = $summary;
 		//show some main data at the beginnung
 		// CHANGE JSW_NZ - let's allow html formatted questions to show

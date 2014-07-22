@@ -33,8 +33,11 @@
     }
     $data['surveylist'] = array(
         "nosid"=> "",
-        "contact"=>sprintf(App()->lang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail"))),
-        "listheading"=> App()->lang->gT("The following surveys are available:"),
+        "contact"=> gT("Please contact %s ( %s ) for further assistance.", array(
+            Yii::app()->getConfig("siteadminname"),
+            encodeEmail(Yii::app()->getConfig("siteadminemail"))
+        )),
+        "listheading"=> gT("The following surveys are available:"),
         "list"=> $list
     );
     $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
@@ -57,7 +60,7 @@
     else
     {
         $aLangData=getLanguageData();
-        $radix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);// or $clang->langcode . defaultlang  ensure it's same for each language ?
+        $radix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);// or App()->language . defaultlang  ensure it's same for each language ?
     }
     $aLSJavascriptVar['sLEMradix']=$radix['separator'];
     $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar);

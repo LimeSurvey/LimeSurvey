@@ -52,7 +52,7 @@
         <?php if ($esrow['usecaptcha'] == "A") { ?>
               selected='selected'
         <?php } ?>
-             ><?php $clang->eT("Survey Access"); ?> / <?php $clang->eT("Registration"); ?> / <?php echo$clang->gT("Save & Load"); ?></option>
+             ><?php eT("Survey Access"); ?> / <?php eT("Registration"); ?> / <?php eT("Save & Load"); ?></option>
             <option value='B'
         <?php if ($esrow['usecaptcha'] == "B") { ?>
               selected='selected'

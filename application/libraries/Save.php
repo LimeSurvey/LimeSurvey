@@ -197,11 +197,11 @@ class Save {
                 $subject  = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
                 $message  = $clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                 $message .= "\n\n".$thissurvey['name']."\n\n";
-                $message .= $clang->gT("Name").": ".$_POST['savename']."\n";
-                $message .= $clang->gT("Password").": ".$_POST['savepass']."\n\n";
-                $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($_POST['savename'])."/loadpass/".rawurlencode ($_POST['savepass'])."/lang/".rawurlencode ($clang->langcode));
-                if ($clienttoken) $message .= "/token/".rawurlencode($clienttoken);
+                $message .= gT("Name").": ".$_POST['savename']."\n";
+                $message .= gT("Password").": ".$_POST['savepass']."\n\n";
+                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
+                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($_POST['savename'])."/loadpass/".rawurlencode ($_POST['savepass'])."/lang/".rawurlencode (App()->language));
+                if ($clienttoken) $message .= "/token/{$clienttoken}";
 
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
                 if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))

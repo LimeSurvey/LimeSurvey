@@ -29,7 +29,6 @@ class UploaderController extends SurveyController {
             $sLanguage='';
         }
 
-        $clang = SetSurveyLanguage( $surveyid, $sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
 

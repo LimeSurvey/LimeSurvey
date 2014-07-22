@@ -75,7 +75,7 @@
         $supportedLanguages['af']['rtl'] = false;
         $supportedLanguages['af']['dateformat'] = 1;
         $supportedLanguages['af']['radixpoint'] = 1;
-
+        
         // Albanian
         $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
         $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
@@ -258,6 +258,7 @@
         $supportedLanguages['ful']['rtl'] = false;
         $supportedLanguages['ful']['dateformat'] = 5;
         $supportedLanguages['ful']['radixpoint'] = 1;
+        $supportedLanguages['ful']['cldr'] = 'ff';
 
         // Galician
         $supportedLanguages['gl']['description'] = $clang->gT('Galician');
@@ -342,6 +343,7 @@
         $supportedLanguages['ie']['rtl'] = false;
         $supportedLanguages['ie']['dateformat'] = 2;
         $supportedLanguages['ie']['radixpoint'] = 0;
+        $supportedLanguages['ie']['cldr'] = 'ga';
 
         // Italian
         $supportedLanguages['it']['description'] = $clang->gT('Italian');
@@ -602,6 +604,7 @@
         $supportedLanguages['swh']['rtl'] = false;
         $supportedLanguages['swh']['dateformat'] = 1;
         $supportedLanguages['swh']['radixpoint'] = 1;
+        $supportedLanguages['swh']['cldr'] = 'sw';
 
         // Swedish
         $supportedLanguages['sv']['description'] = $clang->gT('Swedish');

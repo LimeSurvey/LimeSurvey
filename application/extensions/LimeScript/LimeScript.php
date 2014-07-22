@@ -15,6 +15,7 @@
             $data['urlFormat']                  = Yii::app()->urlManager->urlFormat;
             $data['adminImageUrl']              = Yii::app()->getConfig('adminimageurl');
             $data['csrfToken']                  = Yii::app()->request->csrfToken;
+            $data['language']                   = Yii::app()->language;
             $data['replacementFields']['path']  = App()->createUrl("admin/limereplacementfields/sa/index/");
             $json = json_encode($data, JSON_FORCE_OBJECT);
             $script = "LS.data = $json;\n"

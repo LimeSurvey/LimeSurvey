@@ -48,7 +48,10 @@ $internalConfig = array(
             'class' => 'LSWebUser',
         ),
 		'log' => array(
-			'class' => 'CLogRouter'
+			'class' => 'CLogRouter',
+            'routes' => array(
+                'class' => 'CWebLogRoute'
+            )
 		),
         'cache'=>array(
            'class'=>'system.caching.CFileCache',

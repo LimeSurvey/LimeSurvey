@@ -8,6 +8,23 @@
 	abstract class Response extends Dynamic
 	{
 
+        public function beforeDelete() {
+            if (parent::beforeDelete())
+            {
+                $this->deleteFiles();
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Delete all files related to this repsonse.
+         */
+        protected function deleteFiles()
+        {
+            
+        }
+
 		/**
 		 *
 		 * @param mixed $className Either the classname or the survey id.
@@ -62,6 +79,7 @@
         }
 		public function relations()
 		{
+            $t = $this->getTableAlias();
 			$result = array(
 				'token' => array(self::BELONGS_TO, 'Token_' . $this->dynamicId, array('token' => 'token')),
 				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}" )

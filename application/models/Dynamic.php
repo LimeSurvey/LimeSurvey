@@ -7,7 +7,9 @@
 	abstract class Dynamic extends LSActiveRecord
 	{
 		/**
+         * Prefixed with _ to not collide with column names.
 		 * @var int The dynamic part of the class name.
+         *
 		 */
 		protected $dynamicId;
 

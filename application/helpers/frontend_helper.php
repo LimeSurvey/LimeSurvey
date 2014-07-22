@@ -151,7 +151,7 @@ function makegraph($currentstep, $total)
     value: '.$size.'
     });
     ;});';
-    if (getLanguageRTL($clang->langcode))
+    if (App()->getLocale()->orientation == 'rtl')
     {
         $graph.='
         $(document).ready(function() {
@@ -165,7 +165,7 @@ function makegraph($currentstep, $total)
     <div id="progress-wrapper">
     <span class="hide">'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'</span>
     <div id="progress-pre">';
-    if (getLanguageRTL($clang->langcode))
+    if (App()->getLocale()->orientation == 'rtl')
     {
         $graph.='100%';
     }
@@ -177,7 +177,7 @@ function makegraph($currentstep, $total)
     $graph.='</div>
     <div id="progressbar"></div>
     <div id="progress-post">';
-    if (getLanguageRTL($clang->langcode))
+    if (App()->getLocale()->orientation == 'rtl')
     {
         $graph.='0%';
     }
@@ -243,7 +243,7 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
 #            {
 #                $sTargetURL=Yii::app()->getController()->createUrl($route."/lang/$sLangCode");
 #                $aListLang[$sTargetURL]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
-#                if($clang->langcode==$sLangCode)
+#                if(App()->language==$sLangCode)
 #                    $sSelected=$sTargetURL;
 #            }
         }
@@ -256,8 +256,8 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
         {
             $aListLang[$sLangCode]=html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT,'UTF-8');
         }
-        $sSelected=$clang->langcode;
-        $sHTMLCode=CHtml::label($clang->gT("Choose another language"), 'lang',array('class'=>'hide label'));
+        $sSelected=App()->language;
+        $sHTMLCode=CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label'));
         $sHTMLCode.=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
         // We don't have to add this button if in previewmode
         $sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide'));
@@ -612,7 +612,7 @@ function sendSubmitNotifications($surveyid)
 
     if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['survey_'.$surveyid]['scid']))
     {
-        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/loadname/".urlencode($_SESSION['survey_'.$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION['survey_'.$surveyid]['holdpass'])."/lang/".urlencode($clang->langcode));
+        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/loadname/".urlencode($_SESSION['survey_'.$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION['survey_'.$surveyid]['holdpass'])."/lang/".urlencode(App()->language));
         if ($bIsHTML)
         {
             $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
@@ -839,8 +839,8 @@ function buildsurveysession($surveyid,$preview=false)
     //global $surveyid;
     global $move, $rooturl;
 
-    $clang = Yii::app()->lang;
-    $sLangCode=$clang->langcode;
+    
+    $sLangCode=App()->language;
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
     if(!$preview)
         $preview=Yii::app()->getConfig('previewmode');
@@ -2198,7 +2198,7 @@ function display_first_page() {
     // Fill some necessary var for template
     $navigator = surveymover();
     $sitename = Yii::app()->getConfig('sitename');
-    $languagechanger=makeLanguageChangerSurvey($clang->langcode);
+    $languagechanger=makeLanguageChangerSurvey(App()->language);
 
     sendCacheHeaders();
     doHeader();

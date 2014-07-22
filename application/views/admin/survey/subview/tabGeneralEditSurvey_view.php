@@ -34,13 +34,21 @@
 
 
                     <td style='text-align:left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>
-                            <?php $tempLang=Survey::model()->findByPk($surveyid)->additionalLanguages;
-                                foreach (getLanguageDataRestricted (false, Yii::app()->session['adminlang']) as $langkey2 => $langname) {
-                                    if ($langkey2 != $esrow['language'] && in_array($langkey2, $tempLang) == false) {  // base languag must not be shown here ?>
-                                    <option id='<?php echo $langkey2 ; ?>' value='<?php echo $langkey2; ?>'>
-                                    <?php echo $langname['description']; ?></option>
-                                    <?php }
-                            } ?>
+                            <?php
+
+                                $tempLang=Survey::model()->findByPk($surveyid)->additionalLanguages;
+                                foreach (App()->locale->getLocaleIDs() as $locale)
+                                {
+                                    if ($locale != $esrow['language'])
+                                    {
+                                        $language = $locale . ': '. App()->locale->getLanguage($locale) . ' - ' . App()->locale->getLocaleDisplayName($locale);
+                                        echo CHtml::tag('option', array(
+                                            'id' => $locale,
+                                            'value' => $locale
+                                        ), $language);
+                                    }
+                                }
+                            ?>
                         </select></td>
                 </tr></table></li>
 
