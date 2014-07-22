@@ -13,22 +13,6 @@
 Yii::import('application.helpers.sanitize_helper', true);
 
 /**
-* Simple function to sort the permissions by title
-*
-* @param mixed $aPermissionA  Permission A to compare
-* @param mixed $aPermissionB  Permission B to compare
-*/
-function comparePermission($aPermissionA,$aPermissionB)
-{
-    if($aPermissionA['title'] >$aPermissionB['title']) {
-        return 1;
-    }
-    else {
-        return -1;
-    }
-}
-
-/**
  * Translation helper function.
  * @param string $string
  * @param string $escapemode

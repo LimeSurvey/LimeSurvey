@@ -73,7 +73,9 @@ class Permission extends LSActiveRecord
             'tokens'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create/update/delete/import/export token entries"),'img'=>'tokens'),
             'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature"),'img'=>'translate')
         );
-        uasort($aPermissions,"comparePermission");
+		uasort($aPermissions, function ($a, $b) {
+			return strcmp($a['title'], $b['title']);
+		});
         return $aPermissions;
     }
     
