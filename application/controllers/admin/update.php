@@ -292,7 +292,7 @@ class update extends Survey_Common_Action
             if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
                 Yii::app()->loadHelper("admin/backupdb");
                 $sfilename = $tempdir.DIRECTORY_SEPARATOR."backup_db_".randomChars(20)."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
-                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".sql.gz";
+                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".zip";
 
                 outputDatabase('',false,$sfilename);
                 // Before try to zip: test size of file
