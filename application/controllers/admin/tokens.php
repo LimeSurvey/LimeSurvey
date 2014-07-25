@@ -1989,7 +1989,7 @@ class tokens extends Survey_Common_Action
                                     $separator = ';'; else
                                     $separator = ',';
                         }
-                        $firstline = convertCSVRowToArray($buffer, $separator, '"');
+                        $firstline = str_getcsv($buffer, $separator, '"');
                         $firstline = array_map('trim', $firstline);
                         $ignoredcolumns = array();
                         // Now check the first line for invalid fields
@@ -2015,7 +2015,7 @@ class tokens extends Survey_Common_Action
                     else
                     {
 
-                        $line = convertCSVRowToArray($buffer, $separator, '"');
+                        $line = str_getcsv($buffer, $separator, '"');
 
                         if (count($firstline) != count($line))
                         {

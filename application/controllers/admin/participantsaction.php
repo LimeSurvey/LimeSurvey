@@ -1243,7 +1243,7 @@ class participantsaction extends Survey_Common_Action
                             $separator = ';'; else
                             $separator = ',';
                 }
-                $firstline = convertCSVRowToArray($buffer, $separator, '"');
+                $firstline = str_getcsv($buffer, $separator, '"');
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
                 //now check the first line for invalid fields
@@ -1265,7 +1265,7 @@ class participantsaction extends Survey_Common_Action
                 }
             } else {
                 // After looking at the first line, we now import the actual values
-                $line = convertCSVRowToArray($buffer, $separator, '"');
+                $line = str_getcsv($buffer, $separator, '"');
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line))
                 {

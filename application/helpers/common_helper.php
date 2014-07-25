@@ -4402,13 +4402,6 @@ function CSVEscape($sString)
     return '"' . str_replace('"','""', $sString) . '"';
 }
 
-function convertCSVRowToArray($string, $separator, $quotechar)
-{
-    $fields=preg_split('/' . $separator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
-    $fields=array_map('CSVUnquote',$fields);
-    return $fields;
-}
-
 function createPassword()
 {
     $aCharacters = "ABCDEGHJIKLMNOPQURSTUVWXYZabcdefhjmnpqrstuvwxyz23456789";
@@ -7084,7 +7077,7 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 
     foreach ($csvarray as $csvrow)
     {
-        $rowcontents = convertCSVRowToArray($csvrow,',','"');
+        $rowcontents = str_getcsv($csvrow,',','"');
         $rowid = "";
         foreach ($idkeysarray as $idfieldnum)
         {

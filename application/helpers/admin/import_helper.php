@@ -194,14 +194,14 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
     $countgroups=0;
     if (isset($questionarray))
     {
-        $questionfieldnames=convertCSVRowToArray($questionarray[0],',','"');
+        $questionfieldnames=str_getcsv($questionarray[0],',','"');
         unset($questionarray[0]);
         $countquestions = 0;
     }
 
     if (isset($answerarray))
     {
-        $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
+        $answerfieldnames=str_getcsv($answerarray[0],',','"');
         unset($answerarray[0]);
         $countanswers = count($answerarray);
     }
@@ -220,7 +220,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
     $langcode = Survey::model()->findByPk($iNewSID)->language;
     if (isset($grouparray))
     {
-        $groupfieldnames = convertCSVRowToArray($grouparray[0],',','"');
+        $groupfieldnames = str_getcsv($grouparray[0],',','"');
         $langfieldnum = array_search("language", $groupfieldnames);
         $gidfieldnum = array_search("gid", $groupfieldnames);
         $groupssupportbaselang = doesImportArraySupportLanguage($grouparray,Array($gidfieldnum),$langfieldnum,$sBaseLanguage,true);
@@ -261,7 +261,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
 
     if (count($labelsetsarray) > 1)
     {
-        $labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
+        $labelsetfieldname = str_getcsv($labelsetsarray[0],',','"');
         $langfieldnum = array_search("languages", $labelsetfieldname);
         $lidfilednum =  array_search("lid", $labelsetfieldname);
         $labelsetssupportbaselang = doesImportArraySupportLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$sBaseLanguage,true);
@@ -288,8 +288,8 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
         $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
         $count=0;
         foreach ($labelsetsarray as $lsa) {
-            $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
-            $fieldcontents=convertCSVRowToArray($lsa,',','"');
+            $fieldorders  =str_getcsv($labelsetsarray[0],',','"');
+            $fieldcontents=str_getcsv($lsa,',','"');
             if ($count==0) {$count++; continue;}
 
             $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
@@ -308,8 +308,8 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
             if ($labelsarray) {
                 $count=0;
                 foreach ($labelsarray as $la) {
-                    $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
-                    $lfieldcontents=convertCSVRowToArray($la,',','"');
+                    $lfieldorders  =str_getcsv($labelsarray[0],',','"');
+                    $lfieldcontents=str_getcsv($la,',','"');
                     if ($count==0) {$count++; continue;}
 
                     // Combine into one array with keys and values since its easier to handle
@@ -385,14 +385,14 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
     if (isset($grouparray) && $grouparray)
     {
         // do GROUPS
-        $gafieldorders=convertCSVRowToArray($grouparray[0],',','"');
+        $gafieldorders=str_getcsv($grouparray[0],',','"');
         unset($grouparray[0]);
         $newgid = 0;
         $group_order = 0;   // just to initialize this variable
 
         foreach ($grouparray as $ga)
         {
-            $gacfieldcontents=convertCSVRowToArray($ga,',','"');
+            $gacfieldcontents=str_getcsv($ga,',','"');
             $grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
 
             // Skip not supported languages
@@ -447,7 +447,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
 
             foreach ($questionarray as $qa)
             {
-                $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+                $qacfieldcontents=str_getcsv($qa,',','"');
                 $questionrowdata=array_combine($questionfieldnames,$qacfieldcontents);
                 $questionrowdata=array_map('convertCSVReturnToReturn', $questionrowdata);
                 $questionrowdata["type"]=strtoupper($questionrowdata["type"]);
@@ -582,7 +582,7 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
         {
             foreach ($answerarray as $aa)
             {
-                $answerfieldcontents=convertCSVRowToArray($aa,',','"');
+                $answerfieldcontents=str_getcsv($aa,',','"');
                 $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
                 if ($answerrowdata===false)
                 {
@@ -682,11 +682,11 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
     // Finally the question attributes - it is called just once and only if there was a question
     if (isset($question_attributesarray) && $question_attributesarray)
     {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
-        $fieldorders=convertCSVRowToArray($question_attributesarray[0],',','"');
+        $fieldorders=str_getcsv($question_attributesarray[0],',','"');
         unset($question_attributesarray[0]);
 
         foreach ($question_attributesarray as $qar) {
-            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            $fieldcontents=str_getcsv($qar,',','"');
             $qarowdata=array_combine($fieldorders,$fieldcontents);
 
             // replace the qid for the new one (if there is no new qid in the $aQIDReplacements array it mean that this attribute is orphan -> error, skip this record)
@@ -710,10 +710,10 @@ function CSVImportGroup($sFullFilePath, $iNewSID)
     $results['conditions']=0;
     if (isset($conditionsarray) && $conditionsarray)
     {
-        $fieldorders=convertCSVRowToArray($conditionsarray[0],',','"');
+        $fieldorders=str_getcsv($conditionsarray[0],',','"');
         unset($conditionsarray[0]);
         foreach ($conditionsarray as $car) {
-            $fieldcontents=convertCSVRowToArray($car,',','"');
+            $fieldcontents=str_getcsv($car,',','"');
             $conditionrowdata=array_combine($fieldorders,$fieldcontents);
 
             $oldqid = $conditionrowdata["qid"];
@@ -1238,7 +1238,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
 
     if (isset($questionarray))
     {
-        $questionfieldnames=convertCSVRowToArray($questionarray[0],',','"');
+        $questionfieldnames=str_getcsv($questionarray[0],',','"');
         unset($questionarray[0]);
         $countquestions = count($questionarray)-1;
     }
@@ -1246,7 +1246,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
 
     if (isset($answerarray))
     {
-        $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
+        $answerfieldnames=str_getcsv($answerarray[0],',','"');
         unset($answerarray[0]);
         while (trim(reset($answerarray))=='')
         {
@@ -1298,7 +1298,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
 
     if ($countlabelsets > 0)
     {
-        $labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
+        $labelsetfieldname = str_getcsv($labelsetsarray[0],',','"');
         $langfieldnum = array_search("languages", $labelsetfieldname);
         $lidfilednum =  array_search("lid", $labelsetfieldname);
         $labelsetssupportbaselang = doesImportArraySupportLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$sBaseLanguage,true);
@@ -1316,8 +1316,8 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
         $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
         $count=0;
         foreach ($labelsetsarray as $lsa) {
-            $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
-            $fieldcontents=convertCSVRowToArray($lsa,',','"');
+            $fieldorders  =str_getcsv($labelsetsarray[0],',','"');
+            $fieldcontents=str_getcsv($lsa,',','"');
             if ($count==0) {$count++; continue;}
 
             $results['labelsets']++;
@@ -1338,8 +1338,8 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
             if ($labelsarray) {
                 $count=0;
                 foreach ($labelsarray as $la) {
-                    $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
-                    $lfieldcontents=convertCSVRowToArray($la,',','"');
+                    $lfieldorders  =str_getcsv($labelsarray[0],',','"');
+                    $lfieldcontents=str_getcsv($la,',','"');
                     if ($count==0) {$count++; continue;}
 
                     // Combine into one array with keys and values since its easier to handle
@@ -1432,7 +1432,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
 
         foreach ($questionarray as $qa)
         {
-            $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+            $qacfieldcontents=str_getcsv($qa,',','"');
             $questionrowdata=array_combine($questionfieldnames,$qacfieldcontents);
 
             // Skip not supported languages
@@ -1567,7 +1567,7 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
         {
             foreach ($answerarray as $aa)
             {
-                $answerfieldcontents=convertCSVRowToArray($aa,',','"');
+                $answerfieldcontents=str_getcsv($aa,',','"');
                 $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
                 if ($answerrowdata===false)
                 {
@@ -1660,10 +1660,10 @@ function CSVImportQuestion($sFullFilePath, $iNewSID, $newgid)
         // Finally the question attributes - it is called just once and only if there was a question
         if (isset($question_attributesarray) && $question_attributesarray)
         {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
-            $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+            $fieldorders  =str_getcsv($question_attributesarray[0],',','"');
             unset($question_attributesarray[0]);
             foreach ($question_attributesarray as $qar) {
-                $fieldcontents=convertCSVRowToArray($qar,',','"');
+                $fieldcontents=str_getcsv($qar,',','"');
                 $qarowdata=array_combine($fieldorders,$fieldcontents);
                 $qarowdata["qid"]=$newqid;
                 unset($qarowdata["qaid"]);
@@ -2019,8 +2019,8 @@ function CSVImportLabelset($sFullFilePath, $options)
     if (isset($labelsetsarray) && $labelsetsarray) {
         $count=0;
         foreach ($labelsetsarray as $lsa) {
-            $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
-            $fieldcontents=convertCSVRowToArray($lsa,',','"');
+            $fieldorders  =str_getcsv($labelsetsarray[0],',','"');
+            $fieldcontents=str_getcsv($lsa,',','"');
             if ($count==0) {$count++; continue;}
 
             $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
@@ -2040,11 +2040,11 @@ function CSVImportLabelset($sFullFilePath, $options)
 
             if ($labelsarray) {
                 $count=0;
-                $lfieldorders=convertCSVRowToArray($labelsarray[0],',','"');
+                $lfieldorders=str_getcsv($labelsarray[0],',','"');
                 unset($labelsarray[0]);
                 foreach ($labelsarray as $la) {
 
-                    $lfieldcontents=convertCSVRowToArray($la,',','"');
+                    $lfieldcontents=str_getcsv($la,',','"');
                     // Combine into one array with keys and values since its easier to handle
                     $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                     $labellid=$labelrowdata['lid'];
@@ -2259,7 +2259,6 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $substitutions=array();
     $aQuestionCodeReplacements=array();
     $aQuotaReplacements=array();
-    $importresults['error']=false;
     $importresults['importwarnings']=array();
     $importresults['question_attributes']=0;
 
@@ -2597,8 +2596,8 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     if ($importresults['conditions']>0){$importresults['conditions']--;};
     if ($importresults['labelsets']>0){$importresults['labelsets']--;};
     if ($importresults['quota']>0){$importresults['quota']--;};
-    $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
-    $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
+    $sfieldorders  =str_getcsv($surveyarray[0],',','"');
+    $sfieldcontents=str_getcsv($surveyarray[1],',','"');
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
     $iOldSID=$surveyrowdata["sid"];
 
@@ -2631,8 +2630,8 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
 
     $insert=$surveyarray[0];
-    $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
-    $sfieldcontents=convertCSVRowToArray($surveyarray[1],',','"');
+    $sfieldorders  =str_getcsv($surveyarray[0],',','"');
+    $sfieldcontents=str_getcsv($surveyarray[1],',','"');
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
     // Set new owner ID
     $surveyrowdata['owner_id']=Yii::app()->session['loginID'];
@@ -2662,10 +2661,10 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $iNewSID = Survey::model()->insertNewSurvey($surveyrowdata) or safeDie ("<br />".$clang->gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
 
     // Now import the survey language settings
-    $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
+    $fieldorders=str_getcsv($surveylsarray[0],',','"');
     unset($surveylsarray[0]);
     foreach ($surveylsarray as $slsrow) {
-        $fieldcontents=convertCSVRowToArray($slsrow,',','"');
+        $fieldcontents=str_getcsv($slsrow,',','"');
         $surveylsrowdata=array_combine($fieldorders,$fieldcontents);
         // convert back the '\'.'n' char from the CSV file to true return char "\n"
         $surveylsrowdata=array_map('convertCSVReturnToReturn', $surveylsrowdata);
@@ -2718,8 +2717,8 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
         $count=0;
         foreach ($labelsetsarray as $lsa) {
-            $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
-            $fieldcontents=convertCSVRowToArray($lsa,',','"');
+            $fieldorders  =str_getcsv($labelsetsarray[0],',','"');
+            $fieldcontents=str_getcsv($lsa,',','"');
             if ($count==0) {$count++; continue;}
 
             $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
@@ -2737,8 +2736,8 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             if ($labelsarray) {
                 $count=0;
                 foreach ($labelsarray as $la) {
-                    $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
-                    $lfieldcontents=convertCSVRowToArray($la,',','"');
+                    $lfieldorders  =str_getcsv($labelsarray[0],',','"');
+                    $lfieldcontents=str_getcsv($la,',','"');
                     if ($count==0) {$count++; continue;}
 
                     // Combine into one array with keys and values since its easier to handle
@@ -2815,11 +2814,11 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     if (isset($grouparray) && $grouparray)
     {
         // do GROUPS
-        $gafieldorders=convertCSVRowToArray($grouparray[0],',','"');
+        $gafieldorders=str_getcsv($grouparray[0],',','"');
         unset($grouparray[0]);
         foreach ($grouparray as $ga)
         {
-            $gacfieldcontents=convertCSVRowToArray($ga,',','"');
+            $gacfieldcontents=str_getcsv($ga,',','"');
             $grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
 
             //Now an additional integrity check if there are any groups not belonging into this survey
@@ -2867,11 +2866,11 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     // Import questions
     if (isset($questionarray) && $questionarray)
     {
-        $qafieldorders=convertCSVRowToArray($questionarray[0],',','"');
+        $qafieldorders=str_getcsv($questionarray[0],',','"');
         unset($questionarray[0]);
         foreach ($questionarray as $qa)
         {
-            $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+            $qacfieldcontents=str_getcsv($qa,',','"');
             $questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
             $questionrowdata=array_map('convertCSVReturnToReturn', $questionrowdata);
             $questionrowdata["type"]=strtoupper($questionrowdata["type"]);
@@ -3044,12 +3043,12 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     //Do answers
     if (isset($answerarray) && $answerarray)
     {
-        $answerfieldnames = convertCSVRowToArray($answerarray[0],',','"');
+        $answerfieldnames = str_getcsv($answerarray[0],',','"');
         unset($answerarray[0]);
 
         foreach ($answerarray as $aa)
         {
-            $answerfieldcontents = convertCSVRowToArray($aa,',','"');
+            $answerfieldcontents = str_getcsv($aa,',','"');
             $answerrowdata = array_combine($answerfieldnames,$answerfieldcontents);
             if (in_array($answerrowdata['qid'],$aIgnoredAnswers))
             {
@@ -3155,7 +3154,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 {
                     // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));  
                     //
-                    // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
+                    // In PHP 5.2.10 and some later versions a bug is triggered that resets the foreach loop when inserting a record
                     // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
                     // For this reason we ignore insertion errors (because it is most likely a duplicate)
                     // and continue with the next one
@@ -3217,10 +3216,10 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
     //and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions and question_attributes.
     if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
-        $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+        $fieldorders  =str_getcsv($question_attributesarray[0],',','"');
         unset($question_attributesarray[0]);
         foreach ($question_attributesarray as $qar) {
-            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            $fieldcontents=str_getcsv($qar,',','"');
             $qarowdata=array_combine($fieldorders,$fieldcontents);
             $newqid="";
             $qarowdata["qid"]=$aQIDReplacements[$qarowdata["qid"]];
@@ -3231,11 +3230,11 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     }
 
     if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUTES
-        $fieldorders=convertCSVRowToArray($assessmentsarray[0],',','"');
+        $fieldorders=str_getcsv($assessmentsarray[0],',','"');
         unset($assessmentsarray[0]);
         foreach ($assessmentsarray as $qar)
         {
-            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            $fieldcontents=str_getcsv($qar,',','"');
             $asrowdata=array_combine($fieldorders,$fieldcontents);
             if (isset($asrowdata['link']))
             {
@@ -3257,19 +3256,12 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     }
 
     if (isset($quotaarray) && $quotaarray) {//ONLY DO THIS IF THERE ARE QUOTAS
-        $fieldorders=convertCSVRowToArray($quotaarray[0],',','"');
+        $fieldorders=str_getcsv($quotaarray[0],',','"');
         unset($quotaarray[0]);
         foreach ($quotaarray as $qar)
         {
-            $fieldcontents=convertCSVRowToArray($qar,',','"');
-
+            $fieldcontents=str_getcsv($qar,',','"');
             $asrowdata=array_combine($fieldorders,$fieldcontents);
-
-            $iOldSID=$asrowdata["sid"];
-            foreach ($substitutions as $subs) {
-                if ($iOldSID==$subs[0]) {$iNewSID=$subs[3];}
-            }
-
             $asrowdata["sid"]=$iNewSID;
             $oldid = $asrowdata["id"];
             unset($asrowdata["id"]);
@@ -3283,27 +3275,20 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         $count=0;
         foreach ($quotamembersarray as $qar) {
 
-            $fieldorders  =convertCSVRowToArray($quotamembersarray[0],',','"');
-            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            $fieldorders  =str_getcsv($quotamembersarray[0],',','"');
+            $fieldcontents=str_getcsv($qar,',','"');
             if ($count==0) {$count++; continue;}
 
             $asrowdata=array_combine($fieldorders,$fieldcontents);
 
             $iOldSID=$asrowdata["sid"];
-            $newqid="";
-            $newquotaid="";
             $oldqid=$asrowdata['qid'];
             $oldquotaid=$asrowdata['quota_id'];
-
-            foreach ($substitutions as $subs) {
-                if ($iOldSID==$subs[0]) {$iNewSID=$subs[3];}
-                if ($oldqid==$subs[2]) {$newqid=$subs[5];}
-            }
 
             $newquotaid=$aQuotaReplacements[$oldquotaid];
 
             $asrowdata["sid"]=$iNewSID;
-            $asrowdata["qid"]=$newqid;
+            $asrowdata["qid"]=$aQIDReplacements[$oldqid];
             $asrowdata["quota_id"]=$newquotaid;
             unset($asrowdata["id"]);
 
@@ -3316,8 +3301,8 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         $count=0;
         foreach ($quotalsarray as $qar) {
 
-            $fieldorders  =convertCSVRowToArray($quotalsarray[0],',','"');
-            $fieldcontents=convertCSVRowToArray($qar,',','"');
+            $fieldorders  =str_getcsv($quotalsarray[0],',','"');
+            $fieldcontents=str_getcsv($qar,',','"');
             if ($count==0) {$count++; continue;}
 
             $asrowdata=array_combine($fieldorders,$fieldcontents);
@@ -3354,12 +3339,12 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
     // Do conditions
     if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
-        $fieldorders  =convertCSVRowToArray($conditionsarray[0],',','"');
+        $fieldorders  =str_getcsv($conditionsarray[0],',','"');
         unset($conditionsarray[0]);
         // Exception for conditions based on attributes
         $aQIDReplacements[0]=0;
         foreach ($conditionsarray as $car) {
-            $fieldcontents=convertCSVRowToArray($car,',','"');
+            $fieldcontents=str_getcsv($car,',','"');
             $conditionrowdata=array_combine($fieldorders,$fieldcontents);
 
             unset($conditionrowdata["cid"]);
