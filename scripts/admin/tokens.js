@@ -332,7 +332,15 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    window.open(inviteurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                    $.post(inviteurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
+                        var win=window.open('about:blank');
+                        with(win.document)
+                        {
+                            open();
+                            write(data);
+                            close();
+                        }
+                    });                    
                 }
             }
         });
@@ -349,7 +357,15 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                    $.post(remindurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
+                        var win=window.open('about:blank');
+                        with(win.document)
+                        {
+                            open();
+                            write(data);
+                            close();
+                        }
+                    });                    
                 }
             }
         });
