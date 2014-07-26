@@ -431,6 +431,24 @@
             return $out;
         }
 
+        public function renderLink($name, array $metaData, $form = null)
+        {
+            $out = '';
+            $id = $name;
+            if (isset($metaData['label']))
+            {
+                $out .= CHtml::label($metaData['label'], $id);
+            }
+
+            $metaData['class'][] = 'btn';
+            $out .= CHtml::link($metaData['label'], $metaData['link'], array(
+                'id' => $id,
+                'style' => $metaData['style'],
+                'class' => implode(' ', $metaData['class'])
+            ));
+            return $out;
+        }
+
         public function renderList($name, array $metaData, $form = null)
         {
             $id = $name;
