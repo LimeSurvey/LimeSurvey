@@ -166,10 +166,10 @@ abstract class Writer implements IWriter
     public function getLongAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
     {
         return $this->transformResponseValue(
-                $oSurvey->getFullAnswer($fieldName, $sValue, $this->translator, $this->languageCode);
-                $oSurvey->fieldMap[$column]['type'], 
+                $oSurvey->getFullAnswer($fieldName, $sValue, $this->translator, $this->languageCode),
+                $oSurvey->fieldMap[$fieldName]['type'],
                 $oOptions,
-                $fieldName,
+                $fieldName
                );
     }
 
@@ -186,9 +186,9 @@ abstract class Writer implements IWriter
     {
         return $this->transformResponseValue(
                 $oSurvey->$sValue,
-                $oSurvey->fieldMap[$column]['type'], 
+                $oSurvey->fieldMap[$fieldName]['type'],
                 $oOptions,
-                $fieldName,
+                $fieldName
                );
     }
 

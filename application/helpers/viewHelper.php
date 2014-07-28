@@ -80,15 +80,17 @@ class viewHelper
         if(isset($aField['fieldname']))
         {
             $sQuestionText=self::flatEllipsizeText($aField['question'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']).$aOption['afterquestion'];
-            if(isset($aField['subquestion']) && $aField['subquestion']!="")// if(isset($aField['subquestion']) && $aField['aid']!="") //see bug #9063
+            // Did this question have sub question, maybe not needed, think only isset is OK
+            $bHaveSubQuestion=isset($aField['aid']) && $aField['aid']!="";
+            if(isset($aField['subquestion']) && $bHaveSubQuestion)
             {
                 $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
             }
-            if(isset($aField['subquestion1']) && $aField['subquestion1']!="")// if(isset($aField['subquestion1']) && $aField['aid']!="") //see bug #9063
+            if(isset($aField['subquestion1']) && $bHaveSubQuestion)
             {
                 $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion1'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
             }
-            if(isset($aField['subquestion2']) && $aField['subquestion2']!="")// if(isset($aField['subquestion2']) && $aField['aid']!="") //see bug #9063
+            if(isset($aField['subquestion2']) && $bHaveSubQuestion)
             {
                 $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion2'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
             }
@@ -182,7 +184,7 @@ class viewHelper
         }
         if($iAbbreviated)
         {
-            $sString =ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
+            $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
         return $sString;
     }
