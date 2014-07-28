@@ -1948,16 +1948,21 @@ function checkCompletedQuota($surveyid,$return=false)
             $bPostedField=false;
             // Array of field with quota array value
             $aQuotaFields=array();
+            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
+            $aQuotaRelevantFieldnames=array();
             foreach ($aQuotaCompleted['members'] as $aQuotaMember)
             {
-                    $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
+                $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
+                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]=isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
             }
-            // For each field : test if actual responses is in quota
+            // For each field : test if actual responses is in quota (and is relevant)
             foreach ($aQuotaFields as $sFieldName=>$aValues)
             {
-                // Test if actual answer have a value
-                if(isset($_SESSION['survey_'.$surveyid][$sFieldName]) && in_array($_SESSION['survey_'.$surveyid][$sFieldName],$aValues))
+                $bInQuota=isset($_SESSION['survey_'.$surveyid][$sFieldName]) && in_array($_SESSION['survey_'.$surveyid][$sFieldName],$aValues);
+                if($bInQuota && $aQuotaRelevantFieldnames[$sFieldName])
+                {
                     $iMatchedAnswers++;
+                }
                 if(in_array($sFieldName,$aPostedFields))
                     $bPostedField=true;
             }
