@@ -44,7 +44,7 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getAbbreviatedHeading(SurveyObj $oSurvey, $fieldName)
+    public function getAbbreviatedHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         $oOptions->headingTextLength=((int)$oOptions->headingTextLength)?(int)$oOptions->headingTextLength:15;
         return $this->getHeadingText($oSurvey, $oOptions, $fieldName);
