@@ -58,6 +58,37 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.05+ (build 140717) to 2.05+ (build 140730) July 30, 2014
+-Fixed issue #9052: Importing old .csv survey structure file does not properly import quotas (Carsten Schmitz)
+-Fixed issue #9100: ComfortUpdate step 2 shows absolute file paths (Carsten Schmitz)
+-Fixed issue #9105: Unable to open popup email for administrator in French (Carsten Schmitz)
+-Fixed issue #9115: Chrome has a bug which causes slider layouts not to be styled properly redraw (Carsten Schmitz)
+-Fixed issue #9120: Migration issue from 1.90 to 2.05 when using Postgres (Carsten Schmitz)
+-Fixed issue #9138: Sending multiple invitations, reminders to the same token (Carsten Schmitz)
+-Fixed issue #9143: Comfort update backups have different extensions (Carsten Schmitz)
+-Fixed issue #9147: Deprecated notice on PHP 5.5 when emailing invitations (Carsten Schmitz)
+-Fixed issue : Quota with unrelevant question and default value are true even if question is unrelevant (Denis Chenu)
+-Fixed issue : Unable to save a survey again after reload a survey (Denis Chenu)
+-Fixed issue: XAMPP package not properly installing the database (Carsten Schmitz)
+#Updated translation: Chinese (Taiwan) (Traditional) by drawinglee
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han, L191
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by arnaud21, DenisChenu, JMI
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by aron
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 2.05+ (build 140703) to 2.05+ (build 140717) July 17, 2014
 -Fixed issue #7895: Quota are not tested for hidden question (relevance to 1) (Denis Chenu)
 -Fixed issue #8906: Long URI with autofilter (Denis Chenu)
