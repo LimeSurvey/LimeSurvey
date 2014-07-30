@@ -130,10 +130,12 @@
 
         protected function createDatabase()
         {
+            App()->configure(array('components'=>array('db'=>array('autoConnect'=>false)))) ;
+            $this->connection=App()->db;
+            App()->configure(array('components'=>array('db'=>array('autoConnect'=>true)))) ;
             $connectionString = $this->connection->connectionString;
             $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
-            try
-            {
+            try {
                 $this->connection->active=true;
             }
             catch(Exception $e){
