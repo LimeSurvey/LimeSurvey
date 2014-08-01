@@ -309,7 +309,7 @@ function doToolTip()
     // On label
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
-            {
+        {
             $(this).qtip({
                 style: {
                     classes: "qtip-cream qtip-rounded"
@@ -322,7 +322,21 @@ function doToolTip()
         }
     });
     // Loads the tooltips on image
-    $('img[alt],input[src]').each(function() {
+    $('img[title]').each(function() {
+        if($(this).attr('title') != '')
+        {
+            $(this).qtip({
+                style: {
+                    classes: "qtip-light qtip-rounded"
+                },
+                position: {
+                    viewport: $(window),
+                    at: "bottom right"
+                }
+            });
+        }
+    });
+    $('img[alt]:not([title]),input[src]').each(function() {
         if($(this).attr('alt') != '' && !$(this).data("hasqtip")){
             $(this).qtip({
                 content: {

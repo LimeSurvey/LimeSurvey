@@ -125,8 +125,8 @@ class Permission extends LSActiveRecord
                 'delete' => false,
                 'import' => false,
                 'export' => false,
-                'title' => gT("Survey locale settings"),
-                'description' => gT("Permission to view/update the survey locale settings"),
+                'title' => gT("Survey text elements"),
+                'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"),
                 'img'=>'edit'
             ),
             'surveysecurity' => array(
@@ -159,9 +159,7 @@ class Permission extends LSActiveRecord
                 'img' => 'translate'
             )
         );
-		uasort($aPermissions, function ($a, $b) {
-			return strcmp($a['title'], $b['title']);
-		});
+        uasort($aPermissions, array(__CLASS__,"comparePermissionTitle"));
         foreach ($aPermissions as &$permission)
         {
             $permission = array_merge($defaults, $permission);
@@ -233,9 +231,7 @@ class Permission extends LSActiveRecord
                 'img' => 'cpdb'
             ),
         );
-        uasort($aPermissions, function ($a, $b) {
-			return strcmp($a['title'], $b['title']);
-		});
+        uasort($aPermissions, array(__CLASS__,"comparePermissionTitle"));
         $aPermissions['superadmin'] = array(
             'create' => false,
             'update' => false,
@@ -566,7 +562,16 @@ class Permission extends LSActiveRecord
     function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
     {
         return $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
-    }    
-    
-    
+    }
+
+    /**
+    /* function used to order Permission by language string
+    /* @param aApermission array The first permission information
+    /* @param aBpermission array The second permission information
+    /* @return bool 
+    */
+    private static function comparePermissionTitle($aApermission,$aBpermission)
+    {
+        return strcmp($aApermission['title'], $aBpermission['title']);
+    }
 }
