@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-07-30 11:02:33+00:00\n"
+"POT-Creation-Date: 2014-08-03 23:06:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -489,7 +489,7 @@ msgstr ""
 #: application/views/admin/participants/participantsPanel_view.php:8
 #: application/views/admin/quotas/editquota_view.php:30
 #: application/views/admin/survey/deleteSurvey_view.php:36
-#: application/views/admin/survey/editSurvey_view.php:56
+#: application/views/admin/survey/editSurvey_view.php:60
 #: application/views/admin/survey/listSurveys_view.php:37
 #: application/views/admin/survey/Question/answerOptions_view.php:37
 #: application/views/admin/survey/Question/answerOptions_view.php:171
@@ -1481,7 +1481,7 @@ msgstr ""
 #: application/views/admin/participants/viewAttribute_view.php:171
 #: application/views/admin/survey/editLocalSettings_main_view.php:18
 #: application/views/admin/survey/editSurvey_view.php:34
-#: application/views/admin/survey/editSurvey_view.php:56
+#: application/views/admin/survey/editSurvey_view.php:60
 #: application/views/admin/survey/listSurveys_view.php:35
 #: application/views/admin/survey/listSurveys_view.php:40
 #: application/views/admin/survey/newSurvey_view.php:29
@@ -2622,7 +2622,7 @@ msgid "The survey was successfully expired by setting an expiration date in the 
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1383
-#: application/views/admin/survey/editSurvey_view.php:43
+#: application/views/admin/survey/editSurvey_view.php:47
 msgid "(No target question)"
 msgstr ""
 
@@ -4519,7 +4519,7 @@ msgid "General settings"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:267
-#: application/models/Permission.php:64
+#: application/models/Permission.php:80
 #: application/views/admin/survey/copySurvey_view.php:47
 #: application/views/admin/survey/importSurvey_view.php:61
 #: application/views/admin/survey/surveybar_view.php:71
@@ -4527,7 +4527,7 @@ msgid "Quotas"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:273
-#: application/models/Permission.php:63
+#: application/models/Permission.php:73
 #: application/views/admin/survey/copySurvey_view.php:46
 #: application/views/admin/survey/importSurvey_view.php:60
 #: application/views/admin/survey/surveybar_view.php:75
@@ -5178,7 +5178,7 @@ msgstr ""
 #: application/helpers/common_helper.php:2955
 #: application/helpers/common_helper.php:2966
 #: application/helpers/common_helper.php:3312
-#: application/models/Permission.php:66
+#: application/models/Permission.php:95
 #: application/views/admin/export/statistics_view.php:1252
 msgid "Statistics"
 msgstr ""
@@ -8920,95 +8920,95 @@ msgstr ""
 msgid "Passwords do not match!"
 msgstr ""
 
-#: application/models/Permission.php:63
+#: application/models/Permission.php:74
 msgid "Permission to create/view/update/delete assessments rules for a survey"
 msgstr ""
 
-#: application/models/Permission.php:64
+#: application/models/Permission.php:81
 msgid "Permission to create/view/update/delete quota rules for a survey"
 msgstr ""
 
-#: application/models/Permission.php:65
+#: application/models/Permission.php:85
 #: application/views/admin/export/exportresults_view.php:95
 #: application/views/admin/survey/importSurvey_view.php:69
 #: application/views/admin/survey/surveybar_view.php:215
 msgid "Responses"
 msgstr ""
 
-#: application/models/Permission.php:65
+#: application/models/Permission.php:86
 msgid "Permission to create(data entry)/view/update/delete/import/export responses"
 msgstr ""
 
-#: application/models/Permission.php:66
+#: application/models/Permission.php:96
 msgid "Permission to view statistics"
 msgstr ""
 
-#: application/models/Permission.php:67
+#: application/models/Permission.php:104
 msgid "Survey deletion"
 msgstr ""
 
-#: application/models/Permission.php:67
+#: application/models/Permission.php:105
 msgid "Permission to delete a survey"
 msgstr ""
 
-#: application/models/Permission.php:68
+#: application/models/Permission.php:114
 msgid "Survey activation"
 msgstr ""
 
-#: application/models/Permission.php:68
+#: application/models/Permission.php:115
 msgid "Permission to activate/deactivate a survey"
 msgstr ""
 
-#: application/models/Permission.php:69
+#: application/models/Permission.php:119
 msgid "Survey content"
 msgstr ""
 
-#: application/models/Permission.php:69
+#: application/models/Permission.php:120
 msgid "Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"
 msgstr ""
 
-#: application/models/Permission.php:70
-msgid "Survey locale settings"
+#: application/models/Permission.php:128
+msgid "Survey text elements"
 msgstr ""
 
-#: application/models/Permission.php:70
-msgid "Permission to view/update the survey locale settings"
+#: application/models/Permission.php:129
+msgid "Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"
 msgstr ""
 
-#: application/models/Permission.php:71
+#: application/models/Permission.php:135
 msgid "Survey security"
 msgstr ""
 
-#: application/models/Permission.php:71
+#: application/models/Permission.php:136
 msgid "Permission to modify survey security settings"
 msgstr ""
 
-#: application/models/Permission.php:72
+#: application/models/Permission.php:144
 msgid "Survey settings"
 msgstr ""
 
-#: application/models/Permission.php:72
+#: application/models/Permission.php:145
 msgid "Permission to view/update the survey settings including token table creation"
 msgstr ""
 
-#: application/models/Permission.php:73
+#: application/models/Permission.php:149
 #: application/views/admin/survey/subview/tab_view.php:17
 msgid "Tokens"
 msgstr ""
 
-#: application/models/Permission.php:73
+#: application/models/Permission.php:149
 msgid "Permission to create/update/delete/import/export token entries"
 msgstr ""
 
-#: application/models/Permission.php:74
+#: application/models/Permission.php:157
 msgid "Quick translation"
 msgstr ""
 
-#: application/models/Permission.php:74
+#: application/models/Permission.php:158
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr ""
 
-#: application/models/Permission.php:94
+#: application/models/Permission.php:191
 #: application/views/admin/globalSettings_view.php:28
 #: application/views/admin/participants/displayParticipants_view.php:177
 #: application/views/admin/survey/copySurvey_view.php:20
@@ -9017,37 +9017,37 @@ msgstr ""
 msgid "Surveys"
 msgstr ""
 
-#: application/models/Permission.php:94
+#: application/models/Permission.php:192
 msgid "Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"
 msgstr ""
 
-#: application/models/Permission.php:95
+#: application/models/Permission.php:198
 #: application/views/admin/globalSettings_view.php:25
 msgid "Users"
 msgstr ""
 
-#: application/models/Permission.php:95
+#: application/models/Permission.php:199
 msgid "Permission to create, view, update and delete users"
 msgstr ""
 
-#: application/models/Permission.php:96
+#: application/models/Permission.php:205
 #: application/views/admin/usergroup/usergroupbar_view.php:50
 msgid "User groups"
 msgstr ""
 
-#: application/models/Permission.php:96
+#: application/models/Permission.php:206
 msgid "Permission to create, view, update and delete user groups"
 msgstr ""
 
-#: application/models/Permission.php:97
+#: application/models/Permission.php:210
 msgid "Templates"
 msgstr ""
 
-#: application/models/Permission.php:97
+#: application/models/Permission.php:211
 msgid "Permission to create, view, update, delete, export and import templates"
 msgstr ""
 
-#: application/models/Permission.php:98
+#: application/models/Permission.php:215
 #: application/views/admin/labels/import_view.php:42
 #: application/views/admin/survey/copySurvey_view.php:39
 #: application/views/admin/survey/importSurvey_view.php:54
@@ -9056,32 +9056,32 @@ msgstr ""
 msgid "Label sets"
 msgstr ""
 
-#: application/models/Permission.php:98
+#: application/models/Permission.php:216
 msgid "Permission to create, view, update, delete, export and import label sets/labels"
 msgstr ""
 
-#: application/models/Permission.php:99
+#: application/models/Permission.php:223
 msgid "Settings & Plugins"
 msgstr ""
 
-#: application/models/Permission.php:99
+#: application/models/Permission.php:224
 msgid "Permission to view and update global settings & plugins and to delete and import plugins"
 msgstr ""
 
-#: application/models/Permission.php:100
+#: application/models/Permission.php:229
 #: application/views/admin/participants/participantsPanel_view.php:16
 msgid "Participant panel"
 msgstr ""
 
-#: application/models/Permission.php:100
+#: application/models/Permission.php:230
 msgid "Permission to create your own participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"
 msgstr ""
 
-#: application/models/Permission.php:103
+#: application/models/Permission.php:241
 msgid "Superadministrator"
 msgstr ""
 
-#: application/models/Permission.php:103
+#: application/models/Permission.php:242
 msgid "Unlimited administration permissions"
 msgstr ""
 
@@ -12886,19 +12886,19 @@ msgid "Edit survey settings"
 msgstr ""
 
 #: application/views/admin/survey/editSurvey_view.php:34
-#: application/views/admin/survey/editSurvey_view.php:35
+#: application/views/admin/survey/editSurvey_view.php:36
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr ""
 
-#: application/views/admin/survey/editSurvey_view.php:35
+#: application/views/admin/survey/editSurvey_view.php:36
 msgid "Save & edit survey text elements"
 msgstr ""
 
-#: application/views/admin/survey/editSurvey_view.php:40
+#: application/views/admin/survey/editSurvey_view.php:44
 msgid "Parameter name:"
 msgstr ""
 
-#: application/views/admin/survey/editSurvey_view.php:42
+#: application/views/admin/survey/editSurvey_view.php:46
 msgid "Target (sub-)question:"
 msgstr ""
 
