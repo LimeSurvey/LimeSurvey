@@ -51,17 +51,11 @@ $internalConfig = array(
 			'class' => 'CLogRouter'
 		),
         'cache'=>array(
-           'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
+           'class'=>'system.caching.CFileCache',
         ),
         'db' => array(
                 'schemaCachingDuration' => 3600,
-        ),
-        'messages' => array(
-            'class' => 'GettextMessageSource',
-            'useMoFile' => true,
-            'basePath' => __DIR__ . '/../../locale'
         )
-
 	)
 );
 
