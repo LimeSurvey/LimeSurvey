@@ -172,7 +172,7 @@ function makegraph($currentstep, $total)
     </script>
 
     <div id="progress-wrapper">
-    <span class="hide">'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'</span>
+    <span class="hide">'.sprintf(gT('You have completed %s%% of this survey'),$size).'</span>
     <div id="progress-pre">';
     if (App()->getLocale()->orientation == 'rtl')
     {
@@ -219,7 +219,6 @@ function makegraph($currentstep, $total)
 function makeLanguageChangerSurvey($sSelectedLanguage)
 {
     $surveyid = Yii::app()->getConfig('surveyID');
-    $clang = Yii::app()->lang;
     Yii::app()->loadHelper("surveytranslator");
 
     $aSurveyLangs = Survey::model()->findByPk($surveyid)->getAllLanguages();
@@ -269,7 +268,7 @@ function makeLanguageChangerSurvey($sSelectedLanguage)
         $sHTMLCode=CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label'));
         $sHTMLCode.=CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass,'data-targeturl'=>$sTargetURL));
         // We don't have to add this button if in previewmode
-        $sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide'));
+        $sHTMLCode.= CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'changelang jshide'));
         return $sHTMLCode;
     }
     else
@@ -312,10 +311,10 @@ function makeLanguageChanger($sSelectedLanguage)
         $sSelected=$sSelectedLanguage;
 
         $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get');
-        $sHTMLCode.=CHtml::label($clang->gT("Choose another language"), 'lang',array('class'=>'hide label'));
+        $sHTMLCode.=CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label'));
         $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
-        //$sHTMLCode.= CHtml::htmlButton($clang->gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'jshide'));
-        $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".$clang->gT("Change the language")."</button>";
+        //$sHTMLCode.= CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','id'=>"changelangbtn",'value'=>'changelang','name'=>'changelang','class'=>'jshide'));
+        $sHTMLCode.="<button class='changelang jshide' value='changelang' id='changelangbtn' type='submit'>".gT("Change the language")."</button>";
         $sHTMLCode.= CHtml::endForm();
         return $sHTMLCode;
     }
@@ -377,7 +376,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                                 if ($file['size'] > $validation['max_filesize'] * 1000)
                                 {
                                     $filenotvalidated = array();
-                                    $filenotvalidated[$field."_file_".$i] = sprintf($clang->gT("Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."), $file['size'], $validation['max_filesize']);
+                                    $filenotvalidated[$field."_file_".$i] = sprintf(gT("Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."), $file['size'], $validation['max_filesize']);
                                     $append = true;
                                 }
 
@@ -390,13 +389,13 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                                 {
                                     if (isset($append) && $append)
                                     {
-                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed!"),$validation['allowed_filetypes']);
+                                        $filenotvalidated[$field."_file_".$i] .= sprintf(gT("Sorry, only %s extensions are allowed!"),$validation['allowed_filetypes']);
                                         unset($append);
                                     }
                                     else
                                     {
                                         $filenotvalidated = array();
-                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed!"),$validation['allowed_filetypes']);
+                                        $filenotvalidated[$field."_file_".$i] .= sprintf(gT("Sorry, only %s extensions are allowed!"),$validation['allowed_filetypes']);
                                     }
                                 }
                             }
@@ -408,7 +407,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
                     {
                         $filenotvalidated = array();
-                        $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");
+                        $filenotvalidated[$field] = gT("The minimum number of files has not been uploaded.");
                     }
                 }
             }
@@ -803,33 +802,33 @@ function submitfailed($errormsg='')
     $clang = Yii::app()->lang;
 
     $completed = "<br /><strong><font size='2' color='red'>"
-    . $clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
-    . $clang->gT("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
+    . gT("Did Not Save")."</strong></font><br /><br />\n\n"
+    . gT("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
     if ($thissurvey['adminemail'])
     {
-        $completed .= $clang->gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
+        $completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.")."<br /><br />\n";
         if ($debug>0)
         {
             $completed.='Error message: '.htmlspecialchars($errormsg).'<br />';
         }
-        $email=$clang->gT("An error occurred saving a response to survey id","unescaped")." ".$thissurvey['name']." - $surveyid\n\n";
-        $email .= $clang->gT("DATA TO BE ENTERED","unescaped").":\n";
+        $email=gT("An error occurred saving a response to survey id","unescaped")." ".$thissurvey['name']." - $surveyid\n\n";
+        $email .= gT("DATA TO BE ENTERED","unescaped").":\n";
         foreach ($_SESSION['survey_'.$surveyid]['insertarray'] as $value)
         {
             $email .= "$value: {$_SESSION['survey_'.$surveyid][$value]}\n";
         }
-        $email .= "\n".$clang->gT("SQL CODE THAT FAILED","unescaped").":\n"
+        $email .= "\n".gT("SQL CODE THAT FAILED","unescaped").":\n"
         . "$subquery\n\n"
-        . $clang->gT("ERROR MESSAGE","unescaped").":\n"
+        . gT("ERROR MESSAGE","unescaped").":\n"
         . $errormsg."\n\n";
-        SendEmailMessage($email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
+        SendEmailMessage($email, gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
         //echo "<!-- EMAIL CONTENTS:\n$email -->\n";
         //An email has been sent, so we can kill off this session.
         killSurveySession($surveyid);
     }
     else
     {
-        $completed .= "<a href='javascript:location.reload()'>".$clang->gT("Try to submit again")."</a><br /><br />\n";
+        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
         $completed .= $subquery;
     }
     return $completed;
@@ -881,10 +880,10 @@ function buildsurveysession($surveyid,$preview=false)
 
             if (isset($loadsecurity))
             { // was a bad answer
-                echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect.")."</font><br />";
+                echo "<font color='#FF0000'>".gT("The answer to the security question is incorrect.")."</font><br />";
             }
 
-            echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>"
+            echo "<p class='captcha'>".gT("Please confirm access to survey by answering the security question below and click continue.")."</p>"
             .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('class'=>'captcha'))."
             <table align='center'>
             <tr>
@@ -908,12 +907,12 @@ function buildsurveysession($surveyid,$preview=false)
             if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<tr>
-                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /></td>
+                <td align='center' valign='middle'><label for='captcha'>".gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /></td>
                 <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
                 </td>
                 </tr>";
             }
-            echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></td></tr>
+            echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".gT("Continue")."' /></td></tr>
             </table>
             </form>";
 
@@ -959,13 +958,13 @@ function buildsurveysession($surveyid,$preview=false)
             echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1596]');
             // ->renderPartial('entertoken_view');
             if (isset($secerror)) echo "<span class='error'>".$secerror."</span><br />";
-            echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
-            echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
+            echo '<div id="wrapper"><p id="tokenmessage">'.gT("This is a controlled survey. You need a valid token to participate.")."<br />";
+            echo gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>"
             .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform','autocomplete'=>'off'))."
             <ul>
             <li>";?>
-            <label for='token'><?php $clang->eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='password' name='token' value='' />
+            <label for='token'><?php eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='password' name='token' value='' />
             <?php
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
             <input type='hidden' name='lang' value='".$sLangCode."' id='lang' />";
@@ -990,11 +989,11 @@ function buildsurveysession($surveyid,$preview=false)
             if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<li>
-                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                <label for='captchaimage'>".gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                 </li>";
             }
             echo "<li>
-            <input class='submit button' type='submit' value='".$clang->gT("Continue")."' />
+            <input class='submit button' type='submit' value='".gT("Continue")."' />
             </li>
             </ul>
             </form></div>";
@@ -1027,9 +1026,9 @@ function buildsurveysession($surveyid,$preview=false)
             $redata = compact(array_keys(get_defined_vars()));
             echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[1676]');
             echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1677]');
-            echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-            ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
-            ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
+            echo '<div id="wrapper"><p id="tokenmessage">'.gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+            ."\t".gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
+            ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
             ." (<a href='mailto:{$thissurvey['adminemail']}'>"
             ."{$thissurvey['adminemail']}</a>)</p></div>\n";
 
@@ -1069,9 +1068,9 @@ function buildsurveysession($surveyid,$preview=false)
                 echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1720]');
                 echo "\t<div id='wrapper'>\n"
                 ."\t<p id='tokenmessage'>\n"
-                ."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-                ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br/><br />\n"
-                ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
+                ."\t".gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+                ."\t".gT("The token you have provided is either not valid, or has already been used.")."<br/><br />\n"
+                ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
                 ." (<a href='mailto:{$thissurvey['adminemail']}'>"
                 ."{$thissurvey['adminemail']}</a>)\n"
                 ."\t</p>\n"
@@ -1105,15 +1104,15 @@ function buildsurveysession($surveyid,$preview=false)
                     echo '<div id="wrapper"><p id="tokenmessage">';
                     if (isset($loadsecurity))
                     { // was a bad answer
-                        echo "<span class='error'>".$clang->gT("The answer to the security question is incorrect.")."</span><br />";
+                        echo "<span class='error'>".gT("The answer to the security question is incorrect.")."</span><br />";
                     }
 
-                    echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
+                    echo gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
                     // IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
                     // AND HIDE ENTRY FIELD
                     if (!isset($gettoken))
                     {
-                        echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
+                        echo gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
                         <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
                         <ul>
                         <li>
@@ -1128,11 +1127,11 @@ function buildsurveysession($surveyid,$preview=false)
                             <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                         }
 
-                        echo '<label for="token">'.$clang->gT("Token")."</label><input class='text' type='password' id='token' name='token'></li>";
+                        echo '<label for="token">'.gT("Token")."</label><input class='text' type='password' id='token' name='token'></li>";
                 }
                 else
                 {
-                    echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."</p>
+                    echo gT("Please confirm the token by answering the security question below and click continue.")."</p>
                     <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
                     <ul>
                     <li>
@@ -1146,7 +1145,7 @@ function buildsurveysession($surveyid,$preview=false)
                         <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                         <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                     }
-                    echo '<label for="token">'.$clang->gT("Token:")."</label><span id='token'>$gettoken</span>"
+                    echo '<label for="token">'.gT("Token:")."</label><span id='token'>$gettoken</span>"
                     ."<input type='hidden' name='token' value='$gettoken'></li>";
                 }
 
@@ -1154,10 +1153,10 @@ function buildsurveysession($surveyid,$preview=false)
                 if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 {
                     echo "<li>
-                    <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                    <label for='captchaimage'>".gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.$surveyid)."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                     </li>";
                 }
-                echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>
+                echo "<li><input class='submit' type='submit' value='".gT("Continue")."' /></li>
                 </ul>
                 </form>
                 </id>";
@@ -1262,8 +1261,8 @@ function buildsurveysession($surveyid,$preview=false)
         echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
         echo "\t<div id='wrapper'>\n"
         ."\t<p id='tokenmessage'>\n"
-        ."\t".$clang->gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
-        ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
+        ."\t".gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
+        ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
         ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
         ."\t</p>\n"
@@ -1666,7 +1665,7 @@ function surveymover()
 
     // Construction of mover
     if($sMovePrev){
-        $sLangMoveprev=$clang->gT("Previous");
+        $sLangMoveprev=gT("Previous");
         $sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
     }
     if($sMovePrev && $sMoveNext){
@@ -1675,10 +1674,10 @@ function surveymover()
 
     if($sMoveNext){
         if($sMoveNext=="movesubmit"){
-            $sLangMovenext=$clang->gT("Submit");
+            $sLangMovenext=gT("Submit");
             $sAccessKeyNext='l';// Why l ?
         }else{
-            $sLangMovenext=$clang->gT("Next");
+            $sLangMovenext=gT("Next");
             $sAccessKeyNext='n';
         }
         $sSurveyMover.= CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass));
@@ -2175,7 +2174,7 @@ function display_first_page() {
     echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"),array(),$redata,'frontend_helper[2767]');
     if ($thissurvey['active'] != "Y")
     {
-        echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";
+        echo "<p style='text-align:center' class='error'>".gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";
     }
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
     if (isset($token) && !empty($token)) {
