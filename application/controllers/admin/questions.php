@@ -1078,8 +1078,6 @@ class questions extends Survey_Common_Action
 
         setNoAnswerMode($thissurvey);
 
-        Yii::app()->session['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
-
         $qrows = Question::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
 
         $ia = array(

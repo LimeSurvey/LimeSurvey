@@ -13,6 +13,7 @@
 
 function loadanswers()
 {
+    Yii::trace('start', 'survey.loadanswers');
     global $surveyid;
     global $thissurvey, $thisstep;
     global $clienttoken;
@@ -842,6 +843,7 @@ function submitfailed($errormsg='')
 */
 function buildsurveysession($surveyid,$preview=false)
 {
+    Yii::trace('start', 'survey.buildsurveysession');
     global $secerror, $clienttoken;
     global $tokensexist;
     //global $surveyid;
@@ -1014,7 +1016,7 @@ function buildsurveysession($surveyid,$preview=false)
         } else {
             $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
-		if (!isset($oTokenEntry))
+        if (!isset($oTokenEntry))
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
@@ -1182,13 +1184,15 @@ function buildsurveysession($surveyid,$preview=false)
     {
 
         //get language from token (if one exists)
-        $tkquery2 = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$clienttoken."' AND (completed = 'N' or completed='')";
-        //echo $tkquery2;
-        $result = dbExecuteAssoc($tkquery2) or safeDie ("Couldn't get tokens<br />$tkquery<br />");    //Checked
-        foreach ($result->readAll() as $rw)
+        $token = Token::model($surveyid)->findByAttributes([
+            'token' => $clienttoken,
+            'completed' => ['N', '']
+        ]);
+        if (!isset($token))
         {
-            $tklanguage=$rw['language'];
+            safeDie ("Couldn't get token<br />");
         }
+        $tklanguage = $token->language;
     }
     if (returnGlobal('lang',true))
     {
@@ -1606,6 +1610,7 @@ function buildsurveysession($surveyid,$preview=false)
             }
         }
     }
+    Yii::trace('end', 'survey.buildsurveysession');
 }
 
 /**
@@ -2245,7 +2250,6 @@ function SetSurveyLanguage($surveyid, $language)
         $clang = new limesurvey_lang($_SESSION['survey_'.$surveyid]['s_lang']);
         $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
-        $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat'],$_SESSION['survey_'.$surveyid]['s_lang']);
         LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
     else
