@@ -648,40 +648,29 @@
         */
         private function __construct()
         {
+            Yii::beginProfile('LEMconstruct');
             self::$instance =& $this;
             $this->em = new ExpressionManager();
             if (!isset($_SESSION['LEMlang'])) {
                 $_SESSION['LEMlang'] = 'en';    // so that there is a default
             }
+            Yii::endProfile('LEMconstruct');
         }
 
         /**
         * Ensures there is only one instances of LEM.  Note, if switch between surveys, have to clear this cache
         * @return LimeExpressionManager
         */
-        public static function &singleton()
+        public static function &singleton($recreate = false)
         {
-            $now = microtime(true);
-            if (isset($_SESSION['LEMdirtyFlag'])) {
-                $c = __CLASS__;
-                self::$instance = new $c;
-                unset($_SESSION['LEMdirtyFlag']);
+            if ($recreate)
+            {
+                self::$instance = new self();
             }
-            else if (!isset(self::$instance)) {
-                    if (isset($_SESSION['LEMsingleton'])) {
-                        self::$instance = unserialize($_SESSION['LEMsingleton']);
-                    }
-                    else {
-                        $c = __CLASS__;
-                        self::$instance = new $c;
-                    }
-                }
-                else {
-                    // does exist, and OK to cache
-                    return self::$instance;
+            elseif (!isset(self::$instance) && isset($_SESSION['LEMsingleton']))
+            {
+                self::$instance = unserialize($_SESSION['LEMsingleton']);
             }
-            // only record duration if have to create new (or unserialize) an instance
-            self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
             return self::$instance;
         }
 
@@ -708,7 +697,7 @@
         */
         public static function SetDirtyFlag()
         {
-            $_SESSION['LEMdirtyFlag'] = true;
+            LimeExpressionManager::singleton(true);
             $_SESSION['LEMforceRefresh'] = true;
         }
 
