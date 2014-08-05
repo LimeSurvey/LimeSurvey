@@ -18,14 +18,6 @@
         }
 
         /**
-         * Delete all files related to this repsonse.
-         */
-        protected function deleteFiles()
-        {
-            
-        }
-
-		/**
 		 *
 		 * @param mixed $className Either the classname or the survey id.
 		 * @return Response
@@ -44,6 +36,9 @@
 			return parent::create($surveyId, $scenario);
 		}
 
+		/**
+         * Delete all files related to this repsonse.
+         */
         public function getFiles()
         {
             $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|'));
