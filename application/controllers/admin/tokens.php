@@ -361,13 +361,18 @@ class tokens extends Survey_Common_Action
         $sidx = Yii::app()->request->getPost('sidx', 'lastname');
         $sord = Yii::app()->request->getPost('sord', 'asc');
         $limit = Yii::app()->request->getPost('rows', 25);
-        
+
         $aData = new stdClass;
         $aData->page = $page;
         
+        $aSearchArray=Yii::app()->request->getPost('searcharray');
+        if(empty($search) && !empty($aSearchArray)){
+            $search=$aSearchArray;
+        }
+            //die("<pre>".print_r($search,1)."</pre>");
         if (!empty($search)) {
             $condition = TokenDynamic::model($iSurveyId)->getSearchMultipleCondition($search);
-        } else { 
+        }else{ 
             $condition = new CDbCriteria();
         }
                 
@@ -1976,7 +1981,7 @@ class tokens extends Survey_Common_Action
                                     $separator = ';'; else
                                     $separator = ',';
                         }
-                        $firstline = convertCSVRowToArray($buffer, $separator, '"');
+                        $firstline = str_getcsv($buffer, $separator, '"');
                         $firstline = array_map('trim', $firstline);
                         $ignoredcolumns = array();
                         // Now check the first line for invalid fields
@@ -2002,7 +2007,7 @@ class tokens extends Survey_Common_Action
                     else
                     {
 
-                        $line = convertCSVRowToArray($buffer, $separator, '"');
+                        $line = str_getcsv($buffer, $separator, '"');
 
                         if (count($firstline) != count($line))
                         {

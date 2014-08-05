@@ -59,6 +59,102 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140717) to 2.05+ (build 140730) July 30, 2014
+-Fixed issue #9052: Importing old .csv survey structure file does not properly import quotas (Carsten Schmitz)
+-Fixed issue #9100: ComfortUpdate step 2 shows absolute file paths (Carsten Schmitz)
+-Fixed issue #9105: Unable to open popup email for administrator in French (Carsten Schmitz)
+-Fixed issue #9115: Chrome has a bug which causes slider layouts not to be styled properly redraw (Carsten Schmitz)
+-Fixed issue #9120: Migration issue from 1.90 to 2.05 when using Postgres (Carsten Schmitz)
+-Fixed issue #9138: Sending multiple invitations, reminders to the same token (Carsten Schmitz)
+-Fixed issue #9143: Comfort update backups have different extensions (Carsten Schmitz)
+-Fixed issue #9147: Deprecated notice on PHP 5.5 when emailing invitations (Carsten Schmitz)
+-Fixed issue : Quota with unrelevant question and default value are true even if question is unrelevant (Denis Chenu)
+-Fixed issue : Unable to save a survey again after reload a survey (Denis Chenu)
+-Fixed issue: XAMPP package not properly installing the database (Carsten Schmitz)
+#Updated translation: Chinese (Taiwan) (Traditional) by drawinglee
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han, L191
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by arnaud21, DenisChenu, JMI
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by aron
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Swedish by maxzomborszki
+
+Changes from 2.05+ (build 140703) to 2.05+ (build 140717) July 17, 2014
+-Fixed issue #7895: Quota are not tested for hidden question (relevance to 1) (Denis Chenu)
+-Fixed issue #8906: Long URI with autofilter (Denis Chenu)
+-Fixed issue #9126: Survey's token and EM variables aren't set when exporting printing results view to PDF format. (Denis Chenu)
+-Fixed issue #9128: Using screen readers JAWS and NVDA, image menu are unreadable (Denis Chenu)
+-Fixed issue #9134: Database error when trying to reload survey data (Denis Chenu)
+-Fixed issue #9141: No file can be uploaded if Max number of files is not set (Denis Chenu)
+-Fixed issue: Tip before tooltip on footer manual link (Denis Chenu)
+-Fixed issue: Unable to enter some date without datepicker (Denis Chenu)
+-Fixed issue: XSS in label management and use (Denis Chenu)
+-New feature #9066: afterSurveyComplete aren't call from Quota : afterSurveyQuota (Denis Chenu)
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han, L191
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by arnaud21, ipwnin3D
+#Updated translation: German (Informal) by DLange
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup, ddrmoscow
+#Updated translation: Swedish by ipwnin3D
+#Updated translation: Swedish by sofve
+#Updated translation: Thai by adzpire
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.05+ (build 140618) to 2.05+ (build 140703) July 3, 2014
+-Fixed issue #8028: File upload dialog function can be updated (Denis Chenu)
+-Fixed issue #9001: Gramar error in validation message (Carsten Schmitz)
+-Fixed issue #9071: Language switch not working when using move previous (Denis Chenu)
+-Fixed issue #9105: Unable to open popup email editor in French (Carsten Schmitz)
+-Fixed issue #9117: Array dual scale (dropdown) question : First answer is allways selected if don't show no answer (Denis Chenu)
+-Fixed issue #9127: Invalid quota broke quota view (Denis Chenu)
+-Fixed issue: Asterisks in global settings not visible for fixed settings (Carsten Schmitz)
+-Fixed issue: Miscalculation of completed quota for Multi Question type (Denis Chenu)
+-Fixed issue: Missing translation in token send email process (Denis Chenu)
+-Fixed issue: Search parameter vulnerability in CPDB (Carsten Schmitz)
+-Fixed issue: Untranslated text in multitext array question sum function (Carsten Schmitz)
+-Fixed issue: Vulnerable parameter on survey resume (Carsten Schmitz)
+-Fixed issue: XSS reflection in CPDB and global settings (Carsten Schmitz)
+-New feature : use shortest url with urlFormat path (Denis Chenu)
+#Updated translation: Albanian by florianika
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han, L191
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: German by c_schmitz, DLange
+#Updated translation: German (Informal) by c_schmitz, DLange
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Malay by astrasia
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, rhnascimento
+#Updated translation: Romanian by Borgie
+#Updated translation: Romanian by filipguttman, Borgie
+#Updated translation: Russian by vipgroup
+#Updated translation: Tamil by apmuthu
+#Updated translation: Thai by adzpire
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 140612) to 2.05+ (build 140618) June 18, 2014
 -Fixed issue #9025: Error showing pie chart in statistics when using MS SQL server (Carsten Schmitz)
 -Fixed issue #9050: Template permissions for a user are lost after global permissions are saved (Carsten Schmitz)

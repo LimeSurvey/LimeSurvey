@@ -92,6 +92,7 @@ function doNumericSlider(qID,jsonOptions) {
 			$("#question"+qID).find(".em_default").text(jsonOptions.lang.tip);
 		});
 	}
-
+    //Fix buggy chrome/webkit engine which doesn't properly apply the css rules after this insertion
+    $("#question"+qID).hide().show(0);
 }
 

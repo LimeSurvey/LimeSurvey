@@ -54,11 +54,17 @@ $internalConfig = array(
             )
 		),
         'cache'=>array(
-           'class'=>'system.caching.CFileCache',
+           'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
         ),
         'db' => array(
                 'schemaCachingDuration' => 3600,
+        ),
+        'messages' => array(
+            'class' => 'GettextMessageSource',
+            'useMoFile' => true,
+            'basePath' => __DIR__ . '/../../locale'
         )
+
 	)
 );
 

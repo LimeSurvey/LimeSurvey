@@ -509,7 +509,8 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{questions}}','parent_qid','integer',false ,'0');
             alterColumn('{{questions}}','title',"{$sVarchar}(20)",false , '');
             alterColumn('{{questions}}','question',"text",false);
-            try{ $oDB->createCommand()->dropIndex('questions_idx4','{{questions}}');} catch(Exception $e){};
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            
             alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
             try{ $oDB->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
             alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');

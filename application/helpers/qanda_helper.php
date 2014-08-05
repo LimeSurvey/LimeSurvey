@@ -1288,8 +1288,9 @@ function do_date($ia)
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
+        // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
         // "+1" makes room for a trailing space in date/time values
-        $iLength=strlen($dateformatdetails['dateformat'])+1;
+        $iLength=strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
 
         // HTML for date question using datepicker
@@ -4963,7 +4964,7 @@ function do_array_multitext($ia)
         }
         $num_class = ' numbers-only';
         $extraclass.=" numberonly";
-        $caption.=$clang->gT("Each answers are number. "); 
+        $caption.=$clang->gT("Each answer is a number. "); 
         switch ($aQuestionAttributes['show_totals'])
         {
             case 'R':
@@ -4973,11 +4974,11 @@ function do_array_multitext($ia)
                 <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled" />
                 </label>
                 </td>';
-                $col_head = '            <th class="total">Total</th>';
+                $col_head = '            <th class="total">'.$clang->gT('Total').'</th>';
                 if($show_grand == true)
                 {
                     $row_head = '
-                    <th class="answertext total">Grand total</th>';
+                    <th class="answertext total">'.$clang->gT('Grand total').'</th>';
                     $col_total = '
                     <td>&nbsp;</td>';
                     $grand_total = '
@@ -4985,7 +4986,7 @@ function do_array_multitext($ia)
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
                 };
-                $caption.=$clang->gT("The last row show the total for the column. "); 
+                $caption.=$clang->gT("The last row shows the total for the column. "); 
                 break;
             case 'C':
                 $totals_class = $show_totals = 'col';
@@ -5005,7 +5006,7 @@ function do_array_multitext($ia)
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
                 };
-                $caption.=$clang->gT("The last column show the total for the row. "); 
+                $caption.=$clang->gT("The last column shows the total for the row. "); 
                 break;
             case 'B':
                 $totals_class = $show_totals = 'both';
@@ -5018,7 +5019,7 @@ function do_array_multitext($ia)
                 <td  class="total information-item">
                 <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                 </td>';
-                $col_head = '            <th class="total">Total</th>';
+                $col_head = '            <th class="total">'.$clang->gT('Total').'</th>';
                 $row_head = '
                 <th class="answertext">Total</th>';
                 if($show_grand == true)
@@ -5033,7 +5034,7 @@ function do_array_multitext($ia)
                     $grand_total = '
                     <td>&nbsp;</td>';
                 };
-                $caption.=$clang->gT("The last row show the total for the column and the last column show the total for the row. "); 
+                $caption.=$clang->gT("The last row shows the total for the column and the last column shows the total for the row. "); 
                 break;
         };
         if(!empty($totals_class))

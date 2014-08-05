@@ -313,9 +313,6 @@ class index extends CAction {
                 }
             }
 
-            $_SESSION['survey_'.$surveyid]['holdname'] = $sLoadName;
-            $_SESSION['survey_'.$surveyid]['holdpass'] = $sLoadPass;
-
             if ($errormsg == "") {
                 LimeExpressionManager::SetDirtyFlag();  
                 buildsurveysession($surveyid);

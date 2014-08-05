@@ -763,9 +763,9 @@ class participantsaction extends Survey_Common_Action
     */
     function getParticipants_json($search = null)
     {
-        $page = Yii::app()->request->getPost('page');
-        $limit = Yii::app()->request->getPost('rows');
-        $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+        $page = (int) Yii::app()->request->getPost('page');
+        $limit = (int) Yii::app()->request->getPost('rows');
+        $limit = empty($limit) ? $limit : 50; //Stop division by zero errors
 
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
@@ -774,10 +774,11 @@ class participantsaction extends Survey_Common_Action
             array_push($participantfields, $value['attribute_id']);
         }
         $sidx = Yii::app()->request->getPost('sidx');
-        $sidx = !empty($sidx) ? $sidx : "lastname";
+        $sidx = in_array($sidx,$participantfields) ? $sidx : "lastname";
         $sord = Yii::app()->request->getPost('sord');
-        $sord = !empty($sord) ? $sord : "asc";
+        $sord = ($sord=='desc') ? 'desc' : 'asc';
         $order = $sidx. " ". $sord;
+                                                 
         
         $aData = new stdClass;
         
@@ -834,7 +835,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttribute_json()
     {
-        $iParticipantId = Yii::app()->request->getQuery('pid');
+        $iParticipantId = strip_tags(Yii::app()->request->getQuery('pid'));
         $records = ParticipantAttributeName::model()->getParticipantVisibleAttribute($iParticipantId);
         $records = subval_sort($records, "attribute_name", "asc");
 
@@ -1242,7 +1243,7 @@ class participantsaction extends Survey_Common_Action
                             $separator = ';'; else
                             $separator = ',';
                 }
-                $firstline = convertCSVRowToArray($buffer, $separator, '"');
+                $firstline = str_getcsv($buffer, $separator, '"');
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
                 //now check the first line for invalid fields
@@ -1264,7 +1265,7 @@ class participantsaction extends Survey_Common_Action
                 }
             } else {
                 // After looking at the first line, we now import the actual values
-                $line = convertCSVRowToArray($buffer, $separator, '"');
+                $line = str_getcsv($buffer, $separator, '"');
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line))
                 {

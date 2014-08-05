@@ -14,11 +14,11 @@ CKEDITOR.editorConfig = function( config )
     config.toolbarCanCollapse = false;
     config.resize_enabled = false;
     config.autoParagraph = false;
-    config.entities = false;    
-	
-	if($('html').attr('dir') == 'rtl') {
-		config.contentsLangDirection = 'rtl';
-	}
+    config.basicEntities = false;
+
+    if($('html').attr('dir') == 'rtl') {
+        config.contentsLangDirection = 'rtl';
+    }
 
     config.toolbar_popup =
     [
@@ -37,7 +37,6 @@ CKEDITOR.editorConfig = function( config )
         ['TextColor','BGColor'],
         [ 'ShowBlocks','Templates']
     ];
-    
     config.toolbar_inline =
     [
         ['Maximize','Createlimereplacementfields'],
@@ -55,10 +54,6 @@ CKEDITOR.editorConfig = function( config )
         ['TextColor','BGColor'],
         [ 'ShowBlocks','Templates'],
     ];
-
-
-   
-
    config.toolbar_inline2 =
     [
         ['Maximize','Createlimereplacementfields'],
@@ -68,12 +63,7 @@ CKEDITOR.editorConfig = function( config )
         ['Link','Unlink','Image'],
         ['Source']
     ];
-
-
     config.extraPlugins = "ajax,limereplacementfields";
-
-    
-
 };
 
 (function () {
