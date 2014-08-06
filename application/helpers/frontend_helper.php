@@ -1184,10 +1184,10 @@ function buildsurveysession($surveyid,$preview=false)
     {
 
         //get language from token (if one exists)
-        $token = Token::model($surveyid)->findByAttributes([
+        $token = Token::model($surveyid)->findByAttributes(array(
             'token' => $clienttoken,
-            'completed' => ['N', '']
-        ]);
+            'completed' => array('N', '')
+        ));
         if (!isset($token))
         {
             safeDie ("Couldn't get token<br />");
