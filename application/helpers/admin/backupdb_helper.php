@@ -164,9 +164,7 @@
             {
 
                 if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
-                    $sValue= addcslashes($aRecord[$sFieldName],"'");
-                    $sValue = preg_replace("#\n#", "\\n", $sValue);
-                    $sOutput.= "'" . $sValue . "'";
+                    $sOutput.=Yii::app()->db->quoteValue($aRecord[$sFieldName]);
                 }
                 else
                 {
