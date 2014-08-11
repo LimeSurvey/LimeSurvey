@@ -1746,28 +1746,38 @@ class printablesurvey extends Survey_Common_Action
         $output = "";
         if(!empty($qidattributes['array_filter']))
         {
-            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
-            $output .= "\n<p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext)))."
-            </p>\n";
+            $aFilter=explode(';',$qidattributes['array_filter']);
+            $output .= "\n<p class='extrahelp'>";
+            foreach ($aFilter as $sFilter)
+            {                       
+                $oQuestion=Question::model()->findByAttributes(array('title' => $sFilter, 'language' => $surveyprintlang, 'sid' => $surveyid));
+                if ($oQuestion)
+                {
+                    $sNewQuestionText = flattenText(breakToNewline($oQuestion->getAttribute('question')));
+                    $output .= sprintf($clang->gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], $sNewQuestionText );
+                    
+                }
+            }
+            $output .= "</p>\n";
         }
-        if(!empty($qidattributes['array_filter_exclude']))
+        if(!empty($qidattributes['array_filter']))
         {
-            $arQuestion = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid));
-            if ($arQuestion)
+            $aFilter=explode(';',$qidattributes['array_filter']);
+            $output .= "\n<p class='extrahelp'>";
+            foreach ($aFilter as $sFilter)
             {
-                $newquestiontext=$arQuestion->getAttribute('question');
+                $oQuestion=Question::model()->findByAttributes(array('title' => $sFilter, 'language' => $surveyprintlang, 'sid' => $surveyid));
+                if ($oQuestion)
+                {
+                    $sNewQuestionText = flattenText(breakToNewline($oQuestion->getAttribute('question')));
+                    $output .= sprintf($clang->gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter'], $sNewQuestionText );
+                }
             }
-            else
-            {
-                return '';
-            }
-            $output .= "\n    <p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
-            </p>\n";
-        }
+            $output .= "</p>\n";
+        }        
         return $output;
     }
+
 
     /*
      * $code: Text string containing the reference (column heading) for the current (sub-) question
