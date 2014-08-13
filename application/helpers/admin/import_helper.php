@@ -4313,7 +4313,10 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
         $results['tokens']++;
     }
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,false);
-
+    if (Yii::app()->db->getDriverName() == 'pgsql')
+    {
+        try {Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('{{tokens_".$iSurveyID."}}', 'tid'), (SELECT MAX(tid) FROM {{tokens_".$iSurveyID."}}))")->execute();} catch(Exception $oException){};
+    }
     return $results;
 }
 
@@ -4374,7 +4377,10 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
     }
 
     switchMSSQLIdentityInsert('survey_'.$iSurveyID,false);
-
+    if (Yii::app()->db->getDriverName() == 'pgsql')
+    {
+        try {Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('{{survey_".$iSurveyID."}}', 'id'), (SELECT MAX(id) FROM {{survey_".$iSurveyID."}}))")->execute();} catch(Exception $oException){};
+    }
     return $results;
 }
 
