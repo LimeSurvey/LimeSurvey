@@ -176,7 +176,7 @@
                 ),
                 'help'=> null,
                 'controlOptions'=> array(
-                    'class' => 'default col-sm-7'
+                    'class' => "default"
                 ),
                 'localized'=>false,
             );
@@ -184,6 +184,11 @@
 
             // col-sm-X is here for bootsrap 3 when ready
             $metaData['labelOptions']['class'].=" control-label col-sm-5";
+            // Set the witdth of control-option according to existence of label
+            if(!isset($metaData['label']))
+                $metaData['controlOptions']['class']=" col-sm-12";
+            else
+                $metaData['controlOptions']['class']=" col-sm-7";
             $metaData['controlOptions']['class'].=" controls";
 
             if (is_string($metaData['class']))
@@ -228,7 +233,7 @@
         public function renderLabel($name,$metaData){
             if(!isset($metaData['label']))
                 return "";
-            if(!in_array($metaData['type'],array('list','boolean')))
+            if(!in_array($metaData['type'],array('list','boolean','logo','link','info')))
                 return CHtml::label($metaData['label'], $name, $metaData['labelOptions']);
             else
                 return CHtml::tag('div',$metaData['labelOptions'], $metaData['label']);
@@ -437,13 +442,10 @@
         {
             $out = '';
             $id = $name;
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id);
-            }
 
             $metaData['class'][] = 'btn';
-            $out .= CHtml::link($metaData['label'], $metaData['link'], array(
+            $metaData['text']=isset($metaData['text'])?$metaData['text']:$metaData['label'];
+            $out .= CHtml::link($metaData['text'], $metaData['link'], array(
                 'id' => $id,
                 'style' => $metaData['style'],
                 'class' => implode(' ', $metaData['class'])
