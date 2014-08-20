@@ -5489,12 +5489,13 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
         {
             if(count($aValue)==1)
             {
-                $criteria->addCondition("{$fieldname} = :{$fieldname}");
-                $aParams[":{$fieldname}"]=$aValue[0];
+                // Quote columnName : starting with number broke mssql
+                $criteria->addCondition(Yii::app()->db->quoteColumnName($fieldname)." = :field{$fieldname}");
+                $aParams[":field{$fieldname}"]=$aValue[0];
             }
             else
             {
-                $criteria->addInCondition($fieldname,$aValue); // NO need params : addInCondition bind automatically
+                $criteria->addInCondition(Yii::app()->db->quoteColumnName($fieldname),$aValue); // NO need params : addInCondition bind automatically
             }
             // We can use directly addInCondition, but don't know what is speediest.
         }
