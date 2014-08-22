@@ -164,10 +164,6 @@ function retrieveAnswers($ia)
             break;
         case 'R': //RANKING STYLE
             $values=do_ranking($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $clang->gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.");
-            }
             break;
         case 'M': //Multiple choice checkbox
             $values=do_multiplechoice($ia);
@@ -2119,9 +2115,12 @@ function do_ranking($ia)
         $max_answers=$anscount;
     }
     // Get the max number of line needed
-    if(ctype_digit($max_answers) && intval($max_answers)<$anscount){
+    if(ctype_digit($max_answers) && intval($max_answers)<$anscount)
+    {
         $iMaxLine=$max_answers;
-    }else{
+    }
+    else
+    {
         $iMaxLine=$anscount;
     }
     if (trim($aQuestionAttributes["min_answers"])!='')
@@ -2134,13 +2133,13 @@ function do_ranking($ia)
     // First start by a ranking without javascript : just a list of select box
     // construction select box
     $answers= array();
-        foreach ($ansresult as $ansrow)
-        {
-            $answers[] = $ansrow;
-        }
+    foreach ($ansresult as $ansrow)
+    {
+        $answers[] = $ansrow;
+    }
     $answer .= '<div class="ranking-answers">
     <ul class="answers-list select-list">';
-    for ($i=1; $i<=$anscount; $i++)
+    for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
         $answer .= "\n<li class=\"select-item\">";
@@ -2178,7 +2177,7 @@ function do_ranking($ia)
         . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
         . "<div style='display:none' id='ranking-{$ia[0]}-name'>".$ia[1]."</div>"
         . "</div>";
-    // The list with HTML answres
+    // The list with HTML answers
     $answer .="<div style=\"display:none\">";
     foreach ($answers as $ansrow)
     {
@@ -2205,11 +2204,15 @@ function do_ranking($ia)
     {
         $rank_title=$clang->gT("Your Ranking",'js');
     }
+    // hide_tip is managed by css with EM
+    $rank_help = $clang->gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
+
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
     . "var aRankingTranslations = {
              choicetitle: '{$choice_title}',
-             ranktitle: '{$rank_title}'
+             ranktitle: '{$rank_title}',
+             rankhelp: '{$rank_help}'
             };\n"
     ." doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]});\n"
     ." -->\n"
