@@ -190,6 +190,7 @@ class export extends Survey_Common_Action {
             {
                 $sCode=viewHelper::getFieldCode($fieldinfo);
                 $aFields[$sFieldName]=$sCode.' - '.htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)),30,.6,'...'));
+                $aFieldsOptions[$sFieldName]=array('title'=>viewHelper::getFieldText($fieldinfo),'data-fieldname'=>$fieldinfo['fieldname'],'data-emcode'=>viewHelper::getFieldCode($fieldinfo,array('LEMcompat'=>true))); // No need to filter title : Yii do it (remove all tag)
             }
             
             $data['SingleResponse']=(int)returnGlobal('id');
@@ -198,7 +199,7 @@ class export extends Survey_Common_Action {
             $data['selectinc'] = $selectinc;
             $data['afieldcount'] = $iFieldCount;
             $data['aFields'] = $aFields;
-
+            $data['aFieldsOptions'] = $aFieldsOptions;
             //get max number of datasets
             $iMaximum = SurveyDynamic::model($iSurveyID)->getMaxId();
 
