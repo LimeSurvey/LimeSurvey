@@ -162,7 +162,7 @@
                         {
                         echo '<li>';
                         echo CHtml::label($clang->gT('Use same default value across languages:'), 'samedefault'); // use gT - eT is not working, causes a wrong replacement in label
-                        echo CHtml::checkBox('samedefault', ($questionrow['same_default']== 1) ? TRUE : FALSE );
+                        echo CHtml::checkBox('samedefault', $questionrow['same_default']);
                         echo '</li>';
                         ?>
 
