@@ -155,8 +155,9 @@
                                 'language' =>$language ,
                                 'questionrow' => $questionrow,
                                 'qtproperties' => $qtproperties,
-                                'langopts' => $langopts
-                            );
+                                'langopts' => $langopts,
+                                'clang' => $clang
+                             );
                             $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', array('widgetOptions'=>$widgetOptions));
                             ?>
                             <?php if ($questionrow['type'] != 'Y'): //temporary solution - until everything is move to widgets?>
