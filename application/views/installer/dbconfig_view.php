@@ -22,7 +22,7 @@
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dblocation', array('class' => 'control-label', 'label' => $clang->gT("Database location"))),
                     'control' => CHtml::activeTextField($model, 'dblocation', array('required' => 'required')),
-                    'description' => $clang->gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.').' '.$clang->gT('If your database is using a custom port attach it using a colon. Example: db.host.com:5431')
+                    'description' => $clang->gT('Set this to the IP/net location of your database server. In most cases "localhost" will work. You can force Unix socket with complete socket path.').' '.$clang->gT('If your database is using a custom port attach it using a colon. Example: db.example.com:5431')
                 );
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbuser', array('class' => 'control-label', 'label' => $clang->gT("Database user"))),
