@@ -675,6 +675,7 @@ function sendSubmitNotifications($surveyid)
         $aRecipient=explode(";", ReplaceFields($thissurvey['emailresponseto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
         foreach($aRecipient as $sRecipient)
         {
+            $sRecipient=trim($sRecipient);
             if(validateEmailAddress($sRecipient))
             {
                 $aEmailResponseTo[]=$sRecipient;
@@ -1179,13 +1180,27 @@ function buildsurveysession($surveyid,$preview=false)
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
 
+    //RL: multilingual support
+    if (isset($_GET['token']) && tableExists('{{tokens_'.$surveyid.'}}'))
+    {
+
+        //get language from token (if one exists)
+        $token = Token::model($surveyid)->findByAttributes(array(
+            'token' => $clienttoken,
+            'completed' => array('N', '')
+        ));
+        if (!isset($token))
+        {
+            safeDie ("Couldn't get token<br />");
+        }
+        $tklanguage = $token->language;
+    }
     if (returnGlobal('lang',true))
     {
         $language_to_set=returnGlobal('lang',true);
-    }
-    elseif (isset($oTokenEntry) && $oTokenEntry)
+    } elseif (isset($tklanguage))
     {
-        $language_to_set=$oTokenEntry->language;
+        $language_to_set=$tklanguage;
     }
     else
     {
