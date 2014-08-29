@@ -273,7 +273,7 @@
             $id = $name;
             $value = isset($metaData['content']) ? $metaData['content'] : '';
             if (is_array($value)) { throw new CException('wrong type' . $name); }
-            $out .= CHtml::encode($value);
+            $out .= $value;
 
             return $out;
         }
