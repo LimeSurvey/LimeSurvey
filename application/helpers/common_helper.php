@@ -4732,7 +4732,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
         $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
         return preg_replace('#'.$pattern.'#', $replace, $sString);
     }
-    else // unkown type
+    else // unknown type
     {
         return $sString;
     }

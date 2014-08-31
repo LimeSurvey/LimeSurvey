@@ -231,7 +231,7 @@ function db_upgrade_all($iOldDBVersion) {
                     // copy assessment link to message since from now on we will have HTML assignment messages
                     $oDB->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
                     break;
-                default: die('Unkown database type');
+                default: die('Unknown database type');
             }
             // activate assessment where assessment rules exist
             $oDB->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
@@ -1161,7 +1161,7 @@ function db_upgrade_all($iOldDBVersion) {
                 case 'pgsql':
                     addColumn('{{sessions}}', 'data', 'BYTEA');
                     break;
-                default: die('Unkown database type');
+                default: die('Unknown database type');
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>171),"stg_name='DBVersion'");
         }
@@ -2055,7 +2055,7 @@ function dropPrimaryKey($sTablename)
                 Yii::app()->db->createCommand($sQuery)->execute();
             }
             break;
-        default: die('Unkown database type');
+        default: die('Unknown database type');
     }
 
     // find out the constraint name of the old primary key
@@ -2128,7 +2128,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
             }
             Yii::app()->db->createCommand()->alterColumn($sTable,$sColumn,$sType);
             break;
-        default: die('Unkown database type');
+        default: die('Unknown database type');
     }
 
 }

@@ -556,7 +556,7 @@ class InstallerController extends CController {
                 $sql_file = 'pgsql';
                 break;
             default:
-                throw new Exception(sprintf('Unkown database type "%s".', $sDatabaseType));
+                throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
 
         //checking DB Connection
