@@ -197,7 +197,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth Credentials
      * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,xls or survey zip archive
-     * @param string $sImportDataType  lss,csv,xls or zip
+     * @param string $sImportDataType  lss,csv,txt or zip
      * @param string $sNewSurveyName The optional new name of the survey
      * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
      * @return array|integer iSurveyID  - ID of the new survey
@@ -208,7 +208,7 @@ class remotecontrol_handle
         {
             if (Permission::model()->hasGlobalPermission('surveys','create'))
             {
-                if (!in_array($sImportDataType,array('zip','csv','xls','lss'))) return array('status' => 'Invalid extension');
+                if (!in_array($sImportDataType,array('zip','csv','txt','lss'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
