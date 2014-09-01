@@ -86,7 +86,7 @@
 
 			$this->token = randomChars($length);
 			$counter = 0;
-			while (!$this->validate('token'))
+			while (!$this->validate(array('token')))
 			{
 				$this->token = randomChars($length);
 				$counter++;
