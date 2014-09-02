@@ -59,7 +59,32 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.05+ (build 140811) to 2.05+ (build 140821) August 21, 2014
+Changes from 2.05+ (build 140821) to 2.05+ (build 140902) Sept 2, 2014
+-Fixed issue #9190 : reduce memory footprint for "Ranking" (R) type (Denis Chenu)
+-Fixed issue: CSS being broken when loading email template for detailed admin notification (Carsten Schmitz)
+-Fixed issue: Misuse of 'xml' as file extension for tab-separated-values format (vundicind)
+-Fixed issue: Notification emails not being sent if spaces are preceding the email address (Carsten Schmitz)
+-New feature: Add title on question list when exporting result (Denis Chenu)
+-New feature: Default value for yes/no question type (kairavesloot)
+-New translation: Kazakh 
+#Updated translation: Arabic by sessid, safi00972
+#Updated translation: Bulgarian by simid
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Dutch by L191
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by MikeConom, kiolalis
+#Updated translation: Kazakh by c_schmitz
+#Updated translation: Norwegian (Bokma) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Mexican) by c_schmitz
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Tamil by apmuthu
+
+Changes from 2.05+ (build 140811) to 2.05+ (build 140821) Aug 21, 2014
 -Fixed issue #9164: Error when adding participant to exported and imported survey (Carsten Schmitz)
 -Fixed issue #9167: Small JS issue in survey browsing, public survey list and data entry (Carsten Schmitz)
 -Fixed issue #9175: Feature "Allow multiple responses or update responses with one token" failed (Denis Chenu)
@@ -80,7 +105,7 @@ Changes from 2.05+ (build 140811) to 2.05+ (build 140821) August 21, 2014
 #Updated translation: Swedish by maxzomborszki
 #Updated translation: Ukrainian by bkrupinski
 
-Changes from 2.05+ (build 140730) to 2.05+ (build 140811) August 11, 2014
+Changes from 2.05+ (build 140730) to 2.05+ (build 140811) Aug 11, 2014
 -Fixed issue #9101: I can not switch to a template with uppercase cahracter in template editor (Carsten Schmitz)
 -Fixed issue #9122: User can view 'edit local settings' button even without access (Denis Chenu)
 -Fixed issue #9153: Database dump tool not properly quoting all special chars (Carsten Schmitz)
@@ -106,7 +131,7 @@ Changes from 2.05+ (build 140730) to 2.05+ (build 140811) August 11, 2014
 #Updated translation: Thai by bordin
 #Updated translation: Turkish by kayazeren
 
-Changes from 2.05+ (build 140717) to 2.05+ (build 140730) July 30, 2014
+Changes from 2.05+ (build 140717) to 2.05+ (build 140730) Jul 30, 2014
 -Fixed issue #9052: Importing old .csv survey structure file does not properly import quotas (Carsten Schmitz)
 -Fixed issue #9100: ComfortUpdate step 2 shows absolute file paths (Carsten Schmitz)
 -Fixed issue #9105: Unable to open popup email for administrator in French (Carsten Schmitz)
@@ -136,7 +161,7 @@ Changes from 2.05+ (build 140717) to 2.05+ (build 140730) July 30, 2014
 #Updated translation: Russian by vipgroup
 #Updated translation: Swedish by maxzomborszki
 
-Changes from 2.05+ (build 140703) to 2.05+ (build 140717) July 17, 2014
+Changes from 2.05+ (build 140703) to 2.05+ (build 140717) Jul 17, 2014
 -Fixed issue #7895: Quota are not tested for hidden question (relevance to 1) (Denis Chenu)
 -Fixed issue #8906: Long URI with autofilter (Denis Chenu)
 -Fixed issue #9126: Survey's token and EM variables aren't set when exporting printing results view to PDF format. (Denis Chenu)
@@ -164,7 +189,7 @@ Changes from 2.05+ (build 140703) to 2.05+ (build 140717) July 17, 2014
 #Updated translation: Thai by adzpire
 #Updated translation: Turkish by kayazeren
 
-Changes from 2.05+ (build 140618) to 2.05+ (build 140703) July 3, 2014
+Changes from 2.05+ (build 140618) to 2.05+ (build 140703) Jul 3, 2014
 -Fixed issue #8028: File upload dialog function can be updated (Denis Chenu)
 -Fixed issue #9001: Gramar error in validation message (Carsten Schmitz)
 -Fixed issue #9071: Language switch not working when using move previous (Denis Chenu)
@@ -202,7 +227,7 @@ Changes from 2.05+ (build 140618) to 2.05+ (build 140703) July 3, 2014
 #Updated translation: Thai by adzpire
 #Updated translation: Turkish by kayazeren
 
-Changes from 2.05+ (build 140612) to 2.05+ (build 140618) June 18, 2014
+Changes from 2.05+ (build 140612) to 2.05+ (build 140618) Jun 18, 2014
 -Fixed issue #9025: Error showing pie chart in statistics when using MS SQL server (Carsten Schmitz)
 -Fixed issue #9050: Template permissions for a user are lost after global permissions are saved (Carsten Schmitz)
 -Fixed issue #9077: CSS issue with Basic template when using Array filter (tpartner)
@@ -235,7 +260,7 @@ Changes from 2.05+ (build 140612) to 2.05+ (build 140618) June 18, 2014
 #Updated translation: Portuguese (Brazil) by rhnascimento, mauriciofurtado
 #Updated translation: Thai by adzpire
 
-Changes from 2.05+ (build 140611) to 2.05+ (build 140612) June 12, 2014
+Changes from 2.05+ (build 140611) to 2.05+ (build 140612) Jun 12, 2014
 Fixed issue #9064: Blank page/error on step 4 when updating from version 2.0
 
 Changes from 2.05+ (build 140520) to 2.05+ (build 140611) June 11, 2014
