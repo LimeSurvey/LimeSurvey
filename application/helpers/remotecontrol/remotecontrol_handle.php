@@ -24,7 +24,8 @@ class remotecontrol_handle
 
     /**
      * RPC routine to create a session key.
-     *
+     * Using this function you can create a new XML/JSON-RPC session key.
+     * This is mandatory for all following LSRC2 function calls.
      * @access public
      * @param string $username
      * @param string $password
