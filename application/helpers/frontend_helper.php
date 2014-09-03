@@ -692,7 +692,6 @@ function sendSubmitNotifications($surveyid)
         {
             if (substr($sFieldname,0,4)=='gid_')
             {
-
                 $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
                 $ResultTableText .="\n{$fname[0]}\n\n";
             }
@@ -703,7 +702,7 @@ function sendSubmitNotifications($surveyid)
             }
             else
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
                 $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
             }
         }
@@ -712,7 +711,8 @@ function sendSubmitNotifications($surveyid)
         $ResultTableText .= "\n\n";
         if ($bIsHTML)
         {
-            $aReplacementVars['ANSWERTABLE']=$ResultTableHTML;
+            $filter = new CHtmlPurifier();
+            $aReplacementVars['ANSWERTABLE']=$filter->purify($ResultTableHTML);
         }
         else
         {
