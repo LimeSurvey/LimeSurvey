@@ -657,6 +657,7 @@ function sendSubmitNotifications($surveyid)
         $aRecipient=explode(";", ReplaceFields($thissurvey['emailnotificationto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
         foreach($aRecipient as $sRecipient)
         {
+            $sRecipient=trim($sRecipient);
             if(validateEmailAddress($sRecipient))
             {
                 $aEmailNotificationTo[]=$sRecipient;
@@ -1179,28 +1180,16 @@ function buildsurveysession($surveyid,$preview=false)
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
-
-    //RL: multilingual support
-    if (isset($_GET['token']) && tableExists('{{tokens_'.$surveyid.'}}'))
-    {
-
-        //get language from token (if one exists)
-        $token = Token::model($surveyid)->findByAttributes(array(
-            'token' => $clienttoken,
-            'completed' => array('N', '')
-        ));
-        if (!isset($token))
-        {
-            safeDie ("Couldn't get token<br />");
-        }
-        $tklanguage = $token->language;
-    }
+    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language 
     if (returnGlobal('lang',true))
     {
         $language_to_set=returnGlobal('lang',true);
-    } elseif (isset($tklanguage))
+    }
+    elseif (isset($oTokenEntry) && $oTokenEntry)
     {
-        $language_to_set=$tklanguage;
+        // If survey have token : we have a $oTokenEntry
+        // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
+        $language_to_set=$oTokenEntry->language;
     }
     else
     {
