@@ -147,11 +147,10 @@ class update extends Survey_Common_Action
     
     function step2()
     {
-        
+        $aReadOnlyFiles=array();
         $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $updatebuild = getGlobalSetting("updatebuild");
-
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild);
         $aData = $this->_getFileStatus($updateinfo);
         foreach (array_unique($aData['readonlyfiles']) as $aFile)
