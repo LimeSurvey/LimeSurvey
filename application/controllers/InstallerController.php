@@ -47,6 +47,7 @@ class InstallerController extends CController {
     {
         self::_checkInstallation();
         self::_sessioncontrol();
+        Yii::import('application.helpers.common_helper', true);
 
         switch ($action) {
 
