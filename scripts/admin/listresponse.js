@@ -104,7 +104,6 @@ $(document)
 						colModel : returnColModel(),
 						toppager : true,
 						height : "100%",
-						width : screen.width - 20,
 						shrinkToFit : false,
 						ignoreCase : true,
 						rowNum : 25,
