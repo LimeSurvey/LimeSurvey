@@ -116,7 +116,7 @@ $(document).ready(function() {
         viewrecords : true,
         rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
-        loadonce : false,
+        loadonce : true,
         loadComplete : function() {
             /* Sneaky way of adding custom icons to jqGrid pager buttons */
             $("#pager").find(".ui-share-icon")
@@ -605,7 +605,12 @@ $(document).ready(function() {
     $.extend(jQuery.jgrid.edit,{
         closeAfterAdd: true,
         reloadAfterSubmit: true,
-        closeOnEspace:true
+        closeOnEspace:true,
+        beforeSubmit: function () {
+            // reset the datatype to JSON (loadonce:true sets it to local)
+			$(this).jqGrid("setGridParam", {datatype: "json"});
+            return [true,"",""];
+        }
     });
 
     //script for sharing of participants
