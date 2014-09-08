@@ -296,6 +296,7 @@ class Participant extends LSActiveRecord
         array_push($joinValue,"left join {{users}} luser ON luser.uid=p.owner_uid");
         foreach($attid as $iAttributeID=>$aAttributeDetails)
         {
+            if ($iAttributeID==0) continue;
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv" || $sDatabaseType == 'dblib')
             {

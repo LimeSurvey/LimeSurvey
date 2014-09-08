@@ -101,7 +101,7 @@ class participantsaction extends Survey_Common_Action
         } else {
             $iUserID = Yii::app()->session['loginID'];
         }
-
+        $aAttributeIDs=array_combine($aAttributeIDs,$aAttributeIDs);
         $query = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
         if (!$query)
             return false;
@@ -128,8 +128,8 @@ class participantsaction extends Survey_Common_Action
             }
         }    
 
+        $fieldNeededKeys=array_fill_keys($fields, '');
         $fieldKeys = array_flip($fields);
-        $fieldNeededKeys=array_fill_keys($outputarray[0], '');
         foreach ($query as $field => $aData)
         {
             $outputarray[] = array_merge($fieldNeededKeys,array_intersect_key($aData, $fieldKeys));
