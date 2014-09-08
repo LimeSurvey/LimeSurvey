@@ -369,7 +369,6 @@ class tokens extends Survey_Common_Action
         if(empty($search) && !empty($aSearchArray)){
             $search=$aSearchArray;
         }
-            //die("<pre>".print_r($search,1)."</pre>");
         if (!empty($search)) {
             $condition = TokenDynamic::model($iSurveyId)->getSearchMultipleCondition($search);
         }else{ 
@@ -451,8 +450,8 @@ class tokens extends Survey_Common_Action
             } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
-            // Check if the token can be taken
-            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "") && $bCreatePermission) {
+            // Check if the token can be taken 
+            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "" || $aSurveyInfo['alloweditaftercompletion']=="Y") && $bCreatePermission) {
                 $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", $clang->gT("Do survey"), '_blank');
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
