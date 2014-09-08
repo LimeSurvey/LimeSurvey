@@ -116,7 +116,6 @@ $(document).ready(function() {
         viewrecords : true,
         rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
-        loadonce : true,
         loadComplete : function() {
             /* Sneaky way of adding custom icons to jqGrid pager buttons */
             $("#pager").find(".ui-share-icon")
