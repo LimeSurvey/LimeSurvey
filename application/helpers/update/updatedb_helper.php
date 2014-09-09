@@ -1252,6 +1252,14 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>177),"stg_name='DBVersion'");
         }
 
+        if ($iOldDBVersion < 178)
+        {
+            upgradeTokenTables178();
+            alterColumn('{{participants}}', 'email', "{$sVarchar}(254)", false);
+            alterColumn('{{participants}}', 'firstname', "{$sVarchar}(150)", false);
+            alterColumn('{{participants}}', 'lastname', "{$sVarchar}(150)", false);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>178),"stg_name='DBVersion'");
+        }
 
         $oTransaction->commit();
         // Activate schema caching
@@ -1278,6 +1286,37 @@ function db_upgrade_all($iOldDBVersion) {
     return true;
 }
 
+
+function upgradeTokenTables178()
+{
+    $sVarchar = Yii::app()->getConfig('varchar');
+    $oSchema=Yii::app()->db->schema;
+    $sDBDriverName=setsDBDriverName();
+    if($sDBDriverName=='mssql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
+
+    $surveyidresult = dbGetTablesLike("tokens%");
+    if (!$surveyidresult) {return "Database Error";}
+    else
+    {
+        foreach ( $surveyidresult as $sv )
+        {
+            $sTableName=reset($sv);
+            $oSchema=$oSchema->getTable($sTableName);
+            foreach ($oSchema->columnNames as $sColumnName)
+            {
+                if (strpos($sColumnName,'attribute_')===0)
+                {
+                    alterColumn($sTableName, $sColumnName, "text");
+                }
+            }
+            Yii::app()->db->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,0,254)")->execute();
+            alterColumn($sTableName, 'email', "{$sVarchar}(254)");
+            alterColumn($sTableName, 'firstname', "{$sVarchar}(150)");
+            alterColumn($sTableName, 'lastname', "{$sVarchar}(150)");
+        }
+    }
+}
+        
 
 function upgradeSurveys177()
 {

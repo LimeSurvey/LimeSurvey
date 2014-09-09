@@ -193,8 +193,8 @@ CREATE TABLE `prefix_participant_shares` (
 --
 CREATE TABLE `prefix_participants` (
   `participant_id` varchar(50) NOT NULL,
-  `firstname` varchar(40) DEFAULT NULL,
-  `lastname` varchar(40) DEFAULT NULL,
+  `firstname` varchar(150) DEFAULT NULL,
+  `lastname` varchar(150) DEFAULT NULL,
   `email` varchar(254) DEFAULT NULL,
   `language` varchar(40) DEFAULT NULL,
   `blacklisted` varchar(1) NOT NULL,
@@ -571,4 +571,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '177');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '178');
