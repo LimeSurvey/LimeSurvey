@@ -5205,6 +5205,8 @@
                 else
                 {
                     $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
+                    echo submitfailed('');  // TODO - report SQL error?
+                    
                 }
                 //Insert Row for Timings, if needed
                 if ($this->surveyOptions['savetimings']) {

@@ -307,26 +307,26 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID = sanitize_int($iSurveyID);
         $clang = $this->getController()->lang;
-        if (!tableExists('survey_'.$iSurveyID))
-        {
-            $_SESSION['flashmessage'] = $clang->gT("Error: Response table does not exist. Survey cannot be deactivated.");
-            $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
-        }
         $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
         if (empty($_POST['ok']))
         {
+            if (!tableExists('survey_'.$iSurveyID))
+            {
+                $_SESSION['flashmessage'] = $clang->gT("Error: Response table does not exist. Survey cannot be deactivated.");
+                $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+            }
             $aData['surveyid'] = $iSurveyID;
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
             $aData['step1'] = true;
         }
         else
-        {
+        {         
             //See if there is a tokens table for this survey
             if (tableExists("{{tokens_{$iSurveyID}}}"))
             {
-                if (Yii::app()->db->getDriverName() == 'postgre')
+                if (Yii::app()->db->getDriverName() == 'pgsql')
                 {
                     $deactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable . '_tid_seq', $tnewtable . '_tid_seq');
                     $setsequence = "ALTER TABLE ".Yii::app()->db->quoteTableName($tnewtable)." ALTER COLUMN tid SET DEFAULT nextval('{{{$tnewtable}}}_tid_seq'::regclass);";
@@ -362,13 +362,7 @@ class SurveyAdmin extends Survey_Common_Action
             $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
             $survey->autonumber_start = $new_autonumber_start;
             $survey->save();
-            if (Yii::app()->db->getDrivername() == 'postgre')
-            {
-                $deactivateresult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName . '_id_seq', $sNewSurveyTableName . '_id_seq');
-                $setsequence = "ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$sNewSurveyTableName}_id_seq'::regclass);";
-                $deactivateresult = Yii::app()->db->createCommand($setsequence)->execute();
-            }
-
+            
             $deactivateresult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
 
             $insertdata = array('active' => 'N');
