@@ -40,7 +40,7 @@
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/sa/logout");?>', '_top')">
                 <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php $clang->eT("Logout"); ?>' /></a>
 
-            <a href="#" onclick="showhelp('show')">
+            <a href="http://manual.limesurvey.org" target='_blank'>
                 <img src='<?php echo $sImageURL; ?>showhelp.png' alt='<?php $clang->eT("Show help"); ?>' /></a>
         </div>
     </div>
