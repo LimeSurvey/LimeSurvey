@@ -59,6 +59,45 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140902) to 2.05+ (build 140911) Sept 11, 2014
+-Fixed issue #9024: Unable to access attribute management (tpartner)
+-Fixed issue #9047: Replacement field properties don't show up/bad layout (tpartner)
+-Fixed issue #9132: Remote API won't work when using MSSQL dblib driver on Linux (Carsten Schmitz)
+-Fixed issue #9140: Auto ID is not set properly when using Postgres and deactivating and reactivating the survey (Carsten Schmitz)
+-Fixed issue #9140: Auto ID is not set properly when using Postgres and insert new id with VV import (Denis Chenu)
+-Fixed issue #9140: No error message if data is not inserted on first page (Carsten Schmitz)
+-Fixed issue #9152: CSV export of CPDB with additional attributes doesn't export attribute values properly (Carsten Schmitz)
+-Fixed issue #9162: Pagination in CPDB panel not working (Carsten Schmitz)
+-Fixed issue #9172: Sent invitations are not being marked as sent when a semi-colon exist in the email address field (Carsten Schmitz)
+-Fixed issue #9174: OPTOUTURL from invitation email not working si EmailStatuts is not exactly on "OK" (Denis Chenu)
+-Fixed issue #9181: When dumping database sometimes lines are left out (Carsten Schmitz)
+-Fixed issue #9183: Template upload: "zip" is added to the templatename (Carsten Schmitz)
+-Fixed issue #9185: End page doesn't display correctly if it contains only an image and no text (Carsten Schmitz)
+-Fixed issue #9188: Array (Numbers) with Checkbox layout maximum/minimum answer validation not working if item was check and unchecked (Carsten Schmitz)
+-Fixed issue #9196: Can't update a token response if the last group was hidden (Carsten Schmitz)
+-Fixed issue #9199: JS error "showhelp is not defined" (Carsten Schmitz)
+-Fixed issue #9200: Delete selected participants from CPDB does not allow to select a deletion mode (Carsten Schmitz)
+-Fixed issue #9201: Possibility to perform XSS across email (Denis Chenu)
+-Fixed issue #9208: RemoteControl function export_responses_by_token ignores completion status when several responses for the same token exist (Carsten Schmitz)
+-Fixed issue #9210: ComfortUpdate not working if debug mode is activated (Carsten Schmitz)
+-Fixed issue #9213: Resume on Multiple numerical input displays 10 trailing zeros after the decimal place (Denis Chenu)
+-Fixed issue #9216: CPDB paging doesn't seem to be working properly (tpartner)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence, c_schmitz, DLange
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Spanish (Spain) by jigal
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 140821) to 2.05+ (build 140902) Sept 2, 2014
 -Fixed issue #9190 : reduce memory footprint for "Ranking" (R) type (Denis Chenu)
 -Fixed issue: CSS being broken when loading email template for detailed admin notification (Carsten Schmitz)
