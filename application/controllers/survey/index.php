@@ -526,7 +526,11 @@ class index extends CAction {
                         if (!empty($oResponse->lastpage))
                         {
                             $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
-                            $_SESSION['survey_'.$surveyid]['step'] = $oResponse->lastpage;
+                            // If the response was completed and user is allowed to edit after completion start at the beginning and not at the last page - just makes more sense
+                            if (!($oResponses[0]->submitdate && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                            {
+                                $_SESSION['survey_'.$surveyid]['step'] = $oResponse->lastpage;
+                            }
                         }
                         buildsurveysession($surveyid);
                         if(!empty($oResponse->submitdate)) // alloweditaftercompletion
