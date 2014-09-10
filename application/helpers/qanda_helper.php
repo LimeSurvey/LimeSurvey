@@ -5616,7 +5616,7 @@ function do_array_multiflexi($ia)
                     . " if(this.checked) {"
                     . "  aelt.value=1;jelt.value=1;$checkconditionFunction(1,'{$myfname2}',aelt.type);"
                     . " } else {"
-                    . "  aelt.value=0;jelt.value=0;$checkconditionFunction(0,'{$myfname2}',aelt.type);"
+                    . "  aelt.value='';jelt.value='';$checkconditionFunction('','{$myfname2}',aelt.type);"
                     . " }; return true;\" "
                     //                    . " onchange=\"checkconditions(this.value, this.name, this.type)\" "
                     . " />\n";
