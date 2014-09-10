@@ -604,12 +604,7 @@ $(document).ready(function() {
     $.extend(jQuery.jgrid.edit,{
         closeAfterAdd: true,
         reloadAfterSubmit: true,
-        closeOnEspace:true,
-        beforeSubmit: function () {
-            // reset the datatype to JSON (loadonce:true sets it to local)
-			$(this).jqGrid("setGridParam", {datatype: "json"});
-            return [true,"",""];
-        }
+        closeOnEspace:true
     });
 
     //script for sharing of participants
