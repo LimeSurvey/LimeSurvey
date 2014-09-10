@@ -1348,6 +1348,7 @@ class remotecontrol_handle
                 array_push($aBasicDestinationFields,'attributes')    ;
                 array_push($aBasicDestinationFields,'attributes_lang')    ;
                 array_push($aBasicDestinationFields,'answeroptions')    ;
+                array_push($aBasicDestinationFields,'defaultvalue');
                 $aQuestionSettings=array_intersect($aQuestionSettings,$aBasicDestinationFields);
 
                 if (empty($aQuestionSettings))
@@ -1424,7 +1425,11 @@ class remotecontrol_handle
                         else
                             $aResult['answeroptions']='No available answer options';
                     }
-                    else
+                    else if ($sPropertyName == 'defaultvalue')
+                    {
+					    $aResult['defaultvalue'] = DefaultValue::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage))->defaultvalue;
+					}
+					else
                     {
                             $aResult[$sPropertyName]=$oQuestion->$sPropertyName;
                     }
