@@ -2198,16 +2198,22 @@ class remotecontrol_handle
             //set required values if not set
 
             // @todo: Some of this is part of the validation and should be done in the model instead
-            if (!isset($aResponseData['submitdate']))
+            if (array_key_exists('submitdate', $aResponseData) && empty($aResponseData['submitdate']))
+                unset($aResponseData['submitdate']);
+            else if (!isset($aResponseData['submitdate']))
                 $aResponseData['submitdate'] = date("Y-m-d H:i:s");
             if (!isset($aResponseData['startlanguage']))
                 $aResponseData['startlanguage'] = getBaseLanguageFromSurveyID($iSurveyID);
 
             if ($oSurvey->datestamp=='Y')
             {
-                if (!isset($aResponseData['datestamp']))
+                if (array_key_exists('datestamp', $aResponseData) && empty($aResponseData['datestamp']))
+                    unset($aResponseData['datestamp']);
+                else if (!isset($aResponseData['datestamp']))
                     $aResponseData['datestamp'] = date("Y-m-d H:i:s");
-                if (!isset($aResponseData['startdate']))
+                if (array_key_exists('startdate', $aResponseData) && empty($aResponseData['startdate']))
+                    unset($aResponseData['startdate']);
+                else if (!isset($aResponseData['startdate']))
                     $aResponseData['startdate'] = date("Y-m-d H:i:s");
             }
 
