@@ -3698,7 +3698,7 @@ function do_shortfreetext($ia)
 		//Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'bootstrap.min.css');
 		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'leaflet.css');
 		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
-		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'font-awesome-4.0.3/css/font-awesome.min.css');
+		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig("third_party") . '/font-awesome/css/font-awesome.min.css');
 
 		
         $answer = "
