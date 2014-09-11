@@ -1514,30 +1514,6 @@ class participantsaction extends Survey_Common_Action
     }
 
     /*
-     * Responsible for adding the participant to the specified survey
-     */
-    function addToToken()
-    {
-        $response = Participant::model()->copytoSurvey(Yii::app()->request
-                                                         ->getPost('participantid'),
-                                               Yii::app()->request
-                                                         ->getPost('surveyid'), Yii::app()
-                                                         ->request->getPost('attributeid')
-                                               );
-        $clang = $this->getController()->lang;
-
-        printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
-        if($response['duplicate']>0) {
-            echo "\r\n";
-            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
-        }
-        if($response['overwrite']=="true") {
-            echo "\r\n";
-            $clang->eT("Attribute values for existing participants have been updated from the participants records");
-        }
-    }
-
-    /*
      * Responsible for adding the participant to the specified survey with attribute mapping
      */
     function addToTokenattmap()
