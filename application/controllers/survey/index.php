@@ -520,6 +520,7 @@ class index extends CAction {
                     {
                         $oResponse = $oResponses[0];
                     }
+
                     if (isset($oResponse))
                     {
                         $_SESSION['survey_'.$surveyid]['srid'] = $oResponse->id;
@@ -527,7 +528,7 @@ class index extends CAction {
                         {
                             $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
                             // If the response was completed and user is allowed to edit after completion start at the beginning and not at the last page - just makes more sense
-                            if (!($oResponses->submitdate && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                            if (!($oResponse->submitdate && $thissurvey['alloweditaftercompletion'] == 'Y'))
                             {
                                 $_SESSION['survey_'.$surveyid]['step'] = $oResponse->lastpage;
                             }
