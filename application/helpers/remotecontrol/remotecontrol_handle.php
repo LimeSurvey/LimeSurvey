@@ -558,7 +558,7 @@ class remotecontrol_handle
                  {
                      if (tableExists('{{survey_' . $iSurveyID . '}}'))
                      {
-                         $aSummary['completed_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
+                         $aSummary['completed_responses']=SurveyDynamic::model($iSurveyID)->count('submitdate is NOT NULL');
                          $aSummary['incomplete_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
                          $aSummary['full_responses']=SurveyDynamic::model($iSurveyID)->count();
                      }
