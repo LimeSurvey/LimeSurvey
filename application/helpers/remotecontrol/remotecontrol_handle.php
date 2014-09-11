@@ -2378,23 +2378,45 @@ class remotecontrol_handle
     public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $aFields=null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        Yii::app()->loadHelper('admin/exportresults');
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
+        if(!$maxId = SurveyDynamic::model($iSurveyID)->getMaxId()) return array('status' => 'No Data, could not get max id.');
+
+        if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
-        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
-        $aFilter='';
-        if ($sCompletionStatus=='complete')
-        {
-           $aFilter='submitdate is not NULL';
+        if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if($sDocumentType=='xls'){
+           // Cut down to the first 255 fields
+           $aFields=array_slice($aFields,0,255);        
         }
-        if ($sCompletionStatus=='incomplete')
-        {
-           $aFilter='submitdate is NULL';
-        }
-        if(!$oResult = SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken),$aFilter)) return array('status' => 'No response found for Token');
-        if ($oResult['id'])
-        {
-            return $this->export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode, $sCompletionStatus, $sHeadingType, $sResponseType, $oResult['id'], $oResult['id'], $aFields);
-        }
+        $oFomattingOptions=new FormattingOptions();
+ 
+        if($iFromResponseID !=null)
+            $oFomattingOptions->responseMinRecord=$iFromResponseID;
+        else
+            $oFomattingOptions->responseMinRecord=1;
+
+        if($iToResponseID !=null)
+            $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        else
+            $oFomattingOptions->responseMaxRecord = $maxId;
+
+        $oFomattingOptions->selectedColumns=$aFields;
+        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFomattingOptions->headingFormat=$sHeadingType;
+        $oFomattingOptions->answerFormat=$sResponseType;
+        $oFomattingOptions->output='file';
+
+        $oExport=new ExportSurveyResultsService();
+
+        $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
+
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, "$sTableName.token='$sToken'");
+        return new BigFile($sTempFile, true, 'base64');
+
     }
+
 
 
     /**
