@@ -11,6 +11,10 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+// Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
+
+//if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
+
 /*
 * Let's explain what this strange $ia var means
 *
@@ -3559,7 +3563,7 @@ function do_shortfreetext($ia)
 
         $answer .= "</textarea></p>\n";
     }
-    elseif((int)($aQuestionAttributes['location_mapservice'])!=0){
+    elseif((int)($aQuestionAttributes['location_mapservice'])==1){
         $mapservice = $aQuestionAttributes['location_mapservice'];
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong = null;
@@ -3604,6 +3608,7 @@ function do_shortfreetext($ia)
         <script type=\"text/javascript\">
         zoom['$ia[1]'] = {$aQuestionAttributes['location_mapzoom']};
         </script>
+		
         <div class=\"question answer-item geoloc-item {$extraclass}\">
         <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
 
@@ -3613,10 +3618,12 @@ function do_shortfreetext($ia)
 
         <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
         value = \"{$strBuild}\" >
+		
         <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
         class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
         <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
         </div>";
+		
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
             Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey");
@@ -3632,6 +3639,116 @@ function do_shortfreetext($ia)
             $question_text['help'] = $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
     }
+	////----------------------------------------------------------------------------------- Leaflet Maps + geonames search
+	
+	elseif((int)($aQuestionAttributes['location_mapservice'])==100){
+        $mapservice = $aQuestionAttributes['location_mapservice'];
+        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        $currentLatLong = null;
+
+        $floatLat = -9999;
+        $floatLng = -9999;
+
+        // Get the latitude/longtitude for the point that needs to be displayed by default
+        if (strlen($currentLocation) > 2){
+            $currentLatLong = explode(';',$currentLocation);
+            $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
+        }
+        else{
+            if ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
+                $currentLatLong = getLatLongFromIp(getIPAddress());
+            if (!isset($currentLatLong) || $currentLatLong==false){
+                $floatLat = -9999;
+                $floatLng = -9999;
+                $LatLong = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
+
+                if (isset($LatLong[0]) && isset($LatLong[1])){
+                    $floatLat = $LatLong[0];
+                    $floatLng = $LatLong[1];
+					$currentLatLong = array($floatLat,$floatLng);
+                }
+				else {
+					$currentLatLong = array("","");
+				}
+            }
+        }
+        // 2 - city; 3 - state; 4 - country; 5 - postal
+        $strBuild = "";
+        if ($aQuestionAttributes['location_city'])
+            $strBuild .= "2";
+        if ($aQuestionAttributes['location_state'])
+            $strBuild .= "3";
+        if ($aQuestionAttributes['location_country'])
+            $strBuild .= "4";
+        if ($aQuestionAttributes['location_postal'])
+            $strBuild .= "5";
+
+        $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
+			
+		// scripts
+		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."typeahead.bundle.min.js");
+		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."leaflet.js");
+		//Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap.min.js");
+		
+		Yii::app()->getClientScript()->registerScriptFile("http://maps.google.com/maps/api/js?v=3&sensor=false");
+		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."Google.js");
+		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
+	
+		// css
+		//Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'bootstrap.min.css');
+		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'leaflet.css');
+		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
+		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'font-awesome-4.0.3/css/font-awesome.min.css');
+
+		
+        $answer = "
+        <div class=\"question answer-item geoloc-item {$extraclass}\">
+        <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
+
+        <input type=\"hidden\" class=\"text location ".$kpclass."\" type=\"text\" style=\"width: 90%;\" name=\"$ia[1]_c\"
+        id=\"answer$ia[1]_c\" value=\"$currentLocation\" />
+
+		<p>
+        Lat:<input class=\"coords\" type=\"text\" style=\"width: 150px;\" name=\"$ia[1]_c1\"
+        id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+        Lng:<input class=\"coords\" type=\"text\" style=\"width: 150px;\" name=\"$ia[1]_c2\"
+        id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" />
+
+        <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
+        value = \"{$strBuild}\" >
+        <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
+        class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
+
+		<div>
+			<div class=\"checkbox\" style=\"position: relative; float: left; margin:5px\">
+				<label>
+					<input type=\"checkbox\" id=\"restrictToExtent\"> Restrict search place to map extent
+				</label>
+			</div>
+			<div class=\"geoname_search\" >
+				<form  role=\"search\">
+				  <div class=\"form-group has-feedback navbar-right\">
+					  <input id=\"searchbox\" type=\"text\" placeholder=\"Search\" class=\"form-control\">
+					  <span id=\"searchicon\" class=\"fa fa-search form-control-feedback\" style=\"top:-6px\"></span>
+				  </div>
+				</form>
+			</div>
+		</div>
+
+		<div id=\"map\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\">
+		</div>
+		";
+
+		
+        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
+        {
+            $answer .= "<div class=\"questionhelp\">"
+            . $clang->gT('Click to set the location or drag and drop the pin. You may may also enter coordinates').'</div>';
+            $question_text['help'] = $clang->gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
+        }
+		//----------------------------------------------------------------------------------- end leaflet+geonames
+	}
     else
     {
         //no question attribute set, use common input text field
