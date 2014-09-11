@@ -19,7 +19,6 @@
  */
 require('pdf.php');
 require_once($tcpdf['base_directory'].'/tcpdf.php');
-require_once($tcpdf['base_directory'].'/config/lang/eng.php');
 
 /**
  * A TCPDF based class to produce queXF compatible questionnaire PDF files and banding description XML from queXML
