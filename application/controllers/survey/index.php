@@ -508,6 +508,7 @@ class index extends CAction {
                  */
                 $event = new PluginEvent('beforeLoadResponse');
                 $event->set('responses', $oResponses);
+                $event->set('surveyId', $surveyid);
                 App()->pluginManager->dispatchEvent($event);
 
                 $oResponse = $event->get('response');
