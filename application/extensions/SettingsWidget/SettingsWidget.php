@@ -362,11 +362,6 @@
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
-            if (isset($metaData['label']))
-            {
-                $out .= CHtml::label($metaData['label'], $id);
-            }
-                        
             $out .= CHtml::radioButtonList($name, $value, $metaData['options']);
             return $out;
         }
