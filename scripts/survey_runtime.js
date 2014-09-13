@@ -253,11 +253,12 @@ function activateLanguageChanger(){
                 }
                 $('<form>', {
                     "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
-                    "action": target
-                }).appendTo(document.body).submit();
+                    "action": target,
+                    "method": 'post'
+                }).appendTo(document.body).append($("input[name='YII_CSRF_TOKEN']")).submit();
             }
         }else{
-            $("form#limesurvey [name='lang']").not($(this)).remove();// Remove other lang
+            $(this).closest('form').find("[name='lang']").not($(this)).remove();// Remove other lang
             $('#changelangbtn').click();
         }
     });
