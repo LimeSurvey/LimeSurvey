@@ -962,11 +962,11 @@ class SurveyRuntimeHelper {
         $hiddenfieldnames = implode("|", $inputnames);
 
         if (isset($upload_file) && $upload_file)
-            echo CHtml::form(array("survey/index"), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off'))."\n
+            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         else
-            echo CHtml::form(array("survey/index"), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off'))."\n
+            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         // <-- END FEATURE - SAVE
