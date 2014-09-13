@@ -145,7 +145,9 @@
     }
 
     function _outputRecords($sTableName, $aFieldNames, $aRecords)
-    {
+    {                    
+        $sLastFieldName=end($aFieldNames);         
+        $aLastRecord=end($aRecords);
         $i=0;
         $sOutput='';
         foreach ($aRecords as $aRecord)
@@ -159,26 +161,24 @@
                 $sOutput=substr($sOutput,0,-1);
                 $sOutput.=") VALUES\n";
             }
-            $sOutput.= '(';
+            $sOutput.= '(';      
             foreach ($aFieldNames as $sFieldName)
             {
 
                 if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
-                    $sValue= addcslashes($aRecord[$sFieldName],"'");
-                    $sValue = preg_replace("#\n#", "\\n", $sValue);
-                    $sOutput.= "'" . $sValue . "'";
+                    $sOutput.=Yii::app()->db->quoteValue($aRecord[$sFieldName]);
                 }
                 else
                 {
                     $sOutput.= 'NULL';
                 }
 
-                if (end($aFieldNames) != $sFieldName) {
+                if ($sFieldName != $sLastFieldName) {
                     $sOutput.= ', ';
                 }
             }
             $i++;
-            if ($i==200 || (end($aRecords) == $aRecord))
+            if ($i==200 || ($aLastRecord == $aRecord))
             {
                 $sOutput.= ');' . "\n";
                 $i=0;

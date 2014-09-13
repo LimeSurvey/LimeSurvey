@@ -378,7 +378,11 @@ class Survey extends LSActiveRecord
         foreach ($aData as $k => $v)
             $survey->$k = $v;
         $sResult= $survey->save();
-        if ($sResult==false) return false;
+        if (!$sResult)
+        {
+            tracevar($survey->getErrors());
+            return false;
+        }
         else return $aData['sid'];
     }
 

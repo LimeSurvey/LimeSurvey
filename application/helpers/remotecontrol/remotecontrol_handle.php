@@ -24,7 +24,8 @@ class remotecontrol_handle
 
     /**
      * RPC routine to create a session key.
-     *
+     * Using this function you can create a new XML/JSON-RPC session key.
+     * This is mandatory for all following LSRC2 function calls.
      * @access public
      * @param string $username
      * @param string $password
@@ -197,7 +198,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth Credentials
      * @param string $sImportData String containing the BASE 64 encoded data of a lss,csv,xls or survey zip archive
-     * @param string $sImportDataType  lss,csv,xls or zip
+     * @param string $sImportDataType  lss,csv,txt or zip
      * @param string $sNewSurveyName The optional new name of the survey
      * @param integer $DestSurveyID This is the new ID of the survey - if already used a random one will be taken instead
      * @return array|integer iSurveyID  - ID of the new survey
@@ -208,7 +209,7 @@ class remotecontrol_handle
         {
             if (Permission::model()->hasGlobalPermission('surveys','create'))
             {
-                if (!in_array($sImportDataType,array('zip','csv','xls','lss'))) return array('status' => 'Invalid extension');
+                if (!in_array($sImportDataType,array('zip','csv','txt','lss'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
@@ -557,7 +558,7 @@ class remotecontrol_handle
                  {
                      if (tableExists('{{survey_' . $iSurveyID . '}}'))
                      {
-                         $aSummary['completed_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
+                         $aSummary['completed_responses']=SurveyDynamic::model($iSurveyID)->count('submitdate is NOT NULL');
                          $aSummary['incomplete_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
                          $aSummary['full_responses']=SurveyDynamic::model($iSurveyID)->count();
                      }
@@ -2197,16 +2198,22 @@ class remotecontrol_handle
             //set required values if not set
 
             // @todo: Some of this is part of the validation and should be done in the model instead
-            if (!isset($aResponseData['submitdate']))
+            if (array_key_exists('submitdate', $aResponseData) && empty($aResponseData['submitdate']))
+                unset($aResponseData['submitdate']);
+            else if (!isset($aResponseData['submitdate']))
                 $aResponseData['submitdate'] = date("Y-m-d H:i:s");
             if (!isset($aResponseData['startlanguage']))
                 $aResponseData['startlanguage'] = getBaseLanguageFromSurveyID($iSurveyID);
 
             if ($oSurvey->datestamp=='Y')
             {
-                if (!isset($aResponseData['datestamp']))
+                if (array_key_exists('datestamp', $aResponseData) && empty($aResponseData['datestamp']))
+                    unset($aResponseData['datestamp']);
+                else if (!isset($aResponseData['datestamp']))
                     $aResponseData['datestamp'] = date("Y-m-d H:i:s");
-                if (!isset($aResponseData['startdate']))
+                if (array_key_exists('startdate', $aResponseData) && empty($aResponseData['startdate']))
+                    unset($aResponseData['startdate']);
+                else if (!isset($aResponseData['startdate']))
                     $aResponseData['startdate'] = date("Y-m-d H:i:s");
             }
 
@@ -2377,14 +2384,45 @@ class remotecontrol_handle
     public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $aFields=null)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        Yii::app()->loadHelper('admin/exportresults');
+        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
+        if(!$maxId = SurveyDynamic::model($iSurveyID)->getMaxId()) return array('status' => 'No Data, could not get max id.');
+
+        if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
-        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data');
-        if(!$oResult = SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
-        if ($oResult['id'])
-        {
-            return $this->export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode, $sCompletionStatus, $sHeadingType, $sResponseType, $oResult['id'], $oResult['id'], $aFields);
+        if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if($sDocumentType=='xls'){
+           // Cut down to the first 255 fields
+           $aFields=array_slice($aFields,0,255);        
         }
+        $oFomattingOptions=new FormattingOptions();
+ 
+        if($iFromResponseID !=null)
+            $oFomattingOptions->responseMinRecord=$iFromResponseID;
+        else
+            $oFomattingOptions->responseMinRecord=1;
+
+        if($iToResponseID !=null)
+            $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        else
+            $oFomattingOptions->responseMaxRecord = $maxId;
+
+        $oFomattingOptions->selectedColumns=$aFields;
+        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFomattingOptions->headingFormat=$sHeadingType;
+        $oFomattingOptions->answerFormat=$sResponseType;
+        $oFomattingOptions->output='file';
+
+        $oExport=new ExportSurveyResultsService();
+
+        $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
+
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, "$sTableName.token='$sToken'");
+        return new BigFile($sTempFile, true, 'base64');
+
     }
+
 
 
     /**

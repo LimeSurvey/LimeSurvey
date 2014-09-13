@@ -253,28 +253,32 @@ function doToolTip()
                     at: "top right"
                 }
             });
+            $(this).children("a").children("img").removeAttr('title');
         }
     });
-    $(".sf-menu a > img[alt]").removeAttr("alt");
+    $(".sf-menu a > img[alt]").data("hasqtip", true ).parent("a").data("hasqtip", true );
     $("a").each(function() {
-        tipcontent=$(this).children("img").attr('alt');
-        if(!tipcontent){tipcontent=htmlEncode($(this).attr('title'));}
-        if(tipcontent && tipcontent!=""){
-            $(this).qtip({
-                content: {
-                    text: tipcontent
-                },
-                style: {
-                    classes: "qtip-light qtip-rounded"
-                },
-                position: {
-                    viewport: $(window),
-                    at: 'bottom right'
-                }
-            });
+        if(!$(this).data("hasqtip"))// data-hasqtip not in DOM, then need to be tested directly (:not([data-hasqtip]) don't work)
+        {
+            tipcontent=$(this).children("img").attr('alt');
+            if(!tipcontent){tipcontent=htmlEncode($(this).attr('title'));}
+            if(tipcontent && tipcontent!=""){
+                $(this).qtip({
+                    content: {
+                        text: tipcontent
+                    },
+                    style: {
+                        classes: "qtip-light qtip-rounded"
+                    },
+                    position: {
+                        viewport: $(window),
+                        at: 'bottom right'
+                    }
+                });
+            }
         }
     });
-    $("a > img[alt]").removeAttr("alt");
+    $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
     
     // Call the popuptip hover rel attribute
     $('.popuptip').each(function(){
@@ -299,13 +303,13 @@ function doToolTip()
                     event: "mouseout"
                 }
             });
-            $("#"+$(this).attr('rel')).find("img").removeAttr("alt"); // Remove children img attr alt, the  default tooltip can apply.
+            $("#"+$(this).attr('rel')).find("img").data("hasqtip", true ).removeAttr('title');
         }
     });
     // On label
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
-            {
+        {
             $(this).qtip({
                 style: {
                     classes: "qtip-cream qtip-rounded"
@@ -318,8 +322,22 @@ function doToolTip()
         }
     });
     // Loads the tooltips on image
-    $('img[alt],input[src]').each(function() {
-        if($(this).attr('alt') != ''){
+    $('img[title]').each(function() {
+        if($(this).attr('title') != '')
+        {
+            $(this).qtip({
+                style: {
+                    classes: "qtip-light qtip-rounded"
+                },
+                position: {
+                    viewport: $(window),
+                    at: "bottom right"
+                }
+            });
+        }
+    });
+    $('img[alt]:not([title]),input[src]').each(function() {
+        if($(this).attr('alt') != '' && !$(this).data("hasqtip")){
             $(this).qtip({
                 content: {
                     attr: "alt"

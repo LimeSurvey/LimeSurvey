@@ -625,7 +625,7 @@ class SurveyRuntimeHelper {
                     }
 
 
-                    if (trim(strip_tags($thissurvey['surveyls_endtext'])) == '')
+                    if (trim(str_replace(array('<p>','</p>'),'',$thissurvey['surveyls_endtext'])) == '')
                     {
                         $completed = "<br /><span class='success'>" . $clang->gT("Thank you!") . "</span><br /><br />\n\n"
                         . $clang->gT("Your survey responses have been recorded.") . "<br /><br />\n";

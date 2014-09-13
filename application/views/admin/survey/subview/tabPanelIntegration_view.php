@@ -17,7 +17,7 @@
 
 </script>
 
-<div id='panelintegration'>
+<div id='urlparameters'>
 
     <table id="urlparams" style='margin:0 auto;'><tr><td>&nbsp;</td></tr></table>
     <div id="pagerurlparams"></div>

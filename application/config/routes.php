@@ -18,6 +18,7 @@ $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/tk-<_token:\w+>/*'] = "survey/index/si
 $route['<_sid:\d+>/lang-<_lang:\w+[-\w]+>/*'] = "survey/index/sid/<_sid>/lang/<_lang>";
 $route['<_sid:\d+>/tk-<_token:\w+>/*'] = "survey/index/sid/<_sid>/token/<_token>";
 $route['<_sid:\d+>/*'] = "survey/index/sid/<_sid>";
+$route['<sid:\d+>'] = array('survey/index','matchValue'=>true);
 
 //Admin Routes
 $route['admin/index'] = "admin";
@@ -28,12 +29,15 @@ $route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 $route['admin/labels/<_action:\w+>'] = "admin/labels/index/<_action>";
 $route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/<_lid>";
 
-$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
-
 //Expression Manager tests
 $route['admin/expressions'] = "admin/expressions/index";
 
-//optout
+//optout - optin
 $route['optout/<_sid:\d+>/(:any)/(:any)'] = "optout/index/<_sid>/$2/$3";
+$route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens','matchValue'=>true);
+$route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens','matchValue'=>true);
+$route['statistics_user/<surveyid:\d+>'] =  array('statistics_user/action','matchValue'=>true);
+
+$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 
 return $route;

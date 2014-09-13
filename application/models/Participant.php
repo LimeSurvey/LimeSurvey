@@ -296,6 +296,7 @@ class Participant extends LSActiveRecord
         array_push($joinValue,"left join {{users}} luser ON luser.uid=p.owner_uid");
         foreach($attid as $iAttributeID=>$aAttributeDetails)
         {
+            if ($iAttributeID==0) continue;
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv" || $sDatabaseType == 'dblib')
             {
@@ -1021,10 +1022,10 @@ class Participant extends LSActiveRecord
         }
 
         //Write each participant to the survey token table
-        foreach ($participantid as $key => $participant)
+        foreach ($participantid as $key => $sParticipantUID)
         {
             $writearray = array();
-            $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = :pid')->from('{{participants}}')->bindParam(":pid", $participant, PDO::PARAM_INT);
+            $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = :pid')->from('{{participants}}')->bindParam(":pid", $sParticipantUID, PDO::PARAM_INT);
             $tobeinserted = $participantdata->queryRow();
             
             if (Yii::app()->getConfig('blockaddingtosurveys')=='Y' && $tobeinserted=='Y')
@@ -1034,10 +1035,14 @@ class Participant extends LSActiveRecord
             }
             
             /* Search for matching participant name/email in the survey token table */
-            $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
-                    ->where('firstname = :firstname AND lastname = :lastname AND email = :email')
-                    ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)->queryAll();
-            if (count($query) > 0)
+            $sQuery = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
+            ->where('firstname = :firstname AND lastname = :lastname AND email = :email AND participant_id = :participant_id')
+            ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)
+            ->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)
+            ->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)
+            ->bindParam(":participant_id", $sParticipantUID, PDO::PARAM_STR)
+            ->queryAll();
+            if (count($sQuery) > 0)
             {
                 //Participant already exists in token table - don't copy
                 $duplicate++;
@@ -1049,7 +1054,7 @@ class Participant extends LSActiveRecord
                         $numberofattributes = count($attributesadded);
                         for ($a = 0; $a < $numberofattributes; $a++)
                         {
-                            Participant::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
+                            Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID,$attributesadded[$a],$attributeidadded[$a]);
                         }
                     }
                     //If there are automapped attributes, add those values to the token entry for this participant
@@ -1058,7 +1063,7 @@ class Participant extends LSActiveRecord
                         foreach ($mapped as $key => $value)
                         {
                             if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
-                                Participant::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
                             }
                         }
                     }
@@ -1070,7 +1075,7 @@ class Participant extends LSActiveRecord
                         foreach ($mapped as $key => $value)
                         {
                             if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
-                                Participant::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
                             }
                         }
                     }
@@ -1081,7 +1086,7 @@ class Participant extends LSActiveRecord
                         foreach($mapped as $key=>$value)
                         {
                             if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
-                                Participant::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
                             }
                         }
                     }
@@ -1090,7 +1095,7 @@ class Participant extends LSActiveRecord
             else
             {
                 //Create a new token entry for this participant
-                $writearray = array('participant_id' => $participant,
+                $writearray = array('participant_id' => $sParticipantUID,
                                     'firstname' => $tobeinserted['firstname'],
                                     'lastname' => $tobeinserted['lastname'],
                                     'email' => $tobeinserted['email'],
@@ -1105,7 +1110,7 @@ class Participant extends LSActiveRecord
 
                 //Create a survey link for the new token entry
                 $data = array(
-                    'participant_id' => $participant,
+                    'participant_id' => $sParticipantUID,
                     'token_id' => $insertedtokenid,
                     'survey_id' => $surveyid,
                     'date_created' => date('Y-m-d H:i:s', $time));
@@ -1117,7 +1122,7 @@ class Participant extends LSActiveRecord
                     $numberofattributes = count($attributesadded);
                     for ($a = 0; $a < $numberofattributes; $a++)
                     {
-                        Participant::model()->updateTokenAttributeValue($surveyid, $participant,$attributesadded[$a],$attributeidadded[$a]);
+                        Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID,$attributesadded[$a],$attributeidadded[$a]);
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
@@ -1125,7 +1130,7 @@ class Participant extends LSActiveRecord
                 {
                     foreach ($mapped as $key => $value)
                     {
-                        Participant::model()->updateTokenAttributeValue($surveyid, $participant, $value, $key);
+                        Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
                     }
                 }
                 $sucessfull++;

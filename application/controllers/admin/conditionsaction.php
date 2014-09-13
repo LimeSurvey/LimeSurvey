@@ -1473,7 +1473,7 @@ class conditionsaction extends Survey_Common_Action {
                                     }
                                 }
                             }
-                            // if $rightOperandType is still unkown then it is a simple constant
+                            // if $rightOperandType is still unknown then it is a simple constant
                             if ($rightOperandType == 'unknown')
                             {
                                 $rightOperandType = 'constantVal';

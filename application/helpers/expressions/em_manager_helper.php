@@ -5205,6 +5205,8 @@
                 else
                 {
                     $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
+                    echo submitfailed('');  // TODO - report SQL error?
+                    
                 }
                 //Insert Row for Timings, if needed
                 if ($this->surveyOptions['savetimings']) {
@@ -5324,23 +5326,10 @@
                         SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
                     }
                     // Check Quotas
-                    $bQuotaMatched = false;
-                    $aQuotas = checkQuota('return', $this->sid);
-                    if ($aQuotas !== false)
+                    $aQuotas = checkCompletedQuota($this->sid,'return');
+                    if ($aQuotas && !empty($aQuotas))
                     {
-                        if ($aQuotas != false)
-                        {
-                            foreach ($aQuotas as $aQuota)
-                            {
-                                if (isset($aQuota['status']) && $aQuota['status'] == 'matched') {
-                                    $bQuotaMatched = true;
-                                }
-                            }
-                        }
-                    }
-                    if ($bQuotaMatched)
-                    {
-                        checkQuota('enforce',$this->sid);  // will create a page and quit.
+                        checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                     }
                     else
                     {

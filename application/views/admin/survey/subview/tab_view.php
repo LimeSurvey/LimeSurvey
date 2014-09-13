@@ -20,7 +20,7 @@
         <li><a href='#copy'><?php $clang->eT("Copy"); ?></a></li>
         <?php }
         elseif ($action == "editsurveysettings") { ?>
-        <li><a href='#panelintegration'><?php $clang->eT("Panel integration"); ?></a></li>
+        <li><a href='#urlparameters'><?php $clang->eT("Survey URL parameters"); ?></a></li>
         <li><a href='#resources'><?php $clang->eT("Resources"); ?></a></li>
         
         <?php

@@ -372,9 +372,9 @@ class labels extends Survey_Common_Action
 
         foreach($results as $row)
         {
-            $output[$row->lid] = $row->getAttribute('label_name');
+            $output[$row->lid] = flattenText($row->getAttribute('label_name'));
         }
-
+        header('Content-type: application/json');
         echo ls_json_encode($output);
     }
 

@@ -1272,6 +1272,10 @@ textarea.updater-changelog {
     padding-bottom:7px;
 }
 
+#frmeditquestion li label {
+    display: inline-block;
+}
+
 #forgotpassword input#user, #forgotpassword input#email
 {
     width:18em;
@@ -1828,6 +1832,15 @@ td.LEMerror  {
 {
     background-color:#fff !important;
     color:#000 !important;
+}
+
+#cquestions {
+    width: auto !important;
+    max-width: 95%;
+    font-family: Verdana; 
+    background-color: #FFFFFF; 
+    font-size:10; 
+    border: 0px;
 }
 
 #cquestions optgroup{

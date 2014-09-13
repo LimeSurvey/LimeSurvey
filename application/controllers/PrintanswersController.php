@@ -141,8 +141,6 @@
             {
                 if (substr($sFieldname,0,4) == 'gid_')
                 {
-
-
                         $sOutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
                 }
                 elseif (substr($sFieldname,0,4)=='qid_')
@@ -162,6 +160,8 @@
                 }
             }
             $sOutput .= "</table>\n";
+            $sData['thissurvey']=$aSurveyInfo;
+            $sOutput=templatereplace($sOutput, array() , $sData, '', $aSurveyInfo['anonymized']=="Y",NULL, array(), true);// Do a static replacement
             if($sExportType == 'pdf')
             {
                 $oPDF->writeHTML($sOutput);
@@ -181,7 +181,6 @@
                 
                 sendCacheHeaders();
                 doHeader();
-                $sData['thissurvey']=$aSurveyInfo;
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array(),$sData);
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array(),$sData);

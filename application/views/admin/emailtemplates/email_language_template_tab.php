@@ -24,7 +24,15 @@
             value='<?php $clang->eT("Reset"); ?>' 
             class="fillin"
             data-target="<?php echo "email_{$tab}_{$grouplang}"; ?>"
-            data-value="<?php echo htmlspecialchars(conditionalNewlineToBreak($details['default']['body'],$ishtml),ENT_QUOTES); ?>"
+            data-value="<?php 
+            if ($tab=='admin_detailed_notification'){
+                echo htmlspecialchars($details['default']['body'],ENT_QUOTES); 
+            }
+            else
+            {
+                echo htmlspecialchars(conditionalNewlineToBreak($details['default']['body'],$ishtml),ENT_QUOTES); 
+            }
+            ?>"
         />
     </li>
     <li>
