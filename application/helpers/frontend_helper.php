@@ -887,7 +887,7 @@ function buildsurveysession($surveyid,$preview=false)
             }
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>"
-            .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('class'=>'captcha'))."
+            .CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('class'=>'captcha'))."
             <table align='center'>
             <tr>
             <td align='right' valign='middle'>
@@ -963,7 +963,7 @@ function buildsurveysession($surveyid,$preview=false)
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>"
-            .CHtml::form(array("/survey/index/sid/{$surveyid}"), 'post', array('id'=>'tokenform','autocomplete'=>'off'))."
+            .CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'tokenform','autocomplete'=>'off'))."
             <ul>
             <li>";?>
             <label for='token'><?php $clang->eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='password' name='token' value='' />
@@ -2030,7 +2030,7 @@ function checkCompletedQuota($surveyid,$return=false)
         $sQuotaStep= isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
         $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button"));
         //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
-        $quotaMessage.= CHtml::form(array("/survey/index"), 'post', array('id'=>'limesurvey','name'=>'limesurvey'));
+        $quotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey'));
         $quotaMessage.= templatereplace(file_get_contents($sTemplatePath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$redata);
         $quotaMessage.= CHtml::hiddenField('sid',$surveyid);
         $quotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
@@ -2154,7 +2154,7 @@ function display_first_page() {
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
     echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
-    echo CHtml::form(array("/survey/index"), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off'));
+    echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey','autocomplete'=>'off'));
     echo "\n\n<!-- START THE SURVEY -->\n";
 
     echo templatereplace(file_get_contents($sTemplatePath."welcome.pstpl"),array(),$redata,'frontend_helper[2762]')."\n";

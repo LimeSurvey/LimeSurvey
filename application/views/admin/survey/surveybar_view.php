@@ -33,21 +33,19 @@
         </div>
         <ul class='sf-menu'>
             <?php if($activated || $surveycontent) { ?>
-                <?php if($onelanguage) { ?>
-                    <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
+                     <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index",array("sid"=>$surveyid,"newtest"=>"Y")); ?>" >
                             <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
-                        </a></li>
-                    <?php } else { ?>
-                    <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
-                            <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
-                        </a><ul>
+                        </a>
+                        <?php if(count($languagelist)) { ?>
+                        <ul>
                             <?php foreach ($languagelist as $tmp_lang) { ?>
-                                <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
-                                    <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
-                                <?php } ?>
+                                <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
+                                    <img src='<?php echo $sImageURL;?>do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a>
+                                </li>
+                            <?php } ?>
                         </ul>
+                        <?php } ?>
                     </li>
-                    <?php } ?>
                 <?php } ?>
                 
             <?php if($surveylocale || $surveysettings || $surveysecurity || $quotas || $assessments || $surveycontent) { ?>
