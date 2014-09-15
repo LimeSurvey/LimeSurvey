@@ -428,40 +428,33 @@ class export extends Survey_Common_Action {
 
             //Now get the query string with all fields to export
             $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
-            $result = $query->query();
+            $result = $query->queryAll();
 
             $num_fields = 0;
             //Now we check if we need to adjust the size of the field or the type of the field
             foreach ( $result as $row )
             {
-                if($num_fields==0) {
-                    $num_fields = count($row);
-                }
-                $row = array_values($row);
-                $fieldno = 0;
 
-                while ( $fieldno < $num_fields )
+                foreach ( $fields as $iIndex=>$aField )
                 {
                     //Performance improvement, don't recheck fields that have valuelabels
-                    if ( ! isset($fields[$fieldno]['answers']) )
+                    if ( ! isset($aField['answers']) )
                     {
-                        $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
+                        $strTmp = mb_substr(stripTagsFull($row[$aField['sql_name']]), 0, $iLength);
                         $len = mb_strlen($strTmp);
 
-                        if ( $len > $fields[$fieldno]['size'] ) $fields[$fieldno]['size'] = $len;
+                        if ( $len > $fields[$iIndex]['size'] ) $fields[$iIndex]['size'] = $len;
 
                         if ( trim($strTmp) != '' )
                         {
-                            if ( $fields[$fieldno]['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $fields[$fieldno]['size'] > 16) )
+                            if ( $fields[$iIndex]['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $fields[$iIndex]['size'] > 16) )
                             {
-                                $fields[$fieldno]['SPSStype'] = 'A';
+                                $fields[$iIndex]['SPSStype'] = 'A';
                             }
                         }
                     }
-                    $fieldno++;
                 }
             }
-            $result->close();
 
             /**
             * End of DATA print out
