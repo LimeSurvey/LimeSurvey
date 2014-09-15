@@ -1,5 +1,5 @@
 <div id='tokens'><ul>
-        <li><label for='anonymized' title='<?php eT("If you set this to yes : no link between token table and survey table can be done. You can not use token information in your survey."); ?>'><?php $clang->eT("Anonymized responses?"); ?>
+        <li><label for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'><?php $clang->eT("Anonymized responses?"); ?>
 
                 <script type="text/javascript"><!--
                     function alertPrivacy()
@@ -40,7 +40,7 @@
         </li>
 
         <li>
-            <label for='tokenanswerspersistence' title='<?php $clang->eT("With not anonymous survey (and use left at 1): user can do the survey in several steps. If he close the survey and open it, its previous replies will be reloaded."); ?>'><?php $clang->eT("Enable token-based response persistence?"); ?></label>
+            <label for='tokenanswerspersistence' title='<?php $clang->eT("With non-anonymized responses (and the token table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'><?php $clang->eT("Enable token-based response persistence?"); ?></label>
             <select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') { alert('<?php $clang->eT("This option can't be set if the `Anonymized responses` option is active.","js"); ?>'); this.value='N';}">
                 <option value='Y'
                     <?php if ($esrow['tokenanswerspersistence'] == "Y") { ?>
@@ -56,7 +56,7 @@
         </li>
 
         <li>
-            <label for='alloweditaftercompletion' title='<?php $clang->eT("If token-based response persistence is enabled: user can update his answer after completion, else user can add new answers without restriction."); ?>'><?php $clang->eT("Allow multiple responses or update responses with one token?"); ?></label>
+            <label for='alloweditaftercompletion' title='<?php $clang->eT("If token-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'><?php $clang->eT("Allow multiple responses or update responses with one token?"); ?></label>
             <select id='alloweditaftercompletion' name='alloweditaftercompletion'>
                 <option value='Y'
                     <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
