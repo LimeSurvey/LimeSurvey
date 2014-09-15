@@ -1,6 +1,12 @@
 <?php
     $yii = Yii::app();
     $controller = $yii->getController();
+    $sConfirmLanguage="$(document).on('submit','#addnewsurvey',function(){\n"
+                    . "  if(!UpdateLanguageIDs(mylangs,'".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){\n"
+                    . "    return false;\n"
+                    . "  }\n"
+                    . "});\n";
+    Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
 ?>
 <div id='general'>
     <ul>
