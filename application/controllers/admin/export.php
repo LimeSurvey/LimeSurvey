@@ -942,27 +942,21 @@ class export extends Survey_Common_Action {
         if ( $aSurveyInfo['active'] == 'Y' )
         {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, FALSE);
-
             $this->_addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
-
             unlink($sLSRFileName);
         }
 
-        if ( Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}') )
+        if ( tableExists('{{tokens_' . $iSurveyID . '}}') )
         {
             getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
-
             $this->_addToZip($zip, $sLSTFileName, 'survey_' . $iSurveyID . '_tokens.lst');
-
             unlink($sLSTFileName);
         }
 
-        if ( Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '_timings}}') )
+        if ( tableExists('{{survey_' . $iSurveyID . '_timings}}') )
         {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
-
             $this->_addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
-
             unlink($sLSIFileName);
         }
 
