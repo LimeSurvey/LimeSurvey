@@ -1614,6 +1614,29 @@ function validateEmailAddress($sEmailAddress){
     return false;
 }
 
+/**
+* Validate an list of email addresses - either as array or as semicolon-limited text
+* @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+* 
+* @param mixed $sEmailAddresses  Email address to check
+*/
+function validateEmailAddresses($aEmailAddressList){
+  $aOutList=false;
+  if (!is_array($aEmailAddressList))
+  {
+     $aEmailAddressList=explode(';',$aEmailAddressList);
+  }
+  foreach ($aEmailAddressList as $sEmailAddress)
+  {
+      $sEmailAddress= trim($sEmailAddress);
+      if (validateEmailAddress($sEmailAddress)){
+         $aOutList=$sEmailAddress; 
+      }
+  }
+  return $aOutList;
+}
+
+
 function validateTemplateDir($sTemplateName)
 {
     $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
