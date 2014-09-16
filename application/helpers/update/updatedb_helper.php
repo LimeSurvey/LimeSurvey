@@ -1295,8 +1295,7 @@ function upgradeTokenTables178()
     if($sDBDriverName=='mssql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
 
     $surveyidresult = dbGetTablesLike("tokens%");
-    if (!$surveyidresult) {return "Database Error";}
-    else
+    if ($surveyidresult)
     {
         foreach ( $surveyidresult as $sv )
         {
