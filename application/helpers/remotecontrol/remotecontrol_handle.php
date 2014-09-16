@@ -1798,7 +1798,7 @@ class remotecontrol_handle
                     return array('status' => 'No Tokens found');
 
                 if($aAttributes) {
-                    $aBasicDestinationFields=Tokens_dynamic::model()->tableSchema->columnNames;
+                    $aBasicDestinationFields=Token::model($iSurveyID)->tableSchema->columnNames;
                     $aTokenProperties=array_intersect($aAttributes,$aBasicDestinationFields);
                     $currentAttributes = array('tid','token','firstname','lastname','email');
                     $extendedAttributes = array_diff($aTokenProperties, $currentAttributes);
