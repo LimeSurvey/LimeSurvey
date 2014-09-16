@@ -1806,7 +1806,7 @@ class remotecontrol_handle
 
                 foreach ($oTokens as $token)
                 {
-                    $aTempData[] = array(
+                    $aTempData = array(
                         'tid'=>$token->primarykey,
                         'token'=>$token->attributes['token'],
                         'participant_info'=>array(
