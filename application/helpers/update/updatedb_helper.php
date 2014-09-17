@@ -677,11 +677,9 @@ function db_upgrade_all($iOldDBVersion) {
                 'date_created' => 'datetime NOT NULL'
             ));
             addPrimaryKey('survey_links', array('participant_id','token_id','survey_id'));
-
             // Add language field to question_attributes table
             addColumn('{{question_attributes}}','language',"{$sVarchar}(20)");
-
-            upgradeQuestionAttributes148();
+            upgradeQuestionAttributes148();  
             fixSubquestions();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
         }
@@ -1526,9 +1524,9 @@ function upgradeTokens148()
 
 function upgradeQuestionAttributes148()
 {
-    global $modifyoutput;
     $sSurveyQuery = "SELECT sid FROM {{surveys}}";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $aAllAttributes=questionAttributes(true);
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $iSurveyID=$aSurveyRow['sid'];
@@ -1536,7 +1534,6 @@ function upgradeQuestionAttributes148()
 
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
         $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
-        $aAllAttributes=questionAttributes(true);
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
@@ -1545,7 +1542,7 @@ function upgradeQuestionAttributes148()
                 foreach ($aLanguages as $sLanguage)
                 {
                     $sAttributeInsertQuery="insert into {{question_attributes}} (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$sLanguage}' )";
-                    modifyDatabase("",$sAttributeInsertQuery); echo $modifyoutput; flush();@ob_flush();
+                    modifyDatabase("",$sAttributeInsertQuery); 
                 }
             }
         }

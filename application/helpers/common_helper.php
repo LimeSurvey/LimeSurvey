@@ -7234,16 +7234,32 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 
 /**
 * This function fixes the group ID and type on all subquestions
-*
+* Optimized for minimum memory usage even on huge databases
 */
 function fixSubquestions()
 {
-    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
-    from {{questions}} sq JOIN {{questions}} q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)")->query();
-    foreach($surveyidresult->readAll() as $sv)
+    $surveyidresult=Yii::app()->db->createCommand()
+    ->select('sq.qid, q.gid , q.type ')
+    ->from('{{questions}} sq')
+    ->join('{{questions}} q','sq.parent_qid=q.qid')
+    ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+    ->limit(10000)
+    ->query();
+    $aRecords=$surveyidresult->readAll();
+    while (count($aRecords)>0)
     {
-        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->query();
+        foreach($aRecords as $sv)
+        {
+            Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+        }
+        $surveyidresult=Yii::app()->db->createCommand()
+        ->select('sq.qid, q.gid , q.type ')
+        ->from('{{questions}} sq')
+        ->join('{{questions}} q','sq.parent_qid=q.qid')
+        ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+        ->limit(10000)
+        ->query();
+        $aRecords=$surveyidresult->readAll();
     }
 
 }
