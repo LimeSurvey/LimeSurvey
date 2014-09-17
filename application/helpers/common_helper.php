@@ -1614,6 +1614,29 @@ function validateEmailAddress($sEmailAddress){
     return false;
 }
 
+/**
+* Validate an list of email addresses - either as array or as semicolon-limited text
+* @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+* 
+* @param mixed $sEmailAddresses  Email address to check
+*/
+function validateEmailAddresses($aEmailAddressList){
+  $aOutList=false;
+  if (!is_array($aEmailAddressList))
+  {
+     $aEmailAddressList=explode(';',$aEmailAddressList);
+  }
+  foreach ($aEmailAddressList as $sEmailAddress)
+  {
+      $sEmailAddress= trim($sEmailAddress);
+      if (validateEmailAddress($sEmailAddress)){
+         $aOutList=$sEmailAddress; 
+      }
+  }
+  return $aOutList;
+}
+
+
 function validateTemplateDir($sTemplateName)
 {
     $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
@@ -7211,16 +7234,32 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 
 /**
 * This function fixes the group ID and type on all subquestions
-*
+* Optimized for minimum memory usage even on huge databases
 */
 function fixSubquestions()
 {
-    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
-    from {{questions}} sq JOIN {{questions}} q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)")->query();
-    foreach($surveyidresult->readAll() as $sv)
+    $surveyidresult=Yii::app()->db->createCommand()
+    ->select('sq.qid, q.gid , q.type ')
+    ->from('{{questions}} sq')
+    ->join('{{questions}} q','sq.parent_qid=q.qid')
+    ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+    ->limit(10000)
+    ->query();
+    $aRecords=$surveyidresult->readAll();
+    while (count($aRecords)>0)
     {
-        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->query();
+        foreach($aRecords as $sv)
+        {
+            Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+        }
+        $surveyidresult=Yii::app()->db->createCommand()
+        ->select('sq.qid, q.gid , q.type ')
+        ->from('{{questions}} sq')
+        ->join('{{questions}} q','sq.parent_qid=q.qid')
+        ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+        ->limit(10000)
+        ->query();
+        $aRecords=$surveyidresult->readAll();
     }
 
 }

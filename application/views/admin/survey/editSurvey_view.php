@@ -17,10 +17,18 @@
     $controller->renderPartial('/admin/survey/subview/tabPanelIntegration_view',$data);
     
 ?>
-<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />
 <input type='hidden' id='sid' name='sid' value="<?php echo $esrow['sid'];?>" />
 <input type='hidden' name='languageids' id='languageids' value="<?php echo $esrow['additional_languages'];?>" />
 <input type='hidden' name='language' value="<?php echo $esrow['language'];?>" />
+<?php if (Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')){?>
+    <div class="hidden hide" id="submitsurveybutton">
+    <p><button type="submit" name="action" value='updatesurveysettings'><?php $clang->eT("Save"); ?></button></p>
+    <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveylocale','update')) { ?>
+        <p><button type="submit" name="action" value='updatesurveysettingsandeditlocalesettings'><?php $clang->eT("Save & edit survey text elements");?></button></p>
+    <?php } ?>
+    </div>
+<?php } ?>
+
 </form>
 <?php
     $controller->renderPartial('/admin/survey/subview/tabResourceManagement_view',$data);
@@ -28,16 +36,7 @@
 ?>
 </div>
 
-<?php
-    if (Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update'))
-    {?>
-    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) {$('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save"); ?></button></p>
-    <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveylocale','update')) { ?>
-        <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) { document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; $('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save & edit survey text elements");?> >></button></p>
-    <?php } ?>
-    <?php
-    }
-?>
+<div data-copy="submitsurveybutton"></div>
 <div id='dlgEditParameter'>
     <div id='dlgForm' class='form30'>
         <ul>

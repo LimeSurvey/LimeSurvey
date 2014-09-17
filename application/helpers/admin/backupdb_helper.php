@@ -115,7 +115,7 @@
                 $aRecords = Yii::app()->db->createCommand()
                 ->select()
                 ->from($sTableName)
-                ->limit(intval($iMaxNbRecords), ($i != 0 ? ($i * $iMaxNbRecords) + 1 : null))
+                ->limit(intval($iMaxNbRecords), ($i != 0 ? ($i * $iMaxNbRecords) : null))
                 ->query()->readAll();
 
                 $sOutput.=_outputRecords($sTableName, $aFieldNames, $aRecords);

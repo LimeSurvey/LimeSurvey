@@ -233,10 +233,10 @@
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
-            $out .= CHtml::textField($id, $value, array(
+            $out .= CHtml::numberField($id, $value, array(
                 'id' => $id,
                 'form' => $form,
-                'pattern' => '\d+(\.\d+)?'
+                'data-type'=>'float',
             ));
 
             return $out;
@@ -288,11 +288,12 @@
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
-            $out .= CHtml::textField($id, $value, array(
+            $step=isset($metaData['step'])?$metaData['step']:1;
+            $out .= CHtml::numberField($id, $value, array(
                 'id' => $id,
                 'form' => $form,
                 'data-type' => 'int',
-                'pattern' => '\d+'
+                'step' => 1,
             ));
 
             return $out;
