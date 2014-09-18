@@ -22,29 +22,6 @@
             { ?>
             <li><?php $clang->eT("All conditions meet consistency standards."); ?></li><?php
         } ?>
-        
-        
-        
-
-        <?php
-            if (isset($assessments))
-            {?>
-            <li><?php $clang->eT("The following assessments should be deleted:"); ?>
-                <ul>
-                    <?php
-                        foreach ($assessments as $assessment) {?>
-                        <li>AID:<?php echo $assessment['id'];?> <?php $clang->eT("Assessment:");?> <?php $clang->eT("Reason:");?> <?php echo $assessment['reason'];?></li><?php
-                    }?>
-                </ul>
-            </li>
-            <?php
-            }
-            else
-            { ?>
-            <li><?php $clang->eT("All assessments meet consistency standards."); ?></li><?php
-        } ?>
-        
-        
 
         <?php
             if (isset($questionattributes)) { ?>
