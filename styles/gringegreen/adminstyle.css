@@ -380,7 +380,7 @@ textarea {
 .annotation {
     font-size: 10px;
     color: #FF9D00;
-    vertical-align: top;    
+    vertical-align: top;
 }
 
 .errortitle {
@@ -601,7 +601,7 @@ a.optoutemail {
 
 .listtokenattributes td{
     text-align:center;
-   
+
 }
 
 .conditionlist table,
@@ -1837,9 +1837,9 @@ td.LEMerror  {
 #cquestions {
     width: auto !important;
     max-width: 95%;
-    font-family: Verdana; 
-    background-color: #FFFFFF; 
-    font-size:10; 
+    font-family: Verdana;
+    background-color: #FFFFFF;
+    font-size:10;
     border: 0px;
 }
 
@@ -1863,4 +1863,13 @@ td.LEMerror  {
 
 .ui-tabs .action-buttons button {
 	margin: 0 0.5em;
+}
+
+.ui-jqdialog{
+    border-color: #E5F2CC;
+    border-width: 2px;
+}
+.ui-jqdialog-titlebar{
+    background:none;
+    background-color: #EDF7D7;
 }
