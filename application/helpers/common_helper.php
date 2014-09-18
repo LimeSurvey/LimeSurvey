@@ -137,7 +137,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $args = array('order'=>'surveyls_title');
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with('defaultlanguage')->findAll($args);
         } else {
             $surveyidresult = Survey::model()->with('defaultlanguage')->findAll($args);
         }
