@@ -8018,15 +8018,15 @@ EOD;
             }
 
             $query = "SELECT DISTINCT c.*, q.sid, q.type
-                FROM conditions AS c
-                LEFT JOIN questions q ON c.cqid=q.qid
-                LEFT JOIN questions qa ON c.qid=qa.qid
+                FROM {{conditions}} AS c
+                LEFT JOIN {{questions}} q ON c.cqid=q.qid
+                LEFT JOIN {{questions}} qa ON c.qid=qa.qid
                 WHERE {$where} 1=1
                 UNION
                 SELECT DISTINCT c.*, q.sid, '' AS TYPE
-                FROM conditions AS c
-                LEFT JOIN questions q ON c.cqid=q.qid
-                LEFT JOIN questions qa ON c.qid=qa.qid
+                FROM {{conditions}} AS c
+                LEFT JOIN {{questions}} q ON c.cqid=q.qid
+                LEFT JOIN {{questions}} qa ON c.qid=qa.qid
                 WHERE {$where} c.cqid = 0";
 
             $databasetype = Yii::app()->db->getDriverName();
