@@ -53,7 +53,7 @@ function ngT($single, $plural, $number, $escapemode = 'html')
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
-    
+
     $qtypes = Question::typeList();
     if ($ReturnType == "array")
         return $qtypes;
@@ -139,7 +139,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
         {
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
         } else {
-            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+            $surveyidresult = Survey::model()->with('defaultlanguage')->findAll($args);
         }
 
         $surveynames = array();
@@ -1349,13 +1349,13 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 */
 function returnGlobal($stringname,$bRestrictToString=false)
 {
-    $urlParam=Yii::app()->request->getParam($stringname); 
+    $urlParam=Yii::app()->request->getParam($stringname);
     if(is_null($urlParam) && $aCookies=Yii::app()->request->getCookies() && $stringname!='sid')
     {
         if(isset($aCookies[$stringname]))
         {
             $urlParam = $aCookies[$stringname];
-        } 
+        }
     }
     $bUrlParamIsArray=is_array($urlParam);// Needed to array map or if $bRestrictToString
     if (!is_null($urlParam) && $stringname!='' && (!$bUrlParamIsArray || !$bRestrictToString))
@@ -1449,8 +1449,8 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             return false;
 
         // If it is a comment field there is nothing to convert here
-        if ($fields['aid']=='comment') return $sValue; 
-            
+        if ($fields['aid']=='comment') return $sValue;
+
         //Find out the question type
         $this_type = $fields['type'];
         switch($this_type)
@@ -1597,16 +1597,16 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
 }
 
 /**
-* Validate an email address - also supports IDN email addresses 
+* Validate an email address - also supports IDN email addresses
 * @returns True/false for valid/invalid
-* 
+*
 * @param mixed $sEmailAddress  Email address to check
 */
 function validateEmailAddress($sEmailAddress){
     require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
     $oIdnConverter = new idna_convert();
     $sEmailAddress=$oIdnConverter->encode($sEmailAddress);
-    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);   
+    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
     if ($bResult!==false)
     {
         return true;
@@ -1617,7 +1617,7 @@ function validateEmailAddress($sEmailAddress){
 /**
 * Validate an list of email addresses - either as array or as semicolon-limited text
 * @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
-* 
+*
 * @param mixed $sEmailAddresses  Email address to check
 */
 function validateEmailAddresses($aEmailAddressList){
@@ -1630,7 +1630,7 @@ function validateEmailAddresses($aEmailAddressList){
   {
       $sEmailAddress= trim($sEmailAddress);
       if (validateEmailAddress($sEmailAddress)){
-         $aOutList=$sEmailAddress; 
+         $aOutList=$sEmailAddress;
       }
   }
   return $aOutList;
@@ -1725,7 +1725,7 @@ function validateTemplateDir($sTemplateName)
                 case ";":  //ARRAY (Multi Flex) (Text)
                 case ":":  //ARRAY (Multi Flex) (Numbers)
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
-                   
+
                     foreach($result as $row)
                     {
                         $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
@@ -2377,7 +2377,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 * @return bool
 */
 function hasFileUploadQuestion($iSurveyID) {
-    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));    
+    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));
     return $iCount>0 ;
 }
 
@@ -3322,8 +3322,8 @@ function questionAttributes($returnByName=false)
         'i18n'=>true,
         'default'=>"",
         "help"=>$clang->gT('In the printable version replace the relevance equation with this explanation text.'),
-        "caption"=>$clang->gT("Relevance help for printable survey"));    
-        
+        "caption"=>$clang->gT("Relevance help for printable survey"));
+
         $qattributes["public_statistics"]=array(
         "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
         'category'=>$clang->gT('Statistics'),
@@ -4099,7 +4099,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             {
                 $mail->AddAttachment($attachment[0], $attachment[1]);
             }
-            else 
+            else
             { // Or a string with the filename.
                 $mail->AddAttachment($attachment);
             }
@@ -5242,10 +5242,10 @@ function updateCheck()
     $aUpdateVersions=getUpdateInfo();
     $clang = Yii::app()->lang;
 
-    if (isset($aUpdateVersions['errorcode'])) 
+    if (isset($aUpdateVersions['errorcode']))
     {
         Yii::app()->setFlashMessage(sprintf($clang->gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
-        $aUpdateVersions=array(); 
+        $aUpdateVersions=array();
     }
     if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
@@ -5262,28 +5262,28 @@ function updateCheck()
 
             case 'both':
                 // Show first available update
-                $aUpdateVersion=reset($aUpdateVersions);    
+                $aUpdateVersion=reset($aUpdateVersions);
                 break;
-                
+
             default:
                 // Never show a notification
                 $aUpdateVersions=array();
                 break;
         }
     }
-    
+
     setGlobalSetting('updateversions',json_encode($aUpdateVersions));
-    
-    
+
+
     if (isset($aUpdateVersion)) {
         setGlobalSetting('updateavailable',1);
         setGlobalSetting('updatebuild',$aUpdateVersion['build']);
         setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
     } else {
-        setGlobalSetting('updateavailable',0);    
+        setGlobalSetting('updateavailable',0);
         $aUpdateVersions = array();
     }
-    
+
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
     return $aUpdateVersions;
 }
@@ -5664,7 +5664,7 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
     }
 
     $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
-    
+
     $quota_info = array();
     $x=0;
 
@@ -5936,7 +5936,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
 
 /**
 * Replaces EM variable codes in a current survey with a new one
-* 
+*
 * @param mixed $iSurveyID The survey ID
 * @param mixed $aCodeMap The codemap array (old_code=>new_code)
 */
@@ -5949,7 +5949,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0])) 
+            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
             {
                 $sOldCode=preg_quote($sOldCode,'/');
                 $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
@@ -7058,7 +7058,7 @@ function getDBTableUsage($surveyid){
         $hard_limit = 1600;
         $size_limit = 0;
     }
-    elseif ($arrCols['dbtype'] == 'mssql' || $arrCols['dbtype'] == 'dblib'){ 
+    elseif ($arrCols['dbtype'] == 'mssql' || $arrCols['dbtype'] == 'dblib'){
         $hard_limit = 1024;
         $size_limit = 0;
     }
@@ -7154,7 +7154,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     if (!$bIncludeSuperAdmins)
     {
       // @todo: Adjust for new permission system - not urgent since it it just display
-      //   $sSurveyIDQuery.='and superadmin=0 ';     
+      //   $sSurveyIDQuery.='and superadmin=0 ';
     }
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
     $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
@@ -7297,7 +7297,7 @@ function json_decode_ls($jsonString)
  * Return accepted codingsArray for importing files
  *
  * Used in vvimport
- * TODO : use in token and 
+ * TODO : use in token and
  * @return array
  */
 function aEncodingsArray()
@@ -7469,31 +7469,31 @@ function array_diff_assoc_recursive($array1, $array2) {
 }
 
 
-    function convertPHPSizeToBytes($sSize)  
-    {  
-        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)  
-        $sSuffix = substr($sSize, -1);  
-        $iValue = substr($sSize, 0, -1);  
-        switch(strtoupper($sSuffix)){  
-        case 'P':  
-            $iValue *= 1024;  
-        case 'T':  
-            $iValue *= 1024;  
-        case 'G':  
-            $iValue *= 1024;  
-        case 'M':  
-            $iValue *= 1024;  
-        case 'K':  
-            $iValue *= 1024;  
-            break;  
-        }  
-        return $iValue;  
-    }  
-      
-    function getMaximumFileUploadSize()  
-    {  
-        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));  
-    }  
+    function convertPHPSizeToBytes($sSize)
+    {
+        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
+        $sSuffix = substr($sSize, -1);
+        $iValue = substr($sSize, 0, -1);
+        switch(strtoupper($sSuffix)){
+        case 'P':
+            $iValue *= 1024;
+        case 'T':
+            $iValue *= 1024;
+        case 'G':
+            $iValue *= 1024;
+        case 'M':
+            $iValue *= 1024;
+        case 'K':
+            $iValue *= 1024;
+            break;
+        }
+        return $iValue;
+    }
+
+    function getMaximumFileUploadSize()
+    {
+        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+    }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
 
