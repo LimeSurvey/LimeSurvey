@@ -129,7 +129,7 @@ $(document).ready(function(){
             $('#displaysurveys tbody').hide();
         },
         loadComplete: function(data){
-            // Need this for vertical scrollbar 
+            // Need this for vertical scrollbar
 			$('#displaysurveys').setGridWidth($(window).width()-4);
             $('.wrapper').width($('#displaysurveys').width()+4);
             $('.footer').outerWidth($('#displaysurveys').outerWidth()+4).css({ 'margin':'0 auto' });
@@ -141,11 +141,11 @@ $(document).ready(function(){
             }
         }
     });
-    
+
     // Inject the translations into jqGrid
-    $.extend($.jgrid,{ 
+    $.extend($.jgrid,{
         del:{
-            msg:delmsg, 
+            msg:delmsg,
             bSubmit: sDelCaption,
             caption: sDelCaption,
             bCancel: sCancel
@@ -156,30 +156,39 @@ $(document).ready(function(){
             Find : sFind,
             Reset: sReset,
         }
-    });    
-    
-    jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ 
-        deltitle: sDelTitle, 
+    });
+
+    jQuery("#displaysurveys").jqGrid('navGrid','#pager',{
+        deltitle: sDelTitle,
         searchtitle: sSearchTitle,
         refreshtitle: sRefreshTitle,
-        alertcap: sWarningMsg,        alerttext: sSelectRowMsg,
+        alertcap: sWarningMsg,
+        alerttext: sSelectRowMsg,
         add:false,
         del:true,
         edit:false,
         refresh: true,
         search: true
-        },{},{},{ 
+        },{},{},{
             width : 450,
             afterShowForm: function(form) {
                 form.closest('div.ui-jqdialog').center();
             },
+            beforeSubmit: function(postdata, formid) {
+                var gridIdAsSelector = $.jgrid.jqID(this.id);
+                $("#delmod" + gridIdAsSelector).hide();
+                $("#load_" + gridIdAsSelector).show().center();
+                return [true];
+            },
             afterSubmit: function(response, postdata) {
+                var gridIdAsSelector = $.jgrid.jqID(this.id);
+                $("#load_" + gridIdAsSelector).hide()
                 if (postdata.oper=='del')
                 {
                     // Remove surveys from dropdown, too
                     aSurveyIDs=postdata.id.split(",");
                     $.each(aSurveyIDs,function(iIndex, iSurveyID){
-                        $("#surveylist option[value='"+iSurveyID+"']").remove();   
+                        $("#surveylist option[value='"+iSurveyID+"']").remove();
                     })
                 };
                 return [true];
@@ -213,7 +222,7 @@ $(document).ready(function(){
 
 	$('.wrapper').width($('#displaysurveys').width()+4);
 	$('.footer').outerWidth($('#displaysurveys').outerWidth()+4).css({ 'margin':'0 auto' });
-	
+
     $(window).bind('resize', function() {
         $('#displaysurveys').setGridWidth($(window).width()-4);
         $('.wrapper').width($('#displaysurveys').width()+4);

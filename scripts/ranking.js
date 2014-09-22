@@ -11,8 +11,8 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   // Hide the default answers list
   // Display for media oral, maybe use !window.matchMedia("(oral)").matches but still hidden if user use default browser with screen reader ?
   $('#question'+qID+' .answers-list').addClass("hide");
-  // We are in javascript, then default tip can be removed
-  $('#question'+qID+' .em_default').remove();
+  // We are in javascript, then default tip can be replaced
+  $('#question'+qID+' .em_default').html(aRankingTranslations.rankhelp);
 
 
   // Add connected sortables elements to the question

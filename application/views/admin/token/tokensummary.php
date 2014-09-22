@@ -37,6 +37,14 @@
     </tr>
     <tr>
         <th>
+            <?php $clang->eT("Total screened out"); ?>
+        </th>
+        <td>
+            <?php echo $queries['screenout']; ?>
+        </td>
+    </tr>
+    <tr>
+        <th>
             <?php $clang->eT("Total surveys completed"); ?>
         </th>
         <td>

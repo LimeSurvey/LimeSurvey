@@ -147,16 +147,21 @@ class update extends Survey_Common_Action
     
     function step2()
     {
-        
+        $aReadOnlyFiles=array();
         $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $updatebuild = getGlobalSetting("updatebuild");
-
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild);
         $aData = $this->_getFileStatus($updateinfo);
-        $aReadOnlyFiles=array_unique($aData['readonlyfiles']);
-        sort($aReadOnlyFiles);
-        $aData['readonlyfiles']=$aReadOnlyFiles;
+        if(count($aData['readonlyfiles']))
+        {
+            foreach (array_unique($aData['readonlyfiles']) as $aFile)
+            {
+                $aReadOnlyFiles[]=substr($aFile,strlen(Yii::app()->getConfig("rootdir")));
+            }
+            sort($aReadOnlyFiles);
+            $aData['readonlyfiles']=$aReadOnlyFiles;
+        }
         Yii::app()->session['updateinfo'] = $updateinfo;
         Yii::app()->session['updatesession'] = $cookies;
 
@@ -292,7 +297,7 @@ class update extends Survey_Common_Action
             if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
                 Yii::app()->loadHelper("admin/backupdb");
                 $sfilename = $tempdir.DIRECTORY_SEPARATOR."backup_db_".randomChars(20)."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
-                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".sql.gz";
+                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".zip";
 
                 outputDatabase('',false,$sfilename);
                 // Before try to zip: test size of file
@@ -457,9 +462,18 @@ class update extends Survey_Common_Action
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversions','');
-        // We create this new language object here because the language files might have been overwritten earlier
-        // and the pointers to the file from the application language are not valid anymore 
-        Yii::app()->lang = $aData['clang'] = new Limesurvey_lang(Yii::app()->session['adminlang'],true);
+        // We redirect here because the  files might have been overwritten earlier
+        // and classes may have been changed that would be needed in the view
+        Yii::app()->session['installlstep4b']=$aData;
+        Yii::app()->getController()->redirect(array('/admin/update/sa/step4b'));
+    }
+
+    
+    function step4b()
+    {
+        if (!isset(Yii::app()->session['installlstep4b'])) die();
+        $aData=Yii::app()->session['installlstep4b'];
+        unset (Yii::app()->session['installlstep4b']);
         $this->_renderWrappedTemplate('update', 'step4', $aData);
     }
 
@@ -538,7 +552,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$updateinfo['UpdaterRevision']}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
         $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);

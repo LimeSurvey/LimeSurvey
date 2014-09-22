@@ -86,7 +86,7 @@
 
 			$this->token = randomChars($length);
 			$counter = 0;
-			while (!$this->validate('token'))
+			while (!$this->validate(array('token')))
 			{
 				$this->token = randomChars($length);
 				$counter++;
@@ -119,19 +119,24 @@
 		public function relations()
 		{
 			$result = array(
-				'responses' => array(self::HAS_MANY, 'Response_' . $this->id, array('token' => 'token')),
-				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->id}"),
-				'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->id}")
+				'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
+				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
+				'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
 			);
 			return $result;
 		}
 
 		public function rules()
 		{
-			
 			return array(
 				array('token', 'unique', 'allowEmpty' => true),
-				array(implode(',', $this->tableSchema->columnNames), 'safe')
+				array(implode(',', $this->tableSchema->columnNames), 'safe'),
+                array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+                array('email','filter','filter'=>'trim'),        
+                array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true), 
+                array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),     
+                array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
 			);
 		}
 
@@ -158,7 +163,8 @@
 				"COUNT(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE NULL END) as invalid",
 				"COUNT(CASE WHEN (sent!='N' AND sent<>'') THEN 1 ELSE NULL END) as sent",
 				"COUNT(CASE WHEN (emailstatus LIKE 'OptOut%') THEN 1 ELSE NULL END) as optout",
-				"COUNT(CASE WHEN (completed!='N' and completed<>'') THEN 1 ELSE NULL END) as completed"
+				"COUNT(CASE WHEN (completed!='N' and completed<>'' and completed !='Q') THEN 1 ELSE NULL END) as completed",
+                "COUNT(CASE WHEN (completed='Q') THEN 1 ELSE NULL END) as screenout",
 			);
 			$command = $this->getCommandBuilder()->createFindCommand($this->getTableSchema(),$criteria);
 			return $command->queryRow();
@@ -166,7 +172,7 @@
 
 		public function tableName()
 		{
-			return '{{tokens_' . $this->id . '}}';
+			return '{{tokens_' . $this->dynamicId . '}}';
 		}           
 	}
 

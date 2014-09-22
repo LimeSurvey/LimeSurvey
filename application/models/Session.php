@@ -52,9 +52,9 @@ class Session extends CActiveRecord
     
     public function afterFind()
     {
-        // MSSQL delivers hex data
         $sDatabasetype = Yii::app()->db->getDriverName();
-        if($sDatabasetype=='sqlsrv' || $sDatabasetype=='mssql' || $sDatabasetype=='dblib')
+        // MSSQL delivers hex data (except for dblib driver)
+        if($sDatabasetype=='sqlsrv' || $sDatabasetype=='mssql')
         {
             $this->data=$this->hexToStr($this->data); 
         }

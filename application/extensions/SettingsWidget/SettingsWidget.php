@@ -233,10 +233,10 @@
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
-            $out .= CHtml::textField($id, $value, array(
+            $out .= CHtml::numberField($id, $value, array(
                 'id' => $id,
                 'form' => $form,
-                'pattern' => '\d+(\.\d+)?'
+                'data-type'=>'float',
             ));
 
             return $out;
@@ -266,6 +266,17 @@
 			);
             return $out;
         }
+        
+        public function renderInfo($name, array $metaData, $form = null)
+        {
+            $out = '';
+            $id = $name;
+            $value = isset($metaData['content']) ? $metaData['content'] : '';
+            if (is_array($value)) { throw new CException('wrong type' . $name); }
+            $out .= $value;
+
+            return $out;
+        }
 
         public function renderInt($name, array $metaData, $form = null)
         {
@@ -277,11 +288,12 @@
             {
                 $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
             }
-            $out .= CHtml::textField($id, $value, array(
+            $step=isset($metaData['step'])?$metaData['step']:1;
+            $out .= CHtml::numberField($id, $value, array(
                 'id' => $id,
                 'form' => $form,
                 'data-type' => 'int',
-                'pattern' => '\d+'
+                'step' => 1,
             ));
 
             return $out;
@@ -313,6 +325,21 @@
         {
             return CHtml::image($metaData['path']);
         }
+        
+        public function renderRadio($name, array $metaData, $form = null)
+        {
+            $out = '';
+            $id = $name;
+            $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
+            if (isset($metaData['label']))
+            {
+                $out .= CHtml::label($metaData['label'], $id);
+            }
+                        
+            $out .= CHtml::radioButtonList($name, $value, $metaData['options']);
+            return $out;
+        }
+        
         public function renderRelevance($name, array $metaData, $form = null)
         {
             $out = '';
@@ -402,6 +429,24 @@
             }
             $out .= CHtml::passwordField($id, $value, array('id' => $id, 'form' => $form));
 
+            return $out;
+        }
+
+        public function renderLink($name, array $metaData, $form = null)
+        {
+            $out = '';
+            $id = $name;
+            if (isset($metaData['label']))
+            {
+                $out .= CHtml::label($metaData['label'], $id);
+            }
+
+            $metaData['class'][] = 'btn';
+            $out .= CHtml::link($metaData['label'], $metaData['link'], array(
+                'id' => $id,
+                'style' => $metaData['style'],
+                'class' => implode(' ', $metaData['class'])
+            ));
             return $out;
         }
 

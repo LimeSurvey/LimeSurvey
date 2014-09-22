@@ -1,5 +1,5 @@
 <div id='tokens'><ul>
-        <li><label for='anonymized'><?php $clang->eT("Anonymized responses?"); ?>
+        <li><label for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'><?php $clang->eT("Anonymized responses?"); ?>
 
                 <script type="text/javascript"><!--
                     function alertPrivacy()
@@ -38,21 +38,9 @@
                 </select>
                 <?php } ?>
         </li>
+
         <li>
-            <label for='alloweditaftercompletion' title='<?php $clang->eT("With not anonymous survey: user can update his answer after completion, else user can add new answers without restriction."); ?>'><?php $clang->eT("Allow multiple responses or update responses with one token?"); ?></label>
-            <select id='alloweditaftercompletion' name='alloweditaftercompletion'>
-                <option value='Y'
-                    <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['alloweditaftercompletion'] == "N") { ?>  selected='selected' <?php } ?>
-                    ><?php $clang->eT("No"); ?></option>
-            </select>
-        </li>
-        <li>
-            <label for='tokenanswerspersistence'><?php $clang->eT("Enable token-based response persistence?"); ?></label>
+            <label for='tokenanswerspersistence' title='<?php $clang->eT("With non-anonymized responses (and the token table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'><?php $clang->eT("Enable token-based response persistence?"); ?></label>
             <select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') { alert('<?php $clang->eT("This option can't be set if the `Anonymized responses` option is active.","js"); ?>'); this.value='N';}">
                 <option value='Y'
                     <?php if ($esrow['tokenanswerspersistence'] == "Y") { ?>
@@ -64,7 +52,23 @@
                         selected='selected'
                         <?php } ?>
                     ><?php $clang->eT("No"); ?></option>
-            </select></li>
+            </select>
+        </li>
+
+        <li>
+            <label for='alloweditaftercompletion' title='<?php $clang->eT("If token-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'><?php $clang->eT("Allow multiple responses or update responses with one token?"); ?></label>
+            <select id='alloweditaftercompletion' name='alloweditaftercompletion'>
+                <option value='Y'
+                    <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
+                        selected='selected'
+                        <?php } ?>
+                    ><?php $clang->eT("Yes"); ?></option>
+                <option value='N'
+                    <?php if ($esrow['alloweditaftercompletion'] == "N") { ?>  selected='selected' <?php } ?>
+                    ><?php $clang->eT("No"); ?></option>
+            </select>
+        </li>
+
         <li><label for='allowregister'><?php $clang->eT("Allow public registration?"); ?></label>
             <select id='allowregister' name='allowregister'>
                 <option value='Y'

@@ -361,13 +361,17 @@ class tokens extends Survey_Common_Action
         $sidx = Yii::app()->request->getPost('sidx', 'lastname');
         $sord = Yii::app()->request->getPost('sord', 'asc');
         $limit = Yii::app()->request->getPost('rows', 25);
-        
+
         $aData = new stdClass;
         $aData->page = $page;
         
+        $aSearchArray=Yii::app()->request->getPost('searcharray');
+        if(empty($search) && !empty($aSearchArray)){
+            $search=$aSearchArray;
+        }
         if (!empty($search)) {
             $condition = TokenDynamic::model($iSurveyId)->getSearchMultipleCondition($search);
-        } else { 
+        }else{ 
             $condition = new CDbCriteria();
         }
                 
@@ -446,8 +450,8 @@ class tokens extends Survey_Common_Action
             } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
-            // Check if the token can be taken
-            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "") && $bCreatePermission) {
+            // Check if the token can be taken 
+            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "" || $aSurveyInfo['alloweditaftercompletion']=="Y") && $bCreatePermission) {
                 $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", $clang->gT("Do survey"), '_blank');
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
@@ -683,7 +687,7 @@ class tokens extends Survey_Common_Action
             $aData = array(
             'firstname' => Yii::app()->request->getPost('firstname'),
             'lastname' => Yii::app()->request->getPost('lastname'),
-            'email' => sanitize_email(Yii::app()->request->getPost('email')),
+            'email' => Yii::app()->request->getPost('email'),
             'emailstatus' => Yii::app()->request->getPost('emailstatus'),
             'token' => $sanitizedtoken,
             'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
@@ -784,7 +788,7 @@ class tokens extends Survey_Common_Action
 
             $aTokenData['firstname'] = Yii::app()->request->getPost('firstname');
             $aTokenData['lastname'] = Yii::app()->request->getPost('lastname');
-            $aTokenData['email'] = sanitize_email(Yii::app()->request->getPost('email'));
+            $aTokenData['email'] = Yii::app()->request->getPost('email');
             $aTokenData['emailstatus'] = Yii::app()->request->getPost('emailstatus');
             $santitizedtoken = sanitize_token(Yii::app()->request->getPost('token'));
             $aTokenData['token'] = $santitizedtoken;
@@ -919,7 +923,7 @@ class tokens extends Survey_Common_Action
 
             $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
             'lastname' => Yii::app()->request->getPost('lastname'),
-            'email' => sanitize_email(Yii::app()->request->getPost('email')),
+            'email' => Yii::app()->request->getPost('email'),
             'emailstatus' => 'OK',
             'token' => $santitizedtoken,
             'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
@@ -1558,7 +1562,7 @@ class tokens extends Survey_Common_Action
                 }
                 else
                 {
-                    $aData['tokenoutput'].='<b>All emails were sent.</b>';
+                    $aData['tokenoutput'].="<strong class='result success text-success'>".gT("All emails were sent.")."<strong>";
                 }
 
                 $this->_renderWrappedTemplate('token', $aViewUrls, $aData);
@@ -1744,7 +1748,7 @@ class tokens extends Survey_Common_Action
                                     if (isset($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]))
                                     {
                                         $myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
-                                        $myemail = sanitize_email($myemail);
+                                        $myemail = $myemail;
                                         ++$xv;
                                     }
                                     elseif ($filterblankemail !== true)
@@ -1984,7 +1988,7 @@ class tokens extends Survey_Common_Action
                                     $separator = ';'; else
                                     $separator = ',';
                         }
-                        $firstline = convertCSVRowToArray($buffer, $separator, '"');
+                        $firstline = str_getcsv($buffer, $separator, '"');
                         $firstline = array_map('trim', $firstline);
                         $ignoredcolumns = array();
                         // Now check the first line for invalid fields
@@ -2010,7 +2014,7 @@ class tokens extends Survey_Common_Action
                     else
                     {
 
-                        $line = convertCSVRowToArray($buffer, $separator, '"');
+                        $line = str_getcsv($buffer, $separator, '"');
 
                         if (count($firstline) != count($line))
                         {

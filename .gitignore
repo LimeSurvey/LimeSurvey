@@ -1,3 +1,4 @@
+.settings
 .project
 /upload/surveys/*
 /styles/gringegreen/images/Thumbs.db
@@ -18,3 +19,4 @@
 /third_party/jqgrid/src
 .settings/org.eclipse.php.core.prefs
 .buildpath
+/application/config/config.php

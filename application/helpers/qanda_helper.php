@@ -164,10 +164,6 @@ function retrieveAnswers($ia)
             break;
         case 'R': //RANKING STYLE
             $values=do_ranking($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = $clang->gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.");
-            }
             break;
         case 'M': //Multiple choice checkbox
             $values=do_multiplechoice($ia);
@@ -1288,8 +1284,9 @@ function do_date($ia)
 
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".substr($goodchars,0,1);
+        // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
         // "+1" makes room for a trailing space in date/time values
-        $iLength=strlen($dateformatdetails['dateformat'])+1;
+        $iLength=strlen(date($dateformatdetails['phpdate'],mktime(23,59,59,12,30,1999)))+1;
 
 
         // HTML for date question using datepicker
@@ -1371,17 +1368,19 @@ function do_language($ia)
 
     $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    // Get actual answer
+    $sLang=$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
+    if(!in_array($sLang,$answerlangs))
+    {
+        $sLang=Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    }
     $answer = "\n\t<p class=\"question answer-item dropdown-item langage-item\">\n"
     ."<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Choose your language')}</label>"
     ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\" class=\"languagesurvey\">\n";
-    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
         $answer .= "\t<option value=\"{$ansrow}\"";
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow)
-        {
-            $answer .= SELECTED;
-        }elseif($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'] == $ansrow)
+        if ($sLang == $ansrow)
         {
             $answer .= SELECTED;
         }
@@ -1389,14 +1388,13 @@ function do_language($ia)
         $answer .= '>'.$aLanguage[1]."</option>\n";
     }
     $answer .= "</select>\n";
-    $answer .= "<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+    $answer .= "<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{$sLang}\" />\n";
     $inputnames[]=$ia[1];
-    
-    $answer .= "\n<input type=\"hidden\" name=\"lang\" value=\"\" />\n\t</p>\n";
+
     $answer .= "<script type='text/javascript'>\n"
     . "/*<![CDATA[*/\n"
     ."$('#answer{$ia[1]}').change(function(){ "
-    ."$('input[name=\"lang\"]').val($(this).val());"
+    ."$('<input type=\"hidden\">').attr('name','lang').val($(this).val()).appendTo($('form#limesurvey'));"
     ." })\n"
     ." /*]]>*/\n"
     ."</script>\n";
@@ -2117,9 +2115,12 @@ function do_ranking($ia)
         $max_answers=$anscount;
     }
     // Get the max number of line needed
-    if(ctype_digit($max_answers) && intval($max_answers)<$anscount){
+    if(ctype_digit($max_answers) && intval($max_answers)<$anscount)
+    {
         $iMaxLine=$max_answers;
-    }else{
+    }
+    else
+    {
         $iMaxLine=$anscount;
     }
     if (trim($aQuestionAttributes["min_answers"])!='')
@@ -2132,13 +2133,13 @@ function do_ranking($ia)
     // First start by a ranking without javascript : just a list of select box
     // construction select box
     $answers= array();
-        foreach ($ansresult as $ansrow)
-        {
-            $answers[] = $ansrow;
-        }
+    foreach ($ansresult as $ansrow)
+    {
+        $answers[] = $ansrow;
+    }
     $answer .= '<div class="ranking-answers">
     <ul class="answers-list select-list">';
-    for ($i=1; $i<=$anscount; $i++)
+    for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
         $answer .= "\n<li class=\"select-item\">";
@@ -2176,7 +2177,7 @@ function do_ranking($ia)
         . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
         . "<div style='display:none' id='ranking-{$ia[0]}-name'>".$ia[1]."</div>"
         . "</div>";
-    // The list with HTML answres
+    // The list with HTML answers
     $answer .="<div style=\"display:none\">";
     foreach ($answers as $ansrow)
     {
@@ -2203,11 +2204,15 @@ function do_ranking($ia)
     {
         $rank_title=$clang->gT("Your Ranking",'js');
     }
+    // hide_tip is managed by css with EM
+    $rank_help = $clang->gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
+
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
     . "var aRankingTranslations = {
              choicetitle: '{$choice_title}',
-             ranktitle: '{$rank_title}'
+             ranktitle: '{$rank_title}',
+             rankhelp: '{$rank_help}'
             };\n"
     ." doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]});\n"
     ." -->\n"
@@ -3266,10 +3271,15 @@ function do_multiplenumeric($ia)
                 $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
 
-                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".$clang->gT('Only numbers may be entered in this field.')."\" value=\"";                
+                $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".$clang->gT('Only numbers may be entered in this field.')."\" value=\"";
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
-                    $dispVal = str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
+                    $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    if(strpos($dispVal,"."))
+                    {
+                        $dispVal=rtrim(rtrim($dispVal,"0"),".");
+                    }
+                    $dispVal = str_replace('.',$sSeparator,$dispVal);
                     $answer_main .= $dispVal;
                 }
 
@@ -4962,7 +4972,7 @@ function do_array_multitext($ia)
         }
         $num_class = ' numbers-only';
         $extraclass.=" numberonly";
-        $caption.=$clang->gT("Each answers are number. "); 
+        $caption.=$clang->gT("Each answer is a number. "); 
         switch ($aQuestionAttributes['show_totals'])
         {
             case 'R':
@@ -4972,11 +4982,11 @@ function do_array_multitext($ia)
                 <input name="[[ROW_NAME]]_total" title="[[ROW_NAME]] total" size="[[INPUT_WIDTH]]" value="" type="text" disabled="disabled" class="disabled" />
                 </label>
                 </td>';
-                $col_head = '            <th class="total">Total</th>';
+                $col_head = '            <th class="total">'.$clang->gT('Total').'</th>';
                 if($show_grand == true)
                 {
                     $row_head = '
-                    <th class="answertext total">Grand total</th>';
+                    <th class="answertext total">'.$clang->gT('Grand total').'</th>';
                     $col_total = '
                     <td>&nbsp;</td>';
                     $grand_total = '
@@ -4984,7 +4994,7 @@ function do_array_multitext($ia)
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
                 };
-                $caption.=$clang->gT("The last row show the total for the column. "); 
+                $caption.=$clang->gT("The last row shows the total for the column. "); 
                 break;
             case 'C':
                 $totals_class = $show_totals = 'col';
@@ -5004,7 +5014,7 @@ function do_array_multitext($ia)
                     <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                     </td>';
                 };
-                $caption.=$clang->gT("The last column show the total for the row. "); 
+                $caption.=$clang->gT("The last column shows the total for the row. "); 
                 break;
             case 'B':
                 $totals_class = $show_totals = 'both';
@@ -5017,7 +5027,7 @@ function do_array_multitext($ia)
                 <td  class="total information-item">
                 <input type="text" size="[[INPUT_WIDTH]]" value="" disabled="disabled" class="disabled" />
                 </td>';
-                $col_head = '            <th class="total">Total</th>';
+                $col_head = '            <th class="total">'.$clang->gT('Total').'</th>';
                 $row_head = '
                 <th class="answertext">Total</th>';
                 if($show_grand == true)
@@ -5032,7 +5042,7 @@ function do_array_multitext($ia)
                     $grand_total = '
                     <td>&nbsp;</td>';
                 };
-                $caption.=$clang->gT("The last row show the total for the column and the last column show the total for the row. "); 
+                $caption.=$clang->gT("The last row shows the total for the column and the last column shows the total for the row. "); 
                 break;
         };
         if(!empty($totals_class))
@@ -5606,7 +5616,7 @@ function do_array_multiflexi($ia)
                     . " if(this.checked) {"
                     . "  aelt.value=1;jelt.value=1;$checkconditionFunction(1,'{$myfname2}',aelt.type);"
                     . " } else {"
-                    . "  aelt.value=0;jelt.value=0;$checkconditionFunction(0,'{$myfname2}',aelt.type);"
+                    . "  aelt.value='';jelt.value='';$checkconditionFunction('','{$myfname2}',aelt.type);"
                     . " }; return true;\" "
                     //                    . " onchange=\"checkconditions(this.value, this.name, this.type)\" "
                     . " />\n";
@@ -6245,12 +6255,14 @@ function do_array_dual($ia)
             $trbc = '';
             foreach ($aSubQuestions as $ansrow)
             {
+
                 $myfname = $ia[1].$ansrow['title'];
                 $myfname0 = $ia[1].$ansrow['title']."#0";
                 $myfid0 = $ia[1].$ansrow['title']."_0";
                 $myfname1 = $ia[1].$ansrow['title']."#1";
                 $myfid1 = $ia[1].$ansrow['title']."_1";
-
+                $sActualAnswer0=isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]:"";
+                $sActualAnswer1=isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]:"";
                 if ($ia[6]=='Y' && (is_array($notanswered)) && ((array_search($myfname0, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')) )
                 {
                     $answertext="<span class='errormandatory'>".$ansrow['question']."</span>";
@@ -6264,12 +6276,8 @@ function do_array_dual($ia)
                 $answer .= "\t<th class=\"answertext\">\n"
                 . "<label for=\"answer$myfid0\">{$answertext}</label>\n";
                 // Hidden answers used by EM: sure can be added in javascript
-                $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid0\" id=\"java$myfid0\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];}
-                $answer .= "\" />\n";
-                $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid1\" id=\"java$myfid1\" value=\"";
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])) {$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];}
-                $answer .= "\" />\n";
+                $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid0\" id=\"java$myfid0\" value=\"{$sActualAnswer0}\" />\n";
+                $answer .= "<input type=\"hidden\" disabled=\"disabled\" name=\"java$myfid1\" id=\"java$myfid1\" value=\"{$sActualAnswer1}\" />\n";
                 $answer . "\t</th>\n";
                 // Selector 0
                 if($ddprefix != '')
@@ -6279,35 +6287,23 @@ function do_array_dual($ia)
                 $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
                 . "<select name=\"$myfname0\" id=\"answer$myfid0\">\n";
 
-                // If not mandatory and showanswer, show 'Please choose'
-                if (SHOW_NO_ANSWER == 1)
+                // Show the 'Please choose' if there are no answer actually
+                if ($sActualAnswer0 == '')
                 {
-                    $answer .= "\t<option value=\"\" ";
-                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == '')
-                    {
-                        $answer .= SELECTED;
-                    }
-                    $answer .='>';
-                    if ($ia[6] != 'Y')
-                    {
-                        $answer .=$clang->gT('No answer');
-                    }
-                    else
-                    {
-                        $answer .=$clang->gT('Please choose...');
-                    }
-                    
-                    $answer .="</option>\n";
+                    $answer .= "\t<option value=\"\" ".SELECTED.">".$clang->gT('Please choose...')."</option>\n";
                 }
-
                 foreach ($labels0 as $lrow)
                 {
                     $answer .= "\t<option value=\"".$lrow['code'].'" ';
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $lrow['code'])
+                    if ($sActualAnswer0 == $lrow['code'])
                     {
                         $answer .= SELECTED;
                     }
                     $answer .= '>'.flattenText($lrow['title'])."</option>\n";
+                }
+                if ($sActualAnswer0 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER)
+                {
+                    $answer .= "\t<option value=\"\">".$clang->gT('No answer')."</option>\n";
                 }
                 $answer .= "</select>\n";
                 $answer .= "</td>\n";
@@ -6327,34 +6323,23 @@ function do_array_dual($ia)
                 $answer .= "\t<td class=\"answer-item dropdown-item\">\n"
                 . "<label class=\"hide read\" for=\"answer{$myfid1}\">{$answertext}</label>"
                 . "<select name=\"$myfname1\" id=\"answer$myfid1\">\n";
-                // If not mandatory and showanswer, show 'Please choose'
-                if (SHOW_NO_ANSWER == 1)
+                // Show the 'Please choose' if there are no answer actually
+                if ($sActualAnswer1 == '')
                 {
-                    $answer .= "\t<option value=\"\" ";
-                    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')
-                    {
-                        $answer .= SELECTED;
-                    }
-                    $answer .='>';
-                    if ($ia[6] != 'Y')
-                    {
-                        $answer .=$clang->gT('No answer');
-                    }
-                    else
-                    {
-                        $answer .=$clang->gT('Please choose...');
-                    }
-                    
-                    $answer .="</option>\n";
+                    $answer .= "\t<option value=\"\" ".SELECTED.">".$clang->gT('Please choose...')."</option>\n";
                 }
                 foreach ($labels1 as $lrow1)
                 {
                     $answer .= "\t<option value=\"".$lrow1['code'].'" ';
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $lrow1['code'])
+                    if ($sActualAnswer1 == $lrow1['code'])
                     {
                         $answer .= SELECTED;
                     }
                     $answer .= '>'.flattenText($lrow1['title'])."</option>\n";
+                }
+                if ($sActualAnswer1 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER)
+                {
+                    $answer .= "\t<option value=\"\">".$clang->gT('No answer')."</option>\n";
                 }
                 $answer .= "</select>\n";
                 $answer .= "</td>\n";

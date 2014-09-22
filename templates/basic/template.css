@@ -282,6 +282,10 @@ table,img {
   background-color: #fff;
 }
 
+.numeric-multi .array1 {
+  background-color: #FFFFFF;
+}
+
 .alert{
     display:block;
     }

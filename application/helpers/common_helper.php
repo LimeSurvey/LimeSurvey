@@ -13,22 +13,6 @@
 Yii::import('application.helpers.sanitize_helper', true);
 
 /**
-* Simple function to sort the permissions by title
-*
-* @param mixed $aPermissionA  Permission A to compare
-* @param mixed $aPermissionB  Permission B to compare
-*/
-function comparePermission($aPermissionA,$aPermissionB)
-{
-    if($aPermissionA['title'] >$aPermissionB['title']) {
-        return 1;
-    }
-    else {
-        return -1;
-    }
-}
-
-/**
  * Translation helper function.
  * @param string $string
  * @param string $escapemode
@@ -51,6 +35,11 @@ function eT($string, $escapemode = 'html')
     echo gT($string, $escapemode);
 }
 
+function ngT($single, $plural, $number, $escapemode = 'html')
+{
+    Yii::import('application.libraries.Limesurvey_lang');
+    return App()->lang->ngT($single, $plural, $number, $escapemode);
+}
 /**
 * getQuestionTypeList() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
@@ -60,203 +49,12 @@ function eT($string, $escapemode = 'html')
 *
 * @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
 *
-* Explanation of questiontype array:
-*
-* description : Question description
-* subquestions : 0= Does not support subquestions x=Number of subquestion scales
-* answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
-* assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
 */
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
-    $clang = Yii::app()->lang;
 
-    $group['Arrays'] = $clang->gT('Arrays');
-    $group['MaskQuestions'] = $clang->gT("Mask questions");
-    $group['SinChoiceQues'] = $clang->gT("Single choice questions");
-    $group['MulChoiceQues'] = $clang->gT("Multiple choice questions");
-    $group['TextQuestions'] = $clang->gT("Text questions");
-
-
-    $qtypes = array(
-    "1" => array('description' => $clang->gT("Array dual scale"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'assessable' => 1,
-    'hasdefaultvalues' => 0,
-    'answerscales' => 2),
-    "5" => array('description' => $clang->gT("5 Point Choice"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "A" => array('description' => $clang->gT("Array (5 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "B" => array('description' => $clang->gT("Array (10 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "C" => array('description' => $clang->gT("Array (Yes/No/Uncertain)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "D" => array('description' => $clang->gT("Date/Time"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "E" => array('description' => $clang->gT("Array (Increase/Same/Decrease)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "F" => array('description' => $clang->gT("Array"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "G" => array('description' => $clang->gT("Gender"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "H" => array('description' => $clang->gT("Array by column"),
-    'group' => $group['Arrays'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "I" => array('description' => $clang->gT("Language Switch"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "K" => array('description' => $clang->gT("Multiple Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 1,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "L" => array('description' => $clang->gT("List (Radio)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "M" => array('description' => $clang->gT("Multiple choice"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "N" => array('description' => $clang->gT("Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "O" => array('description' => $clang->gT("List with comment"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "P" => array('description' => $clang->gT("Multiple choice with comments"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "Q" => array('description' => $clang->gT("Multiple Short Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "R" => array('description' => $clang->gT("Ranking"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "S" => array('description' => $clang->gT("Short Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "T" => array('description' => $clang->gT("Long Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "U" => array('description' => $clang->gT("Huge Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "X" => array('description' => $clang->gT("Text display"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "Y" => array('description' => $clang->gT("Yes/No"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "!" => array('description' => $clang->gT("List (Dropdown)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    ":" => array('description' => $clang->gT("Array (Numbers)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    ";" => array('description' => $clang->gT("Array (Texts)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "|" => array('description' => $clang->gT("File upload"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "*" => array('description' => $clang->gT("Equation"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    );
-    asort($qtypes);
-
+    $qtypes = Question::typeList();
     if ($ReturnType == "array")
         return $qtypes;
 
@@ -339,9 +137,9 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $args = array('order'=>'surveyls_title');
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with('defaultlanguage')->findAll($args);
         } else {
-            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+            $surveyidresult = Survey::model()->with('defaultlanguage')->findAll($args);
         }
 
         $surveynames = array();
@@ -1551,13 +1349,13 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 */
 function returnGlobal($stringname,$bRestrictToString=false)
 {
-    $urlParam=Yii::app()->request->getParam($stringname); 
+    $urlParam=Yii::app()->request->getParam($stringname);
     if(is_null($urlParam) && $aCookies=Yii::app()->request->getCookies() && $stringname!='sid')
     {
         if(isset($aCookies[$stringname]))
         {
             $urlParam = $aCookies[$stringname];
-        } 
+        }
     }
     $bUrlParamIsArray=is_array($urlParam);// Needed to array map or if $bRestrictToString
     if (!is_null($urlParam) && $stringname!='' && (!$bUrlParamIsArray || !$bRestrictToString))
@@ -1651,8 +1449,8 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             return false;
 
         // If it is a comment field there is nothing to convert here
-        if ($fields['aid']=='comment') return $sValue; 
-            
+        if ($fields['aid']=='comment') return $sValue;
+
         //Find out the question type
         $this_type = $fields['type'];
         switch($this_type)
@@ -1799,22 +1597,45 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
 }
 
 /**
-* Validate an email address - also supports IDN email addresses 
+* Validate an email address - also supports IDN email addresses
 * @returns True/false for valid/invalid
-* 
+*
 * @param mixed $sEmailAddress  Email address to check
 */
 function validateEmailAddress($sEmailAddress){
     require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
     $oIdnConverter = new idna_convert();
     $sEmailAddress=$oIdnConverter->encode($sEmailAddress);
-    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);   
+    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
     if ($bResult!==false)
     {
         return true;
     }
     return false;
 }
+
+/**
+* Validate an list of email addresses - either as array or as semicolon-limited text
+* @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+*
+* @param mixed $sEmailAddresses  Email address to check
+*/
+function validateEmailAddresses($aEmailAddressList){
+  $aOutList=false;
+  if (!is_array($aEmailAddressList))
+  {
+     $aEmailAddressList=explode(';',$aEmailAddressList);
+  }
+  foreach ($aEmailAddressList as $sEmailAddress)
+  {
+      $sEmailAddress= trim($sEmailAddress);
+      if (validateEmailAddress($sEmailAddress)){
+         $aOutList=$sEmailAddress;
+      }
+  }
+  return $aOutList;
+}
+
 
 function validateTemplateDir($sTemplateName)
 {
@@ -1904,7 +1725,7 @@ function validateTemplateDir($sTemplateName)
                 case ";":  //ARRAY (Multi Flex) (Text)
                 case ":":  //ARRAY (Multi Flex) (Numbers)
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
-                   
+
                     foreach($result as $row)
                     {
                         $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
@@ -2022,12 +1843,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['question']=$clang->gT("Start language");
         $fieldmap["startlanguage"]['group_name']="";
     }
-
-    // Select which question IDs have default values
-    $_aDefaultValues = DefaultValue::model()->with(array('question' => array('condition' => 'question.sid=' . $surveyid)))->findAll();
-    $aDefaultValues = array();
-    foreach ($_aDefaultValues as $k => $v)
-        $aDefaultValues[] = $v->qid;
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
@@ -2562,7 +2377,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 * @return bool
 */
 function hasFileUploadQuestion($iSurveyID) {
-    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));    
+    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));
     return $iCount>0 ;
 }
 
@@ -3507,8 +3322,8 @@ function questionAttributes($returnByName=false)
         'i18n'=>true,
         'default'=>"",
         "help"=>$clang->gT('In the printable version replace the relevance equation with this explanation text.'),
-        "caption"=>$clang->gT("Relevance help for printable survey"));    
-        
+        "caption"=>$clang->gT("Relevance help for printable survey"));
+
         $qattributes["public_statistics"]=array(
         "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
         'category'=>$clang->gT('Statistics'),
@@ -4003,7 +3818,7 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Other'),
         'sortorder'=>134,
         "inputtype"=>"text",
-        'default'=>"png, gif, doc, odt",
+        'default'=>"png, gif, jpg, doc, odt",
         "help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
         "caption"=>$clang->gT("Allowed file types"));
 
@@ -4069,14 +3884,6 @@ function categorySort($a, $b)
     return $result;
 }
 
-// make sure the given string (which comes from a POST or GET variable)
-// is safe to use in MySQL.  This does nothing if gpc_magic_quotes is on.
-function autoEscape($str) {
-    if (!get_magic_quotes_gpc()) {
-        return addslashes ($str);
-    }
-    return $str;
-}
 
 // the opposite of the above: takes a POST or GET variable which may or
 // may not have been 'auto-quoted', and return the *unquoted* version.
@@ -4292,7 +4099,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             {
                 $mail->AddAttachment($attachment[0], $attachment[1]);
             }
-            else 
+            else
             { // Or a string with the filename.
                 $mail->AddAttachment($attachment);
             }
@@ -4610,13 +4417,6 @@ function CSVEscape($sString)
 {
     $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
     return '"' . str_replace('"','""', $sString) . '"';
-}
-
-function convertCSVRowToArray($string, $separator, $quotechar)
-{
-    $fields=preg_split('/' . $separator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
-    $fields=array_map('CSVUnquote',$fields);
-    return $fields;
 }
 
 function createPassword()
@@ -4955,7 +4755,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
         $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
         return preg_replace('#'.$pattern.'#', $replace, $sString);
     }
-    else // unkown type
+    else // unknown type
     {
         return $sString;
     }
@@ -5442,10 +5242,10 @@ function updateCheck()
     $aUpdateVersions=getUpdateInfo();
     $clang = Yii::app()->lang;
 
-    if (isset($aUpdateVersions['errorcode'])) 
+    if (isset($aUpdateVersions['errorcode']))
     {
         Yii::app()->setFlashMessage(sprintf($clang->gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
-        $aUpdateVersions=array(); 
+        $aUpdateVersions=array();
     }
     if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
@@ -5462,28 +5262,28 @@ function updateCheck()
 
             case 'both':
                 // Show first available update
-                $aUpdateVersion=reset($aUpdateVersions);    
+                $aUpdateVersion=reset($aUpdateVersions);
                 break;
-                
+
             default:
                 // Never show a notification
                 $aUpdateVersions=array();
                 break;
         }
     }
-    
+
     setGlobalSetting('updateversions',json_encode($aUpdateVersions));
-    
-    
+
+
     if (isset($aUpdateVersion)) {
         setGlobalSetting('updateavailable',1);
         setGlobalSetting('updatebuild',$aUpdateVersion['build']);
         setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
     } else {
-        setGlobalSetting('updateavailable',0);    
+        setGlobalSetting('updateavailable',0);
         $aUpdateVersions = array();
     }
-    
+
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
     return $aUpdateVersions;
 }
@@ -5680,10 +5480,10 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
     $result = "N/A";
     if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
         return $result;
+    $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
     $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $quota = $quota_info[0];
-    if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
-    count($quota['members']) > 0)
+    if (count($quota['members']) > 0) // Existence of table already tested
     {
         // Keep a list of fields for easy reference
         $fields_list = array();
@@ -5693,25 +5493,31 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 
         foreach ($quota['members'] as $member)
         {
-            $criteria = new CDbCriteria;
-
-            foreach ($member['fieldnames'] as $fieldname)
-            {
-                if (!in_array($fieldname, $fields_list))
-                    $fields_list[] = $fieldname;
-
-                // Yii does not quote column names (duh!) so we have to do it.
-                $criteria->addColumnCondition(array(Yii::app()->db->quoteColumnName($fieldname) => $member['value']), 'OR');
-            }
-
-            $fields_query[$fieldname] = $criteria;
+            if(in_array($member['fieldname'],$aColumnName))
+                $fields_list[$member['fieldname']][] = $member['value'];
+            else
+                return $result;// We return N/A even for activated survey
         }
 
         $criteria = new CDbCriteria;
-
-        foreach ($fields_list as $fieldname)
-            $criteria->mergeWith($fields_query[$fieldname]);
-        $criteria->mergeWith(array('condition'=>"submitdate IS NOT NULL"));
+        $criteria->condition="submitdate IS NOT NULL";
+        $aParams=array();
+        foreach ($fields_list as $fieldname=>$aValue)
+        {
+            if(count($aValue)==1)
+            {
+                // Quote columnName : starting with number broke mssql
+                $criteria->addCondition(Yii::app()->db->quoteColumnName($fieldname)." = :field{$fieldname}");
+                $aParams[":field{$fieldname}"]=$aValue[0];
+            }
+            else
+            {
+                $criteria->addInCondition(Yii::app()->db->quoteColumnName($fieldname),$aValue); // NO need params : addInCondition bind automatically
+            }
+            // We can use directly addInCondition, but don't know what is speediest.
+        }
+        if(!empty($aParams))
+            $criteria->params=$aParams;
         $result = SurveyDynamic::model($iSurveyId)->count($criteria);
     }
 
@@ -5850,7 +5656,6 @@ function includeKeypad()
 function getQuotaInformation($surveyid,$language,$iQuotaID='all')
 {
     Yii::log('getQuotaInformation');
-    global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     $aAttributes=array('sid' => $surveyid);
     if ($iQuotaID != 'all')
@@ -5859,7 +5664,7 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
     }
 
     $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
-    
+
     $quota_info = array();
     $x=0;
 
@@ -5873,18 +5678,8 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
         foreach ($result as $_survey_quotas)
         {
             $survey_quotas = array_merge($_survey_quotas->attributes,$_survey_quotas->languagesettings[0]->attributes);// We have only one language, then we can use first only
-            // !!! Doubting this
-#            foreach ($_survey_quotas->defaultlanguage as $k => $v)
-#                $survey_quotas[$k] = $v;
 
-            array_push($quota_info,array('Name' => $survey_quotas['name'],
-            'Limit' => $survey_quotas['qlimit'],
-            'Action' => $survey_quotas['action'],
-            'Message' => $survey_quotas['quotals_message'],
-            'Url' => $survey_quotas['quotals_url'],
-            'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
-            'AutoloadUrl' => $survey_quotas['autoload_url']));
-
+            array_push($quota_info,$survey_quotas);
             $result_qe = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
             $quota_info[$x]['members'] = array();
             if (count($result_qe) > 0)
@@ -5892,42 +5687,47 @@ function getQuotaInformation($surveyid,$language,$iQuotaID='all')
                 foreach ($result_qe as $quota_entry)
                 {
                     $quota_entry = $quota_entry->attributes;
-                    $result_quest=Question::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
-                    $qtype=$result_quest->attributes;
-
-                    $fieldnames = "0";
-
-                    if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
+                    $oMemberQuestion=Question::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
+                    if($oMemberQuestion)
                     {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
+                        $fieldname = "0";
 
-                    if($qtype['type'] == "L" || $qtype['type'] == "O" || $qtype['type'] =="!")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
+                        if ($oMemberQuestion->type == "I" || $oMemberQuestion->type == "G" || $oMemberQuestion->type == "Y")
+                        {
+                            $fieldname= $surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'];
+                            $value = $quota_entry['code'];
+                        }
 
-                    if($qtype['type'] == "M")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
-                        $value = "Y";
-                    }
+                        if($oMemberQuestion->type == "L" || $oMemberQuestion->type == "O" || $oMemberQuestion->type =="!")
+                        {
+                            $fieldname=$surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'];
+                            $value = $quota_entry['code'];
+                        }
 
-                    if($qtype['type'] == "A" || $qtype['type'] == "B")
-                    {
-                        $temp = explode('-',$quota_entry['code']);
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
-                        $value = $temp[1];
-                    }
+                        if($oMemberQuestion->type == "M")
+                        {
+                            // Need to remove invalid $quota_entry['code']
+                            $fieldname=$surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'].$quota_entry['code'];
+                            $value = "Y";
+                        }
 
-                    array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],
-                    'type' => $qtype['type'],
-                    'code' => $quota_entry['code'],
-                    'value' => $value,
-                    'qid' => $quota_entry['qid'],
-                    'fieldnames' => $fieldnames));
+                        if($oMemberQuestion->type == "A" || $oMemberQuestion->type == "B")
+                        {
+                            $temp = explode('-',$quota_entry['code']);
+                            $fieldname=$surveyid.'X'.$oMemberQuestion->gid.'X'.$quota_entry['qid'].$temp[0];
+                            $value = $temp[1];
+                        }
+
+                        array_push($quota_info[$x]['members'],array(
+                            'Title' => $oMemberQuestion->title,
+                            'type' => $oMemberQuestion->type,
+                            'code' => $quota_entry['code'],
+                            'value' => $value,
+                            'qid' => $quota_entry['qid'],
+                            'fieldname' => $fieldname
+                            )
+                        );
+                    }
                 }
             }
             $x++;
@@ -6136,7 +5936,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
 
 /**
 * Replaces EM variable codes in a current survey with a new one
-* 
+*
 * @param mixed $iSurveyID The survey ID
 * @param mixed $aCodeMap The codemap array (old_code=>new_code)
 */
@@ -6149,7 +5949,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0])) 
+            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
             {
                 $sOldCode=preg_quote($sOldCode,'/');
                 $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
@@ -7258,7 +7058,7 @@ function getDBTableUsage($surveyid){
         $hard_limit = 1600;
         $size_limit = 0;
     }
-    elseif ($arrCols['dbtype'] == 'mssql' || $arrCols['dbtype'] == 'dblib'){ 
+    elseif ($arrCols['dbtype'] == 'mssql' || $arrCols['dbtype'] == 'dblib'){
         $hard_limit = 1024;
         $size_limit = 0;
     }
@@ -7295,7 +7095,7 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 
     foreach ($csvarray as $csvrow)
     {
-        $rowcontents = convertCSVRowToArray($csvrow,',','"');
+        $rowcontents = str_getcsv($csvrow,',','"');
         $rowid = "";
         foreach ($idkeysarray as $idfieldnum)
         {
@@ -7354,7 +7154,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     if (!$bIncludeSuperAdmins)
     {
       // @todo: Adjust for new permission system - not urgent since it it just display
-      //   $sSurveyIDQuery.='and superadmin=0 ';     
+      //   $sSurveyIDQuery.='and superadmin=0 ';
     }
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
     $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
@@ -7434,16 +7234,32 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 
 /**
 * This function fixes the group ID and type on all subquestions
-*
+* Optimized for minimum memory usage even on huge databases
 */
 function fixSubquestions()
 {
-    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
-    from {{questions}} sq JOIN {{questions}} q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)")->query();
-    foreach($surveyidresult->readAll() as $sv)
+    $surveyidresult=Yii::app()->db->createCommand()
+    ->select('sq.qid, q.gid , q.type ')
+    ->from('{{questions}} sq')
+    ->join('{{questions}} q','sq.parent_qid=q.qid')
+    ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+    ->limit(10000)
+    ->query();
+    $aRecords=$surveyidresult->readAll();
+    while (count($aRecords)>0)
     {
-        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->query();
+        foreach($aRecords as $sv)
+        {
+            Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+        }
+        $surveyidresult=Yii::app()->db->createCommand()
+        ->select('sq.qid, q.gid , q.type ')
+        ->from('{{questions}} sq')
+        ->join('{{questions}} q','sq.parent_qid=q.qid')
+        ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+        ->limit(10000)
+        ->query();
+        $aRecords=$surveyidresult->readAll();
     }
 
 }
@@ -7481,7 +7297,7 @@ function json_decode_ls($jsonString)
  * Return accepted codingsArray for importing files
  *
  * Used in vvimport
- * TODO : use in token and 
+ * TODO : use in token and
  * @return array
  */
 function aEncodingsArray()
@@ -7653,31 +7469,31 @@ function array_diff_assoc_recursive($array1, $array2) {
 }
 
 
-    function convertPHPSizeToBytes($sSize)  
-    {  
-        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)  
-        $sSuffix = substr($sSize, -1);  
-        $iValue = substr($sSize, 0, -1);  
-        switch(strtoupper($sSuffix)){  
-        case 'P':  
-            $iValue *= 1024;  
-        case 'T':  
-            $iValue *= 1024;  
-        case 'G':  
-            $iValue *= 1024;  
-        case 'M':  
-            $iValue *= 1024;  
-        case 'K':  
-            $iValue *= 1024;  
-            break;  
-        }  
-        return $iValue;  
-    }  
-      
-    function getMaximumFileUploadSize()  
-    {  
-        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));  
-    }  
+    function convertPHPSizeToBytes($sSize)
+    {
+        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
+        $sSuffix = substr($sSize, -1);
+        $iValue = substr($sSize, 0, -1);
+        switch(strtoupper($sSuffix)){
+        case 'P':
+            $iValue *= 1024;
+        case 'T':
+            $iValue *= 1024;
+        case 'G':
+            $iValue *= 1024;
+        case 'M':
+            $iValue *= 1024;
+        case 'K':
+            $iValue *= 1024;
+            break;
+        }
+        return $iValue;
+    }
+
+    function getMaximumFileUploadSize()
+    {
+        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+    }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
 

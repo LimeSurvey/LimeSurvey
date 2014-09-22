@@ -97,15 +97,6 @@
     $tcpdf['blank_image'] = $tcpdf['image_directory'].'_blank.png';
 
 
-    /************************************************************
-    * TCPDF language settings file
-    * ----------------------------------------------------------
-    * Directory and filename of the language settings file
-    ***********************************************************/
-
-    $tcpdf['language_file'] = $tcpdf['base_directory'].'config'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'eng.php';
-
-
 
     /***************************************************************************
     * DOCUMENT CONFIGURATION PARAMETERS
@@ -205,6 +196,9 @@
 
     $tcpdf['page_font'] = 'freemono';
     $tcpdf['page_font_size'] = 9;
+    $tcpdf['data_font'] = 'freemono';
+    $tcpdf['data_font_size'] = 8;
+    $tcpdf['mono_font'] = 'freemono';
 
     $tcpdf['small_font_ratio'] = 2/3;
 

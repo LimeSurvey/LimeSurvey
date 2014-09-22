@@ -532,8 +532,9 @@ class statistics extends Survey_Common_Action {
                 // Strip first char when not numeric (probably T or D)
                 $qsid=substr($qsid,1);
             }
-            $oQuestion=Question::model()->findByAttributes(array('qid'=>$qqid,'language'=>$sStatisticsLanguage));
-	        $qtype = $oQuestion->type; 
+            $aFieldmap=createFieldMap($qsid,'full',false,false,$sStatisticsLanguage);
+            $qtype=$aFieldmap[$_POST['id']]['type'];
+            $qqid=$aFieldmap[$_POST['id']]['qid'];
             $aattr = getQuestionAttributeValues($qqid);
             $field = substr($_POST['id'], 1);
 

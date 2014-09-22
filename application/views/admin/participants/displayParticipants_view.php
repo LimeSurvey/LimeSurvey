@@ -136,17 +136,14 @@ else
     var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
     var addsurvey = "<?php $clang->eT("Add participants to survey", 'js') ?>";
     var exportcsv = "<?php $clang->eT("Export CSV", 'js') ?>";
-    var nooptionselected = "<?php $clang->eT("Please choose either of the options", 'js') ?>";
+    var nooptionselected = "<?php $clang->eT("Please choose one option.", 'js') ?>";
     var removecondition = "<?php $clang->eT("Remove condition", 'js') ?>";
     var selectSurvey = "<?php $clang->eT("You must select a survey from the list", 'js'); ?>";
     var cancelBtn = "<?php $clang->eT("Cancel", 'js') ?>";
     var okBtn = "<?php $clang->eT("OK", 'js') ?>";
-    var deletefrompanelmsg = "<?php $clang->eT("Select one of the three options", 'js') ?>";
+    var deletefrompanelmsg = "<?php $clang->eT("Please choose one option.", 'js') ?>";
     var noRowSelected = "<?php $clang->eT("You have no row selected", 'js') ?>";
-    var deletefrompanel = "<?php $clang->eT("Delete participant(s) from central participants panel only", 'js') ?>";
-    var deletefrompanelandtoken = "<?php $clang->eT("Delete participant(s) from central panel and tokens tables", 'js') ?>";
-    var deletefrompaneltokenandresponse = "<?php $clang->eT("Delete participant(s) from central panel, tokens tables and all associated responses", 'js') ?>";
-    var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol>";
+    var deleteMsg = '<br/>'+deletefrompanelmsg+'<br/><br/><?php echo str_replace("\n",'',CHtml::radioButtonList('deleteMode','', array('po'=>$clang->gT("Delete participant(s) from central participants panel only"),'ptt'=>$clang->gT("Delete participant(s) from central panel and tokens tables"),'ptta'=>$clang->gT("Delete participant(s) from central panel, tokens tables and all associated responses"))));?>';
     var searchBtn = "<?php $clang->eT("Search", 'js') ?>";
     var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.", 'js') ?>"; //PLEASE REVIEW
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/".$urlsearch); ?>";
@@ -167,7 +164,6 @@ else
     var attMapUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/attributeMap"); ?>";
     var editAttributevalue = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editAttributevalue"); ?>";
     var shareUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/shareParticipants"); ?>";
-    var surveyUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/addToToken"); ?>";
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
     var ajaxUrl = "<?php echo Yii::app()->getConfig('adminimageurl') . "/ajax-loader.gif" ?>";
     var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";

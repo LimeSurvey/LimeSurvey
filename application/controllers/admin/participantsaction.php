@@ -101,7 +101,7 @@ class participantsaction extends Survey_Common_Action
         } else {
             $iUserID = Yii::app()->session['loginID'];
         }
-
+        $aAttributeIDs=array_combine($aAttributeIDs,$aAttributeIDs);
         $query = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
         if (!$query)
             return false;
@@ -128,10 +128,11 @@ class participantsaction extends Survey_Common_Action
             }
         }    
 
+        $fieldNeededKeys=array_fill_keys($fields, '');
         $fieldKeys = array_flip($fields);
         foreach ($query as $field => $aData)
         {
-            $outputarray[] = array_intersect_key($aData, $fieldKeys);
+            $outputarray[] = array_merge($fieldNeededKeys,array_intersect_key($aData, $fieldKeys));
         }
         CPDBExport($outputarray, "central_" . time());
     }
@@ -762,9 +763,9 @@ class participantsaction extends Survey_Common_Action
     */
     function getParticipants_json($search = null)
     {
-        $page = Yii::app()->request->getPost('page');
-        $limit = Yii::app()->request->getPost('rows');
-        $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+        $page = (int) Yii::app()->request->getPost('page');
+        $limit = (int) Yii::app()->request->getPost('rows');
+        $limit = empty($limit) ? 50:$limit; //Stop division by zero errors
 
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
@@ -773,10 +774,11 @@ class participantsaction extends Survey_Common_Action
             array_push($participantfields, $value['attribute_id']);
         }
         $sidx = Yii::app()->request->getPost('sidx');
-        $sidx = !empty($sidx) ? $sidx : "lastname";
+        $sidx = in_array($sidx,$participantfields) ? $sidx : "lastname";
         $sord = Yii::app()->request->getPost('sord');
-        $sord = !empty($sord) ? $sord : "asc";
+        $sord = ($sord=='desc') ? 'desc' : 'asc';
         $order = $sidx. " ". $sord;
+                                                 
         
         $aData = new stdClass;
         
@@ -833,7 +835,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttribute_json()
     {
-        $iParticipantId = Yii::app()->request->getQuery('pid');
+        $iParticipantId = strip_tags(Yii::app()->request->getQuery('pid'));
         $records = ParticipantAttributeName::model()->getParticipantVisibleAttribute($iParticipantId);
         $records = subval_sort($records, "attribute_name", "asc");
 
@@ -1241,7 +1243,7 @@ class participantsaction extends Survey_Common_Action
                             $separator = ';'; else
                             $separator = ',';
                 }
-                $firstline = convertCSVRowToArray($buffer, $separator, '"');
+                $firstline = str_getcsv($buffer, $separator, '"');
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
                 //now check the first line for invalid fields
@@ -1263,9 +1265,7 @@ class participantsaction extends Survey_Common_Action
                 }
             } else {
                 // After looking at the first line, we now import the actual values
-                $line = convertCSVRowToArray($buffer, $separator, '"');
-                // Discard empty lines
-                if (empty($line[0])) continue;
+                $line = str_getcsv($buffer, $separator, '"');
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line))
                 {
@@ -1274,7 +1274,6 @@ class participantsaction extends Survey_Common_Action
                     continue;
                 }
                 $writearray = array_combine($firstline, $line);
-
                 //kick out ignored columns
                 foreach ($ignoredcolumns as $column)
                 {
@@ -1371,7 +1370,7 @@ class participantsaction extends Survey_Common_Action
                         unset($writearray['validuntil']);
                     }
                     $dontimport=false;
-                    if (($filterblankemails == "accept" && $writearray['email'] == "") || $writearray['firstname'] == "" || $writearray['lastname'] == "") {
+                    if (($filterblankemails == "accept" && $writearray['email'] == "")) {
                         //The mandatory fields of email, firstname and lastname
                         //must be filled, but one or more are empty
                         $mandatory++;
@@ -1515,30 +1514,6 @@ class participantsaction extends Survey_Common_Action
     }
 
     /*
-     * Responsible for adding the participant to the specified survey
-     */
-    function addToToken()
-    {
-        $response = Participant::model()->copytoSurvey(Yii::app()->request
-                                                         ->getPost('participantid'),
-                                               Yii::app()->request
-                                                         ->getPost('surveyid'), Yii::app()
-                                                         ->request->getPost('attributeid')
-                                               );
-        $clang = $this->getController()->lang;
-
-        printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
-        if($response['duplicate']>0) {
-            echo "\r\n";
-            printf($clang->gT("%s entries were not copied because they already existed"), $response['duplicate']);
-        }
-        if($response['overwrite']=="true") {
-            echo "\r\n";
-            $clang->eT("Attribute values for existing participants have been updated from the participants records");
-        }
-    }
-
-    /*
      * Responsible for adding the participant to the specified survey with attribute mapping
      */
     function addToTokenattmap()
@@ -1555,7 +1530,6 @@ class participantsaction extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
-        debugbreak();
         $response = Participant::model()->copyCPBDAttributesToTokens($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);
 
         printf($clang->gT("%s participants have been copied to the survey token table"), $response['success']);
