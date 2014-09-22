@@ -242,13 +242,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $event->set('type', $question['type']);
         $event->set('code', $question['code']);
         $event->set('qid', $question['qid']);
+        $event->set('answer', $answer);
         App()->getPluginManager()->dispatchEvent($event);
         $question['text'] = $event->get('text');
         $question['class'] = $event->get('class');
         $question['help'] = $event->get('help');
         $question['mandatory'] = $event->get('mandatory',null,null,$question['mandatory']);// $event->get('mandatory','question',$question['qid'],$question['mandatory']);
-        // answer part ?
-        // $answer is set with answer part
+        // answer part : is we have question, we have answer
+        $answer = $event->get('answer');
         $_question = $question['all'];
         $_question_text = $question['text'];
         $_question_help = $question['help'];
