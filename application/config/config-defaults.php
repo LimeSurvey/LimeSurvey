@@ -68,7 +68,7 @@ $config['minrepeatheadings']  =   3;                // The minimum number of rem
 $config['defaultlang']        =   'en';             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 
 $config['timeadjust']         =   0;                // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
-$config['allowexportalldb']   =   1;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
+$config['allowexportalldb']   =   0;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
 $config['maxdumpdbrecords']   =   500;              // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['allowmandbackwards'] =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
 // has not been answered. 1=Allow, 0=Deny
@@ -237,15 +237,15 @@ $config['usercontrolSameGroupPolicy'] = true;
 $config['demoMode'] = false;
 
 /**
-* Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated. 
+* Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated.
 * Also a notice will be shown that the user knows that he can just login by using the Login button.
-* 
+*
 * @var $config['demoModePrefill']  boolan  If set to true prefill the login mask
 */
 $config['demoModePrefill'] = false;
 
 
-/** 
+/**
 * column_style
 * Because columns are tricky things, in terms of balancing visual
 * layout against semantic markup. The choice has been left to the
@@ -312,7 +312,7 @@ $config['standard_templates_readonly'] =  true;
 $config['showsgqacode'] =  false;
 
 /**
-* When this settings is true/1 (default = false/0) then the printable survey option will show 
+* When this settings is true/1 (default = false/0) then the printable survey option will show
 * the raw relevance equation below the general fill-out instructions in case the question has conditions.
 */
 $config['showrelevance'] =  false;
@@ -320,7 +320,7 @@ $config['showrelevance'] =  false;
 /**
 *  PDF Export Settings
 *  This feature configures PDF export for Export Answers
-*  PDF core fonts are not included in PDF: make ligther pdf 
+*  PDF core fonts are not included in PDF: make ligther pdf
 *  See http://www.tcpdf.org/fonts.php to have the list of PDF core fonts
 */
 
