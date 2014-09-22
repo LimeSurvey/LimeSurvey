@@ -1295,7 +1295,7 @@ class ExpressionManager {
                         }
                         else
                         {
-                            $stringParts[] = is_numeric($code) ? $code : ("'" . addcslashes($code,"'") . "'"); // htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . "'");
+                            $stringParts[] = "'" . addcslashes($code,"'") . "'";
                         }
                     }
                     break;

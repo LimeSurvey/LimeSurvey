@@ -221,6 +221,34 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (isset($question) && is_array($question))
     {
+        $question['sgq'] = (isset($question['sgq']) ? $question['sgq'] : '');
+        if($question['sgq'])
+            list($question['sid'],$question['gid'],$question['qid'])=explode("X",$question['sgq']);
+        else
+            list($question['sid'],$question['gid'],$question['qid'])=array('','','');
+        $question['aid']= (isset($question['aid']) ? $question['aid'] : '');
+        /**
+         * This event fires before each question is rendered. 
+         * Currenty 3 parameters are set:
+         * @param string text The question text
+         * @param string class The class for div around the whole question
+         * @param string help The help text
+         */
+        $event = new PluginEvent('beforeQuestionRender');
+        $event->set('surveyId', $question['sid']);// or $thissurvey['sid']
+        $event->set('text', $question['text']);
+        $event->set('class', $question['class']);
+        $event->set('help', $question['help']);
+        $event->set('type', $question['type']);
+        $event->set('code', $question['code']);
+        $event->set('qid', $question['qid']);
+        App()->getPluginManager()->dispatchEvent($event);
+        $question['text'] = $event->get('text');
+        $question['class'] = $event->get('class');
+        $question['help'] = $event->get('help');
+        $question['mandatory'] = $event->get('mandatory',null,null,$question['mandatory']);// $event->get('mandatory','question',$question['qid'],$question['mandatory']);
+        // answer part ?
+        // $answer is set with answer part
         $_question = $question['all'];
         $_question_text = $question['text'];
         $_question_help = $question['help'];
@@ -228,7 +256,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_man_message = $question['man_message'];
         $_question_valid_message = $question['valid_message'];
         $_question_file_valid_message = $question['file_valid_message'];
-        $question['sgq'] = (isset($question['sgq']) ? $question['sgq'] : '');
         $_question_essentials = $question['essentials'];
         $_getQuestionClass = $question['class'];
         $_question_man_class = $question['man_class'];
@@ -236,11 +263,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_number = $question['number'];
         $_question_code = $question['code'];
         $_question_type = $question['type'];
-        if($question['sgq']) // Not sure it can happen today ? But if set : allways sXgXq
-            list($question['sid'],$question['gid'],$question['qid'])=explode("X",$question['sgq']);
-        else
-            list($question['sid'],$question['gid'],$question['qid'])=array('','','');
-        $question['aid']= (isset($question['aid']) ? $question['aid'] : '');
     }
     else
     {
