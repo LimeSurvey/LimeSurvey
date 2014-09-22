@@ -137,12 +137,12 @@ class SurveyAdmin extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
-    
+
     function fakebrowser()
     {
         $aData['clang'] = $this->getController()->lang;
         Yii::app()->getController()->renderPartial('/admin/survey/newSurveyBrowserMessage', $aData);
-    }    
+    }
 
     /**
     * This function prepares the view for editing a survey
@@ -167,7 +167,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         Yii::app()->loadHelper('/admin/htmleditor');
         initKcfinder();
-        
+
         $esrow = array();
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         $aData['esrow'] = $esrow;
@@ -322,7 +322,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['step1'] = true;
         }
         else
-        {         
+        {
             //See if there is a tokens table for this survey
             if (tableExists("{{tokens_{$iSurveyID}}}"))
             {
@@ -346,7 +346,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             //Remove any survey_links to the CPDB
             SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
-            
+
 
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
             $result = SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
@@ -362,7 +362,7 @@ class SurveyAdmin extends Survey_Common_Action
             $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
             $survey->autonumber_start = $new_autonumber_start;
             $survey->save();
-            
+
             $deactivateresult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
 
             $insertdata = array('active' => 'N');
@@ -570,6 +570,7 @@ class SurveyAdmin extends Survey_Common_Action
         //!!! Is this even possible to execute?
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             $surveys->permission(Yii::app()->user->getId());
+
         $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
@@ -836,8 +837,8 @@ class SurveyAdmin extends Survey_Common_Action
                 else
                 {
                     $sExtension = "";
-                }            
-                
+                }
+
             }
             elseif ($action == 'copysurvey')
             {
@@ -846,7 +847,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             // Start traitment and messagebox
             $aData['bFailed'] = false; // Put a var for continue
-            
+
             if ($action == 'importsurvey')
             {
 
@@ -921,7 +922,7 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $aData['sErrorMessage']=$aImportResults['error'];
                     $aData['bFailed'] = true;
-                } 
+                }
             }
             elseif ($action == 'copysurvey' && !$aData['bFailed'])
             {
@@ -1154,16 +1155,16 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['sRadixDefault'] = $aLanguageDetails['radixpoint'];
         $aData['sDateFormatDefault'] = $aLanguageDetails['dateformat'];
         foreach (getRadixPointData() as $index=>$radixptdata){
-          $aRadixPointData[$index]=$radixptdata['desc'];  
+          $aRadixPointData[$index]=$radixptdata['desc'];
         }
         $aData['aRadixPointData']=$aRadixPointData;
-        
-        foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata) 
+
+        foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata)
         {
-          $aDateFormatData[$index]=$dateformatdata['dateformat'];  
+          $aDateFormatData[$index]=$dateformatdata['dateformat'];
         }
         $aData['aDateFormatData']=$aDateFormatData;
-                
+
         return $aData;
     }
 
@@ -1181,7 +1182,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
         $aData['surveyid'] = $iSurveyID;
-        
+
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
@@ -1421,7 +1422,7 @@ class SurveyAdmin extends Survey_Common_Action
             $generalscripts_path = Yii::app()->getConfig('generalscripts');
             $adminscripts_path = Yii::app()->getConfig('adminscripts');
             $styleurl = Yii::app()->getConfig('styleurl');
-                                                                            
+
             $js_files = array(
                 $adminscripts_path . 'surveysettings.js',
             );
@@ -1434,7 +1435,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             App()->getClientScript()->registerScriptFile($file);
 
-            
+
         }
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('jqgrid');
@@ -1490,7 +1491,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $converter = new Date_Time_Converter($sExpiryDate, $aDateFormatData['phpdate'] . ' H:i:s');
                 $sExpiryDate = $converter->convert("Y-m-d H:i:s");
             }
-                  
+
             $iTokenLength=$_POST['tokenlength'];
             //token length has to be at least 5, otherwise set it to default (15)
             if($iTokenLength < 5)
@@ -1501,7 +1502,7 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 $iTokenLength = 36;
             }
-                              
+
             // Insert base settings into surveys table
             $aInsertData = array(
             'expires' => $sExpiryDate,
@@ -1554,14 +1555,14 @@ class SurveyAdmin extends Survey_Common_Action
                 $aInsertData['adminemail'] = Yii::app()->request->getPost('adminemail');
             } else {
                 $aInsertData['adminemail'] = '';
-                $warning .= $this->getController()->lang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
+                $warning .= $this->getController()->lang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>';
             }
             if (Yii::app()->request->getPost('bounce_email', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
                 $aInsertData['bounce_email'] = Yii::app()->request->getPost('bounce_email');
             } else {
                 $aInsertData['bounce_email'] = '';
-                $warning .= $this->getController()->lang->gT("Warning! Bounce email was not updated because it was not valid.").'<br/>'; 
+                $warning .= $this->getController()->lang->gT("Warning! Bounce email was not updated because it was not valid.").'<br/>';
             }
 
             if (!is_null($iSurveyID))

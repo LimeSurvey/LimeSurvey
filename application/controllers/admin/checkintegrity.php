@@ -240,12 +240,12 @@ class CheckIntegrity extends Survey_Common_Action
         $oCriteria = new CDbCriteria;
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
-        
+
         $aRecords=QuotaMember::model()->findAll($oCriteria);
         foreach ($aRecords as $aRecord)
         {
             QuotaMember::model()->deleteAllByAttributes($aRecord);
-        }        
+        }
         if (QuotaLanguageSetting::model()->hasErrors()) safeDie(QuotaLanguageSetting::model()->getError());
         $aData['messages'][] = $clang->gT('Deleting orphaned quota members.');
         return $aData;
@@ -339,19 +339,20 @@ class CheckIntegrity extends Survey_Common_Action
         $oCriteria->addCondition("entity='survey'");
 
         Permission::model()->deleteAll($oCriteria);
-        
+
 
         // Deactivate surveys that have a missing response table
-        foreach ($surveys as $survey) 
+        foreach ($surveys as $survey)
         {
             if ($survey['active']=='Y' && !tableExists("{{survey_{$survey['sid']}}}"))
             {
                 Survey::model()->updateByPk($survey['sid'],array('active'=>'N'));
             }
         }
-        
-        
-        
+        unset($surveys);
+
+
+
         // Fix subquestions
         fixSubquestions();
 
@@ -401,16 +402,15 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check conditions                                               */
         /**********************************************************************/
-        // TMSW Condition->Relevance:  Replace this with analysis of relevance
-        $aConditions = Condition::model()->findAll();
-        if (Condition::model()->hasErrors()) safeDie(Condition::model()->getError());
         $okQuestion = array();
+        $sQuery = 'SELECT cqid,cid,cfieldname FROM {{conditions}}';
+        $aConditions = Yii::app()->db->createCommand($sQuery)->queryAll();
         foreach ($aConditions as $condition)
         {
             if ($condition['cqid'] != 0) { // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
                 if (!array_key_exists($condition['cqid'], $okQuestion)) {
                     $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['cqid']));
-                    if (Question::model()->hasErrors()) safeDie(Question::model()->getError());                
+                    if (Question::model()->hasErrors()) safeDie(Question::model()->getError());
                     if (!$iRowCount) {
                         $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => $clang->gT('No matching CQID'));
                     } else {
@@ -563,7 +563,7 @@ class CheckIntegrity extends Survey_Common_Action
                 }
             }
         }
-        
+
 
         /**********************************************************************/
         /*     Check survey language settings                                 */
