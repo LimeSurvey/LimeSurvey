@@ -78,8 +78,10 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 </a>
             <?php } ?>
         </div>
-        <div class='menubar-right'><a href="#" onclick="showhelp('show')">
-                <img src='<?php echo $imageurl; ?>showhelp.png' alt='<?php $clang->eT("Show help"); ?>' /></a>
+        <div class='menubar-right'>
+            <a href="http://manual.limesurvey.org" target='_blank'>
+                <img src='<?php echo $imageurl; ?>showhelp.png' alt='<?php $clang->eT("Show help"); ?>' />
+            </a>
         </div>
     </div>
 </div>

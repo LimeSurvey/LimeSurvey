@@ -432,7 +432,7 @@ function lspreview()
                             {
                                 tabbody=tabbody+'<td>'+lsrows[z].assessment_value+'</td>';
                             }
-                            tabbody=tabbody+'<td>'+lsrows[z].title+'</td></tr><tbody>';
+                            tabbody=tabbody+'<td>'+htmlspecialchars(lsrows[z].title)+'</td></tr><tbody>';
                         }
                         tabbody=tabbody+'<thead><tr><th>'+strcode+'</th>';
                         if (assessmentvisible)

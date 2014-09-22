@@ -361,7 +361,7 @@
 
                 <?php $thisforce_ssl = getGlobalSetting('force_ssl');
                     $opt_force_ssl_on = $opt_force_ssl_off = $opt_force_ssl_neither = '';
-                    $warning_force_ssl = sprintf($clang->gT('Warning: Before turning on HTTPS,%s check if this link works.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" title="'. $clang->gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
+                    $warning_force_ssl = sprintf($clang->gT('Warning: Before turning on HTTPS,%s check if this link works.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$this->createUrl("admin/globalsettings/sa").'" title="'. $clang->gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
                     .'<br/> '
                     . $clang->gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
                     switch($thisforce_ssl)

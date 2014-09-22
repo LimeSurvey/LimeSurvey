@@ -9,13 +9,18 @@ class Authwebserver extends AuthPluginBase
     protected $settings = array(
         'strip_domain' => array(
             'type' => 'checkbox',
-            'label' => 'Strip domain part (DOMAIN\\USER or USER@DOMAIN)'
+            'label' => 'Strip domain part (DOMAIN\\USER or USER@DOMAIN)',
         ),
         'serverkey' => array(
             'type' => 'string',
             'label' => 'Key to use for username e.g. PHP_AUTH_USER, LOGON_USER, REMOTE_USER. See phpinfo in global settings.',
-            'default' => 'REMOTE_USER'
+            'default' => 'REMOTE_USER',
         ),
+        'is_default' => array(
+                'type' => 'checkbox',
+                'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
+                'default' => true,
+                )
     );
     
     public function __construct(PluginManager $manager, $id) {
@@ -52,8 +57,16 @@ class Authwebserver extends AuthPluginBase
             {
                $sUser = $aUserMappings[$sUser];
             }
-            $this->setUsername($sUser);
-            $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
+            $oUser = $this->api->getUserByName($sUser);
+            if($oUser || $this->api->getConfigKey('auth_webserver_autocreate_user'))
+            {
+                $this->setUsername($sUser);
+                $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
+            }
+            elseif($this->get('is_default',null,null,$this->settings['is_default']['default']))
+            {
+                throw new CHttpException(401,'Wrong credentials for LimeSurvey administration.');
+            }
         }
     }
     
@@ -61,7 +74,7 @@ class Authwebserver extends AuthPluginBase
     {
         /* @var $identity LSUserIdentity */
         $sUser = $this->getUserName();
-        
+
         $oUser = $this->api->getUserByName($sUser);
         if (is_null($oUser))
         {
@@ -103,7 +116,6 @@ class Authwebserver extends AuthPluginBase
             {
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             }
-
         }
         
     }  

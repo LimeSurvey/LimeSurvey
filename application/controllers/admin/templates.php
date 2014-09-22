@@ -111,9 +111,9 @@ class templates extends Survey_Common_Action
             Yii::app()->loadLibrary('admin.pclzip');
 
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
-        
+
             // Create temporary directory so that if dangerous content is unzipped it would be unaccessible
-            $sNewDirectoryName=sanitize_dirname($_FILES['the_file']['name']);
+            $sNewDirectoryName=sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME ));
             $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
             if (!is_writeable(dirname($destdir)))

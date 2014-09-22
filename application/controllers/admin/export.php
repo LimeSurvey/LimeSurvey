@@ -190,6 +190,7 @@ class export extends Survey_Common_Action {
             {
                 $sCode=viewHelper::getFieldCode($fieldinfo);
                 $aFields[$sFieldName]=$sCode.' - '.htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)),30,.6,'...'));
+                $aFieldsOptions[$sFieldName]=array('title'=>viewHelper::getFieldText($fieldinfo),'data-fieldname'=>$fieldinfo['fieldname'],'data-emcode'=>viewHelper::getFieldCode($fieldinfo,array('LEMcompat'=>true))); // No need to filter title : Yii do it (remove all tag)
             }
             
             $data['SingleResponse']=(int)returnGlobal('id');
@@ -198,7 +199,7 @@ class export extends Survey_Common_Action {
             $data['selectinc'] = $selectinc;
             $data['afieldcount'] = $iFieldCount;
             $data['aFields'] = $aFields;
-
+            $data['aFieldsOptions'] = $aFieldsOptions;
             //get max number of datasets
             $iMaximum = SurveyDynamic::model($iSurveyID)->getMaxId();
 
@@ -427,40 +428,33 @@ class export extends Survey_Common_Action {
 
             //Now get the query string with all fields to export
             $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
-            $result = $query->query();
+            $result = $query->queryAll();
 
             $num_fields = 0;
             //Now we check if we need to adjust the size of the field or the type of the field
             foreach ( $result as $row )
             {
-                if($num_fields==0) {
-                    $num_fields = count($row);
-                }
-                $row = array_values($row);
-                $fieldno = 0;
 
-                while ( $fieldno < $num_fields )
+                foreach ( $fields as $iIndex=>$aField )
                 {
                     //Performance improvement, don't recheck fields that have valuelabels
-                    if ( ! isset($fields[$fieldno]['answers']) )
+                    if ( ! isset($aField['answers']) )
                     {
-                        $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
+                        $strTmp = mb_substr(stripTagsFull($row[$aField['sql_name']]), 0, $iLength);
                         $len = mb_strlen($strTmp);
 
-                        if ( $len > $fields[$fieldno]['size'] ) $fields[$fieldno]['size'] = $len;
+                        if ( $len > $fields[$iIndex]['size'] ) $fields[$iIndex]['size'] = $len;
 
                         if ( trim($strTmp) != '' )
                         {
-                            if ( $fields[$fieldno]['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $fields[$fieldno]['size'] > 16) )
+                            if ( $fields[$iIndex]['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $fields[$iIndex]['size'] > 16) )
                             {
-                                $fields[$fieldno]['SPSStype'] = 'A';
+                                $fields[$iIndex]['SPSStype'] = 'A';
                             }
                         }
                     }
-                    $fieldno++;
                 }
             }
-            $result->close();
 
             /**
             * End of DATA print out
@@ -948,27 +942,21 @@ class export extends Survey_Common_Action {
         if ( $aSurveyInfo['active'] == 'Y' )
         {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, FALSE);
-
             $this->_addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
-
             unlink($sLSRFileName);
         }
 
-        if ( Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}') )
+        if ( tableExists('{{tokens_' . $iSurveyID . '}}') )
         {
             getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
-
             $this->_addToZip($zip, $sLSTFileName, 'survey_' . $iSurveyID . '_tokens.lst');
-
             unlink($sLSTFileName);
         }
 
-        if ( Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '_timings}}') )
+        if ( tableExists('{{survey_' . $iSurveyID . '_timings}}') )
         {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
-
             $this->_addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
-
             unlink($sLSIFileName);
         }
 

@@ -556,7 +556,7 @@ class InstallerController extends CController {
                 $sql_file = 'pgsql';
                 break;
             default:
-                throw new Exception(sprintf('Unkown database type "%s".', $sDatabaseType));
+                throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
 
         //checking DB Connection
@@ -631,6 +631,10 @@ class InstallerController extends CController {
                 if ($this->connection->getActive() == true) {
                     $sPasswordHash=hash('sha256', $sDefaultAdminPassword);
                     try {
+                        
+                        if (User::model()->count()>0){
+                            die();
+                        }
                         // Save user
                         $user=new User;
                         $user->users_name=$sDefaultAdminUserName;

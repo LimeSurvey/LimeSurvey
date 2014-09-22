@@ -13,44 +13,53 @@
 
 function loadanswers()
 {
+    Yii::trace('start', 'survey.loadanswers');
     global $surveyid;
     global $thissurvey, $thisstep;
     global $clienttoken;
     $clang = Yii::app()->lang;
 
-    $scid=returnGlobal('scid',true);
+    $scid=Yii::app()->request->getQuery('scid');
     if (Yii::app()->request->getParam('loadall') == "reload")
     {
-        $query = "SELECT * FROM {{saved_control}} INNER JOIN {$thissurvey['tablename']}
-        ON {{saved_control}}.srid = {$thissurvey['tablename']}.id
-        WHERE {{saved_control}}.sid=$surveyid\n";
-        if (isset($scid)) //Would only come from email
-
+        $sLoadName=Yii::app()->request->getParam('loadname');
+        $sLoadPass=Yii::app()->request->getParam('loadpass');
+        $oCriteria= new CDbCriteria;
+        $oCriteria->join="LEFT JOIN {{saved_control}} ON t.id={{saved_control}}.srid";
+        $oCriteria->condition="{{saved_control}}.sid=:sid";
+        $aParams=array(':sid'=>$surveyid);
+        if (isset($scid)) //Would only come from email : we don't need it ....
         {
-            $query .= "AND {{saved_control}}.scid={$scid}\n";
+            $oCriteria->addCondition("{{saved_control}}.scid=:scid");
+            $aParams[':scid']=$scid;
         }
-        $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
+        $oCriteria->addCondition("{{saved_control}}.identifier=:identifier");
+        $aParams[':identifier']=$sLoadName;
 
         if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
         {
-            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5($_SESSION['survey_'.$surveyid]['holdpass'])."'\n";
+            // To be validated with mssql, think it's not needed
+            $oCriteria->addCondition(" CAST({{saved_control}}.access_code as varchar(32))=:access_code");
         }
         else
         {
-            $query .="AND {{saved_control}}.access_code = '".md5($_SESSION['survey_'.$surveyid]['holdpass'])."'\n";// md5 don't need to be escaped
+            $oCriteria->addCondition("{{saved_control}}.access_code=:access_code");
         }
+        $aParams[':access_code']=md5($sLoadPass);
     }
     elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
     {
-        $query = "SELECT * FROM {$thissurvey['tablename']}
-        WHERE {$thissurvey['tablename']}.id=".$_SESSION['survey_'.$surveyid]['srid']."\n";
+        $oCriteria= new CDbCriteria;
+        $oCriteria->condition="id=:id";
+        $aParams=array(':id'=>$_SESSION['survey_'.$surveyid]['srid']);
     }
     else
     {
         return;
     }
-    $aRow = Yii::app()->db->createCommand($query)->queryRow();// TODO : use Yii for query
-    if (!$aRow)
+    $oCriteria->params=$aParams;
+    $oResponses=SurveyDynamic::model($surveyid)->find($oCriteria);
+    if (!$oResponses)
     {
         return false;
     }
@@ -59,8 +68,21 @@ function loadanswers()
         //A match has been found. Let's load the values!
         //If this is from an email, build surveysession first
         $_SESSION['survey_'.$surveyid]['LEMtokenResume']=true;
+
+        // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
+        if (Yii::app()->request->getParam('loadall') == "reload")
+        {
+            $oSavedSurvey=SavedControl::model()->find("identifier=:identifier AND access_code=:access_code",array(":identifier"=>$sLoadName,":access_code"=>md5($sLoadPass)));
+            // We don't need to control if we have one, because we do the test before
+            $_SESSION['survey_'.$surveyid]['scid'] = $oSavedSurvey->scid;
+            $_SESSION['survey_'.$surveyid]['step'] = ($oSavedSurvey->saved_thisstep>1)?$oSavedSurvey->saved_thisstep:1;
+            $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;// deprecated ?
+            $_SESSION['survey_'.$surveyid]['srid'] = $oSavedSurvey->srid;// Seems OK without
+        }
+
         // Get if survey is been answered
-        $submitdate=$aRow['submitdate'];
+        $submitdate=$oResponses->submitdate;
+        $aRow=$oResponses->attributes;
         foreach ($aRow as $column => $value)
         {
             if ($column == "token")
@@ -68,12 +90,7 @@ function loadanswers()
                 $clienttoken=$value;
                 $token=$value;
             }
-            elseif ($column == "saved_thisstep" && $thissurvey['alloweditaftercompletion'] != 'Y' )
-            {
-                $_SESSION['survey_'.$surveyid]['step']=($value>1? $value:1) ;
-                $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;
-            }
-            elseif ($column =='lastpage' && isset($_GET['token']))
+            elseif ($column =='lastpage' && !isset($_SESSION['survey_'.$surveyid]['step']))
             {
                 if(is_null($submitdate) || $submitdate=="N")
                 {
@@ -95,14 +112,6 @@ function loadanswers()
             UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
             UpdateFieldArray();        // to refresh question titles and question text
             }*/
-            elseif ($column == "scid")
-            {
-                $_SESSION['survey_'.$surveyid]['scid']=$value;
-            }
-            elseif ($column == "srid")
-            {
-                $_SESSION['survey_'.$surveyid]['srid']=$value;
-            }
             elseif ($column == "datestamp")
             {
                 $_SESSION['survey_'.$surveyid]['datestamp']=$value;
@@ -133,8 +142,8 @@ function loadanswers()
                 }  // if (in_array(
             }  // else
         } // foreach
+        return true;
     }
-    return true;
 }
 
 function makegraph($currentstep, $total)
@@ -465,9 +474,9 @@ function submittokens($quotaexit=false)
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
     // check how many uses the token has left
-	$token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
+    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
 
-	if ($quotaexit==true)
+    if ($quotaexit==true)
     {
         $token->completed = 'Q';
         $token->usesleft--;
@@ -510,7 +519,6 @@ function submittokens($quotaexit=false)
          //   if($token->completed == "Y" || $token->completed == $today)
 //            {
                 $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                $to = $token->email;
                 $subject=$thissurvey['email_confirm_subj'];
 
                 $aReplacementVars=array();
@@ -560,7 +568,8 @@ function submittokens($quotaexit=false)
                 }
 
                 //Only send confirmation email if there is a valid email address
-            if (validateEmailAddress($to)) {
+            $sToAddress=validateEmailAddresses($token->email);
+            if ($sToAddress) {
                 $aAttachments = unserialize($thissurvey['attachments']);
     
                 $aRelevantAttachments = array();
@@ -579,7 +588,7 @@ function submittokens($quotaexit=false)
                         }
                     }
                 }
-                SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml, null, $aRelevantAttachments);
+                SendEmailMessage($message, $subject, $sToAddress, $from, $sitename, $ishtml, null, $aRelevantAttachments);
             }
      //   } else {
                 // Leave it to send optional confirmation at closed token
@@ -648,6 +657,7 @@ function sendSubmitNotifications($surveyid)
         $aRecipient=explode(";", ReplaceFields($thissurvey['emailnotificationto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
         foreach($aRecipient as $sRecipient)
         {
+            $sRecipient=trim($sRecipient);
             if(validateEmailAddress($sRecipient))
             {
                 $aEmailNotificationTo[]=$sRecipient;
@@ -666,6 +676,7 @@ function sendSubmitNotifications($surveyid)
         $aRecipient=explode(";", ReplaceFields($thissurvey['emailresponseto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
         foreach($aRecipient as $sRecipient)
         {
+            $sRecipient=trim($sRecipient);
             if(validateEmailAddress($sRecipient))
             {
                 $aEmailResponseTo[]=$sRecipient;
@@ -681,7 +692,6 @@ function sendSubmitNotifications($surveyid)
         {
             if (substr($sFieldname,0,4)=='gid_')
             {
-
                 $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
                 $ResultTableText .="\n{$fname[0]}\n\n";
             }
@@ -692,7 +702,7 @@ function sendSubmitNotifications($surveyid)
             }
             else
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
                 $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
             }
         }
@@ -701,7 +711,8 @@ function sendSubmitNotifications($surveyid)
         $ResultTableText .= "\n\n";
         if ($bIsHTML)
         {
-            $aReplacementVars['ANSWERTABLE']=$ResultTableHTML;
+            $filter = new CHtmlPurifier();
+            $aReplacementVars['ANSWERTABLE']=$filter->purify($ResultTableHTML);
         }
         else
         {
@@ -834,6 +845,7 @@ function submitfailed($errormsg='')
 */
 function buildsurveysession($surveyid,$preview=false)
 {
+    Yii::trace('start', 'survey.buildsurveysession');
     global $secerror, $clienttoken;
     global $tokensexist;
     //global $surveyid;
@@ -844,7 +856,7 @@ function buildsurveysession($surveyid,$preview=false)
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
     if(!$preview)
         $preview=Yii::app()->getConfig('previewmode');
-	$thissurvey = getSurveyInfo($surveyid,$sLangCode);
+    $thissurvey = getSurveyInfo($surveyid,$sLangCode);
 
     $_SESSION['survey_'.$surveyid]['templatename']=validateTemplateDir($thissurvey['template']);
     $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($_SESSION['survey_'.$surveyid]['templatename']).DIRECTORY_SEPARATOR;
@@ -1001,12 +1013,12 @@ function buildsurveysession($surveyid,$preview=false)
 
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
-		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+        if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
             $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken));
         } else {
             $oTokenEntry = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $clienttoken));
         }
-		if (!isset($oTokenEntry))
+        if (!isset($oTokenEntry))
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
@@ -1038,15 +1050,15 @@ function buildsurveysession($surveyid,$preview=false)
         isset($_SESSION['survey_'.$surveyid]['secanswer']) &&
         $loadsecurity == $_SESSION['survey_'.$surveyid]['secanswer'])
         {          
-			if ($thissurvey['alloweditaftercompletion'] == 'Y' )
+            if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
                 $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=> $clienttoken));
             }
             else
             {
                 $oTokenEntry = Token::model($surveyid)->incomplete()->findByAttributes(array(
-					'token' => $clienttoken
-				));
+                    'token' => $clienttoken
+                ));
            }
             if (!isset($oTokenEntry))
             {
@@ -1168,26 +1180,16 @@ function buildsurveysession($surveyid,$preview=false)
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
-
-    //RL: multilingual support
-    if (isset($_GET['token']) && tableExists('{{tokens_'.$surveyid.'}}'))
-    {
-
-        //get language from token (if one exists)
-        $tkquery2 = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$clienttoken."' AND (completed = 'N' or completed='')";
-        //echo $tkquery2;
-        $result = dbExecuteAssoc($tkquery2) or safeDie ("Couldn't get tokens<br />$tkquery<br />");    //Checked
-        foreach ($result->readAll() as $rw)
-        {
-            $tklanguage=$rw['language'];
-        }
-    }
+    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language 
     if (returnGlobal('lang',true))
     {
         $language_to_set=returnGlobal('lang',true);
-    } elseif (isset($tklanguage))
+    }
+    elseif (isset($oTokenEntry) && $oTokenEntry)
     {
-        $language_to_set=$tklanguage;
+        // If survey have token : we have a $oTokenEntry
+        // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
+        $language_to_set=$oTokenEntry->language;
     }
     else
     {
@@ -1240,7 +1242,7 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
 
-    if ($totalquestions == 0)	//break out and crash if there are no questions!
+    if ($totalquestions == 0)    //break out and crash if there are no questions!
     {
         sendCacheHeaders();
         doHeader();
@@ -1263,7 +1265,7 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    //	usort($arows, 'groupOrderThenQuestionOrder');
+    //    usort($arows, 'groupOrderThenQuestionOrder');
 
     //3. SESSION VARIABLE - insertarray
     //An array containing information about used to insert the data into the db at the submit stage
@@ -1480,17 +1482,17 @@ function buildsurveysession($surveyid,$preview=false)
             $_SESSION['survey_'.$surveyid]['insertarray'][]=$field['fieldname'];
             //fieldarray ARRAY CONTENTS -
             //            [0]=questions.qid,
-            //			[1]=fieldname,
-            //			[2]=questions.title,
-            //			[3]=questions.question
-            //                 	[4]=questions.type,
-            //			[5]=questions.gid,
-            //			[6]=questions.mandatory,
-            //			[7]=conditionsexist,
-            //			[8]=usedinconditions
-            //			[8]=usedinconditions
-            //			[9]=used in group.php for question count
-            //			[10]=new group id for question in randomization group (GroupbyGroup Mode)
+            //            [1]=fieldname,
+            //            [2]=questions.title,
+            //            [3]=questions.question
+            //                     [4]=questions.type,
+            //            [5]=questions.gid,
+            //            [6]=questions.mandatory,
+            //            [7]=conditionsexist,
+            //            [8]=usedinconditions
+            //            [8]=usedinconditions
+            //            [9]=used in group.php for question count
+            //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
 
             if (!isset($_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
             {
@@ -1544,22 +1546,22 @@ function buildsurveysession($surveyid,$preview=false)
     $startingValues=array();
     if (isset($_GET))
     {
-		foreach ($_GET as $k=>$v)
+        foreach ($_GET as $k=>$v)
         {
-			if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
+            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
             {
                 $startingValues[$k] = $v;
             }
-			else
-			{   // Search question codes to use those for prefilling.
-				foreach($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details)
-				{
-					if ($details['title'] == $k)
-					{
-						$startingValues[$sgqa] = $v;
-					}
-				}
-			}
+            else
+            {   // Search question codes to use those for prefilling.
+                foreach($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details)
+                {
+                    if ($details['title'] == $k)
+                    {
+                        $startingValues[$sgqa] = $v;
+                    }
+                }
+            }
         }
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
@@ -1598,6 +1600,7 @@ function buildsurveysession($surveyid,$preview=false)
             }
         }
     }
+    Yii::trace('end', 'survey.buildsurveysession');
 }
 
 /**
@@ -1881,12 +1884,12 @@ function UpdateGroupList($surveyid, $language)
 */
 function UpdateFieldArray()
 {
-	global $surveyid;
-	$clang = Yii::app()->lang;
+    global $surveyid;
+    $clang = Yii::app()->lang;
 
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray']))
     {
-		foreach ($_SESSION['survey_'.$surveyid]['fieldarray'] as $key => $value)
+        foreach ($_SESSION['survey_'.$surveyid]['fieldarray'] as $key => $value)
         {
             $questionarray = &$_SESSION['survey_'.$surveyid]['fieldarray'][$key];
             $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
@@ -1902,217 +1905,158 @@ function UpdateFieldArray()
 }
 
 /**
-* checkQuota() returns quota information for the current survey
-* @param string $checkaction - action the function must take after completing:
-* 								enforce: Enforce the Quota action
-* 								return: Return the updated quota array from getQuotaAnswers()
-* @param string $surveyid - Survey identification number
-* @return array - nested array, Quotas->Members->Fields, includes quota status and which members matched in session.
+* checkCompletedQuota() returns matched quotas information for the current response
+* @param integer $surveyid - Survey identification number
+* @param bool $return - set to true to return information, false do the quota
+* @return array - nested array, Quotas->Members->Fields, includes quota information matched in session.
 */
-function checkQuota($checkaction,$surveyid)
+function checkCompletedQuota($surveyid,$return=false)
 {
-    global $clienttoken ;
     if (!isset($_SESSION['survey_'.$surveyid]['srid']))
     {
         return;
     }
-    $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-    $sTemplatePath=getTemplatePath($thissurvey['templatedir']);
-
-    $global_matched = false;
-    $quota_info = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-    $x=0;
-
-    $clang = Yii::app()->lang;
-
-    if(count($quota_info) > 0) // Quota's have to exist
+    static $aMatchedQuotas; // EM call 2 times quotas with 3 lines of php code, then use static. 
+    if(!$aMatchedQuotas)
     {
-        // Check each quota on saved data to see if it is full
-        $querycond = array();
-        foreach ($quota_info as $quota)
+        $aMatchedQuotas=array();
+        $quota_info=$aQuotasInfo = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        // $aQuotasInfo have an 'active' key, we don't use it ?
+        if(!$aQuotasInfo || empty($aQuotasInfo))
+            return $aMatchedQuotas;
+        // Test only completed quota, other is not needed
+        $aQuotasCompleted=array();
+        foreach($aQuotasInfo as $aQuotaInfo)
         {
-            if (count($quota['members']) > 0) // Quota can't be empty
+            $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);// Return a string
+            if(ctype_digit($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
+                $aQuotasCompleted[]=$aQuotaInfo;
+        }
+
+        if(empty($aQuotasCompleted))
+            return $aMatchedQuotas;
+        // OK, we have some quota, then find if this $_SESSION have some set
+        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
+        foreach ($aQuotasCompleted as $aQuotaCompleted)
+        {
+            $iMatchedAnswers=0;
+            $bPostedField=false;
+            // Array of field with quota array value
+            $aQuotaFields=array();
+            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
+            $aQuotaRelevantFieldnames=array();
+            foreach ($aQuotaCompleted['members'] as $aQuotaMember)
             {
-                $fields_list = array(); // Keep a list of fields for easy reference
-                $y=0;
-                // We need to make the conditions for the select statement here
-                unset($querycond);
-                // fill the array of value and query for each fieldnames
-                $fields_value_array = array();
-                $fields_query_array = array();
-                foreach($quota['members'] as $member)
+                $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
+                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]=isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
+            }
+            // For each field : test if actual responses is in quota (and is relevant)
+            foreach ($aQuotaFields as $sFieldName=>$aValues)
+            {
+                $bInQuota=isset($_SESSION['survey_'.$surveyid][$sFieldName]) && in_array($_SESSION['survey_'.$surveyid][$sFieldName],$aValues);
+                if($bInQuota && $aQuotaRelevantFieldnames[$sFieldName])
                 {
-                    foreach($member['fieldnames'] as $fieldname)
-                    {
-                        if (!in_array($fieldname,$fields_list))
-                        {
-                            $fields_list[] = $fieldname;
-                            $fields_value_array[$fieldname] = array();
-                            $fields_query_array[$fieldname] = array();
-                        }
-                        $fields_value_array[$fieldname][]=$member['value'];
-                        $fields_query_array[$fieldname][]= dbQuoteID($fieldname)." = '{$member['value']}'";
-                    }
+                    $iMatchedAnswers++;
                 }
-
-                // fill the $querycond array with each fields_query grouped by fieldname
-                foreach($fields_list as $fieldname)
+                if(in_array($sFieldName,$aPostedFields))
+                    $bPostedField=true;
+            }
+            if($iMatchedAnswers==count($aQuotaFields))
+            {
+                switch ($aQuotaCompleted['action'])
                 {
-                    $select_query = " ( ".implode(' OR ',$fields_query_array[$fieldname]).' )';
-                    $querycond[] = $select_query;
-                }
-                // Test if the fieldname is in the array of value in the session
-                foreach($quota['members'] as $member)
-                {
-                    foreach($member['fieldnames'] as $fieldname)
-                    {
-                        if (isset($_SESSION['survey_'.$surveyid][$fieldname]))
-                        {
-                            if (in_array($_SESSION['survey_'.$surveyid][$fieldname],$fields_value_array[$fieldname])){
-                                $quota_info[$x]['members'][$y]['insession'] = "true";
-                            }
-                        }
-                    }
-                    $y++;
-                }
-                unset($fields_query_array);unset($fields_value_array);
-
-                // Lets only continue if any of the quota fields is in the posted page
-                $matched_fields = false;
-                if (isset($_POST['fieldnames']))
-                {
-                    $posted_fields = explode("|",$_POST['fieldnames']);
-                    foreach ($fields_list as $checkfield)
-                    {
-                        if (in_array($checkfield,$posted_fields))
-                        {
-                            $matched_fields = true;
-                            $global_matched = true;
-                        }
-                    }
-                }
-
-                // A field was submitted that is part of the quota
-                if ($matched_fields == true)
-                {
-                    // Check the status of the quota, is it full or not
-                    $sQuery = "SELECT count(id) FROM {{survey_".$surveyid."}}
-                    WHERE ".implode(' AND ',$querycond)." "."
-                    AND submitdate IS NOT NULL";
-                    $iRowCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-                    if ($iRowCount >= $quota['Limit']) // Quota is full!!
-                    {
-                        // Now we have to check if the quota matches in the current session
-                        // This will let us know if this person is going to exceed the quota
-                        $counted_matches = 0;
-                        foreach($quota_info[$x]['members'] as $member)
-                        {
-                            if (isset($member['insession']) && $member['insession'] == "true") $counted_matches++;
-                        }
-
-                        if($counted_matches == count($quota['members']))
-                        {
-                            // They are going to exceed the quota if data is submitted
-                            $quota_info[$x]['status']="matched";
-                        }
-                        else
-                        {
-                            $quota_info[$x]['status']="notmatched";
-                        }
-                    }
-                    else
-                    {
-                        // Quota is no in danger of being exceeded.
-                        $quota_info[$x]['status']="notmatched";
-                    }
+                    case '1':
+                    default:
+                        $aMatchedQuotas[]=$aQuotaCompleted;
+                        break;
+                    case '2':
+                        if($bPostedField)// Action 2 allow to correct last answers, then need to be posted
+                            $aMatchedQuotas[]=$aQuotaCompleted;
+                        break;
                 }
             }
-            $x++;
         }
     }
-    else
-    {
-        return false;
-    }
+
+    if ($return)
+        return $aMatchedQuotas;
+    if(empty($aMatchedQuotas))
+        return;
 
     // Now we have all the information we need about the quotas and their status.
-    // Lets see what we should do now
-    if ($checkaction == 'return')
+    // We need to construct the page and do all needed action
+    $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    $sTemplatePath=getTemplatePath($thissurvey['templatedir']);
+    $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
+
+    $redata = compact(array_keys(get_defined_vars()));
+    // We take only the first matched quota, no need for each
+    $aMatchedQuota=$aMatchedQuotas[0];
+    // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
+    $event = new PluginEvent('afterSurveyQuota');
+    $event->set('surveyId', $surveyid);
+    $event->set('responseId', $_SESSION['survey_'.$surveyid]['srid']);// We allways have a responseId
+    $event->set('aMatchedQuotas', $aMatchedQuotas);// Give all the matched quota : the first is the active
+    $blocks = array();
+    foreach ($event->getAllContent() as $blockData)
     {
-        return $quota_info;
+        /* @var $blockData PluginEventContent */
+        $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
     }
-    elseif ($global_matched == true && $checkaction == 'enforce')
+    // Allow plugin to update message, url, url description and action
+    $sMessage=$event->get('message',$aMatchedQuota['quotals_message']);
+    $sUrl=$event->get('url',$aMatchedQuota['quotals_url']);
+    $sUrlDescription=$event->get('urldescrip',$aMatchedQuota['quotals_urldescrip']);
+    $sAction=$event->get('action',$aMatchedQuota['action']);
+    $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
+
+    // Doing the action and show the page
+    if ($sAction == "1" && $sClientToken)
+        submittokens(true);
+    // Construct the default message
+    $sMessage = templatereplace($sMessage,array(),$redata);
+    $sUrl = passthruReplace($sUrl, $thissurvey);
+    $sUrl = templatereplace($sUrl,array(),$redata);
+    $sUrlDescription = templatereplace($sUrlDescription,array(),$redata);
+
+    // Construction of default message inside quotamessage class
+    $quotaMessage = "<div class='quotamessage limesurveycore'>\n";
+    $quotaMessage.= "\t".$sMessage."\n";
+    if($sUrl || $sUrl)
+        echo "<br /><br />\t<a href='".$sUrl."'>".$sUrlDescription."</a><br />\n";
+    // Add the navigator with Previous button if quota allow modification.
+    if ($sAction == "2")
     {
-        // Need to add Quota action enforcement here.
-        reset($quota_info);
+        $sQuotaStep= isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
+        $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button"));
+        //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
+        $quotaMessage.= CHtml::form(array("/survey/index"), 'post', array('id'=>'limesurvey','name'=>'limesurvey'));
+        $quotaMessage.= templatereplace(file_get_contents($sTemplatePath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$redata);
+        $quotaMessage.= CHtml::hiddenField('sid',$surveyid);
+        $quotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
+        $quotaMessage.= CHtml::endForm();
+    }
+    $quotaMessage.= "</div>\n";
+    // Add the plugin message before default message
+    $quotaMessage = implode("\n", $blocks) ."\n". $quotaMessage;
 
-        $tempmsg ="";
-        $found = false;
-        $redata = compact(array_keys(get_defined_vars()));
-        foreach($quota_info as $quota)
-        {
-            $quota['Message'] = templatereplace($quota['Message'],array(),$redata);
-            $quota['Url'] = passthruReplace($quota['Url'], $thissurvey);
-            $quota['Url'] = templatereplace($quota['Url'],array(),$redata);
-            $quota['UrlDescrip'] = templatereplace($quota['UrlDescrip'],array(),$redata);
-            if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
-            {
-                // If a token is used then mark the token as completed
-                if (isset($clienttoken) && $clienttoken)
-                {
-                    submittokens(true);
-                }
-
-            sendCacheHeaders();
-            if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
-            {
-                header("Location: ".$quota['Url']);
-                killSurveySession($surveyid);
-            }
-            doHeader();
-
-            echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$redata,'frontend_helper[2617]');
-            echo "\t<div class='quotamessage'>\n";
-            echo "\t".$quota['Message']."<br /><br />\n";
-            echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-            echo "\t</div>\n";
-            echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$redata,'frontend_helper[2622]');
-            doFooter();
+    // Send page to user and end.
+    sendCacheHeaders();
+    if($sAutoloadUrl == 1 && $sUrl != "")
+    {
+        if ($sAction == "1")
             killSurveySession($surveyid);
-            exit;
-            }
-
-            if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "2"))
-            {
-
-                sendCacheHeaders();
-                doHeader();
-
-                $redata = compact(array_keys(get_defined_vars()));
-                echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$redata,'frontend_helper[2634]');
-                echo "\t<div class='quotamessage'>\n";
-                echo "\t".$quota['Message']."<br /><br />\n";
-                echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo CHtml::form(array("/survey/index"), 'post', array('id'=>'limesurvey','name'=>'limesurvey'))."
-                <input type='hidden' name='move' value='movenext' id='movenext' />
-                <button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" id='moveprevbtn'>".$clang->gT("Previous")."</button>
-                <input type='hidden' name='thisstep' value='".($_SESSION['survey_'.$surveyid]['step'])."' id='thisstep' />
-                <input type='hidden' name='sid' value='".returnGlobal('sid',true)."' id='sid' />
-                <input type='hidden' name='token' value='".$clienttoken."' id='token' />
-                </form>\n";
-                echo "\t</div>\n";
-                echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$redata,'frontend_helper[2644]');
-                doFooter();
-                exit;
-            }
-        }
+        header("Location: ".$sUrl);
     }
-    else
-    {
-        // Unknown value
-        return false;
-    }
-
+    doHeader();
+    echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$redata);
+    // Better to use completed.pstpl, but some template can need update , leave it for 2.06 #09133
+    echo $quotaMessage;
+    echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$redata);
+    doFooter();
+    if ($sAction == "1")
+        killSurveySession($surveyid);
+    Yii::app()->end();
 }
 
 /**
@@ -2191,7 +2135,7 @@ function GetReferringUrl()
 */
 function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
-	$totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+    $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
     $clang = Yii::app()->lang;
 
@@ -2296,7 +2240,6 @@ function SetSurveyLanguage($surveyid, $language)
         $clang = new limesurvey_lang($_SESSION['survey_'.$surveyid]['s_lang']);
         $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
-        $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat'],$_SESSION['survey_'.$surveyid]['s_lang']);
         LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
     else

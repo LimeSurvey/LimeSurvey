@@ -116,7 +116,6 @@ $(document).ready(function() {
         viewrecords : true,
         rowList: [25,50,100,250,500,1000,2500,5000],
         multiselect: true,
-        loadonce : false,
         loadComplete : function() {
             /* Sneaky way of adding custom icons to jqGrid pager buttons */
             $("#pager").find(".ui-share-icon")
@@ -308,26 +307,21 @@ $(document).ready(function() {
                 dialog.offset(selRowCoordinates);
             },
             beforeSubmit : function(postdata, formid) {
-                if(!$('#selectable .ui-selected').attr('id')) {
+                if(!$('#deleteMode input[type=\'radio\']:checked').val()) {
                     alert(nooptionselected);
                     message = "dummy";
                 } else {
                     $.post(delparticipantUrl, {
                         participant_id : postdata,
-                        selectedoption : $('#selectable .ui-selected').attr('id')
+                        selectedoption : $('#deleteMode input[type=\'radio\']:checked' ).val()
                         }, function(data) {
                     });
                     success = "dummy";
                     message = "dummy";
                     return[success,message];
                 }
-            }, beforeShowForm:function(form) {
-                $('#selectable').bind("mousedown", function (e) {
-                    e.metaKey = false;
-                }).selectable({
-                    tolerance: 'fit'
-                })
-        }},
+            }
+        },
         {multipleSearch:true, multipleGroup:true}
     );
 

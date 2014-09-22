@@ -147,16 +147,21 @@ class update extends Survey_Common_Action
     
     function step2()
     {
-        
+        $aReadOnlyFiles=array();
         $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $updatebuild = getGlobalSetting("updatebuild");
-
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild);
         $aData = $this->_getFileStatus($updateinfo);
-        $aReadOnlyFiles=array_unique($aData['readonlyfiles']);
-        sort($aReadOnlyFiles);
-        $aData['readonlyfiles']=$aReadOnlyFiles;
+        if(count($aData['readonlyfiles']))
+        {
+            foreach (array_unique($aData['readonlyfiles']) as $aFile)
+            {
+                $aReadOnlyFiles[]=substr($aFile,strlen(Yii::app()->getConfig("rootdir")));
+            }
+            sort($aReadOnlyFiles);
+            $aData['readonlyfiles']=$aReadOnlyFiles;
+        }
         Yii::app()->session['updateinfo'] = $updateinfo;
         Yii::app()->session['updatesession'] = $cookies;
 
@@ -292,7 +297,7 @@ class update extends Survey_Common_Action
             if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
                 Yii::app()->loadHelper("admin/backupdb");
                 $sfilename = $tempdir.DIRECTORY_SEPARATOR."backup_db_".randomChars(20)."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
-                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".sql.gz";
+                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".zip";
 
                 outputDatabase('',false,$sfilename);
                 // Before try to zip: test size of file

@@ -119,7 +119,7 @@ class UserAction extends Survey_Common_Action
                 $body = sprintf($clang->gT("Hello %s,"), $new_full_name) . "<br /><br />\n";
                 $body .= sprintf($clang->gT("this is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename")) . "<br /><br />\n";
                 $body .= $clang->gT("You can use now the following credentials to log into the site:") . "<br />\n";
-                $body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
+                $body .= $clang->gT("Username") . ": " . htmlspecialchars($new_user) . "<br />\n";
                 if (Yii::app()->getConfig("auth_webserver") === false) { // authent is not delegated to web server
                     // send password (if authorized by config)
                     if (Yii::app()->getConfig("display_user_password_in_email") === true) {

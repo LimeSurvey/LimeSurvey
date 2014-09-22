@@ -9,6 +9,7 @@
     var deleteCaption = "<?php $clang->eT("Delete attribute", 'js') ?>";
     var deleteMsg = "<?php $clang->eT("Delete selected attribute(s) and associated data?", 'js') ?>";
     var addCaption = "<?php $clang->eT("Add attribute", 'js') ?>";
+    var addDisabledCaption = "<?php $clang->eT("Maximum 60 attributes. Please remove an attribute before adding.", 'js') ?>";
     var sRequired = "<?php $clang->eT("This field is required.", 'js') ?>";
     var refreshMsg = "<?php $clang->eT("Refresh list", 'js') ?>";
     var searchMsg = "<?php $clang->eT("Search attributes", 'js') ?>";

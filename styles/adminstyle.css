@@ -217,3 +217,11 @@ legend { line-height: normal; }
 .exporttip li { overflow: visible;}
 li input+label { display: inline;}
 #resultexport ol, #resultexport ul { margin: 0 0 10px 10px;}
+
+.hide {
+    display: none !important;
+}
+
+#deleteMode input{
+    margin-left:2em;
+}

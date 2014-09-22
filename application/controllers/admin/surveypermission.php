@@ -438,7 +438,7 @@ class surveypermission extends Survey_Common_Action {
             foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
             {
                 $oddcolumn=!$oddcolumn;
-                $usersummary .= "<tr><td><img src='{$imageurl}{$aCRUDPermissions['img']}_30.png' alt='{$aCRUDPermissions['description']}'/></td>";
+                $usersummary .= "<tr><td><img src='{$imageurl}{$aCRUDPermissions['img']}_30.png' alt='' title='{$aCRUDPermissions['description']}'/></td>";
                 $usersummary .= "<td>{$aCRUDPermissions['title']}</td>";
                 $usersummary .= "<td ><input type=\"checkbox\"  class=\"markrow\" name='all_{$sPermissionKey}' /></td>";
                 foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)

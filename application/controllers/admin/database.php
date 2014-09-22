@@ -95,11 +95,30 @@ class database extends Survey_Common_Action
             {
                 foreach ($aSurveyLanguages as $sLanguage)
                 {
-                    if (!is_null(Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage.'_0')))
-                    {
-                        $this->_updateDefaultValues($iQuestionID,0,0,'',$sLanguage,Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage.'_0'),true);
+                    // Qick and dirty insert for yes/no defaul value
+                    // write the the selectbox option, or if "EM" is slected, this value to table
+                    if ($sQuestionType == 'Y'){
+                        /// value for all langs
+                        if (Yii::app()->request->getPost('samedefault') == 1){
+                            $sLanguage = $aSurveyLanguages[0];   // turn
+                        }else{
+                            $sCurrentLang = $sLanguage; // edit the next lines
+                        }
+                        if ( Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage) == 'EM')  { // Case EM, write expression to database
+                            $this->_updateDefaultValues($iQuestionID,0,0,'',$sLanguage,Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage.'_EM'),true);
+                        }
+                        else{
+                            // Case "other", write list value to database
+                            $this->_updateDefaultValues($iQuestionID,0,0,'',$sLanguage,Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage),true);
+                        }
+                        ///// end yes/no
+                    }else{
+                        if (!is_null(Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage.'_0')))
+                        {
+                            $this->_updateDefaultValues($iQuestionID,0,0,'',$sLanguage,Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage.'_0'),true);
+                        }
                     }
-                }
+               }
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
             LimeExpressionManager::SetDirtyFlag();
