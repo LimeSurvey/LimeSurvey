@@ -221,6 +221,24 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (isset($question) && is_array($question))
     {
+        /**
+         * This event fires before each question is rendered. 
+         * Currenty 3 parameters are set:
+         * @param string text The question text
+         * @param string class The class for div around the whole question
+         * @param string help The help text
+         */
+        $event = new PluginEvent('beforeQuestionRender');
+        $event->set('text', $question['text']);
+        $event->set('class', $question['class']);
+        $event->set('help', $question['help']);
+
+        App()->getPluginManager()->dispatchEvent($event);
+        $question['text'] = $event->get('text');
+        $question['class'] = $event->get('class');
+        $question['help'] = $event->get('help');
+
+
         $_question = $question['all'];
         $_question_text = $question['text'];
         $_question_help = $question['help'];
