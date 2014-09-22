@@ -235,7 +235,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
          * @param string help The help text
          */
         $event = new PluginEvent('beforeQuestionRender');
-        $event->set('surveyid', $question['sid']);// or $thissurvey['sid']
+        $event->set('surveyId', $question['sid']);// or $thissurvey['sid']
         $event->set('text', $question['text']);
         $event->set('class', $question['class']);
         $event->set('help', $question['help']);
