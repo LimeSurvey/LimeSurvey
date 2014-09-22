@@ -163,7 +163,8 @@
 				"COUNT(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE NULL END) as invalid",
 				"COUNT(CASE WHEN (sent!='N' AND sent<>'') THEN 1 ELSE NULL END) as sent",
 				"COUNT(CASE WHEN (emailstatus LIKE 'OptOut%') THEN 1 ELSE NULL END) as optout",
-				"COUNT(CASE WHEN (completed!='N' and completed<>'') THEN 1 ELSE NULL END) as completed"
+				"COUNT(CASE WHEN (completed!='N' and completed<>'' and completed !='Q') THEN 1 ELSE NULL END) as completed",
+                "COUNT(CASE WHEN (completed='Q') THEN 1 ELSE NULL END) as screenout",
 			);
 			$command = $this->getCommandBuilder()->createFindCommand($this->getTableSchema(),$criteria);
 			return $command->queryRow();
