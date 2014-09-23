@@ -558,9 +558,9 @@ class remotecontrol_handle
                  {
                      if (tableExists('{{survey_' . $iSurveyID . '}}'))
                      {
-                         $aSummary['completed_responses']=SurveyDynamic::model($iSurveyID)->count('submitdate is NOT NULL');
-                         $aSummary['incomplete_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
-                         $aSummary['full_responses']=SurveyDynamic::model($iSurveyID)->count();
+                         $aSummary['completed_responses']= Response::model($iSurveyID)->complete()->count();
+                         $aSummary['incomplete_responses']= Response::model($iSurveyID)->incomplete()->count();
+                         $aSummary['full_responses']= Response::model($iSurveyID)->count();
                      }
                      elseif ($sStatName!='all')
                      {
@@ -1664,9 +1664,9 @@ class remotecontrol_handle
                     if (tableExists('{{survey_' . $iSurveyID . '}}')){
                         $participantToken = $result['token'];
                         if(in_array('completed_responses', $aTokenProperties))
-                            $result['completed_responses'] = SurveyDynamic::model($iSurveyID)->countByAttributes(array('token' => $participantToken), 'submitdate IS NOT NULL');
+                            $result['completed_responses'] = Response::model($iSurveyID)->countByAttributes(array('token' => $participantToken), 'submitdate IS NOT NULL');
                         if(in_array('incomplete_responses', $aTokenProperties))
-                            $result['incomplete_responses'] = SurveyDynamic::model($iSurveyID)->countByAttributes(array('token' => $participantToken), 'submitdate IS NULL');
+                            $result['incomplete_responses'] = Response::model($iSurveyID)->countByAttributes(array('token' => $participantToken), 'submitdate IS NULL');
                     }
                     return $result;
                 }

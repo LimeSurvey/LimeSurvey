@@ -73,6 +73,20 @@
 		{
 			return '{{survey_' . $this->dynamicId . '}}';
 		}
+
+	    /**
+	    * Returns this model's scopes for complete and incomplete responses
+		*
+		* @access public
+		* @return array
+		*/
+		public function scopes() 
+		{
+			return array (
+				'incomplete' => array('condition' => 'submitdate is null'),
+				'complete' => array('condition' => 'submitdate is not null')
+			);
+		}
 	}
 
 ?>
