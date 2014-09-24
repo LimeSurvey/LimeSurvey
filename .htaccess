@@ -13,7 +13,8 @@
     RewriteCond %{QUERY_STRING} sid=(\d+)&lang=(\w+)&token=(\w+)$
     RewriteRule ^index.php /index.php/survey/index/sid/%1/token/%3/lang/%2/newtest/Y? [R=301,L]
 
-    # if a directory or a file exists, use it directly RewriteCond %{REQUEST_FILENAME} !-f
+    # if a directory or a file exists, use it directly
+    RewriteCond %{REQUEST_FILENAME} !-f
 
     # otherwise forward it to index.php
     RewriteRule . index.php
