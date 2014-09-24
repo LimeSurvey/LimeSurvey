@@ -1,12 +1,19 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
 
-    # Make the 1.x version URLs still work
-    RewriteCond %{QUERY_STRING} sid=(\d+)&lang=(\w+)
+    # JUST SID
+    RewriteCond %{QUERY_STRING} sid=(\d+)$
+    RewriteRule ^index.php /index.php/%1? [R=301,L]
+
+    # SID AND LANG
+    RewriteCond %{QUERY_STRING} sid=(\d+)&lang=(\w+)$
     RewriteRule ^index.php /index.php/%1/lang-%2? [R=301,L]
 
-    # if a directory or a file exists, use it directly
-    RewriteCond %{REQUEST_FILENAME} !-f
+    # SID, LANG AND TOKEN
+    RewriteCond %{QUERY_STRING} sid=(\d+)&lang=(\w+)&token=(\w+)$
+    RewriteRule ^index.php /index.php/survey/index/sid/%1/token/%3/lang/%2/newtest/Y? [R=301,L]
+
+    # if a directory or a file exists, use it directly RewriteCond %{REQUEST_FILENAME} !-f
 
     # otherwise forward it to index.php
     RewriteRule . index.php
