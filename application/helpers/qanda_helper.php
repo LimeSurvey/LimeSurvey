@@ -3684,23 +3684,20 @@ function do_shortfreetext($ia)
             $strBuild .= "5";
 
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
-			
-		// scripts
-		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."typeahead.bundle.min.js");
-		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."leaflet.js");
-		//Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap.min.js");
-		
-		Yii::app()->getClientScript()->registerScriptFile("http://maps.google.com/maps/api/js?v=3&sensor=false");
-		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."Google.js");
-		Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
-	
-		// css
-		//Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'bootstrap.min.css');
-		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'leaflet.css');
-		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
-		Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig("third_party") . '/font-awesome/css/font-awesome.min.css');
 
-		
+        // scripts
+        //Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."bootstrap.min.js");
+        App()->getClientScript()->registerPackage('leaflet');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."typeahead.bundle.js");// Must be replaced by jqueryui.autocomplete
+#        Yii::app()->getClientScript()->registerScriptFile("http://maps.google.com/maps/api/js?v=3&sensor=false");
+#        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."Google.js");
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
+
+        // css
+        //Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'bootstrap.min.css');
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
+#        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig("third_party") . '/font-awesome/css/font-awesome.min.css');
+
         $answer = "
         <div class=\"question answer-item geoloc-item {$extraclass}\">
         <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">

@@ -3386,9 +3386,9 @@ function questionAttributes($returnByName=false)
         'sortorder'=>90,
         'inputtype'=>'singleselect',
         'options'=>array(0=>$clang->gT('Off'),
-		100=>$clang->gT('Maps'),
-        1=>$clang->gT('Google Maps')
-		),
+            100=>gT('Open Layer (OpenStreetMap via mapquest)'),
+            1=>$clang->gT('Google Maps')
+        ),
         'default' => 0,
         "help"=>$clang->gT("Activate this to show a map above the input field where the user can select a location"),
         "caption"=>$clang->gT("Use mapping service"));

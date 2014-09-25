@@ -70,14 +70,11 @@ function OSGeoInitialize(question,latLng){
 		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
 		  attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		})]);
-		
-		var gmap = new L.Google('HYBRID');
-		
+
 		var baseLayers = {
 		  "Street Map": mapquestOSM,
 		  "Aerial Imagery": mapquestOAM,
-		  "Imagery with Streets": mapquestHYB,
-		  "Google Maps": gmap
+		  "Imagery with Streets": mapquestHYB
 		};
 		var overlays = {
 		};	
