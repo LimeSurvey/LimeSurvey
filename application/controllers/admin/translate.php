@@ -1017,29 +1017,34 @@ class translate extends Survey_Common_Action {
         return $image;
     }
 
+    public function ajaxtranslategoogleapi()
+    {
+        // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin rigth can post
+        if(Yii::app()->request->isPostRequest)
+        {
+            echo self::translate_google_api();
+        }
+    }
     /*
     * translate_google_api.php
     * Creates a JSON interface for the auto-translate feature
     */
     private function translate_google_api()
     {
-        header('Content-type: application/json');
-
         $sBaselang   = Yii::app()->getRequest()->getPost('baselang');
         $sTolang     = Yii::app()->getRequest()->getPost('tolang');
         $sToconvert  = Yii::app()->getRequest()->getPost('text');
 
-        $aSearch     = array('zh-Hans','zh-Hant-HK','zh-Hant-TW',
-						'nl-informal','de-informal','it-formal','pt-BR','es-MX','nb','nn');
+        $aSearch     = array('zh-Hans','zh-Hant-HK','zh-Hant-TW','nl-informal','de-informal','it-formal','pt-BR','es-MX','nb','nn');
         $aReplace    = array('zh-CN','zh-TW','zh-TW','nl','de','it','pt','es','no','no');
-
         $sTolang = str_replace($aSearch, $aReplace, $sTolang);
 
-		$error = FALSE;
+        $error = false;
+
         try
-		{
+        {
             Yii::app()->loadLibrary('admin/gtranslate/GTranslate');
-			$gtranslate = new Gtranslate();
+            $gtranslate = new Gtranslate();
             $objGt = $gtranslate;
 
             // Gtranslate requires you to run function named XXLANG_to_XXLANG
@@ -1078,7 +1083,9 @@ class translate extends Survey_Common_Action {
 			'converted' =>  $sOutput
 		);
 
-        return ls_json_encode($aOutput) . "\n";
+        header('Content-type: application/json');
+        return ls_json_encode($aOutput);
+        Yii::app()->end();
     }
 
     /**

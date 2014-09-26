@@ -10,6 +10,7 @@
 	<script type="text/javascript">
 		sGoogleApiError = "<?php $clang->eT("There was an error using the Google API.");?>";
 		sDetailedError  = "<?php $clang->eT("Detailed Error");?>";
+		translateJsonUrl = "<?php echo $this->createUrl("admin/translate/sa/ajaxtranslategoogleapi"); ?>";
 	</script>
 
 	<div id="translationtabs" style="display: none;" >
