@@ -3416,7 +3416,7 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Slider'),
         'sortorder'=>10,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Slider minimum value'),
+        "help"=>$clang->gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
         "caption"=>$clang->gT('Slider minimum value'));
 
         $qattributes["slider_max"]=array(
@@ -3424,7 +3424,7 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Slider'),
         'sortorder'=>11,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Slider maximum value'),
+        "help"=>$clang->gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
         "caption"=>$clang->gT('Slider maximum value'));
 
         $qattributes["slider_accuracy"]=array(
@@ -3432,7 +3432,7 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Slider'),
         'sortorder'=>30,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Slider accuracy'),
+        "help"=>$clang->gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
         "caption"=>$clang->gT('Slider accuracy'));
 
         $qattributes["slider_default"]=array(
@@ -3440,7 +3440,7 @@ function questionAttributes($returnByName=false)
         'category'=>$clang->gT('Slider'),
         'sortorder'=>50,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Slider start as this value (this will set the initial value).'),
+        "help"=>$clang->gT('Slider start as this value (this will set the initial value). You can use Expression manager, but this must be a number before showing the page.'),
         "caption"=>$clang->gT('Slider initial value'));
 
         $qattributes["slider_middlestart"]=array(

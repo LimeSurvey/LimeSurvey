@@ -3165,36 +3165,14 @@ function do_multiplenumeric($ia)
         $prefixclass="slider";
         $slider_layout=true;
         $extraclass .=" withslider";
-        if (trim($aQuestionAttributes['slider_accuracy'])!='')
-        {
-            $slider_step = $aQuestionAttributes['slider_accuracy'];
-        }
-        else
-        {
-            $slider_step = 1;
-        }
-
-        if (trim($aQuestionAttributes['slider_min'])!='')
-        {
-            $slider_mintext = $aQuestionAttributes['slider_min'];
-            $slider_min = $aQuestionAttributes['slider_min'];
-        }
-        else
-        {
-            $slider_mintext = 0;
-            $slider_min = 0;
-        }
-        if (trim($aQuestionAttributes['slider_max'])!='')
-        {
-            $slider_maxtext = $aQuestionAttributes['slider_max'];
-            $slider_max = $aQuestionAttributes['slider_max'];
-        }
-        else
-        {
-            $slider_maxtext = "100";
-            $slider_max = 100;
-        }
-        $slider_default= (trim($aQuestionAttributes['slider_default'])!='')?$aQuestionAttributes['slider_default']:"";
+        $slider_step=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_accuracy']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_step =  (is_numeric($slider_step))?$slider_step:1;
+        $slider_min = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_min']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_mintext = $slider_min =  (is_numeric($slider_min))?$slider_min:0;
+        $slider_max = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_max']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_maxtext = $slider_max =  (is_numeric($slider_max))?$slider_max:100;
+        $slider_default=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_default =  (is_numeric($slider_default))?$slider_default:"";
 
         if ($slider_default == '' && $aQuestionAttributes['slider_middlestart']==1)
         {

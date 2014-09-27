@@ -9090,6 +9090,10 @@ EOD;
                             case 'max_num_of_files':
                             case 'multiflexible_max':
                             case 'multiflexible_min':
+                            case 'slider_accuracy':
+                            case 'slider_min':
+                            case 'slider_max':
+                            case 'slider_default':
                                 $value = '{' . $value . '}';
                                 break;
                             case 'other_replace_text':
