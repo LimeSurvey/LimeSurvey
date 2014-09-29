@@ -18,7 +18,7 @@
         <li><?php printf($clang->gT("%s records imported"), $xz); ?></li>
     </ul>
 
-    <?php if (!empty($duplicatelist) || !empty($invalidformatlist) || !empty($invalidemaillist)) { ?>
+    <?php if (!empty($duplicatelist) || !empty($invalidformatlist) || !empty($invalidemaillist) || !empty($errorlist)) { ?>
 
         <div class='warningheader'><?php $clang->eT('Warnings'); ?></div>
 
@@ -44,7 +44,7 @@
                     <div class='badtokenlist' id='invalidformatlist' style='display: none;'>
                         <ul>
                             <?php foreach ($invalidformatlist as $aData) { ?>
-                                <li>Line <?php echo $aData; ?></li>
+                                <li><?php echo $aData; ?></li>
                                 <?php } ?>
                         </ul>
                     </div>
@@ -62,7 +62,21 @@
                             <?php } ?>
                     </ul>
                 </div>
-                <?php } ?>
+                </li>
+            <?php } ?>
+            <?php if (!empty($errorlist)) { ?>
+                <li>
+                <?php printf($clang->gT("%s records with invalid information"), count($errorlist)); ?>
+                [<a href='#' onclick='$("#errorlist").toggle();'><?php $clang->eT("List"); ?></a>]
+                <div class='badtokenlist' id='errorlist' style='display: none;'>
+                    <ul>
+                        <?php foreach ($errorlist as $aData) { ?>
+                            <li><?php echo $aData; ?></li>
+                            <?php } ?>
+                    </ul>
+                </div>
+                </li>
+            <?php } ?>
         </ul>
         <?php } ?>
 </div>
