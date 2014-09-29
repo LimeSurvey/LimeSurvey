@@ -67,7 +67,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG') OR !K_TCPDF_EXTERNAL_CONFIG) {
 		}
 	}
 }
-
+return;
 if (!defined('K_PATH_MAIN')) {
 	define ('K_PATH_MAIN', dirname(__FILE__).'/');
 }
