@@ -13,8 +13,8 @@
     var otherisreserved='<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>';
     var sImageURL ='<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
     var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
-    var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
-    var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
+    var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';
+    var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/ajaxSets'); ?>';
     var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
     var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
     var check = true;
