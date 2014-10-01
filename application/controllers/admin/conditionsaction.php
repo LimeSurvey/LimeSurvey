@@ -515,6 +515,7 @@ class conditionsaction extends Survey_Common_Action {
 
         //BEGIN: GATHER INFORMATION
         // 1: Get information for this question
+        // @todo : use viewHelper::getFieldText and getFieldCode for 2.06 for string show to user
         if (!isset($qid)) { $qid = returnGlobal('qid'); }
         if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
         $thissurvey = getSurveyInfo($iSurveyID);
@@ -814,8 +815,10 @@ class conditionsaction extends Survey_Common_Action {
                     foreach ($aresult as $arows)
                     {
                         $attr = getQuestionAttributeValues($rows['qid']);
-                        $label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
-                        $label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
+                        $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
+                        // dualscale_header are allways set, but can be empty
+                        $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gt('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
+                        $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gt('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
                         $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";
                         $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                         $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");
