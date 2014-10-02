@@ -46,8 +46,8 @@
     //var sConfirmationExpireMessage='<?php $clang->eT("Are you sure you want to expire these surveys?",'js');?>';
     //var sConfirmationArchiveMessage='<?php $clang->eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
     // var editUrl = "<?php echo $this->createUrl('/admin/survey/editSurvey_json'); ?>";
-    var colNames = <?php echo $column_names_txt; ?>;
-    var colModels = <?php echo $column_model_txt; ?>;
+    var colNames = <?php echo ls_json_encode($column_names); ?>;
+    var colModels = <?php echo ls_json_encode($column_model); ?>;
 
 
 </script>

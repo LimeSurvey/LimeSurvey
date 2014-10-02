@@ -162,17 +162,22 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     padding: 0 2px;
 }
 /* Fix height of browsettable */
-.browsetable th .qcode {
+#gview_displayresponses th .qcode {
     display: block;
+    padding-right:16px;
     height: auto;
 }
-.browsetable th .questiontext {
+#gview_displayresponses th .questiontext {
     display: block;
-    height: 3em;
+    height: 2.5em;
     overflow: hidden;
+    white-space: normal;
 }
-.browsetable td span {
-    min-width:10em;/* This is OK for date time */
+#gbox_displayresponses.ui-jqgrid .ui-jqgrid-htable th div {
+    height: auto;
+}
+#gbox_displayresponses.ui-jqgrid .s-ico{
+    position:absolute;right:18px;top:0
 }
 .ui-tooltip.tooltip-text{min-width:15em}
 .templateeditor {
@@ -186,7 +191,6 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
 .ui-jqgrid .ui-jqgrid-pager {
     height: auto !important;
 }
-
 /* some li in form have clear */
 .ui-tabs .ui-tabs-nav li{
 clear: none !important;
@@ -203,8 +207,11 @@ clear: none !important;
     width: auto;
     overflow: hidden;
 }
-.ui-jqgrid,.ui-jqgrid-view,.ui-jqgrid-titlebar,.ui-jqgrid-toppager,.ui-jqgrid-pager{min-width:100%;max-width:100%;border-right-width:0;border-left-width:0}
+
 legend { line-height: normal; }
+
+/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
+.ui-jqgrid,.ui-jqgrid-view,.ui-jqgrid-titlebar,.ui-jqgrid-toppager,.ui-jqgrid-pager{min-width:100%;max-width:100%;border-right-width:0;border-left-width:0}
 
 /* export tooltips */
 .tooltip-export {
