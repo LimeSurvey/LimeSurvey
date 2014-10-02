@@ -99,7 +99,7 @@ $(document)
 						url : jsonUrl,
 						// editurl : editUrl,
 						datatype : "json",
-						mtype : "post",
+						mtype : "POST",
 						colNames : colNames,
 						colModel : returnColModel(),
 						toppager : true,
@@ -118,7 +118,10 @@ $(document)
 						multiselect : true,
 						loadonce : true,
 						pager : "#pager",
-						caption : sCaption
+						caption : sCaption,
+						loadComplete: function(){
+						 $("#displayresponses").tooltip({ tooltipClass: "tooltip-text" });
+						}
 					});
 					jQuery("#displayresponses").jqGrid(
 							'navGrid',
@@ -212,10 +215,6 @@ $(document)
 						minWidth : 1400,
 						minHeight : 100
 					});
-
-					$('.wrapper').width($('#displayresponses').width() * 1.006);
-					$('.footer').width(
-							($('#displayresponses').width() * 1.006) - 10);
 
 					/* Trigger the inline search when the access list changes */
 					$('#gs_completed_select').change(

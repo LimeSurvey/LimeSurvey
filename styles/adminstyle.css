@@ -203,7 +203,7 @@ clear: none !important;
     width: auto;
     overflow: hidden;
 }
-
+.ui-jqgrid,.ui-jqgrid-view,.ui-jqgrid-titlebar,.ui-jqgrid-toppager,.ui-jqgrid-pager{min-width:100%;max-width:100%;border-right-width:0;border-left-width:0}
 legend { line-height: normal; }
 
 /* export tooltips */

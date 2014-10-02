@@ -455,7 +455,10 @@ class responses extends Survey_Common_Action
     */
     public function getResponses_json($iSurveyID)
     {
-
+        if(!Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        {
+            Yii::app()->end();
+        }
         $aData = $this->_getData($iSurveyID);
 
         extract($aData);
@@ -549,20 +552,13 @@ class responses extends Survey_Common_Action
             $aSurveyEntry[] = empty($row['submitdate'])?'N':'Y';
             $aSurveyEntry[] = $row['id'];
             $aSurveyEntry[] = $row['startlanguage'];
-            $aSurveyEntry[] = $row[$fnames[2][0]];
-            $aSurveyEntry[] = $row[$fnames[3][0]];
-
             foreach ($row as $row_index => $row_value) {
-
                 // Ignore these fields
                 if (in_array($row_index, array('id', 'submitdate', 'lastpage', 'startlanguage', 'startdate', 'datestamp'))) {
                     continue;
                 }
-
-                $aSurveyEntry[] = $row_value;
-
+                $aSurveyEntry[] = strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $row_index, $row_value, $oBrowseLanguage)));
             }
-
 
             $all_rows[] = array('id' => $row['id'], 'cell' =>  $aSurveyEntry);
 
