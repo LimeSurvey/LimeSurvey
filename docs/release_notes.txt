@@ -59,6 +59,45 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 140915) to 2.05+ (build 141003) Oct 3, 2014
+-Fixed issue #9181: When dumping database sometimes lines are left out (Carsten Schmitz)
+-Fixed issue #9182: Data check integrity function uses too much memory if you have many surveys (Carsten Schmitz)
+-Fixed issue #9225: Infite redirection loop with WebServer authentication (Denis Chenu)
+-Fixed issue #9232: Error when calling list_participants and passing aAttributes array (Carsten Schmitz)
+-Fixed issue #9233: list_participants delivers invalid token data (Carsten Schmitz)
+-Fixed issue #9234: White page after save global settings if done just after auto-update (Carsten Schmitz)
+-Fixed issue #9239: Wrong language used for Expresson Manager in printable version (Denis Chenu)
+-Fixed issue #9240: Leading zeros removed during display for text (Denis Chenu)
+-Fixed issue #9258: Quick translation broken ith valid KEY (Denis Chenu)
+-Fixed issue #9259: slider min/max can be set as non-numeric, which then breaks survey (Denis Chenu)
+-Fixed issue #9269: Unable to delete label set with urlFormat get (Denis Chenu)
+-Fixed issue #9270: getallsets/ajaxsets issue when saving labelset (Denis Chenu)
+-Fixed issue #9271: Array dual scale causes errors (Denis Chenu)
+-Fixed issue: High memory usage on database backup procedure (Carsten Schmitz)
+-Fixed issue: High memory usage on db upgrade from older versions (Carsten Schmitz)
+-Fixed issue: PDF statistics cannot be shown (Carsten Schmitz)
+-New feature: can use Expression Manager in slider min/max/step and default (Denis Chenu)
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21, DenisChenu
+#Updated translation: Georgian by Davitus
+#Updated translation: German by c_schmitz, actxcellence
+#Updated translation: German (Informal) by c_schmitz, actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup, ddrmoscow
+#Updated translation: Spanish (Spain) by kadejo
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 140911) to 2.05+ (build 140915) Sept 15, 2014
 -New feature #8596: Allow empty dates for RemoteControl add_response call (Nate Baker)
 -Fixed issue #8221: Update TCPDF to ver. 6.xx (Alain Bearez)
