@@ -331,18 +331,20 @@ class labels extends Survey_Common_Action
             if ($action == "updateset")
             {
                 updateset($lid);
-                Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Label set properties sucessfully updated.");
+                Yii::app()->setFlashMessage(Yii::app()->lang->gT("Label set properties sucessfully updated."),'success');
             }
             if ($action == "insertlabelset")
                 $lid = insertlabelset();
             if (($action == "modlabelsetanswers") || ($action == "ajaxmodlabelsetanswers"))
                 modlabelsetanswers($lid);
             if ($action == "deletelabelset")
+            {
                 if (deletelabelset($lid))
                 {
-                    Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Label set sucessfully deleted.");
+                    Yii::app()->setFlashMessage(Yii::app()->lang->gT("Label set sucessfully deleted."),'success');
                     $lid = 0;
                 }
+            }
 
 
             if ($lid)

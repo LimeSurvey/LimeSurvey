@@ -1,8 +1,3 @@
-    <script type='text/javascript'>
-        var duplicatelabelcode='<?php $clang->eT('Error: You are trying to use duplicate label codes.','js'); ?>';
-        var otherisreserved='<?php $clang->eT("Error: 'other' is a reserved keyword.",'js'); ?>';
-        var quickaddtitle='<?php $clang->eT('Quick-add subquestion or answer items','js'); ?>';
-    </script>
 <div class='header ui-widget-header'><?php $clang->eT("Labels") ?></div>
 <div id='tabs' class='ui-tabs ui-widget ui-widget-content ui-corner-all'>
     <ul class='ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all'>

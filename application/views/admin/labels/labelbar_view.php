@@ -8,7 +8,7 @@
             <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
             <a href='<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid); ?>'>
                 <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php $clang->eT("Edit label set"); ?>'  /></a>
-            <a href='#' onclick="if (confirm('<?php $clang->eT("Do you really want to delete this label set?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/labels/sa/process")."?action=deletelabelset&amp;lid=$lid"); ?>}" >
+            <a href='#' data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' >
                 <img src='<?php echo $sImageURL; ?>delete.png'  alt='<?php $clang->eT("Delete label set"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>separator.gif'  alt='' />
             <a href='<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>'>

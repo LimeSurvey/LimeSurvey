@@ -9,6 +9,16 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+
+/**
+* delete button
+*/
+$(document).on('click','[data-action="deletelabelset"]',function(event){
+    event.preventDefault();
+    if(confirm($(this).data('confirm'))){
+        sendPost($(this).data('url'),'',['action','lid'],[$(this).data('action'),$('[name="lid"]').val()]);
+    }
+});
 $(document).ready(function(){
     $('#btnDumpLabelSets').click(function(){
         if ($('#labelsets > option:selected').size()==0)
