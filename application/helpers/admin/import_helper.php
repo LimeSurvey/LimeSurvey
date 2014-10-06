@@ -850,7 +850,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $insertdata['gid']=$aGIDReplacements[$oldgid];
         }
         if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',true);
-        
+
         $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
 
         if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',false);
@@ -896,7 +896,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                 $insertdata['qid']=$aQIDReplacements[$oldqid];
             }
             if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
-            
+
             $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
             if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',false);
             if (!isset($aQIDReplacements[$oldqid]))
@@ -938,7 +938,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
             $newsqid=getLastInsertID('{{questions}}');
             if (isset($insertdata['qid'])) switchMSSQLIdentityInsert('questions',true);
-            
+
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
@@ -1020,10 +1020,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                 $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
-            if ($insertdata['sqid']>0) 
+            if ($insertdata['sqid']>0)
             {
                 if (!isset($aQIDReplacements[(int)$insertdata['sqid']])) continue;  // If SQID is invalid skip the default value
-                $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subquestion id    
+                $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subquestion id
             }
 
             // now translate any links
@@ -2960,7 +2960,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             }
             if (!$oQuestion->save())
             {
-                // safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));  
+                // safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));
                 //
                 // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                 // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -3152,7 +3152,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                 }
                 if (!$question->save())
                 {
-                    // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));  
+                    // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));
                     //
                     // In PHP 5.2.10 and some later versions a bug is triggered that resets the foreach loop when inserting a record
                     // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -3495,7 +3495,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     if ($sXMLdata == NULL)
     {
         $sXMLdata = file_get_contents($sFullFilePath);
-    } 
+    }
     $xml = @simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
 
     if (!$xml || $xml->LimeSurveyDocType!='Survey')
@@ -3583,9 +3583,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['googleanalyticsapikey']=$insertdata['googleAnalyticsAPIKey'];
             unset($insertdata['googleAnalyticsAPIKey']);
         }
-        if (isset($insertdata['allowjumps'])) 
+        if (isset($insertdata['allowjumps']))
         {
-            $insertdata['questionindex']= ($insertdata['allowjumps']=="Y")?1:0; 
+            $insertdata['questionindex']= ($insertdata['allowjumps']=="Y")?1:0;
             unset($insertdata['allowjumps']);
         }
         /* Remove unknow column */
@@ -3598,7 +3598,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $results['importwarnings'][]=sprintf($clang->gT("This survey setting has not been imported: %s => %s"),$key,$value);
         }
-        
+
         $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [1]<br />");
 
         $results['surveys']++;
@@ -3640,7 +3640,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             unset($insertdata['surveyls_attributecaptions']);
         }
-        
+
 
 
         $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or safeDie($clang->gT("Error").": Failed to insert data [2]<br />");
@@ -3726,7 +3726,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if ($insertdata)
                 XSSFilterArray($insertdata);
 
-            if (!$bConvertInvalidQuestionCodes)   
+            if (!$bConvertInvalidQuestionCodes)
             {
                 $sScenario='archiveimport';
             }
@@ -3772,7 +3772,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if (!$oQuestion->save())
             {
-                // safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));  
+                // safeDie($clang->gT("Error while saving: "). print_r($oQuestion->errors, true));
                 //
                 // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                 // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -3836,7 +3836,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 XSSFilterArray($insertdata);
 
 
-            if (!$bConvertInvalidQuestionCodes)   
+            if (!$bConvertInvalidQuestionCodes)
             {
                 $sScenario='archiveimport';
             }
@@ -3880,7 +3880,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if (!$question->save())
             {
-                // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));  
+                // safeDie($clang->gT("Error while saving: "). print_r($question->errors, true));
                 //
                 // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                 // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -3931,7 +3931,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             if ($insertdata)
                 XSSFilterArray($insertdata);
-                
+
             if (Answer::model()->insertRecords($insertdata))
             {
                 $results['answers']++;
@@ -3950,17 +3950,17 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata[(string)$key]=(string)$value;
             }
-            
+
             // take care of renaming of date min/max adv. attributes fields
             if ($iDBVersion < 170)
             {
                 if (isset($insertdata['attribute']))
                 {
-                    if ($insertdata['attribute']=='dropdown_dates_year_max') 
+                    if ($insertdata['attribute']=='dropdown_dates_year_max')
                     {
-                        $insertdata['attribute']='date_max'; 
+                        $insertdata['attribute']='date_max';
                     }
-                    if ($insertdata['attribute']=='dropdown_dates_year_min') 
+                    if ($insertdata['attribute']=='dropdown_dates_year_min')
                     {
                         $insertdata['attribute']='date_min';
                     }
@@ -4188,7 +4188,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['sid']=$iNewSID; // remap the survey id
             if (isset($insertdata['targetsqid']) && $insertdata['targetsqid']!='')
             {
-                $insertdata['targetsqid'] =$aSQIDReplacements[(int)$insertdata['targetsqid']]; // remap the qid
+                $insertdata['targetsqid'] =$aQIDReplacements[(int)$insertdata['targetsqid']]; // remap the qid
             }
             if (isset($insertdata['targetqid']) && $insertdata['targetqid']!='')
             {
@@ -4267,7 +4267,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
         $results['tokens']=0;
         return $results;
     }
-    
+
     $results['tokens']=0;
     $results['tokenfieldscreated']=0;
 
@@ -4307,7 +4307,7 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
 		$token = Token::create($iSurveyID);
 		$token->setAttributes($insertdata, false);
         if (!$token->save())
-        {                   
+        {
             $results['warnings'][]=$clang->gT("Skipped tokens entry:").' '. implode('. ',$token->errors['token']);
         };
         $results['tokens']++;
@@ -4367,7 +4367,7 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
                                 $aInsertData[$sFieldname]='';
                         }
                     }
-                    
+
                     $result = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie($clang->gT("Error").": Failed to insert data[16]<br />");
                     $results['responses']++;
                 }
@@ -4571,7 +4571,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
             elseif(is_int($iSubmitdateKey))
             {
                 if( $aResponses[$iSubmitdateKey]=='{question_not_shown}' || trim($aResponses[$iSubmitdateKey]=='')){
-                    $oSurvey->submitdate = new CDbExpression('NULL'); 
+                    $oSurvey->submitdate = new CDbExpression('NULL');
                 }else{
                     // Maybe control valid date : see http://php.net/manual/en/function.checkdate.php#78362 for example
                     $oSurvey->submitdate=$aResponses[$iSubmitdateKey];
@@ -4580,7 +4580,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
             foreach($aKeyForFieldNames as $sFieldName=>$iFieldKey)
             {
                 if( $aResponses[$iFieldKey]=='{question_not_shown}'){
-                    $oSurvey->$sFieldName = new CDbExpression('NULL'); 
+                    $oSurvey->$sFieldName = new CDbExpression('NULL');
                 }else{
                     $sResponse=str_replace(array("{quote}","{tab}","{cr}","{newline}","{lbrace}"),array("\"","\t","\r","\n","{"),$aResponses[$iFieldKey]);
                     $oSurvey->$sFieldName = $sResponse;
@@ -4680,9 +4680,9 @@ function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
     }
     $results['languages']=count($aLanguagesSupported);
      // Return if there are no timing records to import
-    if (!isset($xml->timings->rows)) 
+    if (!isset($xml->timings->rows))
     {
-        return $results;   
+        return $results;
     }
     switchMSSQLIdentityInsert('survey_'.$iSurveyID.'_timings',true);
     foreach ($xml->timings->rows->row as $row)
@@ -4921,7 +4921,7 @@ function TSVImportSurvey($sFullFilePath)
                 $glang = (!empty($row['language']) ? $row['language'] : $baselang);
                 // when a multi-lang tsv-file without information on the group id/number (old style) is imported,
                 // we make up this information by giving a number 0..[numberofgroups-1] per language.
-                // the number and order of groups per language should be the same, so we can also import these files 
+                // the number and order of groups per language should be the same, so we can also import these files
                 if ($lastglang!=$glang)    //reset counter on language change
                 {
                     $iGroupcounter=0;
@@ -4942,7 +4942,7 @@ function TSVImportSurvey($sFullFilePath)
                     $insertdata['group_order'] = $ginfo[$sGroupseq]['group_order'];
                 }
                 else
-                { 
+                {
                     $insertdata['group_order'] = $gseq;
                 }
                 $newgid = QuestionGroup::model()->insertRecords($insertdata);
@@ -5036,7 +5036,7 @@ function TSVImportSurvey($sFullFilePath)
                                 {
                                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                                 }
-                                else 
+                                else
                                 {
                                     $insertdata['language'] = NULL;
                                 }
@@ -5185,6 +5185,6 @@ function TSVImportSurvey($sFullFilePath)
         LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
         LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
     }
-    
+
     return $results;
 }
