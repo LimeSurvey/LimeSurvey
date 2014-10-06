@@ -1926,6 +1926,7 @@ class tokens extends Survey_Common_Action
             $duplicatelist = array();
             $invalidemaillist = array();
             $invalidformatlist = array();
+            $errorlist = array();
             $firstline = array();
 
             $sPath = Yii::app()->getConfig('tempdir');
@@ -2018,12 +2019,11 @@ class tokens extends Survey_Common_Action
 
                         if (count($firstline) != count($line))
                         {
-                            $invalidformatlist[] = $recordcount;
+                            $invalidformatlist[] = sprintf(gt("Line %s"),$recordcount);
                             $recordcount++;
                             continue;
                         }
                         $writearray = array_combine($firstline, $line);
-
                         //kick out ignored columns
                         foreach ($ignoredcolumns as $column)
                         {
@@ -2034,29 +2034,34 @@ class tokens extends Survey_Common_Action
 
                         if ($filterduplicatetoken != false)
                         {
-                            $dupquery = "SELECT count(tid) from {{tokens_".intval($iSurveyId)."}} where 1=1";
+                            $aParams=array();
+                            $oCriteria= new CDbCriteria;
+                            $oCriteria->condition="";
                             foreach ($filterduplicatefields as $field)
                             {
                                 if (isset($writearray[$field]))
                                 {
-                                    $dupquery.= " and ".Yii::app()->db->quoteColumnName($field)." = " . Yii::app()->db->quoteValue($writearray[$field]);
+                                    $oCriteria->addCondition("{$field} = :{$field}");
+                                    $aParams[":{$field}"]=$writearray[$field];
                                 }
                             }
-                            $dupresult = Yii::app()->db->createCommand($dupquery)->queryScalar();
+                            if(!empty($aParams))
+                                $oCriteria->params=$aParams;
+                            $dupresult = TokenDynamic::model($iSurveyId)->count($oCriteria);
                             if ($dupresult > 0)
                             {
                                 $dupfound = true;
-                                $duplicatelist[] = Yii::app()->db->quoteValue($writearray['firstname']) . " " . Yii::app()->db->quoteValue($writearray['lastname']) . " (" . Yii::app()->db->quoteValue($writearray['email']) . ")";
+                                $duplicatelist[] = sprintf(gt("Line %s : %s %s (%s)"),$recordcount,$writearray['firstname'],$writearray['lastname'],$writearray['email']);
                             }
                         }
                         $writearray['email'] = trim($writearray['email']);
                         //treat blank emails
-                        if ($filterblankemail && $writearray['email'] == '')
+                        if (!$dupfound && $filterblankemail && $writearray['email'] == '')
                         {
                             $invalidemail = true;
                             $invalidemaillist[] = $line[0] . " " . $line[1] . " ( )";
                         }
-                        if ($writearray['email'] != '')
+                        if (!$dupfound && $writearray['email'] != '')
                         {
                             $aEmailAddresses = explode(';', $writearray['email']);
                             foreach ($aEmailAddresses as $sEmailaddress)
@@ -2072,6 +2077,15 @@ class tokens extends Survey_Common_Action
                         if (isset($writearray['token']))
                         {
                             $writearray['token'] = sanitize_token($writearray['token']);
+                            if(!$dupfound && $writearray['token']) // We allways filter duplicate token
+                            {
+                                $dupresult = TokenDynamic::model($iSurveyId)->count("token=:token",array('token'=>$writearray['token']));
+                                if($dupresult>0)
+                                {
+                                    $duplicatelist[] = sprintf(gt("Line %s : token %s already used."),$recordcount,$writearray['token']);
+                                    $dupfound=true;
+                                }
+                            }
                         }
 
                         if (!$dupfound && !$invalidemail)
@@ -2079,25 +2093,27 @@ class tokens extends Survey_Common_Action
                             // unset all empty value
                             foreach ($writearray as $key=>$value)
                             {
-                                if($writearray[$key]=="")
+                                if($writearray[$key]=="" && !in_array($key,array('firstname','lastname','email')))
                                     unset($writearray[$key]);
                                 if (substr($value, 0, 1)=='"' && substr($value, -1)=='"')// Fix CSV quote
                                     $value = substr($value, 1, -1);
                             }
                             // Some default value : to be moved to Token model rules in future release ?
                             // But think we have to accept invalid email etc ... then use specific scenario
-                            $writearray['emailstatus']=isset($writearray['emailstatus'])?$writearray['emailstatus']:"OK";
+                            //$writearray['emailstatus']=isset($writearray['emailstatus'])?$writearray['emailstatus']:"OK";
                             $writearray['language']=isset($writearray['language'])?$writearray['language']:$sBaseLanguage;
-                            $oToken = Token::create($iSurveyId);
+                            //$oToken = Token::create($iSurveyId);//
+                            TokenDynamic::sid($iSurveyId);
+                            $oToken = new TokenDynamic;
                             foreach ($writearray as $key => $value)
                             {
                                 //if(in_array($key,$oToken->attributes)) Not needed because we filter attributes before
                                     $oToken->$key=$value;
                             }
-                            $ir=$oToken->save();
-                            if (!$ir)
+                            if (!$oToken->save())
                             {
-                                $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
+                                $errorlist[] = sprintf(gt("Line %s : %s %s (%s)"),$recordcount,$writearray['firstname'],$writearray['lastname'],$writearray['email']);
+                                tracevar($oToken->getErrors());
                             }
                             else
                             {
@@ -2120,6 +2136,7 @@ class tokens extends Survey_Common_Action
                 $aData['duplicatelist'] = $duplicatelist;
                 $aData['invalidformatlist'] = $invalidformatlist;
                 $aData['invalidemaillist'] = $invalidemaillist;
+                $aData['errorlist'] = $errorlist;
                 $aData['thissurvey'] = getSurveyInfo($iSurveyId);
                 $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
 

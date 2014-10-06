@@ -85,12 +85,14 @@ class TokenDynamic extends LSActiveRecord
     public function rules()
     {
         return array(
-        array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
-        array('email','filter','filter'=>'trim'),        
-        array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true), 
-        array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),     
-        array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
+            array('token', 'unique', 'allowEmpty'=>true),// 'caseSensitive'=>false only for mySql
+            array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+            array('email','filter','filter'=>'trim'),
+            array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true), 
+            array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('emailstatus', 'default', 'value' => 'OK'),
 //        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
 //        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),                          
 // Date rules currently don't work properly with MSSQL, deactivating for now
