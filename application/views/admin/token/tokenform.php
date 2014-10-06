@@ -43,7 +43,7 @@
                         echo $email;
                 } ?>" /></li>
         <li><label for='emailstatus'><?php $clang->eT("Email Status"); ?>:</label>
-            <input type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' value="<?php
+            <input type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' placeholder='OK' value="<?php
                     if (isset($emailstatus))
                     {
                         echo $emailstatus;

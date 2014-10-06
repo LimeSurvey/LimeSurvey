@@ -924,7 +924,6 @@ class tokens extends Survey_Common_Action
             $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
             'lastname' => Yii::app()->request->getPost('lastname'),
             'email' => Yii::app()->request->getPost('email'),
-            'emailstatus' => 'OK',
             'token' => $santitizedtoken,
             'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
             'sent' => 'N',
