@@ -1997,6 +1997,7 @@ function checkCompletedQuota($surveyid,$return=false)
     $event->set('surveyId', $surveyid);
     $event->set('responseId', $_SESSION['survey_'.$surveyid]['srid']);// We allways have a responseId
     $event->set('aMatchedQuotas', $aMatchedQuotas);// Give all the matched quota : the first is the active
+    App()->getPluginManager()->dispatchEvent($event);
     $blocks = array();
     foreach ($event->getAllContent() as $blockData)
     {
