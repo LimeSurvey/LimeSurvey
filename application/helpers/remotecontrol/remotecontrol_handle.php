@@ -2332,7 +2332,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
-        if(!$maxId = SurveyDynamic::model($iSurveyID)->getMaxId()) return array('status' => 'No Data, could not get max id.');
+        if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
@@ -2386,7 +2386,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
-        if(!$maxId = SurveyDynamic::model($iSurveyID)->getMaxId()) return array('status' => 'No Data, could not get max id.');
+        if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
 
         if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
@@ -2397,16 +2397,8 @@ class remotecontrol_handle
            $aFields=array_slice($aFields,0,255);        
         }
         $oFormattingOptions=new FormattingOptions();
- 
-        if($iFromResponseID !=null)
-            $oFormattingOptions->responseMinRecord=$iFromResponseID;
-        else
-            $oFormattingOptions->responseMinRecord=1;
-
-        if($iToResponseID !=null)
-            $oFormattingOptions->responseMaxRecord=$iToResponseID;
-        else
-            $oFormattingOptions->responseMaxRecord = $maxId;
+        $oFormattingOptions->responseMinRecord=1;
+        $oFormattingOptions->responseMaxRecord = $maxId;
 
         $oFormattingOptions->selectedColumns=$aFields;
         $oFormattingOptions->responseCompletionState=$sCompletionStatus;
