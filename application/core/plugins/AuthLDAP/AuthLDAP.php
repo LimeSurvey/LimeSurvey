@@ -6,14 +6,6 @@ class AuthLDAP extends AuthPluginBase
     static protected $description = 'Core: LDAP authentication';
     static protected $name = 'LDAP';
 
-    /**
-     * Can we autocreate users? For the moment this is disabled, will be moved 
-     * to a setting when we have more robust user creation system.
-     * 
-     * @var boolean
-     */
-    protected $autoCreate = false;
-
     protected $settings = array(
         'server' => array(
             'type' => 'string',
@@ -73,7 +65,19 @@ class AuthLDAP extends AuthPluginBase
                 ),
         'bindpwd' => array(
                 'type' => 'string',
-                'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previoulsy set.'
+                'label' => 'Password of the LDAP account used to search for the end-user\'s DN if previously set.'
+                ),
+        'auto_create' => array(
+                'type' => 'checkbox',
+                'label' => 'Check to create not yet existing users'
+                ),
+        'fullnameattribute' => array(
+                'type' => 'string',
+                'label' => 'Attribute to use as full name when creating user (uid, cn, ...)'
+                ),
+        'emailattribute' => array(
+                'type' => 'string',
+                'label' => 'Attribute to use as e-mail address when creating user (email, mail, ...)'
                 ),
         'is_default' => array(
                 'type' => 'checkbox',
@@ -158,6 +162,10 @@ class AuthLDAP extends AuthPluginBase
                 unset($aPluginSettings['binddn']);
                 unset($aPluginSettings['bindpwd']);
                 unset($aPluginSettings['ldapoptreferrals']);
+                
+                unset($aPluginSettings['auto_create']);
+                unset($aPluginSettings['fullnameattribute']);
+                unset($aPluginSettings['emailattribute']);
             }
         }
         
@@ -169,10 +177,11 @@ class AuthLDAP extends AuthPluginBase
         // Here we do the actual authentication       
         $username = $this->getUsername();
         $password = $this->getPassword();
+        $autocreate = (bool)$this->get('auto_create');
 
         $user = $this->api->getUserByName($username);
 
-        if ($user === null && $this->autoCreate === false)
+        if ($user === null &&  $autocreate == false)
         {
             // If the user doesnt exist ín the LS database, he can not login
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
@@ -188,20 +197,19 @@ class AuthLDAP extends AuthPluginBase
         }
 
         // Get configuration settings:
-        $ldapserver 		= $this->get('server');
-        $ldapport   		= $this->get('ldapport');
-        $ldapver    		= $this->get('ldapversion');
-        $ldaptls    		= $this->get('ldaptls');
-        $ldapoptreferrals	= $this->get('ldapoptreferrals');
-        $ldapmode    		= $this->get('ldapmode');
-        $suffix     		= $this->get('domainsuffix');
-        $prefix     		= $this->get('userprefix');
-        $searchuserattribute    = $this->get('searchuserattribute');
-        $extrauserfilter    	= $this->get('extrauserfilter');
-        $usersearchbase		= $this->get('usersearchbase');
-        $binddn     		= $this->get('binddn');
-        $bindpwd     		= $this->get('bindpwd');
-
+        $ldapserver          = $this->get('server');
+        $ldapport            = $this->get('ldapport');
+        $ldapver             = $this->get('ldapversion');
+        $ldaptls             = $this->get('ldaptls');
+        $ldapoptreferrals    = $this->get('ldapoptreferrals');
+        $ldapmode            = $this->get('ldapmode');
+        $suffix              = $this->get('domainsuffix');
+        $prefix              = $this->get('userprefix');
+        $searchuserattribute = $this->get('searchuserattribute');
+        $extrauserfilter     = $this->get('extrauserfilter');
+        $usersearchbase      = $this->get('usersearchbase');
+        $binddn              = $this->get('binddn');
+        $bindpwd             = $this->get('bindpwd');
 
 
         if (empty($ldapport)) {
@@ -255,11 +263,13 @@ class AuthLDAP extends AuthPluginBase
                 // An account is defined to do the LDAP search, let's use it
                 $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
             }
+
             if (!$ldapbindsearch) {
                 $this->setAuthFailure(100, ldap_error($ldapconn));
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }        
+
             // Now prepare the search fitler
             if ( $extrauserfilter != "")
             {
@@ -269,13 +279,18 @@ class AuthLDAP extends AuthPluginBase
             {
                 $usersearchfilter = "($searchuserattribute=$username)";
             }
+            
             // Search for the user
-            $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($searchuserattribute));
-            $rescount=ldap_count_entries($ldapconn,$dnsearchres);
+            //$dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($searchuserattribute));
+            // get all user data just in case we need to create this user
+            $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter);
+            $rescount = ldap_count_entries($ldapconn, $dnsearchres);
+
             if ($rescount == 1)
             {
-                $userentry=ldap_get_entries($ldapconn, $dnsearchres);
+                $userentry = ldap_get_entries($ldapconn, $dnsearchres);
                 $userdn = $userentry[0]["dn"];
+                
             }
             else
             {
@@ -299,14 +314,17 @@ class AuthLDAP extends AuthPluginBase
 
         // Authentication was successful, now see if we have a user or that we should create one
         if (is_null($user)) {
-            if ($this->autoCreate === true)  {
+            if ($autocreate)  {
                 /*
                  * Dispatch the newUserLogin event, and hope that after this we can find the user
                  * this allows users to create their own plugin for handling the user creation
                  * we will need more methods to pass username, rdn and ldap connection.
                  */                
-                $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
-
+                // LDAP data for plugin (todo: only works with bind and search for now)
+                $this->userentry = $userentry; 
+                //$this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
+                // when using the line above, the user is created, but an error message is shown on initial login. Is dispatchEvent asynchronous?
+                $this->newUserLogin();
                 // Check ourselves, we do not want fake responses from a plugin
                 $user = $this->api->getUserByName($username);
             }
@@ -321,6 +339,36 @@ class AuthLDAP extends AuthPluginBase
         ldap_close($ldapconn); // all done? close connection
 
         // If we made it here, authentication was a success and we do have a valid user
-        $this->setAuthSuccess($user);
+        if(is_null($user))
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+        else
+            $this->setAuthSuccess($user);
+    }
+    
+    public function newUserLogin()
+    {
+        // LDAP authentication is successful, but user must be created
+        // use LDAP to get attributes:
+        $username            = $this->getUsername();
+        $fullnameattribute   = $this->get('fullnameattribute');
+        $emailattribute      = $this->get('emailattribute');
+        $email = $this->userentry[0][$emailattribute][0];
+        $fullname = $this->userentry[0][$fullnameattribute][0];
+        
+        // create user, code largely taken from authwebserver
+        $u = new User();
+        $u->users_name = $username;
+        $u->full_name = $fullname;
+        $u->password = str_repeat("0123456789abcdef", 4); // not usable, use LDAP
+        $u->parent_id = 1;
+        $u->email = $email;
+        $u->dateformat = 6; // ISO rules
+        
+        if($u->save()){
+            $permission = new Permission;
+            $p = Array('surveys' => array('create'=>true)); // creators have all permissions
+            $permission->setPermissions($u->uid, 0, 'global', $p, true);
+        } else
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
     }
 }
