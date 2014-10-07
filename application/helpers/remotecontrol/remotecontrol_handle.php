@@ -2341,26 +2341,26 @@ class remotecontrol_handle
            // Cut down to the first 255 fields
            $aFields=array_slice($aFields,0,255);
         }
-        $oFomattingOptions=new FormattingOptions();
+        $oFormattingOptions=new FormattingOptions();
         
         if($iFromResponseID !=null)   
-            $oFomattingOptions->responseMinRecord=$iFromResponseID;
+            $oFormattingOptions->responseMinRecord=$iFromResponseID;
         else
-            $oFomattingOptions->responseMinRecord=1;        
+            $oFormattingOptions->responseMinRecord=1;
         
         if($iToResponseID !=null)   
-            $oFomattingOptions->responseMaxRecord=$iToResponseID;
+            $oFormattingOptions->responseMaxRecord=$iToResponseID;
         else
-            $oFomattingOptions->responseMaxRecord = $maxId;
+            $oFormattingOptions->responseMaxRecord = $maxId;
 
-        $oFomattingOptions->selectedColumns=$aFields;
-        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
-        $oFomattingOptions->headingFormat=$sHeadingType;
-        $oFomattingOptions->answerFormat=$sResponseType;
-        $oFomattingOptions->output='file';
+        $oFormattingOptions->selectedColumns=$aFields;
+        $oFormattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFormattingOptions->headingFormat=$sHeadingType;
+        $oFormattingOptions->answerFormat=$sResponseType;
+        $oFormattingOptions->output='file';
 
         $oExport=new ExportSurveyResultsService();
-        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, '');
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFormattingOptions, '');
         return new BigFile($sTempFile, true, 'base64');
     }
 
@@ -2396,29 +2396,29 @@ class remotecontrol_handle
            // Cut down to the first 255 fields
            $aFields=array_slice($aFields,0,255);        
         }
-        $oFomattingOptions=new FormattingOptions();
+        $oFormattingOptions=new FormattingOptions();
  
         if($iFromResponseID !=null)
-            $oFomattingOptions->responseMinRecord=$iFromResponseID;
+            $oFormattingOptions->responseMinRecord=$iFromResponseID;
         else
-            $oFomattingOptions->responseMinRecord=1;
+            $oFormattingOptions->responseMinRecord=1;
 
         if($iToResponseID !=null)
-            $oFomattingOptions->responseMaxRecord=$iToResponseID;
+            $oFormattingOptions->responseMaxRecord=$iToResponseID;
         else
-            $oFomattingOptions->responseMaxRecord = $maxId;
+            $oFormattingOptions->responseMaxRecord = $maxId;
 
-        $oFomattingOptions->selectedColumns=$aFields;
-        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
-        $oFomattingOptions->headingFormat=$sHeadingType;
-        $oFomattingOptions->answerFormat=$sResponseType;
-        $oFomattingOptions->output='file';
+        $oFormattingOptions->selectedColumns=$aFields;
+        $oFormattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFormattingOptions->headingFormat=$sHeadingType;
+        $oFormattingOptions->answerFormat=$sResponseType;
+        $oFormattingOptions->output='file';
 
         $oExport=new ExportSurveyResultsService();
 
         $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
 
-        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, "$sTableName.token='$sToken'");
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFormattingOptions, "$sTableName.token='$sToken'");
         return new BigFile($sTempFile, true, 'base64');
 
     }
