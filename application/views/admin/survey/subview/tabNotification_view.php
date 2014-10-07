@@ -1,18 +1,12 @@
-<div id='notification'><ul>
-
-
-
+<div id='notification'>
+    <ul>
         <li><label for='emailnotificationto'><?php $clang->eT("Send basic admin notification email to:"); ?></label>
-            <input size='70' type='email' value="<?php echo htmlspecialchars($esrow['emailnotificationto']); ?>" id='emailnotificationto' name='emailnotificationto' />
+            <?php echo CHtml::textField('emailnotificationto',$esrow['emailnotificationto'],array('size'=>70)) ?>
         </li>
-
 
         <li><label for='emailresponseto'><?php $clang->eT("Send detailed admin notification email to:"); ?></label>
-            <input size='70' type='email' value="<?php echo htmlspecialchars($esrow['emailresponseto']); ?>" id='emailresponseto' name='emailresponseto' />
+            <?php echo CHtml::textField('emailresponseto',$esrow['emailresponseto'],array('size'=>70)) ?>
         </li>
-
-
-
 
         <li><label for='datestamp'><?php $clang->eT("Date Stamp?"); ?></label>
             <?php if ($esrow['active'] == "Y") { ?>
@@ -22,26 +16,13 @@
                         $clang->eT("Responses will be date stamped.");
                 } ?>
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
-                <input type='hidden' name='datestamp' value="<?php echo $esrow['datestamp']; ?>" />
+                <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown ??>
                 <?php } else { ?>
-                <select id='datestamp' name='datestamp' onchange='alertPrivacy();'>
-                    <option value='Y'
-                        <?php if ($esrow['datestamp'] == "Y") { ?>
-                            selected='selected'
-                            <?php } ?>
-                        ><?php $clang->eT("Yes"); ?></option>
-                    <option value='N'
-                        <?php if ($esrow['datestamp'] != "Y") { ?>
-                            selected='selected'
-                            <?php } ?>
-                        ><?php $clang->eT("No"); ?></option>
-                </select>
+                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes"),"N"=>gT("No")),array('onchange'=>'alertPrivacy();')); ?>
                 <?php } ?>
         </li>
 
-
         <li><label for='ipaddr'><?php $clang->eT("Save IP Address?"); ?></label>
-
             <?php if ($esrow['active'] == "Y") { ?>
                 <?php  if ($esrow['ipaddr'] != "Y") {
                         $clang->eT("Responses will not have the IP address logged.");
@@ -49,24 +30,11 @@
                         $clang->eT("Responses will have the IP address logged");
                 } ?>
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
-                <input type='hidden' name='ipaddr' value='<?php echo $esrow['ipaddr']; ?>' />
+                <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']); // Maybe use a readonly dropdown ??>
                 <?php } else { ?>
-                <select name='ipaddr' id='ipaddr'>
-                    <option value='Y'
-                        <?php if ($esrow['ipaddr'] == "Y") { ?>
-                            selected='selected'
-                            <?php } ?>
-                        ><?php $clang->eT("Yes"); ?></option>
-                    <option value='N'
-                        <?php if ($esrow['ipaddr'] != "Y") { ?>
-                            selected='selected'
-                            <?php } ?>
-                        ><?php $clang->eT("No"); ?></option>
-                </select>
+                    <?php echo CHtml::dropDownList('ipaddr', $esrow['ipaddr'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
                 <?php } ?>
-
         </li>
-
 
         <li><label for='refurl'><?php $clang->eT("Save referrer URL?"); ?></label>
 
@@ -77,20 +45,9 @@
                         $clang->eT("Responses will have their referring URL logged.");
                 } ?>
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
-                <input type='hidden' name='refurl' value='<?php echo $esrow['refurl']; ?>' />
+                <?php echo CHtml::hiddenField('refurl',$esrow['refurl']); // Maybe use a readonly dropdown ??>
                 <?php } else { ?>
-                <select name='refurl' id='refurl'>
-                    <option value='Y'
-                        <?php if ($esrow['refurl'] == "Y") { ?>
-                            selected='selected'
-                            <?php } ?>
-                        ><?php $clang->eT("Yes"); ?></option>
-                    <option value='N'
-                        <?php if ($esrow['refurl'] != "Y") { ?>
-                            selected='selected'
-                            <?php } ?>
-                        ><?php $clang->eT("No"); ?></option>
-                </select>
+                    <?php echo CHtml::dropDownList('refurl', $esrow['refurl'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
                 <?php } ?>
         </li>
 
@@ -101,72 +58,29 @@
                 <?php if ($esrow['savetimings'] != "Y") {  $clang->eT("Timings will not be saved.");}
                     else { $clang->eT("Timings will be saved.");} ?>
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
-                <input type='hidden' name='savetimings' value='<?php echo $esrow['savetimings']; ?>' />
+                <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ??>
                 <?php }
                 else
                 { ?>
-                <select id='savetimings' name='savetimings'>
-                    <option value='Y'
-                        <?php if (!isset($esrow['savetimings']) || !$esrow['savetimings'] || $esrow['savetimings'] == "Y") { ?> selected='selected' <?php } ?>
-                        ><?php $clang->eT("Yes"); ?></option>
-                    <option value='N'
-                        <?php if (isset($esrow['savetimings']) && $esrow['savetimings'] == "N") { ?>  selected='selected' <?php } ?>
-                        ><?php $clang->eT("No"); ?></option>
-                </select>
-            </li>
+                    <?php echo CHtml::dropDownList('savetimings', $esrow['savetimings'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
             <?php } ?>
-
+        </li>
 
         <li><label for='assessments'><?php $clang->eT("Enable assessment mode?"); ?></label>
-            <select id='assessments' name='assessments'>
-                <option value='Y'
-                    <?php if ($esrow['assessments'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['assessments'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("No"); ?></option>
-            </select></li>
-
+            <?php echo CHtml::dropDownList('assessments', $esrow['assessments'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
+        </li>
 
         <li><label for='allowsave'><?php $clang->eT("Participant may save and resume later?"); ?></label>
-            <select id='allowsave' name='allowsave'>
-                <option value='Y'
-                    <?php if (!$esrow['allowsave'] || $esrow['allowsave'] == "Y") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("Yes"); ?></option>
-                <option value='N'
-                    <?php if ($esrow['allowsave'] == "N") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("No"); ?></option>
-            </select></li>
+            <?php echo CHtml::dropDownList('allowsave', $esrow['allowsave'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
+        </li>
 
         <li><label for='googleanalyticsapikey'><?php $clang->eT("Google Analytics API key for this survey?"); ?></label>
-            <input type='text' value='<?php echo htmlspecialchars($esrow['googleanalyticsapikey'],ENT_QUOTES); ?>' name='googleanalyticsapikey' id='googleanalyticsapikey' size='20'/>
+            <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20)) ?>
         </li>
 
         <li><label for='googleanalyticsstyle'><?php $clang->eT("Google Analytics style for this survey?"); ?></label>
-            <select id='googleanalyticsstyle' name='googleanalyticsstyle'>
-                <option value='0'
-                    <?php if (!$esrow['googleanalyticsstyle'] || $esrow['googleanalyticsstyle'] == "0") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("Do not use Google Analytics"); ?></option>
-                <option value='1'
-                    <?php if ($esrow['googleanalyticsstyle'] == "1") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("Default Google Analytics"); ?></option>
-                <option value='2'
-                    <?php if ($esrow['googleanalyticsstyle'] == "2") { ?>
-                        selected='selected'
-                        <?php } ?>
-                    ><?php $clang->eT("Survey name-[SID]/Group name"); ?></option>
-            </select></li>
+            <?php echo CHtml::dropDownList('googleanalyticsstyle', $esrow['googleanalyticsstyle'],array("0"=>gT("Do not use Google Analytics"),"1"=>gT("Default Google Analytics"),"2"=>gT("Survey name-[SID]/Group name"))); ?>
+        </li>
 
-    </ul></div>
+    </ul>
+</div>
