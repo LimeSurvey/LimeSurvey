@@ -246,7 +246,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $question['text'] = $event->get('text');
         $question['class'] = $event->get('class');
         $question['help'] = $event->get('help');
-        $question['mandatory'] = $event->get('mandatory',null,null,$question['mandatory']);// $event->get('mandatory','question',$question['qid'],$question['mandatory']);
+        $question['mandatory'] = $event->get('mandatory',$question['mandatory']);
         // answer part ?
         // $answer is set with answer part
         $_question = $question['all'];
