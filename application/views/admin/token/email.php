@@ -68,14 +68,16 @@
 
                     <ul>
                         <li><label for='from_<?php echo $language; ?>'><?php $clang->eT("From"); ?>:</label>
-                            <input type='text' size='50' id='from_<?php echo $language; ?>' name='from_<?php echo $language; ?>' value="<?php echo htmlspecialchars($thissurvey[$baselang]['adminname'],ENT_QUOTES,'UTF-8')." <".htmlspecialchars($thissurvey[$baselang]['adminemail'],ENT_QUOTES,'UTF-8').">"; ?>" /></li>
+                            <?php echo CHtml::textField("from_{$language}",$thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">",array('size'=>50)); ?>
+                        </li>
                         <li><label for='subject_<?php echo $language; ?>'><?php $clang->eT("Subject"); ?>:</label>
-                            <input type='text' size='83' id='subject_<?php echo $language; ?>' name='subject_<?php echo $language; ?>' value="<?php echo $subject; ?>" /></li>
+                            <?php echo CHtml::textField("subject_{$language}",$subject,array('size'=>83)); ?>
+                        </li>
 
                         <li><label for='message_<?php echo $language; ?>'><?php $clang->eT("Message"); ?>:</label>
                             <div class="htmleditor">
-                            <textarea name='message_<?php echo $language; ?>' id='message_<?php echo $language; ?>' rows='20' cols='80'><?php echo htmlspecialchars($textarea); ?></textarea>
-                            <?php echo getEditor("email-inv", "message_$language", "[" . $clang->gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                                <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20)); ?>
+                                <?php echo getEditor("email-inv", "message_$language", "[" . $clang->gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                             </div>
                         </li>
                     </ul></div>
@@ -83,10 +85,7 @@
 
             <p>
                 <label for='bypassbademails'><?php $clang->eT("Bypass token with failing email addresses"); ?>:</label>
-                <select id='bypassbademails' name='bypassbademails'>
-                    <option value='Y'><?php $clang->eT("Yes"); ?></option>
-                    <option value='N'><?php $clang->eT("No"); ?></option>
-                </select>
+                <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
             </p>
             <p>
                 <input type='submit' value='<?php $clang->eT("Send Invitations"); ?>' />
