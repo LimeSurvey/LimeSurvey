@@ -14,8 +14,8 @@ CKEDITOR.editorConfig = function( config )
     config.toolbarCanCollapse = false;
     config.resize_enabled = false;
     config.autoParagraph = false;
-    config.basicEntities = false;
-
+    config.basicEntities = false; // For <, >, & ( and nbsp)
+    config.entities = false; // For ' ( and a lot of other but not <>&)
     if($('html').attr('dir') == 'rtl') {
         config.contentsLangDirection = 'rtl';
     }
