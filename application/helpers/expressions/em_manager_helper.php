@@ -987,8 +987,8 @@
                     }
                 }
 
-                if ($row['cqid'] == 0 || substr($row['cfieldname'],0,1) == '+') {
-                    $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group
+                if (($row['cqid'] == 0 && !preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'])) || substr($row['cfieldname'],0,1) == '+') {
+                    $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields)
                 }
             }
             // output last one
@@ -8023,7 +8023,7 @@ EOD;
                 LEFT JOIN {{questions}} qa ON c.qid=qa.qid
                 WHERE {$where} 1=1
                 UNION
-                SELECT DISTINCT c.*, q.sid, '' AS TYPE
+                SELECT DISTINCT c.*, q.sid, NULL AS TYPE
                 FROM {{conditions}} AS c
                 LEFT JOIN {{questions}} q ON c.cqid=q.qid
                 LEFT JOIN {{questions}} qa ON c.qid=qa.qid

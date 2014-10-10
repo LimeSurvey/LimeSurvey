@@ -1283,7 +1283,7 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    
+
                     $querytoken = "SELECT count(*) as recordcount "
                     ."FROM {{conditions}} "
                     ."WHERE "
@@ -1313,7 +1313,7 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
                     ->bindValue(":qid", $qid, PDO::PARAM_INT)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    
+
                     $conditionscount=$conditionscount+$conditionscounttoken;
 
                     if ($conditionscount > 0)
@@ -1344,19 +1344,17 @@ class conditionsaction extends Survey_Common_Action {
                                 $markcidstyle="editedrow";
                             }
 
-                            if (isset($currentfield) && $currentfield != $rows['cfieldname'])
+                            if (isset($currentfield) && $currentfield != $rows['cfieldname'] )
                             {
                                 $aViewUrls['output'] .= "<tr class='evenrow'>\n"
-                                ."\t<td colspan='2'>\n"
-                                ."<span><strong>"
-                                .$clang->gT("and")."</strong></span></td></tr>";
+                                ."\t<td colspan='2' class='operator'>\n"
+                                .$clang->gT("and")."</td></tr>";
                             }
                             elseif (isset($currentfield))
                             {
                                 $aViewUrls['output'] .= "<tr class='evenrow'>\n"
-                                ."\t<td colspan='2'>\n"
-                                ."<span><strong>"
-                                .$clang->gT("or")."</strong></span></td></tr>";
+                                ."\t<td colspan='2' class='operator'>\n"
+                                .$clang->gT("or")."</td></tr>";
                             }
 
                             $aViewUrls['output'] .= "\t<tr class='{$markcidstyle}'>\n"
@@ -1527,7 +1525,7 @@ class conditionsaction extends Survey_Common_Action {
 
                                 // now set the corresponding hidden input field
                                 // depending on the rightOperandType
-                                // This is used when Editting a condition
+                                // This is used when editing a condition
                                 if ($rightOperandType == 'predefinedAnsw')
                                 {
                                     $aViewUrls['output'] .= CHtml::hiddenField('EDITcanswers[]', HTMLEscape($rows['value']), array(
