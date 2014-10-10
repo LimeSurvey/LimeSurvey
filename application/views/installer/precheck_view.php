@@ -52,7 +52,7 @@ function dirReport($dir, $write, $clang)
                <th class='text-center'><?php $clang->eT("Current"); ?></th>
         </tr>
         </thead>
-        <tbody>        
+        <tbody>
         <tr>
                <td><?php $clang->eT("PHP version"); ?></td>
                <td>5.3.0+</td>
@@ -62,9 +62,9 @@ function dirReport($dir, $write, $clang)
         <tr>
                <td><?php $clang->eT("Minimum memory available"); ?></td>
                <td>64MB</td>
-               <td><?php 
-               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Too low"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
-               <?php } elseif (ini_get('memory_limit')=='-1') $clang->eT("Unlimited"); else { echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; echo ' MB';} ?></td>
+               <td><?php
+               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Too low"); ?>: <?php echo convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
+               <?php } elseif (ini_get('memory_limit')=='-1') $clang->eT("Unlimited"); else { echo convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; echo ' MB';} ?></td>
         </tr>
         <tr>
                <td><?php $clang->eT("PHP PDO driver library"); ?></td>
@@ -141,7 +141,7 @@ function dirReport($dir, $write, $clang)
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
                <td><?php echo $bIMAPPresent ; ?></td>
         </tr>
-        </tbody>        
+        </tbody>
 
         </table>
         </fieldset>

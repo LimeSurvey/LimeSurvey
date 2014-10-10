@@ -47,6 +47,7 @@ class InstallerController extends CController {
     {
         self::_checkInstallation();
         self::_sessioncontrol();
+        Yii::import('application.helpers.common_helper', true);
 
         switch ($action) {
 
@@ -547,7 +548,7 @@ class InstallerController extends CController {
             case 'mysql':
                 $sql_file = 'mysql';
                 break;
-            case 'dblib': 
+            case 'dblib':
             case 'sqlsrv':
             case 'mssql':
                 $sql_file = 'mssql';
@@ -617,7 +618,7 @@ class InstallerController extends CController {
                 $sDefaultAdminRealName = $model->adminName;
                 $sDefaultSiteName = $model->siteName;
                 $sDefaultSiteLanguage = $model->surveylang;
-                $sDefaultAdminEmail = $model->adminEmail;                
+                $sDefaultAdminEmail = $model->adminEmail;
 
                 $aData['title'] = $clang->gT("Database configuration");
                 $aData['descp'] = $clang->gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -839,10 +840,10 @@ class InstallerController extends CController {
         if (version_compare(PHP_VERSION, '5.3.0', '<'))
             $bProceed = !$aData['verror'] = true;
 
-        if ($this->return_bytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
+        if (convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
             $bProceed = !$aData['bMemoryError'] = true;
-        
-            
+
+
         // mbstring library check
         if (!check_PHPFunction('mb_convert_encoding', $aData['mbstringPresent']))
             $bProceed = false;
@@ -1056,7 +1057,7 @@ class InstallerController extends CController {
 
             $sConfig .="\t\t" . "),"                                          . "\n"
             ."\t\t"   . ""                                          . "\n"
-                    
+
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"
             ."\t\t"   . "// 'session' => array ("                      . "\n"
             ."\t\t\t" . "// 'class' => 'system.web.CDbHttpSession',"   . "\n"
@@ -1137,7 +1138,7 @@ class InstallerController extends CController {
             case 'mysql':
             case 'mysqli':
                 // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
-                if(substr($sDatabaseLocation,0,1)=="/") 
+                if(substr($sDatabaseLocation,0,1)=="/")
                     $sDSN = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
                 else
                     $sDSN = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
@@ -1157,7 +1158,7 @@ class InstallerController extends CController {
                 }
                 break;
 
-            case 'dblib' : 
+            case 'dblib' :
                 $sDSN = $sDatabaseType.":host={$sDatabaseLocation};dbname={$sDatabaseName}";
                 break;
             case 'mssql' :
@@ -1242,33 +1243,12 @@ class InstallerController extends CController {
             return true;
         } catch(Exception $e) {
             if (!empty($aData['model']) && !empty($aData['clang'])) {
-                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->message);
+                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->getMessage());
                 $this->render('/installer/dbconfig_view', $aData);
             } else {
                 return false;
             }
         }
     }
-    
-    /**
-    * This function returns the full number from a PHP ini value
-    * 
-    * @param string $sValue
-    */
-    function return_bytes($sValue) {
-        $sValue = trim($sValue);
-        $sLast = strtolower($sValue[strlen($sValue)-1]);
-        switch($sLast) {
-            // The 'G' modifier is available since PHP 5.1.0
-            case 'g':
-                $sValue *= 1024;
-            case 'm':
-                $sValue *= 1024;
-            case 'k':
-                $sValue *= 1024;
-        }
-
-        return $sValue;
-    }    
 
 }

@@ -29,7 +29,7 @@ class InstallerConfigForm extends CFormModel
 		'mysqli' => 'MySQL (newer driver)',
         'sqlsrv' => 'Microsoft SQL Server (sqlsrv)',
 		'mssql' => 'Microsoft SQL Server (mssql)',
-		'dblib' => 'Microsoft SQL Server (dblib)', 
+		'dblib' => 'Microsoft SQL Server (dblib)',
 		'pgsql' => 'PostgreSQL',
 	);
 
@@ -68,7 +68,7 @@ class InstallerConfigForm extends CFormModel
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
 			array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
 			array('dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'),
-
+            array('dbname','LSYii_CaseValidator','type'=>'lower'),
 			//Optional
 			array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
 			array('adminEmail', 'email', 'on' => 'optional'),
