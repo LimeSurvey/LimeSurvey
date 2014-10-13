@@ -1297,9 +1297,8 @@ function upgradeTokenTables178()
     $surveyidresult = dbGetTablesLike("tokens%");
     if ($surveyidresult)
     {
-        foreach ( $surveyidresult as $sv )
+        foreach ( $surveyidresult as $sTableName )
         {
-            $sTableName=reset($sv);
             $oSchema=$oSchema->getTable($sTableName);
             foreach ($oSchema->columnNames as $sColumnName)
             {
