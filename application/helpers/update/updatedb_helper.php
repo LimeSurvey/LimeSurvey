@@ -510,7 +510,7 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{questions}}','title',"{$sVarchar}(20)",false , '');
             alterColumn('{{questions}}','question',"text",false);
             try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('questions_idx4','{{questions}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
-            
+
             alterColumn('{{questions}}','type',"{$sVarchar}(1)",false , 'T');
             try{ $oDB->createCommand()->createIndex('questions_idx4','{{questions}}','type');} catch(Exception $e){};
             alterColumn('{{questions}}','other',"{$sVarchar}(1)",false , 'N');
@@ -1100,8 +1100,8 @@ function db_upgrade_all($iOldDBVersion) {
             dropColumn('{{users}}','superadmin');
             dropColumn('{{users}}','configurator');
             dropColumn('{{users}}','manage_template');
-            dropColumn('{{users}}','manage_label');      
-            dropColumn('{{users}}','participant_panel');   
+            dropColumn('{{users}}','manage_label');
+            dropColumn('{{users}}','participant_panel');
             $oDB->createCommand()->dropTable('{{templates_rights}}');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>166),"stg_name='DBVersion'");
         }
@@ -1168,7 +1168,7 @@ function db_upgrade_all($iOldDBVersion) {
         if ($iOldDBVersion < 172)
         {
             switch ($sDBDriverName){
-                case 'pgsql': 
+                case 'pgsql':
                     // Special treatment for Postgres as it is too dumb to convert a string to a number without explicit being told to do so ... seriously?
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER USING (entity_id::integer)", false);
                     break;
@@ -1180,9 +1180,9 @@ function db_upgrade_all($iOldDBVersion) {
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
                     $oDB->createCommand()->createIndex('permissions_idx2','{{permissions}}','entity_id,entity,permission,uid',true);
                     break;
-                default: 
+                default:
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
-            } 
+            }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>172),"stg_name='DBVersion'");
         }
         if ($iOldDBVersion < 173)
@@ -1208,7 +1208,7 @@ function db_upgrade_all($iOldDBVersion) {
         if ($iOldDBVersion < 175)
         {
             switch ($sDBDriverName){
-                case 'pgsql': 
+                case 'pgsql':
                     // Special treatment for Postgres as it is too dumb to convert a boolean to a number without explicit being told to do so
                     alterColumn('{{plugins}}', 'active', "INTEGER USING (active::integer)", false);
                     break;
@@ -1232,7 +1232,7 @@ function db_upgrade_all($iOldDBVersion) {
                         $plugin = new Plugin();
                         $plugin->name = 'Authwebserver';
                         $plugin->active = 1;
-                        $plugin->save();                
+                        $plugin->save();
                         $plugin = App()->getPluginManager()->loadPlugin('Authwebserver', $plugin->id);
                         $aPluginSettings = $plugin->getPluginSettings(true);
                         $aDefaultSettings = array();
@@ -1263,7 +1263,7 @@ function db_upgrade_all($iOldDBVersion) {
 
         $oTransaction->commit();
         // Activate schema caching
-        $oDB->schemaCachingDuration=3600; 
+        $oDB->schemaCachingDuration=3600;
         // Load all tables of the application in the schema
         Yii::app()->db->schema->getTables();
         // clear the cache of all loaded tables
@@ -1273,7 +1273,7 @@ function db_upgrade_all($iOldDBVersion) {
     {
         $oTransaction->rollback();
         // Activate schema caching
-        $oDB->schemaCachingDuration=3600; 
+        $oDB->schemaCachingDuration=3600;
         // Load all tables of the application in the schema
         Yii::app()->db->schema->getTables();
         // clear the cache of all loaded tables
@@ -1292,7 +1292,7 @@ function upgradeTokenTables178()
     $sVarchar = Yii::app()->getConfig('varchar');
     $oSchema=Yii::app()->db->schema;
     $sDBDriverName=setsDBDriverName();
-    if($sDBDriverName=='mssql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
+    if($sDBDriverName=='mssql' || $sDBDriverName=='mysql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
 
     $surveyidresult = dbGetTablesLike("tokens%");
     if ($surveyidresult)
@@ -1315,7 +1315,7 @@ function upgradeTokenTables178()
         }
     }
 }
-        
+
 
 function upgradeSurveys177()
 {
@@ -1343,7 +1343,7 @@ function upgradeSurveys177()
 
 /**
 * This function removes the old CPDB fields in token tables
-* replaces them with standard attribute fields 
+* replaces them with standard attribute fields
 * and records the mapping information in the attributedescription field in the survey table instead
 */
 function upgradeTokens176()
@@ -1374,7 +1374,7 @@ function upgradeTokens176()
                         $aAttributes[$sNewName]['cpdbmap']=substr($sColumnName,15);
                         unset($aAttributes[$sColumnName]);
                     }
-                } 
+                }
             }
             Survey::model()->updateByPk($arSurvey->sid, array('attributedescriptions' => serialize($aAttributes)));
         }
@@ -1395,7 +1395,7 @@ function upgradeTokens176()
                 $sNewName='attribute_'.$i;
                 $aColumnNames[]=$sNewName;
                 Yii::app()->db->createCommand()->renameColumn($sTable,$sColumnName,$sNewName);
-            } 
+            }
         }
     }
 }
@@ -1413,7 +1413,7 @@ function upgradeCPDBAttributeDefaultNames173()
     }
 }
 
-/** 
+/**
 * Converts global permissions from users table to the new permission system,
 * and converts template permissions from template_rights to new permission table
 */
@@ -1455,7 +1455,7 @@ function upgradePermissions166()
             $oPermission->permission='superadmin';
             $oPermission->read_p=1;
             $oPermission->save();
-        }          
+        }
         if ($oUser->configurator==1)
         {
             $oPermission=new Permission;
@@ -1466,7 +1466,7 @@ function upgradePermissions166()
             $oPermission->update_p=1;
             $oPermission->read_p=1;
             $oPermission->save();
-        }          
+        }
         if ($oUser->manage_template==1)
         {
             $oPermission=new Permission;
@@ -1481,7 +1481,7 @@ function upgradePermissions166()
             $oPermission->import_p=1;
             $oPermission->export_p=1;
             $oPermission->save();
-        }                 
+        }
         if ($oUser->manage_label==1)
         {
             $oPermission=new Permission;
@@ -1496,7 +1496,7 @@ function upgradePermissions166()
             $oPermission->import_p=1;
             $oPermission->export_p=1;
             $oPermission->save();
-        }                 
+        }
         if ($oUser->participant_panel==1)
         {
             $oPermission=new Permission;
@@ -1506,8 +1506,8 @@ function upgradePermissions166()
             $oPermission->permission='participantpanel';
             $oPermission->create_p=1;
             $oPermission->save();
-        }                 
-    } 
+        }
+    }
     $sQuery = "SELECT * FROM {{templates_rights}}";
     $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
     foreach ( $oResult as $aRow )
@@ -2072,7 +2072,7 @@ function dropPrimaryKey($sTablename)
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql'; 
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
 
     global $modifyoutput;
     switch ($sDBDriverName){
@@ -2113,7 +2113,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql'; 
+    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
     switch ($sDBDriverName){
         case 'mysql':
             $sType=$sFieldType;
@@ -2241,7 +2241,7 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
 
 /**
 * This function drops a unique Key of an MSSQL database field by using the name of the field it lies upon and the table name
-* 
+*
 * @param mixed $sFieldName
 * @param mixed $sTableName
 */
