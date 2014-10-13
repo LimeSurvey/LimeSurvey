@@ -51,7 +51,7 @@ class participantsaction extends Survey_Common_Action
     }
 
 
-    
+
     /**
      * Loads jqGrid for the view
      * @param string $sScript Subaction
@@ -77,23 +77,23 @@ class participantsaction extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'participants', $aViewUrls = array(), $aData = array())
     {
         App()->getClientScript()->registerPackage('bootstrap-multiselect');
-        $aData['display']['menu_bars'] = false;    
+        $aData['display']['menu_bars'] = false;
         foreach((array) $aViewUrls as $sViewUrl)
         {
             $a_ViewUrls[] = $sViewUrl . '_view';
         }
         parent::_renderWrappedTemplate($sAction, $a_ViewUrls, $aData);
     }
-    
+
     /**
      * Export to csv using optional search/filter
-     * 
+     *
      * @param type $search  CDCriteria?
-     * @paran mixed $mAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes 
+     * @paran mixed $mAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes
      */
     private function csvExport($search = null, $aAttributeIDs=null) {
-        Yii::app()->loadHelper('export');      
-        
+        Yii::app()->loadHelper('export');
+
         //If super admin all the participants will be visible
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
@@ -109,14 +109,14 @@ class participantsaction extends Survey_Common_Action
         // Field names in the first row
         $fields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
         $outputarray = array(); // The array to be passed to the export helper to be written to a csv file
-        
+
         $outputarray[0] = $fields; //fields written to output array
 
         // If attribute fields are selected, add them to the output
         if ($aAttributeIDs==null)
         {
             $aAttributes = ParticipantAttributeName::model()->getAllAttributes();
-        }   
+        }
         else
         {
             foreach ($aAttributeIDs as $value)
@@ -126,7 +126,7 @@ class participantsaction extends Survey_Common_Action
                 $attributename = ParticipantAttributeName::model()->getAttributeNames($value);
                 $outputarray[0][] = $attributename[0]['attribute_name'];
             }
-        }    
+        }
 
         $fieldNeededKeys=array_fill_keys($fields, '');
         $fieldKeys = array_flip($fields);
@@ -136,19 +136,19 @@ class participantsaction extends Survey_Common_Action
         }
         CPDBExport($outputarray, "central_" . time());
     }
-    
+
     /**
      * Returns a string with the number of participants available for export or 0
-     * 
+     *
      * @param type $search
      * @return string|0
      */
     protected function csvExportCount($search = null)
     {
         $clang = $this->getController()->lang;
-        
+
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
-        
+
         //If super admin all the participants will be visible
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
@@ -156,7 +156,7 @@ class participantsaction extends Survey_Common_Action
         } else {
             $iUserID = Yii::app()->session['loginID'];
         }
-        
+
 
         $count = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
 
@@ -253,7 +253,7 @@ class participantsaction extends Survey_Common_Action
         );
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl')  . 'displayParticipants.css');
-        
+
 
         // loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
@@ -409,7 +409,7 @@ class participantsaction extends Survey_Common_Action
             $i++;
         }
 
-        
+
         echo ls_json_encode($aData);
     }
 
@@ -418,7 +418,7 @@ class participantsaction extends Survey_Common_Action
      * Basically takes the call on can_edit
      */
     function editAttributeInfo()
-    {    
+    {
         $clang = Yii::app()->lang;
         $operation = Yii::app()->request->getPost('oper');
 
@@ -584,7 +584,7 @@ class participantsaction extends Survey_Common_Action
         $i = 0;
         foreach ($records as $row)
         {
-            $oSurvey=Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByAttributes(array('sid' => $row['survey_id']));            
+            $oSurvey=Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByAttributes(array('sid' => $row['survey_id']));
             foreach($oSurvey->languagesettings as $oLanguageSetting)
             {
                 $surveyname= $oLanguageSetting->surveyls_title;
@@ -614,7 +614,7 @@ class participantsaction extends Survey_Common_Action
         $searchconditionurl = Yii::app()->request->getPost('searchURL');
         $searchcondition  = Yii::app()->request->getPost('searchcondition');
         $searchconditionurl = basename($searchconditionurl);
-        
+
         if ($searchconditionurl != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||", $searchcondition);
@@ -622,7 +622,7 @@ class participantsaction extends Survey_Common_Action
         } else {
             $search = null;
         }
-        
+
         echo $this->csvExportCount($search);
     }
 
@@ -763,6 +763,7 @@ class participantsaction extends Survey_Common_Action
     */
     function getParticipants_json($search = null)
     {
+       // debugbreak();
         $page = (int) Yii::app()->request->getPost('page');
         $limit = (int) Yii::app()->request->getPost('rows');
         $limit = empty($limit) ? 50:$limit; //Stop division by zero errors
@@ -771,17 +772,17 @@ class participantsaction extends Survey_Common_Action
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
         foreach ($attid as $key => $value)
         {
-            array_push($participantfields, $value['attribute_id']);
+            array_push($participantfields, 'a'.$value['attribute_id']);
         }
         $sidx = Yii::app()->request->getPost('sidx');
         $sidx = in_array($sidx,$participantfields) ? $sidx : "lastname";
         $sord = Yii::app()->request->getPost('sord');
         $sord = ($sord=='desc') ? 'desc' : 'asc';
         $order = $sidx. " ". $sord;
-                                                 
-        
+
+
         $aData = new stdClass;
-        
+
         //If super admin all the participants will be visible
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
@@ -796,11 +797,11 @@ class participantsaction extends Survey_Common_Action
         }
         $aData->page = $page;
         $records = Participant::model()->getParticipants($page, $limit,$attid, $order, $search, $iUserID);
-        
-        
+
+
         $aRowToAdd=array();
         foreach ($records as $key => $row)
-        {            
+        {
             if (array_key_exists('can_edit', $row)) {
                 $sCanEdit = $row['can_edit'];
                 if (is_null($sCanEdit)) {
@@ -811,7 +812,7 @@ class participantsaction extends Survey_Common_Action
                 $sCanEdit = "true";
             }
             if (trim($row['ownername'])=='') {
-                $row['ownername']=$row['username'];   
+                $row['ownername']=$row['username'];
             }
             $aRowToAdd['cell'] = array($row['participant_id'], $sCanEdit, htmlspecialchars($row['firstname']), htmlspecialchars($row['lastname']), htmlspecialchars($row['email']), $row['blacklisted'], $row['survey'], $row['language'], $row['ownername']);
             $aRowToAdd['id'] = $row['participant_id'];
@@ -823,7 +824,7 @@ class participantsaction extends Survey_Common_Action
                     $aRowToAdd['cell'][] = $attvalue;
                 }
             }
-            
+
             $aData->rows[] = $aRowToAdd;
         }
 
@@ -1057,7 +1058,7 @@ class participantsaction extends Survey_Common_Action
 
         $clang = $this->getController()->lang;
         if ($_FILES['the_file']['name']=='')
-        {                                                                                                                     
+        {
             Yii::app()->setFlashMessage($clang->gT('Please select a file to import!'),'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
         }
@@ -1081,7 +1082,7 @@ class participantsaction extends Survey_Common_Action
             $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),$templateData);
             exit;
         }
-        
+
 
         if (!$bMoveFileResult)
         {
@@ -1125,7 +1126,7 @@ class participantsaction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('qTip2');
         App()->getClientScript()->registerPackage('jquery-nestedSortable');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapCSV.js");
-        
+
         $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
                         ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
                         ."var mapCSVcancelled = '".App()->createUrl("admin/participants/sa/mapCSVcancelled")."';\n"
@@ -1279,7 +1280,7 @@ class participantsaction extends Survey_Common_Action
                 {
                     unset($writearray[$column]);
                 }
-                // Add aFilterDuplicateFields not in CSV to writearray : quick fix 
+                // Add aFilterDuplicateFields not in CSV to writearray : quick fix
                 foreach($aFilterDuplicateFields as $sFilterDuplicateField){
                     if(!in_array($sFilterDuplicateField, $firstline))
                         $writearray[$sFilterDuplicateField]="";
@@ -1429,7 +1430,7 @@ class participantsaction extends Survey_Common_Action
     }
 
     function summaryview()
-    {                                                          
+    {
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->getAllAttributes()));
     }
 
