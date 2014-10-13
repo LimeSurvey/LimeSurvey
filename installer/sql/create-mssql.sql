@@ -1,13 +1,13 @@
 -- Note that MSSQL needs to have specified if a column is NULL or not NULL because
 -- depending on the database driver the default may by varying.
---
+-- To store Unicode/UTF-8 the related columns need to be nvarchar/ntext
 -- Table structure for table answers
 --
 
 CREATE TABLE [prefix_answers] (
 [qid] int NOT NULL default '0',
 [code] varchar(5) NOT NULL default '',
-[answer] varchar(max) NOT NULL,
+[answer] nvarchar(max) NOT NULL,
 [sortorder] int NOT NULL,
 [assessment_value] int NOT NULL default '0',
 [language] varchar(20)NOT NULL default 'en',
@@ -23,10 +23,10 @@ CREATE TABLE [prefix_assessments] (
 [sid] int NOT NULL default '0',
 [scope] varchar(5) NOT NULL default '',
 [gid] int NOT NULL default '0',
-[name] varchar(max) NOT NULL,
+[name] nvarchar(max) NOT NULL,
 [minimum] varchar(50) NOT NULL default '',
 [maximum] varchar(50) NOT NULL default '',
-[message] varchar(max) NOT NULL,
+[message] nvarchar(max) NOT NULL,
 [language] varchar(20) NOT NULL default 'en',
 PRIMARY KEY  ([id],[language])
 );
@@ -41,7 +41,7 @@ CREATE TABLE [prefix_conditions] (
 [cqid] int NOT NULL default 0,
 [cfieldname] varchar(50) NOT NULL default '',
 [method] varchar(5) NOT NULL default '',
-[value] varchar(255) NOT NULL default '',
+[value] nvarchar(255) NOT NULL default '',
 [scenario] int NOT NULL default 1,
 PRIMARY KEY  ([cid])
 );
@@ -56,7 +56,7 @@ CREATE TABLE [prefix_defaultvalues] (
 [sqid] int NOT NULL default 0,
 [language] varchar(20) NOT NULL,
 [specialtype] varchar(20) NOT NULL default '',
-[defaultvalue] varchar(max) NULL,
+[defaultvalue] nvarchar(max) NULL,
 PRIMARY KEY ([qid] , [specialtype], [language], [scale_id], [sqid])
 );
 
@@ -95,12 +95,12 @@ CREATE TABLE [prefix_failed_login_attempts] (
 CREATE TABLE [prefix_groups] (
 [gid] int NOT NULL IDENTITY (1,1),
 [sid] int NOT NULL default 0,
-[group_name] varchar(100) NOT NULL default '',
+[group_name] nvarchar(100) NOT NULL default '',
 [group_order] int NOT NULL default 0,
-[description] varchar(max) NULL,
-[language] varchar(20) NOT NULL default 'en',
-[randomization_group] varchar(20) NOT NULL default '',
-[grelevance] varchar(max) NULL,
+[description] nvarchar(max) NULL,
+[language] nvarchar(20) NOT NULL default 'en',
+[randomization_group] nvarchar(20) NOT NULL default '',
+[grelevance] nvarchar(max) NULL,
 PRIMARY KEY  ([gid],[language])
 )
 ;
@@ -111,8 +111,8 @@ PRIMARY KEY  ([gid],[language])
 --
 CREATE TABLE [prefix_labels] (
 [lid] int NOT NULL default '0',
-[code] varchar(5) NOT NULL default '',
-[title] varchar(max) NULL,
+[code] nvarchar(5) NOT NULL default '',
+[title] nvarchar(max) NULL,
 [sortorder] int NOT NULL,
 [language] varchar(20) NOT NULL default 'en',
 [assessment_value] int NOT NULL default '0',
@@ -126,7 +126,7 @@ create index [labels_code_idx] on [prefix_labels] ([code]);
 --
 CREATE TABLE [prefix_labelsets] (
 [lid] int NOT NULL IDENTITY (1,1),
-[label_name] varchar(100) NOT NULL default '',
+[label_name] nvarchar(100) NOT NULL default '',
 [languages] varchar(200) default 'en' NULL,
 PRIMARY KEY  ([lid])
 );
@@ -138,7 +138,7 @@ PRIMARY KEY  ([lid])
 CREATE TABLE [prefix_participant_attribute] (
 [participant_id] varchar(50) NOT NULL,
 [attribute_id] int NOT NULL,
-[value] varchar(max) NOT NULL,
+[value] nvarchar(max) NOT NULL,
 PRIMARY KEY  ([participant_id],[attribute_id])
 );
 
@@ -148,7 +148,7 @@ PRIMARY KEY  ([participant_id],[attribute_id])
 --
 CREATE TABLE [prefix_participant_attribute_names_lang] (
 [attribute_id] int NOT NULL,
-[attribute_name] varchar(255) NOT NULL,
+[attribute_name] nvarchar(255) NOT NULL,
 [lang] varchar(20) NOT NULL,
 PRIMARY KEY  ([attribute_id],[lang])
 );
@@ -160,7 +160,7 @@ PRIMARY KEY  ([attribute_id],[lang])
 CREATE TABLE [prefix_participant_attribute_names] (
 [attribute_id] int NOT NULL IDENTITY (1,1),
 [attribute_type] varchar(4) NOT NULL,
-[defaultname] varchar(50) NOT NULL,
+[defaultname] nvarchar(50) NOT NULL,
 [visible] varchar(5) NOT NULL,
 PRIMARY KEY  ([attribute_id],[attribute_type])
 );
@@ -172,7 +172,7 @@ PRIMARY KEY  ([attribute_id],[attribute_type])
 CREATE TABLE [prefix_participant_attribute_values] (
 [value_id] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
 [attribute_id] int NOT NULL,
-[value] varchar(max) NOT NULL
+[value] nvarchar(max) NOT NULL
 );
 
 
@@ -193,9 +193,9 @@ PRIMARY KEY  ([participant_id],[share_uid])
 --
 CREATE TABLE [prefix_participants] (
 [participant_id] varchar(50) NOT NULL,
-[firstname] varchar(40) NULL,
-[lastname] varchar(40) NULL,
-[email] varchar(254) NULL,
+[firstname] nvarchar(40) NULL,
+[lastname] nvarchar(40) NULL,
+[email] nvarchar(254) NULL,
 [language] varchar(40) NULL,
 [blacklisted] varchar(1) NOT NULL,
 [owner_uid] int NOT NULL,
@@ -245,7 +245,7 @@ CREATE TABLE [prefix_plugin_settings] (
 [model] varchar(50) NULL,
 [model_id] int NULL,
 [key] varchar(50) NOT NULL,
-[value] varchar(max) NULL,
+[value] nvarchar(max) NULL,
 PRIMARY KEY  (id),
 );
 
@@ -256,8 +256,8 @@ PRIMARY KEY  (id),
 CREATE TABLE [prefix_question_attributes] (
 [qaid] int NOT NULL IDENTITY (1,1),
 [qid] int NOT NULL default '0',
-[attribute] varchar(50) NULL,
-[value] varchar(max) NULL,
+[attribute] nvarchar(50) NULL,
+[value] nvarchar(max) NULL,
 [language] varchar(20) NULL,
 PRIMARY KEY  ([qaid])
 );
@@ -272,10 +272,10 @@ CREATE TABLE [prefix_questions] (
 [sid] int NOT NULL default '0',
 [gid] int NOT NULL default '0',
 [type] varchar(1) NOT NULL default 'T',
-[title] varchar(20) NOT NULL default '',
-[question] varchar(max) NOT NULL,
-[preg] varchar(max) NULL,
-[help] varchar(max) NULL,
+[title] nvarchar(20) NOT NULL default '',
+[question] nvarchar(max) NOT NULL,
+[preg] nvarchar(max) NULL,
+[help] nvarchar(max) NULL,
 [other] varchar(1) NOT NULL default 'N',
 [mandatory] varchar(1) NULL,
 [question_order] int NOT NULL,
@@ -292,7 +292,7 @@ PRIMARY KEY  ([qid],[language])
 CREATE TABLE [prefix_quota] (
 [id] int NOT NULL IDENTITY (1,1),
 [sid] int NULL,
-[name] varchar(255) NULL,
+[name] nvarchar(255) NULL,
 [qlimit] int NULL,
 [action] int NULL,
 [active] int NOT NULL default '1',
@@ -308,10 +308,10 @@ CREATE TABLE [prefix_quota_languagesettings] (
 [quotals_id] int NOT NULL IDENTITY (1,1),
 [quotals_quota_id] int NOT NULL default 0,
 [quotals_language] varchar(45) NOT NULL default 'en',
-[quotals_name] varchar(255) NULL,
-[quotals_message] varchar(max) NOT NULL,
-[quotals_url] varchar(255) NULL,
-[quotals_urldescrip] varchar(255) NULL,
+[quotals_name] nvarchar(255) NULL,
+[quotals_message] nvarchar(max) NOT NULL,
+[quotals_url] nvarchar(255) NULL,
+[quotals_urldescrip] nvarchar(255) NULL,
 PRIMARY KEY ([quotals_id])
 );
 
@@ -336,9 +336,9 @@ CREATE TABLE [prefix_saved_control] (
 [scid] int NOT NULL IDENTITY (1,1),
 [sid] int NOT NULL default '0',
 [srid] int NOT NULL default '0',
-[identifier] varchar(max) NOT NULL,
-[access_code] varchar(max) NOT NULL,
-[email] varchar(254) NULL,
+[identifier] nvarchar(max) NOT NULL,
+[access_code] nvarchar(max) NOT NULL,
+[email] nvarchar(254) NULL,
 [ip] varchar(max) NOT NULL,
 [saved_thisstep] varchar(max) NOT NULL,
 [status] varchar(1) NOT NULL default '',
@@ -364,7 +364,7 @@ PRIMARY KEY ( [id] )
 --
 CREATE TABLE [prefix_settings_global] (
 [stg_name] varchar(50) NOT NULL default '',
-[stg_value] varchar(255) NOT NULL default '',
+[stg_value] nvarchar(255) NOT NULL default '',
 PRIMARY KEY  ([stg_name])
 );
 
@@ -401,16 +401,16 @@ CREATE TABLE prefix_survey_url_parameters (
 CREATE TABLE [prefix_surveys] (
 [sid] int NOT NULL,
 [owner_id] int NOT NULL,
-[admin] varchar(50) NULL,
+[admin] nvarchar(50) NULL,
 [active] varchar(1) NOT NULL default 'N',
 [expires] DATETIME NULL,
 [startdate] DATETIME NULL,
-[adminemail] varchar(254) NULL,
+[adminemail] nvarchar(254) NULL,
 [anonymized] varchar(1) NOT NULL default 'N',
-[faxto] varchar(20) NULL,
+[faxto] nvarchar(20) NULL,
 [format] varchar(1) NULL,
 [savetimings] varchar(1) NOT NULL default 'N',
-[template] varchar(100) default 'default',
+[template] nvarchar(100) default 'default',
 [language] varchar(50) NULL,
 [additional_languages] varchar(255) NULL,
 [datestamp] varchar(1) NOT NULL default 'N',
@@ -433,7 +433,7 @@ CREATE TABLE [prefix_surveys] (
 [assessments] varchar(1) NOT NULL default 'N',
 [usecaptcha] varchar(1) NOT NULL default 'N',
 [usetokens] varchar(1) NOT NULL default 'N',
-[bounce_email] varchar(254) NULL,
+[bounce_email] nvarchar(254) NULL,
 [attributedescriptions] varchar(max) NULL,
 [emailresponseto] varchar(max) NULL,
 [emailnotificationto] varchar(max) NULL,
@@ -446,9 +446,9 @@ CREATE TABLE [prefix_surveys] (
 [bounceprocessing] varchar(1) NULL default 'N',
 [bounceaccounttype] varchar(4) NULL,
 [bounceaccounthost] varchar(200) NULL,
-[bounceaccountpass] varchar(100) NULL,
+[bounceaccountpass] nvarchar(100) NULL,
 [bounceaccountencryption] varchar(3) NULL,
-[bounceaccountuser] varchar(200) NULL,
+[bounceaccountuser] nvarchar(200) NULL,
 [showwelcome] varchar(1) NULL default 'Y',
 [showprogress] varchar(1) NULL default 'Y',
 [questionindex] int NOT NULL default '0',
@@ -467,28 +467,28 @@ PRIMARY KEY  ([sid])
 CREATE TABLE [prefix_surveys_languagesettings] (
 [surveyls_survey_id] int NOT NULL,
 [surveyls_language] varchar(45) NOT NULL DEFAULT 'en',
-[surveyls_title] varchar(200) NOT NULL,
-[surveyls_description] varchar(max) NULL,
-[surveyls_welcometext] varchar(max) NULL,
-[surveyls_endtext] varchar(max) NULL,
-[surveyls_url] varchar(max) NULL,
-[surveyls_urldescription] varchar(255) NULL,
-[surveyls_email_invite_subj] varchar(255) NULL,
-[surveyls_email_invite] varchar(max) NULL,
-[surveyls_email_remind_subj] varchar(255) NULL,
-[surveyls_email_remind] varchar(max) NULL,
-[surveyls_email_register_subj] varchar(255) NULL,
-[surveyls_email_register] varchar(max) NULL,
-[surveyls_email_confirm_subj] varchar(255) NULL,
-[surveyls_email_confirm] varchar(max) NULL,
+[surveyls_title] nvarchar(200) NOT NULL,
+[surveyls_description] nvarchar(max) NULL,
+[surveyls_welcometext] nvarchar(max) NULL,
+[surveyls_endtext] nvarchar(max) NULL,
+[surveyls_url] nvarchar(max) NULL,
+[surveyls_urldescription] nvarchar(255) NULL,
+[surveyls_email_invite_subj] nvarchar(255) NULL,
+[surveyls_email_invite] nvarchar(max) NULL,
+[surveyls_email_remind_subj] nvarchar(255) NULL,
+[surveyls_email_remind] nvarchar(max) NULL,
+[surveyls_email_register_subj] nvarchar(255) NULL,
+[surveyls_email_register] nvarchar(max) NULL,
+[surveyls_email_confirm_subj] nvarchar(255) NULL,
+[surveyls_email_confirm] nvarchar(max) NULL,
 [surveyls_dateformat] int NOT NULL DEFAULT 1,
-[surveyls_attributecaptions] varchar(max) NULL,
-[email_admin_notification_subj] varchar(255) NULL,
-[email_admin_notification] varchar(max) NULL,
-[email_admin_responses_subj] varchar(255) NULL,
-[email_admin_responses] varchar(max) NULL,
+[surveyls_attributecaptions] nvarchar(max) NULL,
+[email_admin_notification_subj] nvarchar(255) NULL,
+[email_admin_notification] nvarchar(max) NULL,
+[email_admin_responses_subj] nvarchar(255) NULL,
+[email_admin_responses] nvarchar(max) NULL,
 [surveyls_numberformat] int NOT NULL DEFAULT 0,
-[attachments] varchar(max) NULL default NULL,
+[attachments] nvarchar(max) NULL default NULL,
 PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 );
 
@@ -498,8 +498,8 @@ PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 --
 CREATE TABLE [prefix_user_groups] (
 [ugid] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
-[name] varchar(20) NOT NULL UNIQUE,
-[description] varchar(max) NOT NULL,
+[name] nvarchar(20) NOT NULL UNIQUE,
+[description] nvarchar(max) NOT NULL,
 [owner_id] int NOT NULL
 );
 
@@ -519,16 +519,16 @@ PRIMARY KEY ([ugid],[uid])
 --
 CREATE TABLE [prefix_users] (
 [uid] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
-[users_name] varchar(64) NOT NULL UNIQUE default '',
-[password] text NOT NULL,
-[full_name] varchar(50) NOT NULL,
+[users_name] nvarchar(64) NOT NULL UNIQUE default '',
+[password] ntext NOT NULL,
+[full_name] nvarchar(50) NOT NULL,
 [parent_id] int NOT NULL,
 [lang] varchar(20) NULL,
-[email] varchar(254) NULL,
+[email] nvarchar(254) NULL,
 [htmleditormode] varchar(7) NULL default 'default',
 [templateeditormode] varchar(7) NOT NULL default 'default',
 [questionselectormode] varchar(7)  NOT NULL default 'default',
-[one_time_pw] text NULL,
+[one_time_pw] ntext NULL,
 [dateformat] int NOT NULL DEFAULT 1,
 [created] datetime NULL,
 [modified] datetime NULL
@@ -539,7 +539,7 @@ CREATE TABLE [prefix_users] (
 -- Table structure for table templates
 --
 CREATE TABLE [prefix_templates] (
-[folder] varchar(255) NOT NULL,
+[folder] nvarchar(255) NOT NULL,
 [creator] int NOT NULL,
 PRIMARY KEY  ([folder])
 );
