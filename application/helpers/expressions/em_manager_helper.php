@@ -1029,7 +1029,7 @@
 
         /**
         * Process all question attributes that apply to EM
-        * (1) Sub-question-level  relevance:  e.g. array_filter, array_filter_exclude
+        * (1) Sub-question-level relevance:  e.g. array_filter, array_filter_exclude, relevance equations entered in SQ-mask
         * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
         * @param <integer> $onlyThisQseq - only process these attributes for the specified question
         */
@@ -1295,6 +1295,58 @@
                                 'sgqa' => $qinfo['sgqa'],
                                 );
                             }
+                        }
+                    }
+                }
+
+                // individual subquestion relevance
+                if ($hasSubqs & $type!='|' & $type!='!' & $type !='L') 
+                {
+                    $subqs = $qinfo['subqs'];
+                    $last_rowdivid = '--';
+                    foreach ($subqs as $sq) 
+                    {
+                        if ($sq['rowdivid'] == $last_rowdivid)
+                        {
+                            continue;
+                        }
+                        $last_rowdivid = $sq['rowdivid'];
+                        $rowdivid=NULL;
+                        $rowdivid=$sq['rowdivid'];
+                        switch($type)
+                        {
+                            case '1': //Array (Flexible Labels) dual scale
+                                $rowdivid = $rowdivid . '#0';
+                                break;
+                            case ':': //ARRAY Numbers
+                            case ';': //ARRAY Text
+                                $aCsuffix=(explode('_',$sq['csuffix']));
+                                $rowdivid = $rowdivid . '_'.$aCsuffix[1];
+                                break;
+                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case 'F': //ARRAY (Flexible) - Row Format
+                            case 'M': //Multiple choice checkbox
+                            case 'P': //Multiple choice with comments checkbox + text
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (isset($this->knownVars[$rowdivid]['SQrelevance']) & $this->knownVars[$rowdivid]['SQrelevance']!='')
+                        {
+                            $subQrels[] = array(
+                            'qtype' => $type,
+                            'type' => 'SQ_relevance',
+                            'rowdivid' => $sq['rowdivid'],
+                            'eqn' => $this->knownVars[$rowdivid]['SQrelevance'],
+                            'qid' => $questionNum,
+                            'sgqa' => $qinfo['sgqa'],
+                            );
                         }
                     }
                 }
@@ -3549,6 +3601,7 @@
                 $questionId = $fieldNameParts[2];
                 $questionNum = $fielddata['qid'];
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
+                $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
                 $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
                 $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
                 $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
@@ -3960,6 +4013,7 @@
                 'gid'=>$groupNum,
                 'grelevance'=>$grelevance,
                 'relevance'=>$relevance,
+                'SQrelevance'=>$SQrelevance,
                 'qcode'=>$varName,
                 'qseq'=>$questionSeq,
                 'gseq'=>$groupSeq,
@@ -3978,6 +4032,7 @@
                 $this->questionSeq2relevance[$questionSeq] = array(
                 'relevance'=>$relevance,
                 'grelevance'=>$grelevance,
+                //'SQrelevance'=>$SQrelevance,
                 'qid'=>$questionNum,
                 'qseq'=>$questionSeq,
                 'gseq'=>$groupSeq,
@@ -4090,6 +4145,7 @@
             'gid'=>'',
             'grelevance'=>'',
             'relevance'=>'',
+            'SQrelevance'=>'',
             'qcode'=>'this',
             'qseq'=>'',
             'gseq'=>'',
@@ -6947,9 +7003,8 @@
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-
-                        // make sure to update array_filter headings and colors
-                        if( ! empty($LEM->qattr[$arg['qid']]['array_filter'])) {
+                        // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
+                        if( ! empty($sq['type'])) {
                             // js to fix colors
                             $relParts[] = "updateColors($('#question".$arg['qid']."').find('table.question'));\n";
                             // js to fix headings
@@ -9728,6 +9783,11 @@ EOD;
                         $rowdivid=$sgqa;
                         $varName=$LEM->knownVars[$sgqa]['qcode'];
 
+                        // if SQrelevance equation is using SGQA coding, convert to qcoding
+                        $SQrelevance = (($LEM->knownVars[$sgqa]['SQrelevance'] == '') ? 1 : $LEM->knownVars[$sgqa]['SQrelevance']);
+                        $LEM->em->ProcessBooleanExpression($SQrelevance, $gseq, $q['info']['qseq']);
+                        $SQrelevance = trim(strip_tags($LEM->em->GetPrettyPrintString()));
+                    
                         switch  ($q['info']['type'])
                         {
                             case '1':
@@ -9778,6 +9838,7 @@ EOD;
                         $row['class'] = 'SQ';
                         $row['type/scale'] = 0;
                         $row['name'] = substr($varName,strlen($rootVarName)+1);
+                        $row['relevance'] = $SQrelevance;
                         $row['text'] = $subqText;
                         $row['language'] = $lang;
                         $row['default'] = $default;

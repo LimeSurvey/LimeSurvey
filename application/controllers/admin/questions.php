@@ -481,6 +481,7 @@ class questions extends Survey_Common_Action
                 'question' => '',
                 'question_order' => 1,
                 'language' => $baselang,
+                'relevance' => '1',
                 'scale_id' => $iScale,
                 );
                 Question::model()->insertRecords($data);
@@ -523,6 +524,7 @@ class questions extends Survey_Common_Action
                         $question->question_order = $row->question_order;
                         $question->language = $language;
                         $question->scale_id = $iScale;
+                        $question->relevance = $row->relevance;
                         $question->save();
                         /** //activerecord is not not new bugfix!
                         Question::model()->insert(array(
