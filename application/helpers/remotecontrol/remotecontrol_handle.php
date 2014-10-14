@@ -2464,7 +2464,7 @@ class remotecontrol_handle
                                 // delete the files 
                                 if (!empty($fuqtquestions))
                                 {
-                                    Response::model($iSurveyID)->deleteFiles(array('id' => $iResponseID));
+                                    Response::model($iSurveyID)->findByPk($iResponseID)->deleteFiles();
                                 }
                             // delete timings if savetimings is set
                             if(isset( $oSurvey['savetimings'] ) && $oSurvey['savetimings'] == "Y") {
