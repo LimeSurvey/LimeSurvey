@@ -76,9 +76,9 @@ $(document)
 					var searchconditions = {};
 					var field;
 
-					$('#searchbutton').click(function() {
+//					$('#searchbutton').click(function() {
 
-					});
+//					});
 					var lastSel, lastSel2;
 					function returnColModel() {
 						if ($.cookie("detailedresponsecolumns")) {
@@ -99,7 +99,7 @@ $(document)
 						url : jsonUrl,
 						// editurl : editUrl,
 						datatype : "json",
-						mtype : "post",
+						mtype : "POST",
 						colNames : colNames,
 						colModel : returnColModel(),
 						toppager : true,
@@ -107,18 +107,28 @@ $(document)
 						shrinkToFit : false,
 						ignoreCase : true,
 						rowNum : 25,
-						editable : true,
+						editable : false,
 						scrollOffset : 0,
 						sortable : true,
 						hidegrid : false,
-						sortname : 'sid',
+						sortname : 'id',
 						sortorder : 'asc',
 						viewrecords : true,
 						rowList : [ 25, 50, 100, 250, 500, 1000 ],
 						multiselect : true,
-						loadonce : true,
+						loadonce : false,
 						pager : "#pager",
-						caption : sCaption
+						caption : sCaption,
+						beforeRequest: function(){
+							for (i = 0; i < colModels.length; i++) {
+								var col=i+1;
+								$("tr.ui-jqgrid-labels th:eq("+col+") .questiontext").attr('title',colModels[i]['title']);
+							}
+							$(".ui-jqgrid-labels").tooltip();
+						 },
+						 loadComplete: function(){
+						  $("#displayresponses").tooltip({ tooltipClass: "tooltip-text" });
+						 }
 					});
 					jQuery("#displayresponses").jqGrid(
 							'navGrid',
@@ -213,25 +223,20 @@ $(document)
 						minHeight : 100
 					});
 
-					$('.wrapper').width($('#displayresponses').width() * 1.006);
-					$('.footer').width(
-							($('#displayresponses').width() * 1.006) - 10);
+//					$('.wrapper').width($('#displayresponses').width() * 1.006);
+//					$('.footer').width(($('#displayresponses').width() * 1.006) - 10);
 
 					/* Trigger the inline search when the access list changes */
-					$('#gs_completed_select').change(
-							function() {
+					$(document).on('change','#gs_completed_select',function() {
 								$("#gs_Completed").val(
 										$('#gs_completed_select').val());
-
-								var e = jQuery.Event("keydown");
-								$("#gs_Completed").trigger(e);
+								$("#gs_Completed").trigger("keydown");
 							});
 
-					/* Change the text search above "Status" icons to a dropdown */
 					var parentDiv = $('#gs_completed').parent();
 					parentDiv.prepend($('#gs_completed_select'));
 					$('#gs_completed_select').css("display", "");
-					$('#gs_Completed').css("display", "none");
+					$('#gs_completed').css("display", "none");
 
 					/* Disable search on the action column */
 					var parentDiv = $('#gs_actions').parent();
@@ -239,19 +244,20 @@ $(document)
 					$('#gs_no_filter').css("display", "");
 					$('#gs_Actions').css("display", "none");
 
-					var setTooltipsOnColumnHeader = function(grid, iColumn,
-							text) {
-						var col = iColumn + 1;
-						var thd = jQuery("thead:first", grid[0].grid.hDiv)[0];
-						jQuery("tr.ui-jqgrid-labels th:eq(" + col + ")", thd)
-								.attr("title", text);
-					};
+//					var setTooltipsOnColumnHeader = function(grid, iColumn,
+//							text) {
+//						var col = iColumn + 1;
+//						var thd = jQuery("thead:first", grid[0].grid.hDiv)[0];
+//						jQuery("tr.ui-jqgrid-labels th:eq(" + col + ")", thd).tooltip({content:text});
+//					};
 
-					var colmodel_count = colModels.length;
-					for (i = 0; i < colmodel_count; i++) {
-						setTooltipsOnColumnHeader($("#displayresponses"), i,
-								colModels[i]['title']);
-
-					}
+//					var colmodel_count = colModels.length;
+//					for (i = 0; i < colmodel_count; i++) {
+//						var index=i+1;
+//						$("tr.ui-jqgrid-labels th:eq("+index+") .questiontext").tooltip({ content: "ICI" });
+//						//$("tr.ui-jqgrid-labels th:eq("+index+")").html(colModels[i]['title']);
+////						setTooltipsOnColumnHeader($("#displayresponses"), i,
+////								colModels[i]['title']);
+//					}
 
 				});

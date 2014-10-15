@@ -315,136 +315,155 @@ class responses extends Survey_Common_Action
     function browse($iSurveyID)
     {
 
-        App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
-
-        $aData = $this->_getData($iSurveyID);
-        extract($aData);
-        $aViewUrls = array();
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
-
-
-        // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
-        $column_model = array();
-        // The first few colums are fixed.
-        $column_model[] = array('name' => 'actions',   'model_name' => 'Actions',     'index'          => 'actions',     'sorttype' => 'string', 'sortable' => false, 'width' => '100', 'align' => 'left', 'editable' => false);
-
-        // All other columns are based on the questions.
-
-        //add token to top of list if survey is not private
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
+        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
-            $column_model[] = array('name' => 'Token',    'model_name' =>'token',    'index' => 'token',     	'sorttype' => 'string', 	'sortable' => false,	'width' => '100', 	'align' => 'left', 	'editable' => false);
-            $column_model[] = array('name' => 'First name', 'model_name' =>'firstname',  'index' => 'firstname',   'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
-            $column_model[] = array('name' => 'Last Name',  'model_name' =>'lastname',  'index' => 'lastname',    'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
-            $column_model[] = array('name' => 'Email',  'model_name' =>'email',      'index' => 'email',     	'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
+            App()->getClientScript()->registerPackage('jqgrid');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
+
+            $aData = $this->_getData($iSurveyID);
+            extract($aData);
+            $aViewUrls = array();
+            $oBrowseLanguage = new Limesurvey_lang($aData['language']);
+
+
+            // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
+            $column_model = array();
+            // The first few colums are fixed.
+            $column_model[] = array('name' => 'actions',   'model_name' => 'Actions',     'index'          => 'actions',     'sorttype' => 'string', 'sortable' => false, 'width' => '100', 'align' => 'left', 'editable' => false);
+
+            // All other columns are based on the questions.
+
+            //add token to top of list if survey is not private
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
+            {
+                $column_model[] = array('name' => 'Token','model_name' =>'token',    'index' => 'token',     	'sorttype' => 'string', 	'sortable' => false,	'width' => '100', 	'align' => 'left', 	'editable' => false);
+                $column_model[] = array('name' => 'First name', 'model_name' =>'firstname',  'index' => 'firstname',   'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
+                $column_model[] = array('name' => 'Last Name',  'model_name' =>'lastname',  'index' => 'lastname',    'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
+                $column_model[] = array('name' => 'Email',  'model_name' =>'email',      'index' => 'email',     	'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
+            }
+
+            $column_model[] 	= array('name' => 'completed',  'model_name' => 'Completed',  'index' => 'completed',	'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
+
+
+            // $fields = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
+            $fields = createFieldMap($iSurveyID,'full', true, false, $aData['language']);
+
+
+            // foreach ($fields as $fielddetails)
+            foreach ($fields as $fielddetails)
+            {
+
+                // Note that in LS 2,00, $fielddetails is an array, in 2.1 it is an object
+
+                if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
+                    continue;
+
+                // no headers for time data
+                if ($fielddetails['type'] == 'interview_time')
+                    continue;
+                if ($fielddetails['type'] == 'page_time')
+                    continue;
+                if ($fielddetails['type'] == 'answer_time')
+                    continue;
+
+
+                /*
+                $question = $fielddetails['question'];
+                if ($fielddetails['type'] != "|")
+                {
+                if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
+                $question .=' (' . $fielddetails['subquestion'] . ')';
+                if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
+                $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
+                if (isset($fielddetails['scale_id']))
+                $question .='[' . $fielddetails['scale'] . ']';
+                $column_model[] = array('name' => $question,        'index'          => $fielddetails['fieldname'],     'sorttype' => 'string', 'sortable' => true, 'width' => '25', 'align' => 'left', 'editable' => false);
+                }
+                else
+                {
+                if ($fielddetails['aid'] !== 'filecount')
+                {
+                $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
+
+                for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+                {
+                if ($qidattributes['show_title'] == 1)
+                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
+
+                if ($qidattributes['show_comment'] == 1)
+                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+
+                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
+                $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
+                //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                }
+                }
+                else
+                $fnames[] = array($fielddetails['fieldname'], "File count");
+                }
+                */
+
+                // if ( ($fielddetails['fieldname'] == 'id')  || ($fielddetails['fieldname'] == 'startlanguage') ) {
+                // Combine title and aid to provide a unique column header.
+    #            if ( empty($fielddetails['title']) ) {
+    #                $fielddetails['title'] = $fielddetails['fieldname'];
+    #            }
+    #            if ( !empty($fielddetails->aid) ) {
+    #                $fielddetails['title'] = $fielddetails['title'] . '_' . $fielddetails->aid;
+    #            }
+                // Construction of clean name and title
+                $code=viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true));// This must be unique ......
+                $text=viewHelper::getFieldText($fielddetails);
+                $textabb=viewHelper::getFieldText($fielddetails,array('abbreviated'=>10));
+                $column_model[] = array(
+                                    'name' => $code,// MUST be unique : TODO : replace by 'name' => $fielddetails['fieldname'],
+                                    'model_name' => $textabb,
+                                    'index' => $fielddetails['fieldname'],
+                                    'sorttype' => 'string',
+                                    'sortable' => true,
+                                    'width' => '100',
+                                    'align' => 'left',
+                                    'editable' => false,
+                                    'title' => $text,
+                                );
+
+            }
+
+            // print_r($column_model);
+
+
+            $column_model_txt =  ls_json_encode($column_model);
+            $column_names = array();
+            foreach ($column_model as $column) {
+                $column_names[] = "<strong class='qcode'>{$column['name']}</strong> <span class='questiontext'>{$column['model_name']}</span>";
+            }
+
+            $column_names_txt =  ls_json_encode($column_names);
+
+
+            Yii::app()->loadHelper('surveytranslator');
+
+            $aData['issuperadmin'] = false;
+            if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+            {
+                $aData['issuperadmin'] = true;
+            }
+            $aData['surveyid']	= $iSurveyID;
+            $aData['column_model']	= $column_model;
+            $aData['column_names']	= $column_names;
+
+
+            $this->_renderWrappedTemplate('responses', 'listResponses_view', $aData);
         }
-
-        $column_model[] 	= array('name' => 'completed',  'model_name' => 'Completed',  'index' => 'completed',	'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
-
-
-        // $fields = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
-        $fields = createFieldMap($iSurveyID,'full', true, false, $aData['language']);
-
-
-        // foreach ($fields as $fielddetails)
-        foreach ($fields as $fielddetails)
+        else
         {
-
-            // Note that in LS 2,00, $fielddetails is an array, in 2.1 it is an object
-
-            if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
-                continue;
-
-            // no headers for time data
-            if ($fielddetails['type'] == 'interview_time')
-                continue;
-            if ($fielddetails['type'] == 'page_time')
-                continue;
-            if ($fielddetails['type'] == 'answer_time')
-                continue;
-
-
-            /*
-            $question = $fielddetails['question'];
-            if ($fielddetails['type'] != "|")
-            {
-            if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
-            $question .=' (' . $fielddetails['subquestion'] . ')';
-            if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-            $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
-            if (isset($fielddetails['scale_id']))
-            $question .='[' . $fielddetails['scale'] . ']';
-            $column_model[] = array('name' => $question,        'index'          => $fielddetails['fieldname'],     'sorttype' => 'string', 'sortable' => true, 'width' => '25', 'align' => 'left', 'editable' => false);
-            }
-            else
-            {
-            if ($fielddetails['aid'] !== 'filecount')
-            {
-            $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
-
-            for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-            {
-            if ($qidattributes['show_title'] == 1)
-            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
-
-            if ($qidattributes['show_comment'] == 1)
-            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
-
-            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
-            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
-            //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
-            }
-            }
-            else
-            $fnames[] = array($fielddetails['fieldname'], "File count");
-            }
-            */
-
-            // if ( ($fielddetails['fieldname'] == 'id')  || ($fielddetails['fieldname'] == 'startlanguage') ) {
-            // Combine title and aid to provide a unique column header.
-            if ( empty($fielddetails['title']) ) {
-                $fielddetails['title'] = $fielddetails['fieldname'];
-            }
-            if ( !empty($fielddetails->aid) ) {
-                $fielddetails['title'] = $fielddetails['title'] . '_' . $fielddetails->aid;
-            }
-
-            $fnames[] = array($fielddetails['fieldname'], $fielddetails['title']);
-
-            $column_model[] = array('name' => $fielddetails['title'], 'model_name' => strip_tags(FlattenText(substr($fielddetails['title'], 0, 32), true)),        'index'          => $fielddetails['title'],     'sorttype' => 'string', 'sortable' => true, 'width' => '100', 'align' => 'left', 'editable' => false, 'title' => strip_tags(FlattenText($fielddetails['title'])) );
-
+            $aData['surveyid'] = $iSurveyID;
+            App()->getClientScript()->registerPackage('jquery-superfish');
+            $message['title']= gT('Access denied!');
+            $message['message']= gT('You do not have sufficient rights to access this page.');
+            $message['class']= "error";
+            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
-
-        // print_r($column_model);
-
-
-        $column_model_txt =  ls_json_encode($column_model);
-        $column_names = array();
-        foreach ($column_model as $column) {
-            // $column_name = stripTagsFull($column['model_name']);
-            // $column_name = substr($column['model_name'], 0, 32);
-            // $column_names[] = FlattenText($column['model_name'],true) ;
-            $column_names[] = $column['model_name'];
-        }
-
-        $column_names_txt =  ls_json_encode($column_names);
-
-
-        Yii::app()->loadHelper('surveytranslator');
-
-        $aData['issuperadmin'] = false;
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
-        {
-            $aData['issuperadmin'] = true;
-        }
-        $aData['surveyid']	= $iSurveyID;
-        $aData['column_model_txt']	= $column_model_txt;
-        $aData['column_names_txt']	= $column_names_txt;
-
-
-        $this->_renderWrappedTemplate('responses', 'listResponses_view', $aData);
-
     }
 
     /**
@@ -455,7 +474,10 @@ class responses extends Survey_Common_Action
     */
     public function getResponses_json($iSurveyID)
     {
-
+        if(!Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        {
+            Yii::app()->end();
+        }
         $aData = $this->_getData($iSurveyID);
 
         extract($aData);
@@ -464,68 +486,33 @@ class responses extends Survey_Common_Action
 
 
         $sImageURL 	= Yii::app()->getConfig('adminimageurl');
+        $sOrder=Yii::app()->request->getParam('sord','asc');
+        $sOrderBy=Yii::app()->request->getParam('sidx','id');
+        $iPage=Yii::app()->request->getParam('page',1); // Default to 1 ?
+        $iLimit=Yii::app()->request->getParam('rows',25); // Default to 25 ?
 
-
-        $fnames = array();
-        //add token to top of list if survey is not private
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
-        {
-            $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-            $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-            $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-            $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
-        }
-
-        $fields = createFieldMap($iSurveyID, 'full', true, false, $aData['language']);
-
-        foreach ($fields as $q)
-        {
-            if ($q['fieldname'] == 'lastpage' ||
-                $q['fieldname'] == 'submitdate' ||
-                $q['fieldname'] == 'token')
-                continue;
-
-            $question = $q['title'];
-            if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
-            {
-                if (isset($q->sq) && $q->sq != '')
-                    $question .=' (' . $q->sq . ')';
-                if (isset($q->sq1) && isset($q->sq2))
-                    $question .=' (' . $q->sq1 . ':' . $q->sq2 . ')';
-                if (isset($q->scale))
-                    $question .='[' . $q->scale . ']';
-                $fnames[] = array($q['fieldname'], $question);
-            }
-            else
-            {
-                if ($q->aid !== 'filecount')
-                {
-                    $qidattributes = $q->getAttributeValues();
-
-                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-                    {
-                        if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($q['fieldname'], "File " . ($i + 1) . " - " . $q['title'] . "(Title)", "title", $i);
-
-                        if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($q['fieldname'], "File " . ($i + 1) . " - " . $q['title'] . "(Comment)", "comment", $i);
-
-                        $fnames[] = array($q['fieldname'], "File " . ($i + 1) . " - " . $q['title'] . "(File name)", "name", $i);
-                        $fnames[] = array($q['fieldname'], "File " . ($i + 1) . " - " . $q['title'] . "(File size)", "size", $i);
-                    }
-                }
-                else
-                    $fnames[] = array($q['fieldname'], "File count");
-            }
-        }
-
+        // Did we need to fix ? Fix it.
+        $sOrder=($sOrder == 'desc')? 'desc' : 'asc';
+        $iLimit=((int)$iLimit>0) ?(int)$iLimit : 25 ;
+        $iStart=((int)$iPage>0) ? ((int)$iPage*$iLimit - $iLimit) : 0;
 
         // Get the survey responses
-        $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray();
+        $oCriteria = new CDbCriteria;
+        // Get the quickfilter criteria
+        
+        // TODO : Get the filter criteria
+        $iCount = SurveyDynamic::model($iSurveyID)->count($oCriteria);
+        // Add the select criteria
+        $oCriteria->order = Yii::app()->db->quoteColumnName($sOrderBy)." {$sOrder}";
+        $oCriteria->limit = $iLimit;
+        $oCriteria->offset = $iStart;
+        $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
 
         $aSurveyEntries = new stdClass();
-        $aSurveyEntries->page = 1;
-
+        // Elements for ajax
+        $aSurveyEntries->page = $iPage;
+        $aSurveyEntries->total = ($iCount>0)?ceil($iCount/$iLimit):0;
+        $aSurveyEntries->records= $iCount;
         $all_rows = array();
         foreach ($dtresult as $row) {
 
@@ -542,36 +529,28 @@ class responses extends Survey_Common_Action
                 $action_html .= "<a><img id='deleteresponse_" . $row['id'] . "' src='" . $sImageURL . "/token_delete.png' alt='" . $clang->gT('Delete this response') . "' class='deleteresponse'/></a>";
             }
 
-
+            $debuggging=false;
             $aSurveyEntry = array();
-
+            $aTest=array();
             $aSurveyEntry[] = '<!--a-->' . $action_html;
             $aSurveyEntry[] = empty($row['submitdate'])?'N':'Y';
             $aSurveyEntry[] = $row['id'];
             $aSurveyEntry[] = $row['startlanguage'];
-            $aSurveyEntry[] = $row[$fnames[2][0]];
-            $aSurveyEntry[] = $row[$fnames[3][0]];
-
             foreach ($row as $row_index => $row_value) {
-
                 // Ignore these fields
                 if (in_array($row_index, array('id', 'submitdate', 'lastpage', 'startlanguage', 'startdate', 'datestamp'))) {
                     continue;
                 }
-
-                $aSurveyEntry[] = $row_value;
-
+                $aSurveyEntry[] = strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $row_index, $row_value, $oBrowseLanguage)));
             }
-
-
             $all_rows[] = array('id' => $row['id'], 'cell' =>  $aSurveyEntry);
-
         }
 
         $aSurveyEntries->rows = $all_rows;
-
+        viewHelper::disableHtmlLogging();
+        header('Content-type: application/json');
         echo ls_json_encode($aSurveyEntries);
-
+        Yii::app()->end();
     }
 
 
