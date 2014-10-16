@@ -104,7 +104,7 @@ function insertlabelset()
     $result=LabelSet::model()->insertRecords($data);
     if (!$result)
     {
-        Yii::app()->session['flashmessage'] = $clang->gT("Inserting the label set failed.");
+        Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
     }
     else
     {
@@ -126,7 +126,7 @@ function modlabelsetanswers($lid)
         $ajax = true;
     }
     if (!isset($_POST['method'])) {
-        $_POST['method'] = $clang->gT("Save");
+        $_POST['method'] = gT("Save");
     }
 
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
@@ -184,16 +184,16 @@ function modlabelsetanswers($lid)
         }
         if(count($aErrors))
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Not all labels were updated successfully.");
+            Yii::app()->session['flashmessage'] = gT("Not all labels were updated successfully.");
         }
         else
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Labels sucessfully updated");
+            Yii::app()->session['flashmessage'] = gT("Labels sucessfully updated");
         }
     }
     else
     {
-        Yii::app()->setFlashMessage($clang->gT("Can't update labels because you are using duplicated codes"),'error');
+        Yii::app()->setFlashMessage(gT("Can't update labels because you are using duplicated codes"),'error');
     }
 
     if ($ajax){ die(); }

@@ -4,4 +4,4 @@
 
 <p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>
 
-<div class='header ui-widget-header'><?php $clang->eT("Translate survey");?></div>
+<div class='header ui-widget-header'><?php eT("Translate survey");?></div>

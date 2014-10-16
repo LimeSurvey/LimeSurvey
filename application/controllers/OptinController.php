@@ -63,7 +63,7 @@ class OptinController extends LSYii_Controller {
 
         if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))
         {
-            $sMessage = $clang->gT('This survey does not seem to exist.');
+            $sMessage = gT('This survey does not seem to exist.');
         }
         else
         {
@@ -71,7 +71,7 @@ class OptinController extends LSYii_Controller {
 
             if (!isset($oToken))
             {
-                $sMessage = $clang->gT('You are not a participant in this survey.');
+                $sMessage = gT('You are not a participant in this survey.');
             }
             else
             {
@@ -79,15 +79,15 @@ class OptinController extends LSYii_Controller {
                 {
                     $oToken->emailstatus = 'OK';
                     $oToken->save();
-                    $sMessage = $clang->gT('You have been successfully added back to this survey.');
+                    $sMessage = gT('You have been successfully added back to this survey.');
                 }
                 elseif ($oToken->emailstatus == 'OK')
                 {
-                    $sMessage = $clang->gT('You are already a part of this survey.');
+                    $sMessage = gT('You are already a part of this survey.');
                 }
                 else
                 {
-                    $sMessage = $clang->gT('You have been already removed from this survey.');
+                    $sMessage = gT('You have been already removed from this survey.');
                 }
             }
         }

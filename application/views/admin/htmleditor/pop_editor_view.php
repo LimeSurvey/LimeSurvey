@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
     <head>
-        <title><?php printf($clang->gT('Editing %s'), $sFieldText); ?></title>
+        <title><?php printf(gT('Editing %s'), $sFieldText); ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="noindex, nofollow" />
         <?php
@@ -32,8 +32,8 @@
 
 
                 var saveChanges = false;
-                var sReplacementFieldTitle = '<?php $clang->eT('LimeSurvey replacement field properties','js');?>';
-                var sReplacementFieldButton = '<?php $clang->eT('Insert/edit LimeSurvey replacement field','js');?>';
+                var sReplacementFieldTitle = '<?php eT('LimeSurvey replacement field properties','js');?>';
+                var sReplacementFieldButton = '<?php eT('Insert/edit LimeSurvey replacement field','js');?>';
                 $(document).ready(function(){
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
@@ -58,7 +58,7 @@
                     var editor = evt.editor;
                     editor.setData(window.opener.document.getElementsByName("<?php echo $sFieldName; ?>")[0].value);
                     editor.execCommand('maximize');
-                    window.status='LimeSurvey <?php $clang->eT('Editing', 'js') . ' ' . 'javascriptEscape(' . $sFieldText . ', true)'; ?>';
+                    window.status='LimeSurvey <?php eT('Editing', 'js') . ' ' . 'javascriptEscape(' . $sFieldText . ', true)'; ?>';
                 }
 
                 function html_transfert()

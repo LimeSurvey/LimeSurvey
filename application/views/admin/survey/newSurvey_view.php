@@ -7,7 +7,7 @@
     standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
     templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
 </script>
-<div class='header ui-widget-header'><?php $clang->eT("Create, import, or copy survey"); ?></div>
+<div class='header ui-widget-header'><?php eT("Create, import, or copy survey"); ?></div>
 <?php
     $this->renderPartial('/admin/survey/subview/tab_view',$data);
     $this->renderPartial('/admin/survey/subview/tabGeneralNewSurvey_view',$data);
@@ -25,8 +25,8 @@
 ?>
 </div>
 
-<p><button id='btnSave' onclick="if (isEmpty(document.getElementById('surveyls_title'), '<?php $clang->eT("Error: You have to enter a title for this survey.", 'js');?>')) { document.getElementById('addnewsurvey').submit();}" class='standardbtn' >
-        <?php $clang->eT("Save");?>
+<p><button id='btnSave' onclick="if (isEmpty(document.getElementById('surveyls_title'), '<?php eT("Error: You have to enter a title for this survey.", 'js');?>')) { document.getElementById('addnewsurvey').submit();}" class='standardbtn' >
+        <?php eT("Save");?>
     </button>
 </p>
 

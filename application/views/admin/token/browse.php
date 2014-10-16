@@ -55,48 +55,48 @@
     // Build the javasript variables to pass to the jqGrid
 ?>
 <script type="text/javascript">
-    var sAddParticipantToCPDBText = '<?php $clang->eT("Add participants to central database",'js');?>';
-    var sLoadText = '<?php $clang->eT("Loading...",'js');?>';
-    var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
-    var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
-    var sRecordText = '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
-    var sPageText = '<?php $clang->eT("Page {0} of {1}",'js');?>';
+    var sAddParticipantToCPDBText = '<?php eT("Add participants to central database",'js');?>';
+    var sLoadText = '<?php eT("Loading...",'js');?>';
+    var sSelectRowMsg = "<?php eT("Please select at least one participant.", 'js') ?>";
+    var sWarningMsg = "<?php eT("Warning", 'js') ?>";
+    var sRecordText = '<?php eT("View {0} - {1} of {2}",'js');?>';
+    var sPageText = '<?php eT("Page {0} of {1}",'js');?>';
     var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>";
-    var mapButton = "<?php $clang->eT("Next") ?>";
-    var error = "<?php $clang->eT("Error") ?>";
-    var removecondition = "<?php $clang->eT("Remove condition") ?>";
-    var cancelBtn = "<?php $clang->eT("Cancel") ?>";
-    var exportBtn = "<?php $clang->eT("Export") ?>";
-    var okBtn = "<?php $clang->eT("OK") ?>";
-    var resetBtn = "<?php $clang->eT("Reset") ?>";
-    var noRowSelected = "<?php $clang->eT("You have no row selected") ?>";
-    var searchBtn = "<?php $clang->eT("Search") ?>";
-    var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.") ?>"; //PLEASE REVIEW
+    var mapButton = "<?php eT("Next") ?>";
+    var error = "<?php eT("Error") ?>";
+    var removecondition = "<?php eT("Remove condition") ?>";
+    var cancelBtn = "<?php eT("Cancel") ?>";
+    var exportBtn = "<?php eT("Export") ?>";
+    var okBtn = "<?php eT("OK") ?>";
+    var resetBtn = "<?php eT("Reset") ?>";
+    var noRowSelected = "<?php eT("You have no row selected") ?>";
+    var searchBtn = "<?php eT("Search") ?>";
+    var shareMsg = "<?php eT("You can see and edit settings for shared participants in share panel.") ?>"; //PLEASE REVIEW
     var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/getSearch_json/surveyid/{$surveyid}/search"); ?>";
     var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSearchIDs"); ?>";
     var addbutton = "<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?>";
     var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
     var survey_id = "<?php echo $surveyid; ?>";
     var delUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/delete/surveyid/{$surveyid}"); ?>";
-    var saveBtn = "<?php $clang->eT("Save changes") ?>";
-    var okBtn = "<?php echo $clang->eT("OK") ?>";
-    var delmsg = "<?php $clang->eT("Are you sure you want to delete the selected entries?") ?>";
+    var saveBtn = "<?php eT("Save changes") ?>";
+    var okBtn = "<?php echo eT("OK") ?>";
+    var delmsg = "<?php eT("Are you sure you want to delete the selected entries?") ?>";
     var surveyID = "<?php echo $surveyid; ?>";
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/getTokens_json/surveyid/{$surveyid}"); ?>";
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/editToken/surveyid/{$surveyid}"); ?>";
-    var sEmptyRecords ='<?php $clang->eT("Participant table is empty.",'js');?>';
+    var sEmptyRecords ='<?php eT("Participant table is empty.",'js');?>';
     var sCaption ='';
-    var sDelTitle = '<?php $clang->eT("Delete selected participant(s) from this survey",'js');?>';
-    var sRefreshTitle ='<?php $clang->eT("Reload participant list",'js');?>';
-    var noSearchResultsTxt = '<?php $clang->eT("No survey participants matching the search criteria",'js');?>';
-    var sFind= '<?php $clang->eT("Filter",'js');?>';
+    var sDelTitle = '<?php eT("Delete selected participant(s) from this survey",'js');?>';
+    var sRefreshTitle ='<?php eT("Reload participant list",'js');?>';
+    var noSearchResultsTxt = '<?php eT("No survey participants matching the search criteria",'js');?>';
+    var sFind= '<?php eT("Filter",'js');?>';
     var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"); ?>";
     var attMapUrl = "<?php echo $this->createUrl("admin/participants/sa/attributeMapToken/sid/");?>";
-    var invitemsg = "<?php echo $clang->eT("Send an invitation email to the selected entries (if they have not yet been sent an invitation email)"); ?>"
-    var remindmsg = "<?php echo $clang->eT("Send a reminder email to the selected entries (if they have already received the invitation email)"); ?>"
+    var invitemsg = "<?php echo eT("Send an invitation email to the selected entries (if they have not yet been sent an invitation email)"); ?>"
+    var remindmsg = "<?php echo eT("Send a reminder email to the selected entries (if they have already received the invitation email)"); ?>"
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/invite/surveyid/{$surveyid}"); ?>";
-    var sSummary =  '<?php $clang->eT("Summary",'js');?>';
+    var sSummary =  '<?php eT("Summary",'js');?>';
     var showDelButton = <?php echo $showDelButton; ?>;
     var showBounceButton = <?php echo $showBounceButton; ?>;
     var showInviteButton = <?php echo $showInviteButton; ?>;
@@ -106,15 +106,15 @@
     <?php 
     } else {?>
     var bParticipantPanelPermission=true;
-    var viewParticipantsLink = "<?php $clang->eT("View participants of this survey in the central participant database panel") ?>";
+    var viewParticipantsLink = "<?php eT("View participants of this survey in the central participant database panel") ?>";
     <?php } ?>
-    var sBounceProcessing = "<?php $clang->eT("Start bounce processing") ?>";
+    var sBounceProcessing = "<?php eT("Start bounce processing") ?>";
     var sBounceProcessingURL = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/bounceprocessing/surveyid/{$surveyid}"); ?>";
     var participantlinkUrl="<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";
-    var andTxt="<?php $clang->eT("AND") ?>";
-    var orTxt="<?php $clang->eT("OR") ?>";
-    var searchtypes = ["<?php $clang->eT("Equals") ?>","<?php $clang->eT("Contains") ?>","<?php $clang->eT("Not equal") ?>","<?php $clang->eT("Not contains") ?>","<?php $clang->eT("Greater than") ?>","<?php $clang->eT("Less than") ?>"];
-    var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>"<?php if (count($columnNames)) echo ','.$columnNames; ?>];
+    var andTxt="<?php eT("AND") ?>";
+    var orTxt="<?php eT("OR") ?>";
+    var searchtypes = ["<?php eT("Equals") ?>","<?php eT("Contains") ?>","<?php eT("Not equal") ?>","<?php eT("Not contains") ?>","<?php eT("Greater than") ?>","<?php eT("Less than") ?>"];
+    var colNames = ["ID","<?php eT("Action") ?>","<?php eT("First name") ?>","<?php eT("Last name") ?>","<?php eT("Email address") ?>","<?php eT("Email status") ?>","<?php eT("Token") ?>","<?php eT("Language") ?>","<?php eT("Invitation sent?") ?>","<?php eT("Reminder sent?") ?>","<?php eT("Reminder count") ?>","<?php eT("Completed?") ?>","<?php eT("Uses left") ?>","<?php eT("Valid from") ?>","<?php eT("Valid until") ?>"<?php if (count($columnNames)) echo ','.$columnNames; ?>];
     var colModels = [
     { "name":"tid", "index":"tid", "width":30, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
     { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":120, "align":"center", "editable":false},
@@ -136,16 +136,16 @@
 </script>
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php $clang->eT("Survey participants",'js'); ?></strong></div>
+        <strong><?php eT("Survey participants",'js'); ?></strong></div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' class="gridcontrol disabled databegin" />
-            <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' class="gridcontrol disabled databack" />
+            <img src='<?php echo $sImageURL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' class="gridcontrol disabled databegin" />
+            <img src='<?php echo $sImageURL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' class="gridcontrol disabled databack" />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='13' height='20' alt='' />
-            <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' class="gridcontrol disabled dataforward" />
-            <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' class="gridcontrol disabled dataend" />
+            <img src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' class="gridcontrol disabled dataforward" />
+            <img src='<?php echo $sImageURL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' class="gridcontrol disabled dataend" />
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-            <div id='tokensearch' class='form-menubar'><label for='searchstring'><?php $clang->eT("Filter by") ?></label><input type='text' name='searchstring' id='searchstring' class='gridsearch' value="" /></div>
+            <div id='tokensearch' class='form-menubar'><label for='searchstring'><?php eT("Filter by") ?></label><input type='text' name='searchstring' id='searchstring' class='gridsearch' value="" /></div>
         </div>
     </div>
 </div>
@@ -159,7 +159,7 @@
 
 <div id ="search" style="display:none">
     <?php
-        $aOptionSearch = array('' => $clang->gT('Select...'));
+        $aOptionSearch = array('' => gT('Select...'));
         foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
         {
             if($aTokenInformation['search'])
@@ -167,27 +167,27 @@
                 $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
             }
         }
-        $aOptionCondition = array('' => $clang->gT('Select...'),
-        'equal' => $clang->gT("Equals"),
-        'contains' => $clang->gT("Contains"),
-        'notequal' => $clang->gT("Not equal"),
-        'notcontains' => $clang->gT("Not contains"),
-        'greaterthan' => $clang->gT("Greater than"),
-        'lessthan' => $clang->gT("Less than"));
+        $aOptionCondition = array('' => gT('Select...'),
+        'equal' => gT("Equals"),
+        'contains' => gT("Contains"),
+        'notequal' => gT("Not equal"),
+        'notcontains' => gT("Not contains"),
+        'greaterthan' => gT("Greater than"),
+        'lessthan' => gT("Less than"));
     ?>
     <table id='searchtable'>
         <tr>
             <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch); ?></td>
             <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?> alt='<?php $clang->eT("Add another search criteria");?>' class="addcondition-button" style="margin-bottom:4px"></td>
+            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl')."plus.png" ?> alt='<?php eT("Add another search criteria");?>' class="addcondition-button" style="margin-bottom:4px"></td>
         </tr>
     </table>
 </div>
 
 <?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
     <div id="addcpdb" title="addsurvey" style="display:none">
-        <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
+        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
         <p>
             <select id="attributeid" name="attributeid" multiple="multiple">
                 <?php
@@ -208,19 +208,19 @@
 </div>
 
 
-<div id="fieldnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
+<div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
-        <?php $clang->eT("Please select a field."); ?>
+        <?php eT("Please select a field."); ?>
     </p>
 </div>
-<div id="conditionnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
+<div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
-        <?php $clang->eT("Please select a condition."); ?>
+        <?php eT("Please select a condition."); ?>
     </p>
 </div>
-<div id="norowselected" title="<?php $clang->eT("Error") ?>" style="display:none">
+<div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
-        <?php $clang->eT("Please select at least one participant."); ?>
+        <?php eT("Please select at least one participant."); ?>
     </p>
 </div>
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -25,7 +25,7 @@ class LSYii_Application extends CWebApplication
 {
     protected $config = array();
     /**
-     * @var Limesurvey_lang 
+     * @var Limesurvey_lang
      */
     public $lang = null;
 
@@ -51,7 +51,7 @@ class LSYii_Application extends CWebApplication
         if (is_string($config) && !file_exists($config))
         {
             $config = __DIR__ . '/../config/config-sample-mysql' . EXT;
-        } 
+        }
         if(is_string($config)) {
             $config = require($config);
         }
@@ -60,14 +60,14 @@ class LSYii_Application extends CWebApplication
         {
             // If debug = 2 we add firebug / console logging for all trace messages
             // If you want to var_dump $config you could do:
-            // 
+            //
             // Yii::trace(CVarDumper::dumpAsString($config), 'vardump');
-            // 
+            //
             // or shorter:
-            // 
+            //
             //traceVar($config);
-            // 
-            // This statement won't cause any harm or output when debug is 1 or 0             
+            //
+            // This statement won't cause any harm or output when debug is 1 or 0
             $config['preload'][] = 'log';
             if (array_key_exists('components', $config) && array_key_exists('log', $config['components'])) {
                 // We already have some custom logging, only add our own
@@ -83,7 +83,7 @@ class LSYii_Application extends CWebApplication
                 'categories'                 => 'vardump',      // show in firebug/console
                 'showInFireBug'              => true
             );
-            
+
             // if debugsql = 1 we add sql logging to the output
             if (array_key_exists('debugsql', $config['config']) && $config['config']['debugsql'] == 1) {
                 // Add logging of trace
@@ -105,17 +105,17 @@ class LSYii_Application extends CWebApplication
         if (!isset($config['components']['session']))
         {
             $config['components']['session']=array();
-        }        
+        }
         $config['components']['session']=array_merge_recursive($config['components']['session'],array(
             'cookieParams' => array(
                 'httponly' => true,
             ),
-        ));        
+        ));
 
         if (!isset($config['components']['assetManager']))
         {
             $config['components']['assetManager']=array();
-        }        
+        }
         $config['components']['assetManager']=array_merge_recursive($config['components']['assetManager'],array(
             'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'   // Enable to activate cookie protection
         ));
@@ -127,7 +127,7 @@ class LSYii_Application extends CWebApplication
         $email_config = require(__DIR__ . '/../config/email.php');
         $version_config = require(__DIR__ . '/../config/version.php');
         $settings = array_merge($ls_config, $version_config, $email_config);
-        
+
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
             $ls_config = require(__DIR__ . '/../config/config.php');
@@ -142,8 +142,8 @@ class LSYii_Application extends CWebApplication
 
         App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
         // Now initialize the plugin manager
-        $this->initPluginManager(); 
-        
+        $this->initPluginManager();
+
     }
 
 
@@ -167,7 +167,7 @@ class LSYii_Application extends CWebApplication
     }
     /**
      * This method handles initialization of the plugin manager
-     * 
+     *
      * When you want to insert your own plugin manager, or experiment with different settings
      * then this is where you should do that.
      */
@@ -177,11 +177,11 @@ class LSYii_Application extends CWebApplication
         Yii::import('application.libraries.PluginManager.Storage.*');
         Yii::import('application.libraries.PluginManager.Question.*');
         $this->pluginManager = new PluginManager($this->getApi());
-        
+
         // And load the active plugins
         $this->pluginManager->loadPlugins();
     }
-    
+
     /**
     * Loads a helper
     *
@@ -218,17 +218,17 @@ class LSYii_Application extends CWebApplication
     {
         $this->config[$name] = $value;
     }
-    
+
     /**
-     * Set a 'flash message'. 
-     * 
+     * Set a 'flash message'.
+     *
      * A flahs message will be shown on the next request and can contain a message
      * to tell that the action was successful or not. The message is displayed and
      * cleared when it is shown in the view using the widget:
      * <code>
      * $this->widget('application.extensions.FlashMessage.FlashMessage');
-     * </code> 
-     * 
+     * </code>
+     *
      * @param string $message
      * @param string $type
      * @return LSYii_Application Provides a fluent interface
@@ -279,25 +279,26 @@ class LSYii_Application extends CWebApplication
     * @param Limesurvey_lang
     * @return void
     */
-    public function setLang(Limesurvey_lang $lang)
+    public function setLanguage( $sLanguage )
     {
-        $this->lang = $lang;
+        $this->messages->catalog = $sLanguage;
+        parent::setLanguage($sLanguage);
     }
-    
+
     /**
      * Get the Api object.
      */
     public function getApi()
     {
         if (!isset($this->api))
-        {            
+        {
             $this->api = new LimesurveyApi();
         }
         return $this->api;
     }
     /**
      * Get the pluginManager
-     * 
+     *
      * @return PluginManager
      */
     public function getPluginManager()

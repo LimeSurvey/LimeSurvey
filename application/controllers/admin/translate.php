@@ -249,14 +249,14 @@ class translate extends Survey_Common_Action {
 		$adminmenu = "";
         $adminmenu .= CHtml::openTag('div', array('class'=>'menubar'));
         $adminmenu .= CHtml::openTag('div', array('class'=>'menubar-title ui-widget-header'));
-        $adminmenu .= CHtml::tag('strong', array(), $clang->gT("Translate survey") . ": $survey_title");
+        $adminmenu .= CHtml::tag('strong', array(), gT("Translate survey") . ": $survey_title");
         $adminmenu .= CHtml::closeTag("div");
         $adminmenu .= CHtml::openTag('div', array('class'=>'menubar-main'));
         $adminmenu .= CHtml::openTag('div', array('class'=>'menubar-left'));
 
         // Return to survey administration button
         $adminmenu .= $this->menuItem(
-							$clang->gT("Return to survey administration"),
+							gT("Return to survey administration"),
 							"Administration",
 							"home.png",
 							$this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}/")
@@ -302,7 +302,7 @@ class translate extends Survey_Common_Action {
         $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->defaultlanguage->attributes);
 
 		$surveyinfo = array_map('flattenText', $surveyinfo);
-		$menutext = ( $surveyinfo['active'] == "N" ) ? $clang->gT("Test this survey") : $clang->gT("Execute this survey");
+		$menutext = ( $surveyinfo['active'] == "N" ) ? gT("Test this survey") : gT("Execute this survey");
 
 		if ( count($langs) == 0 )
 		{
@@ -315,7 +315,7 @@ class translate extends Survey_Common_Action {
 		}
 		else
 		{
-			$icontext = $clang->gT($menutext);
+			$icontext = gT($menutext);
 
 			$img_tag = CHtml::image($imageurl . '/do.png', $icontext);
 			$survey_button .= CHtml::link($img_tag, '#', array(
@@ -337,7 +337,7 @@ class translate extends Survey_Common_Action {
 									)
 								);
 
-			$survey_button .= $clang->gT("Please select a language:") . CHtml::openTag('ul');
+			$survey_button .= gT("Please select a language:") . CHtml::openTag('ul');
 
 			foreach ( $tmp_survlangs as $tmp_lang )
 			{
@@ -372,7 +372,7 @@ class translate extends Survey_Common_Action {
         $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
 
 		$language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
-		$language_list .= CHtml::tag('label', array('for'=>'translationlanguage'), $clang->gT("Translate to") . ":");
+		$language_list .= CHtml::tag('label', array('for'=>'translationlanguage'), gT("Translate to") . ":");
 		$language_list .= CHtml::openTag(
 							'select',
 							array(
@@ -392,7 +392,7 @@ class translate extends Survey_Common_Action {
 									'selected' => $selected,
 									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$iSurveyID}/")
 								),
-								$clang->gT("Please choose...")
+								gT("Please choose...")
 							);
         }
 
@@ -445,7 +445,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Survey title and description"),
+					'description' => gT("Survey title and description"),
 					'HTMLeditorType' => "title",
 					'HTMLeditorDisplay' => "Inline",
 					'associated' => "description"
@@ -460,7 +460,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Description:"),
+					'description' => gT("Description:"),
 					'HTMLeditorType' => "description",
 					'HTMLeditorDisplay' => "Inline",
 					'associated' => ""
@@ -475,7 +475,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Welcome and end text"),
+					'description' => gT("Welcome and end text"),
 					'HTMLeditorType' => "welcome",
 					'HTMLeditorDisplay' => "Inline",
 					'associated' => "end"
@@ -490,7 +490,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("End message:"),
+					'description' => gT("End message:"),
 					'HTMLeditorType' => "end",
 					'HTMLeditorDisplay' => "Inline",
 					'associated' => ""
@@ -505,7 +505,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Question groups"),
+					'description' => gT("Question groups"),
 					'HTMLeditorType' => "group",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => "group_desc"
@@ -520,7 +520,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Group description"),
+					'description' => gT("Group description"),
 					'HTMLeditorType' => "group_desc",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""
@@ -535,7 +535,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => TRUE,
-					'description' => $clang->gT("Questions"),
+					'description' => gT("Questions"),
 					'HTMLeditorType' => "question",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => "question_help"
@@ -550,7 +550,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => TRUE,
-					'description' => $clang->gT("Question help"),
+					'description' => gT("Question help"),
 					'HTMLeditorType' => "question_help",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""
@@ -565,7 +565,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => TRUE,
 					'qid' => TRUE,
-					'description' => $clang->gT("Subquestions"),
+					'description' => gT("Subquestions"),
 					'HTMLeditorType' => "question",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""
@@ -581,7 +581,7 @@ class translate extends Survey_Common_Action {
                     'scaleid' => 'scale_id',
 					'gid' => FALSE,
 					'qid' => TRUE,
-					'description' => $clang->gT("Answer options"),
+					'description' => gT("Answer options"),
 					'HTMLeditorType' => "subquestion",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => ""
@@ -596,7 +596,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Invitation email subject"),
+					'description' => gT("Invitation email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "Popup",
 					'associated' => "emailinvitebody"
@@ -611,7 +611,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Invitation email"),
+					'description' => gT("Invitation email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -626,7 +626,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Reminder email subject"),
+					'description' => gT("Reminder email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => "emailreminderbody"
@@ -641,7 +641,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Reminder email"),
+					'description' => gT("Reminder email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -656,7 +656,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Confirmation email subject"),
+					'description' => gT("Confirmation email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => "emailconfirmationbody"
@@ -671,7 +671,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Confirmation email"),
+					'description' => gT("Confirmation email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -686,7 +686,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Registration email subject"),
+					'description' => gT("Registration email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => "emailregistrationbody"
@@ -701,7 +701,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-                    'description' => $clang->gT("Registration email"),
+                    'description' => gT("Registration email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -716,7 +716,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-					'description' => $clang->gT("Confirmation email subject"),
+					'description' => gT("Confirmation email subject"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => "email_confirmbody"
@@ -731,7 +731,7 @@ class translate extends Survey_Common_Action {
 					'id2' => '',
 					'gid' => FALSE,
 					'qid' => FALSE,
-                    'description' => $clang->gT("Confirmation email"),
+                    'description' => gT("Confirmation email"),
 					'HTMLeditorType' => "email",
 					'HTMLeditorDisplay' => "",
 					'associated' => ""
@@ -845,7 +845,7 @@ class translate extends Survey_Common_Action {
 		$translateoutput .= '<colgroup valign="top" width="55%" />';
         if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
         {
-            $translateoutput .= CHtml::tag('th', array(), CHtml::tag('b', array(), $clang->gT('Question code / ID')));
+            $translateoutput .= CHtml::tag('th', array(), CHtml::tag('b', array(), gT('Question code / ID')));
         }
         $translateoutput .= CHtml::tag('th', array(), CHtml::tag('b', array(), $baselangdesc));
         $translateoutput .= CHtml::tag('th', array(), CHtml::tag('b', array(), $tolangdesc));

@@ -3,7 +3,7 @@
 /**
  * This file contains configuration parameters for the Yii framework.
  * Do not change these unless you know what you are doing.
- * 
+ *
  */
 @date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
@@ -28,7 +28,7 @@ $internalConfig = array(
 			'rules' => require('routes.php'),
 			'showScriptName' => true,
 		),
-        
+
         'clientScript' => array(
             'packages' => require('third_party.php')
         ),
@@ -60,9 +60,9 @@ $internalConfig = array(
                 'schemaCachingDuration' => 3600,
         ),
         'messages' => array(
-            'class' => 'GettextMessageSource',
+            'class' => 'CGettextMessageSource',
             'useMoFile' => true,
-            'basePath' => __DIR__ . '/../../locale'
+            'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         )
 
 	)

@@ -1,11 +1,11 @@
 <div class='messagebox ui-corner-all'>
     <div class='header ui-widget-header'>
-        <?php if ($bEmail) $clang->eT("Sending invitations..."); else $clang->eT("Sending reminders...");?>
+        <?php if ($bEmail) eT("Sending invitations..."); else eT("Sending reminders...");?>
     </div>
     <?php
     if ($tokenids)
     {
-        echo " (" . $clang->gT("Sending to Token IDs") . ":&nbsp;" . implode(", ", $tokenids) . ")";
+        echo " (" . gT("Sending to Token IDs") . ":&nbsp;" . implode(", ", $tokenids) . ")";
     }
     ?>
     <br /><br />

@@ -4,7 +4,7 @@
         <div id='statsContainer'>
             <div id='statsHeader'>
                 <div class='statsSurveyTitle'><?php echo $thisSurveyTitle; ?></div>
-                <div class='statsNumRecords'><?php echo $clang->gT("Total records in survey")." : $totalrecords"; ?></div>
+                <div class='statsNumRecords'><?php echo gT("Total records in survey")." : $totalrecords"; ?></div>
             </div>
             <?php if (isset($statisticsoutput) && $statisticsoutput) { echo $statisticsoutput; } ?><br />
         </div>

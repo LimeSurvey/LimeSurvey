@@ -1300,11 +1300,11 @@
                 }
 
                 // individual subquestion relevance
-                if ($hasSubqs & $type!='|' & $type!='!' & $type !='L') 
+                if ($hasSubqs & $type!='|' & $type!='!' & $type !='L')
                 {
                     $subqs = $qinfo['subqs'];
                     $last_rowdivid = '--';
-                    foreach ($subqs as $sq) 
+                    foreach ($subqs as $sq)
                     {
                         if ($sq['rowdivid'] == $last_rowdivid)
                         {
@@ -1441,7 +1441,7 @@
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_equs=array();
-                           
+
                            foreach($subqs as $sq)
                             {
                                 $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
@@ -1520,7 +1520,7 @@
                             break;
                     }
                 }
-                
+
                 // date_min
                 // Maximum date allowed in date question
                 if (isset($qattr['date_min']) && trim($qattr['date_min']) != '')
@@ -1536,13 +1536,13 @@
                             {
                                 case 'D': //DATE QUESTION TYPE
                                     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-                                    if (trim($qattr['date_min'])!='') 
+                                    if (trim($qattr['date_min'])!='')
                                     {
                                         $mindate=$qattr['date_min'];
                                         if ((strlen($mindate)==4) && ($mindate>=1900) && ($mindate<=2099))
                                         {
-                                            // backward compatibility: if only a year is given, add month and day 
-                                            $date_min='\''.$mindate.'-01-01'.' 00:00\''; 
+                                            // backward compatibility: if only a year is given, add month and day
+                                            $date_min='\''.$mindate.'-01-01'.' 00:00\'';
                                         }
                                         elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$mindate))
                                         {
@@ -1553,9 +1553,9 @@
                                             $date_min=$date_min.'.NAOK';
                                         }
                                     }
-                                  
+
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    
+
                                     if(($qinfo['mandatory']=='Y')){
                                         $sq_name = '('. $sq_name . ' >= ' . $date_min . ')';
                                     }else{
@@ -1610,13 +1610,13 @@
                             {
                                 case 'D': //DATE QUESTION TYPE
                                     // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-                                    if (trim($qattr['date_max'])!='') 
+                                    if (trim($qattr['date_max'])!='')
                                     {
                                         $maxdate=$qattr['date_max'];
                                         if ((strlen($maxdate)==4) && ($maxdate>=1900) && ($maxdate<=2099))
                                         {
-                                            // backward compatibility: if only a year is given, add month and day 
-                                            $date_max='\''.$maxdate.'-12-31 23:59'.'\''; 
+                                            // backward compatibility: if only a year is given, add month and day
+                                            $date_max='\''.$maxdate.'-12-31 23:59'.'\'';
                                         }
                                         elseif (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/",$maxdate))
                                         {
@@ -1627,9 +1627,9 @@
                                             $date_max=$date_max.'.NAOK';
                                         }
                                     }
-                                  
+
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    
+
                                     if(($qinfo['mandatory']=='Y')){
                                         $sq_name = '(is_empty(' . $date_max . ') || ('. $sq_name . ' <= ' . $date_max . '))';
                                     }else{
@@ -1929,7 +1929,7 @@
                 }else{
                     $input_boxes="";
                 }
-                
+
                 // min_answers
                 // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
                 if (isset($qattr['min_answers']) && trim($qattr['min_answers']) != '' && trim($qattr['min_answers']) != '0')
@@ -2570,7 +2570,7 @@
                             {
                                 case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
                                     $subqValidSelector = $sq['jsVarName_on'];
-                                case 'N': //NUMERICAL QUESTION TYPE 
+                                case 'N': //NUMERICAL QUESTION TYPE
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                     if(($qinfo['mandatory']=='Y')){
                                             $sq_eqn = 'is_int('.$sq_name.')';
@@ -3087,7 +3087,7 @@
 // Helptext is added in qanda_help.php
 /*                  case 'D':
                         $qtips['default']=$this->gT("Please complete all parts of the date.");
-                        break; 
+                        break;
 */
                     default:
                         break;
@@ -4101,7 +4101,7 @@
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
-				
+
 				$token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
                 foreach ($token as $key => $val)
                 {
@@ -4440,7 +4440,7 @@
                 {
                     $result=true;
                     $relevanceJS=1;
-                } 
+                }
                 else
                 {
                     $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
@@ -5228,8 +5228,8 @@
                 $sdata = array_filter($sdata);
                 SurveyDynamic::sid($this->sid);
                 $oSurvey = new SurveyDynamic;
-                
-                $iNewID = $oSurvey->insertRecords($sdata); 
+
+                $iNewID = $oSurvey->insertRecords($sdata);
                 if ($iNewID)    // Checked
                 {
                     $srid = $iNewID;
@@ -5243,7 +5243,7 @@
                 if ($this->surveyOptions['savetimings']) {
                     SurveyTimingDynamic::sid($this->sid);
                     $oSurveyTimings = new SurveyTimingDynamic;
-                    
+
                     $tdata = array(
                     'id'=>$srid,
                     'interviewtime'=>0
@@ -8010,17 +8010,9 @@ EOD;
         }
 
 
-        private function ngT($single, $plural, $number, $escapemode = 'html')
+        private function ngT($sText, $number, $escapemode = 'html')
         {
-            // eventually replace this with i8n
-            if (isset(Yii::app()->lang))
-            {
-                return Yii::app()->lang->ngT($single, $plural, $number, $escapemode);
-            }
-            else
-            {
-                return $string;
-            }
+            return Yii::app()->lang->ngT($sText, $number, $escapemode);
         }
 
         /**
@@ -9383,7 +9375,7 @@ EOD;
                 //////
                 // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
                 //////
-                $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->ngT("This question has at least %s error.","This question has at least %s errors.",$errorCount), $errorCount) . "'" : '';
+                $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->ngT("This question has at least %s error.|This question has at least %s errors.",$errorCount), $errorCount) . "'" : '';
 
                 $questionRow = "<tr class='LEMquestion'>"
                 . "<td $errclass>Q-" . $q['info']['qseq'] . "</td>"
@@ -9422,19 +9414,19 @@ EOD;
             }
 
             if (count($allErrors) > 0) {
-                $out = "<p class='LEMerror'>". sprintf($LEM->ngT("%s question contains errors that need to be corrected","%s questions contain errors that need to be corrected",count($allErrors)), count($allErrors)) . "</p>\n" . $out;
+                $out = "<p class='LEMerror'>". sprintf($LEM->ngT("%s question contains errors that need to be corrected.|%s questions contain errors that need to be corrected.",count($allErrors)), count($allErrors)) . "</p>\n" . $out;
             }
             else {
                 switch ($surveyMode)
                 {
                     case 'survey':
-                        $message = $LEM->gT('No syntax errors detected in this survey');
+                        $message = $LEM->gT('No syntax errors detected in this survey.');
                         break;
                     case 'group':
-                        $message = $LEM->gT('This group, by itself, does not contain any syntax errors');
+                        $message = $LEM->gT('This group, by itself, does not contain any syntax errors.');
                         break;
                     case 'question':
-                        $message = $LEM->gT('This question, by itself, does not contain any syntax errors');
+                        $message = $LEM->gT('This question, by itself, does not contain any syntax errors.');
                         break;
                 }
                 $out = "<p class='LEMheading'>$message</p>\n" . $out."</div>";
@@ -9787,7 +9779,7 @@ EOD;
                         $SQrelevance = (($LEM->knownVars[$sgqa]['SQrelevance'] == '') ? 1 : $LEM->knownVars[$sgqa]['SQrelevance']);
                         $LEM->em->ProcessBooleanExpression($SQrelevance, $gseq, $q['info']['qseq']);
                         $SQrelevance = trim(strip_tags($LEM->em->GetPrettyPrintString()));
-                    
+
                         switch  ($q['info']['type'])
                         {
                             case '1':
@@ -9934,7 +9926,7 @@ EOD;
             $token = Token::model($iSurveyId)->findByAttributes(array(
                 'token' => $sToken
             ));
-            
+
             $this->knownVars['TOKEN:TOKEN'] = array(
                 'code'=> $sToken,
                 'jsName_on'=>'',

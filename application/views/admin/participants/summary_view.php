@@ -1,11 +1,11 @@
 <div class='header ui-widget-header'>
-    <?php $clang->eT("Central participants database summary"); ?>
+    <?php eT("Central participants database summary"); ?>
 </div>
 <br />
 <table class='statisticssummary'>
     <tr>
         <th>
-            <?php $clang->eT("Total participants in central table"); ?>
+            <?php eT("Total participants in central table"); ?>
         </th>
         <td>
             <?php echo $totalrecords; ?>
@@ -13,7 +13,7 @@
     </tr>
     <tr>
         <th>
-            <?php $clang->eT("Participants owned by you"); ?>
+            <?php eT("Participants owned by you"); ?>
         </th>
         <td>
             <?php echo $owned . ' / ' . $totalrecords; ?>
@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <th>
-            <?php $clang->eT("Participants shared with you"); ?>
+            <?php eT("Participants shared with you"); ?>
         </th>
         <td>
             <?php echo $totalrecords - $owned . ' / ' . $totalrecords; ?>
@@ -29,7 +29,7 @@
     </tr>
     <tr>
         <th>
-            <?php $clang->eT("Participants you have shared"); ?>
+            <?php eT("Participants you have shared"); ?>
         </th>
         <td>
             <?php echo $shared . ' / ' . $totalrecords; ?>
@@ -37,7 +37,7 @@
     </tr>
     <tr>
         <th>
-            <?php $clang->eT("Blacklisted participants"); ?>
+            <?php eT("Blacklisted participants"); ?>
         </th>
         <td>
             <?php echo $blacklisted; ?>
@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <th>
-            <?php $clang->eT("Total attributes in the central table"); ?>
+            <?php eT("Total attributes in the central table"); ?>
         </th>
         <td>
             <?php echo $attributecount; ?>

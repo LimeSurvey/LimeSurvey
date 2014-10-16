@@ -14,7 +14,6 @@
 
 class AdminController extends LSYii_Controller
 {
-    public $lang = null;
     public $layout = false;
     protected $user_id = 0;
 
@@ -59,15 +58,14 @@ class AdminController extends LSYii_Controller
     */
     public function error($message, $sURL = array())
     {
-        $clang = $this->lang;
 
         $this->_getAdminHeader();
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
-        $sOutput .= '<div class="warningheader">'.$clang->gT('Error').'</div><br />'."\n";
+        $sOutput .= '<div class="warningheader">'.gT('Error').'</div><br />'."\n";
         $sOutput .= $message . '<br /><br />'."\n";
         if (!empty($sURL) && !is_array($sURL))
         {
-            $sTitle = $clang->gT('Back');
+            $sTitle = gT('Back');
         }
         elseif (!empty($sURL['url']))
         {
@@ -77,13 +75,13 @@ class AdminController extends LSYii_Controller
             }
             else
             {
-                $sTitle = $clang->gT('Back');
+                $sTitle = gT('Back');
             }
             $sURL = $sURL['url'];
         }
         else
         {
-            $sTitle = $clang->gT('Main Admin Screen');
+            $sTitle = gT('Main Admin Screen');
             $sURL = $this->createUrl('/admin');
         }
         $sOutput .= '<input type="submit" value="'.$sTitle.'" onclick=\'window.open("'.$sURL.'", "_top")\' /><br /><br />'."\n";
@@ -91,7 +89,7 @@ class AdminController extends LSYii_Controller
         $sOutput .= '</div>'."\n";
         echo $sOutput;
 
-        $this->_getAdminFooter('http://manual.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        $this->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
 
         die;
     }
@@ -103,7 +101,6 @@ class AdminController extends LSYii_Controller
     */
     protected function _sessioncontrol()
     {
-        Yii::import('application.libraries.Limesurvey_lang');
         // From personal settings
         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
             if (Yii::app()->request->getPost('lang')=='auto')
@@ -120,9 +117,7 @@ class AdminController extends LSYii_Controller
         if (empty(Yii::app()->session['adminlang']))
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
-        global $clang; // Needed so EM can localize equation hints until a better solution is found
-        $this->lang = $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
-        Yii::app()->setLang($this->lang);
+        Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
 
         if (!empty($this->user_id))
             $this->_GetSessionUserRights($this->user_id);
@@ -163,7 +158,7 @@ class AdminController extends LSYii_Controller
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));
                 }
-                
+
             }
 
             return parent::run($action);
@@ -264,15 +259,13 @@ class AdminController extends LSYii_Controller
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
         $aData = array();
-        $aData['adminlang'] = $this->lang->getlangcode();
-        //$data['admin'] = getLanguageRTL;
-        $aData['test'] = "t";
+        $aData['adminlang'] = Yii::app()->language;
         $aData['languageRTL']="";
         $aData['styleRTL']="";
 
         Yii::app()->loadHelper("surveytranslator");
 
-        if (getLanguageRTL($aData['adminlang']))
+        if (getLanguageRTL(Yii::app()->language))
         {
             $aData['languageRTL'] = " dir=\"rtl\" ";
             $aData['bIsRTL']=true;
@@ -293,8 +286,8 @@ class AdminController extends LSYii_Controller
         $aData['datepickerlang']="";
         if ($aData['adminlang'] != 'en')
             Yii::app()->getClientScript()->registerScriptFile(App()->baseUrl . "/third_party/jqueryui/development-bundle/ui/i18n/jquery.ui.datepicker-" . $aData['adminlang'] .".js");
-            
-            
+
+
         $aData['sitename'] = Yii::app()->getConfig("sitename");
         $aData['admintheme'] = Yii::app()->getConfig("admintheme");
         $aData['firebug'] = useFirebug();
@@ -303,8 +296,8 @@ class AdminController extends LSYii_Controller
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
-        
-        
+
+
         if ($return)
         {
             return $sOutput;
@@ -326,9 +319,6 @@ class AdminController extends LSYii_Controller
     */
     public function _getAdminFooter($url, $explanation, $return = false)
     {
-        $clang = $this->lang;
-        $aData['clang'] = $clang;
-
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
         $aData['buildtext'] = "";
@@ -345,7 +335,7 @@ class AdminController extends LSYii_Controller
         }
         else
         {
-            $aData['versiontitle'] = $clang->gT('Version');
+            $aData['versiontitle'] = gT('Version');
         }
 
         $aData['imageurl'] = Yii::app()->getConfig("imageurl");
@@ -369,8 +359,6 @@ class AdminController extends LSYii_Controller
         $aData['title'] = $title;
         $aData['message'] = $message;
         $aData['class'] = $class;
-        $aData['clang'] = $this->lang;
-
         $this->renderPartial('/admin/super/messagebox', $aData);
     }
 
@@ -388,12 +376,8 @@ class AdminController extends LSYii_Controller
     */
     public function _showadminmenu($surveyid = false)
     {
-
-        $clang = $this->lang;
-        $aData['clang']= $clang;
-
         if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
-            Yii::app()->session['flashmessage'] = $clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+            Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 
         $aData['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatenotification")!='never' && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
@@ -405,7 +389,7 @@ class AdminController extends LSYii_Controller
             {
                $aUpdateTexts[]=$aVersion['versionnumber'].'('.$aVersion['build'].')';
             }
-            $aData['sUpdateText']=implode(' '.$clang->gT('or').' ',$aUpdateTexts);
+            $aData['sUpdateText']=implode(' '.gT('or').' ',$aUpdateTexts);
         }
         $aData['surveyid'] = $surveyid;
         $aData['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');

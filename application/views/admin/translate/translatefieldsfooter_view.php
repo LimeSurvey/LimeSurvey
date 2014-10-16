@@ -1,7 +1,7 @@
 <?php echo $translateFieldsFooter; ?>
 </div>
 <?php if ($all_fields_empty) { ?>
-	<p><?php $clang->eT("Nothing to translate on this page");?></p><br />
+	<p><?php eT("Nothing to translate on this page");?></p><br />
 <?php } ?>
 <input type='hidden' name='<?php echo $type;?>_size' value='<?php echo $i ?>' />
 <?php if ($associated) { ?>

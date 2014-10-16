@@ -1,11 +1,11 @@
 <div class='messagebox ui-corner-all'>
-    <div class='warningheader'><?php $clang->eT("Warning"); ?></div><br />
+    <div class='warningheader'><?php eT("Warning"); ?></div><br />
     <?php echo CHtml::form(array("admin/tokens/sa/email/action/{$sSubAction}/surveyid/{$surveyid}"), 'post'); ?>
     
-        <?php $clang->eT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."); ?><br /><br />
-        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
+        <?php eT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."); ?><br /><br />
+        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br /><br />
-        <input type='submit' value='<?php $clang->eT("Continue"); ?>' />
+        <input type='submit' value='<?php eT("Continue"); ?>' />
         <input type='hidden' name='ok' value="absolutely" />
         <input type='hidden' name='action' value="tokens" />
         <input type='hidden' name='bypassbademails' value="<?php echo Yii::app()->request->getPost('bypassbademails'); ?>" />

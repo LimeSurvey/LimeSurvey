@@ -217,74 +217,74 @@ class STATAxmlWriter extends Writer
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
-                        'answer' => $clang->gT('Yes')
+                        'answer' => gT('Yes')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0']     = array(
                         'code' => 0,
-                        'answer' => $clang->gT('Not Selected')
+                        'answer' => gT('Not Selected')
                     );
                 }
                 elseif ($aQuestion['type'] == "P")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
-                        'answer' => $clang->gT('Yes')
+                        'answer' => gT('Yes')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0']     = array(
                         'code' => 0,
-                        'answer' => $clang->gT('Not Selected')
+                        'answer' => gT('Not Selected')
                     );
                 }
                 elseif ($aQuestion['type'] == "G")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 'F',
-                        'answer' => $clang->gT('Female')
+                        'answer' => gT('Female')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 'M',
-                        'answer' => $clang->gT('Male')
+                        'answer' => gT('Male')
                     );
                 }
                 elseif ($aQuestion['type'] == "Y")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
-                        'answer' => $clang->gT('Yes')
+                        'answer' => gT('Yes')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$nvalue] = array(
                         'code' => $nvalue,
-                        'answer' => $clang->gT('No')
+                        'answer' => gT('No')
                     );
                 }
                 elseif ($aQuestion['type'] == "C")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
-                        'answer' => $clang->gT('Yes')
+                        'answer' => gT('Yes')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 2,
-                        'answer' => $clang->gT('No')
+                        'answer' => gT('No')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['9'] = array(
                         'code' => 3,
-                        'answer' => $clang->gT('Uncertain')
+                        'answer' => gT('Uncertain')
                     );
                 }
                 elseif ($aQuestion['type'] == "E")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1']  = array(
                         'code' => 1,
-                        'answer' => $clang->gT('Increase')
+                        'answer' => gT('Increase')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0']  = array(
                         'code' => 2,
-                        'answer' => $clang->gT('Same')
+                        'answer' => gT('Same')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['-1'] = array(
                         'code' => 3,
-                        'answer' => $clang->gT('Decrease')
+                        'answer' => gT('Decrease')
                     );
                 } 
             } // close: no-other/comment variable

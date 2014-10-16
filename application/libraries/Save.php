@@ -77,7 +77,7 @@ class Save {
         //PRESENT OPTIONS SCREEN
         if (isset($errormsg) && $errormsg != "")
         {
-            $errormsg .= "<p>".$clang->gT("Please try again.")."</p>";
+            $errormsg .= "<p>".gT("Please try again.")."</p>";
         }
 		echo templatereplace(file_get_contents($sTemplatePath."save.pstpl"),array(),$redata);
         //END
@@ -113,11 +113,11 @@ class Save {
         
         //Check that the required fields have been completed.
         $errormsg = '';
-        if (empty($_POST['savename'])) $errormsg .= $clang->gT("You must supply a name for this saved session.")."<br />\n";
-        if (empty($_POST['savepass'])) $errormsg .= $clang->gT("You must supply a password for this saved session.")."<br />\n";
+        if (empty($_POST['savename'])) $errormsg .= gT("You must supply a name for this saved session.")."<br />\n";
+        if (empty($_POST['savepass'])) $errormsg .= gT("You must supply a password for this saved session.")."<br />\n";
         if (empty($_POST['savepass']) || empty($_POST['savepass2']) || $_POST['savepass'] != $_POST['savepass2'])
         {
-            $errormsg .= $clang->gT("Your passwords do not match.")."<br />\n";
+            $errormsg .= gT("Your passwords do not match.")."<br />\n";
         }
         // if security question asnwer is incorrect
         if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
@@ -127,7 +127,7 @@ class Save {
              || $_POST['loadsecurity'] != $_SESSION['survey_'.$surveyid]['secanswer']
             )
             {
-                $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
+                $errormsg .= gT("The answer to the security question is incorrect.")."<br />\n";
             }
         }
 
@@ -139,7 +139,7 @@ class Save {
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $_POST['savename']));
         if (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
         {
-            $errormsg .= $clang->gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
+            $errormsg .= gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
             return;
         }
         else
@@ -194,8 +194,8 @@ class Save {
             //Email if needed
             if (isset($_POST['saveemail']) && validateEmailAddress($_POST['saveemail']))
             {
-                $subject  = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
-                $message  = $clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+                $subject  = gT("Saved Survey Details") . " - " . $thissurvey['name'];
+                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                 $message .= "\n\n".$thissurvey['name']."\n\n";
                 $message .= gT("Name").": ".$_POST['savename']."\n";
                 $message .= gT("Password").": ".$_POST['savepass']."\n\n";
@@ -210,14 +210,14 @@ class Save {
                 }
                 else
                 {
-                    $errormsg .= $clang->gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
+                    $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
                     if (trim($thissurvey['adminemail'])=='')
                     {
-                        $errormsg .=$clang->gT('(Reason: Admin email address empty)');    
+                        $errormsg .=gT('(Reason: Admin email address empty)');    
                     }
                 }
             }
-            return $clang->gT('Your survey was successfully saved.');
+            return gT('Your survey was successfully saved.');
         }
     }
 
