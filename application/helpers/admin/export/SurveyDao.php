@@ -16,7 +16,7 @@ class SurveyDao
     public function loadSurveyById($id, $lang = null)
     {
         $survey = new SurveyObj();
-        $clang = Yii::app()->lang;
+        
 
         $intId = sanitize_int($id);
         $survey->id = $intId;

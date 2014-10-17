@@ -24,8 +24,7 @@ function db_upgrade_all($iOldDBVersion) {
 
     $sUserTemplateRootDir = Yii::app()->getConfig('usertemplaterootdir');
     $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
-    $oLang = Yii::app()->lang;
-    echo str_pad($oLang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $oLang->gT('Please be patient...')."<br /><br />\n";
+    echo str_pad(gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $oLang->gT('Please be patient...')."<br /><br />\n";
 
     $sDBDriverName=setsDBDriverName();
     setVarchar($sDBDriverName);
@@ -1531,7 +1530,7 @@ function upgradeSurveys156()
     {
 
         Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
-        $oLanguage = Yii::app()->lang;
+        $oLanguage = App()->language;
         $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
 
@@ -1644,7 +1643,7 @@ function upgradeSurveys145()
     foreach ( $oSurveyResult as $aSurveyRow )
     {
         $oLanguage = new Limesurvey_lang($aSurveyRow['surveyls_language']);
-        $oLanguage = Yii::app()->lang;
+        $oLanguage = App()->language;
         $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
@@ -2305,7 +2304,7 @@ function setVarchar($sDBDriverName=null) {
 
 function replaceTemplateJS(){
     $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-    $clang = Yii::app()->lang;
+
     if (!$usertemplaterootdir) {return false;}
     $countstartpage=0;
     $counterror=0;

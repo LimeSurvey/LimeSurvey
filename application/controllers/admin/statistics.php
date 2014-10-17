@@ -35,9 +35,6 @@ class statistics extends Survey_Common_Action {
 	public function run($surveyid = 0, $subaction = null)
 	{
 		$surveyid = sanitize_int($surveyid);
-		//TODO: Convert question types to views
-        $clang = $this->getController()->lang;
-
 		$imageurl = Yii::app()->getConfig("imageurl");
 		$aData = array('clang' => $clang, 'imageurl' => $imageurl);
         $aData['sql']='';
@@ -488,7 +485,7 @@ class statistics extends Survey_Common_Action {
 
 	}
 
-    
+
     /**
     *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
     */
@@ -503,10 +500,10 @@ class statistics extends Survey_Common_Action {
         $aData['sortmethod']=$sortmethod;
         $aData['sorttype']=$sorttype;
         App()->getClientScript()->reset();
-        $this->getController()->render('export/statistics_browse_view', $aData);    
+        $this->getController()->render('export/statistics_browse_view', $aData);
     }
-    
-    
+
+
 	function graph()
 	{
         Yii::app()->loadHelper('admin/statistics');
@@ -519,12 +516,12 @@ class statistics extends Survey_Common_Action {
 
 
         Yii::import('application.third_party.ar-php.Arabic', true);
-        
+
         $tempdir = Yii::app()->getConfig("tempdir");
         $MyCache = new pCache($tempdir.'/');
 	    $aData['success'] = 1;
         $sStatisticsLanguage=sanitize_languagecode($_POST['sStatisticsLanguage']);
-        $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);  
+        $oStatisticsLanguage = new Limesurvey_lang($sStatisticsLanguage);
 
 	    if (isset($_POST['cmd']) && isset($_POST['id'])) {
 	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 0), 3);

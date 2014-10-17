@@ -325,7 +325,7 @@ class labels extends Survey_Common_Action
             if ($action == "updateset")
             {
                 updateset($lid);
-                Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Label set properties sucessfully updated.");
+                Yii::app()->session['flashmessage'] = gT("Label set properties sucessfully updated.");
             }
             if ($action == "insertlabelset")
                 $lid = insertlabelset();
@@ -334,7 +334,7 @@ class labels extends Survey_Common_Action
             if ($action == "deletelabelset")
                 if (deletelabelset($lid))
                 {
-                    Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Label set sucessfully deleted.");
+                    Yii::app()->session['flashmessage'] = gT("Label set sucessfully deleted.");
                     $lid = 0;
                 }
 

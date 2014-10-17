@@ -77,7 +77,7 @@ class UserAction extends Survey_Common_Action
 
     function adduser()
     {
-        $clang = Yii::app()->lang;
+        
         if (!Permission::model()->hasGlobalPermission('users','create')) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -172,7 +172,7 @@ class UserAction extends Survey_Common_Action
     */
     function deluser()
     {
-        $clang = Yii::app()->lang;
+        
         if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -254,7 +254,7 @@ class UserAction extends Survey_Common_Action
 
     function deleteFinalUser($result, $transfer_surveys_to)
     {
-        $clang = Yii::app()->lang;
+        
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         // Never delete initial admin (with findByAttributes : found the first user without parent)
@@ -323,11 +323,11 @@ class UserAction extends Survey_Common_Action
             }
             else
             {
-                Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+                Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
-        Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+        Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         $this->getController()->redirect(array("admin/user/sa/index"));
         //echo accessDenied('modifyuser');
         //die();
@@ -338,7 +338,7 @@ class UserAction extends Survey_Common_Action
     */
     function moduser()
     {
-        $clang = Yii::app()->lang;
+        
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         $postemail = flattenText(Yii::app()->request->getPost("email"));
@@ -407,7 +407,7 @@ class UserAction extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         }
         $this->_renderWrappedTemplate('user', $aViewUrls);
     }
@@ -415,7 +415,7 @@ class UserAction extends Survey_Common_Action
 
     function savepermissions()
     {
-        $clang = Yii::app()->lang;
+        
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
         if (Yii::app()->session['loginID']==$iUserID) {
@@ -471,7 +471,7 @@ class UserAction extends Survey_Common_Action
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
         if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
         {
-            Yii::app()->setFlashMessage(Yii::app()->lang->gT("Initial Superadmin permissions cannot be updated!"),'error');
+            Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
@@ -485,7 +485,7 @@ class UserAction extends Survey_Common_Action
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
         {
-            Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
+            Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
             $aFilteredPermissions=array();
             foreach  ($aBasePermissions as $PermissionName=>$aPermission)
             {
@@ -519,7 +519,7 @@ class UserAction extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
     }
@@ -553,7 +553,7 @@ class UserAction extends Survey_Common_Action
 
     function usertemplates()
     {
-        $clang = Yii::app()->lang;
+        
         $postuserid = (int) Yii::app()->request->getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
@@ -735,7 +735,7 @@ class UserAction extends Survey_Common_Action
 
     private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
-        $clang = Yii::app()->lang;
+        
         $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/index');
         $urlText = (!empty($urlText)) ? $urlText : gT("Continue");
 

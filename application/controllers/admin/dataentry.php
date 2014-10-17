@@ -75,8 +75,6 @@ class dataentry extends Survey_Common_Action
 
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
-        $aData['clang'] = $this->getController()->lang;
-
         if( Permission::model()->hasSurveyPermission($iSurveyId,'responses','create') )
         {
             if(tableExists("{{survey_$iSurveyId}}"))
@@ -113,7 +111,6 @@ class dataentry extends Survey_Common_Action
 
         $surveyid = sanitize_int($surveyid);
         $aData['surveyid'] = $surveyid;
-        $aData['clang'] = $this->getController()->lang;
         $aData['success'] = false;
         if (Permission::model()->hasSurveyPermission($surveyid,'surveyactivation','update'))
         {
@@ -135,12 +132,11 @@ class dataentry extends Survey_Common_Action
     {
         $vvoutput = '';
         $donotimport = array();
-        $clang = $this->getController()->lang;
         $filePath = $this->_moveUploadedFile($aData);
         //$aFileContents = $this->_readFile($filePath);
-        
+
         Yii::app()->loadHelper('admin/import');
-        // Fill option 
+        // Fill option
         $aOptions=array();
         $aOptions['bDeleteFistLine']=(Yii::app()->request->getPost('dontdeletefirstline') == "dontdeletefirstline")?false:true;// Force, maybe function change ;)
         if(Yii::app()->request->getPost('noid')==="noid"){
@@ -157,7 +153,7 @@ class dataentry extends Survey_Common_Action
         $aData['class']="";
         $aData['title']=gT("Import a VV response data file");
         $aData['aResult']['success'][]=gT("File upload succeeded.");
-        if(isset($aResult['success'])){ 
+        if(isset($aResult['success'])){
             $aData['aResult']['success']=array_merge($aData['aResult']['success'],$aResult['success']);
         }
         $aData['aResult']['errors']=(isset($aResult['errors'])) ? $aResult['errors'] : false;
@@ -195,7 +191,6 @@ class dataentry extends Survey_Common_Action
 
     private function _moveUploadedFile($aData)
     {
-        $clang = $this->getController()->lang;
         $sFullFilePath = Yii::app()->getConfig('tempdir') . "/" . randomChars(20);
         $fileVV = CUploadedFile::getInstanceByName('csv_vv_file');
         if($fileVV){
@@ -232,7 +227,7 @@ class dataentry extends Survey_Common_Action
         $aData['aEncodings']=$aEncodings;
         $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
 
-        $aData['display']['menu_bars']['browse'] = $this->getController()->lang->gT("Import VV file");
+        $aData['display']['menu_bars']['browse'] = gT("Import VV file");
 
         $this->_renderWrappedTemplate('dataentry', 'vvimport', $aData);
     }
@@ -251,7 +246,7 @@ class dataentry extends Survey_Common_Action
         {
             if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
             {
-                
+
                 // Schema that serves as the base for compatibility checks.
                 $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $tables = App()->getApi()->getOldResponseTables($iSurveyId);
@@ -272,7 +267,7 @@ class dataentry extends Survey_Common_Action
 						}
                     }
                 }
-                
+
                 $aData = array();
                 $aData['surveyid'] = $iSurveyId;
                 $aData['settings']['table'] = array(
@@ -300,7 +295,7 @@ class dataentry extends Survey_Common_Action
                 $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $sourceTable = PluginDynamic::model($_POST['table']);
                 $sourceSchema = $sourceTable->getTableSchema();
-             
+
                 $fieldMap = array();
                 $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
                 foreach ($sourceSchema->getColumnNames() as $name)
@@ -332,7 +327,7 @@ class dataentry extends Survey_Common_Action
 				$sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
                 foreach ($sourceResponses as $sourceResponse)
                 {
-                    
+
                     // Using plugindynamic model because I dont trust surveydynamic.
                    $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
 
@@ -346,7 +341,7 @@ class dataentry extends Survey_Common_Action
                 }
 
 
-                
+
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
                 $sOldTimingsTable=substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_'));
                 $sNewTimingsTable = "{{{$surveyid}_timings}}";
@@ -482,7 +477,6 @@ class dataentry extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
-            $aData['clang'] = $clang = $this->getController()->lang;
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
 
             Yii::app()->loadHelper('database');
@@ -1377,7 +1371,6 @@ class dataentry extends Survey_Common_Action
 
             $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::app()->loadHelper("database");
-            $clang = $this->getController()->lang;
             $surveytable = "{{survey_".$surveyid.'}}';
 
             $aDataentryoutput = "<div class='header ui-widget-header'>".gT("Data entry")."</div>\n";
@@ -1484,7 +1477,7 @@ class dataentry extends Survey_Common_Action
     */
     public function insert()
     {
-        $clang = Yii::app()->lang;
+        
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
@@ -1828,7 +1821,7 @@ class dataentry extends Survey_Common_Action
                                     $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                                     $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($saver['identifier'])."/loadpass/".rawurlencode ($saver['password'])."/lang/".rawurlencode($saver['language']));
                                     if (isset($tokendata['token'])) { $message .= "/token/".rawurlencode($tokendata['token']); }
-                                    
+
                                     $from = $thissurvey['adminemail'];
 
                                     if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
@@ -1875,7 +1868,7 @@ class dataentry extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
         {
-            $clang = Yii::app()->lang;
+            
 
             $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
             $surveyinfo=getSurveyInfo($surveyid);
@@ -2120,7 +2113,7 @@ class dataentry extends Survey_Common_Action
                         case "R": //RANKING TYPE QUESTION
                             $thisqid=$deqrow['qid'];
                             $ansquery = "SELECT * FROM {{answers}} WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $ansresult = dbExecuteAssoc($ansquery);    
+                            $ansresult = dbExecuteAssoc($ansquery);
                             $ansresult = $ansresult->readAll();
                             $anscount = count($ansresult);
 
@@ -2150,7 +2143,7 @@ class dataentry extends Survey_Common_Action
                             }
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = dbExecuteAssoc($meaquery);
-                            
+
                             $cdata['mearesult'] = $mearesult->readAll();
                             $meacount = count($cdata['mearesult']);
                             $cdata['meacount'] = $meacount;
@@ -2359,7 +2352,6 @@ class dataentry extends Survey_Common_Action
     * This is a duplicate of the array_filter_help function in printablesurvey.php
     */
     private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
-        $clang = $this->getController()->lang;
         $output = "";
         if(!empty($qidattributes['array_filter']))
         {

@@ -31,7 +31,6 @@ class printablesurvey extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
-            $clang = $this->getController()->lang;
             $aData['surveyid'] = $surveyid;
             App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
@@ -46,7 +45,7 @@ class printablesurvey extends Survey_Common_Action
                 $this->getController()->error('Invalid survey ID');
             // Be sure to have a valid language
             $surveyprintlang=$aSurveyInfo['surveyls_language'];
-            
+
             // Setting the selected language for printout
             $clang = new limesurvey_lang($surveyprintlang);
 
@@ -61,7 +60,7 @@ class printablesurvey extends Survey_Common_Action
             $surveyfaxto = $aSurveyInfo['faxto'];
             $dateformattype = $aSurveyInfo['surveyls_dateformat'];
             Yii::app()->loadHelper('surveytranslator');
-            
+
             if (!is_null($surveyexpirydate))
             {
                 $dformat=getDateFormatData($dateformattype);
@@ -76,7 +75,7 @@ class printablesurvey extends Survey_Common_Action
                 if(!empty($expirytimeofday_h) || !empty($expirytimeofday_m))
                 {
                     $surveyexpirydate .= ' &ndash; '.$expirytimeofday_h.':'.$expirytimeofday_m;
-                };            
+                };
                 sprintf(gT("Please submit by %s"), $surveyexpirydate);
             }
             else
@@ -155,7 +154,7 @@ class printablesurvey extends Survey_Common_Action
             $answertext = '';   // otherwise can throw an error on line 1617
 
             $fieldmap = createFieldMap($surveyid,'full',false,false,$surveyprintlang);
-            
+
             // =========================================================
             // START doin the business:
             foreach ($degresult->readAll() as $degrow)
@@ -556,7 +555,7 @@ class printablesurvey extends Survey_Common_Action
                                 $sEquation='&nbsp;'; // No need to show it twice
                             }
                             $sExplanation = "<b>".gT('Only answer this question if the following conditions are met:')."</b><br/> ".$sExplanation;
-                            if (Yii::app()->getConfig('showrelevance')) 
+                            if (Yii::app()->getConfig('showrelevance'))
                             {
                                 $sExplanation.="<span class='printable_equation'><br>".$sEquation."</span>";
                             }
@@ -596,16 +595,16 @@ class printablesurvey extends Survey_Common_Action
                         ,'QUESTIONHELP' => ''            // content of the question help field.
                         ,'ANSWER' => ''                // contains formatted HTML answer
                         );
-                        
+
                         $showqnumcode = Yii::app()->getConfig('showqnumcode');
                         if(($showqnumcode=='choose' && ($aSurveyInfo['showqnumcode']=='N' || $aSurveyInfo['showqnumcode']=='X')) || $showqnumcode=='number' || $showqnumcode=='none')
                         {
-                           $question['QUESTION_CODE']=''; 
-                        }                        
+                           $question['QUESTION_CODE']='';
+                        }
                         if(($showqnumcode=='choose' && ($aSurveyInfo['showqnumcode']=='C' || $aSurveyInfo['showqnumcode']=='X')) || $showqnumcode=='code' || $showqnumcode=='none')
                         {
-                           $question['QUESTION_NUMBER']=''; 
-                        }                        
+                           $question['QUESTION_NUMBER']='';
+                        }
 
                         if($question['QUESTION_TYPE_HELP'] != "") {
                             $question['QUESTION_TYPE_HELP'] .= "<br />\n";
@@ -1258,7 +1257,7 @@ class printablesurvey extends Survey_Common_Action
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                                 $fresult=Answer::model()->getAllRecords(" scale_id=0 AND qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}'", array('sortorder','code'));
-                                $fresult = $fresult->readAll(); 
+                                $fresult = $fresult->readAll();
                                 $fcount = count($fresult);
                                 $fwidth = "120";
                                 $i=1;
@@ -1509,7 +1508,7 @@ class printablesurvey extends Survey_Common_Action
             }
 
             $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
-            
+
             // START recursive tag stripping.
             // PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression.
             // Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
@@ -1582,7 +1581,7 @@ class printablesurvey extends Survey_Common_Action
             // END recursive empty tag stripping.
 
             echo self::_populate_template( 'survey' , $survey_output );
-            
+
         }// End print
     }
 
@@ -1654,7 +1653,6 @@ class printablesurvey extends Survey_Common_Action
     }
 
     private function _min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
-        $clang = $this->getController()->lang;
         $output = "";
         if(!empty($qidattributes['min_answers'])) {
             $output .= "\n<p class='extrahelp'>".sprintf(gT("Please choose at least %s items."), $qidattributes['min_answers'])."</p>\n";
@@ -1740,9 +1738,8 @@ class printablesurvey extends Survey_Common_Action
                  );
     }
 
-    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) 
+    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid)
     {
-        $clang = $this->getController()->lang;
         $output = "";
         if(!empty($qidattributes['array_filter']))
         {

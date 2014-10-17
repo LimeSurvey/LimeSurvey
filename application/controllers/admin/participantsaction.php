@@ -145,8 +145,6 @@ class participantsaction extends Survey_Common_Action
      */
     protected function csvExportCount($search = null)
     {
-        $clang = $this->getController()->lang;
-
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
 
         //If super admin all the participants will be visible
@@ -384,7 +382,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttributeInfo_json()
     {
-        $clang = Yii::app()->lang;
+        
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
@@ -419,7 +417,7 @@ class participantsaction extends Survey_Common_Action
      */
     function editAttributeInfo()
     {
-        $clang = Yii::app()->lang;
+        
         $operation = Yii::app()->request->getPost('oper');
 
         if ($operation == 'del' && Yii::app()->request->getPost('id'))
@@ -658,7 +656,7 @@ class participantsaction extends Survey_Common_Action
 
             $query = Participant::model()->getParticipantsSearchMultiple($condition, 0, 0);
 
-            printf( $this->getController()->lang->gT("%s participant(s) are to be copied "), count($query));
+            printf( gT("%s participant(s) are to be copied "), count($query));
         }
         // if there is no search condition the participants will be counted on the basis of who is logged in
         else
@@ -673,7 +671,7 @@ class participantsaction extends Survey_Common_Action
                 $count = count($query);
             }
 
-            printf($this->getController()->lang->gT("%s participant(s) are to be copied "), $count);
+            printf(gT("%s participant(s) are to be copied "), $count);
         }
     }
 
@@ -1055,7 +1053,6 @@ class participantsaction extends Survey_Common_Action
     function attributeMapCSV()
     {
 
-        $clang = $this->getController()->lang;
         if ($_FILES['the_file']['name']=='')
         {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'),'error');
@@ -1149,7 +1146,6 @@ class participantsaction extends Survey_Common_Action
      */
     function uploadCSV()
     {
-        $clang = $this->getController()->lang;
         unset(Yii::app()->session['summary']);
         $characterset = Yii::app()->request->getPost('characterset');
         $separator = Yii::app()->request->getPost('separatorused');
@@ -1465,7 +1461,6 @@ class participantsaction extends Survey_Common_Action
      */
     function shareParticipants()
     {
-        $clang = $this->getController()->lang;
         $iParticipantId = Yii::app()->request->getPost('participantid');
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
@@ -1500,7 +1495,6 @@ class participantsaction extends Survey_Common_Action
         $createautomap = Yii::app()->request->getPost('createautomap');
 
         $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
-        $clang = $this->getController()->lang;
 
         printf(gT("%s participants have been copied to the central participants table"), $response['success']);
         if($response['duplicate'] > 0) {
@@ -1524,7 +1518,6 @@ class participantsaction extends Survey_Common_Action
                                                          ->getPost('surveyid'), Yii::app()
                                                          ->request->getPost('attributeid')
                                                );
-        $clang = $this->getController()->lang;
 
         printf(gT("%s participants have been copied to the survey token table"), $response['success']);
         if($response['duplicate']>0) {
@@ -1551,7 +1544,6 @@ class participantsaction extends Survey_Common_Action
         $overwritest = Yii::app()->request->getPost('overwritest');
         $createautomap = Yii::app()->request->getPost('createautomap');
 
-        $clang = $this->getController()->lang;
         if (empty($newcreate[0])) { $newcreate = array(); }
 
         $response = Participant::model()->copyCPBDAttributesToTokens($iSurveyId, $mapped, $newcreate, $iParticipantId, $overwriteauto, $overwriteman, $overwritest, $createautomap);

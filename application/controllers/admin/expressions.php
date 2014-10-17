@@ -24,7 +24,6 @@ class Expressions extends Survey_Common_Action {
 	    }
         if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
-            $clang = $this->getController()->lang;
             App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
@@ -42,7 +41,7 @@ class Expressions extends Survey_Common_Action {
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
 	        if(isset($_GET['sa']))
 		        $this->test($aData['sa'],$aData);
-	        else 
+	        else
 	            $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
         }
     }

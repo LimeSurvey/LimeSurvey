@@ -34,7 +34,7 @@ class update extends Survey_Common_Action
         }
         return 'https://';
     }
-    
+
     /**
     * Default Controller Action
     */
@@ -43,8 +43,6 @@ class update extends Survey_Common_Action
         updateCheck();
         $this->_RunUpdaterUpdate();
         require_once(APPPATH.'/third_party/http/http.php');
-        
-        $clang = $this->getController()->lang;
         $iCurrentBuildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $iDestinationBuild = Yii::app()->request->getParam('build',getGlobalSetting("updatebuild"));
@@ -58,7 +56,7 @@ class update extends Survey_Common_Action
                 setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
             }
         }
-        
+
         $error = false;
 
         if (!is_writable($tempdir)) {
@@ -89,7 +87,7 @@ class update extends Survey_Common_Action
         }
         return $this->_readChangelog($http);
     }
-    
+
     private function _getChangelog($buildnumber, $updaterversion)
     {
         require_once(APPPATH.'/third_party/http/http.php');
@@ -130,7 +128,7 @@ class update extends Survey_Common_Action
 
         return $http->SendRequest($arguments);
     }
-    
+
     private function _requestChangedFiles(http_class $http, $buildnumber, $updaterversion)
     {
         $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
@@ -144,11 +142,10 @@ class update extends Survey_Common_Action
 
         return $http->SendRequest($arguments);
     }
-    
+
     function step2()
     {
-        
-        $clang = $this->getController()->lang;
+
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $updatebuild = getGlobalSetting("updatebuild");
 
@@ -156,7 +153,7 @@ class update extends Survey_Common_Action
         $aData = $this->_getFileStatus($updateinfo);
         foreach (array_unique($aData['readonlyfiles']) as $aFile)
         {
-            $aReadOnlyFiles[]=substr($aFile,strlen(Yii::app()->getConfig("rootdir")));  
+            $aReadOnlyFiles[]=substr($aFile,strlen(Yii::app()->getConfig("rootdir")));
         };
         sort($aReadOnlyFiles);
         $aData['readonlyfiles']=$aReadOnlyFiles;
@@ -233,7 +230,6 @@ class update extends Survey_Common_Action
 
     function step3()
     {
-        $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $updatebuild = getGlobalSetting("updatebuild");
@@ -336,7 +332,6 @@ class update extends Survey_Common_Action
 
     function step4()
     {
-        $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $updatebuild = getGlobalSetting("updatebuild");
@@ -364,7 +359,7 @@ class update extends Survey_Common_Action
         $downloaderror=false;
         Yii::import('application.libraries.admin.http.httpRequestIt');
         $http=new httpRequestIt;
-        
+
         $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
@@ -434,8 +429,8 @@ class update extends Survey_Common_Action
                 }
             }
         }
-        
-        
+
+
         $aData['new_files'] = $new_files;
         $aData['downloaderror'] = $downloaderror;
 
@@ -466,7 +461,7 @@ class update extends Survey_Common_Action
         Yii::app()->getController()->redirect(array('/admin/update/sa/step4b'));
     }
 
-    
+
     function step4b()
     {
         if (!isset(Yii::app()->session['installlstep4b'])) die();
@@ -477,14 +472,13 @@ class update extends Survey_Common_Action
 
     private function _RunUpdaterUpdate()
     {
-        $clang = $this->getController()->lang;
         $versionnumber = Yii::app()->getConfig("versionnumber");
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
 
         require_once(APPPATH.'/third_party/http/http.php');
         $oHTTPRequest=new http_class;
-        
+
         $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
@@ -599,7 +593,6 @@ class update extends Survey_Common_Action
     */
     function db($continue = null)
     {
-        $clang = $this->getController()->lang;
         Yii::app()->loadHelper("update/update");
         if(isset($continue) && $continue=="yes")
         {

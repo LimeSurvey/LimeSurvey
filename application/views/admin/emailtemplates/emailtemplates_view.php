@@ -1,23 +1,23 @@
-<?php 
-    $surveyinfo = getSurveyInfo($surveyid); 
+<?php
+    $surveyinfo = getSurveyInfo($surveyid);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
 ?>
 <script type='text/javascript'>
     var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
-    var sKCFinderLanguage='<?php echo sTranslateLangCode2CK($clang->getlangcode()) ?>';
-    
+    var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';
+
 
 $(document).ready(function () {
     $('button.add-attachment').click(function(e)
     {
         e.preventDefault();
         var target = $(this).parent().find('table');
-        openKCFinder_singleFile(target); 
-        
+        openKCFinder_singleFile(target);
+
     });
-    
-    
-    
+
+
+
 });
 
 
@@ -40,7 +40,7 @@ $(document).ready(function () {
                     </a></li>
                 <?php endforeach; ?>
         </ul>
-        <?php 
+        <?php
             foreach ($grplangs as $key => $grouplang)
             {
                 $bplang = $bplangs[$key];

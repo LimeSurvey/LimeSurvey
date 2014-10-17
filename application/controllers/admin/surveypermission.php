@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
- 
+
 /**
 * surveypermission
 *
@@ -29,9 +29,9 @@ class surveypermission extends Survey_Common_Action {
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
-        $clang = Yii::app()->lang;
+
         $imageurl = Yii::app()->getConfig('adminimageurl');
-            
+
         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','read'))
         {
             $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
@@ -83,7 +83,7 @@ class surveypermission extends Survey_Common_Action {
                         {
                             $group_ids_query = implode(",", $group_ids);
                             unset($group_ids);
-                            $result4 = UserGroup::model()->findAll("ugid IN ($group_ids_query)");                        
+                            $result4 = UserGroup::model()->findAll("ugid IN ($group_ids_query)");
 
                             foreach ($result4 as $resul4row)
                             {
@@ -96,7 +96,7 @@ class surveypermission extends Survey_Common_Action {
                         $surveysecurity .= "<tr>\n";
 
                         $surveysecurity .= "<td>\n";
-                        
+
                         if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','update'))
                         {
                             if($PermissionRow['uid']!=Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin','read')) // Can not update own security
@@ -171,7 +171,7 @@ class surveypermission extends Survey_Common_Action {
             }
             else
             {
-            
+
             }
             if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','create'))
             {
@@ -182,7 +182,7 @@ class surveypermission extends Survey_Common_Action {
                 . "<input style='width: 15em;' type='submit' value='".gT("Add user")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".gT("Please select a user first","js")."'); return false;}\"/>"
                 . "<input type='hidden' name='action' value='addsurveysecurity' />"
                 . "</li></ul></form>\n";
-                
+
                 $surveysecurity .=  CHtml::form(array("admin/surveypermission/sa/addusergroup/surveyid/{$surveyid}"), 'post', array('class'=>"form44"))."<ul><li>\n"
                 . "<label for='ugidselect'>".gT("User group").": </label><select id='ugidselect' name='ugid'>\n"
                 . getSurveyUserGroupList('htmloptions',$surveyid)
@@ -214,8 +214,6 @@ class surveypermission extends Survey_Common_Action {
         $aViewUrls = array();
 
         $action = $_POST['action'];
-        $clang = Yii::app()->lang;
-
         $imageurl = Yii::app()->getConfig('imageurl');
 
         $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : false;
@@ -227,7 +225,7 @@ class surveypermission extends Survey_Common_Action {
             $addsummary .= "<div class=\"messagebox ui-corner-all\" >\n";
 
             $result = Survey::model()->findAll('sid = :surveyid AND owner_id = :owner_id',array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']));
-            if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create') 
+            if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')
                 && in_array($postusergroupid,getSurveyUserGroupList('simpleugidarray',$surveyid))
                 )
             {
@@ -301,7 +299,7 @@ class surveypermission extends Survey_Common_Action {
 
         $action = $_POST['action'];
 
-        $clang = Yii::app()->lang;
+
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = $_POST['uid'];
 
@@ -311,7 +309,7 @@ class surveypermission extends Survey_Common_Action {
             $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
 
             $result = Survey::model()->findAll('sid = :sid AND owner_id = :owner_id AND owner_id != :postuserid',array(':sid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
-            if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create') 
+            if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')
                 &&  in_array($postuserid,getUserList('onlyuidarray'))
                 )
             {
@@ -372,7 +370,7 @@ class surveypermission extends Survey_Common_Action {
 
         $action = $_POST['action'];
 
-        $clang = Yii::app()->lang;
+
         $imageurl = Yii::app()->getConfig('adminimageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : null;
         $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : null;
@@ -431,7 +429,7 @@ class surveypermission extends Survey_Common_Action {
             . "</tr></thead>\n";
 
             //content
-            
+
             $aBasePermissions=Permission::model()->getSurveyBasePermissions();
 
             $oddcolumn=false;
@@ -501,7 +499,7 @@ class surveypermission extends Survey_Common_Action {
 
         $action = $_POST['action'];
 
-        $clang = Yii::app()->lang;
+
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
         $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;// Not used
@@ -558,7 +556,7 @@ class surveypermission extends Survey_Common_Action {
         $aViewUrls = array();
 
         $action = $_POST['action'];
-        $clang = Yii::app()->lang;
+
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
         $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : false;

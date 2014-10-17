@@ -101,7 +101,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($captchapath)) { $captchapath = ''; }
     if (!isset($sitename)) { $sitename=Yii::app()->getConfig('sitename'); }
     if (!isset($saved_id) && isset(Yii::app()->session['survey_'.$_surveyid]['srid'])) { $saved_id=Yii::app()->session['survey_'.$_surveyid]['srid'];}
-    $clang = Yii::app()->lang;
+    
 
     Yii::app()->loadHelper('surveytranslator');
 
@@ -783,7 +783,7 @@ function doHtmlSaveAll($move="")
         return $aSaveAllButtons[$move];
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
-    $clang = Yii::app()->lang;
+    
     $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall submit button");
     $aHtmlOptionsSaveall=array('type'=>'submit','id'=>'saveallbtn','value'=>'saveall','name'=>'saveall','class'=>"saveall submit button");
     if($thissurvey['active'] != "Y"){

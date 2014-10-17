@@ -67,7 +67,7 @@ class UploaderController extends SurveyController {
             {
                 throw new CHttpException(400);// See for debug > 1
             }
-            if(is_file($sFileDir.$sFileGetContent))// Validate file before else 500 error by getMimeType 
+            if(is_file($sFileDir.$sFileGetContent))// Validate file before else 500 error by getMimeType
             {
                 header('Content-Type: '. CFileHelper::getMimeType($sFileDir.$sFileGetContent));
                 readfile($sFileDir.$sFileGetContent);
@@ -126,8 +126,6 @@ class UploaderController extends SurveyController {
 
         if($sMode == "upload")
         {
-            $clang = Yii::app()->lang;
-
             $sTempUploadDir = $tempdir.'/upload/';
             // Check if exists and is writable
             if (!file_exists($sTempUploadDir)) {
@@ -279,7 +277,7 @@ class UploaderController extends SurveyController {
             }
         return;
         }
-        $clang = Yii::app()->lang;
+
         $meta = '';
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-superfish');

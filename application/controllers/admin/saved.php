@@ -25,7 +25,6 @@ class saved extends Survey_Common_Action
     public function view($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         $aViewUrls = array();
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
@@ -50,8 +49,6 @@ class saved extends Survey_Common_Action
      */
     public function delete($iSurveyId, $iSurveyResponseId, $iSavedControlId)
     {
-        $clang = $this->getController()->lang;
-
         SavedControl::model()->deleteAllByAttributes(array('scid' => $iSavedControlId, 'sid' => $iSurveyId)) or die(gT("Couldn't delete"));
         Yii::app()->db->createCommand()->delete("{{survey_".intval($iSurveyId)."}}", 'id=:id', array('id' => $iSurveyResponseId)) or die(gT("Couldn't delete"));
 
@@ -77,7 +74,6 @@ class saved extends Survey_Common_Action
      */
     private function _showSavedList($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         $aResults = SavedControl::model()->findAll(array(
             'select' => array('scid', 'srid', 'identifier', 'ip', 'saved_date', 'email', 'access_code'),
             'condition' => 'sid=:sid',

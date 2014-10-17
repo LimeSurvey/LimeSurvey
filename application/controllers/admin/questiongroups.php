@@ -37,7 +37,6 @@ class questiongroups extends Survey_Common_Action
     {
         $action = $_POST['action'];
         $surveyid = $_POST['sid'];
-        $clang = $this->getController()->lang;
 
         if ($action == 'importgroup')
         {
@@ -106,8 +105,6 @@ class questiongroups extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            $clang = $this->getController()->lang;
-
             Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
 
             Yii::app()->loadHelper('admin/htmleditor');
@@ -212,7 +209,7 @@ class questiongroups extends Survey_Common_Action
                 // This line sets the newly inserted group as the new group
                 if (isset($groupid))
                     $gid = $groupid;
-                Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("New question group was saved.");
+                Yii::app()->session['flashmessage'] = gT("New question group was saved.");
             }
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
@@ -233,8 +230,6 @@ class questiongroups extends Survey_Common_Action
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
             $iGroupId = sanitize_int($iGroupId);
-            $clang = $this->getController()->lang;
-
             $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
             if ($iGroupsDeleted > 0)
@@ -260,7 +255,6 @@ class questiongroups extends Survey_Common_Action
      */
     public function edit($surveyid, $gid)
     {
-        $clang = $this->getController()->lang;
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
@@ -396,7 +390,7 @@ class questiongroups extends Survey_Common_Action
                 }
             }
 
-            Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Question group successfully saved.");
+            Yii::app()->session['flashmessage'] = gT("Question group successfully saved.");
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }

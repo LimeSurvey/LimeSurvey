@@ -7998,21 +7998,13 @@ EOD;
 
         private function gT($string,  $escapemode = 'html')
         {
-            // eventually replace this with i8n
-            if (isset(Yii::app()->lang))
-            {
-                return Yii::app()->lang->gT($string, $escapemode);
-            }
-            else
-            {
-                return $string;
-            }
+            return gT($string, $escapemode);
         }
 
 
         private function ngT($sText, $number, $escapemode = 'html')
         {
-            return Yii::app()->lang->ngT($sText, $number, $escapemode);
+            return ngT($sText, $number, $escapemode);
         }
 
         /**

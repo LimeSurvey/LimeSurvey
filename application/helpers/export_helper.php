@@ -221,7 +221,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     $length_vallabel = 120;
-    $clang = Yii::app()->lang;
+    
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
     $answers=array();

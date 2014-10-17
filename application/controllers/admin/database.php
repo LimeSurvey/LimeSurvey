@@ -30,7 +30,6 @@ class database extends Survey_Common_Action
     function index($sa = null)
     {
         $sAction=Yii::app()->request->getPost('action');
-        $clang = $this->getController()->lang;
         $iSurveyID=returnGlobal('sid');
         $iQuestionGroupID=returnGlobal('gid');
         $iQuestionID=returnGlobal('qid');
@@ -198,7 +197,6 @@ class database extends Survey_Common_Action
             $sQuestionType = $arQuestion['type'];    // Checked
             $aQuestionTypeList=getQuestionTypeList('','array');
             $iScaleCount=$aQuestionTypeList[$sQuestionType]['subquestions'];
-            $clang = $this->getController()->lang;
             // First delete any deleted ids
             $aDeletedQIDs=explode(' ', trim(Yii::app()->request->getPost('deletedqids')));
 
@@ -960,7 +958,7 @@ class database extends Survey_Common_Action
                 $settingsEvent->set('survey', $iSurveyID);
                 App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
             }
-            
+
             Yii::app()->loadHelper('surveytranslator');
             Yii::app()->loadHelper('database');
             $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
@@ -1079,7 +1077,7 @@ class database extends Survey_Common_Action
             'googleanalyticsstyle'=>trim(Yii::app()->request->getPost('googleanalyticsstyle')),
             'tokenlength'=>$tokenlength
             );
-        
+
 
             $warning = '';
             // make sure we only update admin email if it is valid
@@ -1087,14 +1085,14 @@ class database extends Survey_Common_Action
                 || validateEmailAddress(Yii::app()->request->getPost('adminemail'))) {
                 $updatearray['adminemail'] = Yii::app()->request->getPost('adminemail');
             } else {
-                $warning .= gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
+                $warning .= gT("Warning! Notification email was not updated because it was not valid.").'<br/>';
             }
             // make sure we only update bounce email if it is valid
             if (Yii::app()->request->getPost('bounce_email', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
                 $updatearray['bounce_email'] = Yii::app()->request->getPost('bounce_email');
             } else {
-                $warning .= gT("Warning! Bounce email was not updated because it was not valid.").'<br/>'; 
+                $warning .= gT("Warning! Bounce email was not updated because it was not valid.").'<br/>';
             }
 
             // use model

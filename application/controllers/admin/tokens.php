@@ -29,7 +29,6 @@ class tokens extends Survey_Common_Action
     function index($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         $thissurvey = getSurveyInfo($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')
             && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import')
@@ -71,7 +70,6 @@ class tokens extends Survey_Common_Action
     function bounceprocessing($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
         if (!$bTokenExists) //If no tokens table exists
         {
@@ -258,7 +256,6 @@ class tokens extends Survey_Common_Action
     */
     function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         /* Check permissions */
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read'))
@@ -351,7 +348,6 @@ class tokens extends Survey_Common_Action
             eT("No token table.");// return json ? error not treated in js.
             return;
         }
-        $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read'))
         {
             eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
@@ -509,7 +505,6 @@ class tokens extends Survey_Common_Action
     */
     function editToken($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
         {
             eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
@@ -566,7 +561,7 @@ class tokens extends Survey_Common_Action
             {
                 $value = Yii::app()->request->getPost($attr_name);
                 if ($desc['mandatory'] == 'Y' && trim($value) == '')
-                    $this->getController()->error(sprintf($this->controller->lang->gT('%s cannot be left empty'), $desc['description']));
+                    $this->getController()->error(sprintf(gT('%s cannot be left empty'), $desc['description']));
                 $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
 			$token = Token::model($iSurveyId)->find('tid=' . Yii::app()->getRequest()->getPost('id'));
@@ -623,7 +618,6 @@ class tokens extends Survey_Common_Action
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -743,7 +737,6 @@ class tokens extends Survey_Common_Action
     */
     function edit($iSurveyId, $iTokenId)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         $iTokenId = sanitize_int($iTokenId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -847,7 +840,6 @@ class tokens extends Survey_Common_Action
     */
     function delete($iSurveyID)
     {
-        $clang = $this->getController()->lang;
         $iSurveyID = sanitize_int($iSurveyID);
         $sTokenIDs = Yii::app()->request->getPost('tid');
         /* Check permissions */
@@ -881,7 +873,6 @@ class tokens extends Survey_Common_Action
     function addDummies($iSurveyId, $subaction = '')
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -1030,7 +1021,6 @@ class tokens extends Survey_Common_Action
     */
     function managetokenattributes($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
         {
@@ -1081,7 +1071,6 @@ class tokens extends Survey_Common_Action
     */
     function updatetokenattributes($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
         {
@@ -1123,7 +1112,6 @@ class tokens extends Survey_Common_Action
     */
     function deletetokenattributes($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
@@ -1185,7 +1173,6 @@ class tokens extends Survey_Common_Action
     */
     function updatetokenattributedescriptions($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
         {
@@ -1236,7 +1223,6 @@ class tokens extends Survey_Common_Action
     */
     function email($iSurveyId, $tokenids = null)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -1580,7 +1566,6 @@ class tokens extends Survey_Common_Action
     function exportdialog($iSurveyId)
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export'))//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
         {
@@ -1618,7 +1603,6 @@ class tokens extends Survey_Common_Action
     public function importldap($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-        $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -1886,7 +1870,6 @@ class tokens extends Survey_Common_Action
     */
     function import($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = (int) $iSurveyId;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import'))
         {
@@ -2153,7 +2136,6 @@ class tokens extends Survey_Common_Action
     function tokenify($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -2210,7 +2192,6 @@ class tokens extends Survey_Common_Action
     function kill($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -2266,7 +2247,6 @@ class tokens extends Survey_Common_Action
     function bouncesettings($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -2326,8 +2306,6 @@ class tokens extends Survey_Common_Action
         {
             self::_newtokentable($iSurveyId);
         }
-        $clang = $this->getController()->lang;
-
         Yii::app()->loadHelper("surveytranslator");
 
         if ($subaction == "edit")
@@ -2373,7 +2351,6 @@ class tokens extends Survey_Common_Action
     */
     function _newtokentable($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         $aSurveyInfo = getSurveyInfo($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens','create'))
         {

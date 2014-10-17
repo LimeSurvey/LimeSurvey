@@ -27,7 +27,6 @@ class CheckIntegrity extends Survey_Common_Action
         parent::__construct($controller, $id);
 
         if (!Permission::model()->hasGlobalPermission('settings','read')){
-            $clang = $this->getController()->lang;
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/"));
         }
@@ -44,7 +43,7 @@ class CheckIntegrity extends Survey_Common_Action
 
     public function fixredundancy()
     {
-        $clang = Yii::app()->lang;
+        
         $oldsmultidelete=Yii::app()->request->getPost('oldsmultidelete', array());
         $aData['messages'] = array();
         if ( Permission::model()->hasGlobalPermission('settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
@@ -80,7 +79,7 @@ class CheckIntegrity extends Survey_Common_Action
     public function fixintegrity()
     {
         $aData = array();
-        $clang = Yii::app()->lang;
+        
         if (Permission::model()->hasGlobalPermission('settings','update') && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
 
@@ -330,7 +329,7 @@ class CheckIntegrity extends Survey_Common_Action
      */
     protected function _checkintegrity()
     {
-        $clang = Yii::app()->lang;
+        
 
         /*** Plainly delete survey permissions if the survey or user does not exist ***/
         $users = User::model()->findAll();
@@ -346,19 +345,19 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria->addCondition("entity='survey'");
 
         Permission::model()->deleteAll($criteria);
-        
+
 
         // Deactivate surveys that have a missing response table
-        foreach ($surveys as $survey) 
+        foreach ($surveys as $survey)
         {
             if ($survey['active']=='Y' && !tableExists("{{survey_{$survey['sid']}}}"))
             {
                 Survey::model()->updateByPk($survey['sid'],array('active'=>'N'));
             }
         }
-        
-        
-        
+
+
+
         // Fix subquestions
         fixSubquestions();
 
@@ -417,7 +416,7 @@ class CheckIntegrity extends Survey_Common_Action
             if ($condition['cqid'] != 0) { // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
                 if (!array_key_exists($condition['cqid'], $okQuestion)) {
                     $iRowCount = Question::model()->countByAttributes(array('qid' => $condition['cqid']));
-                    if (Question::model()->hasErrors()) safeDie(Question::model()->getError());                
+                    if (Question::model()->hasErrors()) safeDie(Question::model()->getError());
                     if (!$iRowCount) {
                         $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No matching CQID'));
                     } else {
@@ -590,7 +589,7 @@ class CheckIntegrity extends Survey_Common_Action
                 }
             }
         }
-        
+
 
         /**********************************************************************/
         /*     Check survey language settings                                 */
@@ -618,7 +617,7 @@ class CheckIntegrity extends Survey_Common_Action
         if (QuestionGroup::model()->hasErrors()) safeDie(QuestionGroup::model()->getError());
         $gids = array();
         foreach ($groups as $group) $gids[] = $group['gid'];
-        
+
         foreach ($questions as $question)
         {
             //Make sure the group exists

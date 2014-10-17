@@ -23,7 +23,7 @@ if (!defined('BASEPATH'))
 */
 class templates extends Survey_Common_Action
 {
-    
+
     public function runWithParams($params)
     {
         if (!Permission::model()->hasGlobalPermission('templates','read'))
@@ -33,7 +33,7 @@ class templates extends Survey_Common_Action
         parent::runWithParams($params);
     }
 
-    
+
 
     /**
     * Exports a template
@@ -74,19 +74,19 @@ class templates extends Survey_Common_Action
 
    /**
    * Retrieves a temporary template file from disk
-   * 
+   *
    * @param mixed $id ID of the template file
    */
     public function tmp($id)
     {
       $iTime= preg_replace("/[^0-9]$/", '', $id);
       $sFile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."template_temp_{$iTime}.html";
-      
-      if(!is_file($sFile) || !file_exists($sFile)) die(); 
+
+      if(!is_file($sFile) || !file_exists($sFile)) die();
       readfile($sFile);
-        
+
     }
-    
+
     /**
     * Responsible to import a template archive.
     *
@@ -99,7 +99,6 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
-        $clang = $this->getController()->lang;
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
@@ -111,7 +110,7 @@ class templates extends Survey_Common_Action
             Yii::app()->loadLibrary('admin.pclzip');
 
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
-        
+
             // Create temporary directory so that if dangerous content is unzipped it would be unaccessible
             $sNewDirectoryName=sanitize_dirname($_FILES['the_file']['name']);
             $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
@@ -145,7 +144,7 @@ class templates extends Survey_Common_Action
                             "filename" => $sFile['stored_filename'],
                             "status" => gT("OK"),
                             'is_folder' => $sFile['folder']
-                        );                    
+                        );
                     }
                 }
 
@@ -154,8 +153,8 @@ class templates extends Survey_Common_Action
             }
             else
                 $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
-                
-                
+
+
             if (count($aImportedFilesInfo) > 0)
             {
                 $templateFixes= $this->_templateFixes($sNewDirectoryName);
@@ -191,7 +190,6 @@ class templates extends Survey_Common_Action
 
     private function _templateFixes($templatename)
     {
-        $clang = $this->getController()->lang;
         $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
         $templateFixes=array();
         $templateFixes['success']=true;
@@ -240,8 +238,6 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
-        
-        $clang = $this->getController()->lang;
         $action = returnGlobal('action');
         $editfile = returnGlobal('editfile');
         $templatename = returnGlobal('templatename');
@@ -342,7 +338,7 @@ class templates extends Survey_Common_Action
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
         App()->getClientScript()->reset();
         App()->getComponent('bootstrap')->init();
-        
+
         // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
@@ -407,7 +403,6 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
-        $clang = $this->getController()->lang;
         if (returnGlobal('action') == "templatefiledelete") {
             // This is where the temp file is
             $sFileToDelete=preg_replace("[^\w\s\d\.\-_~,;:\[\]\(\]]", '', returnGlobal('otherfile'));
@@ -438,7 +433,7 @@ class templates extends Survey_Common_Action
             die('No permission');
         }
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
-            $clang = Yii::app()->lang;
+
             $sOldName = sanitize_dirname(returnGlobal('copydir'));
             $sNewName = sanitize_dirname(returnGlobal('newname'));
             $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
@@ -473,7 +468,6 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
-        $clang = $this->getController()->lang;
         $newname=sanitize_dirname(Yii::app()->request->getPost("newname"));
         $copydir=sanitize_dirname(Yii::app()->request->getPost("copydir"));
         $action=Yii::app()->request->getPost("action");
@@ -522,8 +516,6 @@ class templates extends Survey_Common_Action
         }
         Yii::app()->loadHelper("admin/template");
         if (is_template_editable($templatename) == true) {
-            $clang = $this->getController()->lang;
-
             if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
                 $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
                 foreach ($surveys as $s)
@@ -620,7 +612,6 @@ class templates extends Survey_Common_Action
     */
     protected function _templatebar($screenname, $editfile, $screens, $tempdir, $templatename)
     {
-        $aData['clang'] = $this->getController()->lang;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['screens'] = $screens;
@@ -679,8 +670,8 @@ class templates extends Survey_Common_Action
 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");            
-            
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+
             App()->getClientScript()->render($myoutput);
             @fwrite($fnew, $myoutput);
             @fclose($fnew);
@@ -702,12 +693,8 @@ class templates extends Survey_Common_Action
            default: $sEditorFileType='html';
            break;
         }
-
-
-        $aData['clang'] = $this->getController()->lang;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
-
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
         $aData['templates'] = $templates;
@@ -794,7 +781,6 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         App()->getClientScript()->reset();
-        $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
 
@@ -1239,7 +1225,6 @@ class templates extends Survey_Common_Action
             closedir($handle);
         }
 
-        $aData['clang'] = $this->getController()->lang;
         $aData['codelanguage'] = $codelanguage;
         $aData['highlighter'] = $highlighter;
         $aData['screens'] = $screens;

@@ -26,8 +26,6 @@ class conditionsaction extends Survey_Common_Action {
         $iSurveyID = sanitize_int($iSurveyID);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
-
-        $clang = $this->getController()->lang;
         $imageurl = Yii::app()->getConfig("adminimageurl");
         Yii::app()->loadHelper("database");
 
@@ -134,7 +132,6 @@ class conditionsaction extends Survey_Common_Action {
         if (isset($p_subaction) && $p_subaction == "resetsurveylogic")
         {
 
-            $clang = $this->getController()->lang;
             $resetsurveylogicoutput = $br;
             $resetsurveylogicoutput .= CHtml::openTag('table', array('class'=>'alertbox'));
             $resetsurveylogicoutput .= CHtml::openTag('tr').CHtml::openTag('td', array('colspan'=>'2'));
@@ -1280,7 +1277,7 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":lang1", $sLanguage, PDO::PARAM_STR)
                     ->bindValue(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    
+
                     $querytoken = "SELECT count(*) as recordcount "
                     ."FROM {{conditions}} "
                     ."WHERE "
@@ -1310,7 +1307,7 @@ class conditionsaction extends Survey_Common_Action {
                     ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
                     ->bindValue(":qid", $qid, PDO::PARAM_INT)
                     ->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
-                    
+
                     $conditionscount=$conditionscount+$conditionscounttoken;
 
                     if ($conditionscount > 0)
@@ -2070,7 +2067,7 @@ class conditionsaction extends Survey_Common_Action {
     private function _showSpeaker($hinttext)
     {
         global $max;
-        $clang = Yii::app()->lang;
+        
         $imageurl = Yii::app()->getConfig("adminimageurl");
 
         if(!isset($max))

@@ -17,7 +17,7 @@
 
 function updateset($lid)
 {
-    $clang = Yii::app()->lang;
+    
 
     // Get added and deleted languagesid arrays
     $postlanguageids=Yii::app()->getRequest()->getPost('languageids');
@@ -90,7 +90,7 @@ function insertlabelset()
 {
     //global $labelsoutput;
     //	$labelsoutput.= $_POST['languageids'];  For debug purposes
-    $clang = Yii::app()->lang;
+    
 
     $postlanguageids=sanitize_languagecodeS(Yii::app()->getRequest()->getPost('languageids'));
     $postlabel_name=flattenText(Yii::app()->getRequest()->getPost('label_name'),false,true,'UTF-8',true);
@@ -118,7 +118,7 @@ function modlabelsetanswers($lid)
 
     //global  $labelsoutput;
 
-    $clang = Yii::app()->lang;
+    
 
     $ajax = false;
 
@@ -206,7 +206,7 @@ function modlabelsetanswers($lid)
 */
 function fixorder($lid) {
 
-    $clang = Yii::app()->lang;
+    
 
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();

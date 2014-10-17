@@ -1266,7 +1266,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
     function _showSpeaker($hinttext)
     {
         global $maxchars; //Where does this come from? can it be replaced? passed with function call?
-        $clang = Yii::app()->lang;
+        
         $sImageURL = Yii::app()->getConfig('adminimageurl');
         if(!isset($maxchars))
         {

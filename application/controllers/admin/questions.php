@@ -37,7 +37,6 @@ class questions extends Survey_Common_Action
         $action = returnGlobal('action');
         $surveyid = returnGlobal('sid');
         $gid = returnGlobal('gid');
-        $clang = $this->getController()->lang;
         $aViewUrls = array();
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewquestion';
@@ -109,7 +108,6 @@ class questions extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
 
-        $clang = $this->getController()->lang;
 
         Yii::app()->loadHelper('surveytranslator');
 
@@ -257,7 +255,7 @@ class questions extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'answers.js');
         //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
-        
+
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
@@ -299,8 +297,6 @@ class questions extends Survey_Common_Action
         $qtypes = getQuestionTypeList('', 'array');
 
         $scalecount = $qtypes[$qtype]['answerscales'];
-
-        $clang = $this->getController()->lang;
 
         // Check if there is at least one answer
         for ($i = 0; $i < $scalecount; $i++)
@@ -449,8 +445,6 @@ class questions extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-
-        $clang = $this->getController()->lang;
 
         // Get languages select on survey.
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -653,7 +647,6 @@ class questions extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            $clang = $this->getController()->lang;
             $surveyinfo = getSurveyInfo($surveyid);
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
@@ -786,7 +779,6 @@ class questions extends Survey_Common_Action
                 $aData['aqresult'] = $aqresult;
             }
 
-            $aData['clang'] = $clang;
             $aData['action'] = $action;
 
             $sumresult1 = Survey::model()->findByPk($surveyid);
@@ -804,7 +796,7 @@ class questions extends Survey_Common_Action
                     $selectormodeclass = Yii::app()->session['questionselectormode'];
                 } else {
                     $selectormodeclass = getGlobalSetting('defaultquestionselectormode', 'default');
-                }                
+                }
 
                 $aData['selectormodeclass'] = $selectormodeclass;
             }
@@ -844,7 +836,6 @@ class questions extends Survey_Common_Action
     */
     public function delete($surveyid, $gid, $qid)
     {
-        $clang = $this->getController()->lang;
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);

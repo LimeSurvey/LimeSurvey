@@ -142,7 +142,7 @@ class Authentication extends Survey_Common_Action
             if (count($aFields) < 1)
             {
                 // wrong or unknown username and/or email
-                $aData['errormsg'] = $this->getController()->lang->gT('User name and/or email not found!');
+                $aData['errormsg'] = gT('User name and/or email not found!');
                 $aData['maxattempts'] = '';
                 $this->_renderWrappedTemplate('authentication', 'error', $aData);
             }

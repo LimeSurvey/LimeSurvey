@@ -135,7 +135,7 @@ class export extends Survey_Common_Action {
         if ( ! isset($convertyto) ) { $convertyto = returnGlobal('convertyto'); }
         if ( ! isset($convertnto) ) { $convertnto = returnGlobal('convertnto'); }
 
-        $clang = Yii::app()->lang;
+        
 
         if ( ! Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export') )
         {
@@ -161,7 +161,7 @@ class export extends Survey_Common_Action {
 
         // Get info about the survey
         $thissurvey = getSurveyInfo($iSurveyID);
-        
+
         // Load ExportSurveyResultsService so we know what exports are available
         $resultsService = new ExportSurveyResultsService();
         $exports = $resultsService->getExports();
@@ -214,7 +214,7 @@ class export extends Survey_Common_Action {
             $data['imageurl'] = Yii::app()->getConfig('imageurl');
             $data['thissurvey'] = $thissurvey;
             $data['display']['menu_bars']['browse'] = gT("Export results");
-            
+
             // Export plugins, leave out all entries that are not plugin
             $exports = array_filter($exports);
             $exportData = array();
@@ -246,7 +246,7 @@ class export extends Survey_Common_Action {
             $data['aLanguages'] = $aLanguages;    // Pass available exports
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
-            
+
             return;
         }
 
@@ -334,7 +334,6 @@ class export extends Survey_Common_Action {
     {
         global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
-        $clang = $this->getController()->lang; 
         //for scale 1=nominal, 2=ordinal, 3=scale
 
         //		$typeMap = $this->_getTypeMap();
@@ -375,7 +374,7 @@ class export extends Survey_Common_Action {
 
         if ( isset($_POST['dldata']) ) $subaction = "dldata";
         if ( isset($_POST['dlstructure']) ) $subaction = "dlstructure";
-        
+
         if  ( ! isset($subaction) )
         {
             $selecthide = "";
@@ -404,7 +403,7 @@ class export extends Survey_Common_Action {
             $this->_renderWrappedTemplate('export', 'spss_view', $data);
             return;
         }
-        
+
         // Get Base language:
         $language = Survey::model()->findByPk($iSurveyID)->language;
         $clang = new limesurvey_lang($language);
@@ -516,7 +515,7 @@ class export extends Survey_Common_Action {
                 {
                     $field['size'] .= '.' . ($field['size']-1);
                 }
-                
+
                 if ( !$field['hide'] ) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
             }
 
@@ -628,8 +627,6 @@ class export extends Survey_Common_Action {
         $subaction = Yii::app()->request->getParam('subaction');
 
         //Exports all responses to a survey in special "Verified Voting" format.
-        $clang = $this->getController()->lang;
-
         if ( ! Permission::model()->hasSurveyPermission($iSurveyId, 'responses','export') )
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -1040,7 +1037,7 @@ class export extends Survey_Common_Action {
             // now convert this xml into json format and then return
             echo _xmlToJson($surveyInXmlFormat);
             exit;
-        } 
+        }
 
         elseif ( $action == "exportstructurequexml" )
         {
@@ -1109,7 +1106,7 @@ class export extends Survey_Common_Action {
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Pragma: {$pragma}");                          // HTTP/1.0
     }
-    
+
     private function _xmlToJson($fileContents) {
         $fileContents = str_replace(array("\n", "\r", "\t"), '', $fileContents);
         $fileContents = trim(str_replace('"', "'", $fileContents));

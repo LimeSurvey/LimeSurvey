@@ -48,8 +48,7 @@ class RegisterController extends LSYii_Controller {
         }
         // Don't test if survey allow registering .....
         $sLanguage = Yii::app()->request->getParam('lang',$oSurvey->language);
-        Yii::import('application.libraries.Limesurvey_lang');
-        Yii::app()->lang = new Limesurvey_lang($sLanguage);
+        Yii::app()->setLanguage($sLanguage);
 
         $thistpl=getTemplatePath(validateTemplateDir($oSurvey->template));
         $data['sid'] = $iSurveyId;
@@ -63,7 +62,7 @@ class RegisterController extends LSYii_Controller {
     /**
     * Default action register
     * Process register form data and take appropriate action
-    * @param $sid Survey Id to register 
+    * @param $sid Survey Id to register
     * @param $aRegisterErrors array of errors when try to register
     * @return
     */
@@ -92,8 +91,8 @@ class RegisterController extends LSYii_Controller {
         }
 
         Yii::import('application.libraries.Limesurvey_lang');
-        Yii::app()->lang = new Limesurvey_lang($sLanguage);
-        
+        Yii::app()->setLanguage($sLanguage);
+
 
         $event = new PluginEvent('beforeRegister');
         $event->set('surveyid', $iSurveyId);
@@ -120,11 +119,10 @@ class RegisterController extends LSYii_Controller {
 
     /**
     * Validate a register form
-    * @param $iSurveyId Survey Id to register 
+    * @param $iSurveyId Survey Id to register
     * @return array of errors when try to register (empty array => no error)
     */
     public function getRegisterErrors($iSurveyId){
-        $clang = Yii::app()->lang;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$clang->langcode);
 
         // Check the security question's answer
@@ -147,7 +145,7 @@ class RegisterController extends LSYii_Controller {
         }elseif (!validateEmailAddress($aFieldValue['sEmail'])){
             $this->aRegisterErrors[]= gT("The email you used is not valid. Please try again.");
         }
-        //Check and validate attribute 
+        //Check and validate attribute
         foreach ($aRegisterAttributes as $key => $aAttribute)
         {
             if ($aAttribute['show_register'] == 'Y' && $aAttribute['mandatory'] == 'Y' && empty($aFieldValue['aAttribute'][$key]))
@@ -158,7 +156,7 @@ class RegisterController extends LSYii_Controller {
     }
 
     public function getRegisterForm($iSurveyId){
-        
+
         $aSurveyInfo=getSurveyInfo($iSurveyId,App()->language);
         $sTemplate=getTemplatePath(validateTemplateDir($aSurveyInfo['template']));
 
@@ -205,11 +203,11 @@ class RegisterController extends LSYii_Controller {
 
     /**
     * Send the register email with $_POST value
-    * @param $iSurveyId Survey Id to register 
+    * @param $iSurveyId Survey Id to register
     * @return boolean : if email is set to sent (before SMTP problem)
     */
     public function sendRegistrationEmail($iSurveyId,$iTokenId){
-        
+
         $sLanguage=App()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
 
@@ -295,12 +293,12 @@ class RegisterController extends LSYii_Controller {
 
     /**
     * Get the token id according to filled values
-    * @param $iSurveyId 
+    * @param $iSurveyId
     * @return integer : the token id created
     */
     public function getTokenId($iSurveyId)
     {
-        
+
         $sLanguage=App()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
 
@@ -354,13 +352,13 @@ class RegisterController extends LSYii_Controller {
     }
     /**
     * Get the array of fill value from the register form
-    * @param $iSurveyId 
+    * @param $iSurveyId
     * @return array : if email is set to sent (before SMTP problem)
     */
     public function getFieldValue($iSurveyId)
     {
         //static $aFiledValue; ?
-        $sLanguage=Yii::app()->lang->langcode;
+        $sLanguage=Yii::app()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
         $aFieldValue=array();
         $aFieldValue['sFirstName']=Yii::app()->request->getPost('register_firstname','');
@@ -377,13 +375,13 @@ class RegisterController extends LSYii_Controller {
     }
 
     /**
-    * Get the array of extra attribute with caption 
-    * @param $iSurveyId 
+    * Get the array of extra attribute with caption
+    * @param $iSurveyId
     * @return array
     */
     public function getExtraAttributeInfo($iSurveyId)
     {
-        $sLanguage=Yii::app()->lang->langcode;
+        $sLanguage=Yii::app()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
         $aRegisterAttributes=$aSurveyInfo['attributedescriptions'];
         foreach($aRegisterAttributes as $key=>$aRegisterAttribute){
@@ -397,25 +395,25 @@ class RegisterController extends LSYii_Controller {
     }
     /**
     * Get the date if survey is future
-    * @param $iSurveyId 
+    * @param $iSurveyId
     * @return localized date
     */
     public function getStartDate($iSurveyId){
-        $aSurveyInfo=getSurveyInfo($iSurveyId,Yii::app()->lang->langcode);
+        $aSurveyInfo=getSurveyInfo($iSurveyId,Yii::app()->language);
         if(empty($aSurveyInfo['startdate']) ||  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))>=$aSurveyInfo['startdate'])
             return;
         Yii::app()->loadHelper("surveytranslator");
-        $aDateFormat=getDateFormatData(getDateFormatForSID($iSurveyId,Yii::app()->lang->langcode),Yii::app()->lang->langcode);
+        $aDateFormat=getDateFormatData(getDateFormatForSID($iSurveyId,Yii::app()->language),Yii::app()->language);
         $datetimeobj = new Date_Time_Converter($aSurveyInfo['startdate'], 'Y-m-d H:i:s');
         return $datetimeobj->convert($aDateFormat['phpdate']);
     }
     /**
     * Display needed public page
-    * @param $iSurveyId 
+    * @param $iSurveyId
     */
     private function display($iSurveyId)
     {
-        $sLanguage=Yii::app()->lang->langcode;
+        $sLanguage=Yii::app()->language;
         $aData['surveyid']=$surveyid=$iSurveyId;
         $aData['thissurvey']=getSurveyInfo($iSurveyId,$sLanguage);
         $sTemplate=getTemplatePath(validateTemplateDir($aData['thissurvey']['template']));

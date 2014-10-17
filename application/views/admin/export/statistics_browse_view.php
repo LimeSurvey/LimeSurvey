@@ -1,5 +1,5 @@
 <?php
-$clang = Yii::app()->lang;
+
 ?>
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid'>

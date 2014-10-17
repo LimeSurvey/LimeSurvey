@@ -47,7 +47,6 @@ class responses extends Survey_Common_Action
         {
             $aData['iId'] = (int) $iId;
         }
-        $aData['clang'] = $clang = $this->getController()->lang;
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
         $aData['action'] = Yii::app()->request->getParam('action');
         $aData['all']=Yii::app()->request->getParam('all');
@@ -98,7 +97,7 @@ class responses extends Survey_Common_Action
             $oBrowseLanguage = new Limesurvey_lang($aData['language']);
 
             extract($aData);
-            $clang = Yii::app()->lang;
+
             $aViewUrls = array();
 
             $fncount = 0;
@@ -270,7 +269,6 @@ class responses extends Survey_Common_Action
         }
         else
         {
-            $clang = $this->getController()->lang;
             $aData['surveyid'] = $iSurveyID;
             App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
@@ -867,7 +865,6 @@ class responses extends Survey_Common_Action
         }
         else
         {
-            $clang = $this->getController()->lang;
             $aData['surveyid'] = $iSurveyID;
             App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');
@@ -1121,7 +1118,7 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'browse.js');
 
         $aData['display']['menu_bars'] = false;
-        $aData['display']['menu_bars']['browse'] = Yii::app()->lang->gT('Browse responses'); // browse is independent of the above
+        $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
 
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }

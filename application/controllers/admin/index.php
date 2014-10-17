@@ -16,7 +16,7 @@ class Index extends Survey_Common_Action
 
     public function run()
     {
-        $clang = Yii::app()->lang;
+        
 
         if (Yii::app()->session['just_logged_in'])
         {
