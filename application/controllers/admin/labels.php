@@ -45,7 +45,6 @@ class labels extends Survey_Common_Action
      */
     public function importlabelresources()
     {
-        $clang = $this->getController()->lang;
         $lid = returnGlobal('lid');
 
         if (!empty($lid))
@@ -117,7 +116,6 @@ class labels extends Survey_Common_Action
      */
     public function import()
     {
-        $clang = $this->getController()->lang;
         $action = returnGlobal('action');
         $aViewUrls = array();
 
@@ -163,7 +161,6 @@ class labels extends Survey_Common_Action
     {
         Yii::app()->loadHelper('surveytranslator');
 
-        $clang = $this->getController()->lang;
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
@@ -229,7 +226,6 @@ class labels extends Survey_Common_Action
         Yii::app()->session['FileManagerContext'] = "edit:label:{$lid}";
 
         // Gets the current language
-        $clang = $this->getController()->lang;
         $action = 'labels';
         $aViewUrls = array();
         $aData = array();
@@ -250,7 +246,6 @@ class labels extends Survey_Common_Action
             {
                 // Now recieve all labelset information and display it
                 $aData['lid'] = $lid;
-                $aData['clang'] = $clang;
                 $aData['row'] = $result->attributes;
 
                 // Display a specific labelbar menu
@@ -299,7 +294,6 @@ class labels extends Survey_Common_Action
                 $aViewUrls['labelview_view'][] = array(
                     'results' => $results,
                     'lslanguages' => $lslanguages,
-                    'clang' => $clang,
                     'lid' => $lid,
                     'maxsortorder' => $maxsortorder,
                 //    'msorow' => $maxresult->sortorder,

@@ -57,26 +57,25 @@ class GlobalSettings extends Survey_Common_Action
         updateCheck();
         $this->getController()->redirect(array('admin/globalsettings'));
     }
-        
+
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');
 
         //save refurl from where global settings screen is called!
         $refurl = Yii::app()->getRequest()->getUrlReferrer();
-        
+
         // Some URLs are not to be allowed to refered back to.
         // These exceptions can be added to the $aReplacements array
         $aReplacements=array('admin/user/adduser'=>'admin/user/index',
                              'admin/user/sa/adduser'=>'admin/user/sa/index',
                              'admin/user/sa/setusertemplates'=>'admin/user/sa/index',
                              'admin/user/setusertemplates'=>'admin/user/sa/index'
-                             
+
                             );
         $refurl= str_replace(array_keys($aReplacements),array_values($aReplacements),$refurl);
         Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
 
-        $data['clang'] = $this->getController()->lang;
         $data['title'] = "hi";
         $data['message'] = "message";
         foreach ($this->_checkSettings() as $key => $row)
@@ -87,9 +86,9 @@ class GlobalSettings extends Survey_Common_Action
         $data['sUpdateNotification'] = getGlobalSetting('updatenotification');
         Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = new date_time_converter(dateShift(getGlobalSetting("updatelastcheck"),'Y-m-d H:i:s',getGlobalSetting('timeadjust')), 'Y-m-d H:i:s'); 
+        $datetimeobj = new date_time_converter(dateShift(getGlobalSetting("updatelastcheck"),'Y-m-d H:i:s',getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
         $data['updatelastcheck']=$datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
-        
+
         $data['updateavailable'] = (getGlobalSetting("updateavailable") &&  Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
         $data['updateinfo'] = getGlobalSetting("updateinfo");
@@ -119,7 +118,6 @@ class GlobalSettings extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('settings','update')) {
             $this->getController()->redirect(array('/admin'));
         }
-        $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
 
         $maxemails = $_POST['maxemails'];
@@ -163,7 +161,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
-        
+
         setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl','')));
         setGlobalSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug','0')));
         setGlobalSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));

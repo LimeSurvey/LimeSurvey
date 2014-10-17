@@ -91,7 +91,6 @@ class Authentication extends Survey_Common_Action
                 $message = $identity->errorMessage;
                 if (empty($message)) {
                     // If no message, return a default message
-                    $clang = $this->getController()->lang;
                     $message = gT('Incorrect username and/or password!');
                 }
                 App()->user->setFlash('loginError', $message);
@@ -163,7 +162,6 @@ class Authentication extends Survey_Common_Action
     */
     private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
-        $clang = $this->getController()->lang;
         $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
         $sTo = $sEmailAddr;
         $sSubject = gT('User data');

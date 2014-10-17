@@ -2,7 +2,6 @@
     <div class='header ui-widget-header'><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></div>
     <br />
     <p><?php
-    debugbreak();
 
     eT("Some piece-of-cake steps to create your very own first survey:"); ?></p><br />
     <ol>

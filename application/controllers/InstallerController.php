@@ -137,7 +137,7 @@ class InstallerController extends CController {
         $this->loadHelper('surveytranslator');
         Yii::app()->session->remove('configFileWritten');
 
-        $aData['clang'] = $clang = $this->lang;
+
         $aData['title'] = gT('Welcome');
         $aData['descp'] = gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep'] = array('on','off','off','off','off','off');
@@ -163,7 +163,7 @@ class InstallerController extends CController {
     */
     private function stepLicense()
     {
-        $aData['clang'] = $clang = $this->lang;
+
         // $aData array contain all the information required by view.
         $aData['title'] = gT('License');
         $aData['descp'] = gT('GNU General Public License:');
@@ -195,7 +195,7 @@ class InstallerController extends CController {
     */
     private function stepPreInstallationCheck()
     {
-        $aData['clang'] = $clang = $this->lang;
+
         $oModel = new InstallerConfigForm();
         //usual data required by view
         $aData['title'] = gT('Pre-installation check');
@@ -231,7 +231,7 @@ class InstallerController extends CController {
     {
         $this->loadHelper('surveytranslator');
 
-        $aData['clang'] = $clang = $this->lang;
+
         // usual data required by view
         $aData['title'] = gT('Database configuration');
         $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
@@ -396,7 +396,6 @@ class InstallerController extends CController {
                         else {$aValues['adminoutput'].=$output;}
                         $aValues['adminoutput'].= "<br />" . sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
                     }
-                    $aValues['clang'] = $clang;
                     $this->render('/installer/dbsettings_view', $aValues);
                 } else {
                     $this->render('/installer/dbconfig_view', $aData);
@@ -421,7 +420,7 @@ class InstallerController extends CController {
             $this->redirect(array('installer/welcome'));
         }
 
-        $aData['clang'] = $clang = $this->lang;
+
         $aData['model'] = $model = new InstallerConfigForm;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -543,7 +542,7 @@ class InstallerController extends CController {
             $this->redirect(array('installer/welcome'));
         }
 
-        $aData['clang'] = $clang = $this->lang;
+
         $aData['model'] = $model = new InstallerConfigForm;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -562,7 +561,7 @@ class InstallerController extends CController {
             case 'mysql':
                 $sql_file = 'mysql';
                 break;
-            case 'dblib': 
+            case 'dblib':
             case 'sqlsrv':
             case 'mssql':
                 $sql_file = 'mssql';
@@ -611,7 +610,7 @@ class InstallerController extends CController {
     */
     private function stepOptionalConfiguration()
     {
-        $aData['clang'] = $clang = $this->lang;
+
         $aData['confirmation'] = Yii::app()->session['optconfig_message'];
         $aData['title'] = gT("Optional settings");
         $aData['descp'] = gT("Optional settings to give you a head start");
@@ -861,8 +860,8 @@ class InstallerController extends CController {
 
         if ($this->return_bytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
             $bProceed = !$aData['bMemoryError'] = true;
-        
-            
+
+
         // mbstring library check
         if (!check_PHPFunction('mb_convert_encoding', $aData['mbstringPresent']))
             $bProceed = false;
@@ -989,7 +988,7 @@ class InstallerController extends CController {
     */
     function _writeConfigFile()
     {
-        $aData['clang'] = $clang = $this->lang;
+
         //write config.php if database exists and has been populated.
         if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist'])
         {
@@ -1076,7 +1075,7 @@ class InstallerController extends CController {
 
             $sConfig .="\t\t" . "),"                                          . "\n"
             ."\t\t"   . ""                                          . "\n"
-                    
+
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"
             ."\t\t"   . "// 'session' => array ("                      . "\n"
             ."\t\t\t" . "// 'class' => 'system.web.CDbHttpSession',"   . "\n"
@@ -1157,7 +1156,7 @@ class InstallerController extends CController {
             case 'mysql':
             case 'mysqli':
                 // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
-                if(substr($sDatabaseLocation,0,1)=="/") 
+                if(substr($sDatabaseLocation,0,1)=="/")
                     $sDSN = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
                 else
                     $sDSN = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
@@ -1177,7 +1176,7 @@ class InstallerController extends CController {
                 }
                 break;
 
-            case 'dblib' : 
+            case 'dblib' :
                 $sDSN = $sDatabaseType.":host={$sDatabaseLocation};dbname={$sDatabaseName}";
                 break;
             case 'mssql' :
@@ -1269,10 +1268,10 @@ class InstallerController extends CController {
             }
         }
     }
-    
+
     /**
     * This function returns the full number from a PHP ini value
-    * 
+    *
     * @param string $sValue
     */
     function return_bytes($sValue) {
@@ -1289,6 +1288,6 @@ class InstallerController extends CController {
         }
 
         return $sValue;
-    }    
+    }
 
 }

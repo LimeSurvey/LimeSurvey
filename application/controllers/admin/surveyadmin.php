@@ -68,7 +68,6 @@ class SurveyAdmin extends Survey_Common_Action
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
-            $clang = $this->getController()->lang;
 
             //Automatically renumbers the "question codes" so that they follow
             //a methodical numbering method
@@ -140,7 +139,6 @@ class SurveyAdmin extends Survey_Common_Action
 
     function fakebrowser()
     {
-        $aData['clang'] = $this->getController()->lang;
         Yii::app()->getController()->renderPartial('/admin/survey/newSurveyBrowserMessage', $aData);
     }
 
@@ -161,7 +159,6 @@ class SurveyAdmin extends Survey_Common_Action
 
         //Yii::app()->loadHelper('text');
         Yii::app()->loadHelper('surveytranslator');
-        $clang = $this->getController()->lang;
 
         Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
 
@@ -198,7 +195,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     function importsurveyresources()
     {
-        $clang = $this->getController()->lang;
         $iSurveyID = Yii::app()->request->getPost('surveyid');
 
         if (!empty($iSurveyID))
@@ -306,7 +302,6 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID = sanitize_int($iSurveyID);
-        $clang = $this->getController()->lang;
         if (!tableExists('survey_'.$iSurveyID))
         {
             $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
@@ -403,7 +398,6 @@ class SurveyAdmin extends Survey_Common_Action
     public function activate($iSurveyID)
     {
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die();
-        $clang = Yii::app()->lang;
 
         $iSurveyID = (int) $iSurveyID;
 
@@ -569,7 +563,6 @@ class SurveyAdmin extends Survey_Common_Action
     public function getSurveys_json()
     {
         $this->getController()->loadHelper('surveytranslator');
-        $clang = $this->getController()->lang;
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
         $surveys = Survey::model();
@@ -709,8 +702,6 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $aData = $aViewUrls = array();
         $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
-        $clang = $this->getController()->lang;
-
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
         {
             if ($delete == 'yes')
@@ -758,7 +749,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function editlocalsettings($iSurveyID)
     {
-        $clang = $this->getController()->lang;
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
@@ -781,7 +771,6 @@ class SurveyAdmin extends Survey_Common_Action
                 // this one is created to get the right default texts fo each language
                 Yii::app()->loadHelper('database');
                 Yii::app()->loadHelper('surveytranslator');
-                $bplang = $this->getController()->lang; //new lang($grouplang);
 
                 $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
 
@@ -793,8 +782,6 @@ class SurveyAdmin extends Survey_Common_Action
                 $esrow = array_map('htmlspecialchars', $esrow);
                 $aData['esrow'] = $esrow;
                 $aData['action'] = "editsurveylocalesettings";
-                $aData['clang'] = $clang;
-
                 $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aData, true);
             }
 
@@ -826,8 +813,6 @@ class SurveyAdmin extends Survey_Common_Action
 
         if ($action == "importsurvey" || $action == "copysurvey")
         {
-            $clang = $this->getController()->lang;
-
             // Start the HTML
             if ($action == 'importsurvey')
             {
@@ -1050,7 +1035,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("The new question group/question order was successfully saved.");
+        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
@@ -1179,9 +1164,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _generalTabEditSurvey($iSurveyID, $esrow)
     {
-        $clang = $this->getController()->lang;
         $aData['action'] = "editsurveysettings";
-        $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
         $aData['surveyid'] = $iSurveyID;
 
@@ -1320,7 +1303,6 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $disabledIfNoResources = " disabled='disabled'";
         }
-        $aData['clang'] = $clang;
         //$aData['esrow'] = $esrow;
         $aData['ZIPimportAction'] = $ZIPimportAction;
         $aData['disabledIfNoResources'] = $disabledIfNoResources;
@@ -1336,7 +1318,6 @@ class SurveyAdmin extends Survey_Common_Action
         {
             die();
         }
-        $clang = $this->getController()->lang;
         Yii::app()->session['flashmessage'] = gT("The survey was successfully expired by setting an expiration date in the survey settings.");
         Survey::model()->expire($iSurveyID);
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
@@ -1352,7 +1333,6 @@ class SurveyAdmin extends Survey_Common_Action
         where up.sid={$iSurveyID}");
         $oResult= $oResult->readAll();
         $i = 0;
-        $clang = $this->getController()->lang;
         $aData = new stdClass();
         foreach ($oResult as $oRow)
         {
@@ -1543,14 +1523,14 @@ class SurveyAdmin extends Survey_Common_Action
                 $aInsertData['adminemail'] = Yii::app()->request->getPost('adminemail');
             } else {
                 $aInsertData['adminemail'] = '';
-                $warning .= $this->getController()->lang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>';
+                $warning .= gT("Warning! Notification email was not updated because it was not valid.").'<br/>';
             }
             if (Yii::app()->request->getPost('bounce_email', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
                 $aInsertData['bounce_email'] = Yii::app()->request->getPost('bounce_email');
             } else {
                 $aInsertData['bounce_email'] = '';
-                $warning .= $this->getController()->lang->gT("Warning! Bounce email was not updated because it was not valid.").'<br/>';
+                $warning .= gT("Warning! Bounce email was not updated because it was not valid.").'<br/>';
             }
 
             if (!is_null($iSurveyID))
@@ -1603,7 +1583,7 @@ class SurveyAdmin extends Survey_Common_Action
             $langsettings = new SurveyLanguageSetting;
             $langsettings->insertNewSurvey($aInsertData);
 
-            Yii::app()->session['flashmessage'] = $warning.$this->getController()->lang->gT("Survey was successfully added.");
+            Yii::app()->session['flashmessage'] = $warning.gT("Survey was successfully added.");
 
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
