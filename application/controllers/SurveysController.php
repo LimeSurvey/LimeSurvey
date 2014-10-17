@@ -8,23 +8,23 @@
         public $layout = 'bare';
         public $defaultAction = 'publicList';
 
-		public function actionOrganize($surveyId)
-		{
-			$this->layout = 'main';
-			$groups = QuestionGroup::model()->findAllByAttributes(array(
-				'sid' => $surveyId
-			));
-			$this->render('organize', compact('groups'));
-		}
+        public function actionOrganize($surveyId)
+        {
+            $this->layout = 'main';
+            $groups = QuestionGroup::model()->findAllByAttributes(array(
+                'sid' => $surveyId
+            ));
+            $this->render('organize', compact('groups'));
+        }
 
 
 
-        public function actionPublicList($lang = null)
+        public function actionPublicList($sLanguage = null)
         {
             $this->sessioncontrol();
-            if (isset($lang))
+            if (isset($sLanguage))
             {
-                App()->setLang(new Limesurvey_lang($lang));
+                App()->setLanguage($sLanguage);
             }
 
             $this->render('publicSurveyList', array(
@@ -46,8 +46,7 @@
             if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
                 Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
-            Yii::import('application.libraries.Limesurvey_lang');
-            Yii::app()->setLang(new Limesurvey_lang(Yii::app()->session['adminlang']));
+            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
         }
     }
 ?>

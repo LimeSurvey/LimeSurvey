@@ -611,7 +611,6 @@ class index extends CAction {
         {
             $baselang = Yii::app()->getConfig('defaultlang');
         }
-        Yii::import("application.libraries.Limesurvey_lang");
         App()->setLanguage($baselang);
     }
 

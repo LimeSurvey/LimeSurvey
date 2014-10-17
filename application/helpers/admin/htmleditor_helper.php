@@ -114,15 +114,14 @@
         {
             $controller = Yii::app()->getController();
         }
-
         if ($load == false)
         {
 
-            return $controller->renderPartial('/admin/survey/prepareEditorScript_view',$data,true);
+            return $controller->renderPartial('/admin/survey/prepareEditorScript_view',array(),true);
         }
         else
         {
-            $controller->renderPartial('/admin/survey/prepareEditorScript_view',$data);
+            $controller->renderPartial('/admin/survey/prepareEditorScript_view',array());
         }
     }
 

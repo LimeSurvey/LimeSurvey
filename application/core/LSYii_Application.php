@@ -24,10 +24,6 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 class LSYii_Application extends CWebApplication
 {
     protected $config = array();
-    /**
-     * @var Limesurvey_lang
-     */
-    public $lang = null;
 
     /**
      *
@@ -276,7 +272,6 @@ class LSYii_Application extends CWebApplication
     * For future use, cache the language app wise as well.
     *
     * @access public
-    * @param Limesurvey_lang
     * @return void
     */
     public function setLanguage( $sLanguage )

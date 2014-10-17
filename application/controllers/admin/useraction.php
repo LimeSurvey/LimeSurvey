@@ -77,7 +77,7 @@ class UserAction extends Survey_Common_Action
 
     function adduser()
     {
-        
+
         if (!Permission::model()->hasGlobalPermission('users','create')) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -172,7 +172,7 @@ class UserAction extends Survey_Common_Action
     */
     function deluser()
     {
-        
+
         if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -254,7 +254,7 @@ class UserAction extends Survey_Common_Action
 
     function deleteFinalUser($result, $transfer_surveys_to)
     {
-        
+
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         // Never delete initial admin (with findByAttributes : found the first user without parent)
@@ -338,7 +338,7 @@ class UserAction extends Survey_Common_Action
     */
     function moduser()
     {
-        
+
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         $postemail = flattenText(Yii::app()->request->getPost("email"));
@@ -415,7 +415,7 @@ class UserAction extends Survey_Common_Action
 
     function savepermissions()
     {
-        
+
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
         if (Yii::app()->session['loginID']==$iUserID) {
@@ -553,7 +553,7 @@ class UserAction extends Survey_Common_Action
 
     function usertemplates()
     {
-        
+
         $postuserid = (int) Yii::app()->request->getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
@@ -604,7 +604,7 @@ class UserAction extends Survey_Common_Action
     */
     function personalsettings()
     {
-
+        DebugBreak();
         // Save Data
         if (Yii::app()->request->getPost("action")) {
             $aData = array(
@@ -735,7 +735,7 @@ class UserAction extends Survey_Common_Action
 
     private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
-        
+
         $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/index');
         $urlText = (!empty($urlText)) ? $urlText : gT("Continue");
 

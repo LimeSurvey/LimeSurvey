@@ -29,21 +29,23 @@ function comparePermission($aPermissionA,$aPermissionB)
 }
 
 /**
- * Translation helper function.
+ * Translation helper function
  * @param string $sToTranslate
  * @param string $sEscapeMode
+ * @param string $sLanguage
  */
-function gT($sToTranslate, $sEscapeMode = 'html')
+function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 {
-    return quoteText(Yii::t('app',$sToTranslate),$sEscapeMode);
+    return quoteText(Yii::t('',$sToTranslate,null,null,$sLanguage),$sEscapeMode);
 }
 
 /**
  * Translation helper function which outputs right away.
  * @param string $sToTranslate
  * @param string $sEscapeMode
+ * @param string $sLanguage
  */
-function eT($sToTranslate, $sEscapeMode = 'html')
+function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 {
     echo gT($sToTranslate,$sEscapeMode);
 }
@@ -56,7 +58,7 @@ function eT($sToTranslate, $sEscapeMode = 'html')
  */
 function ngT($sToTranslate, $iCount, $sEscapeMode = 'html')
 {
-    return quoteText(Yii::t('app',$sToTranslate,$iCount),$sEscapeMode);
+    return quoteText(Yii::t('',$sToTranslate,$iCount),$sEscapeMode);
 }
 
 /**
@@ -1679,16 +1681,15 @@ function sendCacheHeaders()
 }
 
 /**
-* @param type $iSurveyID The Survey ID
-* @param type $sFieldCode Field code of the particular field
-* @param type $sValue The stored response value
-* @param object $oLanguage Initialized limesurvey_lang object for the resulting response data
+* @param integer $iSurveyID The Survey ID
+* @param string $sFieldCode Field code of the particular field
+* @param string $sValue The stored response value
+* @param string $sLanguage Initialized limesurvey_lang object for the resulting response data
 * @return string
 */
-function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
+function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 {
     if ($sValue==null || $sValue=='') return '';
-    $sLanguage = $oLanguage->langcode;
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
     if (strpos($sFieldCode, "{$iSurveyID}X")===0) //Only check if it looks like a real fieldcode
@@ -1741,7 +1742,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 } // while
                 if ($sValue == "-oth-")
                 {
-                    $this_answer=$oLanguage->gT("Other");
+                    $this_answer=gT("Other",null,$sLanguage);
                 }
                 break;
             case "M":
@@ -1749,39 +1750,39 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case "P":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
+                case "Y": $this_answer=gT("Yes",null,$sLanguage); break;
             }
             break;
             case "Y":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-                case "N": $this_answer=$oLanguage->gT("No"); break;
-                default: $this_answer=$oLanguage->gT("No answer");
+                case "Y": $this_answer=gT("Yes",null,$sLanguage); break;
+                case "N": $this_answer=gT("No",null,$sLanguage); break;
+                default: $this_answer=gT("No answer",null,$sLanguage);
             }
             break;
             case "G":
             switch($sValue)
             {
-                case "M": $this_answer=$oLanguage->gT("Male"); break;
-                case "F": $this_answer=$oLanguage->gT("Female"); break;
-                default: $this_answer=$oLanguage->gT("No answer");
+                case "M": $this_answer=gT("Male",null,$sLanguage); break;
+                case "F": $this_answer=gT("Female",null,$sLanguage); break;
+                default: $this_answer=gT("No answer",null,$sLanguage);
             }
             break;
             case "C":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-                case "N": $this_answer=$oLanguage->gT("No"); break;
-                case "U": $this_answer=$oLanguage->gT("Uncertain"); break;
+                case "Y": $this_answer=gT("Yes",null,$sLanguage); break;
+                case "N": $this_answer=gT("No",null,$sLanguage); break;
+                case "U": $this_answer=gT("Uncertain",null,$sLanguage); break;
             }
             break;
             case "E":
             switch($sValue)
             {
-                case "I": $this_answer=$oLanguage->gT("Increase"); break;
-                case "D": $this_answer=$oLanguage->gT("Decrease"); break;
-                case "S": $this_answer=$oLanguage->gT("Same"); break;
+                case "I": $this_answer=gT("Increase",null,$sLanguage); break;
+                case "D": $this_answer=gT("Decrease",null,$sLanguage); break;
+                case "S": $this_answer=gT("Same",null,$sLanguage); break;
             }
             break;
             case "F":
@@ -1803,12 +1804,12 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 } // while
                 if ($sValue == "-oth-")
                 {
-                    $this_answer=$oLanguage->gT("Other");
+                    $this_answer=gT("Other",null,$sLanguage);
                 }
                 break;
             case "|": //File upload
                 if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = $oLanguage->gT("File count");
+                    $this_answer = $sLanguage->gT("File count");
                 } else {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue);
@@ -5992,7 +5993,6 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=true)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
-    $oLanguage = new Limesurvey_lang($sLanguageCode);
 
     //Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
@@ -6044,7 +6044,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 }
                 else
                 {
-                    $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
+                    $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
@@ -6052,7 +6052,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         }
         else
         {
-            $answer=getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
+            $answer=getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
             $aResultTable[$fname['fieldname']]=array($question,'',$answer);
             continue;
         }
@@ -6065,7 +6065,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
 
-        $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
+        $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
         $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
     }
     return $aResultTable;

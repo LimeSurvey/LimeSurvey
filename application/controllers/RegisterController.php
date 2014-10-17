@@ -90,7 +90,6 @@ class RegisterController extends LSYii_Controller {
             $this->redirect(array('survey/index','sid'=>$iSurveyId,'lang'=>$sLanguage));
         }
 
-        Yii::import('application.libraries.Limesurvey_lang');
         Yii::app()->setLanguage($sLanguage);
 
 
