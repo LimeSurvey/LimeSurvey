@@ -238,7 +238,7 @@ class update extends Survey_Common_Action
         $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $aDatabasetype = Yii::app()->db->getDriverName();
-        $aData = array('clang' => $clang);
+        $aData = array();
         // Request the list with changed files from the server
 
         if (!isset( Yii::app()->session['updateinfo']))

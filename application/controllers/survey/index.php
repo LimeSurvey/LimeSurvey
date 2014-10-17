@@ -52,8 +52,7 @@ class index extends CAction {
         global $surveyid;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
-        global $clang;
-        
+
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
         if(isset(Yii::app()->session->connectionID)) {
@@ -89,11 +88,11 @@ class index extends CAction {
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
 
-        $clang = $this->_loadLimesurveyLang($surveyid);
+        $this->_loadLimesurveyLang($surveyid);
 
         if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) )
         {
-            $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>$clang->langcode,'newtest'=>'Y'));
+            $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>App()->language,'newtest'=>'Y'));
             $asMessage = array(
             gT('Token mismatch'),
             gT('The token you provided doesn\'t match the one in your session.'),
@@ -104,7 +103,7 @@ class index extends CAction {
 
         if ( $this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) // No test for response update
         {
-            $aReloadUrlParam=array('lang'=>$clang->langcode,'newtest'=>'Y');
+            $aReloadUrlParam=array('lang'=>App()->language,'newtest'=>'Y');
             if($clienttoken){$aReloadUrlParam['token']=$clienttoken;}
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",$aReloadUrlParam);
             $asMessage = array(
@@ -192,11 +191,11 @@ class index extends CAction {
         if ($surveyid && $surveyExists)
         {
             LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
-            $clang = SetSurveyLanguage( $surveyid, $sDisplayLanguage);
+            SetSurveyLanguage( $surveyid, $sDisplayLanguage);
             if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
-            if ($clang->langcode != $sOldLang)  // Update the Session var only if needed
+            if (App()->language != $sOldLang)  // Update the Session var only if needed
             {
-                UpdateGroupList($surveyid, $clang->langcode);   // to refresh the language strings in the group list session variable
+                UpdateGroupList($surveyid, App()->language);   // to refresh the language strings in the group list session variable
                 UpdateFieldArray();                             // to refresh question titles and question text
             }
         }
@@ -314,7 +313,7 @@ class index extends CAction {
             }
 
             if ($errormsg == "") {
-                LimeExpressionManager::SetDirtyFlag();  
+                LimeExpressionManager::SetDirtyFlag();
                 buildsurveysession($surveyid);
                 if (loadanswers()){
                     Yii::app()->setConfig('move','movenext');
@@ -542,7 +541,7 @@ class index extends CAction {
         if ($previewmode)
         {
             // Unset all SESSION: be sure to have the last version
-            unset($_SESSION['fieldmap-' . $surveyid . $clang->langcode]);// Needed by createFieldMap: else fieldmap can be outdated
+            unset($_SESSION['fieldmap-' . $surveyid . App()->language]);// Needed by createFieldMap: else fieldmap can be outdated
             unset($_SESSION['survey_'.$surveyid]);
             if ($param['action'] == 'previewgroup')
             {
@@ -585,7 +584,7 @@ class index extends CAction {
         foreach(array('lang','action','newtest','qid','gid','sid','loadname','loadpass','scid','thisstep','move','token') as $sNeededParam)
         {
             $param[$sNeededParam]=returnGlobal($sNeededParam,true);
-        } 
+        }
 
         return $param;
     }
@@ -613,7 +612,7 @@ class index extends CAction {
             $baselang = Yii::app()->getConfig('defaultlang');
         }
         Yii::import("application.libraries.Limesurvey_lang");
-        return new Limesurvey_lang($baselang);
+        App()->setLanguage($baselang);
     }
 
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
@@ -674,7 +673,7 @@ class index extends CAction {
 
     function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
-        
+
         killSurveySession($surveyid);
         $thissurvey=getSurveyInfo($surveyid);
         if($thissurvey)

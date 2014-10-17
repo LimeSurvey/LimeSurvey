@@ -101,7 +101,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($captchapath)) { $captchapath = ''; }
     if (!isset($sitename)) { $sitename=Yii::app()->getConfig('sitename'); }
     if (!isset($saved_id) && isset(Yii::app()->session['survey_'.$_surveyid]['srid'])) { $saved_id=Yii::app()->session['survey_'.$_surveyid]['srid'];}
-    
+
 
     Yii::app()->loadHelper('surveytranslator');
 
@@ -141,7 +141,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }
 
 		Yii::app()->getClientScript()->registerCssFile("{$templateurl}template.css");
-		if (getLanguageRTL($clang->langcode))
+		if (getLanguageRTL(App()->language))
         {
             Yii::app()->getClientScript()->registerCssFile("{$templateurl}template-rtl.css");
         }
@@ -498,7 +498,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     $_saveform .= "' /></td></tr>\n";
     if ( isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
-    {                                                                                                                                                                                                     
+    {
         $_saveform .="<tr class='save-survey-row save-survey-captcha'><td class='save-survey-label label-cell' align='right'><label for='loadsecurity'>" . gT("Security question") . "</label>:</td><td class='save-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img alt='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' /></td><td class='captcha-input' valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
     $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
@@ -637,7 +637,7 @@ EOD;
     $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
     $coreReplacements['GROUPNAME'] = $_groupname;
-    $coreReplacements['LANG'] = $clang->getlangcode();
+    $coreReplacements['LANG'] = App()->language;
     $coreReplacements['LANGUAGECHANGER'] = isset($languagechanger) ? $languagechanger : '';    // global
     $coreReplacements['LOADERROR'] = isset($errormsg) ? $errormsg : ''; // global
     $coreReplacements['LOADFORM'] = $_loadform;
@@ -683,8 +683,7 @@ EOD;
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
     $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : '';  // global
-    $coreReplacements['SURVEYLANGAGE'] = $clang->langcode;
-    $coreReplacements['SURVEYLANGUAGE'] = $clang->langcode;
+    $coreReplacements['SURVEYLANGUAGE'] = App()->language;
     $coreReplacements['SURVEYLIST'] = (isset($surveylist))?$surveylist['list']:'';
     $coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : '');
@@ -707,7 +706,7 @@ EOD;
 
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
     $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
-    
+
     return $line;
 
 }
@@ -773,8 +772,8 @@ function PassthruReplace($line, $thissurvey)
 
 /**
 * doHtmlSaveAll return HTML part of saveall button in survey
-* @param string $move : 
-* @return string 
+* @param string $move :
+* @return string
 **/
 function doHtmlSaveAll($move="")
 {
@@ -783,7 +782,7 @@ function doHtmlSaveAll($move="")
         return $aSaveAllButtons[$move];
     $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
-    
+
     $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall submit button");
     $aHtmlOptionsSaveall=array('type'=>'submit','id'=>'saveallbtn','value'=>'saveall','name'=>'saveall','class'=>"saveall submit button");
     if($thissurvey['active'] != "Y"){
@@ -809,7 +808,7 @@ function doHtmlSaveAll($move="")
         $sSaveAllButtons .= CHtml::htmlButton(gT("Resume later"),$aHtmlOptionsSaveall);
     }
     elseif (!$iSessionStep) //Welcome page, show load (but not save)
-    {  
+    {
         if (!$bTokenanswerspersistence && !$bAlreadySaved )
         {
             $sSaveAllButtons .= $sLoadButton;

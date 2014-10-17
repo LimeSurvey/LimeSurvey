@@ -96,14 +96,14 @@ class OptinController extends LSYii_Controller {
         {
             $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
         }
-        $this->_renderHtml($sMessage,$sTemplate,$clang,$aSurveyInfo);
+        $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo);
     }
 
-    private function _renderHtml($html,$thistpl, $oLanguage, $aSurveyInfo)
+    private function _renderHtml($html,$thistpl, $aSurveyInfo)
     {
         sendCacheHeaders();
         doHeader();
-        $aSupportData=array('thissurvey'=>$aSurveyInfo, 'clang'=>$oLanguage);
+        $aSupportData=array('thissurvey'=>$aSurveyInfo);
         echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'startpage.pstpl'),array(), $aSupportData);
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;

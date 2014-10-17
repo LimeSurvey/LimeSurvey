@@ -938,21 +938,14 @@ class templates extends Survey_Common_Action
         $groupdescription = gT("This group description is fairly vacuous, but quite important.");
 
         $navigator = $this->getController()->render('/admin/templates/templateeditor_navigator_view', array(
-        'screenname' => $screenname,
-        'clang' => $clang,
+        'screenname' => $screenname
         ), true);
 
-        $completed = $this->getController()->render('/admin/templates/templateeditor_completed_view', array(
-        'clang' => $clang,
-        ), true);
+        $completed = $this->getController()->render('/admin/templates/templateeditor_completed_view', array(), true);
 
-        $assessments = $this->getController()->render('/admin/templates/templateeditor_assessments_view', array(
-        'clang' => $clang,
-        ), true);
+        $assessments = $this->getController()->render('/admin/templates/templateeditor_assessments_view', array(), true);
 
-        $printoutput = $this->getController()->render('/admin/templates/templateeditor_printoutput_view', array(
-        'clang' => $clang
-        ), true);
+        $printoutput = $this->getController()->render('/admin/templates/templateeditor_printoutput_view', array(), true);
 
         $totalquestions = '10';
         $surveyformat = 'Format';
@@ -1013,7 +1006,7 @@ class templates extends Survey_Common_Action
                 foreach ($Question as $qs)
                     $files[] = array("name" => $qs);
 
-                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array('clang' => $clang), true);
+                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array(), true);
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/survey.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startgroup.pstpl", $aData));
@@ -1037,11 +1030,11 @@ class templates extends Survey_Common_Action
                 );
                 $aData['question'] = $question;
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('clang' => $clang), true);
+                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['answer'] = $answer;
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true,'clang' => $clang), true);
+                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['answer'] = $answer;
                 $question = array(
                 'all' => gT("Please explain something in detail:"),// Still in use ?
@@ -1159,8 +1152,7 @@ class templates extends Survey_Common_Action
                     'QUESTIONHELP' => gT('This is some help text for this question.'),
                     'ANSWER' =>
                     $this->getController()->render('/admin/templates/templateeditor_printablesurvey_quesanswer_view', array(
-                    'templateurl' => $templateurl,
-                    'clang' => $clang
+                    'templateurl' => $templateurl
                     ), true),
                     ), $aData);
                 }

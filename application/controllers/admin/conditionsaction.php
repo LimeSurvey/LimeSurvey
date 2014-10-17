@@ -1132,7 +1132,6 @@ class conditionsaction extends Survey_Common_Action {
 
         $aViewUrls = array();
 
-        $aData['clang'] = $clang;
         $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
         $aData['gid'] = $gid;
@@ -2067,7 +2066,7 @@ class conditionsaction extends Survey_Common_Action {
     private function _showSpeaker($hinttext)
     {
         global $max;
-        
+
         $imageurl = Yii::app()->getConfig("adminimageurl");
 
         if(!isset($max))

@@ -93,7 +93,6 @@ class Assessments extends Survey_Common_Action
         }
 
         $surveyinfo = getSurveyInfo($iSurveyID);
-        $aData['clang'] = $clang;
         $aData['surveyinfo'] = $surveyinfo;
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['surveyid'] = $iSurveyID;

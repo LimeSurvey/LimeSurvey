@@ -47,8 +47,7 @@ class printablesurvey extends Survey_Common_Action
             $surveyprintlang=$aSurveyInfo['surveyls_language'];
 
             // Setting the selected language for printout
-            $clang = new limesurvey_lang($surveyprintlang);
-
+            App()->setLanguage($surveyprintlang);
             $templatename = validateTemplateDir($aSurveyInfo['templatedir']);
             $welcome = $aSurveyInfo['surveyls_welcometext'];
             $end = $aSurveyInfo['surveyls_endtext'];

@@ -574,8 +574,7 @@ class dataentry extends Survey_Common_Action
             'id' => $id,
             'surveyid' => $surveyid,
             'subaction' => $subaction,
-            'part' => 'header',
-            'clang' => $clang,
+            'part' => 'header'
             );
 
             $aViewUrls[] = 'dataentry_header_view';
@@ -1477,15 +1476,14 @@ class dataentry extends Survey_Common_Action
     */
     public function insert()
     {
-        
+
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
 
         $aData = array(
         'surveyid' => $surveyid,
-        'lang' => $lang,
-        'clang' => $clang
+        'lang' => $lang
         );
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','create'))
@@ -1868,7 +1866,7 @@ class dataentry extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
         {
-            
+
 
             $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
             $surveyinfo=getSurveyInfo($surveyid);
@@ -1880,10 +1878,8 @@ class dataentry extends Survey_Common_Action
             if(is_null($lang) || !in_array($lang,$slangs))
             {
                 $sDataEntryLanguage = $baselang;
-                $blang = $clang;
+                $blang = App()->language;
             } else {
-                Yii::app()->loadLibrary('Limesurvey_lang',array($lang));
-                $blang = new Limesurvey_lang($lang);
                 $sDataEntryLanguage = $lang;
             }
 
@@ -1981,9 +1977,6 @@ class dataentry extends Survey_Common_Action
                     $cdata['bgc'] = $bgc;
                     $cdata['fieldname'] = $fieldname;
                     $cdata['deqrow'] = $deqrow;
-                    $cdata['clang'] = $clang;
-
-                    //DIFFERENT TYPES OF DATA FIELD HERE
                     $cdata['blang'] = $blang;
 
                     $cdata['thissurvey'] = $thissurvey;

@@ -57,7 +57,7 @@ class Save {
     function showsaveform()
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
-        global $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $thisstep;
+        global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
 		$redata = compact(array_keys(get_defined_vars()));
         $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
         sendCacheHeaders();
@@ -73,7 +73,7 @@ class Save {
         ."\t</script>\n\n";
 
         echo CHtml::form(array("/survey/index"), 'post')."\n";
-        
+
         //PRESENT OPTIONS SCREEN
         if (isset($errormsg) && $errormsg != "")
         {
@@ -107,10 +107,10 @@ class Save {
         // - "value" which is the value of the response
         //We start by generating the first 5 values which are consistent for all rows.
 
-        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clang, $clienttoken, $thisstep;
+        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
 
         $timeadjust = getGlobalSetting('timeadjust');
-        
+
         //Check that the required fields have been completed.
         $errormsg = '';
         if (empty($_POST['savename'])) $errormsg .= gT("You must supply a name for this saved session.")."<br />\n";
@@ -213,7 +213,7 @@ class Save {
                     $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
                     if (trim($thissurvey['adminemail'])=='')
                     {
-                        $errormsg .=gT('(Reason: Admin email address empty)');    
+                        $errormsg .=gT('(Reason: Admin email address empty)');
                     }
                 }
             }
@@ -240,7 +240,7 @@ class Save {
             $setField = $_POST['lastanswer'];
         }
         elseif (isset($_POST['lastgroup']))
-        {    
+        {
             $setField = $_POST['lastgroup'];
         }
         $passedTime = str_replace(',','.',round(microtime(true) - $_POST['start_time'],2));

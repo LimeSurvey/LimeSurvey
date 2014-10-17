@@ -79,7 +79,7 @@
                 }
             }
         }
-    } 
+    }
 
     function sTranslateLangCode2CK($sLanguageCode){
         $aTranslationTable=array(
@@ -109,9 +109,6 @@
 
     function PrepareEditorScript($load=false, $controller = null)
     {
-        
-        $data['clang'] = $clang;
-
         App()->getClientScript()->registerCoreScript('ckeditor');
         if ($controller == null)
         {
@@ -184,7 +181,7 @@
 
     function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
-        
+
         $htmlcode = '';
         $imgopts = '';
         $toolbarname = 'Basic';
@@ -207,7 +204,7 @@
     }
 
     function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
-    {                         
+    {
         $htmlcode = '';
         $imgopts = '';
         $toolbarname = 'inline';
@@ -255,7 +252,7 @@
             ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'
             ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
         }
-        
+
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
         . "$(document).ready(
@@ -277,7 +274,7 @@
         ."});
         \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
         });";
-        
+
 
         $htmlcode.= '</script>';
 

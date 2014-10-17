@@ -115,7 +115,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
-    
+
 
     $group['Arrays'] = gT('Arrays');
     $group['MaskQuestions'] = gT("Mask questions");
@@ -378,7 +378,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     static $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
-    $clang = new Limesurvey_lang(isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en');
+    App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
 
     if(is_null($cached)) {
         $args = array('order'=>'surveyls_title');
@@ -557,7 +557,7 @@ function getAdminThemeList()
 */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-   
+
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
 
@@ -609,7 +609,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 */
 function getGidPrevious($surveyid, $gid)
 {
-    
+
 
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
@@ -640,7 +640,7 @@ function getGidPrevious($surveyid, $gid)
 */
 function getQidPrevious($surveyid, $gid, $qid)
 {
-    
+
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid'=>0),array('order'=>'question_order'));
 
@@ -673,7 +673,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 */
 function getGidNext($surveyid, $gid)
 {
-    
+
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
@@ -706,7 +706,7 @@ function getGidNext($surveyid, $gid)
 */
 function getQidNext($surveyid, $gid, $qid)
 {
-    
+
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0), array('order'=>'question_order'));
@@ -1153,7 +1153,7 @@ function longestString( $new_string , $longest_length )
 */
 function getNotificationList($notificationcode)
 {
-    
+
     $ntypes = array(
     "0"=>gT("No email notification"),
     "1"=>gT("Basic email notification"),
@@ -1180,7 +1180,7 @@ function getNotificationList($notificationcode)
 */
 function getGroupList($gid,$surveyid)
 {
-    
+
     $groupselecter="";
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
@@ -1241,7 +1241,7 @@ function getGroupList3($gid,$surveyid)
 function getGroupListLang($gid, $language, $surveyid)
 {
 
-    
+
 
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
@@ -1276,7 +1276,7 @@ function getGroupListLang($gid, $language, $surveyid)
 
 function getUserList($outputformat='fullinfoarray')
 {
-    
+
 
     if (!empty(Yii::app()->session['loginID']))
     {
@@ -2245,7 +2245,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
-    $clang = new Limesurvey_lang($sLanguage);
+    App()->setLanguage($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
@@ -2845,11 +2845,11 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
-    $clang = new Limesurvey_lang($sLanguage);
+    App()->setLanguage($sLanguage);
 
     //checks to see if fieldmap has already been built for this page.
-    if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+    if (isset($timingsFieldMap[$surveyid][$style][$sLanguage]) && $force_refresh==false) {
+        return $timingsFieldMap[$surveyid][$style][$sLanguage];
     }
 
     //do something
@@ -2873,8 +2873,8 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
         }
     }
 
-    $timingsFieldMap[$surveyid][$style][$clang->langcode] = $fieldmap;
-    return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+    $timingsFieldMap[$surveyid][$style][$sLanguage] = $fieldmap;
+    return $timingsFieldMap[$surveyid][$style][$sLanguage];
 }
 
 /**
@@ -3091,7 +3091,7 @@ function questionAttributes($returnByName=false)
     // Use some static
     static $qattributes=false;
     static $qat=false;
-    
+
 
     if (!$qattributes)
     {
@@ -4407,7 +4407,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     global $maildebug, $maildebugbody;
 
-    
+
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
     $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
@@ -5450,7 +5450,7 @@ function getTokenConditionsFieldNames($surveyid)
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 {
-    
+
 
     $aBasicTokenFields=array('firstname'=>array(
         'description'=>gT('First name'),
@@ -5702,7 +5702,7 @@ function getUpdateInfo()
 function updateCheck()
 {
     $aUpdateVersions=getUpdateInfo();
-    
+
 
     if (isset($aUpdateVersions['errorcode']))
     {
@@ -6091,13 +6091,13 @@ function isNumericInt($mStr)
 */
 function includeKeypad()
 {
-    
 
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.$clang->langcode.'.js';
-    if ($clang->langcode != 'en' && file_exists($localefile))
+
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
+    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
+    if (App()->language != 'en' && file_exists($localefile))
     {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.$clang->langcode.'.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.App()->language.'.js');
     }
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
 }
@@ -6454,7 +6454,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
 */
 function accessDenied($action,$sid='')
 {
-    
+
     if (Yii::app()->session['loginID'])
     {
         $ugid = Yii::app()->getConfig('ugid');
@@ -6652,7 +6652,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 function fixLanguageConsistency($sid, $availlangs='')
 {
     $sid=sanitize_int($sid);
-    
+
 
     if (trim($availlangs)!='')
     {
@@ -7013,7 +7013,7 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 */
 function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
 {
-    
+
     $condarray = Array();
 
     $baselang = Survey::model()->findByPk($sid)->language;
@@ -7081,7 +7081,7 @@ function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 */
 function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 {
-    
+
     $resarray=Array();
     $resarray['notAbove']=null; // defaults to no constraint
     $resarray['notBelow']=null; // defaults to no constraint
@@ -7179,7 +7179,7 @@ function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 
 function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 {
-    
+
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (!Permission::model()->hasGlobalPermission('superadmin','read'))
@@ -7230,7 +7230,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 function getGroupUserList($ugid)
 {
     Yii::app()->loadHelper('database');
-    
+
 
     $ugid=sanitize_int($ugid);
     $surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
@@ -7272,7 +7272,7 @@ function getGroupUserList($ugid)
 function modifyDatabase($sqlfile='', $sqlstring='')
 {
     Yii::app()->loadHelper('database');
-    
+
 
     global $siteadminemail;
     global $siteadminname;
@@ -7348,7 +7348,7 @@ function modifyDatabase($sqlfile='', $sqlstring='')
 function getLabelSets($languages = null)
 {
 
-    
+
     $languagesarray = array();
     if ($languages)
     {
@@ -7607,7 +7607,7 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 */
 function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surveyid)
 {
-    
+
     $surveyid=sanitize_int($surveyid);
 
     $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
@@ -7647,7 +7647,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
 
 function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 {
-    
+
     $surveyid=sanitize_int($surveyid);
 
     $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
@@ -7748,7 +7748,7 @@ function json_decode_ls($jsonString)
  */
 function aEncodingsArray()
     {
-        
+
         return array(
         "armscii8" => gT("ARMSCII-8 Armenian"),
         "ascii" => gT("US ASCII"),

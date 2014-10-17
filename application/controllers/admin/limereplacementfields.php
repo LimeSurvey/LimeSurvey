@@ -32,7 +32,7 @@ class limereplacementfields extends Survey_Common_Action
             $action = $_GET['action'];
         }
 
-        
+
 
         if (!Yii::app()->session['loginID']) {
             die ("Unauthenticated Access Forbiden");
@@ -59,7 +59,6 @@ class limereplacementfields extends Survey_Common_Action
 
         $data['countfields'] = count($replacementFields);
         $data['replFields'] = $replacementFields;
-        $data['clang'] = $clang;
         if (isset($childQuestions)) {
             $data['cquestions'] = $childQuestions;
         }
@@ -196,7 +195,7 @@ class limereplacementfields extends Survey_Common_Action
 
     private function _getReplacementFields($fieldtype, $surveyid)
     {
-        
+
         $replFields = array();
 
         switch ($fieldtype)

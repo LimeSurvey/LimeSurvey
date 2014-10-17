@@ -6,7 +6,6 @@ class PdfWriter extends Writer
     private $rowCounter;
     private $pdfDestination;
     private $surveyName;
-    private $clang;
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
@@ -14,7 +13,7 @@ class PdfWriter extends Writer
         $pdforientation=Yii::app()->getConfig('pdforientation');
         $this->clang = new limesurvey_lang($sLanguageCode);
 
-        if ($oOptions->output=='file') 
+        if ($oOptions->output=='file')
         {
             $this->pdfDestination = 'F';
         } else {
@@ -33,7 +32,7 @@ class PdfWriter extends Writer
 
         $this->separator="\t";
 
-        $this->rowCounter = 0;        
+        $this->rowCounter = 0;
         $this->surveyName = $survey->languageSettings['surveyls_title'];
         $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings['surveyls_description']);
     }

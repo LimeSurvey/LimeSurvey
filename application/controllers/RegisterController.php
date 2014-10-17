@@ -123,7 +123,7 @@ class RegisterController extends LSYii_Controller {
     * @return array of errors when try to register (empty array => no error)
     */
     public function getRegisterErrors($iSurveyId){
-        $aSurveyInfo=getSurveyInfo($iSurveyId,$clang->langcode);
+        $aSurveyInfo=getSurveyInfo($iSurveyId,App()->language);
 
         // Check the security question's answer
         if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen',$aSurveyInfo['usecaptcha']) )

@@ -4,7 +4,6 @@ class DocWriter extends Writer
     private $output;
     private $separator;
     private $isBeginning;
-    private $clang;
     /**
      * The open filehandle
      */
@@ -27,8 +26,8 @@ class DocWriter extends Writer
             header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
             header("Content-type: application/vnd.ms-word");
         }
-        
-        
+
+
         $sOutput = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <style>
         table {
@@ -59,7 +58,7 @@ class DocWriter extends Writer
         if ($oOptions->answerFormat == 'short')
         {
             //No headers at all, only output values.
-            $this->output .= implode($this->separator, $values).PHP_EOL;          
+            $this->output .= implode($this->separator, $values).PHP_EOL;
         }
         elseif ($oOptions->answerFormat == 'long')
         {
@@ -86,7 +85,7 @@ class DocWriter extends Writer
                 $this->output .= "<tr><td>".$header."</td><td>".$value."</td></tr>".PHP_EOL;
                 $counter++;
             }
-            $this->output .= "</table>".PHP_EOL;           
+            $this->output .= "</table>".PHP_EOL;
         }
         else
         {

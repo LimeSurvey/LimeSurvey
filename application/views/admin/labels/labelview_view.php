@@ -116,9 +116,9 @@
             }
         ?>
     </form>
-    <div id='up_resmgmt'>                              
+    <div id='up_resmgmt'>
         <div>
-            <?php echo CHtml::form('third_party/kcfinder/browse.php?language='.sTranslateLangCode2CK($clang->getlangcode()), 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
+            <?php echo CHtml::form('third_party/kcfinder/browse.php?language='.sTranslateLangCode2CK(App()->language), 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
                 <ul>
                     <li>
                         <label>&nbsp;</label>
@@ -135,8 +135,8 @@
                 <input type='hidden' name='lid' value='<?php echo $lid; ?>' />
             </form>
             <?php echo CHtml::form(array('admin/labels/sa/importlabelresources'), 'post', array('id'=>'importlabelresources',
-                                                                                      'class'=>'form30', 
-                                                                                      'name'=>'importlabelresources', 
+                                                                                      'class'=>'form30',
+                                                                                      'name'=>'importlabelresources',
                                                                                       'enctype'=>'multipart/form-data',
                                                                                       'onsubmit'=>'return validatefilename(this, "'.gT('Please select a file to import!', 'js').'");')); ?>
                 <ul>

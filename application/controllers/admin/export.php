@@ -135,7 +135,7 @@ class export extends Survey_Common_Action {
         if ( ! isset($convertyto) ) { $convertyto = returnGlobal('convertyto'); }
         if ( ! isset($convertnto) ) { $convertnto = returnGlobal('convertnto'); }
 
-        
+
 
         if ( ! Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export') )
         {
@@ -406,7 +406,8 @@ class export extends Survey_Common_Action {
 
         // Get Base language:
         $language = Survey::model()->findByPk($iSurveyID)->language;
-        $clang = new limesurvey_lang($language);
+        App()->setLanguage($language);
+
         Yii::app()->loadHelper("admin/exportresults");
         viewHelper::disableHtmlLogging();
 
@@ -787,7 +788,7 @@ class export extends Survey_Common_Action {
         }
 
         // Setting the selected language for printout
-        $clang = new limesurvey_lang($surveyprintlang);
+        App()->setLanguage($surveyprintlang);
 
         Yii::import("application.libraries.admin.quexmlpdf", TRUE);
         $quexmlpdf = new quexmlpdf($this->getController());

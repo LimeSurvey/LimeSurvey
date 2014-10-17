@@ -295,7 +295,6 @@ class responses extends Survey_Common_Action
             $aViewUrls[] = 'browseallfiltered_view';
         }
 
-        $clang = $aData['clang'];
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
         if (tableExists('{{tokens_' . $iSurveyID . '}}') && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
@@ -907,7 +906,6 @@ class responses extends Survey_Common_Action
 
         $fields = createTimingsFieldMap($iSurveyID, 'full',true,false,$aData['language']);
 
-        $clang = $aData['clang'];
         foreach ($fields as $fielddetails)
         {
             // headers for answer id and time data

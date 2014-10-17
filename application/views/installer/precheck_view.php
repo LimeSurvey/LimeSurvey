@@ -1,7 +1,7 @@
 
 <?php
 
-function dirReport($dir, $write, $clang)
+function dirReport($dir, $write)
 {
     $error = 0;
 
@@ -52,7 +52,7 @@ function dirReport($dir, $write, $clang)
                <th class='text-center'><?php eT("Current"); ?></th>
         </tr>
         </thead>
-        <tbody>        
+        <tbody>
         <tr>
                <td><?php eT("PHP version"); ?></td>
                <td>5.3.0+</td>
@@ -62,7 +62,7 @@ function dirReport($dir, $write, $clang)
         <tr>
                <td><?php eT("Minimum memory available"); ?></td>
                <td>64MB</td>
-               <td><?php 
+               <td><?php
                if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php eT("Too low"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
                <?php } elseif (ini_get('memory_limit')=='-1') eT("Unlimited"); else { echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; echo ' MB';} ?></td>
         </tr>
@@ -85,17 +85,17 @@ function dirReport($dir, $write, $clang)
         <tr>
                <td>/application/config <?php eT("directory"); ?></td>
                <td><?php eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
+               <td><?php  echo dirReport($configPresent,$configWritable); ?></td>
         </tr>
         <tr>
                <td>/upload <?php eT("directory"); ?></td>
                <td><?php eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
+               <td><?php  echo dirReport($uploaddirPresent,$uploaddirWritable); ?></td>
         </tr>
         <tr>
                <td>/tmp <?php eT("directory"); ?></td>
                <td><?php eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
+               <td><?php  echo dirReport($tmpdirPresent,$tmpdirWritable); ?></td>
         </tr>
         <tr>
                <td><?php eT("Session writable"); ?></td>
@@ -141,7 +141,7 @@ function dirReport($dir, $write, $clang)
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
                <td><?php echo $bIMAPPresent ; ?></td>
         </tr>
-        </tbody>        
+        </tbody>
 
         </table>
         </fieldset>

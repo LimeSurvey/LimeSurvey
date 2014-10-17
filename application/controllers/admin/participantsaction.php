@@ -382,7 +382,7 @@ class participantsaction extends Survey_Common_Action
      */
     function getAttributeInfo_json()
     {
-        
+
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
         $limit = isset($limit) ? $limit : 50; //Stop division by zero errors
@@ -417,7 +417,7 @@ class participantsaction extends Survey_Common_Action
      */
     function editAttributeInfo()
     {
-        
+
         $operation = Yii::app()->request->getPost('oper');
 
         if ($operation == 'del' && Yii::app()->request->getPost('id'))
@@ -1407,7 +1407,6 @@ class participantsaction extends Survey_Common_Action
 
         unlink($sFilePath);
         $aData = array();
-        $aData['clang'] = $clang;
         $aData['recordcount'] = $recordcount - 1;
         $aData['duplicatelist'] = $duplicatelist;
         $aData['mincriteria'] = $mincriteria;
@@ -1716,7 +1715,6 @@ class participantsaction extends Survey_Common_Action
         $this->load->model('participants_model');
         $iParticipantId = $this->uri->segment(4);
         $iSurveyId = $this->uri->segment(5);
-        $clang = $this->limesurvey_lang;
         if (!is_numeric($iSurveyId))
         {
             $blacklist = $this->uri->segment(5);
@@ -1725,7 +1723,6 @@ class participantsaction extends Survey_Common_Action
                 $aData = array('blacklisted' => $blacklist, 'participant_id' => $iParticipantId);
                 $aData = $this->participants_model->blacklistparticipantglobal($aData);
                 $aData['global'] = 1;
-                $aData['clang'] = $clang;
                 $aData['blacklist'] = $blacklist;
                 $this->load->view('admin/participants/blacklist_view', $aData);
             }
@@ -1733,7 +1730,6 @@ class participantsaction extends Survey_Common_Action
             {
                 $aData['is_participant'] = 0;
                 $aData['is_updated'] = 0;
-                $aData['clang'] = $clang;
                 $this->load->view('admin/participants/blacklist_view', $aData);
             }
         }
@@ -1745,7 +1741,6 @@ class participantsaction extends Survey_Common_Action
                 $aData = array('blacklisted' => $blacklist);
                 $aData = $this->participants_model->blacklistparticipantlocal($aData, $iSurveyId, $iParticipantId);
                 $aData['global'] = 1;
-                $aData['clang'] = $clang;
                 $aData['local'] = 1;
                 $aData['blacklist'] = $blacklist;
                 $this->load->view('admin/participants/blacklist_view', $aData);
@@ -1754,7 +1749,6 @@ class participantsaction extends Survey_Common_Action
             {
                 $aData['is_participant'] = 0;
                 $aData['is_updated'] = 0;
-                $aData['clang'] = $clang;
                 $this->load->view('admin/participants/blacklist_view', $aData);
             }
         }
