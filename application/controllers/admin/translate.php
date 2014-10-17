@@ -357,7 +357,6 @@ class translate extends Survey_Common_Action {
 	/*
 	* _getLanguageList() returns survey language list
 	* @param string $iSurveyID Survey id
-	* @param string @clang Language object
 	* @param string $tolang The target translation code
 	*/
 	private function _getLanguageList($iSurveyID, $tolang)

@@ -50,7 +50,7 @@ $(document).ready(function () {
                 {
                     $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditionalNewlineToBreak($aDefaultTexts['admin_detailed_notification'],$ishtml);
                 }
-                $this->renderPartial('/admin/emailtemplates/email_language_tab', compact('surveyinfo', 'ishtml', 'surveyid', 'clang', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts'));
+                $this->renderPartial('/admin/emailtemplates/email_language_tab', compact('surveyinfo', 'ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts'));
             }
             ?>
     </div>

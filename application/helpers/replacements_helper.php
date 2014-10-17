@@ -36,7 +36,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'percentcomplete', 'move', 'groupname', 'groupdescription', 'question', 'showxquestions',
     'showgroupinfo', 'showqnumcode', 'questioncode', 'answer', 'navigator', 'help', 'totalquestions',
     'surveyformat', 'completed', 'notanswered', 'privacy', 'surveyid', 'publicurl',
-    'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
+    'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'saved_id', 'usertemplaterootdir',
     'languagechanger', 'printoutput', 'captchapath', 'loadname');
     */
     $allowedvars = array(

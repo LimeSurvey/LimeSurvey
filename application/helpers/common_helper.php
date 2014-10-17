@@ -5335,7 +5335,7 @@ function conditionalNewlineToBreak($mytext,$ishtml,$encoded='')
 {
     if ($ishtml === true)
     {
-        // $mytext has been processed by clang->gT with html mode
+        // $mytext has been processed by gT with html mode
         // and thus \n has already been translated to &#10;
         if ($encoded == '')
         {

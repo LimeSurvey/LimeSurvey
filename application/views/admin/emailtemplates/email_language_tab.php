@@ -85,14 +85,14 @@
             )
         )
     );
-    
-    
+
+
     echo "<div id='tab-$grouplang'>";
     echo "<div class='tabsinner' id='tabsinner-$grouplang'>";
 ?>
 
-            
-                
+
+
                     <ul>
                         <?php
                         foreach ($tabs as $tab => $details)
@@ -105,7 +105,7 @@
                     <?php
                     foreach ($tabs as $tab => $details)
                     {
-                        $this->renderPartial('/admin/emailtemplates/email_language_template_tab', compact('ishtml', 'surveyid' , 'esrow', 'grouplang', 'tab', 'details', 'clang'));
+                        $this->renderPartial('/admin/emailtemplates/email_language_template_tab', compact('ishtml', 'surveyid' , 'esrow', 'grouplang', 'tab', 'details'));
                     }
                     ?>
                 </div>

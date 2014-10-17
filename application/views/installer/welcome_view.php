@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span3">
-        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="span9">
         <h2><?php echo $title; ?></h2>
@@ -33,5 +33,5 @@
             </div>
         <?php echo CHtml::endForm(); ?>
     </div>
-    
+
 </div>

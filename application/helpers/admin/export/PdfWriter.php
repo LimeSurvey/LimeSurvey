@@ -56,7 +56,7 @@ class PdfWriter extends Writer
             {
                 $this->pdf->AddPage();
             }
-            $this->pdf->Cell(0, 10, sprintf($this->clang->gT("Survey response %d"), $this->rowCounter), 1, 1);
+            $this->pdf->Cell(0, 10, sprintf(gT("Survey response %d"), $this->rowCounter), 1, 1);
 
             $columnCounter = 0;
             foreach($headers as $header)

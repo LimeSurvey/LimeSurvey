@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span3">
-        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="span9">
         <?php echo CHtml::beginForm($this->createUrl('installer/database'), 'post', array('class' => 'form-horizontal')); ?>
@@ -53,7 +53,7 @@
                     echo CHtml::tag('div', array('class' => 'controls'), $row['control'] . CHtml::tag('div', array('class' => 'description-field'), $row['description']));
                 echo CHtml::closeTag('div');
             }
-            
+
             ?>
         </fieldset>
         <div class="row">
