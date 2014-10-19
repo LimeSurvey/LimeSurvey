@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-10-12 23:06:13+00:00\n"
+"POT-Creation-Date: 2014-10-19 23:06:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1329,7 +1329,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:207
 #: application/controllers/admin/labels.php:100
 #: application/controllers/admin/labels.php:133
-#: application/controllers/admin/participantsaction.php:1088
+#: application/controllers/admin/participantsaction.php:1089
 #: application/controllers/admin/questiongroups.php:53
 #: application/controllers/admin/questions.php:52
 #: application/controllers/admin/surveyadmin.php:255
@@ -1913,7 +1913,7 @@ msgstr ""
 msgid "%s participant(s) are to be copied "
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1061
+#: application/controllers/admin/participantsaction.php:1062
 #: application/controllers/admin/surveyadmin.php:1324
 #: application/views/admin/labels/labelview_view.php:136
 #: application/views/admin/labels/labelview_view.php:145
@@ -1926,11 +1926,11 @@ msgstr ""
 msgid "Please select a file to import!"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1076
+#: application/controllers/admin/participantsaction.php:1077
 msgid "This is not a .csv file."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1133
+#: application/controllers/admin/participantsaction.php:1134
 #: application/controllers/admin/templates.php:146
 #: application/core/Survey_Common_Action.php:984
 #: application/views/admin/participants/displayParticipants_view.php:143
@@ -1940,55 +1940,55 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1134
+#: application/controllers/admin/participantsaction.php:1135
 #: application/views/admin/token/browse.php:99
 msgid "Summary"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1135
+#: application/controllers/admin/participantsaction.php:1136
 msgid "Upload summary"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1136
+#: application/controllers/admin/participantsaction.php:1137
 msgid "You have to pair this field with an existing attribute."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1137
+#: application/controllers/admin/participantsaction.php:1138
 msgid "Only one CSV attribute is mapped with central attribute."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1138
+#: application/controllers/admin/participantsaction.php:1139
 #: application/views/admin/participants/attributeMapToken_view.php:9
 #: application/views/admin/participants/attributeMap_view.php:17
 msgid "This list cannot accept token attributes."
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1485
+#: application/controllers/admin/participantsaction.php:1486
 msgid "%s participants have been shared"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1505
+#: application/controllers/admin/participantsaction.php:1506
 msgid "%s participants have been copied to the central participants table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1508
-#: application/controllers/admin/participantsaction.php:1538
+#: application/controllers/admin/participantsaction.php:1509
+#: application/controllers/admin/participantsaction.php:1539
 msgid "%s entries were not copied because they already existed"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1512
+#: application/controllers/admin/participantsaction.php:1513
 msgid "Attribute values for existing participants have been updated from the token records"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1535
+#: application/controllers/admin/participantsaction.php:1536
 msgid "%s participants have been copied to the survey token table"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1542
+#: application/controllers/admin/participantsaction.php:1543
 msgid "%s entries were skipped because they are blacklisted"
 msgstr ""
 
-#: application/controllers/admin/participantsaction.php:1546
+#: application/controllers/admin/participantsaction.php:1547
 msgid "Attribute values for existing participants have been updated from the participants records"
 msgstr ""
 
