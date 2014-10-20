@@ -604,7 +604,6 @@ class UserAction extends Survey_Common_Action
     */
     function personalsettings()
     {
-        DebugBreak();
         // Save Data
         if (Yii::app()->request->getPost("action")) {
             $aData = array(

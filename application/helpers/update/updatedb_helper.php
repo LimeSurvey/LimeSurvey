@@ -24,7 +24,7 @@ function db_upgrade_all($iOldDBVersion) {
 
     $sUserTemplateRootDir = Yii::app()->getConfig('usertemplaterootdir');
     $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
-    echo str_pad(gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $oLang->gT('Please be patient...')."<br /><br />\n";
+    echo str_pad(gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". gT('Please be patient...')."<br /><br />\n";
 
     $sDBDriverName=setsDBDriverName();
     setVarchar($sDBDriverName);
@@ -373,7 +373,7 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
             $oDB->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
             // Move all user templates to the new user template directory
-            echo sprintf($oLang->gT("Moving user templates to new location at %s..."),$sUserTemplateRootDir)."<br />";
+            echo sprintf(gT("Moving user templates to new location at %s..."),$sUserTemplateRootDir)."<br />";
             $hTemplateDirectory = opendir($sStandardTemplateRootDir);
             $aFailedTemplates=array();
             // get each entry
@@ -1277,11 +1277,11 @@ function db_upgrade_all($iOldDBVersion) {
         Yii::app()->db->schema->getTables();
         // clear the cache of all loaded tables
         Yii::app()->db->schema->refresh();
-        echo '<br /><br />'.$oLang->gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
+        echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
         return false;
     }
     fixLanguageConsistencyAllSurveys();
-    echo '<br /><br />'.sprintf($oLang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
+    echo '<br /><br />'.sprintf(gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
 
@@ -1530,9 +1530,9 @@ function upgradeSurveys156()
     {
 
         Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
-        $oLanguage = App()->language;
-        $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
-        unset($oLanguage);
+        $sLanguage = App()->language;
+        $aDefaultTexts=templateDefaultTexts($sLanguage,'unescaped');
+        unset($sLanguage);
 
         if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')
         {
@@ -1642,10 +1642,9 @@ function upgradeSurveys145()
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
-        $oLanguage = new Limesurvey_lang($aSurveyRow['surveyls_language']);
-        $oLanguage = App()->language;
-        $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
-        unset($oLanguage);
+        $sLanguage = App()->language;
+        $aDefaultTexts=templateDefaultTexts($sLanguage,'unescaped');
+        unset($sLanguage);
         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
         $sSurveyUpdateQuery = "update {{surveys_languagesettings}} set
         email_admin_responses_subj=".$aDefaultTexts['admin_detailed_notification_subject'].",

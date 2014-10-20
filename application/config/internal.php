@@ -61,6 +61,8 @@ $internalConfig = array(
         ),
         'messages' => array(
             'class' => 'CGettextMessageSource',
+            'cachingDuration'=>3600,
+            'forceTranslation' => true,
             'useMoFile' => true,
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         )
