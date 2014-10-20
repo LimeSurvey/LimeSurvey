@@ -94,7 +94,7 @@ class responses extends Survey_Common_Action
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
-            $oBrowseLanguage = new Limesurvey_lang($aData['language']);
+            $oBrowseLanguage = $aData['language'];
 
             extract($aData);
 
@@ -283,7 +283,7 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
+        $oBrowseLanguage = $aData['language'];
 
         /**
         * fnames is used as informational array
@@ -318,7 +318,7 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
+        $oBrowseLanguage = $aData['language'];
 
 
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
@@ -457,8 +457,7 @@ class responses extends Survey_Common_Action
 
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
-
+        $oBrowseLanguage = $aData['language'];
 
         $sImageURL 	= Yii::app()->getConfig('adminimageurl');
 
@@ -577,8 +576,7 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = new Limesurvey_lang($aData['language']);
-
+        $oBrowseLanguage = $aData['language'];
         $tokenRequest = Yii::app()->request->getParam('token', null);
 
         //Delete Individual answer using inrow delete buttons/links - checked
