@@ -1298,8 +1298,8 @@ function upgradeTokenTables178()
     {
         foreach ( $surveyidresult as $sTableName )
         {
-            $oSchema=$oSchema->getTable($sTableName);
-            foreach ($oSchema->columnNames as $sColumnName)
+            $oTableSchema=$oSchema->getTable($sTableName);
+            foreach ($oTableSchema->columnNames as $sColumnName)
             {
                 if (strpos($sColumnName,'attribute_')===0)
                 {
