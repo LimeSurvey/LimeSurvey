@@ -36,7 +36,7 @@ function comparePermission($aPermissionA,$aPermissionB)
  */
 function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 {
-    return quoteText(Yii::t('',$sToTranslate,null,null,$sLanguage),$sEscapeMode);
+    return quoteText(Yii::t('',$sToTranslate,array(),null,$sLanguage),$sEscapeMode);
 }
 
 /**
