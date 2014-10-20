@@ -59,6 +59,36 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 141003) to 2.05+ (build 141020) Oct 20, 2014
+-Fixed issue #9218: When adding conditions fields referring to the same token field (Carsten Schmitz)
+-Fixed issue #9261: Emailstatus not filled by default when using remotecontrol invite_participants (Denis Chenu)
+-Fixed issue #9266: Chinese and Japanese characters not suppoerted when using MS SQL Server (Carsten Schmitz)
+-Fixed issue #9267: Error message when importing an survey archive having survey URL parameters (Carsten Schmitz)
+-Fixed issue #9274: Uppercase database name leads to errors (Carsten Schmitz)
+-Fixed issue #9278: Simple quote are replaced by HTML entities with HTML editor (Denis Chenu)
+-Fixed issue #9281: Unable to use Expression Manager for mail notification (Denis Chenu)
+-Fixed issue #9287: Missing asterisk in mandatory fields (Denis Chenu)
+-Fixed issue #9293: Quotation marks in email subjects are stripped when saved to the database including all following text (Denis Chenu)
+-Fixed issue #9298: Sort for a numeric token_attribute field in any participant table fails completely (Carsten Schmitz)
+-Fixed issue #9300: XSS protection or variable substitution breaks links with variable substitutions (Denis Chenu)
+-Fixed issue #9314: Error on PDF export w/ chinese content (mfaber)
+#Updated translation: Croatian by rovinj, daniflo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by lukacs
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Russian by vipgroup
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by caybar
+#Updated translation: Swedish by maxzomborszki
+
 Changes from 2.05+ (build 140915) to 2.05+ (build 141003) Oct 3, 2014
 -Fixed issue #9181: When dumping database sometimes lines are left out (Carsten Schmitz)
 -Fixed issue #9182: Data check integrity function uses too much memory if you have many surveys (Carsten Schmitz)
