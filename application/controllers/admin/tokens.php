@@ -2486,6 +2486,7 @@ class tokens extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
+        Yii::app()->end();
     }
 
     /**
