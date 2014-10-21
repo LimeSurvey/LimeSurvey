@@ -38,6 +38,4 @@ $route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens','matchValue'=>tru
 $route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens','matchValue'=>true);
 $route['statistics_user/<surveyid:\d+>'] =  array('statistics_user/action','matchValue'=>true);
 
-$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
-
 return $route;

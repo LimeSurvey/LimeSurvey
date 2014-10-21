@@ -80,7 +80,12 @@ $result = CMap::mergeArray($internalConfig, $userConfig);
 /**
  * Some workarounds for erroneous settings in user config.php.
  */
-$result['defaultController'] = $internalConfig['defaultController'];
+$result['defaultController']=($result['defaultController']=='survey') ? $internalConfig['defaultController'] : $result['defaultController'];
+/**
+ * Allways add needed routes at end
+ */
+$result['components']['urlManager']['rules']['<_controller:\w+>/<_action:\w+>']='<_controller>/<_action>';
+
 return $result;
 /* End of file internal.php */
 /* Location: ./application/config/internal.php */
