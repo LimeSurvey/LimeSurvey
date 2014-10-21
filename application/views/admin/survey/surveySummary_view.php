@@ -12,7 +12,7 @@
             <strong><?php echo gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
         </td>
         <td>
-        <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$surveyinfo['language']}"); ?>
+        <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
         <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
         </td>
     </tr>
@@ -24,7 +24,7 @@
                 <strong><?php echo getLanguageNameFromCode($langname,false).":";?></strong>
             </td>
             <td>
-            <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$langname}"); ?>
+            <?php $tmp_url = $this->createAbsoluteUrl("/survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$langname)); ?>
             <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
             </td>
         </tr>
