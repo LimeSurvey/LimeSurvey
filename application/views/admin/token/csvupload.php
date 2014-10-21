@@ -1,13 +1,10 @@
-<?php if (!empty($sError)) { ?>
-    <?php echo $sError; ?><br /><br />
-    <?php } ?>
-
 <?php echo CHtml::form(array("admin/tokens/sa/import/surveyid/{$iSurveyId}"), 'post', array('id'=>'tokenimport', 'name'=>'tokenimport', 'enctype'=>'multipart/form-data')); ?>
 
     <ul>
         <li>
             <label for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
-            <input type='file' id='the_file' name='the_file' /></li>
+            <?php echo CHtml::fileField('the_file','',array('required'=>'required','accept'=>'.csv')); ?>
+        </li>
         <li>
             <label for='csvcharset'><?php eT("Character set of the file:"); ?></label>
             <?php echo CHtml::dropDownList('csvcharset', 'auto', $aEncodings, array('size' => '1')); ?>
@@ -21,11 +18,15 @@
         </li>
         <li>
             <label for='filterblankemail'><?php eT("Filter blank email addresses:"); ?></label>
-            <input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' />
+            <?php echo CHtml::checkBox('filterblankemail', true); ?>
+        </li>
+        <li>
+            <label for='allowinvalidemail'><?php eT("Allow invalid email addresses:"); ?></label>
+            <?php echo CHtml::checkBox('allowinvalidemail', false); ?>
         </li>
         <li>
             <label for='filterduplicatetoken'><?php eT("Filter duplicate records:"); ?></label>
-            <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' />
+            <?php echo CHtml::checkBox('filterduplicatetoken', true); ?>
         </li>
         <li id='lifilterduplicatefields'>
             <label for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
@@ -35,9 +36,7 @@
         </li>
     </ul>
     <p>
-        <input class='submit' type='submit' name='submit' value='<?php eT("Upload"); ?>' />
-        <input type='hidden' name='subaction' value='upload' />
-        <input type='hidden' name='sid' value='$iSurveyId' />
+        <?php echo CHtml::htmlButton(gT("Upload"),array('type'=>'submit','name'=>'upload','value'=>'import')); ?>
     </p>
 </form>
 <div class='messagebox ui-corner-all'>

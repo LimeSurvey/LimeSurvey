@@ -1885,249 +1885,283 @@ class tokens extends Survey_Common_Action
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'tokensimport.js');
         $aEncodings =aEncodingsArray();
-        if (Yii::app()->request->getPost('submit'))
+
+        if (Yii::app()->request->isPostRequest) // && Yii::app()->request->getPost('subaction')=='upload')
         {
-            if (Yii::app()->request->getPost('csvcharset') && Yii::app()->request->getPost('csvcharset'))  //sanitize charset - if encoding is not found sanitize to 'auto'
+            $sUploadCharset = Yii::app()->request->getPost('csvcharset');
+            if (!array_key_exists($sUploadCharset, $aEncodings))// Validate sUploadCharset
             {
-                $uploadcharset = Yii::app()->request->getPost('csvcharset');
-                if (!array_key_exists($uploadcharset, $aEncodings))
-                {
-                    $uploadcharset = 'auto';
-                }
-                $filterduplicatetoken = (Yii::app()->request->getPost('filterduplicatetoken') && Yii::app()->request->getPost('filterduplicatetoken') == 'on');
-                $filterblankemail = (Yii::app()->request->getPost('filterblankemail') && Yii::app()->request->getPost('filterblankemail') == 'on');
+                $sUploadCharset = 'auto';
             }
+            $bFilterDuplicateToken = Yii::app()->request->getPost('filterduplicatetoken');
+            $bFilterBlankEmail = Yii::app()->request->getPost('filterblankemail');
+            $bAllowInvalidEmail = Yii::app()->request->getPost('allowinvalidemail');
 
-            $attrfieldnames = getAttributeFieldNames($iSurveyId);
-            $duplicatelist = array();
-            $invalidemaillist = array();
-            $invalidformatlist = array();
-            $firstline = array();
+            $aAttrFieldNames = getAttributeFieldNames($iSurveyId);
+            $aDuplicateList = array();
+            $aInvalidEmailList = array();
+            $aInvalidFormatList = array();
+            $aModelErrorList = array();
+            $aFirstLine = array();
 
+            $oFile=CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');
-            $sFileTmpName = $_FILES['the_file']['tmp_name'];
-            $sFilePath = $sPath . '/' . randomChars(20);
-
-            if (!@move_uploaded_file($sFileTmpName, $sFilePath))
+            $sFileName = $sPath . '/' . randomChars(20);
+            //$sFileTmpName=$oFile->getTempName();
+            /* More way to validate CSV ?
+            $aCsvMimetypes = array(
+                'text/csv',
+                'text/plain',
+                'application/csv',
+                'text/comma-separated-values',
+                'application/excel',
+                'application/vnd.ms-excel',
+                'application/vnd.msexcel',
+                'text/anytext',
+                'application/octet-stream',
+                'application/txt',
+            );
+            */
+            if(strtolower($oFile->getExtensionName())!='csv')// && !in_array($oFile->getType(),$aCsvMimetypes)
             {
-                $aData['sError'] = gT("Upload file not found. Check your permissions and path ({$sFilePath}) for the upload directory");
-                $aData['aEncodings'] = $aEncodings;
-                $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
-                $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-                $this->_renderWrappedTemplate('token', array('tokenbar', 'csvupload'), $aData);
+                Yii::app()->setFlashMessage(gT("Only csv file are allowed."),'error');
+            }
+            elseif (!@$oFile->saveAs($sFileName)) //!@move_uploaded_file($sFileTmpName, $sFileName))
+            {
+                Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"),$sPath),'error');
             }
             else
             {
-                $xz = 0;
-                $recordcount = 0;
-                $xv = 0;
+                $iRecordImported = 0;
+                $iRecordCount = 0;
+                $iRecordOk=0;
+                $iInvalidEmailCount=0;// Count invalid email imported
                 // This allows to read file with MAC line endings too
                 @ini_set('auto_detect_line_endings', true);
                 // open it and trim the ednings
-                $tokenlistarray = file($sFilePath);
+                $aTokenListArray = file($sFileName);
                 $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
                 if (!Yii::app()->request->getPost('filterduplicatefields') || (Yii::app()->request->getPost('filterduplicatefields') && count(Yii::app()->request->getPost('filterduplicatefields')) == 0))
                 {
-                    $filterduplicatefields = array('firstname', 'lastname', 'email');
+                    $aFilterDuplicateFields = array('firstname', 'lastname', 'email');
                 }
                 else
                 {
-                    $filterduplicatefields = Yii::app()->request->getPost('filterduplicatefields');
+                    $aFilterDuplicateFields = Yii::app()->request->getPost('filterduplicatefields');
                 }
-                $separator = returnGlobal('separator');
-                foreach ($tokenlistarray as $buffer)
+                $sSeparator = Yii::app()->request->getPost('separator');
+                foreach ($aTokenListArray as $buffer)
                 {
-                    $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
-                    if ($recordcount == 0)
+                    $buffer = @mb_convert_encoding($buffer, "UTF-8", $sUploadCharset);
+                    if ($iRecordCount == 0)
                     {
                         // Parse first line (header) from CSV
                         $buffer = removeBOM($buffer);
                         // We alow all field except tid because this one is really not needed.
-                        $allowedfieldnames = array('participant_id','firstname','lastname','email','emailstatus','token','language','blacklisted','sent','remindersent','remindercount','validfrom','validuntil','completed','usesleft');
-                        $allowedfieldnames = array_merge($attrfieldnames, $allowedfieldnames);
+                        $aAllowedFieldNames = array('participant_id','firstname','lastname','email','emailstatus','token','language','blacklisted','sent','remindersent','remindercount','validfrom','validuntil','completed','usesleft');
+                        $aAllowedFieldNames = array_merge($aAttrFieldNames, $aAllowedFieldNames);
                         // Some header don't have same column name
                         $aReplacedFields=array(
                             'invited'=>'sent'
                         );
-                        switch ($separator)
+                        switch ($sSeparator)
                         {
                             case 'comma':
-                                $separator = ',';
+                                $sSeparator = ',';
                                 break;
                             case 'semicolon':
-                                $separator = ';';
+                                $sSeparator = ';';
                                 break;
                             default:
                                 $comma = substr_count($buffer, ',');
                                 $semicolon = substr_count($buffer, ';');
                                 if ($semicolon > $comma)
-                                    $separator = ';'; else
-                                    $separator = ',';
+                                    $sSeparator = ';'; else
+                                    $sSeparator = ',';
                         }
-                        $firstline = str_getcsv($buffer, $separator, '"');
-                        $firstline = array_map('trim', $firstline);
-                        $ignoredcolumns = array();
+                        $aFirstLine = str_getcsv($buffer, $sSeparator, '"');
+                        $aFirstLine = array_map('trim', $aFirstLine);
+                        $aIgnoredColumns = array();
                         // Now check the first line for invalid fields
-                        foreach ($firstline as $index => $fieldname)
+                        foreach ($aFirstLine as $index => $sFieldname)
                         {
-                            $firstline[$index] = preg_replace("/(.*) <[^,]*>$/", "$1", $fieldname);
-                            $fieldname = $firstline[$index];
-                            if (!in_array($fieldname, $allowedfieldnames))
+                            $aFirstLine[$index] = preg_replace("/(.*) <[^,]*>$/", "$1", $sFieldname);
+                            $sFieldname = $aFirstLine[$index];
+                            if (!in_array($sFieldname, $aAllowedFieldNames))
                             {
-                                $ignoredcolumns[] = $fieldname;
+                                $aIgnoredColumns[] = $sFieldname;
                             }
-                            if (array_key_exists($fieldname, $aReplacedFields))
+                            if (array_key_exists($sFieldname, $aReplacedFields))
                             {
-                                $firstline[$index] = $aReplacedFields[$fieldname];
+                                $aFirstLine[$index] = $aReplacedFields[$sFieldname];
                             }
-                        }
-                        if (!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline))
-                        {
-                            $recordcount = count($tokenlistarray);
-                            break;
                         }
                     }
                     else
                     {
 
-                        $line = str_getcsv($buffer, $separator, '"');
+                        $line = str_getcsv($buffer, $sSeparator, '"');
 
-                        if (count($firstline) != count($line))
+                        if (count($aFirstLine) != count($line))
                         {
-                            $invalidformatlist[] = $recordcount;
-                            $recordcount++;
+                            $aInvalidFormatList[] = sprintf(gt("Line %s"),$iRecordCount);
+                            $iRecordCount++;
                             continue;
                         }
-                        $writearray = array_combine($firstline, $line);
+                        $aWriteArray = array_combine($aFirstLine, $line);
 
                         //kick out ignored columns
-                        foreach ($ignoredcolumns as $column)
+                        foreach ($aIgnoredColumns as $column)
                         {
-                            unset($writearray[$column]);
+                            unset($aWriteArray[$column]);
                         }
-                        $dupfound = false;
-                        $invalidemail = false;
+                        $bDuplicateFound = false;
+                        $bInvalidEmail = false;
+                        $aWriteArray['email'] = isset($aWriteArray['email']) ? trim($aWriteArray['email']) : "";
+                        $aWriteArray['firstname'] = isset($aWriteArray['firstname']) ? $aWriteArray['firstname'] : "";
+                        $aWriteArray['lastname'] = isset($aWriteArray['lastname']) ? $aWriteArray['lastname'] : "";
+                        $aWriteArray['language']=isset($aWriteArray['language'])?$aWriteArray['language']:$sBaseLanguage;
 
-                        if ($filterduplicatetoken != false)
+                        if ($bFilterDuplicateToken)
                         {
-                            $dupquery = "SELECT count(tid) from {{tokens_".intval($iSurveyId)."}} where 1=1";
-                            foreach ($filterduplicatefields as $field)
+                            $oCriteria=new CDbCriteria();
+                            $oCriteria->select = 'tid';
+                            $oCriteria->condition = '';
+                            $aParam=array();
+                            foreach ($aFilterDuplicateFields as $field)
                             {
-                                if (isset($writearray[$field]))
+                                if (isset($aWriteArray[$field]))
                                 {
-                                    $dupquery.= " and ".Yii::app()->db->quoteColumnName($field)." = " . Yii::app()->db->quoteValue($writearray[$field]);
+                                    $oCriteria->addCondition(Yii::app()->db->quoteColumnName($field)." = :field{$field}");
+                                    $oCriteria->params[":field{$field}"]=$aWriteArray[$field]; // Don't use compare : compare don't compare empty value
                                 }
                             }
-                            $dupresult = Yii::app()->db->createCommand($dupquery)->queryScalar();
-                            if ($dupresult > 0)
+                            if (Token::model($iSurveyId)->count($oCriteria)>0)
                             {
-                                $dupfound = true;
-                                $duplicatelist[] = Yii::app()->db->quoteValue($writearray['firstname']) . " " . Yii::app()->db->quoteValue($writearray['lastname']) . " (" . Yii::app()->db->quoteValue($writearray['email']) . ")";
+                                $bDuplicateFound = true;
+                                $aDuplicateList[] = sprintf(gt("Line %s : %s %s (%s)"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']));
                             }
                         }
-                        $writearray['email'] = trim($writearray['email']);
+
                         //treat blank emails
-                        if ($filterblankemail && $writearray['email'] == '')
+                        if ($bFilterBlankEmail && $aWriteArray['email'] == '')
                         {
-                            $invalidemail = true;
-                            $invalidemaillist[] = $line[0] . " " . $line[1] . " ( )";
+                            $bInvalidEmail = true;
+                            $aInvalidEmailList[] = sprintf(gt("Line %s : %s %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']));
                         }
-                        if ($writearray['email'] != '')
+                        if ($aWriteArray['email'] != '')
                         {
-                            $aEmailAddresses = explode(';', $writearray['email']);
+                            $aEmailAddresses = explode(';', $aWriteArray['email']);
                             foreach ($aEmailAddresses as $sEmailaddress)
                             {
                                 if (!validateEmailAddress($sEmailaddress))
                                 {
-                                    $invalidemail = true;
-                                    $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
+                                    if($bAllowInvalidEmail)
+                                    {
+                                        $iInvalidEmailCount++;
+                                        if(empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus']=="OK"))
+                                            $aWriteArray['emailstatus']="invalid";
+                                    }
+                                    else
+                                    {
+                                        $bInvalidEmail = true;
+                                        $aInvalidEmailList[] = sprintf(gt("Line %s : %s %s (%s)"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']));
+                                    }
                                 }
                             }
                         }
 
-                        if (isset($writearray['token']))
+                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']))
                         {
-                            $writearray['token'] = sanitize_token($writearray['token']);
+                            $aWriteArray['token'] = sanitize_token($aWriteArray['token']);
+                            // We allways search for duplicate token (it's in model. Allow to reset or update token ?
+                            if(Token::model($iSurveyId)->count("token=:token",array(":token"=>$aWriteArray['token'])))
+                            {
+                                $bDuplicateFound=true;
+                                $aDuplicateList[] = sprintf(gt("Line %s : %s %s (%s) - token : %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']),CHtml::encode($aWriteArray['token']));
+                            }
                         }
 
-                        if (!$dupfound && !$invalidemail)
+                        if (!$bDuplicateFound && !$bInvalidEmail)
                         {
+                            tracevar($aWriteArray);
                             // unset all empty value
-                            foreach ($writearray as $key=>$value)
+                            foreach ($aWriteArray as $key=>$value)
                             {
-                                if($writearray[$key]=="")
-                                    unset($writearray[$key]);
+                                if($aWriteArray[$key]=="")
+                                    unset($aWriteArray[$key]);
                                 if (substr($value, 0, 1)=='"' && substr($value, -1)=='"')// Fix CSV quote
                                     $value = substr($value, 1, -1);
                             }
                             // Some default value : to be moved to Token model rules in future release ?
                             // But think we have to accept invalid email etc ... then use specific scenario
-                            $writearray['emailstatus']=isset($writearray['emailstatus'])?$writearray['emailstatus']:"OK";
-                            $writearray['language']=isset($writearray['language'])?$writearray['language']:$sBaseLanguage;
                             $oToken = Token::create($iSurveyId);
-                            foreach ($writearray as $key => $value)
+                            if($bAllowInvalidEmail)
                             {
-                                //if(in_array($key,$oToken->attributes)) Not needed because we filter attributes before
+                                $oToken->scenario = 'allowinvalidemail';
+                            }
+                            foreach ($aWriteArray as $key => $value)
+                            {
                                     $oToken->$key=$value;
                             }
-                            // Some default value : to be moved to Token model rules in future release ?
-                            // But think we have to accept invalid email etc ... then use specific scenario
-                            $writearray['emailstatus']=isset($writearray['emailstatus'])?$writearray['emailstatus']:"OK";
-                            $writearray['language']=isset($writearray['language'])?$writearray['language']:$sBaseLanguage;
-                            $ir=$oToken->save();
-                            if (!$ir)
+
+                            if (!$oToken->save())
                             {
-                                $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
+                                tracevar($oToken->getErrors());
+                                $aModelErrorList[] =  sprintf(gt("Line %s : %s"),$iRecordCount,Chtml::errorSummary($oToken));
                             }
                             else
                             {
-                                $xz++;
+                                $iRecordImported++;
                             }
                         }
-                        $xv++;
+                        $iRecordOk++;
                     }
-                    $recordcount++;
+                    $iRecordCount++;
                 }
-                $recordcount = $recordcount - 1;
+                $iRecordCount = $iRecordCount - 1;
 
-                unlink($sFilePath);
+                unlink($sFileName);
 
-                $aData['tokenlistarray'] = $tokenlistarray;
-                $aData['xz'] = $xz;
-                $aData['xv'] = $xv;
-                $aData['recordcount'] = $recordcount;
-                $aData['firstline'] = $firstline;
-                $aData['duplicatelist'] = $duplicatelist;
-                $aData['invalidformatlist'] = $invalidformatlist;
-                $aData['invalidemaillist'] = $invalidemaillist;
+                $aData['aTokenListArray'] = $aTokenListArray;// Big array in memory, just for success ?
+                $aData['iRecordImported'] = $iRecordImported;
+                $aData['iRecordOk'] = $iRecordOk;
+                $aData['iRecordCount'] = $iRecordCount;
+                $aData['aFirstLine'] = $aFirstLine;// Seem not needed
+                $aData['aDuplicateList'] = $aDuplicateList;
+                $aData['aInvalidFormatList'] = $aInvalidFormatList;
+                $aData['aInvalidEmailList'] = $aInvalidEmailList;
+                $aData['aModelErrorList'] = $aModelErrorList;
+                $aData['iInvalidEmailCount']=$iInvalidEmailCount;
                 $aData['thissurvey'] = getSurveyInfo($iSurveyId);
                 $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
 
                 $this->_renderWrappedTemplate('token', array('tokenbar', 'csvpost'), $aData);
+                Yii::app()->end();
             }
         }
-        else
+
+        // If there are error with file : show the form
+        $aData['aEncodings'] = $aEncodings;
+        $aData['iSurveyId'] = $iSurveyId;
+        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+        $aData['surveyid'] = $iSurveyId;
+        $aTokenTableFields = getTokenFieldsAndNames($iSurveyId);
+        unset($aTokenTableFields['sent']);
+        unset($aTokenTableFields['remindersent']);
+        unset($aTokenTableFields['remindercount']);
+        unset($aTokenTableFields['usesleft']);
+        foreach ($aTokenTableFields as $sKey=>$sValue)
         {
-            $aData['aEncodings'] = $aEncodings;
-            $aData['iSurveyId'] = $iSurveyId;
-            $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-            $aData['surveyid'] = $iSurveyId;
-            $aTokenTableFields = getTokenFieldsAndNames($iSurveyId);
-            unset($aTokenTableFields['sent']);
-            unset($aTokenTableFields['remindersent']);
-            unset($aTokenTableFields['remindercount']);
-            unset($aTokenTableFields['usesleft']);
-            foreach ($aTokenTableFields as $sKey=>$sValue)
+            if ($sValue['description']!=$sKey)
             {
-                if ($sValue['description']!=$sKey)
-                {
-                   $sValue['description'] .= ' - '.$sKey;
-                }
-                $aNewTokenTableFields[$sKey]= $sValue['description'];
+               $sValue['description'] .= ' - '.$sKey;
             }
-            $aData['aTokenTableFields'] = $aNewTokenTableFields;
-            $this->_renderWrappedTemplate('token', array('tokenbar', 'csvupload'), $aData);
+            $aNewTokenTableFields[$sKey]= $sValue['description'];
         }
+        $aData['aTokenTableFields'] = $aNewTokenTableFields;
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'csvupload'), $aData);
+
     }
 
     /**
@@ -2444,6 +2478,7 @@ class tokens extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
+        Yii::app()->end();
     }
 
     /**

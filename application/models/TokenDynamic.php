@@ -76,8 +76,7 @@ class TokenDynamic extends LSActiveRecord
     {
         return 'tid';
     }
-    
-    
+
     /**
     * Returns this model's validation rules
     *
@@ -85,20 +84,18 @@ class TokenDynamic extends LSActiveRecord
     public function rules()
     {
         return array(
-        array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
-        array('email','filter','filter'=>'trim'),        
-        array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true), 
-        array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),     
-        array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true), 
-//        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
-//        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),                          
-// Date rules currently don't work properly with MSSQL, deactivating for now
-        );  
-    }    
-    
-
-
+            array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('email','filter','filter'=>'trim'),
+            array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true,'except'=>'allowinvalidemail'),
+            array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('emailstatus', 'default', 'value' => $this->emailstatus),
+            // array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+            // array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),                          
+            // Date rules currently don't work properly with MSSQL, deactivating for now
+        );
+    }
 
     /**
     * Checks to make sure that all required columns exist in this tokens table
@@ -372,8 +369,7 @@ class TokenDynamic extends LSActiveRecord
 
         return array($newtokencount,count($tkresult));
     }
-    
-    
+
      /**
      * This method is invoked before saving a record (after validation, if any).
      * The default implementation raises the {@link onBeforeSave} event.
@@ -418,7 +414,7 @@ class TokenDynamic extends LSActiveRecord
             'criteria'=>$criteria,
         ));
     }
-    
+
     /**
      * Get CDbCriteria for a json search string
      * 
@@ -484,7 +480,7 @@ class TokenDynamic extends LSActiveRecord
         
         return $command;
     }
-    
+
     function deleteToken($tokenid)
     {
         $dlquery = "DELETE FROM ".TokenDynamic::tableName()." WHERE tid=:tokenid";
