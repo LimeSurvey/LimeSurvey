@@ -279,10 +279,14 @@
             $out = '';
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            $out .= CHtml::textField($id, $value, array(
+            if (isset($metaData['label']))
+            {
+                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
+            }
+            $out .= CHtml::numberField($id, $value, array(
                 'id' => $id,
                 'form' => $form,
-                'pattern' => '\d+(\.\d+)?'
+                'data-type'=>'float',
             ));
             return $out;
         }
@@ -314,7 +318,7 @@
             $id = $name;
             $value = isset($metaData['content']) ? $metaData['content'] : '';
             if (is_array($value)) { throw new CException('wrong type' . $name); }
-            $out .= CHtml::encode($value);
+            $out .= $value;
 
             return $out;
         }
@@ -325,11 +329,16 @@
             $id = $name;
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             if (is_array($value)) { throw new CException('wrong type' . $name); }
-            $out .= CHtml::textField($id, $value, array(
+            if (isset($metaData['label']))
+            {
+                $out .= CHtml::label($metaData['label'], $id, $metaData['labelOptions']);
+            }
+            $step=isset($metaData['step'])?$metaData['step']:1;
+            $out .= CHtml::numberField($id, $value, array(
                 'id' => $id,
                 'form' => $form,
                 'data-type' => 'int',
-                'pattern' => '\d+'
+                'step' => 1,
             ));
             return $out;
         }

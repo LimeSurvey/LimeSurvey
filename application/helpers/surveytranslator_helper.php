@@ -363,6 +363,13 @@
         $supportedLanguages['ja']['dateformat'] = 6;
         $supportedLanguages['ja']['radixpoint'] = 0;
 
+        // Kazakh
+        $supportedLanguages['kk']['description'] = $clang->gT('Kazakh');
+        $supportedLanguages['kk']['nativedescription'] = 'Qazaq&#351;a';
+        $supportedLanguages['kk']['rtl'] = false;
+        $supportedLanguages['kk']['dateformat'] = 1;
+        $supportedLanguages['kk']['radixpoint'] = 1;
+
         // Kinyarwanda 
         $supportedLanguages['rw']['description'] = gT('Kinyarwanda');
         $supportedLanguages['rw']['nativedescription'] = 'Kinyarwanda';

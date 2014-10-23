@@ -136,12 +136,12 @@ else
     var sSelectRowMsg = "<?php eT("Please select at least one participant.", 'js') ?>";
     var addsurvey = "<?php eT("Add participants to survey", 'js') ?>";
     var exportcsv = "<?php eT("Export CSV", 'js') ?>";
-    var nooptionselected = "<?php eT("Please choose either of the options", 'js') ?>";
+    var nooptionselected = "<?php eT("Please choose one option.", 'js') ?>";
     var removecondition = "<?php eT("Remove condition", 'js') ?>";
     var selectSurvey = "<?php eT("You must select a survey from the list", 'js'); ?>";
     var cancelBtn = "<?php eT("Cancel", 'js') ?>";
     var okBtn = "<?php eT("OK", 'js') ?>";
-    var deletefrompanelmsg = "<?php eT("Select one of the three options", 'js') ?>";
+    var deletefrompanelmsg = "<?php eT("Please choose one option.", 'js') ?>";
     var noRowSelected = "<?php eT("You have no row selected", 'js') ?>";
     var deletefrompanel = "<?php eT("Delete participant(s) from central participants panel only", 'js') ?>";
     var deletefrompanelandtoken = "<?php eT("Delete participant(s) from central panel and tokens tables", 'js') ?>";
@@ -167,7 +167,6 @@ else
     var attMapUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/attributeMap"); ?>";
     var editAttributevalue = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editAttributevalue"); ?>";
     var shareUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/shareParticipants"); ?>";
-    var surveyUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/addToToken"); ?>";
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
     var ajaxUrl = "<?php echo Yii::app()->getConfig('adminimageurl') . "/ajax-loader.gif" ?>";
     var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";

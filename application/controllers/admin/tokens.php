@@ -365,7 +365,6 @@ class tokens extends Survey_Common_Action
         if(empty($search) && !empty($aSearchArray)){
             $search=$aSearchArray;
         }
-            //die("<pre>".print_r($search,1)."</pre>");
         if (!empty($search)) {
             $condition = TokenDynamic::model($iSurveyId)->getSearchMultipleCondition($search);
         }else{
@@ -447,8 +446,8 @@ class tokens extends Survey_Common_Action
             } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
-            // Check if the token can be taken
-            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "") && $bCreatePermission) {
+            // Check if the token can be taken 
+            if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "" || $aSurveyInfo['alloweditaftercompletion']=="Y") && $bCreatePermission) {
                 $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", gT("Do survey"), '_blank');
             } else {
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
@@ -916,7 +915,6 @@ class tokens extends Survey_Common_Action
             $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
             'lastname' => Yii::app()->request->getPost('lastname'),
             'email' => Yii::app()->request->getPost('email'),
-            'emailstatus' => 'OK',
             'token' => $santitizedtoken,
             'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
             'sent' => 'N',
@@ -2024,32 +2022,34 @@ class tokens extends Survey_Common_Action
 
                         if ($bFilterDuplicateToken)
                         {
-                            $oCriteria=new CDbCriteria();
-                            $oCriteria->select = 'tid';
-                            $oCriteria->condition = '';
-                            $aParam=array();
+                            $aParams=array();
+                            $oCriteria= new CDbCriteria;
+                            $oCriteria->condition="";
                             foreach ($aFilterDuplicateFields as $field)
-                            {
+                                {
                                 if (isset($aWriteArray[$field]))
                                 {
-                                    $oCriteria->addCondition(Yii::app()->db->quoteColumnName($field)." = :field{$field}");
-                                    $oCriteria->params[":field{$field}"]=$aWriteArray[$field]; // Don't use compare : compare don't compare empty value
+                                    $oCriteria->addCondition("{$field} = :{$field}");
+                                    $aParams[":{$field}"]=$writearray[$field];
                                 }
                             }
-                            if (Token::model($iSurveyId)->count($oCriteria)>0)
+                            if(!empty($aParams))
+                                $oCriteria->params=$aParams;
+                            $dupresult = TokenDynamic::model($iSurveyId)->count($oCriteria);
+                            if ($dupresult > 0)
                             {
                                 $bDuplicateFound = true;
-                                $aDuplicateList[] = sprintf(gt("Line %s : %s %s (%s)"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']));
+                                $aDuplicateList[] = sprintf(gt("Line %s : %s %s (%s)"),$recordcount,$writearray['firstname'],$writearray['lastname'],$writearray['email']);
                             }
                         }
 
                         //treat blank emails
-                        if ($bFilterBlankEmail && $aWriteArray['email'] == '')
+                        if (!$bDuplicateFound && $bFilterBlankEmail && $aWriteArray['email'] == '')
                         {
                             $bInvalidEmail = true;
                             $aInvalidEmailList[] = sprintf(gt("Line %s : %s %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']));
                         }
-                        if ($aWriteArray['email'] != '')
+                        if (!$bDuplicateFound && $aWriteArray['email'] != '')
                         {
                             $aEmailAddresses = explode(';', $aWriteArray['email']);
                             foreach ($aEmailAddresses as $sEmailaddress)
@@ -2084,7 +2084,6 @@ class tokens extends Survey_Common_Action
 
                         if (!$bDuplicateFound && !$bInvalidEmail)
                         {
-                            tracevar($aWriteArray);
                             // unset all empty value
                             foreach ($aWriteArray as $key=>$value)
                             {

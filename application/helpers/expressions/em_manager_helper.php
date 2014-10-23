@@ -648,32 +648,40 @@
         */
         private function __construct()
         {
-            Yii::beginProfile('LEMconstruct');
+            self::$instance =& $this;
             $this->em = new ExpressionManager();
             if (!isset($_SESSION['LEMlang'])) {
                 $_SESSION['LEMlang'] = 'en';    // so that there is a default
             }
-            Yii::endProfile('LEMconstruct');
         }
 
         /**
         * Ensures there is only one instances of LEM.  Note, if switch between surveys, have to clear this cache
         * @return LimeExpressionManager
         */
-        public static function singleton()
+        public static function &singleton()
         {
-            if (!isset(self::$instance))
-            {
-                if (isset(App()->cache[self::getCacheKey()]))
-                {
-                    self::$instance = App()->cache->get(self::getCacheKey());
-                }
-                else
-                {
-                    self::$instance = new self();
-                }
-
+            $now = microtime(true);
+            if (isset($_SESSION['LEMdirtyFlag'])) {
+                $c = __CLASS__;
+                self::$instance = new $c;
+                unset($_SESSION['LEMdirtyFlag']);
             }
+            else if (!isset(self::$instance)) {
+                    if (isset($_SESSION['LEMsingleton'])) {
+                        self::$instance = unserialize($_SESSION['LEMsingleton']);
+                    }
+                    else {
+                        $c = __CLASS__;
+                        self::$instance = new $c;
+                    }
+                }
+                else {
+                    // does exist, and OK to cache
+                    return self::$instance;
+            }
+            // only record duration if have to create new (or unserialize) an instance
+            self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
             return self::$instance;
         }
 
@@ -690,22 +698,17 @@
         */
         public static function SetPreviewMode($previewmode=false)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode=$previewmode;
             //$_SESSION[$LEM->sessid]['previewmode']=$previewmode;
         }
 
-        protected static function getCacheKey()
-        {
-            return "LimeExpressionMaanger" . App()->session->sessionID;
-        }
         /**
         * Tells Expression Manager that something has changed enough that needs to eliminate internal caching
         */
         public static function SetDirtyFlag()
         {
-            App()->cache->delete(self::getCacheKey());
-            self::$instance = null;
+            $_SESSION['LEMdirtyFlag'] = true;
             $_SESSION['LEMforceRefresh'] = true;
         }
 
@@ -755,20 +758,24 @@
             // Cheat and upgrade question attributes here too.
             self::UpgradeQuestionAttributes(true,$surveyId,$qid);
 
-            $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
-            $num = count($releqns);
-            if ($num == 0) {
-                return NULL;
+            if (is_null($surveyId))
+            {
+                $sQuery='SELECT sid FROM {{surveys}}';
+                $aSurveyIDs = Yii::app()->db->createCommand($sQuery)->queryColumn();
+            }
+            else{
+                $aSurveyIDs=array($surveyId);
+            }
+            foreach ($aSurveyIDs as $surveyId )     {
+                // echo $surveyId.'<br>';flush();@ob_flush();
+                $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
+                foreach ($releqns as $key=>$value) {
+                    $sQuery = "UPDATE {{questions}} SET relevance=".Yii::app()->db->quoteValue($value)." WHERE qid=".$key;
+                    Yii::app()->db->createCommand($sQuery)->execute();
+                }
             }
 
-            $queries = array();
-            foreach ($releqns as $key=>$value) {
-                $query = "UPDATE {{questions}} SET relevance=".Yii::app()->db->quoteValue($value)." WHERE qid=".$key;
-                dbExecuteAssoc($query);
-                $queries[] = $query;
-            }
             LimeExpressionManager::SetDirtyFlag();
-            return $queries;
         }
 
         /**
@@ -798,7 +805,7 @@
         * @param <integer> $surveyId
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
-                $LEM = LimeExpressionManager::singleton();
+                $LEM =& LimeExpressionManager::singleton();
 
                 $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);
                 $LEM->SetSurveyId($iSurveyId);
@@ -980,8 +987,8 @@
                     }
                 }
 
-                if ($row['cqid'] == 0 || substr($row['cfieldname'],0,1) == '+') {
-                    $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group
+                if (($row['cqid'] == 0 && !preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'])) || substr($row['cfieldname'],0,1) == '+') {
+                    $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields)
                 }
             }
             // output last one
@@ -1023,7 +1030,7 @@
         */
         public static function UnitTestConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return $LEM->ConvertConditionsToRelevance($surveyId, $qid);
         }
 
@@ -3184,7 +3191,7 @@
                 if ($date_min!='' || $date_max!='')
                 {
                     //Get date format of current question and convert date in help text accordingly
-                    $LEM = LimeExpressionManager::singleton();
+                    $LEM =& LimeExpressionManager::singleton();
                     $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $questionNum,$_SESSION['LEMlang']);
                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$questionNum],$LEM->surveyOptions);
                     $_minV = (($date_min == '') ? "''" : "if((strtotime(".$date_min.")), date('".$aDateFormatData['phpdate']."', strtotime(".$date_min.")),'')");
@@ -4095,21 +4102,21 @@
             if (Survey::model()->hasTokens($surveyid) && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
             {
                 //Gather survey data for tokenised surveys, for use in presenting questions
-				$this->knownVars['TOKEN:TOKEN'] = array(
+                $this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
 
-				$token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
+                $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
                 foreach ($token as $key => $val)
                 {
                     $this->knownVars["TOKEN:" . strtoupper($key)] = array(
-						'code' => $anonymized ? '' : $val,
-						'jsName_on' => '',
-						'jsName' => '',
-						'readWrite' => 'N',
+                        'code' => $anonymized ? '' : $val,
+                        'jsName_on' => '',
+                        'jsName' => '',
+                        'readWrite' => 'N',
                     );
                 }
             }
@@ -4176,7 +4183,7 @@
         */
         static function SubQuestionIsRelevant($sgqa)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             if (!isset($LEM->knownVars[$sgqa]))
             {
                 return false;
@@ -4201,7 +4208,7 @@
         */
         static function QuestionIsRelevant($qid)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $qrel = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
             $gseq = (isset($LEM->questionId2groupSeq[$qid]) ? $LEM->questionId2groupSeq[$qid] : -1);
             $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
@@ -4216,7 +4223,7 @@
          */
         static function GroupIsRelevant($gid)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $gseq = $LEM->GetGroupSeq($gid);
             return !$LEM->GroupIsIrrelevantOrHidden($gseq);
         }
@@ -4228,7 +4235,7 @@
         */
         static function GroupIsIrrelevantOrHidden($gseq)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $grel = (isset($_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq]) ? $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] : 1);   // group-level relevance based upon grelevance equation
             $gshow = (isset($LEM->indexGseq[$gseq]['show']) ? $LEM->indexGseq[$gseq]['show'] : true);   // default to true?
             return !($grel && $gshow);
@@ -4289,7 +4296,7 @@
         static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true, $staticReplacement=false)
         {
             $now = microtime(true);
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             if ($noReplacements) {
                 $LEM->em->SetPrettyPrintSource($string);
@@ -4338,7 +4345,7 @@
         */
         static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return $LEM->_ProcessRelevance($eqn,$questionNum,NULL,$jsResultVar,$type,$hidden);
         }
 
@@ -4534,7 +4541,7 @@
         */
         static function GetLastPrettyPrintExpression()
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return $LEM->em->GetLastPrettyPrintExpression();
         }
 
@@ -4545,7 +4552,7 @@
          */
         static function GetAllVarNamesForQ($qseq,$varname)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             $parts = explode('.',$varname);
             $qroot = '';
@@ -4676,7 +4683,7 @@
         static function StartProcessingPage($allOnOnePage=false,$initializeVars=false)
         {
             //        $now = microtime(true);
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $LEM->pageRelevanceInfo=array();
             $LEM->pageTailorInfo=array();
             $LEM->allOnOnePage=$allOnOnePage;
@@ -4715,7 +4722,7 @@
         */
         static function StartSurvey($surveyid,$surveyMode='group',$aSurveyOptions=NULL,$forceRefresh=false,$debugLevel=0)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $LEM->sid=sanitize_int($surveyid);
             $LEM->sessid = 'survey_' . $LEM->sid;
             $LEM->em->StartProcessingGroup($surveyid);
@@ -4838,7 +4845,7 @@
         static function NavigateBackwards()
         {
             $now = microtime(true);
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
             $LEM->updatedValues = array();
@@ -4972,7 +4979,7 @@
         */
         static function NavigateForwards($force=false) {
             $now = microtime(true);
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
             $LEM->updatedValues = array();
@@ -5238,6 +5245,8 @@
                 else
                 {
                     $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
+                    echo submitfailed('');  // TODO - report SQL error?
+
                 }
                 //Insert Row for Timings, if needed
                 if ($this->surveyOptions['savetimings']) {
@@ -5395,7 +5404,7 @@
         */
         static function GetLastMoveResult($clearSubstitutionInfo=false)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             if ($clearSubstitutionInfo)
             {
                 $LEM->em->ClearSubstitutionInfo();  // need to avoid double-generation of tailoring info
@@ -5412,7 +5421,7 @@
         */
         static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false) {
             $now = microtime(true);
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             if(!$preview)
                 $preview=$LEM->sPreviewMode;
@@ -6655,7 +6664,7 @@
 
         static function GetQuestionStatus($qid)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             if (isset($LEM->currentQset[$qid]))
             {
                 return $LEM->currentQset[$qid];
@@ -6669,7 +6678,7 @@
         */
         static function GetGroupIndexInfo($gseq=NULL)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             if (is_null($gseq)) {
                 return $LEM->indexGseq;
             }
@@ -6685,7 +6694,7 @@
         */
         static function GetGroupSeq($gid)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return (isset($LEM->groupId2groupSeq[$gid]) ? $LEM->groupId2groupSeq[$gid] : -1);
         }
 
@@ -6696,7 +6705,7 @@
         */
         static function GetQuestionSeq($qid)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return (isset($LEM->questionId2questionSeq[$qid]) ? $LEM->questionId2questionSeq[$qid] : -1);
         }
 
@@ -6706,7 +6715,7 @@
         */
         static function GetQuestionIndexInfo()
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return $LEM->indexQseq;
         }
 
@@ -6717,7 +6726,7 @@
         */
         static function GetStepIndexInfo($step=NULL)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             switch ($LEM->surveyMode)
             {
                 case 'survey':
@@ -6747,7 +6756,7 @@
         */
         static function StartProcessingGroup($gseq=NULL,$anonymized=false,$surveyid=NULL,$forceRefresh=false)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $LEM->em->StartProcessingGroup(
                 isset($surveyid) ? $surveyid : NULL,
                 '',
@@ -6780,7 +6789,7 @@
         static function FinishProcessingGroup($skipReprocessing=false)
         {
             //        $now = microtime(true);
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             if ($skipReprocessing && $LEM->surveyMode != 'survey')
             {
                 $LEM->pageTailorInfo=array();
@@ -6799,7 +6808,7 @@
         */
         static function SplitStringOnExpressions($src)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return $LEM->em->asSplitStringOnExpressions($src);
         }
 
@@ -6809,7 +6818,7 @@
         */
         static function GetDebugTimingMessage()
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return $LEM->debugTimingMsg;
         }
 
@@ -6818,7 +6827,7 @@
         */
         static function FinishProcessingPage()
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             $totalTime = 0.;
             if ((($LEM->debugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) && count($LEM->runtimeTimings)>0) {
@@ -6838,7 +6847,7 @@
 
             $LEM->initialized=false;    // so detect calls after done
             $LEM->ParseResultCache=array(); // don't need to persist it in session
-            App()->cache->set(self::getCacheKey(), $LEM);
+            $_SESSION['LEMsingleton']=serialize($LEM);
         }
 
         /*
@@ -6848,7 +6857,7 @@
         static function GetRelevanceAndTailoringJavaScript()
         {
             $now = microtime(true);
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             $jsParts=array();
             $allJsVarsUsed=array();
@@ -7647,7 +7656,7 @@
 
         static function setTempVars($vars)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $LEM->tempVars = $vars;
         }
 
@@ -7724,7 +7733,7 @@ EOST;
             LimeExpressionManager::StartProcessingPage();
             LimeExpressionManager::StartProcessingGroup(1);
 
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $LEM->tempVars = $vars;
 
             $LEM->questionId2questionSeq = array();
@@ -7807,7 +7816,7 @@ EOT;
             $argInfo = array();
 
             LimeExpressionManager::SetDirtyFlag();
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
 
             LimeExpressionManager::StartProcessingPage(true);
@@ -7891,14 +7900,14 @@ EOT;
     <script type='text/javascript'>
     <!--
     var LEMradix='.';
-	function checkconditions(value, name, type, evt_type)
-	{
+    function checkconditions(value, name, type, evt_type)
+    {
         if (typeof evt_type === 'undefined')
         {
             evt_type = 'onchange';
         }
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
-	}
+    }
     // -->
     </script>
 EOD;
@@ -7947,7 +7956,7 @@ EOD;
         */
         public static function SetThisAsAliasForSGQA($sgqa)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             if (isset($LEM->knownVars[$sgqa]))
             {
                 $LEM->qcode2sgqa['this']=$sgqa;
@@ -7956,7 +7965,7 @@ EOD;
 
         public static function ShowStackTrace($msg=NULL,&$args=NULL)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             $msg = array("**Stack Trace**" . (is_null($msg) ? '' : ' - ' . $msg));
 
@@ -8013,7 +8022,7 @@ EOD;
         */
         public static  function usingCommaAsRadix()
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $usingCommaAsRadix = (($LEM->surveyOptions['radix']==',') ? true : false);
             return $usingCommaAsRadix;
         }
@@ -8021,27 +8030,26 @@ EOD;
         private static function getConditionsForEM($surveyid=NULL, $qid=NULL)
         {
             if (!is_null($qid)) {
-                $where = " c.qid = ".$qid." and ";
+                $where = " c.qid = ".$qid." AND ";
             }
             else if (!is_null($surveyid)) {
-                    $where = " c.qid in (select qid from {{questions}} where sid = ".$surveyid.") and ";
+                    $where = " qa.sid = {$surveyid} AND ";
                 }
                 else {
                     $where = "";
             }
 
-            $query = "select distinct c.*"
-            .", q.sid, q.type"
-            ." from {{conditions}} as c"
-            .", {{questions}} as q"
-            ." where " . $where
-            ." c.cqid=q.qid"
-            ." union "
-            ." select c.*, q.sid, '' as type"
-            ." from {{conditions}} as c"
-            .", {{questions}} as q"
-            ." where ". $where
-            ." c.cqid = 0 and c.qid = q.qid";
+            $query = "SELECT DISTINCT c.*, q.sid, q.type
+                FROM {{conditions}} AS c
+                LEFT JOIN {{questions}} q ON c.cqid=q.qid
+                LEFT JOIN {{questions}} qa ON c.qid=qa.qid
+                WHERE {$where} 1=1
+                UNION
+                SELECT DISTINCT c.*, q.sid, NULL AS TYPE
+                FROM {{conditions}} AS c
+                LEFT JOIN {{questions}} q ON c.cqid=q.qid
+                LEFT JOIN {{questions}} qa ON c.qid=qa.qid
+                WHERE {$where} c.cqid = 0";
 
             $databasetype = Yii::app()->db->getDriverName();
             if ($databasetype=='mssql' || $databasetype=='dblib')
@@ -8053,71 +8061,60 @@ EOD;
                 $query .= " order by sid, qid, scenario, cqid, cfieldname, value";
             }
 
-            $data = dbExecuteAssoc($query);
-
-            return $data;
+            return Yii::app()->db->createCommand($query)->query();
         }
 
         /**
         * Deprecate obsolete question attributes.
         * @param boolean $changedb - if true, updates parameters and deletes old ones
-        * @param type $surveyid - if set, then only for that survey
+        * @param type $iSureyID - if set, then only for that survey
         * @param type $onlythisqid - if set, then only for this question ID
         */
-        public static function UpgradeQuestionAttributes($changeDB=false,$surveyid=NULL,$onlythisqid=NULL)
+        public static function UpgradeQuestionAttributes($changeDB=false,$iSurveyID=NULL,$onlythisqid=NULL)
         {
-            $LEM = LimeExpressionManager::singleton();
-            $qattrs = $LEM->getQuestionAttributesForEM($surveyid,$onlythisqid,$_SESSION['LEMlang']);
-
-            $qupdates = array();
+            $LEM =& LimeExpressionManager::singleton();
+            if (is_null($iSurveyID))
+            {
+                $sQuery='SELECT sid FROM {{surveys}}';
+                $aSurveyIDs = Yii::app()->db->createCommand($sQuery)->queryColumn();
+            }
+            else{
+                $aSurveyIDs=array($iSurveyID);
+            }
 
             $attibutemap = array(
-            'max_num_value_sgqa' => 'max_num_value',
-            'min_num_value_sgqa' => 'min_num_value',
-            'num_value_equals_sgqa' => 'equals_num_value',
+                'max_num_value_sgqa' => 'max_num_value',
+                'min_num_value_sgqa' => 'min_num_value',
+                'num_value_equals_sgqa' => 'equals_num_value',
             );
             $reverseAttributeMap = array_flip($attibutemap);
-
-            foreach ($qattrs as $qid => $qattr)
+            foreach ($aSurveyIDs as $iSurveyID)
             {
-                $updates = array();
-                foreach ($attibutemap as $src=>$target)
+                $qattrs = $LEM->getQuestionAttributesForEM($iSurveyID,$onlythisqid,$_SESSION['LEMlang']);
+                foreach ($qattrs as $qid => $qattr)
                 {
-                    if (isset($qattr[$src]) && trim($qattr[$src]) != '')
+                    $updates = array();
+                    foreach ($attibutemap as $src=>$target)
                     {
-                        $updates[$target] = $qattr[$src];
+                        if (isset($qattr[$src]) && trim($qattr[$src]) != '')
+                        {
+                            $updates[$target] = $qattr[$src];
+                        }
+                    }
+                    if ($changeDB)
+                    {
+                        foreach  ($updates as $key=>$value)
+                        {
+                            $query = "UPDATE {{question_attributes}} SET value=".Yii::app()->db->quoteValue($value)." WHERE qid={$qid} and attribute=".Yii::app()->db->quoteValue($key);
+                            Yii::app()->db->createCommand($query)->execute();
+                            $query = "DELETE FROM {{question_attributes}} WHERE qid={$qid} and attribute=".Yii::app()->db->quoteValue($reverseAttributeMap[$key]);
+                            Yii::app()->db->createCommand($query)->execute();
+
+                        }
                     }
                 }
-                if (count($updates) > 0)
-                {
-                    $qupdates[$qid] = $updates;
-                }
             }
-            if ($changeDB)
-            {
-                $queries = array();
-                foreach ($qupdates as $qid=>$updates)
-                {
-                    foreach  ($updates as $key=>$value)
-                    {
-                        $query = "UPDATE {{question_attributes}} SET value=".Yii::app()->db->quoteValue($value)." WHERE qid=".$qid." and attribute=".Yii::app()->db->quoteValue($key);
-                        $queries[] = $query;
-                        $query = "DELETE FROM {{question_attributes}} WHERE qid=".$qid." and attribute=".Yii::app()->db->quoteValue($reverseAttributeMap[$key]);
-                        $queries[] = $query;
 
-                    }
-                }
-                // now update the datbase
-                foreach ($queries as $query)
-                {
-                    dbExecuteAssoc($query);
-                }
-                return $queries;
-            }
-            else
-            {
-                return $qupdates;
-            }
         }
 
         /**
@@ -8347,7 +8344,7 @@ EOD;
         */
         static function ProcessCurrentResponses()
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             if (!isset($LEM->currentQset)) {
                 return array();
             }
@@ -8482,7 +8479,7 @@ EOD;
 
         static public function isValidVariable($varName)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             if (isset($LEM->knownVars[$varName]))
             {
@@ -8501,7 +8498,7 @@ EOD;
 
         static public function GetVarAttribute($name,$attr,$default,$gseq,$qseq)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             return $LEM->_GetVarAttribute($name,$attr,$default,$gseq,$qseq);
         }
 
@@ -8726,7 +8723,7 @@ EOD;
                                 $shown = $code;
                                 break;
                             case 'D': //DATE
-                                $LEM = LimeExpressionManager::singleton();
+                                $LEM =& LimeExpressionManager::singleton();
                                 $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'],$_SESSION['LEMlang']);
                                 $aDateFormatData=getDateFormatDataForQID($aAttributes[$var['qid']],$LEM->surveyOptions);
                                 $shown='';
@@ -8814,7 +8811,7 @@ EOD;
 
         public static function SetVariableValue($op,$name,$value)
         {
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
 
             if (isset($LEM->tempVars[$name]))
             {
@@ -8911,7 +8908,7 @@ EOD;
             // A1, code, assessment_value, text
             // End Message
 
-            $LEM = LimeExpressionManager::singleton();
+            $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
 
@@ -9115,6 +9112,10 @@ EOD;
                             case 'max_num_of_files':
                             case 'multiflexible_max':
                             case 'multiflexible_min':
+                            case 'slider_accuracy':
+                            case 'slider_min':
+                            case 'slider_max':
+                            case 'slider_default':
                                 $value = '{' . $value . '}';
                                 break;
                             case 'other_replace_text':
@@ -9639,7 +9640,7 @@ EOD;
                 SetSurveyLanguage($sid,$lang);
                 LimeExpressionManager::StartSurvey($sid, 'survey', array('sgqaNaming'=>'N','assessments'=>$assessments), true);
                 $moveResult = LimeExpressionManager::NavigateForwards();
-                $LEM = LimeExpressionManager::singleton();
+                $LEM =& LimeExpressionManager::singleton();
 
                 if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                     continue;
@@ -9891,7 +9892,7 @@ EOD;
         * Returns the survey ID of the EM singleton
         */
         public static function getLEMsurveyId() {
-                $LEM = LimeExpressionManager::singleton();
+                $LEM =& LimeExpressionManager::singleton();
                 return $LEM->sid;
         }
 

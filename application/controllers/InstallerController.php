@@ -567,7 +567,7 @@ class InstallerController extends CController {
                 $sql_file = 'pgsql';
                 break;
             default:
-                throw new Exception(sprintf('Unkown database type "%s".', $sDatabaseType));
+                throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
 
         //checking DB Connection
@@ -647,6 +647,10 @@ class InstallerController extends CController {
                 if ($this->connection->getActive() == true) {
                     $sPasswordHash=hash('sha256', $sAdminPassword);
                     try {
+                        
+                        if (User::model()->count()>0){
+                            die();
+                        }
                         // Save user
                         $user=new User;
                         $user->users_name=$sAdminUserName;
@@ -855,7 +859,7 @@ class InstallerController extends CController {
         if (version_compare(PHP_VERSION, '5.3.0', '<'))
             $bProceed = !$aData['verror'] = true;
 
-        if ($this->return_bytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
+        if (convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
             $bProceed = !$aData['bMemoryError'] = true;
 
 
@@ -1258,33 +1262,12 @@ class InstallerController extends CController {
             return true;
         } catch(Exception $e) {
             if (!empty($aData['model']) && !empty($aData['clang'])) {
-                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->message);
+                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->getMessage());
                 $this->render('/installer/dbconfig_view', $aData);
             } else {
                 return false;
             }
         }
-    }
-
-    /**
-    * This function returns the full number from a PHP ini value
-    *
-    * @param string $sValue
-    */
-    function return_bytes($sValue) {
-        $sValue = trim($sValue);
-        $sLast = strtolower($sValue[strlen($sValue)-1]);
-        switch($sLast) {
-            // The 'G' modifier is available since PHP 5.1.0
-            case 'g':
-                $sValue *= 1024;
-            case 'm':
-                $sValue *= 1024;
-            case 'k':
-                $sValue *= 1024;
-        }
-
-        return $sValue;
     }
 
 }

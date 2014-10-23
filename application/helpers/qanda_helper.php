@@ -168,10 +168,6 @@ function retrieveAnswers($ia)
             break;
         case 'R': //RANKING STYLE
             $values=do_ranking($ia);
-            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
-            {
-                $question_text['help'] = gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.");
-            }
             break;
         case 'M': //Multiple choice checkbox
             $values=do_multiplechoice($ia);
@@ -2093,9 +2089,12 @@ function do_ranking($ia)
         $max_answers=$anscount;
     }
     // Get the max number of line needed
-    if(ctype_digit($max_answers) && intval($max_answers)<$anscount){
+    if(ctype_digit($max_answers) && intval($max_answers)<$anscount)
+    {
         $iMaxLine=$max_answers;
-    }else{
+    }
+    else
+    {
         $iMaxLine=$anscount;
     }
     if (trim($aQuestionAttributes["min_answers"])!='')
@@ -2108,13 +2107,13 @@ function do_ranking($ia)
     // First start by a ranking without javascript : just a list of select box
     // construction select box
     $answers= array();
-        foreach ($ansresult as $ansrow)
-        {
-            $answers[] = $ansrow;
-        }
+    foreach ($ansresult as $ansrow)
+    {
+        $answers[] = $ansrow;
+    }
     $answer .= '<div class="ranking-answers">
     <ul class="answers-list select-list">';
-    for ($i=1; $i<=$anscount; $i++)
+    for ($i=1; $i<=$iMaxLine; $i++)
     {
         $myfname=$ia[1].$i;
         $answer .= "\n<li class=\"select-item\">";
@@ -2152,7 +2151,7 @@ function do_ranking($ia)
         . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
         . "<div style='display:none' id='ranking-{$ia[0]}-name'>".$ia[1]."</div>"
         . "</div>";
-    // The list with HTML answres
+    // The list with HTML answers
     $answer .="<div style=\"display:none\">";
     foreach ($answers as $ansrow)
     {
@@ -2179,11 +2178,15 @@ function do_ranking($ia)
     {
         $rank_title=gT("Your Ranking",'js');
     }
+    // hide_tip is managed by css with EM
+    $rank_help = $clang->gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
+
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
     . "var aRankingTranslations = {
              choicetitle: '{$choice_title}',
-             ranktitle: '{$rank_title}'
+             ranktitle: '{$rank_title}',
+             rankhelp: '{$rank_help}'
             };\n"
     ." doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]});\n"
     ." -->\n"
@@ -3136,36 +3139,14 @@ function do_multiplenumeric($ia)
         $prefixclass="slider";
         $slider_layout=true;
         $extraclass .=" withslider";
-        if (trim($aQuestionAttributes['slider_accuracy'])!='')
-        {
-            $slider_step = $aQuestionAttributes['slider_accuracy'];
-        }
-        else
-        {
-            $slider_step = 1;
-        }
-
-        if (trim($aQuestionAttributes['slider_min'])!='')
-        {
-            $slider_mintext = $aQuestionAttributes['slider_min'];
-            $slider_min = $aQuestionAttributes['slider_min'];
-        }
-        else
-        {
-            $slider_mintext = 0;
-            $slider_min = 0;
-        }
-        if (trim($aQuestionAttributes['slider_max'])!='')
-        {
-            $slider_maxtext = $aQuestionAttributes['slider_max'];
-            $slider_max = $aQuestionAttributes['slider_max'];
-        }
-        else
-        {
-            $slider_maxtext = "100";
-            $slider_max = 100;
-        }
-        $slider_default= (trim($aQuestionAttributes['slider_default'])!='')?$aQuestionAttributes['slider_default']:"";
+        $slider_step=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_accuracy']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_step =  (is_numeric($slider_step))?$slider_step:1;
+        $slider_min = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_min']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_mintext = $slider_min =  (is_numeric($slider_min))?$slider_min:0;
+        $slider_max = trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_max']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_maxtext = $slider_max =  (is_numeric($slider_max))?$slider_max:100;
+        $slider_default=trim(LimeExpressionManager::ProcessString("{{$aQuestionAttributes['slider_default']}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_default =  (is_numeric($slider_default))?$slider_default:"";
 
         if ($slider_default == '' && $aQuestionAttributes['slider_middlestart']==1)
         {
@@ -3245,7 +3226,12 @@ function do_multiplenumeric($ia)
                 $answer_main .= "{$sliderleft}<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth."\" name=\"".$myfname."\" id=\"answer".$myfname."\" title=\"".gT('Only numbers may be entered in this field.')."\" value=\"";
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
-                    $dispVal = str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
+                    $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    if(strpos($dispVal,"."))
+                    {
+                        $dispVal=rtrim(rtrim($dispVal,"0"),".");
+                    }
+                    $dispVal = str_replace('.',$sSeparator,$dispVal);
                     $answer_main .= $dispVal;
                 }
 
@@ -5687,7 +5673,7 @@ function do_array_multiflexi($ia)
                     . " if(this.checked) {"
                     . "  aelt.value=1;jelt.value=1;$checkconditionFunction(1,'{$myfname2}',aelt.type);"
                     . " } else {"
-                    . "  aelt.value=0;jelt.value=0;$checkconditionFunction(0,'{$myfname2}',aelt.type);"
+                    . "  aelt.value='';jelt.value='';$checkconditionFunction('','{$myfname2}',aelt.type);"
                     . " }; return true;\" "
                     //                    . " onchange=\"checkconditions(this.value, this.name, this.type)\" "
                     . " />\n";

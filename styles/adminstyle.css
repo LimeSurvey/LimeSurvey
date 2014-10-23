@@ -56,7 +56,7 @@ div.htmleditor {
 
 .menubar select {
     margin-bottom: 0px;
-   
+
 }
 .qtip-questiontype {
     z-index: 100000;
@@ -177,7 +177,7 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
 .ui-tooltip.tooltip-text{min-width:15em}
 .templateeditor {
     float:left;
-    width:70%; 
+    width:70%;
     padding:1em;
 }
 
@@ -217,3 +217,15 @@ legend { line-height: normal; }
 .exporttip li { overflow: visible;}
 li input+label { display: inline;}
 #resultexport ol, #resultexport ul { margin: 0 0 10px 10px;}
+
+.hide {
+    display: none !important;
+}
+
+#deleteMode input{
+    margin-left:2em;
+}
+
+.conditionlist td.operator{
+    text-align:center; font-weight:bold;
+}

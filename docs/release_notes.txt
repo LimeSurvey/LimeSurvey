@@ -59,7 +59,211 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.05+ (build 140717) to 2.05+ (build 140730) July 30, 2014
+Changes from 2.05+ (build 141003) to 2.05+ (build 141020) Oct 20, 2014
+-Fixed issue #9218: When adding conditions fields referring to the same token field (Carsten Schmitz)
+-Fixed issue #9261: Emailstatus not filled by default when using remotecontrol invite_participants (Denis Chenu)
+-Fixed issue #9266: Chinese and Japanese characters not suppoerted when using MS SQL Server (Carsten Schmitz)
+-Fixed issue #9267: Error message when importing an survey archive having survey URL parameters (Carsten Schmitz)
+-Fixed issue #9274: Uppercase database name leads to errors (Carsten Schmitz)
+-Fixed issue #9278: Simple quote are replaced by HTML entities with HTML editor (Denis Chenu)
+-Fixed issue #9281: Unable to use Expression Manager for mail notification (Denis Chenu)
+-Fixed issue #9287: Missing asterisk in mandatory fields (Denis Chenu)
+-Fixed issue #9293: Quotation marks in email subjects are stripped when saved to the database including all following text (Denis Chenu)
+-Fixed issue #9298: Sort for a numeric token_attribute field in any participant table fails completely (Carsten Schmitz)
+-Fixed issue #9300: XSS protection or variable substitution breaks links with variable substitutions (Denis Chenu)
+-Fixed issue #9314: Error on PDF export w/ chinese content (mfaber)
+#Updated translation: Croatian by rovinj, daniflo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by lukacs
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Russian by vipgroup
+#Updated translation: Slovenian by dusan
+#Updated translation: Spanish (Spain) by caybar
+#Updated translation: Swedish by maxzomborszki
+
+Changes from 2.05+ (build 140915) to 2.05+ (build 141003) Oct 3, 2014
+-Fixed issue #9181: When dumping database sometimes lines are left out (Carsten Schmitz)
+-Fixed issue #9182: Data check integrity function uses too much memory if you have many surveys (Carsten Schmitz)
+-Fixed issue #9225: Infite redirection loop with WebServer authentication (Denis Chenu)
+-Fixed issue #9232: Error when calling list_participants and passing aAttributes array (Carsten Schmitz)
+-Fixed issue #9233: list_participants delivers invalid token data (Carsten Schmitz)
+-Fixed issue #9234: White page after save global settings if done just after auto-update (Carsten Schmitz)
+-Fixed issue #9239: Wrong language used for Expresson Manager in printable version (Denis Chenu)
+-Fixed issue #9240: Leading zeros removed during display for text (Denis Chenu)
+-Fixed issue #9258: Quick translation broken ith valid KEY (Denis Chenu)
+-Fixed issue #9259: slider min/max can be set as non-numeric, which then breaks survey (Denis Chenu)
+-Fixed issue #9269: Unable to delete label set with urlFormat get (Denis Chenu)
+-Fixed issue #9270: getallsets/ajaxsets issue when saving labelset (Denis Chenu)
+-Fixed issue #9271: Array dual scale causes errors (Denis Chenu)
+-Fixed issue: High memory usage on database backup procedure (Carsten Schmitz)
+-Fixed issue: High memory usage on db upgrade from older versions (Carsten Schmitz)
+-Fixed issue: PDF statistics cannot be shown (Carsten Schmitz)
+-New feature: can use Expression Manager in slider min/max/step and default (Denis Chenu)
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21, DenisChenu
+#Updated translation: Georgian by Davitus
+#Updated translation: German by c_schmitz, actxcellence
+#Updated translation: German (Informal) by c_schmitz, actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Lithuanian by simasj
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup, ddrmoscow
+#Updated translation: Spanish (Spain) by kadejo
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.05+ (build 140911) to 2.05+ (build 140915) Sept 15, 2014
+-New feature #8596: Allow empty dates for RemoteControl add_response call (Nate Baker)
+-Fixed issue #8221: Update TCPDF to ver. 6.xx (Alain Bearez)
+-Fixed issue #9031: get_summary does not return correct completed_responses (patch by ravindrakhokharia) (Carsten Schmitz)
+-Fixed issue #9149: Enable token-based response persistence? lack of explanation (Denis Chenu)
+-Fixed issue #9173: Only one record of same name/email can be added from CPDB to a token table (Carsten Schmitz)
+-Fixed issue #9195: SPSS Export - Text answers are cut on export - wrong data types assigned (Carsten Schmitz)
+-Fixed issue #9209: RemoteControl export_responses_by_token does not return all responses (Carsten Schmitz)
+-Fixed issue #9220: Slider cannot be changed if decimal separator is comma and Slider accuracy is less than 1 (Denis Chenu)
+-Fixed issue #9224: Confirmation emails not being sent if several email addresses are used in the token (Carsten Schmitz)
+-Fixed issue #9229: Language switch in token form with urlFormat to get broken (Denis Chenu)
+-Fixed issue #9231: Error when exporting survey archive (Carsten Schmitz)
+#Updated translation: Czech by slansky, kubaj
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Finnish by morbid, hannikkala
+#Updated translation: French (France) by arnaud21
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.05+ (build 140902) to 2.05+ (build 140911) Sept 11, 2014
+-Fixed issue #9024: Unable to access attribute management (tpartner)
+-Fixed issue #9047: Replacement field properties don't show up/bad layout (tpartner)
+-Fixed issue #9132: Remote API won't work when using MSSQL dblib driver on Linux (Carsten Schmitz)
+-Fixed issue #9140: Auto ID is not set properly when using Postgres and deactivating and reactivating the survey (Carsten Schmitz)
+-Fixed issue #9140: Auto ID is not set properly when using Postgres and insert new id with VV import (Denis Chenu)
+-Fixed issue #9140: No error message if data is not inserted on first page (Carsten Schmitz)
+-Fixed issue #9152: CSV export of CPDB with additional attributes doesn't export attribute values properly (Carsten Schmitz)
+-Fixed issue #9162: Pagination in CPDB panel not working (Carsten Schmitz)
+-Fixed issue #9172: Sent invitations are not being marked as sent when a semi-colon exist in the email address field (Carsten Schmitz)
+-Fixed issue #9174: OPTOUTURL from invitation email not working si EmailStatuts is not exactly on "OK" (Denis Chenu)
+-Fixed issue #9181: When dumping database sometimes lines are left out (Carsten Schmitz)
+-Fixed issue #9183: Template upload: "zip" is added to the templatename (Carsten Schmitz)
+-Fixed issue #9185: End page doesn't display correctly if it contains only an image and no text (Carsten Schmitz)
+-Fixed issue #9188: Array (Numbers) with Checkbox layout maximum/minimum answer validation not working if item was check and unchecked (Carsten Schmitz)
+-Fixed issue #9196: Can't update a token response if the last group was hidden (Carsten Schmitz)
+-Fixed issue #9199: JS error "showhelp is not defined" (Carsten Schmitz)
+-Fixed issue #9200: Delete selected participants from CPDB does not allow to select a deletion mode (Carsten Schmitz)
+-Fixed issue #9201: Possibility to perform XSS across email (Denis Chenu)
+-Fixed issue #9208: RemoteControl function export_responses_by_token ignores completion status when several responses for the same token exist (Carsten Schmitz)
+-Fixed issue #9210: ComfortUpdate not working if debug mode is activated (Carsten Schmitz)
+-Fixed issue #9213: Resume on Multiple numerical input displays 10 trailing zeros after the decimal place (Denis Chenu)
+-Fixed issue #9216: CPDB paging doesn't seem to be working properly (tpartner)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence, c_schmitz, DLange
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Spanish (Spain) by jigal
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.05+ (build 140821) to 2.05+ (build 140902) Sept 2, 2014
+-Fixed issue #9190 : reduce memory footprint for "Ranking" (R) type (Denis Chenu)
+-Fixed issue: CSS being broken when loading email template for detailed admin notification (Carsten Schmitz)
+-Fixed issue: Misuse of 'xml' as file extension for tab-separated-values format (vundicind)
+-Fixed issue: Notification emails not being sent if spaces are preceding the email address (Carsten Schmitz)
+-New feature: Add title on question list when exporting result (Denis Chenu)
+-New feature: Default value for yes/no question type (kairavesloot)
+-New translation: Kazakh 
+#Updated translation: Arabic by sessid, safi00972
+#Updated translation: Bulgarian by simid
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Dutch by L191
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Greek by MikeConom, kiolalis
+#Updated translation: Kazakh by c_schmitz
+#Updated translation: Norwegian (Bokma) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Mexican) by c_schmitz
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Tamil by apmuthu
+
+Changes from 2.05+ (build 140811) to 2.05+ (build 140821) Aug 21, 2014
+-Fixed issue #9164: Error when adding participant to exported and imported survey (Carsten Schmitz)
+-Fixed issue #9167: Small JS issue in survey browsing, public survey list and data entry (Carsten Schmitz)
+-Fixed issue #9175: Feature "Allow multiple responses or update responses with one token" failed (Denis Chenu)
+-Fixed issue #9177: Surveys with quote causing error in MSSQL (Denis Chenu)
+-Fixed issue: Multiple question codes in array filter break printable version (Carsten Schmitz)
+-Fixed issue: Vulnerability in installer (Carsten Schmitz)
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by arnaud21
+#Updated translation: Georgian by giorgi
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by yamatt
+#Updated translation: Latvian by marcic, vipgroup, zemnieks
+#Updated translation: Malay by qfirdaus
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Ukrainian by bkrupinski
+
+Changes from 2.05+ (build 140730) to 2.05+ (build 140811) Aug 11, 2014
+-Fixed issue #9101: I can not switch to a template with uppercase cahracter in template editor (Carsten Schmitz)
+-Fixed issue #9122: User can view 'edit local settings' button even without access (Denis Chenu)
+-Fixed issue #9153: Database dump tool not properly quoting all special chars (Carsten Schmitz)
+-Fixed issue : HTML editor broke using < > ... in Expression (Denis Chenu)
+-Fixed issue: Lost function convert_value() (weberho)
+#Updated translation: Chinese (Hong Kong) (Traditional) by alviniun
+#Updated translation: Chinese (Taiwan) (Traditional) by drawinglee
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han, L191
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by klaster, mariliis
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by tamacheq, arnaud21, DenisChenu
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by yamatt
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by vipgroup
+#Updated translation: Thai by bordin
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.05+ (build 140717) to 2.05+ (build 140730) Jul 30, 2014
 -Fixed issue #9052: Importing old .csv survey structure file does not properly import quotas (Carsten Schmitz)
 -Fixed issue #9100: ComfortUpdate step 2 shows absolute file paths (Carsten Schmitz)
 -Fixed issue #9105: Unable to open popup email for administrator in French (Carsten Schmitz)
@@ -89,7 +293,7 @@ Changes from 2.05+ (build 140717) to 2.05+ (build 140730) July 30, 2014
 #Updated translation: Russian by vipgroup
 #Updated translation: Swedish by maxzomborszki
 
-Changes from 2.05+ (build 140703) to 2.05+ (build 140717) July 17, 2014
+Changes from 2.05+ (build 140703) to 2.05+ (build 140717) Jul 17, 2014
 -Fixed issue #7895: Quota are not tested for hidden question (relevance to 1) (Denis Chenu)
 -Fixed issue #8906: Long URI with autofilter (Denis Chenu)
 -Fixed issue #9126: Survey's token and EM variables aren't set when exporting printing results view to PDF format. (Denis Chenu)
@@ -117,7 +321,7 @@ Changes from 2.05+ (build 140703) to 2.05+ (build 140717) July 17, 2014
 #Updated translation: Thai by adzpire
 #Updated translation: Turkish by kayazeren
 
-Changes from 2.05+ (build 140618) to 2.05+ (build 140703) July 3, 2014
+Changes from 2.05+ (build 140618) to 2.05+ (build 140703) Jul 3, 2014
 -Fixed issue #8028: File upload dialog function can be updated (Denis Chenu)
 -Fixed issue #9001: Gramar error in validation message (Carsten Schmitz)
 -Fixed issue #9071: Language switch not working when using move previous (Denis Chenu)
@@ -155,7 +359,7 @@ Changes from 2.05+ (build 140618) to 2.05+ (build 140703) July 3, 2014
 #Updated translation: Thai by adzpire
 #Updated translation: Turkish by kayazeren
 
-Changes from 2.05+ (build 140612) to 2.05+ (build 140618) June 18, 2014
+Changes from 2.05+ (build 140612) to 2.05+ (build 140618) Jun 18, 2014
 -Fixed issue #9025: Error showing pie chart in statistics when using MS SQL server (Carsten Schmitz)
 -Fixed issue #9050: Template permissions for a user are lost after global permissions are saved (Carsten Schmitz)
 -Fixed issue #9077: CSS issue with Basic template when using Array filter (tpartner)
@@ -188,7 +392,7 @@ Changes from 2.05+ (build 140612) to 2.05+ (build 140618) June 18, 2014
 #Updated translation: Portuguese (Brazil) by rhnascimento, mauriciofurtado
 #Updated translation: Thai by adzpire
 
-Changes from 2.05+ (build 140611) to 2.05+ (build 140612) June 12, 2014
+Changes from 2.05+ (build 140611) to 2.05+ (build 140612) Jun 12, 2014
 Fixed issue #9064: Blank page/error on step 4 when updating from version 2.0
 
 Changes from 2.05+ (build 140520) to 2.05+ (build 140611) June 11, 2014

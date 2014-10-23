@@ -101,6 +101,8 @@ class QuestionAttribute extends LSActiveRecord
     {
         $iQuestionID=(int)$iQuestionID;
         static $aQuestionAttributesStatic=array();// TODO : replace by Yii::app()->cache
+        // Limit the size of the attribute cache due to memory usage
+        $aQuestionAttributesStatic=array_splice($aQuestionAttributesStatic,-1000,null,true);
         if(isset($aQuestionAttributesStatic[$iQuestionID]))
         {
             return $aQuestionAttributesStatic[$iQuestionID];

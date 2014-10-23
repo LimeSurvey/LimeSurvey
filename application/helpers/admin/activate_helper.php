@@ -261,7 +261,7 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     //Get list of questions for the base language
     $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID));
-    
+
     $createsurvey = array();
 
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
@@ -289,7 +289,12 @@ function activateSurvey($iSurveyID, $simulate = false)
                 $createsurvey[$arow['fieldname']] = "decimal (30,10)";
                 break;
             case "S":  //SHORT TEXT
+
                 if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')    {$createsurvey[$arow['fieldname']] = "text";}
+                elseif (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib')
+                {
+                    $createsurvey[$arow['fieldname']] = "nvarchar(255)";
+                }
                 else  {$createsurvey[$arow['fieldname']] = "string";}
                 break;
             case "L":  //LIST (RADIO)
@@ -363,6 +368,14 @@ function activateSurvey($iSurveyID, $simulate = false)
             }
             $arrSim[] = array($type);
         }
+        if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib')
+        {
+           if ($createsurvey[$arow['fieldname']] == "text")
+           {
+               $createsurvey[$arow['fieldname']] = "ntext";
+           }
+        }
+
 
     }
 
@@ -392,33 +405,29 @@ function activateSurvey($iSurveyID, $simulate = false)
     catch (CDbException $e)
     {
     }
-    
+
     $anquery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
-    if ($anresult=Yii::app()->db->createCommand($anquery)->query()->readAll())
+    $iAutoNumberStart=Yii::app()->db->createCommand($anquery)->queryScalar();
+    //if there is an autonumber_start field, start auto numbering here
+    if ($iAutoNumberStart!==false && $iAutoNumberStart>0)
     {
-        //if there is an autonumber_start field, start auto numbering here
-        foreach($anresult as $row)
+        if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib') {
+            mssql_drop_primary_index('survey_'.$iSurveyID);
+            mssql_drop_constraint('id','survey_'.$iSurveyID);
+            $sQuery = "alter table {{survey_{$iSurveyID}}} drop column id ";
+            Yii::app()->db->createCommand($sQuery)->execute();
+            $sQuery = "alter table {{survey_{$iSurveyID}}} add [id] int identity({$iAutoNumberStart},1)";
+            Yii::app()->db->createCommand($sQuery)->execute();
+        }
+        elseif (Yii::app()->db->driverName=='pgsql')
         {
-            if ($row['autonumber_start'] > 0)
-            {
-                if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib') {
-                    mssql_drop_primary_index('survey_'.$iSurveyID);
-                    mssql_drop_constraint('id','survey_'.$iSurveyID);
-                    $autonumberquery = "alter table {{survey_{$iSurveyID}}} drop column id ";
-                    Yii::app()->db->createCommand($autonumberquery)->execute();
-                    $autonumberquery = "alter table {{survey_{$iSurveyID}}} add [id] int identity({$row['autonumber_start']},1)";
-                    Yii::app()->db->createCommand($autonumberquery)->execute();
-                }
-                elseif (Yii::app()->db->driverName=='pgsql')
-                {
-                    
-                }
-                else
-                {
-                    $autonumberquery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = ".$row['autonumber_start'];
-                    $result = @Yii::app()->db->createCommand($autonumberquery)->execute();
-                }
-            }
+            $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyID}}}', 'id'),{$iAutoNumberStart},false);";
+            $result = @Yii::app()->db->createCommand($sQuery)->execute();
+        }
+        else
+        {
+            $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = {$iAutoNumberStart}";
+            $result = @Yii::app()->db->createCommand($sQuery)->execute();
         }
     }
 

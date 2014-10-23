@@ -507,6 +507,7 @@ class index extends CAction {
                  */
                 $event = new PluginEvent('beforeLoadResponse');
                 $event->set('responses', $oResponses);
+                $event->set('surveyId', $surveyid);
                 App()->pluginManager->dispatchEvent($event);
 
                 $oResponse = $event->get('response');
@@ -519,13 +520,18 @@ class index extends CAction {
                     {
                         $oResponse = $oResponses[0];
                     }
+
                     if (isset($oResponse))
                     {
                         $_SESSION['survey_'.$surveyid]['srid'] = $oResponse->id;
                         if (!empty($oResponse->lastpage))
                         {
                             $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
-                            $_SESSION['survey_'.$surveyid]['step'] = $oResponse->lastpage;
+                            // If the response was completed and user is allowed to edit after completion start at the beginning and not at the last page - just makes more sense
+                            if (!($oResponse->submitdate && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                            {
+                                $_SESSION['survey_'.$surveyid]['step'] = $oResponse->lastpage;
+                            }
                         }
                         buildsurveysession($surveyid);
                         if(!empty($oResponse->submitdate)) // alloweditaftercompletion

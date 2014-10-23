@@ -146,7 +146,7 @@
                     eT("Choose columns");?>:
                 <br />
                 <?php 
-                echo CHtml::listBox('colselect[]',array_keys($aFields),$aFields,array('multiple'=>'multiple','size'=>'20','style'=>'width:370px;'));
+                echo CHtml::listBox('colselect[]',array_keys($aFields),$aFields,array('multiple'=>'multiple','size'=>'20','style'=>'width:370px;','options'=>$aFieldsOptions));
                 echo "\t<img src='$imageurl/help.gif' alt='".gT("Help")."' onclick='javascript:alert(\"".gT("Please note: The export to Excel is currently limited to loading no more than 255 columns.","js")."\")'>";?>
                 <span id='columncount'>&nbsp;</span>
                 </fieldset>

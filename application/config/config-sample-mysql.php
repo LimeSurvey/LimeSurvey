@@ -22,10 +22,9 @@
 |
 */
 return array(
-	'name' => 'LimeSurvey',
 	'components' => array(
 		'db' => array(
-			'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey',
+			'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey;',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => '',

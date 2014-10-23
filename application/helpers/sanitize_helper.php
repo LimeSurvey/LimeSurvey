@@ -139,7 +139,7 @@ function sanitize_filename($string, $force_lowercase = true, $alphanumeric = fal
  *     $alphanumeric - If set to *true*, will remove all non-alphanumeric characters.
  */
 
-function sanitize_dirname($string, $force_lowercase = true, $alphanumeric = false) {
+function sanitize_dirname($string, $force_lowercase = false, $alphanumeric = false) {
     $string = str_replace(".", "", $string);
     return sanitize_filename($string, $force_lowercase, $alphanumeric);
 }

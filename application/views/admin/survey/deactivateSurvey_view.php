@@ -34,7 +34,7 @@
                 </td>
                 <td>
                     <?php echo CHtml::form(array("admin/survey/sa/deactivate/surveyid/{$surveyid}/"), 'post'); ?>
-                        <p><input type='submit' value='<?php eT("Deactivate survey"); ?>' onclick="<?php echo convertGETtoPOST($this->createUrl("admin/survey/sa/deactivate/".$surveyid)."?action=deactivate&amp;ok=Y&amp;sid=$surveyid"); ?>" /></p>
+                        <p><input type='submit' value='<?php eT("Deactivate survey"); ?>'/></p>
                         <input type='hidden' value='Y' name='ok' />
                     </form>
                 </td>
@@ -51,7 +51,7 @@
         <p>
         <?php eT("The responses to this survey are no longer available using LimeSurvey."); ?></p>
         <p>
-        <?php echo gT("The responses table has been renamed to: ")." ".$sNewSurveyTableName; ?><br>
+        <?php echo gT("The responses table has been renamed to: ")." <b>".$sNewSurveyTableName; ?></b><br>
         <?php if (isset($toldtable) && $toldtable)
             {
                 echo gT("The tokens table associated with this survey has been renamed to: ")." $tnewtable<br>";

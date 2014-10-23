@@ -4,7 +4,7 @@
             <table class='data-entry-tbl'>
             <tr>
             <td colspan='3'>
-            <strong><?php echo $thissurvey['name']; ?></strong>
+            <strong><?php echo stripJavaScript($thissurvey['name']); ?></strong>
             <br /><?php echo flattenText($thissurvey['description'],true); ?>
             </td>
             </tr>

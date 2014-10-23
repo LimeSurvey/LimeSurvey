@@ -101,7 +101,7 @@ class participantsaction extends Survey_Common_Action
         } else {
             $iUserID = Yii::app()->session['loginID'];
         }
-
+        $aAttributeIDs=array_combine($aAttributeIDs,$aAttributeIDs);
         $query = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
         if (!$query)
             return false;
@@ -128,8 +128,8 @@ class participantsaction extends Survey_Common_Action
             }
         }
 
+        $fieldNeededKeys=array_fill_keys($fields, '');
         $fieldKeys = array_flip($fields);
-        $fieldNeededKeys=array_fill_keys($outputarray[0], '');
         foreach ($query as $field => $aData)
         {
             $outputarray[] = array_merge($fieldNeededKeys,array_intersect_key($aData, $fieldKeys));
@@ -761,15 +761,16 @@ class participantsaction extends Survey_Common_Action
     */
     function getParticipants_json($search = null)
     {
+       // debugbreak();
         $page = (int) Yii::app()->request->getPost('page');
         $limit = (int) Yii::app()->request->getPost('rows');
-        $limit = empty($limit) ? $limit : 50; //Stop division by zero errors
+        $limit = empty($limit) ? 50:$limit; //Stop division by zero errors
 
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
         foreach ($attid as $key => $value)
         {
-            array_push($participantfields, $value['attribute_id']);
+            array_push($participantfields, 'a'.$value['attribute_id']);
         }
         $sidx = Yii::app()->request->getPost('sidx');
         $sidx = in_array($sidx,$participantfields) ? $sidx : "lastname";
@@ -1503,29 +1504,6 @@ class participantsaction extends Survey_Common_Action
         if($response['overwriteman']=="true" || $response['overwriteauto']) {
             echo "\r\n";
             eT("Attribute values for existing participants have been updated from the token records");
-        }
-    }
-
-    /*
-     * Responsible for adding the participant to the specified survey
-     */
-    function addToToken()
-    {
-        $response = Participant::model()->copytoSurvey(Yii::app()->request
-                                                         ->getPost('participantid'),
-                                               Yii::app()->request
-                                                         ->getPost('surveyid'), Yii::app()
-                                                         ->request->getPost('attributeid')
-                                               );
-
-        printf(gT("%s participants have been copied to the survey token table"), $response['success']);
-        if($response['duplicate']>0) {
-            echo "\r\n";
-            printf(gT("%s entries were not copied because they already existed"), $response['duplicate']);
-        }
-        if($response['overwrite']=="true") {
-            echo "\r\n";
-            eT("Attribute values for existing participants have been updated from the participants records");
         }
     }
 

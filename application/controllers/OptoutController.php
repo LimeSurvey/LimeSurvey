@@ -69,7 +69,7 @@ class OptoutController extends LSYii_Controller {
             }
             else
             {
-                if ($oToken->emailstatus == 'OK')
+                if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut')
                 {
                     $oToken->emailstatus = 'OptOut';
                     $oToken->save();
@@ -138,7 +138,7 @@ class OptoutController extends LSYii_Controller {
             }
             else
             {
-                if ($oToken->emailstatus == 'OK')
+                if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut')
                 {
                     $oToken->emailstatus = 'OptOut';
                     $oToken->save();

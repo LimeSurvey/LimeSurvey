@@ -508,7 +508,6 @@ function submittokens($quotaexit=false)
          //   if($token->completed == "Y" || $token->completed == $today)
 //            {
                 $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                $to = $token->email;
                 $subject=$thissurvey['email_confirm_subj'];
 
                 $aReplacementVars=array();
@@ -558,7 +557,8 @@ function submittokens($quotaexit=false)
                 }
 
                 //Only send confirmation email if there is a valid email address
-            if (validateEmailAddress($to)) {
+            $sToAddress=validateEmailAddresses($token->email);
+            if ($sToAddress) {
                 $aAttachments = unserialize($thissurvey['attachments']);
 
                 $aRelevantAttachments = array();
@@ -577,7 +577,7 @@ function submittokens($quotaexit=false)
                         }
                     }
                 }
-                SendEmailMessage($message, $subject, $to, $from, $sitename, $ishtml, null, $aRelevantAttachments);
+                SendEmailMessage($message, $subject, $sToAddress, $from, $sitename, $ishtml, null, $aRelevantAttachments);
             }
      //   } else {
                 // Leave it to send optional confirmation at closed token
@@ -646,6 +646,7 @@ function sendSubmitNotifications($surveyid)
         $aRecipient=explode(";", ReplaceFields($thissurvey['emailnotificationto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
         foreach($aRecipient as $sRecipient)
         {
+            $sRecipient=trim($sRecipient);
             if(validateEmailAddress($sRecipient))
             {
                 $aEmailNotificationTo[]=$sRecipient;
@@ -664,6 +665,7 @@ function sendSubmitNotifications($surveyid)
         $aRecipient=explode(";", ReplaceFields($thissurvey['emailresponseto'],array('ADMINEMAIL' =>$thissurvey['adminemail'] ), true));
         foreach($aRecipient as $sRecipient)
         {
+            $sRecipient=trim($sRecipient);
             if(validateEmailAddress($sRecipient))
             {
                 $aEmailResponseTo[]=$sRecipient;
@@ -679,7 +681,6 @@ function sendSubmitNotifications($surveyid)
         {
             if (substr($sFieldname,0,4)=='gid_')
             {
-
                 $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
                 $ResultTableText .="\n{$fname[0]}\n\n";
             }
@@ -690,7 +691,7 @@ function sendSubmitNotifications($surveyid)
             }
             else
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
                 $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
             }
         }
@@ -699,7 +700,8 @@ function sendSubmitNotifications($surveyid)
         $ResultTableText .= "\n\n";
         if ($bIsHTML)
         {
-            $aReplacementVars['ANSWERTABLE']=$ResultTableHTML;
+            $filter = new CHtmlPurifier();
+            $aReplacementVars['ANSWERTABLE']=$filter->purify($ResultTableHTML);
         }
         else
         {
@@ -1167,28 +1169,16 @@ function buildsurveysession($surveyid,$preview=false)
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
-
-    //RL: multilingual support
-    if (isset($_GET['token']) && tableExists('{{tokens_'.$surveyid.'}}'))
-    {
-
-        //get language from token (if one exists)
-        $token = Token::model($surveyid)->findByAttributes(array(
-            'token' => $clienttoken,
-            'completed' => array('N', '')
-        ));
-        if (!isset($token))
-        {
-            safeDie ("Couldn't get token<br />");
-        }
-        $tklanguage = $token->language;
-    }
+    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language 
     if (returnGlobal('lang',true))
     {
         $language_to_set=returnGlobal('lang',true);
-    } elseif (isset($tklanguage))
+    }
+    elseif (isset($oTokenEntry) && $oTokenEntry)
     {
-        $language_to_set=$tklanguage;
+        // If survey have token : we have a $oTokenEntry
+        // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
+        $language_to_set=$oTokenEntry->language;
     }
     else
     {
@@ -1996,6 +1986,7 @@ function checkCompletedQuota($surveyid,$return=false)
     $event->set('surveyId', $surveyid);
     $event->set('responseId', $_SESSION['survey_'.$surveyid]['srid']);// We allways have a responseId
     $event->set('aMatchedQuotas', $aMatchedQuotas);// Give all the matched quota : the first is the active
+    App()->getPluginManager()->dispatchEvent($event);
     $blocks = array();
     foreach ($event->getAllContent() as $blockData)
     {
@@ -2131,7 +2122,10 @@ function GetReferringUrl()
 function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
     $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 
 
     // Fill some necessary var for template

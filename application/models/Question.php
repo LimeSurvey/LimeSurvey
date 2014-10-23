@@ -590,7 +590,7 @@
                     'description' => gT("Yes/No"),
                     'group' => gT("Mask questions"),
                     'subquestions' => 0,
-                    'hasdefaultvalues' => 0,
+                    'hasdefaultvalues' => 1,
                     'assessable' => 0,
                     'answerscales' => 0),
                 "!" => array(

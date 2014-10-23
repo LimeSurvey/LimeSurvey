@@ -230,7 +230,7 @@ function db_upgrade_all($iOldDBVersion) {
                     // copy assessment link to message since from now on we will have HTML assignment messages
                     $oDB->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
                     break;
-                default: die('Unkown database type');
+                default: die('Unknown database type');
             }
             // activate assessment where assessment rules exist
             $oDB->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
@@ -676,10 +676,8 @@ function db_upgrade_all($iOldDBVersion) {
                 'date_created' => 'datetime NOT NULL'
             ));
             addPrimaryKey('survey_links', array('participant_id','token_id','survey_id'));
-
             // Add language field to question_attributes table
             addColumn('{{question_attributes}}','language',"{$sVarchar}(20)");
-
             upgradeQuestionAttributes148();
             fixSubquestions();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>148),"stg_name='DBVersion'");
@@ -1016,6 +1014,7 @@ function db_upgrade_all($iOldDBVersion) {
             LimeExpressionManager::UpgradeConditionsToRelevance();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>158),"stg_name='DBVersion'");
         }
+
         if ($iOldDBVersion < 159)
         {
             alterColumn('{{failed_login_attempts}}', 'ip', "{$sVarchar}(40)",false);
@@ -1160,7 +1159,7 @@ function db_upgrade_all($iOldDBVersion) {
                 case 'pgsql':
                     addColumn('{{sessions}}', 'data', 'BYTEA');
                     break;
-                default: die('Unkown database type');
+                default: die('Unknown database type');
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>171),"stg_name='DBVersion'");
         }
@@ -1317,23 +1316,26 @@ function upgradeTokenTables178()
 
 function upgradeSurveys177()
 {
-    $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
+    $sSurveyQuery = "SELECT surveyls_attributecaptions,surveyls_survey_id,surveyls_language FROM {{surveys_languagesettings}}";
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    $sSurveyLSUpdateQuery= "update {{surveys_languagesettings}} set surveyls_attributecaptions=:attributecaptions where surveyls_survey_id=:surveyid and surveyls_language=:language";
     foreach ( $oSurveyResult as $aSurveyRow )
     {
         $aAttributeDescriptions=@unserialize($aSurveyRow['surveyls_attributecaptions']);
-        if ($aAttributeDescriptions==NULL) $aAttributeDescriptions=array();
-        $sSurveyLSUpdateQuery= "update {{surveys_languagesettings}} set surveyls_attributecaptions=:attributecaptions where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'].' and surveyls_language=:language';
-        Yii::app()->db->createCommand($sSurveyLSUpdateQuery)->execute(array(':language'=>$aSurveyRow['surveyls_language'],':attributecaptions'=>json_encode($aAttributeDescriptions)));
+        if (!$aAttributeDescriptions) $aAttributeDescriptions=array();
+        Yii::app()->db->createCommand($sSurveyLSUpdateQuery)->execute(
+            array(':language'=>$aSurveyRow['surveyls_language'],
+                ':surveyid'=>$aSurveyRow['surveyls_survey_id'],
+                ':attributecaptions'=>json_encode($aAttributeDescriptions)));
     }
-    $sSurveyQuery = "SELECT * FROM {{surveys}}";
+    $sSurveyQuery = "SELECT sid FROM {{surveys}}";
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    $sSurveyUpdateQuery= "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=:surveyid";
     foreach ( $oSurveyResult as $aSurveyRow )
     {
         $aAttributeDescriptions=@unserialize($aSurveyRow['attributedescriptions']);
-        if ($aAttributeDescriptions==NULL) $aAttributeDescriptions=array();
-        $sSurveyUpdateQuery= "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=".$aSurveyRow['sid'];
-        Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute(array(':attributedescriptions'=>json_encode($aAttributeDescriptions)));
+        if (!$aAttributeDescriptions) $aAttributeDescriptions=array();
+        Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute(array(':attributedescriptions'=>json_encode($aAttributeDescriptions),':surveyid'=>$aSurveyRow['sid']));
     }
 }
 
@@ -1377,6 +1379,7 @@ function upgradeTokens176()
             Survey::model()->updateByPk($arSurvey->sid, array('attributedescriptions' => serialize($aAttributes)));
         }
     }
+    unset($arSurveys);
     // Now fix all 'old' token tables
     $aTables = dbGetTablesLike("%old_tokens%");
     foreach ( $aTables as $sTable )
@@ -1562,9 +1565,9 @@ function upgradeTokens148()
 
 function upgradeQuestionAttributes148()
 {
-    global $modifyoutput;
     $sSurveyQuery = "SELECT sid FROM {{surveys}}";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
+    $aAllAttributes=questionAttributes(true);
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $iSurveyID=$aSurveyRow['sid'];
@@ -1572,7 +1575,6 @@ function upgradeQuestionAttributes148()
 
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
         $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
-        $aAllAttributes=questionAttributes(true);
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
@@ -1581,7 +1583,7 @@ function upgradeQuestionAttributes148()
                 foreach ($aLanguages as $sLanguage)
                 {
                     $sAttributeInsertQuery="insert into {{question_attributes}} (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$sLanguage}' )";
-                    modifyDatabase("",$sAttributeInsertQuery); echo $modifyoutput; flush();@ob_flush();
+                    modifyDatabase("",$sAttributeInsertQuery);
                 }
             }
         }
@@ -2090,7 +2092,7 @@ function dropPrimaryKey($sTablename)
                 Yii::app()->db->createCommand($sQuery)->execute();
             }
             break;
-        default: die('Unkown database type');
+        default: die('Unknown database type');
     }
 
     // find out the constraint name of the old primary key
@@ -2163,7 +2165,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
             }
             Yii::app()->db->createCommand()->alterColumn($sTable,$sColumn,$sType);
             break;
-        default: die('Unkown database type');
+        default: die('Unknown database type');
     }
 
 }

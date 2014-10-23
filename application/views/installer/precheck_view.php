@@ -63,8 +63,8 @@ function dirReport($dir, $write)
                <td><?php eT("Minimum memory available"); ?></td>
                <td>64MB</td>
                <td><?php
-               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php eT("Too low"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
-               <?php } elseif (ini_get('memory_limit')=='-1') eT("Unlimited"); else { echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; echo ' MB';} ?></td>
+               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php eT("Too low"); ?>: <?php echo $convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
+               <?php } elseif (ini_get('memory_limit')=='-1') eT("Unlimited"); else { echo convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; echo ' MB';} ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP PDO driver library"); ?></td>

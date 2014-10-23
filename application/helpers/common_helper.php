@@ -118,192 +118,7 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
 
-
-    $group['Arrays'] = gT('Arrays');
-    $group['MaskQuestions'] = gT("Mask questions");
-    $group['SinChoiceQues'] = gT("Single choice questions");
-    $group['MulChoiceQues'] = gT("Multiple choice questions");
-    $group['TextQuestions'] = gT("Text questions");
-
-
-    $qtypes = array(
-    "1" => array('description' => gT("Array dual scale"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'assessable' => 1,
-    'hasdefaultvalues' => 0,
-    'answerscales' => 2),
-    "5" => array('description' => gT("5 Point Choice"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "A" => array('description' => gT("Array (5 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "B" => array('description' => gT("Array (10 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "C" => array('description' => gT("Array (Yes/No/Uncertain)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "D" => array('description' => gT("Date/Time"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "E" => array('description' => gT("Array (Increase/Same/Decrease)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "F" => array('description' => gT("Array"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "G" => array('description' => gT("Gender"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "H" => array('description' => gT("Array by column"),
-    'group' => $group['Arrays'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "I" => array('description' => gT("Language Switch"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "K" => array('description' => gT("Multiple Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 1,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "L" => array('description' => gT("List (Radio)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "M" => array('description' => gT("Multiple choice"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "N" => array('description' => gT("Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "O" => array('description' => gT("List with comment"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "P" => array('description' => gT("Multiple choice with comments"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "Q" => array('description' => gT("Multiple Short Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "R" => array('description' => gT("Ranking"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "S" => array('description' => gT("Short Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "T" => array('description' => gT("Long Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "U" => array('description' => gT("Huge Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "X" => array('description' => gT("Text display"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "Y" => array('description' => gT("Yes/No"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "!" => array('description' => gT("List (Dropdown)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    ":" => array('description' => gT("Array (Numbers)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    ";" => array('description' => gT("Array (Texts)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "|" => array('description' => gT("File upload"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "*" => array('description' => gT("Equation"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    );
-    asort($qtypes);
-
+    $qtypes = Question::typeList();
     if ($ReturnType == "array")
         return $qtypes;
 
@@ -386,9 +201,9 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $args = array('order'=>'surveyls_title');
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with('defaultlanguage')->findAll($args);
         } else {
-            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+            $surveyidresult = Survey::model()->with('defaultlanguage')->findAll($args);
         }
 
         $surveynames = array();
@@ -1809,7 +1624,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 break;
             case "|": //File upload
                 if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = $sLanguage->gT("File count");
+                    $this_answer = gT("File count");
                 } else {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue);
@@ -1850,101 +1665,20 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
     }
 }
 
-/*function validateEmailAddress($email)
-{
-// Create the syntactical validation regular expression
-// Validate the syntax
-
-// see http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-$maxrootdomainlength = 6;
-return ( ! preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,".$maxrootdomainlength."}))$/ix", $email)) ? FALSE : TRUE;
-}*/
-
-function validateEmailAddress($email){
-
-
-    $no_ws_ctl    = "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]";
-    $alpha        = "[\\x41-\\x5a\\x61-\\x7a]";
-    $digit        = "[\\x30-\\x39]";
-    $cr        = "\\x0d";
-    $lf        = "\\x0a";
-    $crlf        = "(?:$cr$lf)";
-
-
-    $obs_char    = "[\\x00-\\x09\\x0b\\x0c\\x0e-\\x7f]";
-    $obs_text    = "(?:$lf*$cr*(?:$obs_char$lf*$cr*)*)";
-    $text        = "(?:[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f]|$obs_text)";
-
-
-    $text        = "(?:$lf*$cr*$obs_char$lf*$cr*)";
-    $obs_qp        = "(?:\\x5c[\\x00-\\x7f])";
-    $quoted_pair    = "(?:\\x5c$text|$obs_qp)";
-
-
-    $wsp        = "[\\x20\\x09]";
-    $obs_fws    = "(?:$wsp+(?:$crlf$wsp+)*)";
-    $fws        = "(?:(?:(?:$wsp*$crlf)?$wsp+)|$obs_fws)";
-    $ctext        = "(?:$no_ws_ctl|[\\x21-\\x27\\x2A-\\x5b\\x5d-\\x7e])";
-    $ccontent    = "(?:$ctext|$quoted_pair)";
-    $comment    = "(?:\\x28(?:$fws?$ccontent)*$fws?\\x29)";
-    $cfws        = "(?:(?:$fws?$comment)*(?:$fws?$comment|$fws))";
-
-
-    $outer_ccontent_dull    = "(?:$fws?$ctext|$quoted_pair)";
-    $outer_ccontent_nest    = "(?:$fws?$comment)";
-    $outer_comment        = "(?:\\x28$outer_ccontent_dull*(?:$outer_ccontent_nest$outer_ccontent_dull*)+$fws?\\x29)";
-
-
-
-    $atext        = "(?:$alpha|$digit|[\\x21\\x23-\\x27\\x2a\\x2b\\x2d\\x2f\\x3d\\x3f\\x5e\\x5f\\x60\\x7b-\\x7e])";
-    $atext_domain     = "(?:$alpha|$digit|[\\x2b\\x2d\\x5f])";
-
-    $atom        = "(?:$cfws?(?:$atext)+$cfws?)";
-    $atom_domain       = "(?:$cfws?(?:$atext_domain)+$cfws?)";
-
-
-    $qtext        = "(?:$no_ws_ctl|[\\x21\\x23-\\x5b\\x5d-\\x7e])";
-    $qcontent    = "(?:$qtext|$quoted_pair)";
-    $quoted_string    = "(?:$cfws?\\x22(?:$fws?$qcontent)*$fws?\\x22$cfws?)";
-
-
-    $quoted_string    = "(?:$cfws?\\x22(?:$fws?$qcontent)+$fws?\\x22$cfws?)";
-    $word        = "(?:$atom|$quoted_string)";
-
-
-    $obs_local_part    = "(?:$word(?:\\x2e$word)*)";
-
-
-    $obs_domain    = "(?:$atom_domain(?:\\x2e$atom_domain)*)";
-
-    $dot_atom_text     = "(?:$atext+(?:\\x2e$atext+)*)";
-    $dot_atom_text_domain    = "(?:$atext_domain+(?:\\x2e$atext_domain+)*)";
-
-
-    $dot_atom           = "(?:$cfws?$dot_atom_text$cfws?)";
-    $dot_atom_domain   = "(?:$cfws?$dot_atom_text_domain$cfws?)";
-
-
-    $dtext        = "(?:$no_ws_ctl|[\\x21-\\x5a\\x5e-\\x7e])";
-    $dcontent    = "(?:$dtext|$quoted_pair)";
-    $domain_literal    = "(?:$cfws?\\x5b(?:$fws?$dcontent)*$fws?\\x5d$cfws?)";
-
-
-    $local_part    = "(($dot_atom)|($quoted_string)|($obs_local_part))";
-    $domain        = "(($dot_atom_domain)|($domain_literal)|($obs_domain))";
-    $addr_spec    = "$local_part\\x40$domain";
-
-
-    if (strlen($email) > 256) return FALSE;
-
-
-    $email = stripComments($outer_comment, $email, "(x)");
-
-
-
-    if (!preg_match("!^$addr_spec$!", $email, $m)){
-
-        return FALSE;
+/**
+* Validate an email address - also supports IDN email addresses
+* @returns True/false for valid/invalid
+*
+* @param mixed $sEmailAddress  Email address to check
+*/
+function validateEmailAddress($sEmailAddress){
+    require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
+    $oIdnConverter = new idna_convert();
+    $sEmailAddress=$oIdnConverter->encode($sEmailAddress);
+    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
+    if ($bResult!==false)
+    {
+        return true;
     }
 
     $bits = array(
@@ -2058,17 +1792,26 @@ function validateEmailAddress($email){
     return TRUE;
 }
 
-##################################################################################
-
-function stripComments($comment, $email, $replace=''){
-
-    while (1){
-        $new = preg_replace("!$comment!", $replace, $email);
-        if (strlen($new) == strlen($email)){
-            return $email;
-        }
-        $email = $new;
-    }
+/**
+* Validate an list of email addresses - either as array or as semicolon-limited text
+* @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+*
+* @param mixed $sEmailAddresses  Email address to check
+*/
+function validateEmailAddresses($aEmailAddressList){
+  $aOutList=false;
+  if (!is_array($aEmailAddressList))
+  {
+     $aEmailAddressList=explode(';',$aEmailAddressList);
+  }
+  foreach ($aEmailAddressList as $sEmailAddress)
+  {
+      $sEmailAddress= trim($sEmailAddress);
+      if (validateEmailAddress($sEmailAddress)){
+         $aOutList=$sEmailAddress;
+      }
+  }
+  return $aOutList;
 }
 
 
@@ -2278,12 +2021,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['question']=gT("Start language");
         $fieldmap["startlanguage"]['group_name']="";
     }
-
-    // Select which question IDs have default values
-    $_aDefaultValues = DefaultValue::model()->with(array('question' => array('condition' => 'question.sid=' . $surveyid)))->findAll();
-    $aDefaultValues = array();
-    foreach ($_aDefaultValues as $k => $v)
-        $aDefaultValues[] = $v->qid;
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
@@ -3866,7 +3603,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Slider'),
         'sortorder'=>10,
         'inputtype'=>'text',
-        "help"=>gT('Slider minimum value'),
+        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
         "caption"=>gT('Slider minimum value'));
 
         $qattributes["slider_max"]=array(
@@ -3874,7 +3611,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Slider'),
         'sortorder'=>11,
         'inputtype'=>'text',
-        "help"=>gT('Slider maximum value'),
+        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
         "caption"=>gT('Slider maximum value'));
 
         $qattributes["slider_accuracy"]=array(
@@ -3882,7 +3619,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Slider'),
         'sortorder'=>30,
         'inputtype'=>'text',
-        "help"=>gT('Slider accuracy'),
+        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
         "caption"=>gT('Slider accuracy'));
 
         $qattributes["slider_default"]=array(
@@ -3890,7 +3627,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Slider'),
         'sortorder'=>50,
         'inputtype'=>'text',
-        "help"=>gT('Slider start as this value (this will set the initial value).'),
+        "help"=>gT('Slider start as this value (this will set the initial value). You can use Expression manager, but this must be a number before showing the page.'),
         "caption"=>gT('Slider initial value'));
 
         $qattributes["slider_middlestart"]=array(
@@ -5220,7 +4957,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
         $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
         return preg_replace('#'.$pattern.'#', $replace, $sString);
     }
-    else // unkown type
+    else // unknown type
     {
         return $sString;
     }
@@ -5704,7 +5441,6 @@ function updateCheck()
 {
     $aUpdateVersions=getUpdateInfo();
 
-
     if (isset($aUpdateVersions['errorcode']))
     {
         Yii::app()->setFlashMessage(sprintf(gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
@@ -5958,13 +5694,26 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
         {
             $criteria = new CDbCriteria;
 
-            foreach ($member['fieldnames'] as $fieldname)
-            {
-                if (!in_array($fieldname, $fields_list))
-                    $fields_list[] = $fieldname;
+            if(in_array($member['fieldname'],$aColumnName))
+                $fields_list[$member['fieldname']][] = $member['value'];
+            else
+                return $result;// We return N/A even for activated survey
+        }
 
-                // Yii does not quote column names (duh!) so we have to do it.
-                $criteria->addColumnCondition(array(Yii::app()->db->quoteColumnName($fieldname) => $member['value']), 'OR');
+        $criteria = new CDbCriteria;
+        $criteria->condition="submitdate IS NOT NULL";
+        $aParams=array();
+        foreach ($fields_list as $fieldname=>$aValue)
+        {
+            if(count($aValue)==1)
+            {
+                // Quote columnName : starting with number broke mssql
+                $criteria->addCondition(Yii::app()->db->quoteColumnName($fieldname)." = :field{$fieldname}");
+                $aParams[":field{$fieldname}"]=$aValue[0];
+            }
+            else
+            {
+                $criteria->addInCondition(Yii::app()->db->quoteColumnName($fieldname),$aValue); // NO need params : addInCondition bind automatically
             }
 
             $fields_query[$fieldname] = $criteria;
@@ -7696,16 +7445,32 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 
 /**
 * This function fixes the group ID and type on all subquestions
-*
+* Optimized for minimum memory usage even on huge databases
 */
 function fixSubquestions()
 {
-    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
-    from {{questions}} sq JOIN {{questions}} q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)")->query();
-    foreach($surveyidresult->readAll() as $sv)
+    $surveyidresult=Yii::app()->db->createCommand()
+    ->select('sq.qid, q.gid , q.type ')
+    ->from('{{questions}} sq')
+    ->join('{{questions}} q','sq.parent_qid=q.qid')
+    ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+    ->limit(10000)
+    ->query();
+    $aRecords=$surveyidresult->readAll();
+    while (count($aRecords)>0)
     {
-        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->query();
+        foreach($aRecords as $sv)
+        {
+            Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+        }
+        $surveyidresult=Yii::app()->db->createCommand()
+        ->select('sq.qid, q.gid , q.type ')
+        ->from('{{questions}} sq')
+        ->join('{{questions}} q','sq.parent_qid=q.qid')
+        ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+        ->limit(10000)
+        ->query();
+        $aRecords=$surveyidresult->readAll();
     }
 
 }

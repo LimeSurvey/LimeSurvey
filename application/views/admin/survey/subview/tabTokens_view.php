@@ -1,5 +1,5 @@
 <div id='tokens'><ul>
-        <li><label for='anonymized'><?php eT("Anonymized responses?"); ?>
+        <li><label for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'><?php eT("Anonymized responses?"); ?>
 
                 <script type="text/javascript"><!--
                     function alertPrivacy()
@@ -38,11 +38,12 @@
                 </select>
                 <?php } ?>
         </li>
+
         <li>
             <label for='alloweditaftercompletion' title='<?php eT("With not anonymous survey: user can update his answer after completion, else user can add new answers without restriction."); ?>'><?php eT("Allow multiple responses or update responses with one token?"); ?></label>
             <select id='alloweditaftercompletion' name='alloweditaftercompletion'>
                 <option value='Y'
-                    <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
+                    <?php if ($esrow['tokenanswerspersistence'] == "Y") { ?>
                         selected='selected'
                         <?php } ?>
                     ><?php eT("Yes"); ?></option>
@@ -51,11 +52,12 @@
                     ><?php eT("No"); ?></option>
             </select>
         </li>
+
         <li>
             <label for='tokenanswerspersistence'><?php eT("Enable token-based response persistence?"); ?></label>
             <select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') { alert('<?php eT("This option can't be set if the `Anonymized responses` option is active.","js"); ?>'); this.value='N';}">
                 <option value='Y'
-                    <?php if ($esrow['tokenanswerspersistence'] == "Y") { ?>
+                    <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
                         selected='selected'
                         <?php } ?>
                     ><?php eT("Yes"); ?></option>

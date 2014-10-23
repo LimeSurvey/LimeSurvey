@@ -84,6 +84,7 @@ class TokenDynamic extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('token', 'unique', 'allowEmpty'=>true),// 'caseSensitive'=>false only for mySql
             array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('email','filter','filter'=>'trim'),
             array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true,'except'=>'allowinvalidemail'),

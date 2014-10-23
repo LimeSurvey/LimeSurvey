@@ -37,7 +37,7 @@
             {
             $InsertansUnsupportedtypes= Yii::app()->getConfig('InsertansUnsupportedtypes');
             ?>
-            <select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;width:20em;' size='14' ondblclick="$('.cke_dialog_ui_button_ok').children().click();">
+            <select name='cquestions' id='cquestions' size='14' ondblclick="$('.cke_dialog_ui_button_ok').children().click();">
                 <?php
                     $noselection = false;
                 }

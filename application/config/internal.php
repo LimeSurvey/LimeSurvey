@@ -66,7 +66,6 @@ $internalConfig = array(
             'useMoFile' => true,
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         )
-
 	)
 );
 

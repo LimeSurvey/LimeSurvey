@@ -4188,7 +4188,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['sid']=$iNewSID; // remap the survey id
             if (isset($insertdata['targetsqid']) && $insertdata['targetsqid']!='')
             {
-                $insertdata['targetsqid'] =$aSQIDReplacements[(int)$insertdata['targetsqid']]; // remap the qid
+                $insertdata['targetsqid'] =$aQIDReplacements[(int)$insertdata['targetsqid']]; // remap the qid
             }
             if (isset($insertdata['targetqid']) && $insertdata['targetqid']!='')
             {
@@ -4313,7 +4313,10 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
         $results['tokens']++;
     }
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,false);
-
+    if (Yii::app()->db->getDriverName() == 'pgsql')
+    {
+        try {Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('{{tokens_".$iSurveyID."}}', 'tid'), (SELECT MAX(tid) FROM {{tokens_".$iSurveyID."}}))")->execute();} catch(Exception $oException){};
+    }
     return $results;
 }
 
@@ -4374,7 +4377,10 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
     }
 
     switchMSSQLIdentityInsert('survey_'.$iSurveyID,false);
-
+    if (Yii::app()->db->getDriverName() == 'pgsql')
+    {
+        try {Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('{{survey_".$iSurveyID."}}', 'id'), (SELECT MAX(id) FROM {{survey_".$iSurveyID."}}))")->execute();} catch(Exception $oException){};
+    }
     return $results;
 }
 
@@ -4495,6 +4501,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     $aResponsesError=array();
     $aExistingsId=array();
 
+    $iMaxId=0; // If we set the id, keep the max
     // Some specific header (with options)
     $iIdKey=array_search('id', $aCsvHeader); // the id is allways needed and used a lot
     if(is_int($iIdKey)){unset($aKeyForFieldNames['id']);}
@@ -4550,6 +4557,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
                 if(!$bExistingsId) // If not exist : allways import it
                 {
                     $oSurvey->id=$aResponses[$iIdKey];
+                    $iMaxId=($aResponses[$iIdKey]>$iMaxId)?$aResponses[$iIdKey]:$iMaxId;
                 }
                 elseif($aOptions['sExistingId']=='replace' || $aOptions['sExistingId']=='replaceanswers')// Set it depending with some options
                 {
@@ -4609,6 +4617,19 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
                 // tracevar($oException->getMessage());// Show it in console (if debug is set)
             }
 
+        }
+    }
+    // Fix max next id (for pgsql)
+    // mysql dot need fix, but what for mssql ?
+    // Do a model function for this can be a good idea (see activate_helper/activateSurvey)
+    if (Yii::app()->db->driverName=='pgsql')
+    {
+        $sSequenceName= Yii::app()->db->getSchema()->getTable("{{survey_{$iSurveyID}}}")->sequenceName;
+        $iActualSerial=Yii::app()->db->createCommand("SELECT last_value FROM  {$sSequenceName}")->queryScalar();
+        if($iActualSerial<$iMaxId)
+        {
+            $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyId}}}', 'id'),{$iMaxId},false);";
+            $result = @Yii::app()->db->createCommand($sQuery)->execute();
         }
     }
 

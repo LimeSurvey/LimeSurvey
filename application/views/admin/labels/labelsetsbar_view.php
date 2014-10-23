@@ -40,11 +40,14 @@
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/sa/logout");?>', '_top')">
                 <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php eT("Logout"); ?>' /></a>
 
-            <a href="#" onclick="showhelp('show')">
+            <a href="http://manual.limesurvey.org" target='_blank'>
                 <img src='<?php echo $sImageURL; ?>showhelp.png' alt='<?php eT("Show help"); ?>' /></a>
         </div>
     </div>
 </div>
-<script type="text/javascript"><!--
-    var sImageURL = '<?php echo $sImageURL ?>'; //-->
-   </script>
+<script type="text/javascript">
+    var sImageURL = '<?php echo $sImageURL ?>';
+    var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.','js'); ?>';
+    var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.",'js'); ?>';
+    var quickaddtitle='<?php eT('Quick-add subquestion or answer items','js'); ?>';
+</script>

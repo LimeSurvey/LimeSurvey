@@ -1,6 +1,6 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php echo $title; ?></strong>: (<?php echo $thissurvey['surveyls_title']; ?>)
+        <strong><?php echo $title; ?></strong>: (<?php echo flattenText($thissurvey['surveyls_title']); ?>)
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>

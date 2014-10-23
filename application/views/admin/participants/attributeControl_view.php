@@ -9,6 +9,7 @@
     var deleteCaption = "<?php eT("Delete attribute", 'js') ?>";
     var deleteMsg = "<?php eT("Delete selected attribute(s) and associated data?", 'js') ?>";
     var addCaption = "<?php eT("Add attribute", 'js') ?>";
+    var addDisabledCaption = "<?php eT("Maximum 60 attributes. Please remove an attribute before adding.", 'js') ?>";
     var sRequired = "<?php eT("This field is required.", 'js') ?>";
     var refreshMsg = "<?php eT("Refresh list", 'js') ?>";
     var searchMsg = "<?php eT("Search attributes", 'js') ?>";
