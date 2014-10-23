@@ -2329,7 +2329,6 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokenbounce.js");
             $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
         }
     }
