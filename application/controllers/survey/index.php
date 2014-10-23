@@ -375,27 +375,35 @@ class index extends CAction {
             }
             if (!isset($tokenInstance))
             {
-                $tk = Token::model($surveyid)->findByAttributes(array('token' => $token));
-                if($tk->completed == 'N')
+                $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
+                if($oToken)
                 {
                     $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
-                    if(strtotime($now) < strtotime($tk->validfrom))
+                    if($oToken->completed != 'N' && !empty($oToken->completed))
                     {
-                        $err = $clang->gT("This invitation is not valid yet.");
+                        $sError = $clang->gT("This invitation has already been used.");
                     }
-                    else
+                    elseif(strtotime($now) < strtotime($oToken->validfrom))
                     {
-                        $err = $clang->gT("This invitation is not valid anymore.");
+                        $sError = $clang->gT("This invitation is not valid yet.");
+                    }
+                    elseif(strtotime($now)>strtotime($oToken->validfrom))
+                    {
+                        $sError = $clang->gT("This invitation is not valid anymore.");
+                    }
+                    else // This can not happen 
+                    {
+                        $sError = $clang->gT("This is a controlled survey. You need a valid token to participate.");
                     }
                 }
                 else
                 {
-                    $err = $clang->gT("This invitation has already been used.");
+                    $sError = $clang->gT("This is a controlled survey. You need a valid token to participate.");
                 }
                 $asMessage = array(
                 null,
                 $clang->gT("We are sorry but you are not allowed to enter this survey."),
-                $err,
+                $sError,
                 sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                 );
 
