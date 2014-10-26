@@ -2122,11 +2122,6 @@ function GetReferringUrl()
 function display_first_page() {
     global $token, $surveyid, $thissurvey, $navigator;
     $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
-<<<<<<< HEAD
-
-=======
->>>>>>> master
-
 
     // Fill some necessary var for template
     $navigator = surveymover();

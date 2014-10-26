@@ -364,7 +364,7 @@
         $supportedLanguages['ja']['radixpoint'] = 0;
 
         // Kazakh
-        $supportedLanguages['kk']['description'] = $clang->gT('Kazakh');
+        $supportedLanguages['kk']['description'] = gT('Kazakh');
         $supportedLanguages['kk']['nativedescription'] = 'Qazaq&#351;a';
         $supportedLanguages['kk']['rtl'] = false;
         $supportedLanguages['kk']['dateformat'] = 1;

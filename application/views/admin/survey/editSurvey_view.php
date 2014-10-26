@@ -21,9 +21,9 @@
 <input type='hidden' name='language' value="<?php echo $esrow['language'];?>" />
 <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')){?>
     <div class="hidden hide" id="submitsurveybutton">
-    <p><button type="submit" name="action" value='updatesurveysettings'><?php $clang->eT("Save"); ?></button></p>
+    <p><button type="submit" name="action" value='updatesurveysettings'><?php eT("Save"); ?></button></p>
     <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveylocale','update')) { ?>
-        <p><button type="submit" name="action" value='updatesurveysettingsandeditlocalesettings'><?php $clang->eT("Save & edit survey text elements");?></button></p>
+        <p><button type="submit" name="action" value='updatesurveysettingsandeditlocalesettings'><?php eT("Save & edit survey text elements");?></button></p>
     <?php } ?>
     </div>
 <?php } ?>

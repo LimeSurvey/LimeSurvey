@@ -374,27 +374,34 @@ class index extends CAction {
             }
             if (!isset($tokenInstance))
             {
-                $tk = Token::model($surveyid)->findByAttributes(array('token' => $token));
-                if($tk->completed == 'N')
+                $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
+                if($oToken)
                 {
                     $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
-                    if(strtotime($now) < strtotime($tk->validfrom))
+                    if($oToken->completed != 'N' && !empty($oToken->completed))// This can not happen (TokenInstance must fix this)
                     {
-                        $err = gT("This invitation is not valid yet.");
+                        $sError = gT("This invitation has already been used.");
                     }
-                    else
+                    elseif(strtotime($now) < strtotime($oToken->validfrom))
                     {
-                        $err = gT("This invitation is not valid anymore.");
+                        $sError = gT("This invitation is not valid yet.");
+                    }
+                    elseif(strtotime($now)>strtotime($oToken->validfrom))
+                    {
+                        $sError = gT("This invitation is not valid anymore.");
+                    }
+                    else // This can not happen
+                    {
+                        $sError = gT("This is a controlled survey. You need a valid token to participate.");
                     }
                 }
                 else
                 {
-                    $err = gT("This invitation has already been used.");
+                    $sError = gT("This is a controlled survey. You need a valid token to participate.");
                 }
                 $asMessage = array(
-                null,
+                $sError,
                 gT("We are sorry but you are not allowed to enter this survey."),
-                $err,
                 sprintf(gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                 );
 

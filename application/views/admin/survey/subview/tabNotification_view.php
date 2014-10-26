@@ -52,19 +52,19 @@
         </li>
 
         <li><label for='savetimings'><?php eT("Save timings?"); ?></label>
-            <?php 
-            if ($esrow['active']=="Y")
-                { ?>
-            <?php } ?>
-        </li>
-
-                <?php if ($esrow['savetimings'] != "Y") {  eT("Timings will not be saved.");}
-                    else { eT("Timings will be saved.");} ?>
+            <?php if ($esrow['active']=="Y") { ?>
+                <?php if ($esrow['savetimings'] != "Y")
+                    {
+                        eT("Timings will not be saved.");
+                    }
+                    else
+                    {
+                        eT("Timings will be saved.");
+                    }
+                ?>
                 <span class='annotation'> <?php eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ??>
-                <?php }
-                else
-                { ?>
+            <?php } else { ?>
                     <?php echo CHtml::dropDownList('savetimings', $esrow['savetimings'],array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>
             <?php } ?>
         </li>
