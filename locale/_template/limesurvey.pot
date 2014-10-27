@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-10-19 23:06:16+00:00\n"
+"POT-Creation-Date: 2014-10-27 00:06:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2751,8 +2751,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:346
 #: application/controllers/admin/surveypermission.php:535
 #: application/controllers/admin/surveypermission.php:638
-#: application/controllers/admin/tokens.php:2418
-#: application/controllers/admin/tokens.php:2462
+#: application/controllers/admin/tokens.php:2417
+#: application/controllers/admin/tokens.php:2461
 #: application/controllers/admin/useraction.php:741
 #: application/helpers/common_helper.php:6005
 #: application/helpers/common_helper.php:6010
@@ -3393,31 +3393,31 @@ msgstr ""
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2399
+#: application/controllers/admin/tokens.php:2398
 #: application/views/admin/token/tokenwarning.php:6
 msgid "Tokens have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2405
+#: application/controllers/admin/tokens.php:2404
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2415
+#: application/controllers/admin/tokens.php:2414
 #: application/views/admin/export/exportresults_view.php:128
 #: application/views/admin/token/tokenbar.php:5
 #: application/views/admin/token/tokenwarning.php:3
 msgid "Token control"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2416
+#: application/controllers/admin/tokens.php:2415
 msgid "A token table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2459
+#: application/controllers/admin/tokens.php:2458
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2460
+#: application/controllers/admin/tokens.php:2459
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr ""
 
@@ -4145,6 +4145,8 @@ msgid "There is no matching saved survey"
 msgstr ""
 
 #: application/controllers/survey/index.php:361
+#: application/controllers/survey/index.php:396
+#: application/controllers/survey/index.php:401
 #: application/helpers/frontend_helper.php:963
 #: application/helpers/frontend_helper.php:1032
 #: application/helpers/frontend_helper.php:1074
@@ -4154,7 +4156,7 @@ msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
 #: application/controllers/survey/index.php:362
-#: application/controllers/survey/index.php:399
+#: application/controllers/survey/index.php:407
 #: application/helpers/frontend_helper.php:1034
 #: application/helpers/frontend_helper.php:1076
 #: application/helpers/frontend_helper.php:1256
@@ -4162,22 +4164,22 @@ msgid "For further information please contact %s"
 msgstr ""
 
 #: application/controllers/survey/index.php:384
-msgid "This invitation is not valid yet."
-msgstr ""
-
-#: application/controllers/survey/index.php:388
-msgid "This invitation is not valid anymore."
-msgstr ""
-
-#: application/controllers/survey/index.php:393
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:397
+#: application/controllers/survey/index.php:388
+msgid "This invitation is not valid yet."
+msgstr ""
+
+#: application/controllers/survey/index.php:392
+msgid "This invitation is not valid anymore."
+msgstr ""
+
+#: application/controllers/survey/index.php:405
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:575
+#: application/controllers/survey/index.php:583
 msgid "Your responses were successfully saved."
 msgstr ""
 
