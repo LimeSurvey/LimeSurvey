@@ -8278,32 +8278,33 @@ EOD;
 
         function getGroupInfoForEM($surveyid,$lang=NULL)
         {
-            if (!is_null($lang)) {
-                $lang = " and a.language='".$lang."'";
+            if (is_null($lang) && isset($_SESSION['LEMlang']))
+            {
+                $lang = $_SESSION['LEMlang'];
             }
-            $query = "SELECT a.group_name, a.description, a.gid, a.group_order, a.grelevance"
-            ." FROM {{groups}} AS a"
-            ." WHERE a.sid=".$surveyid
-            .$lang
-            ." ORDER BY group_order";
-
-            $data = dbExecuteAssoc($query);
-
+            elseif(is_null($lang))
+            {
+                $lang=Survey::model()->findByPk($surveyid)->language;
+            }
+            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid and language=:language",'order'=>'group_order','params'=>array(":sid"=>$surveyid,':language'=>$lang)));
             $qinfo = array();
             $_order=0;
-            foreach ($data as $d)
+            foreach ($oQuestionGroups as $oQuestionGroup)
             {
-                $gid[$d['gid']] = array(
+                $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
-                    'gid' => $d['gid'],
-                    'group_name' => $d['group_name'],
-                    'description' =>  $d['description'],
-                    'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $d['grelevance']:1,
-                 );
-                $qinfo[$_order] = $gid[$d['gid']];
+                    'gid' =>  $oQuestionGroup->gid,
+                    'group_name' => $oQuestionGroup->group_name,
+                    'description' =>  $oQuestionGroup->description,
+                    'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
+                );
+                $qinfo[$_order] = $gid[$oQuestionGroup->gid];
                 ++$_order;
             }
-            if (isset($_SESSION['survey_'.$surveyid]) && isset($_SESSION['survey_'.$surveyid]['grouplist'])) {
+            // Needed for Randomization group. 
+            $groupRemap= (!$this->sPreviewMode && !empty($_SESSION['survey_'.$surveyid]['groupReMap']) && !empty($_SESSION['survey_'.$surveyid]['grouplist']));
+            if ($groupRemap)
+            {
                 $_order=0;
                 $qinfo = array();
                 foreach ($_SESSION['survey_'.$surveyid]['grouplist'] as $info)
@@ -8313,7 +8314,6 @@ EOD;
                     ++$_order;
                 }
             }
-
             return $qinfo;
         }
 
