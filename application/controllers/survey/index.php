@@ -346,14 +346,20 @@ class index extends CAction {
 		if ($tokensexist == 1 && isset($token) && $token!="" &&
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
-            // check also if it is allowed to change survey after completion
-			if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+        	// check also if it is allowed to change survey after completion
+	   		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
 				$tokenInstance = Token::model($surveyid)->findByAttributes(array('token' => $token));
             } else {
 				$tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
-
-			if (!isset($tokenInstance) && !$previewmode)
+            
+	  	    // Review Token case is the same. If not, unset, as if nothing was found.
+		    if (isset($tokenInstance) && strcmp($tokenInstance->token, $token) !== 0) 
+		    {
+				unset($tokenInstance);
+		    }
+						
+	    	if (!isset($tokenInstance) && !$previewmode)
             {
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
                 $asMessage = array(
@@ -373,9 +379,20 @@ class index extends CAction {
             } else {
                 $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
             }
+
+	  	    // Review Token case is the same. If not, unset, as if nothing was found.
+		    if (isset($tokenInstance) && strcmp($tokenInstance->token, $token) !== 0) 
+		    {
+				unset($tokenInstance);
+		    }
+			
             if (!isset($tokenInstance))
             {
                 $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
+				// Review Token case is the same. If not, unset, as if nothing was found.
+				if (isset($oToken) && strcmp($oToken->token, $token) !== 0) {
+					$oToken = null;
+				}
                 if($oToken)
                 {
                     $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
