@@ -2841,7 +2841,6 @@ function questionAttributes($returnByName=false)
         // If you insert a new attribute please do it in correct alphabetical order!
         // Please also list the new attribute in the function &TSVSurveyExport($sid) in em_manager_helper.php,
         // so your new attribute will not be "forgotten" when the survey is exported to Excel/CSV-format!
-
         $qattributes["alphasort"]=array(
         "types"=>"!LOWZ",
         'category'=>gT('Display'),
@@ -4031,6 +4030,20 @@ function questionAttributes($returnByName=false)
         'default'=>1,
         "help"=>gT("Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"),
         "caption"=>gT("Value range allows missing"));
+        $qattributes["thousands_separator"] = array(
+            'types' => 'NK',
+            "help" => gT("Show a thousands separator when the user enters a value"),
+            "caption" => gT("Thousands separator"),
+            'category' => gT('Display'),
+            'inputtype' => 'singleselect',
+            'sortorder' => 100,
+            'options' => array(
+                0 => gT('No'),
+                1 => gT('Yes')
+            ),
+            'default'=>0,
+        );
+        
     }
     //This builds a more useful array (don't modify)
     if ($returnByName==false)

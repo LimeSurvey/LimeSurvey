@@ -3081,6 +3081,12 @@ function do_multiplenumeric($ia)
     $sSeparator = $sSeparator['separator'];
     //Must turn on the "numbers only javascript"
     $extraclass .=" numberonly";
+    if ($aQuestionAttributes['thousands_separator'] == 1) {
+        App()->clientScript->registerPackage('jquery-price-format');
+        App()->clientScript->registerScriptFile('scripts/numerical_input.js');
+        $extraclass .= " thousandsseparator";
+    }
+
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -3328,6 +3334,7 @@ function do_numerical($ia)
 
     $extraclass ="";
     $answertypeclass = "numeric";
+
     $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
@@ -3337,6 +3344,11 @@ function do_numerical($ia)
     else
     {
         $prefix = '';
+    }
+    if ($aQuestionAttributes['thousands_separator'] == 1) {
+        App()->clientScript->registerPackage('jquery-price-format');
+        App()->clientScript->registerScriptFile('scripts/numerical_input.js');
+        $extraclass .= " thousandsseparator";
     }
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];

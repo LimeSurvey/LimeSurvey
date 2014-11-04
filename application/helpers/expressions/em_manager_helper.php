@@ -9569,6 +9569,7 @@ EOD;
             'time_limit_warning_display_time',
             'time_limit_warning_message',
             'time_limit_warning_style',
+            'thousands_separator',
             'use_dropdown',
 
             );
