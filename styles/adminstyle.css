@@ -229,3 +229,5 @@ li input+label { display: inline;}
 .conditionlist td.operator{
     text-align:center; font-weight:bold;
 }
+
+#quotalist form{display:inline;}

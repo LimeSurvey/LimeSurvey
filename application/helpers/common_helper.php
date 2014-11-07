@@ -5517,7 +5517,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
             // We can use directly addInCondition, but don't know what is speediest.
         }
         if(!empty($aParams))
-            $criteria->params=$aParams;
+            $criteria->params=array_merge($criteria->params,$aParams);
         $result = SurveyDynamic::model($iSurveyId)->count($criteria);
     }
 
