@@ -5,6 +5,12 @@
  * Do not change these unless you know what you are doing.
  *
  */
+
+if (!file_exists(dirname(__FILE__) .  '/config.php')) {
+    $userConfig = require(dirname(__FILE__) . '/config-sample-mysql.php');
+} else {
+    $userConfig = require(dirname(__FILE__) . '/config.php');
+}
 @date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
 	'basePath' => dirname(dirname(__FILE__)),
@@ -23,15 +29,19 @@ $internalConfig = array(
             'responsiveCss' => false,
             'jqueryCss' => false
         ),
+        'clientScript'=>array(
+            'class'=>'ext.ExtendedClientScript.ExtendedClientScript',
+            'combineCss'=>false,
+            'compressCss'=>false,
+            'combineJs'=>$userConfig['config']['debug']>0?false:true,
+            'compressJs'=>false,
+            'packages' => require('third_party.php'),
+        ),
 		'urlManager' => array(
 			'urlFormat' => 'get',
 			'rules' => require('routes.php'),
 			'showScriptName' => true,
 		),
-
-        'clientScript' => array(
-            'packages' => require('third_party.php')
-        ),
         'assetManager' => array(
             'baseUrl' => '/tmp/assets'
         ),
@@ -69,11 +79,7 @@ $internalConfig = array(
 	)
 );
 
-if (!file_exists(dirname(__FILE__) .  '/config.php')) {
-    $userConfig = require(dirname(__FILE__) . '/config-sample-mysql.php');
-} else {
-    $userConfig = require(dirname(__FILE__) . '/config.php');
-}
+
 
 $result = CMap::mergeArray($internalConfig, $userConfig);
 /**
