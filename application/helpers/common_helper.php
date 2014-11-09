@@ -7269,7 +7269,7 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
-    if (is_string($content))
+    if (is_string($content) && get_magic_quotes_gpc())
     {
         $content=stripslashes($content);
     }
