@@ -2035,7 +2035,11 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 
 function addPrimaryKey($sTablename, $aColumns)
 {
-    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+    $sDBDriverName=Yii::app()->db->getDriverName();
+    if ($sDBDriverName=='mysqli' || $sDBDriverName=='mysql')
+    {
+        Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+    }
 }
 
 /**
