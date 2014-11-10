@@ -59,6 +59,9 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 141109) to 2.05+ (build 141110) Nov 10, 2014
+Fixed issue #9351: Error on update for non-MySQL installations
+
 Changes from 2.05+ (build 141020) to 2.05+ (build 141109) Nov 09, 2014
 -Fixed issue #9026: If empty survey, export 1 empty record to avoid blank results. (gabrieljenik)
 -Fixed issue #9307: Calling a survey with a non-existing token leads to PHP Warning (debug=1) (Denis Chenu)
