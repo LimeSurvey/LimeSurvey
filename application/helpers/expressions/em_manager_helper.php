@@ -5910,7 +5910,12 @@
 
             $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
             $grel = $gRelInfo['result'];
-
+            //Allways set a $_SESSION 
+            $allSQs = explode('|', $LEM->qid2code[$qid]);
+            foreach($allSQs as $answer){
+                if(!isset($_SESSION[$LEM->sessid][$answer]))
+                    $_SESSION[$LEM->sessid][$answer]=null;
+            }
             ///////////////////////////
             // IS QUESTION RELEVANT? //
             ///////////////////////////
@@ -5963,6 +5968,7 @@
             $prettyPrintSQRelEqn='';
             $prettyPrintValidTip='';
             $anyUnanswered = false;
+
             if (!$qrel)
             {
                 // All sub-questions are irrelevant
@@ -6217,7 +6223,7 @@
             //////////////////////////////////////////////
             $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
             $mandatoryTip = '';
-            if (!$force && $qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
+            if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
             {
                 $mandatoryTip = "<strong><br /><span class='errormandatory'>".$LEM->gT('This question is mandatory').'.  ';
                 switch ($qInfo['type'])
@@ -6361,6 +6367,7 @@
                         break;
                 }
             }
+
             ///////////////////////////////////////////////
             // DETECT ANY VIOLATIONS OF VALIDATION RULES //
             ///////////////////////////////////////////////
@@ -6370,7 +6377,7 @@
             $validationEqn='';
             $validationJS='';       // assume can't generate JavaScript to validate equation
             $validTip='';           // default is none
-            if (!$force && isset($LEM->qid2validationEqn[$qid]))
+            if (isset($LEM->qid2validationEqn[$qid]))
             {
                 $hasValidationEqn=true;
                 if (!$qhidden)  // do this even is starts irrelevant, else will never show this information.
@@ -6415,11 +6422,11 @@
                     }
                 }
             }
+
             if (!$qvalid)
             {
                 $invalidSQs = $LEM->qid2code[$qid]; // TODO - currently invalidates all - should only invalidate those that truly fail validation rules.
             }
-
             /////////////////////////////////////////////////////////
             // OPTIONALLY DISPLAY (DETAILED) DEBUGGING INFORMATION //
             /////////////////////////////////////////////////////////
@@ -6579,19 +6586,19 @@
             'relEqn' => $prettyPrintRelEqn,
             'sgqa' => $LEM->qid2code[$qid],
             'unansweredSQs' => implode('|',$unansweredSQs),
-            'valid' => $qvalid,
+            'valid' => $force || $qvalid,
             'validEqn' => $validationEqn,
             'prettyValidEqn' => $prettyPrintValidEqn,
             'validTip' => $validTip,
             'prettyValidTip' => $prettyPrintValidTip,
             'validJS' => $validationJS,
-            'invalidSQs' => (isset($invalidSQs) ? $invalidSQs : ''),
+            'invalidSQs' => (isset($invalidSQs) && !$force) ? $invalidSQs : '',
             'relevantSQs' => implode('|',$relevantSQs),
             'irrelevantSQs' => implode('|',$irrelevantSQs),
             'subQrelEqn' => implode('<br />',$prettyPrintSQRelEqns),
-            'mandViolation' => $qmandViolation,
+            'mandViolation' => (!$force) ? $qmandViolation : false,
             'anyUnanswered' => $anyUnanswered,
-            'mandTip' => $mandatoryTip,
+            'mandTip' => (!$force) ? $mandatoryTip : '',
             'message' => $debug_qmessage,
             'updatedValues' => $updatedValues,
             'sumEqn' => (isset($sumEqn) ? $sumEqn : ''),
@@ -6623,7 +6630,6 @@
             'mandViolation' => $qmandViolation,
             'valid' => $qvalid,
             );
-
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $qrel;
             return $qStatus;
         }

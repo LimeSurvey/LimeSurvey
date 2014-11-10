@@ -89,13 +89,9 @@ function retrieveAnswers($ia)
     $qtitle=$ia[3];
     $inputnames=array();
 
-    // TMSW - eliminate this - get from LEM
-    //A bit of housekeeping to stop PHP Notices
-    $answer = "";
-    if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) {$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] = "";}
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     //Create the question/answer html
-
+    $answer = "";
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
     // this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.
     $number = isset($ia[9]) ? $ia[9] : '';
@@ -922,11 +918,10 @@ function do_5pointchoice($ia)
         }
         $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
     }
-
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
         $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1]."NANS\" value=\"\"";
-        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
         {
             $answer .= CHECKED;
         }
@@ -1580,7 +1575,7 @@ function do_list_dropdown($ia)
         $answer .= '                    <option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
     }
 
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '') && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
@@ -2151,7 +2146,7 @@ function do_ranking($ia)
         }
         $answer .= "</label>";
         $answer .= "<select name=\"{$myfname}\" id=\"answer{$myfname}\">\n";
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
             $answer .= "\t<option value=\"\"".SELECTED.">".$clang->gT('Please choose...')."</option>\n";
         }
@@ -3049,9 +3044,7 @@ function do_multipleshorttext($ia)
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 
                 // color code missing mandatory questions red
-                if ($ia[6]=='Y' && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])
-                        || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep'] > $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step']))
-                        && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') {
+                if ($ia[6]=='Y' &&  $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                     $ansrow['question'] = "<span class='errormandatory'>{$ansrow['question']}</span>";
                 }
 
@@ -3236,9 +3229,8 @@ function do_multiplenumeric($ia)
             }
 
             // color code missing mandatory questions red
-            if ($ia[6]=='Y' && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])
-                    || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep'] > $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step']))
-                    && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
+            if ($ia[6]=='Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '')
+            {
                 $theanswer = "<span class='errormandatory'>{$theanswer}</span>";
             }
 
@@ -3839,11 +3831,10 @@ function do_yesno($ia)
     // --> START NEW FEATURE - SAVE
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".$clang->gT('No')."\n</label>\n\t</li>\n";
     // --> END NEW FEATURE - SAVE
-
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '')
+        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
         {
             $answer .= CHECKED;
         }
@@ -3915,7 +3906,9 @@ function do_gender($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_5point($ia)
 {
-    global $notanswered, $thissurvey;
+    global $thissurvey;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
     $clang = Yii::app()->lang;
     $caption=$clang->gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "); 
@@ -4005,10 +3998,9 @@ function do_array_5point($ia)
         $answertext = $ansrow['question'];
         if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
 
-        /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-        containing a list of unanswered questions, the current question must be in the array,
-        and there must be no answer available for the item in this session. */
-        if ($ia[6]=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+        /* Check if this item has not been answered */
+        if ($ia[6]=='Y' && in_array($myfname,$aMandatoryViolationSubQ))
+        {
             $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
         }
 
@@ -4084,7 +4076,9 @@ function do_array_5point($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_10point($ia)
 {
-    global $notanswered, $thissurvey;
+    global $thissurvey;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
     $clang = Yii::app()->lang;
     $caption=$clang->gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "); 
@@ -4155,10 +4149,9 @@ function do_array_10point($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
-        /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-        containing a list of unanswered questions, the current question must be in the array,
-        and there must be no answer available for the item in this session. */
-        if ($ia[6]=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") ) {
+        /* Check if this item has not been answered */
+        if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ) )
+        {
             $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         $trbc = alternation($trbc , 'row');
@@ -4213,7 +4206,9 @@ function do_array_10point($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_yesnouncertain($ia)
 {
-    global $notanswered, $thissurvey;
+    global $thissurvey;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
     $clang = Yii::app()->lang;
     $caption=$clang->gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "); 
@@ -4289,10 +4284,9 @@ function do_array_yesnouncertain($ia)
         {
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow['question'];
-            /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-            containing a list of unanswered questions, the current question must be in the array,
-            and there must be no answer available for the item in this session. */
-            if ($ia[6]=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+            /* Check the sub question mandatory violation */
+            if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
+            {
                 $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
             $trbc = alternation($trbc , 'row');
@@ -4370,7 +4364,8 @@ function do_array_yesnouncertain($ia)
 function do_array_increasesamedecrease($ia)
 {
     global $thissurvey;
-    global $notanswered;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
     $clang = Yii::app()->lang;
     $caption=$clang->gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "); 
@@ -4446,10 +4441,8 @@ function do_array_increasesamedecrease($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow['question'];
-        /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-        containing a list of unanswered questions, the current question must be in the array,
-        and there must be no answer available for the item in this session. */
-        if ($ia[6]=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") )
+        /* Check the sub Q mandatory violation */
+        if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
         {
             $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
         }
@@ -4531,7 +4524,8 @@ function do_array_increasesamedecrease($ia)
 function do_array($ia)
 {
     global $thissurvey;
-    global $notanswered;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -4632,7 +4626,6 @@ function do_array($ia)
         $answer = '<tbody>';
         $trbc = '';
         $inputnames=array();
-
         foreach($aQuestions as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
@@ -4650,13 +4643,10 @@ function do_array($ia)
             {
                 $answertext=substr($answertext,0, strpos($answertext,'|'));
             }
-            /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-            containing a list of unanswered questions, the current question must be in the array,
-            and there must be no answer available for the item in this session. */
-
             if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
-
-            if ($ia[6]=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+            /* Check the mandatory sub Q violation */
+            if (in_array($myfname, $aMandatoryViolationSubQ))
+            {
                 $answertext = '<span class="errormandatory">'.$answertext.'</span>';
             }
             // Get array_filter stuff
@@ -4799,13 +4789,10 @@ function do_array($ia)
             {
                 $answertext=substr($answertext,0, strpos($answertext,'|'));
             }
-            /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-            containing a list of unanswered questions, the current question must be in the array,
-            and there must be no answer available for the item in this session. */
-
             if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
 
-            if ($ia[6]=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+            if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
+            {
                 $answertext = '<span class="errormandatory">'.$answertext.'</span>';
             }
             // Get array_filter stuff
@@ -4884,7 +4871,8 @@ function do_array($ia)
 function do_array_multitext($ia)
 {
     global $thissurvey;
-    global $notanswered;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -5150,17 +5138,15 @@ function do_array_multitext($ia)
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow['question'];
             $answertextsave=$answertext;
-            /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-            containing a list of unanswered questions, the current question must be in the array,
-            and there must be no answer available for the item in this session. */
-            if ($ia[6]=='Y' && is_array($notanswered))
+            /* Check the sub Q mandatory volation */
+            if ($ia[6]=='Y' && !empty($aMandatoryViolationSubQ))
             {
                 //Go through each labelcode and check for a missing answer! If any are found, highlight this line
                 $emptyresult=0;
                 foreach($labelcode as $ld)
                 {
                     $myfname2=$myfname.'_'.$ld;
-                    if((array_search($myfname2, $notanswered) !== FALSE) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '')
+                    if(in_array($myfname2, $aMandatoryViolationSubQ))
                     {
                         $emptyresult=1;
                     }
@@ -5270,7 +5256,8 @@ EOD;
 function do_array_multiflexi($ia)
 {
     global $thissurvey;
-    global $notanswered;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -5484,17 +5471,15 @@ function do_array_multiflexi($ia)
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow['question'];
             $answertextsave=$answertext;
-            /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-            containing a list of unanswered questions, the current question must be in the array,
-            and there must be no answer available for the item in this session. */
-            if ($ia[6]=='Y' && is_array($notanswered))
+            /* Check the sub Q mandatory violation */
+            if ($ia[6]=='Y' && !empty($aMandatoryViolationSubQ))
             {
                 //Go through each labelcode and check for a missing answer! If any are found, highlight this line
                 $emptyresult=0;
                 foreach($labelcode as $ld)
                 {
                     $myfname2=$myfname.'_'.$ld;
-                    if((array_search($myfname2, $notanswered) !== FALSE) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == "")
+                    if(in_array($myfname2, $aMandatoryViolationSubQ))
                     {
                         $emptyresult=1;
                     }
@@ -5528,6 +5513,7 @@ function do_array_multiflexi($ia)
                 if ($checkboxlayout == false)
                 {
                     $myfname2=$myfname."_$ld";
+
                     if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))
                     {
                         $myfname2_java_value = " value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]}\" ";
@@ -5549,7 +5535,7 @@ function do_array_multiflexi($ia)
 
                         for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
                             $answer .= '<option value="'.str_replace('.',$sSeparator,$ii).'"';
-                            if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == $ii) {
+                            if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] === $ii) {
                                 $answer .= SELECTED;
                             }
                             $answer .= ">".str_replace('.',$sSeparator,$ii)."</option>\n";
@@ -5635,7 +5621,8 @@ function do_array_multiflexi($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_arraycolumns($ia)
 {
-    global $notanswered;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $clang = Yii::app()->lang;
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
@@ -5706,10 +5693,8 @@ function do_arraycolumns($ia)
                 $ld = $answers[$_i];
                 $myfname = $ia[1].$anscode[$_i];
                 $trbc = alternation($trbc , 'row');
-                /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-                containing a list of unanswered questions, the current question must be in the array,
-                and there must be no answer available for the item in this session. */
-                if ($ia[6]=='Y' && (is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") )
+                /* Check the Sub Q mandatory violation */
+                if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
                 {
                     $ld = "<span class=\"errormandatory\">{$ld}</span>";
                 }
@@ -5788,7 +5773,8 @@ function do_array_dual($ia)
 {
     $clang = Yii::app()->lang;
     global $thissurvey;
-    global $notanswered;
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -6031,10 +6017,8 @@ function do_array_dual($ia)
                 $myfid0 = $ia[1].$ansrow['title'].'_0';
                 $myfname1 = $ia[1].$ansrow['title'].'#1'; // new multi-scale-answer
                 $myfid1 = $ia[1].$ansrow['title'].'_1';
-                /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-                containing a list of unanswered questions, the current question must be in the array,
-                and there must be no answer available for the item in this session. */
-                if ($ia[6]=='Y' && (is_array($notanswered)) && ((array_search($myfname0, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')) )
+                /* Check the Sub Q mandatory violation */
+                if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
                 {
                     $answertext = "<span class='errormandatory'>{$answertext}</span>";
                 }
@@ -6241,7 +6225,7 @@ function do_array_dual($ia)
                 $myfid1 = $ia[1].$ansrow['title']."_1";
                 $sActualAnswer0=isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]:"";
                 $sActualAnswer1=isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]:"";
-                if ($ia[6]=='Y' && (is_array($notanswered)) && ((array_search($myfname0, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')) )
+                if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
                 {
                     $answertext="<span class='errormandatory'>".$ansrow['question']."</span>";
                 }

@@ -387,7 +387,6 @@ class SurveyRuntimeHelper {
                     $LEMskipReprocessing=true;
                 }
             }
-
             if (isset($moveResult) && isset($moveResult['seq']) )// Reload at first page (welcome after click previous fill an empty $moveResult array
             {
                 // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
@@ -395,8 +394,8 @@ class SurveyRuntimeHelper {
                 {
                     //LimeExpressionManager::JumpTo(-1, false, false, true);
                     LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
-                    $moveResult = LimeExpressionManager::JumpTo($moveResult['seq'], false, false, false);// no preview, no save data and NO force
-                    if(!$moveResult['mandViolation'] && !$moveResult['valid'] && !$moveResult['invalidSQs'])
+                    $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
+                    if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
                         $moveResult['finished'] = true;
                 }
                 if ($moveResult['finished'] == true)
