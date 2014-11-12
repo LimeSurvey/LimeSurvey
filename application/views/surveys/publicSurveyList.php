@@ -33,7 +33,7 @@
     }
     $data['surveylist'] = array(
         "nosid"=> "",
-        "contact"=> gT("Please contact %s ( %s ) for further assistance.", array(
+        "contact"=> sprintf(gT("Please contact %s ( %s ) for further assistance."), array(
             Yii::app()->getConfig("siteadminname"),
             encodeEmail(Yii::app()->getConfig("siteadminemail"))
         )),

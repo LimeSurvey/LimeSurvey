@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span3">
-        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', )); ?>
+        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="span9">
     <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => 'form-horizontal')); ?>
