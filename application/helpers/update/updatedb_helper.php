@@ -1252,7 +1252,7 @@ function db_upgrade_all($iOldDBVersion) {
         }
         if ($iOldDBVersion < 178)
         {
-            if ($sDBDriverName=='mysql' || $sDBDriverName='mysqli')
+            if ($sDBDriverName=='mysql' || $sDBDriverName=='mysqli')
             {
                 modifyPrimaryKey('questions', array('qid','language'));
             }
