@@ -1097,10 +1097,20 @@ class participantsaction extends Survey_Common_Action
             $sFileName = $_FILES['the_file']['name'];
 
             $regularfields = array('firstname', 'participant_id', 'lastname', 'email', 'language', 'blacklisted', 'owner_uid');
-            $csvread = fopen($sFilePath, 'r');
+            $oCSVFile = fopen($sFilePath, 'r');
+            $aFirstLine = fgets($oCSVFile);
+            rewind($oCSVFile);
 
-            $separator = Yii::app()->request->getPost('separatorused');
-            $firstline = fgetcsv($csvread, 1000, ',');
+            $sSeparator = Yii::app()->request->getPost('separatorused');
+            if ($sSeparator=='auto')
+            {
+                $aCount[',']=substr_count($aFirstLine,',');
+                $aCount[';']=substr_count($aFirstLine,';');
+                $aCount['|']=substr_count($aFirstLine,'|');
+                $aResult = array_keys($aCount, max($aCount));
+                $sSeparator=$aResult[0];
+            }
+            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
             $selectedcsvfields = array();
             foreach ($firstline as $key => $value)
             {
