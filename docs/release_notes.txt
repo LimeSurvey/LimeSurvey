@@ -59,6 +59,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 141110) to 2.05+ (build 141113) Nov 13, 2014
+-Fixed issue #8806: Questionindex to 2 allows invalid survey submitted (Denis Chenu)
+-Fixed issue #9198: Complete group's navigation can stop before clicked group (Denis Chenu)
+-Fixed issue #9285: Index complete + mandatory question: Undefined notice (Denis Chenu)
+-Fixed issue #9328: Language changer causes warning for mandatory questions (Denis Chenu)
+-Fixed issue #9342: Attribute descriptions are not deleted in database when field is deleted (Carsten Schmitz)
+-Fixed issue #9351: Database error during update when using a database other than MySQL (Carsten Schmitz)
+-Fixed issue #9355: Group rights cannot be set (Carsten Schmitz)
+-Fixed issue: Black background with PDF charts when using Linux (Carsten Schmitz)
+-Updated translation: Finnish by morbid
+-Updated translation: Polish by elisa
+
 Changes from 2.05+ (build 141109) to 2.05+ (build 141110) Nov 10, 2014
 Fixed issue #9351: Error on update for non-MySQL installations
 
