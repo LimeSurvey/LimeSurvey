@@ -741,7 +741,8 @@
             }
             if ($_SESSION['LEMlang'] != $lang) {
                 // then changing languages, so clear cache
-                    self::SetDirtyFlag();
+                //    self::SetDirtyFlag();
+                $_SESSION['LEMforceRefresh'] = true;// Force refresh but don't remove cache
             }
             $_SESSION['LEMlang'] = $lang;
         }
@@ -5490,7 +5491,7 @@
                             return $LEM->lastMoveResult;
                         }
 
-                        $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
+                        $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$force);
                         if (is_null($result)) {
                             return NULL;    // invalid group - either bad number, or no questions within it
                         }
@@ -5501,19 +5502,20 @@
                             // then skip this group - assume already saved?
                             continue;
                         }
-                        elseif (!($result['mandViolation'] || !$result['valid']) && $LEM->currentGroupSeq < $seq) {
-                                // if there is a violation while moving forward, need to stop and ask that set of questions
-                                // if there are no violations, can skip this group as long as changed values are saved.
-                                continue;
+                        elseif (!($result['mandViolation'] || !$result['valid']) && $LEM->currentGroupSeq < $seq) 
+                        {
+                            // if there is a violation while moving forward, need to stop and ask that set of questions
+                            // if there are no violations, can skip this group as long as changed values are saved.
+                            continue;
+                        }
+                        else
+                        {
+                            // display new group
+                            if(!$preview){ // Save only if not in preview mode
+                                $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                                $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             }
-                            else
-                            {
-                                // display new group
-                                if(!$preview){ // Save only if not in preview mode
-                                    $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
-                                    $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                                }
-                                $LEM->lastMoveResult = array(
+                            $LEM->lastMoveResult = array(
                                 'finished'=>false,
                                 'message'=>$message,
                                 'gseq'=>$LEM->currentGroupSeq,
@@ -5522,8 +5524,8 @@
                                 'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
-                                );
-                                return $LEM->lastMoveResult;
+                            );
+                            return $LEM->lastMoveResult;
                         }
                     }
                     break;
@@ -5538,7 +5540,7 @@
                     $message = '';
                     if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq)
                     {
-                        $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
+                        $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$force);
                         $message .= $result['message'];
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                         $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
@@ -5600,7 +5602,7 @@
 
                         $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                         $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
-                        $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
+                        $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$force);
                         $message .= $result['message'];
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                         $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
@@ -5719,10 +5721,11 @@
 
         /**
         * Check a group and all of the questions it contains
-        * @param <type> $groupSeq - the index-0 sequence number for this group
+        * @param integer $groupSeq - the index-0 sequence number for this group
+        * @param boolean $force : force validation to true, even if there are error
         * @return <array> - detailed information about this group
         */
-        function _ValidateGroup($groupSeq)
+        function _ValidateGroup($groupSeq,$force=false)
         {
             $LEM =& $this;
 
@@ -5758,7 +5761,7 @@
             /////////////////////////////////////////////////////////
             for ($i=$groupSeqInfo['qstart'];$i<=$groupSeqInfo['qend']; ++$i)
             {
-                $qStatus = $LEM->_ValidateQuestion($i);
+                $qStatus = $LEM->_ValidateQuestion($i,$force);
 
                 $updatedValues = array_merge($updatedValues,$qStatus['updatedValues']);
 
@@ -5888,11 +5891,12 @@
         * (c) relevance status - including sub-question-level relevance
         * (d) answered - if $_SESSION[$LEM->sessid][sgqa]=='' or NULL, then it is not answered
         * (e) validity - whether relevant questions pass their validity tests
-        * @param <type> $questionSeq - the 0-index sequence number for this question
+        * @param integer $questionSeq - the 0-index sequence number for this question
+        * @param boolean $force : force validation to true, even if there are error, this allow to save in DB even with error
         * @return <array> of information about this question and its sub-questions
         */
 
-        function _ValidateQuestion($questionSeq)
+        function _ValidateQuestion($questionSeq,$force=false)
         {
             $LEM =& $this;
             $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
@@ -5906,7 +5910,12 @@
 
             $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
             $grel = $gRelInfo['result'];
-
+            //Allways set a $_SESSION 
+            $allSQs = explode('|', $LEM->qid2code[$qid]);
+            foreach($allSQs as $answer){
+                if(!isset($_SESSION[$LEM->sessid][$answer]))
+                    $_SESSION[$LEM->sessid][$answer]=null;
+            }
             ///////////////////////////
             // IS QUESTION RELEVANT? //
             ///////////////////////////
@@ -5959,6 +5968,7 @@
             $prettyPrintSQRelEqn='';
             $prettyPrintValidTip='';
             $anyUnanswered = false;
+
             if (!$qrel)
             {
                 // All sub-questions are irrelevant
@@ -6357,6 +6367,7 @@
                         break;
                 }
             }
+
             ///////////////////////////////////////////////
             // DETECT ANY VIOLATIONS OF VALIDATION RULES //
             ///////////////////////////////////////////////
@@ -6411,11 +6422,11 @@
                     }
                 }
             }
+
             if (!$qvalid)
             {
                 $invalidSQs = $LEM->qid2code[$qid]; // TODO - currently invalidates all - should only invalidate those that truly fail validation rules.
             }
-
             /////////////////////////////////////////////////////////
             // OPTIONALLY DISPLAY (DETAILED) DEBUGGING INFORMATION //
             /////////////////////////////////////////////////////////
@@ -6520,26 +6531,27 @@
                     $LEM->updatedValues[$sgqa] = NULL;
                 }
             }
-            else if ($qInfo['type'] == '*')
-                {
-                    // Process relevant equations, even if hidden, and write the result to the database
-                    $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
-                    $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
-                    // Store the result of the Equation in the SESSION
-                    $_SESSION[$LEM->sessid][$sgqa] = $result;
-                    $_update = array(
-                    'type'=>'*',
-                    'value'=>$result,
-                    );
-                    $updatedValues[$sgqa] = $_update;
-                    $LEM->updatedValues[$sgqa] = $_update;
+            elseif ($qInfo['type'] == '*')
+            {
+                // Process relevant equations, even if hidden, and write the result to the database
+                $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
+                $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
+                // Store the result of the Equation in the SESSION
+                $_SESSION[$LEM->sessid][$sgqa] = $result;
+                $_update = array(
+                'type'=>'*',
+                'value'=>$result,
+                );
+                $updatedValues[$sgqa] = $_update;
+                $LEM->updatedValues[$sgqa] = $_update;
 
-                    if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
-                    {
-                        $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
-                        $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br />\n";
-                    }
+                if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
+                {
+                    $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
+                    $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br />\n";
+                }
             }
+
             if ( $LEM->surveyOptions['deletenonvalues'] )
             {
                 foreach ($irrelevantSQs as $sq)
@@ -6554,12 +6566,12 @@
             // Regardless of whether relevant or hidden, if there is a default value and $_SESSION[$LEM->sessid][$sgqa] is NULL, then use the default value in $_SESSION, but don't write to database
             // Also, set this AFTER testing relevance
             $sgqas = explode('|',$LEM->qid2code[$qid]);
+            
             foreach ($sgqas as $sgqa)
             {
                 if (!is_null($LEM->knownVars[$sgqa]['default']) && !isset($_SESSION[$LEM->sessid][$sgqa])) {
                     // add support for replacements
-                    $defaultVal = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], NULL, NULL, false, 1, 1, false, false, true);
-                    $_SESSION[$LEM->sessid][$sgqa] = $defaultVal;
+                    $_SESSION[$LEM->sessid][$sgqa] = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], NULL, NULL, false, 1, 1, false, false, true);
                 }
             }
 
@@ -6574,19 +6586,19 @@
             'relEqn' => $prettyPrintRelEqn,
             'sgqa' => $LEM->qid2code[$qid],
             'unansweredSQs' => implode('|',$unansweredSQs),
-            'valid' => $qvalid,
+            'valid' => $force || $qvalid,
             'validEqn' => $validationEqn,
             'prettyValidEqn' => $prettyPrintValidEqn,
             'validTip' => $validTip,
             'prettyValidTip' => $prettyPrintValidTip,
             'validJS' => $validationJS,
-            'invalidSQs' => (isset($invalidSQs) ? $invalidSQs : ''),
+            'invalidSQs' => (isset($invalidSQs) && !$force) ? $invalidSQs : '',
             'relevantSQs' => implode('|',$relevantSQs),
             'irrelevantSQs' => implode('|',$irrelevantSQs),
             'subQrelEqn' => implode('<br />',$prettyPrintSQRelEqns),
-            'mandViolation' => $qmandViolation,
+            'mandViolation' => (!$force) ? $qmandViolation : false,
             'anyUnanswered' => $anyUnanswered,
-            'mandTip' => $mandatoryTip,
+            'mandTip' => (!$force) ? $mandatoryTip : '',
             'message' => $debug_qmessage,
             'updatedValues' => $updatedValues,
             'sumEqn' => (isset($sumEqn) ? $sumEqn : ''),
@@ -6618,7 +6630,6 @@
             'mandViolation' => $qmandViolation,
             'valid' => $qvalid,
             );
-
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $qrel;
             return $qStatus;
         }

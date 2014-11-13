@@ -362,24 +362,24 @@ class SurveyRuntimeHelper {
                         $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps'] + 1, false);
                     }
                 }
-                if (isset($move) && (preg_match('/^changelang_/', $move) || $move=='changelang'))
+                if (isset($move) && $move=='changelang')
                 {
                     // jump to current step using new language, processing POST values
-                    $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);  // do process the POST data
+                    $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, true, true);  // do process the POST data
                 }
                 if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1)
                 {
-					$move = (int) $move;
+                    $move = (int) $move;
                     if ($move > 0 && (($move <= $_SESSION[$LEMsessid]['step']) || (isset($_SESSION[$LEMsessid]['maxstep']) && $move <= $_SESSION[$LEMsessid]['maxstep'])))
                     {
                         $moveResult = LimeExpressionManager::JumpTo($move, false);
                     }
                 }
-				elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2)
-				{
-					$move = (int) $move;
-					$moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
-				}
+                elseif (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 2)
+                {
+                    $move = (int) $move;
+                    $moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
+                }
                 if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0))
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
@@ -387,9 +387,17 @@ class SurveyRuntimeHelper {
                     $LEMskipReprocessing=true;
                 }
             }
-
             if (isset($moveResult) && isset($moveResult['seq']) )// Reload at first page (welcome after click previous fill an empty $moveResult array
             {
+                // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
+                if($moveResult['finished'] == true && $thissurvey['questionindex']==2)// $thissurvey['questionindex']>=2
+                {
+                    //LimeExpressionManager::JumpTo(-1, false, false, true);
+                    LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
+                    $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
+                    if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
+                        $moveResult['finished'] = true;
+                }
                 if ($moveResult['finished'] == true)
                 {
                     $move = 'movesubmit';
