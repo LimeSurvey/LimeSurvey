@@ -102,7 +102,7 @@ class LSYii_Validators extends CValidator {
     public function xssFilter($value)
     {
         $filter = new CHtmlPurifier();
-        $filter->options = array(
+        $filter->setOptions(array(
             'AutoFormat.RemoveEmpty'=>false,
             'CSS.AllowTricky'=>true, // Allow display:none; (and other)
             'HTML.SafeObject'=>true, // To allow including youtube
@@ -117,7 +117,7 @@ class LSYii_Validators extends CValidator {
                 'nntp' => true,
                 'news' => true,
                 )
-        );
+        ));
         // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
