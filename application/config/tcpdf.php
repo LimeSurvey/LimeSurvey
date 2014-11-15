@@ -194,9 +194,9 @@
     * HTML <small> font size ratio
     ***********************************************************/
 
-    $tcpdf['page_font'] = 'freemono';
+    $tcpdf['page_font'] = 'freesans';
     $tcpdf['page_font_size'] = 9;
-    $tcpdf['data_font'] = 'freemono';
+    $tcpdf['data_font'] = 'freesans';
     $tcpdf['data_font_size'] = 8;
     $tcpdf['mono_font'] = 'freemono';
 
