@@ -195,6 +195,22 @@ class pdf extends TCPDF {
   private $_config = array();
 
   /**
+   * Base font size for answer PDF export
+   *
+   * @var int
+   * @access private
+   */
+  private $baseAnswerFontSize = 12;
+
+  /**
+   * Cell height for answer PDF export
+   *
+   * @var int
+   * @access private
+   */
+  private $cellHeight = 7;
+
+  /**
    * Set _config for pdf
    * @access public
    * @param mixed $tcpdf
@@ -601,5 +617,101 @@ class pdf extends TCPDF {
     $text = html_entity_decode($text,null,'UTF-8');
     $text = str_replace("\t",' ',$text);
     return strip_tags($text);
+  }
+  /**
+   *
+   * Create Answer PDF document, set metadata and set title
+   * @param $siteName - LimeSurvey site name (header and metadata)
+   * @param $sSurveyName - Survey name (header, metadata and title),
+   * @param $pdfHeaderString - TCPDF header string
+   * @param $showHeader - boolean
+   * @return unknown_type
+   */
+  function initAnswerPDF($siteName, $sSurveyName, $pdfHeaderString, $showHeader)
+  {
+    $this->SetAuthor($siteName);
+    $this->SetTitle($sSurveyName);
+    $this->SetSubject($sSurveyName);
+    $this->SetKeywords($sSurveyName);
+
+    $logoFileName = 'logo_pdf.jpg';
+    if ($showHeader && file_exists(K_PATH_IMAGES.$logoFileName))
+    {
+      $this->SetHeaderData($logoFileName, 40, $siteName, $pdfHeaderString);
+    }  
+    $this->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $this->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+    $this->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+    $this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $this->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $this->SetFooterMargin(PDF_MARGIN_FOOTER);
+    $this->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+    $this->setImageScale(PDF_IMAGE_SCALE_RATIO);
+    $this->setFontSubsetting(true);
+    $this->AddPage();
+
+    $this->SetFillColor(220, 220, 220);
+    $this->SetFont('helvetica');
+
+    if(!empty($sSurveyName))
+    {
+        $this->ln(2);
+        $this->SetFontSize($this->baseAnswerFontSize + 6);
+        $this->MultiCell('','',$sSurveyName,'','C',0);
+        $this->ln(10);
+    }
+  }
+  /**
+   *
+   * Add GID text to PDF
+   * @param $sfname - Answer field text
+   * @return unknown_type
+   */
+  function addGidAnswer($sfname)
+  {
+    $this->ln(10);
+    $this->SetFontSize($this->baseAnswerFontSize + 2);
+    $this->MultiCell('', $this->cellHeight, html_entity_decode($sfname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
+    $this->ln(2);
+  }
+  /**
+   *
+   * Add QID text to PDF
+   * @param $sfname - Answer field text
+   * @return unknown_type
+   */
+  function addQidAnswer($sfname)
+  {
+    $this->ln(10);
+    $this->SetFontSize($this->baseAnswerFontSize);
+    $this->MultiCell('', $this->cellHeight, html_entity_decode($sfname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
+    $this->ln(2);
+  }
+  /**
+   *
+   * Add submit date to PDF
+   * @param $fname - Answer field text array
+   * @param $submitDate - submit date
+   * @return unknown_type
+   */
+  function addSubmitDate($fname, $sFieldName) 
+  {
+    $this->SetFontSize($this->baseAnswerFontSize);
+    $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[0]." ".$fname[1]." ".$sFieldName,ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
+    $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);
+    $this->ln(2);
+  }
+  /**
+   *
+   * Add answer to PDF
+   * @param $fname - Answer field text array
+   * @return unknown_type
+   */
+  function addAnswer($fname)
+  {
+    $this->SetFontSize($this->baseAnswerFontSize);
+    $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[0]." ".$fname[1],ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
+    $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);
+    $this->ln(2);
   }
 }
