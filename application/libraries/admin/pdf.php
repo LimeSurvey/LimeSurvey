@@ -665,53 +665,102 @@ class pdf extends TCPDF {
    *
    * Add GID text to PDF
    * @param $sfname - Answer field text
+   * @param $allowBreakPage - Allow break cell in two pages
    * @return unknown_type
    */
-  function addGidAnswer($sfname)
+  function addGidAnswer($sfname, $allowBreakPage=false)
   {
+    $startPage = $this->getPage();
     $this->ln(10);
     $this->SetFontSize($this->baseAnswerFontSize + 2);
     $this->MultiCell('', $this->cellHeight, html_entity_decode($sfname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
     $this->ln(2);
+    if ($this->getPage() != $startPage && !$allowBreakPage)
+    {
+      $this->rollbackTransaction(true);
+      $this->AddPage();
+      $this->addGidAnswer($fname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+    }
+    else
+    {
+      $this->commitTransaction();
+    }
   }
   /**
    *
    * Add QID text to PDF
    * @param $sfname - Answer field text
+   * @param $allowBreakPage - Allow break cell in two pages
    * @return unknown_type
    */
-  function addQidAnswer($sfname)
+  function addQidAnswer($sfname, $allowBreakPage=false)
   {
+    $startPage = $this->getPage();
     $this->ln(10);
     $this->SetFontSize($this->baseAnswerFontSize);
     $this->MultiCell('', $this->cellHeight, html_entity_decode($sfname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
     $this->ln(2);
+    if ($this->getPage() != $startPage && !$allowBreakPage)
+    {
+      $this->rollbackTransaction(true);
+      $this->AddPage();
+      $this->addQidAnswer($fname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+    }
+    else
+    {
+      $this->commitTransaction();
+    }
   }
   /**
    *
    * Add submit date to PDF
    * @param $fname - Answer field text array
    * @param $submitDate - submit date
+   * @param $allowBreakPage - Allow break cell in two pages
    * @return unknown_type
    */
-  function addSubmitDate($fname, $sFieldName) 
+  function addSubmitDate($fname, $sFieldName, $allowBreakPage=false) 
   {
+    $startPage = $this->getPage();
     $this->SetFontSize($this->baseAnswerFontSize);
     $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[0]." ".$fname[1]." ".$sFieldName,ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
     $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);
     $this->ln(2);
+    if ($this->getPage() != $startPage && !$allowBreakPage)
+    {
+      $this->rollbackTransaction(true);
+      $this->AddPage();
+      $this->addSubmitDate($fname,$sFieldName,true); // Second param = true avoid an endless loop if a cell is longer than a page
+    }
+    else
+    {
+      $this->commitTransaction();
+    }
   }
   /**
    *
    * Add answer to PDF
    * @param $fname - Answer field text array
+   * @param $allowBreakPage - Allow break cell in two pages
    * @return unknown_type
    */
-  function addAnswer($fname)
+  function addAnswer($fname, $allowBreakPage=false)
   {
+    $startPage = $this->getPage();
+    $this->startTransaction();
     $this->SetFontSize($this->baseAnswerFontSize);
     $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[0]." ".$fname[1],ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
     $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);
     $this->ln(2);
+    if ($this->getPage() != $startPage && !$allowBreakPage)
+    {
+      $this->rollbackTransaction(true);
+      $this->AddPage();
+      $this->addAnswer($fname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+    }
+    else
+    {
+      $this->commitTransaction();
+    }
   }
 }
