@@ -1299,7 +1299,7 @@ function upgradeSurveys177()
                 ':surveyid'=>$aSurveyRow['surveyls_survey_id'],
                 ':attributecaptions'=>json_encode($aAttributeDescriptions)));
     }
-    $sSurveyQuery = "SELECT sid FROM {{surveys}}";
+    $sSurveyQuery = "SELECT sid,attributedescriptions FROM {{surveys}}";
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
     $sSurveyUpdateQuery= "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=:surveyid";
     foreach ( $oSurveyResult as $aSurveyRow )
