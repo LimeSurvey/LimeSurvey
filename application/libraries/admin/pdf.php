@@ -208,7 +208,7 @@ class pdf extends TCPDF {
    * @var int
    * @access private
    */
-  private $cellHeight = 7;
+  private $cellHeight = 6;
 
   /**
    * Set _config for pdf
@@ -621,44 +621,43 @@ class pdf extends TCPDF {
   /**
    *
    * Create Answer PDF document, set metadata and set title
+   * @param $aPdfLanguageSettings - Pdf language settings
    * @param $siteName - LimeSurvey site name (header and metadata)
+   * @param $sLanguage - Survey language
    * @param $sSurveyName - Survey name (header, metadata and title),
    * @param $pdfHeaderString - TCPDF header string
    * @param $showHeader - boolean
    * @return unknown_type
    */
-  function initAnswerPDF($siteName, $sSurveyName, $pdfHeaderString, $showHeader)
+  function initAnswerPDF($aPdfLanguageSettings, $siteName, $sLanguage, $sSurveyName, $pdfHeaderString, $showHeader)
   {
     $this->SetAuthor($siteName);
     $this->SetTitle($sSurveyName);
     $this->SetSubject($sSurveyName);
     $this->SetKeywords($sSurveyName);
 
+    $this->SetFont($aPdfLanguageSettings['pdffont']);
+    $this->baseAnswerFontSize = $aPdfLanguageSettings['pdffontsize'];
+    $this->cellHeight = ceil($this->baseAnswerFontSize / 2);
+    $this->setLanguageArray($aPdfLanguageSettings['lg']);
+    
     $logoFileName = 'logo_pdf.jpg';
     if ($showHeader && file_exists(K_PATH_IMAGES.$logoFileName))
     {
       $this->SetHeaderData($logoFileName, 40, $siteName, $pdfHeaderString);
+      $this->SetHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', $this->baseAnswerFontSize - 2));
+      $this->SetFooterFont(Array($aPdfLanguageSettings['pdffont'], '', $this->baseAnswerFontSize - 2));
     }  
-    $this->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-    $this->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-    $this->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-    $this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-    $this->SetHeaderMargin(PDF_MARGIN_HEADER);
-    $this->SetFooterMargin(PDF_MARGIN_FOOTER);
-    $this->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-    $this->setImageScale(PDF_IMAGE_SCALE_RATIO);
-    $this->setFontSubsetting(true);
     $this->AddPage();
 
     $this->SetFillColor(220, 220, 220);
-    $this->SetFont('helvetica');
 
     if(!empty($sSurveyName))
     {
-        $this->ln(2);
+        $this->ln(1);
         $this->SetFontSize($this->baseAnswerFontSize + 6);
         $this->MultiCell('','',$sSurveyName,'','C',0);
-        $this->ln(10);
+        $this->ln(6);
     }
   }
   /**
@@ -671,7 +670,8 @@ class pdf extends TCPDF {
   function addGidAnswer($sfname, $allowBreakPage=false)
   {
     $startPage = $this->getPage();
-    $this->ln(10);
+    $this->startTransaction();
+    $this->ln(6);
     $this->SetFontSize($this->baseAnswerFontSize + 2);
     $this->MultiCell('', $this->cellHeight, html_entity_decode($sfname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
     $this->ln(2);
@@ -679,7 +679,7 @@ class pdf extends TCPDF {
     {
       $this->rollbackTransaction(true);
       $this->AddPage();
-      $this->addGidAnswer($fname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+      $this->addGidAnswer($sfname,true); // Second param = true avoid an endless loop if a cell is longer than a page
     }
     else
     {
@@ -696,7 +696,8 @@ class pdf extends TCPDF {
   function addQidAnswer($sfname, $allowBreakPage=false)
   {
     $startPage = $this->getPage();
-    $this->ln(10);
+    $this->startTransaction();
+    $this->ln(6);
     $this->SetFontSize($this->baseAnswerFontSize);
     $this->MultiCell('', $this->cellHeight, html_entity_decode($sfname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
     $this->ln(2);
@@ -704,7 +705,7 @@ class pdf extends TCPDF {
     {
       $this->rollbackTransaction(true);
       $this->AddPage();
-      $this->addQidAnswer($fname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+      $this->addQidAnswer($sfname,true); // Second param = true avoid an endless loop if a cell is longer than a page
     }
     else
     {
@@ -722,6 +723,7 @@ class pdf extends TCPDF {
   function addSubmitDate($fname, $sFieldName, $allowBreakPage=false) 
   {
     $startPage = $this->getPage();
+    $this->startTransaction();
     $this->SetFontSize($this->baseAnswerFontSize);
     $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[0]." ".$fname[1]." ".$sFieldName,ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
     $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);

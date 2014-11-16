@@ -175,7 +175,8 @@
                 $siteName = Yii::app()->getConfig('sitename');
 
                 $oPDF = new pdf();
-                $oPDF->initAnswerPDF($siteName, $sSurveyName, $sSurveyName." (".$clang->gT("ID",'unescaped').":".$iSurveyID.")", true);
+                $headerString = $sSurveyName." (".$clang->gT("ID",'unescaped').":".$iSurveyID.")";
+                $oPDF->initAnswerPDF($aPdfLanguageSettings, $siteName, $sLanguage, $sSurveyName, $headerString, true);
 
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
