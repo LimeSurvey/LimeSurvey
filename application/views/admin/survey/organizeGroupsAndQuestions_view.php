@@ -1,4 +1,4 @@
-<?php 
+<?php
     App()->getClientScript()->registerPackage('jquery-nestedSortable');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'organize.js');
 ?>
@@ -12,7 +12,7 @@
         <?php
             foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
             {?>
-            <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='group-item' data-level='group'><div class='ui-widget-header'> <?php echo $aGroupAndQuestions['group_name'];?></div>
+            <li id='list_g<?php echo $aGroupAndQuestions['gid'];?>' class='group-item' data-level='group'><div class='ui-widget-header'> <?php echo flattenText($aGroupAndQuestions['group_name'],true);?></div>
                 <?php if (isset ($aGroupAndQuestions['questions']))
                     {?>
                     <ol class='question-list' data-level='question'>
