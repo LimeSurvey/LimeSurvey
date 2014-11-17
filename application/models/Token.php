@@ -53,7 +53,7 @@
 			// Check if we have custom attributes.
 			if ($this->hasAttribute('attribute_1'))
 			{
-				foreach (unserialize($this->survey->attributedescriptions) as $key => $info)
+				foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
 				{
 					$labels[$key] = $info['description'];
 				}
@@ -79,7 +79,7 @@
 				'token' => $token
 			));
 		}
-		
+
 		public function generateToken()
 		{
 			$length = $this->survey->tokenlength;
@@ -108,7 +108,7 @@
 		}
 
 		/**
-		 * 
+		 *
 		 * @param int $surveyId
 		 * @param string $scenario
 		 * @return Token Description
@@ -131,9 +131,9 @@
 			return array(
 				array('token', 'unique', 'allowEmpty' => true),// 'caseSensitive'=>false only for mySql
 				array(implode(',', $this->tableSchema->columnNames), 'safe'),
-                array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+                array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                 array('email','filter','filter'=>'trim'),
-                array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true), 
+                array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true),
                 array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                 array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                 array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
@@ -174,7 +174,7 @@
 		public function tableName()
 		{
 			return '{{tokens_' . $this->dynamicId . '}}';
-		}           
+		}
 	}
 
 ?>

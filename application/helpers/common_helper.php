@@ -7499,5 +7499,24 @@ function array_diff_assoc_recursive($array1, $array2) {
         return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
     }
 
+    /**
+    * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
+    *
+    * @param string $oTokenAttributeData  The original token attributes as stored in the database
+    */
+    function decodeTokenAttributes($oTokenAttributeData){
+        if (trim($oTokenAttributeData)=='') return array();
+        if (substr($oTokenAttributeData,0,1)!='{' && substr($oTokenAttributeData,0,1)!='[')
+        {
+            $aReturnData=@unserialize($oTokenAttributeData);
+        }
+        else
+        {
+             $aReturnData=@json_decode($oTokenAttributeData,true);
+        }
+        if ($aReturnData===false || $aReturnData===null) return array();
+        return $aReturnData;
+    }
+
 // Closing PHP tag intentionally omitted - yes, it is okay
 

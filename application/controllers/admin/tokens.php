@@ -1165,9 +1165,9 @@ class tokens extends Survey_Common_Action
         elseif($sAttributeToDelete)
         {
             // Update field attributedescriptions in survey table
-            $aTokenAttributeDescriptions=  unserialize(Survey::model()->findByPk($iSurveyId)->attributedescriptions);
+            $aTokenAttributeDescriptions=decodeTokenAttributes(Survey::model()->findByPk($iSurveyId)->attributedescriptions);
             unset($aTokenAttributeDescriptions[$sAttributeToDelete]);
-            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($aTokenAttributeDescriptions)));
+            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($aTokenAttributeDescriptions)));
 
             $sTableName="{{tokens_".intval($iSurveyId)."}}";
             Yii::app()->db->createCommand(Yii::app()->db->getSchema()->dropColumn($sTableName, $sAttributeToDelete))->execute();
@@ -1219,7 +1219,7 @@ class tokens extends Survey_Common_Action
                 $captions[$language][$fieldname] = $_POST["caption_{$fieldname}_$language"];
         }
 
-        Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
+        Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
         foreach ($languages as $language)
         {
             $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
@@ -2447,7 +2447,7 @@ class tokens extends Survey_Common_Action
                                 );
                 }
             }
-            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
+            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
 
 
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));

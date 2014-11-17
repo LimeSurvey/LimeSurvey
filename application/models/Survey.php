@@ -21,7 +21,7 @@ class Survey extends LSActiveRecord
      * This is a static cache, it lasts only during the active request. If you ever need
      * to clear it, like on activation of a survey when in the same request a row is read,
      * saved and read again you can use resetCache() method.
-     * 
+     *
      * @var array
      */
     protected $findByPkCache = array();
@@ -49,7 +49,7 @@ class Survey extends LSActiveRecord
     {
         $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 day');
-        
+
         if (!isset($surveyId))
         {
             $this->expires = $dateTime;
@@ -182,7 +182,7 @@ class Survey extends LSActiveRecord
         array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
         array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
         array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),
-        array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true), 
+        array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
         array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
         array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
@@ -268,7 +268,7 @@ class Survey extends LSActiveRecord
     */
     public function getTokenAttributes()
     {
-        $attdescriptiondata = @unserialize($this->attributedescriptions);
+        $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
         // checked for invalid data
         if($attdescriptiondata == null)
         {
@@ -306,14 +306,14 @@ class Survey extends LSActiveRecord
                 }
             }
             $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
-            self::model()->updateByPk($this->sid, array('attributedescriptions' => serialize($fields)));
-            $ls->surveyls_attributecaptions = serialize($languagesettings);
+            self::model()->updateByPk($this->sid, array('attributedescriptions' => json_encode($fields)));
+            $ls->surveyls_attributecaptions = json_encode($languagesettings);
             $ls->save();
             $attdescriptiondata = $fields;
         }
         $aCompleteData=array();
         foreach ($attdescriptiondata as $sKey=>$aValues)
-        {                                   
+        {
             if (!is_array($aValues)) $aValues=array();
             $aCompleteData[$sKey]= array_merge(array(
                     'description' => '',
@@ -324,10 +324,10 @@ class Survey extends LSActiveRecord
         }
         return $aCompleteData;
     }
-    
+
     /**
      * Returns true in a token table exists for the given $surveyId
-     * 
+     *
      * @staticvar array $tokens
      * @param int $iSurveyID
      * @return boolean
@@ -335,19 +335,19 @@ class Survey extends LSActiveRecord
     public function hasTokens($iSurveyID) {
         static $tokens = array();
         $iSurveyID = (int) $iSurveyID;
-         
+
         if (!isset($tokens[$iSurveyID])) {
             // Make sure common_helper is loaded
             Yii::import('application.helpers.common_helper', true);
-            
+
             $tokens_table = "{{tokens_{$iSurveyID}}}";
             if (tableExists($tokens_table)) {
                 $tokens[$iSurveyID] = true;
             } else {
                 $tokens[$iSurveyID] = false;
-            }            
+            }
         }
-        
+
         return $tokens[$iSurveyID];
     }
 
@@ -436,7 +436,7 @@ class Survey extends LSActiveRecord
             Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
         }
     }
-    
+
     public function findByPk($pk, $condition = '', $params = array()) {
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
@@ -446,21 +446,21 @@ class Survey extends LSActiveRecord
                 if (!is_null($result)) {
                     $this->findByPkCache[$pk] = $result;
                 }
-                
+
                 return $result;
             }
         }
-        
-        return parent::findByPk($pk, $condition, $params);        
+
+        return parent::findByPk($pk, $condition, $params);
     }
-    
+
     /**
      * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
     public function resetCache() {
         $this->findByPkCache = array();
     }
-    
+
     /**
      * Attribute renamed to questionindex in dbversion 169
      * Y maps to 1 otherwise 0;
