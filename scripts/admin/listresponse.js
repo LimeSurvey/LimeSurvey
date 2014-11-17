@@ -220,18 +220,18 @@ $(document)
 					/* Trigger the inline search when the access list changes */
 					$('#gs_completed_select').change(
 							function() {
-								$("#gs_Completed").val(
+								$("#gs_completed").val(
 										$('#gs_completed_select').val());
 
 								var e = jQuery.Event("keydown");
-								$("#gs_Completed").trigger(e);
+								$("#gs_completed").trigger(e);
 							});
 
 					/* Change the text search above "Status" icons to a dropdown */
 					var parentDiv = $('#gs_completed').parent();
 					parentDiv.prepend($('#gs_completed_select'));
 					$('#gs_completed_select').css("display", "");
-					$('#gs_Completed').css("display", "none");
+					$('#gs_completed').css("display", "none");
 
 					/* Disable search on the action column */
 					var parentDiv = $('#gs_actions').parent();

@@ -335,7 +335,7 @@ class responses extends Survey_Common_Action
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         $column_model = array();
         // The first few colums are fixed.
-        $column_model[] = array('name' => 'actions',   'model_name' => 'Actions',     'index'          => 'actions',     'sorttype' => 'string', 'sortable' => false, 'width' => '100', 'align' => 'left', 'editable' => false);
+        $column_model[] = array('name' => 'actions',   'model_name' => 'Actions',     'index'          => 'actions',     'sorttype' => 'string', 'sortable' => false, 'width' => '100', 'align' => 'left', 'editable' => false, 'search' => false);
 
         // All other columns are based on the questions.
 
