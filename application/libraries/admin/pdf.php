@@ -195,6 +195,22 @@ class pdf extends TCPDF {
   private $_config = array();
 
   /**
+   * Base font size for answer PDF export
+   *
+   * @var int
+   * @access private
+   */
+  private $baseAnswerFontSize = 12;
+
+  /**
+   * Cell height for answer PDF export
+   *
+   * @var int
+   * @access private
+   */
+  private $cellHeight = 6;
+
+  /**
    * Set _config for pdf
    * @access public
    * @param mixed $tcpdf
@@ -601,5 +617,152 @@ class pdf extends TCPDF {
     $text = html_entity_decode($text,null,'UTF-8');
     $text = str_replace("\t",' ',$text);
     return strip_tags($text);
+  }
+  /**
+   *
+   * Create Answer PDF document, set metadata and set title
+   * @param $aPdfLanguageSettings - Pdf language settings
+   * @param $siteName - LimeSurvey site name (header and metadata)
+   * @param $sLanguage - Survey language
+   * @param $sSurveyName - Survey name (header, metadata and title),
+   * @param $pdfHeaderString - TCPDF header string
+   * @param $showHeader - boolean
+   * @return unknown_type
+   */
+  function initAnswerPDF($aPdfLanguageSettings, $siteName, $sLanguage, $sSurveyName, $pdfHeaderString, $showHeader)
+  {
+    $this->SetAuthor($siteName);
+    $this->SetTitle($sSurveyName);
+    $this->SetSubject($sSurveyName);
+    $this->SetKeywords($sSurveyName);
+
+    $this->SetFont($aPdfLanguageSettings['pdffont']);
+    $this->baseAnswerFontSize = $aPdfLanguageSettings['pdffontsize'];
+    $this->cellHeight = ceil($this->baseAnswerFontSize / 2);
+    $this->setLanguageArray($aPdfLanguageSettings['lg']);
+    
+    $logoFileName = 'logo_pdf.jpg';
+    if ($showHeader && file_exists(K_PATH_IMAGES.$logoFileName))
+    {
+      $this->SetHeaderData($logoFileName, 40, $siteName, $pdfHeaderString);
+      $this->SetHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', $this->baseAnswerFontSize - 2));
+      $this->SetFooterFont(Array($aPdfLanguageSettings['pdffont'], '', $this->baseAnswerFontSize - 2));
+    }  
+    $this->AddPage();
+
+    $this->SetFillColor(220, 220, 220);
+
+    if(!empty($sSurveyName))
+    {
+        $this->ln(1);
+        $this->SetFontSize($this->baseAnswerFontSize + 6);
+        $this->MultiCell('','',$sSurveyName,'','C',0);
+        $this->ln(6);
+    }
+  }
+  /**
+   *
+   * Add GID text to PDF
+   * @param $sfname - Answer field text
+   * @param $allowBreakPage - Allow break cell in two pages
+   * @return unknown_type
+   */
+  function addGidAnswer($sfname, $allowBreakPage=false)
+  {
+    $startPage = $this->getPage();
+    $this->startTransaction();
+    $this->ln(6);
+    $this->SetFontSize($this->baseAnswerFontSize + 2);
+    $this->MultiCell('', $this->cellHeight, html_entity_decode($sfname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
+    $this->ln(2);
+    if ($this->getPage() != $startPage && !$allowBreakPage)
+    {
+      $this->rollbackTransaction(true);
+      $this->AddPage();
+      $this->addGidAnswer($sfname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+    }
+    else
+    {
+      $this->commitTransaction();
+    }
+  }
+  /**
+   *
+   * Add QID text to PDF
+   * @param $sfname - Answer field text
+   * @param $allowBreakPage - Allow break cell in two pages
+   * @return unknown_type
+   */
+  function addQidAnswer($sfname, $allowBreakPage=false)
+  {
+    $startPage = $this->getPage();
+    $this->startTransaction();
+    $this->ln(6);
+    $this->SetFontSize($this->baseAnswerFontSize);
+    $this->MultiCell('', $this->cellHeight, html_entity_decode($sfname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
+    $this->ln(2);
+    if ($this->getPage() != $startPage && !$allowBreakPage)
+    {
+      $this->rollbackTransaction(true);
+      $this->AddPage();
+      $this->addQidAnswer($sfname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+    }
+    else
+    {
+      $this->commitTransaction();
+    }
+  }
+  /**
+   *
+   * Add submit date to PDF
+   * @param $fname - Answer field text array
+   * @param $submitDate - submit date
+   * @param $allowBreakPage - Allow break cell in two pages
+   * @return unknown_type
+   */
+  function addSubmitDate($fname, $sFieldName, $allowBreakPage=false) 
+  {
+    $startPage = $this->getPage();
+    $this->startTransaction();
+    $this->SetFontSize($this->baseAnswerFontSize);
+    $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[0]." ".$fname[1]." ".$sFieldName,ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
+    $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);
+    $this->ln(2);
+    if ($this->getPage() != $startPage && !$allowBreakPage)
+    {
+      $this->rollbackTransaction(true);
+      $this->AddPage();
+      $this->addSubmitDate($fname,$sFieldName,true); // Second param = true avoid an endless loop if a cell is longer than a page
+    }
+    else
+    {
+      $this->commitTransaction();
+    }
+  }
+  /**
+   *
+   * Add answer to PDF
+   * @param $fname - Answer field text array
+   * @param $allowBreakPage - Allow break cell in two pages
+   * @return unknown_type
+   */
+  function addAnswer($fname, $allowBreakPage=false)
+  {
+    $startPage = $this->getPage();
+    $this->startTransaction();
+    $this->SetFontSize($this->baseAnswerFontSize);
+    $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[0]." ".$fname[1],ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
+    $this->MultiCell(0, $this->cellHeight, html_entity_decode($fname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);
+    $this->ln(2);
+    if ($this->getPage() != $startPage && !$allowBreakPage)
+    {
+      $this->rollbackTransaction(true);
+      $this->AddPage();
+      $this->addAnswer($fname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+    }
+    else
+    {
+      $this->commitTransaction();
+    }
   }
 }
