@@ -643,7 +643,7 @@ class pdf extends TCPDF {
     $sLogoFileName = Yii::app()->getConfig('pdflogofile');
     if (Yii::app()->getConfig('pdfshowheader')=='Y' && file_exists(K_PATH_IMAGES.$sLogoFileName))
     {
-      $this->SetHeaderData($sLogoFileName, 40, $sSiteName, $sPdfHeaderString);
+      $this->SetHeaderData($sLogoFileName, Yii::app()->getConfig('pdflogowidth'), $sSiteName, $sPdfHeaderString);
       $this->SetHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', $this->ibaseAnswerFontSize - 2));
       $this->SetFooterFont(Array($aPdfLanguageSettings['pdffont'], '', $this->ibaseAnswerFontSize - 2));
     }  

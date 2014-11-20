@@ -369,7 +369,8 @@ $config['pdffontsize']    = 9;                       //Fontsize for normal text;
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 $config['pdfshowheader'] = 'Y';           // Show header in pdf answer export
 $config['pdflogofile'] = 'logo_pdf.png';  // File name of logo for single answer export. Path is template path, i.e. template/default/logo_pdf.png.
-                                          // If not found, resulting pdf doesn't has header
+                                          // If not found, resulting pdf doesn't have header. A large image implies slower pdf generation.
+$config['pdflogowidth'] = '40';           // Logo width
 
 // QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF questionnaires
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
