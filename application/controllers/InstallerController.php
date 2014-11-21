@@ -462,7 +462,7 @@ class InstallerController extends CController {
                 $bCreateDB=false;
             }
             break;
-            case 'postgres':
+            case 'pgsql':
             try
             {
                 $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
@@ -632,7 +632,7 @@ class InstallerController extends CController {
                 if ($this->connection->getActive() == true) {
                     $sPasswordHash=hash('sha256', $sDefaultAdminPassword);
                     try {
-                        
+
                         if (User::model()->count()>0){
                             die();
                         }
