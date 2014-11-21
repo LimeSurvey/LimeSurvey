@@ -43,7 +43,7 @@ class remotecontrol_handle
             $session->id = $sSessionKey;
             $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
             if($sDatabasetype=='sqlsrv' || $sDatabasetype=='mssql' || $sDatabasetype=='dblib')
-                $username=new CDbExpression('CONVERT(VARBINARY(MAX), '.Yii::app()->db->quoteValue($username).')');            
+                $username=new CDbExpression('CONVERT(VARBINARY(MAX), '.Yii::app()->db->quoteValue($username).')');
             $session->data = $username;
             $session->save();
             return $sSessionKey;
@@ -341,7 +341,7 @@ class remotecontrol_handle
             return array('status' => 'Invalid Session key');
     }
 
-    
+
     /**
      * RPC Routine that launches a newly created survey.
      *
@@ -402,7 +402,7 @@ class remotecontrol_handle
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read'))
             return array('status' => 'Error: No Permission');
-            
+
         $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
 
         if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
@@ -411,14 +411,14 @@ class remotecontrol_handle
         $oAllQuestions =Question::model()->getQuestionList($iSurveyID, $sLanguage);
            if (!isset($oAllQuestions))
                 return array('status' => 'No available data');
-                
+
         if($groupIDs!=null)
         {
             if(is_int($groupIDs))
                     $groupIDs = array($groupIDs);
-                
-            if(is_array($groupIDs)) 
-            {   
+
+            if(is_array($groupIDs))
+            {
                 //check that every value of the array belongs to the survey defined
                 $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
 
@@ -426,25 +426,25 @@ class remotecontrol_handle
                     $validGroups[] = $group['gid'];
 
                 $groupIDs=array_intersect($groupIDs,$validGroups);
-                
+
                 if (empty($groupIDs))
                     return array('status' => 'Error: Invalid group ID');
-                                     
-               foreach($oAllQuestions as $key => $aQuestion)  
+
+               foreach($oAllQuestions as $key => $aQuestion)
                  {
                      if(!in_array($aQuestion['gid'],$groupIDs))
-                        unset($oAllQuestions[$key]);     
-                 }      
+                        unset($oAllQuestions[$key]);
+                 }
             }
             else
                 return array('status' => 'Error: Invalid group ID');
         }
-            
+
            if (!isset($oAllQuestions))
                 return array('status' => 'No available data');
-                
-        usort($oAllQuestions, 'groupOrderThenQuestionOrder');     
-        
+
+        usort($oAllQuestions, 'groupOrderThenQuestionOrder');
+
         $aSummary = createCompleteSGQA($iSurveyID,$oAllQuestions,$sLanguage);
 
         $helper = new statistics_helper();
@@ -489,14 +489,14 @@ class remotecontrol_handle
         $oSurvey=Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
            if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');
-               
+
         $oResponses = SurveyDynamic::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
         if (empty($oResponses))  return array('status' => 'No valid Data');
 
         return $oResponses;
-        
+
     }
-    
+
     /**
      * RPC routine to get survey summary, regarding token usage and survey participation.
      * Returns the requested value as string.
@@ -520,7 +520,7 @@ class remotecontrol_handle
             $aPermittedSurveyStats  = array('completed_responses',
                 'incomplete_responses',
                 'full_responses');
-             $aPermittedStats = array_merge($aPermittedSurveyStats, $aPermittedTokenStats, array('all'));  
+             $aPermittedStats = array_merge($aPermittedSurveyStats, $aPermittedTokenStats, array('all'));
              // Check if survey exists
              $oSurvey = Survey::model()->findByPk($iSurveyID);
              if (!isset($oSurvey))
@@ -528,12 +528,12 @@ class remotecontrol_handle
 
              if (!in_array($sStatName, $aPermittedStats))
                  return array('status' => 'Invalid summary key');
-                 
+
              //Check permissions to access this survey
              if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read'))
              {
                  $aSummary=array();
-                 
+
                  if (in_array($sStatName, $aPermittedTokenStats) || $sStatName=='all')
                  {
                      if (tableExists('{{tokens_' . $iSurveyID . '}}'))
@@ -546,7 +546,7 @@ class remotecontrol_handle
                              $aSummary['token_sent']=$aTokenSummary['sent'];
                              $aSummary['token_opted_out']=$aTokenSummary['optout'];
                              $aSummary['token_completed']=$aTokenSummary['completed'];
-                         }                        
+                         }
                      }
                      elseif ($sStatName!='all')
                      {
@@ -1029,7 +1029,7 @@ class remotecontrol_handle
         {
             return array('status' => 'Invalid Session Key');
         }
-        
+
     }
 
     /**
@@ -1527,7 +1527,7 @@ class remotecontrol_handle
     }
 
 
-    
+
 
     /* Participant-Token specific functions */
 
@@ -1664,7 +1664,7 @@ class remotecontrol_handle
                     return $result;
                 }
 
-                
+
             }
             else
                 return array('status' => 'No permission');
@@ -1773,10 +1773,10 @@ class remotecontrol_handle
     * @param int $iStart Start id of the token list
     * @param int  $iLimit Number of participants to return
     * @param bool $bUnused If you want unused tokens, set true
-    * @param bool|array $aAttributes The extented attributes that we want 
+    * @param bool|array $aAttributes The extented attributes that we want
     * @return array The list of tokens
     */
-    public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false,$aAttributes=false)    
+    public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false,$aAttributes=false)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -1816,9 +1816,9 @@ class remotecontrol_handle
                     ));
                     foreach($extendedAttributes as $sAttribute)
                     {
-                        $aTempData[$sAttribute]=$token->attributes[$sAttribute];                                
+                        $aTempData[$sAttribute]=$token->attributes[$sAttribute];
                     }
-                    $aData[]= $aTempData;                                                                                                                                                            
+                    $aData[]= $aTempData;
                 }
                 return $aData;
             }
@@ -1830,7 +1830,7 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC Routine to return the ids and info of questions of a survey/group.
+     * RPC Routine to return the ids and info of (sub-)questions of a survey/group.
      * Returns array of ids and info.
      *
      * @access public
@@ -1865,10 +1865,10 @@ class remotecontrol_handle
                     if($sGroupSurveyID != $iSurveyID)
                         return array('status' => 'Error: IMissmatch in surveyid and groupid');
                     else
-                        $aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"parent_qid"=>"0","language"=>$sLanguage));
+                        $aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID,"language"=>$sLanguage));
                 }
                 else
-                    $aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID,"parent_qid"=>"0", "language"=>$sLanguage));
+                    $aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "language"=>$sLanguage));
 
                 if(count($aQuestionList)==0)
                     return array('status' => 'No questions found');
@@ -2079,7 +2079,7 @@ class remotecontrol_handle
             foreach($aResultTokens as $key=>$oToken)
             {
                 //pattern taken from php_filter_validate_email PHP_5_4/ext/filter/logical_filters.c
-                $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';        
+                $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
 
                 //if(!filter_var($emailaddress, FILTER_VALIDATE_EMAIL))
                 if (preg_match($pattern, $oToken['email']) !== 1)
@@ -2150,7 +2150,7 @@ class remotecontrol_handle
             $aAllTokens = $oTokens->findUninvitedIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $iAllTokensCount=count($aAllTokens);
             unset($aAllTokens); // save some memory before the next query
-            
+
             $aResultTokens = $oTokens->findUninvited(false, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
 
             if (empty($aResultTokens))
@@ -2232,7 +2232,7 @@ class remotecontrol_handle
             return array('status' => 'No permission');
 
     }
-    
+
     /**
      * RPC Routine to update a response in a given survey.
      * Routine supports only single response updates.
@@ -2256,7 +2256,7 @@ class remotecontrol_handle
         if ($oSurvey->getAttribute('active') !== 'Y') {
             return 'Error: Survey is not active.';
         }
-        
+
         if ($oSurvey->getAttribute('alloweditaftercompletion') !== 'Y') {
             return 'Error: Survey does not allow edit after completion.';
         }
@@ -2272,28 +2272,28 @@ class remotecontrol_handle
             ) {
                 return 'Error: Missing response identifier (id|token).';
             }
-            
+
             SurveyDynamic::sid($iSurveyID);
             $oSurveyDynamic = new SurveyDynamic;
-            
+
             if (isset($aResponseData['id'])) {
                 $aResponses = $oSurveyDynamic->findAllByPk($aResponseData['id']);
             } else {
                 $aResponses = $oSurveyDynamic->findAllByAttributes(array('token' => $aResponseData['token']));
             }
-            
-            if(empty($aResponses)) 
+
+            if(empty($aResponses))
                 return 'Error: No matching Response.';
-            if(count($aResponses) > 1) 
+            if(count($aResponses) > 1)
                 return 'Error: More then one matching response, updateing multiple responses at once is not supported.';
-            
+
             $aBasicDestinationFields=$oSurveyDynamic->tableSchema->columnNames;
             $aInvalidFields= array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
-            if(count($aInvalidFields) > 0) 
+            if(count($aInvalidFields) > 0)
                 return 'Error: Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields));
 
             unset($aResponseData['token']);
-            
+
             foreach ($aResponseData as $sAtributeName => $value) {
                 $aResponses[0]->setAttribute($sAtributeName, $value);
             }
@@ -2308,7 +2308,7 @@ class remotecontrol_handle
         } else {
             return 'No permission';
         }
-    }    
+    }
 
     /**
      * RPC Routine to export responses.
@@ -2342,13 +2342,13 @@ class remotecontrol_handle
            $aFields=array_slice($aFields,0,255);
         }
         $oFomattingOptions=new FormattingOptions();
-        
-        if($iFromResponseID !=null)   
+
+        if($iFromResponseID !=null)
             $oFomattingOptions->responseMinRecord=$iFromResponseID;
         else
-            $oFomattingOptions->responseMinRecord=1;        
-        
-        if($iToResponseID !=null)   
+            $oFomattingOptions->responseMinRecord=1;
+
+        if($iToResponseID !=null)
             $oFomattingOptions->responseMaxRecord=$iToResponseID;
         else
             $oFomattingOptions->responseMaxRecord = $maxId;
@@ -2379,7 +2379,7 @@ class remotecontrol_handle
      * @param string $sResponseType 'short' or 'long' Optional defaults to 'short'
      * @param array $aFields Optional Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
-     * 
+     *
      */
     public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $aFields=null)
     {
@@ -2394,10 +2394,10 @@ class remotecontrol_handle
         if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
         if($sDocumentType=='xls'){
            // Cut down to the first 255 fields
-           $aFields=array_slice($aFields,0,255);        
+           $aFields=array_slice($aFields,0,255);
         }
         $oFomattingOptions=new FormattingOptions();
- 
+
         if($iFromResponseID !=null)
             $oFomattingOptions->responseMinRecord=$iFromResponseID;
         else

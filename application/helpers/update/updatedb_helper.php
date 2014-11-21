@@ -1249,14 +1249,21 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeSurveys177();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>177),"stg_name='DBVersion'");
         }
-
         if ($iOldDBVersion < 178)
+        {
+            if ($sDBDriverName=='mysql' || $sDBDriverName=='mysqli')
+            {
+                modifyPrimaryKey('questions', array('qid','language'));
+            }
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>178),"stg_name='DBVersion'");
+        }
+        if ($iOldDBVersion < 179)
         {
             upgradeTokenTables178();
             alterColumn('{{participants}}', 'email', "{$sVarchar}(254)", false);
             alterColumn('{{participants}}', 'firstname', "{$sVarchar}(150)", false);
             alterColumn('{{participants}}', 'lastname', "{$sVarchar}(150)", false);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>178),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>179),"stg_name='DBVersion'");
         }
 
         $oTransaction->commit();
@@ -1328,7 +1335,7 @@ function upgradeSurveys177()
                 ':surveyid'=>$aSurveyRow['surveyls_survey_id'],
                 ':attributecaptions'=>json_encode($aAttributeDescriptions)));
     }
-    $sSurveyQuery = "SELECT sid FROM {{surveys}}";
+    $sSurveyQuery = "SELECT sid,attributedescriptions FROM {{surveys}}";
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
     $sSurveyUpdateQuery= "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=:surveyid";
     foreach ( $oSurveyResult as $aSurveyRow )
@@ -2063,9 +2070,23 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 
 function addPrimaryKey($sTablename, $aColumns)
 {
-    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+    $sDBDriverName=Yii::app()->db->getDriverName();
+    if ($sDBDriverName=='mysqli' || $sDBDriverName=='mysql')
+    {
+        Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+    }
 }
 
+/**
+* Modifies a primary key in one command  - this is only tested on MySQL
+*
+* @param string $sTablename The table name
+* @param array $aColumns Column names to be in the new key
+*/
+function modifyPrimaryKey($sTablename, $aColumns)
+{
+    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+}
 
 function dropPrimaryKey($sTablename)
 {

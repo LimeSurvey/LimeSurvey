@@ -446,7 +446,7 @@ class tokens extends Survey_Common_Action
             } else {
                     $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
-            // Check if the token can be taken 
+            // Check if the token can be taken
             if ($token['token'] != "" && ($token['completed'] == "N" || $token['completed'] == "" || $aSurveyInfo['alloweditaftercompletion']=="Y") && $bCreatePermission) {
                 $action .= viewHelper::getImageLink('do_16.png', "survey/index/sid/{$iSurveyId}/token/{$token['token']}/lang/{$token['language']}/newtest/Y", gT("Do survey"), '_blank');
             } else {
@@ -1152,9 +1152,14 @@ class tokens extends Survey_Common_Action
         }
         elseif($sAttributeToDelete)
         {
+            // Update field attributedescriptions in survey table
+            $aTokenAttributeDescriptions=decodeTokenAttributes(Survey::model()->findByPk($iSurveyId)->attributedescriptions);
+            unset($aTokenAttributeDescriptions[$sAttributeToDelete]);
+            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($aTokenAttributeDescriptions)));
+
             $sTableName="{{tokens_".intval($iSurveyId)."}}";
             Yii::app()->db->createCommand(Yii::app()->db->getSchema()->dropColumn($sTableName, $sAttributeToDelete))->execute();
-            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
+            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache
             LimeExpressionManager::SetDirtyFlag();
             Yii::app()->session['flashmessage'] = sprintf(gT("Attribute %s was deleted."), $sAttributeToDelete);
             Yii::app()->getController()->redirect(Yii::app()->getController()->createUrl("/admin/tokens/sa/managetokenattributes/surveyid/$iSurveyId"));
@@ -1201,7 +1206,7 @@ class tokens extends Survey_Common_Action
                 $captions[$language][$fieldname] = $_POST["caption_{$fieldname}_$language"];
         }
 
-        Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
+        Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
         foreach ($languages as $language)
         {
             $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
@@ -2151,15 +2156,15 @@ class tokens extends Survey_Common_Action
         unset($aTokenTableFields['remindercount']);
         unset($aTokenTableFields['usesleft']);
         foreach ($aTokenTableFields as $sKey=>$sValue)
-        {
-            if ($sValue['description']!=$sKey)
             {
-               $sValue['description'] .= ' - '.$sKey;
+                if ($sValue['description']!=$sKey)
+                {
+                   $sValue['description'] .= ' - '.$sKey;
+                }
+                $aNewTokenTableFields[$sKey]= $sValue['description'];
             }
-            $aNewTokenTableFields[$sKey]= $sValue['description'];
-        }
-        $aData['aTokenTableFields'] = $aNewTokenTableFields;
-        $this->_renderWrappedTemplate('token', array('tokenbar', 'csvupload'), $aData);
+            $aData['aTokenTableFields'] = $aNewTokenTableFields;
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'csvupload'), $aData);
 
     }
 
@@ -2323,7 +2328,6 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokenbounce.js");
             $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
         }
     }
@@ -2434,7 +2438,7 @@ class tokens extends Survey_Common_Action
                                 );
                 }
             }
-            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
+            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
 
 
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));

@@ -322,17 +322,18 @@ class SurveyAdmin extends Survey_Common_Action
             //See if there is a tokens table for this survey
             if (tableExists("{{tokens_{$iSurveyID}}}"))
             {
+                $toldtable = Yii::app()->db->tablePrefix."tokens_{$iSurveyID}";
+                $tnewtable = Yii::app()->db->tablePrefix."old_tokens_{$iSurveyID}_{$date}";
                 if (Yii::app()->db->getDriverName() == 'pgsql')
                 {
-                    $deactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable . '_tid_seq', $tnewtable . '_tid_seq');
-                    $setsequence = "ALTER TABLE ".Yii::app()->db->quoteTableName($tnewtable)." ALTER COLUMN tid SET DEFAULT nextval('{{{$tnewtable}}}_tid_seq'::regclass);";
-                    $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
-                    $setidx = "ALTER INDEX {{{$toldtable}}}_idx RENAME TO {{{$tnewtable}}}_idx;";
-                    $deactivateresult = Yii::app()->db->createCommand($setidx)->query();
+                    $tidDefault = Yii::app()->db->createCommand("SELECT pg_attrdef.adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
+                    if(preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", $tidDefault, $matches)){
+                        $oldSeq = $matches[1];
+                        $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldSeq, $tnewtable . '_tid_seq');
+                        $setsequence = "ALTER TABLE ".Yii::app()->db->quoteTableName($toldtable)." ALTER COLUMN tid SET DEFAULT nextval('{$tnewtable}_tid_seq'::regclass);";
+                        $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
+                    }
                 }
-
-                $toldtable = "{{tokens_{$iSurveyID}}}";
-                $tnewtable = "{{old_tokens_{$iSurveyID}_{$date}}}";
 
                 $tdeactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
 
@@ -358,6 +359,16 @@ class SurveyAdmin extends Survey_Common_Action
             $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
             $survey->autonumber_start = $new_autonumber_start;
             $survey->save();
+            if (Yii::app()->db->getDriverName() == 'pgsql')
+            {
+                $idDefault = Yii::app()->db->createCommand("SELECT pg_attrdef.adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
+                if(preg_match("/nextval\('(survey_\d+_id_seq\d*)'::regclass\)/", $idDefault, $matches)){
+                    $oldSeq = $matches[1];
+                    $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldSeq, $sNewSurveyTableName . '_id_seq');
+                    $setsequence = "ALTER TABLE ".Yii::app()->db->quoteTableName($sOldSurveyTableName)." ALTER COLUMN id SET DEFAULT nextval('{{{$sNewSurveyTableName}}}_id_seq'::regclass);";
+                    $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
+                }
+            }
 
             $deactivateresult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
 

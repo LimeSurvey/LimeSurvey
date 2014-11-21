@@ -59,6 +59,47 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 141110) to 2.05+ (build 141113) Nov 13, 2014
+-Fixed issue #8806: Questionindex to 2 allows invalid survey submitted (Denis Chenu)
+-Fixed issue #9198: Complete group's navigation can stop before clicked group (Denis Chenu)
+-Fixed issue #9285: Index complete + mandatory question: Undefined notice (Denis Chenu)
+-Fixed issue #9328: Language changer causes warning for mandatory questions (Denis Chenu)
+-Fixed issue #9342: Attribute descriptions are not deleted in database when field is deleted (Carsten Schmitz)
+-Fixed issue #9351: Database error during update when using a database other than MySQL (Carsten Schmitz)
+-Fixed issue #9355: Group rights cannot be set (Carsten Schmitz)
+-Fixed issue: Black background with PDF charts when using Linux (Carsten Schmitz)
+-Updated translation: Finnish by morbid
+-Updated translation: Polish by elisa
+
+Changes from 2.05+ (build 141109) to 2.05+ (build 141110) Nov 10, 2014
+Fixed issue #9351: Error on update for non-MySQL installations
+
+Changes from 2.05+ (build 141020) to 2.05+ (build 141109) Nov 09, 2014
+-Fixed issue #9026: If empty survey, export 1 empty record to avoid blank results. (gabrieljenik)
+-Fixed issue #9307: Calling a survey with a non-existing token leads to PHP Warning (debug=1) (Denis Chenu)
+-Fixed issue #9320: Unable to edit local the bounce parameters in token management (Denis Chenu)
+-Fixed issue #9339: Duplicate questions IDs used when new survey that has different based language than previous surveys (Carsten Schmitz)
+-Fixed issue #9343: Unable to see Question group survey_logic_file after import (Denis Chenu)
+-Fixed issue: Files cannot be downloaded if magic_quotes is activated on the server (Carsten Schmitz)
+-Fixed issue: Placing several quota members on the same question leads to unrecoverable error in admin and survey runtime (Carsten Schmitz)
+#Updated translation: Catalan by valdomir
+#Updated translation: Croatian by netcom
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Finnish by morbid
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by lukacs
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by yamatt, nomoto, ngyuki
+#Updated translation: Lithuanian by simasj
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, holch
+#Updated translation: Serbian by MilaVeljovic
+#Updated translation: Spanish (Chile) by jcarcamo
+#Updated translation: Spanish (Spain) by valdomir
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 141003) to 2.05+ (build 141020) Oct 20, 2014
 -Fixed issue #9218: When adding conditions fields referring to the same token field (Carsten Schmitz)
 -Fixed issue #9261: Emailstatus not filled by default when using remotecontrol invite_participants (Denis Chenu)

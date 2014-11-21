@@ -385,7 +385,7 @@ class surveypermission extends Survey_Common_Action {
         }
         elseif( $action == "setusergroupsurveysecurity" )
         {
-            if ( !Permission::model()->hasGlobalPermission('superadmin','read') && !in_array($postusergroupid,getUserList('onlyuidarray')) ) // User can not change own security (except for superadmin ?)
+            if ( !Permission::model()->hasGlobalPermission('superadmin','read') && !in_array($postusergroupid,getUserGroupList(null, 'simplegidarray')) ) // User can not change own security (except for superadmin ?)
             {
                 $this->getController()->error('Access denied');
             }

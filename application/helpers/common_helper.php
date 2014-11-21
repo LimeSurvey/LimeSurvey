@@ -5731,12 +5731,8 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 
             $fields_query[$fieldname] = $criteria;
         }
-
-        $criteria = new CDbCriteria;
-
-        foreach ($fields_list as $fieldname)
-            $criteria->mergeWith($fields_query[$fieldname]);
-        $criteria->mergeWith(array('condition'=>"submitdate IS NOT NULL"));
+        if(!empty($aParams))
+            $criteria->params=array_merge($criteria->params,$aParams);
         $result = SurveyDynamic::model($iSurveyId)->count($criteria);
     }
 
@@ -7493,6 +7489,10 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
+    if (is_string($content) && get_magic_quotes_gpc())
+    {
+        $content=stripslashes($content);
+    }
     $ans = json_encode($content);
     $ans = str_replace(array('{','}'),array('{ ',' }'), $ans);
     return $ans;
@@ -7717,6 +7717,25 @@ function array_diff_assoc_recursive($array1, $array2) {
     function getMaximumFileUploadSize()
     {
         return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+    }
+
+    /**
+    * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
+    *
+    * @param string $oTokenAttributeData  The original token attributes as stored in the database
+    */
+    function decodeTokenAttributes($oTokenAttributeData){
+        if (trim($oTokenAttributeData)=='') return array();
+        if (substr($oTokenAttributeData,0,1)!='{' && substr($oTokenAttributeData,0,1)!='[')
+        {
+            $aReturnData=@unserialize($oTokenAttributeData);
+        }
+        else
+        {
+             $aReturnData=@json_decode($oTokenAttributeData,true);
+        }
+        if ($aReturnData===false || $aReturnData===null) return array();
+        return $aReturnData;
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

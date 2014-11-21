@@ -268,7 +268,7 @@ class Survey extends LSActiveRecord
     */
     public function getTokenAttributes()
     {
-        $attdescriptiondata = @unserialize($this->attributedescriptions);
+        $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
         // checked for invalid data
         if($attdescriptiondata == null)
         {
@@ -306,8 +306,8 @@ class Survey extends LSActiveRecord
                 }
             }
             $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
-            self::model()->updateByPk($this->sid, array('attributedescriptions' => serialize($fields)));
-            $ls->surveyls_attributecaptions = serialize($languagesettings);
+            self::model()->updateByPk($this->sid, array('attributedescriptions' => json_encode($fields)));
+            $ls->surveyls_attributecaptions = json_encode($languagesettings);
             $ls->save();
             $attdescriptiondata = $fields;
         }

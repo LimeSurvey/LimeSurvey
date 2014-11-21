@@ -50,9 +50,9 @@
                 'validuntil' => gT('Valid until'),
             );
             // Check if we have custom attributes.
-            if ($this->hasAttribute('attribute_1') && !empty($this->survey->attributedescriptions))
+			if ($this->hasAttribute('attribute_1'))
             {
-                foreach (unserialize($this->survey->attributedescriptions) as $key => $info)
+				foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
                 {
                     $labels[$key] = $info['description'];
                 }

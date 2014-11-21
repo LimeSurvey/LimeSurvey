@@ -199,12 +199,13 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
                 if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                 $graph = new pChart(690+$legendsize[0],$gheight);
+                $graph->drawFilledRectangle(0,0,690+$legendsize[0],$gheight,254,254,254,false);
                 $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
                 $graph->setGraphArea(50,30,500,$gheight-60);
                 $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
                 $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
-                $graph->drawGraphArea(255,255,255,TRUE);
+                $graph->drawGraphArea(254,254,254,TRUE);
                 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
                 $graph->drawGrid(4,TRUE,230,230,230,50);
                 // Draw the 0 line
@@ -216,7 +217,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-                $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+                $graph->drawLegend(510,30,$DataSet->GetDataDescription(),250,250,250);
 
                 $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData(),$graph);
                 $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
@@ -291,6 +292,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
                 $gheight=ceil($gheight);
                 $graph = new pChart(690,$gheight);
+                $graph->drawFilledRectangle(0,0,690,$gheight,254,254,254,false);
                 $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
                 $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,254,255,254);
                 $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);
