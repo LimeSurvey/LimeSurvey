@@ -4043,7 +4043,7 @@ function questionAttributes($returnByName=false)
             ),
             'default'=>0,
         );
-        
+
     }
     //This builds a more useful array (don't modify)
     if ($returnByName==false)
@@ -7723,12 +7723,21 @@ function array_diff_assoc_recursive($array1, $array2) {
     * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
     *
     * @param string $oTokenAttributeData  The original token attributes as stored in the database
+    * @param boolean $bAllowSerialized If serialized data is accepted and properly read - with DBVersion 179 this should only be allowed on survey import
     */
     function decodeTokenAttributes($oTokenAttributeData){
         if (trim($oTokenAttributeData)=='') return array();
         if (substr($oTokenAttributeData,0,1)!='{' && substr($oTokenAttributeData,0,1)!='[')
         {
-            $aReturnData=@unserialize($oTokenAttributeData);
+            $sSerialType=getSerialClass($oTokenAttributeData);
+            if ($sSerialType=='array') // Safe to decode
+            {
+                $aReturnData=@unserialize($oTokenAttributeData);
+            }
+            else // Something else, might be unsafe
+            {
+                return array();
+            }
         }
         else
         {
@@ -7738,5 +7747,11 @@ function array_diff_assoc_recursive($array1, $array2) {
         return $aReturnData;
     }
 
+    function getSerialClass($sSerial) {
+        $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
+
+        $aParts = explode(':', $sSerial, 4);
+        return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : trim($aParts[2], '"');
+    }
 // Closing PHP tag intentionally omitted - yes, it is okay
 

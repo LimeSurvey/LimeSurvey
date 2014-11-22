@@ -1259,7 +1259,8 @@ function db_upgrade_all($iOldDBVersion) {
         }
         if ($iOldDBVersion < 179)
         {
-            upgradeTokenTables178();
+            upgradeSurveys177(); // Needs to be run again to make sure
+            upgradeTokenTables179();
             alterColumn('{{participants}}', 'email', "{$sVarchar}(254)", false);
             alterColumn('{{participants}}', 'firstname', "{$sVarchar}(150)", false);
             alterColumn('{{participants}}', 'lastname', "{$sVarchar}(150)", false);
@@ -1292,7 +1293,7 @@ function db_upgrade_all($iOldDBVersion) {
 }
 
 
-function upgradeTokenTables178()
+function upgradeTokenTables179()
 {
     $sVarchar = Yii::app()->getConfig('varchar');
     $oSchema=Yii::app()->db->schema;
@@ -1328,7 +1329,7 @@ function upgradeSurveys177()
     $sSurveyLSUpdateQuery= "update {{surveys_languagesettings}} set surveyls_attributecaptions=:attributecaptions where surveyls_survey_id=:surveyid and surveyls_language=:language";
     foreach ( $oSurveyResult as $aSurveyRow )
     {
-        $aAttributeDescriptions=@unserialize($aSurveyRow['surveyls_attributecaptions']);
+        $aAttributeDescriptions=decodeTokenAttributes($aSurveyRow['surveyls_attributecaptions']);
         if (!$aAttributeDescriptions) $aAttributeDescriptions=array();
         Yii::app()->db->createCommand($sSurveyLSUpdateQuery)->execute(
             array(':language'=>$aSurveyRow['surveyls_language'],
@@ -1340,7 +1341,7 @@ function upgradeSurveys177()
     $sSurveyUpdateQuery= "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=:surveyid";
     foreach ( $oSurveyResult as $aSurveyRow )
     {
-        $aAttributeDescriptions=@unserialize($aSurveyRow['attributedescriptions']);
+        $aAttributeDescriptions=decodeTokenAttributes($aSurveyRow['attributedescriptions']);
         if (!$aAttributeDescriptions) $aAttributeDescriptions=array();
         Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute(array(':attributedescriptions'=>json_encode($aAttributeDescriptions),':surveyid'=>$aSurveyRow['sid']));
     }
