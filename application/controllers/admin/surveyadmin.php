@@ -993,7 +993,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         // Prepare data for the view
         $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-
+        LimeExpressionManager::StartSurvey($iSurveyID, 'survey');
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
         $aGrouplist = QuestionGroup::model()->getGroups($iSurveyID);
