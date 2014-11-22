@@ -33,12 +33,12 @@
     }
     $data['surveylist'] = array(
         "nosid"=> "",
-        "contact"=> sprintf(gT("Please contact %s ( %s ) for further assistance."), array(
+        "contact"=> sprintf(gT("Please contact %s ( %s ) for further assistance."),
             Yii::app()->getConfig("siteadminname"),
             encodeEmail(Yii::app()->getConfig("siteadminemail"))
-        )),
+        ),
         "listheading"=> gT("The following surveys are available:"),
-        "list"=> $list
+        "list"=> $list,
     );
     $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
     $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
