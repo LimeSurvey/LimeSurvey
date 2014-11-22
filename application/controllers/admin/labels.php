@@ -134,9 +134,7 @@ class labels extends Survey_Common_Action
             if (isset($_POST['checkforduplicates']))
                 $options['checkforduplicates'] = $_POST['checkforduplicates'];
 
-            if (strtolower($sExtension) == 'csv')
-                $aImportResults = CSVImportLabelset($sFullFilepath, $options);
-            elseif (strtolower($sExtension) == 'lsl')
+            if (strtolower($sExtension) == 'lsl')
                 $aImportResults = XMLImportLabelsets($sFullFilepath, $options);
             else
                 $this->getController()->error(gT("Uploaded label set file needs to have an .lsl extension."));

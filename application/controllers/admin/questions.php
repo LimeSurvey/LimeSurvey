@@ -66,9 +66,7 @@ class questions extends Survey_Common_Action
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
             Yii::app()->loadHelper('admin/import');
 
-            if (strtolower($sExtension) == 'csv')
-                $aImportResults = CSVImportQuestion($sFullFilepath, $surveyid, $gid);
-            elseif (strtolower($sExtension) == 'lsq')
+            if (strtolower($sExtension) == 'lsq')
                 $aImportResults = XMLImportQuestion($sFullFilepath, $surveyid, $gid);
             else
                 $this->getController()->error(gT('Unknown file extension'));

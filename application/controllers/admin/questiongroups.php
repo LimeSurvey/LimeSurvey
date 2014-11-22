@@ -65,9 +65,7 @@ class questiongroups extends Survey_Common_Action
             Yii::app()->loadHelper('admin/import');
 
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-            if (strtolower($sExtension) == 'csv')
-                $aImportResults = CSVImportGroup($sFullFilepath, $surveyid);
-            elseif (strtolower($sExtension) == 'lsg')
+            if (strtolower($sExtension) == 'lsg')
                 $aImportResults = XMLImportGroup($sFullFilepath, $surveyid);
             else
                 $this->getController()->error('Unknown file extension');
