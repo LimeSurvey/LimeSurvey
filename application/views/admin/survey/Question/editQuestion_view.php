@@ -16,7 +16,7 @@ if ($adding || $copying) {
 <script type='text/javascript'><?php echo $qTypeOutput; ?></script>
 
 <div class='header ui-widget-header'>
-    <?php 
+    <?php
     if ($adding) { ?>
         <?php eT("Add a new question"); ?>
         <?php } elseif ($copying) { ?>
@@ -329,7 +329,7 @@ if ($adding || $copying) {
         <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".gT("Please select a file to import!",'js')."');")); ?>
             <ul>
                 <li>
-                    <label for='the_file'><?php eT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>
+                    <label for='the_file'><?php eT("Select LimeSurvey question file (*.lsq)"); ?>:</label>
                     <input name='the_file' id='the_file' type="file" required="required" accept=".lsq,.csv" />
                 </li>
                 <li>

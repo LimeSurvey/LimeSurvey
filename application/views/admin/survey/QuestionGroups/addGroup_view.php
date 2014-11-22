@@ -52,7 +52,7 @@
             <?php echo CHtml::form(array("admin/questiongroups/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!','js').'");')); ?>
                 <ul>
                     <li>
-                        <label for='the_file'><?php eT("Select question group file (*.lsg/*.csv):"); ?></label>
+                        <label for='the_file'><?php eT("Select question group file (*.lsg):"); ?></label>
                         <input id='the_file' name="the_file" type="file" /></li>
                     <li><label for='translinksfields'><?php eT("Convert resource links?"); ?></label>
                         <input id='translinksfields' name="translinksfields" type="checkbox" checked="checked"/></li></ul>

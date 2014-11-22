@@ -64,7 +64,7 @@
                     <?php eT("Import label set(s)"); ?>
                 </div><ul>
                     <li><label for='the_file'>
-                        <?php eT("Select label set file (*.lsl,*.csv):"); ?></label>
+                        <?php eT("Select label set file (*.lsl):"); ?></label>
                         <input id='the_file' name='the_file' type='file'/>
                     </li>
                     <li><label for='checkforduplicates'>

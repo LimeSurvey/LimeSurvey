@@ -958,11 +958,7 @@ class remotecontrol_handle
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
                 file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
 
-                if (strtolower($sImportDataType)=='csv')
-                {
-                    $aImportResults = CSVImportGroup($sFullFilePath, $iSurveyID);
-                }
-                elseif ( strtolower($sImportDataType)=='lsg')
+                if ( strtolower($sImportDataType)=='lsg')
                 {
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
@@ -1252,11 +1248,7 @@ class remotecontrol_handle
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
                 file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
 
-                if (strtolower($sImportDataType)=='csv')
-                {
-                    $aImportResults = CSVImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
-                }
-                elseif ( strtolower($sImportDataType)=='lsq')
+                if ( strtolower($sImportDataType)=='lsq')
                 {
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
