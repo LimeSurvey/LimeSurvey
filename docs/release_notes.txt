@@ -59,6 +59,28 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 141113) to 2.05+ (build 141123) Nov 23, 2014
+-Fixed issue #8589: PHP object injection in surveys (Carsten Schmitz)
+-Fixed issue #9282: Deactivating survey with tokens fails with postgres - patch provided by random1 (Carsten Schmitz)
+-Fixed issue #9317: Participants CSV import ignores delimiter setting (Carsten Schmitz)
+-Fixed issue #9322: E-mail template content lost when you trying to save after session timeout (Carsten Schmitz)
+-Fixed issue #9332: Date question + debug > 1 : broken Reorder survey (gabrieljenik)
+-Fixed issue #9338: Database name text is forced to lowercase (Carsten Schmitz)
+-Fixed issue #9358: Strange characters in email notifications when using Chrome browser (Carsten Schmitz)
+-Fixed issue #9361: HTML in group name breaks question reordering (Carsten Schmitz)
+-Fixed issue #9362: Loss of attribute descriptions on update (Carsten Schmitz)
+-Fixed issue #9365: The method list_question doesn't return subquestions (Carsten Schmitz)
+-Fixed issue: Ugly default font for PDF output (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, atvoogt
+#Updated translation: French (France) by MVT, DenisChenu
+#Updated translation: German by actxcellence, jlpd, pseitz
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Greek by kiolalis
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Portugal) by algarvio
+#Updated translation: Spanish (Spain) by aesteban, artasom
+
 Changes from 2.05+ (build 141110) to 2.05+ (build 141113) Nov 13, 2014
 -Fixed issue #8806: Questionindex to 2 allows invalid survey submitted (Denis Chenu)
 -Fixed issue #9198: Complete group's navigation can stop before clicked group (Denis Chenu)
