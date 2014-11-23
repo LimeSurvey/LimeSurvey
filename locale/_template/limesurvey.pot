@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-11-17 00:06:16+00:00\n"
+"POT-Creation-Date: 2014-11-23 22:35:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8941,7 +8941,7 @@ msgstr ""
 msgid "Your survey was successfully saved."
 msgstr ""
 
-#: application/models/InstallerConfigForm.php:76
+#: application/models/InstallerConfigForm.php:75
 msgid "Passwords do not match!"
 msgstr ""
 
