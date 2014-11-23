@@ -1252,9 +1252,9 @@ class tokens extends Survey_Common_Action
         }
         $aTokenIds=array_unique(array_filter((array) $aTokenIds));
 
-        $sSubAction = Yii::app()->request->getParam('action');
-        $sSubAction = !in_array($sSubAction, array('email', 'remind')) ? 'email' : $sSubAction;
-        $bEmail = $sSubAction == 'email';
+        $sSubAction = Yii::app()->request->getParam('action','invite');
+        $sSubAction = !in_array($sSubAction, array('invite', 'remind')) ? 'invite' : $sSubAction;
+        $bEmail = $sSubAction == 'invite';
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('/admin/htmleditor');
@@ -1300,12 +1300,29 @@ class tokens extends Survey_Common_Action
 
         if (!Yii::app()->request->getPost('ok'))
         {
+            // Fill empty email template by default text
+            foreach($aSurveyLangs as $sSurveyLanguage)
+            {
+                $aData['thissurvey'][$sSurveyLanguage] = getSurveyInfo($iSurveyId, $sSurveyLanguage);
+                $bDefaultIsNeeded=empty($aData['surveylangs'][$sSurveyLanguage]["email_{$sSubAction}"]) || empty($aData['surveylangs'][$sSurveyLanguage]["email_{$sSubAction}_subj"]);
+                if($bDefaultIsNeeded){
+                    $sNewlines=($bHtml)? 'html' : 'text'; // This broke included style for admin_detailed_notification
+                    $aDefaultTexts=templateDefaultTexts($sSurveyLanguage,'unescaped',$sNewlines);
+                    if(empty($aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"]))
+                    {
+                        if($sSubAction=='invite')
+                            $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"]=$aDefaultTexts["invitation"];
+                        elseif($sSubAction=='remind')
+                            $aData['thissurvey'][$sSurveyLanguage]["email_{$sSubAction}"]=$aDefaultTexts["reminder"];
+                    }
+                }
+            }
             if (empty($aData['tokenids']))
             {
                 $aTokens = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
                 foreach($aTokens as $aToken)
                 {
-					$aData['tokenids'][] = $aToken;
+                    $aData['tokenids'][] = $aToken;
                 }
             }
             $this->_renderWrappedTemplate('token', array('tokenbar', $sSubAction), $aData);
@@ -1387,26 +1404,24 @@ class tokens extends Survey_Common_Action
                     $from = Yii::app()->request->getPost('from_' . $emrow['language']);
 
                     $fieldsarray["{OPTOUTURL}"] = $this->getController()
-                                                       ->createAbsoluteUrl("/optout/tokens/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                                                       ->createAbsoluteUrl("/optout/tokens",array("surveyid"=>$iSurveyId,"langcode"=>trim($emrow['language']),"token"=>$emrow['token']));
                     $fieldsarray["{OPTINURL}"] = $this->getController()
-                                                      ->createAbsoluteUrl("/optin/tokens/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
+                                                      ->createAbsoluteUrl("/optin/tokens",array("surveyid"=>$iSurveyId,"langcode"=>trim($emrow['language']),"token"=>$emrow['token']));
                     $fieldsarray["{SURVEYURL}"] = $this->getController()
-                                                       ->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}/token/{$emrow['token']}/lang/" . trim($emrow['language']) . "/");
-
-                    foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
-                    {
-                        $url = $fieldsarray["{{$key}URL}"];
-                        if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
-                        $modsubject = str_replace("@@{$key}URL@@", $url, $modsubject);
-                        $modmessage = str_replace("@@{$key}URL@@", $url, $modmessage);
-                    }
+                                                       ->createAbsoluteUrl("/survey/index",array("sid"=>$iSurveyId,"token"=>$emrow['token'],"lang"=>trim($emrow['language'])));
 
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
                     '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
                     global $maildebug;
+                    foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
+                    {
+                        $url = $fieldsarray["{{$key}URL}"];
+                        if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
+                        $sSubject[$emrow['language']] = str_replace("@@{$key}URL@@", $url, $sSubject[$emrow['language']]);
+                        $sMessage[$emrow['language']] = str_replace("@@{$key}URL@@", $url, $sMessage[$emrow['language']]);
+                    }
                     $modsubject = Replacefields($sSubject[$emrow['language']], $fieldsarray);
                     $modmessage = Replacefields($sMessage[$emrow['language']], $fieldsarray);
-
                     if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
                         $tokenoutput .= $emrow['tid'] . " " . ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.") . "<br />", $fieldsarray);
@@ -1420,7 +1435,7 @@ class tokens extends Survey_Common_Action
                         /*
                          * Get attachments.
                          */
-                        if ($sSubAction == 'email')
+                        if ($sSubAction == 'invite')
                         {
                             $sTemplate = 'invitation';
                         }
