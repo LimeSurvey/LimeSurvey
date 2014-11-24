@@ -86,7 +86,7 @@ function limesurveySubmitHandler(){
     $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
 
     $(document).on('click',"#limesurvey .button", function(event){
-        if(!$("#limesurvey :invalid").length))
+        if(!$("#limesurvey :invalid").length)
         {
             $(this).prop('active',true).addClass('active');
             $("#limesurvey .button.ui-button" ).not($(this)).button( "option", "disabled", true );
