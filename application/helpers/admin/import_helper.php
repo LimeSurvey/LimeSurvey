@@ -1897,6 +1897,11 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
             $oTransaction = Yii::app()->db->beginTransaction();
             try
             {
+                if (isset($oSurvey->id) && !is_null($oSurvey->id))
+                {
+                    switchMSSQLIdentityInsert('survey_'.$iSurveyId, true);
+                    $bSwitched=true;
+                }
                 if($oSurvey->save())
                 {
                     $oTransaction->commit();
@@ -1913,6 +1918,10 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
                 {
                     $oTransaction->rollBack();
                     $aResponsesError[]=$aResponses[$iIdReponsesKey];
+                }
+                if (isset($bSwitched) && $bSwitched==true){
+                    switchMSSQLIdentityInsert('survey_'.$iSurveyId, false);
+                    $bSwitched=false;
                 }
             }
             catch(Exception $oException)
