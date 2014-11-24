@@ -333,7 +333,13 @@ $(document).ready(function() {
                 else
                 {
                     $.post(inviteurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
-                        window.open('data:text/html;charset=utf-8,'+data);
+                        var win=window.open();
+                        with(win.document)
+                        {
+                            open();
+                            write(data);
+                            close();
+                        }
                     });
                 }
             }
@@ -352,7 +358,13 @@ $(document).ready(function() {
                 else
                 {
                     $.post(remindurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
-                        window.open('data:text/html;charset=utf-8,'+data);
+                        var win=window.open();
+                        with(win.document)
+                        {
+                            open();
+                            write(data);
+                            close();
+                        }
                     });
                 }
             }
