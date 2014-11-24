@@ -85,10 +85,13 @@ function limesurveySubmitHandler(){
     $(document).on("click",".disabled",function(){return false});
     $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
 
-    $(document).on('click',".button", function(event){
-        $(this).prop('active',true).addClass('active');
-        $(".button.ui-button" ).not($(this)).button( "option", "disabled", true );
-        $(".button").not($(this)).prop('disabled',true).addClass('disabled');
+    $(document).on('click',"#limesurvey .button", function(event){
+        if(!$("#limesurvey :invalid").length))
+        {
+            $(this).prop('active',true).addClass('active');
+            $("#limesurvey .button.ui-button" ).not($(this)).button( "option", "disabled", true );
+            $("#limesurvey .button").not($(this)).prop('disabled',true).addClass('disabled');
+        }
     });
     if (document.all && !document.querySelector) { // IE7 or lower
         $(function() { 
