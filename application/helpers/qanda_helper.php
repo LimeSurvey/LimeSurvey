@@ -1270,7 +1270,7 @@ function do_date($ia)
         $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{gT('Date picker')}</label>
         <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" title='".sprintf(gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
-        <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{App()->language}'  />
+        <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='".App()->language."'  />
         <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$mindate}\"    />
         <input  type='hidden' name='datemax{$ia[1]}' id='datemax{$ia[1]}' value=\"{$maxdate}\"   />
         </p>";
@@ -2174,8 +2174,8 @@ function do_ranking($ia)
         $rank_title=gT("Your Ranking",'js');
     }
     // hide_tip is managed by css with EM
-    $rank_help = $clang->gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
-
+    $rank_help = gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js');
+    
     $answer .= "<script type='text/javascript'>\n"
     . "  <!--\n"
     . "var aRankingTranslations = {
