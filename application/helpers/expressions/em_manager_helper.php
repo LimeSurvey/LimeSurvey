@@ -8065,11 +8065,11 @@ EOD;
             $databasetype = Yii::app()->db->getDriverName();
             if ($databasetype=='mssql' || $databasetype=='dblib')
             {
-                $query .= " order by sid, c.qid, scenario, cqid, cfieldname, value";
+                $query .= " order by c.qid, sid, scenario, cqid, cfieldname, value";
             }
             else
             {
-                $query .= " order by sid, qid, scenario, cqid, cfieldname, value";
+                $query .= " order by qid, sid, scenario, cqid, cfieldname, value";
             }
 
             return Yii::app()->db->createCommand($query)->query();

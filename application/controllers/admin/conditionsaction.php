@@ -204,12 +204,15 @@ class conditionsaction extends Survey_Common_Action {
 
         if (isset($p_subaction) && $p_subaction == "insertcondition")
         {
-            if ((	!isset($p_canswers) &&
-            !isset($_POST['ConditionConst']) &&
-            !isset($_POST['prevQuestionSGQA']) &&
-            !isset($_POST['tokenAttr']) &&
-            !isset($_POST['ConditionRegexp'])) ||
-            (!isset($p_cquestions) && !isset($p_csrctoken))
+            if (
+                (
+                    !isset($p_canswers) &&
+                    !isset($_POST['ConditionConst']) &&
+                    !isset($_POST['prevQuestionSGQA']) &&
+                    !isset($_POST['tokenAttr']) &&
+                    !isset($_POST['ConditionRegexp'])
+                ) ||
+                (!isset($p_cquestions) && !isset($p_csrctoken))
             )
             {
                 $conditionsoutput_action_error .= CHtml::script("\n<!--\n alert(\"".gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n");
@@ -413,7 +416,6 @@ class conditionsaction extends Survey_Common_Action {
         // COPY CONDITIONS IF THIS IS COPY
         if ( isset($p_subaction) && $p_subaction == "copyconditions" )
         {
-
             $qid = returnGlobal('qid');
             $copyconditionsfrom = returnGlobal('copyconditionsfrom');
             $copyconditionsto = returnGlobal('copyconditionsto');
@@ -1147,13 +1149,14 @@ class conditionsaction extends Survey_Common_Action {
         $aViewUrls['conditionshead_view'][] = $aData;
 
         //BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
-        if (	$subaction == 'index' ||
-        $subaction == 'editconditionsform' || $subaction == 'insertcondition' ||
-        $subaction == "editthiscondition" || $subaction == "delete" ||
-        $subaction == "updatecondition" || $subaction == "deletescenario" ||
-        $subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
-        $subaction == "updatescenario" ||
-        $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
+        if (
+            $subaction == 'index' ||
+            $subaction == 'editconditionsform' || $subaction == 'insertcondition' ||
+            $subaction == "editthiscondition" || $subaction == "delete" ||
+            $subaction == "updatecondition" || $subaction == "deletescenario" ||
+            $subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
+            $subaction == "updatescenario" ||
+            $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
         )
         {
 
@@ -1375,13 +1378,21 @@ class conditionsaction extends Survey_Common_Action {
                             {
                                 $leftOperandType = 'tokenattr';
                                 $aTokenAttrNames=getTokenFieldsAndNames($iSurveyID);
-                                if (count($aTokenAttrNames) != 0)
+                                if(isset($aTokenAttrNames[strtolower($extractedTokenAttr[1])]))
                                 {
-                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".gT("From token table")."]";
+                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description']);
                                 }
                                 else
                                 {
-                                    $thisAttrName=HTMLEscape($extractedTokenAttr[1])." [".gT("Inexistant token table")."]";
+                                    $thisAttrName=HTMLEscape($extractedTokenAttr[1]);
+                                }
+                                if(tableExists("{{tokens_$iSurveyID}}"))
+                                {
+                                    $thisAttrName.= " [".gT("From token table")."]";
+                                }
+                                else
+                                {
+                                    $thisAttrName.= " [".gT("Inexistant token table")."]";
                                 }
                                 $aViewUrls['output'] .= "\t$thisAttrName\n";
                                 // TIBO not sure this is used anymore !!
@@ -1565,10 +1576,10 @@ class conditionsaction extends Survey_Common_Action {
                         }
 
                     }
-
-
                     $s++;
                 }
+                // If we have a condition, allways reset the condition, this can fix old import (see #09344)
+                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
             }
             else
             { // no condition ==> disable delete all conditions button, and display a simple comment
