@@ -767,10 +767,11 @@
             else{
                 $aSurveyIDs=array($surveyId);
             }
-            foreach ($aSurveyIDs as $surveyId )     {
-                // echo $surveyId.'<br>';flush();@ob_flush();
+            foreach ($aSurveyIDs as $surveyId )
+            {
                 $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
-                foreach ($releqns as $key=>$value) {
+                foreach ($releqns as $key=>$value)
+                {
                     $sQuery = "UPDATE {{questions}} SET relevance=".Yii::app()->db->quoteValue($value)." WHERE qid=".$key;
                     Yii::app()->db->createCommand($sQuery)->execute();
                 }
@@ -880,14 +881,15 @@
                     $_cqid = $row['cqid'];
                     $_subqid = -1;
                 }
-
                 // fix fieldnames
-                if ($row['type'] == '' && preg_match('/^{.+}$/',$row['cfieldname'])) {
+                if (empty($row['type']) && preg_match('/^{.+}$/',$row['cfieldname']))
+                {
                     $fieldname = substr($row['cfieldname'],1,-1);    // {TOKEN:xxxx}
                     $subqid = $fieldname;
                     $value = $row['value'];
                 }
-                else if ($row['type'] == 'M' || $row['type'] == 'P') {
+                elseif ($row['type'] == 'M' || $row['type'] == 'P')
+                {
                     if (substr($row['cfieldname'],0,1) == '+') {
                         // if prefixed with +, then a fully resolved name
                         $fieldname = substr($row['cfieldname'],1) . '.NAOK';
@@ -901,11 +903,13 @@
                         $value = 'Y';
                     }
                 }
-                else {
+                else
+                {
                     $fieldname = $row['cfieldname'] . '.NAOK';
                     $subqid = $fieldname;
                     $value = $row['value'];
                 }
+
                 if ($_subqid != -1 && $_subqid != $subqid)
                 {
                     $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
@@ -917,17 +921,19 @@
                 if (preg_match('/^@\d+X\d+X\d+.*@$/',$value)) {
                     $value = substr($value,1,-1);
                 }
-                else if (preg_match('/^{.+}$/',$value)) {
-                        $value = substr($value,1,-1);
+                elseif (preg_match('/^{.+}$/',$value))
+                {
+                    $value = substr($value,1,-1);
+                }
+                elseif ($row['method'] == 'RX')
+                {
+                    if (!preg_match('#^/.*/$#',$value))
+                    {
+                        $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
                     }
-                    else if ($row['method'] == 'RX') {
-                            if (!preg_match('#^/.*/$#',$value))
-                            {
-                                $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
-                            }
-                    }
-                    else {
-                        $value = '"' . $value . '"';
+                }
+                else {
+                    $value = '"' . $value . '"';
                 }
 
                 // add equation
@@ -988,9 +994,11 @@
                     }
                 }
 
-                if (($row['cqid'] == 0 && !preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'])) || substr($row['cfieldname'],0,1) == '+') {
+                if (($row['cqid'] == 0 && !preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'])) || substr($row['cfieldname'],0,1) == '+')
+                {
                     $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group (except for TOKEN fields)
                 }
+
             }
             // output last one
             if ($_qid != -1)
@@ -1006,10 +1014,12 @@
                 $relevanceEqn = implode(' or ', $scenarios);
                 $relevanceEqns[$_qid] = $relevanceEqn;
             }
-            if (is_null($qid)) {
+            if (is_null($qid))
+            {
                 return $relevanceEqns;
             }
-            else {
+            else
+            {
                 if (isset($relevanceEqns[$qid]))
                 {
                     $result = array();
@@ -8021,11 +8031,13 @@ EOD;
             if (!is_null($qid)) {
                 $where = " c.qid = ".$qid." AND ";
             }
-            else if (!is_null($surveyid)) {
-                    $where = " qa.sid = {$surveyid} AND ";
-                }
-                else {
-                    $where = "";
+            else if (!is_null($surveyid))
+            {
+                $where = " qa.sid = {$surveyid} AND ";
+            }
+            else
+            {
+                $where = "";
             }
 
             $query = "SELECT DISTINCT c.*, q.sid, q.type
@@ -8043,11 +8055,11 @@ EOD;
             $databasetype = Yii::app()->db->getDriverName();
             if ($databasetype=='mssql' || $databasetype=='dblib')
             {
-                $query .= " order by sid, c.qid, scenario, cqid, cfieldname, value";
+                $query .= " order by c.qid, sid, scenario, cqid, cfieldname, value";
             }
             else
             {
-                $query .= " order by sid, qid, scenario, cqid, cfieldname, value";
+                $query .= " order by qid, sid, scenario, cqid, cfieldname, value";
             }
 
             return Yii::app()->db->createCommand($query)->query();
@@ -8910,7 +8922,6 @@ EOD;
             );
 
             $varNamesUsed = array(); // keeps track of whether variables have been declared
-
             if (!is_null($qid))
             {
                 $surveyMode='question';

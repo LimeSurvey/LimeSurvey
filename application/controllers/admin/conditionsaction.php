@@ -1379,14 +1379,23 @@ class conditionsaction extends Survey_Common_Action {
                             {
                                 $leftOperandType = 'tokenattr';
                                 $aTokenAttrNames=getTokenFieldsAndNames($iSurveyID);
-                                if (count($aTokenAttrNames) != 0)
+                                if(isset($aTokenAttrNames[strtolower($extractedTokenAttr[1])]))
                                 {
-                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description'])." [".$clang->gT("From token table")."]";
+                                    $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])]['description']);
                                 }
                                 else
                                 {
-                                    $thisAttrName=HTMLEscape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
+                                    $thisAttrName=HTMLEscape($extractedTokenAttr[1]);
                                 }
+                                if(tableExists("{{tokens_$iSurveyID}}"))
+                                {
+                                    $thisAttrName.= " [".$clang->gT("From token table")."]";
+                                }
+                                else
+                                {
+                                    $thisAttrName.= " [".$clang->gT("Inexistant token table")."]";
+                                }
+
                                 $aViewUrls['output'] .= "\t$thisAttrName\n";
                                 // TIBO not sure this is used anymore !!
                                 $conditionsList[]=array("cid"=>$rows['cid'],
