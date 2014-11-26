@@ -5316,6 +5316,7 @@ function getAttributeValue($surveyid,$attrName,$token)
 */
 function stripJavaScript($sContent){
     $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $sContent);
+    // TODO : Adding the onload/onhover etc ... or remove this false security function
     return $text;
 }
 

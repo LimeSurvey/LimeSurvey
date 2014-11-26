@@ -1,6 +1,19 @@
 //$Id: listsurvey.js 9692 2012-12-10 21:31:10Z pradesh $
 //V1.1 Pradesh - Copied from listsurvey.js
 
+/*
+* Scroll the pager and the footer when scrolling horizontally
+* Maybe for token table too
+*/
+$(window).scroll(function(){
+    $('.ui-jqgrid-toppager').css({
+        'left': $(this).scrollLeft()
+    });
+    $('.ui-jqgrid-pager').css({
+        'left': $(this).scrollLeft()
+    });
+});
+
 $(document)
 		.ready(
 				function() {
@@ -77,7 +90,7 @@ $(document)
 					var field;
 
 					$('#searchbutton').click(function() {
-
+						// Must be done
 					});
 					var lastSel, lastSel2;
 					function returnColModel() {
@@ -99,7 +112,7 @@ $(document)
 						url : jsonUrl,
 						// editurl : editUrl,
 						datatype : "json",
-						mtype : "post",
+						mtype : "POST",
 						colNames : colNames,
 						colModel : returnColModel(),
 						toppager : true,
@@ -107,18 +120,30 @@ $(document)
 						shrinkToFit : false,
 						ignoreCase : true,
 						rowNum : 25,
-						editable : true,
+						editable : false,
 						scrollOffset : 0,
 						sortable : true,
 						hidegrid : false,
-						sortname : 'sid',
+						sortname : 'id',
 						sortorder : 'asc',
 						viewrecords : true,
 						rowList : [ 25, 50, 100, 250, 500, 1000 ],
 						multiselect : true,
-						loadonce : true,
+						loadonce : true, // loadonce : false, to use ajax request (else memory issue)
 						pager : "#pager",
-						caption : sCaption
+						caption : sCaption,
+						beforeRequest: function(){
+							// ACtuvate tooltip on header
+							for (i = 0; i < colModels.length; i++) {
+								var col=i+1;
+								$("tr.ui-jqgrid-labels th:eq("+col+") .questiontext").attr('title',colModels[i]['title']);
+							}
+							$(".ui-jqgrid-labels").tooltip();
+						},
+						loadComplete: function(){
+							// actvate tooltip on answers
+							$("#displayresponses").tooltip({ tooltipClass: "tooltip-text" });
+						}
 					});
 					jQuery("#displayresponses").jqGrid(
 							'navGrid',
@@ -213,19 +238,16 @@ $(document)
 						minHeight : 100
 					});
 
-					$('.wrapper').width($('#displayresponses').width() * 1.006);
-					$('.footer').width(
-							($('#displayresponses').width() * 1.006) - 10);
+// This is really AWFULL !
+//					$('.wrapper').width($('#displayresponses').width() * 1.006);
+//					$('.footer').width(
+//							($('#displayresponses').width() * 1.006) - 10);
 
 					/* Trigger the inline search when the access list changes */
-					$('#gs_completed_select').change(
-							function() {
-								$("#gs_completed").val(
-										$('#gs_completed_select').val());
-
-								var e = jQuery.Event("keydown");
-								$("#gs_completed").trigger(e);
-							});
+					$(document).on('change','#gs_completed_select',function() {
+						$("#gs_completed").val($('#gs_completed_select').val());
+						$("#gs_completed").trigger("keydown");
+					});
 
 					/* Change the text search above "Status" icons to a dropdown */
 					var parentDiv = $('#gs_completed').parent();
@@ -239,19 +261,20 @@ $(document)
 					$('#gs_no_filter').css("display", "");
 					$('#gs_Actions').css("display", "none");
 
-					var setTooltipsOnColumnHeader = function(grid, iColumn,
-							text) {
-						var col = iColumn + 1;
-						var thd = jQuery("thead:first", grid[0].grid.hDiv)[0];
-						jQuery("tr.ui-jqgrid-labels th:eq(" + col + ")", thd)
-								.attr("title", text);
-					};
+// It don't work, and jquery ui have own tooltip (bootstrap too) then use it
+//					var setTooltipsOnColumnHeader = function(grid, iColumn,
+//							text) {
+//						var col = iColumn + 1;
+//						var thd = jQuery("thead:first", grid[0].grid.hDiv)[0];
+//						jQuery("tr.ui-jqgrid-labels th:eq(" + col + ")", thd)
+//								.attr("title", text);
+//					};
 
-					var colmodel_count = colModels.length;
-					for (i = 0; i < colmodel_count; i++) {
-						setTooltipsOnColumnHeader($("#displayresponses"), i,
-								colModels[i]['title']);
+//					var colmodel_count = colModels.length;
+//					for (i = 0; i < colmodel_count; i++) {
+//						setTooltipsOnColumnHeader($("#displayresponses"), i,
+//								colModels[i]['title']);
 
-					}
+//					}
 
 				});

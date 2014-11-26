@@ -472,7 +472,7 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD, $iUserID=null)
+    function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
     {
         static $aPermissionStatic;
 
@@ -546,11 +546,11 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasGlobalPermission($sPermission, $sCRUD, $iUserID=null)
+    function hasGlobalPermission($sPermission, $sCRUD='read', $iUserID=null)
     {
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
-    }    
-    
+    }
+
     /**
     * Checks if a user has a certain permission in the given survey
     *
@@ -560,10 +560,10 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID=null)
+    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
     {
         return $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
-    }        
+    }
 
     /**
     * Returns true if a user has permission to use a certain template

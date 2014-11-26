@@ -323,6 +323,15 @@ class responses extends Survey_Common_Action
     function browse($iSurveyID)
     {
 
+        if(!Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        {
+            $aData['surveyid'] = $iSurveyID;
+            $message['title']= gT('Access denied!');
+            $message['message']= gT('You do not have sufficient rights to access this page.');
+            $message['class']= "error";
+            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
+            Yii::app()->end();
+        }
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
 
@@ -342,20 +351,17 @@ class responses extends Survey_Common_Action
         //add token to top of list if survey is not private
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
         {
-            $column_model[] = array('name' => 'Token',    'model_name' =>'token',    'index' => 'token',     	'sorttype' => 'string', 	'sortable' => false,	'width' => '100', 	'align' => 'left', 	'editable' => false);
-            $column_model[] = array('name' => 'First name', 'model_name' =>'firstname',  'index' => 'firstname',   'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
-            $column_model[] = array('name' => 'Last Name',  'model_name' =>'lastname',  'index' => 'lastname',    'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
-            $column_model[] = array('name' => 'Email',  'model_name' =>'email',      'index' => 'email',     	'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
+            $column_model[] = array('name'=>'token', 'model_name'=>'Token', 'index'=>'token', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
+            $column_model[] = array('name'=>'firstname','model_name'=>gt('First name'), 'index'=>'firstname', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
+            $column_model[] = array('name'=>'lastname', 'model_name'=>gt('Last Name'), 'index'=>'lastname', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
+            $column_model[] = array('name'=>'email', 'model_name'=>gt('Email'), 'index'=>'email', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
         }
 
-        $column_model[] 	= array('name' => 'completed',  'model_name' => 'Completed',  'index' => 'completed',	'sorttype' => 'string', 	'sortable' => true, 	'width' => '100', 	'align' => 'left', 	'editable' => false);
+        $column_model[] = array('name' => 'completed', 'model_name'=>gt('Completed'), 'index'=>'completed', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=> false);
 
-
-        // $fields = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
         $fields = createFieldMap($iSurveyID,'full', true, false, $aData['language']);
-
-
-        // foreach ($fields as $fielddetails)
+        // AN array to control unicity of $code (EM code)
+        $aCodes=array();
         foreach ($fields as $fielddetails)
         {
 
@@ -364,9 +370,7 @@ class responses extends Survey_Common_Action
             if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
                 continue;
 
-            // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Issue_9207 - Excluded token to prevent it from being included twice in the table.
-            // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if ($fielddetails['fieldname'] == 'token')
                 continue;
 
@@ -415,40 +419,50 @@ class responses extends Survey_Common_Action
             $fnames[] = array($fielddetails['fieldname'], "File count");
             }
             */
-
-            // if ( ($fielddetails['fieldname'] == 'id')  || ($fielddetails['fieldname'] == 'startlanguage') ) {
-            // Combine title and aid to provide a unique column header.
-            if ( empty($fielddetails['title']) ) {
-                $fielddetails['title'] = $fielddetails['fieldname'];
+            // TODO: upload question type have more than one column (see before)
+            // Construction of clean name and title
+            $code=viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true));// This must be unique ......
+            //fix unicity of $code
+            if(isset($aCodes[$code]))
+            {
+                $aCodes[$code]++;
+                $code="{$code}-{$aCodes[$code]}";
             }
-            if ( !empty($fielddetails->aid) ) {
-                $fielddetails['title'] = $fielddetails['title'] . '_' . $fielddetails->aid;
+            else
+            {
+                $aCodes[$code]=0;
             }
-
-            $fnames[] = array($fielddetails['fieldname'], $fielddetails['title']);
-
-            $column_model[] = array('name' => $fielddetails['title'], 'model_name' => strip_tags(FlattenText(substr($fielddetails['title'], 0, 32), true)),        'index'          => $fielddetails['title'],     'sorttype' => 'string', 'sortable' => true, 'width' => '100', 'align' => 'left', 'editable' => false, 'title' => strip_tags(FlattenText($fielddetails['title'])) );
-
+            $text=viewHelper::getFieldText($fielddetails);
+            $textabb=viewHelper::getFieldText($fielddetails,array('abbreviated'=>10));
+            $column_model[] = array(
+                'name' => $code,// Must be unique : it's true only for new survey
+                'model_name' => $textabb,
+                'index' => $fielddetails['fieldname'],
+                'sorttype' => 'string',
+                'sortable' => true,
+                'width' => '100',
+                'align' => 'left',
+                'editable' => false,
+                'title' => $text,
+            );
         }
 
-        $column_model_txt =  ls_json_encode($column_model);
+        $column_model_txt = ls_json_encode($column_model);
         $column_names = array();
-        foreach ($column_model as $column) {
-            // $column_name = stripTagsFull($column['model_name']);
-            // $column_name = substr($column['model_name'], 0, 32);
-            // $column_names[] = FlattenText($column['model_name'],true) ;
-            $column_names[] = $column['model_name'];
+        foreach ($column_model as $column)
+        {
+            $column_names[] = "<strong class='qcode'>{$column['name']}</strong> <span class='questiontext'>{$column['model_name']}</span>";
         }
-
-        $column_names_txt =  ls_json_encode($column_names);
+        $column_names_txt = ls_json_encode($column_names);
 
 
         Yii::app()->loadHelper('surveytranslator');
 
         $aData['issuperadmin'] = false;
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+        if (Permission::model()->hasGlobalPermission('superadmin'))
         {
             $aData['issuperadmin'] = true;
+            tracevar('OK');
         }
         $aData['surveyid']	= $iSurveyID;
         $aData['column_model_txt']	= $column_model_txt;
@@ -467,7 +481,10 @@ class responses extends Survey_Common_Action
     */
     public function getResponses_json($iSurveyID)
     {
-
+        if(!Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        {
+            Yii::app()->end();
+        }
         $aData = $this->_getData($iSurveyID);
 
         extract($aData);
@@ -475,7 +492,6 @@ class responses extends Survey_Common_Action
         $oBrowseLanguage = $aData['language'];
 
         $sImageURL 	= Yii::app()->getConfig('adminimageurl');
-
 
         $fnames = array();
         //add token to top of list if survey is not private
@@ -537,6 +553,10 @@ class responses extends Survey_Common_Action
         // issue_9207 - added join of survey table with token table.
         // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        $sOrder=Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc';// ajax use sort
+        $iLimit=Yii::app()->request->getParam('limit'); // We need to set a maximum : else memory issue
+        $iStart=Yii::app()->request->getParam('start'); 
+        // Old behaviour : ajax default request from jqgrid need sort / rows (limit) / page (start) / sidx for order by : use javacript log please ....
         $oCriteria = new CDbCriteria;
         //Create the query
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
@@ -555,20 +575,23 @@ class responses extends Survey_Common_Action
 
         $dtcount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
 
-        if ($limit > $dtcount)
+        // limit or row ?
+        if (!$iLimit || $limit > $dtcount)
         {
-            $limit = $dtcount;
+            $iLimit = $dtcount;
         }
 
         //NOW LETS SHOW THE DATA
         if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
             $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
 
-        if (!is_null($tokenRequest)) {
+        if (!is_null(Yii::app()->request->getParam('token'))) {
             $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
         }
 
-        $oCriteria->order   = 'id ' . ($order == 'desc' ? 'desc' : 'asc');
+        $oCriteria->order   = "id {$sOrder}";
+        // We don't use ajax then : we never update this !
+        // And we need to return the number of complete row and number of page
         $oCriteria->offset  = (Yii::app()->request->getPost('page', 1) - 1) * 50;
         $oCriteria->limit   = Yii::app()->request->getPost('rows', 50);
 
@@ -642,8 +665,8 @@ class responses extends Survey_Common_Action
                 ))) {
                     continue;
                 }
-
-                $aSurveyEntry[] = $row_value;
+                // Alternative to striptag : use CHtmlPurifier : but CHtmlPurifier use a lot of memory
+                $aSurveyEntry[] = strip_tags(getExtendedAnswer($iSurveyID, $row_index, $row_value, $oBrowseLanguage)); // This fix XSS and get the value
 
             }
 
@@ -653,7 +676,8 @@ class responses extends Survey_Common_Action
         }
 
         $aSurveyEntries->rows = $all_rows;
-
+        //viewHelper::disableHtmlLogging(); It's better with but we need to fix error actually
+        header('Content-type: application/json');
         echo ls_json_encode($aSurveyEntries);
 
     }

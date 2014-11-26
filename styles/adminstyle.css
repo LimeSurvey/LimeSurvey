@@ -161,19 +161,28 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     height: auto;
     padding: 0 2px;
 }
+
 /* Fix height of browsettable */
-.browsetable th .qcode {
+#gview_displayresponses th .qcode {
     display: block;
+    padding-right:16px; /* leave place for ordering arrow */
     height: auto;
 }
-.browsetable th .questiontext {
+#gbox_displayresponses.ui-jqgrid .s-ico{
+ position:absolute;right:18px;top:0; /* The ordering arrow */
+}
+#gview_displayresponses th .questiontext {
     display: block;
-    height: 3em;
+    height: 2.5em;
     overflow: hidden;
 }
-.browsetable td span {
-    min-width:10em;/* This is OK for date time */
+#gbox_displayresponses.ui-jqgrid .ui-jqgrid-htable th div {
+     height: auto;
 }
+/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
+/* Myabe use a pseudo fixd-y solution is a good idea */
+.ui-jqgrid,.ui-jqgrid-view,.ui-jqgrid-titlebar,.ui-jqgrid-toppager,.ui-jqgrid-pager{min-width:100%;max-width:100%;border-right-width:0;border-left-width:0}
+
 .ui-tooltip.tooltip-text{min-width:15em}
 .templateeditor {
     float:left;
