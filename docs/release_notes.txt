@@ -59,6 +59,13 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 141123) to 2.05+ (build 141126) Nov 26, 2014
+-Fixed issue #9140: VV-Import not working with MSSQL (Carsten Schmitz)
+-Fixed issue #9283: More than 255 characters can be entered into a short text question on Postgres and MSSQL which leads to an error (Carsten Schmitz)
+-Fixed issue #9344: AND rules with ATTRIBUTE disappear when modify and importing the survey (Denis Chenu)
+-Fixed issue #9371: Invitations/reminders cannot be sent to selected tokens (Carsten Schmitz)
+#Updated translation: Japanese by yamatt
+
 Changes from 2.05+ (build 141113) to 2.05+ (build 141123) Nov 23, 2014
 -Fixed issue #8589: PHP object injection in surveys (Carsten Schmitz)
 -Fixed issue #9282: Deactivating survey with tokens fails with postgres - patch provided by random1 (Carsten Schmitz)
