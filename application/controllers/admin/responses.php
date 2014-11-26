@@ -437,8 +437,8 @@ class responses extends Survey_Common_Action
             $column_model[] = array(
                 'name' => $code,// Must be unique : it's true only for new survey
                 'model_name' => $textabb,
-                'index' => $fielddetails['fieldname'],
-                'sorttype' => 'string',
+                'index' => $code, // $fielddetails['fieldname'], : this is for ajax
+                'sorttype' => 'string',// Depend of question type can be excellent
                 'sortable' => true,
                 'width' => '100',
                 'align' => 'left',
@@ -452,6 +452,7 @@ class responses extends Survey_Common_Action
         foreach ($column_model as $column)
         {
             $column_names[] = "<strong class='qcode'>{$column['name']}</strong> <span class='questiontext'>{$column['model_name']}</span>";
+            // Think it's best to do the column name during column model : then we can use $fielddetails['fieldname'] for name : we are sure it's unique
         }
         $column_names_txt = ls_json_encode($column_names);
 
@@ -462,11 +463,10 @@ class responses extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('superadmin'))
         {
             $aData['issuperadmin'] = true;
-            tracevar('OK');
         }
-        $aData['surveyid']	= $iSurveyID;
-        $aData['column_model_txt']	= $column_model_txt;
-        $aData['column_names_txt']	= $column_names_txt;
+        $aData['surveyid']= $iSurveyID;
+        $aData['column_model_txt']= $column_model_txt;
+        $aData['column_names_txt']= $column_names_txt;
 
 
         $this->_renderWrappedTemplate('responses', 'listResponses_view', $aData);
