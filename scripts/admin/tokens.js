@@ -1,3 +1,12 @@
+/*
+* Scroll the pager when scrolling horizontally
+*/
+$(window).scroll(function(){
+    $('.ui-jqgrid-pager').css({
+        'left': $(this).scrollLeft()
+    });
+});
+
 var conditionid=1;
 function checkbounces() {
     $("#dialog-modal").dialog('open');
