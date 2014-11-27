@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
- 
+
 class LSYii_Validators extends CValidator {
 
     /**
@@ -69,7 +69,7 @@ class LSYii_Validators extends CValidator {
     /**
     * Remove some empty characters put by CK editor
     * Did we need to do if user don't use inline HTML editor ?
-    * 
+    *
     * @param string $value
     */
     public function fixCKeditor($value)
@@ -95,8 +95,8 @@ class LSYii_Validators extends CValidator {
         return $value;
     }
     /**
-    * Remove any script or dangerous HTML 
-    * 
+    * Remove any script or dangerous HTML
+    *
     * @param string $value
     */
     public function xssFilter($value)
@@ -104,11 +104,12 @@ class LSYii_Validators extends CValidator {
         $filter = new CHtmlPurifier();
         $filter->options = array(
             'AutoFormat.RemoveEmpty'=>false,
+            'Core.NormalizeNewlines'=>false,
             'CSS.AllowTricky'=>true, // Allow display:none; (and other)
             'HTML.SafeObject'=>true, // To allow including youtube
             'Output.FlashCompat'=>true,
             'Attr.EnableID'=>true, // Allow to set id
-            'Attr.AllowedFrameTargets'=>array('_blank','_self'),             
+            'Attr.AllowedFrameTargets'=>array('_blank','_self'),
             'URI.AllowedSchemes'=>array(
                 'http' => true,
                 'https' => true,
@@ -154,7 +155,7 @@ class LSYii_Validators extends CValidator {
     }
     /**
     * Defines the customs validation rule for language string
-    * 
+    *
     * @param mixed $value
     */
     public function languageFilter($value)
@@ -164,7 +165,7 @@ class LSYii_Validators extends CValidator {
     }
     /**
     * Defines the customs validation rule for multi language string
-    * 
+    *
     * @param mixed $value
     */
     public function multiLanguageFilter($value)
@@ -173,5 +174,5 @@ class LSYii_Validators extends CValidator {
         $aValue=array_map("sanitize_languagecode",$aValue);
         return implode(" ",$aValue);
     }
-        
+
 }
