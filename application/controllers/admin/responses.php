@@ -568,16 +568,7 @@ class responses extends Survey_Common_Action
         {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-
-        $iCount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
-        $iLimit=((int)$iLimit>0) ?(int)$iLimit : 50 ;
-        if (!$iLimit || $iLimit > $iCount)
-        {
-            $iLimit = $iCount;
-        }
-        $iStart=((int)$iPage>0) ? ((int)$iPage*$iLimit - $iLimit) : 0;
-        
-        //Get the data
+        //Get the filter data
         if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
             $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
         if (!is_null(Yii::app()->request->getParam('token'))) {
@@ -600,8 +591,6 @@ class responses extends Survey_Common_Action
         }
         $sOrderBy = Yii::app()->db->quoteColumnName($sOrderBy); // Maybe need to fix if $sOrderBy is in columns name
         $oCriteria->order = "{$sOrderBy} {$sOrder}";
-        $oCriteria->offset = $iStart;
-        $oCriteria->limit = $iLimit;
         if(Yii::app()->request->getParam('_search'))
         {
             if(($value=Yii::app()->request->getParam('completed')) && !incompleteAnsFilterState()) // 
@@ -619,14 +608,25 @@ class responses extends Survey_Common_Action
                 }
             }
         }
-        $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
-
         // Elements for nav bar of jquery
+        $iCount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
+        $iLimit=((int)$iLimit>0) ?(int)$iLimit : 50 ;
+        if (!$iLimit || $iLimit > $iCount)
+        {
+            $iLimit = $iCount;
+        }
+        $iStart=((int)$iPage>0) ? ((int)$iPage*$iLimit - $iLimit) : 0;
         $aSurveyEntries = new stdClass();
-        $aSurveyEntries->page = $iPage;
+        $aSurveyEntries->page = $iPage; // Did we need to fix page ?
         $aSurveyEntries->total = ($iCount>0)?ceil($iCount/$iLimit):0;
         $aSurveyEntries->records= $iCount;
 
+        // Last criteria update
+        $oCriteria->offset = $iStart;
+        $oCriteria->limit = $iLimit;
+
+        // Get the rows
+        $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
         $all_rows = array();
         foreach ($dtresult as $row) {
             $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'><img src='" . $sImageURL . "/token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
