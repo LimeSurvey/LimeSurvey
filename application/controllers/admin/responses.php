@@ -363,9 +363,6 @@ class responses extends Survey_Common_Action
         $aCodes=array();
         foreach ($fields as $fielddetails)
         {
-
-            // Note that in LS 2,00, $fielddetails is an array, in 2.1 it is an object
-
             if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
                 continue;
 
@@ -434,9 +431,9 @@ class responses extends Survey_Common_Action
             $text=viewHelper::getFieldText($fielddetails);
             $textabb=viewHelper::getFieldText($fielddetails,array('abbreviated'=>10));
             $column_model[] = array(
-                'name' => $code,// Must be unique : it's true only for new survey
+                'name' => $fielddetails['fieldname'],
                 'model_name' => "<strong class='qcode'>{$code}</strong> <span class='questiontext'>{$textabb}</span>",
-                'index' => $code, // $fielddetails['fieldname'], : this is for ajax
+                'index' => $fielddetails['fieldname'],
                 'sorttype' => 'string',// Depend of question type can be excellent
                 'sortable' => true,
                 'width' => '100',
@@ -551,9 +548,10 @@ class responses extends Survey_Common_Action
         // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // issue_9207 - added join of survey table with token table.
         // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        $sOrder=Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc';// ajax use sort
-        $iLimit=Yii::app()->request->getParam('limit'); // We need to set a maximum : else memory issue
-        $iStart=Yii::app()->request->getParam('start'); 
+        $sOrder=Yii::app()->request->getPost('sord') == 'desc' ? 'desc' : 'asc';
+        $sOrderBy=Yii::app()->request->getPost('sidx','id');
+        $iPage=Yii::app()->request->getPost('page',1);
+        $iLimit=Yii::app()->request->getPost('rows',50); // Default to 50 ?
         // Old behaviour : ajax default request from jqgrid need sort / rows (limit) / page (start) / sidx for order by : use javacript log please ....
         $oCriteria = new CDbCriteria;
         //Create the query
@@ -571,43 +569,66 @@ class responses extends Survey_Common_Action
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
 
-        $dtcount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
-
-        // limit or row ?
-        if (!$iLimit || $limit > $dtcount)
+        $iCount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
+        $iLimit=((int)$iLimit>0) ?(int)$iLimit : 50 ;
+        if (!$iLimit || $iLimit > $iCount)
         {
-            $iLimit = $dtcount;
+            $iLimit = $iCount;
         }
-
-        //NOW LETS SHOW THE DATA
+        $iStart=((int)$iPage>0) ? ((int)$iPage*$iLimit - $iLimit) : 0;
+        
+        //Get the data
         if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
             $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
-
         if (!is_null(Yii::app()->request->getParam('token'))) {
             $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
         }
-
-        $oCriteria->order   = "id {$sOrder}";
-        // We don't use ajax then : we never update this !
-        // And we need to return the number of complete row and number of page
-        $oCriteria->offset  = (Yii::app()->request->getPost('page', 1) - 1) * 50;
-        $oCriteria->limit   = Yii::app()->request->getPost('rows', 50);
-
-
+        $aKnowColumns=array_keys(SurveyDynamic::model($iSurveyID)->attributes);
+        // Fix $sOrderBy : add firstname/lastnamle and some other
+        
+        switch ($sOrderBy)
+        {
+            case 'completed':
+                $sOrderBy='submitdate';
+                break;
+            default:
+                if(!in_array($sOrderBy,$aKnowColumns))
+                {
+                    Yii::trace("unknow column $sOrderBy in json request");
+                    $sOrderBy='id';
+                }
+        }
+        $sOrderBy = Yii::app()->db->quoteColumnName($sOrderBy); // Maybe need to fix if $sOrderBy is in columns name
+        $oCriteria->order = "{$sOrderBy} {$sOrder}";
+        $oCriteria->offset = $iStart;
+        $oCriteria->limit = $iLimit;
+        if(Yii::app()->request->getParam('_search'))
+        {
+            if(($value=Yii::app()->request->getParam('completed')) && !incompleteAnsFilterState()) // 
+            {
+                if($value=='Y')
+                    $oCriteria->addCondition("submitdate IS NOT NULL");
+                elseif($value=='N')
+                    $oCriteria->addCondition("submitdate IS NULL");
+            }
+            foreach($aKnowColumns as $sFiltering)
+            {
+                if($value=Yii::app()->request->getParam($sFiltering))
+                {
+                    $oCriteria->compare(Yii::app()->db->quoteColumnName($sFiltering),$value,true);
+                }
+            }
+        }
         $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
 
-        // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Issue_9207 - end
-        // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+        // Elements for nav bar of jquery
         $aSurveyEntries = new stdClass();
-        $aSurveyEntries->page = 1;
+        $aSurveyEntries->page = $iPage;
+        $aSurveyEntries->total = ($iCount>0)?ceil($iCount/$iLimit):0;
+        $aSurveyEntries->records= $iCount;
 
         $all_rows = array();
         foreach ($dtresult as $row) {
-
-            // BUG: For some reason, the $action_html is placed outside the json string! //
             $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'><img src='" . $sImageURL . "/token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','update')) {
                 $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "/edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
@@ -635,22 +656,12 @@ class responses extends Survey_Common_Action
                 $aSurveyEntry[] = $row['lastname'];
                 $aSurveyEntry[] = $row['email'];
             }
-            // /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // issue_9207 - added token fields for non-anon surveys.
-            // /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
             // completed
             $aSurveyEntry[] = empty($row['submitdate'])?'N':'Y';
-
             // id
             $aSurveyEntry[] = $row['id'];
-
             // startlanguage
             $aSurveyEntry[] = $row['startlanguage'];
-
-
-//             $aSurveyEntry[] = $row[$fnames[2][0]];
-//             $aSurveyEntry[] = $row[$fnames[3][0]];
 
             foreach ($row as $row_index => $row_value) {
 
@@ -665,19 +676,15 @@ class responses extends Survey_Common_Action
                 }
                 // Alternative to striptag : use CHtmlPurifier : but CHtmlPurifier use a lot of memory
                 $aSurveyEntry[] = strip_tags(getExtendedAnswer($iSurveyID, $row_index, $row_value, $oBrowseLanguage)); // This fix XSS and get the value
-
             }
-
-
             $all_rows[] = array('id' => $row['id'], 'cell' =>  $aSurveyEntry);
-
         }
 
         $aSurveyEntries->rows = $all_rows;
         //viewHelper::disableHtmlLogging(); It's better with but we need to fix error actually
         header('Content-type: application/json');
-        echo ls_json_encode($aSurveyEntries);
-
+        echo json_encode($aSurveyEntries);
+        Yii::app()->end();
     }
 
 

@@ -124,7 +124,7 @@ $(function() {
         viewrecords : true,
         rowList : [ 25, 50, 100, 250, 500, 1000 ],
         multiselect : true,
-        loadonce : true, // loadonce : false, to use ajax request (else memory issue)
+        loadonce : false, // use ajax request
         pager : "#pager",
         caption : sCaption,
         beforeRequest: function(){
