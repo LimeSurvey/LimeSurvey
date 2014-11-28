@@ -340,7 +340,6 @@ class responses extends Survey_Common_Action
         $aViewUrls = array();
         $oBrowseLanguage = $aData['language'];
 
-
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         $column_model = array();
         // The first few colums are fixed.
@@ -436,7 +435,7 @@ class responses extends Survey_Common_Action
             $textabb=viewHelper::getFieldText($fielddetails,array('abbreviated'=>10));
             $column_model[] = array(
                 'name' => $code,// Must be unique : it's true only for new survey
-                'model_name' => $textabb,
+                'model_name' => "<strong class='qcode'>{$code}</strong> <span class='questiontext'>{$textabb}</span>",
                 'index' => $code, // $fielddetails['fieldname'], : this is for ajax
                 'sorttype' => 'string',// Depend of question type can be excellent
                 'sortable' => true,
@@ -451,19 +450,19 @@ class responses extends Survey_Common_Action
         $column_names = array();
         foreach ($column_model as $column)
         {
-            $column_names[] = "<strong class='qcode'>{$column['name']}</strong> <span class='questiontext'>{$column['model_name']}</span>";
-            // Think it's best to do the column name during column model : then we can use $fielddetails['fieldname'] for name : we are sure it's unique
+            $column_names[] = $column['model_name'];
         }
         $column_names_txt = ls_json_encode($column_names);
 
 
-        Yii::app()->loadHelper('surveytranslator');
 
+#        Yii::app()->loadHelper('surveytranslator');
         $aData['issuperadmin'] = false;
         if (Permission::model()->hasGlobalPermission('superadmin'))
         {
             $aData['issuperadmin'] = true;
         }
+
         $aData['surveyid']= $iSurveyID;
         $aData['column_model_txt']= $column_model_txt;
         $aData['column_names_txt']= $column_names_txt;
@@ -552,7 +551,6 @@ class responses extends Survey_Common_Action
         // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // issue_9207 - added join of survey table with token table.
         // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         $sOrder=Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc';// ajax use sort
         $iLimit=Yii::app()->request->getParam('limit'); // We need to set a maximum : else memory issue
         $iStart=Yii::app()->request->getParam('start'); 
