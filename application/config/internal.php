@@ -13,17 +13,17 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 }
 @date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
-	'basePath' => dirname(dirname(__FILE__)),
-	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
-	'name' => 'LimeSurvey',
-	'defaultController' => 'surveys',
-	'import' => array(
-		'application.core.*',
-		'application.models.*',
-		'application.controllers.*',
-		'application.modules.*',
-	),
-	'components' => array(
+    'basePath' => dirname(dirname(__FILE__)),
+    'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
+    'name' => 'LimeSurvey',
+    'defaultController' => 'surveys',
+    'import' => array(
+        'application.core.*',
+        'application.models.*',
+        'application.controllers.*',
+        'application.modules.*',
+    ),
+    'components' => array(
         'bootstrap' => array(
             'class' => 'application.core.LSBootstrap',
             'responsiveCss' => false,
@@ -37,18 +37,17 @@ $internalConfig = array(
             'compressJs'=>false,
             'packages' => require('third_party.php'),
         ),
-		'urlManager' => array(
-			'urlFormat' => 'get',
-			'rules' => require('routes.php'),
-			'showScriptName' => true,
-		),
+        'urlManager' => array(
+            'urlFormat' => 'get',
+            'rules' => require('routes.php'),
+            'showScriptName' => true,
+        ),
         'assetManager' => array(
             'baseUrl' => '/tmp/assets'
         ),
-		'request' => array(
+        'request' => array(
             'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(
-//              '^services/wsdl.*$'   // Set here additional regex rules for routes not to be validate
                 'remotecontrol'
             ),
             'enableCsrfValidation'=>true,    // CSRF protection
@@ -57,12 +56,14 @@ $internalConfig = array(
         'user' => array(
             'class' => 'LSWebUser',
         ),
-		'log' => array(
-			'class' => 'CLogRouter',
+        'log' => array(
+            'class' => 'CLogRouter',
             'routes' => array(
-                'class' => 'CWebLogRoute'
+                'CWebLogRoute' => array( // Use an associative array allow update in config
+                    'class' => 'CWebLogRoute',
+                ),
             )
-		),
+        ),
         'cache'=>array(
            'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
         ),
@@ -76,7 +77,7 @@ $internalConfig = array(
             'useMoFile' => true,
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         )
-	)
+    )
 );
 
 
