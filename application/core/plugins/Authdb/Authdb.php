@@ -2,15 +2,15 @@
 class Authdb extends AuthPluginBase
 {
     protected $storage = 'DbStorage';
-    
     protected $_onepass = null;
-    
+
     static protected $description = 'Core: Database authentication + exports';
     static protected $name = 'LimeSurvey internal database';
-    
-    public function __construct(PluginManager $manager, $id) {
+
+    public function __construct(PluginManager $manager, $id)
+    {
         parent::__construct($manager, $id);
-        
+
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
@@ -19,12 +19,10 @@ class Authdb extends AuthPluginBase
         $this->subscribe('afterLoginFormSubmit');
         $this->subscribe('newUserSession');
         $this->subscribe('beforeDeactivate');
-        
         // Now register for the core exports
         $this->subscribe('listExportPlugins');
         $this->subscribe('listExportOptions');
         $this->subscribe('newExport');
-        
     }
 
     public function beforeDeactivate()
@@ -34,13 +32,12 @@ class Authdb extends AuthPluginBase
         // Optionally set a custom error message.
         $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
     }
-    
+
     public function beforeLogin()
     {
         $this->getEvent()->set('default', get_class($this));   // This is the default login method, should be configurable from plugin settings
-        
+
         // We can skip the login form here and set username/password etc.
-        
         $request = $this->api->getRequest();
         if (!is_null($request->getParam('onepass'))) {
             // We have a one time password, skip the login form
@@ -49,7 +46,7 @@ class Authdb extends AuthPluginBase
             $this->setAuthPlugin(); // This plugin will handle authentication and skips the login form
         }
     }
-    
+
     /**
      * Get the onetime password (if set)
      * 
@@ -59,10 +56,9 @@ class Authdb extends AuthPluginBase
     {
         return $this->_onepass;
     }
-    
+
     public function newLoginForm()
     {
-        
         $sUserName='';
         $sPassword='';
         if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
@@ -75,27 +71,27 @@ class Authdb extends AuthPluginBase
              ->addContent(CHtml::tag('li', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user',$sUserName,array('size'=>40,'maxlength'=>40))))
              ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password',$sPassword,array('size'=>40,'maxlength'=>40))));
     }
-    
+
     public function afterLoginFormSubmit()
     {
-        // Here we handle post data        
+        // Here we handle post data
         $request = $this->api->getRequest();
         if ($request->getIsPostRequest()) {
             $this->setUsername( $request->getPost('user'));
             $this->setPassword($request->getPost('password'));
         }
     }
-    
+
     public function newUserSession()
     {
-        // Here we do the actual authentication       
+        // Here we do the actual authentication
         $username = $this->getUsername();
         $password = $this->getPassword();
         $onepass  = $this->getOnePass();
-        
+
         $user = $this->api->getUserByName($username);
-        
-        if ($user !== null)
+
+        if ($user !== null and $username==$user->users_name) // Control of equality for uppercase/lowercase with mysql
         {
             if (gettype($user->password)=='resource')
             {
@@ -118,17 +114,17 @@ class Authdb extends AuthPluginBase
             $user->save();
             $this->setAuthSuccess($user);
             return;
-        }        
-        
+        }
+
         if ($sStoredPassword !== hash('sha256', $password))
         {
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }
-        
+
         $this->setAuthSuccess($user);
     }
-    
+
     /**
      * Set the onetime password
      * 
@@ -141,8 +137,8 @@ class Authdb extends AuthPluginBase
         
         return $this;
     }
-    
-    
+
+
     // Now the export part:
     public function listExportOptions()
     {
@@ -150,11 +146,10 @@ class Authdb extends AuthPluginBase
         $type = $event->get('type');
         
         switch ($type) {
-            case 'csv':                 
+            case 'csv':
                 $event->set('label', gT("CSV"));
                 $event->set('default', true);
                 break;
-                
             case 'xls':
                 $label = gT("Microsoft Excel");
                 if (!function_exists('iconv')) {
@@ -162,26 +157,22 @@ class Authdb extends AuthPluginBase
                 }
                 $event->set('label', $label);
                 break;
-                
             case 'doc':
                 $event->set('label', gT("Microsoft Word"));
                 $event->set('onclick', 'document.getElementById("answers-long").checked=true;document.getElementById("answers-short").disabled=true;');
                 break;
-            
             case 'pdf':
                 $event->set('label', gT("PDF"));
                 break;
-            
             case 'html':
                 $event->set('label', gT("HTML"));
                 break;
-            
             case 'json':    // Not in the interface, only for RPC
             default:
                 break;
         }
     }
-    
+
     /**
      * Registers this export type
      */
@@ -189,7 +180,7 @@ class Authdb extends AuthPluginBase
     {
         $event = $this->getEvent();
         $exports = $event->get('exportplugins');
-        
+
         // Yes we overwrite existing classes if available
         $className = get_class();
         $exports['csv'] = $className;
@@ -198,10 +189,10 @@ class Authdb extends AuthPluginBase
         $exports['html'] = $className;
         $exports['json'] = $className;
         $exports['doc'] = $className;
-        
+
         $event->set('exportplugins', $exports);
     }
-    
+
     /**
      * Returns the required IWriter
      */
@@ -209,7 +200,7 @@ class Authdb extends AuthPluginBase
     {
         $event = $this->getEvent();
         $type = $event->get('type');
-                
+
         switch ($type) {
             case "doc":
                 $writer = new DocWriter();
@@ -231,7 +222,7 @@ class Authdb extends AuthPluginBase
                 $writer = new CsvWriter();
                 break;
         }
-        
+
         $event->set('writer', $writer);
     }
 }
