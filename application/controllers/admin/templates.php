@@ -282,7 +282,7 @@ class templates extends Survey_Common_Action
             }
             Yii::app()->session['flashmessage'] = $uploadresult;
         }
-        $this->getController()->redirect(array("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
