@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-11-26 09:18:56+00:00\n"
+"POT-Creation-Date: 2014-12-01 00:06:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1614,7 +1614,7 @@ msgstr ""
 #: application/controllers/admin/useraction.php:130
 #: application/controllers/admin/useraction.php:380
 #: application/controllers/admin/useraction.php:398
-#: application/core/plugins/Authdb/Authdb.php:76
+#: application/core/plugins/Authdb/Authdb.php:75
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:108
 #: application/helpers/replacements_helper.php:504
 #: application/helpers/replacements_helper.php:537
@@ -2657,7 +2657,7 @@ msgstr ""
 #: application/controllers/admin/useraction.php:143
 #: application/controllers/admin/useraction.php:380
 #: application/controllers/admin/useraction.php:398
-#: application/core/plugins/Authdb/Authdb.php:75
+#: application/core/plugins/Authdb/Authdb.php:74
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:107
 #: application/views/admin/user/editusers.php:8
 #: application/views/admin/user/modifyuser.php:5
@@ -4281,27 +4281,27 @@ msgstr ""
 msgid "Core plugin can not be disabled."
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:154
+#: application/core/plugins/Authdb/Authdb.php:152
 msgid "CSV"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:159
+#: application/core/plugins/Authdb/Authdb.php:157
 msgid "Microsoft Excel"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:161
+#: application/core/plugins/Authdb/Authdb.php:159
 msgid "(Iconv Library not installed)"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:167
+#: application/core/plugins/Authdb/Authdb.php:165
 msgid "Microsoft Word"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:172
+#: application/core/plugins/Authdb/Authdb.php:170
 msgid "PDF"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:176
+#: application/core/plugins/Authdb/Authdb.php:174
 msgid "HTML"
 msgstr ""
 
