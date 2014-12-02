@@ -120,6 +120,18 @@ class GlobalSettings extends Survey_Common_Action
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
 
+        $iPDFFontSize = sanitize_int($_POST['pdffontsize']);
+        if ($iPDFFontSize < 1)
+        {
+            $iPDFFontSize = 9;
+        }
+
+        $iPDFLogoWigth = sanitize_int($_POST['pdflogowidth']);
+        if ($iPDFLogoWigth < 1)
+        {
+            $iPDFLogoWigth = 50;
+        }
+
         $maxemails = $_POST['maxemails'];
         if (sanitize_int($_POST['maxemails']) < 1) {
             $maxemails = 1;
@@ -194,6 +206,11 @@ class GlobalSettings extends Survey_Common_Action
         if ($iSessionExpirationTime == 0) $iSessionExpirationTime = 7200;
         setGlobalSetting('iSessionExpirationTime', $iSessionExpirationTime);
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
+        setGlobalSetting('pdffontsize', $iPDFFontSize);
+        setGlobalSetting('pdfshowheader', $_POST['pdfshowheader']);
+        setGlobalSetting('pdflogowidth', $iPDFLogoWigth);
+        setGlobalSetting('pdfheadertitle', $_POST['pdfheadertitle']);
+        setGlobalSetting('pdfheaderstring', $_POST['pdfheaderstring']);
         setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);
         setGlobalSetting('googleanalyticsapikey',$_POST['googleanalyticsapikey']);
         setGlobalSetting('googletranslateapikey',$_POST['googletranslateapikey']);
