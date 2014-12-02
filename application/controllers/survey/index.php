@@ -387,7 +387,7 @@ class index extends CAction {
                     {
                         $sError = $clang->gT("This invitation is not valid yet.");
                     }
-                    elseif(strtotime($now)>strtotime($oToken->validfrom))
+                    elseif(strtotime($now) > strtotime($oToken->validuntil))
                     {
                         $sError = $clang->gT("This invitation is not valid anymore.");
                     }
