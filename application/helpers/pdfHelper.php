@@ -61,8 +61,7 @@ class pdfHelper
             $lg['a_meta_dir'] = 'ltr';
         }
         $lg['a_meta_language'] = $language;
-        $pdflang = new Limesurvey_lang($language);
-        $lg['w_page']=$pdflang->gT("page");
+        $lg['w_page']=gT("page");
 
         return array('pdffont'=>$pdffont,'pdffontsize'=>$pdffontsize,'lg'=>$lg);
     }
