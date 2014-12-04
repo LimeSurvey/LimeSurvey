@@ -913,10 +913,6 @@ class database extends Survey_Common_Action
                     $url = Yii::app()->request->getPost('url_'.$langname);
                     if ($url == 'http://') {$url="";}
 
-                    $short_title = html_entity_decode(Yii::app()->request->getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
-                    $description = html_entity_decode(Yii::app()->request->getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
-                    $welcome = html_entity_decode(Yii::app()->request->getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
-                    $endtext = html_entity_decode(Yii::app()->request->getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
                     $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
                     $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
 
