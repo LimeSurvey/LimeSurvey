@@ -14,7 +14,7 @@ class PdfWriter extends Writer
         $pdforientation=Yii::app()->getConfig('pdforientation');
         $this->clang = new limesurvey_lang($sLanguageCode);
 
-        if ($oOptions->output=='file') 
+        if ($oOptions->output=='file')
         {
             $this->pdfDestination = 'F';
         } else {
@@ -26,15 +26,16 @@ class PdfWriter extends Writer
 
         // create new PDF document
         $this->pdf = new pdf();
+        $this->surveyName = $survey->languageSettings['surveyls_title'];
         $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
+        $this->pdf->addHeader($aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
         $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
         $this->separator="\t";
 
-        $this->rowCounter = 0;        
-        $this->surveyName = $survey->languageSettings['surveyls_title'];
+        $this->rowCounter = 0;
         $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings['surveyls_description']);
     }
 
