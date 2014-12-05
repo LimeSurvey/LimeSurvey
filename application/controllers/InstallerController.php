@@ -238,6 +238,13 @@ class InstallerController extends CController {
         $aData['classesForStep'] = array('off','off','off','on','off','off');
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm;
+        if (isset(Yii::app()->session['populateerror']))
+        {
+            $oModel->addError('dblocation',Yii::app()->session['populateerror']);
+            $oModel->addError('dbpwd','');
+            $oModel->addError('dbuser','');
+            unset(Yii::app()->session['populateerror']);
+        }
 
         if(isset($_POST['InstallerConfigForm']))
         {
@@ -576,12 +583,15 @@ class InstallerController extends CController {
         }
         else
         {
-            $sConfirmation = $clang->gT('Database was populated but there were errors:').'<p><ul>';
+            $sConfirmation = $clang->gT('There were errors when trying to populate the database :').'<p><ul>';
             foreach ($aErrors as $sError)
             {
                 $sConfirmation.='<li>'.htmlspecialchars($sError).'</li>';
             }
             $sConfirmation.='</ul>';
+            Yii::app()->session['populateerror']=$sConfirmation;
+
+            $this->redirect(array('installer/database'));
         }
 
         Yii::app()->session['tablesexist'] = true;
@@ -909,16 +919,20 @@ class InstallerController extends CController {
     function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
     {
         extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
-        switch ($sDatabaseType) {
-            case 'mysql':
-            case 'mysqli':
-                $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
-                break;
-            case 'pgsql':
-                if (version_compare($this->connection->getServerVersion(),'9','>=')) {
-                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." SET bytea_output='escape';")->execute();
-                }
-                break;
+        try{
+            switch ($sDatabaseType) {
+                case 'mysql':
+                case 'mysqli':
+                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
+                    break;
+                case 'pgsql':
+                    if (version_compare($this->connection->getServerVersion(),'9','>=')) {
+                        $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." SET bytea_output='escape';")->execute();
+                    }
+                    break;
+            }
+        } catch(Exception $e) {
+            return array($e->getMessage());
         }
 
         return $this->_executeSQLFile($sFileName, $sDatabasePrefix);
