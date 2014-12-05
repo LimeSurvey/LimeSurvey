@@ -1,4 +1,3 @@
-
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>{SURVEYNAME} {GROUPNAME} {SITENAME}</title>
@@ -15,7 +14,7 @@
 <body>
 <!--[if lt IE 7 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie6 ielt7 ielt8 ielt9 no-js"> <![endif]-->
 <!--[if IE 7 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie7 ielt8 ielt9 no-js"> <![endif]-->
-<!--[if IE 8 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie8ielt9  no-js"> <![endif]-->
+<!--[if IE 8 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie8 ielt9  no-js"> <![endif]-->
 <!--[if IE 9 ]> <div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} ie ie9 no-js"> <![endif]-->
 <!--[if gt IE 9]><!--><div id="container" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} no-js"><!--<![endif]-->
 <script type='text/javascript'>/*<![CDATA[*/(function(H){ H.className=H.className.replace(/\bno-js\b/,'js') })(document.getElementById('container'));/*]]>*/</script>
