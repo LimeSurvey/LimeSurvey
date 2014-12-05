@@ -708,8 +708,8 @@
         */
         public static function SetDirtyFlag()
         {
-            $_SESSION['LEMdirtyFlag'] = true;
-            $_SESSION['LEMforceRefresh'] = true;
+            $_SESSION['LEMdirtyFlag'] = true;// For fieldmap and other. question help {HELP} is taken from fieldmap
+            $_SESSION['LEMforceRefresh'] = true;// For Expression manager string
         }
 
         /**
@@ -741,8 +741,7 @@
             }
             if ($_SESSION['LEMlang'] != $lang) {
                 // then changing languages, so clear cache
-                //    self::SetDirtyFlag();
-                $_SESSION['LEMforceRefresh'] = true;// Force refresh but don't remove cache
+                self::SetDirtyFlag();
             }
             $_SESSION['LEMlang'] = $lang;
         }
