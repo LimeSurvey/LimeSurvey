@@ -185,19 +185,15 @@ function OSGeoInitialize(question,latLng){
 // ---------------------------------
 /* Typeahead search functionality */
 
-		
-		   var geonamesBH = new Bloodhound({
+			var geonamesBH = new Bloodhound({
 			name: "GeoNames",
 			datumTokenizer: function (d) {
 			  return Bloodhound.tokenizers.whitespace(d.name);
 			},
 			queryTokenizer: Bloodhound.tokenizers.whitespace,
 			remote: {
-			  url: "http://api.geonames.org/searchJSON?username=limesurvey&featureClass=P&maxRows=5&name_startsWith=%QUERY",
+			  url: "http://api.geonames.org/searchJSON?username="+LSmap.geonameuser+"&featureClass=P&maxRows=5&name_startsWith=%QUERY",
 			  filter: function (data) {
-			  	//if (data.geonames.length == 0) {
-				//no results 
-				//}
 				return $.map(data.geonames, function (result) {
 				  return {
 					name: result.name + ", " + result.countryName,
@@ -209,7 +205,6 @@ function OSGeoInitialize(question,latLng){
 			  },
 			  ajax: {
 				beforeSend: function (jqXhr, settings) {
-
 					if ($("#restrictToExtent").prop('checked')){
 						settings.url += "&east=" + osmaps[''+question] .getBounds().getEast() + "&west=" + osmaps[''+question] .getBounds().getWest() + "&north=" + osmaps[''+question] .getBounds().getNorth() + "&south=" + osmaps[''+question] .getBounds().getSouth();
 					}

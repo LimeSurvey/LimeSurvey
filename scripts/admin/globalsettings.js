@@ -1,16 +1,15 @@
-// $Id: globalsettings.js 8964 2010-07-20 20:46:47Z anishseth $
-
+$(document).on('click',"[data-copy] :submit",function(){
+    $("form :input[value='"+$(this).val()+"']").click();
+});
 $(document).ready(function(){
-    $("#emailmethod").change(Emailchange);
-    Emailchange();
-
-    $("#bounceaccounttype").change(Emailchanges);
-    Emailchanges();
+    $("[data-copy]").each(function(){
+        $(this).html($("#"+$(this).data('copy')).html());
+    });
+    $('[type=password]').attr('autocomplete', 'off');
     $('#btnRemove').click(removeLanguages);
     $('#btnAdd').click(addLanguages);
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
 });
-
 
 function removeLanguages(ui,evt)
 {
@@ -32,29 +31,5 @@ function UpdateRestrictedLanguages(){
        aString=aString+' '+$(this).val();
     });
     $('#restrictToLanguages').val($.trim(aString));
-}
-
-function Emailchange(ui,evt)
-{
-    smtp_enabled=($("#emailmethod").val()=='smtp');
-    if (smtp_enabled==true) {smtp_enabled='';}
-    else {smtp_enabled='disabled';}
-    $("#emailsmtphost").prop('disabled',smtp_enabled);
-    $("#emailsmtpuser").prop('disabled',smtp_enabled);
-    $("#emailsmtppassword").prop('disabled',smtp_enabled);
-    $("#emailsmtpssl").prop('disabled',smtp_enabled);
-    $("#emailsmtpdebug").prop('disabled',smtp_enabled);
-}
-
-function Emailchanges(ui,evt)
-{
-    bounce_disabled=($("#bounceaccounttype").val()=='off');
-    if (bounce_disabled==true) {bounce_disabled='disabled';}
-    else {bounce_disabled='';}
-    $("#bounceaccounthost").prop('disabled',bounce_disabled);
-    $("#bounceaccountuser").prop('disabled',bounce_disabled);
-    $("#bounceaccountpass").prop('disabled',bounce_disabled);
-    $("#bounceencryption").prop('disabled',bounce_disabled);
-    $("#bounceaccountmailbox").prop('disabled',bounce_disabled);
 }
 

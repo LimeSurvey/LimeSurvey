@@ -3645,6 +3645,10 @@ function do_shortfreetext($ia)
 
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
 
+        $aGlobalMapScriptVar= array(
+            'geonameuser'=>getGlobalSetting('GeoNamesUsername'),// Did we need to urlencode ?
+            );
+        Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar),CClientScript::POS_HEAD);
         App()->getClientScript()->registerPackage('leaflet');
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."typeahead.bundle.js");// Must be replaced by jqueryui.autocomplete
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
