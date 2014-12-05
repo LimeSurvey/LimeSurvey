@@ -176,13 +176,12 @@
 
                         if ($language == $baselang && count($questlangs) > 1)
                         {
+                        echo '<li>';
+                        echo CHtml::label($clang->gT('Use same default value across languages:'), 'samedefault'); // use gT - eT is not working, causes a wrong replacement in label
+                        echo CHtml::checkBox('samedefault', $questionrow['same_default']);
+                        echo '</li>';
                         ?>
-                        <li>
-                            <label for='samedefault'>
-                                <?php $clang->eT('Use same default value across languages:') ?>
-                            </label>
-                            <input type='checkbox' name='samedefault' id='samedefault'<?php $questionrow['same_default'] ? ' checked="checked"' : '' ?> />
-                        </li>
+
                         <?php
                         }
                     ?>
