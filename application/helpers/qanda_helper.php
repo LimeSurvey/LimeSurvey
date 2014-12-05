@@ -3995,7 +3995,7 @@ function do_array_5point($ia)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
     $caption=gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. ");
@@ -4165,7 +4165,7 @@ function do_array_10point($ia)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
     $caption=gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. ");
@@ -4295,7 +4295,7 @@ function do_array_yesnouncertain($ia)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
     $caption=gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. ");
@@ -4452,7 +4452,7 @@ function do_array_increasesamedecrease($ia)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
     $caption=gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. ");
@@ -4612,7 +4612,7 @@ function do_array($ia)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -4958,7 +4958,7 @@ function do_array_multitext($ia)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -5343,7 +5343,7 @@ function do_array_multiflexi($ia)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
@@ -5706,7 +5706,7 @@ function do_array_multiflexi($ia)
 function do_arraycolumns($ia)
 {
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
     $caption=gT("An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. ");
@@ -5857,7 +5857,7 @@ function do_array_dual($ia)
 
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
-    $aMandatoryViolationSubQ=$aLastMoveResult['mandViolation'] ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
+    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
     $extraclass ="";
