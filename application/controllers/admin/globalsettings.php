@@ -71,7 +71,6 @@ class GlobalSettings extends Survey_Common_Action
                              'admin/user/sa/adduser'=>'admin/user/sa/index',
                              'admin/user/sa/setusertemplates'=>'admin/user/sa/index',
                              'admin/user/setusertemplates'=>'admin/user/sa/index'
-
                             );
         $refurl= str_replace(array_keys($aReplacements),array_values($aReplacements),$refurl);
         Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
@@ -119,6 +118,18 @@ class GlobalSettings extends Survey_Common_Action
             $this->getController()->redirect(array('/admin'));
         }
         Yii::app()->loadHelper('surveytranslator');
+
+        $iPDFFontSize = sanitize_int(App()->request->getPost('pdffontsize'));
+        if ($iPDFFontSize < 1)
+        {
+            $iPDFFontSize = 9;
+        }
+
+        $iPDFLogoWigth = sanitize_int(App()->request->getPost('pdflogowidth'));
+        if ($iPDFLogoWigth < 1)
+        {
+            $iPDFLogoWigth = 50;
+        }
 
         $maxemails = (int)App()->request->getPost('maxemails');
         if ($maxemails < 1) {
@@ -196,6 +207,11 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('GeoNamesUsername', App()->request->getPost('GeoNamesUsername'));
         setGlobalSetting('googleMapsAPIKey', App()->request->getPost('googleMapsAPIKey'));
         setGlobalSetting('ipInfoDbAPIKey', App()->request->getPost('ipInfoDbAPIKey'));
+        setGlobalSetting('pdffontsize', $iPDFFontSize);
+        setGlobalSetting('pdfshowheader', App()->request->getPost('pdfshowheader'));
+        setGlobalSetting('pdflogowidth', $iPDFLogoWigth);
+        setGlobalSetting('pdfheadertitle', App()->request->getPost('pdfheadertitle'));
+        setGlobalSetting('pdfheaderstring', App()->request->getPost('pdfheaderstring'));
         setGlobalSetting('googleanalyticsapikey',App()->request->getPost('googleanalyticsapikey'));
         setGlobalSetting('googletranslateapikey',App()->request->getPost('googletranslateapikey'));
         setGlobalSetting('force_ssl', App()->request->getPost('force_ssl'));
