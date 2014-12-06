@@ -268,6 +268,34 @@
                 <li><label for="showqnumcode"><?php eT('Show question number and/or question code'); ?></label>
                     <?php echo CHtml::dropDownList('showqnumcode',getGlobalSetting('showqnumcode'),array('choose'=>gT('Survey admin can choose'),'show'=>gT('Show both'),'number'=>gT('Show question number only'),'code'=>gT('Show question code only'),'none'=>gT('Hide both'))) ?>
                 </li>
+                <li><label for='pdffontsize'><?php eT("Font size of answers export PDFs"); ?></label>
+                    <input type='text' size='5' id='pdffontsize' name='pdffontsize' value="<?php echo htmlspecialchars(getGlobalSetting('pdffontsize')); ?>" />
+                </li>
+                <li><label for='pdfshowheader'><?php eT("Show header in answers export PDFs?") ; ?></label>
+                    <select id='pdfshowheader' name='pdfshowheader'>
+                        <option value='Y'
+                            <?php if (getGlobalSetting('pdfshowheader') == "Y") { ?>
+                                selected='selected'
+                                <?php } ?>
+                            ><?php eT("Yes") ; ?>
+                        </option>
+                        <option value='N'
+                            <?php if (getGlobalSetting('pdfshowheader') != "Y") { ?>
+                                selected='selected'
+                                <?php } ?>
+                            ><?php eT("No") ; ?>
+                        </option>
+                    </select>
+                </li>
+                <li><label for='pdflogowidth'><?php eT("Wigth of PDF header logo"); ?></label>
+                    <input type='text' size='5' id='pdflogowidth' name='pdflogowidth' value="<?php echo htmlspecialchars(getGlobalSetting('pdflogowidth')); ?>" />
+                </li>
+                <li><label for='pdfheadertitle'><?php eT("PDF header title (if empty, site name will be used)"); ?></label>
+                    <input type='text' id='pdfheadertitle' size='50' maxlength='256' name='pdfheadertitle' value="<?php echo htmlspecialchars(getGlobalSetting('pdfheadertitle')); ?>" />
+                </li>
+                <li><label for='pdfheaderstring'><?php eT("PDF header string (if empty, survey name will be used)"); ?></label>
+                    <input type='text' id='pdfheaderstring' size='50' maxlength='256' name='pdfheaderstring' value="<?php echo htmlspecialchars(getGlobalSetting('pdfheaderstring')); ?>" />
+                </li>
             </ul>
         </div>
         <div id='language'>

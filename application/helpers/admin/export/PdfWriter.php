@@ -11,7 +11,6 @@ class PdfWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         $pdforientation=Yii::app()->getConfig('pdforientation');
-        $this->clang = new limesurvey_lang($sLanguageCode);
 
         if ($oOptions->output=='file')
         {
@@ -25,7 +24,9 @@ class PdfWriter extends Writer
 
         // create new PDF document
         $this->pdf = new pdf();
+        $this->surveyName = $survey->languageSettings['surveyls_title'];
         $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
+        $this->pdf->addHeader($aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);
         $this->pdf->AddPage();
         $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
         $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
@@ -33,7 +34,6 @@ class PdfWriter extends Writer
         $this->separator="\t";
 
         $this->rowCounter = 0;
-        $this->surveyName = $survey->languageSettings['surveyls_title'];
         $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings['surveyls_description']);
     }
 
@@ -43,7 +43,7 @@ class PdfWriter extends Writer
         if ($oOptions->answerFormat == 'short')
         {
             $pdfstring = '';
-            $this->pdf->titleintopdf($this->clang->gT("Survey response"));
+            $this->pdf->titleintopdf(gT("Survey response"));
             foreach ($values as $value)
             {
                 $pdfstring .= $value.' | ';
