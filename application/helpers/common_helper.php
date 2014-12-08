@@ -797,7 +797,7 @@ function getQuestionClass($input)
 */
 function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="",$column_style=null)
 {
-    // Fix existing coluln style, disallow it if global config is null
+    // Fix existing column style, disallow it if global config is null
     if (!in_array($column_style,array('css','ul','table')) || is_null(Yii::app()->getConfig('column_style')))
         $column_style = Yii::app()->getConfig('column_style');
     if ( !in_array($column_style,array('css','ul','table')) && !is_null($column_style) )
