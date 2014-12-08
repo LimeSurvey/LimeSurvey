@@ -795,23 +795,26 @@ function getQuestionClass($input)
 * 'ul' is the default because it's the best possible compromise
 * between semantic markup and visual layout.
 */
-function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
+function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="",$column_style=null)
 {
-
-    $column_style = Yii::app()->getConfig('column_style');
+    // Fix existing coluln style, disallow it if global config is null
+    if (!in_array($column_style,array('css','ul','table')) || is_null(Yii::app()->getConfig('column_style')))
+        $column_style = Yii::app()->getConfig('column_style');
     if ( !in_array($column_style,array('css','ul','table')) && !is_null($column_style) )
     {
         $column_style = 'ul';
-    };
-    if(!is_null($column_style) && $columns!=1) // Add a global class for all column.
-    {
-        $wrapperclass.= " colstyle-{$column_style}";
     }
+
     if($columns < 2)
     {
         $column_style = null;
         $columns = 1;
     }
+    elseif(!is_null($column_style)) // Add a global class for all column.
+    {
+        $wrapperclass.= " colstyle-{$column_style}";
+    }
+
 
     if(($columns > $answer_count) && $answer_count>0)
     {
@@ -2953,13 +2956,28 @@ function questionAttributes($returnByName=false)
         $qattributes["display_columns"]=array(
         "types"=>"LM",
         'category'=>gT('Display'),
-        'sortorder'=>100,
+        'sortorder'=>120,
         'inputtype'=>'integer',
         'default'=>'1',
         'min'=>'1',
         'max'=>'100',
         "help"=>gT('The answer options will be distributed across the number of columns set here'),
         "caption"=>gT('Display columns'));
+
+        $qattributes["column_style"]=array(
+        "types"=>"LM",
+        'category'=>gT('Display'),
+        'sortorder'=>121,
+        'inputtype'=>'singleselect',
+        'default'=>'',
+        'options'=>array(
+            ""=>gT('Default (use internal configuration).'),
+            "css"=>gT('Css : use css only method'),
+            "ul"=>gT('Ul/li : using multiple floated unordered lists'),
+            "table"=>gT('table : using conventional tables based layout'),
+        ),
+        "help"=>gT('Defines how columns are rendered for survey answers (if display columns are used).'),
+        "caption"=>gT('Column style'));
 
         $qattributes["display_rows"]=array(
         "types"=>"QSTU",

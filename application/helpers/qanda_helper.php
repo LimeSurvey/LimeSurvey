@@ -1722,7 +1722,7 @@ function do_list_radio($ia)
     if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
-    $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
+    $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item",$aQuestionAttributes['column_style']);
     $answer = $wrapper['whole-start'];
 
     //Time Limit Code
@@ -2295,7 +2295,7 @@ function do_multiplechoice($ia)
         $anscount++; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
     }
 
-    $wrapper = setupColumns($dcols, $anscount,"subquestions-list questions-list checkbox-list","question-item answer-item checkbox-item");
+    $wrapper = setupColumns($dcols, $anscount,"subquestions-list questions-list checkbox-list","question-item answer-item checkbox-item",$aQuestionAttributes['column_style']);
 
     $answer = '<input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount."\" />\n\n".$wrapper['whole-start'];
 
