@@ -125,10 +125,10 @@ class GlobalSettings extends Survey_Common_Action
             $iPDFFontSize = 9;
         }
 
-        $iPDFLogoWigth = sanitize_int(App()->request->getPost('pdflogowidth'));
-        if ($iPDFLogoWigth < 1)
+        $iPDFLogoWidth = sanitize_int(App()->request->getPost('pdflogowidth'));
+        if ($iPDFLogoWidth < 1)
         {
-            $iPDFLogoWigth = 50;
+            $iPDFLogoWidth = 50;
         }
 
         $maxemails = (int)App()->request->getPost('maxemails');
@@ -209,7 +209,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('ipInfoDbAPIKey', App()->request->getPost('ipInfoDbAPIKey'));
         setGlobalSetting('pdffontsize', $iPDFFontSize);
         setGlobalSetting('pdfshowheader', App()->request->getPost('pdfshowheader'));
-        setGlobalSetting('pdflogowidth', $iPDFLogoWigth);
+        setGlobalSetting('pdflogowidth', $iPDFLogoWidth);
         setGlobalSetting('pdfheadertitle', App()->request->getPost('pdfheadertitle'));
         setGlobalSetting('pdfheaderstring', App()->request->getPost('pdfheaderstring'));
         setGlobalSetting('googleanalyticsapikey',App()->request->getPost('googleanalyticsapikey'));
