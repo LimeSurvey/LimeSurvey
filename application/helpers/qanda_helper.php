@@ -3644,54 +3644,46 @@ function do_shortfreetext($ia)
             $strBuild .= "5";
 
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
-
+        tracevar($currentLatLong);
         $aGlobalMapScriptVar= array(
-            'geonameuser'=>getGlobalSetting('GeoNamesUsername'),// Did we need to urlencode ?
+            'geonameUser'=>getGlobalSetting('GeoNamesUsername'),// Did we need to urlencode ?
+            'geonameLang'=>Yii::app()->language,
             );
-        Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar),CClientScript::POS_HEAD);
-        App()->getClientScript()->registerPackage('leaflet');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."typeahead.bundle.js");// Must be replaced by jqueryui.autocomplete
+        $aThisMapScriptVar=array(
+            'zoomLevel'=>$aQuestionAttributes['location_mapzoom'],
+            'latitude'=>$currentLatLong[0],
+            'longitude'=>$currentLatLong[1],
+            
+        );
+        Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
+        Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar),CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
 
         $answer = "
         <div class=\"question answer-item geoloc-item {$extraclass}\">
-        <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
+            <input type=\"hidden\"  name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\"><!-- No javascript need a way to answer -->
+            <input type=\"hidden\" class=\"location\" name=\"$ia[1]_c\" id=\"answer$ia[1]_c\" value=\"$currentLocation\" />
 
-        <input type=\"hidden\" class=\"text location ".$kpclass."\" type=\"text\" style=\"width: 90%;\" name=\"$ia[1]_c\"
-        id=\"answer$ia[1]_c\" value=\"$currentLocation\" />
+            <ul class=\"coordinates-list\">
+                <li class=\"coordinate-item\">".gt("Latitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c1\" id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" /></li>
+                <li class=\"coordinate-item\">".gt("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c2\" id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" /></li>
+            </ul>
 
-		<p>
-        Lat:<input class=\"coords\" type=\"text\" style=\"width: 150px;\" name=\"$ia[1]_c1\"
-        id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" />
-		&nbsp;&nbsp;&nbsp;&nbsp;
-        Lng:<input class=\"coords\" type=\"text\" style=\"width: 150px;\" name=\"$ia[1]_c2\"
-        id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" />
+            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" >
+            <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\" class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
 
-        <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
-        value = \"{$strBuild}\" >
-        <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
-        class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
-
-		<div>
-			<div class=\"checkbox\" style=\"position: relative; float: left; margin:5px\">
-				<label>
-					<input type=\"checkbox\" id=\"restrictToExtent\"> Restrict search place to map extent
-				</label>
-			</div>
-			<div class=\"geoname_search\" >
-				<form  role=\"search\">
-				  <div class=\"form-group has-feedback navbar-right\">
-					  <input id=\"searchbox\" type=\"text\" placeholder=\"Search\" class=\"form-control\">
-					  <span id=\"searchicon\" class=\"fa fa-search form-control-feedback\" style=\"top:-6px\"></span>
-				  </div>
-				</form>
-			</div>
-		</div>
-
-		<div id=\"map\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\">
-		</div>
-		";
+            <div>
+                <div class=\"geoname_restrict\">
+                    <input type=\"checkbox\" id=\"restrictToExtent_{$ia[1]}\"> <label for=\"restrictToExtent_{$ia[1]}\">".gt("Restrict search place to map extent")."</label>
+                </div>
+                <div class=\"geoname_search\" >
+                    <input id=\"searchbox_{$ia[1]}\" placeholder=\"".gt("Search")."\" width=\"15\">
+                </div>
+            </div>
+            <div id=\"map_{$ia[1]}\" style=\"width: 100%; height: {$aQuestionAttributes['location_mapheight']}px;\">
+        </div>
+        ";
 
 
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
@@ -3732,15 +3724,18 @@ function do_shortfreetext($ia)
 
 function getLatLongFromIp($sIPAddress){
     $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
-    $oXML = simplexml_load_file("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml");
-    if ($oXML->{'statusCode'} == "OK"){
-        $lat = (float)$oXML->{'latitude'};
-        $lng = (float)$oXML->{'longitude'};
+    if($ipInfoDbAPIKey)// ipinfodb.com need a key
+    {
+        $oXML = simplexml_load_file("http://api.ipinfodb.com/v3/ip-city/?key=$ipInfoDbAPIKey&ip=$sIPAddress&format=xml");
+        if ($oXML->{'statusCode'} == "OK"){
+            $lat = (float)$oXML->{'latitude'};
+            $lng = (float)$oXML->{'longitude'};
 
-        return(array($lat,$lng));
+            return(array($lat,$lng));
+        }
+        else
+            return false;
     }
-    else
-        return false;
 }
 
 

@@ -23,12 +23,6 @@ $(document).ready(function()
 				osmaps[''+question] = OSGeoInitialize(question,latLng);
 			}
 		}
-		
-		// Highlight search box text on click 
-		$("#searchbox").click(function () {
-		  $(this).select();
-		});
-		
 	});
 
 });
@@ -49,44 +43,48 @@ function isvalidCoord(val){
 
 // OSMap functions
 function OSGeoInitialize(question,latLng){
-		
+		var name = question.substr(0,question.length - 2);
 		// tiles layers def
-		
+		var MapOption=LSmaps[name];
+		if(isNaN(MapOption.latitude) || MapOption.latitude==""){
+			MapOption.latitude=0;
+		}
+		if(isNaN(MapOption.longitude) || MapOption.longitude==""){
+			MapOption.longitude=0;
+		}
 		var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
-		  maxZoom: 19,
-		  subdomains: ["otile1", "otile2", "otile3", "otile4"],
-		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+			maxZoom: 19,
+			subdomains: ["otile1", "otile2", "otile3", "otile4"],
+			attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		});
 		var mapquestOAM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-		  maxZoom: 10,
-		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-		  attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+			maxZoom: 10,
+			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
+			attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		});
 		var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-		  maxZoom: 10,
-		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
+			maxZoom: 10,
+			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
 		}), L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
-		  maxZoom: 19,
-		  subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-		  attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">. Map data (c) <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+			maxZoom: 19,
+			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
+			attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
 		})]);
 
 		var baseLayers = {
-		  "Street Map": mapquestOSM,
-		  "Aerial Imagery": mapquestOAM,
-		  "Imagery with Streets": mapquestHYB
+			"Street Map": mapquestOSM,
+			"Aerial Imagery": mapquestOAM,
+			"Imagery with Streets": mapquestHYB
 		};
 		var overlays = {
-		};	
-		
-		var map = L.map("map", { 
-			zoom:1,
+		};
+		var map = L.map("map_"+name, { 
+			zoom:MapOption.zoomLevel,
 			minZoom:1,
-			center: [15, 15] ,
+			center: [MapOption.latitude, MapOption.longitude] ,
 			maxBounds: ([[-90, -180],[90, 180]]),
 			layers: [mapquestOSM]
 		});
-		
 		//function zoomExtent(){ // todo: restrict to rect ?
 		//	map.setView([15, 15],1);
 		//}
@@ -115,7 +113,7 @@ function OSGeoInitialize(question,latLng){
 			lat=-9999; lng=-9999;
 		}
 		
-		marker = new L.marker([lat,lng], {title:'Current Location',id:1,draggable:'true'});
+		var marker = new L.marker([lat,lng], {title:'Current Location',id:1,draggable:'true'});
 		map.addLayer(marker);
 		
 		var layerControl = L.control.layers(baseLayers, overlays, {
@@ -135,127 +133,96 @@ function OSGeoInitialize(question,latLng){
 				var position = marker.getLatLng();
 				UI_update(position.lat,position.lng)
 		});
-		
-		var name = question.substr(0,question.length - 2);
-		
+
 		function UI_update(lat,lng){
 			if (isvalidCoord(lat) && isvalidCoord(lng)) {
 				//$("#answer"+question).val(Math.round(lat*100000)/100000 + " " + Math.round(lng*100000)/100000);
-				$("#answer"+name).val(Math.round(lat*100000)/100000 + ";" + Math.round(lng*100000)/100000);
+				$("#answer"+name).val(Math.round(lat*100000)/100000 + ";" + Math.round(lng*100000)/100000).trigger("keyup");
 				$("#answer_lat"+question).val(Math.round(lat*100000)/100000);
 				$("#answer_lng"+question).val(Math.round(lng*100000)/100000);
 			} else {
 				//$("#answer"+question).val("");
-				$("#answer"+name).val("");
+				$("#answer"+name).val("").trigger("keyup");
 				$("#answer_lat"+question).val("");
 				$("#answer_lng"+question).val("");
 			}
 			
 		}
 		
-		$('.coords').each(function() {
+		$('coords[name^='+name+']').each(function() {
 			// Save current value of element
 			$(this).data('oldVal', $(this));
-			
 			// Look for changes
 			$(this).bind("propertychange keyup input cut paste", function(event){
-			   // If value has changed...
-			   if ($(this).data('oldVal') != $(this).val()) {
-				// Updated stored value
-				$(this).data('oldVal', $(this).val());
-				
-				var newLat = $("#answer_lat"+question).val();
-				var newLng = $("#answer_lng"+question).val();
-				
-				if (isNumber(newLat) && isNumber(newLng)) {
-					$("#answer"+name).val(newLat + ";" + newLng);
-					marker.setLatLng(L.latLng(newLat,newLng));
-				} else {
-					$("#answer"+name).val("-- --");
-					marker.setLatLng(L.latLng(9999,9999));
-				}
-			  }
-			});
-		  });
-
-		 function isNumber(n){
-			return !isNaN(parseFloat(n)) && isFinite(n);
-		 }
-		  
-// ---------------------------------
-/* Typeahead search functionality */
-
-			var geonamesBH = new Bloodhound({
-			name: "GeoNames",
-			datumTokenizer: function (d) {
-			  return Bloodhound.tokenizers.whitespace(d.name);
-			},
-			queryTokenizer: Bloodhound.tokenizers.whitespace,
-			remote: {
-			  url: "http://api.geonames.org/searchJSON?username="+LSmap.geonameuser+"&featureClass=P&maxRows=5&name_startsWith=%QUERY",
-			  filter: function (data) {
-				return $.map(data.geonames, function (result) {
-				  return {
-					name: result.name + ", " + result.countryName,
-					lat: result.lat,
-					lng: result.lng,
-					source: "GeoNames"
-				  };
-				});
-			  },
-			  ajax: {
-				beforeSend: function (jqXhr, settings) {
-					if ($("#restrictToExtent").prop('checked')){
-						settings.url += "&east=" + osmaps[''+question] .getBounds().getEast() + "&west=" + osmaps[''+question] .getBounds().getWest() + "&north=" + osmaps[''+question] .getBounds().getNorth() + "&south=" + osmaps[''+question] .getBounds().getSouth();
+				// If value has changed...
+				if ($(this).data('oldVal') != $(this).val()) {
+					// Updated stored value
+					$(this).data('oldVal', $(this).val());
+					var newLat = $("#answer_lat"+question).val();
+					var newLng = $("#answer_lng"+question).val();
+					if (isNumber(newLat) && isNumber(newLng)) {
+						$("#answer"+name).val(newLat + ";" + newLng);
+						marker.setLatLng(L.latLng(newLat,newLng));
+					} else {
+						$("#answer"+name).val("-- --");
+						marker.setLatLng(L.latLng(9999,9999));
 					}
-					$("#searchicon").removeClass("fa-search").addClass("fa-refresh fa-spin");
-				},
-				complete: function (jqXHR, status) {
-					geonamesBH.clearRemoteCache(); //clear cache
-					$('#searchicon').removeClass("fa-refresh fa-spin").addClass("fa-search");
 				}
-			  }
+			});
+		});
+
+		function isNumber(n){
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+		$("#searchbox_"+name).autocomplete({
+			appendTo: $("#searchbox_"+name).parent(),
+			source: function( request, response ) {
+				$.ajax({
+					url: "http://api.geonames.org/searchJSON",
+					dataType: "jsonp",
+					data: {
+						username : LSmap.geonameUser,
+						featureClass : 'P',
+						maxRows : 5,
+						lang : LSmap.geonameLang,
+						name_startsWith: request.term
+					},
+					beforeSend : function(jqXHR, settings) {
+						if($("#restrictToExtent_"+name).prop('checked'))
+						{
+							settings.url += "&east=" + map.getBounds().getEast() + "&west=" + map.getBounds().getWest() + "&north=" + map.getBounds().getNorth() + "&south=" + map.getBounds().getSouth();
+						}
+					},
+					success: function( data ) {
+						response($.map(data.geonames, function(item) {
+						return {
+							label: item.name + ", " + item.countryName,
+							lat: item.lat,
+							lng: item.lng,
+							source: "GeoNames"
+							};
+						}));
+					}
+				});
 			},
-			limit: 10
-		  });
-
-			geonamesBH.initialize();
-
-		  /* instantiate the typeahead UI */
-		  $("#searchbox").typeahead({
 			minLength: 3,
-			highlight: true,
-			hint: false
-		  }, {
-			name: "GeoNames",
-			displayKey: "name",
-			source: geonamesBH.ttAdapter(),
-			templates: {
-			  header: "<h4 class='typeahead-header'><img src='styles-public/images/globe.png' width='25' height='25'>&nbsp;GeoNames</h4>"
+			select: function( event, ui ) {
+				if(ui.item.source=="GeoNames")
+				{
+					map.setView([ui.item.lat, ui.item.lng], 13);
+					marker.setLatLng([ui.item.lat, ui.item.lng]);
+					UI_update(ui.item.lat, ui.item.lng);
+				}
+			},
+			 open: function() { 
+				$( this ).addClass( "searching" );
+			},
+			close: function() {
+				$( this ).removeClass( "searching" );
 			}
-		  }).on("typeahead:selected", function (obj, datum) {
-			if (datum.source === "GeoNames") {
-			  osmaps[''+question].setView([datum.lat, datum.lng], 13);
-			  marker.setLatLng([datum.lat, datum.lng]);
-			  UI_update(datum.lat, datum.lng);
-			}
-			
-			if ($(".navbar-collapse").height() > 50) {
-			  $(".navbar-collapse").collapse("hide");
-			}
-		  }).on("typeahead:opened", function () {
-			$(".navbar-collapse.in").css("max-height", $(document).height() - $(".navbar-header").height());
-			$(".navbar-collapse.in").css("height", $(document).height() - $(".navbar-header").height());
-		  }).on("typeahead:closed", function () {
-			$(".navbar-collapse.in").css("max-height", "");
-			$(".navbar-collapse.in").css("height", "");
-		  });
-		  $(".twitter-typeahead").css("position", "static");
-		  $(".twitter-typeahead").css("display", "block");
-		//});
-//----------- end geonames		
-	
-    return map;
+		});
+
+	return map;
 
 }
 
