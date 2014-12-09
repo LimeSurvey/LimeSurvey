@@ -3599,57 +3599,53 @@ function do_shortfreetext($ia)
             $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
     }
-	elseif((int)($aQuestionAttributes['location_mapservice'])==100){
-        $mapservice = $aQuestionAttributes['location_mapservice'];
-        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-        $currentLatLong = null;
+    elseif((int)($aQuestionAttributes['location_mapservice'])==100)
+    {
 
-        $floatLat = -9999;
-        $floatLng = -9999;
+        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        $currentCenter = $currentLatLong = null;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
-        if (strlen($currentLocation) > 2){
+        if (strlen($currentLocation) > 2 && strpos($currentLocation,";"))
+        {
             $currentLatLong = explode(';',$currentLocation);
-            $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
+            $currentCenter = $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
         }
-        else{
-            if ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
-                $currentLatLong = getLatLongFromIp(getIPAddress());
-            if (!isset($currentLatLong) || $currentLatLong==false){
-                $floatLat = -9999;
-                $floatLng = -9999;
-                $LatLong = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
+        elseif ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
+        {
+            $currentCenter = $currentLatLong = getLatLongFromIp(getIPAddress());
+        }
 
-                if (isset($LatLong[0]) && isset($LatLong[1])){
-                    $floatLat = $LatLong[0];
-                    $floatLng = $LatLong[1];
-					$currentLatLong = array($floatLat,$floatLng);
-                }
-				else {
-					$currentLatLong = array("","");
-				}
+        // If it's not set : set the center to the default position, but don't set the marker
+        if (!$currentLatLong)
+        {
+            $currentLatLong = array("","");
+            $currentCenter = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
+            if(count($currentCenter)!=2)
+            {
+                $currentCenter = array("","");
             }
         }
         // 2 - city; 3 - state; 4 - country; 5 - postal
+        // TODO : move it to aThisMapScriptVar and use geoname reverse geocoding (http://www.geonames.org/export/reverse-geocoding.html)
         $strBuild = "";
-        if ($aQuestionAttributes['location_city'])
+        /*if ($aQuestionAttributes['location_city'])
             $strBuild .= "2";
         if ($aQuestionAttributes['location_state'])
             $strBuild .= "3";
         if ($aQuestionAttributes['location_country'])
             $strBuild .= "4";
         if ($aQuestionAttributes['location_postal'])
-            $strBuild .= "5";
+            $strBuild .= "5";*/
 
-        $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
         $aGlobalMapScriptVar= array(
             'geonameUser'=>getGlobalSetting('GeoNamesUsername'),// Did we need to urlencode ?
             'geonameLang'=>Yii::app()->language,
             );
         $aThisMapScriptVar=array(
             'zoomLevel'=>$aQuestionAttributes['location_mapzoom'],
-            'latitude'=>$currentLatLong[0],
-            'longitude'=>$currentLatLong[1],
+            'latitude'=>$currentCenter[0],
+            'longitude'=>$currentCenter[1],
             
         );
         App()->getClientScript()->registerPackage('leaflet');
@@ -3661,14 +3657,14 @@ function do_shortfreetext($ia)
         $answer = "
         <div class=\"question answer-item geoloc-item {$extraclass}\">
             <input type=\"hidden\"  name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\"><!-- No javascript need a way to answer -->
-            <input type=\"hidden\" class=\"location\" name=\"$ia[1]_c\" id=\"answer$ia[1]_c\" value=\"$currentLocation\" />
+            <input type=\"hidden\" class=\"location\" name=\"$ia[1]_c\" id=\"answer$ia[1]_c\" value=\"{$currentLatLong[0]} {$currentLatLong[1]}\" />
 
             <ul class=\"coordinates-list\">
                 <li class=\"coordinate-item\">".gt("Latitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c1\" id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" /></li>
                 <li class=\"coordinate-item\">".gt("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c2\" id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" /></li>
             </ul>
 
-            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" >
+            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" > 
             <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\" class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
 
             <div>
