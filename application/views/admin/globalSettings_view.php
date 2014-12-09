@@ -271,21 +271,12 @@
                 <li><label for='pdffontsize'><?php eT("Font size of answers export PDFs"); ?></label>
                     <input type='text' size='5' id='pdffontsize' name='pdffontsize' value="<?php echo htmlspecialchars(getGlobalSetting('pdffontsize')); ?>" />
                 </li>
-                <li><label for='pdfshowheader'><?php eT("Show header in answers export PDFs?") ; ?></label>
-                    <select id='pdfshowheader' name='pdfshowheader'>
-                        <option value='Y'
-                            <?php if (getGlobalSetting('pdfshowheader') == "Y") { ?>
-                                selected='selected'
-                                <?php } ?>
-                            ><?php eT("Yes") ; ?>
-                        </option>
-                        <option value='N'
-                            <?php if (getGlobalSetting('pdfshowheader') != "Y") { ?>
-                                selected='selected'
-                                <?php } ?>
-                            ><?php eT("No") ; ?>
-                        </option>
-                    </select>
+                <li><label for="pdfshowheader"><?php eT('Show header in answers export PDFs?'); ?></label>
+                    <?php echo CHtml::dropDownList('pdfshowheader', getGlobalSetting('pdfshowheader'), array(
+                        'Y' => gT("Yes"),
+                        'N' => gT("No")
+                    ));
+                    ?>
                 </li>
                 <li><label for='pdflogowidth'><?php eT("Wigth of PDF header logo"); ?></label>
                     <input type='text' size='5' id='pdflogowidth' name='pdflogowidth' value="<?php echo htmlspecialchars(getGlobalSetting('pdflogowidth')); ?>" />
