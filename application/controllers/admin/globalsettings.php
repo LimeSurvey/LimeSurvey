@@ -126,10 +126,10 @@ class GlobalSettings extends Survey_Common_Action
             $iPDFFontSize = 9;
         }
 
-        $iPDFLogoWigth = sanitize_int($_POST['pdflogowidth']);
-        if ($iPDFLogoWigth < 1)
+        $iPDFLogoWidth = sanitize_int($_POST['pdflogowidth']);
+        if ($iPDFLogoWidth < 1)
         {
-            $iPDFLogoWigth = 50;
+            $iPDFLogoWidth = 50;
         }
 
         $maxemails = $_POST['maxemails'];
@@ -208,7 +208,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
         setGlobalSetting('pdffontsize', $iPDFFontSize);
         setGlobalSetting('pdfshowheader', $_POST['pdfshowheader']);
-        setGlobalSetting('pdflogowidth', $iPDFLogoWigth);
+        setGlobalSetting('pdflogowidth', $iPDFLogoWidth);
         setGlobalSetting('pdfheadertitle', $_POST['pdfheadertitle']);
         setGlobalSetting('pdfheaderstring', $_POST['pdfheaderstring']);
         setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);
