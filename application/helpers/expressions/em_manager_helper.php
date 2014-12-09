@@ -1371,7 +1371,7 @@
                             foreach($subqs as $sq)
                             {
                                 $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute (see #08946)
+                                $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute
                                 if($type=="K")
                                     $subqValidSelector = $sq['jsVarName_on'];
                                 else
@@ -1398,7 +1398,7 @@
                             foreach($subqs as $sq)
                             {
                                 $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute (see #08665)
+                                $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute
                                 $subqValidSelector = $sq['jsVarName_on'];
                                 if (!is_null($sq_name)) {
                                     $sq_equs[] = $sq_equ;
@@ -1452,11 +1452,7 @@
                            foreach($subqs as $sq)
                             {
                                 $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                if(($qinfo['mandatory']=='Y')){
-                                    $sq_equs[] = '('.$sq_name.'!="INVALID")';
-                                }else{
-                                    $sq_equs[] = '('.$sq_name.'!="INVALID")';
-                                }
+                                $sq_equs[] = '('.$sq_name.'!="INVALID")';
                             }
                             if (!isset($validationEqn[$questionNum]))
                             {
@@ -1562,12 +1558,7 @@
                                     }
 
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-
-                                    if(($qinfo['mandatory']=='Y')){
-                                        $sq_name = '('. $sq_name . ' >= ' . $date_min . ')';
-                                    }else{
-                                        $sq_name = '(is_empty(' . $sq_name . ') || ('. $sq_name . ' >= ' . $date_min . '))';
-                                    }
+                                    $sq_name = '(is_empty(' . $sq_name . ') || ('. $sq_name . ' >= ' . $date_min . '))';
                                     $subqValidSelector = '';
                                     break;
                                 default:
@@ -1636,12 +1627,7 @@
                                     }
 
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-
-                                    if(($qinfo['mandatory']=='Y')){
-                                        $sq_name = '(is_empty(' . $date_max . ') || ('. $sq_name . ' <= ' . $date_max . '))';
-                                    }else{
-                                        $sq_name = '(is_empty(' . $sq_name . ') || is_empty(' . $date_max . ') || ('. $sq_name . ' <= ' . $date_max . '))';
-                                    }
+                                    $sq_name = '(is_empty(' . $sq_name . ') || is_empty(' . $date_max . ') || ('. $sq_name . ' <= ' . $date_max . '))';
                                     $subqValidSelector = '';
                                     break;
                                 default:
@@ -2579,11 +2565,7 @@
                                     $subqValidSelector = $sq['jsVarName_on'];
                                 case 'N': //NUMERICAL QUESTION TYPE
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    if(($qinfo['mandatory']=='Y')){
-                                            $sq_eqn = 'is_int('.$sq_name.')';
-                                    }else{
-                                            $sq_eqn = 'is_int('.$sq_name.') || is_empty('.$sq_name.')';
-                                    }
+                                    $sq_eqn = 'is_int('.$sq_name.') || is_empty('.$sq_name.')';
                                     break;
                                 default:
                                     break;
@@ -2631,11 +2613,7 @@
                                 foreach($subqs as $sq)
                                 {
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    if(($qinfo['mandatory']=='Y')){
-                                        $sq_equs[] = 'is_numeric('.$sq_name.')';
-                                    }else{
-                                        $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
-                                    }
+                                    $sq_equs[] = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';
                                 }
                                 if (!isset($validationEqn[$questionNum]))
                                 {
@@ -2658,7 +2636,7 @@
                                 foreach($subqs as $sq)
                                 {
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute (see #08665)
+                                    $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute
                                     $subqValidSelector = $sq['jsVarName_on'];
                                     if (!is_null($sq_name)) {
                                         $sq_equs[] = $sq_equ;
@@ -2690,7 +2668,7 @@
                                 foreach($subqs as $sq)
                                 {
                                     $sq_name = ($this->sgqaNaming)?substr($sq['jsVarName'],4).".NAOK":$sq['varName'].".NAOK";
-                                    $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute (see #08665)
+                                    $sq_equ = '( is_numeric('.$sq_name.') || is_empty('.$sq_name.') )';// Leave mandatory to mandatory attribute
                                     $subqValidSelector = $sq['jsVarName_on'];
                                     if (!is_null($sq_name)) {
                                         $sq_equs[] = $sq_equ;
