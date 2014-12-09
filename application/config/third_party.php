@@ -223,4 +223,13 @@ return array(
             'jqueryui'
         )
     ),
+    'leaflet' => array(
+        'baseUrl' => 'third_party/leaflet/',
+        'js' => array(
+            'leaflet.js'
+        ),
+        'css' => array(
+            'leaflet.css'
+        ),
+    ),
 );

@@ -3599,8 +3599,6 @@ function do_shortfreetext($ia)
             $question_text['help'] = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
     }
-	////----------------------------------------------------------------------------------- Leaflet Maps + geonames search
-
 	elseif((int)($aQuestionAttributes['location_mapservice'])==100){
         $mapservice = $aQuestionAttributes['location_mapservice'];
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
@@ -3644,7 +3642,6 @@ function do_shortfreetext($ia)
             $strBuild .= "5";
 
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
-        tracevar($currentLatLong);
         $aGlobalMapScriptVar= array(
             'geonameUser'=>getGlobalSetting('GeoNamesUsername'),// Did we need to urlencode ?
             'geonameLang'=>Yii::app()->language,
@@ -3655,6 +3652,7 @@ function do_shortfreetext($ia)
             'longitude'=>$currentLatLong[1],
             
         );
+        App()->getClientScript()->registerPackage('leaflet');
         Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar),CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
@@ -3692,7 +3690,6 @@ function do_shortfreetext($ia)
             . gT('Click to set the location or drag and drop the pin. You may may also enter coordinates').'</div>';
             $question_text['help'] = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
-		//----------------------------------------------------------------------------------- end leaflet+geonames
 	}
     else
     {
