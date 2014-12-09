@@ -164,8 +164,8 @@
             {
                 foreach($this->subscriptions[$eventName] as $subscription)
                 {
-                    if (!$event->isStopped() 
-                     && (empty($target) || in_array(get_class($subscription[0]), $target))) 
+                    if (!$event->isStopped()
+                     && (empty($target) || !is_a($subscription[0],'AuthPluginBase') || in_array(get_class($subscription[0]), $target)))
                     {
                         $subscription[0]->setEvent($event);
                         call_user_func($subscription);
