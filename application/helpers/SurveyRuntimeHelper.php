@@ -252,7 +252,7 @@ class SurveyRuntimeHelper {
         else
         {
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
-            if (!isset($_SESSION[$LEMsessid]['step'])) // || !$_SESSION[$LEMsessid]['step']) - don't do this for step0, else rebuild the session
+            if (!isset($_SESSION[$LEMsessid]['step']))
             {
                 buildsurveysession($surveyid);
                 $sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
@@ -264,11 +264,11 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['step'] = 0;
                 if ($surveyMode == 'survey')
                 {
-                    $move = "movenext"; // to force a call to NavigateForwards()
+                    LimeExpressionManager::JumpTo(1, false, false, true);
                 }
-                elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')                
+                elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
-                    $move = "movenext";
+                    LimeExpressionManager::JumpTo(1, false, false, true);
                     $_SESSION[$LEMsessid]['step']=1;
                 }
             }
