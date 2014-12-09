@@ -5388,7 +5388,7 @@
                     $message = '';
 
                     $LEM->currentQset = array();    // reset active list of questions
-                    $result = $LEM->_ValidateSurvey();
+                    $result = $LEM->_ValidateSurvey($force);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     $finished=false;
@@ -5621,7 +5621,7 @@
         * Check the entire survey
         * @return <type>
         */
-        private function _ValidateSurvey()
+        private function _ValidateSurvey($force=false)
         {
             $LEM =& $this;
 
@@ -5640,7 +5640,7 @@
             ///////////////////////////////////////////////////////
             for ($i=0;$i<$LEM->numGroups;++$i) {
                 $LEM->currentGroupSeq=$i;
-                $gStatus = $LEM->_ValidateGroup($i);
+                $gStatus = $LEM->_ValidateGroup($i,$force);
                 if (is_null($gStatus)) {
                     continue;   // invalid group, so skip it
                 }

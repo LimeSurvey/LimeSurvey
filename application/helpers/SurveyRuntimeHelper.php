@@ -264,11 +264,11 @@ class SurveyRuntimeHelper {
                 $_SESSION[$LEMsessid]['step'] = 0;
                 if ($surveyMode == 'survey')
                 {
-                    $move = "movenext"; // to force a call to NavigateForwards()
+                    LimeExpressionManager::JumpTo(1, false, false, true);
                 }
-                elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')                
+                elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
-                    $move = "movenext";
+                    LimeExpressionManager::JumpTo(1, false, false, true);
                     $_SESSION[$LEMsessid]['step']=1;
                 }
             }
