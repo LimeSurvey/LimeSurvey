@@ -59,6 +59,42 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 141126) to 2.05+ (build 141210) Dev 10, 2014
+-Updated feature: Answers export to PDF (user and admin gui) (Aestu)
+-New translation: Esperanto (Carsten Schmitz)
+-Fixed issue #9187: Default value edit page - Set value for all languages is not working (kairavesloot)
+-Fixed issue #9187: (kairavesloot)
+-Fixed issue #9255: Cannot import .lss file on MSSQL when certain text contents size limits are approached (Carsten Schmitz)
+-Fixed issue #9369: Mandatory type N fields are validated upon first submit (Denis Chenu)
+-Fixed issue #9372: RemoteControl export_responses breaks with some XML-RPC clients (Carsten Schmitz)
+-Fixed issue #9378: Auth plugin base : lowercase uppercase mix : Not loggued but no error (Denis Chenu)
+-Fixed issue #9379: DB error during installation when unsufficient permissions to create tables (Carsten Schmitz)
+-Fixed issue #9381: Bug when showing message of invalid token (Aestu)
+-Fixed issue #9389: Non mandatory array question type show 'error' header if there are one mandatory error (Denis Chenu)
+-Fixed issue #9395: All in one survey with mandatory array have errormandatory without submit (Denis Chenu)
+-Fixed issue: Array question type can show scroll bar (Denis Chenu)
+-Fixed issue: PDF logo was not found in all admin templates (Aestu)
+-Fixed issue: Question help text are not updated if update lang by url param (Denis Chenu)
+-Fixed issue: Wrong redirect URL after upload in template editor. (Yong Zhang)
+#Updated translation: Afrikaans by alistair4004
+#Updated translation: Albanian by Dorina1988, Helda
+#Updated translation: Basque by losimo, artasom
+#Updated translation: Chinese (Hong Kong) (Traditional) by achan, billych
+#Updated translation: Croatian by rovinj, pstrbenac
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han, atvoogt
+#Updated translation: Esperanto by Fabricio, sudastelaro
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by c_schmitz
+#Updated translation: Greek by kiolalis
+#Updated translation: Indonesian by ysulistya
+#Updated translation: Italian by Zeos
+#Updated translation: Kurdish (Sorani) by c_schmitz, Muhammed
+#Updated translation: Polish by elisa
+#Updated translation: Russian by ddrmoscow
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by naphatthakorn, vinate
+
 Changes from 2.05+ (build 141123) to 2.05+ (build 141126) Nov 26, 2014
 -Fixed issue #9140: VV-Import not working with MSSQL (Carsten Schmitz)
 -Fixed issue #9283: More than 255 characters can be entered into a short text question on Postgres and MSSQL which leads to an error (Carsten Schmitz)
