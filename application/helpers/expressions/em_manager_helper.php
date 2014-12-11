@@ -7030,10 +7030,10 @@
                         if ($sq['isExclusiveJS'] != '')
                         {
                             $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' };\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                             $relParts[] = "    }\n";
                             $relParts[] = "    else {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' };\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                             $relParts[] = "    }\n";
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -7045,23 +7045,23 @@
                             if ($sq['irrelevantAndExclusiveJS'] != '')
                             {
                                 $relParts[] = "    if ( " . $sq['irrelevantAndExclusiveJS'] . " ) {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' };\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                                 $relParts[] = "    }\n";
                                 $relParts[] = "    else {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' };\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                                 if ($afHide)
                                 {
                                     $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').relevanceOff();\n";
                                 }
                                 else
                                 {
-                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' };\n";
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                                 }
                                 $relParts[] = "    }\n";
                             }
                             else
                             {
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' };\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                             }
                         }
                         else
