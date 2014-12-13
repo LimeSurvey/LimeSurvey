@@ -1692,57 +1692,66 @@ function questionGetXMLStructure($xml,$gid,$qid)
 
 function tokensExport($iSurveyID)
 {
+    $sEmailFiter=trim(App()->request->getPost('filteremail'));
+    $iTokenStatus=App()->request->getPost('tokenstatus');
+    $iInvitationStatus=App()->request->getPost('invitationstatus');
+    $iReminderStatus=App()->request->getPost('reminderstatus');
+    $sTokenLanguage=App()->request->getPost('tokenlanguage');
+
+    $oSurvey=Survey::model()->findByPk($iSurveyID);
+    $bIsNotAnonymous= ($oSurvey->anonymized=='N' && $oSurvey->active=='Y');// db table exist (survey_$iSurveyID) ?
+
     $bquery = "SELECT * FROM {{tokens_$iSurveyID}} where 1=1";
     $databasetype = Yii::app()->db->getDriverName();
-    if (trim($_POST['filteremail'])!='')
+    if ($sEmailFiter!='')
     {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
         {
-            $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
+            $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$sEmailFiter.'%', true);
         }
         else
         {
-            $bquery .= ' and email like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
+            $bquery .= ' and email like '.dbQuoteAll('%'.$sEmailFiter.'%', true);
         }
     }
-    if ($_POST['tokenstatus']==1)
+    if ($iTokenStatus==1)
     {
         $bquery .= " and completed<>'N'";
     }
-    if ($_POST['tokenstatus']==2)
+    elseif ($iTokenStatus==2)
     {
         $bquery .= " and completed='N'";
-        if ($thissurvey['anonymized']=='N')
+        if ($bIsNotAnonymous)
         {
             $bquery .=" and token not in (select token from {{survey_$iSurveyID}} group by token)";
         }
     }
-    if ($_POST['tokenstatus']==3 && $thissurvey['anonymized']=='N')
+    if ($iTokenStatus==3 && $bIsNotAnonymous)
     {
         $bquery .= " and completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)";
     }
 
-    if ($_POST['invitationstatus']==1)
+    if ($iInvitationStatus==1)
     {
         $bquery .= " and sent<>'N'";
     }
-    if ($_POST['invitationstatus']==2)
+    if ($iInvitationStatus==2)
     {
         $bquery .= " and sent='N'";
     }
 
-    if ($_POST['reminderstatus']==1)
+    if ($iReminderStatus==1)
     {
         $bquery .= " and remindersent<>'N'";
     }
-    if ($_POST['reminderstatus']==2)
+    if ($iReminderStatus==2)
     {
         $bquery .= " and remindersent='N'";
     }
 
-    if ($_POST['tokenlanguage']!='')
+    if ($sTokenLanguage!='')
     {
-        $bquery .= " and language=".dbQuoteAll($_POST['tokenlanguage']);
+        $bquery .= " and language=".dbQuoteAll($sTokenLanguage);
     }
     $bquery .= " ORDER BY tid";
     Yii::app()->loadHelper('database');

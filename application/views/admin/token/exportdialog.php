@@ -32,7 +32,7 @@ if($resultr){
 }
 ?>
             </select></li>
-        <li><label for='filteremail' ><?php $clang->eT('Filter by email address'); ?></label><input type='email' id='filteremail' name='filteremail' /></li>
+        <li><label for='filteremail' title='<?php $clang->eT('Email address contains'); ?>' ><?php $clang->eT('Filter by email address'); ?></label><input type='text' id='filteremail' name='filteremail' /></li>
         <li>&nbsp;</li>
         <li><label for='tokendeleteexported' ><?php $clang->eT('Delete exported tokens'); ?></label><input type='checkbox' id='tokendeleteexported' name='tokendeleteexported' /> </li>
     </ul>
