@@ -397,7 +397,8 @@
                 'name' => $name,
                 'value' => $value,
                 'options' => array(
-                    'minimumResultsForSearch' => 1000
+                    'minimumResultsForSearch' => 1000,
+                    'dropdownAutoWidth'=> true
                 )
             );
             

@@ -1596,17 +1596,80 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
 
-        if (Yii::app()->request->getPost('submit'))
+        if (!is_null(Yii::app()->request->getPost('submit')))
         {
             Yii::app()->loadHelper("export");
             tokensExport($iSurveyId);
         }
         else
         {
-			$aData['resultr'] = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
-            $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+            //$aData['resultr'] = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
+            
             $aData['surveyid'] = $iSurveyId;
+            $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
+            $aData['sAction']=App()->createUrl("admin/tokens",array("sa"=>"exportdialog","surveyid"=>$iSurveyId));
+            $aData['aButtons']=array(
+                gT('Export tokens')=> array(
+                    'type'=>'submit',
+                    'name'=>'submit',
+                ),
+            );
+            $oSurvey=Survey::model()->findByPk($iSurveyId);
 
+            $aOptionsStatus=array('0'=>gt('All tokens'),'1'=>gT('Completed'),'2'=>gT('Not completed'));
+            if($oSurvey->anonymized=='N' && $oSurvey->active=='Y')
+            {
+                $aOptionsStatus['3']=gT('Not started');
+                $aOptionsStatus['4']=gT('Started but not yet completed');
+            }
+
+            $oTokenLanguages=Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
+            $aFilterByLanguage=array(''=>gt('All'));
+            foreach ($oTokenLanguages as $oTokenLanguage)
+            {
+                $sLanguageCode=sanitize_languagecode($oTokenLanguage->language);
+                $aFilterByLanguage[$sLanguageCode]=getLanguageNameFromCode($sLanguageCode,false);
+            }
+            $aData['aSettings']=array(
+                'tokenstatus'=>array(
+                    'type'=>'select',
+                    'label'=>gT('Survey status'),
+                    'options'=>$aOptionsStatus,
+                ),
+                'invitationstatus'=>array(
+                    'type'=>'select',
+                    'label'=>gT('Invitation status'),
+                    'options'=>array(
+                        '0'=>gt('All'),
+                        '1'=>gT('Invited'),
+                        '2'=>gT('Not invited'),
+                    ),
+                ),
+                'reminderstatus'=>array(
+                    'type'=>'select',
+                    'label'=>gT('Reminder status'),
+                    'options'=>array(
+                        '0'=>gt('All'),
+                        '1'=>gT('Reminder(s) sent'),
+                        '2'=>gT('No reminder(s) sent'),
+                    ),
+                ),
+                'tokenlanguage'=>array(
+                    'type'=>'select',
+                    'label'=>gT('Filter by language'),
+                    'options'=>$aFilterByLanguage,
+                ),
+                'filteremail'=>array(
+                    'type'=>'string',
+                    'label'=>gT('Filter by email address'),
+                    'help'=>gT('Email address contains the input.'),
+                ),
+                'tokendeleteexported'=>array(
+                    'type'=>'checkbox',
+                    'label'=>gT('Delete exported tokens'),
+                    'help'=>'Attention : the tokens are deleted from token table, you can not find it again.',
+                ),
+            );
             $this->_renderWrappedTemplate('token', array('tokenbar', 'exportdialog'), $aData);
         }
     }

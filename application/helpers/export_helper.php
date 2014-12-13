@@ -1717,15 +1717,15 @@ function tokensExport($iSurveyID)
     {
         $bquery .= " and completed<>'N'";
     }
-    if ($iTokenStatus==2)
+    elseif ($iTokenStatus==2)
     {
         $bquery .= " and completed='N'";
-        if ($bIsNotAnonymous=='N')
-        {
-            $bquery .=" and token not in (select token from {{survey_$iSurveyID}} group by token)";
-        }
     }
-    if ($iTokenStatus==3 && $bIsNotAnonymous=='N')
+    elseif($iTokenStatus==3 && $bIsNotAnonymous)
+    {
+        $bquery .= " and completed='N' and token not in (select token from {{survey_$iSurveyID}} group by token)";
+    }
+    elseif($iTokenStatus==4 && $bIsNotAnonymous)
     {
         $bquery .= " and completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)";
     }
