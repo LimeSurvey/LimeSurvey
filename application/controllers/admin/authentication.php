@@ -110,14 +110,14 @@ class Authentication extends Survey_Common_Action
                  
         /* Adding beforeLogout event */
         $beforeLogout = new PluginEvent('beforeLogout');
-        App()->getPluginManager()->dispatchEvent($beforeLogout, array($plugin));
+        App()->getPluginManager()->dispatchEvent($beforeLogout);
 
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
 
         /* Adding afterLogout event */
         $event = new PluginEvent('afterLogout');
-        App()->getPluginManager()->dispatchEvent($event, array($plugin));
+        App()->getPluginManager()->dispatchEvent($event);
         
         $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }

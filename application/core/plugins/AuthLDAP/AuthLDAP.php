@@ -108,16 +108,6 @@ class AuthLDAP extends AuthPluginBase
             ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label><input name='password' id='password' type='password' size='40' maxlength='40' value='' />"));
     }
 
-    public function afterLoginFormSubmit()
-    {
-        // Here we handle post data        
-        $request = $this->api->getRequest();
-        if ($request->getIsPostRequest()) {
-            $this->setUsername( $request->getPost('user'));
-            $this->setPassword($request->getPost('password'));
-        }
-    }
-    
     /**
      * Modified getPluginSettings since we have a select box that autosubmits
      * and we only want to show the relevant options.
@@ -166,6 +156,13 @@ class AuthLDAP extends AuthPluginBase
 
     public function newUserSession()
     {
+        // Do nothing if this user is not Authdb type
+        $identity = $this->getEvent()->get('identity');
+        if ($identity->plugin != 'AuthLDAP')
+        {
+            return;
+        }
+
         // Here we do the actual authentication       
         $username = $this->getUsername();
         $password = $this->getPassword();
