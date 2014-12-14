@@ -72,7 +72,7 @@ class Save {
         ."\t//-->\n"
         ."\t</script>\n\n";
 
-        echo CHtml::form(array("/survey/index"), 'post')."\n";
+        echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post')."\n";
 
         //PRESENT OPTIONS SCREEN
         if (isset($errormsg) && $errormsg != "")
@@ -81,7 +81,6 @@ class Save {
         }
 		echo templatereplace(file_get_contents($sTemplatePath."save.pstpl"),array(),$redata);
         //END
-        echo "<input type='hidden' name='sid' value='$surveyid' />\n";
         echo "<input type='hidden' name='thisstep' value='$thisstep' />\n";
         echo CHtml::hiddenField('token',$clienttoken)."\n";
         echo "<input type='hidden' name='saveprompt' value='Y' />\n";
