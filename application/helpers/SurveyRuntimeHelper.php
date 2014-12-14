@@ -314,13 +314,20 @@ class SurveyRuntimeHelper {
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, true, false, true);
                 //$backpopup=gT("Clear all need confirmation.");
             }
-            if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
+            if (isset($move))
             {
-                $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step'];
+                if(!in_array($move,array("clearall","changelang","saveall","reload")))
+                    $_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step'];
+                else // Accepted $move without error
+                    $_SESSION[$LEMsessid]['prevstep']= $move;
+            }
+            else
+            {
+                //$_SESSION[$LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
             }
             if (!isset($_SESSION[$LEMsessid]['prevstep']))
             {
-                $_SESSION[$LEMsessid]['prevstep']=-1;   // this only happens on re-load
+                $_SESSION[$LEMsessid]['prevstep']=$_SESSION[$LEMsessid]['step']-1;   // this only happens on re-load
             }
 
             if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
@@ -451,7 +458,7 @@ class SurveyRuntimeHelper {
                 $cSave = new Save();
             }
            if ($thissurvey['active'] == "Y" && Yii::app()->request->getPost('saveall')) // Don't test if save is allowed
-            {
+           {
                 $bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid);
                 // must do this here to process the POSTed values
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false);   // by jumping to current step, saves data so far
