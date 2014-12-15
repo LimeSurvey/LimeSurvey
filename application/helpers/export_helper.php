@@ -434,7 +434,8 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
             $fieldtype = 'A';
             $val_size = 255;
         } elseif ($fieldname == 'lastpage') {
-            $hide = 1;
+            $fieldtype = 'F';
+            $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) pages
         }
 
         #Get qid (question id)
