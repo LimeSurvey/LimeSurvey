@@ -69,7 +69,7 @@ class index extends CAction {
         $thisstep = $param['thisstep'];
         $move=getMove();
         Yii::app()->setConfig('move',$move);
-        $clienttoken = $param['token'];
+        $clienttoken = trim($param['token']);
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
         if (is_null($thissurvey) && !is_null($surveyid)) $thissurvey = getSurveyInfo($surveyid);
 
@@ -314,7 +314,7 @@ class index extends CAction {
             }
 
             if ($errormsg == "") {
-                LimeExpressionManager::SetDirtyFlag();  
+                LimeExpressionManager::SetDirtyFlag();
                 buildsurveysession($surveyid);
                 if (loadanswers()){
                     Yii::app()->setConfig('move','movenext');
@@ -391,7 +391,7 @@ class index extends CAction {
                     {
                         $sError = $clang->gT("This invitation is not valid anymore.");
                     }
-                    else // This can not happen 
+                    else // This can not happen
                     {
                         $sError = $clang->gT("This is a controlled survey. You need a valid token to participate.");
                     }
@@ -599,7 +599,7 @@ class index extends CAction {
         foreach(array('lang','action','newtest','qid','gid','sid','loadname','loadpass','scid','thisstep','move','token') as $sNeededParam)
         {
             $param[$sNeededParam]=returnGlobal($sNeededParam,true);
-        } 
+        }
 
         return $param;
     }
