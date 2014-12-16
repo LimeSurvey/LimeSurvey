@@ -200,7 +200,7 @@ class pdf extends TCPDF {
    * @var int
    * @access private
    */
-  private $ibaseAnswerFontSize = 12;
+  private $_ibaseAnswerFontSize = 12;
 
   /**
    * Cell height for answer PDF export
@@ -208,7 +208,15 @@ class pdf extends TCPDF {
    * @var int
    * @access private
    */
-  private $iCellHeight = 6;
+  private $_iCellHeight = 6;
+
+  /**
+   * Survey Information (preventing from passing to methods every time)
+   *
+   * @var array
+   * @access private
+   */
+  private $_aSurveyInfo = array();
 
   /**
    * Set _config for pdf
@@ -621,23 +629,24 @@ class pdf extends TCPDF {
   /**
    *
    * Create Answer PDF document, set metadata and set title
+   * @param $aSurveyInfo - Survey Information (preventing from passing to methods every time)
    * @param $aPdfLanguageSettings - Pdf language settings
    * @param $sSiteName - LimeSurvey site name (header and metadata)
-   * @param $sLanguage - Survey language
    * @param $sSurveyName - Survey name (header, metadata and title),
    * @param $sDefaultHeaderString - TCPDF header string
    * @return unknown_type
    */
-  function initAnswerPDF($aPdfLanguageSettings, $sSiteName, $sLanguage, $sSurveyName, $sDefaultHeaderString)
+  function initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, $sSiteName, $sSurveyName, $sDefaultHeaderString)
   {
+    $this->_aSurveyInfo = $aSurveyInfo;
     $this->SetAuthor($sSiteName);
     $this->SetTitle($sSurveyName);
     $this->SetSubject($sSurveyName);
     $this->SetKeywords($sSurveyName);
 
     $this->SetFont($aPdfLanguageSettings['pdffont']);
-    $this->ibaseAnswerFontSize = $aPdfLanguageSettings['pdffontsize'];
-    $this->iCellHeight = ceil($this->ibaseAnswerFontSize / 2);
+    $this->_ibaseAnswerFontSize = $aPdfLanguageSettings['pdffontsize'];
+    $this->_iCellHeight = ceil($this->_ibaseAnswerFontSize / 2);
     $this->setLanguageArray($aPdfLanguageSettings['lg']);
 
     $this->addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString);
@@ -647,7 +656,7 @@ class pdf extends TCPDF {
     if(!empty($sSurveyName))
     {
         $this->ln(1);
-        $this->SetFontSize($this->ibaseAnswerFontSize + 6);
+        $this->SetFontSize($this->_ibaseAnswerFontSize + 6);
         $this->MultiCell('','',$sSurveyName,'','C',0);
         $this->ln(6);
     }
@@ -672,8 +681,8 @@ class pdf extends TCPDF {
       if ($sHeaderString == '') $sHeaderString = $sDefaultHeaderString;
 
       $this->SetHeaderData($sLogoFileName, Yii::app()->getConfig('pdflogowidth'), $sHeaderTitle, $sHeaderString);
-      $this->SetHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', $this->ibaseAnswerFontSize - 2));
-      $this->SetFooterFont(Array($aPdfLanguageSettings['pdffont'], '', $this->ibaseAnswerFontSize - 2));
+      $this->SetHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', $this->_ibaseAnswerFontSize - 2));
+      $this->SetFooterFont(Array($aPdfLanguageSettings['pdffont'], '', $this->_ibaseAnswerFontSize - 2));
     }
   }
 
@@ -686,11 +695,15 @@ class pdf extends TCPDF {
    */
   function addGidAnswer($sFname, $bAllowBreakPage=false)
   {
+    $sAnswerHTML = html_entity_decode(stripJavaScript($sFname,ENT_COMPAT));
+    $sData['thissurvey']=$aSurveyInfo;
+    $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+
     $startPage = $this->getPage();
     $this->startTransaction();
     $this->ln(6);
-    $this->SetFontSize($this->ibaseAnswerFontSize + 2);
-    $this->MultiCell('', $this->iCellHeight, html_entity_decode($sFname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
+    $this->SetFontSize($this->_ibaseAnswerFontSize + 2);
+    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sAnswerHTML, 0, 1, false, true, 'L');
     $this->ln(2);
     if ($this->getPage() != $startPage && !$bAllowBreakPage)
     {
@@ -713,11 +726,15 @@ class pdf extends TCPDF {
    */
   function addQidAnswer($sFname, $bAllowBreakPage=false)
   {
+    $sAnswerHTML = html_entity_decode(stripJavaScript($sFname,ENT_COMPAT));
+    $sData['thissurvey']=$aSurveyInfo;
+    $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+
     $startPage = $this->getPage();
     $this->startTransaction();
     $this->ln(6);
-    $this->SetFontSize($this->ibaseAnswerFontSize);
-    $this->MultiCell('', $this->iCellHeight, html_entity_decode($sFname,ENT_COMPAT), 0, 'L', 0, 1, '', '', true);
+    $this->SetFontSize($this->_ibaseAnswerFontSize);
+    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sAnswerHTML, 0, 1, false, true, 'L');
     $this->ln(2);
     if ($this->getPage() != $startPage && !$bAllowBreakPage)
     {
@@ -741,11 +758,16 @@ class pdf extends TCPDF {
    */
   function addSubmitDate($sFname, $sFieldName, $bAllowBreakPage=false)
   {
+    $sAnswerHTML = html_entity_decode(stripJavaScript($sFname[0]." ".$sFname[1]." ".$sFieldName,ENT_COMPAT));
+    $sData['thissurvey']=$aSurveyInfo;
+    $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+    $sResponse = html_entity_decode($sFname[2],ENT_COMPAT);
+
     $startPage = $this->getPage();
     $this->startTransaction();
-    $this->SetFontSize($this->ibaseAnswerFontSize);
-    $this->MultiCell(0, $this->iCellHeight, html_entity_decode($sFname[0]." ".$sFname[1]." ".$sFieldName,ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
-    $this->MultiCell(0, $this->iCellHeight, html_entity_decode($sFname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);
+    $this->SetFontSize($this->_ibaseAnswerFontSize);
+    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sAnswerHTML, 1, 1, true, true, 'L');
+    $this->MultiCell(0, $this->_iCellHeight, $sResponse, 1, 'L', 0, 1, '', '', true);
     $this->ln(2);
     if ($this->getPage() != $startPage && !$bAllowBreakPage)
     {
@@ -768,11 +790,16 @@ class pdf extends TCPDF {
    */
   function addAnswer($sFname, $bAllowBreakPage=false)
   {
+    $sAnswerHTML = html_entity_decode(stripJavaScript($sFname[0]." ".$sFname[1],ENT_COMPAT));
+    $sData['thissurvey']=$aSurveyInfo;
+    $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+    $sResponse = html_entity_decode($sFname[2],ENT_COMPAT);
+
     $startPage = $this->getPage();
     $this->startTransaction();
-    $this->SetFontSize($this->ibaseAnswerFontSize);
-    $this->MultiCell(0, $this->iCellHeight, html_entity_decode($sFname[0]." ".$sFname[1],ENT_COMPAT), 1, 'L', 1, 1, '', '', true);
-    $this->MultiCell(0, $this->iCellHeight, html_entity_decode($sFname[2],ENT_COMPAT), 1, 'L', 0, 1, '', '', true);
+    $this->SetFontSize($this->_ibaseAnswerFontSize);
+    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sAnswerHTML, 1, 1, true, true, 'L');
+    $this->MultiCell(0, $this->_iCellHeight, $sResponse, 1, 'L', 0, 1, '', '', true);
     $this->ln(2);
     if ($this->getPage() != $startPage && !$bAllowBreakPage)
     {
