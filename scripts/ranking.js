@@ -1,5 +1,15 @@
 function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
-// TODO : advanced setting in attributes
+
+$(document).on('relevance','#question'+qID+' .dragDropTable .choice' , function(event,data) {
+    if(data.style=='disabled'){
+        if(data.status){
+            $(event.target).removeClass( "ui-state-disabled" );
+        }else{
+            $(event.target).addClass( "ui-state-disabled" );
+        }
+    }
+});
+// TODO : advanced setting in data
   if (typeof showpopups === 'undefined'){showpopups=true;}
   if (typeof samechoiceheight === 'undefined'){samechoiceheight=true;}
   if (typeof samelistheight === 'undefined'){ samelistheight=true;}
@@ -60,6 +70,7 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
 
   // Set up the connected sortable			
   $('#sortable-choice-'+qID+', #sortable-rank-'+qID+'').sortable({
+    cancel: ".ui-state-disabled",
     connectWith: '.connectedSortable'+qID+'',
     forceHelperSize: true,
     forcePlaceholderSize: true,

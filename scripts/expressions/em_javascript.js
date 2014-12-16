@@ -17,6 +17,48 @@
  * php.js is dual licensed under the MIT licenses.
  */
 
+/* Custom event relevance true/false */
+(function($) {
+    $.fn.extend({
+        relevanceOn: function(options) {
+            var defaults = {
+                style: 'hidden'
+            };
+            options = $.extend(defaults, options);
+            options.status = true;
+            $(this).trigger('relevance',options);
+            return this;
+        },
+        relevanceOff: function(options) {
+            var defaults = {
+                style: 'hidden'
+            };
+            options = $.extend(defaults, options);
+            options.status = false;
+            $(this).trigger('relevance',options);
+            return this;
+        }
+    });
+})(jQuery);
+/* Default functionnality for event */
+/* can be replaced by .off method */
+/* can be extended by another .on method */
+$(document).on('relevance',function(event,data) {
+    if(data.style=='disabled'){
+        if(data.status){
+            $(event.target).find(":input:not(:hidden)").prop( "disabled", false ); // Review for ranking
+        }else{
+            $(event.target).find(":input:not(:hidden)").prop( "disabled", true );
+        }
+    }
+    else{ // data.style=='hidden'
+        if(data.status){
+            $(event.target).show();
+        }else{
+            $(event.target).hide();
+        }
+    }
+});
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty

@@ -7003,9 +7003,9 @@
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
                         // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
                         if( ! empty($sq['type'])) {
-                            // js to fix colors
+                            // js to fix colors : todo move it to survey_runtime with event trigger
                             $relParts[] = "updateColors($('#question".$arg['qid']."').find('table.question'));\n";
-                            // js to fix headings
+                            // js to fix headings : todo move it to survey_runtime with event trigger
                             $repeatheadings = Yii::app()->getConfig("repeatheadings");
                             if(isset($LEM->qattr[$arg['qid']]['repeat_headings']) && $LEM->qattr[$arg['qid']]['repeat_headings'] !== "") {
                                 $repeatheadings = $LEM->qattr[$arg['qid']]['repeat_headings'];
@@ -7021,19 +7021,19 @@
                         $relParts[] = "  if ( " . (empty($sq['relevancejs'])?'1':$sq['relevancejs']) . " ) {\n";
                         if ($afHide)
                         {
-                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').relevanceOn();\n";
                         }
                         else
                         {
-                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
+                            $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                         }
                         if ($sq['isExclusiveJS'] != '')
                         {
                             $relParts[] = "    if ( " . $sq['isExclusiveJS'] . " ) {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                             $relParts[] = "    }\n";
                             $relParts[] = "    else {\n";
-                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
+                            $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                             $relParts[] = "    }\n";
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -7045,34 +7045,34 @@
                             if ($sq['irrelevantAndExclusiveJS'] != '')
                             {
                                 $relParts[] = "    if ( " . $sq['irrelevantAndExclusiveJS'] . " ) {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                                 $relParts[] = "    }\n";
                                 $relParts[] = "    else {\n";
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').removeAttr('disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                                 if ($afHide)
                                 {
-                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').relevanceOff();\n";
                                 }
                                 else
                                 {
-                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                                    $relParts[] = "     $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                                 }
                                 $relParts[] = "    }\n";
                             }
                             else
                             {
-                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                                $relParts[] = "      $('#javatbd" . $sq['rowdivid'] . "').relevanceOn({ style : 'disabled' });\n";
                             }
                         }
                         else
                         {
                             if ($afHide)
                             {
-                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').relevanceOff();\n";
                             }
                             else
                             {
-                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').relevanceOff({ style : 'disabled' });\n";
                             }
                         }
                         $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
@@ -7261,7 +7261,7 @@
                         if (!($relevance == '' || $relevance == '1' || ($arg['result'] == true && $arg['numJsVars']==0)))
                         {
                             // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
-                            $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
+                            $relParts[] = "  $('#question" . $arg['qid'] . "').relevanceOn();\n";
                             if ($arg['type'] == 'S')
                             {
                                 $relParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
@@ -7295,7 +7295,7 @@
                         if( !($arg['hidden'] && $arg['type']=="*"))// Equation question type don't update visibility of group if hidden ( child of bug #08315).
                             $dynamicQinG[$arg['gseq']][$arg['qid']]=true;
                         $relParts[] = "else {\n";
-                        $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+                        $relParts[] = "  $('#question" . $arg['qid'] . "').relevanceOff();\n";
                         $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                         $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                         $relParts[] = "}\n";
