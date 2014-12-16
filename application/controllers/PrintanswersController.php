@@ -91,10 +91,23 @@
             $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
             //Ensure script is not run directly, avoid path disclosure
             //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
-            if ($aSurveyInfo['printanswers'] == 'N')
+            
+            //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
+            if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
             {
-                die();  //Die quietly if print answers is not permitted
+                sendCacheHeaders();
+                doHeader();
+                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array());
+                echo "<center><br />\n"
+                ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
+                ."\t".$clang->gT("We are sorry but you are not allowed to print the answers.")."<br />\n"
+                ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
+                ."</center><br />\n";
+                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array());
+                doFooter();
+                exit;
             }
+            
             //CHECK IF SURVEY IS ACTIVATED AND EXISTS
             $sSurveyName = $aSurveyInfo['surveyls_title'];
             $sAnonymized = $aSurveyInfo['anonymized'];
