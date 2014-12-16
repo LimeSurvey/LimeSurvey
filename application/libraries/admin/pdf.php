@@ -695,8 +695,9 @@ class pdf extends TCPDF {
    */
   function addGidAnswer($sFname, $bAllowBreakPage=false)
   {
-    $sAnswerHTML = html_entity_decode(stripJavaScript($sFname,ENT_COMPAT));
-    $sData['thissurvey']=$aSurveyInfo;
+    $oPurifier = new CHtmlPurifier();
+    $sAnswerHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sFname)),ENT_COMPAT);
+    $sData['thissurvey']=$this->_aSurveyInfo;
     $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
 
     $startPage = $this->getPage();
@@ -726,8 +727,9 @@ class pdf extends TCPDF {
    */
   function addQidAnswer($sFname, $bAllowBreakPage=false)
   {
-    $sAnswerHTML = html_entity_decode(stripJavaScript($sFname,ENT_COMPAT));
-    $sData['thissurvey']=$aSurveyInfo;
+    $oPurifier = new CHtmlPurifier();
+    $sAnswerHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sFname)),ENT_COMPAT);
+    $sData['thissurvey']=$this->_aSurveyInfo;
     $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
 
     $startPage = $this->getPage();
@@ -758,10 +760,11 @@ class pdf extends TCPDF {
    */
   function addSubmitDate($sFname, $sFieldName, $bAllowBreakPage=false)
   {
-    $sAnswerHTML = html_entity_decode(stripJavaScript($sFname[0]." ".$sFname[1]." ".$sFieldName,ENT_COMPAT));
-    $sData['thissurvey']=$aSurveyInfo;
+    $oPurifier = new CHtmlPurifier();
+    $sAnswerHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sFname[0]." ".$sFname[1]." ".$sFieldName)),ENT_COMPAT);
+    $sData['thissurvey']=$this->_aSurveyInfo;
     $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
-    $sResponse = html_entity_decode($sFname[2],ENT_COMPAT);
+    $sResponse = flattenText($sFname[2], false, true, 'UTF-8', false);
 
     $startPage = $this->getPage();
     $this->startTransaction();
@@ -790,10 +793,11 @@ class pdf extends TCPDF {
    */
   function addAnswer($sFname, $bAllowBreakPage=false)
   {
-    $sAnswerHTML = html_entity_decode(stripJavaScript($sFname[0]." ".$sFname[1],ENT_COMPAT));
-    $sData['thissurvey']=$aSurveyInfo;
+    $oPurifier = new CHtmlPurifier();
+    $sAnswerHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sFname[0]." ".$sFname[1])),ENT_COMPAT);
+    $sData['thissurvey']=$this->_aSurveyInfo;
     $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
-    $sResponse = html_entity_decode($sFname[2],ENT_COMPAT);
+    $sResponse = flattenText($sFname[2], false, true, 'UTF-8', false);
 
     $startPage = $this->getPage();
     $this->startTransaction();
