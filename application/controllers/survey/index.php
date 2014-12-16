@@ -68,7 +68,7 @@ class index extends CAction {
         $thisstep = $param['thisstep'];
         $move=getMove();
         Yii::app()->setConfig('move',$move);
-        $clienttoken = $param['token'];
+        $clienttoken = trim($param['token']);
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
         if (is_null($thissurvey) && !is_null($surveyid)) $thissurvey = getSurveyInfo($surveyid);
 
