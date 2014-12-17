@@ -2364,7 +2364,7 @@ class statistics_helper {
                             $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                             $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
                             if ($aggregatedPercentage !== 'na') {
-                                $this->sheet->writeNumber($this->xlsRow,3,$percentage/100, $this->xlsPercents);
+                                $this->sheet->writeNumber($this->xlsRow,3,$aggregatedPercentage/100, $this->xlsPercents);
                             }
                             break;
 
