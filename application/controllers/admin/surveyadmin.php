@@ -711,7 +711,7 @@ class SurveyAdmin extends Survey_Common_Action
     * @param string $sa
     * @return void
     */
-    public function delete($iSurveyID, $delete = 'no')
+    public function delete($iSurveyID)
     {
         $aData = $aViewUrls = array();
         $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
@@ -719,7 +719,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
         {
-            if ($delete == 'yes')
+            if (Yii::app()->request->getPost("delete") == 'yes')
             {
                 $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin','read');
                 $this->_deleteSurvey($iSurveyID);

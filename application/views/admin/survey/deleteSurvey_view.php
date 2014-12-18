@@ -31,8 +31,11 @@
             <?php $clang->eT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."); ?><br /><br />
         <?php } ?>
 
-        <p>
-        <input type='submit' value='<?php $clang->eT("Delete survey"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/$surveyid/delete/yes"); ?>', '_top')" />
-        <input type='submit' value='<?php $clang->eT("Cancel"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" />
+        echo CHtml::beginForm($this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"), 'post');?>
+        <input type='hidden' name='delete' value='yes'>
+        <input type='submit' value='<?php $clang->eT("Delete survey"); ?>'>
+        <input type='button' value='<?php $clang->eT("Cancel"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" />
+        <?php
+        echo CHtml::endForm();
     <?php } ?>
 </div><br />&nbsp;
