@@ -66,7 +66,7 @@ class LSUserIdentity extends CUserIdentity {
                 // Delegate actual authentication to plugin
                 $authEvent = new PluginEvent('newUserSession', $this);
                 $authEvent->set('identity', $this);
-                App()->getPluginManager()->dispatchEvent($authEvent, array($this->plugin));
+                App()->getPluginManager()->dispatchEvent($authEvent);
                 $pluginResult = $authEvent->get('result');
                 if ($pluginResult instanceof LSAuthResult) {
                     $result = $pluginResult;
