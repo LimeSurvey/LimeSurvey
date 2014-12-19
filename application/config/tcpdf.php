@@ -47,7 +47,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['base_url'] = '';
+    $tcpdf['base_url'] = 'dummy'; // If empty and debug === 2, "empty needle" occurs
 
 
     /************************************************************
