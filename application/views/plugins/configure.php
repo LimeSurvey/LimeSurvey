@@ -1,8 +1,11 @@
 <?php
-    $this->widget('ext.SettingsWidget.SettingsWidget', array(
 
+    $title = isset($properties['pluginName']) ? sprintf(gT("Settings for plugin: %s"), $properties['pluginName']) : null;
+    if (is_null($title)) $title = isset($plugin['name']) ? sprintf(gT("Settings for plugin %s"), $plugin['name']) : null;
+
+    $this->widget('ext.SettingsWidget.SettingsWidget', array(
         'settings' => $settings,
-        'title' => isset($plugin['name']) ? sprintf(gT("Settings for plugin %s"), $plugin['name']) : null,
+        'title' => $title,
         'formHtmlOptions' => array(
             'id' => "pluginsettings-{$plugin['name']}",
         ),
