@@ -151,6 +151,7 @@ class LSYii_Validators extends CValidator {
                 $sNewValue.="}";
             }
         }
+        gc_collect_cycles(); // To counter a high memory usage of HTML-Purifier
         return $sNewValue;
     }
     /**
