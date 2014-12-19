@@ -653,12 +653,34 @@ class pdf extends TCPDF {
     $this->AddPage();
     $this->SetFillColor(220, 220, 220);
 
-    if(!empty($sSurveyName))
+    $this->addTitle($sSurveyName);
+  }
+
+  /**
+   *
+   * Add title to pdf
+   * @param $sTitle - Title
+   * @param $sSubtitle - Subtitle
+   * @return unknown_type
+   */
+  function addTitle($sTitle, $sSubtitle="")
+  {
+    if(!empty($sTitle))
     {
+      $this->ln(1);
+      $this->SetFontSize($this->_ibaseAnswerFontSize + 6);
+      $oPurifier = new CHtmlPurifier();
+      $sTitleHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sTitle)),ENT_COMPAT);
+      $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sTitleHTML, 0, 1, false, true, 'C');
+      if (!empty($sSubtitle))
+      {
         $this->ln(1);
-        $this->SetFontSize($this->_ibaseAnswerFontSize + 6);
-        $this->MultiCell('','',$sSurveyName,'','C',0);
-        $this->ln(6);
+        $this->SetFontSize($this->_ibaseAnswerFontSize + 2);
+        $sSubtitleHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sSubtitle)),ENT_COMPAT);
+        $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sSubtitleHTML, 0, 1, false, true, 'C');
+      }
+      $this->ln(6);
+      $this->SetFontSize($this->_ibaseAnswerFontSize);
     }
   }
 
