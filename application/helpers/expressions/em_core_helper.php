@@ -590,14 +590,6 @@ class ExpressionManager {
                             $result = array(NULL,$token[1],'NUMBER');   // was 0 instead of NULL
                         }
                         $this->RDP_StackPush($result);
-
-                        // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
-                        $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
-                        if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
-                        {
-                            $this->RDP_AddError(gT("Variable not declared until a later page"),$token);
-                            return false;
-                        }
                         return true;
                     }
                     else
