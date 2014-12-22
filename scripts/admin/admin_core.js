@@ -376,7 +376,8 @@ function doToolTip()
             });
         }
     });
-
+    /* Any other title take jquery ui tooltip */
+    $(document).tooltip();
 }
 // A function to encode any HTML for qtip
 function htmlEncode(html){

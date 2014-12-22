@@ -1410,20 +1410,22 @@ class ExpressionManager {
         $tokens = $this->RDP_tokens;
         $errCount = count($errs);
         $errIndex = 0;
+        $aClass=array();
         if ($errCount > 0)
         {
             usort($errs,"cmpErrorTokens");
         }
-        $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
         $stringParts=array();
         $numTokens = count($tokens);
         $globalErrs=array();
+        $bHaveError=false;
         while ($errIndex < $errCount)
         {
             if ($errs[$errIndex++][1][1]==0)
             {
                 // General message, associated with position 0
                 $globalErrs[] = $errs[$errIndex-1][0];
+                $bHaveError=true;
             }
             else
             {
@@ -1448,17 +1450,18 @@ class ExpressionManager {
             }
             if ($thisTokenHasError)
             {
-                $stringParts[] = "<span title='" . implode('; ',$messages) . "' " . $errSpecificStyle . ">";
+                $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-error'>";
+                $bHaveError=true;
             }
             switch ($token[2])
             {
                 case 'DQ_STRING':
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>\"";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-var-string'>\"";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "\"</span>";
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>'";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-var-string'>'";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "'</span>";
                     break;
@@ -1472,7 +1475,7 @@ class ExpressionManager {
                             $messages[] = $funcInfo[2];
                             $messages[] = $funcInfo[3];
                         }
-                        $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: blue; font-weight: bold'>";
+                        $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-function' >";
                         $stringParts[] = $token[0];
                         $stringParts[] = "</span>";
                     }
@@ -1480,7 +1483,7 @@ class ExpressionManager {
                     {
                         if (!$this->RDP_isValidVariable($token[0]))
                         {
-                            $color = 'red';
+                            $class = 'em-var-error';
                             $displayName = $token[0];
                         }
                         else
@@ -1568,30 +1571,29 @@ class ExpressionManager {
                                 }
                             }
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
-                                $color = '#996600'; // tan
+                                $class = 'em-var-static'; 
                             }
-                            else if ($groupSeq > $this->groupSeq) {
-                                $color = '#FF00FF ';     // pink a likely error
+                            elseif ($groupSeq > $this->groupSeq) {
+                                $class = 'em-var-before em-var-diffgroup';
                             }
-                            else if ($groupSeq < $this->groupSeq) {
-                                $color = 'green';
+                            elseif ($groupSeq < $this->groupSeq) {
+                                $class = 'em-var-after ';
                             }
-                            else if ($questionSeq > $this->questionSeq) {
-                                $color = 'maroon';  // #228b22 - warning
+                            elseif ($questionSeq > $this->questionSeq) {
+                                $class = 'em-var-before em-var-inpage';
                             }
                             else {
-                                $color = '#4C88BE';    // cyan that goes well with the background color
+                                $class = 'em-var-after em-var-inpage';
                             }
                         }
                         // prevent EM prcessing of messages within span
                         $message = implode('; ',$messages);
                         $message = str_replace(array('{','}'), array('{ ', ' }'), $message);
 
-                        $stringParts[] = "<span title='"  . $message . "' style='color: ". $color . "; font-weight: bold'";
+                        $stringParts[] = "<span title='"  . $message . "' class='em-var {$class}'";
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
-                            // Modify this link to utilize a different framework
                             $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
-                            $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
+                            $stringParts[] = " data-link='{$editlink}'";
                         }
                         $stringParts[] = ">";
                         if ($this->sgqaNaming)
@@ -1613,7 +1615,7 @@ class ExpressionManager {
                     break;
                 case 'ASSIGN':
                     $messages[] = 'Assigning a new value to a variable';
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: red; font-weight: bold'>";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-assign'>";
                     $stringParts[] = $token[0];
                     $stringParts[] =  "</span>";
                     break;
@@ -1635,7 +1637,11 @@ class ExpressionManager {
                 ++$errIndex;
             }
         }
-        return "<span style='background-color: #eee8aa;'>" . implode('', $stringParts) . "</span>";
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+        $sClass='em-expression';
+        $sClass.=($bHaveError)?" em-haveerror":"";
+        return "<span class='$sClass'>" . implode('', $stringParts) . "</span>";
     }
 
     /**
