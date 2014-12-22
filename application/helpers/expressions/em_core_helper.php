@@ -1236,7 +1236,6 @@ class ExpressionManager {
             return '';
         }
         $tokens = $this->RDP_tokens;
-        // TODOSHNOULLE
         $stringParts=array();
         $numTokens = count($tokens);
         for ($i=0;$i<$numTokens;++$i)
@@ -1637,8 +1636,11 @@ class ExpressionManager {
                 ++$errIndex;
             }
         }
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+        if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        {
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+        }
         $sClass='em-expression';
         $sClass.=($bHaveError)?" em-haveerror":"";
         return "<span class='$sClass'>" . implode('', $stringParts) . "</span>";
@@ -1892,8 +1894,15 @@ class ExpressionManager {
                 }
                 else
                 {
-                    // show original and errors in-line
-                    $resolvedPart = $this->GetPrettyPrintString();
+                    // show original and errors in-line only if user have the rigth to update survey content
+                    if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+                    {
+                        $resolvedPart = $this->GetPrettyPrintString();
+                    }
+                    else
+                    {
+                        $resolvedPart = '';
+                    }
                     $allErrors[] = $this->GetErrors();
                 }
                 $onpageJsVarsUsed = $this->GetOnPageJsVarsUsed();
