@@ -1985,11 +1985,16 @@ function checkCompletedQuota($surveyid,$return=false)
 
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
-    $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-    $sTemplatePath=getTemplatePath($thissurvey['templatedir']);
-    $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
+    $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    $sTemplatePath=getTemplatePath($aSurveyInfo['templatedir']);
+    $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";// {TOKEN} is take by $redata ...
 
-    $redata = compact(array_keys(get_defined_vars()));
+    // $redata for templatereplace
+    $aDataReplacement = array(
+        'thissurvey'=>$aSurveyInfo,
+        'clienttoken'=>$sClientToken,
+        'token'=>$sClientToken,
+    );
     // We take only the first matched quota, no need for each
     $aMatchedQuota=$aMatchedQuotas[0];
     // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
@@ -2010,29 +2015,27 @@ function checkCompletedQuota($surveyid,$return=false)
     $sUrlDescription=$event->get('urldescrip',$aMatchedQuota['quotals_urldescrip']);
     $sAction=$event->get('action',$aMatchedQuota['action']);
     $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
-
+    // Construct the default message
+    $sMessage = templatereplace($sMessage,array(),$aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
+    $sUrl = passthruReplace($sUrl, $aSurveyInfo);
+    $sUrl = templatereplace($sUrl,array(),$aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
+    $sUrlDescription = templatereplace($sUrlDescription,array(),$aDataReplacement, 'QuotaUrldescription', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
     // Doing the action and show the page
     if ($sAction == "1" && $sClientToken)
         submittokens(true);
-    // Construct the default message
-    $sMessage = templatereplace($sMessage,array(),$redata);
-    $sUrl = passthruReplace($sUrl, $thissurvey);
-    $sUrl = templatereplace($sUrl,array(),$redata);
-    $sUrlDescription = templatereplace($sUrlDescription,array(),$redata);
 
     // Construction of default message inside quotamessage class
     $quotaMessage = "<div class='quotamessage limesurveycore'>\n";
     $quotaMessage.= "\t".$sMessage."\n";
-    if($sUrl || $sUrl)
-        echo "<br /><br />\t<a href='".$sUrl."'>".$sUrlDescription."</a><br />\n";
+    if($sUrl)
+        $quotaMessage.= "<br /><br />\t<a href='".$sUrl."'>".$sUrlDescription."</a><br />\n";
     // Add the navigator with Previous button if quota allow modification.
     if ($sAction == "2")
     {
         $sQuotaStep= isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
         $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button"));
-        //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
         $quotaMessage.= CHtml::form(array("/survey/index"), 'post', array('id'=>'limesurvey','name'=>'limesurvey'));
-        $quotaMessage.= templatereplace(file_get_contents($sTemplatePath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$redata);
+        $quotaMessage.= templatereplace(file_get_contents($sTemplatePath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
         $quotaMessage.= CHtml::hiddenField('sid',$surveyid);
         $quotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
         $quotaMessage.= CHtml::endForm();
@@ -2049,11 +2052,11 @@ function checkCompletedQuota($surveyid,$return=false)
             killSurveySession($surveyid);
         header("Location: ".$sUrl);
     }
+
     doHeader();
-    echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$redata);
-    // Better to use completed.pstpl, but some template can need update , leave it for 2.06 #09133
+    echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$aDataReplacement);
     echo $quotaMessage;
-    echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$redata);
+    echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$aDataReplacement);
     doFooter();
     if ($sAction == "1")
         killSurveySession($surveyid);
