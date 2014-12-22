@@ -5693,48 +5693,38 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
     $result = "N/A";
     if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
         return $result;
-    $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
-    $quota = $quota_info[0];
+    $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
+    $aQuotas = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
+    $aQuota = $aQuotas[0];
     if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
-    count($quota['members']) > 0)
+    count($aQuota['members']) > 0)
     {
         // Keep a list of fields for easy reference
-        $fields_list = array();
+        $aQuotaColumns = array();
 
-        // Construct an array of value for each $quota['members']['fieldnames']
-        $fields_query = array();
-
-        foreach ($quota['members'] as $member)
+        foreach ($aQuota['members'] as $member)
         {
-            $criteria = new CDbCriteria;
-
             if(in_array($member['fieldname'],$aColumnName))
-                $fields_list[$member['fieldname']][] = $member['value'];
+                $aQuotaColumns[$member['fieldname']][] = $member['value'];
             else
                 return $result;// We return N/A even for activated survey
         }
 
-        $criteria = new CDbCriteria;
-        $criteria->condition="submitdate IS NOT NULL";
-        $aParams=array();
-        foreach ($fields_list as $fieldname=>$aValue)
+        $oCriteria = new CDbCriteria;
+        $oCriteria->condition="submitdate IS NOT NULL";
+        foreach ($aQuotaColumns as $sColumn=>$aValue)
         {
+
             if(count($aValue)==1)
             {
-                // Quote columnName : starting with number broke mssql
-                $criteria->addCondition(Yii::app()->db->quoteColumnName($fieldname)." = :field{$fieldname}");
-                $aParams[":field{$fieldname}"]=$aValue[0];
+                $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind automatically
             }
             else
             {
-                $criteria->addInCondition(Yii::app()->db->quoteColumnName($fieldname),$aValue); // NO need params : addInCondition bind automatically
+                $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind automatically
             }
-
-            $fields_query[$fieldname] = $criteria;
         }
-        if(!empty($aParams))
-            $criteria->params=array_merge($criteria->params,$aParams);
-        $result = SurveyDynamic::model($iSurveyId)->count($criteria);
+        $result = SurveyDynamic::model($iSurveyId)->count($oCriteria);
     }
 
     return $result;
@@ -5866,95 +5856,84 @@ function includeKeypad()
 * @param string $surveyid - Survey identification number
 * @param string $language - Language of the quota
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
-* @return array - nested array, Quotas->Members->Fields
+* @return array - nested array, Quotas->Members
 */
-function getQuotaInformation($surveyid,$language,$iQuotaID='all')
+function getQuotaInformation($surveyid,$language,$iQuotaID=null)
 {
     Yii::log('getQuotaInformation');
-    global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     $aAttributes=array('sid' => $surveyid);
-    if ($iQuotaID != 'all')
+    if ((int)$iQuotaID)
     {
         $aAttributes['id'] = $iQuotaID;
     }
 
-    $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
+    $aQuotas = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
 
-    $quota_info = array();
+    $aSurveyQuotasInfo = array();
     $x=0;
 
     $surveyinfo=getSurveyInfo($surveyid,$language);
 
     // Check all quotas for the current survey
-    //if ($result->RecordCount() > 0)
-    if (count($result) > 0)
+    if (count($aQuotas) > 0)
     {
-        //while ($survey_quotas = $result->FetchRow())
-        foreach ($result as $_survey_quotas)
+        foreach ($aQuotas as $oQuota)
         {
-            $survey_quotas = array_merge($_survey_quotas->attributes,$_survey_quotas->languagesettings[0]->attributes);// We have only one language, then we can use first only
-            // !!! Doubting this
-#            foreach ($_survey_quotas->defaultlanguage as $k => $v)
-#                $survey_quotas[$k] = $v;
-
-            array_push($quota_info,array('Name' => $survey_quotas['name'],
-            'Limit' => $survey_quotas['qlimit'],
-            'Action' => $survey_quotas['action'],
-            'Message' => $survey_quotas['quotals_message'],
-            'Url' => $survey_quotas['quotals_url'],
-            'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
-            'AutoloadUrl' => $survey_quotas['autoload_url']));
-
-            $result_qe = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
-            $quota_info[$x]['members'] = array();
-            if (count($result_qe) > 0)
+            // Array for each quota
+            $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->languagesettings[0]->attributes);// We have only one language, then we can use first only
+            $aQuotaMembers = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$oQuota->id));
+            $aQuotaInfo['members'] = array();
+            if (count($aQuotaMembers) > 0)
             {
-                foreach ($result_qe as $quota_entry)
+                foreach ($aQuotaMembers as $oQuotaMember)
                 {
-                    $quota_entry = $quota_entry->attributes;
-                    $result_quest=Question::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
-                    $qtype=$result_quest->attributes;
-
-                    $fieldnames = "0";
-
-                    if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
+                    $oMemberQuestion=Question::model()->findByAttributes(array('qid'=>$oQuotaMember->qid, 'language'=>$baselang));
+                    if($oMemberQuestion)
                     {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
+                        $sFieldName = "0";
 
-                    if($qtype['type'] == "L" || $qtype['type'] == "O" || $qtype['type'] =="!")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
+                        if ($oMemberQuestion->type == "I" || $oMemberQuestion->type == "G" || $oMemberQuestion->type == "Y")
+                        {
+                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid;
+                            $sValue = $oQuotaMember->code;
+                        }
 
-                    if($qtype['type'] == "M")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
-                        $value = "Y";
-                    }
+                        if($oMemberQuestion->type == "L" || $oMemberQuestion->type == "O" || $oMemberQuestion->type =="!")
+                        {
+                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid;
+                            $sValue = $oQuotaMember->code;
+                        }
 
-                    if($qtype['type'] == "A" || $qtype['type'] == "B")
-                    {
-                        $temp = explode('-',$quota_entry['code']);
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
-                        $value = $temp[1];
-                    }
+                        if($oMemberQuestion->type == "M")
+                        {
+                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid.$oQuotaMember->code;
+                            $sValue = "Y";
+                        }
 
-                    array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],
-                    'type' => $qtype['type'],
-                    'code' => $quota_entry['code'],
-                    'value' => $value,
-                    'qid' => $quota_entry['qid'],
-                    'fieldnames' => $fieldnames));
+                        if($oMemberQuestion->type == "A" || $oMemberQuestion->type == "B")
+                        {
+                            $temp = explode('-',$oQuotaMember->code);
+                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid.$temp[0];
+                            $sValue = $temp[1];
+                        }
+
+                        $aQuotaInfo['members'][]=array(
+                            'title' => $oMemberQuestion->title,
+                            'type' => $oMemberQuestion->type,
+                            'code' => $oQuotaMember->code,
+                            'value' => $sValue,
+                            'qid' => $oQuotaMember->qid,
+                            'fieldname' => $sFieldName,
+                        );
+                    }
                 }
             }
-            $x++;
+            // Push this quota Information to all survey quota
+            array_push($aSurveyQuotasInfo,$aQuotaInfo);
         }
     }
-    return $quota_info;
+    return $aSurveyQuotasInfo;
 }
 
 /**
