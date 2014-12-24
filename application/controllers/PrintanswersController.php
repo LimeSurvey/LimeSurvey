@@ -209,7 +209,7 @@
                     {
                         if($sAnonymized != 'Y')
                         {
-                            $oPDF->addSubmitDate($fname, $sFieldName);
+                            $oPDF->addAnswer($fname);
                         }
                     }
                     else

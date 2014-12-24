@@ -24,17 +24,10 @@ class PdfWriter extends Writer
 
         // create new PDF document
         $this->pdf = new pdf();
-        $this->surveyName = $survey->languageSettings['surveyls_title'];
-        $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
-        $this->pdf->addHeader($aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);
-        $this->pdf->AddPage();
-        $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
-        $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
-
+        $this->surveyName = $survey->info['surveyls_title'];
+        $this->pdf->initAnswerPDF($survey->info, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);
         $this->separator="\t";
-
         $this->rowCounter = 0;
-        $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings['surveyls_description']);
     }
 
     public function outputRecord($headers, $values, FormattingOptions $oOptions)
@@ -43,7 +36,6 @@ class PdfWriter extends Writer
         if ($oOptions->answerFormat == 'short')
         {
             $pdfstring = '';
-            $this->pdf->titleintopdf(gT("Survey response"));
             foreach ($values as $value)
             {
                 $pdfstring .= $value.' | ';
@@ -56,13 +48,12 @@ class PdfWriter extends Writer
             {
                 $this->pdf->AddPage();
             }
-            $this->pdf->Cell(0, 10, sprintf(gT("Survey response %d"), $this->rowCounter), 1, 1);
+            $this->pdf->addTitle(sprintf(gT("Survey response %d"), $this->rowCounter));
 
             $columnCounter = 0;
             foreach($headers as $header)
             {
-                $this->pdf->intopdf($header);
-                $this->pdf->intopdf($this->stripTagsFull($values[$columnCounter]));
+                $this->pdf->addValue($header, $values[$columnCounter]);
                 $columnCounter++;
             }
         }
