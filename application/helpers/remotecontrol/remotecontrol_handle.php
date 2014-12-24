@@ -558,9 +558,9 @@ class remotecontrol_handle
                  {
                      if (tableExists('{{survey_' . $iSurveyID . '}}'))
                      {
-                         $aSummary['completed_responses']=SurveyDynamic::model($iSurveyID)->count('submitdate is NOT NULL');
-                         $aSummary['incomplete_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
-                         $aSummary['full_responses']=SurveyDynamic::model($iSurveyID)->count();
+                         $aSummary['completed_responses']= Response::model($iSurveyID)->complete()->count();
+                         $aSummary['incomplete_responses']= Response::model($iSurveyID)->incomplete()->count();
+                         $aSummary['full_responses']= Response::model($iSurveyID)->count();
                      }
                      elseif ($sStatName!='all')
                      {
@@ -1660,7 +1660,14 @@ class remotecontrol_handle
                     return array('status' => 'No valid Data');
                 }
                 else
-                {
+                {   
+                    if (tableExists('{{survey_' . $iSurveyID . '}}')){
+                        $participantToken = $result['token'];
+                        if(in_array('completed_responses', $aTokenProperties))
+                            $result['completed_responses'] = Response::model($iSurveyID)->countByAttributes(array('token' => $participantToken), 'submitdate IS NOT NULL');
+                        if(in_array('incomplete_responses', $aTokenProperties))
+                            $result['incomplete_responses'] = Response::model($iSurveyID)->countByAttributes(array('token' => $participantToken), 'submitdate IS NULL');
+                    }
                     return $result;
                 }
 
@@ -2421,6 +2428,63 @@ class remotecontrol_handle
         $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, "$sTableName.token='$sToken'");
         return new BigFile($sTempFile, true, 'base64');
 
+    }
+
+    /**
+     * RPC Routine to delete responses of particular token in a survey.
+     * Returns array
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that participants belong
+     * @param array|struct $aAttributeData - An array with the particular fieldnames as keys and their values used to fetch results
+     * @return array Result of the change action
+     */
+    public function delete_responses_by_attributes($sSessionKey, $iSurveyID, $aAttributeData){
+        // check sessionKey is valid or not
+        if ($this->_checkSessionKey($sSessionKey))
+        {
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            if (!isset($oSurvey))
+                return array('status' => 'Error: Invalid survey ID');
+            if($oSurvey['active']=='N')
+                return array('status' => 'Error:Survey is inactive');
+            
+                if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
+                {
+                    // get response id from response table using token
+                    $oResults = Response::model($iSurveyID)->findAllByAttributes($aAttributeData);
+                    $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$iSurveyID}/files/";
+                    $fuqtquestions = Question::model()->findAllByAttributes(array('sid' => $iSurveyID,'type' => 'fileuploadquestiontype'));                                
+                    // get all questions using the uploaded files 
+                    if($oResults){
+                        foreach($oResults as $oResult) {
+                        // get survey info using surveyId
+                            $iResponseID = (int) $oResult['id'];
+                                // delete the files 
+                                if (!empty($fuqtquestions))
+                                {
+                                    Response::model($iSurveyID)->findByPk($iResponseID)->deleteFiles();
+                                }
+                            // delete timings if savetimings is set
+                            if(isset( $oSurvey['savetimings'] ) && $oSurvey['savetimings'] == "Y") {
+                                SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                            }
+                        }
+                        // delete the row
+                        Response::model($iSurveyID)->deleteAllByAttributes($aAttributeData);
+                        return array('iSurveyID'=>$iSurveyID);
+                    } else {
+                        return array('status' => 'No responses for this token');
+                    }
+                }
+                else
+                {
+                    return array('status' => 'No permission');
+                }    
+        }
+        else
+            return array('status' => 'Invalid Session Key');
     }
 
 
