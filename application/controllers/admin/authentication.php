@@ -79,15 +79,23 @@ class Authentication extends Survey_Common_Action
             // Now authenticate
             if ($identity->authenticate()) 
             {
-                 FailedLoginAttempt::model()->deleteAttempts();
+                FailedLoginAttempt::model()->deleteAttempts();
                 App()->user->setState('plugin', $authMethod);
                 $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                 Yii::app()->session['just_logged_in'] = true;
                 Yii::app()->session['loginsummary'] = $this->_getSummary();
+
+                $event = new PluginEvent('afterSuccessfulLogin');
+                App()->getPluginManager()->dispatchEvent($event);
+
                 $this->_doRedirect();
 
             } else {
                 // Failed
+                $event = new PluginEvent('afterFailedLoginAttempt');
+                $event->set('identity', $identity);
+                App()->getPluginManager()->dispatchEvent($event);
+
                 $message = $identity->errorMessage;
                 if (empty($message)) {
                     // If no message, return a default message
