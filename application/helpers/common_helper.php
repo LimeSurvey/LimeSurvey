@@ -75,12 +75,16 @@ function egT($sToTranslate, $iCount, $sEscapeMode = 'html')
 
 /**
 * Quotes a translation according to purpose
+* if sEscapeMode is null, we use HTML method because probably we had to specify null as sEscapeMode upstream
 *
 * @param mixed $sText Text to quote
 * @param string $sEscapeMode Optional - One of the values 'html','js' or 'unescaped' - defaults to 'html'
 */
 function quoteText($sText, $sEscapeMode = 'html')
 {
+    if ($sEscapeMode === null)
+        $sEscapeMode = 'html';
+
     switch ($sEscapeMode)
     {
         case 'html':
