@@ -37,19 +37,7 @@
             } elseif ($oOptions->output == 'file') {
                 $this->handle = fopen($this->filename, 'w');
             }
-            $this->groupMap = array();
-            $index = 0;
-            foreach ($oOptions->selectedColumns as $column) {
-                if (isset($survey->fieldMap[$column])) {
-                    $question = $survey->fieldMap[$column];
-                } else {
-                    // Token field
-                    $question = array('gid'=>0, 'qid'=>'');
-                }
-                $question['index'] = $index;
-                $this->groupMap[intval($question['gid'])][] = $question;
-                $index++;
-            }            
+            $this->groupMap = $this->setGroupMap($survey, $oOptions);
         }
 
         protected function writeHeader()
