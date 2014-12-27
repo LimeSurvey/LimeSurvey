@@ -41,6 +41,9 @@
                 <input type="hidden" name="subaction" value="quota_delquota" />
             </form>
         <?php } ?>
+        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) {
+            echo CHtml::link(gT("Validate"),array('admin/validate','sa'=>'quota','sid'=>$surveyid,'quota'=>$quotalisting['id']),array('class'=>'btn btn-link','title'=>sprintf(gT("Validation of quota %s"),$quotalisting['name']),"target"=>"dialog"));
+        } ?>
     </td></tr>
 
 <tr class="evenrow">

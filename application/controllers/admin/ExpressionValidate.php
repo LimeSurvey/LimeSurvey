@@ -5,13 +5,23 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
  * 
  * @copyright 2014 The LimeSurvey Project Team
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
- * @todo : Add quota, add any expression
+ * @todo : Add any expression
+ * @version : 1.1
  */
 class ExpressionValidate extends Survey_Common_Action {
 
+    /**
+    * @var string : Default layout is popup : less header, no footer
+    */
     public $layout = 'popup';
 
+    /**
+    * @var integer : The survey id to start to fill know vars
+    */
     private $iSurveyId;
+    /**
+    * @var string : The language for the survey
+    */
     private $sLang;
 
     public function index()
@@ -20,16 +30,74 @@ class ExpressionValidate extends Survey_Common_Action {
     }
 
     /**
-    * Check the Expression in email
-    * @param $iSurveyId : the survey id : can be sid/surveyid url GET parameters
-    * @param $lang : the mail language
+    * Check the Expression in quota
+    * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
+    * @param integer $quota : the quota id
+    * @param string $lang : the survey language, optional : if not set get all language of survey
     * 
     * @author Denis Chenu
     * @version 1.0
     */
+    public function quota($iSurveyId,$quota,$lang=null)
+    {
+        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','read'))
+            throw new CHttpException(401,"401 Unauthorized");
+        $iQuotaId=$quota;
+        if(is_string($lang))
+        {
+            $oValidator= new LSYii_Validators;
+            $aLangs=array($oValidator->languageFilter($lang));
+        }
+        else
+        {
+            $aLangs = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
+        }
+        $aExpressions=array();
+        $this->iSurveyId=$iSurveyId;
+        foreach($aLangs as $sLang)
+        {
+            $oQuotaLanguageSetting=QuotaLanguageSetting::model()->find("quotals_quota_id =:quota_id and quotals_language=:language",array(':quota_id'=>$iQuotaId,':language'=>$sLang));
+            // We don't need to go to step since new feature #8823, maybe need to be fixed ?
+            if($oQuotaLanguageSetting)
+            {
+                $this->sLang=$sLang;
+                $aExpressions['name_'.$sLang]=array(
+                    'title'=>sprintf("Quota name (%s)",$sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_name,array(),__METHOD__), 
+                );
+                $aExpressions['message_'.$sLang]=array(
+                    'title'=>sprintf("Quota message (%s)",$sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_message,array(),__METHOD__), 
+                );
+                $aExpressions['url_'.$sLang]=array(
+                    'title'=>sprintf("URL (%s)",$sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url,array(),__METHOD__), 
+                );
+                $aExpressions['urldescrip_'.$sLang]=array(
+                    'title'=>sprintf("URL description (%s)",$sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_urldescrip,array(),__METHOD__), 
+                );
+            }
+        }
+        $aData=array(
+            'aExpressions'=>$aExpressions,
+        );
+        $this->getController()->layout=$this->layout;
+        $this->getController()->pageTitle=gt("Validate quota");
+
+        $this->getController()->render("/admin/expressions/validationList", $aData);
+    }
+    /**
+    * Check the Expression in email
+    * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
+    * @param string $lang : the mail language
+    * 
+    * @author Denis Chenu
+    * @version 1.1
+    */
     public function email($iSurveyId,$lang)
     {
-        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
+        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'read'))
             throw new CHttpException(401,"401 Unauthorized");
         $sType=Yii::app()->request->getQuery('type');
         $this->sLang=$sLang=$lang;
@@ -177,11 +245,22 @@ class ExpressionValidate extends Survey_Common_Action {
         }
         $aData['aExpressions']=$aExpressions;
         $this->getController()->layout=$this->layout;
-        $this->getController()->pageTitle=sprintf("Validate expression in email : %s",$sType);
+        $this->getController()->pageTitle=sprintf(gt("Validate expression in email : %s"),$sType);
 
-        $this->getController()->render("/admin/expressions/email", $aData);
+        $this->getController()->render("/admin/expressions/validationList", $aData);
     }
 
+    /**
+    * Get the complete HTML from a string
+    * @param string $sExpression : the string to parse
+    * @param array $aReplacement : optionnal array of replacemement
+    * @param string $sDebugSource : optionnal debug source (for templatereplace)
+    * @uses ExpressionValidate::$iSurveyId
+    * @uses ExpressionValidate::$sLang
+    *
+    * @author Denis Chenu
+    * @version 1.0
+    */
     private function getHtmlExpression($sExpression,$aReplacement=array(),$sDebugSource=__CLASS__)
     {
         $LEM =LimeExpressionManager::singleton();
