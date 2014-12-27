@@ -741,7 +741,6 @@ function linksInDialog()
             event.preventDefault();
             var src = $(this).attr("href");
             var title = $(this).attr("title");
-            console.log(title);
             iframe.attr({
                 src: src,
             });
