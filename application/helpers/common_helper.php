@@ -5810,16 +5810,16 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             continue;
         }
         if (isset($fname['subquestion']))
-            $subquestion = "{$fname['subquestion']}";
+            $subquestion = "[{$fname['subquestion']}]";
 
         if (isset($fname['subquestion1']))
-            $subquestion = "{$fname['subquestion1']}";
+            $subquestion = "[{$fname['subquestion1']}]";
 
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
 
         $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
-        $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
+        $aResultTable[$fname['fieldname']]=array($question,$subquestion,$answer);
     }
     return $aResultTable;
 }

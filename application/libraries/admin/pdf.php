@@ -745,98 +745,39 @@ class pdf extends TCPDF {
 
   /**
    *
-   * Add QID text to PDF
-   * @param $sFname - Answer field text
-   * @param $bAllowBreakPage - Allow break cell in two pages
-   * @return unknown_type
-   */
-  function addQidAnswer($sFname, $bAllowBreakPage=false)
-  {
-    $oPurifier = new CHtmlPurifier();
-    $sAnswerHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sFname)),ENT_COMPAT);
-    $sData['thissurvey']=$this->_aSurveyInfo;
-    $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
-
-    $startPage = $this->getPage();
-    $this->startTransaction();
-    $this->ln(6);
-    $this->SetFontSize($this->_ibaseAnswerFontSize);
-    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sAnswerHTML, 0, 1, false, true, 'L');
-    $this->ln(2);
-    if ($this->getPage() != $startPage && !$bAllowBreakPage)
-    {
-      $this->rollbackTransaction(true);
-      $this->AddPage();
-      $this->addQidAnswer($sFname,true); // Second param = true avoid an endless loop if a cell is longer than a page
-    }
-    else
-    {
-      $this->commitTransaction();
-    }
-  }
-
-  /**
-   *
    * Add answer to PDF
-   * @param $sFname - Answer field text array
+   *
+   * @param $sQuestion - Question field text array
+   * @param $sResponse - Answer field text array
+   * @param $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
+   *                               because we can not interpret expressions so just purify.
+   *                               TODO: Find a universal valid method to interpret expressions
    * @param $bAllowBreakPage - Allow break cell in two pages
    * @return unknown_type
    */
-  function addAnswer($sFname, $bAllowBreakPage=false)
+  function addAnswer($sQuestion, $sResponse, $bReplaceExpressions=true, $bAllowBreakPage=false)
   {
     $oPurifier = new CHtmlPurifier();
-    $sAnswerHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sFname[0]." ".$sFname[1])),ENT_COMPAT);
-    $sData['thissurvey']=$this->_aSurveyInfo;
-    $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
-    $sResponse = flattenText($sFname[2], false, true, 'UTF-8', false);
+    $sQuestionHTML = str_replace('-oth-','',$sQuestion); // Copied from Writer::stripTagsFull. Really necessary?
+    $sQuestionHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sQuestionHTML)),ENT_COMPAT);
+    if ($bReplaceExpressions)
+    {
+        $sData['thissurvey']=$this->_aSurveyInfo;
+        $sQuestionHTML = templatereplace($sQuestionHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+    }
+    $sResponse = flattenText($sResponse, false, true, 'UTF-8', false);
 
     $startPage = $this->getPage();
     $this->startTransaction();
     $this->SetFontSize($this->_ibaseAnswerFontSize);
-    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sAnswerHTML, 1, 1, true, true, 'L');
+    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sQuestionHTML, 1, 1, true, true, 'L');
     $this->MultiCell(0, $this->_iCellHeight, $sResponse, 1, 'L', 0, 1, '', '', true);
     $this->ln(2);
     if ($this->getPage() != $startPage && !$bAllowBreakPage)
     {
       $this->rollbackTransaction(true);
       $this->AddPage();
-      $this->addAnswer($sFname,true); // Second param = true avoid an endless loop if a cell is longer than a page
-    }
-    else
-    {
-      $this->commitTransaction();
-    }
-  }
-
-  /**
-   *
-   * Add pair (header,value) to PDF
-   * @param $sHeader - Header
-   * @param $sValue - Value
-   * @param $bAllowBreakPage - Allow break cell in two pages
-   * @return unknown_type
-   */
-  function addValue($sHeader, $sValue, $bAllowBreakPage=false)
-  {
-    $oPurifier = new CHtmlPurifier();
-    // We use this method when exporting answers PDF from admin GUI, we can not interpret expressions so just purify
-    // TODO: Find a way to interpret expressions in this situation
-    $sHeaderHTML = str_replace('-oth-','',$sHeader);
-    $sHeaderHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sHeaderHTML)),ENT_COMPAT);
-    $sData['thissurvey']=$this->_aSurveyInfo;
-    $sValueHTML = flattenText($sValue, false, true, 'UTF-8', false);
-
-    $startPage = $this->getPage();
-    $this->startTransaction();
-    $this->SetFontSize($this->_ibaseAnswerFontSize);
-    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sHeaderHTML, 1, 1, true, true, 'L');
-    $this->MultiCell(0, $this->_iCellHeight, $sValueHTML, 1, 'L', 0, 1, '', '', true);
-    $this->ln(2);
-    if ($this->getPage() != $startPage && !$bAllowBreakPage)
-    {
-      $this->rollbackTransaction(true);
-      $this->AddPage();
-      $this->addValue($sHeader,$sValue,true); // Last param = true avoid an endless loop if a cell is longer than a page
+      $this->addAnswer($sQuestion,$sResponse,$bReplaceExpressions,true); // "Last param = true" prevents an endless loop if a cell is longer than a page
     }
     else
     {
