@@ -65,6 +65,7 @@
                 $this->writeHeader();
                 $this->first = false;
             }
+            $this->tag('h1', sprintf(gT("Survey response")));
             $this->openTag('div', array(
                 'class' => 'response',
                 'data-srid' => $values[0]
