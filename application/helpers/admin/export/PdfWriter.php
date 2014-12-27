@@ -7,6 +7,14 @@ class PdfWriter extends Writer
     private $pdfDestination;
     private $surveyName;
 
+    /**
+     * Map of questions groups
+     *
+     * @var array
+     * @access private
+     */
+    private $aGroupMap = array();
+
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
@@ -28,6 +36,7 @@ class PdfWriter extends Writer
         $this->pdf->initAnswerPDF($survey->info, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);
         $this->separator="\t";
         $this->rowCounter = 0;
+        $this->aGroupMap = $this->setGroupMap($survey, $oOptions);
     }
 
     public function outputRecord($headers, $values, FormattingOptions $oOptions)
@@ -49,12 +58,19 @@ class PdfWriter extends Writer
                 $this->pdf->AddPage();
             }
             $this->pdf->addTitle(sprintf(gT("Survey response %d"), $this->rowCounter));
-
-            $columnCounter = 0;
-            foreach($headers as $header)
+            foreach ($this->aGroupMap as $gid => $questions)
             {
-                $this->pdf->addValue($header, $values[$columnCounter]);
-                $columnCounter++;
+                if ($gid != 0)
+                {
+                    $this->pdf->addGidAnswer($questions[0]['group_name']);
+                }
+                foreach ($questions as $question)
+                {
+                    if (isset($values[$question['index']]) && isset($headers[$question['index']]))
+                    {
+                        $this->pdf->addValue($headers[$question['index']], $values[$question['index']]);
+                    }
+                }
             }
         }
         else

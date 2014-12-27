@@ -37,6 +37,31 @@ abstract class Writer implements IWriter
     }
 
     /**
+    * Return map of questions groups
+    *
+    * @param Survey $survey
+    * @param FormattingOptions $oOptions
+    * @return array
+    */
+    public function setGroupMap(SurveyObj $survey, FormattingOptions $oOptions)
+    {
+        $aGroupMap = array();
+        $index = 0;
+        foreach ($oOptions->selectedColumns as $column) {
+            if (isset($survey->fieldMap[$column])) {
+                $question = $survey->fieldMap[$column];
+            } else {
+                // Token field
+                $question = array('gid'=>0, 'qid'=>'');
+            }
+            $question['index'] = $index;
+            $aGroupMap[intval($question['gid'])][] = $question;
+            $index++;
+        }
+        return $aGroupMap;
+    }
+
+    /**
     * Returns an abbreviated heading for the survey's question that matches
     * Force headingTextLength to be set, set to 15 if is not set (old behaviour)
     *
