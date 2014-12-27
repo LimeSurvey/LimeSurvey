@@ -195,6 +195,7 @@ class AdminController extends LSYii_Controller
         'emailtemplates'   => 'emailtemplates',
         'export'           => 'export',
         'expressions'      => 'expressions',
+        'validate'         => 'ExpressionValidate',
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
         'limereplacementfields' => 'limereplacementfields',

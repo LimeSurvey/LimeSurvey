@@ -9,3 +9,4 @@
 .em-var-error{color: #ff4500}
 .em-var-error{color: #ff0000 /* orangered */}
 .em-error{border: 2px solid #ff0000; /* red */;}
+[data-link]{cursor:pointer}

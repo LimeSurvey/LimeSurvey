@@ -52,7 +52,6 @@ class Survey_Common_Action extends CAction
         {
             $sSubAction = $params['sa'];
         }
-
         // Check if the class has the method
         $oClass = new ReflectionClass($this);
         if (!$oClass->hasMethod($sSubAction))
@@ -87,7 +86,8 @@ class Survey_Common_Action extends CAction
 
         // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
         $aActions = Yii::app()->getController()->getActionClasses();
-        if(empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != $aActions[$this->getId()] || !$oMethod->isPublic())
+
+        if(empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic())
         {
             // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
             // So let us get the last possible default method, ie. index

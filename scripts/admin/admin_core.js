@@ -18,7 +18,7 @@
  * Need to be replaced by some polyfills see #8009
  */
 hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
-
+linksInDialog();
 $(document).ready(function(){
     initializeAjaxProgress();
     tableCellAdapters();
@@ -276,6 +276,7 @@ function doToolTip()
                     }
                 });
             }
+            $(this).removeAttr('title');
         }
     });
     $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
@@ -376,8 +377,6 @@ function doToolTip()
             });
         }
     });
-    /* Any other title take jquery ui tooltip */
-    $(document).tooltip();
 }
 // A function to encode any HTML for qtip
 function htmlEncode(html){
@@ -724,6 +723,32 @@ function removeCSRFDivs()
     });
 }
 
+function linksInDialog()
+{
+    $(function () {
+        var iframe = $('<iframe id="dialog" allowfullscreen></iframe>');
+        var dialog = $("<div></div>").append(iframe).appendTo("body").dialog({
+            autoOpen: false,
+            modal: false,
+            resizable: true,
+            width: "60%",
+            height: $(window).height()*0.6,
+            close: function () {
+                iframe.attr("src", "");
+            }
+        });
+        $(document).on('click','a[target=dialog]',function(event){
+            event.preventDefault();
+            var src = $(this).attr("href");
+            var title = $(this).attr("title");
+            console.log(title);
+            iframe.attr({
+                src: src,
+            });
+            dialog.dialog("option", "title", title).dialog("open");
+        });
+    });
+}
 function initializeAjaxProgress()
 {
     $('#ajaxprogress').dialog({

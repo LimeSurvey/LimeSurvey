@@ -2,6 +2,9 @@
 <div id='<?php echo "tab-$grouplang-$tab"; ?>'>
 <ul>
     <li>
+        <?php echo CHtml::link(sprintf(gT("Validate expression in %s"),$details['title']),array('admin/validate','sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab),array('title'=>$details['title'],"target"=>"dialog")); ?>
+    </li>
+    <li>
         <label for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
         <?php echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$details['field']['subject'],array('size'=>80)); ?>
         <?php echo CHtml::button(gT("Reset"),array('class'=>'fillin','data-target'=>"email_{$tab}_subj_{$grouplang}",'data-value'=>$details['default']['subject'])); ?>

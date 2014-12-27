@@ -1590,7 +1590,7 @@ class ExpressionManager {
                         $message = str_replace(array('{','}'), array('{ ', ' }'), $message);
 
                         $stringParts[] = "<span title='"  . $message . "' class='em-var {$class}'";
-                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0) {
                             $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
                             $stringParts[] = " data-link='{$editlink}'";
                         }
