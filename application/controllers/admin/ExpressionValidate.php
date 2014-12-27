@@ -11,6 +11,9 @@ class ExpressionValidate extends Survey_Common_Action {
 
     public $layout = 'popup';
 
+    private $iSurveyId;
+    private $sLang;
+
     public function index()
     {
         throw new CHttpException(400);
@@ -29,16 +32,9 @@ class ExpressionValidate extends Survey_Common_Action {
         if(!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
             throw new CHttpException(401,"401 Unauthorized");
         $sType=Yii::app()->request->getQuery('type');
-        $sLang=$lang;
-        $LEM =LimeExpressionManager::singleton();
+        $this->sLang=$sLang=$lang;
+        $this->iSurveyId=$iSurveyId; // This start the survey before Expression : is this allways needed ?
 
-        $LEM::SetDirtyFlag();// Not sure it's needed
-        $LEM::SetPreviewMode('logic');
-        $aSurveyInfo=getSurveyInfo($iSurveyId,$sLang);
-        $aSurveyOptions = array(
-            'hyperlinkSyntaxHighlighting'=>true,
-        );
-        $LEM::StartSurvey($iSurveyId, 'survey', $aSurveyOptions);// QCODE are replaced : see #9424 : to be moved only for after survey email after fixed
         $aTypeAttributes=array(
             'invitation'=>array(
                 'subject'=>array(
@@ -101,6 +97,7 @@ class ExpressionValidate extends Survey_Common_Action {
                 ),
             ),
         );
+        $aSurveyInfo=getSurveyInfo($iSurveyId,$sLang);
         // Replaced before email edit
         $aReplacement=array(
             'ADMINNAME'=> $aSurveyInfo['admin'],
@@ -166,9 +163,6 @@ class ExpressionValidate extends Survey_Common_Action {
         }
 
         $aData=array();
-        $aReData=array(
-            'thissurvey'=>getSurveyInfo($iSurveyId,$sLang),
-        );
         //$oSurveyLanguage=SurveyLanguageSetting::model()->find("surveyls_survey_id=:sid and surveyls_language=:language",array(":sid"=>$iSurveyId,":language"=>$sLang));
         $aExpressions=array();
         foreach($aTypeAttributes[$sType] as $key=>$aAttribute)
@@ -176,10 +170,9 @@ class ExpressionValidate extends Survey_Common_Action {
             $sAttribute=$aAttribute['attribute'];
             // Email send do : templatereplace + ReplaceField to the Templatereplace done : we need 2 in one
             // $LEM::ProcessString($oSurveyLanguage->$sAttribute,null,$aReplacement,false,1,1,false,false,true); // This way : ProcessString don't replace coreReplacements
-            templatereplace($aSurveyInfo[$sAttribute], $aReplacement,$aReData,'ExpressionValidate::email',false,null,array(),true);
             $aExpressions[$key]=array(
                 'title'=>$aAttribute['title'],
-                'expression'=> $LEM::GetLastPrettyPrintExpression(),
+                'expression'=> $this->getHtmlExpression($aSurveyInfo[$sAttribute],$aReplacement,__METHOD__),
             );
         }
         $aData['aExpressions']=$aExpressions;
@@ -187,5 +180,25 @@ class ExpressionValidate extends Survey_Common_Action {
         $this->getController()->pageTitle=sprintf("Validate expression in email : %s",$sType);
 
         $this->getController()->render("/admin/expressions/email", $aData);
+    }
+
+    private function getHtmlExpression($sExpression,$aReplacement=array(),$sDebugSource=__CLASS__)
+    {
+        $LEM =LimeExpressionManager::singleton();
+        $LEM::SetDirtyFlag();// Not sure it's needed
+        $LEM::SetPreviewMode('logic');
+
+        $aReData=array();
+        if($this->iSurveyId)
+        {
+            $LEM::StartSurvey($this->iSurveyId, 'survey', array('hyperlinkSyntaxHighlighting'=>true));// replace QCODE
+            $aReData['thissurvey']=getSurveyInfo($this->iSurveyId,$this->sLang);
+        }
+        // TODO : Find error in class name, style etc ....
+        // need: templatereplace without any filter and find if there are error but $bHaveError=$LEM->em->HasErrors() is Private
+        $oFilter = new CHtmlPurifier();
+        templatereplace($oFilter->purify(viewHelper::filterScript($sExpression)), $aReplacement,$aReData,$sDebugSource,false,null,array(),true);
+
+        return $LEM::GetLastPrettyPrintExpression();
     }
 }
