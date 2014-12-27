@@ -131,10 +131,6 @@
                     {
                             $sOutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
                     }
-                    elseif (substr($sFieldname,0,4)=='qid_')
-                    {
-                            $sOutput .= "\t<tr class='printanswersquestionhead'><td colspan='2'>{$fname[0]}</td></tr>\n";
-                    }
                     elseif ($sFieldname=='submitdate')
                     {
                         if($sAnonymized != 'Y')
@@ -142,7 +138,7 @@
                                 $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                         }
                     }
-                    else
+                    elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it
                     {
                         $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".flattenText($fname[2])."</td></tr>";
                     }
@@ -201,20 +197,16 @@
                     {
                         $oPDF->addGidAnswer($fname[0]);
                     }
-                    elseif (substr($sFieldname,0,4)=='qid_')
-                    {
-                        $oPDF->addQidAnswer($fname[0]);
-                    }
                     elseif ($sFieldname=='submitdate')
                     {
                         if($sAnonymized != 'Y')
                         {
-                            $oPDF->addAnswer($fname);
+                            $oPDF->addAnswer($fname[0]." ".$fname[1], $fname[2]);
                         }
                     }
-                    else
+                    elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it
                     {
-                        $oPDF->addAnswer($fname);
+                        $oPDF->addAnswer($fname[0]." ".$fname[1], $fname[2]);
                     }
                 }
 

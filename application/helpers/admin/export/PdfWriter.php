@@ -70,7 +70,7 @@ class PdfWriter extends Writer
                 {
                     if (isset($values[$question['index']]) && isset($headers[$question['index']]))
                     {
-                        $this->pdf->addValue($headers[$question['index']], $values[$question['index']]);
+                        $this->pdf->addAnswer($headers[$question['index']], $values[$question['index']], false);
                     }
                 }
             }
