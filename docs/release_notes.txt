@@ -59,7 +59,47 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.05+ (build 141126) to 2.05+ (build 141210) Dev 10, 2014
+Changes from 2.05+ (build 141210) to 2.05+ (build 141229) Dec 29, 2014
+-Fixed issue #9171: Unable to subscribe to event (Alfredo Esteban)
+-Fixed issue #9326: High memory usage if non-superadmin imports survey with acivated XSS filter (Carsten Schmitz)
+-Fixed issue #9386: XSS issue related to survey deletion (Carsten Schmitz)
+-Fixed issue #9400: Export Started but not yet completed tokens don't work (Denis Chenu)
+-Fixed issue #9408: Excel statistics for question types "5 point array" and "5 point choice" show wrong aggregated percentage (Carsten Schmitz)
+-Fixed issue #9409: PDF export by user contains html tag (Alfredo Esteban)
+-Fixed issue #9415: Invalid url for image broke Print to PDF with debug 2 (Alfredo Esteban)
+-Fixed issue #9418: Plugin Settings | The class name is being showed, instead of name of the plugin. (gabrieljenik)
+-Fixed issue #9419: Unable to delete survey (Alfredo Esteban)
+-Fixed issue #9422: Answers PDF from admin gui doesn't show question group name (Alfredo Esteban)
+-Fixed issue #9425: Absence of delimeter at the end of a question group (Alfredo Esteban)
+-Fixed issue #9426: No title at beginning of new respondent answers in HTML export from admin gui (Alfredo Esteban)
+-Fixed issue: LimesurveyApi->getOldResponseTables return timing table (Denis Chenu)
+-Fixed issue: Removing HTML tags from pdf title (Alfredo Esteban)
+-Fixed issue: {TOKEN} is not replaced by token in quota message and url (Denis Chenu)
+-Fixed issue: Trailing space in token key leads to unrecoverable survey situation (Carsten Schmitz)
+-Removed feature: 'allowmandbackwards' config option is deprecated (Carsten Schmitz)
+-Updated feature: Answers PDF export from admin GUI. (Alfredo Esteban)
+-Updated feature: Audit plugin logs login, logout and failed login attempt (Alfredo Esteban)
+#Updated translation: Basque by ikt
+#Updated translation: Croatian by rovinj, nmisic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by mariliis
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by arnaud21
+#Updated translation: Icelandic by svelgur
+#Updated translation: Italian by lfanfoni, Zeos
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmal) by peterhol, pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Russian by severt, vipgroup
+#Updated translation: Spanish (Chile) by jrojas
+#Updated translation: Spanish (Spain) by aesteban, valdomir
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt
+
+Changes from 2.05+ (build 141126) to 2.05+ (build 141210) Dec 10, 2014
 -Updated feature: Answers export to PDF (user and admin gui) (Aestu)
 -New translation: Esperanto (Carsten Schmitz)
 -Fixed issue #9187: Default value edit page - Set value for all languages is not working (kairavesloot)
