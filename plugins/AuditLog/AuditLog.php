@@ -113,7 +113,7 @@
                 $sAction='create';
                 $aOldValues=array();
                 // Indicate the password has changed but assign fake hash
-                $aNewValues['password']=hash('md5','67890');
+                $aNewValues['password']='*MASKED*PASSWORD*';
             }
             else
             {                
@@ -121,11 +121,16 @@
                 $sAction='update';
                 $aOldValues=$oOldUser->getAttributes();
                 
+                // Postgres delivers bytea fields as streams
+                if (gettype($aOldValues['password'])=='resource')
+                {
+                    $aOldValues['password'] = stream_get_contents($aOldValues['password']);
+                }
                 // If the password has changed then indicate that it has changed but assign fake hashes
                 if ($aNewValues['password']!=$aOldValues['password'])
                 {
-                    $aOldValues['password']=hash('md5','12345');
-                    $aNewValues['password']=hash('md5','67890');
+                    $aOldValues['password']='*MASKED*OLD*PASSWORD*';
+                    $aNewValues['password']='*MASKED*NEW*PASSWORD*';
                 };
             }
             
