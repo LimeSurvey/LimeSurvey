@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2014-12-22 00:06:21+00:00\n"
+"POT-Creation-Date: 2014-12-29 00:06:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -74,56 +74,56 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:95
+#: application/controllers/admin/authentication.php:103
 msgid "Incorrect username and/or password!"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:116
+#: application/controllers/admin/authentication.php:124
 msgid "Logout successful."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:146
+#: application/controllers/admin/authentication.php:154
 msgid "User name and/or email not found!"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:169
+#: application/controllers/admin/authentication.php:177
 msgid "User data"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:174
+#: application/controllers/admin/authentication.php:182
 msgid "Username: %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:175
+#: application/controllers/admin/authentication.php:183
 msgid "Email: %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:176
+#: application/controllers/admin/authentication.php:184
 msgid "New password: %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:179
+#: application/controllers/admin/authentication.php:187
 msgid "Your user data for accessing %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:187
+#: application/controllers/admin/authentication.php:195
 msgid "An email with your login data was sent to you."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:191
+#: application/controllers/admin/authentication.php:199
 #: application/controllers/admin/useraction.php:151
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:215
+#: application/controllers/admin/authentication.php:223
 msgid "Please log in first."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:220
+#: application/controllers/admin/authentication.php:228
 msgid "Welcome %s!"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:225
+#: application/controllers/admin/authentication.php:233
 msgid "Reloading screen. Please wait."
 msgstr ""
 
@@ -2416,7 +2416,7 @@ msgid "Total time"
 msgstr ""
 
 #: application/controllers/admin/responses.php:658
-#: application/helpers/admin/export/HtmlWriter.php:89
+#: application/helpers/admin/export/HtmlWriter.php:78
 #: application/views/admin/assessments_view.php:74
 msgid "Group"
 msgstr ""
@@ -4046,7 +4046,7 @@ msgstr ""
 msgid "Survey name (ID):"
 msgstr ""
 
-#: application/controllers/PrintanswersController.php:179
+#: application/controllers/PrintanswersController.php:175
 #: application/helpers/admin/statistics_helper.php:1831
 #: application/helpers/admin/statistics_helper.php:1844
 #: application/helpers/admin/statistics_helper.php:1892
@@ -4698,16 +4698,16 @@ msgid "This question has a condition set, however the condition is based on a qu
 msgstr ""
 
 #: application/helpers/admin/export/DocWriter.php:75
-#: application/helpers/admin/export/PdfWriter.php:48
+#: application/helpers/admin/export/HtmlWriter.php:68
 msgid "Survey response"
 msgstr ""
 
-#: application/helpers/admin/export/HtmlWriter.php:67
+#: application/helpers/admin/export/HtmlWriter.php:55
 #: application/views/admin/templates/templateeditor_printoutput_view.php:1
 msgid "Survey name (ID)"
 msgstr ""
 
-#: application/helpers/admin/export/PdfWriter.php:61
+#: application/helpers/admin/export/PdfWriter.php:62
 msgid "Survey response %d"
 msgstr ""
 
@@ -7765,7 +7765,7 @@ msgid "This survey does not yet have any questions and cannot be tested or compl
 msgstr ""
 
 #: application/helpers/frontend_helper.php:1659
-#: application/helpers/frontend_helper.php:2032
+#: application/helpers/frontend_helper.php:2036
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:61
 #: application/views/installer/dbsettings_view.php:13
@@ -7796,7 +7796,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2169
+#: application/helpers/frontend_helper.php:2172
 #: application/helpers/SurveyRuntimeHelper.php:1147
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
