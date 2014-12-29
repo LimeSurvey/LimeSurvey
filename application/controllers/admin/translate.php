@@ -1034,6 +1034,7 @@ class translate extends Survey_Common_Action {
 
         $aSearch     = array('zh-Hans','zh-Hant-HK','zh-Hant-TW','nl-informal','de-informal','it-formal','pt-BR','es-MX','nb','nn');
         $aReplace    = array('zh-CN','zh-TW','zh-TW','nl','de','it','pt','es','no','no');
+        $sBaselang = str_replace($aSearch, $aReplace, $sBaselang);
         $sTolang = str_replace($aSearch, $aReplace, $sTolang);
 
         $error = false;
