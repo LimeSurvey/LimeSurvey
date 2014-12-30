@@ -583,7 +583,7 @@ class InstallerController extends CController {
         }
         else
         {
-            $sConfirmation = $clang->gT('There were errors when trying to populate the database :').'<p><ul>';
+            $sConfirmation = $clang->gT('There were errors when trying to populate the database:').'<p><ul>';
             foreach ($aErrors as $sError)
             {
                 $sConfirmation.='<li>'.htmlspecialchars($sError).'</li>';
