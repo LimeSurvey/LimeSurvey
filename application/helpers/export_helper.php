@@ -1509,7 +1509,7 @@ function group_export($action, $iSurveyID, $gid)
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();
 
-    header("Content-Type: text/html/force-download");
+    header("Content-Type: application/force-download");
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -1611,7 +1611,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();
 
-    header("Content-Type: text/html/force-download");
+    header("Content-Type: application/force-download");
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
