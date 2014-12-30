@@ -570,15 +570,14 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->loadHelper('surveytranslator');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $surveys = Survey::model();
-        //!!! Is this even possible to execute?
+        $oSurvey = new Survey;
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-            $surveys->permission(Yii::app()->user->getId());
+            $oSurvey->permission(Yii::app()->user->getId());
 
-        $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
+        $aSurveys = $oSurvey->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
-        foreach ($surveys as $rows)
+        foreach ($aSurveys as $rows)
         {
             if (!isset($rows->owner->attributes)) $aOwner=array('users_name'=>gT('(None)')); else $aOwner=$rows->owner->attributes;
             $rows = array_merge($rows->attributes, $rows->defaultlanguage->attributes, $aOwner);
