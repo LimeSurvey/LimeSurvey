@@ -4261,14 +4261,16 @@
 
          /**
         * Translate all Expressions, Macros, registered variables, etc. in $string
-        * @param <type> $string - the string to be replaced
-        * @param <type> $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
-        * @param <type> $replacementFields - optional replacement values
-        * @param <boolean> $debug - if true,write translations for this page to html-formatted log file
-        * @param <type> $numRecursionLevels - the number of times to recursively subtitute values in this string
-        * @param <type> $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
-        * @param <type> $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
-        * @return <type> - the original $string with all replacements done.
+        * @param string $string - the string to be replaced
+        * @param integer $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
+        * @param array $replacementFields - optional replacement values
+        * @param boolean $debug - deprecated
+        * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
+        * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
+        * @param boolean $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
+        * @param boolean $timeit 
+        * @param boolean $staticReplacement - return HTML string without the system to update by javascript 
+        * @return string - the original $string with all replacements done.
         */
 
         static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true, $staticReplacement=false)
@@ -5276,7 +5278,8 @@
                     switch($type)
                     {
                         case 'D': //DATE
-                            if (trim($val)=='') {
+                            if (trim($val)=='')
+                            {
                                 $val=NULL;  // since some databases can't store blanks in date fields
                             }
                             // otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses()
@@ -5289,7 +5292,8 @@
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
-                            if (trim($val)=='') {
+                            if (trim($val)=='')
+                            {
                                 $val=NULL;  // since some databases can't store blanks in numerical inputs
                             }
                             break;
@@ -5914,6 +5918,7 @@
         {
             $LEM =& $this;
             $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
+
             $qrel=true;   // assume relevant unless discover otherwise
             $prettyPrintRelEqn='';    //  assume no relevance eqn by default
             $qid=$qInfo['qid'];
@@ -5924,12 +5929,7 @@
 
             $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
             $grel = $gRelInfo['result'];
-            //Allways set a $_SESSION 
-            $allSQs = explode('|', $LEM->qid2code[$qid]);
-            foreach($allSQs as $answer){
-                if(!isset($_SESSION[$LEM->sessid][$answer]))
-                    $_SESSION[$LEM->sessid][$answer]=null;
-            }
+
             ///////////////////////////
             // IS QUESTION RELEVANT? //
             ///////////////////////////
@@ -5970,7 +5970,6 @@
             {
                 $qrel=true;
             }
-
             //////////////////////////////////////
             // ARE ANY SUB-QUESTION IRRELEVANT? //
             //////////////////////////////////////
@@ -6529,6 +6528,7 @@
                 }
             }
 
+
             /////////////////////////////////////////////////////////////
             // CREATE ARRAY OF VALUES THAT NEED TO BE SILENTLY UPDATED //
             /////////////////////////////////////////////////////////////
@@ -6569,7 +6569,20 @@
                 }
             }
 
-            if ( $LEM->surveyOptions['deletenonvalues'] )
+            // Process Default : 1st part : update in DB if actually relevant
+            if ($qrel && $grel)
+            {
+                $sgqas = explode('|',$LEM->qid2code[$qid]);
+                foreach ($sgqas as $sgqa)
+                {
+                    if (!is_null($LEM->knownVars[$sgqa]['default']))
+                    {
+                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, false, 1, 1, false, false, true));// Static replace : can't update HTML inside a input
+                    }
+                }
+            }
+
+            if ($LEM->surveyOptions['deletenonvalues'])
             {
                 foreach ($irrelevantSQs as $sq)
                 {
@@ -6579,18 +6592,23 @@
                     $LEM->updatedValues[$sq]= NULL;
                 }
             }
-
-            // Regardless of whether relevant or hidden, if there is a default value and $_SESSION[$LEM->sessid][$sgqa] is NULL, then use the default value in $_SESSION, but don't write to database
-            // Also, set this AFTER testing relevance
-            $sgqas = explode('|',$LEM->qid2code[$qid]);
-            
-            foreach ($sgqas as $sgqa)
-            {
-                if (!is_null($LEM->knownVars[$sgqa]['default']) && !isset($_SESSION[$LEM->sessid][$sgqa])) {
-                    // add support for replacements
-                    $_SESSION[$LEM->sessid][$sgqa] = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], NULL, NULL, false, 1, 1, false, false, true);
+            // Regardless of whether relevant or hidden, allways set a $_SESSION for quanda_helper, use default value if exist
+            // Set this after testing relevance for default value hidden by relevance : ONLY for actual page, not needed after
+            $allSQs = explode('|', $LEM->qid2code[$qid]);
+            foreach($allSQs as $answer){
+                if(!isset($_SESSION[$LEM->sessid][$answer]))
+                {
+                    if(!is_null($LEM->knownVars[$answer]['default']))
+                    {
+                        $_SESSION[$LEM->sessid][$answer]=$LEM->ProcessString($LEM->knownVars[$answer]['default'],  $qInfo['qid'], NULL, false, 1, 1, false, false, true);
+                    }
+                    else
+                    {
+                        $_SESSION[$LEM->sessid][$answer]=null;
+                    }
                 }
             }
+
 
             //////////////////////////////////////////////////////////////////////////
             // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
