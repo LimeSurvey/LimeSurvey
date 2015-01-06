@@ -257,7 +257,6 @@ class export extends Survey_Common_Action {
         // In the future it might be possible to 'post' the 'export language' from
         // the exportresults form
         $explang = Yii::app()->request->getPost('exportlang',$surveybaselang);
-        $elang = new limesurvey_lang($explang);
 
         //Get together our FormattingOptions and then call into the exportSurvey
         //function.
