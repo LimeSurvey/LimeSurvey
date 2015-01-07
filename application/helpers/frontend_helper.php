@@ -2046,7 +2046,6 @@ function checkCompletedQuota($surveyid,$return=false)
     doHeader();
     echo templatereplace(file_get_contents($sTemplatePath."/startpage.pstpl"),array(),$aDataReplacement);
     echo templatereplace(file_get_contents($sTemplatePath."/completed.pstpl"),array("COMPLETED"=>$sHtmlQuotaMessage,"URL"=>$sHtmlQuotaUrl),$aDataReplacement);
-    // Better to use completed.pstpl, but some template can need update , leave it for 2.06 #09133
     echo templatereplace(file_get_contents($sTemplatePath."/endpage.pstpl"),array(),$aDataReplacement);
     doFooter();
     if ($sAction == "1")
