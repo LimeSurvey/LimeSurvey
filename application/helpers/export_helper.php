@@ -379,17 +379,23 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fieldno=0;
 
     $fields=array();
+    // Token lookup
+    $token_fields = array();
+
     if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
-            if($attributefield!='token') {
+            if ($attributefield != 'token') {
                 $fieldno++;
-                $fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
+
+                $token_fields[$attributefield] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
                 'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
                 'VariableLabel'=>$attributedescription['description'],'sql_name'=>$attributefield,'size'=>'100',
                 'title'=>$attributefield,'hide'=>0, 'scale'=>'');
+                // Add to return fields
+                $fields[] = $token_fields[$attributefield];
             }
         }
     }
@@ -439,10 +445,40 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         }
 
         #Get qid (question id)
-        if (in_array($fieldname, $noQID) || substr($fieldname,0,10)=='attribute_'){
+        if (in_array($fieldname, $noQID)) {
             $qid = 0;
             $varlabel = $fieldname;
             $ftitle = $fieldname;
+        } elseif ( substr($fieldname,0,10)=='attribute_') {
+            $qid = 0;
+            $varlabel = $fieldname;
+            // $varlabel = $token_fields[$fieldname]['description'];
+            $ftitle = $fieldname;
+
+            // set other variables from token_fields
+            $code = $token_fields[$fieldname]['code'];
+            $fieldtype = $token_fields[$fieldname]['SPSStype'];
+            $ftype = $token_fields[$fieldname]['LStype'];
+            $val_size = $token_fields[$fieldname]['size'];
+            $export_scale = $token_fields[$fieldname]['scale'];
+            $hide = $token_fields[$fieldname]['hide'];
+
+            /*
+             * TODO: what to do with name and title
+            $token_fields[$attributefield] = array(
+                'name'=>mb_substr($attributefield, 0, 8),
+                'title'=>$attributefield,
+            );
+
+            * TODO: what to do with id, LSLong, ValueLabels, scale_id
+            $tempArray = array(
+                'id'=>"$prefix$fid",
+                "LSlong"=>$lsLong,
+                'ValueLabels'=>'',
+                'scale_id'=>$scale_id
+            );
+            */
+
         } else{
             //GET FIELD DATA
             if (!isset($fieldmap[$fieldname])) {
