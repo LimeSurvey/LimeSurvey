@@ -90,10 +90,9 @@ class PluginsController extends LSYii_Controller
                 $aSave[$name] = App()->request->getPost($name, null);
             }
             $oPluginObject->saveSettings($aSave);
-
-            if(App()->request->getPost('redirect'))
+            Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
+            if(!is_null(App()->request->getPost('redirect')))
             {
-                Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
                 $this->forward('plugins/index', true);
             }
         }

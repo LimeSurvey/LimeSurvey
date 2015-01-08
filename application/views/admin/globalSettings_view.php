@@ -350,7 +350,12 @@
         </div>
         <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages); ?>'/>
         <div class="hidden hide" id="submitglobalbutton">
-            <p><button type="submit" name="action" value='globalsettingssave'><?php eT("Save"); ?></button></p>
+            <p>
+                <?php if(Yii::app()->session['refurl']) { ?>
+                <button type="submit" name="action" value='savequit'><?php eT("Save and quit"); ?></button>
+                <?php } ?>
+                <button type="submit" name="action" value='save'><?php eT("Save"); ?></button>
+            </p>
         </div>
     </form>
 

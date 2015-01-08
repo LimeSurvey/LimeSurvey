@@ -77,9 +77,9 @@
             $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . " btn" : 'btn';
             if (isset($htmlOptions['type']) && $htmlOptions['type'] == 'link')
             {
-                $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . " btn-link button" : 'btn-link button';
-                //echo CHtml::link($label,$htmlOptions['href'],$htmlOptions); // This allow cancel without js
-                echo CHtml::linkButton($label,$htmlOptions);
+                $htmlOptions['class'] = $htmlOptions['class'] . " btn-link button";
+                echo CHtml::link($label,$htmlOptions['href'],$htmlOptions); // This allow cancel without js
+                //echo CHtml::linkButton($label,$htmlOptions);
             }
             elseif(isset($htmlOptions['type']))
             {
@@ -96,6 +96,11 @@
             echo CHtml::openTag('div', array('class' => 'buttons control-group'));
             foreach ($this->buttons as $label => $htmlOptions)
             {
+                if (is_string($htmlOptions))
+                {
+                    $label = $htmlOptions;
+                    $htmlOptions = array();
+                }
                 $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . " inline" : 'inline';
                 $this->renderButton($label, $htmlOptions);
             }

@@ -73,7 +73,9 @@ class GlobalSettings extends Survey_Common_Action
                              'admin/user/setusertemplates'=>'admin/user/sa/index'
                             );
         $refurl= str_replace(array_keys($aReplacements),array_values($aReplacements),$refurl);
-        Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
+        // Don't update refurl is it's globalsetting
+        if(strpos($refurl,'globalsettings')===false)
+            Yii::app()->session['refurl'] = htmlspecialchars($refurl); //just to be safe!
 
         $data['title'] = "hi";
         $data['message'] = "message";
@@ -110,11 +112,13 @@ class GlobalSettings extends Survey_Common_Action
 
     private function _saveSettings()
     {
-        if (App()->request->getPost('action') !== "globalsettingssave") {
+        if (App()->request->getPost('action') !== "save" && App()->request->getPost('action') !== "savequit") // Why not use App()->request->isPostRequest ?
+        {
             return;
         }
 
-        if (!Permission::model()->hasGlobalPermission('settings','update')) {
+        if (!Permission::model()->hasGlobalPermission('settings','update'))
+        {
             $this->getController()->redirect(array('/admin'));
         }
         Yii::app()->loadHelper('surveytranslator');
@@ -226,9 +230,14 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags(App()->request->getPost('usercontrolSameGroupPolicy')));
 
         Yii::app()->setFlashMessage(gT("Global settings were saved."));
-
-        $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-        if($url){Yii::app()->getController()->redirect($url);}
+        if(App()->request->getPost('action') == "savequit")
+        {
+            $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
+            if($url)
+            {
+                Yii::app()->getController()->redirect($url);
+            }
+        }
     }
 
     private function _checkSettings()

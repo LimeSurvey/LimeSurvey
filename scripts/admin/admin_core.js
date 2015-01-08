@@ -87,7 +87,16 @@ $(document).ready(function(){
     $('#MaximizeGroupWindow').click(function(){
         $('#groupdetails').show();
     });
-    $('#tabs').tabs();
+    $('#tabs').tabs({
+        activate: function(event, ui) {
+            if(history.pushState) {
+                history.pushState(null, null, '#'+ui.newPanel.attr('id'));
+            }
+            else {
+                location.hash = ui.newPanel.attr('id');
+            }
+        }
+    });
     $('.tab-nav').tabs();
     $(".flashmessage").each(function() {
         $(this).notify().notify('create','themeroller',{},{custom:true,
