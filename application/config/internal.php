@@ -19,6 +19,7 @@ $internalConfig = array(
     'defaultController' => 'surveys',
     'import' => array(
         'application.core.*',
+        'application.core.db.*',
         'application.models.*',
         'application.controllers.*',
         'application.modules.*',
@@ -68,7 +69,8 @@ $internalConfig = array(
            'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
         ),
         'db' => array(
-                'schemaCachingDuration' => 3600,
+            'schemaCachingDuration' => 3600,
+            'class' => 'DbConnection'
         ),
         'messages' => array(
             'class' => 'CGettextMessageSource',

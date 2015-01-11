@@ -115,12 +115,10 @@ class TokenDynamic extends LSActiveRecord
         if(count($missingcolumns)>0) //Some columns are missing - we need to create them
         {
             Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
-            setVarchar(); //Set the appropriate varchar settings according to the database
-            $sVarchar = Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
             $columninfo=array('validfrom'=>'datetime',
                               'validuntil'=>'datetime',
-                              'blacklisted'=>$sVarchar.'(17)',
-                              'participant_id'=>$sVarchar.'(50)',
+                              'blacklisted'=> 'string(17)',
+                              'participant_id'=> 'string(50)',
                               'remindercount'=>"integer DEFAULT '0'",
                               'usesleft'=>'integer NOT NULL default 1'); //Not sure if any other fields would ever turn up here - please add if you can think of any others
             foreach($missingcolumns as $columnname) {
@@ -136,9 +134,7 @@ class TokenDynamic extends LSActiveRecord
                 $definition = $tableSchema->getColumn($columnname);
                 if ($definition->allowNull != true) {
                     Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
-                    setVarchar(); //Set the appropriate varchar settings according to the database
-                    $sVarchar = Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
-                    Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, sprintf('%s(%s)', Yii::app()->getConfig('varchar'), $definition->size));
+                    Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, "string({$definition->size}})");
                     Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
                 }
             }

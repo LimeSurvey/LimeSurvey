@@ -25,18 +25,18 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
     Yii::app()->loadHelper('database');
     $fields = array(
     'tid' => 'pk',
-    'participant_id' => 'varchar(50)',
-    'firstname' => 'varchar(40)',
-    'lastname' => 'varchar(40)',
+    'participant_id' => 'string(50)',
+    'firstname' => 'string(40)',
+    'lastname' => 'string(40)',
     'email' => 'text',
     'emailstatus' => 'text',
-    'token' => 'varchar(35)',
-    'language' => 'varchar(25)',
-    'blacklisted' => 'varchar(17)',
-    'sent' => "varchar(17) DEFAULT 'N'",
-    'remindersent' => "varchar(17) DEFAULT 'N'",
+    'token' => 'string(35)',
+    'language' => 'string(25)',
+    'blacklisted' => 'string(17)',
+    'sent' => "string(17) DEFAULT 'N'",
+    'remindersent' => "string(17) DEFAULT 'N'",
     'remindercount' => 'integer DEFAULT 0',
-    'completed' => "varchar(17) DEFAULT 'N'",
+    'completed' => "string(17) DEFAULT 'N'",
     'usesleft' => 'integer DEFAULT 1',
     'validfrom' => 'datetime',
     'validuntil' => 'datetime',
@@ -45,33 +45,6 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
     foreach ($aAttributeFields as $sAttributeField)
     {
         $fields[$sAttributeField]='text';
-    }
-
-    if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib')
-    {
-        $fields = array(
-            'tid' => 'pk',
-            'participant_id' => 'varchar(50)',
-            'firstname' => 'nvarchar(40)',
-            'lastname' => 'nvarchar(40)',
-            'email' => 'ntext',
-            'emailstatus' => 'ntext',
-            'token' => 'varchar(35)',
-            'language' => 'varchar(25)',
-            'blacklisted' => 'varchar(17)',
-            'sent' => "varchar(17) DEFAULT 'N'",
-            'remindersent' => "varchar(17) DEFAULT 'N'",
-            'remindercount' => 'integer DEFAULT 0',
-            'completed' => "varchar(17) DEFAULT 'N'",
-            'usesleft' => 'integer DEFAULT 1',
-            'validfrom' => 'datetime',
-            'validuntil' => 'datetime',
-            'mpid' => 'integer'
-        );
-        foreach ($aAttributeFields as $sAttributeField)
-        {
-            $fields[$sAttributeField]='nvarchar(255)';
-        }
     }
 
     try{
@@ -85,11 +58,14 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
         foreach($tokenattributefieldnames as $attrname=>$attrdetails)
         {
             if (isset($fields[$attrname])) continue; // Field was already created
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyID)."}}", $attrname, 'VARCHAR(255)'))->execute();
+            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyID)."}}", $attrname, 'string(255)'))->execute();
         }
         Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         return true;
     } catch(Exception $e) {
+        var_dump($e->getMessage());
+        die();
+        
         return false;
     }
 

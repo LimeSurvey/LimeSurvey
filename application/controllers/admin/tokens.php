@@ -50,11 +50,6 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            //Check that the tokens table has the required fields
-			/**
-			 * @todo is this still needed? What versions of token tables require this??
-			 */
-            TokenDynamic::model($iSurveyId)->checkColumns();
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
 			$aData['queries'] = Token::model($iSurveyId)->summary();
@@ -1093,8 +1088,7 @@ class tokens extends Survey_Common_Action
                 $i++;
             }
             $tokenattributefieldnames[] = 'attribute_' . $i;
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyId)."}}", 'attribute_' . $i, 'VARCHAR(255)'))->execute();
-            $fields['attribute_' . $i] = array('type' => 'VARCHAR', 'constraint' => '255');
+            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyId)."}}", 'attribute_' . $i, 'string(255)'))->execute();
         }
 
         Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyId . '}}', true); // Refresh schema cache just in case the table existed in the past
@@ -2521,9 +2515,6 @@ class tokens extends Survey_Common_Action
 
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));
             Yii::app()->db->schema->getTable(Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId), true); // Refresh schema cache just in case the table existed in the past
-
-            //Check that the tokens table has the required fields
-            TokenDynamic::model($iSurveyId)->checkColumns();
 
             //Add any survey_links from the renamed table
             SurveyLink::model()->rebuildLinksFromTokenTable($iSurveyId);

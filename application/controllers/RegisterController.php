@@ -218,7 +218,7 @@ class RegisterController extends LSYii_Controller {
         $aReplacementFields["{SURVEYNAME}"]=$aSurveyInfo['name'];
         $aReplacementFields["{SURVEYDESCRIPTION}"]=$aSurveyInfo['description'];
         $aReplacementFields["{EXPIRY}"]=$aSurveyInfo["expiry"];
-        $oToken=TokenDynamic::model($iSurveyId)->findByPk($iTokenId);// Reload the token (needed if just created)
+        $oToken = Token::model($iSurveyId)->findByPk($iTokenId); // Reload the token (needed if just created)
         foreach($oToken->attributes as $attribute=>$value){
             $aReplacementFields["{".strtoupper($attribute)."}"]=$value;
         }
@@ -303,7 +303,9 @@ class RegisterController extends LSYii_Controller {
 
         $aFieldValue=$this->getFieldValue($iSurveyId);
         // Now construct the text returned
-        $oToken=TokenDynamic::model($iSurveyId)->find('email=:email',array(':email'=>$aFieldValue['sEmail']));
+        $oToken=Token::model($iSurveyId)->findByAttributes([
+            'email' => $aFieldValue['sEmail']
+        ]);
         if ($oToken)
          {
             if($oToken->usesleft<1 && $aSurveyInfo['alloweditaftercompletion']!='Y')
@@ -343,8 +345,8 @@ class RegisterController extends LSYii_Controller {
             {
                 $oToken->validuntil = $aSurveyInfo['expires'];
             }
+            $oToken->generateToken();
             $oToken->save();
-            TokenDynamic::model($iSurveyId)->createToken($oToken->tid);// Review if really create a token
             $this->sMailMessage=gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.");
             return $oToken->tid;
         }

@@ -189,39 +189,3 @@ function dbGetTablesLike($table)
 {
     return (array) Yii::app()->db->createCommand(dbSelectTablesLike("{{{$table}}}"))->queryColumn();
 }
-
-/**
-* Creates a table using the YII DB Schema function but properly handles custom field types for the various DB types
-*
-* @param mixed $sTableName
-* @param mixed $aColumns
-* @param mixed $sOptions
-*/
-function createTable($sTableName, $aColumns, $sOptions=null)
-{
-    $sDBDriverName=Yii::app()->db->getDriverName();
-
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql' || $sDBDriverName=='dblib')
-    {
-        foreach ($aColumns as $sName=>&$sType)
-        {
-            $sType=str_replace('text','varchar(max)',$sType);
-            $sType=str_replace('binary','text',$sType);
-            if ($sType=='pk') $sType.=' NOT NULL';
-            if (stripos($sType,'null')===false && stripos($sType,'PRIMARY KEY')===false) $sType.=' NULL';
-        }
-    }
-    if ($sDBDriverName=='pgsql')
-    {
-        foreach ($aColumns as $sName=>&$sType)
-        {
-            $sType=str_replace('varchar','character varying',$sType);
-        }
-    }
-    if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')
-    {
-        if (is_null($sOptions))
-        $sOptions='ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
-    }
-    Yii::app()->db->createCommand()->createTable($sTableName,$aColumns,$sOptions);
-}

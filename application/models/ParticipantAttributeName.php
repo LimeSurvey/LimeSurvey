@@ -47,7 +47,6 @@ class ParticipantAttributeName extends LSActiveRecord
             // First load the helper
             Yii::app()->loadHelper('update/updatedb');
             $dbType = setsDBDriverName();
-            setVarchar($dbType);
             $table = 'participant_attribute_names';
             if ($dbType == 'mysql') {
                 // Only for mysql first remove auto increment
@@ -57,7 +56,7 @@ class ParticipantAttributeName extends LSActiveRecord
             addPrimaryKey($table, (array) $model->primaryKey());
             if ($dbType == 'mysql') {
                 // Add back auto increment
-                alterColumn($model->tableName(), $model->primaryKey(), Yii::app()->getConfig('autoincrement'));
+                alterColumn($model->tableName(), $model->primaryKey(), 'autoincrement');
             }
             // Refresh all schema data now just to make sure
             Yii::app()->db->schema->refresh();

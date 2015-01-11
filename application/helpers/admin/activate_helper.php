@@ -269,7 +269,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         switch($arow['type'])
         {
             case 'startlanguage':
-                $createsurvey[$arow['fieldname']] = "VARCHAR(20) NOT NULL";
+                $createsurvey[$arow['fieldname']] = "string(20) NOT NULL";
                 break;
             case 'id':
                 $createsurvey[$arow['fieldname']] = "pk";
@@ -289,13 +289,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 $createsurvey[$arow['fieldname']] = "decimal (30,10)";
                 break;
             case "S":  //SHORT TEXT
-
-                if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')    {$createsurvey[$arow['fieldname']] = "text";}
-                elseif (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib')
-                {
-                    $createsurvey[$arow['fieldname']] = "nvarchar(255)";
-                }
-                else  {$createsurvey[$arow['fieldname']] = "string";}
+                $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "L":  //LIST (RADIO)
             case "!":  //LIST (DROPDOWN)
@@ -304,7 +298,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "O":  //DROPDOWN LIST WITH COMMENT
                 if ($arow['aid'] != 'other' && strpos($arow['aid'],'comment')===false && strpos($arow['aid'],'othercomment')===false)
                 {
-                    $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
+                    $createsurvey[$arow['fieldname']] = "string(5)";
                 }
                 else
                 {
@@ -325,10 +319,10 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "G":  //Gender
             case "Y":  //YesNo
             case "X":  //Boilerplate
-                $createsurvey[$arow['fieldname']] = "VARCHAR(1)";
+                $createsurvey[$arow['fieldname']] = "string(1)";
                 break;
             case "I":  //Language switch
-                $createsurvey[$arow['fieldname']] = "VARCHAR(20)";
+                $createsurvey[$arow['fieldname']] = "string(20)";
                 break;
             case "|":
                 $createsurveydirectory = true;
@@ -339,23 +333,23 @@ function activateSurvey($iSurveyID, $simulate = false)
                 break;
             case "ipaddress":
                 if ($prow->ipaddr == "Y")
-                    $createsurvey[$arow['fieldname']] = "text";
+                    $createsurvey[$arow['fieldname']] = "string";
                 break;
             case "url":
                 if ($prow->refurl == "Y")
-                    $createsurvey[$arow['fieldname']] = "text";
+                    $createsurvey[$arow['fieldname']] = "string";
                 break;
             case "token":
-                    $createsurvey[$arow['fieldname']] = "VARCHAR(36)";
+                    $createsurvey[$arow['fieldname']] = "string(36)";
                 break;
             case '*': // Equation
                 $createsurvey[$arow['fieldname']] = "text";
                 break;
             default:
-                $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
+                $createsurvey[$arow['fieldname']] = "string(5)";
         }
     if ($prow->anonymized == 'N' && !array_key_exists('token',$createsurvey)) {
-        $createsurvey['token'] = "VARCHAR(36)";
+        $createsurvey['token'] = "string(36)";
     }
         if ($simulate){
             $tempTrim = trim($createsurvey);
@@ -368,15 +362,6 @@ function activateSurvey($iSurveyID, $simulate = false)
             }
             $arrSim[] = array($type);
         }
-        if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib')
-        {
-           if ($createsurvey[$arow['fieldname']] == "text")
-           {
-               $createsurvey[$arow['fieldname']] = "ntext";
-           }
-        }
-
-
     }
 
     if ($simulate){
