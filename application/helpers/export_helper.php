@@ -368,13 +368,13 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     // NOTE: this is a partial map using _defaults + special token types only
     $tokenMap = array(
       '_defaults' => array(
-        'qid'=>0,
-        'code'=>'',
-        'SPSStype'=>'A',
-        'LStype'=>'Undef',
-        'size'=>'100',
-        'hide'=>0,
-        'scale'=>'',
+        'qid' => 0,
+        'code' => '',
+        'SPSStype' => 'A',
+        'LStype' => 'Undef',
+        'size' => '100',
+        'hide' => 0,
+        'scale' => '',
       ),
       'sent' => array(
         'SPSStype' => 'DATETIME23.2',
