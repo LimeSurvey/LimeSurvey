@@ -484,6 +484,11 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage');
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
+        $values = array(
+          'qid' => 0,
+          'VariableLabel' => '',
+        );
+
         #Condition for SPSS fields:
         # - Length may not be longer than 8 characters
         # - Name may not begin with a digit
@@ -505,11 +510,11 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
 
         #Get qid (question id)
         if (in_array($fieldname, $noQID)) {
-            $qid = 0;
+            $values['qid'] = 0;
             $varlabel = $fieldname;
             $ftitle = $fieldname;
         } elseif ( substr($fieldname,0,10)=='attribute_') {
-            $qid = 0;
+            $values['qid'] = 0;
             $varlabel = $fieldname;
             // $varlabel = $token_fields[$fieldname]['description'];
             $ftitle = $fieldname;
@@ -544,18 +549,18 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 //Field in database but no longer in survey... how is this possible?
                 //@TODO: think of a fix.
                 $fielddata = array();
-                $qid=0;
+                $values['qid']=0;
                 $varlabel = $fieldname;
                 $ftitle = $fieldname;
                 $fieldtype = "F";
                 $val_size = 1;
             } else {
                 $fielddata=$fieldmap[$fieldname];
-                $qid=$fielddata['qid'];
+                $values['qid']=$fielddata['qid'];
                 $ftype=$fielddata['type'];
                 $fsid=$fielddata['sid'];
                 $fgid=$fielddata['gid'];
-                $code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
+                $code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$values['qid']));
                 $varlabel=$fielddata['question'];
                 if (isset($fielddata['scale'])) $varlabel = "[{$fielddata['scale']}] ". $varlabel;
                 if (isset($fielddata['subquestion'])) $varlabel = "[{$fielddata['subquestion']}] ". $varlabel;
@@ -573,7 +578,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 //Get default scale for this type
                 if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
                 //But allow override
-                $aQuestionAttribs = getQuestionAttributeValues($qid,$ftype);
+                $aQuestionAttribs = getQuestionAttributeValues($values['qid'],$ftype);
                 if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
             }
 
@@ -582,7 +587,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $fid = $fieldno - $diff;
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
         $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
-        'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
+        'qid'=>$values['qid'],'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
         'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
         'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
