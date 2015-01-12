@@ -378,15 +378,19 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
       ),
       'sent' => array(
         'SPSStype' => 'DATETIME23.2',
+        'size' => '',
       ),
       'remindersent' => array(
         'SPSStype' => 'DATETIME23.2',
+        'size' => '',
       ),
       'remindercount' => array(
-        'SPSStype' => 'F4',
+        'SPSStype' => 'F',
+        'size' => '4',
       ),
       'usesleft' => array(
-        'SPSStype' => 'F4',
+        'SPSStype' => 'F',
+        'size' => '4',
       ),
     );
 
