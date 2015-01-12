@@ -100,22 +100,25 @@
             foreach ($extraFields as $extraField) {
                 $fields[$extraField] = 'text';
             }
-
-            $db = \Yii::app()->db;
-            $sTableName="{{tokens_".intval($surveyId)."}}";
-            try {
-                $db->createCommand()->createTable($sTableName, $fields);
-                
-                $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1,50000),  $sTableName,'token');
-            } catch(Exception $e) {}
-        
+            
             // create fields for the custom token attributes associated with this survey
             $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->tokenAttributes;
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
-                if (isset($fields[$attrname])) continue; // Field was already created
-                $db->createCommand()->addColumn("{{tokens_".intval($surveyId)."}}", $attrname, 'string(255)')->execute();
+                if (!isset($fields[$attrname])) {
+                    $fields[$attrname] = 'string(255)';
+                }
             }
+            
+            $db = \Yii::app()->db;
+            $sTableName="{{tokens_".intval($surveyId)."}}";
+            
+            $db->createCommand()->createTable($sTableName, $fields);
+            /**
+             * @todo Check if this random component in the index name is needed.
+             * As far as I (sam) know index names need only be unique per table.
+             */
+            $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1,50000),  $sTableName,'token');
             
             // Refresh schema cache just in case the table existed in the past
             $db->schema->getTable($sTableName, true); 
