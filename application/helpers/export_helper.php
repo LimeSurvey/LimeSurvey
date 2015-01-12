@@ -511,12 +511,12 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         #Get qid (question id)
         if (in_array($fieldname, $noQID)) {
             $values['qid'] = 0;
-            $varlabel = $fieldname;
+            $values['VariableLabel'] = $fieldname;
             $ftitle = $fieldname;
         } elseif ( substr($fieldname,0,10)=='attribute_') {
             $values['qid'] = 0;
-            $varlabel = $fieldname;
-            // $varlabel = $token_fields[$fieldname]['description'];
+            $values['VariableLabel'] = $fieldname;
+            // $values['VariableLabel'] = $token_fields[$fieldname]['description'];
             $ftitle = $fieldname;
 
             // set other variables from token_fields
@@ -550,7 +550,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 //@TODO: think of a fix.
                 $fielddata = array();
                 $values['qid']=0;
-                $varlabel = $fieldname;
+                $values['VariableLabel'] = $fieldname;
                 $ftitle = $fieldname;
                 $fieldtype = "F";
                 $val_size = 1;
@@ -561,11 +561,11 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 $fsid=$fielddata['sid'];
                 $fgid=$fielddata['gid'];
                 $code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$values['qid']));
-                $varlabel=$fielddata['question'];
-                if (isset($fielddata['scale'])) $varlabel = "[{$fielddata['scale']}] ". $varlabel;
-                if (isset($fielddata['subquestion'])) $varlabel = "[{$fielddata['subquestion']}] ". $varlabel;
-                if (isset($fielddata['subquestion2'])) $varlabel = "[{$fielddata['subquestion2']}] ". $varlabel;
-                if (isset($fielddata['subquestion1'])) $varlabel = "[{$fielddata['subquestion1']}] ". $varlabel;
+                $values['VariableLabel']=$fielddata['question'];
+                if (isset($fielddata['scale'])) $values['VariableLabel'] = "[{$fielddata['scale']}] ". $values['VariableLabel'];
+                if (isset($fielddata['subquestion'])) $values['VariableLabel'] = "[{$fielddata['subquestion']}] ". $values['VariableLabel'];
+                if (isset($fielddata['subquestion2'])) $values['VariableLabel'] = "[{$fielddata['subquestion2']}] ". $values['VariableLabel'];
+                if (isset($fielddata['subquestion1'])) $values['VariableLabel'] = "[{$fielddata['subquestion1']}] ". $values['VariableLabel'];
                 $ftitle=$fielddata['title'];
                 if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
                 if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
@@ -588,7 +588,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
         $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
         'qid'=>$values['qid'],'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
-        'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
+        'ValueLabels'=>'','VariableLabel'=>$values['VariableLabel'],"sql_name"=>$fieldname,"size"=>$val_size,
         'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
         $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
