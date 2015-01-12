@@ -487,6 +487,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $values = array(
           'qid' => 0,
           'VariableLabel' => '',
+          'size' => 0,
         );
 
         #Condition for SPSS fields:
@@ -495,7 +496,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $fieldname = $fieldnames[$i];
         $fieldtype = '';
         $ftype='';
-        $val_size = 1;
+        $values['size'] = 1;
         $hide = 0;
         $export_scale = '';
         $code='';
@@ -505,7 +506,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         #Determine field type
         if (isset($tokenMap[$fieldname])) {
           $fieldtype = $tokenMap[$fieldname]['SPSStype'];
-          $val_size = $tokenMap[$fieldname]['size'];
+          $values['size'] = $tokenMap[$fieldname]['size'];
         }
 
         #Get qid (question id)
@@ -523,7 +524,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
             $code = $token_fields[$fieldname]['code'];
             $fieldtype = $token_fields[$fieldname]['SPSStype'];
             $ftype = $token_fields[$fieldname]['LStype'];
-            $val_size = $token_fields[$fieldname]['size'];
+            $values['size'] = $token_fields[$fieldname]['size'];
             $export_scale = $token_fields[$fieldname]['scale'];
             $hide = $token_fields[$fieldname]['hide'];
 
@@ -553,7 +554,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 $values['VariableLabel'] = $fieldname;
                 $ftitle = $fieldname;
                 $fieldtype = "F";
-                $val_size = 1;
+                $values['size'] = 1;
             } else {
                 $fielddata=$fieldmap[$fieldname];
                 $values['qid']=$fielddata['qid'];
@@ -568,7 +569,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 if (isset($fielddata['subquestion1'])) $values['VariableLabel'] = "[{$fielddata['subquestion1']}] ". $values['VariableLabel'];
                 $ftitle=$fielddata['title'];
                 if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
-                if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
+                if (isset($typeMap[$ftype]['size'])) $values['size'] = $typeMap[$ftype]['size'];
                 if (isset($fielddata['scale_id'])) $scale_id = $fielddata['scale_id'];
                 if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
                 if (isset($typeMap[$ftype]['hide'])) {
@@ -586,18 +587,16 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $fieldno++;
         $fid = $fieldno - $diff;
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
-        $tempArray = array(
+        $tempArray = $values + array(
           'id' => "$prefix$fid",
           'name' => mb_substr($fieldname, 0, 8),
-          'qid' => $values['qid'],
           'code' => $code,
           'SPSStype' => $fieldtype,
           'LStype' => $ftype,
           'LSlong' => $lsLong,
           'ValueLabels' =>'',
-          'VariableLabel' => $values['VariableLabel'],
           'sql_name' => $fieldname,
-          "size" => $val_size,
+          "size" => $values['size'],
           'title'=>$ftitle,
           'hide'=>$hide,
           'scale'=>$export_scale,
