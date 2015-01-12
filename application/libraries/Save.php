@@ -152,7 +152,7 @@ class Save {
                     "datestamp" => $today,
                     "ipaddr" => getIPAddress(),
                     "startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
-                    "refurl" => getenv("HTTP_REFERER")
+                    "refurl" => ((isset($_SESSION['survey_'.$surveyid]['refurl'])) ? $_SESSION['survey_'.$surveyid]['refurl'] : getenv('HTTP_REFERER'))
                 );
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
@@ -176,7 +176,14 @@ class Save {
             $saved_control->saved_thisstep = $thisstep;
             $saved_control->status = 'S';
             $saved_control->saved_date = $today;
-            $saved_control->refurl = getenv('HTTP_REFERER');
+            if (isset($_SESSION['survey_'.$surveyid]['refurl']))
+            {
+                $saved_control->refurl = $_SESSION['survey_'.$surveyid]['refurl'];
+            }
+            else
+            {
+                $saved_control->refurl = getenv("HTTP_REFERER");
+            }
 
             if ($saved_control->save())
             {

@@ -5165,7 +5165,14 @@
                 }
                 if ($this->surveyOptions['refurl'] == true)
                 {
-                    $sdata['refurl'] = getenv("HTTP_REFERER");
+                    if (isset($_SESSION[$this->sessid]['refurl']))
+                    {
+                        $sdata['refurl'] = $_SESSION[$this->sessid]['refurl'];
+                    }
+                    else
+                    {
+                        $sdata['refurl'] = getenv("HTTP_REFERER");
+                    }
                 }
 
                 $sdata = array_filter($sdata);
