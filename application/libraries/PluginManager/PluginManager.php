@@ -182,39 +182,43 @@ use Plugin;
         public function scanPlugins()
         {
             $result = array();
+            $modules = [];
             foreach ($this->pluginDirs as $pluginDir) {
                 $currentDir = Yii::getPathOfAlias($pluginDir);
                 if (is_dir($currentDir)) {
-                    foreach (new DirectoryIterator($currentDir) as $fileInfo)
-                    {
-                        if (!$fileInfo->isDot() && $fileInfo->isDir())
-                        {
-                            // Check if the base plugin file exists.
-                            // Directory name Example most contain file ExamplePlugin.php.
-                            $pluginName = $fileInfo->getFilename();
-                            $file = Yii::getPathOfAlias($pluginDir . ".$pluginName.{$pluginName}") . ".php";
-                            if (file_exists($file))
-                            {
-                                $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
-                            }
+                    foreach(\CFileHelper::findFiles($currentDir, [
+                        'fileTypes' => ['php']
+                    ]) as $file) {
+                        $pluginName = basename($file, '.php');
+                        $relativeName = strtr($file, [$currentDir => '']);
+                        
+                        // Old style plugin.
+                        if (file_exists($currentDir . "/$pluginName/$pluginName.php")) {
+                            $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                        } elseif ($pluginName == 'config') {
+                            $config = require($file);
+                            $config['dir'] = dirname($file);
+                            $config['class'] = $config['namespace'] . '\\' . $config['name'];
+                            $modules[$config['name']] = $config; 
                         }
-
+                        
                     }
                 }
             }
-
+            $this->createAutoloader($modules);
             return $result;
         }
 
         /**
-         * Gets the description of a plugin. The description is accessed via a
-         * static function inside the plugin file.
+         * Gets the description of a plugin. 
+         * The description is accessed via a function inside the plugin class.
          *
          * @param string $pluginClass The classname of the plugin
          */
         public function getPluginInfo($pluginClass, $pluginDir = null)
         {
             $result = array();
+            
             $class = "{$pluginClass}";
             
             if (!class_exists($class, false)) {
@@ -238,9 +242,9 @@ use Plugin;
                     return false;
                 }
             }
-            
-            $result['description'] = call_user_func(array($class, 'getDescription'));
-            $result['pluginName'] = call_user_func(array($class, 'getName'));
+            $plugin = new $class($this, null, false);
+            $result['description'] = $plugin->getDescription();
+            $result['pluginName'] = $plugin->getName();
             $result['pluginClass'] = $class;            
             return $result;
         }
@@ -361,6 +365,28 @@ use Plugin;
             }
         }
         
+        
+        private function createAutoloader($modules) {
+            $configPath = \Yii::getPathOfAlias('application.config');
+            $content = "<?php\n";
+            $content .= 'return '; 
+            $content .= strtr(var_export($modules, true), ["  " => "    "]);
+            $content .= ';';
+            file_put_contents($configPath . '/plugins.php', $content);
+        }
+        
+        public function setPlugins($plugins) 
+        {
+            $defaults = [];
+            $app = \Yii::app();
+            foreach($plugins as $name => $plugin) {
+                $config = \CMap::mergeArray($defaults, $plugin);
+                if($config['type'] == 'module') {
+                    
+                    $app->setModules([$name => $config]);
+                }
+            }
+        }
         
     }
 ?>

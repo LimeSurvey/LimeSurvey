@@ -231,6 +231,9 @@ class Permission extends LSActiveRecord
                 'img' => 'cpdb'
             ),
         );
+        
+        $event = new ls\pluginmanager\PluginEvent('getPermissions');
+        $event->dispatch();
         uasort($aPermissions, array(__CLASS__,"comparePermissionTitle"));
         $aPermissions['superadmin'] = array(
             'create' => false,
@@ -282,6 +285,8 @@ class Permission extends LSActiveRecord
                 if ($aPermissionDetail['export']) $aPermissionDetail['export']=($oCurrentPermissions?(boolean)$oCurrentPermissions->export_p:false);
             }
         }     
+        var_dump($aBasePermissions);
+        die();
         return $aBasePermissions;
     }
      

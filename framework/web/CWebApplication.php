@@ -350,9 +350,9 @@ class CWebApplication extends CApplication
 
 			if(is_file($classFile))
 			{
-				if(!class_exists($className,false))
+                if(!class_exists($className,false))
 					require($classFile);
-				if(class_exists($className,false) && is_subclass_of($className,'CController'))
+                if(class_exists($className,false) && is_subclass_of($className,'CController'))
 				{
 					$id[0]=strtolower($id[0]);
 					return array(

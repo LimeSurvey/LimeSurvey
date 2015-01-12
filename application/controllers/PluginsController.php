@@ -30,7 +30,7 @@ class PluginsController extends LSYii_Controller
     public function accessRules()
     {
         $aRules = array(
-            array('allow', 'roles' => array('administrator')),
+            array('allow', 'roles' => array('superadmin')),
             array('allow', 'actions' => array('direct')),
             array('deny')
         );

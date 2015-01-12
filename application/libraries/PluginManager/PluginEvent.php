@@ -60,6 +60,11 @@ class PluginEvent
         
         return $this;
     }
+    
+    public function dispatch() 
+    {
+        \Yii::app()->pluginManager->dispatchEvent($this);
+    }
 
     /**
      * Get a value for the given key. 

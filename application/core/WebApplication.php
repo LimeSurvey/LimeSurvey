@@ -21,8 +21,9 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 * Implements global  config
 * @property CLogRouter $log Log router component.
 */
-class LSYii_Application extends CWebApplication
+class WebApplication extends CWebApplication
 {
+    public $loader;
     protected $config = array();
 
     /**
@@ -39,6 +40,20 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($config = null)
     {
+        /**
+         * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
+         */
+        require __DIR__ . '/../Psr4AutoloaderClass.php';
+        $this->loader = new Psr4AutoloaderClass();
+        $this->loader->register();
+        $this->loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../libraries/PluginManager');
+        foreach($config['modules'] as $module) {
+            if (isset($module['namespace'], $module['dir'])) {
+                $this->loader->addNamespace($module['namespace'], $module['dir']);
+            }
+            class_exists($module['class']);
+        }
+        
         parent::__construct($config);
         Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.
@@ -130,7 +145,7 @@ class LSYii_Application extends CWebApplication
      *
      * @param string $message
      * @param string $type
-     * @return LSYii_Application Provides a fluent interface
+     * @return WebApplication Provides a fluent interface
      */
     public function setFlashMessage($message,$type='default')
     {
@@ -204,6 +219,6 @@ class LSYii_Application extends CWebApplication
         return $this->getComponent('pluginManager');
     }
 
-
+   
 }
 

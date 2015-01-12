@@ -99,12 +99,12 @@ $internalConfig = array(
         ),
         'pluginManager' => [
             'class' => "\\ls\\pluginmanager\\PluginManager",
-            'api' => "\\ls\\pluginmanager\\LimesurveyApi"
-
+            'api' => "\\ls\\pluginmanager\\LimesurveyApi",
+            'plugins' => require_once(__DIR__ . '/plugins.php')
         ]
-    )
+    ),
+    
 );
-
 
 
 $result = CMap::mergeArray($internalConfig, $userConfig);
