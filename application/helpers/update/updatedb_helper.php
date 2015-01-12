@@ -88,7 +88,7 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeTokenTables126();
 
             // Create quota table
-            createTable('{{quota}}',array(
+            $oDB->createCommand()->createTable('{{quota}}',array(
                 'id' => 'pk',
                 'sid' => 'integer',
                 'qlimit' => 'integer',
@@ -98,7 +98,7 @@ function db_upgrade_all($iOldDBVersion) {
             ));
 
             // Create quota_members table
-            createTable('{{quota_members}}',array(
+            $oDB->createCommand()->createTable('{{quota_members}}',array(
                 'id' => 'pk',
                 'sid' => 'integer',
                 'qid' => 'integer',
@@ -109,7 +109,7 @@ function db_upgrade_all($iOldDBVersion) {
 
 
             // Create templates_rights table
-            createTable('{{templates_rights}}',array(
+            $oDB->createCommand()->createTable('{{templates_rights}}',array(
                 'uid' => 'integer NOT NULL',
                 'folder' => 'string NOT NULL',
                 'use' => 'integer',
@@ -117,7 +117,7 @@ function db_upgrade_all($iOldDBVersion) {
             ));
 
             // Create templates table
-            createTable('{{templates}}',array(
+            $oDB->createCommand()->createTable('{{templates}}',array(
                 'folder' => 'string NOT NULL',
                 'creator' => 'integer NOT NULL',
                 'PRIMARY KEY (folder)'
@@ -278,7 +278,7 @@ function db_upgrade_all($iOldDBVersion) {
                 'quotals_url' => 'string',
                 'quotals_urldescrip' => 'string',
             );
-            createTable('{{quota_languagesettings}}',$aFields);
+            $oDB->createCommand()->createTable('{{quota_languagesettings}}',$aFields);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>136),"stg_name='DBVersion'");
         }
 
@@ -344,7 +344,7 @@ function db_upgrade_all($iOldDBVersion) {
                 'specialtype' => "string(20) NOT NULL default ''",
                 'defaultvalue' => 'text',
             );
-            createTable('{{defaultvalues}}',$aFields);
+            $oDB->createCommand()->createTable('{{defaultvalues}}',$aFields);
             addPrimaryKey('defaultvalues', array('qid','specialtype','language','scale_id','sqid'));
 
             // -Move all 'answers' that are subquestions to the questions table
@@ -365,7 +365,7 @@ function db_upgrade_all($iOldDBVersion) {
                 'modified' => "datetime NOT NULL",
                 'sessdata' => 'text'
             );
-            createTable('{{sessions}}',$aFields);
+            $oDB->createCommand()->createTable('{{sessions}}',$aFields);
             addPrimaryKey('sessions',array('sesskey'));
             $oDB->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
             $oDB->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
@@ -430,7 +430,7 @@ function db_upgrade_all($iOldDBVersion) {
                 'import_p' => "integer NOT NULL default 0",
                 'export_p' => "integer NOT NULL default 0"
             );
-            createTable('{{survey_permissions}}',$aFields);
+            $oDB->createCommand()->createTable('{{survey_permissions}}',$aFields);
             addPrimaryKey('survey_permissions', array('sid','uid','permission'));
 
             upgradeSurveyPermissions145();
@@ -591,7 +591,7 @@ function db_upgrade_all($iOldDBVersion) {
 
             addColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer NOT NULL DEFAULT 0");
 
-            createTable('{{failed_login_attempts}}',array(
+            $oDB->createCommand()->createTable('{{failed_login_attempts}}',array(
                 'id' => "pk",
                 'ip' => 'string(37) NOT NULL',
                 'last_attempt' => 'string(20) NOT NULL',
@@ -620,7 +620,7 @@ function db_upgrade_all($iOldDBVersion) {
         {
             addColumn('{{users}}','participant_panel',"integer NOT NULL default 0");
 
-            createTable('{{participants}}',array(
+            $oDB->createCommand()->createTable('{{participants}}',array(
                 'participant_id' => 'string(50) NOT NULL',
                 'firstname' => 'string(40) default NULL',
                 'lastname' => 'string(40) default NULL',
@@ -631,34 +631,34 @@ function db_upgrade_all($iOldDBVersion) {
             ));
             addPrimaryKey('participants', array('participant_id'));
 
-            createTable('{{participant_attribute}}',array(
+            $oDB->createCommand()->createTable('{{participant_attribute}}',array(
                 'participant_id' => 'string(50) NOT NULL',
                 'attribute_id' => "integer NOT NULL",
                 'value' => 'string(50) NOT NULL'
             ));
             addPrimaryKey('participant_attribute', array('participant_id','attribute_id'));
 
-            createTable('{{participant_attribute_names}}',array(
+            $oDB->createCommand()->createTable('{{participant_attribute_names}}',array(
                 'attribute_id' => 'autoincrement',
                 'attribute_type' => 'string(4) NOT NULL',
                 'visible' => 'string(5) NOT NULL',
                 'PRIMARY KEY (attribute_id,attribute_type)'
             ));
 
-            createTable('{{participant_attribute_names_lang}}',array(
+            $oDB->createCommand()->createTable('{{participant_attribute_names_lang}}',array(
                 'attribute_id' => 'integer NOT NULL',
                 'attribute_name' => 'string(30) NOT NULL',
                 'lang' => 'string(20) NOT NULL'
             ));
             addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
 
-            createTable('{{participant_attribute_values}}',array(
+            $oDB->createCommand()->createTable('{{participant_attribute_values}}',array(
                 'attribute_id' => 'integer NOT NULL',
                 'value_id' => 'pk',
                 'value' => 'string(20) NOT NULL'
             ));
 
-            createTable('{{participant_shares}}',array(
+            $oDB->createCommand()->createTable('{{participant_shares}}',array(
                 'participant_id' => 'string(50) NOT NULL',
                 'share_uid' => 'integer NOT NULL',
                 'date_added' => 'datetime NOT NULL',
@@ -666,7 +666,7 @@ function db_upgrade_all($iOldDBVersion) {
             ));
             addPrimaryKey('participant_shares', array('participant_id','share_uid'));
 
-            createTable('{{survey_links}}',array(
+            $oDB->createCommand()->createTable('{{survey_links}}',array(
                 'participant_id' => 'string(50) NOT NULL',
                 'token_id' => 'integer NOT NULL',
                 'survey_id' => 'integer NOT NULL',
@@ -689,7 +689,7 @@ function db_upgrade_all($iOldDBVersion) {
                 'targetqid' => 'integer',
                 'targetsqid' => 'integer'
             );
-            createTable('{{survey_url_parameters}}',$aFields);
+            $oDB->createCommand()->createTable('{{survey_url_parameters}}',$aFields);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>149),"stg_name='DBVersion'");
         }
 
@@ -713,7 +713,7 @@ function db_upgrade_all($iOldDBVersion) {
 
         if ($iOldDBVersion < 153)
         {
-            createTable('{{expression_errors}}',array(
+            $oDB->createCommand()->createTable('{{expression_errors}}',array(
                 'id' => 'pk',
                 'errortime' => 'string(50)',
                 'sid' => 'integer',
@@ -753,7 +753,7 @@ function db_upgrade_all($iOldDBVersion) {
             {
                 // do nothing
             }
-            createTable('{{survey_url_parameters}}',array(
+            $oDB->createCommand()->createTable('{{survey_url_parameters}}',array(
                 'id' => 'pk',
                 'sid' => 'integer NOT NULL',
                 'parameter' => 'string(50) NOT NULL',
@@ -764,7 +764,7 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->dropTable('{{sessions}}');
             if ($sDBDriverName=='mysql')
             {
-                createTable('{{sessions}}',array(
+                $oDB->createCommand()->createTable('{{sessions}}',array(
                     'id' => 'string(32) NOT NULL',
                     'expire' => 'integer',
                     'data' => 'longtext'
@@ -772,7 +772,7 @@ function db_upgrade_all($iOldDBVersion) {
             }
             else
             {
-                createTable('{{sessions}}',array(
+                $oDB->createCommand()->createTable('{{sessions}}',array(
                     'id' => 'string(32) NOT NULL',
                     'expire' => 'integer',
                     'data' => 'text'
@@ -923,7 +923,7 @@ function db_upgrade_all($iOldDBVersion) {
             // Sometimes the survey_links table was deleted before this step, if so
             // we recreate it (copied from line 663)
             if (!tableExists('{survey_links}')) {
-                createTable('{{survey_links}}',array(
+                $oDB->createCommand()->createTable('{{survey_links}}',array(
                     'participant_id' => 'string(50) NOT NULL',
                     'token_id' => 'integer NOT NULL',
                     'survey_id' => 'integer NOT NULL',
@@ -1268,9 +1268,9 @@ function db_upgrade_all($iOldDBVersion) {
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
         // Load all tables of the application in the schema
-        Yii::app()->db->schema->getTables();
+        $oDB->schema->getTables();
         // clear the cache of all loaded tables
-        Yii::app()->db->schema->refresh();
+        $oDB->schema->refresh();
     }
     catch(Exception $e)
     {
@@ -1278,9 +1278,9 @@ function db_upgrade_all($iOldDBVersion) {
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
         // Load all tables of the application in the schema
-        Yii::app()->db->schema->getTables();
+        $oDB->schema->getTables();
         // clear the cache of all loaded tables
-        Yii::app()->db->schema->refresh();
+        $oDB->schema->refresh();
         echo '<br /><br />'.gT('An non-recoverable error happened during the update. Error details:')."<p>".htmlspecialchars($e->getMessage()).'</p><br />';
         return false;
     }
@@ -1292,7 +1292,7 @@ function db_upgrade_all($iOldDBVersion) {
 
 function upgradeTokenTables179()
 {
-    $oSchema=Yii::app()->db->schema;
+    $oSchema=$oDB->schema;
     $sDBDriverName=setsDBDriverName();
     if($sDBDriverName=='mssql' || $sDBDriverName=='mysql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
 
@@ -1309,7 +1309,7 @@ function upgradeTokenTables179()
                     alterColumn($sTableName, $sColumnName, "text");
                 }
             }
-            Yii::app()->db->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,0,254)")->execute();
+            $oDB->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,0,254)")->execute();
             alterColumn($sTableName, 'email', "string(254)");
             alterColumn($sTableName, 'firstname', "string(150)");
             alterColumn($sTableName, 'lastname', "string(150)");
@@ -1321,25 +1321,25 @@ function upgradeTokenTables179()
 function upgradeSurveys177()
 {
     $sSurveyQuery = "SELECT surveyls_attributecaptions,surveyls_survey_id,surveyls_language FROM {{surveys_languagesettings}}";
-    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     $sSurveyLSUpdateQuery= "update {{surveys_languagesettings}} set surveyls_attributecaptions=:attributecaptions where surveyls_survey_id=:surveyid and surveyls_language=:language";
     foreach ( $oSurveyResult as $aSurveyRow )
     {
         $aAttributeDescriptions=decodeTokenAttributes($aSurveyRow['surveyls_attributecaptions']);
         if (!$aAttributeDescriptions) $aAttributeDescriptions=array();
-        Yii::app()->db->createCommand($sSurveyLSUpdateQuery)->execute(
+        $oDB->createCommand($sSurveyLSUpdateQuery)->execute(
             array(':language'=>$aSurveyRow['surveyls_language'],
                 ':surveyid'=>$aSurveyRow['surveyls_survey_id'],
                 ':attributecaptions'=>json_encode($aAttributeDescriptions)));
     }
     $sSurveyQuery = "SELECT sid,attributedescriptions FROM {{surveys}}";
-    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     $sSurveyUpdateQuery= "update {{surveys}} set attributedescriptions=:attributedescriptions where sid=:surveyid";
     foreach ( $oSurveyResult as $aSurveyRow )
     {
         $aAttributeDescriptions=decodeTokenAttributes($aSurveyRow['attributedescriptions']);
         if (!$aAttributeDescriptions) $aAttributeDescriptions=array();
-        Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute(array(':attributedescriptions'=>json_encode($aAttributeDescriptions),':surveyid'=>$aSurveyRow['sid']));
+        $oDB->createCommand($sSurveyUpdateQuery)->execute(array(':attributedescriptions'=>json_encode($aAttributeDescriptions),':surveyid'=>$aSurveyRow['sid']));
     }
 }
 
@@ -1359,7 +1359,7 @@ function upgradeTokens176()
         $sTokenTableName='tokens_'.$arSurvey->sid;
         if (tableExists($sTokenTableName))
         {
-            $aColumnNames=$aColumnNamesIterator=Yii::app()->db->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
+            $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
             $aAttributes = $arSurvey->tokenAttributes;
             foreach($aColumnNamesIterator as $sColumnName)
             {
@@ -1371,7 +1371,7 @@ function upgradeTokens176()
                     while (in_array('attribute_'.$i,$aColumnNames)) $i++;
                     $sNewName='attribute_'.$i;
                     $aColumnNames[]=$sNewName;
-                    Yii::app()->db->createCommand()->renameColumn('{{'.$sTokenTableName.'}}',$sColumnName,$sNewName);
+                    $oDB->createCommand()->renameColumn('{{'.$sTokenTableName.'}}',$sColumnName,$sNewName);
                     // Update attribute descriptions with the new mapping
                     if (isset($aAttributes[$sColumnName]))
                     {
@@ -1388,7 +1388,7 @@ function upgradeTokens176()
     $aTables = dbGetTablesLike("%old_tokens%");
     foreach ( $aTables as $sTable )
     {
-        $aColumnNames=$aColumnNamesIterator=Yii::app()->db->schema->getTable($sTable)->columnNames;
+        $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable($sTable)->columnNames;
         foreach($aColumnNamesIterator as $sColumnName)
         {
             // Check if an old atttribute_cpdb column exists in that token table
@@ -1399,7 +1399,7 @@ function upgradeTokens176()
                 while (in_array('attribute_'.$i,$aColumnNames)) $i++;
                 $sNewName='attribute_'.$i;
                 $aColumnNames[]=$sNewName;
-                Yii::app()->db->createCommand()->renameColumn($sTable,$sColumnName,$sNewName);
+                $oDB->createCommand()->renameColumn($sTable,$sColumnName,$sNewName);
             }
         }
     }
@@ -1411,10 +1411,10 @@ function upgradeCPDBAttributeDefaultNames173()
     FROM {{participant_attribute_names_lang}}
     group by attribute_id, attribute_name, lang
     order by attribute_id";
-    $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
+    $oResult = $oDB->createCommand($sQuery)->queryAll();
     foreach ( $oResult as $aAttribute )
     {
-        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',array('defaultname'=>substr($aAttribute['attribute_name'],0,50)),"attribute_id={$aAttribute['attribute_id']}");
+        $oDB->createCommand()->update('{{participant_attribute_names}}',array('defaultname'=>substr($aAttribute['attribute_name'],0,50)),"attribute_id={$aAttribute['attribute_id']}");
     }
 }
 
@@ -1514,7 +1514,7 @@ function upgradePermissions166()
         }
     }
     $sQuery = "SELECT * FROM {{templates_rights}}";
-    $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
+    $oResult = $oDB->createCommand($sQuery)->queryAll();
     foreach ( $oResult as $aRow )
     {
         $oPermission=new Permission;
@@ -1532,7 +1532,7 @@ function upgradeSurveys156()
 {
     global $modifyoutput;
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
-    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
 
@@ -1544,7 +1544,7 @@ function upgradeSurveys156()
         if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')
         {
             $sSurveyUpdateQuery= "update {{surveys}} set sendconfirmation='N' where sid=".$aSurveyRow['surveyls_survey_id'];
-            Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
+            $oDB->createCommand($sSurveyUpdateQuery)->execute();
 
             $aValues=array('surveyls_email_confirm_subj'=>$aDefaultTexts['confirmation_subject'],
                 'surveyls_email_confirm'=>$aDefaultTexts['confirmation']);
@@ -1582,7 +1582,7 @@ function upgradeQuestionAttributes148()
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
             {
-                Yii::app()->db->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
+                $oDB->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
                 foreach ($aLanguages as $sLanguage)
                 {
                     $sAttributeInsertQuery="insert into {{question_attributes}} (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$sLanguage}' )";
@@ -1598,7 +1598,7 @@ function upgradeSurveyTimings146()
 {
     $aTables = dbGetTablesLike("%timings");
     foreach ($aTables as $sTable) {
-        Yii::app()->db->createCommand()->renameColumn($sTable,'interviewTime','interviewtime');
+        $oDB->createCommand()->renameColumn($sTable,'interviewTime','interviewtime');
     }
 }
 
@@ -1610,7 +1610,7 @@ function upgradeTokens145()
     foreach ( $aTables as $sTable )
     {
         addColumn($sTable,'usesleft',"integer NOT NULL default 1");
-        Yii::app()->db->createCommand()->update($sTable,array('usesleft'=>'0'),"completed<>'N'");
+        $oDB->createCommand()->update($sTable,array('usesleft'=>'0'),"completed<>'N'");
     }
 }
 
@@ -1628,7 +1628,7 @@ function upgradeSurveys145()
             $sAdminEmailAddress=$aEmailAddresses[0];
             $sEmailnNotificationAddresses=implode(';',$aEmailAddresses);
             $sSurveyUpdateQuery= "update {{surveys}} set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailnNotificationAddresses}' where sid=".$aSurveyRow['sid'];
-            Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
+            $oDB->createCommand($sSurveyUpdateQuery)->execute();
         }
         else
         {
@@ -1640,11 +1640,11 @@ function upgradeSurveys145()
                 $sEmailDetailedNotificationAddresses=$sEmailDetailedNotificationAddresses.';'.trim($aSurveyRow['emailresponseto']);
             }
             $sSurveyUpdateQuery= "update {{surveys}} set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailDetailedNotificationAddresses}' where sid=".$aSurveyRow['sid'];
-            Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
+            $oDB->createCommand($sSurveyUpdateQuery)->execute();
         }
     }
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
-    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
         $sLanguage = App()->language;
@@ -1657,7 +1657,7 @@ function upgradeSurveys145()
         email_admin_notification_subj=".$aDefaultTexts['admin_notification_subject'].",
         email_admin_notification=".$aDefaultTexts['admin_notification']."
         where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
-        Yii::app()->db->createCommand()->update('{{surveys_languagesettings}}',array('email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
+        $oDB->createCommand()->update('{{surveys_languagesettings}}',array('email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
             'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
             'email_admin_notification_subj'=>$aDefaultTexts['admin_notification_subject'],
             'email_admin_notification'=>$aDefaultTexts['admin_notification']
@@ -1670,7 +1670,7 @@ function upgradeSurveys145()
 function upgradeSurveyPermissions145()
 {
     $sPermissionQuery = "SELECT * FROM {{surveys_rights}}";
-    $oPermissionResult = Yii::app()->db->createCommand($sPermissionQuery)->queryAll();
+    $oPermissionResult = $oDB->createCommand($sPermissionQuery)->queryAll();
     if (empty($oPermissionResult)) {return "Database Error";}
     else
     {
@@ -1678,7 +1678,7 @@ function upgradeSurveyPermissions145()
         foreach ( $oPermissionResult as $aPermissionRow )
         {
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName, array('permission'=>'assessments',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName, array('permission'=>'assessments',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -1686,7 +1686,7 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'quotas',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'quotas',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -1694,7 +1694,7 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'responses',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'responses',
                 'create_p'=>$aPermissionRow['browse_response'],
                 'read_p'=>$aPermissionRow['browse_response'],
                 'update_p'=>$aPermissionRow['browse_response'],
@@ -1704,23 +1704,23 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'statistics',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'statistics',
                 'read_p'=>$aPermissionRow['browse_response'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'survey',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'survey',
                 'read_p'=>1,
                 'delete_p'=>$aPermissionRow['delete_survey'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'surveyactivation',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'surveyactivation',
                 'update_p'=>$aPermissionRow['activate_survey'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'surveycontent',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'surveycontent',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -1730,19 +1730,19 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'surveylocale',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'surveylocale',
                 'read_p'=>$aPermissionRow['edit_survey_property'],
                 'update_p'=>$aPermissionRow['edit_survey_property'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'surveysettings',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'surveysettings',
                 'read_p'=>$aPermissionRow['edit_survey_property'],
                 'update_p'=>$aPermissionRow['edit_survey_property'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($sTableName,array('permission'=>'tokens',
+            $sPermissionInsertQuery=$oDB->createCommand()->insert($sTableName,array('permission'=>'tokens',
                 'create_p'=>$aPermissionRow['activate_survey'],
                 'read_p'=>$aPermissionRow['activate_survey'],
                 'update_p'=>$aPermissionRow['activate_survey'],
@@ -1761,7 +1761,7 @@ function upgradeTables143()
 
     $aQIDReplacements=array();
     $answerquery = "select a.*, q.sid, q.gid from {{answers}} a,{{questions}} q where a.qid=q.qid and q.type in ('L','O','!') and a.default_value='Y'";
-    $answerresult = Yii::app()->db->createCommand($answerquery)->queryAll();
+    $answerresult = $oDB->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
         modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".dbQuoteAll($row['language']).",'',".dbQuoteAll($row['code']).")"); echo $modifyoutput; flush();@ob_flush();
@@ -1770,7 +1770,7 @@ function upgradeTables143()
     // Convert answers to subquestions
 
     $answerquery = "select a.*, q.sid, q.gid, q.type from {{answers}} a,{{questions}} q where a.qid=q.qid and a.language=q.language and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
-    $answerresult = Yii::app()->db->createCommand($answerquery)->queryAll();
+    $answerresult = $oDB->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
 
@@ -1804,7 +1804,7 @@ function upgradeTables143()
         }
     }
     // Sanitize data
-    $sDBDriverName=Yii::app()->db->getDriverName();
+    $sDBDriverName=$oDB->getDriverName();
     if ($sDBDriverName=='pgsql')
     {
         modifyDatabase("","delete from {{answers}} USING {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{questions}}.type in ('1','F','H','M','P','W','Z')"); echo $modifyoutput; flush();@ob_flush();
@@ -1816,11 +1816,11 @@ function upgradeTables143()
 
     // Convert labels to answers
     $answerquery = "select qid ,type ,lid ,lid1, language from {{questions}} where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
-    $answerresult = Yii::app()->db->createCommand($answerquery)->queryAll();
+    $answerresult = $oDB->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
         $labelquery="Select * from {{labels}} where lid={$row['lid']} and language=".dbQuoteAll($row['language']);
-        $labelresult = Yii::app()->db->createCommand($labelquery)->queryAll();
+        $labelresult = $oDB->createCommand($labelquery)->queryAll();
         foreach ( $labelresult as $lrow )
         {
             modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
@@ -1829,7 +1829,7 @@ function upgradeTables143()
         if ($row['type']=='1')
         {
             $labelquery="Select * from {{labels}} where lid={$row['lid1']} and language=".dbQuoteAll($row['language']);
-            $labelresult = Yii::app()->db->createCommand($labelquery)->queryAll();
+            $labelresult = $oDB->createCommand($labelquery)->queryAll();
             foreach ( $labelresult as $lrow )
             {
                 modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",1,{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
@@ -1839,11 +1839,11 @@ function upgradeTables143()
 
     // Convert labels to subquestions
     $answerquery = "select * from {{questions}} where parent_qid=0 and type in (';',':')";
-    $answerresult = Yii::app()->db->createCommand($answerquery)->queryAll();
+    $answerresult = $oDB->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
         $labelquery="Select * from {{labels}} where lid={$row['lid']} and language=".dbQuoteAll($row['language']);
-        $labelresult = Yii::app()->db->createCommand($labelquery)->queryAll();
+        $labelresult = $oDB->createCommand($labelquery)->queryAll();
         foreach ( $labelresult as $lrow )
         {
             $aInsert=array();
@@ -1903,19 +1903,19 @@ function upgradeQuestionAttributes142()
 {
     global $modifyoutput;
     $attributequery="Select qid from {{question_attributes}} where attribute='exclude_all_other'  group by qid having count(qid)>1 ";
-    $questionids = Yii::app()->db->createCommand($attributequery)->queryRow();
+    $questionids = $oDB->createCommand($attributequery)->queryRow();
     if(!is_array($questionids)) { return "Database Error"; }
     else
     {
         foreach ($questionids as $questionid)
         {
             //Select all affected question attributes
-            $attributevalues=Yii::app()->db->createCommand("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid)->queryColumn();
+            $attributevalues=$oDB->createCommand("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid)->queryColumn();
             modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid); echo $modifyoutput; flush();@ob_flush();
             $record['value']=implode(';',$attributevalues);
             $record['attribute']='exclude_all_other';
             $record['qid']=$questionid;
-            Yii::app()->db->createCommand()->insert('{{question_attributes}}', $record)->execute();
+            $oDB->createCommand()->insert('{{question_attributes}}', $record)->execute();
         }
     }
 }
@@ -1923,7 +1923,7 @@ function upgradeQuestionAttributes142()
 function upgradeSurveyTables139()
 {
     global $modifyoutput;
-    $dbprefix = Yii::app()->db->tablePrefix;
+    $dbprefix = $oDB->tablePrefix;
     $aTables = dbGetTablesLike("survey\_%");
     foreach ( $aTables as $sTable )
     {
@@ -1961,8 +1961,8 @@ function fixMySQLCollations()
 {
     global $modifyoutput;
     $sql = 'SHOW TABLE STATUS';
-    $dbprefix = Yii::app()->db->tablePrefix;
-    $result = Yii::app()->db->createCommand($sql)->queryAll();
+    $dbprefix = $oDB->tablePrefix;
+    $result = $oDB->createCommand($sql)->queryAll();
     foreach ( $result as $tables ) {
         // Loop through all tables in this database
         $table = $tables['Name'];
@@ -1976,7 +1976,7 @@ function fixMySQLCollations()
             }
 
             # Now loop through all the fields within this table
-            $result2 = Yii::app()->db->createCommand("SHOW FULL COLUMNS FROM ".$table)->queryAll();
+            $result2 = $oDB->createCommand("SHOW FULL COLUMNS FROM ".$table)->queryAll();
             foreach ( $result2 as $column )
             {
                 if ($column['Collation']!= 'utf8_unicode_ci' )
@@ -2007,7 +2007,7 @@ function fixMySQLCollations()
 function upgradeSurveyTables126()
 {
     $surveyidquery = "SELECT sid FROM {{surveys}} WHERE active='Y' and datestamp='Y'";
-    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
+    $surveyidresult = $oDB->createCommand($surveyidquery)->queryAll();
     if (!$surveyidresult) {return "Database Error";}
     else
     {
@@ -2024,22 +2024,22 @@ function upgradeTokenTables126()
     $aTables = dbGetTablesLike("tokens%");
     foreach ( $aTables as $sTable )
     {
-        Yii::app()->db->createCommand()->alterColumn($sTable,'token',"string(15)");
+        $oDB->createCommand()->alterColumn($sTable,'token',"string(15)");
         addColumn($sTable,'emailstatus',"string(300) NOT NULL DEFAULT 'OK'");
     }
 }
 
 function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 {
-    Yii::app()->db->createCommand()->update('{{answers}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
-    Yii::app()->db->createCommand()->update('{{questions}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
-    Yii::app()->db->createCommand()->update('{{groups}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
-    Yii::app()->db->createCommand()->update('{{labels}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
-    Yii::app()->db->createCommand()->update('{{surveys}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
-    Yii::app()->db->createCommand()->update('{{surveys_languagesettings}}',array('surveyls_language'=>$sNewLanguageCode),'surveyls_language=:lang',array(':lang'=>$sOldLanguageCode));
-    Yii::app()->db->createCommand()->update('{{users}}',array('lang'=>$sNewLanguageCode),'lang=:language',array(':language'=>$sOldLanguageCode));
+    $oDB->createCommand()->update('{{answers}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
+    $oDB->createCommand()->update('{{questions}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
+    $oDB->createCommand()->update('{{groups}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
+    $oDB->createCommand()->update('{{labels}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
+    $oDB->createCommand()->update('{{surveys}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
+    $oDB->createCommand()->update('{{surveys_languagesettings}}',array('surveyls_language'=>$sNewLanguageCode),'surveyls_language=:lang',array(':lang'=>$sOldLanguageCode));
+    $oDB->createCommand()->update('{{users}}',array('lang'=>$sNewLanguageCode),'lang=:language',array(':language'=>$sOldLanguageCode));
 
-    $resultdata=Yii::app()->db->createCommand("select * from {{labelsets}}");
+    $resultdata=$oDB->createCommand("select * from {{labelsets}}");
     foreach ($resultdata->queryAll() as $datarow){
         $aLanguages=explode(' ',$datarow['languages']);
         foreach ($aLanguages as &$sLanguage)
@@ -2047,10 +2047,10 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
             if ($sLanguage==$sOldLanguageCode) $sLanguage=$sNewLanguageCode;
         }
         $toreplace=implode(' ',$aLanguages);
-        Yii::app()->db->createCommand()->update('{{labelsets}}',array('languages'=>$toreplace),'lid=:lid',array(':lid'=>$datarow['lid']));
+        $oDB->createCommand()->update('{{labelsets}}',array('languages'=>$toreplace),'lid=:lid',array(':lid'=>$datarow['lid']));
     }
 
-    $resultdata=Yii::app()->db->createCommand("select * from {{surveys}}");
+    $resultdata=$oDB->createCommand("select * from {{surveys}}");
     foreach ($resultdata->queryAll() as $datarow){
         $aLanguages=explode(' ',$datarow['additional_languages']);
         foreach ($aLanguages as &$sLanguage)
@@ -2058,16 +2058,16 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
             if ($sLanguage==$sOldLanguageCode) $sLanguage=$sNewLanguageCode;
         }
         $toreplace=implode(' ',$aLanguages);
-        Yii::app()->db->createCommand()->update('{{surveys}}',array('additional_languages'=>$toreplace),'sid=:sid',array(':sid'=>$datarow['sid']));
+        $oDB->createCommand()->update('{{surveys}}',array('additional_languages'=>$toreplace),'sid=:sid',array(':sid'=>$datarow['sid']));
     }
 }
 
 function addPrimaryKey($sTablename, $aColumns)
 {
-    $sDBDriverName=Yii::app()->db->getDriverName();
+    $sDBDriverName=$oDB->getDriverName();
     if ($sDBDriverName=='mysqli' || $sDBDriverName=='mysql')
     {
-        Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+        $oDB->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
     }
 }
 
@@ -2079,12 +2079,12 @@ function addPrimaryKey($sTablename, $aColumns)
 */
 function modifyPrimaryKey($sTablename, $aColumns)
 {
-    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+    $oDB->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
 }
 
 function dropPrimaryKey($sTablename)
 {
-    $sDBDriverName=Yii::app()->db->getDriverName();
+    $sDBDriverName=$oDB->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
 
@@ -2092,7 +2092,7 @@ function dropPrimaryKey($sTablename)
     switch ($sDBDriverName){
         case 'mysql':
             $sQuery="ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
-            Yii::app()->db->createCommand($sQuery)->execute();
+            $oDB->createCommand($sQuery)->execute();
             break;
         case 'pgsql':
         case 'mssql':
@@ -2100,11 +2100,11 @@ function dropPrimaryKey($sTablename)
             ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
             ."WHERE (TABLE_NAME = '{{{$sTablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
-            $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
+            $primarykey = $oDB->createCommand($pkquery)->queryRow(false);
             if ($primarykey!==false)
             {
                 $sQuery="ALTER TABLE {{".$sTablename."}} DROP CONSTRAINT ".$primarykey[0];
-                Yii::app()->db->createCommand($sQuery)->execute();
+                $oDB->createCommand($sQuery)->execute();
             }
             break;
         default: die('Unknown database type');
@@ -2116,7 +2116,7 @@ function dropPrimaryKey($sTablename)
 function fixLanguageConsistencyAllSurveys()
 {
     $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
-    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
+    $surveyidresult = $oDB->createCommand($surveyidquery)->queryAll();
     foreach ( $surveyidresult as $sv )
     {
         fixLanguageConsistency($sv['sid'],$sv['additional_languages']);
@@ -2125,7 +2125,7 @@ function fixLanguageConsistencyAllSurveys()
 
 function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL')
 {
-    $sDBDriverName=Yii::app()->db->getDriverName();
+    $sDBDriverName=$oDB->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
     switch ($sDBDriverName){
@@ -2139,36 +2139,36 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
             {
                 $sType.=" DEFAULT '{$sDefault}'";
             }
-            Yii::app()->db->createCommand()->alterColumn($sTable,$sColumn,$sType);
+            $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
             break;
         case 'mssql':
             dropDefaultValueMSSQL($sColumn,$sTable);
             $sType=$sFieldType;
             if ($bAllowNull!=true && $sDefault!='NULL')
             {
-                Yii::app()->db->createCommand("UPDATE {$sTable} SET [{$sColumn}]='{$sDefault}' where [{$sColumn}] is NULL;")->execute();
+                $oDB->createCommand("UPDATE {$sTable} SET [{$sColumn}]='{$sDefault}' where [{$sColumn}] is NULL;")->execute();
             }
-            Yii::app()->db->createCommand()->alterColumn($sTable,$sColumn,$sType);
+            $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
             if ($sDefault!='NULL')
             {
-                Yii::app()->db->createCommand("ALTER TABLE {$sTable} ADD default '{$sDefault}' FOR [{$sColumn}];")->execute();
+                $oDB->createCommand("ALTER TABLE {$sTable} ADD default '{$sDefault}' FOR [{$sColumn}];")->execute();
             }
             break;
         case 'pgsql':
             $sType=$sFieldType;
-            Yii::app()->db->createCommand()->alterColumn($sTable,$sColumn,$sType);
-            try{ Yii::app()->db->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute();} catch(Exception $e) {};
-            try{ Yii::app()->db->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute();} catch(Exception $e) {};
+            $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
+            try{ $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute();} catch(Exception $e) {};
+            try{ $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute();} catch(Exception $e) {};
 
             if ($bAllowNull!=true)
             {
-                Yii::app()->db->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET NOT NULL")->execute();
+                $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET NOT NULL")->execute();
             }
             if ($sDefault!='NULL')
             {
-                Yii::app()->db->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET DEFAULT '{$sDefault}'")->execute();
+                $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET DEFAULT '{$sDefault}'")->execute();
             }
-            Yii::app()->db->createCommand()->alterColumn($sTable,$sColumn,$sType);
+            $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
             break;
         default: die('Unknown database type');
     }
@@ -2178,7 +2178,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 
 function dropColumn($sTableName, $sColumnName)
 {
-    $sDBDriverName=Yii::app()->db->getDriverName();
+    $sDBDriverName=$oDB->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
 
@@ -2186,7 +2186,7 @@ function dropColumn($sTableName, $sColumnName)
     {
         dropDefaultValueMSSQL($sColumnName,$sTableName);
     }
-    Yii::app()->db->createCommand()->dropColumn($sTableName,$sColumnName);
+    $oDB->createCommand()->dropColumn($sTableName,$sColumnName);
 }
 
 
@@ -2195,25 +2195,25 @@ function dropColumn($sTableName, $sColumnName)
 
 function addColumn($sTableName, $sColumn, $sType)
 {
-    Yii::app()->db->createCommand()->addColumn($sTableName,$sColumn,$sType);
+    $oDB->createCommand()->addColumn($sTableName,$sColumn,$sType);
 }
 
 
 function setTransactionBookmark($sBookmark='limesurvey')
 {
-    $sDBDriverName=Yii::app()->db->getDriverName();
+    $sDBDriverName=$oDB->getDriverName();
     if ($sDBDriverName=='pgsql')
     {
-        Yii::app()->db->createCommand("SAVEPOINT {$sBookmark};")->execute();
+        $oDB->createCommand("SAVEPOINT {$sBookmark};")->execute();
     }
 }
 
 function rollBackToTransactionBookmark($sBookmark='limesurvey')
 {
-    $sDBDriverName=Yii::app()->db->getDriverName();
+    $sDBDriverName=$oDB->getDriverName();
     if ($sDBDriverName=='pgsql')
     {
-        Yii::app()->db->createCommand("ROLLBACK TO SAVEPOINT {$sBookmark};")->execute();
+        $oDB->createCommand("ROLLBACK TO SAVEPOINT {$sBookmark};")->execute();
     }
 }
 
@@ -2228,10 +2228,10 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
     sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
     sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
     WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{$tablename}')";
-    $defaultname = Yii::app()->db->createCommand($dfquery)->queryRow();
+    $defaultname = $oDB->createCommand($dfquery)->queryRow();
     if ($defaultname!=false)
     {
-        Yii::app()->db->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
+        $oDB->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
     }
 }
 
@@ -2246,10 +2246,10 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
     $sQuery ="select TC.Constraint_Name, CC.Column_Name from information_schema.table_constraints TC
     inner join information_schema.constraint_column_usage CC on TC.Constraint_Name = CC.Constraint_Name
     where TC.constraint_type = 'Unique' and Column_name='{$sFieldName}' and TC.TABLE_NAME='{$sTableName}'";
-    $aUniqueKeyName = Yii::app()->db->createCommand($sQuery)->queryRow();
+    $aUniqueKeyName = $oDB->createCommand($sQuery)->queryRow();
     if ($aUniqueKeyName!=false)
     {
-        Yii::app()->db->createCommand("ALTER TABLE {$sTableName} DROP CONSTRAINT {$aUniqueKeyName['Constraint_Name']}")->execute();
+        $oDB->createCommand("ALTER TABLE {$sTableName} DROP CONSTRAINT {$aUniqueKeyName['Constraint_Name']}")->execute();
     }
 }
 
@@ -2260,7 +2260,7 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
 *
 */
 function setsDBDriverName() {
-    $sDBDriverName=Yii::app()->db->getDriverName();
+    $sDBDriverName=$oDB->getDriverName();
     if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
     if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
     return $sDBDriverName;
@@ -2335,7 +2335,7 @@ function replaceTemplateJS(){
 function upgradeSurveyTables164()
 {
     $sQuery = "SELECT sid FROM {{surveys}} WHERE active='Y' and anonymized='N'";
-    $aResult = Yii::app()->db->createCommand($sQuery)->queryAll();
+    $aResult = $oDB->createCommand($sQuery)->queryAll();
     if (!$aResult) {
         return "Database Error";
     } else {

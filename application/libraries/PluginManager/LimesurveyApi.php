@@ -1,4 +1,6 @@
 <?php 
+namespace ls\pluginmanager;
+use User;
     /**
     * Class exposing a Limesurvey API to plugins.
     * This class is instantiated by the plugin manager,

@@ -1,4 +1,5 @@
 <?php
+namespace ls\pluginmanager;
     interface iPluginStorage {
 
         /**

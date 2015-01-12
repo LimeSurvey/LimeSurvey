@@ -101,26 +101,25 @@
                 $fields[$extraField] = 'text';
             }
 
-
-    try{
-        $sTableName="{{tokens_".intval($iSurveyID)."}}";
-        createTable($sTableName, $fields);
-        try{
-            Yii::app()->db->createCommand()->createIndex("idx_token_token_{$iSurveyID}_".rand(1,50000),"{{tokens_".intval($iSurveyID)."}}",'token');
-        } catch(Exception $e) {}
-        // create fields for the custom token attributes associated with this survey
-        $tokenattributefieldnames = Survey::model()->findByPk($iSurveyID)->tokenAttributes;
-        foreach($tokenattributefieldnames as $attrname=>$attrdetails)
-        {
-            if (isset($fields[$attrname])) continue; // Field was already created
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyID)."}}", $attrname, 'string(255)'))->execute();
-        }
-        Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-        return true;
-    } catch(Exception $e) {
-        return false;
-    }
-
+            $db = \Yii::app()->db;
+            $sTableName="{{tokens_".intval($surveyId)."}}";
+            try {
+                $db->createCommand()->createTable($sTableName, $fields);
+                
+                $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1,50000),  $sTableName,'token');
+            } catch(Exception $e) {}
+        
+            // create fields for the custom token attributes associated with this survey
+            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->tokenAttributes;
+            foreach($tokenattributefieldnames as $attrname=>$attrdetails)
+            {
+                if (isset($fields[$attrname])) continue; // Field was already created
+                $db->createCommand()->addColumn("{{tokens_".intval($surveyId)."}}", $attrname, 'string(255)')->execute();
+            }
+            
+            // Refresh schema cache just in case the table existed in the past
+            $db->schema->getTable($sTableName, true); 
+            
         }
         public function findByToken($token)
         {

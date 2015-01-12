@@ -1997,7 +1997,7 @@ class remotecontrol_handle
                 $aAttributeFields=array_unique($aAttributeFields);
             }
             Yii::app()->loadHelper('admin/token');
-            if (createTokenTable($iSurveyID, $aAttributeFields))
+            if (Token::createTable($iSurveyID, $aAttributeFields))
             {
                 return array('status' => 'OK');
             }

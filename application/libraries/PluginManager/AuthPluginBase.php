@@ -1,4 +1,8 @@
 <?php
+namespace ls\pluginmanager;
+use \User;
+use LSAuthResult;
+
 abstract class AuthPluginBase extends PluginBase {
     
     /**

@@ -24,9 +24,6 @@ $internalConfig = array(
         'application.controllers.*',
         'application.modules.*',
     ),
-    'preload' => [
-        'pluginManager'
-    ],
     'components' => array(
         'bootstrap' => array(
             'class' => 'application.core.LSBootstrap',
@@ -83,8 +80,8 @@ $internalConfig = array(
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         ),
         'pluginManager' => [
-            'class' => "application.libraries.PluginManager.PluginManager",
-            'api' => "LimesurveyApi"
+            'class' => "\\ls\\pluginmanager\\PluginManager",
+            'api' => "\\ls\\pluginmanager\\LimesurveyApi"
 
         ]
     )

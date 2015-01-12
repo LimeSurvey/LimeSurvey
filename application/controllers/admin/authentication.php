@@ -1,4 +1,5 @@
 <?php
+use ls\pluginmanager\PluginEvent;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');

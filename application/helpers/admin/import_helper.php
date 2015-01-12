@@ -757,7 +757,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             if (pathinfo($aFile['filename'], PATHINFO_EXTENSION) == 'lst')
             {
                 Yii::app()->loadHelper("admin/token");
-                if (createTokenTable($aImportResults['newsid']))
+                if (Token::createTable($aImportResults['newsid']))
                     $aTokenCreateResults = array('tokentablecreated' => true);
                 $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
                 $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);

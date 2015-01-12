@@ -1,5 +1,5 @@
 <?php
-
+namespace ls\pluginmanager;
     /**
      * Base class for plugins.
      */

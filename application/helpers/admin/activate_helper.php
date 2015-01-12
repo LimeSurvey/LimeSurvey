@@ -375,8 +375,8 @@ function activateSurvey($iSurveyID, $simulate = false)
     $tabname = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
     try
-    {
-        $execresult = createTable($tabname, $createsurvey);
+    {   
+        $execresult = Yii::app()->db->createCommand()->createTable($tabname, $createsurvey);
         Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
     }
     catch (CDbException $e)
@@ -430,7 +430,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         $tabname = "{{survey_{$iSurveyID}_timings}}";
         try
         {
-            $execresult = createTable($tabname,$column);
+            $execresult = Yii::app()->db->createCommand()->createTable($tabname,$column);
             Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
         }
         catch (CDbException $e)

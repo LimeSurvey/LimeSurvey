@@ -1,4 +1,7 @@
 <?php
+use ls\pluginmanager\AuthPluginBase;
+use ls\pluginmanager\PluginManager;
+
 class Authdb extends AuthPluginBase
 {
     protected $storage = 'DbStorage';

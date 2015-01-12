@@ -1,16 +1,12 @@
 <?php
 namespace ls\pluginmanager;
 use Yii;
+use Plugin;
     /**
      * Factory for limesurvey plugin objects.
      */
-    class PluginManager extends CApplicationComponent{
-        /**
-         *
-         * @var ls\pluginmanager\Psr4AutoloaderClass
-         */
-        protected $loader;
-        /**
+    class PluginManager extends \CApplicationComponent{
+       /**
          * Object containing any API that the plugins can use.
          * @var mixed $api The class name of the API class to load, or
          */
@@ -40,12 +36,6 @@ use Yii;
          */
         public function init() {
             parent::init();
-            $this->loader = new Psr4AutoloaderClass();
-            $this->loader->addNamespace('ls\PluginManager', __DIR__);
-            Yii::import('application.libraries.PluginManager.*');
-            Yii::import('application.libraries.PluginManager.Storage.*');
-            Yii::import('application.libraries.PluginManager.Question.*');
-        
             if (!is_object($this->api)) {
                 $class = $this->api;
                 $this->api = new $class;

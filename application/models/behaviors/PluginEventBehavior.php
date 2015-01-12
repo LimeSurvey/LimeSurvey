@@ -1,4 +1,5 @@
 <?php
+    use \ls\pluginmanager\PluginEvent;
 	class PluginEventBehavior extends CModelBehavior
 	{
 		public function events()
@@ -47,7 +48,7 @@
 		 */
 	    public function dispatchPluginModelEvent($sEventName, $criteria = null)
 		{
-			$oPluginEvent = new PluginEvent($sEventName, $this);
+            $oPluginEvent = new PluginEvent($sEventName, $this);
 			$oPluginEvent->set('model', $this->owner);
 			if (isset($criteria))
 			{

@@ -170,10 +170,17 @@
         error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
     }
 
-    if (version_compare(PHP_VERSION, '5.3.0', '<'))
-        die ('This script can only be run on PHP version 5.3.0 or later! Your version: '.PHP_VERSION.'<br />');
+    if (version_compare(PHP_VERSION, '5.4.0', '<'))
+        die ('This script can only be run on PHP version 5.4.0 or later! Your version: '.PHP_VERSION.'<br />');
 
 
+/**
+ * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
+ */
+    require 'application/Psr4AutoloaderClass.php';
+    $loader = new Psr4AutoloaderClass();
+    $loader->register();
+    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

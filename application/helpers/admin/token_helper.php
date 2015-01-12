@@ -12,66 +12,6 @@
 *
 */
 
-
-/**
-* Creates the basic token table for a survey
-*
-* @param mixed $iSurveyID
-* @param mixed $aAttributeFields
-* @return False if failed , else DB object
-*/
-function createTokenTable($iSurveyID, $aAttributeFields=array())
-{
-    Yii::app()->loadHelper('database');
-    $fields = array(
-    'tid' => 'pk',
-    'participant_id' => 'string(50)',
-    'firstname' => 'string(40)',
-    'lastname' => 'string(40)',
-    'email' => 'text',
-    'emailstatus' => 'text',
-    'token' => 'string(35)',
-    'language' => 'string(25)',
-    'blacklisted' => 'string(17)',
-    'sent' => "string(17) DEFAULT 'N'",
-    'remindersent' => "string(17) DEFAULT 'N'",
-    'remindercount' => 'integer DEFAULT 0',
-    'completed' => "string(17) DEFAULT 'N'",
-    'usesleft' => 'integer DEFAULT 1',
-    'validfrom' => 'datetime',
-    'validuntil' => 'datetime',
-    'mpid' => 'integer'
-    );
-    foreach ($aAttributeFields as $sAttributeField)
-    {
-        $fields[$sAttributeField]='text';
-    }
-
-    try{
-        $sTableName="{{tokens_".intval($iSurveyID)."}}";
-        createTable($sTableName, $fields);
-        try{
-            Yii::app()->db->createCommand()->createIndex("idx_token_token_{$iSurveyID}_".rand(1,50000),"{{tokens_".intval($iSurveyID)."}}",'token');
-        } catch(Exception $e) {}
-        // create fields for the custom token attributes associated with this survey
-        $tokenattributefieldnames = Survey::model()->findByPk($iSurveyID)->tokenAttributes;
-        foreach($tokenattributefieldnames as $attrname=>$attrdetails)
-        {
-            if (isset($fields[$attrname])) continue; // Field was already created
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyID)."}}", $attrname, 'string(255)'))->execute();
-        }
-        Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-        return true;
-    } catch(Exception $e) {
-        var_dump($e->getMessage());
-        die();
-        
-        return false;
-    }
-
-}
-
-
 /**
 * Sends email to tokens - invitation and reminders
 *
