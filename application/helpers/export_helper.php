@@ -392,6 +392,44 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         'SPSStype' => 'F',
         'size' => '4',
       ),
+      'submitdate' => array(
+        'SPSStype' => 'DATETIME23.2',
+        'size' => '',
+      ),
+      'startdate' => array(
+        'SPSStype' => 'DATETIME23.2',
+        'size' => '',
+      ),
+      'datestamp' => array(
+        'SPSStype' => 'DATETIME23.2',
+        'size' => '',
+      ),
+      'startlanguage' => array(
+        'SPSStype' => 'A',
+        'size' => '19',
+      ),
+      'token' => array(
+        'SPSStype' => 'A',
+        'size' => '16',
+      ),
+      'id' => array(
+        'SPSStype' => 'F',
+        'size' => '7',
+      ),
+      'ipaddr' => array(
+        'SPSStype' => 'A',
+        // TODO what with IPv6 values?
+        'size' => '15',
+      ),
+      'refurl' =>array(
+        'SPSStype'=>'A',
+        'size'=>'255',
+      ),
+      'lastpage' =>array(
+        'SPSStype' => 'F',
+        // Arbitrarily restrict size to 9,999,999 (7 digits) pages
+        'size' => '7',
+      ),
     );
 
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
@@ -460,26 +498,9 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $aQuestionAttribs=array();
 
         #Determine field type
-        if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
-            $fieldtype = 'DATETIME23.2';
-        } elseif ($fieldname=='startlanguage') {
-            $fieldtype = 'A';
-            $val_size = 19;
-        } elseif ($fieldname=='token') {
-            $fieldtype = 'A';
-            $val_size = 16;
-        } elseif ($fieldname=='id') {
-            $fieldtype = 'F';
-            $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
-        } elseif ($fieldname == 'ipaddr') {
-            $fieldtype = 'A';
-            $val_size = 15;
-        } elseif ($fieldname == 'refurl') {
-            $fieldtype = 'A';
-            $val_size = 255;
-        } elseif ($fieldname == 'lastpage') {
-            $fieldtype = 'F';
-            $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) pages
+        if (isset($tokenMap[$fieldname])) {
+          $fieldtype = $tokenMap[$fieldname]['SPSStype'];
+          $val_size = $tokenMap[$fieldname]['size'];
         }
 
         #Get qid (question id)
