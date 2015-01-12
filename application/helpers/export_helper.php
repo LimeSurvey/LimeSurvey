@@ -487,7 +487,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $values = array(
           'qid' => 0,
           'VariableLabel' => '',
-          'size' => 0,
+          'size' => 1,
           'scale_id' => null,
           'scale' => '',
         );
@@ -498,11 +498,8 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $fieldname = $fieldnames[$i];
         $fieldtype = '';
         $ftype='';
-        $values['size'] = 1;
         $hide = 0;
-        $values['scale'] = '';
         $code='';
-        $values['scale_id'] = null;
         $aQuestionAttribs=array();
 
         #Determine field type
