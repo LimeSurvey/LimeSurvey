@@ -73,7 +73,10 @@ $internalConfig = array(
                     'categories'                 => 'vardump',      // show in firebug/console
                     'showInFireBug'              => true,
                     'enabled' => defined('YII_DEBUG') && YII_DEBUG
-                )
+                ),
+                'profile' => [
+                    'class' => CProfileLogRoute::class
+                ]
             )
         ),
         'cache'=>array(
@@ -99,8 +102,7 @@ $internalConfig = array(
         ),
         'pluginManager' => [
             'class' => "\\ls\\pluginmanager\\PluginManager",
-            'api' => "\\ls\\pluginmanager\\LimesurveyApi",
-            'plugins' => require_once(__DIR__ . '/plugins.php')
+            'api' => "\\ls\\pluginmanager\\LimesurveyApi"
         ]
     ),
     

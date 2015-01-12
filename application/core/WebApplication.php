@@ -47,13 +47,6 @@ class WebApplication extends CWebApplication
         $this->loader = new Psr4AutoloaderClass();
         $this->loader->register();
         $this->loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../libraries/PluginManager');
-        foreach($config['modules'] as $module) {
-            if (isset($module['namespace'], $module['dir'])) {
-                $this->loader->addNamespace($module['namespace'], $module['dir']);
-            }
-            class_exists($module['class']);
-        }
-        
         parent::__construct($config);
         Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.

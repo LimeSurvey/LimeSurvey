@@ -1,6 +1,6 @@
 <?php
 namespace ls\pluginmanager;
-use Yii;
+use \Yii;
 use Plugin;
     /**
      * Factory for limesurvey plugin objects.
@@ -179,34 +179,31 @@ use Plugin;
          * This function is not efficient so should only be used in the admin interface
          * that specifically deals with enabling / disabling plugins.
          */
-        public function scanPlugins()
+        public function scanPlugins($forceReload = false)
         {
-            $result = array();
-            $modules = [];
-            foreach ($this->pluginDirs as $pluginDir) {
-                $currentDir = Yii::getPathOfAlias($pluginDir);
-                if (is_dir($currentDir)) {
+            Yii::beginProfile('scanPlugins');
+            $cacheKey = 'scanPlugins';
+            if (false === $plugins = \Yii::app()->cache->get($cacheKey)) {
+                $plugins = [];
+                foreach ($this->pluginDirs as $pluginDir) {
+                    $currentDir = Yii::getPathOfAlias($pluginDir);
                     foreach(\CFileHelper::findFiles($currentDir, [
-                        'fileTypes' => ['php']
+                        'fileTypes' => ['json']
                     ]) as $file) {
-                        $pluginName = basename($file, '.php');
-                        $relativeName = strtr($file, [$currentDir => '']);
-                        
-                        // Old style plugin.
-                        if (file_exists($currentDir . "/$pluginName/$pluginName.php")) {
-                            $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
-                        } elseif ($pluginName == 'config') {
-                            $config = require($file);
+                        if (basename($file) == 'config.json') {
+                            $config = json_decode(file_get_contents($file), true);
                             $config['dir'] = dirname($file);
-                            $config['class'] = $config['namespace'] . '\\' . $config['name'];
-                            $modules[$config['name']] = $config; 
+                            $plugins[$config['name']] = $config;
+
                         }
-                        
+
                     }
                 }
+                \Yii::app()->cache->set($cacheKey, $plugins, 3600);
             }
-            $this->createAutoloader($modules);
-            return $result;
+            Yii::endProfile('scanPlugins');
+            return $plugins;
+            
         }
 
         /**
@@ -377,15 +374,15 @@ use Plugin;
         
         public function setPlugins($plugins) 
         {
-            $defaults = [];
-            $app = \Yii::app();
-            foreach($plugins as $name => $plugin) {
-                $config = \CMap::mergeArray($defaults, $plugin);
-                if($config['type'] == 'module') {
-                    
-                    $app->setModules([$name => $config]);
-                }
-            }
+//            $defaults = [];
+//            $app = \Yii::app();
+//            foreach($plugins as $name => $plugin) {
+//                $config = \CMap::mergeArray($defaults, $plugin);
+//                if($config['type'] == 'module') {
+//
+//                    $app->setModules([$name => $config]);
+//                }
+//            }
         }
         
     }
