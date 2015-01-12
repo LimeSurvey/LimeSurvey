@@ -489,6 +489,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'VariableLabel' => '',
           'size' => 0,
           'scale_id' => null,
+          'scale' => '',
         );
 
         #Condition for SPSS fields:
@@ -499,7 +500,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $ftype='';
         $values['size'] = 1;
         $hide = 0;
-        $export_scale = '';
+        $values['scale'] = '';
         $code='';
         $values['scale_id'] = null;
         $aQuestionAttribs=array();
@@ -526,7 +527,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
             $fieldtype = $token_fields[$fieldname]['SPSStype'];
             $ftype = $token_fields[$fieldname]['LStype'];
             $values['size'] = $token_fields[$fieldname]['size'];
-            $export_scale = $token_fields[$fieldname]['scale'];
+            $values['scale'] = $token_fields[$fieldname]['scale'];
             $hide = $token_fields[$fieldname]['hide'];
 
             /*
@@ -578,10 +579,10 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                     $diff++;
                 }
                 //Get default scale for this type
-                if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
+                if (isset($typeMap[$ftype]['Scale'])) $values['scale'] = $typeMap[$ftype]['Scale'];
                 //But allow override
                 $aQuestionAttribs = getQuestionAttributeValues($values['qid'],$ftype);
-                if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
+                if (isset($aQuestionAttribs['scale_export'])) $values['scale'] = $aQuestionAttribs['scale_export'];
             }
 
         }
@@ -600,7 +601,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           "size" => $values['size'],
           'title'=>$ftitle,
           'hide'=>$hide,
-          'scale'=>$export_scale,
+          'scale'=>$values['scale'],
           'scale_id'=>$values['scale_id']
         );
         //Now check if we have to retrieve value labels
