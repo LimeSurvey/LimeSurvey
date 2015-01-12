@@ -365,6 +365,31 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
 '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
 );
 
+    // NOTE: this is a partial map using _defaults + special token types only
+    $tokenMap = array(
+      '_defaults' => array(
+        'qid'=>0,
+        'code'=>'',
+        'SPSStype'=>'A',
+        'LStype'=>'Undef',
+        'size'=>'100',
+        'hide'=>0,
+        'scale'=>'',
+      ),
+      'sent' => array(
+        'SPSStype' => 'DATETIME23.2',
+      ),
+      'remindersent' => array(
+        'SPSStype' => 'DATETIME23.2',
+      ),
+      'remindercount' => array(
+        'SPSStype' => 'F4',
+      ),
+      'usesleft' => array(
+        'SPSStype' => 'F4',
+      ),
+    );
+
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
     #See if tokens are being used
@@ -379,21 +404,30 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $fieldno=0;
 
     $fields=array();
-    // Token lookup
-    $token_fields = array();
 
+    $token_fields = array();
     if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
-            if ($attributefield != 'token') {
+            if($attributefield!='token') {
                 $fieldno++;
 
-                $token_fields[$attributefield] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
-                'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
-                'VariableLabel'=>$attributedescription['description'],'sql_name'=>$attributefield,'size'=>'100',
-                'title'=>$attributefield,'hide'=>0, 'scale'=>'');
+                $token_fields[$attributefield] = $tokenMap['_defaults'];
+                if (isset($tokenMap[$attributefield])) {
+                  // Override with special values
+                  $token_fields[$attributefield] = $tokenMap[$attributefield] + $token_fields[$attributefield];
+                }
+
+                // Add special values
+                $token_fields[$attributefield] += array(
+                  'id' => "$prefix$fieldno",
+                  'name' => mb_substr($attributefield, 0, 8),
+                  'VariableLabel' => $attributedescription['description'],
+                  'sql_name' => $attributefield,
+                  'title' => $attributefield,
+                );
                 // Add to return fields
                 $fields[] = $token_fields[$attributefield];
             }
