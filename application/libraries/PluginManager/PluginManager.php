@@ -1,14 +1,20 @@
 <?php
+namespace ls\pluginmanager;
+use Yii;
     /**
      * Factory for limesurvey plugin objects.
      */
-    class PluginManager {
-
+    class PluginManager extends CApplicationComponent{
+        /**
+         *
+         * @var ls\pluginmanager\Psr4AutoloaderClass
+         */
+        protected $loader;
         /**
          * Object containing any API that the plugins can use.
-         * @var object
+         * @var mixed $api The class name of the API class to load, or
          */
-        protected $api = null;
+        public $api;
         /**
          * Array mapping guids to question object class names.
          * @var type 
@@ -17,7 +23,10 @@
         
         protected $plugins = array();
         
-        protected $pluginDirs = array();
+        protected $pluginDirs = [
+            'webroot.plugins', // User plugins
+            'application.core.plugins' // Core plugins
+        ];
         
         protected $stores = array();
 
@@ -26,24 +35,23 @@
         /**
          * Creates the plugin manager.
          * 
-         * @param mixed $api The class name of the API class to load, or
+         * 
          * a reference to an already constructed reference.
          */
-        public function __construct($api) 
-        {
-            if (is_object($api))
-            {
-                $this->api = $api;
-            }
-            else 
-            {
-                $this->api = new $api();
-            }
-            
-            $this->pluginDirs[] = 'webroot.plugins';           // User plugins
-            $this->pluginDirs[] = 'application.core.plugins';  // Core plugins
-        }
+        public function init() {
+            parent::init();
+            $this->loader = new Psr4AutoloaderClass();
+            $this->loader->addNamespace('ls\PluginManager', __DIR__);
+            Yii::import('application.libraries.PluginManager.*');
+            Yii::import('application.libraries.PluginManager.Storage.*');
+            Yii::import('application.libraries.PluginManager.Question.*');
         
+            if (!is_object($this->api)) {
+                $class = $this->api;
+                $this->api = new $class;
+            }
+            $this->loadPlugins();
+        }
         /**
          * Return a list of installed plugins, but only if the files are still there
          * 
@@ -301,7 +309,7 @@
             } catch (Exception $exc) {
                 // Something went wrong, maybe no database was present so we load no plugins
             }
-            
+
             $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this));    // Alow plugins to do stuff after all plugins are loaded
         }
         

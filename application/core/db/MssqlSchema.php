@@ -2,6 +2,7 @@
 
 class MssqlSchema extends CMssqlSchema
 {
+    use SmartColumnTypeTrait;
     public function __construct($conn) {
         parent::__construct($conn);
         /**

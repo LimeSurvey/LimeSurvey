@@ -26,11 +26,6 @@ class LSYii_Application extends CWebApplication
     protected $config = array();
 
     /**
-     *
-     * @var PluginManager
-     */
-    protected $pluginManager;
-    /**
      * @var LimesurveyApi
      */
     protected $api;
@@ -137,9 +132,6 @@ class LSYii_Application extends CWebApplication
             $this->setConfig($key, $value);
 
         App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
-        // Now initialize the plugin manager
-        $this->initPluginManager();
-
     }
 
 
@@ -161,23 +153,6 @@ class LSYii_Application extends CWebApplication
         }
 
     }
-    /**
-     * This method handles initialization of the plugin manager
-     *
-     * When you want to insert your own plugin manager, or experiment with different settings
-     * then this is where you should do that.
-     */
-    public function initPluginManager()
-    {
-        Yii::import('application.libraries.PluginManager.*');
-        Yii::import('application.libraries.PluginManager.Storage.*');
-        Yii::import('application.libraries.PluginManager.Question.*');
-        $this->pluginManager = new PluginManager($this->getApi());
-
-        // And load the active plugins
-        $this->pluginManager->loadPlugins();
-    }
-
     /**
     * Loads a helper
     *
@@ -298,7 +273,7 @@ class LSYii_Application extends CWebApplication
      */
     public function getPluginManager()
     {
-        return $this->pluginManager;
+        return $this->getComponent('pluginManager');
     }
 
 
