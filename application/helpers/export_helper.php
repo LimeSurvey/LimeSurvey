@@ -586,10 +586,23 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $fieldno++;
         $fid = $fieldno - $diff;
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
-        $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
-        'qid'=>$values['qid'],'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
-        'ValueLabels'=>'','VariableLabel'=>$values['VariableLabel'],"sql_name"=>$fieldname,"size"=>$val_size,
-        'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
+        $tempArray = array(
+          'id' => "$prefix$fid",
+          'name' => mb_substr($fieldname, 0, 8),
+          'qid' => $values['qid'],
+          'code' => $code,
+          'SPSStype' => $fieldtype,
+          'LStype' => $ftype,
+          'LSlong' => $lsLong,
+          'ValueLabels' =>'',
+          'VariableLabel' => $values['VariableLabel'],
+          'sql_name' => $fieldname,
+          "size" => $val_size,
+          'title'=>$ftitle,
+          'hide'=>$hide,
+          'scale'=>$export_scale,
+          'scale_id'=>$scale_id
+        );
         //Now check if we have to retrieve value labels
         $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
         if (is_array($answers)) {
