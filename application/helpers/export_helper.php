@@ -488,6 +488,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'qid' => 0,
           'VariableLabel' => '',
           'size' => 0,
+          'scale_id' => null,
         );
 
         #Condition for SPSS fields:
@@ -500,7 +501,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $hide = 0;
         $export_scale = '';
         $code='';
-        $scale_id = null;
+        $values['scale_id'] = null;
         $aQuestionAttribs=array();
 
         #Determine field type
@@ -540,7 +541,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 'id'=>"$prefix$fid",
                 "LSlong"=>$lsLong,
                 'ValueLabels'=>'',
-                'scale_id'=>$scale_id
+                'scale_id'=>$values['scale_id']
             );
             */
 
@@ -570,7 +571,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 $ftitle=$fielddata['title'];
                 if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
                 if (isset($typeMap[$ftype]['size'])) $values['size'] = $typeMap[$ftype]['size'];
-                if (isset($fielddata['scale_id'])) $scale_id = $fielddata['scale_id'];
+                if (isset($fielddata['scale_id'])) $values['scale_id'] = $fielddata['scale_id'];
                 if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
                 if (isset($typeMap[$ftype]['hide'])) {
                     $hide = $typeMap[$ftype]['hide'];
@@ -600,7 +601,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'title'=>$ftitle,
           'hide'=>$hide,
           'scale'=>$export_scale,
-          'scale_id'=>$scale_id
+          'scale_id'=>$values['scale_id']
         );
         //Now check if we have to retrieve value labels
         $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
