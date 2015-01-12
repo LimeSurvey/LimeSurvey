@@ -221,8 +221,6 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         $('#answer'+name).val(displayVal);
     }
 
-    console.log ("Number treated >> " + value + " >> " + newval);
-
     /**
      * Check conditions
      */
