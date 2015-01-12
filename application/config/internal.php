@@ -44,13 +44,16 @@ $internalConfig = array(
             'showScriptName' => true,
         ),
         'assetManager' => array(
-            'baseUrl' => '/tmp/assets'
+            'baseUrl' => '/tmp/assets',
+            'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'
+            
         ),
         'request' => array(
             'class'=>'LSHttpRequest',
             'noCsrfValidationRoutes'=>array(
                 'remotecontrol'
             ),
+
             'enableCsrfValidation'=>true,    // CSRF protection
             'enableCookieValidation'=>false   // Enable to activate cookie protection
         ),
@@ -72,6 +75,11 @@ $internalConfig = array(
             'schemaCachingDuration' => 3600,
             'class' => 'DbConnection'
         ),
+        'session' => [
+            'cookieParams' => array(
+                'httponly' => true,
+            ),
+        ],
         'messages' => array(
             'class' => 'CGettextMessageSource',
             'cachingDuration'=>3600,

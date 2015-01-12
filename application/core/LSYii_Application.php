@@ -80,28 +80,9 @@ class LSYii_Application extends CWebApplication
                 $config['components']['db']['enableParamLogging'] = true;
             }
         }
+      
 
-        if (!isset($config['components']['request']))
-        {
-            $config['components']['request']=array();
-        }
-        if (!isset($config['components']['session']))
-        {
-            $config['components']['session']=array();
-        }
-        $config['components']['session']=array_merge_recursive($config['components']['session'],array(
-            'cookieParams' => array(
-                'httponly' => true,
-            ),
-        ));
-
-        if (!isset($config['components']['assetManager']))
-        {
-            $config['components']['assetManager']=array();
-        }
-        $config['components']['assetManager']=array_merge_recursive($config['components']['assetManager'],array(
-            'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'   // Enable to activate cookie protection
-        ));
+       
 
         parent::__construct($config);
         Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
