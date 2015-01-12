@@ -24,6 +24,7 @@ $internalConfig = array(
         'application.controllers.*',
         'application.modules.*',
     ),
+    'preload' => ['log'],
     'components' => array(
         'bootstrap' => array(
             'class' => 'application.core.LSBootstrap',
@@ -66,6 +67,13 @@ $internalConfig = array(
                 'CWebLogRoute' => array( // Use an associative array allow update in config
                     'class' => 'CWebLogRoute',
                 ),
+                'trace' => array(
+                    'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
+                    'levels'                     => 'trace',        // you can include more separated by commas
+                    'categories'                 => 'vardump',      // show in firebug/console
+                    'showInFireBug'              => true,
+                    'enabled' => defined('YII_DEBUG') && YII_DEBUG
+                )
             )
         ),
         'cache'=>array(
@@ -73,7 +81,9 @@ $internalConfig = array(
         ),
         'db' => array(
             'schemaCachingDuration' => 3600,
-            'class' => 'DbConnection'
+            'class' => 'DbConnection',
+            'enableProfiling' => isset($userConfig['config']['debugsql']) && $userConfig['config']['debugsql'] >= 1,
+            'enableParamLogging' => isset($userConfig['config']['debugsql']) && $userConfig['config']['debugsql'] >= 1
         ),
         'session' => [
             'cookieParams' => array(
