@@ -1049,66 +1049,10 @@ class database extends Survey_Common_Action
                     $param->save();
                 }
             }
-            $updatearray= array('admin'=> Yii::app()->request->getPost('admin'),
-            'expires'=>$expires,
-            'startdate'=>$startdate,
-            'anonymized'=> Yii::app()->request->getPost('anonymized'),
-            'faxto'=> Yii::app()->request->getPost('faxto'),
-            'format'=> Yii::app()->request->getPost('format'),
-            'savetimings'=> Yii::app()->request->getPost('savetimings'),
-            'template'=>$template,
-            'assessments'=> Yii::app()->request->getPost('assessments'),
-            'language'=> Yii::app()->request->getPost('language'),
-            'additional_languages'=> Yii::app()->request->getPost('languageids'),
-            'datestamp'=> Yii::app()->request->getPost('datestamp'),
-            'ipaddr'=> Yii::app()->request->getPost('ipaddr'),
-            'refurl'=> Yii::app()->request->getPost('refurl'),
-            'publicgraphs'=> Yii::app()->request->getPost('publicgraphs'),
-            'usecookie'=> Yii::app()->request->getPost('usecookie'),
-            'allowregister'=> Yii::app()->request->getPost('allowregister'),
-            'allowsave'=> Yii::app()->request->getPost('allowsave'),
-            'navigationdelay'=> Yii::app()->request->getPost('navigationdelay'),
-            'printanswers'=> Yii::app()->request->getPost('printanswers'),
-            'publicstatistics'=> Yii::app()->request->getPost('publicstatistics'),
-            'autoredirect'=> Yii::app()->request->getPost('autoredirect'),
-            'showxquestions'=> Yii::app()->request->getPost('showxquestions'),
-            'showgroupinfo'=> Yii::app()->request->getPost('showgroupinfo'),
-            'showqnumcode'=> Yii::app()->request->getPost('showqnumcode'),
-            'shownoanswer'=> Yii::app()->request->getPost('shownoanswer'),
-            'showwelcome'=> Yii::app()->request->getPost('showwelcome'),
-            'allowprev'=> Yii::app()->request->getPost('allowprev'),
-            'questionindex'=> Yii::app()->request->getPost('questionindex'),
-            'nokeyboard'=> Yii::app()->request->getPost('nokeyboard'),
-            'showprogress'=> Yii::app()->request->getPost('showprogress'),
-            'listpublic'=> Yii::app()->request->getPost('public'),
-            'htmlemail'=> Yii::app()->request->getPost('htmlemail'),
-            'sendconfirmation'=>  Yii::app()->request->getPost('sendconfirmation'),
-            'tokenanswerspersistence'=> Yii::app()->request->getPost('tokenanswerspersistence'),
-            'alloweditaftercompletion'=> Yii::app()->request->getPost('alloweditaftercompletion'),
-            'usecaptcha'=> Yii::app()->request->getPost('usecaptcha'),
-            'emailresponseto'=>trim(Yii::app()->request->getPost('emailresponseto')),
-            'emailnotificationto'=>trim(Yii::app()->request->getPost('emailnotificationto')),
-            'googleanalyticsapikey'=>trim(Yii::app()->request->getPost('googleanalyticsapikey')),
-            'googleanalyticsstyle'=>trim(Yii::app()->request->getPost('googleanalyticsstyle')),
-            'tokenlength'=>$tokenlength
-            );
 
 
-            $warning = '';
-            // make sure we only update admin email if it is valid
-            if (Yii::app()->request->getPost('adminemail', '') == ''
-                || validateEmailAddress(Yii::app()->request->getPost('adminemail'))) {
-                $updatearray['adminemail'] = Yii::app()->request->getPost('adminemail');
-            } else {
-                $warning .= gT("Warning! Notification email was not updated because it was not valid.").'<br/>';
-            }
-            // make sure we only update bounce email if it is valid
-            if (Yii::app()->request->getPost('bounce_email', '') == ''
-                || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
-                $updatearray['bounce_email'] = Yii::app()->request->getPost('bounce_email');
-            } else {
-                $warning .= gT("Warning! Bounce email was not updated because it was not valid.").'<br/>';
-            }
+
+
 
             // use model
 
