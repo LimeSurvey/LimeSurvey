@@ -5300,46 +5300,33 @@ function removeBOM($str=""){
 /**********************************************/
 function getUpdateInfo()
 {
-    if (getGlobalSetting('SessionName')=='')
-    {
-        setGlobalSetting('SessionName',randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789'));
+    if (getGlobalSetting('SessionName')=='') {
+        setGlobalSetting('SessionName', \Yii::app()->securityManager->generateRandomString(64));
     }
-    Yii::import('application.libraries.admin.http.httpRequestIt');
-    $http=new httpRequestIt;
-
-    $http->timeout=0;
-    $http->data_timeout=0;
-    $http->user_agent="LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber");
-    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber").'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck=true',$arguments);
-
-    $updateinfo=false;
-    $error=$http->Open($arguments);
-    $error=$http->SendRequest($arguments);
-
-    $http->ReadReplyHeaders($headers);
-
-
-    if($error=="") {
-        $body=''; $full_body='';
-        for(;;){
-            $error = $http->ReadReplyBody($body,10000);
-            if($error != "" || strlen($body)==0) break;
-            $full_body .= $body;
-        }
-        $updateinfo=json_decode($full_body,true);
-        if ($http->response_status!='200')
-        {
-            $updateinfo['errorcode']=$http->response_status;
-            $updateinfo['errorhtml']=$full_body;
-        }
+    
+    $url = "http://update.limesurvey.org/?" . \Yii::app()->urlManager->createPathInfo(array(
+        'build' => Yii::app()->getConfig("buildnumber"),
+        'php' => PHP_VERSION,
+        'id' => md5(getGlobalSetting('SessionName')),
+        'crosscheck' => 'true' // Passed as string, should be changed.
+    ), '=', '&');
+    
+    $opts = [
+        'http' => [
+            'method' => 'GET',
+            'user_agent' => "LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber"),
+            'timeout' => 10,
+            'ignore_errors' => true
+        ]
+    ];
+    $body = file_get_contents($url, false, stream_context_create($opts));
+    if ($body != false && (null === $updateInfo = json_decode($body, true))) {
+        $updateInfo = [
+            'errorhtml' => $body,
+            'errorcode' => $http_response_header
+        ];
     }
-    else
-    {
-        $updateinfo['errorcode']=$error;
-        $updateinfo['errorhtml']=$error;
-    }
-    unset( $http );
-    return $updateinfo;
+    return $updateInfo;
 }
 
 /**
