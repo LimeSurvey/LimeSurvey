@@ -5306,7 +5306,10 @@ function getUpdateInfo()
     
     $url = "http://update.limesurvey.org/?" . \Yii::app()->urlManager->createPathInfo(array(
         'build' => Yii::app()->getConfig("buildnumber"),
-        'php' => PHP_VERSION,
+        /**
+         * Optionally enable this after user consent. For now it remains disabled.
+         */
+//        'php' => PHP_VERSION,
         'id' => md5(getGlobalSetting('SessionName')),
         'crosscheck' => 'true' // Passed as string, should be changed.
     ), '=', '&');

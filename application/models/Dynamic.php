@@ -21,7 +21,7 @@
 		/**
 		 *
 		 * @param type $className
-		 * @return Dynamic2
+		 * @return Dynamic
 		 */
 
 		public static function model($className = null) {

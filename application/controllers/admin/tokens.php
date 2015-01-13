@@ -2275,7 +2275,7 @@ class tokens extends Survey_Common_Action
         else
         {
             //get token length from survey settings
-            $newtoken = TokenDynamic::model($iSurveyId)->createTokens($iSurveyId);
+            $newtoken = Token::model($iSurveyId)->generateTokens($iSurveyId);
             $newtokencount = $newtoken['0'];
             $neededtokencount = $newtoken['1'];
             if($neededtokencount>$newtokencount)

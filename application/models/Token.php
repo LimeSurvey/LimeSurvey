@@ -130,15 +130,18 @@
                 'token' => $token
             ));
         }
-
+        /**
+         * Generates a token for this object.
+         * @throws CHttpException
+         */
         public function generateToken()
         {
             $length = $this->survey->tokenlength;
-            $this->token = randomChars($length);
+            $this->token = \Yii::app()->securityManager->generateRandomString($length);
             $counter = 0;
             while (!$this->validate('token'))
             {
-                $this->token = randomChars($length);
+                $this->token = \Yii::app()->securityManager->generateRandomString($length);
                 $counter++;
                 // This is extremely unlikely.
                 if ($counter > 10)
@@ -147,7 +150,69 @@
                 }
             }
         }
+        
+        /**
+         * Generates a token for all token objects in this survey.
+         * Syntax: Token::model(12345)->generateTokens();
+         */
+        public function generateTokens() {
+            if ($this->scenario != '') {
+                throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens");
+            }
+            $surveyId = $this->dynamicId;
+            $tokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
+            
+            $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
+            //Exit early if there are not empty tokens
+            if (count($tkresult)===0) return array(0,0);
 
+            //get token length from survey settings
+            $tlrow = Survey::model()->findByAttributes(array("sid"=>$surveyId));
+            
+            //Add some criteria to select only the token field
+            $criteria = $this->getDbCriteria();
+            $criteria->select = 'token';
+            $ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
+
+            // select all existing tokens
+            foreach ($ntresult as $tkrow)
+            {
+                $existingtokens[$tkrow['token']] = true;
+            }
+
+            $newtokencount = 0;
+            $invalidtokencount=0;
+            foreach ($tkresult as $tkrow)
+            {
+                $bIsValidToken = false;
+                while ($bIsValidToken == false && $invalidtokencount<50)
+                {
+                    $newtoken = Yii::app()->securityManager->generateRandomString($tokenLength);
+                    if (!isset($existingtokens[$newtoken]))
+                    {
+                        $existingtokens[$newtoken] = true;
+                        $bIsValidToken = true;
+                        $invalidtokencount=0;
+                    }
+                    else
+                    {
+                        $invalidtokencount ++;
+                    }
+                }
+                if($bIsValidToken)
+                {
+                    $itresult = $this->updateByPk($tkrow['tid'], ['token' => $newtoken]);
+                    $newtokencount++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return array($newtokencount,count($tkresult));
+
+        }
         /**
          *
          * @param mixed $className Either the classname or the survey id.
@@ -204,6 +269,9 @@
                 ),
                 'editable' => array(
                     'condition' => "COALESCE(validuntil, '$now') >= '$now' AND COALESCE(validfrom, '$now') <= '$now'"
+                ),
+                'empty' => array(
+                    'condition' => 'token is null or token = ""'
                 )
             );
         }
