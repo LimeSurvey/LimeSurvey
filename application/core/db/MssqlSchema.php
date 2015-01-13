@@ -30,7 +30,14 @@ class MssqlSchema extends CMssqlSchema
          * Not confirmed.
          * If resulting type doesn't contain NULL then add it.
          */
-        $result = parent::getColumnType($type);
+        if (preg_match('/([[:alpha:]]+)\s*(\(.+?\)).*/', $type, $matches)) {
+            $baseType = parent::getColumnType($type);
+            $param = $matches[2];
+            $result = preg_replace('/\(.+?\)/', $param, $baseType, 1);
+        } else {
+            $result = parent::getColumnType($type);
+        }
+        
         if (stripos($result, 'NULL') === false) {
             $result .= ' NULL';
         }
