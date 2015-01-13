@@ -6,12 +6,22 @@ abstract class AuthPluginBase extends PluginBase {
      * are copied from LSUserIdentity and CBaseUserIdentity for easier access.
      */
     const ERROR_NONE = 0;
-	const ERROR_USERNAME_INVALID = 1;
-	const ERROR_PASSWORD_INVALID = 2;
+    const ERROR_USERNAME_INVALID = 1;
+    const ERROR_PASSWORD_INVALID = 2;
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
     const ERROR_UNKNOWN_IDENTITY = 100;
-    
+    const ERROR_INVALID_EMAIL = 110;
+    const ERROR_ALREADY_EXISTING_USER = 120;
+    const ERROR_LDAP_CONNECTION = 130;
+    const ERROR_LDAP_MODE = 135;
+    const ERROR_LDAP_NO_EMAIL = 140;
+    const ERROR_LDAP_NO_FULLNAME = 150;
+    const ERROR_LDAP_NO_BIND = 160;
+    const ERROR_LDAP_NO_SEARCH_RESULT = 170;
+
+    const LDAP_INVALID_PASSWORD_TEXT = "INVALID_PASSWORD-LDAP_USER";
+
     protected $_username = null;
     protected $_password = null;
     

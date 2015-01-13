@@ -154,12 +154,24 @@ class Authentication extends Survey_Common_Action
                 $aData['errormsg'] = $this->getController()->lang->gT('User name and/or email not found!');
                 $aData['maxattempts'] = '';
                 $this->_renderWrappedTemplate('authentication', 'error', $aData);
+                return;
             }
-            else
+
+            $sPassword = $aFields[0]['password'];
+            if (gettype($sPassword) == 'resource')
             {
-                $aData['message'] = $this->_sendPasswordEmail($sEmailAddr, $aFields);
-                $this->_renderWrappedTemplate('authentication', 'message', $aData);
+                $sPassword=stream_get_contents($sPassword,-1,0);
             }
+            if ($sPassword == AuthPluginBase::LDAP_INVALID_PASSWORD_TEXT)
+            {
+                $aData['errormsg'] = $this->getController()->lang->gT('User is configured for LDAP authentication, contact your Administrator');
+                $aData['maxattempts'] = '';
+                $this->_renderWrappedTemplate('authentication', 'error', $aData);
+                return;
+            }
+
+            $aData['message'] = $this->_sendPasswordEmail($sEmailAddr, $aFields);
+            $this->_renderWrappedTemplate('authentication', 'message', $aData);
         }
     }
 
