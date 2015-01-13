@@ -566,7 +566,7 @@ class Permission extends LSActiveRecord
     }
 
     /**
-    * Returns true if a user has permission to use a certain template
+    * Returns true if a user has permission to read/create/update a certain template
     * @param $sPermission string Name of the permission - see function getGlobalPermissions
     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
     * @param $iUserID integer User ID - if not given the one of the current user is used
@@ -574,7 +574,7 @@ class Permission extends LSActiveRecord
     */
     function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
     {
-        return $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
+        return $this->hasPermission(0, 'global', 'templates', $sCRUD, $iUserID) || $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
     }
 
     /**

@@ -149,12 +149,11 @@ class SurveyAdmin extends Survey_Common_Action
     function editsurveysettings($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
-        if (is_null($iSurveyID) || !$iSurveyID)
-            $this->getController()->error('Invalid survey id');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('surveys','read'))
             $this->getController()->error('No permission');
-
+        if(Yii::app()->request->isPostRequest)
+            $this->update($iSurveyID);
         $this->_registerScriptFiles();
 
         //Yii::app()->loadHelper('text');
@@ -1419,6 +1418,213 @@ class SurveyAdmin extends Survey_Common_Action
         }
     }
 
+    /**
+    * Update survey settings with post value
+    *
+    * @param $iSurveyId  The survey id
+    */
+    function update($iSurveyId)
+    {
+        if(!Yii::app()->request->isPostRequest)
+            throw new CHttpException(500);
+        if(!Permission::model()->hasSurveyPermission($iSurveyId,'surveysettings','update'))
+            throw new CHttpException(401,"401 Unauthorized");
+
+        // Preload survey
+        $oSurvey=Survey::model()->findByPk($iSurveyId);
+
+         // Save plugin settings.
+        $pluginSettings = App()->request->getPost('plugin', array());
+        foreach($pluginSettings as $plugin => $settings)
+        {
+            $settingsEvent = new PluginEvent('newSurveySettings');
+            $settingsEvent->set('settings', $settings);
+            $settingsEvent->set('survey', $iSurveyId);
+            App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
+        }
+
+        /* Start to fix some param before save (TODO : use models directly ?) */
+        /* Date management */
+        Yii::app()->loadHelper('surveytranslator');
+        $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
+        Yii::app()->loadLibrary('Date_Time_Converter');
+        $startdate = App()->request->getPost('startdate');
+        if (trim($startdate)=="")
+        {
+            $startdate=null;
+        }
+        else
+        {
+            Yii::app()->loadLibrary('Date_Time_Converter');
+            $datetimeobj = new date_time_converter($startdate,$formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
+            $startdate=$datetimeobj->convert("Y-m-d H:i:s");
+        }
+        $expires = App()->request->getPost('expires');
+        if (trim($expires)=="")
+        {
+            $expires=null;
+        }
+        else
+        {
+            $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+            $expires=$datetimeobj->convert("Y-m-d H:i:s");
+        }
+        /* Token management */
+        $tokenlength = (int)App()->request->getPost('tokenlength');
+        //token length has to be at least 5, otherwise set it to default (15) : model
+        if($tokenlength < 5)
+        {
+            $tokenlength = 15;
+        }
+        if($tokenlength > 36)
+        {
+            $tokenlength = 36;
+        }
+
+        /* Fix email of admin : not in model ? */
+        if (Yii::app()->request->getPost('adminemail', '') == '' || validateEmailAddress(trim(Yii::app()->request->getPost('adminemail')))) {
+            $adminemail = trim(Yii::app()->request->getPost('adminemail'));
+        } else {
+            $adminemail= $oSurvey->adminemail;
+            Yii::app()->setFlashMessage(gT("Warning! Notification email was not updated because it was not valid."),'warning'); gT().'<br/>';
+        }
+        if (Yii::app()->request->getPost('bounce_email', '') == '' || validateEmailAddress(trim(Yii::app()->request->getPost('adminemail')))) {
+            $bounce_email = trim(Yii::app()->request->getPost('bounce_email'));
+        } else {
+            $bounce_email = $oSurvey->bounce_email;
+            Yii::app()->setFlashMessage(gT("Warning! Bounce email was not updated because it was not valid."),'warning'); gT().'<br/>';
+        }
+
+        // Validate template : accepted: user have rigth to read template OR template are not updated : else set to the default from config
+        $template = Yii::app()->request->getPost('template');
+        if( $template!=$oSurvey->template && !Permission::model()->hasTemplatePermission($template))
+        {
+            $template = Yii::app()->getConfig('defaulttemplate');
+        }
+
+        // We have $oSurvey : update and save it
+        $oSurvey->admin =  Yii::app()->request->getPost('admin');
+        $oSurvey->expires =  $expires;
+        $oSurvey->startdate =  $startdate;
+        $oSurvey->anonymized = Yii::app()->request->getPost('anonymized');
+        $oSurvey->faxto = Yii::app()->request->getPost('faxto');
+        $oSurvey->format = Yii::app()->request->getPost('format');
+        $oSurvey->savetimings = Yii::app()->request->getPost('savetimings');
+        $oSurvey->template = $template;
+        $oSurvey->assessments = Yii::app()->request->getPost('assessments');
+        $oSurvey->language = Yii::app()->request->getPost('language');
+        $oSurvey->additional_languages = Yii::app()->request->getPost('languageids');
+        $oSurvey->datestamp = Yii::app()->request->getPost('datestamp');
+        $oSurvey->ipaddr = Yii::app()->request->getPost('ipaddr');
+        $oSurvey->refurl = Yii::app()->request->getPost('refurl');
+        $oSurvey->publicgraphs = Yii::app()->request->getPost('publicgraphs');
+        $oSurvey->usecookie = Yii::app()->request->getPost('usecookie');
+        $oSurvey->allowregister = Yii::app()->request->getPost('allowregister');
+        $oSurvey->allowsave = Yii::app()->request->getPost('allowsave');
+        $oSurvey->navigationdelay = Yii::app()->request->getPost('navigationdelay');
+        $oSurvey->printanswers = Yii::app()->request->getPost('printanswers');
+        $oSurvey->publicstatistics = Yii::app()->request->getPost('publicstatistics');
+        $oSurvey->autoredirect = Yii::app()->request->getPost('autoredirect');
+        $oSurvey->showxquestions = Yii::app()->request->getPost('showxquestions');
+        $oSurvey->showgroupinfo = Yii::app()->request->getPost('showgroupinfo');
+        $oSurvey->showqnumcode = Yii::app()->request->getPost('showqnumcode');
+        $oSurvey->shownoanswer = Yii::app()->request->getPost('shownoanswer');
+        $oSurvey->showwelcome = Yii::app()->request->getPost('showwelcome');
+        $oSurvey->allowprev = Yii::app()->request->getPost('allowprev');
+        $oSurvey->questionindex = Yii::app()->request->getPost('questionindex');
+        $oSurvey->nokeyboard = Yii::app()->request->getPost('nokeyboard');
+        $oSurvey->showprogress = Yii::app()->request->getPost('showprogress');
+        $oSurvey->listpublic = Yii::app()->request->getPost('public');
+        $oSurvey->htmlemail = Yii::app()->request->getPost('htmlemail');
+        $oSurvey->sendconfirmation = Yii::app()->request->getPost('sendconfirmation');
+        $oSurvey->tokenanswerspersistence = Yii::app()->request->getPost('tokenanswerspersistence');
+        $oSurvey->alloweditaftercompletion = Yii::app()->request->getPost('alloweditaftercompletion');
+        $oSurvey->usecaptcha = Yii::app()->request->getPost('usecaptcha');
+        $oSurvey->emailresponseto = trim(Yii::app()->request->getPost('emailresponseto'));
+        $oSurvey->emailnotificationto = trim(Yii::app()->request->getPost('emailnotificationto'));
+        $oSurvey->googleanalyticsapikey = trim(Yii::app()->request->getPost('googleanalyticsapikey'));
+        $oSurvey->googleanalyticsstyle = trim(Yii::app()->request->getPost('googleanalyticsstyle'));
+        $oSurvey->tokenlength = $tokenlength;
+        $oSurvey->adminemail = $adminemail;
+        $oSurvey->bounce_email = $bounce_email;
+        if ($oSurvey->save())
+        {
+            Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+        }
+        else
+        {
+            Yii::app()->setFlashMessage(gT("Survey could not be updated.","error"));
+            tracevar($oSurvey->getErrors());
+        }
+
+        /* Reload $oSurvey (language are fixed : need it ?) */
+        $oSurvey=Survey::model()->findByPk($iSurveyId);
+
+        /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
+        $aAvailableLanguage=$oSurvey->getAllLanguages();
+        $oCriteria = new CDbCriteria;
+        $oCriteria->compare('surveyls_survey_id',$iSurveyId);
+        $oCriteria->addNotInCondition('surveyls_language',$aAvailableLanguage);
+        SurveyLanguageSetting::model()->deleteAll($oCriteria);
+
+        /* Add new language fixLanguageConsistency do it ?*/
+        foreach ($oSurvey->additionalLanguages as $sLang)
+        {
+            if ($sLang)
+            {
+                $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$iSurveyId,':langname'=>$sLang));
+                if(!$oLanguageSettings)
+                {
+                    $oLanguageSettings= new SurveyLanguageSetting;
+                    $languagedetails=getLanguageDetails($sLang);
+                    $oLanguageSettings->surveyls_survey_id = $iSurveyId;
+                    $oLanguageSettings->surveyls_language = $sLang;
+                    $oLanguageSettings->surveyls_title = ''; // Not in default model ?
+                    $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
+                    if(!$oLanguageSettings->save())
+                    {
+                        Yii::app()->setFlashMessage(gT("Survey language could not be created.","error"));
+                        tracevar($oLanguageSettings->getErrors());
+                    }
+                }
+            }
+        }
+        /* Language fix : remove and add question/group */
+        cleanLanguagesFromSurvey($iSurveyId,implode(" ",$oSurvey->additionalLanguages));
+        fixLanguageConsistency($iSurveyId,implode(" ",$oSurvey->additionalLanguages));
+
+        // Url params in json 
+        $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
+        SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyId));
+        if(isset($aURLParams))
+        {
+            foreach($aURLParams as $aURLParam)
+            {
+                $aURLParam['parameter']=trim($aURLParam['parameter']);
+                if ($aURLParam['parameter']=='' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$aURLParam['parameter']) || $aURLParam['parameter']=='sid' || $aURLParam['parameter']=='newtest' || $aURLParam['parameter']=='token' || $aURLParam['parameter']=='lang')
+                {
+                    continue;  // this parameter name seems to be invalid - just ignore it
+                }
+                unset($aURLParam['act']);
+                unset($aURLParam['title']);
+                unset($aURLParam['id']);
+                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
+                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
+                $aURLParam['sid']=$iSurveyId;
+
+                $param = new SurveyURLParameter;
+                foreach ($aURLParam as $k => $v)
+                    $param->$k = $v;
+                $param->save();
+            }
+        }
+
+        if (Yii::app()->request->getPost('redirect'))
+        {
+            $this->getController()->redirect(Yii::app()->request->getPost('redirect'));
+            App()->end();
+        }
+    }
     /**
     * Saves the new survey after the creation screen is submitted
     *
