@@ -3,7 +3,6 @@
 class MysqlSchema extends CMysqlSchema
 {
     use SmartColumnTypeTrait;
-
     public function __construct($conn) {
         parent::__construct($conn);
         /**
@@ -17,5 +16,4 @@ class MysqlSchema extends CMysqlSchema
         $result .= ' ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
         return $result;
     }
-    
 }

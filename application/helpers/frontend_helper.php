@@ -78,6 +78,7 @@ function loadanswers()
             $_SESSION['survey_'.$surveyid]['step'] = ($oSavedSurvey->saved_thisstep>1)?$oSavedSurvey->saved_thisstep:1;
             $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;// deprecated ?
             $_SESSION['survey_'.$surveyid]['srid'] = $oSavedSurvey->srid;// Seems OK without
+            $_SESSION['survey_'.$surveyid]['refurl'] = $oSavedSurvey->refurl;
         }
 
         // Get if survey is been answered
@@ -2097,21 +2098,14 @@ function GetReferringUrl()
     // read it from server variable
     if(isset($_SERVER["HTTP_REFERER"]))
     {
-        if(!preg_match('/'.$_SERVER["SERVER_NAME"].'/', $_SERVER["HTTP_REFERER"]))
+        if (!Yii::app()->getConfig('strip_query_from_referer_url'))
         {
-            if (!Yii::app()->getConfig('strip_query_from_referer_url'))
-            {
-                return $_SERVER["HTTP_REFERER"];
-            }
-            else
-            {
-                $aRefurl = explode("?",$_SERVER["HTTP_REFERER"]);
-                return $aRefurl[0];
-            }
+            return $_SERVER["HTTP_REFERER"];
         }
         else
         {
-            return '-';
+            $aRefurl = explode("?",$_SERVER["HTTP_REFERER"]);
+            return $aRefurl[0];
         }
     }
     else

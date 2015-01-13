@@ -32,6 +32,7 @@ class MssqlSchema extends CMssqlSchema
          * If resulting type doesn't contain NULL then add it.
          */
         $result = parent::getColumnType($type);
+        
         if (stripos($result, 'NULL') === false) {
             $result .= ' NULL';
         }

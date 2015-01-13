@@ -3,6 +3,7 @@
 class PgsqlSchema extends CPgsqlSchema
 {
     use SmartColumnTypeTrait;
+    
     public function __construct($conn) {
         parent::__construct($conn);
         /**
@@ -10,4 +11,5 @@ class PgsqlSchema extends CPgsqlSchema
          */
         $this->columnTypes['autoincrement'] = 'serial';
     }
+    
 }
