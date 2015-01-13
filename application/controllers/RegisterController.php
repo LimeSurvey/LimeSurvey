@@ -303,9 +303,9 @@ class RegisterController extends LSYii_Controller {
 
         $aFieldValue=$this->getFieldValue($iSurveyId);
         // Now construct the text returned
-        $oToken=Token::model($iSurveyId)->findByAttributes([
+        $oToken=Token::model($iSurveyId)->findByAttributes(array(
             'email' => $aFieldValue['sEmail']
-        ]);
+        ));
         if ($oToken)
          {
             if($oToken->usesleft<1 && $aSurveyInfo['alloweditaftercompletion']!='Y')

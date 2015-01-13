@@ -125,7 +125,7 @@ class Assessments extends Survey_Common_Action
     private function _collectEditData(array $aData)
     {
         $assessments = Assessment::model()->findAllByAttributes(array(
-            'id' => sanitize_int($_POST['id'])
+            'id' => sanitize_int($_POST['id']),
             'language' => App()->language
         ));
 
