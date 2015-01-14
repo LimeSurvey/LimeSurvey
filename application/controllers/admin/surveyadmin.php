@@ -1481,20 +1481,6 @@ class SurveyAdmin extends Survey_Common_Action
             $tokenlength = 36;
         }
 
-        /* Fix email of admin : not in model ? */
-        if (Yii::app()->request->getPost('adminemail', '') == '' || validateEmailAddress(trim(Yii::app()->request->getPost('adminemail')))) {
-            $adminemail = trim(Yii::app()->request->getPost('adminemail'));
-        } else {
-            $adminemail= $oSurvey->adminemail;
-            Yii::app()->setFlashMessage(gT("Warning! Notification email was not updated because it was not valid."),'warning'); gT().'<br/>';
-        }
-        if (Yii::app()->request->getPost('bounce_email', '') == '' || validateEmailAddress(trim(Yii::app()->request->getPost('adminemail')))) {
-            $bounce_email = trim(Yii::app()->request->getPost('bounce_email'));
-        } else {
-            $bounce_email = $oSurvey->bounce_email;
-            Yii::app()->setFlashMessage(gT("Warning! Bounce email was not updated because it was not valid."),'warning'); gT().'<br/>';
-        }
-
         // Validate template : accepted: user have rigth to read template OR template are not updated : else set to the default from config
         $template = Yii::app()->request->getPost('template');
         if( $template!=$oSurvey->template && !Permission::model()->hasTemplatePermission($template))
@@ -1545,15 +1531,15 @@ class SurveyAdmin extends Survey_Common_Action
         $oSurvey->googleanalyticsapikey = trim(Yii::app()->request->getPost('googleanalyticsapikey'));
         $oSurvey->googleanalyticsstyle = trim(Yii::app()->request->getPost('googleanalyticsstyle'));
         $oSurvey->tokenlength = $tokenlength;
-        $oSurvey->adminemail = $adminemail;
-        $oSurvey->bounce_email = $bounce_email;
+        $oSurvey->adminemail = trim(Yii::app()->request->getPost('adminemail'));
+        $oSurvey->bounce_email = trim(Yii::app()->request->getPost('bounce_email'));
         if ($oSurvey->save())
         {
             Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
         }
         else
         {
-            Yii::app()->setFlashMessage(gT("Survey could not be updated.","error"));
+            Yii::app()->setFlashMessage(gT("Survey could not be updated."),"error");
             tracevar($oSurvey->getErrors());
         }
 
