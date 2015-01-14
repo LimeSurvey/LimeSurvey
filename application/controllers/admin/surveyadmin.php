@@ -1469,17 +1469,6 @@ class SurveyAdmin extends Survey_Common_Action
             $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
             $expires=$datetimeobj->convert("Y-m-d H:i:s");
         }
-        /* Token management */
-        $tokenlength = (int)App()->request->getPost('tokenlength');
-        //token length has to be at least 5, otherwise set it to default (15) : model
-        if($tokenlength < 5)
-        {
-            $tokenlength = 15;
-        }
-        if($tokenlength > 36)
-        {
-            $tokenlength = 36;
-        }
 
         // Validate template : accepted: user have rigth to read template OR template are not updated : else set to the default from config
         $template = Yii::app()->request->getPost('template');
@@ -1530,7 +1519,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oSurvey->emailnotificationto = trim(Yii::app()->request->getPost('emailnotificationto'));
         $oSurvey->googleanalyticsapikey = trim(Yii::app()->request->getPost('googleanalyticsapikey'));
         $oSurvey->googleanalyticsstyle = trim(Yii::app()->request->getPost('googleanalyticsstyle'));
-        $oSurvey->tokenlength = $tokenlength;
+        $oSurvey->tokenlength = trim(App()->request->getPost('tokenlength'));
         $oSurvey->adminemail = trim(Yii::app()->request->getPost('adminemail'));
         $oSurvey->bounce_email = trim(Yii::app()->request->getPost('bounce_email'));
         if ($oSurvey->save())
