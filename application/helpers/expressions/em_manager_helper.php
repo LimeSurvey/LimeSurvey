@@ -3120,7 +3120,7 @@
                 {
                     $_minV = (($min_num_value_n == '') ? "''" : $min_num_value_n);
                     $_maxV = (($max_num_value_n == '') ? "''" : $max_num_value_n);
-                    if ($type=='N')
+                    if ($type!='N')
                     {
                         $qtips['value_range']=
                             "{if(!is_empty($_minV) && is_empty($_maxV), sprintf('".$this->gT("Each answer must be at least %s")."',fixnum($_minV)), '')}" .
