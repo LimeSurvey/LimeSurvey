@@ -17,6 +17,55 @@
             $this->subscribe('beforePermissionSetSave'); 
             $this->subscribe('beforeParticipantSave'); 
             $this->subscribe('beforeParticipantDelete'); 
+            $this->subscribe('beforeLogout');
+            $this->subscribe('afterSuccessfulLogin');
+            $this->subscribe('afterFailedLoginAttempt');
+        }
+
+        /**
+        * User logout to the audit log
+        * @return unknown_type
+        */
+        public function beforeLogout()
+        {
+            $iUserID=$this->api->getCurrentUser()->uid;
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid=$iUserID;
+            $oAutoLog->entity='user';
+            $oAutoLog->entityid=$iUserID;
+            $oAutoLog->action='beforeLogout';
+            $oAutoLog->save();
+        }
+
+        /**
+        * Successfull login to the audit log
+        * @return unknown_type
+        */
+        public function afterSuccessfulLogin()
+        {
+            $iUserID=$this->api->getCurrentUser()->uid;
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid=$iUserID;
+            $oAutoLog->entity='user';
+            $oAutoLog->entityid=$iUserID;
+            $oAutoLog->action='afterSuccessfulLogin';
+            $oAutoLog->save();
+        }
+
+        /**
+        * Failed login attempt to the audit log
+        * @return unknown_type
+        */
+        public function afterFailedLoginAttempt()
+        {
+            $event = $this->getEvent();
+            $identity = $event->get('identity');
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->entity='user';
+            $oAutoLog->action='afterFailedLoginAttempt';
+            $aUsername['username'] = $identity->username;
+            $oAutoLog->newvalues = json_encode($aUsername);
+            $oAutoLog->save();
         }
 
         /**
