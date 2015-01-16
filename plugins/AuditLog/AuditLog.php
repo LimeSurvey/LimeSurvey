@@ -28,13 +28,17 @@
         */
         public function beforeLogout()
         {
-            $iUserID=$this->api->getCurrentUser()->uid;
-            $oAutoLog = $this->api->newModel($this, 'log');
-            $oAutoLog->uid=$iUserID;
-            $oAutoLog->entity='user';
-            $oAutoLog->entityid=$iUserID;
-            $oAutoLog->action='beforeLogout';
-            $oAutoLog->save();
+            $oUser = $this->api->getCurrentUser();
+            if ($oUser != false)
+            {
+                $iUserID = $oUser->uid;
+                $oAutoLog = $this->api->newModel($this, 'log');
+                $oAutoLog->uid=$iUserID;
+                $oAutoLog->entity='user';
+                $oAutoLog->entityid=$iUserID;
+                $oAutoLog->action='beforeLogout';
+                $oAutoLog->save();
+            }
         }
 
         /**
