@@ -1,15 +1,5 @@
-.settingswidget *{
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
 .settingswidget input[type^='button'], .settingswidget label{
-    line-height: normal;
     margin-top: 0px;
-}
-
-.settingswidget textarea {
-    min-height: 100px;
 }
 
 .settingswidget .boolean label{
@@ -17,11 +7,17 @@
 }
 
 .settingswidget {
-    margin: auto;
-    width: 80%;
+    margin: 0 1em;
+}
+.settingswidget ul{
+    margin:0;padding:0;
+}
+.form-horizontal .control-label,.form-horizontal .controls{
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-.form-horizontal.col-sm-1,.form-horizontal .col-sm-2,.form-horizontal .col-sm-3,.form-horizontal .col-sm-4,.form-horizontal .col-sm-5,.form-horizontal .col-sm-6,.form-horizontal .col-sm-7,.form-horizontal .col-sm-8,.form-horizontal .col-sm-9,.form-horizontal .col-sm-10,.form-horizontal .col-sm-11,.form-horizontal .col-sm-12 {
+.form-horizontal .col-sm-1,.form-horizontal .col-sm-2,.form-horizontal .col-sm-3,.form-horizontal .col-sm-4,.form-horizontal .col-sm-5,.form-horizontal .col-sm-6,.form-horizontal .col-sm-7,.form-horizontal .col-sm-8,.form-horizontal .col-sm-9,.form-horizontal .col-sm-10,.form-horizontal .col-sm-11,.form-horizontal .col-sm-12 {
   position: relative;
   min-height: 1px;
   padding-right: 15px;
@@ -70,9 +66,6 @@ width: 8.33333333%;
 .settingswidget .setting > .control-label {
     text-align: right;
     vertical-align: top;
-}
-.form-horizontal input[type="text"],.form-horizontal input[type="password"]{
-    height:2.4em; /*bootstrap 3: 34px for 14px*/
 }
 .form-horizontal textarea {
     height:auto;

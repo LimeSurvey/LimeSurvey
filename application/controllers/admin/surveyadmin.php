@@ -1476,7 +1476,6 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $template = Yii::app()->getConfig('defaulttemplate');
         }
-
         // We have $oSurvey : update and save it
         $oSurvey->admin =  Yii::app()->request->getPost('admin');
         $oSurvey->expires =  $expires;
@@ -1488,7 +1487,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oSurvey->template = $template;
         $oSurvey->assessments = Yii::app()->request->getPost('assessments');
         $oSurvey->language = Yii::app()->request->getPost('language');
-        $oSurvey->additional_languages = Yii::app()->request->getPost('languageids');
+        $oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
         $oSurvey->datestamp = Yii::app()->request->getPost('datestamp');
         $oSurvey->ipaddr = Yii::app()->request->getPost('ipaddr');
         $oSurvey->refurl = Yii::app()->request->getPost('refurl');
@@ -1558,7 +1557,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
                     if(!$oLanguageSettings->save())
                     {
-                        Yii::app()->setFlashMessage(gT("Survey language could not be created.","error"));
+                        Yii::app()->setFlashMessage(gT("Survey language could not be created."),"error");
                         tracevar($oLanguageSettings->getErrors());
                     }
                 }
