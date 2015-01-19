@@ -10,8 +10,7 @@ $(document).ready(function(){
     $("[data-copy]").each(function(){
         $(this).html($("#"+$(this).data('copy')).html());
     });
-    $("#template").change(templatechange);
-    $("#template").keyup(templatechange);
+
     $("#copysurveyform").submit(copysurvey);
     $("#urlparams").jqGrid({ url:jsonUrl,
         datatype: "json",
@@ -139,16 +138,16 @@ function editParameter(rowid)
     $("#dlgEditParameter").dialog("open");
 }
 
-function templatechange()
+function templatechange(template)
 {
     standardtemplates=['basic','bluengrey','business_grey','citronade','clear_logo','default','eirenicon','limespired','mint_idea','sherpa','vallendar'];
-    if (in_array(this.value,standardtemplates))
+    if (in_array(template,standardtemplates))
     {
-        $("#preview").attr('src',standardtemplaterooturl+'/'+this.value+'/preview.png');
+        $("#preview").attr('src',standardtemplaterooturl+'/'+template+'/preview.png');
     }
     else
     {
-    $("#preview").attr('src',templaterooturl+'/'+this.value+'/preview.png');
+    $("#preview").attr('src',templaterooturl+'/'+template+'/preview.png');
     }
 }
 
