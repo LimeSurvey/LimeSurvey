@@ -499,10 +499,10 @@ class Permission extends LSActiveRecord
 
         if ($iEntityID>0 && $sEntityName=='survey')
         {
-            $aSurveyInfo=getSurveyInfo($iEntityID);// OR find but then don't use $static
-            if (!$aSurveyInfo) return false;
+            $oSurvey=Survey::model()->findByPk($iEntityID);
+            if (!$oSurvey) return false;
             // If you own a survey you have access to the whole survey
-            if ($iUserID==$aSurveyInfo['owner_id']) return true;
+            if ($iUserID==$oSurvey->owner_id) return true;
         }
 
         // Check if superadmin and cache it

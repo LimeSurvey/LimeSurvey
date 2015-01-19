@@ -9,35 +9,32 @@
 
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
         'id'=>'general',
-        'title'=>gt("General"),
+        //'title'=>gt("General"),
         'form' => false,
         'formHtmlOptions'=>array(
             'class'=>'form-core',
         ),
         'inlist'=>true,
         'settings' => array(
-            'baselanguage'=>array(
-                'type'=>'info',
-                'label'=>gT('Base language'),
-                'content'=>getLanguageNameFromCode($esrow['language'],false), // Or show a select readonly/deactivated mode ?
-            ),
+#            'baselanguage'=>array(
+#                'type'=>'info',
+#                'label'=>gT('Base language'),
+#                'content'=>getLanguageNameFromCode($esrow['language'],false), // Or show a select readonly/deactivated mode ?
+#            ),
             /* Alternate solution for base lang */
-            /*
             'baselanguage'=>array(
                 'type'=>'select',
                 'label'=>gT('Base language'),
                 'options'=>array(
-                    $esrow['language']=>getLanguageNameFromCode($esrow['language'],false)
+                    $esrow['language']=getLanguageNameFromCode($esrow['language'],false),
                 ),
                 'htmlOptions'=>array(
                     'disabled'=>true,
-                    'width'=>'100%',
                 ),
                 'selectOptions'=>array(
-                    'width'=>'100%',
                 ),
+                'current'=>$esrow['language'],
             ),
-            */
             'additional_languages'=>array(
                 'type'=>'select',
                 'label'=>gT('Additional Languages'),

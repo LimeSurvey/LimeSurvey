@@ -27,7 +27,7 @@ class LSYii_EmailIDNAValidator extends CValidator {
         
         if ($this->allowMultiple)
         {
-                $aEmailAdresses=explode(';',$object->$attribute);
+            $aEmailAdresses=explode(';',$object->$attribute);
         }
         else
         {

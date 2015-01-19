@@ -1709,32 +1709,15 @@ function validateEmailAddresses($aEmailAddressList){
   return $aOutList;
 }
 
-
+/**
+* @deprecated
+* Use Survey::model()->templateNameFilter if really needed (Global template)
+* SUrvey->template is allways validated
+*/
 function validateTemplateDir($sTemplateName)
 {
-    $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-    $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');
-    if (is_dir("$usertemplaterootdir/{$sTemplateName}/"))
-    {
-        return $sTemplateName;
-    }
-    elseif (is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
-    {
-        return $sTemplateName;
-    }
-    elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
-    {
-        return $sDefaultTemplate;
-    }
-    elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
-    {
-        return $sDefaultTemplate;
-    }
-    else
-    {
-        return 'default';
-    }
+    tracevar("Usage of deprecacted function validateTemplateDir");
+    return Survey::model()->templateNameFilter($sTemplateName);
 }
 
 

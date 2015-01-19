@@ -25,6 +25,23 @@ class Survey extends LSActiveRecord
      * @var array
      */
     protected $findByPkCache = array();
+    /* Set some setting not by default database */
+    public $format = 'G';
+
+    /**
+     * init to set default
+     *
+     */
+    public function init()
+    {
+        $this->template = $this->templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
+        $validator= new LSYii_Validators;
+        $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
+
+        // Allways fix the template name (TODO : remove extra validateTemplateDir test
+        $this->attachEventHandler("onAfterFind", array($this,'filterTemplateName'));
+
+    }
 
     /**
      * Returns the title of the survey. Uses the current language and
@@ -146,68 +163,105 @@ class Survey extends LSActiveRecord
     public function rules()
     {
         return array(
-        array('datecreated', 'default','value'=>date("Y-m-d")),
-        array('startdate', 'default','value'=>NULL),
-        array('expires', 'default','value'=>NULL),
-        array('admin,faxto','LSYii_Validators'),
-        array('adminemail','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
-        array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
-        array('active', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('allowregister', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('allowsave', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('autoredirect', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('allowprev', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('printanswers', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('ipaddr', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('refurl', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('publicstatistics', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('publicgraphs', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('listpublic', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('htmlemail', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('sendconfirmation', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('tokenanswerspersistence', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('assessments', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('usetokens', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('showxquestions', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false),
-        array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-        array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),
-        array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),
-        array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
-        array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
-        array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),
-        array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
-        array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
-        array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-      //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-      //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-      //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-      // Date rules currently don't work properly with MSSQL, deactivating for now
-        array('template', 'tmplfilter'),
+            array('datecreated', 'default','value'=>date("Y-m-d")),
+            array('startdate', 'default','value'=>NULL),
+            array('expires', 'default','value'=>NULL),
+            array('admin,faxto','LSYii_Validators'),
+            array('adminemail','filter', 'filter'=>'trim'),
+            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
+            array('adminemail','filter', 'filter'=>'trim'),
+            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
+            array('active', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('allowregister', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('allowsave', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('autoredirect', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('allowprev', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('printanswers', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('ipaddr', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('refurl', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('publicstatistics', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('publicgraphs', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('listpublic', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('htmlemail', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('sendconfirmation', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('tokenanswerspersistence', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('assessments', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('usetokens', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('showxquestions', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false),
+            array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
+            array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),
+            array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),
+            array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
+            array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
+            array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),
+            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
+            array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
+            array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('template', 'filter', 'filter'=>array($this,'templateNameFilter')), // Todo : add restriction by user when insert/update
+            array('language','LSYii_Validators','isLanguage'=>true),
+            array('language', 'required', 'on' => 'insert'),
+            array('language', 'filter', 'filter'=>'trim'),
+            array('additional_languages', 'filter', 'filter'=>'trim'),
+            array('additional_languages','LSYii_Validators','isLanguageMulti'=>true),
+            // Date rules currently don't work properly with MSSQL, deactivating for now
+            //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+            //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+            //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
         );
     }
 
     /**
-    * Defines the customs validation rule tmplfilter
+    * Filter the template name : test if template if exist
     *
-    * @param mixed $attribute
-    * @param mixed $params
+    * @param string $sTemplateName
     */
-    public function tmplfilter($attribute,$params)
+    public function templateNameFilter($sTemplateName)
     {
-        if(!array_key_exists($this->$attribute,getTemplateList()))
-            $this->$attribute = 'default';
+        $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
+        $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
+        $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');
+
+        if (is_dir("$usertemplaterootdir/{$sTemplateName}/"))
+        {
+            return $sTemplateName;
+        }
+        elseif (is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
+        {
+            return $sTemplateName;
+        }
+        elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
+        {
+            return $sDefaultTemplate;
+        }
+        elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
+        {
+            return $sDefaultTemplate;
+        }
+        else
+        {
+            return 'default';
+        }
     }
+
+    /**
+    * filterTemplateName to fix some template name 
+    */
+    public function filterTemplateName($event)
+    {
+        $this->template=$this->templateNameFilter($this->template);
+    }
+
 
 
     /**

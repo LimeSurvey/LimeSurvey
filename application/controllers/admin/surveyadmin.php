@@ -1052,65 +1052,18 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _fetchSurveyInfo($action, $iSurveyID=null)
     {
-        if (isset($iSurveyID))
-            $iSurveyID = sanitize_int($iSurveyID);
-
         if ($action == 'newsurvey')
         {
-            $esrow['active'] = 'N';
-            $esrow['questionindex'] = 0;
-            $esrow['format'] = 'G'; //Group-by-group mode
-            $esrow['template'] = Yii::app()->getConfig('defaulttemplate');
-            $esrow['allowsave'] = 'Y';
-            $esrow['allowprev'] = 'N';
-            $esrow['nokeyboard'] = 'N';
-            $esrow['printanswers'] = 'N';
-            $esrow['publicstatistics'] = 'N';
-            $esrow['publicgraphs'] = 'N';
-            $esrow['listpublic'] = 'N';
-            $esrow['autoredirect'] = 'N';
-            $esrow['tokenlength'] = 15;
-            $esrow['allowregister'] = 'N';
-            $esrow['usecookie'] = 'N';
-            $esrow['usecaptcha'] = 'D';
-            $esrow['htmlemail'] = 'Y';
-            $esrow['sendconfirmation'] = 'Y';
-            $esrow['emailnotificationto'] = '';
-            $esrow['anonymized'] = 'N';
-            $esrow['datestamp'] = 'N';
-            $esrow['ipaddr'] = 'N';
-            $esrow['refurl'] = 'N';
-            $esrow['tokenanswerspersistence'] = 'N';
-            $esrow['alloweditaftercompletion'] = 'N';
-            $esrow['startdate'] = '';
-            $esrow['savetimings'] = 'N';
-            $esrow['expires'] = '';
-            $esrow['showqnumcode'] = 'X';
-            $esrow['showwelcome'] = 'Y';
-            $esrow['emailresponseto'] = '';
-            $esrow['assessments'] = 'N';
-            $esrow['navigationdelay'] = 0;
-            $esrow['googleanalyticsapikey']    = '';
-            $esrow['googleanalyticsstyle']     = '0';
+            $oSurvey=new Survey;
         }
-        elseif ($action == 'editsurvey')
+        elseif ($action == 'editsurvey' && $iSurveyID)
         {
-            $condition = array('sid' => $iSurveyID);
-            $esresult = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
-            if ($esresult)
-            {
-                // Set template to default if not exist
-                if (!$esresult['template'])
-                {
-                    $esresult['template']=Yii::app()->getConfig('defaulttemplate');
-                }
-                $esresult['template']=validateTemplateDir($esresult['template']);
-
-                $esrow = $esresult;
-            }
+            $oSurvey = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
         }
-
-        return $esrow;
+        if($oSurvey)
+        {
+            return $oSurvey->attributes;
+        }
     }
 
     /**
@@ -1187,17 +1140,8 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabPresentationNavigation($esrow)
     {
-        global $showxquestions, $showgroupinfo, $showqnumcode;
-
-        Yii::app()->loadHelper('globalsettings');
-
-        $shownoanswer = getGlobalSetting('shownoanswer') ? getGlobalSetting('shownoanswer') : 'Y';
 
         $aData['esrow'] = $esrow;
-        $aData['shownoanswer'] = $shownoanswer;
-        $aData['showxquestions'] = $showxquestions;
-        $aData['showgroupinfo'] = $showgroupinfo;
-        $aData['showqnumcode'] = $showqnumcode;
         return $aData;
     }
 
@@ -1480,47 +1424,46 @@ class SurveyAdmin extends Survey_Common_Action
         $oSurvey->admin =  Yii::app()->request->getPost('admin');
         $oSurvey->expires =  $expires;
         $oSurvey->startdate =  $startdate;
-        $oSurvey->anonymized = Yii::app()->request->getPost('anonymized');
-        $oSurvey->faxto = Yii::app()->request->getPost('faxto');
-        $oSurvey->format = Yii::app()->request->getPost('format');
-        $oSurvey->savetimings = Yii::app()->request->getPost('savetimings');
+        $oSurvey->anonymized = App()->request->getPost('anonymized');
+        $oSurvey->faxto = App()->request->getPost('faxto');
+        $oSurvey->format = App()->request->getPost('format');
+        $oSurvey->savetimings = App()->request->getPost('savetimings');
         $oSurvey->template = $template;
-        $oSurvey->assessments = Yii::app()->request->getPost('assessments');
-        $oSurvey->language = Yii::app()->request->getPost('language');
+        $oSurvey->assessments = App()->request->getPost('assessments');
         $oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
-        $oSurvey->datestamp = Yii::app()->request->getPost('datestamp');
-        $oSurvey->ipaddr = Yii::app()->request->getPost('ipaddr');
-        $oSurvey->refurl = Yii::app()->request->getPost('refurl');
-        $oSurvey->publicgraphs = Yii::app()->request->getPost('publicgraphs');
-        $oSurvey->usecookie = Yii::app()->request->getPost('usecookie');
-        $oSurvey->allowregister = Yii::app()->request->getPost('allowregister');
-        $oSurvey->allowsave = Yii::app()->request->getPost('allowsave');
-        $oSurvey->navigationdelay = Yii::app()->request->getPost('navigationdelay');
-        $oSurvey->printanswers = Yii::app()->request->getPost('printanswers');
-        $oSurvey->publicstatistics = Yii::app()->request->getPost('publicstatistics');
-        $oSurvey->autoredirect = Yii::app()->request->getPost('autoredirect');
-        $oSurvey->showxquestions = Yii::app()->request->getPost('showxquestions');
-        $oSurvey->showgroupinfo = Yii::app()->request->getPost('showgroupinfo');
-        $oSurvey->showqnumcode = Yii::app()->request->getPost('showqnumcode');
-        $oSurvey->shownoanswer = Yii::app()->request->getPost('shownoanswer');
-        $oSurvey->showwelcome = Yii::app()->request->getPost('showwelcome');
-        $oSurvey->allowprev = Yii::app()->request->getPost('allowprev');
-        $oSurvey->questionindex = Yii::app()->request->getPost('questionindex');
-        $oSurvey->nokeyboard = Yii::app()->request->getPost('nokeyboard');
-        $oSurvey->showprogress = Yii::app()->request->getPost('showprogress');
-        $oSurvey->listpublic = Yii::app()->request->getPost('public');
-        $oSurvey->htmlemail = Yii::app()->request->getPost('htmlemail');
-        $oSurvey->sendconfirmation = Yii::app()->request->getPost('sendconfirmation');
-        $oSurvey->tokenanswerspersistence = Yii::app()->request->getPost('tokenanswerspersistence');
-        $oSurvey->alloweditaftercompletion = Yii::app()->request->getPost('alloweditaftercompletion');
-        $oSurvey->usecaptcha = Yii::app()->request->getPost('usecaptcha');
-        $oSurvey->emailresponseto = trim(Yii::app()->request->getPost('emailresponseto'));
-        $oSurvey->emailnotificationto = trim(Yii::app()->request->getPost('emailnotificationto'));
-        $oSurvey->googleanalyticsapikey = trim(Yii::app()->request->getPost('googleanalyticsapikey'));
-        $oSurvey->googleanalyticsstyle = trim(Yii::app()->request->getPost('googleanalyticsstyle'));
-        $oSurvey->tokenlength = trim(App()->request->getPost('tokenlength'));
-        $oSurvey->adminemail = trim(Yii::app()->request->getPost('adminemail'));
-        $oSurvey->bounce_email = trim(Yii::app()->request->getPost('bounce_email'));
+        $oSurvey->datestamp = App()->request->getPost('datestamp');
+        $oSurvey->ipaddr = App()->request->getPost('ipaddr');
+        $oSurvey->refurl = App()->request->getPost('refurl');
+        $oSurvey->publicgraphs = App()->request->getPost('publicgraphs');
+        $oSurvey->usecookie = App()->request->getPost('usecookie');
+        $oSurvey->allowregister = App()->request->getPost('allowregister');
+        $oSurvey->allowsave = App()->request->getPost('allowsave');
+        $oSurvey->navigationdelay = App()->request->getPost('navigationdelay');
+        $oSurvey->printanswers = App()->request->getPost('printanswers');
+        $oSurvey->publicstatistics = App()->request->getPost('publicstatistics');
+        $oSurvey->autoredirect = App()->request->getPost('autoredirect');
+        $oSurvey->showxquestions = App()->request->getPost('showxquestions');
+        $oSurvey->showgroupinfo = App()->request->getPost('showgroupinfo');
+        $oSurvey->showqnumcode = App()->request->getPost('showqnumcode');
+        $oSurvey->shownoanswer = App()->request->getPost('shownoanswer');
+        $oSurvey->showwelcome = App()->request->getPost('showwelcome');
+        $oSurvey->allowprev = App()->request->getPost('allowprev');
+        $oSurvey->questionindex = App()->request->getPost('questionindex');
+        $oSurvey->nokeyboard = App()->request->getPost('nokeyboard');
+        $oSurvey->showprogress = App()->request->getPost('showprogress');
+        $oSurvey->listpublic = App()->request->getPost('public');
+        $oSurvey->htmlemail = App()->request->getPost('htmlemail');
+        $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation');
+        $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence');
+        $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion');
+        $oSurvey->usecaptcha = App()->request->getPost('usecaptcha');
+        $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
+        $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
+        $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+        $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
+        $oSurvey->tokenlength = App()->request->getPost('tokenlength');
+        $oSurvey->adminemail = App()->request->getPost('adminemail');
+        $oSurvey->bounce_email = App()->request->getPost('bounce_email');
         if ($oSurvey->save())
         {
             Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
