@@ -141,7 +141,7 @@ class GlobalSettings extends Survey_Common_Action
         }
 
         $defaultlang = sanitize_languagecode(App()->request->getPost('defaultlang'));
-        $aRestrictToLanguages = explode(' ', sanitize_languagecodeS(App()->request->getPost('restrictToLanguages')));
+        $aRestrictToLanguages = App()->request->getPost('restrictToLanguages',array());
         if (!in_array($defaultlang,$aRestrictToLanguages)){ // Force default language in restrictToLanguages
             $aRestrictToLanguages[]=$defaultlang;
         }

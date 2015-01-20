@@ -1675,15 +1675,7 @@ class SurveyAdmin extends Survey_Common_Action
             $sDescription = $_POST['description'];
             $sWelcome = $_POST['welcome'];
             $sURLDescription = $_POST['urldescrip'];
-            if (Yii::app()->getConfig('filterxsshtml'))
-            {
-                //$p = new CHtmlPurifier();
-                //$p->options = array('URI.AllowedSchemes'=>array('http' => true,  'https' => true));
-                //$sTitle=$p->purify($sTitle);
-                //$sDescription=$p->purify($sDescription);
-                //$sWelcome=$p->purify($sWelcome);
-                //$sURLDescription=$p->purify($sURLDescription);
-            }
+
             $sTitle = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
             $sDescription = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
             $sWelcome = html_entity_decode($sWelcome, ENT_QUOTES, "UTF-8");

@@ -9,18 +9,21 @@
 .settingswidget {
     margin: 0 1em;
 }
-.settingswidget ul{
+.settingswidget > ul{
     margin:0;padding:0;
+}
+.settingswidget > ul > li{
+list-style: none;
 }
 .form-horizontal .control-label,.form-horizontal .controls{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 form li.control-group{
-overflow:visible;margin-bottom: 0;
+overflow:visible;
 }
 .form-core .control-group{
-margin-bottom: 0;
+margin-bottom: 5px;
 }
 .form-horizontal .col-sm-1,.form-horizontal .col-sm-2,.form-horizontal .col-sm-3,.form-horizontal .col-sm-4,.form-horizontal .col-sm-5,.form-horizontal .col-sm-6,.form-horizontal .col-sm-7,.form-horizontal .col-sm-8,.form-horizontal .col-sm-9,.form-horizontal .col-sm-10,.form-horizontal .col-sm-11,.form-horizontal .col-sm-12 {
   position: relative;
@@ -75,7 +78,6 @@ width: 8.33333333%;
 .form-horizontal textarea {
     height:auto;
 }
-.form-horizontal .default input[type="text"],.form-horizontal .default input[type="password"],
 .form-horizontal .default textarea,
 .form-horizontal .default .htmleditor,
 .form-horizontal .default .jsoneditor-wrapper

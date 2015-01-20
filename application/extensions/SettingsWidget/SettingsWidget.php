@@ -99,6 +99,10 @@
                 $htmlOptions['type']=$metaData['type'];
                 return CHtml::htmlButton($label, $htmlOptions);
             }
+            elseif(isset($htmlOptions['type'])) // Allow type button or cancel in pluginSettings>settings>button
+            {
+                return CHtml::htmlButton($label, $htmlOptions);
+            }
             else
             {
                 return CHtml::submitButton($label, $htmlOptions);
@@ -307,7 +311,7 @@
 
         public function renderFloat($name, array $metaData, $form = null)
         {
-            $htmlOptions = $this->htmlOptions($metaData,$form,array('pattern' => '\d+(\.\d+)?'));// pattern can be replaced by plugin developer
+            $htmlOptions = $this->htmlOptions($metaData,$form,array('step'=>'any'));// step can be replaced by plugin developer
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             return CHtml::numberField($name, $value, $htmlOptions);
         }
@@ -414,14 +418,14 @@
         public function renderString($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            $htmlOptions = $this->htmlOptions($metaData,$form);
+            $htmlOptions = $this->htmlOptions($metaData,$form,array('size'=>50));
             return CHtml::textField($name, $value, $htmlOptions);
         }
 
         public function renderEmail($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            $htmlOptions = $this->htmlOptions($metaData,$form);
+            $htmlOptions = $this->htmlOptions($metaData,$form,array('size'=>50));
             return CHtml::emailField($name, $value, $htmlOptions);
         }
 
@@ -435,7 +439,7 @@
         public function renderPassword($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            $htmlOptions = $this->htmlOptions($metaData,$form,array('autocomplete'=>'off'));
+            $htmlOptions = $this->htmlOptions($metaData,$form,array('autocomplete'=>'off','size'=>50));
             return CHtml::passwordField($name,$value,$htmlOptions);
         }
 
