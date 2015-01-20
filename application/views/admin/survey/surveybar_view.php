@@ -125,11 +125,13 @@
                             <?php if ($conditionscount>0){?>
                                 <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
                                 <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php eT("Reset conditions");?></a>
-                                <?php } else {?>
+                            <?php } else {?>
                                 <a href="#" onclick="alert('<?php eT("Currently there are no conditions configured for this survey.", "js"); ?>');" >
                                 <img src='<?php echo $sImageURL;?>resetsurveylogic_disabled_30.png' alt=''/> <?php eT("Reset conditions");?></a>
-                                <?php } ?>
-                                </li><li>
+                            <?php } ?>
+                        </li>
+                        <?php if(!$activated) { ?>
+                        <li>
                                 <a href="#">
                                 <img src='<?php echo $sImageURL;?>resetsurveylogic_30.png' alt=''/><?php eT("Regenerate question codes");?></a>
                                 <ul>
@@ -142,6 +144,7 @@
                                 </ul>
                         </li>
                         <?php } ?>
+                    <?php } ?>
                 	</ul>
                 </li>
             <?php } ?> 
