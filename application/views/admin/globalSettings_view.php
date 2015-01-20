@@ -145,7 +145,7 @@
                 'settings' => $aSettingsUpdate,
             ));
         ?>
-        <div>
+        </div>
         <?php
             // General seetings in one part
             // Preparing array 
