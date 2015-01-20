@@ -66,43 +66,40 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function regenquestioncodes($iSurveyID, $sSubAction )
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
+        $clang = $this->getController()->lang;
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
-            $clang = $this->getController()->lang;
-
-            //Automatically renumbers the "question codes" so that they follow
-            //a methodical numbering method
-            $iQuestionNumber=1;
-            $iGroupNumber=0;
-            $iSequence=0;
-            $sQuery="SELECT a.qid, a.gid\n"
-            ."FROM {{questions}} as a, {{groups}} g "
-            ."WHERE a.gid=g.gid AND a.sid={$iSurveyID} AND a.parent_qid=0 "
-            ."GROUP BY a.gid, a.qid, g.group_order, question_order "
-            ."ORDER BY g.group_order, question_order";
-            $arResult=dbExecuteAssoc($sQuery) or safe_die ("Error: ".$connect->ErrorMsg());  // Checked
-            $grows = array(); //Create an empty array in case FetchRow does not return any rows
-            foreach ($arResult->readAll() as $grow) {$grows[] = $grow;} // Get table output into array
-            foreach($grows as $grow)
-            {
-                //Go through all the questions
-                if ($sSubAction == 'bygroup' && (!isset($iGroupNumber) || $iGroupNumber != $grow['gid']))
-                { //If we're doing this by group, restart the numbering when the group number changes
-                    $iQuestionNumber=1;
-                    $iGroupNumber = $grow['gid'];
-                    $iSequence++;
-                }
-                $usql="UPDATE {{questions}} "
-                ."SET title='".(($sSubAction == 'bygroup') ? ('G' . $iSequence ) : '')."Q".str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT)."'\n"
-                ."WHERE qid=".$grow['qid'];
-                //$databaseoutput .= "[$sql]";
-                $uresult=dbExecuteAssoc($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked
-                $iQuestionNumber++;
-                $iGroupNumber=$grow['gid'];
-            }
-            $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");
-            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+            Yii::app()->setFlashMessage($clang->gT("No access."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        if ($oSurvey->active=='Y')
+        {
+            Yii::app()->setFlashMessage($clang->gT("You can't update question code for an active survey."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
+        }
+        //Automatically renumbers the "question codes" so that they follow
+        //a methodical numbering method
+        $iQuestionNumber=1;
+        $iGroupNumber=0;
+        $iGroupSequence=0;
+        $oQuestions=Question::model()->with('groups')->findAll(array('select'=>'t.qid,t.gid','condition'=>"t.sid=:sid and t.language=:language and parent_qid=0",'order'=>'groups.group_order, question_order','params'=>array(':sid'=>$iSurveyID,':language'=>$oSurvey->language)));
+        foreach($oQuestions as $oQuestion)
+        {
+            if ($sSubAction == 'bygroup' && $iGroupNumber != $oQuestion->gid)
+            { //If we're doing this by group, restart the numbering when the group number changes
+                $iQuestionNumber=1;
+                $iGroupNumber = $oQuestion->gid;
+                $iGroupSequence++;
+            }
+            $sNewTitle=(($sSubAction == 'bygroup') ? ('G' . $iGroupSequence ) : '')."Q".str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
+            Question::model()->updateAll(array('title'=>$sNewTitle),'qid=:qid',array(':qid'=>$oQuestion->qid));
+            $iQuestionNumber++;
+            $iGroupNumber=$oQuestion->gid;
+        }
+
+        Yii::app()->setFlashMessage($clang->gT("Question codes were successfully regenerated."));
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
