@@ -627,7 +627,7 @@
             $aLanguages=array();
             foreach (getLanguageData(true) as  $sLanguage=>$aLanguage)
             {
-                $aLanguages[$sLanguage]=$aLanguage['nativedescription']." - ".$aLanguage['description'];
+                $aLanguages[$sLanguage]="{$aLanguage['description']} (".html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8').")";
             }
             $aAvailableLang=getLanguageDataRestricted ();
             $this->widget('ext.SettingsWidget.SettingsWidget', array(
@@ -645,9 +645,6 @@
                         ),
                         'options'=>$aLanguages,
                         'current'=>getGlobalSetting('defaultlang'),
-                        'htmlOptions'=>array(
-                            'encode'=>false,
-                        ),
                     ),
                     'restrictToLanguages'=>array(
                         'type'=>'select',
@@ -656,7 +653,6 @@
                         'current'=>array_keys(getLanguageDataRestricted ()),
                         'htmlOptions'=>array(
                             'multiple'=>true,
-                            'encode'=>false,
                         ),
                         'selectOptions'=>array(
                             'width'=>'100%',

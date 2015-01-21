@@ -4,7 +4,7 @@
     unset($aAvailableLang[$esrow['language']]);
     $aLang=array();
     foreach ($aAvailableLang as $lang => $aLanguage) {
-        $aLang[$lang]="{$aLanguage['description']} ({$aLanguage['nativedescription']})";
+        $aLang[$lang]="{$aLanguage['description']} (".html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8').")";
     }
 
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
@@ -40,7 +40,7 @@
                 'label'=>gT('Additional Languages'),
                 'htmlOptions'=>array(
                     'multiple'=>true,
-                    'encode'=>false,
+
                 ),
                 'options'=>$aLang,
                 'current'=>Survey::model()->findByPk($surveyid)->additionalLanguages,
