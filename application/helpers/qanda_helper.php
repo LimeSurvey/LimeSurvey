@@ -5548,14 +5548,25 @@ function do_array_multiflexi($ia)
             /* Check the sub Q mandatory violation */
             if ($ia[6]=='Y' && !empty($aMandatoryViolationSubQ))
             {
-                //Go through each labelcode and check for a missing answer! If any are found, highlight this line
-                $emptyresult=0;
+                //Go through each labelcode and check for a missing answer! Default :If any are found, highlight this line, checkbox : if one is not found : don't highlight
+                // PS : we really need a better system : event for EM !
+                $emptyresult=($aQuestionAttributes['multiflexible_checkbox']!=0) ? 1 : 0;
                 foreach($labelcode as $ld)
                 {
                     $myfname2=$myfname.'_'.$ld;
-                    if(in_array($myfname2, $aMandatoryViolationSubQ))
+                    if($aQuestionAttributes['multiflexible_checkbox']!=0)
                     {
-                        $emptyresult=1;
+                        if(!in_array($myfname2, $aMandatoryViolationSubQ))
+                        {
+                            $emptyresult=0;
+                        }
+                    }
+                    else
+                    {
+                        if(in_array($myfname2, $aMandatoryViolationSubQ))
+                        {
+                            $emptyresult=1;
+                        }
                     }
                 }
                 if ($emptyresult == 1)
@@ -5608,7 +5619,7 @@ function do_array_multiflexi($ia)
 
                         for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
                             $answer .= '<option value="'.str_replace('.',$sSeparator,$ii).'"';
-                            if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] === $ii) {
+                            if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && (string)$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == (string)$ii) {
                                 $answer .= SELECTED;
                             }
                             $answer .= ">".str_replace('.',$sSeparator,$ii)."</option>\n";
