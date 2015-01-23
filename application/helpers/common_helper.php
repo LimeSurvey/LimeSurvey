@@ -1710,19 +1710,6 @@ function validateEmailAddresses($aEmailAddressList){
 }
 
 /**
-* @deprecated
-* Use Survey::model()->templateNameFilter if really needed (Global template)
-* SUrvey->template is allways validated
-*/
-function validateTemplateDir($sTemplateName)
-{
-    tracevar("Usage of deprecacted function validateTemplateDir");
-    return Survey::model()->templateNameFilter($sTemplateName);
-}
-
-
-
-/**
  *This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
  * It can be used for the generation of statistics. Derived from Statistics_userController
  * @param int $iSurveyID Id of the Survey in question

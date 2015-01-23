@@ -1054,7 +1054,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
         elseif ($action == 'editsurvey' && $iSurveyID)
         {
-            $oSurvey = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
         }
         if($oSurvey)
         {
@@ -1410,12 +1410,6 @@ class SurveyAdmin extends Survey_Common_Action
             $expires=$datetimeobj->convert("Y-m-d H:i:s");
         }
 
-        // Validate template : accepted: user have rigth to read template OR template are not updated : else set to the default from config
-        $template = Yii::app()->request->getPost('template');
-        if( $template!=$oSurvey->template && !Permission::model()->hasTemplatePermission($template))
-        {
-            $template = Yii::app()->getConfig('defaulttemplate');
-        }
         // We have $oSurvey : update and save it
         $oSurvey->admin =  Yii::app()->request->getPost('admin');
         $oSurvey->expires =  $expires;
@@ -1424,7 +1418,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oSurvey->faxto = App()->request->getPost('faxto');
         $oSurvey->format = App()->request->getPost('format');
         $oSurvey->savetimings = App()->request->getPost('savetimings');
-        $oSurvey->template = $template;
+        $oSurvey->template = Yii::app()->request->getPost('template');
         $oSurvey->assessments = App()->request->getPost('assessments');
         $oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
         $oSurvey->datestamp = App()->request->getPost('datestamp');
@@ -1555,16 +1549,7 @@ class SurveyAdmin extends Survey_Common_Action
                 return;
             }
 
-            // Check if template may be used
-            $sTemplate = $_POST['template'];
-            if (!$sTemplate || (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
-            {
-                $sTemplate = "default";
-            }
-
             Yii::app()->loadHelper("surveytranslator");
-
-
             // If start date supplied convert it to the right format
             $aDateFormatData = getDateFormatData(Yii::app()->session['dateformat']);
             $sStartDate = $_POST['startdate'];
@@ -1599,44 +1584,44 @@ class SurveyAdmin extends Survey_Common_Action
             $aInsertData = array(
             'expires' => $sExpiryDate,
             'startdate' => $sStartDate,
-            'template' => $sTemplate,
+            'template' => App()->request->getPost('template'),
             'owner_id' => Yii::app()->session['loginID'],
-            'admin' => $_POST['admin'],
+            'admin' => App()->request->getPost('admin'),
             'active' => 'N',
-            'anonymized' => $_POST['anonymized'],
-            'faxto' => $_POST['faxto'],
-            'format' => $_POST['format'],
-            'savetimings' => $_POST['savetimings'],
-            'language' => $_POST['language'],
-            'datestamp' => $_POST['datestamp'],
-            'ipaddr' => $_POST['ipaddr'],
-            'refurl' => $_POST['refurl'],
-            'usecookie' => $_POST['usecookie'],
-            'emailnotificationto' => $_POST['emailnotificationto'],
-            'allowregister' => $_POST['allowregister'],
-            'allowsave' => $_POST['allowsave'],
-            'navigationdelay' => $_POST['navigationdelay'],
-            'autoredirect' => $_POST['autoredirect'],
-            'showxquestions' => $_POST['showxquestions'],
-            'showgroupinfo' => $_POST['showgroupinfo'],
-            'showqnumcode' => $_POST['showqnumcode'],
-            'shownoanswer' => $_POST['shownoanswer'],
-            'showwelcome' => $_POST['showwelcome'],
-            'allowprev' => $_POST['allowprev'],
-            'questionindex' => $_POST['questionindex'],
-            'nokeyboard' => $_POST['nokeyboard'],
-            'showprogress' => $_POST['showprogress'],
-            'printanswers' => $_POST['printanswers'],
-            'listpublic' => $_POST['public'],
-            'htmlemail' => $_POST['htmlemail'],
-            'sendconfirmation' => $_POST['sendconfirmation'],
-            'tokenanswerspersistence' => $_POST['tokenanswerspersistence'],
-            'alloweditaftercompletion' => $_POST['alloweditaftercompletion'],
-            'usecaptcha' => $_POST['usecaptcha'],
-            'publicstatistics' => $_POST['publicstatistics'],
-            'publicgraphs' => $_POST['publicgraphs'],
-            'assessments' => $_POST['assessments'],
-            'emailresponseto' => $_POST['emailresponseto'],
+            'anonymized' => App()->request->getPost('anonymized'),
+            'faxto' => App()->request->getPost('faxto'),
+            'format' => App()->request->getPost('format'),
+            'savetimings' => App()->request->getPost('savetimings'),
+            'language' => App()->request->getPost('language'),
+            'datestamp' => App()->request->getPost('datestamp'),
+            'ipaddr' => App()->request->getPost('ipaddr'),
+            'refurl' => App()->request->getPost('refurl'),
+            'usecookie' => App()->request->getPost('usecookie'),
+            'emailnotificationto' => App()->request->getPost('emailnotificationto'),
+            'allowregister' => App()->request->getPost('allowregister'),
+            'allowsave' => App()->request->getPost('allowsave'),
+            'navigationdelay' => App()->request->getPost('navigationdelay'),
+            'autoredirect' => App()->request->getPost('autoredirect'),
+            'showxquestions' => App()->request->getPost('showxquestions'),
+            'showgroupinfo' => App()->request->getPost('showgroupinfo'),
+            'showqnumcode' => App()->request->getPost('showqnumcode'),
+            'shownoanswer' => App()->request->getPost('shownoanswer'),
+            'showwelcome' => App()->request->getPost('showwelcome'),
+            'allowprev' => App()->request->getPost('allowprev'),
+            'questionindex' => App()->request->getPost('questionindex'),
+            'nokeyboard' => App()->request->getPost('nokeyboard'),
+            'showprogress' => App()->request->getPost('showprogress'),
+            'printanswers' => App()->request->getPost('printanswers'),
+            'listpublic' => App()->request->getPost('public'),
+            'htmlemail' => App()->request->getPost('htmlemail'),
+            'sendconfirmation' => App()->request->getPost('sendconfirmation'),
+            'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
+            'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
+            'usecaptcha' => App()->request->getPost('usecaptcha'),
+            'publicstatistics' => App()->request->getPost('publicstatistics'),
+            'publicgraphs' => App()->request->getPost('publicgraphs'),
+            'assessments' => App()->request->getPost('assessments'),
+            'emailresponseto' => App()->request->getPost('emailresponseto'),
             'tokenlength' => $iTokenLength
             );
 

@@ -319,7 +319,7 @@ function retrieveAnswers($ia)
     // are put.
 
     $sTemplate = isset($thissurvey['template']) ? $thissurvey['template'] : NULL;
-    if(is_file('templates/'.validateTemplateDir($sTemplate).'/question_start.pstpl'))
+    if(is_file('templates/'.$sTemplate.'/question_start.pstpl'))
     {
         $qtitle_custom = '';
 

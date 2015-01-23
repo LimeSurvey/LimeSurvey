@@ -51,4 +51,34 @@ class Template extends LSActiveRecord
     {
         return 'folder';
     }
+
+    /**
+    * Filter the template name : test if template if exist
+    *
+    * @param string $sTemplateName
+    */
+    public static function templateNameFilter($sTemplateName)
+    {
+        $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
+        $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
+        $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');// !empty ?
+        if (!empty($sTemplateName) && is_dir("$usertemplaterootdir/{$sTemplateName}/"))// Maybe better validate is_file("$usertemplaterootdir/{$sTemplateName}/startpage.pstpl")
+        {
+            return $sTemplateName;
+        }
+        elseif (!empty($sTemplateName) && is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
+        {
+            return $sTemplateName;
+        }
+        elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
+        {
+            return $sDefaultTemplate;
+        }
+        elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
+        {
+            return $sDefaultTemplate;
+        }
+        return 'default';
+
+    }
 }

@@ -34,13 +34,11 @@ class Survey extends LSActiveRecord
      */
     public function init()
     {
-        $this->template = $this->templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
+        $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
         $validator= new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
 
-        // Allways fix the template name (TODO : remove extra validateTemplateDir test
-        $this->attachEventHandler("onAfterFind", array($this,'filterTemplateName'));
-
+        $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
     }
 
     /**
@@ -208,7 +206,7 @@ class Survey extends LSActiveRecord
             array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
             array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('template', 'filter', 'filter'=>array($this,'templateNameFilter')), // Todo : add restriction by user when insert/update
+            array('template', 'filter', 'filter'=>array($this,'filterTemplateSave')),
             array('language','LSYii_Validators','isLanguage'=>true),
             array('language', 'required', 'on' => 'insert'),
             array('language', 'filter', 'filter'=>'trim'),
@@ -221,48 +219,36 @@ class Survey extends LSActiveRecord
         );
     }
 
-    /**
-    * Filter the template name : test if template if exist
-    *
-    * @param string $sTemplateName
-    */
-    public function templateNameFilter($sTemplateName)
-    {
-        $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-        $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-        $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');
 
-        if (is_dir("$usertemplaterootdir/{$sTemplateName}/"))
-        {
-            return $sTemplateName;
-        }
-        elseif (is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
-        {
-            return $sTemplateName;
-        }
-        elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
-        {
-            return $sDefaultTemplate;
-        }
-        elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
-        {
-            return $sDefaultTemplate;
-        }
-        else
-        {
-            return 'default';
-        }
+    /**
+    * fixSurveyAttribute to fix and/or add some survey attribute
+    * - Fix template name to be sure template exist
+    */
+    public function fixSurveyAttribute($event)
+    {
+        $this->template=Template::templateNameFilter($this->template);
     }
 
     /**
-    * filterTemplateName to fix some template name 
+    * filterTemplateSave to fix some template name 
     */
-    public function filterTemplateName($event)
+    public function filterTemplateSave($sTemplateName)
     {
-        $this->template=$this->templateNameFilter($this->template);
+        if(!Permission::model()->hasTemplatePermission($sTemplateName))
+        {
+            if(!$this->isNewRecord)// Reset to default only if different from actual value
+            {
+                $oSurvey=self::model()->findByPk($this->sid);
+                if($oSurvey->template != $sTemplateName)// No need to test !is_null($oSurvey)
+                    $sTemplateName = Yii::app()->getConfig('defaulttemplate');
+            }
+            else
+            {
+                $sTemplateName = Yii::app()->getConfig('defaulttemplate');
+            }
+        }
+        return Template::templateNameFilter($sTemplateName);
     }
-
-
 
     /**
     * permission scope for this model
