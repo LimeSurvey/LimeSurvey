@@ -3973,8 +3973,7 @@ function do_gender($ia)
 
 // ---------------------------------------------------------------
 /**
-* DONE: well-formed valid HTML is appreciated
-* Enter description here...
+* Construct answer part array_5point
 * @param $ia
 * @return unknown_type
 */
@@ -4096,13 +4095,14 @@ function do_array_5point($ia)
         for ($i=1; $i<=5; $i++)
         {
             $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</td>\n";
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
+            . "<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
+            . "\n</td>\n";
         }
 
         $answertext2 = $ansrow['question'];
@@ -4120,13 +4120,14 @@ function do_array_5point($ia)
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_t_content .= CHECKED;
             }
-            $answer_t_content .= " onclick='$checkconditionFunction(this.value, this.name, this.type)'  />\n</td>\n";
+            $answer_t_content .= " onclick='$checkconditionFunction(this.value, this.name, this.type)'  />\n"
+            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
+            ."</td>\n";
         }
 
         $answer_t_content .= "</tr>\n";
@@ -4143,8 +4144,7 @@ function do_array_5point($ia)
 
 // ---------------------------------------------------------------
 /**
-* DONE: well-formed valid HTML is appreciated
-* Enter description here...
+* Construct answer part array_10point
 * @param $ia
 * @return unknown_type
 */
@@ -4247,26 +4247,28 @@ function do_array_10point($ia)
         for ($i=1; $i<=10; $i++)
         {
             $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n"
-            ."<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n";
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t"
+            ."<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
+            ."</td>\n";
             // --> END NEW FEATURE - SAVE
         }
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_t_content .= CHECKED;
             }
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n";
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
+            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
+            ."\n\t</td>\n";
 
         }
         $answer_t_content .= "</tr>\n";
@@ -4375,16 +4377,16 @@ function do_array_yesnouncertain($ia)
             . $hiddenfield
             . "\t\t\t\t$answertext</th>\n"
             . "\t<td class=\"answer_cell_Y answer-item radio-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-Y\">".gT('Yes')."</label>\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" ";
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y')
             {
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n"
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
+            . "<label class=\"hide read\" for=\"answer$myfname-Y\">".gT('Yes')."</label>\n"
+            . "\n\t</td>\n"
             . "\t<td class=\"answer_cell_U answer-item radio-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-U\">".gT('Uncertain')."</label>\n"
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" ";
             // --> END NEW FEATURE - SAVE
 
@@ -4393,9 +4395,10 @@ function do_array_yesnouncertain($ia)
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n"
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-U\">".gT('Uncertain')."</label>\n"
+            . "\t</td>\n"
             . "\t<td class=\"answer_cell_N answer-item radio-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-N\">".gT('No')."</label>\n"
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" ";
             // --> END NEW FEATURE - SAVE
 
@@ -4404,7 +4407,9 @@ function do_array_yesnouncertain($ia)
                 $answer_t_content .= CHECKED;
             }
             // --> START NEW FEATURE - SAVE
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
+            . "<label class=\"hide read\" for=\"answer$myfname-N\">".gT('No')."</label>\n"
+            . "\n"
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             // --> END NEW FEATURE - SAVE
             if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -4416,14 +4421,15 @@ function do_array_yesnouncertain($ia)
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-                . "\t<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
                     $answer_t_content .= CHECKED;
                 }
                 // --> START NEW FEATURE - SAVE
-                $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+                $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+                . "\t<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
+                ."\n\t</td>\n";
                 // --> END NEW FEATURE - SAVE
             }
             $answer_t_content .= "</tr>";
@@ -4540,16 +4546,15 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= "\" />\n\t</th>\n";
 
         $answer_body .= "\t<td class=\"answer_cell_I answer-item radio-item\">\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-I\">".gT('Increase')."</label>\n"
         ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" ";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I')
         {
             $answer_body .= CHECKED;
         }
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+        . "<label class=\"hide read\" for=\"answer$myfname-I\">".gT('Increase')."</label>\n"
         . "\t</td>\n"
         . "\t<td class=\"answer_cell_S answer-item radio-item\">\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-S\">".gT('Same')."</label>\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" ";
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S')
@@ -4558,9 +4563,9 @@ function do_array_increasesamedecrease($ia)
         }
 
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+        . "<label class=\"hide read\" for=\"answer$myfname-S\">".gT('Same')."</label>\n"
         . "\t</td>\n"
         . "\t<td class=\"answer_cell_D answer-item radio-item\">\n"
-        . "<label class=\"hide read\" for=\"answer$myfname-D\">".gT('Decrease')."</label>\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" ";
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D')
@@ -4569,6 +4574,7 @@ function do_array_increasesamedecrease($ia)
         }
 
         $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+        . "<label class=\"hide read\" for=\"answer$myfname-D\">".gT('Decrease')."</label>\n"
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
@@ -4577,13 +4583,13 @@ function do_array_increasesamedecrease($ia)
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
             $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            . "<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
             {
                 $answer_body .= CHECKED;
             }
             $answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+            . "<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
             . "\t</td>\n";
         }
         $answer_body .= "</tr>\n";
@@ -4745,7 +4751,6 @@ function do_array($ia)
             foreach ($labelcode as $ld)
             {
                 $answer .= "\t\t\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
-                . "<label class=\"hide read\" for=\"answer$myfname-$ld\">{$labelans[$thiskey]}</label>\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\"";
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)
                 {
@@ -4753,6 +4758,7 @@ function do_array($ia)
                 }
                 // --> START NEW FEATURE - SAVE
                 $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+                . "<label class=\"hide read\" for=\"answer$myfname-$ld\">{$labelans[$thiskey]}</label>\n"
                 . "\t</td>\n";
                 // --> END NEW FEATURE - SAVE
 
@@ -4771,14 +4777,15 @@ function do_array($ia)
             if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
             {
                 $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-                ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
                 if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                 {
                     $answer .= CHECKED;
                 }
                 // --> START NEW FEATURE - SAVE
-                $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n\t</td>\n";
+                $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n"
+                ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>\n"
+                . "\t</td>\n";
                 // --> END NEW FEATURE - SAVE
             }
 
@@ -5802,7 +5809,6 @@ function do_arraycolumns($ia)
                     //if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
                     $myfname=$ia[1].$ld;
                     $answer .= "\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
-                    . "<label class=\"hide read\" for=\"answer".$myfname.'-'.$ansrow['code']."\">{$ansrow['answer']}</label>\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                     . 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
@@ -5816,7 +5822,9 @@ function do_arraycolumns($ia)
                         // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
                         // should remove the !isset part I think !!
                     }
-                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</td>\n";
+                    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
+                    . "<label class=\"hide read\" for=\"answer".$myfname.'-'.$ansrow['code']."\">{$ansrow['answer']}</label>\n"
+                    . "\t</td>\n";
                 }
                 unset($trbc);
                 $answer .= "</tr>\n";
@@ -6129,14 +6137,14 @@ function do_array_dual($ia)
                 foreach ($labelcode0 as $ld)
                 {
                     $answer .= "\t<td class=\"answer_cell_1_00$ld answer-item {$answertypeclass}-item\">\n"
-                    . "<label class=\"hide read\" for=\"answer{$myfid0}-{$ld}\">$labelans0[$thiskey]</label>\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname0\" value=\"$ld\" id=\"answer$myfid0-$ld\" ";
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == $ld)
                     {
                         $answer .= CHECKED;
                     }
-                    $answer .= "  />\n";
-                    $answer .= "\n\t</td>\n";
+                    $answer .= "  />\n"
+                    . "<label class=\"hide read\" for=\"answer{$myfid0}-{$ld}\">$labelans0[$thiskey]</label>\n"
+                    . "\n\t</td>\n";
                     $thiskey++;
                 }
                 if (count($labelans1)>0) // if second label set is used
@@ -6144,28 +6152,28 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"dual_scale_separator information-item\">";
                     if ($shownoanswer)// No answer for accessibility and no javascript (but hide hide even with no js: need reworking)
                     {
-                        $answer .=  "<label for='answer$myfid0-' class= \"hide read\">".gT("No answer")."</label>"
-                        . "\t<input class='radio jshide read' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
+                        $answer .= "\t<input class='radio jshide read' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;
                         }
                         $answer .= " />\n";
                     }
-                    $answer .= "{$answertextcenter}</td>\n"; // separator
+                    $answer .=  "<label for='answer$myfid0-' class= \"hide read\">".gT("No answer")."</label>";
+                    $answer .= "\t{$answertextcenter}</td>\n"; // separator
                     array_push($inputnames,$myfname1);
                     $thiskey=0;
                     foreach ($labelcode1 as $ld) // second label set
                     {
-                        $answer .= "\t<td class=\"answer_cell_2_00$ld  answer-item radio-item\">\n";
-                        $answer .= "<label class=\"hide read\" for=\"answer{$myfid1}-{$ld}\">{$labelans1[$thiskey]}</label>\n"
+                        $answer .= "\t<td class=\"answer_cell_2_00$ld  answer-item radio-item\">\n"
                         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfid1-$ld\" ";
                         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
                         {
                             $answer .= CHECKED;
                         }
-                        $answer .= " />\n";
-                        $answer .= "\t</td>\n";
+                        $answer .= " />\n"
+                        . "<label class=\"hide read\" for=\"answer{$myfid1}-{$ld}\">{$labelans1[$thiskey]}</label>\n"
+                        . "\t</td>\n";
                         $thiskey++;
                     }
                 }
@@ -6178,24 +6186,23 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"dual_scale_no_answer answer-item radio-item noanswer-item\">\n";
                     if (count($labelans1)>0)
                     {
-                        $answer .= "<label class='hide read' for='answer$myfid1-'>".gT("No answer")."</label>"
-                        . "\t<input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' ";
+                        $answer .= "\t<input class='radio' type='radio' name='$myfname1' value='' id='answer$myfid1-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "")
                         {
                             $answer .= CHECKED;
                         }
                         // --> START NEW FEATURE - SAVE
                         $answer .= " />\n";
+                        $answer .= "<label class='hide read' for='answer$myfid1-'>".gT("No answer")."</label>";
                     }
                     else
                     {
-                        $answer .= "<label class='hide read' for='answer$myfid0-'>".gT("No answer")."<label>\n"
-                        . "\t<input class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
+                        $answer .= "\t<input class='radio' type='radio' name='$myfname0' value='' id='answer$myfid0-' ";
                         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0] == "")
                         {
                             $answer .= CHECKED;
                         }
-                        // --> START NEW FEATURE - SAVE
+                        $answer .= "<label class='hide read' for='answer$myfid0-'>".gT("No answer")."<label>\n";
                         $answer .= " />\n";
                     }
                     $answer .= "\t</td>\n";
