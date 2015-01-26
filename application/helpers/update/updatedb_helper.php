@@ -26,8 +26,6 @@ function db_upgrade_all($iOldDBVersion) {
     $sStandardTemplateRootDir = Yii::app()->getConfig('standardtemplaterootdir');
     echo str_pad(gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". gT('Please be patient...')."<br /><br />\n";
 
-    $sDBDriverName=setsDBDriverName();
-    
     $oDB = Yii::app()->getDb();
     $oDB->schemaCachingDuration=0; // Deactivate schema caching
     $oTransaction = $oDB->beginTransaction();
@@ -62,7 +60,7 @@ function db_upgrade_all($iOldDBVersion) {
         if ($iOldDBVersion < 113) {
             //Fixes the collation for the complete DB, tables and columns
 
-            if ($sDBDriverName=='mysql')
+            if (Yii::app()->db->driverName=='mysql')
             {
                 $sDatabaseName=getDBConnectionStringProperty('dbname');
                 fixMySQLCollations();
@@ -201,7 +199,7 @@ function db_upgrade_all($iOldDBVersion) {
             addColumn('{{answers}}','assessment_value',"integer NOT NULL default '0'");
             addColumn('{{labels}}','assessment_value',"integer NOT NULL default '0'");
             // copy any valid codes from code field to assessment field
-            switch ($sDBDriverName){
+            switch (Yii::app()->db->driverName){
                 case 'mysql':
                 case 'mysqli':
                     $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
@@ -480,9 +478,9 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{assessments}}','minimum',"string(50)",false , '');
             alterColumn('{{assessments}}','maximum',"string(50)",false , '');
             // change the primary index to include language
-            if ($sDBDriverName=='mysql') // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
+            if (Yii::app()->db->driverName=='mysql') // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
             {
-                $oDB->createCommand("ALTER TABLE {{assessments}} DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `language`)")->execute();
+                modifyPrimaryKey('{{assessments}}', array('id', 'language'));
             }
             else
             {
@@ -762,7 +760,7 @@ function db_upgrade_all($iOldDBVersion) {
             ));
 
             $oDB->createCommand()->dropTable('{{sessions}}');
-            if ($sDBDriverName=='mysql')
+            if (Yii::app()->db->driverName=='mysql')
             {
                 $oDB->createCommand()->createTable('{{sessions}}',array(
                     'id' => 'string(32) NOT NULL',
@@ -947,7 +945,7 @@ function db_upgrade_all($iOldDBVersion) {
 
 
 
-            if ($sDBDriverName=='pgsql')
+            if (Yii::app()->db->driverName=='pgsql')
             {
                 try{ setTransactionBookmark(); $oDB->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
                 try{ setTransactionBookmark(); $oDB->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;} catch(Exception $e) { rollBackToTransactionBookmark(); };
@@ -1142,11 +1140,16 @@ function db_upgrade_all($iOldDBVersion) {
 
         if ($iOldDBVersion < 171)
         {
-            dropColumn('{{sessions}}','data');
-            switch ($sDBDriverName){
+            try {
+                dropColumn('{{sessions}}','data');
+            }
+            catch (Exception $e) {
+                
+            }
+            switch (Yii::app()->db->driverName){
                 case 'mysql':
                 case 'mysqli':
-                    addColumn('{{sessions}}', 'data', 'LONGBLOB');
+                    addColumn('{{sessions}}', 'data', 'longbinary');
                     break;
                 case 'sqlsrv':
                 case 'dblib':
@@ -1162,7 +1165,7 @@ function db_upgrade_all($iOldDBVersion) {
         }
         if ($iOldDBVersion < 172)
         {
-            switch ($sDBDriverName){
+            switch (Yii::app()->db->driverName){
                 case 'pgsql':
                     // Special treatment for Postgres as it is too dumb to convert a string to a number without explicit being told to do so ... seriously?
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER USING (entity_id::integer)", false);
@@ -1192,7 +1195,7 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{saved_control}}', 'email', "string(254)");
             alterColumn('{{surveys}}', 'adminemail', "string(254)");
             alterColumn('{{surveys}}', 'bounce_email', "string(254)");
-            switch ($sDBDriverName){
+            switch (Yii::app()->db->driverName){
                 case 'sqlsrv':
                 case 'dblib':
                 case 'mssql': dropUniqueKeyMSSQL('email','{{users}}');
@@ -1202,7 +1205,7 @@ function db_upgrade_all($iOldDBVersion) {
         }
         if ($iOldDBVersion < 175)
         {
-            switch ($sDBDriverName){
+            switch (Yii::app()->db->driverName){
                 case 'pgsql':
                     // Special treatment for Postgres as it is too dumb to convert a boolean to a number without explicit being told to do so
                     alterColumn('{{plugins}}', 'active', "INTEGER USING (active::integer)", false);
@@ -1248,7 +1251,7 @@ function db_upgrade_all($iOldDBVersion) {
         }
         if ($iOldDBVersion < 178)
         {
-            if ($sDBDriverName=='mysql' || $sDBDriverName=='mysqli')
+            if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli')
             {
                 modifyPrimaryKey('questions', array('qid','language'));
             }
@@ -1292,9 +1295,9 @@ function db_upgrade_all($iOldDBVersion) {
 
 function upgradeTokenTables179()
 {
-    $oSchema=$oDB->schema;
-    $sDBDriverName=setsDBDriverName();
-    if($sDBDriverName=='mssql' || $sDBDriverName=='mysql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if(Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='mysql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
 
     $surveyidresult = dbGetTablesLike("tokens%");
     if ($surveyidresult)
@@ -1320,6 +1323,7 @@ function upgradeTokenTables179()
 
 function upgradeSurveys177()
 {
+    $oDB = Yii::app()->db;
     $sSurveyQuery = "SELECT surveyls_attributecaptions,surveyls_survey_id,surveyls_language FROM {{surveys_languagesettings}}";
     $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
     $sSurveyLSUpdateQuery= "update {{surveys_languagesettings}} set surveyls_attributecaptions=:attributecaptions where surveyls_survey_id=:surveyid and surveyls_language=:language";
@@ -1352,6 +1356,7 @@ function upgradeSurveys177()
 */
 function upgradeTokens176()
 {
+    $oDB = Yii::app()->db;
     $arSurveys = Survey::model()->findAll();
     // Fix any active token tables
     foreach ( $arSurveys as $arSurvey )
@@ -1411,7 +1416,7 @@ function upgradeCPDBAttributeDefaultNames173()
     FROM {{participant_attribute_names_lang}}
     group by attribute_id, attribute_name, lang
     order by attribute_id";
-    $oResult = $oDB->createCommand($sQuery)->queryAll();
+    $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
     foreach ( $oResult as $aAttribute )
     {
         $oDB->createCommand()->update('{{participant_attribute_names}}',array('defaultname'=>substr($aAttribute['attribute_name'],0,50)),"attribute_id={$aAttribute['attribute_id']}");
@@ -1804,8 +1809,7 @@ function upgradeTables143()
         }
     }
     // Sanitize data
-    $sDBDriverName=$oDB->getDriverName();
-    if ($sDBDriverName=='pgsql')
+    if (Yii::app()->db->driverName=='pgsql')
     {
         modifyDatabase("","delete from {{answers}} USING {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{questions}}.type in ('1','F','H','M','P','W','Z')"); echo $modifyoutput; flush();@ob_flush();
     }
@@ -2064,11 +2068,7 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 
 function addPrimaryKey($sTablename, $aColumns)
 {
-    $sDBDriverName=$oDB->getDriverName();
-    if ($sDBDriverName=='mysqli' || $sDBDriverName=='mysql')
-    {
-        $oDB->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
-    }
+    return Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY', $sTablename, $aColumns);
 }
 
 /**
@@ -2079,20 +2079,15 @@ function addPrimaryKey($sTablename, $aColumns)
 */
 function modifyPrimaryKey($sTablename, $aColumns)
 {
-    $oDB->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
 }
 
 function dropPrimaryKey($sTablename)
 {
-    $sDBDriverName=$oDB->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
-
-    global $modifyoutput;
-    switch ($sDBDriverName){
+    switch (Yii::app()->db->driverName){
         case 'mysql':
             $sQuery="ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
-            $oDB->createCommand($sQuery)->execute();
+            Yii::app()->db->createCommand($sQuery)->execute();
             break;
         case 'pgsql':
         case 'mssql':
@@ -2100,11 +2095,11 @@ function dropPrimaryKey($sTablename)
             ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
             ."WHERE (TABLE_NAME = '{{{$sTablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
-            $primarykey = $oDB->createCommand($pkquery)->queryRow(false);
+            $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
             if ($primarykey!==false)
             {
                 $sQuery="ALTER TABLE {{".$sTablename."}} DROP CONSTRAINT ".$primarykey[0];
-                $oDB->createCommand($sQuery)->execute();
+                Yii::app()->db->createCommand($sQuery)->execute();
             }
             break;
         default: die('Unknown database type');
@@ -2116,7 +2111,7 @@ function dropPrimaryKey($sTablename)
 function fixLanguageConsistencyAllSurveys()
 {
     $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
-    $surveyidresult = $oDB->createCommand($surveyidquery)->queryAll();
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     foreach ( $surveyidresult as $sv )
     {
         fixLanguageConsistency($sv['sid'],$sv['additional_languages']);
@@ -2125,10 +2120,10 @@ function fixLanguageConsistencyAllSurveys()
 
 function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL')
 {
-    $sDBDriverName=$oDB->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
-    switch ($sDBDriverName){
+    $oDB = Yii::app()->db;
+    if (Yii::app()->db->driverName=='mysqli') Yii::app()->db->driverName='mysql';
+    if (Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib') Yii::app()->db->driverName='mssql';
+    switch (Yii::app()->db->driverName){
         case 'mysql':
             $sType=$sFieldType;
             if ($bAllowNull!=true)
@@ -2178,15 +2173,15 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 
 function dropColumn($sTableName, $sColumnName)
 {
-    $sDBDriverName=$oDB->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
+    Yii::app()->db->driverName= Yii::app()->db->getDriverName();
+    if (Yii::app()->db->driverName=='mysqli') Yii::app()->db->driverName='mysql';
+    if (Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib') Yii::app()->db->driverName='mssql';
 
-    if ($sDBDriverName=='mssql')
+    if (Yii::app()->db->driverName=='mssql')
     {
         dropDefaultValueMSSQL($sColumnName,$sTableName);
     }
-    $oDB->createCommand()->dropColumn($sTableName,$sColumnName);
+    Yii::app()->db->createCommand()->dropColumn($sTableName,$sColumnName);
 }
 
 
@@ -2195,25 +2190,23 @@ function dropColumn($sTableName, $sColumnName)
 
 function addColumn($sTableName, $sColumn, $sType)
 {
-    $oDB->createCommand()->addColumn($sTableName,$sColumn,$sType);
+    Yii::app()->db->createCommand()->addColumn($sTableName,$sColumn,$sType);
 }
 
 
 function setTransactionBookmark($sBookmark='limesurvey')
 {
-    $sDBDriverName=$oDB->getDriverName();
-    if ($sDBDriverName=='pgsql')
+    if (Yii::app()->db->driverName=='pgsql')
     {
-        $oDB->createCommand("SAVEPOINT {$sBookmark};")->execute();
+        Yii::app()->db->createCommand("SAVEPOINT {$sBookmark};")->execute();
     }
 }
 
 function rollBackToTransactionBookmark($sBookmark='limesurvey')
 {
-    $sDBDriverName=$oDB->getDriverName();
-    if ($sDBDriverName=='pgsql')
+    if (Yii::app()->db->driverName=='pgsql')
     {
-        $oDB->createCommand("ROLLBACK TO SAVEPOINT {$sBookmark};")->execute();
+        Yii::app()->db->createCommand("ROLLBACK TO SAVEPOINT {$sBookmark};")->execute();
     }
 }
 
@@ -2231,7 +2224,7 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
     $defaultname = $oDB->createCommand($dfquery)->queryRow();
     if ($defaultname!=false)
     {
-        $oDB->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
+        Yii::app()->db->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
     }
 }
 
@@ -2251,19 +2244,6 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
     {
         $oDB->createCommand("ALTER TABLE {$sTableName} DROP CONSTRAINT {$aUniqueKeyName['Constraint_Name']}")->execute();
     }
-}
-
-
-
-/**
-* Returns the name of the DB Driver - used for other functions that make db specific calls
-*
-*/
-function setsDBDriverName() {
-    $sDBDriverName=$oDB->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
-    return $sDBDriverName;
 }
 
 function replaceTemplateJS(){

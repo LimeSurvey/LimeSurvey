@@ -9,6 +9,8 @@ class MysqlSchema extends CMysqlSchema
          * Auto increment.
          */
         $this->columnTypes['autoincrement'] = 'int(11) NOT NULL AUTO_INCREMENT';
+        
+        $this->columnTypes['longbinary'] = 'longblob';
     }
 
     public function createTable($table, $columns, $options = null) {

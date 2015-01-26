@@ -10,6 +10,8 @@ class PgsqlSchema extends CPgsqlSchema
          * Auto increment.
          */
         $this->columnTypes['autoincrement'] = 'serial';
+        
+        $this->columnTypes['longbinary'] = 'bytea';
     }
     
 }

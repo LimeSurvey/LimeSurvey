@@ -21,6 +21,8 @@ class MssqlSchema extends CMssqlSchema
          * Auto increment.
          */
         $this->columnTypes['autoincrement'] = 'integer NOT NULL IDENTITY (1,1)';
+        
+        $this->columnTypes['longbinary'] = 'varbinary(max)';
     }
 
     public function getColumnType($type)
