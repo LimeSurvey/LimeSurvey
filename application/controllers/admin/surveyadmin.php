@@ -69,7 +69,7 @@ class SurveyAdmin extends Survey_Common_Action
         $clang = $this->getController()->lang;
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
-            Yii::app()->setFlashMessage($clang->gT("No access."),'error');
+            Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
         $oSurvey=Survey::model()->findByPk($iSurveyID);
