@@ -532,7 +532,7 @@ function submittokens($quotaexit=false)
                 $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
                 $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $redata=array('thissurvey'=>$thissurvey);
-                $subject=templatereplace($subject,$aReplacementVars,$redata);
+                $subject=templatereplace($subject,$aReplacementVars,$redata,'email_confirm_subj', false, NULL, array(), true );
 
                 $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
 
@@ -547,7 +547,7 @@ function submittokens($quotaexit=false)
 
                 $message=$thissurvey['email_confirm'];
                 //$message=ReplaceFields($message, $fieldsarray, true);
-                $message=templatereplace($message,$aReplacementVars,$redata);
+                $message=templatereplace($message,$aReplacementVars,$redata,'email_confirm', false, NULL, array(), true );
                 if (!$ishtml)
                 {
                     $message=strip_tags(breakToNewline(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
@@ -734,8 +734,8 @@ function sendSubmitNotifications($surveyid)
     $redata=compact(array_keys(get_defined_vars()));
     if (count($aEmailNotificationTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,$redata,'frontend_helper[1398]',($thissurvey['anonymized'] == "Y"),NULL, array(), true);
-        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'frontend_helper[1399]',($thissurvey['anonymized'] == "Y"),NULL, array(), true);
+        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,$redata,'admin_notification',$thissurvey['anonymized'] == "Y",NULL, array(), true);
+        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'admin_notification_subj',($thissurvey['anonymized'] == "Y"),NULL, array(), true);
         foreach ($aEmailNotificationTo as $sRecipient)
         {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
@@ -766,8 +766,8 @@ function sendSubmitNotifications($surveyid)
     }
     if (count($aEmailResponseTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars,$redata,'frontend_helper[1414]',($thissurvey['anonymized'] == "Y"));
-        $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,'frontend_helper[1415]',($thissurvey['anonymized'] == "Y"));
+        $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars,$redata,'detailed_admin_notification',$thissurvey['anonymized'] == "Y",NULL, array(), true);
+        $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,'detailed_admin_notification_subj',$thissurvey['anonymized'] == "Y",NULL, array(), true);
         foreach ($aEmailResponseTo as $sRecipient)
         {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
