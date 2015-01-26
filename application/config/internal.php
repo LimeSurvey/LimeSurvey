@@ -75,7 +75,7 @@ $internalConfig = array(
                     'enabled' => defined('YII_DEBUG') && YII_DEBUG
                 ),
                 'profile' => [
-                    'class' => CProfileLogRoute::class
+                    'class' => 'CProfileLogRoute'
                 ]
             )
         ),
