@@ -50,7 +50,7 @@ class RegisterController extends LSYii_Controller {
         $sLanguage = Yii::app()->request->getParam('lang',$oSurvey->language);
         Yii::app()->setLanguage($sLanguage);
 
-        $thistpl=getTemplatePath(validateTemplateDir($oSurvey->template));
+        $thistpl=getTemplatePath($oSurvey->template);
         $data['sid'] = $iSurveyId;
         $data['startdate'] = $oSurvey->startdate;
         $data['enddate'] = $oSurvey->expires;
@@ -157,7 +157,7 @@ class RegisterController extends LSYii_Controller {
     public function getRegisterForm($iSurveyId){
 
         $aSurveyInfo=getSurveyInfo($iSurveyId,App()->language);
-        $sTemplate=getTemplatePath(validateTemplateDir($aSurveyInfo['template']));
+        $sTemplate=getTemplatePath($aSurveyInfo['template']);
 
         // Event to replace register form
         $event = new PluginEvent('beforeRegisterForm');
@@ -417,7 +417,7 @@ class RegisterController extends LSYii_Controller {
         $sLanguage=Yii::app()->language;
         $aData['surveyid']=$surveyid=$iSurveyId;
         $aData['thissurvey']=getSurveyInfo($iSurveyId,$sLanguage);
-        $sTemplate=getTemplatePath(validateTemplateDir($aData['thissurvey']['template']));
+        $sTemplate=getTemplatePath($aData['thissurvey']['template']);
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
         $aData['languagechanger']=makeLanguageChangerSurvey($sLanguage);
         $aData['sitename']=Yii::app()->getConfig('sitename');

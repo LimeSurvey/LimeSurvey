@@ -66,11 +66,7 @@
             SetSurveyLanguage($iSurveyID, $sLanguage);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             //SET THE TEMPLATE DIRECTORY
-            if (!isset($aSurveyInfo['templatedir']) || !$aSurveyInfo['templatedir'])
-            {
-                $aSurveyInfo['templatedir']=Yii::app()->getConfig('defaulttemplate');
-            }
-            $sTemplate = validateTemplateDir($aSurveyInfo['templatedir']);
+             $sTemplate = $aSurveyInfo['template'];
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
             //display "sorry but your session has expired"

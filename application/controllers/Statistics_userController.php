@@ -343,20 +343,13 @@ class Statistics_userController extends LSYii_Controller {
         $thissurvey = getSurveyInfo($surveyid,$language);
 
         //SET THE TEMPLATE DIRECTORY
-        if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
-        {
-            $data['sTemplatePath'] = validateTemplateDir(Yii::app()->getConfig("defaulttemplate"));
-        }
-        else
-        {
-            $data['sTemplatePath'] = validateTemplateDir($thissurvey['templatedir']);
-        }
+        $data['sTemplatePath'] = $surveyinfo['template'];// surveyinfo=getSurveyInfo and if survey don't exist : stop before. 
 
 
         //---------- CREATE STATISTICS ----------
         $redata = compact(array_keys(get_defined_vars()));
         doHeader();
-        echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($data['sTemplatePath'])).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
+        echo templatereplace(file_get_contents(getTemplatePath($data['sTemplatePath']).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
 
 
         //some progress bar stuff

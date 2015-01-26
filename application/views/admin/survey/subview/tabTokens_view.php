@@ -115,7 +115,7 @@
             </select>
         </li>
         <li><label for='tokenlength'><?php eT("Set token length to:"); ?></label>
-            <input type='text' value="<?php echo $esrow['tokenlength']; ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
+            <input type="number" min="5" max="36" step="1"  pattern="\d*" value="<?php echo $esrow['tokenlength']; ?>" name='tokenlength' id='tokenlength' style='width:4em' />
         </li>
     </ul></div>
     

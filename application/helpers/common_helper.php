@@ -1709,36 +1709,6 @@ function validateEmailAddresses($aEmailAddressList){
   return $aOutList;
 }
 
-
-function validateTemplateDir($sTemplateName)
-{
-    $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-    $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');
-    if (is_dir("$usertemplaterootdir/{$sTemplateName}/"))
-    {
-        return $sTemplateName;
-    }
-    elseif (is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
-    {
-        return $sTemplateName;
-    }
-    elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
-    {
-        return $sDefaultTemplate;
-    }
-    elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
-    {
-        return $sDefaultTemplate;
-    }
-    else
-    {
-        return 'default';
-    }
-}
-
-
-
 /**
  *This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
  * It can be used for the generation of statistics. Derived from Statistics_userController

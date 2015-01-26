@@ -141,7 +141,7 @@ class GlobalSettings extends Survey_Common_Action
         }
 
         $defaultlang = sanitize_languagecode(App()->request->getPost('defaultlang'));
-        $aRestrictToLanguages = explode(' ', sanitize_languagecodeS(App()->request->getPost('restrictToLanguages')));
+        $aRestrictToLanguages = App()->request->getPost('restrictToLanguages',array());
         if (!in_array($defaultlang,$aRestrictToLanguages)){ // Force default language in restrictToLanguages
             $aRestrictToLanguages[]=$defaultlang;
         }
@@ -161,7 +161,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string(App()->request->getPost('defaulttemplateeditormode')));
         if (!Yii::app()->getConfig('demoMode'))
         {
-            setGlobalSetting('defaulttemplate', sanitize_paranoid_string(App()->request->getPost('defaulttemplate')));
+            setGlobalSetting('defaulttemplate', Template::templateNameFilter(App()->request->getPost('defaulttemplate')));
         }
         $sAdminTheme=sanitize_paranoid_string(App()->request->getPost('admintheme'));
         setGlobalSetting('admintheme', $sAdminTheme);

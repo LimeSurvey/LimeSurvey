@@ -1095,10 +1095,7 @@ class questions extends Survey_Common_Action
 
         $answers = retrieveAnswers($ia,$surveyid);
 
-        if (!$thissurvey['template'])
-            $thistpl = getTemplatePath(Yii::app()->getConfig('defaulttemplate'));
-        else
-            $thistpl = getTemplatePath(validateTemplateDir($thissurvey['template']));
+        $thistpl = getTemplatePath($thissurvey['template']);
 
         doHeader();
 

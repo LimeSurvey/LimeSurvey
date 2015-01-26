@@ -32,7 +32,12 @@
         } ?>
     </ul>
     <?php
-        if ($action == "editsurveysettings") $sURL="admin/database/index/updatesurveysettings";
-        else $sURL="admin/survey/sa/insert";
+        if ($action == "editsurveysettings" && $surveyid)
+        {
+            echo CHtml::form(array('admin/survey','sa'=>'editsurveysettings','surveyid'=>$surveyid), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form30'));
+        }
+        else
+        {
+            echo CHtml::form(array('admin/survey','sa'=>'insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form30'));
+        }
     ?>
-    <?php echo CHtml::form(array($sURL), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form30')); ?>

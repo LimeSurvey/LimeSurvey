@@ -48,7 +48,7 @@ class printablesurvey extends Survey_Common_Action
 
             // Setting the selected language for printout
             App()->setLanguage($surveyprintlang);
-            $templatename = validateTemplateDir($aSurveyInfo['templatedir']);
+            $templatename = $aSurveyInfo['template'];
             $welcome = $aSurveyInfo['surveyls_welcometext'];
             $end = $aSurveyInfo['surveyls_endtext'];
             $surveyname = $aSurveyInfo['surveyls_title'];

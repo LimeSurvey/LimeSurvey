@@ -848,8 +848,8 @@ function buildsurveysession($surveyid,$preview=false)
         $preview=Yii::app()->getConfig('previewmode');
     $thissurvey = getSurveyInfo($surveyid,$sLangCode);
 
-    $_SESSION['survey_'.$surveyid]['templatename']=validateTemplateDir($thissurvey['template']);
-    $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($_SESSION['survey_'.$surveyid]['templatename']).DIRECTORY_SEPARATOR;
+    $_SESSION['survey_'.$surveyid]['templatename']=$thissurvey['template'];// $thissurvey['template'] already fixed by model : but why put this in session ?
+    $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
     $loadsecurity = returnGlobal('loadsecurity',true);
@@ -1976,7 +1976,7 @@ function checkCompletedQuota($surveyid,$return=false)
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
     $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-    $sTemplatePath=getTemplatePath($aSurveyInfo['templatedir']);
+    $sTemplatePath=getTemplatePath($aSurveyInfo['template']);
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
     // $redata for templatereplace
     $aDataReplacement = array(

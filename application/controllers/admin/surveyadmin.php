@@ -66,42 +66,38 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function regenquestioncodes($iSurveyID, $sSubAction )
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
-
-            //Automatically renumbers the "question codes" so that they follow
-            //a methodical numbering method
-            $iQuestionNumber=1;
-            $iGroupNumber=0;
-            $iSequence=0;
-            $sQuery="SELECT a.qid, a.gid\n"
-            ."FROM {{questions}} as a, {{groups}} g "
-            ."WHERE a.gid=g.gid AND a.sid={$iSurveyID} AND a.parent_qid=0 "
-            ."GROUP BY a.gid, a.qid, g.group_order, question_order "
-            ."ORDER BY g.group_order, question_order";
-            $arResult=dbExecuteAssoc($sQuery) or safe_die ("Error: ".$connect->ErrorMsg());  // Checked
-            $grows = array(); //Create an empty array in case FetchRow does not return any rows
-            foreach ($arResult->readAll() as $grow) {$grows[] = $grow;} // Get table output into array
-            foreach($grows as $grow)
-            {
-                //Go through all the questions
-                if ($sSubAction == 'bygroup' && (!isset($iGroupNumber) || $iGroupNumber != $grow['gid']))
-                { //If we're doing this by group, restart the numbering when the group number changes
-                    $iQuestionNumber=1;
-                    $iGroupNumber = $grow['gid'];
-                    $iSequence++;
-                }
-                $usql="UPDATE {{questions}} "
-                ."SET title='".(($sSubAction == 'bygroup') ? ('G' . $iSequence ) : '')."Q".str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT)."'\n"
-                ."WHERE qid=".$grow['qid'];
-                //$databaseoutput .= "[$sql]";
-                $uresult=dbExecuteAssoc($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked
-                $iQuestionNumber++;
-                $iGroupNumber=$grow['gid'];
-            }
-            $_SESSION['flashmessage'] = gT("Question codes were successfully regenerated.");
-            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        if ($oSurvey->active=='Y')
+        {
+            Yii::app()->setFlashMessage(gT("You can't update question code for an active survey."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
+        }
+        //Automatically renumbers the "question codes" so that they follow
+        //a methodical numbering method
+        $iQuestionNumber=1;
+        $iGroupNumber=0;
+        $iGroupSequence=0;
+        $oQuestions=Question::model()->with('groups')->findAll(array('select'=>'t.qid,t.gid','condition'=>"t.sid=:sid and t.language=:language and parent_qid=0",'order'=>'groups.group_order, question_order','params'=>array(':sid'=>$iSurveyID,':language'=>$oSurvey->language)));
+        foreach($oQuestions as $oQuestion)
+        {
+            if ($sSubAction == 'bygroup' && $iGroupNumber != $oQuestion->gid)
+            { //If we're doing this by group, restart the numbering when the group number changes
+                $iQuestionNumber=1;
+                $iGroupNumber = $oQuestion->gid;
+                $iGroupSequence++;
+            }
+            $sNewTitle=(($sSubAction == 'bygroup') ? ('G' . $iGroupSequence ) : '')."Q".str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
+            Question::model()->updateAll(array('title'=>$sNewTitle),'qid=:qid',array(':qid'=>$oQuestion->qid));
+            $iQuestionNumber++;
+            $iGroupNumber=$oQuestion->gid;
+        }
+        Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
@@ -1052,65 +1048,18 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _fetchSurveyInfo($action, $iSurveyID=null)
     {
-        if (isset($iSurveyID))
-            $iSurveyID = sanitize_int($iSurveyID);
-
         if ($action == 'newsurvey')
         {
-            $esrow['active'] = 'N';
-            $esrow['questionindex'] = 0;
-            $esrow['format'] = 'G'; //Group-by-group mode
-            $esrow['template'] = Yii::app()->getConfig('defaulttemplate');
-            $esrow['allowsave'] = 'Y';
-            $esrow['allowprev'] = 'N';
-            $esrow['nokeyboard'] = 'N';
-            $esrow['printanswers'] = 'N';
-            $esrow['publicstatistics'] = 'N';
-            $esrow['publicgraphs'] = 'N';
-            $esrow['listpublic'] = 'N';
-            $esrow['autoredirect'] = 'N';
-            $esrow['tokenlength'] = 15;
-            $esrow['allowregister'] = 'N';
-            $esrow['usecookie'] = 'N';
-            $esrow['usecaptcha'] = 'D';
-            $esrow['htmlemail'] = 'Y';
-            $esrow['sendconfirmation'] = 'Y';
-            $esrow['emailnotificationto'] = '';
-            $esrow['anonymized'] = 'N';
-            $esrow['datestamp'] = 'N';
-            $esrow['ipaddr'] = 'N';
-            $esrow['refurl'] = 'N';
-            $esrow['tokenanswerspersistence'] = 'N';
-            $esrow['alloweditaftercompletion'] = 'N';
-            $esrow['startdate'] = '';
-            $esrow['savetimings'] = 'N';
-            $esrow['expires'] = '';
-            $esrow['showqnumcode'] = 'X';
-            $esrow['showwelcome'] = 'Y';
-            $esrow['emailresponseto'] = '';
-            $esrow['assessments'] = 'N';
-            $esrow['navigationdelay'] = 0;
-            $esrow['googleanalyticsapikey']    = '';
-            $esrow['googleanalyticsstyle']     = '0';
+            $oSurvey=new Survey;
         }
-        elseif ($action == 'editsurvey')
+        elseif ($action == 'editsurvey' && $iSurveyID)
         {
-            $condition = array('sid' => $iSurveyID);
-            $esresult = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
-            if ($esresult)
-            {
-                // Set template to default if not exist
-                if (!$esresult['template'])
-                {
-                    $esresult['template']=Yii::app()->getConfig('defaulttemplate');
-                }
-                $esresult['template']=validateTemplateDir($esresult['template']);
-
-                $esrow = $esresult;
-            }
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
         }
-
-        return $esrow;
+        if($oSurvey)
+        {
+            return $oSurvey->attributes;
+        }
     }
 
     /**
@@ -1187,17 +1136,8 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabPresentationNavigation($esrow)
     {
-        global $showxquestions, $showgroupinfo, $showqnumcode;
-
-        Yii::app()->loadHelper('globalsettings');
-
-        $shownoanswer = getGlobalSetting('shownoanswer') ? getGlobalSetting('shownoanswer') : 'Y';
 
         $aData['esrow'] = $esrow;
-        $aData['shownoanswer'] = $shownoanswer;
-        $aData['showxquestions'] = $showxquestions;
-        $aData['showgroupinfo'] = $showgroupinfo;
-        $aData['showqnumcode'] = $showqnumcode;
         return $aData;
     }
 
@@ -1469,91 +1409,58 @@ class SurveyAdmin extends Survey_Common_Action
             $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
             $expires=$datetimeobj->convert("Y-m-d H:i:s");
         }
-        /* Token management */
-        $tokenlength = (int)App()->request->getPost('tokenlength');
-        //token length has to be at least 5, otherwise set it to default (15) : model
-        if($tokenlength < 5)
-        {
-            $tokenlength = 15;
-        }
-        if($tokenlength > 36)
-        {
-            $tokenlength = 36;
-        }
-
-        /* Fix email of admin : not in model ? */
-        if (Yii::app()->request->getPost('adminemail', '') == '' || validateEmailAddress(trim(Yii::app()->request->getPost('adminemail')))) {
-            $adminemail = trim(Yii::app()->request->getPost('adminemail'));
-        } else {
-            $adminemail= $oSurvey->adminemail;
-            Yii::app()->setFlashMessage(gT("Warning! Notification email was not updated because it was not valid."),'warning'); gT().'<br/>';
-        }
-        if (Yii::app()->request->getPost('bounce_email', '') == '' || validateEmailAddress(trim(Yii::app()->request->getPost('adminemail')))) {
-            $bounce_email = trim(Yii::app()->request->getPost('bounce_email'));
-        } else {
-            $bounce_email = $oSurvey->bounce_email;
-            Yii::app()->setFlashMessage(gT("Warning! Bounce email was not updated because it was not valid."),'warning'); gT().'<br/>';
-        }
-
-        // Validate template : accepted: user have rigth to read template OR template are not updated : else set to the default from config
-        $template = Yii::app()->request->getPost('template');
-        if( $template!=$oSurvey->template && !Permission::model()->hasTemplatePermission($template))
-        {
-            $template = Yii::app()->getConfig('defaulttemplate');
-        }
 
         // We have $oSurvey : update and save it
         $oSurvey->admin =  Yii::app()->request->getPost('admin');
         $oSurvey->expires =  $expires;
         $oSurvey->startdate =  $startdate;
-        $oSurvey->anonymized = Yii::app()->request->getPost('anonymized');
-        $oSurvey->faxto = Yii::app()->request->getPost('faxto');
-        $oSurvey->format = Yii::app()->request->getPost('format');
-        $oSurvey->savetimings = Yii::app()->request->getPost('savetimings');
-        $oSurvey->template = $template;
-        $oSurvey->assessments = Yii::app()->request->getPost('assessments');
-        $oSurvey->language = Yii::app()->request->getPost('language');
-        $oSurvey->additional_languages = Yii::app()->request->getPost('languageids');
-        $oSurvey->datestamp = Yii::app()->request->getPost('datestamp');
-        $oSurvey->ipaddr = Yii::app()->request->getPost('ipaddr');
-        $oSurvey->refurl = Yii::app()->request->getPost('refurl');
-        $oSurvey->publicgraphs = Yii::app()->request->getPost('publicgraphs');
-        $oSurvey->usecookie = Yii::app()->request->getPost('usecookie');
-        $oSurvey->allowregister = Yii::app()->request->getPost('allowregister');
-        $oSurvey->allowsave = Yii::app()->request->getPost('allowsave');
-        $oSurvey->navigationdelay = Yii::app()->request->getPost('navigationdelay');
-        $oSurvey->printanswers = Yii::app()->request->getPost('printanswers');
-        $oSurvey->publicstatistics = Yii::app()->request->getPost('publicstatistics');
-        $oSurvey->autoredirect = Yii::app()->request->getPost('autoredirect');
-        $oSurvey->showxquestions = Yii::app()->request->getPost('showxquestions');
-        $oSurvey->showgroupinfo = Yii::app()->request->getPost('showgroupinfo');
-        $oSurvey->showqnumcode = Yii::app()->request->getPost('showqnumcode');
-        $oSurvey->shownoanswer = Yii::app()->request->getPost('shownoanswer');
-        $oSurvey->showwelcome = Yii::app()->request->getPost('showwelcome');
-        $oSurvey->allowprev = Yii::app()->request->getPost('allowprev');
-        $oSurvey->questionindex = Yii::app()->request->getPost('questionindex');
-        $oSurvey->nokeyboard = Yii::app()->request->getPost('nokeyboard');
-        $oSurvey->showprogress = Yii::app()->request->getPost('showprogress');
-        $oSurvey->listpublic = Yii::app()->request->getPost('public');
-        $oSurvey->htmlemail = Yii::app()->request->getPost('htmlemail');
-        $oSurvey->sendconfirmation = Yii::app()->request->getPost('sendconfirmation');
-        $oSurvey->tokenanswerspersistence = Yii::app()->request->getPost('tokenanswerspersistence');
-        $oSurvey->alloweditaftercompletion = Yii::app()->request->getPost('alloweditaftercompletion');
-        $oSurvey->usecaptcha = Yii::app()->request->getPost('usecaptcha');
-        $oSurvey->emailresponseto = trim(Yii::app()->request->getPost('emailresponseto'));
-        $oSurvey->emailnotificationto = trim(Yii::app()->request->getPost('emailnotificationto'));
-        $oSurvey->googleanalyticsapikey = trim(Yii::app()->request->getPost('googleanalyticsapikey'));
-        $oSurvey->googleanalyticsstyle = trim(Yii::app()->request->getPost('googleanalyticsstyle'));
-        $oSurvey->tokenlength = $tokenlength;
-        $oSurvey->adminemail = $adminemail;
-        $oSurvey->bounce_email = $bounce_email;
+        $oSurvey->anonymized = App()->request->getPost('anonymized');
+        $oSurvey->faxto = App()->request->getPost('faxto');
+        $oSurvey->format = App()->request->getPost('format');
+        $oSurvey->savetimings = App()->request->getPost('savetimings');
+        $oSurvey->template = Yii::app()->request->getPost('template');
+        $oSurvey->assessments = App()->request->getPost('assessments');
+        $oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
+        $oSurvey->datestamp = App()->request->getPost('datestamp');
+        $oSurvey->ipaddr = App()->request->getPost('ipaddr');
+        $oSurvey->refurl = App()->request->getPost('refurl');
+        $oSurvey->publicgraphs = App()->request->getPost('publicgraphs');
+        $oSurvey->usecookie = App()->request->getPost('usecookie');
+        $oSurvey->allowregister = App()->request->getPost('allowregister');
+        $oSurvey->allowsave = App()->request->getPost('allowsave');
+        $oSurvey->navigationdelay = App()->request->getPost('navigationdelay');
+        $oSurvey->printanswers = App()->request->getPost('printanswers');
+        $oSurvey->publicstatistics = App()->request->getPost('publicstatistics');
+        $oSurvey->autoredirect = App()->request->getPost('autoredirect');
+        $oSurvey->showxquestions = App()->request->getPost('showxquestions');
+        $oSurvey->showgroupinfo = App()->request->getPost('showgroupinfo');
+        $oSurvey->showqnumcode = App()->request->getPost('showqnumcode');
+        $oSurvey->shownoanswer = App()->request->getPost('shownoanswer');
+        $oSurvey->showwelcome = App()->request->getPost('showwelcome');
+        $oSurvey->allowprev = App()->request->getPost('allowprev');
+        $oSurvey->questionindex = App()->request->getPost('questionindex');
+        $oSurvey->nokeyboard = App()->request->getPost('nokeyboard');
+        $oSurvey->showprogress = App()->request->getPost('showprogress');
+        $oSurvey->listpublic = App()->request->getPost('public');
+        $oSurvey->htmlemail = App()->request->getPost('htmlemail');
+        $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation');
+        $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence');
+        $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion');
+        $oSurvey->usecaptcha = App()->request->getPost('usecaptcha');
+        $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
+        $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
+        $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+        $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
+        $oSurvey->tokenlength = App()->request->getPost('tokenlength');
+        $oSurvey->adminemail = App()->request->getPost('adminemail');
+        $oSurvey->bounce_email = App()->request->getPost('bounce_email');
         if ($oSurvey->save())
         {
             Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
         }
         else
         {
-            Yii::app()->setFlashMessage(gT("Survey could not be updated.","error"));
+            Yii::app()->setFlashMessage(gT("Survey could not be updated."),"error");
             tracevar($oSurvey->getErrors());
         }
 
@@ -1583,7 +1490,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
                     if(!$oLanguageSettings->save())
                     {
-                        Yii::app()->setFlashMessage(gT("Survey language could not be created.","error"));
+                        Yii::app()->setFlashMessage(gT("Survey language could not be created."),"error");
                         tracevar($oLanguageSettings->getErrors());
                     }
                 }
@@ -1642,16 +1549,7 @@ class SurveyAdmin extends Survey_Common_Action
                 return;
             }
 
-            // Check if template may be used
-            $sTemplate = $_POST['template'];
-            if (!$sTemplate || (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
-            {
-                $sTemplate = "default";
-            }
-
             Yii::app()->loadHelper("surveytranslator");
-
-
             // If start date supplied convert it to the right format
             $aDateFormatData = getDateFormatData(Yii::app()->session['dateformat']);
             $sStartDate = $_POST['startdate'];
@@ -1686,44 +1584,44 @@ class SurveyAdmin extends Survey_Common_Action
             $aInsertData = array(
             'expires' => $sExpiryDate,
             'startdate' => $sStartDate,
-            'template' => $sTemplate,
+            'template' => App()->request->getPost('template'),
             'owner_id' => Yii::app()->session['loginID'],
-            'admin' => $_POST['admin'],
+            'admin' => App()->request->getPost('admin'),
             'active' => 'N',
-            'anonymized' => $_POST['anonymized'],
-            'faxto' => $_POST['faxto'],
-            'format' => $_POST['format'],
-            'savetimings' => $_POST['savetimings'],
-            'language' => $_POST['language'],
-            'datestamp' => $_POST['datestamp'],
-            'ipaddr' => $_POST['ipaddr'],
-            'refurl' => $_POST['refurl'],
-            'usecookie' => $_POST['usecookie'],
-            'emailnotificationto' => $_POST['emailnotificationto'],
-            'allowregister' => $_POST['allowregister'],
-            'allowsave' => $_POST['allowsave'],
-            'navigationdelay' => $_POST['navigationdelay'],
-            'autoredirect' => $_POST['autoredirect'],
-            'showxquestions' => $_POST['showxquestions'],
-            'showgroupinfo' => $_POST['showgroupinfo'],
-            'showqnumcode' => $_POST['showqnumcode'],
-            'shownoanswer' => $_POST['shownoanswer'],
-            'showwelcome' => $_POST['showwelcome'],
-            'allowprev' => $_POST['allowprev'],
-            'questionindex' => $_POST['questionindex'],
-            'nokeyboard' => $_POST['nokeyboard'],
-            'showprogress' => $_POST['showprogress'],
-            'printanswers' => $_POST['printanswers'],
-            'listpublic' => $_POST['public'],
-            'htmlemail' => $_POST['htmlemail'],
-            'sendconfirmation' => $_POST['sendconfirmation'],
-            'tokenanswerspersistence' => $_POST['tokenanswerspersistence'],
-            'alloweditaftercompletion' => $_POST['alloweditaftercompletion'],
-            'usecaptcha' => $_POST['usecaptcha'],
-            'publicstatistics' => $_POST['publicstatistics'],
-            'publicgraphs' => $_POST['publicgraphs'],
-            'assessments' => $_POST['assessments'],
-            'emailresponseto' => $_POST['emailresponseto'],
+            'anonymized' => App()->request->getPost('anonymized'),
+            'faxto' => App()->request->getPost('faxto'),
+            'format' => App()->request->getPost('format'),
+            'savetimings' => App()->request->getPost('savetimings'),
+            'language' => App()->request->getPost('language'),
+            'datestamp' => App()->request->getPost('datestamp'),
+            'ipaddr' => App()->request->getPost('ipaddr'),
+            'refurl' => App()->request->getPost('refurl'),
+            'usecookie' => App()->request->getPost('usecookie'),
+            'emailnotificationto' => App()->request->getPost('emailnotificationto'),
+            'allowregister' => App()->request->getPost('allowregister'),
+            'allowsave' => App()->request->getPost('allowsave'),
+            'navigationdelay' => App()->request->getPost('navigationdelay'),
+            'autoredirect' => App()->request->getPost('autoredirect'),
+            'showxquestions' => App()->request->getPost('showxquestions'),
+            'showgroupinfo' => App()->request->getPost('showgroupinfo'),
+            'showqnumcode' => App()->request->getPost('showqnumcode'),
+            'shownoanswer' => App()->request->getPost('shownoanswer'),
+            'showwelcome' => App()->request->getPost('showwelcome'),
+            'allowprev' => App()->request->getPost('allowprev'),
+            'questionindex' => App()->request->getPost('questionindex'),
+            'nokeyboard' => App()->request->getPost('nokeyboard'),
+            'showprogress' => App()->request->getPost('showprogress'),
+            'printanswers' => App()->request->getPost('printanswers'),
+            'listpublic' => App()->request->getPost('public'),
+            'htmlemail' => App()->request->getPost('htmlemail'),
+            'sendconfirmation' => App()->request->getPost('sendconfirmation'),
+            'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
+            'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
+            'usecaptcha' => App()->request->getPost('usecaptcha'),
+            'publicstatistics' => App()->request->getPost('publicstatistics'),
+            'publicgraphs' => App()->request->getPost('publicgraphs'),
+            'assessments' => App()->request->getPost('assessments'),
+            'emailresponseto' => App()->request->getPost('emailresponseto'),
             'tokenlength' => $iTokenLength
             );
 
@@ -1758,15 +1656,7 @@ class SurveyAdmin extends Survey_Common_Action
             $sDescription = $_POST['description'];
             $sWelcome = $_POST['welcome'];
             $sURLDescription = $_POST['urldescrip'];
-            if (Yii::app()->getConfig('filterxsshtml'))
-            {
-                //$p = new CHtmlPurifier();
-                //$p->options = array('URI.AllowedSchemes'=>array('http' => true,  'https' => true));
-                //$sTitle=$p->purify($sTitle);
-                //$sDescription=$p->purify($sDescription);
-                //$sWelcome=$p->purify($sWelcome);
-                //$sURLDescription=$p->purify($sURLDescription);
-            }
+
             $sTitle = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
             $sDescription = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
             $sWelcome = html_entity_decode($sWelcome, ENT_QUOTES, "UTF-8");
