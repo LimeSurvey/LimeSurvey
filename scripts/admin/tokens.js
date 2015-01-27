@@ -1,3 +1,12 @@
+/*
+* Scroll the pager when scrolling horizontally
+*/
+$(window).scroll(function(){
+    $('.ui-jqgrid-pager').css({
+        'left': $(this).scrollLeft()
+    });
+});
+
 var conditionid=1;
 function checkbounces() {
     $("#dialog-modal").dialog('open');
@@ -55,8 +64,8 @@ function addSelectedParticipantsToCPDB()
         $("#addcpdb").load(postUrl, {
             participantid:token},function(){
                 $(location).attr('href',attMapUrl+'/'+survey_id);
-        });        
-    }    
+        });
+    }
 
     /*$(":checked").each(function() {
     token.push($(this).attr('name'));
@@ -66,13 +75,6 @@ function addSelectedParticipantsToCPDB()
 
 $(document).ready(function() {
 
-    $("#filterduplicatetoken").change(function(){
-        if ($("#filterduplicatetoken").prop('checked')) {
-            $("#lifilterduplicatefields").slideDown();
-        } else {
-            $("#lifilterduplicatefields").slideUp();
-        }
-    })
     // Code for AJAX download
     jQuery.download = function(url, data, method){
         //url and data options required
@@ -118,7 +120,7 @@ $(document).ready(function() {
     $('#searchbutton').click(function(){
 
     });
-    var lastSel,lastSel2;
+
     oGrid=jQuery("#displaytokens").jqGrid({
         loadtext : sLoadText,
         recordtext: sRecordText,
@@ -339,7 +341,9 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    window.open(inviteurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                    $.post(inviteurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
+                        window.open('data:text/html;charset=utf-8,'+data);
+                    });
                 }
             }
         });
@@ -356,7 +360,9 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                    $.post(remindurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
+                        window.open('data:text/html;charset=utf-8,'+data);
+                    });
                 }
             }
         });
@@ -382,7 +388,7 @@ $(document).ready(function() {
     }
     if (bParticipantPanelPermission==true)
     {
-        $("#displaytokens").navSeparatorAdd("#pager",{});        
+        $("#displaytokens").navSeparatorAdd("#pager",{});
         $("#displaytokens").navButtonAdd('#pager', {
             caption:"",
             title:viewParticipantsLink,
@@ -401,13 +407,14 @@ $(document).ready(function() {
         if(sSearchString != ""){
             var aSearchConditions=new Array;
             for(col in colInformation){
-                if(colInformation[col]['quickfilter'])
-                    aSearchConditions.push(col+"||contains||"+sSearchString);
+                if(colInformation[col]['quickfilter']){
+                    aSearchConditions.push(col);aSearchConditions.push('contains');aSearchConditions.push(sSearchString);aSearchConditions.push("or");
+                }
             }
-            var sSearchConditions=aSearchConditions.join("||or||");
-            oGrid.jqGrid('setGridParam', {url: jsonSearchUrl+"/"+sSearchConditions}).trigger('reloadGrid', [{current: true, page: 1}]);
+            aSearchConditions.pop();// remove last 'or'
+            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { searcharray: aSearchConditions} }).trigger('reloadGrid', [{current: true, page: 1}]);
         }else{
-            oGrid.jqGrid('setGridParam', {url: jsonUrl}).trigger('reloadGrid', [{current: true, page: 1}]);
+            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { }}).trigger('reloadGrid', [{current: true, page: 1}]);
         }
     }, 500);
 

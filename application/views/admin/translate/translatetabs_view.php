@@ -5,6 +5,8 @@ echo PrepareEditorScript(true, Yii::app()->getController());
 ?>
 
 <div class='translate'>
-<input type='button' class='auto-trans' value='<?php $clang->eT("Auto Translate");?>' id='auto-trans-tab-<?php echo $type;?>' />
-<img src='<?php echo Yii::app()->getConfig("adminimageurl");?>/ajax-loader.gif' style='display: none' class='ajax-loader' alt='<?php $clang->eT("Loading...");?>' />
+<?php if(App()->getConfig('googletranslateapikey')){ ?>
+    <input type='button' class='auto-trans' value='<?php eT("Auto Translate");?>' id='auto-trans-tab-<?php echo $type;?>' />
+    <img src='<?php echo Yii::app()->getConfig("adminimageurl");?>/ajax-loader.gif' style='display: none' class='ajax-loader' alt='<?php eT("Loading...");?>' />
+<?php } ?>
 <?php echo $translateTabs; ?>

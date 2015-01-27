@@ -36,8 +36,7 @@ class pdfHelper
         {
             $pdffont=PDF_FONT_NAME_DATA;
         }
-        $pdfcorefont=array("courier","helvetica","symbol","times","zapfdingbats");
-        $pdffontsize=Yii::app()->getConfig('pdffontsize');
+        $pdfcorefont=array("freesans","dejavusans","courier","helvetica","freemono","symbol","times","zapfdingbats");
         if (in_array($pdffont,$pdfcorefont))
         {
             $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
@@ -46,6 +45,7 @@ class pdfHelper
                 $pdffont = $alternatepdffontfile[$language];// Actually use only core font
             }
         }
+        $pdffontsize=Yii::app()->getConfig('pdffontsize');
         if ($pdffontsize=='auto')
         {
             $pdffontsize=PDF_FONT_SIZE_MAIN;
@@ -61,8 +61,7 @@ class pdfHelper
             $lg['a_meta_dir'] = 'ltr';
         }
         $lg['a_meta_language'] = $language;
-        $pdflang = new Limesurvey_lang($language);
-        $lg['w_page']=$pdflang->gT("page");
+        $lg['w_page']=gT("page");
 
         return array('pdffont'=>$pdffont,'pdffontsize'=>$pdffontsize,'lg'=>$lg);
     }

@@ -1,4 +1,5 @@
 <?php
+use ls\pluginmanager\AuthPluginBase;
 class AuthLDAP extends AuthPluginBase
 {
     protected $storage = 'DbStorage';
@@ -17,11 +18,13 @@ class AuthLDAP extends AuthPluginBase
     protected $settings = array(
         'server' => array(
             'type' => 'string',
-            'label' => 'Ldap server e.g. ldap://ldap.mydomain.com or ldaps://ldap.mydomain.com'
+            'label' => 'Ldap server',
+            'help' => 'e.g. ldap://ldap.example.com or ldaps://ldap.example.com'
             ),
         'ldapport' => array(
             'type' => 'string',
-            'label' => 'Port number (default when omitted is 389)'
+            'label' => 'Port number',
+            'help' => 'Default when omitted is 389',
             ),
         'ldapversion' => array(
             'type' => 'select',
@@ -30,9 +33,15 @@ class AuthLDAP extends AuthPluginBase
             'default' => '2',
             'submitonchange'=> true
             ),
+        'ldapoptreferrals' => array(
+            'type' => 'boolean',
+            'label' => 'Select true if referrals must be followed (use false for ActiveDirectory)',
+            'default' => '0'
+            ),
         'ldaptls' => array(
             'type' => 'boolean',
-            'label' => 'Check to enable Start-TLS encryption When using LDAPv3',
+            'help' => 'Check to enable Start-TLS encryption, when using LDAPv3',
+            'label' => 'Enable Start-TLS',
             'default' => '0'
             ),
         'ldapmode' => array(
@@ -44,11 +53,13 @@ class AuthLDAP extends AuthPluginBase
             ),
         'userprefix' => array(
             'type' => 'string',
-            'label' => 'Username prefix cn= or uid=',
+            'label' => 'Username prefix',
+            'help' => 'e.g. cn= or uid=',
             ),
         'domainsuffix' => array(
                 'type' => 'string',
-                'label' => 'Username suffix e.g. @mydomain.com or remaining part of ldap query'
+                'label' => 'Username suffix',
+                'help' => 'e.g. @mydomain.com or remaining part of ldap query',
                 ),
         'searchuserattribute' => array(
                 'type' => 'string',
@@ -76,8 +87,8 @@ class AuthLDAP extends AuthPluginBase
                 )
     );
 
-    public function __construct(PluginManager $manager, $id) {
-        parent::__construct($manager, $id);
+    public function init() 
+    {
 
         /**
          * Here you should handle subscribing to the events your plugin will handle
@@ -103,16 +114,6 @@ class AuthLDAP extends AuthPluginBase
             ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label><input name='password' id='password' type='password' size='40' maxlength='40' value='' />"));
     }
 
-    public function afterLoginFormSubmit()
-    {
-        // Here we handle post data        
-        $request = $this->api->getRequest();
-        if ($request->getIsPostRequest()) {
-            $this->setUsername( $request->getPost('user'));
-            $this->setPassword($request->getPost('password'));
-        }
-    }
-    
     /**
      * Modified getPluginSettings since we have a select box that autosubmits
      * and we only want to show the relevant options.
@@ -152,6 +153,7 @@ class AuthLDAP extends AuthPluginBase
                 unset($aPluginSettings['extrauserfilter']);
                 unset($aPluginSettings['binddn']);
                 unset($aPluginSettings['bindpwd']);
+                unset($aPluginSettings['ldapoptreferrals']);
             }
         }
         
@@ -160,6 +162,13 @@ class AuthLDAP extends AuthPluginBase
 
     public function newUserSession()
     {
+        // Do nothing if this user is not AuthLDAP type
+        $identity = $this->getEvent()->get('identity');
+        if ($identity->plugin != 'AuthLDAP')
+        {
+            return;
+        }
+
         // Here we do the actual authentication       
         $username = $this->getUsername();
         $password = $this->getPassword();
@@ -168,8 +177,16 @@ class AuthLDAP extends AuthPluginBase
 
         if ($user === null && $this->autoCreate === false)
         {
-            // If the user doesnt exist ín the LS database, he can not login
+            // If the user doesnt exist ï¿½n the LS database, he can not login
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+            return;
+        }
+
+        if (empty($password))
+        {
+            // If password is null or blank reject login
+            // This is necessary because in simple bind ldap server authenticates with blank password
+            $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }
 
@@ -178,6 +195,7 @@ class AuthLDAP extends AuthPluginBase
         $ldapport   		= $this->get('ldapport');
         $ldapver    		= $this->get('ldapversion');
         $ldaptls    		= $this->get('ldaptls');
+        $ldapoptreferrals	= $this->get('ldapoptreferrals');
         $ldapmode    		= $this->get('ldapmode');
         $suffix     		= $this->get('domainsuffix');
         $prefix     		= $this->get('userprefix');
@@ -207,6 +225,7 @@ class AuthLDAP extends AuthPluginBase
             $ldapver = 2;
         }
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
+        ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, $ldapoptreferrals);
 
         if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0 )
         {

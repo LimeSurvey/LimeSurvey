@@ -1,6 +1,6 @@
 <?php
 if (count($_POST) == 0) {
-    $clang = Yii::app()->lang;
+    
 
     $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
     . "from {{surveys_languagesettings}} as a join {{surveys}} as b on a.surveyls_survey_id = b.sid"
@@ -47,12 +47,12 @@ EOD;
 }
 else {
 
-    $clang = Yii::app()->lang;
+    
 
-    $surveyInfo = explode('|',$_POST['sid']);
-    $surveyid = $surveyInfo[0];
+    $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
+    $surveyid = sanitize_int($surveyInfo[0]);
     $assessments = ($surveyInfo[1] == 'Y');
-    $surveyMode = $_POST['surveyMode'];
+    $surveyMode = sanitize_paranoid_string(Yii::app()->request->getParam('surveyMode'));
     $LEMdebugLevel = (
             ((isset($_POST['LEM_DEBUG_TIMING']) && $_POST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
             ((isset($_POST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_POST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +

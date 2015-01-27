@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
- 
+
 class LSYii_Validators extends CValidator {
 
     /**
@@ -69,7 +69,7 @@ class LSYii_Validators extends CValidator {
     /**
     * Remove some empty characters put by CK editor
     * Did we need to do if user don't use inline HTML editor ?
-    * 
+    *
     * @param string $value
     */
     public function fixCKeditor($value)
@@ -95,8 +95,8 @@ class LSYii_Validators extends CValidator {
         return $value;
     }
     /**
-    * Remove any script or dangerous HTML 
-    * 
+    * Remove any script or dangerous HTML
+    *
     * @param string $value
     */
     public function xssFilter($value)
@@ -104,10 +104,12 @@ class LSYii_Validators extends CValidator {
         $filter = new CHtmlPurifier();
         $filter->options = array(
             'AutoFormat.RemoveEmpty'=>false,
+            'Core.NormalizeNewlines'=>false,
             'CSS.AllowTricky'=>true, // Allow display:none; (and other)
             'HTML.SafeObject'=>true, // To allow including youtube
             'Output.FlashCompat'=>true,
             'Attr.EnableID'=>true, // Allow to set id
+            'Attr.AllowedFrameTargets'=>array('_blank','_self'),
             'URI.AllowedSchemes'=>array(
                 'http' => true,
                 'https' => true,
@@ -118,22 +120,29 @@ class LSYii_Validators extends CValidator {
                 )
         );
         // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
+
+        /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
+        $sFiltered=preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#','{$1}',$filter->purify($value));
         Yii::import('application.helpers.expressions.em_core_helper');// Already imported in em_manager_helper.php ?
         $oExpressionManager= new ExpressionManager;
+        /**  We get 2 array : one filtered, other unfiltered **/
         $aValues=$oExpressionManager->asSplitStringOnExpressions($value);// Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
+        $aFilteredValues=$oExpressionManager->asSplitStringOnExpressions($sFiltered);// Same but for the filtered string
+        $bCountIsOk=count($aValues)==count($aFilteredValues);
+        /** Construction of new string with unfiltered EM and filtered HTML **/
         $sNewValue="";
-        foreach($aValues as $aValue){
+        foreach($aValues as $key=>$aValue){
             if($aValue[2]=="STRING")
-                $sNewValue.=$filter->purify($aValue[0]);
+                $sNewValue.=$bCountIsOk ? $aFilteredValues[$key][0]:$filter->purify($aValue[0]);// If EM is broken : can throw invalid $key
             else
             {
                 $sExpression=trim($aValue[0], '{}');
                 $sNewValue.="{";
-                $aParsedExpressions=$oExpressionManager->Tokenize($sExpression,true);// Return array of array : 0=>the string,1=>string length,2=>string type 
+                $aParsedExpressions=$oExpressionManager->Tokenize($sExpression,true);
                 foreach($aParsedExpressions as $aParsedExpression)
                 {
                     if($aParsedExpression[2]=='DQ_STRING')
-                        $sNewValue.="\"".$filter->purify($aParsedExpression[0])."\"";
+                        $sNewValue.="\"".$filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS
                     elseif($aParsedExpression[2]=='SQ_STRING')
                         $sNewValue.="'".$filter->purify($aParsedExpression[0])."'";
                     else
@@ -142,11 +151,12 @@ class LSYii_Validators extends CValidator {
                 $sNewValue.="}";
             }
         }
+        gc_collect_cycles(); // To counter a high memory usage of HTML-Purifier
         return $sNewValue;
     }
     /**
     * Defines the customs validation rule for language string
-    * 
+    *
     * @param mixed $value
     */
     public function languageFilter($value)
@@ -156,7 +166,7 @@ class LSYii_Validators extends CValidator {
     }
     /**
     * Defines the customs validation rule for multi language string
-    * 
+    *
     * @param mixed $value
     */
     public function multiLanguageFilter($value)
@@ -165,4 +175,5 @@ class LSYii_Validators extends CValidator {
         $aValue=array_map("sanitize_languagecode",$aValue);
         return implode(" ",$aValue);
     }
+
 }

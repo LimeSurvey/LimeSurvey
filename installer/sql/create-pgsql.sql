@@ -199,8 +199,8 @@ CREATE TABLE prefix_participant_shares (
 --
 CREATE TABLE prefix_participants (
   "participant_id" character varying(50) PRIMARY KEY NOT NULL,
-  "firstname" character varying(40),
-  "lastname" character varying(40),
+  "firstname" character varying(150),
+  "lastname" character varying(150),
   "email" character varying(254),
   "language" character varying(40),
   "blacklisted" character varying(1) NOT NULL,
@@ -542,18 +542,6 @@ CREATE TABLE prefix_users (
     "modified" timestamp
 );
 
-
---
--- Table structure for table templates_rights
---
-CREATE TABLE prefix_templates_rights (
-  "uid" integer NOT NULL,
-  "folder" character varying(255) NOT NULL,
-  "use" integer NOT NULL,
-  CONSTRAINT prefix_templates_rights_pkey PRIMARY KEY ("uid","folder")
-);
-
-
 --
 -- Table structure for table templates
 --
@@ -588,4 +576,4 @@ create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, u
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '177');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '179');

@@ -29,26 +29,77 @@ function comparePermission($aPermissionA,$aPermissionB)
 }
 
 /**
- * Translation helper function.
- * @param string $string
- * @param string $escapemode
+ * Translation helper function
+ * @param string $sToTranslate
+ * @param string $sEscapeMode
+ * @param string $sLanguage
  */
-function gT($string, $escapemode = 'html')
+function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 {
-    Yii::import('application.libraries.Limesurvey_lang');
-    if (isset(App()->lang))
-    {
-        return App()->lang->gT($string, $escapemode);
-    }
-    else
-    {
-        return $string;
-    }
+    return quoteText(Yii::t('',$sToTranslate,array(),null,$sLanguage),$sEscapeMode);
 }
 
-function eT($string, $escapemode = 'html')
+/**
+ * Translation helper function which outputs right away.
+ * @param string $sToTranslate
+ * @param string $sEscapeMode
+ * @param string $sLanguage
+ */
+function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 {
-    echo gT($string, $escapemode);
+    echo gT($sToTranslate,$sEscapeMode);
+}
+
+/**
+ * Translation helper function for plural forms
+ * @param string $sToTranslate
+ * @param integer $iCount
+ * @param string $sEscapeMode
+ */
+function ngT($sToTranslate, $iCount, $sEscapeMode = 'html')
+{
+    return quoteText(Yii::t('',$sToTranslate,$iCount),$sEscapeMode);
+}
+
+/**
+ * Translation helper function for plural forms which outputs right away
+ * @param string $sToTranslate
+ * @param integer $iCount
+ * @param string $sEscapeMode
+ */
+function egT($sToTranslate, $iCount, $sEscapeMode = 'html')
+{
+    echo ngT($sToTranslate,$iCount,$sEscapeMode);
+}
+
+
+/**
+* Quotes a translation according to purpose
+* if sEscapeMode is null, we use HTML method because probably we had to specify null as sEscapeMode upstream
+*
+* @param mixed $sText Text to quote
+* @param string $sEscapeMode Optional - One of the values 'html','js' or 'unescaped' - defaults to 'html'
+*/
+function quoteText($sText, $sEscapeMode = 'html')
+{
+    if ($sEscapeMode === null)
+        $sEscapeMode = 'html';
+
+    switch ($sEscapeMode)
+    {
+        case 'html':
+            return HTMLEscape($sText);
+            break;
+        case 'js':
+            return javascriptEscape($sText);
+            break;
+        case 'unescaped':
+            return $sText;
+            break;
+        default:
+            return "Unsupported EscapeMode in gT method";
+            break;
+    }
 }
 
 /**
@@ -70,193 +121,8 @@ function eT($string, $escapemode = 'html')
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
     $publicurl = Yii::app()->getConfig('publicurl');
-    $clang = Yii::app()->lang;
 
-    $group['Arrays'] = $clang->gT('Arrays');
-    $group['MaskQuestions'] = $clang->gT("Mask questions");
-    $group['SinChoiceQues'] = $clang->gT("Single choice questions");
-    $group['MulChoiceQues'] = $clang->gT("Multiple choice questions");
-    $group['TextQuestions'] = $clang->gT("Text questions");
-
-
-    $qtypes = array(
-    "1" => array('description' => $clang->gT("Array dual scale"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'assessable' => 1,
-    'hasdefaultvalues' => 0,
-    'answerscales' => 2),
-    "5" => array('description' => $clang->gT("5 Point Choice"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "A" => array('description' => $clang->gT("Array (5 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "B" => array('description' => $clang->gT("Array (10 Point Choice)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "C" => array('description' => $clang->gT("Array (Yes/No/Uncertain)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "D" => array('description' => $clang->gT("Date/Time"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "E" => array('description' => $clang->gT("Array (Increase/Same/Decrease)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "F" => array('description' => $clang->gT("Array"),
-    'group' => $group['Arrays'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "G" => array('description' => $clang->gT("Gender"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "H" => array('description' => $clang->gT("Array by column"),
-    'group' => $group['Arrays'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "I" => array('description' => $clang->gT("Language Switch"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 0,
-    'subquestions' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "K" => array('description' => $clang->gT("Multiple Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'hasdefaultvalues' => 1,
-    'subquestions' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "L" => array('description' => $clang->gT("List (Radio)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "M" => array('description' => $clang->gT("Multiple choice"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "N" => array('description' => $clang->gT("Numerical Input"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "O" => array('description' => $clang->gT("List with comment"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "P" => array('description' => $clang->gT("Multiple choice with comments"),
-    'group' => $group['MulChoiceQues'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 0),
-    "Q" => array('description' => $clang->gT("Multiple Short Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 1,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "R" => array('description' => $clang->gT("Ranking"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 1),
-    "S" => array('description' => $clang->gT("Short Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "T" => array('description' => $clang->gT("Long Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "U" => array('description' => $clang->gT("Huge Free Text"),
-    'group' => $group['TextQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "X" => array('description' => $clang->gT("Text display"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "Y" => array('description' => $clang->gT("Yes/No"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "!" => array('description' => $clang->gT("List (Dropdown)"),
-    'group' => $group['SinChoiceQues'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 1,
-    'assessable' => 1,
-    'answerscales' => 1),
-    ":" => array('description' => $clang->gT("Array (Numbers)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 1,
-    'answerscales' => 0),
-    ";" => array('description' => $clang->gT("Array (Texts)"),
-    'group' => $group['Arrays'],
-    'subquestions' => 2,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "|" => array('description' => $clang->gT("File upload"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    "*" => array('description' => $clang->gT("Equation"),
-    'group' => $group['MaskQuestions'],
-    'subquestions' => 0,
-    'hasdefaultvalues' => 0,
-    'assessable' => 0,
-    'answerscales' => 0),
-    );
-    asort($qtypes);
-
+    $qtypes = Question::typeList();
     if ($ReturnType == "array")
         return $qtypes;
 
@@ -333,15 +199,15 @@ function getSurveyList($returnarray=false, $surveyid=false)
     static $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
-    $clang = new Limesurvey_lang(isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en');
+    App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
 
     if(is_null($cached)) {
         $args = array('order'=>'surveyls_title');
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+            $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with('defaultlanguage')->findAll($args);
         } else {
-            $surveyidresult = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findAll($args);
+            $surveyidresult = Survey::model()->with('defaultlanguage')->findAll($args);
         }
 
         $surveynames = array();
@@ -413,25 +279,25 @@ function getSurveyList($returnarray=false, $surveyid=false)
     //Only show each activesurvey group if there are some
     if ($activesurveys!='')
     {
-        $surveyselecter .= "<optgroup label='".$clang->gT("Active")."' class='activesurveyselect'>\n";
+        $surveyselecter .= "<optgroup label='".gT("Active")."' class='activesurveyselect'>\n";
         $surveyselecter .= $activesurveys . "</optgroup>";
     }
     if ($expiredsurveys!='')
     {
-        $surveyselecter .= "<optgroup label='".$clang->gT("Expired")."' class='expiredsurveyselect'>\n";
+        $surveyselecter .= "<optgroup label='".gT("Expired")."' class='expiredsurveyselect'>\n";
         $surveyselecter .= $expiredsurveys . "</optgroup>";
     }
     if ($inactivesurveys!='')
     {
-        $surveyselecter .= "<optgroup label='".$clang->gT("Inactive")."' class='inactivesurveyselect'>\n";
+        $surveyselecter .= "<optgroup label='".gT("Inactive")."' class='inactivesurveyselect'>\n";
         $surveyselecter .= $inactivesurveys . "</optgroup>";
     }
     if (!isset($svexist))
     {
-        $surveyselecter = "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
+        $surveyselecter = "<option selected='selected' value=''>".gT("Please choose...")."</option>\n".$surveyselecter;
     } else
     {
-        $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
+        $surveyselecter = "<option value=''>".gT("None")."</option>\n".$surveyselecter;
     }
     return $surveyselecter;
 }
@@ -512,7 +378,7 @@ function getAdminThemeList()
 */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-   $clang = Yii::app()->lang;
+
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
 
@@ -544,12 +410,12 @@ function getQuestions($surveyid,$gid,$selectedqid)
 
     if (!isset($qexists))
     {
-        $sQuestionselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$sQuestionselecter;
+        $sQuestionselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$sQuestionselecter;
     }
     else
     {
         $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid);
-        $sQuestionselecter = "<option value='{$link}'>".$clang->gT("None")."</option>\n".$sQuestionselecter;
+        $sQuestionselecter = "<option value='{$link}'>".gT("None")."</option>\n".$sQuestionselecter;
     }
     return $sQuestionselecter;
 }
@@ -564,7 +430,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 */
 function getGidPrevious($surveyid, $gid)
 {
-    $clang = Yii::app()->lang;
+
 
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
@@ -595,7 +461,7 @@ function getGidPrevious($surveyid, $gid)
 */
 function getQidPrevious($surveyid, $gid, $qid)
 {
-    $clang = Yii::app()->lang;
+
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid'=>0),array('order'=>'question_order'));
 
@@ -628,7 +494,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 */
 function getGidNext($surveyid, $gid)
 {
-    $clang = Yii::app()->lang;
+
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
@@ -661,7 +527,7 @@ function getGidNext($surveyid, $gid)
 */
 function getQidNext($surveyid, $gid, $qid)
 {
-    $clang = Yii::app()->lang;
+
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0), array('order'=>'question_order'));
@@ -1108,11 +974,11 @@ function longestString( $new_string , $longest_length )
 */
 function getNotificationList($notificationcode)
 {
-    $clang = Yii::app()->lang;
+
     $ntypes = array(
-    "0"=>$clang->gT("No email notification"),
-    "1"=>$clang->gT("Basic email notification"),
-    "2"=>$clang->gT("Detailed email notification with result codes")
+    "0"=>gT("No email notification"),
+    "1"=>gT("Basic email notification"),
+    "2"=>gT("Detailed email notification with result codes")
     );
     if (!isset($ntypeselector)) {$ntypeselector="";}
     foreach($ntypes as $ntcode=>$ntdescription)
@@ -1135,7 +1001,7 @@ function getNotificationList($notificationcode)
 */
 function getGroupList($gid,$surveyid)
 {
-    $clang = Yii::app()->lang;
+
     $groupselecter="";
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
@@ -1152,8 +1018,8 @@ function getGroupList($gid,$surveyid)
     }
     if ($groupselecter)
     {
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
-        else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
+        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter;}
+        else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".gT("None")."</option>\n";}
     }
     return $groupselecter;
 }
@@ -1162,7 +1028,7 @@ function getGroupList($gid,$surveyid)
 
 function getGroupList3($gid,$surveyid)
 {
-    //$clang = Yii::app()->lang;
+    //
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
 
@@ -1196,7 +1062,7 @@ function getGroupList3($gid,$surveyid)
 function getGroupListLang($gid, $language, $surveyid)
 {
 
-    $clang = Yii::app()->lang;
+
 
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
@@ -1222,8 +1088,8 @@ function getGroupListLang($gid, $language, $surveyid)
     if ($groupselecter)
     {
         $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid);
-        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
-        else {$groupselecter .= "<option value='{$link}'>".$clang->gT("None")."</option>\n";}
+        if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter;}
+        else {$groupselecter .= "<option value='{$link}'>".gT("None")."</option>\n";}
     }
     return $groupselecter;
 }
@@ -1231,7 +1097,7 @@ function getGroupListLang($gid, $language, $surveyid)
 
 function getUserList($outputformat='fullinfoarray')
 {
-    $clang = Yii::app()->lang;
+
 
     if (!empty(Yii::app()->session['loginID']))
     {
@@ -1397,10 +1263,13 @@ function getSurveyInfo($surveyid, $languagecode='')
 * @param string $mode Escape mode for the translation function
 * @return array
 */
-function templateDefaultTexts($oLanguage, $mode='html', $sNewlines='text'){
+function templateDefaultTexts($sLanguage, $mode='html', $sNewlines='text')
+{
+    $sOldLanguage=App()->language;
+    App()->setLanguage($sLanguage);
     $aDefaultTexts=array(
-    'admin_detailed_notification_subject'=>$oLanguage->gT("Response submission for survey {SURVEYNAME} with results",$mode),
-    'admin_detailed_notification'=>$oLanguage->gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}",$mode),
+    'admin_detailed_notification_subject'=>gT("Response submission for survey {SURVEYNAME} with results",$mode),
+    'admin_detailed_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}\n\n\nThe following answers were given by the participant:\n{ANSWERTABLE}",$mode),
     'admin_detailed_notification_css'=>'<style type="text/css">
     .printouttable {
     margin:1em auto;
@@ -1437,21 +1306,22 @@ function templateDefaultTexts($oLanguage, $mode='html', $sNewlines='text'){
     padding-top:1em;
     }
     </style>',
-    'admin_notification_subject'=>$oLanguage->gT("Response submission for survey {SURVEYNAME}",$mode),
-    'admin_notification'=>$oLanguage->gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}",$mode),
-    'confirmation_subject'=>$oLanguage->gT("Confirmation of your participation in our survey"),
-    'confirmation'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",$mode),
-    'invitation_subject'=>$oLanguage->gT("Invitation to participate in a survey",$mode),
-    'invitation'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nyou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".$oLanguage->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode)."\n\n".$oLanguage->gT("If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n{OPTINURL}",$mode),
-    'reminder_subject'=>$oLanguage->gT("Reminder to participate in a survey",$mode),
-    'reminder'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".$oLanguage->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode),
-    'registration_subject'=>$oLanguage->gT("Survey registration confirmation",$mode),
-    'registration'=>$oLanguage->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",$mode)
+    'admin_notification_subject'=>gT("Response submission for survey {SURVEYNAME}",$mode),
+    'admin_notification'=>gT("Hello,\n\nA new response was submitted for your survey '{SURVEYNAME}'.\n\nClick the following link to reload the survey:\n{RELOADURL}\n\nClick the following link to see the individual response:\n{VIEWRESPONSEURL}\n\nClick the following link to edit the individual response:\n{EDITRESPONSEURL}\n\nView statistics by clicking here:\n{STATISTICSURL}",$mode),
+    'confirmation_subject'=>gT("Confirmation of your participation in our survey"),
+    'confirmation'=>gT("Dear {FIRSTNAME},\n\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",$mode),
+    'invitation_subject'=>gT("Invitation to participate in a survey",$mode),
+    'invitation'=>gT("Dear {FIRSTNAME},\n\nyou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode)."\n\n".gT("If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:\n{OPTINURL}",$mode),
+    'reminder_subject'=>gT("Reminder to participate in a survey",$mode),
+    'reminder'=>gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",$mode)."\n\n".gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}",$mode),
+    'registration_subject'=>gT("Survey registration confirmation",$mode),
+    'registration'=>gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",$mode)
     );
     if ($sNewlines=='html')
     {
         $aDefaultTexts=array_map('nl2br',$aDefaultTexts);
     }
+    App()->setLanguage($sOldLanguage);
     return $aDefaultTexts;
 }
 
@@ -1551,13 +1421,13 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 */
 function returnGlobal($stringname,$bRestrictToString=false)
 {
-    $urlParam=Yii::app()->request->getParam($stringname); 
+    $urlParam=Yii::app()->request->getParam($stringname);
     if(is_null($urlParam) && $aCookies=Yii::app()->request->getCookies() && $stringname!='sid')
     {
         if(isset($aCookies[$stringname]))
         {
             $urlParam = $aCookies[$stringname];
-        } 
+        }
     }
     $bUrlParamIsArray=is_array($urlParam);// Needed to array map or if $bRestrictToString
     if (!is_null($urlParam) && $stringname!='' && (!$bUrlParamIsArray || !$bRestrictToString))
@@ -1630,16 +1500,15 @@ function sendCacheHeaders()
 }
 
 /**
-* @param type $iSurveyID The Survey ID
-* @param type $sFieldCode Field code of the particular field
-* @param type $sValue The stored response value
-* @param object $oLanguage Initialized limesurvey_lang object for the resulting response data
+* @param integer $iSurveyID The Survey ID
+* @param string $sFieldCode Field code of the particular field
+* @param string $sValue The stored response value
+* @param string $sLanguage Initialized limesurvey_lang object for the resulting response data
 * @return string
 */
-function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
+function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 {
     if ($sValue==null || $sValue=='') return '';
-    $sLanguage = $oLanguage->langcode;
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
     if (strpos($sFieldCode, "{$iSurveyID}X")===0) //Only check if it looks like a real fieldcode
@@ -1651,8 +1520,8 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             return false;
 
         // If it is a comment field there is nothing to convert here
-        if ($fields['aid']=='comment') return $sValue; 
-            
+        if ($fields['aid']=='comment') return $sValue;
+
         //Find out the question type
         $this_type = $fields['type'];
         switch($this_type)
@@ -1692,7 +1561,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 } // while
                 if ($sValue == "-oth-")
                 {
-                    $this_answer=$oLanguage->gT("Other");
+                    $this_answer=gT("Other",null,$sLanguage);
                 }
                 break;
             case "M":
@@ -1700,39 +1569,39 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
             case "P":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
+                case "Y": $this_answer=gT("Yes",null,$sLanguage); break;
             }
             break;
             case "Y":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-                case "N": $this_answer=$oLanguage->gT("No"); break;
-                default: $this_answer=$oLanguage->gT("No answer");
+                case "Y": $this_answer=gT("Yes",null,$sLanguage); break;
+                case "N": $this_answer=gT("No",null,$sLanguage); break;
+                default: $this_answer=gT("No answer",null,$sLanguage);
             }
             break;
             case "G":
             switch($sValue)
             {
-                case "M": $this_answer=$oLanguage->gT("Male"); break;
-                case "F": $this_answer=$oLanguage->gT("Female"); break;
-                default: $this_answer=$oLanguage->gT("No answer");
+                case "M": $this_answer=gT("Male",null,$sLanguage); break;
+                case "F": $this_answer=gT("Female",null,$sLanguage); break;
+                default: $this_answer=gT("No answer",null,$sLanguage);
             }
             break;
             case "C":
             switch($sValue)
             {
-                case "Y": $this_answer=$oLanguage->gT("Yes"); break;
-                case "N": $this_answer=$oLanguage->gT("No"); break;
-                case "U": $this_answer=$oLanguage->gT("Uncertain"); break;
+                case "Y": $this_answer=gT("Yes",null,$sLanguage); break;
+                case "N": $this_answer=gT("No",null,$sLanguage); break;
+                case "U": $this_answer=gT("Uncertain",null,$sLanguage); break;
             }
             break;
             case "E":
             switch($sValue)
             {
-                case "I": $this_answer=$oLanguage->gT("Increase"); break;
-                case "D": $this_answer=$oLanguage->gT("Decrease"); break;
-                case "S": $this_answer=$oLanguage->gT("Same"); break;
+                case "I": $this_answer=gT("Increase",null,$sLanguage); break;
+                case "D": $this_answer=gT("Decrease",null,$sLanguage); break;
+                case "S": $this_answer=gT("Same",null,$sLanguage); break;
             }
             break;
             case "F":
@@ -1754,12 +1623,12 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
                 } // while
                 if ($sValue == "-oth-")
                 {
-                    $this_answer=$oLanguage->gT("Other");
+                    $this_answer=gT("Other",null,$sLanguage);
                 }
                 break;
             case "|": //File upload
                 if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = $oLanguage->gT("File count");
+                    $this_answer = gT("File count");
                 } else {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue);
@@ -1800,256 +1669,45 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $oLanguage)
     }
 }
 
-/*function validateEmailAddress($email)
-{
-// Create the syntactical validation regular expression
-// Validate the syntax
-
-// see http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-$maxrootdomainlength = 6;
-return ( ! preg_match("/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,".$maxrootdomainlength."}))$/ix", $email)) ? FALSE : TRUE;
-}*/
-
-function validateEmailAddress($email){
-
-
-    $no_ws_ctl    = "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]";
-    $alpha        = "[\\x41-\\x5a\\x61-\\x7a]";
-    $digit        = "[\\x30-\\x39]";
-    $cr        = "\\x0d";
-    $lf        = "\\x0a";
-    $crlf        = "(?:$cr$lf)";
-
-
-    $obs_char    = "[\\x00-\\x09\\x0b\\x0c\\x0e-\\x7f]";
-    $obs_text    = "(?:$lf*$cr*(?:$obs_char$lf*$cr*)*)";
-    $text        = "(?:[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f]|$obs_text)";
-
-
-    $text        = "(?:$lf*$cr*$obs_char$lf*$cr*)";
-    $obs_qp        = "(?:\\x5c[\\x00-\\x7f])";
-    $quoted_pair    = "(?:\\x5c$text|$obs_qp)";
-
-
-    $wsp        = "[\\x20\\x09]";
-    $obs_fws    = "(?:$wsp+(?:$crlf$wsp+)*)";
-    $fws        = "(?:(?:(?:$wsp*$crlf)?$wsp+)|$obs_fws)";
-    $ctext        = "(?:$no_ws_ctl|[\\x21-\\x27\\x2A-\\x5b\\x5d-\\x7e])";
-    $ccontent    = "(?:$ctext|$quoted_pair)";
-    $comment    = "(?:\\x28(?:$fws?$ccontent)*$fws?\\x29)";
-    $cfws        = "(?:(?:$fws?$comment)*(?:$fws?$comment|$fws))";
-
-
-    $outer_ccontent_dull    = "(?:$fws?$ctext|$quoted_pair)";
-    $outer_ccontent_nest    = "(?:$fws?$comment)";
-    $outer_comment        = "(?:\\x28$outer_ccontent_dull*(?:$outer_ccontent_nest$outer_ccontent_dull*)+$fws?\\x29)";
-
-
-
-    $atext        = "(?:$alpha|$digit|[\\x21\\x23-\\x27\\x2a\\x2b\\x2d\\x2f\\x3d\\x3f\\x5e\\x5f\\x60\\x7b-\\x7e])";
-    $atext_domain     = "(?:$alpha|$digit|[\\x2b\\x2d\\x5f])";
-
-    $atom        = "(?:$cfws?(?:$atext)+$cfws?)";
-    $atom_domain       = "(?:$cfws?(?:$atext_domain)+$cfws?)";
-
-
-    $qtext        = "(?:$no_ws_ctl|[\\x21\\x23-\\x5b\\x5d-\\x7e])";
-    $qcontent    = "(?:$qtext|$quoted_pair)";
-    $quoted_string    = "(?:$cfws?\\x22(?:$fws?$qcontent)*$fws?\\x22$cfws?)";
-
-
-    $quoted_string    = "(?:$cfws?\\x22(?:$fws?$qcontent)+$fws?\\x22$cfws?)";
-    $word        = "(?:$atom|$quoted_string)";
-
-
-    $obs_local_part    = "(?:$word(?:\\x2e$word)*)";
-
-
-    $obs_domain    = "(?:$atom_domain(?:\\x2e$atom_domain)*)";
-
-    $dot_atom_text     = "(?:$atext+(?:\\x2e$atext+)*)";
-    $dot_atom_text_domain    = "(?:$atext_domain+(?:\\x2e$atext_domain+)*)";
-
-
-    $dot_atom           = "(?:$cfws?$dot_atom_text$cfws?)";
-    $dot_atom_domain   = "(?:$cfws?$dot_atom_text_domain$cfws?)";
-
-
-    $dtext        = "(?:$no_ws_ctl|[\\x21-\\x5a\\x5e-\\x7e])";
-    $dcontent    = "(?:$dtext|$quoted_pair)";
-    $domain_literal    = "(?:$cfws?\\x5b(?:$fws?$dcontent)*$fws?\\x5d$cfws?)";
-
-
-    $local_part    = "(($dot_atom)|($quoted_string)|($obs_local_part))";
-    $domain        = "(($dot_atom_domain)|($domain_literal)|($obs_domain))";
-    $addr_spec    = "$local_part\\x40$domain";
-
-
-    if (strlen($email) > 256) return FALSE;
-
-
-    $email = stripComments($outer_comment, $email, "(x)");
-
-
-
-    if (!preg_match("!^$addr_spec$!", $email, $m)){
-
-        return FALSE;
+/**
+* Validate an email address - also supports IDN email addresses
+* @returns True/false for valid/invalid
+*
+* @param mixed $sEmailAddress  Email address to check
+*/
+function validateEmailAddress($sEmailAddress){
+    require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
+    $oIdnConverter = new idna_convert();
+    $sEmailAddress=$oIdnConverter->encode($sEmailAddress);
+    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
+    if ($bResult!==false)
+    {
+        return true;
     }
-
-    $bits = array(
-    'local'            => isset($m[1]) ? $m[1] : '',
-    'local-atom'        => isset($m[2]) ? $m[2] : '',
-    'local-quoted'        => isset($m[3]) ? $m[3] : '',
-    'local-obs'        => isset($m[4]) ? $m[4] : '',
-    'domain'        => isset($m[5]) ? $m[5] : '',
-    'domain-atom'        => isset($m[6]) ? $m[6] : '',
-    'domain-literal'    => isset($m[7]) ? $m[7] : '',
-    'domain-obs'        => isset($m[8]) ? $m[8] : '',
-    );
-
-
-
-    $bits['local']    = stripComments($comment, $bits['local']);
-    $bits['domain']    = stripComments($comment, $bits['domain']);
-
-
-
-
-    if (strlen($bits['local']) > 64) return FALSE;
-    if (strlen($bits['domain']) > 255) return FALSE;
-
-
-
-    if (strlen($bits['domain-literal'])){
-
-        $Snum            = "(\d{1,3})";
-        $IPv4_address_literal    = "$Snum\.$Snum\.$Snum\.$Snum";
-
-        $IPv6_hex        = "(?:[0-9a-fA-F]{1,4})";
-
-        $IPv6_full        = "IPv6\:$IPv6_hex(:?\:$IPv6_hex){7}";
-
-        $IPv6_comp_part        = "(?:$IPv6_hex(?:\:$IPv6_hex){0,5})?";
-        $IPv6_comp        = "IPv6\:($IPv6_comp_part\:\:$IPv6_comp_part)";
-
-        $IPv6v4_full        = "IPv6\:$IPv6_hex(?:\:$IPv6_hex){5}\:$IPv4_address_literal";
-
-        $IPv6v4_comp_part    = "$IPv6_hex(?:\:$IPv6_hex){0,3}";
-        $IPv6v4_comp        = "IPv6\:((?:$IPv6v4_comp_part)?\:\:(?:$IPv6v4_comp_part\:)?)$IPv4_address_literal";
-
-
-
-        if (preg_match("!^\[$IPv4_address_literal\]$!", $bits['domain'], $m)){
-
-            if (intval($m[1]) > 255) return FALSE;
-            if (intval($m[2]) > 255) return FALSE;
-            if (intval($m[3]) > 255) return FALSE;
-            if (intval($m[4]) > 255) return FALSE;
-
-        }else{
-
-
-            while (1){
-
-                if (preg_match("!^\[$IPv6_full\]$!", $bits['domain'])){
-                    break;
-                }
-
-                if (preg_match("!^\[$IPv6_comp\]$!", $bits['domain'], $m)){
-                    list($a, $b) = explode('::', $m[1]);
-                    $folded = (strlen($a) && strlen($b)) ? "$a:$b" : "$a$b";
-                    $groups = explode(':', $folded);
-                    if (count($groups) > 6) return FALSE;
-                    break;
-                }
-
-                if (preg_match("!^\[$IPv6v4_full\]$!", $bits['domain'], $m)){
-
-                    if (intval($m[1]) > 255) return FALSE;
-                    if (intval($m[2]) > 255) return FALSE;
-                    if (intval($m[3]) > 255) return FALSE;
-                    if (intval($m[4]) > 255) return FALSE;
-                    break;
-                }
-
-                if (preg_match("!^\[$IPv6v4_comp\]$!", $bits['domain'], $m)){
-                    list($a, $b) = explode('::', $m[1]);
-                    $b = substr($b, 0, -1); # remove the trailing colon before the IPv4 address
-                    $folded = (strlen($a) && strlen($b)) ? "$a:$b" : "$a$b";
-                    $groups = explode(':', $folded);
-                    if (count($groups) > 4) return FALSE;
-                    break;
-                }
-
-                return FALSE;
-            }
-        }
-    }else{
-
-
-        $labels = explode('.', $bits['domain']);
-
-
-        if (count($labels) == 1) return FALSE;
-
-
-        foreach ($labels as $label){
-
-            if (strlen($label) > 63) return FALSE;
-            if (substr($label, 0, 1) == '-') return FALSE;
-            if (substr($label, -1) == '-') return FALSE;
-        }
-
-        if (preg_match('!^[0-9]+$!', array_pop($labels))) return FALSE;
-    }
-
-
-    return TRUE;
+    return false;
 }
 
-##################################################################################
-
-function stripComments($comment, $email, $replace=''){
-
-    while (1){
-        $new = preg_replace("!$comment!", $replace, $email);
-        if (strlen($new) == strlen($email)){
-            return $email;
-        }
-        $email = $new;
-    }
+/**
+* Validate an list of email addresses - either as array or as semicolon-limited text
+* @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+*
+* @param mixed $sEmailAddresses  Email address to check
+*/
+function validateEmailAddresses($aEmailAddressList){
+  $aOutList=false;
+  if (!is_array($aEmailAddressList))
+  {
+     $aEmailAddressList=explode(';',$aEmailAddressList);
+  }
+  foreach ($aEmailAddressList as $sEmailAddress)
+  {
+      $sEmailAddress= trim($sEmailAddress);
+      if (validateEmailAddress($sEmailAddress)){
+         $aOutList=$sEmailAddress;
+      }
+  }
+  return $aOutList;
 }
-
-
-function validateTemplateDir($sTemplateName)
-{
-    $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-    $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');
-    if (is_dir("$usertemplaterootdir/{$sTemplateName}/"))
-    {
-        return $sTemplateName;
-    }
-    elseif (is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
-    {
-        return $sTemplateName;
-    }
-    elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
-    {
-        return $sDefaultTemplate;
-    }
-    elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
-    {
-        return $sDefaultTemplate;
-    }
-    else
-    {
-        return 'default';
-    }
-}
-
-
 
 /**
  *This functions generates a a summary containing the SGQA for questions of a survey, enriched with options per question
@@ -2086,7 +1744,7 @@ function validateTemplateDir($sTemplateName)
                     break;
                 case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
                 case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-                case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+                case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
                 case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
                 case "F": // FlEXIBLE ARRAY
                 case "H": // ARRAY (By Column)
@@ -2110,7 +1768,7 @@ function validateTemplateDir($sTemplateName)
                 case ";":  //ARRAY (Multi Flex) (Text)
                 case ":":  //ARRAY (Multi Flex) (Numbers)
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 0", 'question_order');
-                   
+
                     foreach($result as $row)
                     {
                         $fresult = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[qid] AND language = '{$sLanguage}' AND scale_id = 1", 'question_order');
@@ -2196,12 +1854,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
-    $clang = new Limesurvey_lang($sLanguage);
+    App()->setLanguage($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
         $fieldmap["id"]['title']="";
-        $fieldmap["id"]['question']=$clang->gT("Response ID");
+        $fieldmap["id"]['question']=gT("Response ID");
         $fieldmap["id"]['group_name']="";
     }
 
@@ -2209,7 +1867,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if ($style == "full")
     {
         $fieldmap["submitdate"]['title']="";
-        $fieldmap["submitdate"]['question']=$clang->gT("Date submitted");
+        $fieldmap["submitdate"]['question']=gT("Date submitted");
         $fieldmap["submitdate"]['group_name']="";
     }
 
@@ -2217,7 +1875,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if ($style == "full")
     {
         $fieldmap["lastpage"]['title']="";
-        $fieldmap["lastpage"]['question']=$clang->gT("Last page");
+        $fieldmap["lastpage"]['question']=gT("Last page");
         $fieldmap["lastpage"]['group_name']="";
     }
 
@@ -2225,15 +1883,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if ($style == "full")
     {
         $fieldmap["startlanguage"]['title']="";
-        $fieldmap["startlanguage"]['question']=$clang->gT("Start language");
+        $fieldmap["startlanguage"]['question']=gT("Start language");
         $fieldmap["startlanguage"]['group_name']="";
     }
-
-    // Select which question IDs have default values
-    $_aDefaultValues = DefaultValue::model()->with(array('question' => array('condition' => 'question.sid=' . $surveyid)))->findAll();
-    $aDefaultValues = array();
-    foreach ($_aDefaultValues as $k => $v)
-        $aDefaultValues[] = $v->qid;
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
@@ -2243,7 +1895,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($style == "full")
         {
             $fieldmap["token"]['title']="";
-            $fieldmap["token"]['question']=$clang->gT("Token");
+            $fieldmap["token"]['question']=gT("Token");
             $fieldmap["token"]['group_name']="";
         }
     }
@@ -2258,7 +1910,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($style == "full")
         {
             $fieldmap["startdate"]['title']="";
-            $fieldmap["startdate"]['question']=$clang->gT("Date started");
+            $fieldmap["startdate"]['question']=gT("Date started");
             $fieldmap["startdate"]['group_name']="";
         }
 
@@ -2271,7 +1923,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($style == "full")
         {
             $fieldmap["datestamp"]['title']="";
-            $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
+            $fieldmap["datestamp"]['question']=gT("Date last action");
             $fieldmap["datestamp"]['group_name']="";
         }
 
@@ -2287,7 +1939,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($style == "full")
         {
             $fieldmap["ipaddr"]['title']="";
-            $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
+            $fieldmap["ipaddr"]['question']=gT("IP address");
             $fieldmap["ipaddr"]['group_name']="";
         }
     }
@@ -2298,7 +1950,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if ($style == "full")
         {
             $fieldmap["refurl"]['title']="";
-            $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
+            $fieldmap["refurl"]['question']=gT("Referrer URL");
             $fieldmap["refurl"]['group_name']="";
         }
     }
@@ -2426,7 +2078,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         {
                             $fieldmap[$fieldname]['title']=$arow['title'];
                             $fieldmap[$fieldname]['question']=$arow['question'];
-                            $fieldmap[$fieldname]['subquestion']=$clang->gT("Other");
+                            $fieldmap[$fieldname]['subquestion']=gT("Other");
                             $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                             $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                             $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2454,7 +2106,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     {
                         $fieldmap[$fieldname]['title']=$arow['title'];
                         $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
+                        $fieldmap[$fieldname]['subquestion']=gT("Comment");
                         $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2513,6 +2165,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                         $fieldmap[$fieldname]['preg']=$arow['preg'];
                         $fieldmap[$fieldname]['answerList']=$answerList;
+                        $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                     }
                 }
             }
@@ -2532,12 +2185,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['question']=$arow['question'];
                     $fieldmap[$fieldname]['subquestion']=$abrow['question'];
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['scale']=$clang->gT('Scale 1');
+                    $fieldmap[$fieldname]['scale']=gT('Scale 1');
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                    $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
 
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
@@ -2549,12 +2203,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['question']=$arow['question'];
                     $fieldmap[$fieldname]['subquestion']=$abrow['question'];
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['scale']=$clang->gT('Scale 2');
+                    $fieldmap[$fieldname]['scale']=gT('Scale 2');
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                    // TODO SQrelevance for different scales? $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                 }
             }
         }
@@ -2574,7 +2229,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
                     $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=sprintf($clang->gT('Rank %s'),$i);
+                    $fieldmap[$fieldname]['subquestion']=sprintf(gT('Rank %s'),$i);
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2634,6 +2289,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
+
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                 'type'=>$arow['type'],
@@ -2654,6 +2310,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                     $fieldmap[$fieldname]['preg']=$arow['preg'];
+                    // get SQrelevance from DB
+                    $fieldmap[$fieldname]['SQrelevance']=$abrow['relevance'];
                     if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
                         $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
                     }
@@ -2667,7 +2325,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     {
                         $fieldmap[$fieldname]['title']=$arow['title'];
                         $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion']=$clang->gT('Comment');
+                        $fieldmap[$fieldname]['subquestion']=gT('Comment');
                         $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2686,7 +2344,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
                     $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['subquestion']=$clang->gT('Other');
+                    $fieldmap[$fieldname]['subquestion']=gT('Other');
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2704,7 +2362,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     {
                         $fieldmap[$fieldname]['title']=$arow['title'];
                         $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion']=$clang->gT('Other comment');
+                        $fieldmap[$fieldname]['subquestion']=gT('Other comment');
                         $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2718,6 +2376,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         if (isset($fieldmap[$fieldname]))
         {
+            //set question relevance (uses last SQ's relevance field for question relevance)
             $fieldmap[$fieldname]['relevance']=$arow['relevance'];
             $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
             $fieldmap[$fieldname]['questionSeq']=$questionSeq;
@@ -2768,7 +2427,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 * @return bool
 */
 function hasFileUploadQuestion($iSurveyID) {
-    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));    
+    $iCount = Question::model()->count( "sid=:surveyid AND parent_qid=0 AND type='|'", array(':surveyid' => $iSurveyID));
     return $iCount>0 ;
 }
 
@@ -2789,36 +2448,36 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
-    $clang = new Limesurvey_lang($sLanguage);
+    App()->setLanguage($sLanguage);
 
     //checks to see if fieldmap has already been built for this page.
-    if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+    if (isset($timingsFieldMap[$surveyid][$style][$sLanguage]) && $force_refresh==false) {
+        return $timingsFieldMap[$surveyid][$style][$sLanguage];
     }
 
     //do something
     $fields = createFieldMap($surveyid, $style, $force_refresh, $questionid, $sQuestionLanguage);
-    $fieldmap['interviewtime']=array('fieldname'=>'interviewtime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>$clang->gT('Total time'), 'title'=>'interviewtime');
+    $fieldmap['interviewtime']=array('fieldname'=>'interviewtime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>gT('Total time'), 'title'=>'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
             $fieldname="{$field['sid']}X{$field['gid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>'', 'aid'=>'', 'title'=>'groupTime'.$field['gid'], 'question'=>$clang->gT('Group time').": ".$field['group_name']);
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"page_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>'', 'aid'=>'', 'title'=>'groupTime'.$field['gid'], 'question'=>gT('Group time').": ".$field['group_name']);
             }
 
             // field for time spent on answering a question
             $fieldname="{$field['sid']}X{$field['gid']}X{$field['qid']}time";
             if (!isset($fieldmap[$fieldname]))
             {
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], 'aid'=>'', "title"=>$field['title'].'Time', "question"=>$clang->gT('Question time').": ".$field['title']);
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"answer_time", 'sid'=>$surveyid, "gid"=>$field['gid'], "group_name"=>$field['group_name'], "qid"=>$field['qid'], 'aid'=>'', "title"=>$field['title'].'Time', "question"=>gT('Question time').": ".$field['title']);
             }
         }
     }
 
-    $timingsFieldMap[$surveyid][$style][$clang->langcode] = $fieldmap;
-    return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+    $timingsFieldMap[$surveyid][$style][$sLanguage] = $fieldmap;
+    return $timingsFieldMap[$surveyid][$style][$sLanguage];
 }
 
 /**
@@ -3035,7 +2694,7 @@ function questionAttributes($returnByName=false)
     // Use some static
     static $qattributes=false;
     static $qat=false;
-    $clang = Yii::app()->lang;
+
 
     if (!$qattributes)
     {
@@ -3047,1179 +2706,1180 @@ function questionAttributes($returnByName=false)
         // If you insert a new attribute please do it in correct alphabetical order!
         // Please also list the new attribute in the function &TSVSurveyExport($sid) in em_manager_helper.php,
         // so your new attribute will not be "forgotten" when the survey is exported to Excel/CSV-format!
-
         $qattributes["alphasort"]=array(
         "types"=>"!LOWZ",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT("Sort the answer options alphabetically"),
-        "caption"=>$clang->gT('Sort answers alphabetically'));
+        "help"=>gT("Sort the answer options alphabetically"),
+        "caption"=>gT('Sort answers alphabetically'));
 
         $qattributes["answer_width"]=array(
         "types"=>"ABCEF1:;",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'integer',
         'min'=>'1',
         'max'=>'100',
-        "help"=>$clang->gT('Set the percentage width of the (sub-)question column (1-100)'),
-        "caption"=>$clang->gT('(Sub-)question width'));
+        "help"=>gT('Set the percentage width of the (sub-)question column (1-100)'),
+        "caption"=>gT('(Sub-)question width'));
 
         $qattributes["repeat_headings"]=array(
         "types"=>"F:1;",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'integer',
          'default'=>'',
-        "help"=>$clang->gT('Repeat headings every X subquestions (Set to 0 to deactivate heading repeat, deactivate minimum repeat headings from config).'),
-        "caption"=>$clang->gT('Repeat headers'));
+        "help"=>gT('Repeat headings every X subquestions (Set to 0 to deactivate heading repeat, deactivate minimum repeat headings from config).'),
+        "caption"=>gT('Repeat headers'));
 
         $qattributes["array_filter"]=array(
         "types"=>"1ABCEF:;MPLKQR",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."),
-        "caption"=>$clang->gT('Array filter'));
+        "help"=>gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."),
+        "caption"=>gT('Array filter'));
 
         $qattributes["array_filter_exclude"]=array(
         "types"=>"1ABCEF:;MPLKQR",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."),
-        "caption"=>$clang->gT('Array filter exclusion'));
+        "help"=>gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."),
+        "caption"=>gT('Array filter exclusion'));
 
         $qattributes["array_filter_style"]=array(
         "types"=>"1ABCEF:;MPLKQR",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('Hidden'),
-        1=>$clang->gT('Disabled')),
+        'options'=>array(0=>gT('Hidden'),
+        1=>gT('Disabled')),
         'default'=>0,
-        "help"=>$clang->gT("Specify how array-filtered sub-questions should be displayed"),
-        "caption"=>$clang->gT('Array filter style'));
+        "help"=>gT("Specify how array-filtered sub-questions should be displayed"),
+        "caption"=>gT('Array filter style'));
 
         $qattributes["assessment_value"]=array(
         "types"=>"MP",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>100,
         'default'=>'1',
         'inputtype'=>'integer',
-        "help"=>$clang->gT("If one of the subquestions is marked then for each marked subquestion this value is added as assessment."),
-        "caption"=>$clang->gT('Assessment value'));
+        "help"=>gT("If one of the subquestions is marked then for each marked subquestion this value is added as assessment."),
+        "caption"=>gT('Assessment value'));
 
         $qattributes["category_separator"]=array(
         "types"=>"!",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Category separator'),
-        "caption"=>$clang->gT('Category separator'));
+        "help"=>gT('Category separator'),
+        "caption"=>gT('Category separator'));
 
         $qattributes["code_filter"]=array(
         "types"=>"WZ",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Filter the available answers by this value'),
-        "caption"=>$clang->gT('Code filter'));
+        "help"=>gT('Filter the available answers by this value'),
+        "caption"=>gT('Code filter'));
 
         $qattributes["commented_checkbox"]=array(
         "types"=>"P",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>110,
         'inputtype'=>'singleselect',
         'options'=>array(
-            "allways"=>$clang->gT('No control on checkbox'),
-            "checked"=>$clang->gT('Checkbox is checked'),
-            "unchecked"=>$clang->gT('Checkbox is unchecked'),
+            "allways"=>gT('No control on checkbox'),
+            "checked"=>gT('Checkbox is checked'),
+            "unchecked"=>gT('Checkbox is unchecked'),
             ),
         'default' => "checked",
-        'help'=>$clang->gT('Choose when user can add a comment'),
-        'caption'=>$clang->gT('Comment only when'));
+        'help'=>gT('Choose when user can add a comment'),
+        'caption'=>gT('Comment only when'));
 
         $qattributes["commented_checkbox_auto"]=array(
         "types"=>"P",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>111,
         'inputtype'=>'singleselect',
         'options'=>array(
-            "0"=>$clang->gT('No'),
-            "1"=>$clang->gT('Yes'),
+            "0"=>gT('No'),
+            "1"=>gT('Yes'),
             ),
         'default' => "1",
-        'help'=>$clang->gT('Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).'),
-        'caption'=>$clang->gT('Remove text or uncheck checkbox automatically'));
+        'help'=>gT('Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).'),
+        'caption'=>gT('Remove text or uncheck checkbox automatically'));
 
         $qattributes["display_columns"]=array(
         "types"=>"LM",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'integer',
         'default'=>'1',
         'min'=>'1',
         'max'=>'100',
-        "help"=>$clang->gT('The answer options will be distributed across the number of columns set here'),
-        "caption"=>$clang->gT('Display columns'));
+        "help"=>gT('The answer options will be distributed across the number of columns set here'),
+        "caption"=>gT('Display columns'));
 
         $qattributes["display_rows"]=array(
         "types"=>"QSTU",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT('How many rows to display'),
-        "caption"=>$clang->gT('Display rows'));
+        "help"=>gT('How many rows to display'),
+        "caption"=>gT('Display rows'));
 
         $qattributes["dropdown_dates"]=array(
         "types"=>"D",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Use accessible dropdown boxes instead of calendar popup'),
-        "caption"=>$clang->gT('Display dropdown boxes'));
+        "help"=>gT('Use accessible dropdown boxes instead of calendar popup'),
+        "caption"=>gT('Display dropdown boxes'));
 
         $qattributes["date_min"]=array(
         "types"=>"D",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>110,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Minimum date selectable in calendar (YYYY-MM-DD). Only the year is used if dropdown boxes are selected.'),
-        "caption"=>$clang->gT('Minimum date'));
+        "help"=>gT('Minimum date selectable in calendar (YYYY-MM-DD). Only the year is used if dropdown boxes are selected.'),
+        "caption"=>gT('Minimum date'));
 
         $qattributes["date_max"]=array(
         "types"=>"D",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>111,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Maximum date selectable in calendar (YYYY-MM-DD). Only the year is used if dropdown boxes are selected.'),
-        "caption"=>$clang->gT('Maximum date'));
+        "help"=>gT('Maximum date selectable in calendar (YYYY-MM-DD). Only the year is used if dropdown boxes are selected.'),
+        "caption"=>gT('Maximum date'));
 
         $qattributes["dropdown_prepostfix"]=array(
         "types"=>"1",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>112,
         'inputtype'=>'text',
         'i18n'=>true,
-        "help"=>$clang->gT('Prefix|Suffix for dropdown lists'),
-        "caption"=>$clang->gT('Dropdown prefix/suffix'));
+        "help"=>gT('Prefix|Suffix for dropdown lists'),
+        "caption"=>gT('Dropdown prefix/suffix'));
 
         $qattributes["dropdown_separators"]=array(
         "types"=>"1",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>120,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Text shown on each subquestion row between both scales in dropdown mode'),
-        "caption"=>$clang->gT('Dropdown separator'));
+        "help"=>gT('Text shown on each subquestion row between both scales in dropdown mode'),
+        "caption"=>gT('Dropdown separator'));
 
         $qattributes["dualscale_headerA"]=array(
         "types"=>"1",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>110,
         'inputtype'=>'text',
         'i18n'=>true,
-        "help"=>$clang->gT('Enter a header text for the first scale'),
-        "caption"=>$clang->gT('Header for first scale'));
+        "help"=>gT('Enter a header text for the first scale'),
+        "caption"=>gT('Header for first scale'));
 
         $qattributes["dualscale_headerB"]=array(
         "types"=>"1",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>111,
         'inputtype'=>'text',
         'i18n'=>true,
-        "help"=>$clang->gT('Enter a header text for the second scale'),
-        "caption"=>$clang->gT('Header for second scale'));
+        "help"=>gT('Enter a header text for the second scale'),
+        "caption"=>gT('Header for second scale'));
 
         $qattributes["equals_num_value"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Multiple numeric inputs sum must equal this value'),
-        "caption"=>$clang->gT('Equals sum value'));
+        "help"=>gT('Multiple numeric inputs sum must equal this value'),
+        "caption"=>gT('Equals sum value'));
 
         $qattributes["em_validation_q"]=array(
         "types"=>":;ABCDEFKMNPQRSTU",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>200,
         'inputtype'=>'textarea',
-        "help"=>$clang->gT('Enter a boolean equation to validate the whole question.'),
-        "caption"=>$clang->gT('Question validation equation'));
+        "help"=>gT('Enter a boolean equation to validate the whole question.'),
+        "caption"=>gT('Question validation equation'));
 
         $qattributes["em_validation_q_tip"]=array(
         "types"=>":;ABCDEFKMNPQRSTU",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>210,
         'inputtype'=>'textarea',
-        "help"=>$clang->gT('This is a hint text that will be shown to the participant describing the question validation equation.'),
-        "caption"=>$clang->gT('Question validation tip'));
+        "help"=>gT('This is a hint text that will be shown to the participant describing the question validation equation.'),
+        "caption"=>gT('Question validation tip'));
 
         $qattributes["em_validation_sq"]=array(
         "types"=>";:KQSTUN",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>220,
         'inputtype'=>'textarea',
-        "help"=>$clang->gT('Enter a boolean equation to validate each sub-question.'),
-        "caption"=>$clang->gT('Sub-question validation equation'));
+        "help"=>gT('Enter a boolean equation to validate each sub-question.'),
+        "caption"=>gT('Sub-question validation equation'));
 
         $qattributes["em_validation_sq_tip"]=array(
         "types"=>";:KQSTUN",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>230,
         'inputtype'=>'textarea',
-        "help"=>$clang->gT('This is a tip shown to the participant describing the sub-question validation equation.'),
-        "caption"=>$clang->gT('Sub-question validation tip'));
+        "help"=>gT('This is a tip shown to the participant describing the sub-question validation equation.'),
+        "caption"=>gT('Sub-question validation tip'));
 
         $qattributes["exclude_all_others"]=array(
         "types"=>":ABCEFMPKQ",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>130,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semikolon.'),
-        "caption"=>$clang->gT('Exclusive option'));
+        "help"=>gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semikolon.'),
+        "caption"=>gT('Exclusive option'));
 
         $qattributes["exclude_all_others_auto"]=array(
         "types"=>"MP",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>131,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('If the participant marks all options, uncheck all and check the option set in the "Exclusive option" setting'),
-        "caption"=>$clang->gT('Auto-check exclusive option if all others are checked'));
+        "help"=>gT('If the participant marks all options, uncheck all and check the option set in the "Exclusive option" setting'),
+        "caption"=>gT('Auto-check exclusive option if all others are checked'));
 
         // Map Options
 
         $qattributes["location_city"]=array(
         "types"=>"S",
         'readonly_when_active'=>true,
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
         'default'=>0,
-        'options'=>array(0=>$clang->gT('Yes'),
-        1=>$clang->gT('No')),
-        "help"=>$clang->gT("Store the city?"),
-        "caption"=>$clang->gT("Save city"));
+        'options'=>array(0=>gT('Yes'),
+        1=>gT('No')),
+        "help"=>gT("Store the city?"),
+        "caption"=>gT("Save city"));
 
         $qattributes["location_state"]=array(
         "types"=>"S",
         'readonly_when_active'=>true,
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>100,
         'default'=>0,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('Yes'),
-        1=>$clang->gT('No')),
-        "help"=>$clang->gT("Store the state?"),
-        "caption"=>$clang->gT("Save state"));
+        'options'=>array(0=>gT('Yes'),
+        1=>gT('No')),
+        "help"=>gT("Store the state?"),
+        "caption"=>gT("Save state"));
 
         $qattributes["location_postal"]=array(
         "types"=>"S",
         'readonly_when_active'=>true,
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
         'default'=>0,
-        'options'=>array(0=>$clang->gT('Yes'),
-        1=>$clang->gT('No')),
-        "help"=>$clang->gT("Store the postal code?"),
-        "caption"=>$clang->gT("Save postal code"));
+        'options'=>array(0=>gT('Yes'),
+        1=>gT('No')),
+        "help"=>gT("Store the postal code?"),
+        "caption"=>gT("Save postal code"));
 
         $qattributes["location_country"]=array(
         "types"=>"S",
         'readonly_when_active'=>true,
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
         'default'=>0,
-        'options'=>array(0=>$clang->gT('Yes'),
-        1=>$clang->gT('No')),
-        "help"=>$clang->gT("Store the country?"),
-        "caption"=>$clang->gT("Save country"));
+        'options'=>array(0=>gT('Yes'),
+        1=>gT('No')),
+        "help"=>gT("Store the country?"),
+        "caption"=>gT("Save country"));
 
         $qattributes["statistics_showmap"]=array(
         "types"=>"S",
-        'category'=>$clang->gT('Statistics'),
+        'category'=>gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>100,
-        'options'=>array(1=>$clang->gT('Yes'), 0=>$clang->gT('No')),
-        'help'=>$clang->gT("Show a map in the statistics?"),
-        'caption'=>$clang->gT("Display map"),
+        'options'=>array(1=>gT('Yes'), 0=>gT('No')),
+        'help'=>gT("Show a map in the statistics?"),
+        'caption'=>gT("Display map"),
         'default'=>1
         );
 
         $qattributes["statistics_showgraph"]=array(
         'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-        'category'=>$clang->gT('Statistics'),
+        'category'=>gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>101,
-        'options'=>array(1=>$clang->gT('Yes'), 0=>$clang->gT('No')),
-        'help'=>$clang->gT("Display a chart in the statistics?"),
-        'caption'=>$clang->gT("Display chart"),
+        'options'=>array(1=>gT('Yes'), 0=>gT('No')),
+        'help'=>gT("Display a chart in the statistics?"),
+        'caption'=>gT("Display chart"),
         'default'=>1
         );
 
         $qattributes["statistics_graphtype"]=array(
         "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
-        'category'=>$clang->gT('Statistics'),
+        'category'=>gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>102,
-        'options'=>array(0=>$clang->gT('Bar chart'), 1=>$clang->gT('Pie chart')),
-        'help'=>$clang->gT("Select the type of chart to be displayed"),
-        'caption'=>$clang->gT("Chart type"),
+        'options'=>array(0=>gT('Bar chart'), 1=>gT('Pie chart')),
+        'help'=>gT("Select the type of chart to be displayed"),
+        'caption'=>gT("Chart type"),
         'default'=>0
         );
 
         $qattributes["location_mapservice"]=array(
         "types"=>"S",
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('Off'),
-        1=>$clang->gT('Google Maps')),
+        'options'=>array(0=>gT('Off'),
+            100=>gT('Open Layer (OpenStreetMap via mapquest)'),
+            1=>gT('Google Maps')
+        ),
         'default' => 0,
-        "help"=>$clang->gT("Activate this to show a map above the input field where the user can select a location"),
-        "caption"=>$clang->gT("Use mapping service"));
+        "help"=>gT("Activate this to show a map above the input field where the user can select a location"),
+        "caption"=>gT("Use mapping service"));
 
         $qattributes["location_mapwidth"]=array(
         "types"=>"S",
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>102,
         'inputtype'=>'text',
         'default'=>'500',
-        "help"=>$clang->gT("Width of the map in pixel"),
-        "caption"=>$clang->gT("Map width"));
+        "help"=>gT("Width of the map in pixel"),
+        "caption"=>gT("Map width"));
 
         $qattributes["location_mapheight"]=array(
         "types"=>"S",
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>103,
         'inputtype'=>'text',
         'default'=>'300',
-        "help"=>$clang->gT("Height of the map in pixel"),
-        "caption"=>$clang->gT("Map height"));
+        "help"=>gT("Height of the map in pixel"),
+        "caption"=>gT("Map height"));
 
         $qattributes["location_nodefaultfromip"]=array(
         "types"=>"S",
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>91,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('Yes'),
-        1=>$clang->gT('No')),
+        'options'=>array(0=>gT('Yes'),
+        1=>gT('No')),
         'default' => 0,
-        "help"=>$clang->gT("Get the default location using the user's IP address?"),
-        "caption"=>$clang->gT("IP as default location"));
+        "help"=>gT("Get the default location using the user's IP address?"),
+        "caption"=>gT("IP as default location"));
 
         $qattributes["location_defaultcoordinates"]=array(
         "types"=>"S",
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>101,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
-        "caption"=>$clang->gT('Default position'));
+        "help"=>gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
+        "caption"=>gT('Default position'));
 
         $qattributes["location_mapzoom"]=array(
         "types"=>"S",
-        'category'=>$clang->gT('Location'),
+        'category'=>gT('Location'),
         'sortorder'=>101,
         'inputtype'=>'text',
         'default'=>'11',
-        "help"=>$clang->gT("Map zoom level"),
-        "caption"=>$clang->gT("Zoom level"));
+        "help"=>gT("Map zoom level"),
+        "caption"=>gT("Zoom level"));
 
         // End Map Options
 
         $qattributes["hide_tip"]=array(
         "types"=>"15ABCDEFGHIKLMNOPQRSTUXY!:;|",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Hide the tip that is normally shown with a question'),
-        "caption"=>$clang->gT('Hide tip'));
+        "help"=>gT('Hide the tip that is normally shown with a question'),
+        "caption"=>gT('Hide tip'));
 
         $qattributes['hidden']=array(
         'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>101,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        'help'=>$clang->gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
-        'caption'=>$clang->gT('Always hide this question'));
+        'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
+        'caption'=>gT('Always hide this question'));
 
         $qattributes["max_answers"]=array(
         "types"=>"MPR1:;ABCEFKQ",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>11,
         'inputtype'=>'integer',
-        "help"=>$clang->gT('Limit the number of possible answers'),
-        "caption"=>$clang->gT('Maximum answers'));
+        "help"=>gT('Limit the number of possible answers'),
+        "caption"=>gT('Maximum answers'));
 
         $qattributes["max_num_value"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Maximum sum value of multiple numeric input'),
-        "caption"=>$clang->gT('Maximum sum value'));
+        "help"=>gT('Maximum sum value of multiple numeric input'),
+        "caption"=>gT('Maximum sum value'));
 
         $qattributes["max_num_value_n"]=array(
         "types"=>"NK",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>110,
         'inputtype'=>'integer',
-        "help"=>$clang->gT('Maximum value of the numeric input'),
-        "caption"=>$clang->gT('Maximum value'));
+        "help"=>gT('Maximum value of the numeric input'),
+        "caption"=>gT('Maximum value'));
 
         //    $qattributes["max_num_value_sgqa"]=array(
         //    "types"=>"K",
-        //    'category'=>$clang->gT('Logic'),
+        //    'category'=>gT('Logic'),
         //    'sortorder'=>100,
         //    'inputtype'=>'text',
-        //    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
-        //    "caption"=>$clang->gT('Max value from SGQA'));
+        //    "help"=>gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
+        //    "caption"=>gT('Max value from SGQA'));
 
         $qattributes["maximum_chars"]=array(
         "types"=>"STUNQK:;",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Maximum characters allowed'),
-        "caption"=>$clang->gT('Maximum characters'));
+        "help"=>gT('Maximum characters allowed'),
+        "caption"=>gT('Maximum characters'));
 
         $qattributes["min_answers"]=array(
         "types"=>"MPR1:;ABCEFKQ",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>10,
         'inputtype'=>'integer',
-        "help"=>$clang->gT('Ensure a minimum number of possible answers (0=No limit)'),
-        "caption"=>$clang->gT('Minimum answers'));
+        "help"=>gT('Ensure a minimum number of possible answers (0=No limit)'),
+        "caption"=>gT('Minimum answers'));
 
         $qattributes["min_num_value"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT('The sum of the multiple numeric inputs must be greater than this value'),
-        "caption"=>$clang->gT('Minimum sum value'));
+        "help"=>gT('The sum of the multiple numeric inputs must be greater than this value'),
+        "caption"=>gT('Minimum sum value'));
 
         $qattributes["min_num_value_n"]=array(
         "types"=>"NK",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         'inputtype'=>'integer',
-        "help"=>$clang->gT('Minimum value of the numeric input'),
-        "caption"=>$clang->gT('Minimum value'));
+        "help"=>gT('Minimum value of the numeric input'),
+        "caption"=>gT('Minimum value'));
 
         //    $qattributes["min_num_value_sgqa"]=array(
         //    "types"=>"K",
-        //    'category'=>$clang->gT('Logic'),
+        //    'category'=>gT('Logic'),
         //    'sortorder'=>100,
         //    'inputtype'=>'text',
-        //    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
-        //    "caption"=>$clang->gT('Minimum value from SGQA'));
+        //    "help"=>gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
+        //    "caption"=>gT('Minimum value from SGQA'));
 
         $qattributes["multiflexible_max"]=array(
         "types"=>":",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>112,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Maximum value for array(mult-flexible) question type'),
-        "caption"=>$clang->gT('Maximum value'));
+        "help"=>gT('Maximum value for array(mult-flexible) question type'),
+        "caption"=>gT('Maximum value'));
 
         $qattributes["multiflexible_min"]=array(
         "types"=>":",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>110,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Minimum value for array(multi-flexible) question type'),
-        "caption"=>$clang->gT('Minimum value'));
+        "help"=>gT('Minimum value for array(multi-flexible) question type'),
+        "caption"=>gT('Minimum value'));
 
         $qattributes["multiflexible_step"]=array(
         "types"=>":",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>111,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Step value'),
-        "caption"=>$clang->gT('Step value'));
+        "help"=>gT('Step value'),
+        "caption"=>gT('Step value'));
 
         $qattributes["multiflexible_checkbox"]=array(
         "types"=>":",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Use checkbox layout'),
-        "caption"=>$clang->gT('Checkbox layout'));
+        "help"=>gT('Use checkbox layout'),
+        "caption"=>gT('Checkbox layout'));
 
         $qattributes["reverse"]=array(
         "types"=>"D:",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Present answer options in reverse order'),
-        "caption"=>$clang->gT('Reverse answer order'));
+        "help"=>gT('Present answer options in reverse order'),
+        "caption"=>gT('Reverse answer order'));
 
         //    $qattributes["num_value_equals_sgqa"]=array(
         //    "types"=>"K",
-        //    'category'=>$clang->gT('Logic'),
+        //    'category'=>gT('Logic'),
         //    'sortorder'=>100,
         //    'inputtype'=>'text',
-        //    "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
-        //    "caption"=>$clang->gT('Value equals SGQA'));
+        //    "help"=>gT('SGQA identifier to use total of previous question as total for this question'),
+        //    "caption"=>gT('Value equals SGQA'));
 
         $qattributes["num_value_int_only"]=array(
         "types"=>"N",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
         'options'=>array(
-        0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Restrict input to integer values'),
-        "caption"=>$clang->gT('Integer only'));
+        "help"=>gT('Restrict input to integer values'),
+        "caption"=>gT('Integer only'));
 
         $qattributes["numbers_only"]=array(
         "types"=>"Q;S*",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>150,
         'inputtype'=>'singleselect',
         'options'=>array(
-        0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')
+        0=>gT('No'),
+        1=>gT('Yes')
         ),
         'default'=>0,
-        "help"=>$clang->gT('Allow only numerical input'),
-        "caption"=>$clang->gT('Numbers only')
+        "help"=>gT('Allow only numerical input'),
+        "caption"=>gT('Numbers only')
         );
 
         $qattributes['show_totals'] =    array(
         'types' =>    ';',
-        'category' =>    $clang->gT('Other'),
+        'category' =>    gT('Other'),
         'sortorder' =>    151,
         'inputtype'    => 'singleselect',
         'options' =>    array(
-        'X' =>    $clang->gT('Off'),
-        'R' =>    $clang->gT('Rows'),
-        'C' =>    $clang->gT('Columns'),
-        'B' =>    $clang->gT('Both rows and columns')
+        'X' =>    gT('Off'),
+        'R' =>    gT('Rows'),
+        'C' =>    gT('Columns'),
+        'B' =>    gT('Both rows and columns')
         ),
         'default' =>    'X',
-        'help' =>    $clang->gT('Show totals for either rows, columns or both rows and columns'),
-        'caption' =>    $clang->gT('Show totals for')
+        'help' =>    gT('Show totals for either rows, columns or both rows and columns'),
+        'caption' =>    gT('Show totals for')
         );
 
         $qattributes['show_grand_total'] =    array(
         'types' =>    ';',
-        'category' =>    $clang->gT('Other'),
+        'category' =>    gT('Other'),
         'sortorder' =>    152,
         'inputtype' =>    'singleselect',
         'options' =>    array(
-        0 =>    $clang->gT('No'),
-        1 =>    $clang->gT('Yes')
+        0 =>    gT('No'),
+        1 =>    gT('Yes')
         ),
         'default' =>    0,
-        'help' =>    $clang->gT('Show grand total for either columns or rows'),
-        'caption' =>    $clang->gT('Show grand total')
+        'help' =>    gT('Show grand total for either columns or rows'),
+        'caption' =>    gT('Show grand total')
         );
 
         $qattributes["input_boxes"]=array(
         "types"=>":",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT("Present as text input boxes instead of dropdown lists"),
-        "caption"=>$clang->gT("Text inputs"));
+        "help"=>gT("Present as text input boxes instead of dropdown lists"),
+        "caption"=>gT("Text inputs"));
 
         $qattributes["other_comment_mandatory"]=array(
         "types"=>"PLW!Z",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT("Make the 'Other:' comment field mandatory when the 'Other:' option is active"),
-        "caption"=>$clang->gT("'Other:' comment mandatory"));
+        "help"=>gT("Make the 'Other:' comment field mandatory when the 'Other:' option is active"),
+        "caption"=>gT("'Other:' comment mandatory"));
 
         $qattributes["other_numbers_only"]=array(
         "types"=>"LMP",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT("Allow only numerical input for 'Other' text"),
-        "caption"=>$clang->gT("Numbers only for 'Other'"));
+        "help"=>gT("Allow only numerical input for 'Other' text"),
+        "caption"=>gT("Numbers only for 'Other'"));
 
         $qattributes["other_replace_text"]=array(
         "types"=>"LMPWZ!",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'text',
         'i18n'=>true,
-        "help"=>$clang->gT("Replaces the label of the 'Other:' answer option with a custom text"),
-        "caption"=>$clang->gT("Label for 'Other:' option"));
+        "help"=>gT("Replaces the label of the 'Other:' answer option with a custom text"),
+        "caption"=>gT("Label for 'Other:' option"));
 
         $qattributes["page_break"]=array(
         "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to Yes.'),
-        "caption"=>$clang->gT('Insert page break in printable view'));
+        "help"=>gT('Insert a page break before this question in printable view by setting this to Yes.'),
+        "caption"=>gT('Insert page break in printable view'));
 
         $qattributes["prefix"]=array(
         "types"=>"KNQS",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>10,
         'inputtype'=>'text',
         'i18n'=>true,
-        "help"=>$clang->gT('Add a prefix to the answer field'),
-        "caption"=>$clang->gT('Answer prefix'));
+        "help"=>gT('Add a prefix to the answer field'),
+        "caption"=>gT('Answer prefix'));
 
         $qattributes["printable_help"]=array(
         "types"=>"15ABCDEFGHKLMNOPRWYZ!:*",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>201,
         "inputtype"=>"text",
         'i18n'=>true,
         'default'=>"",
-        "help"=>$clang->gT('In the printable version replace the relevance equation with this explanation text.'),
-        "caption"=>$clang->gT("Relevance help for printable survey"));    
-        
+        "help"=>gT('In the printable version replace the relevance equation with this explanation text.'),
+        "caption"=>gT("Relevance help for printable survey"));
+
         $qattributes["public_statistics"]=array(
         "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
-        'category'=>$clang->gT('Statistics'),
+        'category'=>gT('Statistics'),
         'sortorder'=>80,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Show statistics of this question in the public statistics page'),
-        "caption"=>$clang->gT('Show in public statistics'));
+        "help"=>gT('Show statistics of this question in the public statistics page'),
+        "caption"=>gT('Show in public statistics'));
 
         $qattributes["random_order"]=array(
         "types"=>"!ABCEFHKLMOPQRWZ1:;",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('Off'),
-        1=>$clang->gT('Randomize on each page load')
-        //,2=>$clang->gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
+        'options'=>array(0=>gT('Off'),
+        1=>gT('Randomize on each page load')
+        //,2=>gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
         ),
         'default'=>0,
-        "help"=>$clang->gT('Present subquestions/answer options in random order'),
-        "caption"=>$clang->gT('Random order'));
+        "help"=>gT('Present subquestions/answer options in random order'),
+        "caption"=>gT('Random order'));
 
         /*
         $qattributes['relevance']=array(
         'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>1,
         'inputtype'=>'text',
         'default'=>'1',
-        'help'=>$clang->gT('The relevance equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
+        'help'=>gT('The relevance equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
         . '  The relevance equation can be as complex as you like, using any combination of mathematical operators, nested parentheses,'
         . ' any variable or token that has already been set, and any of more than 50 functions.  It is parsed by the ExpressionManager.'),
-        'caption'=>$clang->gT('Relevance equation'));
+        'caption'=>gT('Relevance equation'));
         */
 
         $qattributes["showpopups"]=array(
         "types"=>"R",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>110,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>1,
-        "caption"=>$clang->gT('Show javascript alert'),
-        "help"=>$clang->gT('Show an alert if answers exceeds the number of max answers'));
+        "caption"=>gT('Show javascript alert'),
+        "help"=>gT('Show an alert if answers exceeds the number of max answers'));
         $qattributes["samechoiceheight"]=array(
         "types"=>"R",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>120,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>1,
-        "caption"=>$clang->gT('Same height for all answer options'),
-        "help"=>$clang->gT('Force each answer option to have the same height'));
+        "caption"=>gT('Same height for all answer options'),
+        "help"=>gT('Force each answer option to have the same height'));
         $qattributes["samelistheight"]=array(
         "types"=>"R",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>121,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>1,
-        "caption"=>$clang->gT('Same height for lists'),
-        "help"=>$clang->gT('Force the choice list and the rank list to have the same height'));
+        "caption"=>gT('Same height for lists'),
+        "help"=>gT('Force the choice list and the rank list to have the same height'));
 
         $qattributes["parent_order"]=array(
         "types"=>":",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "caption"=>$clang->gT('Get order from previous question'),
-        "help"=>$clang->gT('Enter question ID to get subquestion order from a previous question'));
+        "caption"=>gT('Get order from previous question'),
+        "help"=>gT('Enter question ID to get subquestion order from a previous question'));
 
         $qattributes["slider_layout"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>1,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Use slider layout'),
-        "caption"=>$clang->gT('Use slider layout'));
+        "help"=>gT('Use slider layout'),
+        "caption"=>gT('Use slider layout'));
 
         $qattributes["slider_min"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>10,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Slider minimum value'),
-        "caption"=>$clang->gT('Slider minimum value'));
+        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
+        "caption"=>gT('Slider minimum value'));
 
         $qattributes["slider_max"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>11,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Slider maximum value'),
-        "caption"=>$clang->gT('Slider maximum value'));
+        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
+        "caption"=>gT('Slider maximum value'));
 
         $qattributes["slider_accuracy"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>30,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Slider accuracy'),
-        "caption"=>$clang->gT('Slider accuracy'));
+        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
+        "caption"=>gT('Slider accuracy'));
 
         $qattributes["slider_default"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>50,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Slider start as this value (this will set the initial value).'),
-        "caption"=>$clang->gT('Slider initial value'));
+        "help"=>gT('Slider start as this value (this will set the initial value). You can use Expression manager, but this must be a number before showing the page.'),
+        "caption"=>gT('Slider initial value'));
 
         $qattributes["slider_middlestart"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>40,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
-        "caption"=>$clang->gT('Slider starts at the middle position'));
+        "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
+        "caption"=>gT('Slider starts at the middle position'));
 
         $qattributes["slider_rating"]=array(
         "types"=>"5",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
         'options'=>array(
-        0=>$clang->gT('No'),
-        1=>$clang->gT('Yes - stars'),
-        2=>$clang->gT('Yes - slider with emoticon'),
+        0=>gT('No'),
+        1=>gT('Yes - stars'),
+        2=>gT('Yes - slider with emoticon'),
         ),
         'default'=>0,
-        "help"=>$clang->gT('Use slider layout'),
-        "caption"=>$clang->gT('Use slider layout'));
+        "help"=>gT('Use slider layout'),
+        "caption"=>gT('Use slider layout'));
 
         $qattributes["slider_reset"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>50,
         'inputtype'=>'singleselect',
         'options'=>array(
-        0=>$clang->gT('No'),
-        1=>$clang->gT('Yes'),
+        0=>gT('No'),
+        1=>gT('Yes'),
         ),
         'default'=>0,
-        "help"=>$clang->gT('Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.'),
-        "caption"=>$clang->gT('Allow reset the slider'));
+        "help"=>gT('Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.'),
+        "caption"=>gT('Allow reset the slider'));
 
         $qattributes["slider_showminmax"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Display min and max value under the slider'),
-        "caption"=>$clang->gT('Display slider min and max value'));
+        "help"=>gT('Display min and max value under the slider'),
+        "caption"=>gT('Display slider min and max value'));
 
         $qattributes["slider_separator"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Slider'),
+        'category'=>gT('Slider'),
         'sortorder'=>110,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Answer|Left-slider-text|Right-slider-text separator character'),
-        "caption"=>$clang->gT('Slider left/right text separator'));
+        "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
+        "caption"=>gT('Slider left/right text separator'));
 
         $qattributes["suffix"]=array(
         "types"=>"KNQS",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>11,
         'inputtype'=>'text',
         'i18n'=>true,
-        "help"=>$clang->gT('Add a suffix to the answer field'),
-        "caption"=>$clang->gT('Answer suffix'));
+        "help"=>gT('Add a suffix to the answer field'),
+        "caption"=>gT('Answer suffix'));
 
         $qattributes["text_input_width"]=array(
         "types"=>"KNSTUQ;",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'text',
-        "help"=>$clang->gT('Width of text input box'),
-        "caption"=>$clang->gT('Input box width'));
+        "help"=>gT('Width of text input box'),
+        "caption"=>gT('Input box width'));
 
         $qattributes["use_dropdown"]=array(
         "types"=>"1FO",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>112,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT('Present dropdown control(s) instead of list of radio buttons'),
-        "caption"=>$clang->gT('Use dropdown presentation'));
+        "help"=>gT('Present dropdown control(s) instead of list of radio buttons'),
+        "caption"=>gT('Use dropdown presentation'));
 
 
         $qattributes["dropdown_size"]=array(
         "types"=>"!",   // TODO add these later?  "1F",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>200,
         'inputtype'=>'text',
         'default'=>0,
-        "help"=>$clang->gT('For list dropdown boxes, show up to this many rows'),
-        "caption"=>$clang->gT('Height of dropdown'));
+        "help"=>gT('For list dropdown boxes, show up to this many rows'),
+        "caption"=>gT('Height of dropdown'));
 
         $qattributes["dropdown_prefix"]=array(
         "types"=>"!",   // TODO add these later?  "1F",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>201,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('None'),
-        1=>$clang->gT('Order - like 3)'),
+        'options'=>array(0=>gT('None'),
+        1=>gT('Order - like 3)'),
         ),
         'default'=>0,
-        "help"=>$clang->gT('Accelerator keys for list items'),
-        "caption"=>$clang->gT('Prefix for list items'));
+        "help"=>gT('Accelerator keys for list items'),
+        "caption"=>gT('Prefix for list items'));
 
         $qattributes["scale_export"]=array(
         "types"=>"CEFGHLMOPWYZ1!:*",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
-        'options'=>array(0=>$clang->gT('Default'),
-        1=>$clang->gT('Nominal'),
-        2=>$clang->gT('Ordinal'),
-        3=>$clang->gT('Scale')),
+        'options'=>array(0=>gT('Default'),
+        1=>gT('Nominal'),
+        2=>gT('Ordinal'),
+        3=>gT('Scale')),
         'default'=>0,
-        "help"=>$clang->gT("Set a specific SPSS export scale type for this question"),
-        "caption"=>$clang->gT('SPSS export scale type'));
+        "help"=>gT("Set a specific SPSS export scale type for this question"),
+        "caption"=>gT('SPSS export scale type'));
 
         $qattributes["choice_title"]=array(
         "types"=>"R",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>200,
         "inputtype"=>"text",
         'i18n'=>true,
         'default'=>"",
-        "help"=>sprintf($clang->gT("Replace choice header (default: \"%s\")",'js'),$clang->gT("Your Choices")),
-        "caption"=>$clang->gT("Choice header"));
+        "help"=>sprintf(gT("Replace choice header (default: \"%s\")",'js'),gT("Your Choices")),
+        "caption"=>gT("Choice header"));
 
         $qattributes["rank_title"]=array(
         "types"=>"R",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>201,
         "inputtype"=>"text",
         'i18n'=>true,
         'default'=>"",
-        "help"=>sprintf($clang->gT("Replace rank header (default: \"%s\")",'js'),$clang->gT("Your Ranking")),
-        "caption"=>$clang->gT("Rank header"));
+        "help"=>sprintf(gT("Replace rank header (default: \"%s\")",'js'),gT("Your Ranking")),
+        "caption"=>gT("Rank header"));
 
         //Timer attributes
         $qattributes["time_limit"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>90,
         "inputtype"=>"integer",
-        "help"=>$clang->gT("Limit time to answer question (in seconds)"),
-        "caption"=>$clang->gT("Time limit"));
+        "help"=>gT("Limit time to answer question (in seconds)"),
+        "caption"=>gT("Time limit"));
 
         $qattributes["time_limit_action"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>92,
         'inputtype'=>'singleselect',
-        'options'=>array(1=>$clang->gT('Warn and move on'),
-        2=>$clang->gT('Move on without warning'),
-        3=>$clang->gT('Disable only')),
+        'options'=>array(1=>gT('Warn and move on'),
+        2=>gT('Move on without warning'),
+        3=>gT('Disable only')),
         "default" => 1,
-        "help"=>$clang->gT("Action to perform when time limit is up"),
-        "caption"=>$clang->gT("Time limit action"));
+        "help"=>gT("Action to perform when time limit is up"),
+        "caption"=>gT("Time limit action"));
 
         $qattributes["time_limit_disable_next"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>94,
         "inputtype"=>"singleselect",
         'default'=>0,
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
-        "help"=>$clang->gT("Disable the next button until time limit expires"),
-        "caption"=>$clang->gT("Time limit disable next"));
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
+        "help"=>gT("Disable the next button until time limit expires"),
+        "caption"=>gT("Time limit disable next"));
 
         $qattributes["time_limit_disable_prev"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>96,
         "inputtype"=>"singleselect",
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>0,
-        "help"=>$clang->gT("Disable the prev button until the time limit expires"),
-        "caption"=>$clang->gT("Time limit disable prev"));
+        "help"=>gT("Disable the prev button until the time limit expires"),
+        "caption"=>gT("Time limit disable prev"));
 
         $qattributes["time_limit_countdown_message"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>98,
         "inputtype"=>"textarea",
         'i18n'=>true,
-        "help"=>$clang->gT("The text message that displays in the countdown timer during the countdown"),
-        "caption"=>$clang->gT("Time limit countdown message"));
+        "help"=>gT("The text message that displays in the countdown timer during the countdown"),
+        "caption"=>gT("Time limit countdown message"));
 
         $qattributes["time_limit_timer_style"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>100,
         "inputtype"=>"textarea",
-        "help"=>$clang->gT("CSS Style for the message that displays in the countdown timer during the countdown"),
-        "caption"=>$clang->gT("Time limit timer CSS style"));
+        "help"=>gT("CSS Style for the message that displays in the countdown timer during the countdown"),
+        "caption"=>gT("Time limit timer CSS style"));
 
         $qattributes["time_limit_message_delay"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>102,
         "inputtype"=>"integer",
-        "help"=>$clang->gT("Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"),
-        "caption"=>$clang->gT("Time limit expiry message display time"));
+        "help"=>gT("Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"),
+        "caption"=>gT("Time limit expiry message display time"));
 
         $qattributes["time_limit_message"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>104,
         "inputtype"=>"textarea",
         'i18n'=>true,
-        "help"=>$clang->gT("The message to display when the time limit has expired (a default message will display if this setting is left blank)"),
-        "caption"=>$clang->gT("Time limit expiry message"));
+        "help"=>gT("The message to display when the time limit has expired (a default message will display if this setting is left blank)"),
+        "caption"=>gT("Time limit expiry message"));
 
         $qattributes["time_limit_message_style"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>106,
         "inputtype"=>"textarea",
-        "help"=>$clang->gT("CSS style for the 'time limit expiry message'"),
-        "caption"=>$clang->gT("Time limit message CSS style"));
+        "help"=>gT("CSS style for the 'time limit expiry message'"),
+        "caption"=>gT("Time limit message CSS style"));
 
         $qattributes["time_limit_warning"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>108,
         "inputtype"=>"integer",
-        "help"=>$clang->gT("Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
-        "caption"=>$clang->gT("1st time limit warning message timer"));
+        "help"=>gT("Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
+        "caption"=>gT("1st time limit warning message timer"));
 
         $qattributes["time_limit_warning_display_time"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>110,
         "inputtype"=>"integer",
-        "help"=>$clang->gT("The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
-        "caption"=>$clang->gT("1st time limit warning message display time"));
+        "help"=>gT("The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
+        "caption"=>gT("1st time limit warning message display time"));
 
         $qattributes["time_limit_warning_message"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>112,
         "inputtype"=>"textarea",
         'i18n'=>true,
-        "help"=>$clang->gT("The message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
-        "caption"=>$clang->gT("1st time limit warning message"));
+        "help"=>gT("The message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
+        "caption"=>gT("1st time limit warning message"));
 
         $qattributes["time_limit_warning_style"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>114,
         "inputtype"=>"textarea",
-        "help"=>$clang->gT("CSS style used when the 'time limit warning' message is displayed"),
-        "caption"=>$clang->gT("1st time limit warning CSS style"));
+        "help"=>gT("CSS style used when the 'time limit warning' message is displayed"),
+        "caption"=>gT("1st time limit warning CSS style"));
 
         $qattributes["time_limit_warning_2"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>116,
         "inputtype"=>"integer",
-        "help"=>$clang->gT("Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
-        "caption"=>$clang->gT("2nd time limit warning message timer"));
+        "help"=>gT("Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
+        "caption"=>gT("2nd time limit warning message timer"));
 
         $qattributes["time_limit_warning_2_display_time"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>118,
         "inputtype"=>"integer",
-        "help"=>$clang->gT("The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
-        "caption"=>$clang->gT("2nd time limit warning message display time"));
+        "help"=>gT("The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
+        "caption"=>gT("2nd time limit warning message display time"));
 
         $qattributes["time_limit_warning_2_message"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>120,
         "inputtype"=>"textarea",
         'i18n'=>true,
-        "help"=>$clang->gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
-        "caption"=>$clang->gT("2nd time limit warning message"));
+        "help"=>gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
+        "caption"=>gT("2nd time limit warning message"));
 
         $qattributes["time_limit_warning_2_style"]=array(
         "types"=>"STUXL!",
-        'category'=>$clang->gT('Timer'),
+        'category'=>gT('Timer'),
         'sortorder'=>122,
         "inputtype"=>"textarea",
-        "help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
-        "caption"=>$clang->gT("2nd time limit warning CSS style"));
+        "help"=>gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
+        "caption"=>gT("2nd time limit warning CSS style"));
 
         $qattributes["date_format"]=array(
         "types"=>"D",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         "inputtype"=>"text",
-        "help"=>$clang->gT("Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"),
-        "caption"=>$clang->gT("Date/Time format"));
+        "help"=>gT("Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"),
+        "caption"=>gT("Date/Time format"));
 
         $qattributes["dropdown_dates_minute_step"]=array(
         "types"=>"D",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         "inputtype"=>"integer",
         'default'=>1,
-        "help"=>$clang->gT("Minute step interval when using select boxes"),
-        "caption"=>$clang->gT("Minute step interval"));
+        "help"=>gT("Minute step interval when using select boxes"),
+        "caption"=>gT("Minute step interval"));
 
         $qattributes["dropdown_dates_month_style"]=array(
         "types"=>"D",
-        'category'=>$clang->gT('Display'),
+        'category'=>gT('Display'),
         'sortorder'=>100,
         "inputtype"=>"singleselect",
-        'options'=>array(0=>$clang->gT('Short names'),
-        1=>$clang->gT('Full names'),
-        2=>$clang->gT('Numbers')),
+        'options'=>array(0=>gT('Short names'),
+        1=>gT('Full names'),
+        2=>gT('Numbers')),
         'default'=>0,
-        "help"=>$clang->gT("Change the display style of the month when using select boxes"),
-        "caption"=>$clang->gT("Month display style"));
+        "help"=>gT("Change the display style of the month when using select boxes"),
+        "caption"=>gT("Month display style"));
 
         $qattributes["show_title"]=array(
         "types"=>"|",
-        'category'=>$clang->gT('File metadata'),
+        'category'=>gT('File metadata'),
         'sortorder'=>124,
         "inputtype"=>"singleselect",
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>1,
-        "help"=>$clang->gT("Is the participant required to give a title to the uploaded file?"),
-        "caption"=>$clang->gT("Show title"));
+        "help"=>gT("Is the participant required to give a title to the uploaded file?"),
+        "caption"=>gT("Show title"));
 
         $qattributes["show_comment"]=array(
         "types"=>"|",
-        'category'=>$clang->gT('File metadata'),
+        'category'=>gT('File metadata'),
         'sortorder'=>126,
         "inputtype"=>"singleselect",
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>1,
-        "help"=>$clang->gT("Is the participant required to give a comment to the uploaded file?"),
-        "caption"=>$clang->gT("Show comment"));
+        "help"=>gT("Is the participant required to give a comment to the uploaded file?"),
+        "caption"=>gT("Show comment"));
 
 
         $qattributes["max_filesize"]=array(
         "types"=>"|",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>128,
         "inputtype"=>"integer",
         'default'=>10240,
-        "help"=>$clang->gT("The participant cannot upload a single file larger than this size"),
-        "caption"=>$clang->gT("Maximum file size allowed (in KB)"));
+        "help"=>gT("The participant cannot upload a single file larger than this size"),
+        "caption"=>gT("Maximum file size allowed (in KB)"));
 
         $qattributes["max_num_of_files"]=array(
         "types"=>"|",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>130,
         "inputtype"=>"text",
         'default'=>'1',
-        "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
-        "caption"=>$clang->gT("Max number of files"));
+        "help"=>gT("Maximum number of files that the participant can upload for this question"),
+        "caption"=>gT("Max number of files"));
 
         $qattributes["min_num_of_files"]=array(
         "types"=>"|",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>132,
         "inputtype"=>"text",
         'default'=>'0',
-        "help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
-        "caption"=>$clang->gT("Min number of files"));
+        "help"=>gT("Minimum number of files that the participant must upload for this question"),
+        "caption"=>gT("Min number of files"));
 
         $qattributes["allowed_filetypes"]=array(
         "types"=>"|",
-        'category'=>$clang->gT('Other'),
+        'category'=>gT('Other'),
         'sortorder'=>134,
         "inputtype"=>"text",
         'default'=>"png, gif, doc, odt",
-        "help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
-        "caption"=>$clang->gT("Allowed file types"));
+        "help"=>gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
+        "caption"=>gT("Allowed file types"));
 
         $qattributes["random_group"]=array(
         "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
-        'category'=>$clang->gT('Logic'),
+        'category'=>gT('Logic'),
         'sortorder'=>180,
         'inputtype'=>'text',
-        "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
-        "caption"=>$clang->gT("Randomization group name"));
+        "help"=>gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
+        "caption"=>gT("Randomization group name"));
 
         // This is added to support historical behavior.  Early versions of 1.92 used a value of "No", so if there was a min_sum_value or equals_sum_value, the question was not valid
         // unless those criteria were met.  In later releases of 1.92, the default was changed so that missing values were allowed even if those attributes were set
@@ -4227,14 +3887,28 @@ function questionAttributes($returnByName=false)
         // Existing surveys will use the old behavior, but if the author edits the question, the default will be the new behavior.
         $qattributes["value_range_allows_missing"]=array(
         "types"=>"K",
-        'category'=>$clang->gT('Input'),
+        'category'=>gT('Input'),
         'sortorder'=>100,
         "inputtype"=>"singleselect",
-        'options'=>array(0=>$clang->gT('No'),
-        1=>$clang->gT('Yes')),
+        'options'=>array(0=>gT('No'),
+        1=>gT('Yes')),
         'default'=>1,
-        "help"=>$clang->gT("Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"),
-        "caption"=>$clang->gT("Value range allows missing"));
+        "help"=>gT("Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"),
+        "caption"=>gT("Value range allows missing"));
+        $qattributes["thousands_separator"] = array(
+            'types' => 'NK',
+            "help" => gT("Show a thousands separator when the user enters a value"),
+            "caption" => gT("Thousands separator"),
+            'category' => gT('Display'),
+            'inputtype' => 'singleselect',
+            'sortorder' => 100,
+            'options' => array(
+                0 => gT('No'),
+                1 => gT('Yes')
+            ),
+            'default'=>0,
+        );
+
     }
     //This builds a more useful array (don't modify)
     if ($returnByName==false)
@@ -4349,7 +4023,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     global $maildebug, $maildebugbody;
 
-    $clang = Yii::app()->lang;
+
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
     $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
@@ -4378,7 +4052,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     }
     if (Yii::app()->getConfig('demoMode'))
     {
-        $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
+        $maildebug=gT('Email was not sent because demo-mode is activated.');
         $maildebugbody='';
         return false;
     }
@@ -4498,7 +4172,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             {
                 $mail->AddAttachment($attachment[0], $attachment[1]);
             }
-            else 
+            else
             { // Or a string with the filename.
                 $mail->AddAttachment($attachment);
             }
@@ -5161,7 +4835,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
         $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
         return preg_replace('#'.$pattern.'#', $replace, $sString);
     }
-    else // unkown type
+    else // unknown type
     {
         return $sString;
     }
@@ -5277,7 +4951,7 @@ function conditionalNewlineToBreak($mytext,$ishtml,$encoded='')
 {
     if ($ishtml === true)
     {
-        // $mytext has been processed by clang->gT with html mode
+        // $mytext has been processed by gT with html mode
         // and thus \n has already been translated to &#10;
         if ($encoded == '')
         {
@@ -5392,55 +5066,55 @@ function getTokenConditionsFieldNames($surveyid)
 */
 function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
 {
-    $clang = Yii::app()->lang;
+
 
     $aBasicTokenFields=array('firstname'=>array(
-        'description'=>$clang->gT('First name'),
+        'description'=>gT('First name'),
         'mandatory'=>'N',
         'showregister'=>'Y'
         ),
         'lastname'=>array(
-            'description'=>$clang->gT('Last name'),
+            'description'=>gT('Last name'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
         'email'=>array(
-            'description'=>$clang->gT('Email address'),
+            'description'=>gT('Email address'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
         'emailstatus'=>array(
-            'description'=>$clang->gT("Email status"),
+            'description'=>gT("Email status"),
             'mandatory'=>'N',
             'showregister'=>'N'
         ),
         'token'=>array(
-            'description'=>$clang->gT('Token'),
+            'description'=>gT('Token'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
         'language'=>array(
-            'description'=>$clang->gT('Language code'),
+            'description'=>gT('Language code'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
         'sent'=>array(
-            'description'=>$clang->gT('Invitation sent date'),
+            'description'=>gT('Invitation sent date'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
         'remindersent'=>array(
-            'description'=>$clang->gT('Last reminder sent date'),
+            'description'=>gT('Last reminder sent date'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
         'remindercount'=>array(
-            'description'=>$clang->gT('Total numbers of sent reminders'),
+            'description'=>gT('Total numbers of sent reminders'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
         'usesleft'=>array(
-            'description'=>$clang->gT('Uses left'),
+            'description'=>gT('Uses left'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),
@@ -5507,6 +5181,7 @@ function getAttributeValue($surveyid,$attrName,$token)
 */
 function stripJavaScript($sContent){
     $text = preg_replace('@<script[^>]*?>.*?</script>@si', '', $sContent);
+    // TODO : Adding the onload/onhover etc ... or remove this false security function
     return $text;
 }
 
@@ -5595,48 +5270,36 @@ function removeBOM($str=""){
 /**********************************************/
 function getUpdateInfo()
 {
-    if (getGlobalSetting('SessionName')=='')
-    {
-        setGlobalSetting('SessionName',randomChars(64,'ABCDEFGHIJKLMNOPQRSTUVWXYZ!"$%&/()=?`+*~#",;.:abcdefghijklmnopqrstuvwxyz123456789'));
+    if (getGlobalSetting('SessionName')=='') {
+        setGlobalSetting('SessionName', \Yii::app()->securityManager->generateRandomString(64));
     }
-    require_once(APPPATH.'/third_party/http/http.php');
-    $http=new http_class;
-
-    $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
-    $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
-    $http->timeout=0;
-    $http->data_timeout=0;
-    $http->user_agent="LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber");
-    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber").'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck=true',$arguments);
-
-    $updateinfo=false;
-    $error=$http->Open($arguments);
-    $error=$http->SendRequest($arguments);
-
-    $http->ReadReplyHeaders($headers);
-
-
-    if($error=="") {
-        $body=''; $full_body='';
-        for(;;){
-            $error = $http->ReadReplyBody($body,10000);
-            if($error != "" || strlen($body)==0) break;
-            $full_body .= $body;
-        }
-        $updateinfo=json_decode($full_body,true);
-        if ($http->response_status!='200')
-        {
-            $updateinfo['errorcode']=$http->response_status;
-            $updateinfo['errorhtml']=$full_body;
-        }
+    
+    $url = "http://update.limesurvey.org/?" . \Yii::app()->urlManager->createPathInfo(array(
+        'build' => Yii::app()->getConfig("buildnumber"),
+        /**
+         * Optionally enable this after user consent. For now it remains disabled.
+         */
+//        'php' => PHP_VERSION,
+        'id' => md5(getGlobalSetting('SessionName')),
+        'crosscheck' => 'true' // Passed as string, should be changed.
+    ), '=', '&');
+    
+    $opts = [
+        'http' => [
+            'method' => 'GET',
+            'user_agent' => "LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber"),
+            'timeout' => 10,
+            'ignore_errors' => true
+        ]
+    ];
+    $body = file_get_contents($url, false, stream_context_create($opts));
+    if ($body != false && (null === $updateInfo = json_decode($body, true))) {
+        $updateInfo = [
+            'errorhtml' => $body,
+            'errorcode' => $http_response_header
+        ];
     }
-    else
-    {
-        $updateinfo['errorcode']=$error;
-        $updateinfo['errorhtml']=$error;
-    }
-    unset( $http );
-    return $updateinfo;
+    return $updateInfo;
 }
 
 /**
@@ -5646,12 +5309,11 @@ function getUpdateInfo()
 function updateCheck()
 {
     $aUpdateVersions=getUpdateInfo();
-    $clang = Yii::app()->lang;
 
-    if (isset($aUpdateVersions['errorcode'])) 
+    if (isset($aUpdateVersions['errorcode']))
     {
-        Yii::app()->setFlashMessage(sprintf($clang->gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
-        $aUpdateVersions=array(); 
+        Yii::app()->setFlashMessage(sprintf(gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
+        $aUpdateVersions=array();
     }
     if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
@@ -5668,28 +5330,28 @@ function updateCheck()
 
             case 'both':
                 // Show first available update
-                $aUpdateVersion=reset($aUpdateVersions);    
+                $aUpdateVersion=reset($aUpdateVersions);
                 break;
-                
+
             default:
                 // Never show a notification
                 $aUpdateVersions=array();
                 break;
         }
     }
-    
+
     setGlobalSetting('updateversions',json_encode($aUpdateVersions));
-    
-    
+
+
     if (isset($aUpdateVersion)) {
         setGlobalSetting('updateavailable',1);
         setGlobalSetting('updatebuild',$aUpdateVersion['build']);
         setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
     } else {
-        setGlobalSetting('updateavailable',0);    
+        setGlobalSetting('updateavailable',0);
         $aUpdateVersions = array();
     }
-    
+
     setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
     return $aUpdateVersions;
 }
@@ -5886,39 +5548,38 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
     $result = "N/A";
     if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
         return $result;
-    $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
-    $quota = $quota_info[0];
+    $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
+    $aQuotas = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
+    $aQuota = $aQuotas[0];
     if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
-    count($quota['members']) > 0)
+    count($aQuota['members']) > 0)
     {
         // Keep a list of fields for easy reference
-        $fields_list = array();
+        $aQuotaColumns = array();
 
-        // Construct an array of value for each $quota['members']['fieldnames']
-        $fields_query = array();
-
-        foreach ($quota['members'] as $member)
+        foreach ($aQuota['members'] as $member)
         {
-            $criteria = new CDbCriteria;
-
-            foreach ($member['fieldnames'] as $fieldname)
-            {
-                if (!in_array($fieldname, $fields_list))
-                    $fields_list[] = $fieldname;
-
-                // Yii does not quote column names (duh!) so we have to do it.
-                $criteria->addColumnCondition(array(Yii::app()->db->quoteColumnName($fieldname) => $member['value']), 'OR');
-            }
-
-            $fields_query[$fieldname] = $criteria;
+            if(in_array($member['fieldname'],$aColumnName))
+                $aQuotaColumns[$member['fieldname']][] = $member['value'];
+            else
+                return $result;// We return N/A even for activated survey
         }
 
-        $criteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria;
+        $oCriteria->condition="submitdate IS NOT NULL";
+        foreach ($aQuotaColumns as $sColumn=>$aValue)
+        {
 
-        foreach ($fields_list as $fieldname)
-            $criteria->mergeWith($fields_query[$fieldname]);
-        $criteria->mergeWith(array('condition'=>"submitdate IS NOT NULL"));
-        $result = SurveyDynamic::model($iSurveyId)->count($criteria);
+            if(count($aValue)==1)
+            {
+                $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind automatically
+            }
+            else
+            {
+                $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind automatically
+            }
+        }
+        $result = SurveyDynamic::model($iSurveyId)->count($oCriteria);
     }
 
     return $result;
@@ -5936,7 +5597,6 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=true)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
-    $oLanguage = new Limesurvey_lang($sLanguageCode);
 
     //Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
@@ -5988,7 +5648,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
                 }
                 else
                 {
-                    $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
+                    $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
@@ -5996,21 +5656,21 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
         }
         else
         {
-            $answer=getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
+            $answer=getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
             $aResultTable[$fname['fieldname']]=array($question,'',$answer);
             continue;
         }
         if (isset($fname['subquestion']))
-            $subquestion = "{$fname['subquestion']}";
+            $subquestion = "[{$fname['subquestion']}]";
 
         if (isset($fname['subquestion1']))
-            $subquestion = "{$fname['subquestion1']}";
+            $subquestion = "[{$fname['subquestion1']}]";
 
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
 
-        $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$oLanguage);
-        $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
+        $answer = getExtendedAnswer($iSurveyID,$fname['fieldname'], $idrow[$fname['fieldname']],$sLanguageCode);
+        $aResultTable[$fname['fieldname']]=array($question,$subquestion,$answer);
     }
     return $aResultTable;
 }
@@ -6035,13 +5695,13 @@ function isNumericInt($mStr)
 */
 function includeKeypad()
 {
-    $clang = Yii::app()->lang;
 
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.$clang->langcode.'.js';
-    if ($clang->langcode != 'en' && file_exists($localefile))
+
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
+    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
+    if (App()->language != 'en' && file_exists($localefile))
     {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.$clang->langcode.'.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.App()->language.'.js');
     }
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
 }
@@ -6051,95 +5711,84 @@ function includeKeypad()
 * @param string $surveyid - Survey identification number
 * @param string $language - Language of the quota
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
-* @return array - nested array, Quotas->Members->Fields
+* @return array - nested array, Quotas->Members
 */
-function getQuotaInformation($surveyid,$language,$iQuotaID='all')
+function getQuotaInformation($surveyid,$language,$iQuotaID=null)
 {
     Yii::log('getQuotaInformation');
-    global $clienttoken;
     $baselang = Survey::model()->findByPk($surveyid)->language;
     $aAttributes=array('sid' => $surveyid);
-    if ($iQuotaID != 'all')
+    if ((int)$iQuotaID)
     {
         $aAttributes['id'] = $iQuotaID;
     }
 
-    $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
-    
-    $quota_info = array();
+    $aQuotas = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes($aAttributes);
+
+    $aSurveyQuotasInfo = array();
     $x=0;
 
     $surveyinfo=getSurveyInfo($surveyid,$language);
 
     // Check all quotas for the current survey
-    //if ($result->RecordCount() > 0)
-    if (count($result) > 0)
+    if (count($aQuotas) > 0)
     {
-        //while ($survey_quotas = $result->FetchRow())
-        foreach ($result as $_survey_quotas)
+        foreach ($aQuotas as $oQuota)
         {
-            $survey_quotas = array_merge($_survey_quotas->attributes,$_survey_quotas->languagesettings[0]->attributes);// We have only one language, then we can use first only
-            // !!! Doubting this
-#            foreach ($_survey_quotas->defaultlanguage as $k => $v)
-#                $survey_quotas[$k] = $v;
-
-            array_push($quota_info,array('Name' => $survey_quotas['name'],
-            'Limit' => $survey_quotas['qlimit'],
-            'Action' => $survey_quotas['action'],
-            'Message' => $survey_quotas['quotals_message'],
-            'Url' => $survey_quotas['quotals_url'],
-            'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
-            'AutoloadUrl' => $survey_quotas['autoload_url']));
-
-            $result_qe = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
-            $quota_info[$x]['members'] = array();
-            if (count($result_qe) > 0)
+            // Array for each quota
+            $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->languagesettings[0]->attributes);// We have only one language, then we can use first only
+            $aQuotaMembers = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$oQuota->id));
+            $aQuotaInfo['members'] = array();
+            if (count($aQuotaMembers) > 0)
             {
-                foreach ($result_qe as $quota_entry)
+                foreach ($aQuotaMembers as $oQuotaMember)
                 {
-                    $quota_entry = $quota_entry->attributes;
-                    $result_quest=Question::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
-                    $qtype=$result_quest->attributes;
-
-                    $fieldnames = "0";
-
-                    if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
+                    $oMemberQuestion=Question::model()->findByAttributes(array('qid'=>$oQuotaMember->qid, 'language'=>$baselang));
+                    if($oMemberQuestion)
                     {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
+                        $sFieldName = "0";
 
-                    if($qtype['type'] == "L" || $qtype['type'] == "O" || $qtype['type'] =="!")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-                        $value = $quota_entry['code'];
-                    }
+                        if ($oMemberQuestion->type == "I" || $oMemberQuestion->type == "G" || $oMemberQuestion->type == "Y")
+                        {
+                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid;
+                            $sValue = $oQuotaMember->code;
+                        }
 
-                    if($qtype['type'] == "M")
-                    {
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
-                        $value = "Y";
-                    }
+                        if($oMemberQuestion->type == "L" || $oMemberQuestion->type == "O" || $oMemberQuestion->type =="!")
+                        {
+                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid;
+                            $sValue = $oQuotaMember->code;
+                        }
 
-                    if($qtype['type'] == "A" || $qtype['type'] == "B")
-                    {
-                        $temp = explode('-',$quota_entry['code']);
-                        $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
-                        $value = $temp[1];
-                    }
+                        if($oMemberQuestion->type == "M")
+                        {
+                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid.$oQuotaMember->code;
+                            $sValue = "Y";
+                        }
 
-                    array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],
-                    'type' => $qtype['type'],
-                    'code' => $quota_entry['code'],
-                    'value' => $value,
-                    'qid' => $quota_entry['qid'],
-                    'fieldnames' => $fieldnames));
+                        if($oMemberQuestion->type == "A" || $oMemberQuestion->type == "B")
+                        {
+                            $temp = explode('-',$oQuotaMember->code);
+                            $sFieldName=$surveyid.'X'.$oMemberQuestion->gid.'X'.$oQuotaMember->qid.$temp[0];
+                            $sValue = $temp[1];
+                        }
+
+                        $aQuotaInfo['members'][]=array(
+                            'title' => $oMemberQuestion->title,
+                            'type' => $oMemberQuestion->type,
+                            'code' => $oQuotaMember->code,
+                            'value' => $sValue,
+                            'qid' => $oQuotaMember->qid,
+                            'fieldname' => $sFieldName,
+                        );
+                    }
                 }
             }
-            $x++;
+            // Push this quota Information to all survey quota
+            array_push($aSurveyQuotasInfo,$aQuotaInfo);
         }
     }
-    return $quota_info;
+    return $aSurveyQuotasInfo;
 }
 
 /**
@@ -6342,7 +5991,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
 
 /**
 * Replaces EM variable codes in a current survey with a new one
-* 
+*
 * @param mixed $iSurveyID The survey ID
 * @param mixed $aCodeMap The codemap array (old_code=>new_code)
 */
@@ -6355,7 +6004,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0])) 
+            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
             {
                 $sOldCode=preg_quote($sOldCode,'/');
                 $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
@@ -6398,105 +6047,105 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
 */
 function accessDenied($action,$sid='')
 {
-    $clang = Yii::app()->lang;
+
     if (Yii::app()->session['loginID'])
     {
         $ugid = Yii::app()->getConfig('ugid');
-        $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
+        $accesssummary = "<p><strong>".gT("Access denied!")."</strong><br />\n";
         $scriptname = Yii::app()->getConfig('scriptname');
         //$action=returnGlobal('action');
         if  (  $action == "dumpdb"  )
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed dump the database!")."<br />";
-            $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed dump the database!")."<br />";
+            $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "dumplabel")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed export a label set!")."<br />";
-            $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed export a label set!")."<br />";
+            $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "edituser")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to change user data!");
-            $accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to change user data!");
+            $accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "newsurvey")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to create new surveys!")."<br />";
-            $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to create new surveys!")."<br />";
+            $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "deletesurvey")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to delete this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to delete this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "addquestion")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to add new questions for this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to add new questions for this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "activate")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to activate this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to activate this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "deactivate")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to stop this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to stop this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "addgroup")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to add a group to this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to add a group to this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "ordergroups")
         {
             $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/$sid");
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to order groups in this survey!")."<br />";
-            $accesssummary .= "<a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to order groups in this survey!")."<br />";
+            $accesssummary .= "<a href='$link'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "editsurvey")
         {
             $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/$sid");
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to edit this survey!")."</p>";
-            $accesssummary .= "<a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to edit this survey!")."</p>";
+            $accesssummary .= "<a href='$link'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "editgroup")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to edit groups in this survey!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to edit groups in this survey!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "browse_response" || $action == "listcolumn" || $action == "vvexport" || $action == "vvimport")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to browse responses!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to browse responses!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "assessment")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to set assessment rules!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to set assessment rules!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "delusergroup")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to delete this group!")."</p>";
-            $accesssummary .= "<a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to delete this group!")."</p>";
+            $accesssummary .= "<a href='$scriptname?action=editusergroups'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "importsurvey")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to import a survey!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to import a survey!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
 
         elseif($action == "importgroup")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to import a group!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to import a group!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "importquestion")
         {
-            $accesssummary .= "<p>".$clang->gT("You are not allowed to to import a question!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p>".gT("You are not allowed to to import a question!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "CSRFwarn") //won't be used.
         {
@@ -6504,28 +6153,28 @@ function accessDenied($action,$sid='')
             if (isset($sid)) {
                 $sURLID="?sid={$sid}";
             }
-            $accesssummary .= "<p><span color='errortitle'>".$clang->gT("Security alert")."</span>: ".$clang->gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.$clang->gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
-            $accesssummary .= "<a href='{$scriptname}{$sURLID}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p><span color='errortitle'>".gT("Security alert")."</span>: ".gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
+            $accesssummary .= "<a href='{$scriptname}{$sURLID}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "FakeGET")
         {
-            $accesssummary .= "<p><span class='errortitle'>".$clang->gT("Security alert")."</span>: ".$clang->gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.$clang->gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<p><span class='errortitle'>".gT("Security alert")."</span>: ".gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         else
         {
-            $accesssummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";
+            $accesssummary .= "<br />".gT("You are not allowed to perform this operation!")."<br />\n";
             if(!empty($sid))
             {
-                $accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                $accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid>".gT("Continue")."</a><br />&nbsp;\n";
             }
             elseif(!empty($ugid))
             {
-                $accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                $accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$ugid}'>".gT("Continue")."</a><br />&nbsp;\n";
             }
             else
             {
-                $accesssummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+                $accesssummary .= "<br /><br /><a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
             }
         }
         return $accesssummary;
@@ -6543,7 +6192,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 {
 
     Yii::app()->loadHelper('database');
-    //$clang = Yii::app()->lang;
+    //
     $sid=sanitize_int($sid);
     $baselang = Survey::model()->findByPk($sid)->language;
 
@@ -6596,7 +6245,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 function fixLanguageConsistency($sid, $availlangs='')
 {
     $sid=sanitize_int($sid);
-    $clang = Yii::app()->lang;
+
 
     if (trim($availlangs)!='')
     {
@@ -6957,7 +6606,7 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 */
 function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
 {
-    $clang = Yii::app()->lang;
+
     $condarray = Array();
 
     $baselang = Survey::model()->findByPk($sid)->language;
@@ -7025,7 +6674,7 @@ function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 */
 function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 {
-    $clang = Yii::app()->lang;
+
     $resarray=Array();
     $resarray['notAbove']=null; // defaults to no constraint
     $resarray['notBelow']=null; // defaults to no constraint
@@ -7123,7 +6772,7 @@ function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 
 function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 {
-    $clang = Yii::app()->lang;
+
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (!Permission::model()->hasGlobalPermission('superadmin','read'))
@@ -7158,8 +6807,8 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
         }
     }
 
-    if (!isset($svexist)) {$selecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$selecter;}
-    //else {$selecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$selecter;}
+    if (!isset($svexist)) {$selecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$selecter;}
+    //else {$selecter = "<option value='-1'>".gT("None")."</option>\n".$selecter;}
 
     if ($outputformat == 'simplegidarray')
     {
@@ -7174,7 +6823,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 function getGroupUserList($ugid)
 {
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+
 
     $ugid=sanitize_int($ugid);
     $surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
@@ -7195,7 +6844,7 @@ function getGroupUserList($ugid)
             $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
         }
     }
-    $surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
+    $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
     return $surveyselecter;
 }
 
@@ -7216,7 +6865,7 @@ function getGroupUserList($ugid)
 function modifyDatabase($sqlfile='', $sqlstring='')
 {
     Yii::app()->loadHelper('database');
-    $clang = Yii::app()->lang;
+
 
     global $siteadminemail;
     global $siteadminname;
@@ -7268,7 +6917,7 @@ function modifyDatabase($sqlfile='', $sqlstring='')
                 catch(CDbException $e)
                 {
                     $command=htmlspecialchars($command);
-                    $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
+                    $modifyoutput .="<br />".sprintf(gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
                     $success = false;
                 }
 
@@ -7292,7 +6941,7 @@ function modifyDatabase($sqlfile='', $sqlstring='')
 function getLabelSets($languages = null)
 {
 
-    $clang = Yii::app()->lang;
+
     $languagesarray = array();
     if ($languages)
     {
@@ -7464,7 +7113,7 @@ function getDBTableUsage($surveyid){
         $hard_limit = 1600;
         $size_limit = 0;
     }
-    elseif ($arrCols['dbtype'] == 'mssql' || $arrCols['dbtype'] == 'dblib'){ 
+    elseif ($arrCols['dbtype'] == 'mssql' || $arrCols['dbtype'] == 'dblib'){
         $hard_limit = 1024;
         $size_limit = 0;
     }
@@ -7551,7 +7200,7 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 */
 function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surveyid)
 {
-    $clang = Yii::app()->lang;
+
     $surveyid=sanitize_int($surveyid);
 
     $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
@@ -7560,7 +7209,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
     if (!$bIncludeSuperAdmins)
     {
       // @todo: Adjust for new permission system - not urgent since it it just display
-      //   $sSurveyIDQuery.='and superadmin=0 ';     
+      //   $sSurveyIDQuery.='and superadmin=0 ';
     }
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
     $oSurveyIDResult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
@@ -7583,15 +7232,15 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
                 $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
             }
         }
-    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "<option value='-1'>".gT("None")."</option>\n".$surveyselecter;}
 
     return $surveyselecter;
 }
 
 function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 {
-    $clang = Yii::app()->lang;
+
     $surveyid=sanitize_int($surveyid);
 
     $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
@@ -7623,8 +7272,8 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
         }
     }
 
-    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "<option value='-1'>".gT("None")."</option>\n".$surveyselecter;}
 
     if ($outputformat == 'simpleugidarray')
     {
@@ -7640,16 +7289,32 @@ function getSurveyUserGroupList($outputformat='htmloptions',$surveyid)
 
 /**
 * This function fixes the group ID and type on all subquestions
-*
+* Optimized for minimum memory usage even on huge databases
 */
 function fixSubquestions()
 {
-    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
-    from {{questions}} sq JOIN {{questions}} q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)")->query();
-    foreach($surveyidresult->readAll() as $sv)
+    $surveyidresult=Yii::app()->db->createCommand()
+    ->select('sq.qid, q.gid , q.type ')
+    ->from('{{questions}} sq')
+    ->join('{{questions}} q','sq.parent_qid=q.qid')
+    ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+    ->limit(10000)
+    ->query();
+    $aRecords=$surveyidresult->readAll();
+    while (count($aRecords)>0)
     {
-        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->query();
+        foreach($aRecords as $sv)
+        {
+            Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+        }
+        $surveyidresult=Yii::app()->db->createCommand()
+        ->select('sq.qid, q.gid , q.type ')
+        ->from('{{questions}} sq')
+        ->join('{{questions}} q','sq.parent_qid=q.qid')
+        ->where('sq.parent_qid>0 AND (sq.gid!=q.gid or sq.type!=q.type)')
+        ->limit(10000)
+        ->query();
+        $aRecords=$surveyidresult->readAll();
     }
 
 }
@@ -7659,6 +7324,10 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
+    if (is_string($content) && get_magic_quotes_gpc())
+    {
+        $content=stripslashes($content);
+    }
     $ans = json_encode($content);
     $ans = str_replace(array('{','}'),array('{ ',' }'), $ans);
     return $ans;
@@ -7687,50 +7356,50 @@ function json_decode_ls($jsonString)
  * Return accepted codingsArray for importing files
  *
  * Used in vvimport
- * TODO : use in token and 
+ * TODO : use in token and
  * @return array
  */
 function aEncodingsArray()
     {
-        $clang = Yii::app()->lang;
+
         return array(
-        "armscii8" => $clang->gT("ARMSCII-8 Armenian"),
-        "ascii" => $clang->gT("US ASCII"),
-        "auto" => $clang->gT("Automatic"),
-        "big5" => $clang->gT("Big5 Traditional Chinese"),
-        "binary" => $clang->gT("Binary pseudo charset"),
-        "cp1250" => $clang->gT("Windows Central European (Windows-1250)"),
-        "cp1251" => $clang->gT("Windows Cyrillic (Windows-1251)"),
-        "cp1256" => $clang->gT("Windows Arabic (Windows-1256)"),
-        "cp1257" => $clang->gT("Windows Baltic (Windows-1257)"),
-        "cp850" => $clang->gT("DOS West European (cp850)"),
-        "cp852" => $clang->gT("DOS Central European (cp852)"),
-        "cp866" => $clang->gT("DOS Cyrillic (cp866)"),
-        "cp932" => $clang->gT("Windows-31J - SJIS for Windows Japanese (cp932)"),
-        "dec8" => $clang->gT("DEC West European"),
-        "eucjpms" => $clang->gT("UJIS for Windows Japanese"),
-        "euckr" => $clang->gT("EUC-KR Korean"),
-        "gb2312" => $clang->gT("GB2312 Simplified Chinese"),
-        "gbk" => $clang->gT("GBK Simplified Chinese"),
-        "geostd8" => $clang->gT("GEOSTD8 Georgian"),
-        "greek" => $clang->gT("ISO 8859-7 Greek"),
-        "hebrew" => $clang->gT("ISO 8859-8 Hebrew"),
-        "hp8" => $clang->gT("HP West European"),
-        "keybcs2" => $clang->gT("DOS Kamenicky Czech-Slovak (cp895)"),
-        "koi8r" => $clang->gT("KOI8-R Relcom Russian"),
-        "koi8u" => $clang->gT("KOI8-U Ukrainian"),
-        "latin1" => $clang->gT("ISO 8859-1 West European (latin1)"),
-        "latin2" => $clang->gT("ISO 8859-2 Central European (latin2)"),
-        "latin5" => $clang->gT("ISO 8859-9 Turkish (latin5)"),
-        "latin7" => $clang->gT("ISO 8859-13 Baltic (latin7)"),
-        "macce" => $clang->gT("Mac Central European"),
-        "macroman" => $clang->gT("Mac West European"),
-        "sjis" => $clang->gT("Shift-JIS Japanese"),
-        "swe7" => $clang->gT("7bit Swedish"),
-        "tis620" => $clang->gT("TIS620 Thai"),
-        "ucs2" => $clang->gT("UCS-2 Unicode"),
-        "ujis" => $clang->gT("EUC-JP Japanese"),
-        "utf8" => $clang->gT("UTF-8 Unicode"),
+        "armscii8" => gT("ARMSCII-8 Armenian"),
+        "ascii" => gT("US ASCII"),
+        "auto" => gT("Automatic"),
+        "big5" => gT("Big5 Traditional Chinese"),
+        "binary" => gT("Binary pseudo charset"),
+        "cp1250" => gT("Windows Central European (Windows-1250)"),
+        "cp1251" => gT("Windows Cyrillic (Windows-1251)"),
+        "cp1256" => gT("Windows Arabic (Windows-1256)"),
+        "cp1257" => gT("Windows Baltic (Windows-1257)"),
+        "cp850" => gT("DOS West European (cp850)"),
+        "cp852" => gT("DOS Central European (cp852)"),
+        "cp866" => gT("DOS Cyrillic (cp866)"),
+        "cp932" => gT("Windows-31J - SJIS for Windows Japanese (cp932)"),
+        "dec8" => gT("DEC West European"),
+        "eucjpms" => gT("UJIS for Windows Japanese"),
+        "euckr" => gT("EUC-KR Korean"),
+        "gb2312" => gT("GB2312 Simplified Chinese"),
+        "gbk" => gT("GBK Simplified Chinese"),
+        "geostd8" => gT("GEOSTD8 Georgian"),
+        "greek" => gT("ISO 8859-7 Greek"),
+        "hebrew" => gT("ISO 8859-8 Hebrew"),
+        "hp8" => gT("HP West European"),
+        "keybcs2" => gT("DOS Kamenicky Czech-Slovak (cp895)"),
+        "koi8r" => gT("KOI8-R Relcom Russian"),
+        "koi8u" => gT("KOI8-U Ukrainian"),
+        "latin1" => gT("ISO 8859-1 West European (latin1)"),
+        "latin2" => gT("ISO 8859-2 Central European (latin2)"),
+        "latin5" => gT("ISO 8859-9 Turkish (latin5)"),
+        "latin7" => gT("ISO 8859-13 Baltic (latin7)"),
+        "macce" => gT("Mac Central European"),
+        "macroman" => gT("Mac West European"),
+        "sjis" => gT("Shift-JIS Japanese"),
+        "swe7" => gT("7bit Swedish"),
+        "tis620" => gT("TIS620 Thai"),
+        "ucs2" => gT("UCS-2 Unicode"),
+        "ujis" => gT("EUC-JP Japanese"),
+        "utf8" => gT("UTF-8 Unicode"),
         );
     }
 /**
@@ -7859,37 +7528,71 @@ function array_diff_assoc_recursive($array1, $array2) {
 }
 
 
-    function convertPHPSizeToBytes($sSize)  
-    {  
-        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)  
-        $sSuffix = substr($sSize, -1);  
-        $iValue = substr($sSize, 0, -1);  
-        switch(strtoupper($sSuffix)){  
-        case 'P':  
-            $iValue *= 1024;  
-        case 'T':  
-            $iValue *= 1024;  
-        case 'G':  
-            $iValue *= 1024;  
-        case 'M':  
-            $iValue *= 1024;  
-        case 'K':  
-            $iValue *= 1024;  
-            break;  
-        }  
-        return $iValue;  
-    }  
-      
-    function getMaximumFileUploadSize()  
-    {  
-        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));  
-    }  
+    function convertPHPSizeToBytes($sSize)
+    {
+        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
+        $sSuffix = substr($sSize, -1);
+        $iValue = substr($sSize, 0, -1);
+        switch(strtoupper($sSuffix)){
+        case 'P':
+            $iValue *= 1024;
+        case 'T':
+            $iValue *= 1024;
+        case 'G':
+            $iValue *= 1024;
+        case 'M':
+            $iValue *= 1024;
+        case 'K':
+            $iValue *= 1024;
+            break;
+        }
+        return $iValue;
+    }
 
 
 	function run(Closure $closure)
 	{
 		return $closure();
 	}
+    function getMaximumFileUploadSize()
+    {
+        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+    }
+
+    /**
+    * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
+    *
+    * @param string $oTokenAttributeData  The original token attributes as stored in the database
+    * @param boolean $bAllowSerialized If serialized data is accepted and properly read - with DBVersion 179 this should only be allowed on survey import
+    */
+    function decodeTokenAttributes($oTokenAttributeData){
+        if (trim($oTokenAttributeData)=='') return array();
+        if (substr($oTokenAttributeData,0,1)!='{' && substr($oTokenAttributeData,0,1)!='[')
+        {
+            $sSerialType=getSerialClass($oTokenAttributeData);
+            if ($sSerialType=='array') // Safe to decode
+            {
+                $aReturnData=@unserialize($oTokenAttributeData);
+            }
+            else // Something else, might be unsafe
+            {
+                return array();
+            }
+        }
+        else
+        {
+             $aReturnData=@json_decode($oTokenAttributeData,true);
+        }
+        if ($aReturnData===false || $aReturnData===null) return array();
+        return $aReturnData;
+    }
+
+    function getSerialClass($sSerial) {
+        $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
+
+        $aParts = explode(':', $sSerial, 4);
+        return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : trim($aParts[2], '"');
+    }
 // Closing PHP tag intentionally omitted - yes, it is okay
 
 

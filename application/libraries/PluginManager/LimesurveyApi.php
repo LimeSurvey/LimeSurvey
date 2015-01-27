@@ -1,4 +1,6 @@
 <?php 
+namespace ls\pluginmanager;
+use User;
     /**
     * Class exposing a Limesurvey API to plugins.
     * This class is instantiated by the plugin manager,
@@ -266,9 +268,10 @@
         {
             $tables = array();
             $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
+            $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
             foreach (App()->getDb()->getSchema()->getTableNames() as $table)
             {
-                if (strpos($table, $base) === 0)
+                if (strpos($table, $base) === 0 && strpos($table, $timingbase)===false)
                 $tables[] = $table;
             }
             return $tables;

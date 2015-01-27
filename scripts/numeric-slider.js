@@ -31,17 +31,14 @@ function doNumericSlider(qID,jsonOptions) {
 		$("#question"+qID+" .slider-list").children('.answer-item').each(function(){
 			var thisinput=$(this).children(".input").children('input.text').first();
 			var myfname=$(thisinput).attr('name');
-			var actualval=$(thisinput).attr('value');
+			var actualval=$(thisinput).attr('value').replace(LSvar.sLEMradix,".");
+			var havevalue=false;
+			var startvalue=false;
 			if(actualval!=""){
-				havevalue==true;
+				havevalue=true;
 				startvalue=actualval;
-			}else{
-				havevalue==false;
-				if(jsonOptions.slider_startvalue=="NULL"){
-					startvalue=false;
-				}else{
-					startvalue=parseFloat(jsonOptions.slider_startvalue);
-				}
+			}else if(jsonOptions.slider_startvalue!="NULL"){
+				startvalue=parseFloat(jsonOptions.slider_startvalue);
 			}
 			$(this).children(".input").hide();
 			$(htmlSlider.replace(/myfname/g,myfname)).insertAfter($(this).children(".input"));
@@ -56,15 +53,15 @@ function doNumericSlider(qID,jsonOptions) {
 					$('#slider-callout-'+myfname).appendTo($('#container-'+myfname+' .ui-slider-handle').get(0));
 				},
 				slide: function( event, ui ) {
-                    displayvalue=''+ui.value;
-                    displayvalue=displayvalue.replace(/\./,LSvar.sLEMradix);
+					displayvalue=''+ui.value;
+					displayvalue=displayvalue.replace(/\./,LSvar.sLEMradix);
 					$(thisinput).val(displayvalue);
 					$(thisinput).triggerHandler("keyup");
 					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + displayvalue + jsonOptions.slider_suffix);
 				}
 			});
 			// Update the value of the input if Slider start is set
-			if(!havevalue && startvalue && jsonOptions.slider_displaycallout){
+			if(havevalue || ( startvalue && jsonOptions.slider_displaycallout)){
                 startvalue=''+startvalue;
                 startvalue=startvalue.replace(/\./,LSvar.sLEMradix);
 				$("#slider-callout-"+myfname).text(jsonOptions.slider_prefix + startvalue + jsonOptions.slider_suffix);
@@ -79,7 +76,6 @@ function doNumericSlider(qID,jsonOptions) {
 					$( "#container-"+myfname ).slider( "option", "value", jsonOptions.slider_startvalue );
 				}
 				if(jsonOptions.slider_displaycallout && jsonOptions.slider_startvalue!="NULL"){
-                    
 					$('#slider-callout-'+myfname).text(jsonOptions.slider_prefix + jsonOptions.slider_startvalue.replace(/\./,LSvar.sLEMradix) + jsonOptions.slider_suffix);
 					$(thisinput).val(jsonOptions.slider_startvalue);
 				}else{
@@ -92,6 +88,7 @@ function doNumericSlider(qID,jsonOptions) {
 			$("#question"+qID).find(".em_default").text(jsonOptions.lang.tip);
 		});
 	}
-
+    //Fix buggy chrome/webkit engine which doesn't properly apply the css rules after this insertion
+    $("#question"+qID).hide().show(0);
 }
 

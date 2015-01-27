@@ -30,7 +30,7 @@
         {
             echo $sOutput;
         }
-        
+
         if (!is_null($sFileName))
         {
             $oFile=fopen($sFileName,'w');
@@ -45,7 +45,7 @@
         {
             fclose($oFile);
         }
-        
+
     }
 
     function _outputDBDescription($sDbName, $bAllowExportAllDb)
@@ -57,26 +57,31 @@
         }
         $sOutput.= '-- Date of Dump: ' . dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
         $sOutput.= '--' . "\n";
-        return $sOutput; 
+        return $sOutput;
     }
 
     function _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile)
     {
-        $aTables = Yii::app()->db->getSchema()->getTables();
-        foreach ($aTables as $sTableName => $oTableData)
+        if ($bAllowExportAllDb){
+            $aTables = Yii::app()->db->getSchema()->getTableNames();
+        }
+        else
         {
-            if ($bAllowExportAllDb && Yii::app()->db->tablePrefix == substr($sTableName, 0, strlen(Yii::app()->db->tablePrefix))) {
-                $sOutput=_outputTableDescription($sTableName);
-                if ($bEchoOutput)
-                {
-                    echo $sOutput;
-                }
-                if (!is_null($sFileName))
-                {
-                    fwrite($oFile,$sOutput);
-                }                
-                _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile);
+            $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix,'_')."%"))->queryColumn();
+        }
+        foreach ($aTables as $sTableName)
+        {
+            $oTableData=Yii::app()->db->getSchema()->getTable($sTableName);
+            $sOutput=_outputTableDescription($sTableName);
+            if ($bEchoOutput)
+            {
+                echo $sOutput;
             }
+            if (!is_null($sFileName))
+            {
+                fwrite($oFile,$sOutput);
+            }
+            _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile);
         }
     }
 
@@ -93,7 +98,7 @@
 
         $aCreateTable = Yii::app()->db->createCommand('SHOW CREATE TABLE '.Yii::app()->db->quoteTableName($sTableName))->queryRow();
         $sOutput.= $aCreateTable['Create Table'].';'."\n\n";
-        return $sOutput; 
+        return $sOutput;
     }
 
     /**
@@ -115,7 +120,7 @@
                 $aRecords = Yii::app()->db->createCommand()
                 ->select()
                 ->from($sTableName)
-                ->limit(intval($iMaxNbRecords), ($i != 0 ? ($i * $iMaxNbRecords) + 1 : null))
+                ->limit(intval($iMaxNbRecords), ($i != 0 ? ($i * $iMaxNbRecords) : null))
                 ->query()->readAll();
 
                 $sOutput.=_outputRecords($sTableName, $aFieldNames, $aRecords);
@@ -126,13 +131,13 @@
                 if (!is_null($sFileName))
                 {
                     fwrite($oFile,$sOutput);
-                }                     
+                }
                 $sOutput='';
-                
+
 
             }
             $sOutput.= "\n";
-            
+
         }
         if ($bEchoOutput)
         {
@@ -141,11 +146,13 @@
         if (!is_null($sFileName))
         {
             fwrite($oFile,$sOutput);
-        }                     
+        }
     }
 
     function _outputRecords($sTableName, $aFieldNames, $aRecords)
     {
+        $sLastFieldName=end($aFieldNames);
+        $aLastRecord=end($aRecords);
         $i=0;
         $sOutput='';
         foreach ($aRecords as $aRecord)
@@ -164,21 +171,19 @@
             {
 
                 if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
-                    $sValue= addcslashes($aRecord[$sFieldName],"'");
-                    $sValue = preg_replace("#\n#", "\\n", $sValue);
-                    $sOutput.= "'" . $sValue . "'";
+                    $sOutput.=Yii::app()->db->quoteValue($aRecord[$sFieldName]);
                 }
                 else
                 {
                     $sOutput.= 'NULL';
                 }
 
-                if (end($aFieldNames) != $sFieldName) {
+                if ($sFieldName != $sLastFieldName) {
                     $sOutput.= ', ';
                 }
             }
             $i++;
-            if ($i==200 || (end($aRecords) == $aRecord))
+            if ($i==200 || ($aLastRecord == $aRecord))
             {
                 $sOutput.= ');' . "\n";
                 $i=0;
@@ -218,5 +223,4 @@
         $sDbName = $aMatches[1];
 
         return $sDbName;
-    }    
-    
+    }

@@ -6,15 +6,21 @@ class PdfWriter extends Writer
     private $rowCounter;
     private $pdfDestination;
     private $surveyName;
-    private $clang;
+
+    /**
+     * Map of questions groups
+     *
+     * @var array
+     * @access private
+     */
+    private $aGroupMap = array();
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         $pdforientation=Yii::app()->getConfig('pdforientation');
-        $this->clang = new limesurvey_lang($sLanguageCode);
 
-        if ($oOptions->output=='file') 
+        if ($oOptions->output=='file')
         {
             $this->pdfDestination = 'F';
         } else {
@@ -26,16 +32,11 @@ class PdfWriter extends Writer
 
         // create new PDF document
         $this->pdf = new pdf();
-        $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
-        $this->pdf->AddPage();
-        $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
-        $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
-
+        $this->surveyName = $survey->info['surveyls_title'];
+        $this->pdf->initAnswerPDF($survey->info, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);
         $this->separator="\t";
-
-        $this->rowCounter = 0;        
-        $this->surveyName = $survey->languageSettings['surveyls_title'];
-        $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings['surveyls_description']);
+        $this->rowCounter = 0;
+        $this->aGroupMap = $this->setGroupMap($survey, $oOptions);
     }
 
     public function outputRecord($headers, $values, FormattingOptions $oOptions)
@@ -44,7 +45,6 @@ class PdfWriter extends Writer
         if ($oOptions->answerFormat == 'short')
         {
             $pdfstring = '';
-            $this->pdf->titleintopdf($this->clang->gT("Survey response"));
             foreach ($values as $value)
             {
                 $pdfstring .= $value.' | ';
@@ -57,14 +57,20 @@ class PdfWriter extends Writer
             {
                 $this->pdf->AddPage();
             }
-            $this->pdf->Cell(0, 10, sprintf($this->clang->gT("Survey response %d"), $this->rowCounter), 1, 1);
-
-            $columnCounter = 0;
-            foreach($headers as $header)
+            $this->pdf->addTitle(sprintf(gT("Survey response %d"), $this->rowCounter));
+            foreach ($this->aGroupMap as $gid => $questions)
             {
-                $this->pdf->intopdf($header);
-                $this->pdf->intopdf($this->stripTagsFull($values[$columnCounter]));
-                $columnCounter++;
+                if ($gid != 0)
+                {
+                    $this->pdf->addGidAnswer($questions[0]['group_name']);
+                }
+                foreach ($questions as $question)
+                {
+                    if (isset($values[$question['index']]) && isset($headers[$question['index']]))
+                    {
+                        $this->pdf->addAnswer($headers[$question['index']], $values[$question['index']], false);
+                    }
+                }
             }
         }
         else

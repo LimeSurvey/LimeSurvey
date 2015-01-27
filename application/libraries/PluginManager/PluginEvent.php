@@ -1,5 +1,7 @@
 <?php
-
+namespace ls\pluginmanager;
+use Yii;
+use Hash;
 Yii::import('application.helpers.Hash');
 
 class PluginEvent
@@ -57,6 +59,11 @@ class PluginEvent
         $this->_event = $event;
         
         return $this;
+    }
+    
+    public function dispatch() 
+    {
+        \Yii::app()->pluginManager->dispatchEvent($this);
     }
 
     /**

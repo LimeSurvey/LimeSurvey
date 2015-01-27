@@ -22,6 +22,7 @@ $(document).ready(function()
     navbuttonsJqueryUi();
     showStartPopups();
     addClassEmpty();
+    noScrollOnSelect();
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
@@ -29,9 +30,6 @@ $(document).ready(function()
     {
         $(focus_element).focus();
     }
-    $(".question").find("select").each(function () {
-        hookEvent($(this).attr('id'),'mousewheel',noScroll);
-    });
 
     // Keypad functions
     var kp = $("input.num-keypad");
@@ -87,10 +85,13 @@ function limesurveySubmitHandler(){
     $(document).on("click",".disabled",function(){return false});
     $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
 
-    $(document).on('click',".button", function(event){
-        $(this).prop('active',true).addClass('active');
-        $(".button.ui-button" ).not($(this)).button( "option", "disabled", true );
-        $(".button").not($(this)).prop('disabled',true).addClass('disabled');
+    $(document).on('click',"#limesurvey .button", function(event){
+        if(!$("#limesurvey :invalid").length)
+        {
+            $(this).prop('active',true).addClass('active');
+            $("#limesurvey .button.ui-button" ).not($(this)).button( "option", "disabled", true );
+            $("#limesurvey .button").not($(this)).prop('disabled',true).addClass('disabled');
+        }
     });
     if (document.all && !document.querySelector) { // IE7 or lower
         $(function() { 
@@ -255,10 +256,12 @@ function activateLanguageChanger(){
                 }
                 $('<form>', {
                     "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
-                    "action": target
-                }).appendTo(document.body).submit();
+                    "action": target,
+                    "method": 'post'
+                }).appendTo(document.body).append($("input[name='YII_CSRF_TOKEN']")).submit();
             }
         }else{
+            $(this).closest('form').find("[name='lang']").not($(this)).remove();// Remove other lang
             $('#changelangbtn').click();
         }
     });
@@ -285,7 +288,7 @@ function manageIndex(){
     });
 }
 /**
- * Put a empty class on empty answer text item (limit to answers part)
+ * Put a empty class on empty answer text item (limit to answers part) 
  * @author Denis Chenu / Shnoulle
  */
 function addClassEmpty()
@@ -306,6 +309,16 @@ function addClassEmpty()
 	});
 }
 
+/**
+ * Disable scroll on select, put it in function to allow update in template
+ * 
+ */
+function noScrollOnSelect()
+{
+    $(".question").find("select").each(function () {
+        hookEvent($(this).attr('id'),'mousewheel',noScroll);
+    });
+}
 /**
  * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
  * Using delegate the can be outside document.ready (using .on is possible but on $(document) then : less readbale

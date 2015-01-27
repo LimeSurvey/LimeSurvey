@@ -13,55 +13,55 @@
  */
 class SurveyLanguageSetting extends LSActiveRecord
 {
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{surveys_languagesettings}}';
-	}
+    /**
+     * Returns the table's name
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{surveys_languagesettings}}';
+    }
 
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function primaryKey()
-	{
-		return array('surveyls_survey_id', 'surveyls_language');
-	}
+    /**
+     * Returns the table's primary key
+     *
+     * @access public
+     * @return array
+     */
+    public function primaryKey()
+    {
+        return array('surveyls_survey_id', 'surveyls_language');
+    }
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return SurveyLanguageSetting
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return SurveyLanguageSetting
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * Returns the relations of this model
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
-	{
-		$alias = $this->getTableAlias();
-		return array(
-			'survey' => array(self::BELONGS_TO, 'Survey', '', 'on' => "$alias.surveyls_survey_id = survey.sid"),
+    /**
+     * Returns the relations of this model
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        $alias = $this->getTableAlias();
+        return array(
+            'survey' => array(self::BELONGS_TO, 'Survey', '', 'on' => "$alias.surveyls_survey_id = survey.sid"),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 'survey.owner_id = owner.uid'),
-		);
-	}
+        );
+    }
 
 
     /**
@@ -104,8 +104,8 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_url','LSYii_Validators','isUrl'=>true),
             array('surveyls_urldescription','LSYii_Validators'),
 
-            array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true), 
-            array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true), 
+            array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true),
+            array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
 
@@ -118,10 +118,9 @@ class SurveyLanguageSetting extends LSActiveRecord
     */
     public function lsdefault($attribute,$params)
     {
-        $oLanguageTranslator = new Limesurvey_lang($this->surveyls_language);
         $oSurvey=Survey::model()->findByPk($this->surveyls_survey_id);
         $sEmailFormat=$oSurvey->htmlemail=='Y'?'html':'';
-        $aDefaultTexts=templateDefaultTexts($oLanguageTranslator,'unescaped', $sEmailFormat);
+        $aDefaultTexts=templateDefaultTexts($this->surveyls_language,'unescaped', $sEmailFormat);
 
          $aDefaultTextData=array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
                         'surveyls_email_invite' => $aDefaultTexts['invitation'],
@@ -142,7 +141,7 @@ class SurveyLanguageSetting extends LSActiveRecord
 
          if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
     }
-                                                                              
+
 
     /**
      * Returns the token's captions
@@ -156,24 +155,24 @@ class SurveyLanguageSetting extends LSActiveRecord
         return $captions !== false ? $captions : array();
     }
 
-	function getAllRecords($condition=FALSE, $return_query = TRUE)
-	{
-		$query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
-		if ($condition != FALSE)
-		{
-			$query->where($condition);
-		}
+    function getAllRecords($condition=FALSE, $return_query = TRUE)
+    {
+        $query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
+        if ($condition != FALSE)
+        {
+            $query->where($condition);
+        }
         return ( $return_query ) ? $query->queryAll() : $query;
-	}
+    }
 
     function getDateFormat($surveyid,$languagecode)
     {
-		return Yii::app()->db->createCommand()->select('surveyls_dateformat')
+        return Yii::app()->db->createCommand()->select('surveyls_dateformat')
             ->from('{{surveys_languagesettings}}')
             ->join('{{surveys}}','{{surveys}}.sid = {{surveys_languagesettings}}.surveyls_survey_id AND surveyls_survey_id = :surveyid')
             ->where('surveyls_language = :langcode')
             ->bindParam(":langcode", $languagecode, PDO::PARAM_STR)
-			->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
+            ->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
             ->queryScalar();
     }
 
@@ -193,64 +192,41 @@ class SurveyLanguageSetting extends LSActiveRecord
 
     function getAllData($sid,$lcode)
     {
-    	$query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
+        $query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
         return $this->db->query($query, array($sid, $sid, $lcode));
     }
 
     function insertNewSurvey($data)
     {
-        if (isset($data['surveyls_url']) && $data['surveyls_url']== 'http://') {$data['surveyls_url']="";}
-		return $this->insertSomeRecords($data);
+        return $this->insertSomeRecords($data);
     }
 
     /**
      * Updates a single record identified by $condition with the
-     * key/value pairs in the $data array. 
-     * 
+     * key/value pairs in the $data array.
+     *
      * @param type $data
      * @param type $condition
      * @param type $xssfiltering
      * @return boolean
      */
     function updateRecord($data,$condition='', $xssfiltering = false)
-    {       
-        if (isset($data['surveyls_url']) && $data['surveyls_url']== 'http://') {$data['surveyls_url']="";}
-        
-        /*
-         * Mdekker: don't think we need this anymore
-		if($xssfiltering)
-		{
-			$filter = new CHtmlPurifier();
-			$filter->options = array('URI.AllowedSchemes'=>array(
-  				'http' => true,
-  				'https' => true,
-			));
-			if (isset($data["description"]))
-				$data["description"] = $filter->purify($data["description"]);
-			if (isset($data["title"]))
-				$data["title"] = $filter->purify($data["title"]);
-			if (isset($data["welcome"]))
-				$data["welcome"] = $filter->purify($data["welcome"]);
-			if (isset($data["endtext"]))
-				$data["endtext"] = $filter->purify($data["endtext"]);
-		}
-         */
-        
+    {
         $record = $this->findByPk($condition);
         foreach ($data as $key => $value)
         {
             $record->$key = $value;
         }
         $record->save($xssfiltering);
-                    
+
         return true;
     }
 
-	function insertSomeRecords($data)
+    function insertSomeRecords($data)
     {
         $lang = new self;
-		foreach ($data as $k => $v)
-			$lang->$k = $v;
-		return $lang->save();
+        foreach ($data as $k => $v)
+            $lang->$k = $v;
+        return $lang->save();
     }
 }

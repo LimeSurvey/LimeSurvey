@@ -93,12 +93,16 @@ class remotecontrol extends Survey_Common_Action
     */
     public function test()
     {
+        die(); // Remove if you want to test this function
         $RPCType=Yii::app()->getConfig("RPCInterface");
         $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
         $sFileToImport=dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss';
 
         if ($RPCType == 'xml') {
+            $cur_path = get_include_path();
+            set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
             require_once('Zend/XmlRpc/Client.php');
+            
             $client = new Zend_XmlRpc_Client($serverUrl);
         } elseif ($RPCType == 'json') {
             Yii::app()->loadLibrary('jsonRPCClient');
@@ -113,7 +117,7 @@ class remotecontrol extends Survey_Common_Action
         {
             echo 'Retrieved session key'.'<br>';
         }
-
+        
         $sLSSData=base64_encode(file_get_contents($sFileToImport));
         $iSurveyID=$client->call('import_survey', array($sSessionKey, $sLSSData, 'lss','Test import by JSON_RPC',1000));
         echo 'Created new survey SID:'.$iSurveyID.'<br>';

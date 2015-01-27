@@ -66,43 +66,38 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function regenquestioncodes($iSurveyID, $sSubAction )
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update'))
         {
-            $clang = $this->getController()->lang;
-
-            //Automatically renumbers the "question codes" so that they follow
-            //a methodical numbering method
-            $iQuestionNumber=1;
-            $iGroupNumber=0;
-            $iSequence=0;
-            $sQuery="SELECT a.qid, a.gid\n"
-            ."FROM {{questions}} as a, {{groups}} g "
-            ."WHERE a.gid=g.gid AND a.sid={$iSurveyID} AND a.parent_qid=0 "
-            ."GROUP BY a.gid, a.qid, g.group_order, question_order "
-            ."ORDER BY g.group_order, question_order";
-            $arResult=dbExecuteAssoc($sQuery) or safe_die ("Error: ".$connect->ErrorMsg());  // Checked
-            $grows = array(); //Create an empty array in case FetchRow does not return any rows
-            foreach ($arResult->readAll() as $grow) {$grows[] = $grow;} // Get table output into array
-            foreach($grows as $grow)
-            {
-                //Go through all the questions
-                if ($sSubAction == 'bygroup' && (!isset($iGroupNumber) || $iGroupNumber != $grow['gid']))
-                { //If we're doing this by group, restart the numbering when the group number changes
-                    $iQuestionNumber=1;
-                    $iGroupNumber = $grow['gid'];
-                    $iSequence++;
-                }
-                $usql="UPDATE {{questions}} "
-                ."SET title='".(($sSubAction == 'bygroup') ? ('G' . $iSequence ) : '')."Q".str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT)."'\n"
-                ."WHERE qid=".$grow['qid'];
-                //$databaseoutput .= "[$sql]";
-                $uresult=dbExecuteAssoc($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked
-                $iQuestionNumber++;
-                $iGroupNumber=$grow['gid'];
-            }
-            $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");
-            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        if ($oSurvey->active=='Y')
+        {
+            Yii::app()->setFlashMessage(gT("You can't update question code for an active survey."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
+        }
+        //Automatically renumbers the "question codes" so that they follow
+        //a methodical numbering method
+        $iQuestionNumber=1;
+        $iGroupNumber=0;
+        $iGroupSequence=0;
+        $oQuestions=Question::model()->with('groups')->findAll(array('select'=>'t.qid,t.gid','condition'=>"t.sid=:sid and t.language=:language and parent_qid=0",'order'=>'groups.group_order, question_order','params'=>array(':sid'=>$iSurveyID,':language'=>$oSurvey->language)));
+        foreach($oQuestions as $oQuestion)
+        {
+            if ($sSubAction == 'bygroup' && $iGroupNumber != $oQuestion->gid)
+            { //If we're doing this by group, restart the numbering when the group number changes
+                $iQuestionNumber=1;
+                $iGroupNumber = $oQuestion->gid;
+                $iGroupSequence++;
+            }
+            $sNewTitle=(($sSubAction == 'bygroup') ? ('G' . $iGroupSequence ) : '')."Q".str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
+            Question::model()->updateAll(array('title'=>$sNewTitle),'qid=:qid',array(':qid'=>$oQuestion->qid));
+            $iQuestionNumber++;
+            $iGroupNumber=$oQuestion->gid;
+        }
+        Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
@@ -137,12 +132,11 @@ class SurveyAdmin extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
-    
+
     function fakebrowser()
     {
-        $aData['clang'] = $this->getController()->lang;
         Yii::app()->getController()->renderPartial('/admin/survey/newSurveyBrowserMessage', $aData);
-    }    
+    }
 
     /**
     * This function prepares the view for editing a survey
@@ -151,23 +145,21 @@ class SurveyAdmin extends Survey_Common_Action
     function editsurveysettings($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
-        if (is_null($iSurveyID) || !$iSurveyID)
-            $this->getController()->error('Invalid survey id');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('surveys','read'))
             $this->getController()->error('No permission');
-
+        if(Yii::app()->request->isPostRequest)
+            $this->update($iSurveyID);
         $this->_registerScriptFiles();
 
         //Yii::app()->loadHelper('text');
         Yii::app()->loadHelper('surveytranslator');
-        $clang = $this->getController()->lang;
 
         Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
 
         Yii::app()->loadHelper('/admin/htmleditor');
         initKcfinder();
-        
+
         $esrow = array();
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         $aData['esrow'] = $esrow;
@@ -198,7 +190,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     function importsurveyresources()
     {
-        $clang = $this->getController()->lang;
         $iSurveyID = Yii::app()->request->getPost('surveyid');
 
         if (!empty($iSurveyID))
@@ -206,7 +197,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['display']['menu_bars']['surveysummary'] = 'importsurveyresources';
 
             if (Yii::app()->getConfig('demoMode'))
-                $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+                $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
 
             // Create temporary directory
             // If dangerous content is unzipped
@@ -220,7 +211,7 @@ class SurveyAdmin extends Survey_Common_Action
             $zip = new PclZip($zipfilename);
 
             if (!is_writeable($basedestdir))
-                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
 
             if (!is_dir($destdir))
                 mkdir($destdir);
@@ -231,7 +222,7 @@ class SurveyAdmin extends Survey_Common_Action
             if (is_file($zipfilename))
             {
                 if ($zip->extract($extractdir) <= 0)
-                    $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
 
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
@@ -249,10 +240,10 @@ class SurveyAdmin extends Survey_Common_Action
                 unlink($zipfilename);
 
                 if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
-                    $this->getController()->error($clang->gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+                    $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
             }
             else
-                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+                $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
 
             $aData = array(
             'aErrorFilesInfo' => $aErrorFilesInfo,
@@ -306,16 +297,15 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID = sanitize_int($iSurveyID);
-        $clang = $this->getController()->lang;
-        if (!tableExists('survey_'.$iSurveyID))
-        {
-            $_SESSION['flashmessage'] = $clang->gT("Error: Response table does not exist. Survey cannot be deactivated.");
-            $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
-        }
         $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
         if (empty($_POST['ok']))
         {
+            if (!tableExists('survey_'.$iSurveyID))
+            {
+                $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
+                $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+            }
             $aData['surveyid'] = $iSurveyID;
             $aData['date'] = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
@@ -326,17 +316,18 @@ class SurveyAdmin extends Survey_Common_Action
             //See if there is a tokens table for this survey
             if (tableExists("{{tokens_{$iSurveyID}}}"))
             {
-                if (Yii::app()->db->getDriverName() == 'postgre')
+                $toldtable = Yii::app()->db->tablePrefix."tokens_{$iSurveyID}";
+                $tnewtable = Yii::app()->db->tablePrefix."old_tokens_{$iSurveyID}_{$date}";
+                if (Yii::app()->db->getDriverName() == 'pgsql')
                 {
-                    $deactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable . '_tid_seq', $tnewtable . '_tid_seq');
-                    $setsequence = "ALTER TABLE ".Yii::app()->db->quoteTableName($tnewtable)." ALTER COLUMN tid SET DEFAULT nextval('{{{$tnewtable}}}_tid_seq'::regclass);";
-                    $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
-                    $setidx = "ALTER INDEX {{{$toldtable}}}_idx RENAME TO {{{$tnewtable}}}_idx;";
-                    $deactivateresult = Yii::app()->db->createCommand($setidx)->query();
+                    $tidDefault = Yii::app()->db->createCommand("SELECT pg_attrdef.adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
+                    if(preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", $tidDefault, $matches)){
+                        $oldSeq = $matches[1];
+                        $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldSeq, $tnewtable . '_tid_seq');
+                        $setsequence = "ALTER TABLE ".Yii::app()->db->quoteTableName($toldtable)." ALTER COLUMN tid SET DEFAULT nextval('{$tnewtable}_tid_seq'::regclass);";
+                        $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
+                    }
                 }
-
-                $toldtable = "{{tokens_{$iSurveyID}}}";
-                $tnewtable = "{{old_tokens_{$iSurveyID}_{$date}}}";
 
                 $tdeactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
 
@@ -346,7 +337,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             //Remove any survey_links to the CPDB
             SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
-            
+
 
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
             $result = SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
@@ -362,11 +353,15 @@ class SurveyAdmin extends Survey_Common_Action
             $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
             $survey->autonumber_start = $new_autonumber_start;
             $survey->save();
-            if (Yii::app()->db->getDrivername() == 'postgre')
+            if (Yii::app()->db->getDriverName() == 'pgsql')
             {
-                $deactivateresult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName . '_id_seq', $sNewSurveyTableName . '_id_seq');
-                $setsequence = "ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$sNewSurveyTableName}_id_seq'::regclass);";
-                $deactivateresult = Yii::app()->db->createCommand($setsequence)->execute();
+                $idDefault = Yii::app()->db->createCommand("SELECT pg_attrdef.adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
+                if(preg_match("/nextval\('(survey_\d+_id_seq\d*)'::regclass\)/", $idDefault, $matches)){
+                    $oldSeq = $matches[1];
+                    $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldSeq, $sNewSurveyTableName . '_id_seq');
+                    $setsequence = "ALTER TABLE ".Yii::app()->db->quoteTableName($sOldSurveyTableName)." ALTER COLUMN id SET DEFAULT nextval('{{{$sNewSurveyTableName}}}_id_seq'::regclass);";
+                    $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
+                }
             }
 
             $deactivateresult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
@@ -403,7 +398,6 @@ class SurveyAdmin extends Survey_Common_Action
     public function activate($iSurveyID)
     {
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die();
-        $clang = Yii::app()->lang;
 
         $iSurveyID = (int) $iSurveyID;
 
@@ -453,44 +447,44 @@ class SurveyAdmin extends Survey_Common_Action
             if (isset($aResult['error']))
             {
                 $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n" .
-                "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($iSurveyID)</div>\n";
+                "<div class='header ui-widget-header'>".gT("Activate Survey")." ($iSurveyID)</div>\n";
                 if ($aResult['error']=='surveytablecreation')
                 {
-                    $aViewUrls['output'].="<div class='warningheader'>".$clang->gT("Survey table could not be created.")."</div>\n";
+                    $aViewUrls['output'].="<div class='warningheader'>".gT("Survey table could not be created.")."</div>\n";
                 }
                 else
                 {
-                    $aViewUrls['output'].="<div class='warningheader'>".$clang->gT("Timings table could not be created.")."</div>\n";
+                    $aViewUrls['output'].="<div class='warningheader'>".gT("Timings table could not be created.")."</div>\n";
                 }
                 $aViewUrls['output'].="<p>" .
-                $clang->gT("Database error!!")."\n <font color='red'>" ."</font>\n" .
+                gT("Database error!!")."\n <font color='red'>" ."</font>\n" .
                 "<pre>".var_export ($aResult['error'],true)."</pre>\n
-                <a href='".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID)."'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
+                <a href='".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID)."'>".gT("Main Admin Screen")."</a>\n</div>" ;
             }
             else
             {
                 $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n"
-                ."<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ({$iSurveyID})</div>\n"
-                ."<div class='successheader'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
+                ."<div class='header ui-widget-header'>".gT("Activate Survey")." ({$iSurveyID})</div>\n"
+                ."<div class='successheader'>".gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
 
                 if (isset($aResult['warning']))
                 {
                     $aViewUrls['output'] .= "<div class='warningheader'>"
-                    .$clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.")
+                    .gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory.")
                     ."</div>";
                 }
 
                 if ($survey->allowregister=='Y')
                 {
-                    $aViewUrls['output'] .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n"
-                    ."<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n";
+                    $aViewUrls['output'] .= gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n"
+                    ."<input type='submit' value='".gT("Initialise tokens")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n";
                 }
                 else
                 {
-                    $aViewUrls['output'] .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n"
-                    ."<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n"
-                    ."<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n"
-                    ."<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID))."\" />\n";
+                    $aViewUrls['output'] .= gT("This survey is now active, and responses can be recorded.")."<br /><br />\n"
+                    ."<strong>".gT("Open-access mode").":</strong> ".gT("No invitation code is needed to complete the survey.")."<br />".gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n"
+                    ."<input type='submit' value='".gT("Switch to closed-access mode")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))."\" />\n"
+                    ."<input type='submit' value='".gT("No, thanks.")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID))."\" />\n";
                 }
                 $aViewUrls['output'] .= "</div><br />&nbsp;\n";
             }
@@ -569,39 +563,38 @@ class SurveyAdmin extends Survey_Common_Action
     public function getSurveys_json()
     {
         $this->getController()->loadHelper('surveytranslator');
-        $clang = $this->getController()->lang;
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $surveys = Survey::model();
-        //!!! Is this even possible to execute?
+        $oSurvey = new Survey;
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-            $surveys->permission(Yii::app()->user->getId());
-        $surveys = $surveys->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
+            $oSurvey->permission(Yii::app()->user->getId());
+
+        $aSurveys = $oSurvey->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
         $aSurveyEntries->page = 1;
-        foreach ($surveys as $rows)
+        foreach ($aSurveys as $rows)
         {
-            if (!isset($rows->owner->attributes)) $aOwner=array('users_name'=>$clang->gT('(None)')); else $aOwner=$rows->owner->attributes;
+            if (!isset($rows->owner->attributes)) $aOwner=array('users_name'=>gT('(None)')); else $aOwner=$rows->owner->attributes;
             $rows = array_merge($rows->attributes, $rows->defaultlanguage->attributes, $aOwner);
             $aSurveyEntry = array();
             // Set status
             if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
-                $aSurveyEntry[] = '<!--a--><img src="' . Yii::app()->getConfig('adminimageurl') . 'expired.png" alt="' . $clang->gT("This survey is active but expired.") . '" />';
+                $aSurveyEntry[] = '<!--a--><img src="' . Yii::app()->getConfig('adminimageurl') . 'expired.png" alt="' . gT("This survey is active but expired.") . '" />';
             }
             elseif ($rows['active'] == "Y" && $rows['startdate'] != '' && $rows['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
-                $aSurveyEntry[] = '<!--b--><img src="' . Yii::app()->getConfig('adminimageurl') . 'notyetstarted.png" alt="' . $clang->gT("This survey is active but has a start date.") . '" />';
+                $aSurveyEntry[] = '<!--b--><img src="' . Yii::app()->getConfig('adminimageurl') . 'notyetstarted.png" alt="' . gT("This survey is active but has a start date.") . '" />';
             }
             elseif ($rows['active'] == "Y")
             {
                 if (Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/sa/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
+                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/sa/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . gT("This survey is active - click here to stop this survey.") . '"/></a>';
                 }
                 else
                 {
-                    $aSurveyEntry[] = '<!--d--><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . $clang->gT("This survey is currently active.") . '" />';
+                    $aSurveyEntry[] = '<!--d--><img src="' . Yii::app()->getConfig('adminimageurl') . 'active.png" alt="' . gT("This survey is currently active.") . '" />';
                 }
             }
             else
@@ -611,11 +604,11 @@ class SurveyAdmin extends Survey_Common_Action
 
                 if ($questionsCountResult>0 && Permission::model()->hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
+                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="" alt="' . gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
                 }
                 else
                 {
-                    $aSurveyEntry[] = '<!--f--><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="' . $clang->gT("This survey is currently not active.") . '" alt="' . $clang->gT("This survey is currently not active.") . '" />';
+                    $aSurveyEntry[] = '<!--f--><img src="' . Yii::app()->getConfig('adminimageurl') . 'inactive.png" title="' . gT("This survey is currently not active.") . '" alt="' . gT("This survey is currently not active.") . '" />';
                 }
             }
 
@@ -634,7 +627,7 @@ class SurveyAdmin extends Survey_Common_Action
             //Set Owner
             if(Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID']==$rows['owner_id'])
             {
-                $aSurveyEntry[] = $rows['users_name'] . ' (<a class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
+                $aSurveyEntry[] = $rows['users_name'] . ' (<a class="ownername_edit" translate_to="' . gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. gT('Edit') .'</a>)';
             }
             else
             {
@@ -643,21 +636,21 @@ class SurveyAdmin extends Survey_Common_Action
             //Set Access
             if (tableExists('tokens_' . $rows['sid'] ))
             {
-                $aSurveyEntry[] = $clang->gT("Closed");
+                $aSurveyEntry[] = gT("Closed");
             }
             else
             {
-                $aSurveyEntry[] = $clang->gT("Open");
+                $aSurveyEntry[] = gT("Open");
             }
 
             //Set Anonymous
             if ($rows['anonymized'] == "Y")
             {
-                $aSurveyEntry[] = $clang->gT("Yes");
+                $aSurveyEntry[] = gT("Yes");
             }
             else
             {
-                $aSurveyEntry[] = $clang->gT("No");
+                $aSurveyEntry[] = gT("No");
             }
 
             //Set Responses
@@ -705,19 +698,17 @@ class SurveyAdmin extends Survey_Common_Action
     * @param string $sa
     * @return void
     */
-    public function delete($iSurveyID, $delete = 'no')
+    public function delete($iSurveyID)
     {
         $aData = $aViewUrls = array();
         $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
-        $clang = $this->getController()->lang;
-
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
         {
-            if ($delete == 'yes')
+            if (Yii::app()->request->getPost("delete") == 'yes')
             {
                 $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin','read');
                 $this->_deleteSurvey($iSurveyID);
-                Yii::app()->session['flashmessage'] = $clang->gT("Survey deleted.");
+                Yii::app()->session['flashmessage'] = gT("Survey deleted.");
                 $this->getController()->redirect(array("admin/index"));
             }
             else
@@ -758,7 +749,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function editlocalsettings($iSurveyID)
     {
-        $clang = $this->getController()->lang;
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
@@ -781,20 +771,17 @@ class SurveyAdmin extends Survey_Common_Action
                 // this one is created to get the right default texts fo each language
                 Yii::app()->loadHelper('database');
                 Yii::app()->loadHelper('surveytranslator');
-                $bplang = $this->getController()->lang; //new lang($grouplang);
 
                 $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
 
                 $aTabTitles[$sLang] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
                 if ($esrow['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
-                    $aTabTitles[$sLang] .= '(' . $clang->gT("Base language") . ')';
+                    $aTabTitles[$sLang] .= '(' . gT("Base language") . ')';
 
                 $esrow = array_map('htmlspecialchars', $esrow);
                 $aData['esrow'] = $esrow;
                 $aData['action'] = "editsurveylocalesettings";
-                $aData['clang'] = $clang;
-
                 $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aData, true);
             }
 
@@ -826,13 +813,11 @@ class SurveyAdmin extends Survey_Common_Action
 
         if ($action == "importsurvey" || $action == "copysurvey")
         {
-            $clang = $this->getController()->lang;
-
             // Start the HTML
             if ($action == 'importsurvey')
             {
-                $aData['sHeader'] = $clang->gT("Import survey data");
-                $aData['sSummaryHeader'] = $clang->gT("Survey structure import summary");
+                $aData['sHeader'] = gT("Import survey data");
+                $aData['sSummaryHeader'] = gT("Survey structure import summary");
                 $importingfrom = "http";
                 $aPathInfo = pathinfo($_FILES['the_file']['name']);
                 if (isset($aPathInfo['extension']))
@@ -842,29 +827,29 @@ class SurveyAdmin extends Survey_Common_Action
                 else
                 {
                     $sExtension = "";
-                }            
-                
+                }
+
             }
             elseif ($action == 'copysurvey')
             {
-                $aData['sHeader'] = $clang->gT("Copy survey");
-                $aData['sSummaryHeader'] = $clang->gT("Survey copy summary");
+                $aData['sHeader'] = gT("Copy survey");
+                $aData['sSummaryHeader'] = gT("Survey copy summary");
             }
             // Start traitment and messagebox
             $aData['bFailed'] = false; // Put a var for continue
-            
+
             if ($action == 'importsurvey')
             {
 
                 $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20).'.'.$sExtension;
                 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
                 {
-                    $aData['sErrorMessage'] = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
+                    $aData['sErrorMessage'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
                     $aData['bFailed'] = true;
                 }
                 if (!$aData['bFailed'] && (strtolower($sExtension) != 'csv' && strtolower($sExtension) != 'lss' && strtolower($sExtension) != 'txt' && strtolower($sExtension) != 'lsa'))
                 {
-                    $aData['sErrorMessage'] = sprintf($clang->gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
+                    $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
                     $aData['bFailed'] = true;
                 }
             }
@@ -897,17 +882,17 @@ class SurveyAdmin extends Survey_Common_Action
                 }
                 if (!$iSurveyID)
                 {
-                    $aData['sErrorMessage'] = $clang->gT("No survey ID has been provided. Cannot copy survey");
+                    $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
                     $aData['bFailed'] = true;
                 }
                 elseif(!Survey::model()->findByPk($iSurveyID))
                 {
-                    $aData['sErrorMessage'] = $clang->gT("Invalid survey ID");
+                    $aData['sErrorMessage'] = gT("Invalid survey ID");
                     $aData['bFailed'] = true;
                 }
                 elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
                 {
-                    $aData['sErrorMessage'] = $clang->gT("You don't have sufficient permissions.");
+                    $aData['sErrorMessage'] = gT("You don't have sufficient permissions.");
                     $aData['bFailed'] = true;
                 }
                 else
@@ -927,11 +912,11 @@ class SurveyAdmin extends Survey_Common_Action
                 {
                     $aData['sErrorMessage']=$aImportResults['error'];
                     $aData['bFailed'] = true;
-                } 
+                }
             }
             elseif ($action == 'copysurvey' && !$aData['bFailed'])
             {
-                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName,NULL,(isset($_POST['translinksfields'])));
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')) ,(isset($_POST['translinksfields'])));
                 if (isset($aExcludes['conditions']))
                 {
                     Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
@@ -987,7 +972,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         // Prepare data for the view
         $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-
+        LimeExpressionManager::StartSurvey($iSurveyID, 'survey');
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
         $aGrouplist = QuestionGroup::model()->getGroups($iSurveyID);
@@ -1050,7 +1035,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("The new question group/question order was successfully saved.");
+        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
 
@@ -1063,65 +1048,18 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _fetchSurveyInfo($action, $iSurveyID=null)
     {
-        if (isset($iSurveyID))
-            $iSurveyID = sanitize_int($iSurveyID);
-
         if ($action == 'newsurvey')
         {
-            $esrow['active'] = 'N';
-            $esrow['questionindex'] = 0;
-            $esrow['format'] = 'G'; //Group-by-group mode
-            $esrow['template'] = Yii::app()->getConfig('defaulttemplate');
-            $esrow['allowsave'] = 'Y';
-            $esrow['allowprev'] = 'N';
-            $esrow['nokeyboard'] = 'N';
-            $esrow['printanswers'] = 'N';
-            $esrow['publicstatistics'] = 'N';
-            $esrow['publicgraphs'] = 'N';
-            $esrow['listpublic'] = 'N';
-            $esrow['autoredirect'] = 'N';
-            $esrow['tokenlength'] = 15;
-            $esrow['allowregister'] = 'N';
-            $esrow['usecookie'] = 'N';
-            $esrow['usecaptcha'] = 'D';
-            $esrow['htmlemail'] = 'Y';
-            $esrow['sendconfirmation'] = 'Y';
-            $esrow['emailnotificationto'] = '';
-            $esrow['anonymized'] = 'N';
-            $esrow['datestamp'] = 'N';
-            $esrow['ipaddr'] = 'N';
-            $esrow['refurl'] = 'N';
-            $esrow['tokenanswerspersistence'] = 'N';
-            $esrow['alloweditaftercompletion'] = 'N';
-            $esrow['startdate'] = '';
-            $esrow['savetimings'] = 'N';
-            $esrow['expires'] = '';
-            $esrow['showqnumcode'] = 'X';
-            $esrow['showwelcome'] = 'Y';
-            $esrow['emailresponseto'] = '';
-            $esrow['assessments'] = 'N';
-            $esrow['navigationdelay'] = 0;
-            $esrow['googleanalyticsapikey']    = '';
-            $esrow['googleanalyticsstyle']     = '0';
+            $oSurvey=new Survey;
         }
-        elseif ($action == 'editsurvey')
+        elseif ($action == 'editsurvey' && $iSurveyID)
         {
-            $condition = array('sid' => $iSurveyID);
-            $esresult = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
-            if ($esresult)
-            {
-                // Set template to default if not exist
-                if (!$esresult['template'])
-                {
-                    $esresult['template']=Yii::app()->getConfig('defaulttemplate');
-                }
-                $esresult['template']=validateTemplateDir($esresult['template']);
-
-                $esrow = $esresult;
-            }
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
         }
-
-        return $esrow;
+        if($oSurvey)
+        {
+            return $oSurvey->attributes;
+        }
     }
 
     /**
@@ -1131,8 +1069,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _generalTabNewSurvey()
     {
-        $clang = $this->getController()->lang;
-
         //Use the current user details for the default administrator name and email for this survey
         $user=User::model()->findByPk(Yii::app()->session['loginID']);
         $owner =$user->attributes;
@@ -1154,22 +1090,21 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $aData['action'] = "newsurvey";
-        $aData['clang'] = $clang;
         $aData['owner'] = $owner;
         $aLanguageDetails= getLanguageDetails(Yii::app()->session['adminlang']);
         $aData['sRadixDefault'] = $aLanguageDetails['radixpoint'];
         $aData['sDateFormatDefault'] = $aLanguageDetails['dateformat'];
         foreach (getRadixPointData() as $index=>$radixptdata){
-          $aRadixPointData[$index]=$radixptdata['desc'];  
+          $aRadixPointData[$index]=$radixptdata['desc'];
         }
         $aData['aRadixPointData']=$aRadixPointData;
-        
-        foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata) 
+
+        foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata)
         {
-          $aDateFormatData[$index]=$dateformatdata['dateformat'];  
+          $aDateFormatData[$index]=$dateformatdata['dateformat'];
         }
         $aData['aDateFormatData']=$aDateFormatData;
-                
+
         return $aData;
     }
 
@@ -1182,12 +1117,10 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _generalTabEditSurvey($iSurveyID, $esrow)
     {
-        $clang = $this->getController()->lang;
         $aData['action'] = "editsurveysettings";
-        $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
         $aData['surveyid'] = $iSurveyID;
-        
+
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
@@ -1203,19 +1136,8 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabPresentationNavigation($esrow)
     {
-        $clang = $this->getController()->lang;
-        global $showxquestions, $showgroupinfo, $showqnumcode;
 
-        Yii::app()->loadHelper('globalsettings');
-
-        $shownoanswer = getGlobalSetting('shownoanswer') ? getGlobalSetting('shownoanswer') : 'Y';
-
-        $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
-        $aData['shownoanswer'] = $shownoanswer;
-        $aData['showxquestions'] = $showxquestions;
-        $aData['showgroupinfo'] = $showgroupinfo;
-        $aData['showqnumcode'] = $showqnumcode;
         return $aData;
     }
 
@@ -1227,7 +1149,6 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabPublicationAccess($esrow)
     {
-        $clang = $this->getController()->lang;
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $startdate = '';
         if ($esrow['startdate'])
@@ -1244,7 +1165,6 @@ class SurveyAdmin extends Survey_Common_Action
             $datetimeobj = new date_time_converter($esrow['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
             $expires = $datetimeobj->convert("d.m.Y H:i");
         }
-        $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
         $aData['startdate'] = $startdate;
         $aData['expires'] = $expires;
@@ -1259,11 +1179,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabNotificationDataManagement($esrow)
     {
-        $clang = $this->getController()->lang;
-
-        $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
-
         return $aData;
     }
 
@@ -1275,11 +1191,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabTokens($esrow)
     {
-        $clang = $this->getController()->lang;
-
-        $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
-
         return $aData;
     }
 
@@ -1321,15 +1233,13 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _tabResourceManagement($iSurveyID)
     {
-        $clang = $this->getController()->lang;
-
         global $sCKEditorURL;
 
         // TAB Uploaded Resources Management
-        $ZIPimportAction = " onclick='if (validatefilename(this.form,\"" . $clang->gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'";
+        $ZIPimportAction = " onclick='if (validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'";
         if (!function_exists("zip_open"))
         {
-            $ZIPimportAction = " onclick='alert(\"" . $clang->gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'";
+            $ZIPimportAction = " onclick='alert(\"" . gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'";
         }
 
         $disabledIfNoResources = '';
@@ -1337,7 +1247,6 @@ class SurveyAdmin extends Survey_Common_Action
         {
             $disabledIfNoResources = " disabled='disabled'";
         }
-        $aData['clang'] = $clang;
         //$aData['esrow'] = $esrow;
         $aData['ZIPimportAction'] = $ZIPimportAction;
         $aData['disabledIfNoResources'] = $disabledIfNoResources;
@@ -1353,8 +1262,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             die();
         }
-        $clang = $this->getController()->lang;
-        Yii::app()->session['flashmessage'] = $clang->gT("The survey was successfully expired by setting an expiration date in the survey settings.");
+        Yii::app()->session['flashmessage'] = gT("The survey was successfully expired by setting an expiration date in the survey settings.");
         Survey::model()->expire($iSurveyID);
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyID));
     }
@@ -1369,7 +1277,6 @@ class SurveyAdmin extends Survey_Common_Action
         where up.sid={$iSurveyID}");
         $oResult= $oResult->readAll();
         $i = 0;
-        $clang = $this->getController()->lang;
         $aData = new stdClass();
         foreach ($oResult as $oRow)
         {
@@ -1380,7 +1287,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
             else
             {
-                        $oRow['title'] = $clang->gT('(No target question)');
+                        $oRow['title'] = gT('(No target question)');
             }
 
             if ($oRow['sqquestion'] != '')
@@ -1427,7 +1334,7 @@ class SurveyAdmin extends Survey_Common_Action
             $generalscripts_path = Yii::app()->getConfig('generalscripts');
             $adminscripts_path = Yii::app()->getConfig('adminscripts');
             $styleurl = Yii::app()->getConfig('styleurl');
-                                                                            
+
             $js_files = array(
                 $adminscripts_path . 'surveysettings.js',
             );
@@ -1440,7 +1347,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             App()->getClientScript()->registerScriptFile($file);
 
-            
+
         }
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('jqgrid');
@@ -1451,6 +1358,180 @@ class SurveyAdmin extends Survey_Common_Action
         }
     }
 
+    /**
+    * Update survey settings with post value
+    *
+    * @param $iSurveyId  The survey id
+    */
+    function update($iSurveyId)
+    {
+        if(!Yii::app()->request->isPostRequest)
+            throw new CHttpException(500);
+        if(!Permission::model()->hasSurveyPermission($iSurveyId,'surveysettings','update'))
+            throw new CHttpException(401,"401 Unauthorized");
+
+        // Preload survey
+        $oSurvey=Survey::model()->findByPk($iSurveyId);
+
+         // Save plugin settings.
+        $pluginSettings = App()->request->getPost('plugin', array());
+        foreach($pluginSettings as $plugin => $settings)
+        {
+            $settingsEvent = new PluginEvent('newSurveySettings');
+            $settingsEvent->set('settings', $settings);
+            $settingsEvent->set('survey', $iSurveyId);
+            App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
+        }
+
+        /* Start to fix some param before save (TODO : use models directly ?) */
+        /* Date management */
+        Yii::app()->loadHelper('surveytranslator');
+        $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
+        Yii::app()->loadLibrary('Date_Time_Converter');
+        $startdate = App()->request->getPost('startdate');
+        if (trim($startdate)=="")
+        {
+            $startdate=null;
+        }
+        else
+        {
+            Yii::app()->loadLibrary('Date_Time_Converter');
+            $datetimeobj = new date_time_converter($startdate,$formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
+            $startdate=$datetimeobj->convert("Y-m-d H:i:s");
+        }
+        $expires = App()->request->getPost('expires');
+        if (trim($expires)=="")
+        {
+            $expires=null;
+        }
+        else
+        {
+            $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+            $expires=$datetimeobj->convert("Y-m-d H:i:s");
+        }
+
+        // We have $oSurvey : update and save it
+        $oSurvey->admin =  Yii::app()->request->getPost('admin');
+        $oSurvey->expires =  $expires;
+        $oSurvey->startdate =  $startdate;
+        $oSurvey->anonymized = App()->request->getPost('anonymized');
+        $oSurvey->faxto = App()->request->getPost('faxto');
+        $oSurvey->format = App()->request->getPost('format');
+        $oSurvey->savetimings = App()->request->getPost('savetimings');
+        $oSurvey->template = Yii::app()->request->getPost('template');
+        $oSurvey->assessments = App()->request->getPost('assessments');
+        $oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
+        $oSurvey->datestamp = App()->request->getPost('datestamp');
+        $oSurvey->ipaddr = App()->request->getPost('ipaddr');
+        $oSurvey->refurl = App()->request->getPost('refurl');
+        $oSurvey->publicgraphs = App()->request->getPost('publicgraphs');
+        $oSurvey->usecookie = App()->request->getPost('usecookie');
+        $oSurvey->allowregister = App()->request->getPost('allowregister');
+        $oSurvey->allowsave = App()->request->getPost('allowsave');
+        $oSurvey->navigationdelay = App()->request->getPost('navigationdelay');
+        $oSurvey->printanswers = App()->request->getPost('printanswers');
+        $oSurvey->publicstatistics = App()->request->getPost('publicstatistics');
+        $oSurvey->autoredirect = App()->request->getPost('autoredirect');
+        $oSurvey->showxquestions = App()->request->getPost('showxquestions');
+        $oSurvey->showgroupinfo = App()->request->getPost('showgroupinfo');
+        $oSurvey->showqnumcode = App()->request->getPost('showqnumcode');
+        $oSurvey->shownoanswer = App()->request->getPost('shownoanswer');
+        $oSurvey->showwelcome = App()->request->getPost('showwelcome');
+        $oSurvey->allowprev = App()->request->getPost('allowprev');
+        $oSurvey->questionindex = App()->request->getPost('questionindex');
+        $oSurvey->nokeyboard = App()->request->getPost('nokeyboard');
+        $oSurvey->showprogress = App()->request->getPost('showprogress');
+        $oSurvey->listpublic = App()->request->getPost('public');
+        $oSurvey->htmlemail = App()->request->getPost('htmlemail');
+        $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation');
+        $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence');
+        $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion');
+        $oSurvey->usecaptcha = App()->request->getPost('usecaptcha');
+        $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
+        $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
+        $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+        $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
+        $oSurvey->tokenlength = App()->request->getPost('tokenlength');
+        $oSurvey->adminemail = App()->request->getPost('adminemail');
+        $oSurvey->bounce_email = App()->request->getPost('bounce_email');
+        if ($oSurvey->save())
+        {
+            Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+        }
+        else
+        {
+            Yii::app()->setFlashMessage(gT("Survey could not be updated."),"error");
+            tracevar($oSurvey->getErrors());
+        }
+
+        /* Reload $oSurvey (language are fixed : need it ?) */
+        $oSurvey=Survey::model()->findByPk($iSurveyId);
+
+        /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
+        $aAvailableLanguage=$oSurvey->getAllLanguages();
+        $oCriteria = new CDbCriteria;
+        $oCriteria->compare('surveyls_survey_id',$iSurveyId);
+        $oCriteria->addNotInCondition('surveyls_language',$aAvailableLanguage);
+        SurveyLanguageSetting::model()->deleteAll($oCriteria);
+
+        /* Add new language fixLanguageConsistency do it ?*/
+        foreach ($oSurvey->additionalLanguages as $sLang)
+        {
+            if ($sLang)
+            {
+                $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$iSurveyId,':langname'=>$sLang));
+                if(!$oLanguageSettings)
+                {
+                    $oLanguageSettings= new SurveyLanguageSetting;
+                    $languagedetails=getLanguageDetails($sLang);
+                    $oLanguageSettings->surveyls_survey_id = $iSurveyId;
+                    $oLanguageSettings->surveyls_language = $sLang;
+                    $oLanguageSettings->surveyls_title = ''; // Not in default model ?
+                    $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
+                    if(!$oLanguageSettings->save())
+                    {
+                        Yii::app()->setFlashMessage(gT("Survey language could not be created."),"error");
+                        tracevar($oLanguageSettings->getErrors());
+                    }
+                }
+            }
+        }
+        /* Language fix : remove and add question/group */
+        cleanLanguagesFromSurvey($iSurveyId,implode(" ",$oSurvey->additionalLanguages));
+        fixLanguageConsistency($iSurveyId,implode(" ",$oSurvey->additionalLanguages));
+
+        // Url params in json 
+        $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
+        SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyId));
+        if(isset($aURLParams))
+        {
+            foreach($aURLParams as $aURLParam)
+            {
+                $aURLParam['parameter']=trim($aURLParam['parameter']);
+                if ($aURLParam['parameter']=='' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$aURLParam['parameter']) || $aURLParam['parameter']=='sid' || $aURLParam['parameter']=='newtest' || $aURLParam['parameter']=='token' || $aURLParam['parameter']=='lang')
+                {
+                    continue;  // this parameter name seems to be invalid - just ignore it
+                }
+                unset($aURLParam['act']);
+                unset($aURLParam['title']);
+                unset($aURLParam['id']);
+                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
+                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
+                $aURLParam['sid']=$iSurveyId;
+
+                $param = new SurveyURLParameter;
+                foreach ($aURLParam as $k => $v)
+                    $param->$k = $v;
+                $param->save();
+            }
+        }
+
+        if (Yii::app()->request->getPost('redirect'))
+        {
+            $this->getController()->redirect(Yii::app()->request->getPost('redirect'));
+            App()->end();
+        }
+    }
     /**
     * Saves the new survey after the creation screen is submitted
     *
@@ -1463,21 +1544,12 @@ class SurveyAdmin extends Survey_Common_Action
             // Check if survey title was set
             if (!$_POST['surveyls_title'])
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("Survey could not be created because it did not have a title");
+                Yii::app()->session['flashmessage'] = gT("Survey could not be created because it did not have a title");
                 redirect($this->getController()->createUrl('admin'));
                 return;
             }
 
-            // Check if template may be used
-            $sTemplate = $_POST['template'];
-            if (!$sTemplate || (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('templates','read') && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
-            {
-                $sTemplate = "default";
-            }
-
             Yii::app()->loadHelper("surveytranslator");
-
-
             // If start date supplied convert it to the right format
             $aDateFormatData = getDateFormatData(Yii::app()->session['dateformat']);
             $sStartDate = $_POST['startdate'];
@@ -1496,7 +1568,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $converter = new Date_Time_Converter($sExpiryDate, $aDateFormatData['phpdate'] . ' H:i:s');
                 $sExpiryDate = $converter->convert("Y-m-d H:i:s");
             }
-                  
+
             $iTokenLength=$_POST['tokenlength'];
             //token length has to be at least 5, otherwise set it to default (15)
             if($iTokenLength < 5)
@@ -1507,49 +1579,49 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 $iTokenLength = 36;
             }
-                              
+
             // Insert base settings into surveys table
             $aInsertData = array(
             'expires' => $sExpiryDate,
             'startdate' => $sStartDate,
-            'template' => $sTemplate,
+            'template' => App()->request->getPost('template'),
             'owner_id' => Yii::app()->session['loginID'],
-            'admin' => $_POST['admin'],
+            'admin' => App()->request->getPost('admin'),
             'active' => 'N',
-            'anonymized' => $_POST['anonymized'],
-            'faxto' => $_POST['faxto'],
-            'format' => $_POST['format'],
-            'savetimings' => $_POST['savetimings'],
-            'language' => $_POST['language'],
-            'datestamp' => $_POST['datestamp'],
-            'ipaddr' => $_POST['ipaddr'],
-            'refurl' => $_POST['refurl'],
-            'usecookie' => $_POST['usecookie'],
-            'emailnotificationto' => $_POST['emailnotificationto'],
-            'allowregister' => $_POST['allowregister'],
-            'allowsave' => $_POST['allowsave'],
-            'navigationdelay' => $_POST['navigationdelay'],
-            'autoredirect' => $_POST['autoredirect'],
-            'showxquestions' => $_POST['showxquestions'],
-            'showgroupinfo' => $_POST['showgroupinfo'],
-            'showqnumcode' => $_POST['showqnumcode'],
-            'shownoanswer' => $_POST['shownoanswer'],
-            'showwelcome' => $_POST['showwelcome'],
-            'allowprev' => $_POST['allowprev'],
-            'questionindex' => $_POST['questionindex'],
-            'nokeyboard' => $_POST['nokeyboard'],
-            'showprogress' => $_POST['showprogress'],
-            'printanswers' => $_POST['printanswers'],
-            'listpublic' => $_POST['public'],
-            'htmlemail' => $_POST['htmlemail'],
-            'sendconfirmation' => $_POST['sendconfirmation'],
-            'tokenanswerspersistence' => $_POST['tokenanswerspersistence'],
-            'alloweditaftercompletion' => $_POST['alloweditaftercompletion'],
-            'usecaptcha' => $_POST['usecaptcha'],
-            'publicstatistics' => $_POST['publicstatistics'],
-            'publicgraphs' => $_POST['publicgraphs'],
-            'assessments' => $_POST['assessments'],
-            'emailresponseto' => $_POST['emailresponseto'],
+            'anonymized' => App()->request->getPost('anonymized'),
+            'faxto' => App()->request->getPost('faxto'),
+            'format' => App()->request->getPost('format'),
+            'savetimings' => App()->request->getPost('savetimings'),
+            'language' => App()->request->getPost('language'),
+            'datestamp' => App()->request->getPost('datestamp'),
+            'ipaddr' => App()->request->getPost('ipaddr'),
+            'refurl' => App()->request->getPost('refurl'),
+            'usecookie' => App()->request->getPost('usecookie'),
+            'emailnotificationto' => App()->request->getPost('emailnotificationto'),
+            'allowregister' => App()->request->getPost('allowregister'),
+            'allowsave' => App()->request->getPost('allowsave'),
+            'navigationdelay' => App()->request->getPost('navigationdelay'),
+            'autoredirect' => App()->request->getPost('autoredirect'),
+            'showxquestions' => App()->request->getPost('showxquestions'),
+            'showgroupinfo' => App()->request->getPost('showgroupinfo'),
+            'showqnumcode' => App()->request->getPost('showqnumcode'),
+            'shownoanswer' => App()->request->getPost('shownoanswer'),
+            'showwelcome' => App()->request->getPost('showwelcome'),
+            'allowprev' => App()->request->getPost('allowprev'),
+            'questionindex' => App()->request->getPost('questionindex'),
+            'nokeyboard' => App()->request->getPost('nokeyboard'),
+            'showprogress' => App()->request->getPost('showprogress'),
+            'printanswers' => App()->request->getPost('printanswers'),
+            'listpublic' => App()->request->getPost('public'),
+            'htmlemail' => App()->request->getPost('htmlemail'),
+            'sendconfirmation' => App()->request->getPost('sendconfirmation'),
+            'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
+            'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
+            'usecaptcha' => App()->request->getPost('usecaptcha'),
+            'publicstatistics' => App()->request->getPost('publicstatistics'),
+            'publicgraphs' => App()->request->getPost('publicgraphs'),
+            'assessments' => App()->request->getPost('assessments'),
+            'emailresponseto' => App()->request->getPost('emailresponseto'),
             'tokenlength' => $iTokenLength
             );
 
@@ -1560,14 +1632,14 @@ class SurveyAdmin extends Survey_Common_Action
                 $aInsertData['adminemail'] = Yii::app()->request->getPost('adminemail');
             } else {
                 $aInsertData['adminemail'] = '';
-                $warning .= $this->getController()->lang->gT("Warning! Notification email was not updated because it was not valid.").'<br/>'; 
+                $warning .= gT("Warning! Notification email was not updated because it was not valid.").'<br/>';
             }
             if (Yii::app()->request->getPost('bounce_email', '') == ''
                 || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
                 $aInsertData['bounce_email'] = Yii::app()->request->getPost('bounce_email');
             } else {
                 $aInsertData['bounce_email'] = '';
-                $warning .= $this->getController()->lang->gT("Warning! Bounce email was not updated because it was not valid.").'<br/>'; 
+                $warning .= gT("Warning! Bounce email was not updated because it was not valid.").'<br/>';
             }
 
             if (!is_null($iSurveyID))
@@ -1584,15 +1656,7 @@ class SurveyAdmin extends Survey_Common_Action
             $sDescription = $_POST['description'];
             $sWelcome = $_POST['welcome'];
             $sURLDescription = $_POST['urldescrip'];
-            if (Yii::app()->getConfig('filterxsshtml'))
-            {
-                //$p = new CHtmlPurifier();
-                //$p->options = array('URI.AllowedSchemes'=>array('http' => true,  'https' => true));
-                //$sTitle=$p->purify($sTitle);
-                //$sDescription=$p->purify($sDescription);
-                //$sWelcome=$p->purify($sWelcome);
-                //$sURLDescription=$p->purify($sURLDescription);
-            }
+
             $sTitle = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
             $sDescription = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
             $sWelcome = html_entity_decode($sWelcome, ENT_QUOTES, "UTF-8");
@@ -1620,7 +1684,7 @@ class SurveyAdmin extends Survey_Common_Action
             $langsettings = new SurveyLanguageSetting;
             $langsettings->insertNewSurvey($aInsertData);
 
-            Yii::app()->session['flashmessage'] = $warning.$this->getController()->lang->gT("Survey was successfully added.");
+            Yii::app()->session['flashmessage'] = $warning.gT("Survey was successfully added.");
 
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);

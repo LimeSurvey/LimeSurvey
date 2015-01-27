@@ -1,3 +1,4 @@
+.settings
 .project
 /upload/surveys/*
 /styles/gringegreen/images/Thumbs.db
@@ -14,7 +15,9 @@
 /nbproject
 /tmp/assets/*
 /tmp/runtime/cache/*
+/framework
 .svn
 /third_party/jqgrid/src
 .settings/org.eclipse.php.core.prefs
 .buildpath
+/application/config/config.php

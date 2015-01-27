@@ -40,7 +40,7 @@ $(document).ready(function() {
         newRow.fadeIn();
 
     }
-    $('.settingswidget .settingslist a.remove').bind('click', removeRow);
-    $('.settingswidget .settingslist a.add').bind('click', addRow);
+    $('.settingswidget .setting-list a.remove').bind('click',removeRow);
+    $('.settingswidget .setting-list a.add').bind('click', addRow);
 
 })

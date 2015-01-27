@@ -44,9 +44,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
     $language = $oLanguage->langcode;
-    $clang = $oLanguage;
     $cachefilename = "";
-    
+
     /* Set the fonts for the chart */
     if ($chartfontfile=='auto')
     {
@@ -62,7 +61,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             }
             else
             {
-                Yii::app()->setFlashMessage(sprintf($clang->gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts.'),$neededfontfile),'error');
+                Yii::app()->setFlashMessage(sprintf(gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts.'),$neededfontfile),'error');
                 $bErrorGenerate=true;// Don't do a graph again.
                 return false;
             }
@@ -80,7 +79,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->drawTitle(0,0,$clang->gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
+            $graph->drawTitle(0,0,gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
             $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet,$graph);
             $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
             unset($graph);
@@ -99,7 +98,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->drawTitle(0,0,$clang->gT('Sorry, but this question has no responses yet so a graph cannot be shown.','unescaped'),30,30,30,690,200);
+            $graph->drawTitle(0,0,gT('Sorry, but this question has no responses yet so a graph cannot be shown.','unescaped'),30,30,30,690,200);
             $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet,$graph);
             $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
             unset($graph);
@@ -199,12 +198,13 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
                 if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                 $graph = new pChart(690+$legendsize[0],$gheight);
+                $graph->drawFilledRectangle(0,0,690+$legendsize[0],$gheight,254,254,254,false);
                 $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
                 $graph->setGraphArea(50,30,500,$gheight-60);
                 $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
                 $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
-                $graph->drawGraphArea(255,255,255,TRUE);
+                $graph->drawGraphArea(254,254,254,TRUE);
                 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
                 $graph->drawGrid(4,TRUE,230,230,230,50);
                 // Draw the 0 line
@@ -216,7 +216,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-                $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+                $graph->drawLegend(510,30,$DataSet->GetDataDescription(),250,250,250);
 
                 $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData(),$graph);
                 $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
@@ -290,6 +290,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
                 $gheight=ceil($gheight);
                 $graph = new pChart(690,$gheight);
+                $graph->drawFilledRectangle(0,0,690,$gheight,254,254,254,false);
                 $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
                 $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,254,255,254);
                 $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);
@@ -1484,7 +1485,7 @@ class statistics_helper {
 
                 case "1":    //array (dual scale)
 
-                    $clang = Yii::app()->lang;
+
                     $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                     $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
                     $sSubquestion = flattenText($questionDesc['question']);
@@ -1512,7 +1513,7 @@ class statistics_helper {
                         }
 
                         //output
-                        $labelno = sprintf($clang->gT('Label %s'),'1');
+                        $labelno = sprintf(gT('Label %s'),'1');
                     }
 
                     //label 2
@@ -1534,7 +1535,7 @@ class statistics_helper {
                         }
 
                         //output
-                        $labelno = sprintf($clang->gT('Label %s'),'2');
+                        $labelno = sprintf(gT('Label %s'),'2');
                     }
 
                     //get data
@@ -2360,7 +2361,7 @@ class statistics_helper {
                             $this->sheet->writeNumber($this->xlsRow,1,$grawdata[$i]);
                             $this->sheet->writeNumber($this->xlsRow,2,$percentage/100, $this->xlsPercents);
                             if ($aggregatedPercentage !== 'na') {
-                                $this->sheet->writeNumber($this->xlsRow,3,$percentage/100, $this->xlsPercents);
+                                $this->sheet->writeNumber($this->xlsRow,3,$aggregatedPercentage/100, $this->xlsPercents);
                             }
                             break;
 
@@ -2816,7 +2817,7 @@ class statistics_helper {
         $imagedir = Yii::app()->getConfig("imagedir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
-        $clang = Yii::app()->lang;
+
         $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
 
@@ -2962,7 +2963,7 @@ class statistics_helper {
             * Initiate the Spreadsheet_Excel_Writer
             */
             require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
-            
+
             if($pdfOutput=='F')
             {
                 $sFileName = $tempdir.'/statistic-survey'.$surveyid.'.xls';
@@ -3100,9 +3101,9 @@ class statistics_helper {
 
         elseif (!empty($newsql)) {$sql = $newsql;}
 
-        if (!isset($sql) || !$sql) 
+        if (!isset($sql) || !$sql)
         {
-            $sql= null;            
+            $sql= null;
         }
 
         //only continue if we have something to output
@@ -3196,7 +3197,11 @@ class statistics_helper {
                 {
                     $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
                 }
-                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
+                $sSSL='';
+                if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off"){
+                    $sSSL='s';
+                }
+                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
                 ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
                 return $statisticsoutput;
 
@@ -3239,7 +3244,7 @@ class statistics_helper {
         static $recordCount = 0;
         static $field = null;
         static $allRows = null;
-        
+
         if ($surveyid !== $sid || $fieldname !== $field) {
             //get data
             $query =" FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
@@ -3286,15 +3291,15 @@ class statistics_helper {
                 // Need at least 2 records
                 if ($recordCount<2) return;
                 break;
-                
+
             case 0:
                 return $recordCount;
-                
+
             default:
                 return;
                 break;
-        }        
-        
+        }
+
         $q1 = $quartile/4 * ($recordCount+1);
         $row = $q1-1; // -1 since we start counting at 0
         if ($q1 === (int) $q1) {
@@ -3320,7 +3325,7 @@ class statistics_helper {
         //filter incomplete answers if set
         if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null";}
         elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null";}
-        
+
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
         {
@@ -3349,7 +3354,7 @@ class statistics_helper {
             $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
         }
         return $output;
-    }    
-    
-    
+    }
+
+
 }

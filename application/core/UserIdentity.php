@@ -130,11 +130,12 @@ class UserIdentity extends CUserIdentity
                     $aTemplates=explode(",",$aUserProfile['templatelist']);
                     foreach ($aTemplates as $sTemplateName)
                     {
-                        $oRecord=new Templates_rights;
-                        $oRecord->uid = $oUser->uid;
-                        $oRecord->folder = trim($sTemplateName);
-                        $oRecord->use = 1;
-                        $oRecord->save();
+                        $oPermission=new Permission;
+                        $oPermission->uid = $oUser->uid;
+                        $oPermission->entity = 'template';
+                        $oPermission->permission = trim($sTemplateName);
+                        $oPermission->read_p = 1;
+                        $oPermission->save();
                     }
 
                     // read again user from newly created entry

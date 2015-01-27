@@ -227,6 +227,7 @@ class ExpressionManager {
 'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
 'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
 'tan' => array('tan', 'Math.tan', gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
+'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
 'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
 'trim' => array('trim', 'trim', gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
 'ucwords' => array('ucwords', 'ucwords', gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
@@ -589,14 +590,6 @@ class ExpressionManager {
                             $result = array(NULL,$token[1],'NUMBER');   // was 0 instead of NULL
                         }
                         $this->RDP_StackPush($result);
-
-                        // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
-                        $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
-                        if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
-                        {
-                            $this->RDP_AddError(gT("Variable not declared until a later page"),$token);
-                            return false;
-                        }
                         return true;
                     }
                     else
@@ -1161,7 +1154,7 @@ class ExpressionManager {
         }
         return array_unique($jsNames);
     }
-    
+
     /**
      * Return the list of all of the JavaScript variables used by the most recent expression
      * @return <type>
@@ -1243,7 +1236,6 @@ class ExpressionManager {
             return '';
         }
         $tokens = $this->RDP_tokens;
-        // TODOSHNOULLE
         $stringParts=array();
         $numTokens = count($tokens);
         for ($i=0;$i<$numTokens;++$i)
@@ -1294,7 +1286,7 @@ class ExpressionManager {
                         }
                         else
                         {
-                            $stringParts[] = is_numeric($code) ? $code : ("'" . addcslashes($code,"'") . "'"); // htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . "'");
+                            $stringParts[] = "'" . addcslashes($code,"'") . "'";
                         }
                     }
                     break;
@@ -1417,20 +1409,22 @@ class ExpressionManager {
         $tokens = $this->RDP_tokens;
         $errCount = count($errs);
         $errIndex = 0;
+        $aClass=array();
         if ($errCount > 0)
         {
             usort($errs,"cmpErrorTokens");
         }
-        $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
         $stringParts=array();
         $numTokens = count($tokens);
         $globalErrs=array();
+        $bHaveError=false;
         while ($errIndex < $errCount)
         {
             if ($errs[$errIndex++][1][1]==0)
             {
                 // General message, associated with position 0
                 $globalErrs[] = $errs[$errIndex-1][0];
+                $bHaveError=true;
             }
             else
             {
@@ -1455,17 +1449,18 @@ class ExpressionManager {
             }
             if ($thisTokenHasError)
             {
-                $stringParts[] = "<span title='" . implode('; ',$messages) . "' " . $errSpecificStyle . ">";
+                $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-error'>";
+                $bHaveError=true;
             }
             switch ($token[2])
             {
                 case 'DQ_STRING':
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>\"";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-var-string'>\"";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "\"</span>";
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>'";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-var-string'>'";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "'</span>";
                     break;
@@ -1479,7 +1474,7 @@ class ExpressionManager {
                             $messages[] = $funcInfo[2];
                             $messages[] = $funcInfo[3];
                         }
-                        $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: blue; font-weight: bold'>";
+                        $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-function' >";
                         $stringParts[] = $token[0];
                         $stringParts[] = "</span>";
                     }
@@ -1487,7 +1482,7 @@ class ExpressionManager {
                     {
                         if (!$this->RDP_isValidVariable($token[0]))
                         {
-                            $color = 'red';
+                            $class = 'em-var-error';
                             $displayName = $token[0];
                         }
                         else
@@ -1575,30 +1570,29 @@ class ExpressionManager {
                                 }
                             }
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
-                                $color = '#996600'; // tan
+                                $class = 'em-var-static'; 
                             }
-                            else if ($groupSeq > $this->groupSeq) {
-                                $color = '#FF00FF ';     // pink a likely error
+                            elseif ($groupSeq > $this->groupSeq) {
+                                $class = 'em-var-before em-var-diffgroup';
                             }
-                            else if ($groupSeq < $this->groupSeq) {
-                                $color = 'green';
+                            elseif ($groupSeq < $this->groupSeq) {
+                                $class = 'em-var-after ';
                             }
-                            else if ($questionSeq > $this->questionSeq) {
-                                $color = 'maroon';  // #228b22 - warning
+                            elseif ($questionSeq > $this->questionSeq) {
+                                $class = 'em-var-before em-var-inpage';
                             }
                             else {
-                                $color = '#4C88BE';    // cyan that goes well with the background color
+                                $class = 'em-var-after em-var-inpage';
                             }
                         }
                         // prevent EM prcessing of messages within span
                         $message = implode('; ',$messages);
                         $message = str_replace(array('{','}'), array('{ ', ' }'), $message);
 
-                        $stringParts[] = "<span title='"  . $message . "' style='color: ". $color . "; font-weight: bold'";
-                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
-                            // Modify this link to utilize a different framework
+                        $stringParts[] = "<span title='"  . $message . "' class='em-var {$class}'";
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0) {
                             $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
-                            $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
+                            $stringParts[] = " data-link='{$editlink}'";
                         }
                         $stringParts[] = ">";
                         if ($this->sgqaNaming)
@@ -1620,7 +1614,7 @@ class ExpressionManager {
                     break;
                 case 'ASSIGN':
                     $messages[] = 'Assigning a new value to a variable';
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: red; font-weight: bold'>";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-assign'>";
                     $stringParts[] = $token[0];
                     $stringParts[] =  "</span>";
                     break;
@@ -1642,7 +1636,14 @@ class ExpressionManager {
                 ++$errIndex;
             }
         }
-        return "<span style='background-color: #eee8aa;'>" . implode('', $stringParts) . "</span>";
+        if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        {
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+        }
+        $sClass='em-expression';
+        $sClass.=($bHaveError)?" em-haveerror":"";
+        return "<span class='$sClass'>" . implode('', $stringParts) . "</span>";
     }
 
     /**
@@ -1893,8 +1894,15 @@ class ExpressionManager {
                 }
                 else
                 {
-                    // show original and errors in-line
-                    $resolvedPart = $this->GetPrettyPrintString();
+                    // show original and errors in-line only if user have the rigth to update survey content
+                    if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+                    {
+                        $resolvedPart = $this->GetPrettyPrintString();
+                    }
+                    else
+                    {
+                        $resolvedPart = '';
+                    }
                     $allErrors[] = $this->GetErrors();
                 }
                 $onpageJsVarsUsed = $this->GetOnPageJsVarsUsed();
@@ -2011,7 +2019,7 @@ class ExpressionManager {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs)
                     {
-                        $this->RDP_AddError(sprintf(ngT("Function must have at least %s argument","Function must have at least %s arguments",$minArgs), $minArgs), $funcNameToken);
+                        $this->RDP_AddError(sprintf(Yii::t("Function must have at least %s argument|Function must have at least %s arguments",$minArgs), $minArgs), $funcNameToken);
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
@@ -2156,10 +2164,10 @@ class ExpressionManager {
      */
     public function asSplitStringOnExpressions($src)
     {
-         
+
         $parts = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
-        
-        
+
+
         $count = count($parts);
         $tokens = array();
         $inSQString=false;
@@ -2378,7 +2386,7 @@ class ExpressionManager {
 
     /**
     * Public call of RDP_Tokenize
-    * 
+    *
     * @param string $sSource : the string to tokenize
     * @param bool $bOnEdit : on edition, actually don't remove space
     * @return array
@@ -2574,6 +2582,52 @@ function exprmgr_sumifop($args)
         }
     }
     return $result;
+}
+
+/**
+ * Find the closest matching numerical input values in a list an replace it by the
+ * corresponding value within another list 
+ * 
+ * @author Johannes Weberhofer, 2013
+ *
+ * @param numeric $fValueToReplace
+ * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the 
+ * 		  closest value should be returned
+ * @param string $sTranslateFromList - comma seperated list of numeric values to translate from
+ * @param string $sTranslateToList - comma seperated list of numeric values to translate to
+ * @return numeric
+ */
+function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList) 
+{
+	if ( (is_numeric($fValueToReplace)) && ($iStrict!=null) && ($sTranslateFromList!=null) && ($sTranslateToList!=null) ) 
+	{
+		$aFromValues = explode( ',', $sTranslateFromList);
+		$aToValues = explode( ',', $sTranslateToList);
+		if ( (count($aFromValues) > 0)  && (count($aFromValues) == count($aToValues)) )
+		{
+			$fMinimumDiff = null;
+			$iNearestIndex = 0;
+			for ( $i = 0; $i < count($aFromValues); $i++) {
+				if ( !is_numeric($aFromValues[$i])) {
+					// break processing when non-numeric variables are about to be processed
+					return null;
+				}
+				$fCurrentDiff = abs($aFromValues[$i] - $fValueToReplace);
+				if ($fCurrentDiff === 0) {
+					return $aToValues[$i];
+				} else if ($i === 0) {
+					$fMinimumDiff = $fCurrentDiff;
+				} else if ( $fMinimumDiff > $fCurrentDiff ) {
+					$fMinimumDiff = $fCurrentDiff;
+					$iNearestIndex = $i;
+				}
+			}					
+			if ( $iStrict !== 1 ) {
+				return $aToValues[$iNearestIndex];
+			}
+		}
+	}
+	return null;
 }
 
 /**

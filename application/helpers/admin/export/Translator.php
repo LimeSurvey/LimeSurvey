@@ -6,22 +6,7 @@ class Translator
 
     public function translate($key, $sLanguageCode)
     {
-        return $this->getTranslationLibrary($sLanguageCode)->gT($key);
-    }
-
-    protected function getTranslationLibrary($sLanguageCode)
-    {
-        $library = null;
-        if (!array_key_exists($sLanguageCode, $this->translations))
-        {
-            $library = new limesurvey_lang($sLanguageCode);
-            $this->translations[$sLanguageCode] = $library;
-        }
-        else
-        {
-            $library = $this->translations[$sLanguageCode];
-        }
-        return $library;
+        return gT($key,'html',$sLanguageCode);
     }
 
     /**

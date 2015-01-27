@@ -37,7 +37,6 @@ class questiongroups extends Survey_Common_Action
     {
         $action = $_POST['action'];
         $surveyid = $_POST['sid'];
-        $clang = $this->getController()->lang;
 
         if ($action == 'importgroup')
         {
@@ -50,12 +49,12 @@ class questiongroups extends Survey_Common_Action
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
             {
-                $fatalerror = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $this->config->item('tempdir'));
+                $fatalerror = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $this->config->item('tempdir'));
             }
 
             // validate that we have a SID
             if (!returnGlobal('sid'))
-                $fatalerror .= $clang->gT("No SID (Survey) has been provided. Cannot import question.");
+                $fatalerror .= gT("No SID (Survey) has been provided. Cannot import question.");
 
             if (isset($fatalerror))
             {
@@ -66,9 +65,7 @@ class questiongroups extends Survey_Common_Action
             Yii::app()->loadHelper('admin/import');
 
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-            if (strtolower($sExtension) == 'csv')
-                $aImportResults = CSVImportGroup($sFullFilepath, $surveyid);
-            elseif (strtolower($sExtension) == 'lsg')
+            if (strtolower($sExtension) == 'lsg')
                 $aImportResults = XMLImportGroup($sFullFilepath, $surveyid);
             else
                 $this->getController()->error('Unknown file extension');
@@ -106,8 +103,6 @@ class questiongroups extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            $clang = $this->getController()->lang;
-
             Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
 
             Yii::app()->loadHelper('admin/htmleditor');
@@ -212,7 +207,7 @@ class questiongroups extends Survey_Common_Action
                 // This line sets the newly inserted group as the new group
                 if (isset($groupid))
                     $gid = $groupid;
-                Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("New question group was saved.");
+                Yii::app()->session['flashmessage'] = gT("New question group was saved.");
             }
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
@@ -233,17 +228,15 @@ class questiongroups extends Survey_Common_Action
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
             $iGroupId = sanitize_int($iGroupId);
-            $clang = $this->getController()->lang;
-
             $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
             if ($iGroupsDeleted > 0)
             {
                 fixSortOrderGroups($iSurveyId);
-                Yii::app()->setFlashMessage($clang->gT('The question group was deleted.'));
+                Yii::app()->setFlashMessage(gT('The question group was deleted.'));
             }
             else
-                Yii::app()->setFlashMessage($clang->gT('Group could not be deleted'),'error');
+                Yii::app()->setFlashMessage(gT('Group could not be deleted'),'error');
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyId));
         }
@@ -260,7 +253,6 @@ class questiongroups extends Survey_Common_Action
      */
     public function edit($surveyid, $gid)
     {
-        $clang = $this->getController()->lang;
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
@@ -321,7 +313,7 @@ class questiongroups extends Survey_Common_Action
                 $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
                 if ($first)
                 {
-                    $aTabTitles[$sLanguage].= ' (' . $clang->gT("Base language") . ')';
+                    $aTabTitles[$sLanguage].= ' (' . gT("Base language") . ')';
                     $first = false;
                 }
             }
@@ -396,7 +388,7 @@ class questiongroups extends Survey_Common_Action
                 }
             }
 
-            Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Question group successfully saved.");
+            Yii::app()->session['flashmessage'] = gT("Question group successfully saved.");
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
         }
     }

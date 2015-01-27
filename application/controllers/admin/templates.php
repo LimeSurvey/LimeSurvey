@@ -24,6 +24,17 @@ if (!defined('BASEPATH'))
 class templates extends Survey_Common_Action
 {
 
+    public function runWithParams($params)
+    {
+        if (!Permission::model()->hasGlobalPermission('templates','read'))
+        {
+            die('No permission');
+        }
+        parent::runWithParams($params);
+    }
+
+
+
     /**
     * Exports a template
     *
@@ -33,7 +44,10 @@ class templates extends Survey_Common_Action
     */
     public function templatezip($templatename)
     {
-
+        if (!Permission::model()->hasGlobalPermission('templates','export'))
+        {
+            die('No permission');
+        }
         $templatedir = getTemplatePath($templatename) . DIRECTORY_SEPARATOR;
         $tempdir = Yii::app()->getConfig('tempdir');
 
@@ -60,19 +74,19 @@ class templates extends Survey_Common_Action
 
    /**
    * Retrieves a temporary template file from disk
-   * 
+   *
    * @param mixed $id ID of the template file
    */
     public function tmp($id)
     {
       $iTime= preg_replace("/[^0-9]$/", '', $id);
       $sFile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."template_temp_{$iTime}.html";
-      
-      if(!is_file($sFile) || !file_exists($sFile)) die(); 
+
+      if(!is_file($sFile) || !file_exists($sFile)) die();
       readfile($sFile);
-        
+
     }
-    
+
     /**
     * Responsible to import a template archive.
     *
@@ -81,30 +95,33 @@ class templates extends Survey_Common_Action
     */
     public function upload()
     {
-        $clang = $this->getController()->lang;
+        if (!Permission::model()->hasGlobalPermission('templates','import'))
+        {
+            die('No permission');
+        }
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
         $lid = returnGlobal('lid');
         $action = returnGlobal('action');
 
         if ($action == 'templateupload') {
             if (Yii::app()->getConfig('demoMode'))
-                $this->getController()->error($clang->gT("Demo mode: Uploading templates is disabled."));
+                $this->getController()->error(gT("Demo mode: Uploading templates is disabled."));
 
             Yii::app()->loadLibrary('admin.pclzip');
 
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
-        
+
             // Create temporary directory so that if dangerous content is unzipped it would be unaccessible
-            $sNewDirectoryName=str_replace('.', '', self::_strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
+            $sNewDirectoryName=sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME ));
             $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
             if (!is_writeable(dirname($destdir)))
-                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), dirname($destdir)));
+                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
 
             if (!is_dir($destdir))
                 mkdir($destdir);
             else
-                $this->getController()->error(sprintf($clang->gT("Template '%s' does already exist."), $sNewDirectoryName));
+                $this->getController()->error(sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
 
             $aImportedFilesInfo = array();
             $aErrorFilesInfo = array();
@@ -115,7 +132,7 @@ class templates extends Survey_Common_Action
                 $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
                 if ($aExtractResult==0)
                 {
-                    $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed."));
+                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed."));
 
                 }
                 else
@@ -125,19 +142,19 @@ class templates extends Survey_Common_Action
                     {
                         $aImportedFilesInfo[] = Array(
                             "filename" => $sFile['stored_filename'],
-                            "status" => $clang->gT("OK"),
+                            "status" => gT("OK"),
                             'is_folder' => $sFile['folder']
-                        );                    
+                        );
                     }
                 }
 
                 if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) == 0)
-                    $this->getController()->error($clang->gT("This ZIP archive contains no valid template files. Import failed."));
+                    $this->getController()->error(gT("This ZIP archive contains no valid template files. Import failed."));
             }
             else
-                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
-                
-                
+                $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
+
+
             if (count($aImportedFilesInfo) > 0)
             {
                 $templateFixes= $this->_templateFixes($sNewDirectoryName);
@@ -173,7 +190,6 @@ class templates extends Survey_Common_Action
 
     private function _templateFixes($templatename)
     {
-        $clang = $this->getController()->lang;
         $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
         $templateFixes=array();
         $templateFixes['success']=true;
@@ -194,18 +210,18 @@ class templates extends Survey_Common_Action
                 if(strpos($content, "{TEMPLATEJS}")===false)
                 {
                     $templateFixes['success']=false;
-                    $templateFixes['details']['templatejs']=$clang->gT("Unable to add {TEMPLATEJS} placeholder, please check your startpage.pstpl.");
+                    $templateFixes['details']['templatejs']=gT("Unable to add {TEMPLATEJS} placeholder, please check your startpage.pstpl.");
                 }
                 else
                 {
-                    $templateFixes['details']['templatejs']=$clang->gT("Placeholder {TEMPLATEJS} added to your startpage.pstpl.");
+                    $templateFixes['details']['templatejs']=gT("Placeholder {TEMPLATEJS} added to your startpage.pstpl.");
                 }
             }
         }
         else
         {
             $templateFixes['success']=false;
-            $templateFixes['details']['templatejs']=$clang->gT("Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please check your template.");
+            $templateFixes['details']['templatejs']=gT("Unable to find startpage.pstpl to add {TEMPLATEJS} placeholder, please check your template.");
         }
         return $templateFixes;
     }
@@ -218,7 +234,10 @@ class templates extends Survey_Common_Action
     */
     public function uploadfile()
     {
-        $clang = $this->getController()->lang;
+        if (!Permission::model()->hasGlobalPermission('templates','import'))
+        {
+            die('No permission');
+        }
         $action = returnGlobal('action');
         $editfile = returnGlobal('editfile');
         $templatename = returnGlobal('templatename');
@@ -235,31 +254,31 @@ class templates extends Survey_Common_Action
         {
             if(Yii::app()->getConfig('demoMode'))
             {
-                $uploadresult = $clang->gT("Demo mode: Uploading template files is disabled.");
+                $uploadresult = gT("Demo mode: Uploading template files is disabled.");
             }
             elseif($filename!=$_FILES['upload_file']['name'])
             {
-                $uploadresult = $clang->gT("This filename is not allowed to be uploaded.");
+                $uploadresult = gT("This filename is not allowed to be uploaded.");
             }
             elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedtemplateuploads )))
             {
 
-                $uploadresult = $clang->gT("This file type is not allowed to be uploaded.");
+                $uploadresult = gT("This file type is not allowed to be uploaded.");
             }
             else
             {
                   //Uploads the file into the appropriate directory
                    if (!@move_uploaded_file($_FILES['upload_file']['tmp_name'], $fullfilepath)) {
-                        $uploadresult = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir);
+                        $uploadresult = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir);
                    }
                    else
                    {
-                        $uploadresult = sprintf($clang->gT("File %s uploaded"),$filename);
+                        $uploadresult = sprintf(gT("File %s uploaded"),$filename);
                    }
             }
             Yii::app()->session['flashmessage'] = $uploadresult;
         }
-        $this->getController()->redirect(array("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
@@ -319,7 +338,7 @@ class templates extends Survey_Common_Action
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile);
         App()->getClientScript()->reset();
         App()->getComponent('bootstrap')->init();
-        
+
         // After reseting, we need register again the script : maybe move it to endScripts_view for allways needed scripts ?
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
@@ -380,7 +399,10 @@ class templates extends Survey_Common_Action
     */
     public function templatefiledelete()
     {
-        $clang = $this->getController()->lang;
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         if (returnGlobal('action') == "templatefiledelete") {
             // This is where the temp file is
             $sFileToDelete=preg_replace("[^\w\s\d\.\-_~,;:\[\]\(\]]", '', returnGlobal('otherfile'));
@@ -388,11 +410,11 @@ class templates extends Survey_Common_Action
             $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $_POST['templatename'] . "/" . $sFileToDelete;
             if (@unlink($the_full_file_path))
             {
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("The file %s was deleted."), htmlspecialchars($sFileToDelete));
+                Yii::app()->session['flashmessage'] = sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete));
             }
             else
             {
-                Yii::app()->session['flashmessage'] = sprintf($clang->gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete));
+                Yii::app()->session['flashmessage'] = sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete));
             }
             $this->getController()->redirect(array("admin/templates/sa/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
         }
@@ -406,18 +428,22 @@ class templates extends Survey_Common_Action
     */
     public function templaterename()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
-            $clang = Yii::app()->lang;
-            $sOldName = sanitize_paranoid_string(returnGlobal('copydir'));
-            $sNewName = sanitize_paranoid_string(returnGlobal('newname'));
+
+            $sOldName = sanitize_dirname(returnGlobal('copydir'));
+            $sNewName = sanitize_dirname(returnGlobal('newname'));
             $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
             $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
             if (isStandardTemplate(returnGlobal('newname')))
-                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . $clang->gT("This name is reserved for standard template.", "js"));
+                $this->getController()->error(sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js"));
             elseif (file_exists($sNewDirectoryPath))
-                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . $clang->gT("A template with that name already exists.", "js"));
+                $this->getController()->error(sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js"));
             elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false)
-                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . $clang->gT("Maybe you don't have permission.", "js"));
+                $this->getController()->error(sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
             else
             {
                 Survey::model()->updateAll(array( 'template' => $sNewName ), "template = :oldname", array(':oldname'=>$sOldName));
@@ -438,9 +464,12 @@ class templates extends Survey_Common_Action
     */
     public function templatecopy()
     {
-        $clang = $this->getController()->lang;
-        $newname=sanitize_paranoid_string(Yii::app()->request->getPost("newname"));
-        $copydir=sanitize_paranoid_string(Yii::app()->request->getPost("copydir"));
+        if (!Permission::model()->hasGlobalPermission('templates','create'))
+        {
+            die('No permission');
+        }
+        $newname=sanitize_dirname(Yii::app()->request->getPost("newname"));
+        $copydir=sanitize_dirname(Yii::app()->request->getPost("copydir"));
         $action=Yii::app()->request->getPost("action");
         if ($newname && $copydir) {
             // Copies all the files from one template directory to a new one
@@ -456,13 +485,13 @@ class templates extends Survey_Common_Action
             }
             elseif ($mkdirresult == 2)
             {
-                Yii::app()->setFlashMessage(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
+                Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
                 $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$copydir));
             }
             else
             {
-                Yii::app()->setFlashMessage(sprintf($clang->gT("Unable to create directory `%s`."), $newname),'error');
-                Yii::app()->setFlashMessage($clang->gT("Please check the directory permissions."));
+                Yii::app()->setFlashMessage(sprintf(gT("Unable to create directory `%s`."), $newname),'error');
+                Yii::app()->setFlashMessage(gT("Please check the directory permissions."));
                 $this->getController()->redirect(array("admin/templates/sa/view"));
             }
         }
@@ -481,10 +510,12 @@ class templates extends Survey_Common_Action
     */
     public function delete($templatename)
     {
+        if (!Permission::model()->hasGlobalPermission('templates','delete'))
+        {
+            die('No permission');
+        }
         Yii::app()->loadHelper("admin/template");
         if (is_template_editable($templatename) == true) {
-            $clang = $this->getController()->lang;
-
             if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
                 $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
                 foreach ($surveys as $s)
@@ -496,10 +527,10 @@ class templates extends Survey_Common_Action
                 Template::model()->deleteAllByAttributes(array('folder' => $templatename));
                 Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
 
-                Yii::app()->setFlashMessage(sprintf($clang->gT("Template '%s' was successfully deleted."), $templatename));
+                Yii::app()->setFlashMessage(sprintf(gT("Template '%s' was successfully deleted."), $templatename));
             }
             else
-                Yii::app()->setFlashMessage(sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
+                Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
         }
 
         // Redirect with default templatename, editfile and screenname
@@ -514,6 +545,10 @@ class templates extends Survey_Common_Action
     */
     public function templatesavechanges()
     {
+        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        {
+            die('No permission');
+        }
         if (returnGlobal('changes')) {
             $changedtext = returnGlobal('changes');
             $changedtext = str_replace('<?', '', $changedtext);
@@ -577,7 +612,6 @@ class templates extends Survey_Common_Action
     */
     protected function _templatebar($screenname, $editfile, $screens, $tempdir, $templatename)
     {
-        $aData['clang'] = $this->getController()->lang;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['screens'] = $screens;
@@ -636,8 +670,8 @@ class templates extends Survey_Common_Action
 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");            
-            
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+
             App()->getClientScript()->render($myoutput);
             @fwrite($fnew, $myoutput);
             @fclose($fnew);
@@ -659,12 +693,8 @@ class templates extends Survey_Common_Action
            default: $sEditorFileType='html';
            break;
         }
-
-
-        $aData['clang'] = $this->getController()->lang;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
-
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
         $aData['templates'] = $templates;
@@ -751,7 +781,6 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         App()->getClientScript()->reset();
-        $clang = $this->getController()->lang;
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
 
@@ -766,16 +795,16 @@ class templates extends Survey_Common_Action
 
         // Standard screens
         // Only these may be viewed
-        $screens[] = array('name' => $clang->gT('Survey List Page'), 'id' => 'surveylist');
-        $screens[] = array('name' => $clang->gT('Welcome Page'), 'id' => 'welcome');
-        $screens[] = array('name' => $clang->gT('Question Page'), 'id' => 'question');
-        $screens[] = array('name' => $clang->gT('Completed Page'), 'id' => 'completed');
-        $screens[] = array('name' => $clang->gT('Clear All Page'), 'id' => 'clearall');
-        $screens[] = array('name' => $clang->gT('Register Page'), 'id' => 'register');
-        $screens[] = array('name' => $clang->gT('Load Page'), 'id' => 'load');
-        $screens[] = array('name' => $clang->gT('Save Page'), 'id' => 'save');
-        $screens[] = array('name' => $clang->gT('Print answers page'), 'id' => 'printanswers');
-        $screens[] = array('name' => $clang->gT('Printable survey page'), 'id' => 'printablesurvey');
+        $screens[] = array('name' => gT('Survey List Page'), 'id' => 'surveylist');
+        $screens[] = array('name' => gT('Welcome Page'), 'id' => 'welcome');
+        $screens[] = array('name' => gT('Question Page'), 'id' => 'question');
+        $screens[] = array('name' => gT('Completed Page'), 'id' => 'completed');
+        $screens[] = array('name' => gT('Clear All Page'), 'id' => 'clearall');
+        $screens[] = array('name' => gT('Register Page'), 'id' => 'register');
+        $screens[] = array('name' => gT('Load Page'), 'id' => 'load');
+        $screens[] = array('name' => gT('Save Page'), 'id' => 'save');
+        $screens[] = array('name' => gT('Print answers page'), 'id' => 'printanswers');
+        $screens[] = array('name' => gT('Printable survey page'), 'id' => 'printablesurvey');
 
         // Page display blocks
         $SurveyList = array('startpage.pstpl',
@@ -832,7 +861,7 @@ class templates extends Survey_Common_Action
         $file_version = "LimeSurvey template editor " . Yii::app()->getConfig('versionnumber');
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
-        $templatename = sanitize_paranoid_string($templatename);
+        $templatename = sanitize_dirname($templatename);
         $screenname = autoUnescape($screenname);
 
         // Checks if screen name is in the list of allowed screen names
@@ -846,10 +875,10 @@ class templates extends Survey_Common_Action
             $subaction = sanitize_paranoid_string(returnGlobal('subaction'));
 
         if (!isset($newname))
-            $newname = sanitize_paranoid_string(returnGlobal('newname'));
+            $newname = sanitize_dirname(returnGlobal('newname'));
 
         if (!isset($copydir))
-            $copydir = sanitize_paranoid_string(returnGlobal('copydir'));
+            $copydir = sanitize_dirname(returnGlobal('copydir'));
 
         if (is_file(Yii::app()->getConfig('usertemplaterootdir') . '/' . $templatename . '/question_start.pstpl')) {
             $files[] = array('name' => 'question_start.pstpl');
@@ -888,42 +917,35 @@ class templates extends Survey_Common_Action
         $thissurvey['active'] = 'N';
 
         // FAKE DATA FOR TEMPLATES
-        $thissurvey['name'] = $clang->gT("Template Sample");
+        $thissurvey['name'] = gT("Template Sample");
         $thissurvey['description'] =
-            "<p>".$clang->gT('This is a sample survey description. It could be quite long.')."</p>".
-            "<p>".$clang->gT("But this one isn't.")."<p>";
+            "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
+            "<p>".gT("But this one isn't.")."<p>";
         $thissurvey['welcome'] =
-            "<p>".$clang->gT('Welcome to this sample survey')."<p>" .
-            "<p>".$clang->gT('You should have a great time doing this')."<p>";
+            "<p>".gT('Welcome to this sample survey')."<p>" .
+            "<p>".gT('You should have a great time doing this')."<p>";
         $thissurvey['allowsave'] = "Y";
         $thissurvey['active'] = "Y";
         $thissurvey['tokenanswerspersistence'] = "Y";
         $thissurvey['templatedir'] = $templatename;
         $thissurvey['format'] = "G";
         $thissurvey['surveyls_url'] = "http://www.limesurvey.org/";
-        $thissurvey['surveyls_urldescription'] = $clang->gT("Some URL description");
+        $thissurvey['surveyls_urldescription'] = gT("Some URL description");
         $thissurvey['usecaptcha'] = "A";
         $percentcomplete = makegraph(6, 10);
 
-        $groupname = $clang->gT("Group 1: The first lot of questions");
-        $groupdescription = $clang->gT("This group description is fairly vacuous, but quite important.");
+        $groupname = gT("Group 1: The first lot of questions");
+        $groupdescription = gT("This group description is fairly vacuous, but quite important.");
 
         $navigator = $this->getController()->render('/admin/templates/templateeditor_navigator_view', array(
-        'screenname' => $screenname,
-        'clang' => $clang,
+        'screenname' => $screenname
         ), true);
 
-        $completed = $this->getController()->render('/admin/templates/templateeditor_completed_view', array(
-        'clang' => $clang,
-        ), true);
+        $completed = $this->getController()->render('/admin/templates/templateeditor_completed_view', array(), true);
 
-        $assessments = $this->getController()->render('/admin/templates/templateeditor_assessments_view', array(
-        'clang' => $clang,
-        ), true);
+        $assessments = $this->getController()->render('/admin/templates/templateeditor_assessments_view', array(), true);
 
-        $printoutput = $this->getController()->render('/admin/templates/templateeditor_printoutput_view', array(
-        'clang' => $clang
-        ), true);
+        $printoutput = $this->getController()->render('/admin/templates/templateeditor_printoutput_view', array(), true);
 
         $totalquestions = '10';
         $surveyformat = 'Format';
@@ -941,7 +963,7 @@ class templates extends Survey_Common_Action
         $aData['groupname'] = $groupname;
         $aData['groupdescription'] = $groupdescription;
         $aData['navigator'] = $navigator;
-        $aData['help'] = $clang->gT("This is some help text.");
+        $aData['help'] = gT("This is some help text.");
         $aData['surveyformat'] = $surveyformat;
         $aData['totalquestions'] = $totalquestions;
         $aData['completed'] = $completed;
@@ -964,9 +986,9 @@ class templates extends Survey_Common_Action
             case 'surveylist':
                 unset($files);
                 $surveylist = array(
-                "nosid" => $clang->gT("You have not provided a survey identification number"),
-                "contact" => sprintf($clang->gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
-                "listheading" => $clang->gT("The following surveys are available:"),
+                "nosid" => gT("You have not provided a survey identification number"),
+                "contact" => sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
+                "listheading" => gT("The following surveys are available:"),
                 "list" => $this->getController()->render('/admin/templates/templateeditor_surveylist_view', array(), true),
                 );
                 $aData['surveylist'] = $surveylist;
@@ -984,18 +1006,18 @@ class templates extends Survey_Common_Action
                 foreach ($Question as $qs)
                     $files[] = array("name" => $qs);
 
-                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array('clang' => $clang), true);
+                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array(), true);
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/survey.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startgroup.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/groupdescription.pstpl", $aData));
 
                 $question = array(
-                'all' => $clang->gT("How many roads must a man walk down?"),// Still in use ?
-                'text' => $clang->gT("How many roads must a man walk down?"),
+                'all' => gT("How many roads must a man walk down?"),// Still in use ?
+                'text' => gT("How many roads must a man walk down?"),
                 'code' => '1a',
                 'help' => 'helpful text',
-                'mandatory' => $clang->gT("*"),
+                'mandatory' => gT("*"),
                 'man_class' => ' mandatory',
                 'man_message' => '',
                 'valid_message' => '',
@@ -1008,15 +1030,15 @@ class templates extends Survey_Common_Action
                 );
                 $aData['question'] = $question;
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('clang' => $clang), true);
+                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['answer'] = $answer;
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true,'clang' => $clang), true);
+                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['answer'] = $answer;
                 $question = array(
-                'all' => $clang->gT("Please explain something in detail:"),// Still in use ?
-                'text' => $clang->gT('Please explain something in detail:'),
+                'all' => gT("Please explain something in detail:"),// Still in use ?
+                'text' => gT('Please explain something in detail:'),
                 'code' => '2a',
                 'help' => '',
                 'mandatory' => '',
@@ -1115,23 +1137,22 @@ class templates extends Survey_Common_Action
                     $questionoutput[] = templatereplace($op, array(
                     'QUESTION_NUMBER' => '1',
                     'QUESTION_CODE' => 'Q1',
-                    'QUESTION_MANDATORY' => $clang->gT('*'),
+                    'QUESTION_MANDATORY' => gT('*'),
                     // If there are conditions on a question, list the conditions.
                     'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',
                     'QUESTION_CLASS' => ' mandatory list-radio',
-                    'QUESTION_TYPE_HELP' => $clang->gT('Please choose *only one* of the following:'),
+                    'QUESTION_TYPE_HELP' => gT('Please choose *only one* of the following:'),
                     // (not sure if this is used) mandatory error
                     'QUESTION_MAN_MESSAGE' => '',
                     // (not sure if this is used) validation error
                     'QUESTION_VALID_MESSAGE' => '',
                     // (not sure if this is used) file validation error
                     'QUESTION_FILE_VALID_MESSAGE' => '',
-                    'QUESTION_TEXT' => $clang->gT('This is a sample question text. The user was asked to pick an entry.'),
-                    'QUESTIONHELP' => $clang->gT('This is some help text for this question.'),
+                    'QUESTION_TEXT' => gT('This is a sample question text. The user was asked to pick an entry.'),
+                    'QUESTIONHELP' => gT('This is some help text for this question.'),
                     'ANSWER' =>
                     $this->getController()->render('/admin/templates/templateeditor_printablesurvey_quesanswer_view', array(
-                    'templateurl' => $templateurl,
-                    'clang' => $clang
+                    'templateurl' => $templateurl
                     ), true),
                     ), $aData);
                 }
@@ -1139,12 +1160,12 @@ class templates extends Survey_Common_Action
                 $groupoutput[] = templatereplace(file_get_contents("$templatedir/print_group.pstpl"), array('QUESTIONS' => implode(' ', $questionoutput)), $aData);
 
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), array('GROUPS' => implode(' ', $groupoutput),
-                'FAX_TO' => $clang->gT("Please fax your completed survey to:") . " 000-000-000",
-                'SUBMIT_TEXT' => $clang->gT("Submit your survey."),
+                'FAX_TO' => gT("Please fax your completed survey to:") . " 000-000-000",
+                'SUBMIT_TEXT' => gT("Submit your survey."),
                 'HEADELEMENTS' => getPrintableHeader(),
-                'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
-                'THANKS' => $clang->gT('Thank you for completing this survey.'),
-                'END' => $clang->gT('This is the survey end message.')
+                'SUBMIT_BY' => sprintf(gT("Please submit by %s"), date('d.m.y')),
+                'THANKS' => gT('Thank you for completing this survey.'),
+                'END' => gT('This is the survey end message.')
                 ), $aData);
                 break;
 
@@ -1196,7 +1217,6 @@ class templates extends Survey_Common_Action
             closedir($handle);
         }
 
-        $aData['clang'] = $this->getController()->lang;
         $aData['codelanguage'] = $codelanguage;
         $aData['highlighter'] = $highlighter;
         $aData['screens'] = $screens;

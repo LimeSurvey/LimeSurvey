@@ -50,7 +50,7 @@ h5,h6{font-size:1em}
 p,dl{margin:0 0 .75em}
 em,q,cite{font-style:italic}
 input, button, select {vertical-align: middle;}
-.hide{position:absolute;top:auto;left:-999999px}
+.hide{position:absolute;top:auto;left:-999999px;width: 1px;height: 1px;overflow:hidden;}
 @media reader {
   #progressbar,#progress-pre,#progress-post{display:none}
   #progress-wrapper .hide{position:relative;top:0;left:0;}

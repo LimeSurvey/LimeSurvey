@@ -1,4 +1,5 @@
 <?php
+use ls\pluginmanager\PluginBase;
 class ExportSTATAxml extends PluginBase {
     
     protected $storage = 'DbStorage';
@@ -6,8 +7,8 @@ class ExportSTATAxml extends PluginBase {
     static protected $description = 'Core: Export survey results to a STATA xml file';
     static protected $name = 'STATA Export';
     
-    public function __construct(PluginManager $manager, $id) {
-        parent::__construct($manager, $id);
+    public function init()
+    {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle
@@ -17,6 +18,16 @@ class ExportSTATAxml extends PluginBase {
         $this->subscribe('newExport');
     }
     
+    protected $settings = array(
+        'statafileversion' => array(
+            'type' => 'select',
+            'label' => 'Export for Stata',
+            'options' => array('113' => 'version 8 through 12', '117'  => 'version 13 and up'),
+            'default' => '113',
+            'submitonchange'=> false
+            )
+        );
+
     public function listExportOptions()
     {
         $event = $this->getEvent();
@@ -56,8 +67,9 @@ class ExportSTATAxml extends PluginBase {
     {
         $event = $this->getEvent();
         $type = $event->get('type');
-                
-        $writer = new STATAxmlWriter();
+
+        $pluginsettings=$this->getPluginSettings(true);
+        $writer = new STATAxmlWriter($pluginsettings);
         $event->set('writer', $writer);
     }
 }

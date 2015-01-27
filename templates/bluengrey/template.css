@@ -742,6 +742,10 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
   display: inline-block;
   width: 85%;
 }
+.list-radio .answers ul.colstyle-css li label, .list-radio .answers ul.colstyle-ul li label, .list-radio .answers table.colstyle-table li label, 
+.list-with-comment .answers ul.colstyle-css li label, .list-with-comment .answers ul.colstyle-ul li label, .list-with-comment .answers table.colstyle-table li label {
+    display: inline;
+}
 .list-radio .answers li.other-item label,
 .list-with-comment .answers li.other-item label {
   width: auto;
@@ -879,6 +883,10 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 .multiple-opt .answers li label, .multiple-opt-comments .answers li .option label {
   display: inline-block;
   width: 90%;
+}
+.multiple-opt .answers ul.colstyle-css li label, .multiple-opt .answers ul.colstyle-ul li label, .multiple-opt .answers table.colstyle-table li label,
+.multiple-opt-comments .answers ul.colstyle-css li label, .multiple-opt-comments .answers ul.colstyle-ul li label, .multiple-opt-comments .answers table.colstyle-table li label {
+    display: inline;
 }
 .multiple-opt .answers li.other-item label, .multiple-opt-comments .answers li.other-item .option label {
   width: auto;

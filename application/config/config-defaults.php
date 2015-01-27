@@ -68,16 +68,14 @@ $config['minrepeatheadings']  =   3;                // The minimum number of rem
 $config['defaultlang']        =   'en';             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 
 $config['timeadjust']         =   0;                // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
-$config['allowexportalldb']   =   1;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
+$config['allowexportalldb']   =   0;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
 $config['maxdumpdbrecords']   =   500;              // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
-$config['allowmandbackwards'] =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
-// has not been answered. 1=Allow, 0=Deny
 $config['deletenonvalues']    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators']   =   0;                // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $config['blacklistallsurveys']     =  'N';          // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']     =  'N';          // Blacklist participant for any new added survey once the global field is set
-$config['blockaddingtosurveys']     =  'N';         // Don't allow blacklisted participants to be added to new survey
+$config['blockaddingtosurveys']     =  'Y';         // Don't allow blacklisted participants to be added to new survey
 $config['hideblacklisted']     =  'N';              // Don't show blacklisted participants
 $config['deleteblacklisted']     =  'N';            // Delete globally blacklisted participant from the database
 $config['allowunblacklist']     =  'N';             // Allow participant to unblacklist himself/herself
@@ -86,7 +84,7 @@ $config['defaulttemplate']    =  'default';         // This setting specifys the
 
 $config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js';  // File types allowed to be uploaded in the templates section.
 
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 $config['memory_limit']        =  '32';   // This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
 
@@ -236,7 +234,16 @@ $config['usercontrolSameGroupPolicy'] = true;
 
 $config['demoMode'] = false;
 
-/** 
+/**
+* Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated.
+* Also a notice will be shown that the user knows that he can just login by using the Login button.
+*
+* @var $config['demoModePrefill']  boolan  If set to true prefill the login mask
+*/
+$config['demoModePrefill'] = false;
+
+
+/**
 * column_style
 * Because columns are tricky things, in terms of balancing visual
 * layout against semantic markup. The choice has been left to the
@@ -303,7 +310,7 @@ $config['standard_templates_readonly'] =  true;
 $config['showsgqacode'] =  false;
 
 /**
-* When this settings is true/1 (default = false/0) then the printable survey option will show 
+* When this settings is true/1 (default = false/0) then the printable survey option will show
 * the raw relevance equation below the general fill-out instructions in case the question has conditions.
 */
 $config['showrelevance'] =  false;
@@ -311,7 +318,7 @@ $config['showrelevance'] =  false;
 /**
 *  PDF Export Settings
 *  This feature configures PDF export for Export Answers
-*  PDF core fonts are not included in PDF: make ligther pdf 
+*  PDF core fonts are not included in PDF: make ligther pdf
 *  See http://www.tcpdf.org/fonts.php to have the list of PDF core fonts
 */
 
@@ -325,9 +332,9 @@ $config['alternatepdffontfile']=array(
     'ar'=>'dejavusans',// 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
     'be'=>'dejavusans',
     'bg'=>'dejavusans',
-    'zh-Hans'=>'chinese',
-    'zh-Hant-HK'=>'chinese',
-    'zh-Hant-TW'=>'chinese',
+    'zh-Hans'=>'cid0cs',
+    'zh-Hant-HK'=>'cid0ct',
+    'zh-Hant-TW'=>'cid0ct',
     'cs'=>'dejavusans',
     'cs-informal'=>'dejavusans',// This one not really tested: no translation for Yes/No or Gender
     'el'=>'dejavusans',
@@ -358,6 +365,12 @@ $config['notsupportlanguages'] = array(
     );
 $config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
+$config['pdfshowheader'] = 'N';           // Show header in pdf answer export
+$config['pdflogofile'] = 'logo_pdf.png';  // File name of logo for single answer export. Path is template path, i.e. template/default/logo_pdf.png.
+                                          // If not found, resulting pdf doesn't have header. A large image implies slower pdf generation.
+$config['pdflogowidth'] = '50';           // Logo width
+$config['pdfheadertitle'] = '';           // Header title (bold font). If this config param is empty and header is enabled, site name is used
+$config['pdfheaderstring'] = '';          // Header string (under title). If this config param is empty and header is enabled, survey name is used
 
 // QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF questionnaires
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
@@ -499,6 +512,13 @@ $config['ipInfoDbAPIKey'] = '';
 // To have questions that require google Maps!
 
 $config['googleMapsAPIKey'] = '';
+
+/**
+* GeoNames username for API. http://www.geonames.org/export/web-services.html
+* default limesurvey username is limited to 2000 credits/hour and 30 000 crdits/day see : http://www.geonames.org/export/ Terms and conditions
+*/
+$config['GeoNamesUsername'] = 'limesurvey';
+
 
 // Google Translate API key:  https://code.google.com/apis/language/translate/v2/getting_started.html
 $googletranslateapikey = '';

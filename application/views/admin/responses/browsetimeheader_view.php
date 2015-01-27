@@ -1,36 +1,36 @@
-<div class="header ui-widget-header"><?php echo $clang->eT('Time statistics'); ?></div>
+<div class="header ui-widget-header"><?php echo eT('Time statistics'); ?></div>
 <script type='text/javascript'>
-    var strdeleteconfirm='<?php echo $clang->eT('Do you really want to delete this response?', 'js'); ?>';
-    var strDeleteAllConfirm='<?php echo $clang->eT('Do you really want to delete all marked responses?', 'js'); ?>';
+    var strdeleteconfirm='<?php echo eT('Do you really want to delete this response?', 'js'); ?>';
+    var strDeleteAllConfirm='<?php echo eT('Do you really want to delete all marked responses?', 'js'); ?>';
 </script>
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php $clang->eT("Data view control"); ?></strong>
+        <strong><?php eT("Data view control"); ?></strong>
     </div>
     <div class='menubar-main'>
         <?php if (!Yii::app()->request->getPost('sql'))
         { ?>
-            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/0/limit/$limit"); ?>' title='<?php $clang->eT("Show start..."); ?>' >
-                <img name='DataBegin' align='left' src='<?php echo $sImageURL; ?>databegin.png' alt='<?php $clang->eT("Show start..."); ?>' />
+            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/0/limit/$limit"); ?>' title='<?php eT("Show start..."); ?>' >
+                <img name='DataBegin' align='left' src='<?php echo $sImageURL; ?>databegin.png' alt='<?php eT("Show start..."); ?>' />
             </a>
-            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$last/limit/$limit"); ?>' title='<?php $clang->eT("Show previous.."); ?>'>
-                <img name='DataBack' align='left'  src='<?php echo $sImageURL; ?>databack.png' alt='<?php $clang->eT("Show previous.."); ?>' />
+            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$last/limit/$limit"); ?>' title='<?php eT("Show previous.."); ?>'>
+                <img name='DataBack' align='left'  src='<?php echo $sImageURL; ?>databack.png' alt='<?php eT("Show previous.."); ?>' />
             </a>
             <img src='<?php echo $sImageURL; ?>/blank.gif' width='13' height='20' alt='' />
-            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
-                <img name='DataForward' align='left' src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' />
+            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$next/limit/$limit"); ?>' title='<?php eT("Show next..."); ?>'>
+                <img name='DataForward' align='left' src='<?php echo $sImageURL; ?>dataforward.png' alt='<?php eT("Show next.."); ?>' />
             </a>
-            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$end/imit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>'>
-                <img name='DataEnd' align='left' src='<?php echo $sImageURL; ?>dataend.png' alt='<?php $clang->eT("Show last.."); ?>' />
+            <a href='<?php echo $this->createUrl("/admin/responses/sa/time/surveyid/$iSurveyId/start/$end/imit/$limit"); ?>' title='<?php eT("Show last..."); ?>'>
+                <img name='DataEnd' align='left' src='<?php echo $sImageURL; ?>dataend.png' alt='<?php eT("Show last.."); ?>' />
             </a>
             <img src='<?php echo $sImageURL; ?>separator.gif' alt='' />
         <?php } ?>
         <?php echo CHtml::form(array("admin/responses/sa/time/surveyid/{$surveyid}/"), 'post', array('id'=>'browseresults')); ?>
             <font size='1' face='verdana'>
             <img src='<?php echo $sImageURL; ?>blank.gif' width='31' height='20' alt='' />
-            <?php $clang->eT("Records displayed:"); ?> <input type='text' size='4' value='<?php echo $limit ?>' name='limit' id='limit' />
-            <?php $clang->eT("Starting from:"); ?> <input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
-            <input type='submit' value='<?php $clang->eT("Show"); ?>' />
+            <?php eT("Records displayed:"); ?> <input type='text' size='4' value='<?php echo $limit ?>' name='limit' id='limit' />
+            <?php eT("Starting from:"); ?> <input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
+            <input type='submit' value='<?php eT("Show"); ?>' />
             </font>
         </form>
     </div>
@@ -48,7 +48,7 @@
 <thead>
     <tr>
         <th><input type='checkbox' id='selectall'></th>
-        <th><?php $clang->eT('Actions'); ?></th>
+        <th><?php eT('Actions'); ?></th>
         <?php
             foreach ($fnames as $fn)
             {
@@ -80,7 +80,7 @@
     <tr>
         <td colspan=<?php echo $fncount + 2; ?>>
             <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-                <img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php $clang->eT('Delete marked responses'); ?>' />
+                <img id='imgDeleteMarkedResponses' src='<?php echo $sImageURL; ?>token_delete.png' alt='<?php eT('Delete marked responses'); ?>' />
             <?php } ?>
         </td>
     </tr>

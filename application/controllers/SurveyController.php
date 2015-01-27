@@ -14,7 +14,7 @@
 class SurveyController extends LSYii_Controller
 {
     public $lang = null;
-    
+
     /**
      * Initialises this controller, does some basic checks and setups
      *
@@ -24,8 +24,6 @@ class SurveyController extends LSYii_Controller
     protected function _init()
     {
         parent::_init();
-
-        $this->_sessioncontrol();
 
         unset(Yii::app()->session['FileManagerContext']);
 
@@ -50,10 +48,7 @@ class SurveyController extends LSYii_Controller
     {
         if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-
-        Yii::import('application.libraries.Limesurvey_lang');
-        $this->lang = new Limesurvey_lang(Yii::app()->session['adminlang']);
-        Yii::app()->setLang($this->lang);
+        Yii::app()->setLanguage(Yii::app()->session['adminlang']);
     }
 
     /**

@@ -501,6 +501,7 @@ th.admincell {
 
 .btnaddanswer,
 .btndelanswer,
+.btntogglerelevance,
 .header_statistics img {
     cursor:pointer;
 }
@@ -774,7 +775,7 @@ ul.assessmentscope li label:first-child {
 .answertable th {
     font-weight:bold;
     font-size: 8pt;
-    padding:3px;
+    padding:3px 3px 3px 1px;
 }
 
 .answertable tr {
@@ -1266,6 +1267,10 @@ textarea.updater-changelog {
     list-style-type: none;
     clear:left;
     padding-bottom:7px;
+}
+
+#frmeditquestion li label {
+    display: inline-block;
 }
 
 #forgotpassword input#user, #forgotpassword input#email
@@ -1879,6 +1884,15 @@ td.LEMerror  {
     color:#000 !important;
 }
 
+#cquestions {
+    width: auto !important;
+    max-width: 95%;
+    font-family: Verdana; 
+    background-color: #FFFFFF; 
+    font-size:10; 
+    border: 0px;
+}
+
 #cquestions optgroup{
     font-weight:bold;
 }
@@ -1893,4 +1907,55 @@ td.LEMerror  {
 .ui-tabs .action-buttons button {
 	margin: 0 0.5em;
 	padding: 0;
+}
+
+/* Data consistency & redundancy  check */
+
+.messagebox.data-integrity .hint {
+	line-height: 1em;
+}
+
+.messagebox.data-integrity .hint.warning {
+    color: #EE0000;
+}
+
+.messagebox.data-integrity.consistency {
+	padding-bottom: 1.1em;
+}
+
+.messagebox.data-integrity.consistency input[type="submit"] {
+	margin: 0.8em 0 0 0;
+}
+
+.data-consistency-list {
+	margin: 0.4em 0.8em 0 2.8em;
+}
+
+.data-redundancy-list {
+	margin-right: 0.8em;
+}
+
+.data-redundancy-list > li {
+	padding-top: 0.4em;
+}
+
+.data-redundancy-list ul {
+	margin: 0 0 0.8em 1.1em;
+}
+
+.data-redundancy-list ul li {
+	display: table-row;
+}
+
+.data-redundancy-list ul input,
+.data-redundancy-list ul label {
+	display: table-cell;
+}
+
+.data-redundancy-list input[type="checkbox"] {
+	margin-top: 0.15em;
+}
+
+.data-redundancy-list ul label {
+	padding-left: 0.4em;
 }

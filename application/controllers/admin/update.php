@@ -23,6 +23,19 @@ class update extends Survey_Common_Action
 {
 
     /**
+    * Returns the supported protocol extension (https/http)
+    *
+    */
+    private function getProtocol()
+    {
+        if(!function_exists("extension_loaded") || !extension_loaded("openssl"))
+        {
+            return 'http://';
+        }
+        return 'https://';
+    }
+
+    /**
     * Default Controller Action
     */
     function index($sSubAction = null)
@@ -30,8 +43,6 @@ class update extends Survey_Common_Action
         updateCheck();
         $this->_RunUpdaterUpdate();
         require_once(APPPATH.'/third_party/http/http.php');
-        
-        $clang = $this->getController()->lang;
         $iCurrentBuildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $iDestinationBuild = Yii::app()->request->getParam('build',getGlobalSetting("updatebuild"));
@@ -45,7 +56,7 @@ class update extends Survey_Common_Action
                 setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
             }
         }
-        
+
         $error = false;
 
         if (!is_writable($tempdir)) {
@@ -76,7 +87,7 @@ class update extends Survey_Common_Action
         }
         return $this->_readChangelog($http);
     }
-    
+
     private function _getChangelog($buildnumber, $updaterversion)
     {
         require_once(APPPATH.'/third_party/http/http.php');
@@ -111,13 +122,13 @@ class update extends Survey_Common_Action
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
-        $http->GetRequestArguments('https://update.limesurvey.org/updates/changelog/' . $buildnumber . '/' . $updaterversion , $arguments);
+        $http->GetRequestArguments($this->getProtocol().'update.limesurvey.org/updates/changelog/' . $buildnumber . '/' . $updaterversion , $arguments);
 
         $http->Open($arguments);
 
         return $http->SendRequest($arguments);
     }
-    
+
     private function _requestChangedFiles(http_class $http, $buildnumber, $updaterversion)
     {
         $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
@@ -125,25 +136,29 @@ class update extends Survey_Common_Action
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
-        $http->GetRequestArguments('https://update.limesurvey.org/updates/update/' . $buildnumber . '/' . $updaterversion , $arguments);
+        $http->GetRequestArguments($this->getProtocol().'update.limesurvey.org/updates/update/' . $buildnumber . '/' . $updaterversion , $arguments);
 
         $http->Open($arguments);
 
         return $http->SendRequest($arguments);
     }
-    
+
     function step2()
     {
-        
-        $clang = $this->getController()->lang;
+        $aReadOnlyFiles=array();
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $updatebuild = getGlobalSetting("updatebuild");
-
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild);
         $aData = $this->_getFileStatus($updateinfo);
-        $aReadOnlyFiles=array_unique($aData['readonlyfiles']);
-        sort($aReadOnlyFiles);
-        $aData['readonlyfiles']=$aReadOnlyFiles;
+        if(count($aData['readonlyfiles']))
+        {
+            foreach (array_unique($aData['readonlyfiles']) as $aFile)
+            {
+                $aReadOnlyFiles[]=substr($aFile,strlen(Yii::app()->getConfig("rootdir")));
+            }
+            sort($aReadOnlyFiles);
+            $aData['readonlyfiles']=$aReadOnlyFiles;
+        }
         Yii::app()->session['updateinfo'] = $updateinfo;
         Yii::app()->session['updatesession'] = $cookies;
 
@@ -217,7 +232,6 @@ class update extends Survey_Common_Action
 
     function step3()
     {
-        $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $updatebuild = getGlobalSetting("updatebuild");
@@ -226,7 +240,7 @@ class update extends Survey_Common_Action
         $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $aDatabasetype = Yii::app()->db->getDriverName();
-        $aData = array('clang' => $clang);
+        $aData = array();
         // Request the list with changed files from the server
 
         if (!isset( Yii::app()->session['updateinfo']))
@@ -264,10 +278,10 @@ class update extends Survey_Common_Action
         $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
         if ($v_list == 0) {
-            $aFileBackup= array('class'=>'error','text'=>sprintf($clang->gT("Error on file backup: %s"),$archive->errorInfo(true)));
+            $aFileBackup= array('class'=>'error','text'=>sprintf(gT("Error on file backup: %s"),$archive->errorInfo(true)));
         }
         else{
-            $aFileBackup= array('class'=>'success','text'=>sprintf($clang->gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
+            $aFileBackup= array('class'=>'success','text'=>sprintf(gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
         }
         $aData['aFileBackup']=$aFileBackup;
 
@@ -279,7 +293,7 @@ class update extends Survey_Common_Action
             if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
                 Yii::app()->loadHelper("admin/backupdb");
                 $sfilename = $tempdir.DIRECTORY_SEPARATOR."backup_db_".randomChars(20)."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
-                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".sql.gz";
+                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".zip";
 
                 outputDatabase('',false,$sfilename);
                 // Before try to zip: test size of file
@@ -289,22 +303,22 @@ class update extends Survey_Common_Action
                     $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
                     unlink($sfilename);
                     if ($v_list == 0) {// Unknow reason because backup of DB work ?
-                        $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                        $aSQLBackup=array('class'=>'warning','text'=>gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                     }
                     else
                     {
-                        $aSQLBackup=array('class'=>'success','text'=>sprintf($clang->gT('DB backup created: %s'),htmlspecialchars($dfilename)));
+                        $aSQLBackup=array('class'=>'success','text'=>sprintf(gT('DB backup created: %s'),htmlspecialchars($dfilename)));
                     }
                 }
                 else
                 {
-                    $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                    $aSQLBackup=array('class'=>'warning','text'=>gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                 }
             }
         }
         else
         {
-            $aSQLBackup=array('class'=>'warning','text'=>$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
+            $aSQLBackup=array('class'=>'warning','text'=>gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
         }
         $aData['aSQLBackup']=$aSQLBackup;
         if($aFileBackup['class']=="success" && $aSQLBackup['class']=="success") {
@@ -320,7 +334,6 @@ class update extends Survey_Common_Action
 
     function step4()
     {
-        $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $updatebuild = getGlobalSetting("updatebuild");
@@ -348,7 +361,7 @@ class update extends Survey_Common_Action
         $downloaderror=false;
         Yii::import('application.libraries.admin.http.httpRequestIt');
         $http=new httpRequestIt;
-        
+
         $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
@@ -359,7 +372,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $http->data_timeout=0;
         $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $http->GetRequestArguments("https://update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
+        $http->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
         $http->RestoreCookies(Yii::app()->session['updatesession']);
 
         $error=$http->Open($arguments);
@@ -418,8 +431,8 @@ class update extends Survey_Common_Action
                 }
             }
         }
-        
-        
+
+
         $aData['new_files'] = $new_files;
         $aData['downloaderror'] = $downloaderror;
 
@@ -444,22 +457,30 @@ class update extends Survey_Common_Action
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversions','');
-        // We create this new language object here because the language files might have been overwritten earlier
-        // and the pointers to the file from the application language are not valid anymore 
-        Yii::app()->lang = $aData['clang'] = new Limesurvey_lang(Yii::app()->session['adminlang'],true);
+        // We redirect here because the  files might have been overwritten earlier
+        // and classes may have been changed that would be needed in the view
+        Yii::app()->session['installlstep4b']=$aData;
+        Yii::app()->getController()->redirect(array('/admin/update/sa/step4b'));
+    }
+
+
+    function step4b()
+    {
+        if (!isset(Yii::app()->session['installlstep4b'])) die();
+        $aData=Yii::app()->session['installlstep4b'];
+        unset (Yii::app()->session['installlstep4b']);
         $this->_renderWrappedTemplate('update', 'step4', $aData);
     }
 
     private function _RunUpdaterUpdate()
     {
-        $clang = $this->getController()->lang;
         $versionnumber = Yii::app()->getConfig("versionnumber");
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
 
         require_once(APPPATH.'/third_party/http/http.php');
         $oHTTPRequest=new http_class;
-        
+
         $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
@@ -468,7 +489,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments("https://update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
 
         $updateinfo=false;
         $error=$oHTTPRequest->Open($arguments);
@@ -518,6 +539,9 @@ class update extends Survey_Common_Action
         $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+
         // Allow redirects
         $oHTTPRequest->follow_redirect=1;
         /* Connection timeout */
@@ -525,7 +549,7 @@ class update extends Survey_Common_Action
         /* Data transfer timeout */
         $oHTTPRequest->data_timeout=0;
         $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments("https://update.limesurvey.org/updates/downloadupdater/{$buildnumber}",$arguments);
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$updateinfo['UpdaterRevision']}",$arguments);
 
         $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
         $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);
@@ -571,7 +595,6 @@ class update extends Survey_Common_Action
     */
     function db($continue = null)
     {
-        $clang = $this->getController()->lang;
         Yii::app()->loadHelper("update/update");
         if(isset($continue) && $continue=="yes")
         {

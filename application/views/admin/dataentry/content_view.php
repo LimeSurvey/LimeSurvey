@@ -72,7 +72,7 @@
 
             case "1": // multi scale^ ?>
 
-            <table><tr><td></td><th><?php echo sprintf($clang->gT('Label %s'),'1').'</th><th>'.sprintf($clang->gT('Label %s'),'2'); ?></th></tr>
+            <table><tr><td></td><th><?php echo sprintf(gT('Label %s'),'1').'</th><th>'.sprintf(gT('Label %s'),'2'); ?></th></tr>
 
             <?php foreach ($dearesult as $dearow)
                 {
@@ -81,7 +81,7 @@
                     $delresult = dbExecuteAssoc($delquery); ?>
                 <tr><td><?php echo $dearow['question']; ?></td><td>
                         <select name='<?php echo $fieldname.$dearow['title']; ?>#0'>
-                            <option selected='selected' value=''><?php $clang->eT("Please choose..."); ?></option>
+                            <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                             <?php foreach ($delresult as $delrow)
                                 { ?>
                                 <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
@@ -91,7 +91,7 @@
                         $delresult = dbExecuteAssoc($delquery); ?>
                     <td>
                         <select name='<?php echo $fieldname.$dearow['title']; ?>#1'>
-                            <option selected='selected' value=''><?php $clang->eT("Please choose..."); ?></option>
+                            <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                             <?php foreach ($delresult as $delrow)
                                 { ?>
                                 <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
@@ -100,12 +100,12 @@
                 <?php }
                 if ($fother == "Y")
                 { ?>
-                <option value='-oth-'><?php $clang->eT("Other"); ?></option>
+                <option value='-oth-'><?php eT("Other"); ?></option>
                 <?php }
 
                 if ($fother == "Y")
                 {
-                    $clang->eT("Other"); ?>:
+                    eT("Other"); ?>:
                 <input type='text' name='<?php echo $fieldname; ?>other' value='' />
                 <?php } ?>
         </tr></table>
@@ -179,8 +179,8 @@
         <script type='text/javascript'>
             <!--
             var aRankingTranslations = {
-                choicetitle: '<?php echo $clang->gT("Your Choices",'js') ?>',
-                ranktitle: '<?php echo $clang->gT("Your Ranking",'js') ?>'
+                choicetitle: '<?php echo gT("Your Choices",'js') ?>',
+                ranktitle: '<?php echo gT("Your Ranking",'js') ?>'
             };
             function checkconditions(){};
             $(function() {
@@ -374,7 +374,7 @@
                 $acomma = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $acomma = $acomma['separator'];
             }
-            $title = $clang->gT('Only numbers may be entered in this field.');
+            $title = gT('Only numbers may be entered in this field.');
 
             echo $prefix; ?><input type='text' name='<?php echo $fieldname; ?>' size='<?php echo $tiwidth; ?>' title='<?php echo $title; ?>' <?php echo $maxlength; ?> onkeypress="return goodchars(event,'-0123456789<?php echo $acomma; ?>')" /><?php echo $suffix;
             break;

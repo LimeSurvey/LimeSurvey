@@ -5,20 +5,18 @@
      * index.php
      */
     require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
-    
+
     class ConsoleApplication extends CConsoleApplication
     {
-        
+
         protected $config = array();
-        
-        public $lang = null;
 
         /**
          *
          * @var PluginManager
          */
         protected $pluginManager;
-        
+
         /**
          * @var LimesurveyApi
          */
@@ -57,10 +55,10 @@
         public function getController()
         {
             return $this;
-            
+
         }
-        
-        
+
+
         /**
         * Returns a config variable from the config
         *
@@ -96,7 +94,7 @@
 
         /**
          * This method handles initialization of the plugin manager
-         * 
+         *
          * When you want to insert your own plugin manager, or experiment with different settings
          * then this is where you should do that.
          */
@@ -122,7 +120,7 @@
         {
             Yii::import('application.helpers.' . $helper . '_helper', true);
         }
-        
+
         /**
          * Sets a configuration variable into the config
          *

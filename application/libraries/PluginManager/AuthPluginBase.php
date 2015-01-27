@@ -1,4 +1,8 @@
 <?php
+namespace ls\pluginmanager;
+use \User;
+use LSAuthResult;
+
 abstract class AuthPluginBase extends PluginBase {
     
     /**
@@ -34,7 +38,22 @@ abstract class AuthPluginBase extends PluginBase {
     {
         return $this->_username;
     }
-    
+
+    /**
+     * Set username and password
+     *
+     * @return null
+     */
+    public function afterLoginFormSubmit()
+    {
+        // Here we handle post data
+        $request = $this->api->getRequest();
+        if ($request->getIsPostRequest()) {
+            $this->setUsername( $request->getPost('user'));
+            $this->setPassword($request->getPost('password'));
+        }
+    }
+
     /**
      * Set authentication result to success for the given user object.
      * 
