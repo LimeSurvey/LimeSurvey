@@ -13,12 +13,12 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 }
 @date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
-	'basePath' => dirname(dirname(__FILE__)),
+	'basePath' => __DIR__ . '/../',
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
 	'name' => 'LimeSurvey',
 	'defaultController' => 'surveys',
 	'aliases' => array(
-		'vendor' => realpath(__DIR__ . '/../../vendor')
+		'vendor' => __DIR__ . '/../../vendor'
 	),
 	'import' => array(
 		'application.core.*',
@@ -26,10 +26,10 @@ $internalConfig = array(
 		'application.controllers.*',
 		'application.modules.*',
 	),
+    'preload' => ['log'],
 	'components' => array(
         'bootstrap' => array(
             'class' => 'TbApi',
-			'assetsPath' => 'vendor.crisu83.yiistrap.assets'
         ),
         'clientScript'=>array(
             'class'=>'ext.ExtendedClientScript.ExtendedClientScript',

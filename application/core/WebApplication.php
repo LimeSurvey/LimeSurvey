@@ -47,7 +47,10 @@ class WebApplication extends CWebApplication
         $this->loader->register();
         $this->loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../libraries/PluginManager');
         parent::__construct($config);
+        
         Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
+        Yii::import('application.helpers.common_helper', true);
+
         // Load the default and environmental settings from different files into self.
         $ls_config = require(__DIR__ . '/../config/config-defaults.php');
         $email_config = require(__DIR__ . '/../config/email.php');

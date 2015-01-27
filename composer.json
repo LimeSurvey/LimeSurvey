@@ -16,6 +16,8 @@
 		
 	},
     "autoload" : {
-        "classmap" : []
+        "classmap" : [
+            "application/core/WebApplication.php"
+        ]
     }
 }

@@ -1,8 +1,8 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
 
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta charset="UTF-8"/>
 	<meta name="author" content="" />
 
     <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/styles/admin/favicon.ico" type="image/x-icon" />
@@ -24,6 +24,7 @@
             find('a:eq(1)').button().end().
             find('a:eq(2)').button();
         });";
+        App()->bootstrap->register();
         App()->getClientScript()->registerScript('installer', $script);
     ?>
     <link rel="icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico" />
@@ -32,11 +33,14 @@
 
 <body>
     <div class="container">
-        <div class="row"><div class="span12">
-            <h1><?php eT("LimeSurvey installer"); ?></h1>
-        </div></div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1><?php eT("LimeSurvey installer"); ?></h1>
+            </div>
+        </div>
+        <div class="row">
         <?php echo $content; ?>
-
+        </div>
         <div class="row" style="margin-top: 30px;">
             <div class="span12" style="text-align: center;">
                 <img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/poweredby.png" alt="Powered by LimeSurvey"/>

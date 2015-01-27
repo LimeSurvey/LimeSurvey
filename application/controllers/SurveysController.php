@@ -34,13 +34,6 @@
             ));
         }
 
-		public function actionOrganize($surveyId)
-		{
-			Group::model()->with('questions')->findAllByAttributes(array(
-				'sid' => $surveyId
-			));
-		}
-
         /**
          * Load and set session vars
          * @todo Remove this ugly code. Language settings should be moved to Application instead of Controller.

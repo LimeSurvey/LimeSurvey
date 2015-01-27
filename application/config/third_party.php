@@ -59,7 +59,6 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'bootstrap'
         )
     ),
     'jquery-bindWithDelay' => array(

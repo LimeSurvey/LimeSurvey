@@ -3,16 +3,12 @@
  * Web Installer Sidebar (Progressbar and Step-Listing) Viewscript
  */
 ?>
+<div class="col-md-3">
 <h2 class="maintitle"><?php eT("Progress"); ?></h2>
 <p><?php printf(gT("%s%% completed"),$progressValue); ?></p>
 <?php
     Yii::app()->bootstrap->init();
-    $this->widget('ext.bootstrap.widgets.TbProgress', array(
-            'type' => 'success',
-            'striped' => true,
-            'animated' => true,
-            'percent' => $progressValue,
-        ));
+    echo TbHtml::animatedProgressBar($progressValue, ['color' => TbHtml::PROGRESS_COLOR_SUCCESS]);
     ?>
 <ol>
     <li class="<?php echo $classesForStep[0]; ?>">
@@ -34,3 +30,4 @@
         <?php eT("Optional settings"); ?>
     </li>
 </ol>
+</div>

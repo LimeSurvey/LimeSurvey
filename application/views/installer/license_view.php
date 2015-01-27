@@ -1,13 +1,17 @@
-<div class="row">
-    <div class="span3">
-        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
-    </div>
-    <div class="span9">
+<?php 
+$this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); 
+?>
+
+<div class="col-md-9">
         <?php
             echo CHtml::tag('h2', array(), $title);
             echo CHtml::tag('p', array(), $descp);
+            $license = file_get_contents(Yii::getPathOfAlias('application') . '/../docs/license.txt');
+            echo CHtml::tag('div', [
+                'style' => 'white-space: pre; max-height: 500px; overflow: auto;'
+            ], $license);
         ?>
-        <iframe src="<?php echo $this->createUrl('installer/viewlicense'); ?>" style="height: 268px; width: 100%; border-width: 0px;"> </iframe>
+    
         <?php echo CHtml::form(array("installer/license"), 'post', array('name'=>'formcheck')); ?>
 
 
@@ -22,4 +26,3 @@
             </div>
         </form>
     </div>
-</div>

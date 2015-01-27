@@ -47,48 +47,7 @@ class InstallerController extends CController {
     {
         self::_checkInstallation();
         self::_sessioncontrol();
-        Yii::import('application.helpers.common_helper', true);
-
-        switch ($action) {
-
-            case 'welcome':
-                $this->stepWelcome();
-                break;
-
-            case 'license':
-                $this->stepLicense();
-                break;
-
-            case 'viewlicense':
-                $this->stepViewLicense();
-                break;
-
-            case 'precheck':
-                $this->stepPreInstallationCheck();
-                break;
-
-            case 'database':
-                $this->stepDatabaseConfiguration();
-                break;
-
-            case 'createdb':
-                $this->stepCreateDb();
-                break;
-
-            case 'populatedb':
-                $this->stepPopulateDb();
-                break;
-
-            case 'optional':
-                $this->stepOptionalConfiguration();
-                break;
-
-            case 'index' :
-            default :
-                $this->redirect(array('installer/welcome'));
-                break;
-
-        }
+        parent::run($action);
     }
 
     /**
@@ -158,12 +117,12 @@ class InstallerController extends CController {
     /**
     * Display license
     */
-    private function stepLicense()
+    public function actionLicense()
     {
 
         // $aData array contain all the information required by view.
         $aData['title'] = gT('License');
-        $aData['descp'] = gT('GNU General Public License:');
+//        $aData['descp'] = gT('GNU General Public License:');
         $aData['classesForStep'] = array('off','on','off','off','off','off');
         $aData['progressValue']= 15;
 
@@ -173,20 +132,8 @@ class InstallerController extends CController {
         }
         Yii::app()->session['saveCheck'] = 'save';  // Checked in next step
 
-        $this->render('/installer/license_view',$aData);
+        $this->render('license_view',$aData);
     }
-
-    /**
-    * display the license file as IIS for example
-    * does not display it via the server.
-    */
-    public function stepViewLicense()
-    {
-        header('Content-Type: text/plain; charset=UTF-8');
-        readfile(dirname(BASEPATH) . '/docs/license.txt');
-        exit;
-    }
-
     /**
     * check a few writing permissions and optional settings
     */
