@@ -1,4 +1,7 @@
 <?php
+if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+    die("Make sure you run composer install.");
+} 
 	require_once('vendor/autoload.php'); 
 	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));

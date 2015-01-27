@@ -2,13 +2,15 @@
     "name" : "sammousa/limesurvey",
     "description" : "Limesurvey for composer.",
     "license" : "GPL-2.0",
+    "minimum-stability": "dev",
     "require": {
         "crisu83/yiistrap": "dev-bs3",
 		"2amigos/yiiwheels": "dev-master",
 		"yiisoft/yii" : "dev-master",
 		"tecnick.com/tcpdf": "dev-master",
 		"phpmailer/phpmailer": "dev-master",
-		"jsonrpc/jsonrpc" : "dev-master"
+		"jsonrpc/jsonrpc" : "dev-master",
+        "ar-php/ar-php": "dev-master"
     },
 	"require-dev" : {
 		

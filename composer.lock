@@ -1,111 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "0d4039d7209334510b31d49b81b642c4",
+    "hash": "188fb32f39b251bb318f12839f1fceee",
     "packages": [
         {
             "name": "2amigos/yiistrap",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2amigos/yiistrap.git",
-                "reference": "24537d27105acfc247417895dad6779a78c83296"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yiistrap/zipball/24537d27105acfc247417895dad6779a78c83296",
-                "reference": "24537d27105acfc247417895dad6779a78c83296",
-                "shasum": ""
-            },
-            "require-dev": {
-                "codeception/codeception": "@stable",
-                "crisu83/yii-composer": "dev-master",
-                "php": ">=5.3.0",
-                "yiisoft/yii": "1.1.13"
-            },
-            "type": "library",
-            "extra": {
-                "yii-install-writable": [
-                    "tests/_log"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Christoffer Niska",
-                    "email": "christoffer.niska@gmail.com",
-                    "homepage": "http://www.cniska.net/"
-                },
-                {
-                    "name": "Antonio Ramirez",
-                    "email": "ramirez.cobos@gmail.com",
-                    "homepage": "http://www.ramirezcobos.com/"
-                }
-            ],
-            "description": "Twitter Bootstrap for the Yii PHP framework.",
-            "keywords": [
-                "bootstrap",
-                "yii"
-            ],
-            "time": "2013-09-01 21:42:53"
-        },
-        {
-            "name": "2amigos/yiiwheels",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/2amigos/yiiwheels.git",
-                "reference": "924a07bbc6d7819600ffd7efa659caf4fc925252"
+                "url": "https://github.com/2amigos/yiistrap.git",
+                "reference": "db3352a9764806d042b882de57559777e9da7b96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yiiwheels/zipball/924a07bbc6d7819600ffd7efa659caf4fc925252",
-                "reference": "924a07bbc6d7819600ffd7efa659caf4fc925252",
-                "shasum": ""
-            },
-            "require": {
-                "2amigos/yiistrap": "1.*"
-            },
-            "require-dev": {
-                "php": ">=5.3.0",
-                "yiisoft/yii": "1.1.13"
-            },
-            "type": "yii-extension",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Antonio Ramirez",
-                    "email": "ramirez.cobos@gmail.com",
-                    "homepage": "http://www.ramirezcobos.com/"
-                }
-            ],
-            "description": "Extension library for Yiistrap, Yii Twitter's Bootstrap.",
-            "keywords": [
-                "bootstrap",
-                "yii"
-            ],
-            "time": "2014-03-26 23:37:37"
-        },
-        {
-            "name": "crisu83/yiistrap",
-            "version": "dev-bs3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Crisu83/yiistrap.git",
-                "reference": "9045e7531cace008e3c0e030a2a5824c03d8d8fe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Crisu83/yiistrap/zipball/9045e7531cace008e3c0e030a2a5824c03d8d8fe",
-                "reference": "9045e7531cace008e3c0e030a2a5824c03d8d8fe",
+                "url": "https://api.github.com/repos/2amigos/yiistrap/zipball/db3352a9764806d042b882de57559777e9da7b96",
+                "reference": "db3352a9764806d042b882de57559777e9da7b96",
                 "shasum": ""
             },
             "require-dev": {
@@ -144,12 +56,159 @@
                     "homepage": "http://www.ramirezcobos.com/"
                 }
             ],
+            "description": "Twitter Bootstrap for the Yii PHP framework. Own maintained version.",
+            "keywords": [
+                "bootstrap",
+                "yii"
+            ],
+            "time": "2014-09-03 06:31:45"
+        },
+        {
+            "name": "2amigos/yiiwheels",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yiiwheels.git",
+                "reference": "ff48faf1c958da52743b15b7f2938a2bfa667ad7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yiiwheels/zipball/ff48faf1c958da52743b15b7f2938a2bfa667ad7",
+                "reference": "ff48faf1c958da52743b15b7f2938a2bfa667ad7",
+                "shasum": ""
+            },
+            "require": {
+                "2amigos/yiistrap": "dev-master"
+            },
+            "require-dev": {
+                "php": ">=5.3.0",
+                "yiisoft/yii": ">=1.1.13"
+            },
+            "type": "yii-extension",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "ramirez.cobos@gmail.com",
+                    "homepage": "http://www.ramirezcobos.com/"
+                }
+            ],
+            "description": "Extension library for Yiistrap, Yii Twitter's Bootstrap.",
+            "keywords": [
+                "bootstrap",
+                "yii"
+            ],
+            "time": "2014-12-15 17:42:40"
+        },
+        {
+            "name": "ar-php/ar-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tawfekov/ar-php.git",
+                "reference": "92657a9ef39cb1aad4b08364895523939dcd3803"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tawfekov/ar-php/zipball/92657a9ef39cb1aad4b08364895523939dcd3803",
+                "reference": "92657a9ef39cb1aad4b08364895523939dcd3803",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Arphp": "src/"
+                },
+                " classmap ": [
+                    "autoload_classmap.php "
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Khaled Al-Sham'aa",
+                    "email": "khaled@ar-php.org",
+                    "homepage": "http://www.ar-php.org/"
+                },
+                {
+                    "name": "tawfek daghistani",
+                    "email": "tawfekov@gmail.com",
+                    "homepage": "http://www.dagho.com/"
+                }
+            ],
+            "description": "helper libaray for dealing with arabic language",
+            "homepage": "http://www.ar-php.org/",
+            "time": "2012-11-03 12:29:33"
+        },
+        {
+            "name": "crisu83/yiistrap",
+            "version": "dev-bs3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crisu83/yiistrap.git",
+                "reference": "c99196f2b9325b4a1d127c5a63ed765fe8b1d58c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/crisu83/yiistrap/zipball/c99196f2b9325b4a1d127c5a63ed765fe8b1d58c",
+                "reference": "c99196f2b9325b4a1d127c5a63ed765fe8b1d58c",
+                "shasum": ""
+            },
+            "require": {
+                "twbs/bootstrap": ">=3.1.1"
+            },
+            "require-dev": {
+                "codeception/codeception": "@stable",
+                "crisu83/yii-composer": ">=1.0.0",
+                "yiisoft/yii": ">=1.1.13"
+            },
+            "type": "library",
+            "extra": {
+                "yii-install-writable": [
+                    "tests/_log"
+                ]
+            },
+            "autoload": {
+                "classmap": [
+                    "behaviors/",
+                    "components/",
+                    "form/",
+                    "helpers/",
+                    "widgets/",
+                    "gii/bootstrap/BootstrapCode.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Christoffer Niska",
+                    "email": "christoffer.niska@gmail.com",
+                    "homepage": "http://www.cniska.net/"
+                },
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "ramirez.cobos@gmail.com",
+                    "homepage": "http://www.ramirezcobos.com/"
+                }
+            ],
             "description": "Twitter Bootstrap for the Yii PHP framework.",
             "keywords": [
                 "bootstrap",
                 "yii"
             ],
-            "time": "2014-03-13 00:01:08"
+            "time": "2015-01-22 19:35:16"
         },
         {
             "name": "jsonrpc/jsonrpc",
@@ -200,12 +259,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "bfddf97eddc396f4297ca10006fa20b410582a84"
+                "reference": "34b33d9e3fd5b08fe2d397dca514058162dbf084"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/bfddf97eddc396f4297ca10006fa20b410582a84",
-                "reference": "bfddf97eddc396f4297ca10006fa20b410582a84",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/34b33d9e3fd5b08fe2d397dca514058162dbf084",
+                "reference": "34b33d9e3fd5b08fe2d397dca514058162dbf084",
                 "shasum": ""
             },
             "require": {
@@ -213,7 +272,7 @@
             },
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "*",
-                "phpunit/phpunit": "4.0.*"
+                "phpunit/phpunit": "4.1.*"
             },
             "type": "library",
             "autoload": {
@@ -245,15 +304,21 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2014-04-22 12:38:07"
+            "time": "2015-01-09 13:15:29"
         },
         {
             "name": "tecnick.com/tcpdf",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://git.code.sf.net/p/tcpdf/code",
-                "reference": "2cf6cd032ee011214f0827650d3df677b9b86388"
+                "url": "https://github.com/tecnickcom/TCPDF.git",
+                "reference": "da2fe9359426ca334417549248307f33cd042ace"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/da2fe9359426ca334417549248307f33cd042ace",
+                "reference": "da2fe9359426ca334417549248307f33cd042ace",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
@@ -291,7 +356,7 @@
                     "homepage": "http://nicolaasuni.tecnick.com"
                 }
             ],
-            "description": "TCPDF is a PHP class for generating PDF documents.",
+            "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
             "homepage": "http://www.tcpdf.org/",
             "keywords": [
                 "PDFD32000-2008",
@@ -302,7 +367,58 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2014-04-22 20:56:54"
+            "time": "2015-01-24 09:41:10"
+        },
+        {
+            "name": "twbs/bootstrap",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twbs/bootstrap.git",
+                "reference": "03e41b355c51474ebac21ba22f4626f05feba844"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/03e41b355c51474ebac21ba22f4626f05feba844",
+                "reference": "03e41b355c51474ebac21ba22f4626f05feba844",
+                "shasum": ""
+            },
+            "replace": {
+                "twitter/bootstrap": "self.version"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jacob Thornton",
+                    "email": "jacobthornton@gmail.com"
+                },
+                {
+                    "name": "Mark Otto",
+                    "email": "markdotto@gmail.com"
+                }
+            ],
+            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+            "homepage": "http://getbootstrap.com",
+            "keywords": [
+                "JS",
+                "css",
+                "framework",
+                "front-end",
+                "less",
+                "mobile-first",
+                "responsive",
+                "web"
+            ],
+            "time": "2015-01-26 16:02:58"
         },
         {
             "name": "yiisoft/yii",
@@ -310,12 +426,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "8833552a7c7f2babe11019bf8e8b6e516f33d72b"
+                "reference": "7edd7d388c3a4565f147873c9105ee4bb39ca0aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/8833552a7c7f2babe11019bf8e8b6e516f33d72b",
-                "reference": "8833552a7c7f2babe11019bf8e8b6e516f33d72b",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/7edd7d388c3a4565f147873c9105ee4bb39ca0aa",
+                "reference": "7edd7d388c3a4565f147873c9105ee4bb39ca0aa",
                 "shasum": ""
             },
             "require": {
@@ -325,6 +441,12 @@
                 "framework/yiic"
             ],
             "type": "library",
+            "autoload": {
+                "classmap": [
+                    "framework/YiiBase.php",
+                    "framework/yii.php"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
@@ -386,28 +508,22 @@
                 "framework",
                 "yii"
             ],
-            "time": "2014-04-23 16:25:24"
+            "time": "2015-01-25 09:45:39"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
-    "minimum-stability": "stable",
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
     "stability-flags": {
         "crisu83/yiistrap": 20,
         "2amigos/yiiwheels": 20,
         "yiisoft/yii": 20,
         "tecnick.com/tcpdf": 20,
         "phpmailer/phpmailer": 20,
-        "jsonrpc/jsonrpc": 20
+        "jsonrpc/jsonrpc": 20,
+        "ar-php/ar-php": 20
     },
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "prefer-stable": false,
+    "platform": [],
+    "platform-dev": []
 }
