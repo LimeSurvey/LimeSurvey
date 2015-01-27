@@ -123,9 +123,10 @@ DEALINGS IN THE SOFTWARE.
     
     // Set the source element as child to the audio element
     var play = document.getElementById('play' + questionCode);
-    if (play.firstChild) play.removeChild(play.firstChild);
+    while (play.firstChild) play.removeChild(play.firstChild);
     play.appendChild(source);
     play.style.display = 'inline';
+    play.load();
     
     // Upload the blob via the upload function
     upload(blob);

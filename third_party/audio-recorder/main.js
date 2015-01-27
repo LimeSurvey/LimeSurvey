@@ -73,7 +73,6 @@ function toggleRecording( e ) {
         save.style.display = 'none';
         var play = document.getElementById('play' + questionCode);
         play.style.display = 'none';
-        console.log(play);
     }
 }
 
