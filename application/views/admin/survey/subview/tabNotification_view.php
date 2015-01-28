@@ -18,7 +18,7 @@
                 <span class='annotation'> <?php $clang->eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown ??>
                 <?php } else { ?>
-                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes"),"N"=>gT("No")),array('onchange'=>'alertPrivacy();')); ?>
+                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes"),"N"=>gT("No")),array('onchange'=>'alertDateStampAnonymization();')); ?>
                 <?php } ?>
         </li>
 
@@ -52,7 +52,7 @@
         </li>
 
         <li><label for='savetimings'><?php $clang->eT("Save timings?"); ?></label>
-            <?php 
+            <?php
             if ($esrow['active']=="Y")
                 { ?>
                 <?php if ($esrow['savetimings'] != "Y") {  $clang->eT("Timings will not be saved.");}

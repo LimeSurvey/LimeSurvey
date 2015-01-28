@@ -44,7 +44,7 @@
         </div>
         <?php $clang->eT("Please check these settings now, then click the button below.");?>
         <?php echo CHtml::form(array("admin/survey/sa/activate/surveyid/{$surveyid}/"), 'post', array('class'=>'form44')); ?>
-        
+
             <ul>
                 <li><label for='anonymized'><?php $clang->eT("Anonymized responses?"); ?>
 
@@ -73,7 +73,7 @@
                 </li>
 
                 <li><label for='datestamp'><?php $clang->eT("Date stamp?"); ?></label>
-                    <select id='datestamp' name='datestamp' onchange='alertPrivacy();'>
+                    <select id='datestamp' name='datestamp' onchange='alertDateStampAnonymization();'>
                         <option value='Y'
                             <?php if ($aSurveysettings['datestamp'] == "Y") { ?>
                                 selected='selected'
