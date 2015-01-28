@@ -1134,15 +1134,16 @@ function do_date($ia)
                     * yearmin = Minimum year value for dropdown list, if not set default is 1900
                     * yearmax = Maximum year value for dropdown list, if not set default is 2037
                     * if full dates (format: YYYY-MM-DD) are given, only the year is used
+                    * expressions are not supported because contents of dropbox cannot be easily updated dynamically
                     */
-                    $yearmin = (int)substr(LimeExpressionManager::ProcessString($mindate),0,4);
-                    if (!isset($yearmin) || $yearmin==0)
+                    $yearmin = (int)substr($mindate,0,4);
+                    if (!isset($yearmin) || $yearmin<1900 || $yearmin>2037)
                     {
                         $yearmin = 1900;
                     }
 
-                    $yearmax = (int)substr(LimeExpressionManager::ProcessString($maxdate), 0, 4);
-                    if (!isset($yearmax) || $yearmax==0)
+                    $yearmax = (int)substr($maxdate, 0, 4);
+                    if (!isset($yearmax) || $yearmax<1900 || $yearmax>2037)
                     {
                         $yearmax = 2037;
                     }
