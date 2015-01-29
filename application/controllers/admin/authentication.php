@@ -113,9 +113,6 @@ class Authentication extends Survey_Common_Action
     */
     public function logout()
     {
-        // Fetch the current user
-        $plugin = App()->user->getState('plugin', null);    // Save for afterLogout, current user will be destroyed by then
-
         /* Adding beforeLogout event */
         $beforeLogout = new PluginEvent('beforeLogout');
         App()->getPluginManager()->dispatchEvent($beforeLogout);
