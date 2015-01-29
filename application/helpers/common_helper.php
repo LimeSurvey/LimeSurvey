@@ -5631,6 +5631,54 @@ function isNumericInt($mStr)
 
 
 /**
+* Implode and sort content array for very long arrays
+*
+* @param string $sDelimeter
+* @param array $aArray
+* @return string String showing array content
+*/
+function short_implode($sDelimeter, $aArray)
+{
+    if (sizeof($aArray) < Yii::app()->getConfig('minlengthshortimplode'))
+    {
+        sort($aArray);
+        return implode($sDelimeter, $aArray);
+    }
+    else
+    {
+        sort($aArray);
+        $iIndexA = 0;
+        $iIndexB = 1;
+        while ($iIndexA < sizeof($aArray))
+        {
+            if ($iIndexA == 0)
+            {
+                $sResult = $aArray[$iIndexA];
+            }
+            else
+            {
+                $sResult = $sResult.', '.$aArray[$iIndexA];
+            }
+            $iIndexB = $iIndexA+1;
+            if ($iIndexB < sizeof($aArray))
+            {
+                while ($iIndexB < sizeof($aArray) && $aArray[$iIndexB] - 1 == $aArray[$iIndexB-1])
+                {
+                    $iIndexB++;
+                }
+                if ($iIndexA < $iIndexB - 1)
+                {
+                    $sResult = $sResult.'-'.$aArray[$iIndexB-1];
+                }
+            }
+            $iIndexA = $iIndexB;
+        }
+        return $sResult;
+    }
+}
+
+
+/**
 * Include Keypad headers
 */
 function includeKeypad()
