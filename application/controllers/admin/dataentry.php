@@ -138,9 +138,9 @@ class dataentry extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $filePath = $this->_moveUploadedFile($aData);
         //$aFileContents = $this->_readFile($filePath);
-        
+
         Yii::app()->loadHelper('admin/import');
-        // Fill option 
+        // Fill option
         $aOptions=array();
         $aOptions['bDeleteFistLine']=(Yii::app()->request->getPost('dontdeletefirstline') == "dontdeletefirstline")?false:true;// Force, maybe function change ;)
         if(Yii::app()->request->getPost('noid')==="noid"){
@@ -157,7 +157,7 @@ class dataentry extends Survey_Common_Action
         $aData['class']="";
         $aData['title']=$clang->gT("Import a VV response data file");
         $aData['aResult']['success'][]=$clang->gT("File upload succeeded.");
-        if(isset($aResult['success'])){ 
+        if(isset($aResult['success'])){
             $aData['aResult']['success']=array_merge($aData['aResult']['success'],$aResult['success']);
         }
         $aData['aResult']['errors']=(isset($aResult['errors'])) ? $aResult['errors'] : false;
@@ -251,7 +251,7 @@ class dataentry extends Survey_Common_Action
         {
             if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
             {
-                
+
                 // Schema that serves as the base for compatibility checks.
                 $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $tables = App()->getApi()->getOldResponseTables($iSurveyId);
@@ -272,7 +272,7 @@ class dataentry extends Survey_Common_Action
 						}
                     }
                 }
-                
+
                 $aData = array();
                 $aData['surveyid'] = $iSurveyId;
                 $aData['settings']['table'] = array(
@@ -300,7 +300,7 @@ class dataentry extends Survey_Common_Action
                 $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $sourceTable = PluginDynamic::model($_POST['table']);
                 $sourceSchema = $sourceTable->getTableSchema();
-             
+
                 $fieldMap = array();
                 $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
                 foreach ($sourceSchema->getColumnNames() as $name)
@@ -332,7 +332,7 @@ class dataentry extends Survey_Common_Action
 				$sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
                 foreach ($sourceResponses as $sourceResponse)
                 {
-                    
+
                     // Using plugindynamic model because I dont trust surveydynamic.
                    $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
 
@@ -346,10 +346,10 @@ class dataentry extends Survey_Common_Action
                 }
 
 
-                
+
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
                 $sOldTimingsTable=substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_'));
-                $sNewTimingsTable = "{{{$surveyid}_timings}}";
+                $sNewTimingsTable = "survey_{$surveyid}_timings";
 
                 if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
                 {
@@ -1828,7 +1828,7 @@ class dataentry extends Survey_Common_Action
                                     $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                                     $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($saver['identifier'])."/loadpass/".rawurlencode ($saver['password'])."/lang/".rawurlencode($saver['language']));
                                     if (isset($tokendata['token'])) { $message .= "/token/".rawurlencode($tokendata['token']); }
-                                    
+
                                     $from = $thissurvey['adminemail'];
 
                                     if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
@@ -2120,7 +2120,7 @@ class dataentry extends Survey_Common_Action
                         case "R": //RANKING TYPE QUESTION
                             $thisqid=$deqrow['qid'];
                             $ansquery = "SELECT * FROM {{answers}} WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $ansresult = dbExecuteAssoc($ansquery);    
+                            $ansresult = dbExecuteAssoc($ansquery);
                             $ansresult = $ansresult->readAll();
                             $anscount = count($ansresult);
 
@@ -2150,7 +2150,7 @@ class dataentry extends Survey_Common_Action
                             }
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = dbExecuteAssoc($meaquery);
-                            
+
                             $cdata['mearesult'] = $mearesult->readAll();
                             $meacount = count($cdata['mearesult']);
                             $cdata['meacount'] = $meacount;
