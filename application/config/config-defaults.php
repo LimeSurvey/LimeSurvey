@@ -316,6 +316,13 @@ $config['showsgqacode'] =  false;
 $config['showrelevance'] =  false;
 
 /**
+* To prevent brute force against forgotten password functionality, there is a random delay
+* that prevent attacker from knowing whether username and email address are valid or not.
+*/
+$config['minforgottenpasswordemaildelay'] =  500000;
+$config['maxforgottenpasswordemaildelay'] =  1500000;
+
+/**
 *  PDF Export Settings
 *  This feature configures PDF export for Export Answers
 *  PDF core fonts are not included in PDF: make ligther pdf
