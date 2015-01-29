@@ -273,6 +273,9 @@ use Plugin;
                 {
                     if ($this->getPluginInfo($pluginName) !== false) {
                         $this->plugins[$id] = new $pluginName($this, $id);
+                        if (method_exists($this->plugins[$id], 'init')) {
+                            $this->plugins[$id]->init();
+                        }
                     } else {
                         $this->plugins[$id] = null;
                     }
