@@ -51,7 +51,7 @@ class DbStorage implements iPluginStorage {
             $attributes['key'] = $key;
         }
         
-        $records = PluginSetting::model()->findAllByAttributes($attributes);
+        $records = \PluginSetting::model()->findAllByAttributes($attributes);
         if (count($records) > 1)
         {
             foreach ($records as $record)

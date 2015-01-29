@@ -181,6 +181,7 @@
     $loader = new Psr4AutoloaderClass();
     $loader->register();
     $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
+    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager/Storage');
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

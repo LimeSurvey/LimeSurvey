@@ -73,6 +73,10 @@ use Plugin;
          */
         public function getStore($storageClass)
         {
+            if (!class_exists($storageClass)
+                    && class_exists('ls\\pluginmanager\\' . $storageClass)) {
+                $storageClass = 'ls\\pluginmanager\\' . $storageClass;
+            }
             if (!isset($this->stores[$storageClass]))
             {
                 $this->stores[$storageClass] = new $storageClass();
