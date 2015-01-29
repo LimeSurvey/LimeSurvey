@@ -8,17 +8,6 @@
         public $layout = 'bare';
         public $defaultAction = 'publicList';
 
-        public function actionOrganize($surveyId)
-        {
-            $this->layout = 'main';
-            $groups = QuestionGroup::model()->findAllByAttributes(array(
-                'sid' => $surveyId
-            ));
-            $this->render('organize', compact('groups'));
-        }
-
-
-
         public function actionPublicList($sLanguage = null)
         {
             $this->sessioncontrol();
