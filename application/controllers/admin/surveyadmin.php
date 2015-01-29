@@ -673,7 +673,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $tokenscompleted = $summary['completed'];
 
                     $aSurveyEntry[] = $tokens;
-                    $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);
+                    $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1).' %';
                 }
                 else
                 {

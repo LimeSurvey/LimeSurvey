@@ -2246,6 +2246,7 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['grelevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['description'] = (isset($row['text']) ? $row['text'] : '');
                 $insertdata['language'] = $glang;
+                $insertdata['randomization_group'] = (isset($row['random_group']) ? $row['random_group'] : '');
 
                 // For multi language survey: same gid/sort order across all languages
                 if (isset($ginfo[$sGroupseq]))

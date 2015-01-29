@@ -8344,6 +8344,7 @@ EOD;
                     'group_name' => $oQuestionGroup->group_name,
                     'description' =>  $oQuestionGroup->description,
                     'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
+                    'randomization_group' =>  $oQuestionGroup->randomization_group
                 );
                 $qinfo[$_order] = $gid[$oQuestionGroup->gid];
                 ++$_order;
@@ -9699,6 +9700,7 @@ EOD;
                         $row['relevance'] = $grelevance;
                         $row['text'] = $gtext;
                         $row['language'] = $lang;
+                        $row['random_group'] = $ginfo['randomization_group'];
                         $rows[] = $row;
                     }
 
