@@ -124,10 +124,18 @@ div.navigator > div:last-child {
     text-align: right;
 }
 
-.form-horizontal .controls {
-    margin-left: 220px;
+.form-horizontal .help-block {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-.form-horizontal .control-label {
-    width: 200px;
+/* 
+Actual installer stuffs
+*/
+#installer form {
+    overflow: hidden;
+}
+
+#installer form .form-group.btn-group {
+    
 }

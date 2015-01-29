@@ -18,4 +18,17 @@ class MysqlSchema extends CMysqlSchema
         $result .= ' ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
         return $result;
     }
+    
+    public function getDatabases() {
+        return $this->dbConnection->createCommand('SHOW DATABASES')->queryColumn(['Database']);
+    }
+    
+    public function createDatabase($name) {
+        try {
+            $this->connection->createCommand("CREATE DATABASE `$name` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;        
+    }
 }

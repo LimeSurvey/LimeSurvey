@@ -18,11 +18,14 @@ $internalConfig = array(
 	'name' => 'LimeSurvey',
 	'defaultController' => 'surveys',
 	'aliases' => array(
-		'vendor' => __DIR__ . '/../../vendor'
+		'vendor' => __DIR__ . '/../vendor',
+        'yiiwheels' => __DIR__ . '/../vendor/2amigos/yiiwheels'
 	),
 	'import' => array(
 		'application.core.*',
+        'application.components.*',
 		'application.models.*',
+        'application.models.installer.*',
 		'application.controllers.*',
 		'application.modules.*',
 	),
@@ -86,7 +89,8 @@ $internalConfig = array(
             'schemaCachingDuration' => 3600,
             'class' => 'DbConnection',
             'enableProfiling' => isset($userConfig['config']['debugsql']) && $userConfig['config']['debugsql'] >= 1,
-            'enableParamLogging' => isset($userConfig['config']['debugsql']) && $userConfig['config']['debugsql'] >= 1
+            'enableParamLogging' => isset($userConfig['config']['debugsql']) && $userConfig['config']['debugsql'] >= 1,
+            'charset' => 'utf8',
         ),
         'session' => [
             'cookieParams' => array(
@@ -103,6 +107,9 @@ $internalConfig = array(
         'pluginManager' => [
             'class' => "\\ls\\pluginmanager\\PluginManager",
             'api' => "\\ls\\pluginmanager\\LimesurveyApi"
+        ],
+        'yiiwheels' => [
+            'class' => 'yiiwheels.YiiWheels'
         ]
     ),
     

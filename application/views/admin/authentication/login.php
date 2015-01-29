@@ -24,7 +24,7 @@
                     'name' => 'authMethod',
                     'value' => $selectedAuth,
                     'data' => $possibleAuthMethods,
-                    'options' => array(
+                    'htmlOptions' => array(
                         'onChange'=>'this.form.submit();'
                     )
                 ));
@@ -51,7 +51,7 @@
             $this->widget('WhSelect2', array(
                 'name' => 'loginlang',
                 'data' => $languageData,
-                'options' => array(
+                'pluginOptions' => array(
                     'width' => '230px'
                 ),
                 'htmlOptions' => array(

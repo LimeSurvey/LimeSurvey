@@ -12,5 +12,21 @@ class DbConnection extends \CDbConnection
             'sqlsrv' => 'MssqlSchema',
         ));
     }
+    
+   /**
+    * Executes an SQL file
+    *
+    * @param string $fileName
+    * @param string $prefix
+    */
+    public function executeFile($fileName, $prefix)
+    {
+        if (!is_readable($fileName)) {
+            throw new \Exception("SQL file is not readable.");
+        }
+        $sql = strtr(file_get_contents($fileName), ['prefix_' => $prefix]);
+        $this->createCommand($sql)->execute();
+        return true;
+    }
 }
 ?>

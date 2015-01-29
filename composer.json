@@ -3,6 +3,9 @@
     "description" : "Limesurvey for composer.",
     "license" : "GPL-2.0",
     "minimum-stability": "dev",
+    "config": {
+        "vendor-dir": "application/vendor"
+    },
     "require": {
         "crisu83/yiistrap": "dev-bs3",
 		"2amigos/yiiwheels": "dev-master",
@@ -17,7 +20,9 @@
 	},
     "autoload" : {
         "classmap" : [
-            "application/core/WebApplication.php"
+            "application/core/db",
+            "application/core",
+            "application/vendor/2amigos/yiiwheels"
         ]
     }
 }

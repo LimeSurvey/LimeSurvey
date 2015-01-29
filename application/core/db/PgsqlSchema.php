@@ -14,4 +14,12 @@ class PgsqlSchema extends CPgsqlSchema
         $this->columnTypes['longbinary'] = 'bytea';
     }
     
+    public function createDatabase($name) {
+        try {
+            $this->connection->createCommand("CREATE DATABASE \"$name\" ENCODING 'UTF8'")->execute();
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;        
+    }
 }

@@ -16,10 +16,6 @@
         //App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . 'adminstyle.css', 'all');
 
         $script = "$(function() {
-        $('.on').animate({
-					color: '#0B55C4'
-				}, 1000 );
-
         $('.demo').find('a:first').button().end().
             find('a:eq(1)').button().end().
             find('a:eq(2)').button();
@@ -31,18 +27,23 @@
 	<title><?php eT("LimeSurvey installer"); ?></title>
 </head>
 
-<body>
+<body id="installer">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1><?php eT("LimeSurvey installer"); ?></h1>
+                <h1><?php echo gT("LimeSurvey installer") . ' - ' . $this->stepTitle; ?></h1>
             </div>
         </div>
         <div class="row">
-        <?php echo $content; ?>
+            <div class="col-md-4" style="min-height: 250px;">
+                <?php $this->renderPartial('/installer/sidebar_view'); ?>
+            </div>
+            <div class="col-md-8" style="min-height: 250px;">
+                <?php echo $content; ?>
+            </div>
         </div>
         <div class="row" style="margin-top: 30px;">
-            <div class="span12" style="text-align: center;">
+            <div class="col-md-12" style="text-align: center;">
                 <img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/poweredby.png" alt="Powered by LimeSurvey"/>
             </div>
         </div>
