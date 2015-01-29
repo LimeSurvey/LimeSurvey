@@ -39,13 +39,6 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($config = null)
     {
-        /**
-         * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
-         */
-        require __DIR__ . '/../Psr4AutoloaderClass.php';
-        $this->loader = new Psr4AutoloaderClass();
-        $this->loader->register();
-        $this->loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../libraries/PluginManager');
         parent::__construct($config);
         Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.

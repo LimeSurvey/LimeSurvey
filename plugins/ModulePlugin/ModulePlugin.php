@@ -2,13 +2,13 @@
     /**
      * Example plugin that can not be activated.
      */
-    class ModulePlugin extends PluginBase
+    class ModulePlugin extends \ls\pluginmanager\PluginBase
     {
         static protected $description = 'Demo: This plugins registers a module.';
         static protected $name = 'ModulePlugin';
 
-        public function __construct(PluginManager $manager, $id) {
-            parent::__construct($manager, $id);
+        public function init()
+        {
             $this->subscribe('beforeActivate');
         }
 

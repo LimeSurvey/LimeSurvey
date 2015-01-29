@@ -1,5 +1,5 @@
 <?php
-class Authwebserver extends AuthPluginBase
+class Authwebserver extends ls\pluginmanager\AuthPluginBase
 {
     protected $storage = 'DbStorage';    
     
@@ -23,8 +23,7 @@ class Authwebserver extends AuthPluginBase
                 )
     );
     
-    public function __construct(PluginManager $manager, $id) {
-        parent::__construct($manager, $id);
+    public function init() {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle

@@ -1964,6 +1964,7 @@ function upgradeTokens128()
 function fixMySQLCollations()
 {
     global $modifyoutput;
+    $oDB = Yii::app()->db;
     $sql = 'SHOW TABLE STATUS';
     $dbprefix = $oDB->tablePrefix;
     $result = $oDB->createCommand($sql)->queryAll();
@@ -2035,6 +2036,7 @@ function upgradeTokenTables126()
 
 function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 {
+    $oDB = Yii::app()->db;
     $oDB->createCommand()->update('{{answers}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
     $oDB->createCommand()->update('{{questions}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));
     $oDB->createCommand()->update('{{groups}}',array('language'=>$sNewLanguageCode),'language=:lang',array(':lang'=>$sOldLanguageCode));

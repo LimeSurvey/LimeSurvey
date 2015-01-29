@@ -1,14 +1,12 @@
 <?php
-    class AuditLog extends PluginBase {
+    class AuditLog extends \ls\pluginmanager\PluginBase {
 
         protected $storage = 'DbStorage';    
         static protected $description = 'Core: Create an audit log of changes';
         static protected $name = 'auditlog';
        
         
-        public function __construct(PluginManager $manager, $id) {
-            parent::__construct($manager, $id);
-
+        public function init() {
             $this->subscribe('beforeSurveySettings');
             $this->subscribe('newSurveySettings');
             $this->subscribe('beforeActivate');

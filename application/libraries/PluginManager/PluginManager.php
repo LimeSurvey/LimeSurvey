@@ -185,7 +185,7 @@ use Plugin;
             foreach ($this->pluginDirs as $pluginDir) {
                 $currentDir = Yii::getPathOfAlias($pluginDir);
                 if (is_dir($currentDir)) {
-                    foreach (new DirectoryIterator($currentDir) as $fileInfo)
+                    foreach (new \DirectoryIterator($currentDir) as $fileInfo)
                     {
                         if (!$fileInfo->isDot() && $fileInfo->isDir())
                         {

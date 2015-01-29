@@ -177,7 +177,7 @@
 /**
  * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
  */
-    require 'application/Psr4AutoloaderClass.php';
+    require_once 'application/Psr4AutoloaderClass.php';
     $loader = new Psr4AutoloaderClass();
     $loader->register();
     $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
