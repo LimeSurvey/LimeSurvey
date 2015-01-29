@@ -21,13 +21,15 @@
 
         public function checkAccess($operation, $params = array(), $allowCaching = true)
         {
-            $defaults = [
-                'entity' => 'global',
-                'entity_id' => 0,
-                'crud' => 'read'
-            ];
-            $params = array_merge($defaults, $params);
-            return Permission::model()->hasPermission($params['entity_id'], $params['entity'], $operation, $params['crud']);
+            if ($operation == 'administrator')
+            {
+                return Permission::model()->hasGlobalPermission('superadmin', 'read');
+            }
+            else
+            {
+                return parent::checkAccess($operation, $params, $allowCaching);
+            }
+
         }
 
         public function getStateKeyPrefix()

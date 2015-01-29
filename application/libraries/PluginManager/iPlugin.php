@@ -3,9 +3,18 @@ namespace ls\pluginmanager;
 interface iPlugin {
 
     /**
+     * Should return the description for this plugin
+     * Constructor for the plugin
+     * 
+     * @param PluginManager $manager    The plugin manager instantiating the object
+     * @param int           $id         The id for storage
+     */
+    public function __construct(PluginManager $manager, $id);
+
+    /**
      * Return the description for this plugin
      */
-    public function getDescription();
+    public static function getDescription();
     
     /**
      * Get the current event this plugin is responding to
@@ -33,7 +42,7 @@ interface iPlugin {
      * Gets the name for the plugin, this must be unique.
      * @return string Plugin name, max length: 20.
      */
-    public function getName();
+    public static function getName();
     /**
      * Returns a reference to the storage interface for the plugin.
      * @return iPluginStorage 

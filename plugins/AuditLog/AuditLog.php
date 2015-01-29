@@ -1,5 +1,4 @@
 <?php
-use ls\pluginmanager\PluginBase;
     class AuditLog extends PluginBase {
 
         protected $storage = 'DbStorage';    
@@ -7,7 +6,9 @@ use ls\pluginmanager\PluginBase;
         static protected $name = 'auditlog';
        
         
-        public function init() {
+        public function __construct(PluginManager $manager, $id) {
+            parent::__construct($manager, $id);
+
             $this->subscribe('beforeSurveySettings');
             $this->subscribe('newSurveySettings');
             $this->subscribe('beforeActivate');

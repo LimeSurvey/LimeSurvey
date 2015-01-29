@@ -21,9 +21,8 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 * Implements global  config
 * @property CLogRouter $log Log router component.
 */
-class WebApplication extends CWebApplication
+class LSYii_Application extends CWebApplication
 {
-    public $loader;
     protected $config = array();
 
     /**
@@ -138,7 +137,7 @@ class WebApplication extends CWebApplication
      *
      * @param string $message
      * @param string $type
-     * @return WebApplication Provides a fluent interface
+     * @return LSYii_Application Provides a fluent interface
      */
     public function setFlashMessage($message,$type='default')
     {
@@ -212,6 +211,6 @@ class WebApplication extends CWebApplication
         return $this->getComponent('pluginManager');
     }
 
-   
+
 }
 

@@ -1,5 +1,4 @@
 <?php
-use ls\pluginmanager\PluginBase;
 class ExportSTATAxml extends PluginBase {
     
     protected $storage = 'DbStorage';
@@ -7,8 +6,8 @@ class ExportSTATAxml extends PluginBase {
     static protected $description = 'Core: Export survey results to a STATA xml file';
     static protected $name = 'STATA Export';
     
-    public function init()
-    {
+    public function __construct(PluginManager $manager, $id) {
+        parent::__construct($manager, $id);
         
         /**
          * Here you should handle subscribing to the events your plugin will handle

@@ -1,5 +1,4 @@
 <?php
-use ls\pluginmanager\AuthPluginBase;
 class AuthLDAP extends AuthPluginBase
 {
     protected $storage = 'DbStorage';
@@ -87,8 +86,8 @@ class AuthLDAP extends AuthPluginBase
                 )
     );
 
-    public function init() 
-    {
+    public function __construct(PluginManager $manager, $id) {
+        parent::__construct($manager, $id);
 
         /**
          * Here you should handle subscribing to the events your plugin will handle
@@ -177,7 +176,7 @@ class AuthLDAP extends AuthPluginBase
 
         if ($user === null && $this->autoCreate === false)
         {
-            // If the user doesnt exist ï¿½n the LS database, he can not login
+            // If the user doesnt exist ín the LS database, he can not login
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }

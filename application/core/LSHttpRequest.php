@@ -16,7 +16,7 @@
  * Description of HttpRequest
  *
  *
- * Used in WebApplication.php
+ * Used in LSYii_Application.php
  * <pre>
  *    'request'=>array(
  *        'class'=>'HttpRequest',

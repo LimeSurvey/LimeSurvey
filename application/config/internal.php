@@ -104,9 +104,9 @@ $internalConfig = array(
             'class' => "\\ls\\pluginmanager\\PluginManager",
             'api' => "\\ls\\pluginmanager\\LimesurveyApi"
         ]
-    ),
-    
+    )
 );
+
 
 
 $result = CMap::mergeArray($internalConfig, $userConfig);

@@ -174,6 +174,13 @@
         die ('This script can only be run on PHP version 5.4.0 or later! Your version: '.PHP_VERSION.'<br />');
 
 
+/**
+ * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
+ */
+    require 'application/Psr4AutoloaderClass.php';
+    $loader = new Psr4AutoloaderClass();
+    $loader->register();
+    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
@@ -183,7 +190,7 @@
  *
  */
 require_once BASEPATH . 'yii' . EXT;
-require_once APPPATH . 'core/WebApplication' . EXT;
+require_once APPPATH . 'core/LSYii_Application' . EXT;
 
 $config = require_once(APPPATH . 'config/internal' . EXT);
 
@@ -197,6 +204,7 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
 }
 
 
-Yii::createApplication('WebApplication', $config)->run();
+Yii::createApplication('LSYii_Application', $config)->run();
+
 /* End of file index.php */
 /* Location: ./index.php */

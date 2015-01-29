@@ -1,6 +1,4 @@
 <?php
-use ls\pluginmanager\PluginBase;
-
 class ExportR extends PluginBase {
     
     protected $storage = 'DbStorage';
@@ -8,8 +6,8 @@ class ExportR extends PluginBase {
     static protected $description = 'Core: R-export';
     static protected $name = 'Export results to R';
     
-    public function init() 
-    {
+    public function __construct(PluginManager $manager, $id) {
+        parent::__construct($manager, $id);
         
         /**
          * Here you should handle subscribing to the events your plugin will handle

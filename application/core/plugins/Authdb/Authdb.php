@@ -1,5 +1,6 @@
 <?php
 use ls\pluginmanager\AuthPluginBase;
+use ls\pluginmanager\PluginManager;
 
 class Authdb extends AuthPluginBase
 {
@@ -9,8 +10,10 @@ class Authdb extends AuthPluginBase
     static protected $description = 'Core: Database authentication + exports';
     static protected $name = 'LimeSurvey internal database';
 
-    public function init()
+    public function __construct(PluginManager $manager, $id)
     {
+        parent::__construct($manager, $id);
+
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */

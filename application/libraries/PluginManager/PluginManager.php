@@ -181,41 +181,41 @@ use Plugin;
          */
         public function scanPlugins($forceReload = false)
         {
-            Yii::beginProfile('scanPlugins');
-            $cacheKey = 'scanPlugins';
-            if (false === $plugins = \Yii::app()->cache->get($cacheKey)) {
-                $plugins = [];
-                foreach ($this->pluginDirs as $pluginDir) {
-                    $currentDir = Yii::getPathOfAlias($pluginDir);
-                    foreach(\CFileHelper::findFiles($currentDir, [
-                        'fileTypes' => ['json']
-                    ]) as $file) {
-                        if (basename($file) == 'config.json') {
-                            $config = json_decode(file_get_contents($file), true);
-                            $config['dir'] = dirname($file);
-                            $plugins[$config['name']] = $config;
-
+            $result = array();
+            foreach ($this->pluginDirs as $pluginDir) {
+                $currentDir = Yii::getPathOfAlias($pluginDir);
+                if (is_dir($currentDir)) {
+                    foreach (new DirectoryIterator($currentDir) as $fileInfo)
+                    {
+                        if (!$fileInfo->isDot() && $fileInfo->isDir())
+                        {
+                            // Check if the base plugin file exists.
+                            // Directory name Example most contain file ExamplePlugin.php.
+                            $pluginName = $fileInfo->getFilename();
+                            $file = Yii::getPathOfAlias($pluginDir . ".$pluginName.{$pluginName}") . ".php";
+                            if (file_exists($file))
+                            {
+                                $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                            }
                         }
 
                     }
                 }
                 \Yii::app()->cache->set($cacheKey, $plugins, 3600);
             }
-            Yii::endProfile('scanPlugins');
-            return $plugins;
-            
+
+            return $result;
         }
 
         /**
-         * Gets the description of a plugin. 
-         * The description is accessed via a function inside the plugin class.
+         * Gets the description of a plugin. The description is accessed via a
+         * static function inside the plugin file.
          *
          * @param string $pluginClass The classname of the plugin
          */
         public function getPluginInfo($pluginClass, $pluginDir = null)
         {
             $result = array();
-            
             $class = "{$pluginClass}";
             
             if (!class_exists($class, false)) {
@@ -239,9 +239,9 @@ use Plugin;
                     return false;
                 }
             }
-            $plugin = new $class($this, null, false);
-            $result['description'] = $plugin->getDescription();
-            $result['pluginName'] = $plugin->getName();
+            
+            $result['description'] = call_user_func(array($class, 'getDescription'));
+            $result['pluginName'] = call_user_func(array($class, 'getName'));
             $result['pluginClass'] = $class;            
             return $result;
         }
@@ -362,28 +362,6 @@ use Plugin;
             }
         }
         
-        
-        private function createAutoloader($modules) {
-            $configPath = \Yii::getPathOfAlias('application.config');
-            $content = "<?php\n";
-            $content .= 'return '; 
-            $content .= strtr(var_export($modules, true), ["  " => "    "]);
-            $content .= ';';
-            file_put_contents($configPath . '/plugins.php', $content);
-        }
-        
-        public function setPlugins($plugins) 
-        {
-//            $defaults = [];
-//            $app = \Yii::app();
-//            foreach($plugins as $name => $plugin) {
-//                $config = \CMap::mergeArray($defaults, $plugin);
-//                if($config['type'] == 'module') {
-//
-//                    $app->setModules([$name => $config]);
-//                }
-//            }
-        }
         
     }
 ?>

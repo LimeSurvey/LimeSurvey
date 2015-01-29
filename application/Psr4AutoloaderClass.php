@@ -60,7 +60,7 @@ class Psr4AutoloaderClass
      */
     public function register()
     {
-        spl_autoload_register(array($this, 'loadClass'), true, true);
+        spl_autoload_register(array($this, 'loadClass'));
     }
 
     /**
