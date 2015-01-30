@@ -6,7 +6,7 @@ mv .build/repo/.git .build/new/
 mv * .build/new/
 cd .build/new
 git add *
-git commit -m "Automated release"
+git commit -a -m "Automated release"
 git tag -a 3.0.0-auto -m "Automated release of v3.0.0"
 git push origin master
 git push origin --tags
