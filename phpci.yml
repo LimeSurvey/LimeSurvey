@@ -1,6 +1,6 @@
 build_settings:
     clone_depth: 1 # depth of 1 is a shallow clone, remove this line to clone entire repo
-    verbose: false
+    verbose: true
     ignore:
         - "application/vendor"
         - "tests"
