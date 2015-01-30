@@ -14,7 +14,6 @@ trait SmartColumnTypeTrait {
         } else {
             $result = parent::getColumnType($type);
         }
-       
-        return $result;		
+        return $result;
 	}
 }
