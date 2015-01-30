@@ -2,13 +2,9 @@ build_settings:
     clone_depth: 1 # depth of 1 is a shallow clone, remove this line to clone entire repo
     verbose: false
     ignore:
-        - "vendor"
+        - "application/vendor"
         - "tests"
         - "third_party"
-        - "tmp"
-        - "framework"
-        - "upload"
-        - "docs"
         - "application/third_party"
         - "locale"
     mysql:
@@ -21,10 +17,12 @@ setup:
 #        - "DROP DATABASE IF EXISTS test;"
 #        - "CREATE DATABASE test;"
 #        - "GRANT ALL PRIVILEGES ON test.* TO test@'localhost' IDENTIFIED BY 'test';"
-#    composer:
-#        action: "install"
+    composer:
+        action: "install"
 
 test:
+    php_parallel_lint: 
+            
 #    php_unit:
 #        config:
 #            - "PHPUnit-all.xml"
@@ -33,10 +31,10 @@ test:
 #            - "tests/"
 #        run_from: "phpunit/"
 #        coverage: "tests/logs/coverage"
-    php_mess_detector:
-        allow_failures: false
-        suffixes:
-            - "php"
+#    php_mess_detector:
+#        allow_failures: false
+#        suffixes:
+#            - "php"
 #    php_code_sniffer:
 #        standard: "PSR2"
 #    php_cpd:
@@ -47,3 +45,13 @@ test:
 complete:
 #    mysql:
 #        - "DROP DATABASE IF EXISTS test;"
+success:
+#    git:
+#        "github/limesurvey-builds":
+#            merge:
+#                branch: "master"
+#                remote: "git@github.com:SamMousa/Releases.git"
+#            push: 
+#                remote: "git@github.com:SamMousa/Releases.git"
+#                branch: "master"
+#        
