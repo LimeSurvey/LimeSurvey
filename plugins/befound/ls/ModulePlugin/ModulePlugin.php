@@ -6,7 +6,10 @@
     class ModulePlugin extends \ls\pluginmanager\PluginModule
     {
         public $defaultController = 'dashboard';
-        public $controllerNamespace = __NAMESPACE__ . '\\controllers';
+        public $controllerNamespace;
         
+        public function __construct() {
+             $this->controllerNamespace = __NAMESPACE__ . '\\controllers';
+        }
     }
 ?>
