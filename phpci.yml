@@ -51,14 +51,16 @@ test:
         allow_failures: true
     php_loc:
         
-    git:
-        "2.07":
-            push: 
-                remote: "git@github.com:SamMousa/Releases.git"
-                branch: "master"
+    
 
 complete:
 #    mysql:
 #        - "DROP DATABASE IF EXISTS test;"
 success:
+    shell: 
         
+    git:
+        "2.07":
+            push: 
+                remote: "git@github.com:SamMousa/Releases.git"
+                branch: "master"

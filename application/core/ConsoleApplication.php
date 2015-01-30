@@ -13,7 +13,7 @@
 
         /**
          *
-         * @var PluginManager
+         * @var \ls\pluginmanager\PluginManager
          */
         protected $pluginManager;
 
@@ -100,10 +100,7 @@
          */
         public function initPluginManager()
         {
-            Yii::import('application.libraries.PluginManager.*');
-            Yii::import('application.libraries.PluginManager.Storage.*');
-            Yii::import('application.libraries.PluginManager.Question.*');
-            $this->pluginManager = new PluginManager($this->getApi());
+            $this->pluginManager = new \ls\pluginmanager\PluginManager($this->getApi());
 
             // And load the active plugins
             $this->pluginManager->loadPlugins();

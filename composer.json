@@ -23,6 +23,9 @@
             "application/core/db",
             "application/core",
             "application/vendor/2amigos/yiiwheels"
-        ]
+        ],
+        "psr-4" : {
+            "ls\\pluginmanager\\" : "application/libraries/PluginManager"
+        }
     }
 }
