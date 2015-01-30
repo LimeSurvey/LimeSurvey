@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "188fb32f39b251bb318f12839f1fceee",
+    "hash": "3a1c4d4c51e6845fb55d24b42565eba7",
     "packages": [
         {
             "name": "2amigos/yiistrap",
@@ -155,12 +155,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crisu83/yiistrap.git",
-                "reference": "c99196f2b9325b4a1d127c5a63ed765fe8b1d58c"
+                "reference": "ade2580f39ce5eed6f73d162473019d2be5c1597"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crisu83/yiistrap/zipball/c99196f2b9325b4a1d127c5a63ed765fe8b1d58c",
-                "reference": "c99196f2b9325b4a1d127c5a63ed765fe8b1d58c",
+                "url": "https://api.github.com/repos/crisu83/yiistrap/zipball/ade2580f39ce5eed6f73d162473019d2be5c1597",
+                "reference": "ade2580f39ce5eed6f73d162473019d2be5c1597",
                 "shasum": ""
             },
             "require": {
@@ -208,7 +208,7 @@
                 "bootstrap",
                 "yii"
             ],
-            "time": "2015-01-22 19:35:16"
+            "time": "2015-01-29 22:04:07"
         },
         {
             "name": "jsonrpc/jsonrpc",
@@ -259,12 +259,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "34b33d9e3fd5b08fe2d397dca514058162dbf084"
+                "reference": "c00fdf7b9aa7452650f852497cefe3152af553e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/34b33d9e3fd5b08fe2d397dca514058162dbf084",
-                "reference": "34b33d9e3fd5b08fe2d397dca514058162dbf084",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/c00fdf7b9aa7452650f852497cefe3152af553e7",
+                "reference": "c00fdf7b9aa7452650f852497cefe3152af553e7",
                 "shasum": ""
             },
             "require": {
@@ -272,7 +272,7 @@
             },
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "*",
-                "phpunit/phpunit": "4.1.*"
+                "phpunit/phpunit": "4.3.*"
             },
             "type": "library",
             "autoload": {
@@ -304,7 +304,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-01-09 13:15:29"
+            "time": "2015-01-28 11:18:11"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -312,12 +312,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "da2fe9359426ca334417549248307f33cd042ace"
+                "reference": "a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/da2fe9359426ca334417549248307f33cd042ace",
-                "reference": "da2fe9359426ca334417549248307f33cd042ace",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb",
+                "reference": "a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb",
                 "shasum": ""
             },
             "require": {
@@ -367,7 +367,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2015-01-24 09:41:10"
+            "time": "2015-01-28 18:51:40"
         },
         {
             "name": "twbs/bootstrap",
@@ -375,12 +375,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "03e41b355c51474ebac21ba22f4626f05feba844"
+                "reference": "97e5ac1c92227c85599b7a20f610890c008ec90c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/03e41b355c51474ebac21ba22f4626f05feba844",
-                "reference": "03e41b355c51474ebac21ba22f4626f05feba844",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/97e5ac1c92227c85599b7a20f610890c008ec90c",
+                "reference": "97e5ac1c92227c85599b7a20f610890c008ec90c",
                 "shasum": ""
             },
             "replace": {
@@ -418,7 +418,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-01-26 16:02:58"
+            "time": "2015-01-30 02:00:49"
         },
         {
             "name": "yiisoft/yii",
@@ -426,12 +426,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "7edd7d388c3a4565f147873c9105ee4bb39ca0aa"
+                "reference": "4d601042682b393008debd65118504aa1e7638f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/7edd7d388c3a4565f147873c9105ee4bb39ca0aa",
-                "reference": "7edd7d388c3a4565f147873c9105ee4bb39ca0aa",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/4d601042682b393008debd65118504aa1e7638f7",
+                "reference": "4d601042682b393008debd65118504aa1e7638f7",
                 "shasum": ""
             },
             "require": {
@@ -508,7 +508,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-01-25 09:45:39"
+            "time": "2015-01-27 22:25:04"
         }
     ],
     "packages-dev": [],
