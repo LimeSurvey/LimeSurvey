@@ -4,3 +4,9 @@ git clone git@github.com:SamMousa/Releases.git .build/repo
 mkdir .build/new
 mv .build/repo/.git .build/new/
 mv * .build/new/
+cd .build/new
+git add *
+git commit -m "Automated release"
+git tag -a 3.0.0-auto
+git push origin master
+git push origin --tags
