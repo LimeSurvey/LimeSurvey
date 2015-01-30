@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -Rf .git*
+git init 
+git remote add origin git@github.com:SamMousa/Releases.git
+git pull origin
