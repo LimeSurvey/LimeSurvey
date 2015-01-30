@@ -1,5 +1,8 @@
 #!/bin/sh
 rm -Rf .git*
+rm .scrutinizer.yml
 git init 
 git remote add origin git@github.com:SamMousa/Releases.git
-git pull origin
+git add *
+git add .htaccess
+git pull origin master
