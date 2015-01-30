@@ -22,12 +22,12 @@ setup:
 
 test:
     php_parallel_lint: 
-    php_mess_detector:
-        allow_failures: true
-        suffixes:
-            - "php"
-        rules:
-            - "unusedcode"
+#    php_mess_detector:
+#        allow_failures: true
+#        suffixes:
+#            - "php"
+#        rules:
+#            - "unusedcode"
 #    php_unit:
 #        config:
 #            - "PHPUnit-all.xml"
@@ -46,17 +46,18 @@ test:
         allow_failures: true
 #    grunt:
 #        task: "build"
+    php_docblock_checker:
 
 complete:
 #    mysql:
 #        - "DROP DATABASE IF EXISTS test;"
 success:
-#    git:
-#        "github/limesurvey-builds":
-#            merge:
-#                branch: "master"
-#                remote: "git@github.com:SamMousa/Releases.git"
-#            push: 
-#                remote: "git@github.com:SamMousa/Releases.git"
-#                branch: "master"
-#        
+    git:
+        "github/limesurvey-builds":
+            merge:
+                branch: "master"
+                remote: "git@github.com:SamMousa/Releases.git"
+            push: 
+                remote: "git@github.com:SamMousa/Releases.git"
+                branch: "master"
+        
