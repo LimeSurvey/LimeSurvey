@@ -18,51 +18,62 @@
 * @param int $fixnumbering
 * @todo can call this function (no $_GET, but getParam) AND do it with Yii
 */
-function fixNumbering($fixnumbering, $iSurveyID)
+function fixNumbering($iQuestionID, $iSurveyID)
 {
 
     Yii::app()->loadHelper("database");
 
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
     //Fix a question id - requires renumbering a question
-    $oldqid = (int) $fixnumbering;
-    $lastqid=Question::model()->getMaxId('qid', true); // Always refresh as we insert new qid's
-    $newqid=$lastqid+1;
+    $iQuestionID = (int) $iQuestionID;
+    $iMaxQID=Question::model()->getMaxId('qid', true); // Always refresh as we insert new qid's
+    $iNewQID=$iMaxQID+1;
 
     // Not sure we can do this in MSSQL ?
-    $query = "UPDATE {{questions}} SET qid=$newqid WHERE qid=$oldqid";
-    $result = db_execute_assosc($query);
+    $sQuery = "UPDATE {{questions}} SET qid=$iNewQID WHERE qid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
     // Update subquestions
-    $query = "UPDATE {{questions}} SET parent_qid=$newqid WHERE parent_qid=$oldqid";
-    $result = db_execute_assosc($query);
+    $sQuery = "UPDATE {{questions}} SET parent_qid=$iNewQID WHERE parent_qid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
     //Update conditions.. firstly conditions FOR this question
-    $query = "UPDATE {{conditions}} SET qid=$newqid WHERE qid=$oldqid";
-    $result = db_execute_assosc($query);
+    $sQuery = "UPDATE {{conditions}} SET qid=$iNewQID WHERE qid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
+    //Update default values
+    $sQuery = "UPDATE {{defaultvalues}} SET qid=$iNewQID WHERE qid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
+    $sQuery = "UPDATE {{defaultvalues}} SET sqid=$iNewQID WHERE sqid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
+    //Update quotas
+    $sQuery = "UPDATE {{quota_members}} SET qid=$iNewQID WHERE qid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
+    //Update url params
+    $sQuery = "UPDATE {{survey_url_parameters}} SET targetqid=$iNewQID WHERE targetqid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
+    $sQuery = "UPDATE {{survey_url_parameters}} SET targetsqid=$iNewQID WHERE targetsqid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
     //Now conditions based upon this question
-    $query = "SELECT cqid, cfieldname FROM {{conditions}} WHERE cqid=$oldqid";
-    $result = dbExecuteAssoc($query);
-    foreach ($result->readAll() as $row)
-    {
-        $switcher[]=array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
+    $sQuery = "SELECT cqid, cfieldname FROM {{conditions}} WHERE cqid=$iQuestionID";
+    $sResult=Yii::app()->db->createCommand($sQuery)->query();
+    foreach ($sResult->readAll() as $row){
+        $aSwitcher[]=array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
     }
-    if (isset($switcher))
+    if (isset($aSwitcher))
     {
-        foreach ($switcher as $switch)
+        foreach ($aSwitcher as $aSwitch)
         {
-            $query = "UPDATE {{conditions}}
-            SET cqid=$newqid,
-            cfieldname='".str_replace("X".$oldqid, "X".$newqid, $switch['cfieldname'])."'
-            WHERE cqid=$oldqid";
-            $result = db_execute_assosc($query);
+            $sQuery = "UPDATE {{conditions}}
+            SET cqid=$iNewQID,
+            cfieldname='".str_replace("X".$iQuestionID, "X".$iNewQID, $aSwitch['cfieldname'])."'
+            WHERE cqid=$iQuestionID";
+            $sResult = db_execute_assosc($sQuery);
         }
     }
-    // TMSW Condition->Relevance:  (1) Call LEM->ConvertConditionsToRelevance()when done. (2) Should relevance for old conditions be removed first?
     //Now question_attributes
-    $query = "UPDATE {{question_attributes}} SET qid=$newqid WHERE qid=$oldqid";
-    $result = db_execute_assosc($query);
+    $sQuery = "UPDATE {{question_attributes}} SET qid=$iNewQID WHERE qid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
     //Now answers
-    $query = "UPDATE {{answers}} SET qid=$newqid WHERE qid=$oldqid";
-    $result = db_execute_assosc($query);
+    $sQuery = "UPDATE {{answers}} SET qid=$iNewQID WHERE qid=$iQuestionID";
+    Yii::app()->db->createCommand($sQuery)->query();
 
     LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
 }
@@ -102,11 +113,11 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
-    //	# "L" -> LIST
+    //    # "L" -> LIST
     //  # "O" -> LIST WITH COMMENT
     //  # "M" -> Multiple choice
-    //	# "P" -> Multiple choice with comments
-    //	# "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
+    //    # "P" -> Multiple choice with comments
+    //    # "A", "B", "C", "E", "F", "H", "^" -> Various Array Types
     //  # "R" -> RANKING
     //  # "U" -> FILE CSV MORE
     //  # "I" -> LANGUAGE SWITCH
@@ -214,25 +225,13 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
-    if (isset($fieldmap))
+    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID),$aDuplicateQIDs);
+    if (count($aDuplicateQIDs))
     {
-        foreach($fieldmap as $fielddata)
+        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate)
         {
-            $fieldlist[]=$fielddata['fieldname'];
-        }
-        $fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
-    }
-
-    $checkKeysUniqueComparison = create_function('$value','if ($value > 1) return true;');
-    @$duplicates = array_keys (array_filter (array_count_values($fieldlist), $checkKeysUniqueComparison));
-    if (isset($duplicates))
-    {
-        foreach ($duplicates as $dup)
-        {
-            $badquestion=arraySearchByKey($dup, $fieldmap, "fieldname", 1);
-            $fix = "[<a href='$scriptname?action=activate&amp;sid=$iSurveyID&amp;fixnumbering=".$badquestion['qid']."'>Click Here to Fix</a>]";
-            $failedcheck[]=array($badquestion['qid'], $badquestion['question'], ": Bad duplicate fieldname $fix", $badquestion['gid']);
+            $sFixLink = "[<a href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
+            $failedcheck[]=array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }
     if(isset($failedcheck))
@@ -368,7 +367,6 @@ function activateSurvey($iSurveyID, $simulate = false)
         return array('dbengine'=>$CI->db->databasetabletype, 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$arrSim);
     }
 
-
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
@@ -387,7 +385,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     {
         if (isset($createsurvey['token'])) Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1,50000),$tabname,'token');
     }
-    catch (CDbException $e)
+        catch (CDbException $e)
     {
     }
 
