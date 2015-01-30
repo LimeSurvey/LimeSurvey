@@ -52,7 +52,7 @@ test:
     php_loc:
         
     git:
-        "github/limesurvey-builds":
+        "2.07":
             push: 
                 remote: "git@github.com:SamMousa/Releases.git"
                 branch: "master"
