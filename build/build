@@ -6,8 +6,8 @@ mv .build/repo/.git .build/new/
 mv * .build/new/
 cd .build/new
 git add *
-$VERSION=`php -r '$config = include("application/config/version.php"); echo $config["versionnumber"] . '.' . $config['buildnumber'];'`
-git commit -a -m "Automated release"
+$VERSION=`php -r '$config = include("application/config/version.php"); echo $config["versionnumber"] . '.' . $config["buildnumber"];'`
+git commit -a -m "Automated release $VERSION"
 git tag -a $VERSION-auto -m "Automated release of v$VERSION"
 git push origin master
 git push origin --tags
