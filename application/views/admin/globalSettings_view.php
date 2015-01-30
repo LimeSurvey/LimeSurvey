@@ -590,7 +590,7 @@
                         ),
                     ),
                     'pdfshowheader'=>array(
-                        'type'=>'int',
+                        'type'=>'select',
                         'label'=>gT("Show header in answers export PDFs?"),
                         'options'=>array(
                             'Y' => gT("Yes"),
