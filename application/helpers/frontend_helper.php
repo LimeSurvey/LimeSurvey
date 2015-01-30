@@ -39,13 +39,14 @@ function loadanswers()
         if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
         {
             // To be validated with mssql, think it's not needed
-            $oCriteria->addCondition(" CAST({{saved_control}}.access_code as varchar(32))=:access_code");
+            $oCriteria->addCondition("(CAST({{saved_control}}.access_code as varchar(64))=:md5_code OR CAST({{saved_control}}.access_code as varchar(64))=:sha256_code)");
         }
         else
         {
-            $oCriteria->addCondition("{{saved_control}}.access_code=:access_code");
+            $oCriteria->addCondition("({{saved_control}}.access_code=:md5_code OR {{saved_control}}.access_code=:sha256_code)");
         }
-        $aParams[':access_code']=md5($sLoadPass);
+        $aParams[':md5_code']=md5($sLoadPass);
+        $aParams[':sha256_code']=hash('sha256',$sLoadPass);
     }
     elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
     {
@@ -1170,7 +1171,7 @@ function buildsurveysession($surveyid,$preview=false)
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
-    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language 
+    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
     if (returnGlobal('lang',true))
     {
         $language_to_set=returnGlobal('lang',true);

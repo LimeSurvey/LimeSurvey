@@ -5272,7 +5272,7 @@ function getUpdateInfo()
     if (getGlobalSetting('SessionName')=='') {
         setGlobalSetting('SessionName', \Yii::app()->securityManager->generateRandomString(64));
     }
-    
+
     $url = "http://update.limesurvey.org/?" . \Yii::app()->urlManager->createPathInfo(array(
         'build' => Yii::app()->getConfig("buildnumber"),
         /**
@@ -5282,7 +5282,7 @@ function getUpdateInfo()
         'id' => md5(getGlobalSetting('SessionName')),
         'crosscheck' => 'true' // Passed as string, should be changed.
     ), '=', '&');
-    
+
     $opts = [
         'http' => [
             'method' => 'GET',
@@ -7587,5 +7587,15 @@ function array_diff_assoc_recursive($array1, $array2) {
         $aParts = explode(':', $sSerial, 4);
         return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : trim($aParts[2], '"');
     }
+
+    /**
+    * Checks if a string looks like it is a MD5 hash
+    *
+    * @param mixed $md5
+    */
+    function isMd5($sMD5 ='') {
+        return strlen($sMD5) == 32 && ctype_xdigit($sMD5);
+    }
+
 // Closing PHP tag intentionally omitted - yes, it is okay
 
