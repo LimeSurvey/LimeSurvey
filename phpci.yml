@@ -43,12 +43,12 @@ test:
 #            - "php"
 #    php_code_sniffer:
 #        standard: "PSR2"
-    php_cpd:
-        allow_failures: true
+#    php_cpd:
+#        allow_failures: true
 #    grunt:
 #        task: "build"
-    php_docblock_checker:
-        allow_failures: true
+#    php_docblock_checker:
+#        allow_failures: true
     php_loc:
         
     
@@ -58,4 +58,4 @@ complete:
 #        - "DROP DATABASE IF EXISTS test;"
 success:
     shell:
-        - "build/build" 
+        - "cd %BUILD_PATH% && build/build" 
