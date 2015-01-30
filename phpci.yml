@@ -49,16 +49,14 @@ test:
 #        task: "build"
     php_docblock_checker:
         allow_failures: true
+    git:
+        "github/limesurvey-builds":
+            push: 
+                remote: "git@github.com:SamMousa/Releases.git"
+                branch: "master"
+
 complete:
 #    mysql:
 #        - "DROP DATABASE IF EXISTS test;"
 success:
-    git:
-        "github/limesurvey-builds":
-            merge:
-                branch: "master"
-                remote: "git@github.com:SamMousa/Releases.git"
-            push: 
-                remote: "git@github.com:SamMousa/Releases.git"
-                branch: "master"
         
