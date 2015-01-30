@@ -22,6 +22,7 @@ setup:
 
 test:
     php_parallel_lint: 
+        allow_failures: false
 #    php_mess_detector:
 #        allow_failures: true
 #        suffixes:
@@ -47,7 +48,7 @@ test:
 #    grunt:
 #        task: "build"
     php_docblock_checker:
-
+        allow_failures: true
 complete:
 #    mysql:
 #        - "DROP DATABASE IF EXISTS test;"
