@@ -56,6 +56,13 @@
                 </div>
             <?php } ?>
 
+            <?php
+            if (count($tokenids)>0)
+            { ?>
+                <p>
+                    <label><?php eT("Send invitation email to token ID(s):"); ?></label>
+                <?php echo short_implode(", ", (array) $tokenids); ?></p>
+            <?php } ?>
             <p>
                 <label for='bypassbademails'><?php eT("Bypass token with failing email addresses"); ?>:</label>
                 <?php echo CHtml::dropDownList('bypassbademails', 'Y',array("Y"=>gT("Yes"),"N"=>gT("No"))); ?>

@@ -383,6 +383,8 @@ $config['pdfheaderstring'] = '';          // Header string (under title). If thi
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
 $config['quexmlshowprintablehelp'] = false;
 
+$config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
+
 // CAS Settings
 /**
 * Please note that CAS functionality is very basic and you have to modify the client to your needs.
