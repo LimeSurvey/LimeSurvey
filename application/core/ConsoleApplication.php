@@ -103,7 +103,10 @@
             $this->pluginManager = new \ls\pluginmanager\PluginManager($this->getApi());
 
             // And load the active plugins
-            $this->pluginManager->loadPlugins();
+            // Only load plugins if we have a config file.
+            if (file_exists(__DIR__ . '/../config/config.php')) {
+                $this->pluginManager->loadPlugins();
+            }
         }
 
         /**
