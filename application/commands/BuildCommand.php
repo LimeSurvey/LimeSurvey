@@ -79,7 +79,6 @@ class BuildCommand extends CConsoleCommand
         
         $this->out("The release will be tagged '{$this->tag}'");
         
-        $this->updateVersion();
         $this->updateChangeLog();
         
         $tempDir = sys_get_temp_dir() . "/{$this->tag}-" . rand(0, 10000);
@@ -103,6 +102,8 @@ class BuildCommand extends CConsoleCommand
         // Copy all except hidden files from our build dir to the new directory.
         shell_exec("cp -fR $sourceDir/* $tempDir/new");
         chdir("$tempDir/new");
+        $this->updateVersion("$tempDir/new/application/config/version.php");
+        
         $this->git('add *');
         $this->git("commit -a -m 'Automated release {$this->tag}'");
         $this->git("tag -a {$this->tag} -m 'Automated release of {$this->tag}'");
@@ -114,13 +115,13 @@ class BuildCommand extends CConsoleCommand
         return include __DIR__ . '/../config/version.php';
     }
     
-    protected function updateVersion() {
+    protected function updateVersion($file) {
         $this->out("Updating version file.");
         $config = array_merge($this->version, [
             'buildnumber' => $this->buildNumber,
             'sourceCommit' => $this->git("log -n 1 --pretty='%h'")[0],
         ]);
-        $bytes = file_put_contents(__DIR__ . '/../config/version.php', "<?php\nreturn " . var_export($config, true) . ';');
+        $bytes = file_put_contents($file, "<?php\nreturn " . var_export($config, true) . ';');
         $this->out("Finished version file, $bytes bytes written.");
     }
     public function getVersionNumber() {
