@@ -188,17 +188,22 @@ class BuildCommand extends CConsoleCommand
         return $result;
     }   
     protected function formatCommitMessage($hash, $author, $message) {
-        if (substr_compare('dev', $message, 0, 3, true) === 0) {
-            return;
+        $keywords = [
+            'Fixed issue',
+            'Updated feature',
+            'Updated translation',
+            'New feature',
+            'New translation'
+        ];
+        // Check if message starts with a keyword:
+        foreach($keywords as $keyword) {
+            if (substr_compare($keyword, $message, 0, strlen($keyword), true) === 0) {
+                if ($keyword == 'Updated translation') {
+                    return "#" . $message;
+                } else {
+                    return '-' . strtr($message, ['#0' => '#']) . " ($author)";
+                }
+            }
         }
-        if (substr_compare('git-svn-id', $message, 0, 10, true) === 0) {
-            return;
-        }
-        if (substr_compare('Updated translation', $message, 0, 19, true) === 0) {
-            return "#" . $message;
-        }
-        
-        // Normal commit message:
-        return '-' . strtr($message, ['#0' => '#']) . " ($author)";
     }
 }
