@@ -120,6 +120,9 @@ class BuildCommand extends CConsoleCommand
         rename("$tempDir/base/.git", "$tempDir/new/.git");
         // Copy all except hidden files from our build dir to the new directory.
         shell_exec("cp -fR $sourceDir/* $tempDir/new");
+        
+        $this->updateChangeLog("$tempDir/new/docs/ChangeLog");
+        
         chdir("$tempDir/new");
         
         // Get existing tags and make sure our new tag and thus build number is unique.
@@ -129,8 +132,7 @@ class BuildCommand extends CConsoleCommand
         }
         $this->updateVersion("$tempDir/new/application/config/version.php");
         $this->out("The release will be tagged '{$this->tag}'");
-        $this->updateChangeLog("$tempDir/new/docs/ChangeLog");
-        
+        \
         $this->git('add --all *');
         $this->git("commit -a -m 'Automated release {$this->tag}'");
         $this->git("tag -a {$this->tag} -m 'Automated release of {$this->tag}'");
