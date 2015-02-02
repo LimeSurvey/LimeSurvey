@@ -84,8 +84,8 @@ class BuildCommand extends CConsoleCommand
             $this->out("Interactive LimeSurvey build tool.");
             $this->versionNumber = $this->ask("Please enter a version number", $this->versionNumber, '/^\d\.\d\d$/');
             $this->updateVersionNumber();
-            
-            
+            $this->out("Running composer install to make sure dependencies are up to date.");
+            $this->out(shell_exec("composer install"));
         }
         $this->doRelease($quiet, $branch);
     }
@@ -94,7 +94,6 @@ class BuildCommand extends CConsoleCommand
         $this->quiet = $quiet;
         $this->branch = $branch;
         $this->out("Starting build on branch {$this->branch}");
-        
         $info = $this->previousBuildInfo;
         $this->out("Last build info:");
         $this->out($info);
@@ -155,14 +154,18 @@ class BuildCommand extends CConsoleCommand
     }
     
     protected function updateVersionNumber() {
-        $this->out("Updating version number.");
-        $config = array_merge($this->version, [
-            'versionnumber' => $this->versionNumber
-        ]);
-        $bytes = file_put_contents(__DIR__ . '/../config/version.php', "<?php\nreturn " . var_export($config, true) . ';');
-        $this->out("Finished version file, $bytes bytes written.");
-        $this->out($this->git("commit application/config/version.php -m 'Version bump to {$this->versionNumber}'"));
-        $this->out($this->git("push origin"));
+        if ($this->version['versionnumber'] != $this->versionNumber) {
+            $this->out("Updating version number.");
+            $config = array_merge($this->version, [
+                'versionnumber' => $this->versionNumber
+            ]);
+            $bytes = file_put_contents(__DIR__ . '/../config/version.php', "<?php\nreturn " . var_export($config, true) . ';');
+            $this->out("Finished version file, $bytes bytes written.");
+            $this->out($this->git("commit application/config/version.php -m 'Version bump to {$this->versionNumber}'"));
+            $this->out($this->git("push origin"));
+        } else {
+            $this->out("Version number unchanged.");
+        }
     }
     public function getVersionNumber() {
         if (!isset($this->_versionNumber)) {
