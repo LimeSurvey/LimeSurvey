@@ -75,15 +75,6 @@ class BuildCommand extends CConsoleCommand
         $this->out("Last build info:");
         $this->out($info);
         
-        $buildNumber = $this->buildNumber;
-        if ($buildNumber == $info['buildnumber']) {
-            $this->buildNumber++;
-        }
-        
-        $this->out("The release will be tagged '{$this->tag}'");
-        
-        $this->updateChangeLog();
-        
         $tempDir = sys_get_temp_dir() . "/{$this->tag}-" . rand(0, 10000);
         mkdir($tempDir);
         mkdir("$tempDir/base");
@@ -105,7 +96,15 @@ class BuildCommand extends CConsoleCommand
         // Copy all except hidden files from our build dir to the new directory.
         shell_exec("cp -fR $sourceDir/* $tempDir/new");
         chdir("$tempDir/new");
+        
+        // Get existing tags and make sure our new tag and thus build number is unique.
+        $tags = $this->git('tag');
+        while(in_array($this->tag, $tags)) {
+            $this->buildNumber++;
+        }
         $this->updateVersion("$tempDir/new/application/config/version.php");
+        $this->out("The release will be tagged '{$this->tag}'");
+        $this->updateChangeLog();
         
         $this->git('add --all *');
         $this->git("commit -a -m 'Automated release {$this->tag}'");
