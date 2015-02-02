@@ -76,6 +76,7 @@ class BuildCommand extends CConsoleCommand
     }
     
     public function actionRelease($interactive = 'true', $quiet = 'false', $branch = 'current', $test = 'false') {
+        chdir(__DIR__ . '/../../');
         $interactive = ($interactive === 'true');
         $quiet = ($quiet === 'true');
         $test = ($test === 'true');
@@ -117,11 +118,17 @@ class BuildCommand extends CConsoleCommand
             $this->out($this->git("push origin {$this->branch}:{$this->branch}"));
         }
         rename("$tempDir/base/.git", "$tempDir/new/.git");
-        // Copy all except hidden files from our build dir to the new directory.
-        shell_exec("cp -fR $sourceDir/* $tempDir/new");
+        rename("$tempDir/base/.gitignore", "$tempDir/new/.gitignore");
         
+        // Copy all except hidden files from our build dir to the new directory.
+        $this->out("Copying from $sourceDir to $tempDir/new");
+        passthru("cp -fr $sourceDir/* $tempDir/new");   
+        // Remove .git directories from composer dependencies.
+        $this->out("Copying from $sourceDir to $tempDir/new");
+        passthru("find $tempDir/new/application/vendor/ -type d -name '.git' -exec rm -rf {} \;");
         $this->out("Changing to $tempDir/new");
         chdir("$tempDir/new");
+        
         
         // Get existing tags and make sure our new tag and thus build number is unique.
         $tags = $this->git('tag');
