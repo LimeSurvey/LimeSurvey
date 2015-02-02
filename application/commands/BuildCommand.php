@@ -104,7 +104,7 @@ class BuildCommand extends CConsoleCommand
         }
         $this->updateVersion("$tempDir/new/application/config/version.php");
         $this->out("The release will be tagged '{$this->tag}'");
-        $this->updateChangeLog("$tempDir/new/application/docs/ChangeLog");
+        $this->updateChangeLog("$tempDir/new/docs/ChangeLog");
         
         $this->git('add --all *');
         $this->git("commit -a -m 'Automated release {$this->tag}'");
