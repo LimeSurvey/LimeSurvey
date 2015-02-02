@@ -74,11 +74,9 @@ test:
 #        allow_failures: true
     php_loc:
         
-    
-
+    shell:
+        - "cd %BUILD_PATH% && application/console build release" 
 complete:
 #    mysql:
 #        - "DROP DATABASE IF EXISTS test;"
 success:
-    shell:
-        - "cd %BUILD_PATH% && application/console build release" 

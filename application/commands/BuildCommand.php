@@ -5,7 +5,10 @@ class BuildCommand extends CConsoleCommand
     public $releaseRepo = "SamMousa/Releases";
     public $quiet = false;
     
+    
     protected $_branch;
+    protected $_buildNumber;
+    
     protected function git($command, &$returnValue = null) 
     {
         $output = [];
@@ -74,7 +77,7 @@ class BuildCommand extends CConsoleCommand
         
         $buildNumber = $this->buildNumber;
         if ($buildNumber == $info['buildnumber']) {
-            throw new \Exception("Duplicate build number.");
+            $this->buildNumber++;
         }
         
         $this->out("The release will be tagged '{$this->tag}'");
@@ -144,7 +147,14 @@ class BuildCommand extends CConsoleCommand
     
     public function getBuildNumber() 
     {
-        return date('ymd');
+        if (!isset($this->_buildNumber)) {
+            $this->_buildNumber = date('ymd');
+        }
+        return $this->_buildNumber;
+    }
+    
+    public function setBuildNumber($value) {
+        $this->_buildNumber = $value;
     }
     
     /**
