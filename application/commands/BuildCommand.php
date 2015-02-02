@@ -107,7 +107,7 @@ class BuildCommand extends CConsoleCommand
         chdir("$tempDir/new");
         $this->updateVersion("$tempDir/new/application/config/version.php");
         
-        $this->git('add *');
+        $this->git('add --all *');
         $this->git("commit -a -m 'Automated release {$this->tag}'");
         $this->git("tag -a {$this->tag} -m 'Automated release of {$this->tag}'");
         $this->git("push origin {$this->branch}:{$this->branch}");
