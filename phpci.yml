@@ -23,32 +23,32 @@ setup:
 test:
     php_parallel_lint: 
         allow_failures: false
-    php_mess_detector:
-        allow_failures: true
-        zero_config: true
-        ignore:
-            - "application/vendor"
-            - "application/tests"
-            - "application/logs"
-            - "application/helpers/Zend"
-            - "application/third_party"
-            - "build"
-            - "docs"
-            - "fonts"
-            - "images"
-            - "installer"
-            - "locale"
-            - "plugins"
-            - "scripts"
-            - "styles"
-            - "styles-public"
-            - "templates"
-            - "themes"
-            - "third_party"
-            - "tmp"
-            - "upload"
-
-
+#    php_mess_detector:
+#        allow_failures: true
+#        zero_config: true
+#        ignore:
+#            - "application/vendor"
+#            - "application/tests"
+#            - "application/logs"
+#            - "application/helpers/Zend"
+#            - "application/third_party"
+#            - "build"
+#            - "docs"
+#            - "fonts"
+#            - "images"
+#            - "installer"
+#            - "locale"
+#            - "plugins"
+#            - "scripts"
+#            - "styles"
+#            - "styles-public"
+#            - "templates"
+#            - "themes"
+#            - "third_party"
+#            - "tmp"
+#            - "upload"
+#
+#
 
         suffixes:
             - "php"
