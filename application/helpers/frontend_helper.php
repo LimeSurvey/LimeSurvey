@@ -693,17 +693,17 @@ function sendSubmitNotifications($surveyid)
         {
             if (substr($sFieldname,0,4)=='gid_')
             {
-                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
                 $ResultTableText .="\n{$fname[0]}\n\n";
             }
             elseif (substr($sFieldname,0,4)=='qid_')
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
                 $ResultTableText .="\n{$fname[0]}\n";
             }
             else
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".strip_tags("{$fname[0]} {$fname[1]}")."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
                 $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
             }
         }
@@ -712,8 +712,7 @@ function sendSubmitNotifications($surveyid)
         $ResultTableText .= "\n\n";
         if ($bIsHTML)
         {
-            $filter = new CHtmlPurifier();
-            $aReplacementVars['ANSWERTABLE']=$filter->purify($ResultTableHTML);
+            $aReplacementVars['ANSWERTABLE']=$ResultTableHTML;
         }
         else
         {
