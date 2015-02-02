@@ -104,7 +104,7 @@ class BuildCommand extends CConsoleCommand
         }
         $this->updateVersion("$tempDir/new/application/config/version.php");
         $this->out("The release will be tagged '{$this->tag}'");
-        $this->updateChangeLog();
+        $this->updateChangeLog("$tempDir/new/application/docs/ChangeLog");
         
         $this->git('add --all *');
         $this->git("commit -a -m 'Automated release {$this->tag}'");
@@ -160,7 +160,7 @@ class BuildCommand extends CConsoleCommand
      * This function updates the change log, by prepending the changes.
      * @param type $since
      */
-    protected function updateChangeLog() {
+    protected function updateChangeLog($file) {
         $this->out("Updating ChangeLog");
         $since = $this->previousBuildInfo['sourceCommit'];
         if (isset($since)) {
@@ -179,7 +179,6 @@ class BuildCommand extends CConsoleCommand
             }
         }
         
-        $file = __DIR__ . '/../../docs/ChangeLog';
         if (file_exists($file)) {
             $changes .= file_get_contents($file);
         }
