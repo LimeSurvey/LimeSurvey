@@ -54,8 +54,8 @@ class BuildCommand extends CConsoleCommand
         do {
             $result = readline("$question $hint [$default]: ");
             $hint = "(must match: $regex)";
-        } while (isset($regex) && !preg_match($regex, $result));
-        return $result;
+        } while ($result != '' && isset($regex) && !preg_match($regex, $result));
+        return $result == '' ? $default : $result;
     }
     protected function getPreviousBuildInfo() {
         // Get version file.
