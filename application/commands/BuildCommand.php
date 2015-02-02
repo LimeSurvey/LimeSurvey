@@ -75,9 +75,10 @@ class BuildCommand extends CConsoleCommand
         
     }
     
-    public function actionRelease($interactive = 'true', $quiet = 'false', $branch = 'current') {
+    public function actionRelease($interactive = 'true', $quiet = 'false', $branch = 'current', $test = 'false') {
         $interactive = ($interactive === 'true');
         $quiet = ($quiet === 'true');
+        $test = ($test === 'true');
         $branch = ($branch != 'current') ? $branch : null;
         if ($interactive) {
             // Interactive first asks the user to specify a new version number.\
@@ -87,10 +88,10 @@ class BuildCommand extends CConsoleCommand
             $this->out("Running composer install to make sure dependencies are up to date.");
             $this->out(shell_exec("composer install"));
         }
-        $this->doRelease($quiet, $branch);
+        $this->doRelease($quiet, $branch, $test);
     }
     
-    protected function doRelease($quiet = false, $branch = null) {
+    protected function doRelease($quiet = false, $branch = null, $test = false) {
         $this->quiet = $quiet;
         $this->branch = $branch;
         $this->out("Starting build on branch {$this->branch}");
@@ -119,8 +120,7 @@ class BuildCommand extends CConsoleCommand
         // Copy all except hidden files from our build dir to the new directory.
         shell_exec("cp -fR $sourceDir/* $tempDir/new");
         
-        $this->updateChangeLog("$tempDir/new/docs/ChangeLog");
-        
+        $this->out("Changing to $tempDir/new");
         chdir("$tempDir/new");
         
         // Get existing tags and make sure our new tag and thus build number is unique.
@@ -129,12 +129,20 @@ class BuildCommand extends CConsoleCommand
             $this->buildNumber++;
         }
         $this->updateVersion("$tempDir/new/application/config/version.php");
+        $this->updateChangeLog();
+        
         $this->out("The release will be tagged '{$this->tag}'");
         $this->git('add --all *');
         $this->git("commit -a -m 'Automated release {$this->tag}'");
         $this->git("tag -a {$this->tag} -m 'Automated release of {$this->tag}'");
-        $this->git("push origin {$this->branch}:{$this->branch}");
-        $this->git("push origin --tags");
+        if ($test) {
+            $this->out("Not pushing changes since running in test mode.");
+            $this->out("Go to $tempDir/new to view and inspect the build.");
+            
+        } else {
+            $this->git("push origin {$this->branch}:{$this->branch}");
+            $this->git("push origin --tags");
+        }
     }
     
     public function getVersion() {
@@ -207,7 +215,7 @@ class BuildCommand extends CConsoleCommand
      * This function updates the change log, by prepending the changes.
      * @param type $since
      */
-    protected function updateChangeLog($file) {
+    protected function updateChangeLog() {
         $this->out("Updating ChangeLog");
         $since = $this->previousBuildInfo['sourceCommit'];
         if (isset($since)) {
@@ -218,7 +226,9 @@ class BuildCommand extends CConsoleCommand
         $changes = "Changes from {$this->previousBuildInfo['versionnumber']}"
             . " (build {$this->previousBuildInfo['buildnumber']})"
             . " to {$this->versionNumber} (build {$this->buildNumber})\n";
-        foreach (explode(chr(0), shell_exec('git log --no-merges -z --pretty="%h---%an---%B"' . $range)) as $commit) {
+            
+        $sourceDir = __DIR__ . '/../../.git';
+        foreach (explode(chr(0), shell_exec("git --git-dir {$sourceDir} log --no-merges -z --pretty='%h---%an---%B' $range")) as $commit) {
             $parts = explode('---', $commit);
             if (count($parts) == 3) {
                 $parts[2] = array_filter(array_map('trim', explode("\n", $parts[2])));
@@ -226,9 +236,13 @@ class BuildCommand extends CConsoleCommand
             }
         }
         
+        $dir = getcwd();
+        $file = "$dir/docs/ChangeLog";
         if (file_exists($file)) {
+            $this->git("checkout -- $file");
             $changes .= file_get_contents($file);
         }
+        
         $bytes = file_put_contents($file, $changes);
         $this->out("Finished ChangeLog, $bytes bytes written.");
     }
