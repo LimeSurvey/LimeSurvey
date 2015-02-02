@@ -162,6 +162,7 @@ class BuildCommand extends CConsoleCommand
         $bytes = file_put_contents(__DIR__ . '/../config/version.php', "<?php\nreturn " . var_export($config, true) . ';');
         $this->out("Finished version file, $bytes bytes written.");
         $this->out($this->git("commit application/config/version.php -m 'Version bump to {$this->versionNumber}'"));
+        $this->out($this->git("push origin"));
     }
     public function getVersionNumber() {
         if (!isset($this->_versionNumber)) {
