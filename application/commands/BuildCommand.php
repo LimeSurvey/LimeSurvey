@@ -8,6 +8,7 @@ class BuildCommand extends CConsoleCommand
     
     protected $_branch;
     protected $_buildNumber;
+    protected $_versionNumber;
     
     protected function git($command, &$returnValue = null) 
     {
@@ -48,6 +49,14 @@ class BuildCommand extends CConsoleCommand
         }
     }
     
+    protected function ask($question, $default=null, $regex = null) {
+        $hint = '';
+        do {
+            $result = readline("$question $hint [$default]: ");
+            $hint = "(must match: $regex)";
+        } while (isset($regex) && !preg_match($regex, $result));
+        return $result;
+    }
     protected function getPreviousBuildInfo() {
         // Get version file.
         $file = "https://raw.githubusercontent.com/{$this->releaseRepo}/{$this->branch}/application/config/version.php";
@@ -66,7 +75,23 @@ class BuildCommand extends CConsoleCommand
         ], $version);
         
     }
-    public function actionRelease($quiet = false, $branch = null) {
+    
+    public function actionRelease($interactive = 'true', $quiet = 'false', $branch = 'current') {
+        $interactive = ($interactive === 'true');
+        $quiet = ($quiet === 'true');
+        $branch = ($branch != 'current') ? $branch : null;
+        if ($interactive) {
+            // Interactive first asks the user to specify a new version number.\
+            $this->out("Interactive LimeSurvey build tool.");
+            $this->versionNumber = $this->ask("Please enter a version number", $this->versionNumber, '/^\d\.\d\d$/');
+            $this->updateVersionNumber();
+            
+            
+        }
+        $this->doRelease($quiet, $branch);
+    }
+    
+    protected function doRelease($quiet = false, $branch = null) {
         $this->quiet = $quiet;
         $this->branch = $branch;
         $this->out("Starting build on branch {$this->branch}");
@@ -120,14 +145,30 @@ class BuildCommand extends CConsoleCommand
     protected function updateVersion($file) {
         $this->out("Updating version file.");
         $config = array_merge($this->version, [
+            'versionnumber' => $this->versionNumber,
             'buildnumber' => $this->buildNumber,
             'sourceCommit' => $this->git("log -n 1 --pretty='%h'")[0],
         ]);
         $bytes = file_put_contents($file, "<?php\nreturn " . var_export($config, true) . ';');
         $this->out("Finished version file, $bytes bytes written.");
     }
+    
+    protected function updateVersionNumber() {
+        $this->out("Updating version number.");
+        $config = array_merge($this->version, [
+            'versionnumber' => $this->versionNumber
+        ]);
+        $bytes = file_put_contents(__DIR__ . '/../config/version.php', "<?php\nreturn " . var_export($config, true) . ';');
+        $this->out("Finished version file, $bytes bytes written.");
+    }
     public function getVersionNumber() {
-        return $this->version['versionnumber'];
+        if (!isset($this->_versionNumber)) {
+            $this->_versionNumber = $this->version['versionnumber'];
+        }
+        return $this->_versionNumber;
+    }
+    public function setVersionNumber($version) {
+        $this->_versionNumber = $version;
     }
     public function getTag() {
         return "{$this->versionNumber}.{$this->buildNumber}-{$this->stability}";

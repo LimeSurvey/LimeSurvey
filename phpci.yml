@@ -75,7 +75,7 @@ test:
     php_loc:
         
     shell:
-        - "cd %BUILD_PATH% && application/console build release" 
+        - "cd %BUILD_PATH% && application/limesurvey build release --interactive=false" 
 complete:
 #    mysql:
 #        - "DROP DATABASE IF EXISTS test;"
