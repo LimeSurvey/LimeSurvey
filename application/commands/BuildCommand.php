@@ -1,0 +1,191 @@
+<?php
+
+class BuildCommand extends CConsoleCommand 
+{
+    public $releaseRepo = "SamMousa/Releases";
+    public $quiet = false;
+    
+    protected $_branch;
+    protected function git($command, &$returnValue = null) 
+    {
+        $output = [];
+        exec("git $command", $output, $returnValue);
+        return $output;
+    }
+    
+    protected function getBranch() {
+        if (!isset($this->_branch)) {
+            foreach ($this->git('branch') as $branch) {
+                if (substr($branch, 0, 1) === '*') {
+                    $result = trim(substr($branch, 1));
+                    break;
+                }
+            }
+        }
+        return $this->_branch;
+    }
+    
+    public function setBranch($branch) {
+        $this->_branch = $branch;
+    }
+    
+    protected function out($lines) {
+        if (!$this->quiet) {
+            if (!is_array($lines)) {
+                $lines = [$lines];
+            }
+            foreach ($lines as $key => $line) {
+                if (is_numeric($key)) {
+                    echo "$line\n";
+                } else {
+                    echo "$key : $line\n";
+                }
+            }
+            
+        }
+    }
+    
+    protected function getPreviousBuildInfo() {
+        // Get version file.
+        $file = "https://raw.githubusercontent.com/{$this->releaseRepo}/{$this->branch}/application/config/version.php";
+        $client = new \GuzzleHttp\Client();
+        try {
+            $result = $client->get($file);
+        } catch (\Exception $e) {
+            // Branch does not exist on repo yet.
+        }
+        return array_merge([
+            'sourceCommit' => null,
+            'versionnumber' => null,
+            'buildnumber' => null,
+        ], eval(substr($result->getBody()->getContents(), 5)));
+        
+    }
+    public function actionRelease($quiet = false, $branch = null) {
+        $this->quiet = $quiet;
+        $this->branch = $branch;
+        $this->out("Starting build on branch {$this->branch}");
+        
+        $info = $this->previousBuildInfo;
+        $this->out("Last build info:");
+        $this->out($info);
+        
+        $buildNumber = $this->buildNumber;
+        if ($buildNumber == $info['buildnumber']) {
+            throw new \Exception("Duplicate build number.");
+        }
+        
+        $this->out("The release will be tagged '{$this->tag}'");
+        
+        $this->updateVersion();
+        $this->updateChangeLog();
+        
+        $tempDir = sys_get_temp_dir() . "/{$this->tag}-" . rand(0, 10000);
+        mkdir($tempDir);
+        mkdir("$tempDir/base");
+        mkdir("$tempDir/new");
+        $this->out($this->git("clone git@github.com:{$this->releaseRepo}.git {$tempDir}/base -b {$this->branch}"));
+        rename("$tempDir/base/.git", "$tempDir/new/.git");
+        // Copy all except hidden files from our build dir to the new directory.
+        $sourceDir = getcwd();
+        shell_exec("cp -fR $sourceDir/* $tempDir/new");
+        chdir("$tempDir/new");
+        $this->git('add *');
+        $this->git("commit -a -m 'Automated release {$this->tag}'");
+        $this->git("tag -a {$this->tag} -m 'Automated release of {$this->tag}'");
+        $this->git("push origin {$this->branch}:{$this->branch}");
+        $this->git("push origin --tags");
+    }
+    
+    public function getVersion() {
+        return include __DIR__ . '/../config/version.php';
+    }
+    
+    protected function updateVersion() {
+        $this->out("Updating version file.");
+        $config = array_merge($this->version, [
+            'buildnumber' => $this->buildNumber,
+            'sourceCommit' => $this->git("log -n 1 --pretty='%h'")[0],
+        ]);
+        $bytes = file_put_contents(__DIR__ . '/../config/version.php', "<?php\nreturn " . var_export($config, true) . ';');
+        $this->out("Finished version file, $bytes bytes written.");
+    }
+    public function getVersionNumber() {
+        return $this->version['versionnumber'];
+    }
+    public function getTag() {
+        return "{$this->versionNumber}.{$this->buildNumber}-{$this->stability}";
+    }
+    
+    public function getStability() {
+        switch ($this->branch) {
+            case 'master':
+                return 'stable';
+            case 'develop':
+                return 'nightly';
+            default:
+                return 'unstable';
+        }
+    }
+    
+    public function getBuildNumber() 
+    {
+        return date('ymd');
+    }
+    
+    /**
+     * This function updates the change log, by prepending the changes.
+     * @param type $since
+     */
+    protected function updateChangeLog() {
+        $this->out("Updating ChangeLog");
+        $since = $this->previousBuildInfo['sourceCommit'];
+        if (isset($since)) {
+            $range = " $since..HEAD";
+        } else {
+            $range = '';
+        }
+        $changes = "Changes from {$this->previousBuildInfo['versionnumber']}"
+            . " (build {$this->previousBuildInfo['buildnumber']})"
+            . " to {$this->versionNumber} (build {$this->buildNumber})\n";
+        foreach (explode(chr(0), shell_exec('git log --no-merges -z --pretty="%h---%an---%B"' . $range)) as $commit) {
+            $parts = explode('---', $commit);
+            if (count($parts) == 3) {
+                $parts[2] = array_filter(array_map('trim', explode("\n", $parts[2])));
+                $changes .= $this->formatCommitMessages($parts[0], $parts[1], $parts[2]);
+            }
+        }
+        
+        $file = __DIR__ . '/../../docs/ChangeLog';
+        if (file_exists($file)) {
+            $changes .= file_get_contents($file);
+        }
+        $bytes = file_put_contents($file, $changes);
+        $this->out("Finished ChangeLog, $bytes bytes written.");
+    }
+    
+    protected function formatCommitMessages($hash, $author, array $messages) {
+        $result = '';
+        foreach($messages as $message) {
+            $formatted = $this->formatCommitMessage($hash, $author, $message);
+            if (isset($formatted)) {
+                $result .= $formatted . "\n";
+            }
+        }
+        return $result;
+    }   
+    protected function formatCommitMessage($hash, $author, $message) {
+        if (substr_compare('dev', $message, 0, 3, true) === 0) {
+            return;
+        }
+        if (substr_compare('git-svn-id', $message, 0, 10, true) === 0) {
+            return;
+        }
+        if (substr_compare('Updated translation', $message, 0, 19, true) === 0) {
+            return "#" . $message;
+        }
+        
+        // Normal commit message:
+        return '-' . strtr($message, ['#0' => '#']) . " ($author)";
+    }
+}
