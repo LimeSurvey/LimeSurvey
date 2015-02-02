@@ -17,7 +17,7 @@ class BuildCommand extends CConsoleCommand
         if (!isset($this->_branch)) {
             foreach ($this->git('branch') as $branch) {
                 if (substr($branch, 0, 1) === '*') {
-                    $result = trim(substr($branch, 1));
+                    $this->_branch = trim(substr($branch, 1));
                     break;
                 }
             }
@@ -51,14 +51,16 @@ class BuildCommand extends CConsoleCommand
         $client = new \GuzzleHttp\Client();
         try {
             $result = $client->get($file);
+            $version = eval(substr($result->getBody()->getContents(), 5));
         } catch (\Exception $e) {
             // Branch does not exist on repo yet.
+            $version = [];
         }
         return array_merge([
             'sourceCommit' => null,
             'versionnumber' => null,
             'buildnumber' => null,
-        ], eval(substr($result->getBody()->getContents(), 5)));
+        ], $version);
         
     }
     public function actionRelease($quiet = false, $branch = null) {
@@ -84,10 +86,21 @@ class BuildCommand extends CConsoleCommand
         mkdir($tempDir);
         mkdir("$tempDir/base");
         mkdir("$tempDir/new");
-        $this->out($this->git("clone git@github.com:{$this->releaseRepo}.git {$tempDir}/base -b {$this->branch}"));
+        
+        $sourceDir = getcwd();
+        // This might fail.
+        $this->out($this->git("clone git@github.com:{$this->releaseRepo}.git {$tempDir}/base -b {$this->branch}", $returnValue));
+        
+        
+        if ($returnValue == 128) {
+            $this->out("Could not find matching branch on release repository. Creating it now from release repo default branch.");
+            $this->out($this->git("clone git@github.com:{$this->releaseRepo}.git {$tempDir}/base", $returnValue));
+            chdir("$tempDir/base");
+            $this->out($this->git("checkout -b {$this->branch}"));
+            $this->out($this->git("push origin {$this->branch}:{$this->branch}"));
+        }
         rename("$tempDir/base/.git", "$tempDir/new/.git");
         // Copy all except hidden files from our build dir to the new directory.
-        $sourceDir = getcwd();
         shell_exec("cp -fR $sourceDir/* $tempDir/new");
         chdir("$tempDir/new");
         $this->git('add *');

@@ -81,4 +81,4 @@ complete:
 #        - "DROP DATABASE IF EXISTS test;"
 success:
     shell:
-        - "cd %BUILD_PATH% && build/build" 
+        - "cd %BUILD_PATH% && application/console build release" 
