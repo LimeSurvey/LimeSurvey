@@ -5,7 +5,6 @@ class BuildCommand extends CConsoleCommand
     public $releaseRepo = "SamMousa/Releases";
     public $quiet = false;
     
-    
     protected $_branch;
     protected $_buildNumber;
     protected $_versionNumber;
@@ -145,10 +144,11 @@ class BuildCommand extends CConsoleCommand
     
     protected function updateVersion($file) {
         $this->out("Updating version file.");
+        $sourceDir = __DIR__ . '/../../.git';
         $config = array_merge($this->version, [
             'versionnumber' => $this->versionNumber,
             'buildnumber' => $this->buildNumber,
-            'sourceCommit' => $this->git("log -n 1 --pretty='%h'")[0],
+            'sourceCommit' => $this->git("--git-dir {$sourceDir} log -n 1 --pretty='%h'")[0],
         ]);
         $bytes = file_put_contents($file, "<?php\nreturn " . var_export($config, true) . ';');
         $this->out("Finished version file, $bytes bytes written.");
@@ -161,6 +161,7 @@ class BuildCommand extends CConsoleCommand
         ]);
         $bytes = file_put_contents(__DIR__ . '/../config/version.php', "<?php\nreturn " . var_export($config, true) . ';');
         $this->out("Finished version file, $bytes bytes written.");
+        $this->out($this->git("commit application/config/version.php -m 'Version bump to {$this->versionNumber}'"));
     }
     public function getVersionNumber() {
         if (!isset($this->_versionNumber)) {
