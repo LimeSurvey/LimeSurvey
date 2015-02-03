@@ -481,7 +481,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
     $num_results = count($fieldnames);
     $num_fields = $num_results;
     $diff = 0;
-    $noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage');
+
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
         $values = array(
@@ -509,11 +509,13 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         }
 
         #Get qid (question id)
-        if (in_array($fieldname, $noQID)) {
+        if ($fieldname !== '_defaults' && isset($tokenMap[$fieldname])) {
+            // It's a standard token field
             $values['qid'] = 0;
             $values['VariableLabel'] = $fieldname;
             $ftitle = $fieldname;
         } elseif ( substr($fieldname,0,10)=='attribute_') {
+            // It's a additional token field
             $values['qid'] = 0;
             $values['VariableLabel'] = $fieldname;
             // $values['VariableLabel'] = $token_fields[$fieldname]['description'];
