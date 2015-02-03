@@ -5,8 +5,8 @@
 	<meta charset="UTF-8"/>
 	<meta name="author" content="" />
 
-    <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/styles/admin/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo $this->createUrl('/');?>styles/admin/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="<?php echo $this->createUrl('/');?>images/favicon.ico" type="image/x-icon" />
 
         <?php
         App()->getClientScript()->registerPackage('jqueryui');
