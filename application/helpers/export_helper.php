@@ -491,6 +491,8 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'scale_id' => null,
           'scale' => '',
           'LStype' => '',
+          'title' => '',
+          'code' => '',
         );
 
         #Condition for SPSS fields:
@@ -499,7 +501,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $fieldname = $fieldnames[$i];
         $fieldtype = '';
         $hide = 0;
-        $code='';
+        $values['code']='';
         $aQuestionAttribs=array();
 
         #Determine field type
@@ -522,7 +524,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
             $values['title'] = $fieldname;
 
             // set other variables from token_fields
-            $code = $token_fields[$fieldname]['code'];
+            $values['code'] = $token_fields[$fieldname]['code'];
             $fieldtype = $token_fields[$fieldname]['SPSStype'];
             $values['LStype'] = $token_fields[$fieldname]['LStype'];
             $values['size'] = $token_fields[$fieldname]['size'];
@@ -563,7 +565,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
 
                 $fsid=$fielddata['sid'];
                 $fgid=$fielddata['gid'];
-                $code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$values['qid']));
+                $values['code']=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$values['qid']));
 
                 // TODO: is statement order important: is VariableLabel prefixed multiple times?
                 $values['VariableLabel']=$fielddata['question'];
@@ -574,7 +576,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 // END TODO: is statement order important: is VariableLabel prefixed multiple times?
 
                 $values['title']=$fielddata['title'];
-                if (!is_null($code) && $code<>"" ) $values['title'] .= "_$code";
+                if (!is_null($values['code']) && $values['code']<>"" ) $values['title'] .= "_" . $values['code'];
                 if (isset($typeMap[$values['LStype']]['size'])) $values['size'] = $typeMap[$values['LStype']]['size'];
                 if (isset($fielddata['scale_id'])) $values['scale_id'] = $fielddata['scale_id'];
                 if($fieldtype == '') $fieldtype = $typeMap[$values['LStype']]['SPSStype'];
@@ -596,7 +598,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         $tempArray = $values + array(
           'id' => "$prefix$fid",
           'name' => mb_substr($fieldname, 0, 8),
-          'code' => $code,
+          'code' => $values['code'],
           'SPSStype' => $fieldtype,
           'LStype' => $values['LStype'],
           'LSlong' => $lsLong,
