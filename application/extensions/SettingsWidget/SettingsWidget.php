@@ -404,7 +404,7 @@
                 'data' => $metaData['options'],
                 'name' => $name,
                 'value' => $value,
-                'options' => $select2Options,
+                'pluginOptions' => $select2Options,
                 'htmlOptions'=>$htmlOptions,
             );
             $properties['events']=isset($metaData['events']) ? $metaData['events'] : array();

@@ -488,7 +488,7 @@
                     'name' => $item['name'],
                     'value' => $item['value'],
                     'data' => $listData,
-                    'options' => array(
+                    'pluginOptions' => array(
                         'minimumResultsForSearch' => 10,
                         'placeholder' => gT('Please choose...')
                     ),
