@@ -536,14 +536,6 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 'name'=>mb_substr($attributefield, 0, 8),
                 'title'=>$attributefield,
             );
-
-            * TODO: what to do with id, LSLong, ValueLabels, scale_id
-            $tempArray = array(
-                'id'=>"$prefix$fid",
-                "LSlong"=>$lsLong,
-                'ValueLabels'=>'',
-                'scale_id'=>$values['scale_id']
-            );
             */
 
         } else{
@@ -593,7 +585,10 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         }
         $fieldno++;
         $fid = $fieldno - $diff;
-        $lsLong = isset($typeMap[$values['LStype']]["name"])?$typeMap[$values['LStype']]["name"]:$values['LStype'];
+        // Get name from $typeMap if exists
+        // TODO: why is $typeMap not complete?
+        $lsLong = isset($typeMap[$values['LStype']]["name"]) ? $typeMap[$values['LStype']]["name"] : $values['LStype'];
+
         $tempArray = $values + array(
           'id' => "$prefix$fid",
           'name' => mb_substr($fieldname, 0, 8),
@@ -601,6 +596,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'SPSStype' => $fieldtype,
           'LStype' => $values['LStype'],
           'LSlong' => $lsLong,
+          // TODO: this is never set.
           'ValueLabels' =>'',
           'sql_name' => $fieldname,
           "size" => $values['size'],
