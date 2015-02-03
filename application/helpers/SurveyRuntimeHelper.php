@@ -177,14 +177,8 @@ class SurveyRuntimeHelper {
             $thissurvey = getSurveyInfo($surveyid);
         }
         $LEMsessid = 'survey_' . $surveyid;
-        if (isset($_SESSION[$LEMsessid]['s_lang']))
-        {
-            $this->setJavascriptVar($surveyid, $_SESSION[$LEMsessid]['s_lang']);
-        }
-        else
-        {
-            $this->setJavascriptVar($surveyid, $thissurvey['language']);
-        }
+        $this->setJavascriptVar($surveyid);
+
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
         if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))
         {
@@ -1196,14 +1190,12 @@ class SurveyRuntimeHelper {
     /**
     * setJavascriptVar
     *
-    *
     * @return @void
     * @param integer $iSurveyId : the survey id for the script
-    * @param string $sLanguage : the actual language for the survey
     */
-    public function setJavascriptVar($iSurveyId, $sLanguage)
+    public function setJavascriptVar($iSurveyId)
     {
-        $aSurveyinfo=getSurveyInfo($iSurveyId);
+        $aSurveyinfo=getSurveyInfo($iSurveyId, App()->getLanguage());
         if(isset($aSurveyinfo['surveyls_numberformat']))
         {
             $aLSJavascriptVar=array();
@@ -1214,6 +1206,6 @@ class SurveyRuntimeHelper {
             $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         }
-        // Don't update, because already set in index/run
+        // Maybe remove one from index and allow empty $surveyid here.
     }
 }
