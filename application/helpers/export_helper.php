@@ -493,6 +493,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'LStype' => '',
           'title' => '',
           'code' => '',
+          'hide' => 0,
         );
 
         #Condition for SPSS fields:
@@ -500,8 +501,6 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         # - Name may not begin with a digit
         $fieldname = $fieldnames[$i];
         $fieldtype = '';
-        $hide = 0;
-        $values['code']='';
         $aQuestionAttribs=array();
 
         #Determine field type
@@ -529,7 +528,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
             $values['LStype'] = $token_fields[$fieldname]['LStype'];
             $values['size'] = $token_fields[$fieldname]['size'];
             $values['scale'] = $token_fields[$fieldname]['scale'];
-            $hide = $token_fields[$fieldname]['hide'];
+            $values['hide'] = $token_fields[$fieldname]['hide'];
 
             /*
              * TODO: what to do with name and title
@@ -581,7 +580,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 if (isset($fielddata['scale_id'])) $values['scale_id'] = $fielddata['scale_id'];
                 if($fieldtype == '') $fieldtype = $typeMap[$values['LStype']]['SPSStype'];
                 if (isset($typeMap[$values['LStype']]['hide'])) {
-                    $hide = $typeMap[$values['LStype']]['hide'];
+                    $values['hide'] = $typeMap[$values['LStype']]['hide'];
                     $diff++;
                 }
                 //Get default scale for this type
@@ -606,7 +605,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'sql_name' => $fieldname,
           "size" => $values['size'],
           'title'=>$values['title'],
-          'hide'=>$hide,
+          'hide'=>$values['hide'],
           'scale'=>$values['scale'],
           'scale_id'=>$values['scale_id']
         );
