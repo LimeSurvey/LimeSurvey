@@ -513,13 +513,13 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
             // It's a standard token field
             $values['qid'] = 0;
             $values['VariableLabel'] = $fieldname;
-            $ftitle = $fieldname;
+            $values['title'] = $fieldname;
         } elseif ( substr($fieldname,0,10)=='attribute_') {
             // It's a additional token field
             $values['qid'] = 0;
             $values['VariableLabel'] = $fieldname;
             // $values['VariableLabel'] = $token_fields[$fieldname]['description'];
-            $ftitle = $fieldname;
+            $values['title'] = $fieldname;
 
             // set other variables from token_fields
             $code = $token_fields[$fieldname]['code'];
@@ -553,7 +553,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 $fielddata = array();
                 $values['qid']=0;
                 $values['VariableLabel'] = $fieldname;
-                $ftitle = $fieldname;
+                $values['title'] = $fieldname;
                 $fieldtype = "F";
                 $values['size'] = 1;
             } else {
@@ -573,8 +573,8 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
                 if (isset($fielddata['subquestion1'])) $values['VariableLabel'] = "[{$fielddata['subquestion1']}] ". $values['VariableLabel'];
                 // END TODO: is statement order important: is VariableLabel prefixed multiple times?
 
-                $ftitle=$fielddata['title'];
-                if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
+                $values['title']=$fielddata['title'];
+                if (!is_null($code) && $code<>"" ) $values['title'] .= "_$code";
                 if (isset($typeMap[$values['LStype']]['size'])) $values['size'] = $typeMap[$values['LStype']]['size'];
                 if (isset($fielddata['scale_id'])) $values['scale_id'] = $fielddata['scale_id'];
                 if($fieldtype == '') $fieldtype = $typeMap[$values['LStype']]['SPSStype'];
@@ -603,7 +603,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'ValueLabels' =>'',
           'sql_name' => $fieldname,
           "size" => $values['size'],
-          'title'=>$ftitle,
+          'title'=>$values['title'],
           'hide'=>$hide,
           'scale'=>$values['scale'],
           'scale_id'=>$values['scale_id']
