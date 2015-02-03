@@ -490,6 +490,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
           'size' => 1,
           'scale_id' => null,
           'scale' => '',
+          'LStype' => '',
         );
 
         #Condition for SPSS fields:
@@ -497,7 +498,6 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
         # - Name may not begin with a digit
         $fieldname = $fieldnames[$i];
         $fieldtype = '';
-        $ftype='';
         $hide = 0;
         $code='';
         $aQuestionAttribs=array();
@@ -522,7 +522,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
             // set other variables from token_fields
             $code = $token_fields[$fieldname]['code'];
             $fieldtype = $token_fields[$fieldname]['SPSStype'];
-            $ftype = $token_fields[$fieldname]['LStype'];
+            $values['LStype'] = $token_fields[$fieldname]['LStype'];
             $values['size'] = $token_fields[$fieldname]['size'];
             $values['scale'] = $token_fields[$fieldname]['scale'];
             $hide = $token_fields[$fieldname]['hide'];
@@ -557,41 +557,46 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V') {
             } else {
                 $fielddata=$fieldmap[$fieldname];
                 $values['qid']=$fielddata['qid'];
-                $ftype=$fielddata['type'];
+                $values['LStype']=$fielddata['type'];
+
                 $fsid=$fielddata['sid'];
                 $fgid=$fielddata['gid'];
                 $code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$values['qid']));
+
+                // TODO: is statement order important: is VariableLabel prefixed multiple times?
                 $values['VariableLabel']=$fielddata['question'];
                 if (isset($fielddata['scale'])) $values['VariableLabel'] = "[{$fielddata['scale']}] ". $values['VariableLabel'];
                 if (isset($fielddata['subquestion'])) $values['VariableLabel'] = "[{$fielddata['subquestion']}] ". $values['VariableLabel'];
                 if (isset($fielddata['subquestion2'])) $values['VariableLabel'] = "[{$fielddata['subquestion2']}] ". $values['VariableLabel'];
                 if (isset($fielddata['subquestion1'])) $values['VariableLabel'] = "[{$fielddata['subquestion1']}] ". $values['VariableLabel'];
+                // END TODO: is statement order important: is VariableLabel prefixed multiple times?
+
                 $ftitle=$fielddata['title'];
                 if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
-                if (isset($typeMap[$ftype]['size'])) $values['size'] = $typeMap[$ftype]['size'];
+                if (isset($typeMap[$values['LStype']]['size'])) $values['size'] = $typeMap[$values['LStype']]['size'];
                 if (isset($fielddata['scale_id'])) $values['scale_id'] = $fielddata['scale_id'];
-                if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
-                if (isset($typeMap[$ftype]['hide'])) {
-                    $hide = $typeMap[$ftype]['hide'];
+                if($fieldtype == '') $fieldtype = $typeMap[$values['LStype']]['SPSStype'];
+                if (isset($typeMap[$values['LStype']]['hide'])) {
+                    $hide = $typeMap[$values['LStype']]['hide'];
                     $diff++;
                 }
                 //Get default scale for this type
-                if (isset($typeMap[$ftype]['Scale'])) $values['scale'] = $typeMap[$ftype]['Scale'];
+                if (isset($typeMap[$values['LStype']]['Scale'])) $values['scale'] = $typeMap[$values['LStype']]['Scale'];
                 //But allow override
-                $aQuestionAttribs = getQuestionAttributeValues($values['qid'],$ftype);
+                $aQuestionAttribs = getQuestionAttributeValues($values['qid'],$values['LStype']);
                 if (isset($aQuestionAttribs['scale_export'])) $values['scale'] = $aQuestionAttribs['scale_export'];
             }
 
         }
         $fieldno++;
         $fid = $fieldno - $diff;
-        $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
+        $lsLong = isset($typeMap[$values['LStype']]["name"])?$typeMap[$values['LStype']]["name"]:$values['LStype'];
         $tempArray = $values + array(
           'id' => "$prefix$fid",
           'name' => mb_substr($fieldname, 0, 8),
           'code' => $code,
           'SPSStype' => $fieldtype,
-          'LStype' => $ftype,
+          'LStype' => $values['LStype'],
           'LSlong' => $lsLong,
           'ValueLabels' =>'',
           'sql_name' => $fieldname,
