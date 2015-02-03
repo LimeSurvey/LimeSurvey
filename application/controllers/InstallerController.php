@@ -424,7 +424,7 @@ class InstallerController extends CController {
         {
             $sURLFormat='get'; // Fall back to get if an Apache server cannot be determined reliably
         }
-
+        App()->urlManager->setUrlFormat($sURLFormat);
         $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
         ."/*"."\n"
         ."| -------------------------------------------------------------------"."\n"
