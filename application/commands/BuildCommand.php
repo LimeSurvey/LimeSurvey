@@ -125,7 +125,7 @@ class BuildCommand extends CConsoleCommand
         passthru("cp -fr $sourceDir/* $tempDir/new");   
         // Remove .git directories from composer dependencies.
         $this->out("Copying from $sourceDir to $tempDir/new");
-        passthru("find $tempDir/new/application/vendor/ -type d -name '.git' -exec rm -rf {} \;");
+        shell_exec("find $tempDir/new/application/vendor/ -type d -name '.git' -exec rm -rf {} \;");
         $this->out("Changing to $tempDir/new");
         chdir("$tempDir/new");
         
