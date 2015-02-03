@@ -484,7 +484,7 @@
                 {
                     $htmlOptions['data-route'] = $item['route'];
                 }
-                $result .= $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+                $result .= $this->widget('WhSelect2', array(
                     'name' => $item['name'],
                     'value' => $item['value'],
                     'data' => $listData,

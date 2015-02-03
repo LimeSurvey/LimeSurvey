@@ -138,7 +138,7 @@ if ($adding || $copying) {
                                     }
                                     $groups[$questionType['group']][$key] = $questionType['description'];
                                 }
-                                $this->widget('ext.bootstrap.widgets.TbSelect2', array(
+                                $this->widget('WhSelect2', array(
                                     'data' => $groups,
                                     'name' => 'type',
                                     'options' => array(

@@ -412,7 +412,7 @@
             if (isset($metaData['submitonchange']) && $metaData['submitonchange']) {
                 $properties['events']['change']='js: function(e) { this.form.submit();}';
             }
-            return App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', $properties, true);
+            return App()->getController()->widget('WhSelect2', $properties, true);
         }
 
         public function renderString($name, array $metaData, $form = null)
