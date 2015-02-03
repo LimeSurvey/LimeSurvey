@@ -24,7 +24,7 @@ class PreCheck extends CFormModel
     }
     
     public function getPdoSupport() {
-        return !empty(PDO::getAvailableDrivers());
+        return count(PDO::getAvailableDrivers()) > 0;
     }
     
     public function getMultiByteSupport() {
