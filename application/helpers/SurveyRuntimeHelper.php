@@ -172,19 +172,12 @@ class SurveyRuntimeHelper {
     function run($surveyid,$args) {
         global $errormsg;
         extract($args);
-
         if (!$thissurvey) {
             $thissurvey = getSurveyInfo($surveyid);
         }
         $LEMsessid = 'survey_' . $surveyid;
-        if (isset($_SESSION[$LEMsessid]['s_lang']))
-        {
-            $this->setJavascriptVar($surveyid, $_SESSION[$LEMsessid]['s_lang']);
-        }
-        else
-        {
-            $this->setJavascriptVar($surveyid, $thissurvey['language']);
-        }
+        $this->setJavascriptVar($surveyid, isset($clang->langcode) ? $clang->langcode : $thissurvey['language']);
+
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
         if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))
         {
@@ -208,7 +201,6 @@ class SurveyRuntimeHelper {
         }
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['separator'];
-
         $surveyOptions = array(
             'active' => ($thissurvey['active'] == 'Y'),
             'allowsave' => ($thissurvey['allowsave'] == 'Y'),
@@ -1196,7 +1188,7 @@ class SurveyRuntimeHelper {
     */
     public function setJavascriptVar($iSurveyId, $sLanguage)
     {
-        $aSurveyinfo=getSurveyInfo($iSurveyId);
+        $aSurveyinfo=getSurveyInfo($iSurveyId,$sLanguage);
         if(isset($aSurveyinfo['surveyls_numberformat']))
         {
             $aLSJavascriptVar=array();
