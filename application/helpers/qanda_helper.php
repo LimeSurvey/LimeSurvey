@@ -3912,7 +3912,7 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
     $clang = Yii::app()->lang;
@@ -4082,7 +4082,7 @@ function do_array_5point($ia)
 function do_array_10point($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
     $clang = Yii::app()->lang;
@@ -4212,7 +4212,7 @@ function do_array_10point($ia)
 function do_array_yesnouncertain($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
     $clang = Yii::app()->lang;
@@ -4369,7 +4369,7 @@ function do_array_yesnouncertain($ia)
 function do_array_increasesamedecrease($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
     $clang = Yii::app()->lang;
@@ -4529,7 +4529,7 @@ function do_array_increasesamedecrease($ia)
 function do_array($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
@@ -4876,7 +4876,7 @@ function do_array($ia)
 function do_array_multitext($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
@@ -5261,7 +5261,7 @@ EOD;
 function do_array_multiflexi($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
@@ -5637,7 +5637,7 @@ function do_array_multiflexi($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_arraycolumns($ia)
 {
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $clang = Yii::app()->lang;
     $extraclass = "";
@@ -5789,7 +5789,7 @@ function do_array_dual($ia)
 {
     $clang = Yii::app()->lang;
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
