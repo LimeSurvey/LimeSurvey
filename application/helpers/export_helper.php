@@ -1509,6 +1509,7 @@ function group_export($action, $iSurveyID, $gid)
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();
 
+    viewHelper::disableHtmlLogging();
     header("Content-Type: application/force-download");
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
