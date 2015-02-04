@@ -1,12 +1,12 @@
 <?php
-use ls\pluginmanager\AuthPluginBase;
+namespace ls\core\plugins;
 
-class Authwebserver extends AuthPluginBase
+use ls\pluginmanager\AuthPluginBase;
+use \ls\pluginmanager\PluginEvent;
+
+class AuthWebServer extends AuthPluginBase
 {
     protected $storage = 'DbStorage';    
-    
-    static protected $description = 'Core: Webserver authentication';
-    static protected $name = 'Webserver';
     
     protected $settings = array(
         'strip_domain' => array(
@@ -27,14 +27,9 @@ class Authwebserver extends AuthPluginBase
     
     public function init() 
     {
-        /**
-         * Here you should handle subscribing to the events your plugin will handle
-         */
-        $this->subscribe('beforeLogin');
-        $this->subscribe('newUserSession');
     }
 
-    public function beforeLogin()
+    public function eventBeforeLogin(PluginEvent $event)
     {       
         // normal login through webserver authentication    
         $serverKey = $this->get('serverkey');
@@ -71,7 +66,7 @@ class Authwebserver extends AuthPluginBase
         }
     }
     
-    public function newUserSession()
+    public function eventNewUserSession()
     {
         // Do nothing if this user is not Authwebserver type
         $identity = $this->getEvent()->get('identity');

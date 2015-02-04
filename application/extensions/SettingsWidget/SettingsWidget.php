@@ -73,59 +73,34 @@
 
         protected function renderButton($label, $metaData)
         {
-            //Button can come from 2 system, by pluginSettings>settings>button ot by by pluginSettings>buttons
-            if (is_string($metaData))
-            {
-                $label = $metaData;
-                $metaData = array(
-                    'htmlOptions'=>array(),
-                );
-            }
+            $htmlOptions = array_merge([
+                'type' => 'submit'
+            ], $this->htmlOptions($metaData, null));
 
-            $metaData['class'][]='btn';
-            if (isset($metaData['type']) && $metaData['type'] == 'link')
-            {
-                $metaData['class'][]='btn-link';
-                $metaData['class'][]='button';
+            var_dump($htmlOptions);
+            switch($htmlOptions['type']) {
+                case 'link':
+                    var_dump( array_merge($htmlOptions, ['url' => $metaData['href']]));
+                    $result = TbHtml::linkButton($label, array_merge($htmlOptions, ['url' => $metaData['href']]));
+                    break;
+                default:
+                    $result = TbHtml::htmlButton($label, $htmlOptions);
             }
-            $htmlOptions = $this->htmlOptions($metaData,null,array('container'=> false, 'separator' => ''));
-
-            if (isset($metaData['type']) && $metaData['type'] == 'link')
-            {
-                return CHtml::link($label,$metaData['href'],$htmlOptions); // This allow cancel without js
-            }
-            elseif(isset($metaData['type']))
-            {
-                $htmlOptions['type']=$metaData['type'];
-                return CHtml::htmlButton($label, $htmlOptions);
-            }
-            elseif(isset($htmlOptions['type'])) // Allow type button or cancel in pluginSettings>settings>button
-            {
-                return CHtml::htmlButton($label, $htmlOptions);
-            }
-            else
-            {
-                return CHtml::submitButton($label, $htmlOptions);
-            }
+            return $result;
         }
 
         protected function renderButtons()
         {
-            if(!empty($this->buttons))
-            {
-                $aHtmlButtons=array();
-                foreach ($this->buttons as $label => $htmlOptions)
-                {
-                    if (is_string($htmlOptions))
-                    {
+            if(!empty($this->buttons)) {
+                echo CHtml::openTag('div', ['class' => 'btn-group pull-right']);
+                foreach ($this->buttons as $label => $htmlOptions) {
+                    if (is_numeric($label)) {
                         $label = $htmlOptions;
-                        $htmlOptions=array(
-                            'htmlOptions'=>array()
-                        );
+                        $htmlOptions = [];
                     }
-                    $aHtmlButtons[]= $this->renderButton($label, $htmlOptions);
+                    echo $this->renderButton($label, $htmlOptions);
                 }
-                echo CHtml::tag('div', array('class' => 'buttons control-group'),implode($aHtmlButtons));
+                echo CHtml::closeTag('div');
             }
         }
 
@@ -159,7 +134,7 @@
             $content .= $this->renderHelp($name, $metaData);
             $content .= CHtml::closeTag('div');
 
-            $result=CHtml::tag($wrapper,array('class'=>"setting control-group setting-{$metaData['type']}", 'data-name' => $name),$content);
+            $result=CHtml::tag($wrapper,array('class'=>"setting form-group setting-{$metaData['type']}", 'data-name' => $name),$content);
 
             if($return)
                 return $result;
@@ -494,7 +469,7 @@
             return $out;
         }
 
-        /* Return htmlOptions for an input od seting
+        /* Return htmlOptions for an input or seting
         *
         * @param array metaData : completMetaData of setting
         * @param string form form to be used
@@ -504,13 +479,10 @@
         public function htmlOptions(array $metaData, $form = null,array $aDefault = array(),array $aForced = array())
         {
 
-            if(isset($metaData['htmlOptions']) && is_array($metaData['htmlOptions']))
-            {
-                $htmlOptions=$metaData['htmlOptions'];
-            }
-            else
-            {
-                $htmlOptions=array();
+            if(isset($metaData['htmlOptions']) && is_array($metaData['htmlOptions'])) {
+                $htmlOptions = $metaData['htmlOptions'];
+            } else {
+                $htmlOptions = [];
             }
             // If metadata have a class, replace actual class
             if(!empty($metaData['class']) && is_array($metaData['class']))

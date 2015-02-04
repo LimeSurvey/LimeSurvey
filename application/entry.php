@@ -1,8 +1,8 @@
 <?php
-if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
-    die("Make sure you run composer install.");
-} 
-	require_once(__DIR__ . '/vendor/autoload.php'); 
+    if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+        die("Make sure you run composer install.");
+    } 
+	$loader = require_once(__DIR__ . '/vendor/autoload.php'); 
 	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
@@ -30,15 +30,10 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
         die('This version of LimeSurvey  requires PHP version 5.4.0 or later! Your version: '.PHP_VERSION);
 
 
-/*
- * --------------------------------------------------------------------
- * LOAD THE BOOTSTRAP FILE
- * --------------------------------------------------------------------
- *
- * And away we go...
- *
- */
 class_exists('Yii');
+Yii::$enableIncludePath = false;
 $config = require_once(__DIR__ . '/config/internal' . EXT);
+$config['loader'] = $loader;
+unset($loader);
 //var_dump($config); die();
 Yii::createApplication('WebApplication', $config)->run();

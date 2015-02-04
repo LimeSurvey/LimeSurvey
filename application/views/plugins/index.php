@@ -4,13 +4,13 @@
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
 
-    $dataProvider = new CArrayDataProvider($data);
+    
     
     $gridColumns = array(
         array(// display the activation link
             'class' => 'CLinkColumn',
             'header' => gT('Status'),
-            'labelExpression' => function($data) { return ($data['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); },
+            'labelExpression' => function($data) { return ($data['attributes']['active'] == 1 ? CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Active'), array('width' => 32, 'height' => 32)) : CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Inactive'), array('width' => 32, 'height' => 32))); },
             'url' => '#'
         ),
         array(// display the activation link
@@ -18,13 +18,13 @@
             'type' => 'raw',
             'header' => gT('Action'),
             'value' => function($data) {
-                if ($data['active'] == 0)
+                if ($data['attributes']['active'] == 0)
                 { 
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/activate", "id" => $data['id']));
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/activate", "id" => $data['attributes']['name']));
                 } else {
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id'])); 
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['attributes']['name'])); 
                 }
-                if(count($data['settings'])>0)
+                if(true || count($data['settings'])>0)
                 {
                     $output .= CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'survey_settings_30.png', gT('Configure'), array('width' => 16, 'height' => 16, 'style' => 'margin-left: 8px;')), array("/plugins/configure", "id" => $data['id'])); 
                 }
@@ -41,6 +41,19 @@
             'header' => gT('Description'),
             'name' => 'description'
         ),
+        [
+            'type' => 'raw',
+            'header' => gT('Errors in limesurvey.json'),
+            'value' => function($pluginConfig) {
+                $result = '<dl>';
+                foreach($pluginConfig->errors as $field => $errors) {
+                    $result .= CHtml::tag('dt', [], $field);
+                    $result .= CHtml::tag('dd', [], $errors[0]);
+                }
+                $result .= '</dl>';
+                return $result;
+            }
+        ],
     ); 
         
         /*
@@ -53,9 +66,9 @@
         */
         
     $this->widget('TbGridView', array(
-        'dataProvider'=>$dataProvider,
+        'dataProvider'=> $plugins,
         'columns'=>$gridColumns,
-        'rowCssClassExpression'=> function ($index, $data) { return ($index % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
+//        'rowCssClassExpression'=> function ($index, $data) { return ($index % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
 //        'itemsCssClass' => 'items table-condensed table-bordered'
     ));
 ?>

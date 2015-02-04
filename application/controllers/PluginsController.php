@@ -70,46 +70,52 @@ class PluginsController extends LSYii_Controller
 
     public function actionConfigure($id)
     {
-        $arPlugin      = Plugin::model()->findByPk($id)->attributes;
-        $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
-
-        if ($arPlugin === null)
-        {
-            Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
-            $this->redirect(array('plugins/'));
-        }
+        $pluginConfig = \ls\pluginmanager\PluginConfig::findAll(false)[$id];
+        $plugin = App()->pluginManager->loadPlugin($pluginConfig);
         
-        // If post handle data, yt0 seems to be the submit button
-        if (App()->request->isPostRequest)
-        {
-
-            $aSettings = $oPluginObject->getPluginSettings(false);
-            $aSave     = array();
-            foreach ($aSettings as $name => $setting)
-            {
-                $aSave[$name] = App()->request->getPost($name, null);
-            }
-            $oPluginObject->saveSettings($aSave);
-            Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
-            if(!is_null(App()->request->getPost('redirect')))
-            {
-                $this->forward('plugins/index', true);
-            }
+        if (App()->request->isPostRequest) {
+            $plugin->saveSettings(App()->request->getPost($plugin->id));
         }
+//        var_dump($settings);
+//            var_dump($plugin);
+//            die();
+//        if ($arPlugin === null)
+//        {
+//            Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
+//            $this->redirect(array('plugins/'));
+//        }
+//        
+//        // If post handle data, yt0 seems to be the submit button
+//        if (App()->request->isPostRequest)
+//        {
+//
+//            $aSettings = $oPluginObject->getPluginSettings(false);
+//            $aSave     = array();
+//            foreach ($aSettings as $name => $setting)
+//            {
+//                $aSave[$name] = App()->request->getPost($name, null);
+//            }
+//            $oPluginObject->saveSettings($aSave);
+//            App()->user->setFlash('pluginmanager', 'Settings saved');
+//            if(!is_null(App()->request->getPost('redirect')))
+//            {
+//                $this->forward('plugins/index', true);
+//            }
+//        }
+//
+//        // Prepare settings to be send to the view.
+//        $aSettings = $oPluginObject->getPluginSettings();
+//        if (empty($aSettings))
+//        {
+//            // And show a message
+//            Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
+//            $this->forward('plugins/index', true);
+//        }
+//
+//        // Send to view plugin porperties: name and description
+//        $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
 
-        // Prepare settings to be send to the view.
-        $aSettings = $oPluginObject->getPluginSettings();
-        if (empty($aSettings))
-        {
-            // And show a message
-            Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
-            $this->forward('plugins/index', true);
-        }
-
-        // Send to view plugin porperties: name and description
-        $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
-
-        $this->render('/plugins/configure', array('settings' => $aSettings, 'plugin' => $arPlugin, 'properties' => $aPluginProp));
+        $this->render('configure', ['plugin' => $plugin]);
     }
 
     public function actionDeactivate($id)
@@ -162,52 +168,9 @@ class PluginsController extends LSYii_Controller
 
     public function actionIndex()
     {
-		$oPluginManager = App()->getPluginManager();
-
-        // Scan the plugins folder.
-        $aDiscoveredPlugins = $oPluginManager->scanPlugins();
-        $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(function ($installedPlugin) {
-                return $installedPlugin->name;
-            }, $aInstalledPlugins);
-
-        // Install newly discovered plugins.
-        foreach ($aDiscoveredPlugins as $discoveredPlugin)
-        {
-            if (!in_array($discoveredPlugin['pluginClass'], $aInstalledNames))
-            {
-                $oPlugin         = new Plugin();
-                $oPlugin->name   = $discoveredPlugin['pluginClass'];
-                $oPlugin->active = 0;
-                $oPlugin->save();
-            }
-        }
-
-        $aoPlugins = Plugin::model()->findAll();
-        $data      = array();
-        foreach ($aoPlugins as $oPlugin)
-        {
-            /* @var $plugin Plugin */
-            if (array_key_exists($oPlugin->name, $aDiscoveredPlugins))
-            {
-                $aPluginSettings = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id)->getPluginSettings(false);
-                $data[]          = array(
-                    'id'          => $oPlugin->id,
-                    'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
-                    'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
-                    'active'      => $oPlugin->active,
-                    'settings'    => $aPluginSettings,
-                    'new'         => !in_array($oPlugin->name, $aInstalledNames)
-                );
-            } else
-            {
-                // This plugin is missing, maybe the files were deleted but the record was not removed from the database
-                // Now delete this record. Depending on the plugin the settings will be preserved
-                App()->user->setFlash('pluginDelete' . $oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
-                $oPlugin->delete();
-            }
-        }
-        echo $this->render('/plugins/index', compact('data'));
+        
+        $plugins = new CArrayDataProvider(App()->pluginManager->scanPlugins());
+        return $this->render('index', ['plugins' => $plugins]);
     }
 
     public function filters()

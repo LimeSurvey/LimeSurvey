@@ -23,7 +23,7 @@
         <?php
 			$this->widget('ext.LimeScript.LimeScript');
 			$this->widget('ext.LimeDebug.LimeDebug');
-			Yii::app()->bootstrap->register();
+			App()->bootstrap->register();
 		?>
         <title>Limesurvey Administration</title>
     </head>

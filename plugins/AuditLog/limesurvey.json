@@ -1,0 +1,26 @@
+{
+    "name" : "Audit Log",
+    "vendor" : "Limesurvey Development Team",
+    "class" : "ls\\AuditLog\\AuditLog",
+    "description" : "Core: Create an audit log of changes.",
+    "type" : "simple",
+    "autoload" : {
+        "psr-4": {
+            "ls\\AuditLog\\" : ""
+        }
+    },
+    "events" : [
+        "beforeSurveySettings",
+        "newSurveySettings",
+        "beforeActivate",
+        "beforeUserSave",
+        "beforeUserDelete",
+        "beforePermissionSetSave",
+        "beforeParticipantSave",
+        "beforeParticipantDelete", 
+        "beforeLogout",
+        "afterSuccessfulLogin",
+        "afterFailedLoginAttempt"
+    ],
+    "apiVersion" : "1.0"
+}

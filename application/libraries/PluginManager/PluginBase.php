@@ -9,19 +9,10 @@ abstract class PluginBase implements iPlugin {
      *
      * @var LimesurveyApi
      */
-    protected $api = null;
+    public $api = null;
 
-    /**
-     *
-     * @var PluginEvent
-     */
-    protected $event = null;
-
-    protected $id = null;
     protected $storage = 'DummyStorage';
 
-    static protected $description = 'Base plugin object';
-    static protected $name = 'PluginBase';
     private $store = null;
     protected $settings = array();
 
@@ -31,6 +22,8 @@ abstract class PluginBase implements iPlugin {
      * @var PluginManager
      */
     protected $pluginManager;
+    
+    public $id;
 
     /**
      * Constructor for the plugin
@@ -38,10 +31,9 @@ abstract class PluginBase implements iPlugin {
      * @param PluginManager $manager    The plugin manager instantiating the object
      * @param int           $id         The id for storage
      */
-    public function __construct(PluginManager $manager, $id, $init = true)
+    public function __construct(PluginManager $manager, $init = true)
     {
         $this->pluginManager = $manager;
-        $this->id = $id;
         $this->api = $manager->getAPI();
         if ($init) {
             $this->init();
@@ -77,36 +69,6 @@ abstract class PluginBase implements iPlugin {
     {
         return static::$description;
     }
-
-    /**
-     * Get the current event this plugin is responding to
-     * 
-     * @return PluginEvent
-     */
-    public function getEvent()
-    {
-        return $this->event;
-    }
-
-    /**
-     * Returns the id of the plugin
-     * 
-     * Used by storage model to find settings specific to this plugin
-     * 
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-
-
-    public function getName()
-    {
-        return static::$name;
-    }
-
 
     /** 
      * Publishes plugin assets.
@@ -188,7 +150,7 @@ abstract class PluginBase implements iPlugin {
      */
     protected function subscribe($event, $function = null)
     {
-        return $this->pluginManager->subscribe($this, $event, $function);
+        return $this->pluginManager->subscribe($event, [$this, isset($function) ? $function : $event]);
     }
 
     /**

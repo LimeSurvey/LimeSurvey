@@ -44,13 +44,13 @@ abstract class AuthPluginBase extends PluginBase {
      *
      * @return null
      */
-    public function afterLoginFormSubmit()
+    public function eventAfterLoginFormSubmit($event)
     {
         // Here we handle post data
         $request = $this->api->getRequest();
         if ($request->getIsPostRequest()) {
-            $this->setUsername( $request->getPost('user'));
-            $this->setPassword($request->getPost('password'));
+            $this->setUsername($event, $request->getPost('user'));
+            $this->setPassword($event, $request->getPost('password'));
         }
     }
 
@@ -60,13 +60,11 @@ abstract class AuthPluginBase extends PluginBase {
      * @param User $user
      * @return AuthPluginBase
      */
-    public function setAuthSuccess(User $user)
+    public function setAuthSuccess(PluginEvent $event, User $user)
     {
-        $event = $this->getEvent();
-        $identity = $this->getEvent()->get('identity');
+        $identity = $event->get('identity');
         $identity->id = $user->uid;
         $identity->user = $user;
-        $identity = $this->getEvent()->set('identity', $identity);
         $event->set('result', new LSAuthResult(self::ERROR_NONE));
         
         return $this;
@@ -94,9 +92,8 @@ abstract class AuthPluginBase extends PluginBase {
      * 
      * @return AuthPluginBase
      */
-    public function setAuthPlugin()
+    public function setAuthPlugin(PluginEvent $event)
     {
-        $event = $this->getEvent();
         $identity = $this->getEvent()->get('identity');
         $identity->plugin = get_class($this);
         $this->getEvent()->stop();
@@ -110,15 +107,10 @@ abstract class AuthPluginBase extends PluginBase {
      * @param string $password
      * @return AuthPluginBase
      */
-    protected function setPassword($password)
+    protected function setPassword($event, $password)
     {
         $this->_password = $password;
-        $event = $this->getEvent();
-        $identity = $this->getEvent()->get('identity');
-        $identity->password = $password;
-        
-        $event->set('identity', $identity);
-        
+        $event->get('identity')->password = $password;
         return $this;
     }
     
@@ -128,15 +120,10 @@ abstract class AuthPluginBase extends PluginBase {
      * @param string $username The username
      * @return AuthPluginBase
      */
-    protected function setUsername($username)
+    protected function setUsername($event, $username)
     {
         $this->_username = $username;
-        $event = $this->getEvent();
-        $identity = $this->getEvent()->get('identity');
-        $identity->username = $username;
-        
-        $event->set('identity', $identity);
-        
+        $identity = $event->get('identity')->username = $username;
         return $this;
     }
 }

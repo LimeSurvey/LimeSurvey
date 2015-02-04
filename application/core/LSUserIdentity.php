@@ -46,7 +46,7 @@ class LSUserIdentity extends CUserIdentity {
      *
      * @var string
      */
-    public $plugin = 'Authdb';
+    public $plugin = 'ls\\core\\plugins\\AuthDb';
 
     public function authenticate() {
         // First initialize the result, we can later retieve it to get the exact error code/message

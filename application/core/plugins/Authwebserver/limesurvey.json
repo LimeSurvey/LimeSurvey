@@ -1,0 +1,17 @@
+{
+    "name" : "LimeSurvey server auth",
+    "vendor" : "Limesurvey Development Team",
+    "class" : "ls\\core\\plugins\\AuthWebServer",
+    "description" : "Core: Webserver authentication",
+    "type" : "simple",
+    "autoload" : {
+        "psr-4": {
+            "ls\\core\\plugins\\" : ""
+        }
+    },
+    "events" : [
+        "beforeLogin",
+        "newUserSession"
+    ],
+    "apiVersion" : "1.0"
+}

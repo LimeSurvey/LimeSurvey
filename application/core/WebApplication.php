@@ -17,11 +17,16 @@
  */
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 /**
-* Implements global  config
-* @property CLogRouter $log Log router component.
-*/
+ * Implements global  config
+ * @property CLogRouter $log Log router component.
+ * @property \ls\pluginmanager\PluginManager $pluginManager 
+ */
 class WebApplication extends CWebApplication
 {
+    /**
+     *
+     * @var Composer\Autoload\ClassLoader
+     */
     public $loader;
     protected $config = array();
 

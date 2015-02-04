@@ -4,14 +4,14 @@ use Yii;
 use Hash;
 Yii::import('application.helpers.Hash');
 
-class PluginEvent
+class PluginEvent extends \CComponent
 {
     /**
      * The name of this event
      * 
      * @var string 
      */
-    protected $_event = '';
+    protected $_name;
     
     /**
      * This array holds the content blocks that plugins generate, idexed by plugin name
@@ -19,13 +19,6 @@ class PluginEvent
      * @var array of PluginEventContent
      */
     protected $_content = array();
-    
-    /**
-     * The class who fired the event, or null when not set
-     * 
-     * @var object 
-     */
-    protected $_sender = null;
     
     /**
      * When true it prevents delegating the event to other plugins.
@@ -45,20 +38,12 @@ class PluginEvent
     /**
      * Constructor for the PluginEvent
      * 
-     * @param string $event    Name of the event fired 
-     * @param object $sender   The object sending the event
+     * @param string $name    Name of the event.
      * @return \PluginEvent
      */
-    public function __construct($event, $sender = null)
+    public function __construct($name)
     {
-        if (!is_null($sender) && is_object($sender))
-        {
-            $this->_sender = $sender;
-        }
-        
-        $this->_event = $event;
-        
-        return $this;
+       $this->_name = $name;
     }
     
     public function dispatch() 
@@ -134,25 +119,9 @@ class PluginEvent
      * 
      * @return string
      */
-    public function getEventName()
+    public function getName()
     {
-        return $this->_event;
-    }
-    
-    /**
-     * Return the sender of the event
-     * 
-     * Normally the class that fired the event, but can return false when not set.
-     * 
-     * @return object The object sending the event, or false when unknown
-     */
-    public function getSender()
-    {
-        if (!is_null($this->_sender)) {
-            return $this->_sender;
-        } else {
-            return false;
-        }
+        return $this->_name;
     }
     
     /**

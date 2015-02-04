@@ -29,7 +29,7 @@ $internalConfig = array(
 		'application.controllers.*',
 		'application.modules.*',
 	),
-    'preload' => ['log'],
+    'preload' => ['log', 'pluginManager'],
 	'components' => array(
         'bootstrap' => array(
             'class' => 'TbApi',
@@ -106,7 +106,19 @@ $internalConfig = array(
         ),
         'pluginManager' => [
             'class' => "\\ls\\pluginmanager\\PluginManager",
-            'api' => "\\ls\\pluginmanager\\LimesurveyApi"
+            'apiMap' => [
+                "1.0" => "\\ls\\pluginmanager\\LimesurveyApi"
+            ],
+            'oldPluginDirs' => [
+//                'webroot.plugins', // User plugins
+                'application.core.plugins' // Core plugins
+            ],
+            'pluginDirs' => [
+                __DIR__ . '/../core/plugins',
+                __DIR__ . '/../../plugins',
+                
+            ],
+            'loader' => $loader // Composer classloader.
         ],
         'yiiwheels' => [
             'class' => 'yiiwheels.YiiWheels'

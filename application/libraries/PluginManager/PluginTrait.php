@@ -45,10 +45,9 @@ trait PluginTrait
      * 
      * @param type $settings
      */
-    public function saveSettings($settings)
+    public function saveSettings(array $settings)
     {
-        foreach ($settings as $name => $setting)
-        {
+        foreach ($settings as $name => $setting) {
             $this->set($name, $setting);
         }
     }

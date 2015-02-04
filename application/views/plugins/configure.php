@@ -1,25 +1,26 @@
 <?php
-
-    $title = isset($properties['pluginName']) ? sprintf(gT("Settings for plugin: %s"), $properties['pluginName']) : null;
-    if (is_null($title)) $title = isset($plugin['name']) ? sprintf(gT("Settings for plugin %s"), $plugin['name']) : null;
-
-    $this->widget('ext.SettingsWidget.SettingsWidget', array(
-        'settings' => $settings,
+    /* @var $plugin PluginBase */
+    $title = sprintf(gT("Settings for plugin: %s"), $plugin->name);
+    
+    $this->widget('SettingsWidget', array(
+        'prefix' => $plugin->id,
+        'settings' => $plugin->getPluginSettings(),
         'title' => $title,
         'formHtmlOptions' => array(
-            'id' => "pluginsettings-{$plugin['name']}",
+            'id' => "pluginsettings-{$plugin->name}",
         ),
         'method' => 'post',
         'buttons' => array(
-            gT('Save plugin settings'),
+            gT('Save plugin settings') => [
+                'color' => 'primary',
+            ],
             gT('Save and return to plugins list')=>array(
                 'type'=>'submit',
-                'name'=>'redirect',
-                'value'=>App()->createUrl('plugins/index'), // This allow to use App()->request->getPost('redirect')) for forward (not used actually)
+                'name'=>'redirect'
             ),
             gT('Cancel') => array(
                 'type' => 'link',
-                'href' => App()->createUrl('plugins/index')
+                'href' => ['plugins/index']
             )
         )
     ));
