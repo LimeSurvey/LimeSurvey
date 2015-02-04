@@ -1507,6 +1507,8 @@ function concat()
 
 function group_export($action, $iSurveyID, $gid)
 {
+    viewHelper::disableHtmlLogging();
+
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();
 
