@@ -1,5 +1,5 @@
 <?php
-    Yii::import('application.helpers.Hash', true);
+    use Cake\Utility\Hash;
 
     class LSWebUser extends CWebUser
     {

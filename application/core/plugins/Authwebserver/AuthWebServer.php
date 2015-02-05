@@ -29,6 +29,16 @@ class AuthWebServer extends AuthPluginBase
     {
     }
 
+     public function eventNewLoginForm(PluginEvent $event)
+    {
+        $event->set('forms.' . $this->name, [
+        'serverkey' => array(
+            'type' => 'string',
+            'label' => 'Key to use for username e.g. PHP_AUTH_USER, LOGON_USER, REMOTE_USER. See phpinfo in global settings.',
+            'default' => 'REMOTE_USER',
+        ) ]);
+        return;
+    }
     public function eventBeforeLogin(PluginEvent $event)
     {       
         // normal login through webserver authentication    
@@ -66,10 +76,10 @@ class AuthWebServer extends AuthPluginBase
         }
     }
     
-    public function eventNewUserSession()
+    public function eventNewUserSession(PluginEvent $event)
     {
         // Do nothing if this user is not Authwebserver type
-        $identity = $this->getEvent()->get('identity');
+        $identity = $event->get('identity');
         if ($identity->plugin != 'Authwebserver')
         {
             return;

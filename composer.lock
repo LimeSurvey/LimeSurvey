@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bfd678d29cb6e5aa10be35f2048a843b",
+    "hash": "65ea854f5cf3cefbb36ff318db4418d7",
     "packages": [
         {
             "name": "2amigos/yiistrap",
@@ -148,6 +148,39 @@
             "description": "helper libaray for dealing with arabic language",
             "homepage": "http://www.ar-php.org/",
             "time": "2012-11-03 12:29:33"
+        },
+        {
+            "name": "cakephp/utility",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/utility.git",
+                "reference": "c315a4467ffbf2b37b4b082628b25533fb3a431d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/c315a4467ffbf2b37b4b082628b25533fb3a431d",
+                "reference": "c315a4467ffbf2b37b4b082628b25533fb3a431d",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cake\\Utility\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "http://cakephp.org"
+                }
+            ],
+            "description": "CakePHP Utility classes such as Inflector, String, Hash, and Security",
+            "time": "2015-01-01 19:38:39"
         },
         {
             "name": "crisu83/yiistrap",
@@ -725,7 +758,8 @@
         "phpmailer/phpmailer": 20,
         "jsonrpc/jsonrpc": 20,
         "ar-php/ar-php": 20,
-        "guzzlehttp/guzzle": 20
+        "guzzlehttp/guzzle": 20,
+        "cakephp/utility": 20
     },
     "prefer-stable": false,
     "platform": [],

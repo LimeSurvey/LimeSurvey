@@ -14,7 +14,8 @@
 		"phpmailer/phpmailer": "dev-master",
 		"jsonrpc/jsonrpc" : "dev-master",
         "ar-php/ar-php": "dev-master",
-        "guzzlehttp/guzzle": "~5.0@dev"
+        "guzzlehttp/guzzle": "~5.0@dev",
+        "cakephp/utility": "dev-master"
     },
 	"require-dev" : {
 		

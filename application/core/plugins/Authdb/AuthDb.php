@@ -48,6 +48,13 @@ class AuthDb extends AuthPluginBase
 
     public function eventNewLoginForm(PluginEvent $event)
     {
+        $event->set('forms.' . $this->name, [
+        'serverkey' => array(
+            'type' => 'string',
+            'label' => 'Key to use for username e.g. PHP_AUTH_USER, LOGON_USER, REMOTE_USER. See phpinfo in global settings.',
+            'default' => 'REMOTE_USER',
+        ) ]);
+        return;
         $sUserName='';
         $sPassword='';
         if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
@@ -63,6 +70,8 @@ class AuthDb extends AuthPluginBase
 
     public function eventNewUserSession(PluginEvent $event)
     {
+        
+        
         // Do nothing if this user is not Authdb type
         $identity = $event->get('identity');
         if ($identity->plugin != __CLASS__) {

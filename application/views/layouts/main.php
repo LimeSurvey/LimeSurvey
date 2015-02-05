@@ -28,12 +28,16 @@
         <title>Limesurvey Administration</title>
     </head>
     <body>
-		<nav><?php
-			$this->widget('ext.yii-barmenu.BarMenu', array(
-				'items' => require __DIR__ . '/../menu.php',
-				'iconUrl' => App()->getConfig('adminimageurl')
-			));
-		?></nav>
+        <?php
+            if (!App()->user->isGuest) {
+                echo CHtml::openTag('nav');
+                $this->widget('ext.yii-barmenu.BarMenu', array(
+                    'items' => require __DIR__ . '/../menu.php',
+                    'iconUrl' => App()->getConfig('adminimageurl')
+                ));
+                echo CHtml::closeTag('nav');
+            }
+		?>
         <div class="wrapper clearfix">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>

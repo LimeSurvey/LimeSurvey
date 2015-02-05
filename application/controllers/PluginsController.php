@@ -9,17 +9,17 @@ class PluginsController extends LSYii_Controller
      * Stored dynamic properties set and unset via __get and __set.
      * @var array of mixed.
      */
-    protected $properties = array();
-
-    public function __get($property)
-    {
-        return $this->properties[$property];
-    }
-
-    public function __set($property, $value)
-    {
-        $this->properties[$property] = $value;
-    }
+//    protected $properties = array();
+//
+//    public function __get($property)
+//    {
+//        return $this->properties[$property];
+//    }
+//
+//    public function __set($property, $value)
+//    {
+//        $this->properties[$property] = $value;
+//    }
 
     public function _init()
     {

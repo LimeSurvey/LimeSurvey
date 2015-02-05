@@ -1,7 +1,7 @@
 <?php
 namespace ls\pluginmanager;
 use Yii;
-use Hash;
+use Cake\Utility\Hash;
 Yii::import('application.helpers.Hash');
 
 class PluginEvent extends \CComponent
@@ -63,14 +63,7 @@ class PluginEvent extends \CComponent
      */
     public function get($key = null, $default = null)
     {
-        if (!Hash::check($this->_parameters, $key))
-        {
-            return $default;
-        }
-        else
-        {
-            return Hash::get($this->_parameters, $key);
-        }
+        return Hash::get($this->_parameters, $key, $default);
     }
     
     /**
