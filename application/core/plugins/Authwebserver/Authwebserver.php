@@ -20,7 +20,11 @@ class Authwebserver extends AuthPluginBase
                 'type' => 'checkbox',
                 'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
                 'default' => true,
-                )
+         ),
+	'logout_url' => array(
+		'type' => 'string',
+		'label' => 'Remote auth logout URL (LimeSurvey will redirect to this URL after local logout)',
+	),
     );
     
     public function __construct(PluginManager $manager, $id) {
@@ -31,6 +35,7 @@ class Authwebserver extends AuthPluginBase
          */
         $this->subscribe('beforeLogin');
         $this->subscribe('newUserSession');
+	$this->subscribe('afterLogout');
     }
 
     public function beforeLogin()
@@ -127,5 +132,14 @@ class Authwebserver extends AuthPluginBase
         
     }  
     
-    
+    public function afterLogout()
+    {
+	$logoutURL = $this->get('logout_url');
+        if (!empty($logoutURL))
+	{
+	//header("Location: https://sondages.auf.org/mellon/logout?ReturnTo=https://auf.org/");
+	header("Location: $logoutURL");
+	exit;
+	}
+    }    
 }
