@@ -137,7 +137,6 @@ class Authwebserver extends AuthPluginBase
 	$logoutURL = $this->get('logout_url');
         if (!empty($logoutURL))
 	{
-	//header("Location: https://sondages.auf.org/mellon/logout?ReturnTo=https://auf.org/");
 	header("Location: $logoutURL");
 	exit;
 	}
