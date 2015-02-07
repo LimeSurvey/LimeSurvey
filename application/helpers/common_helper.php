@@ -174,17 +174,7 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 */
 function isStandardTemplate($sTemplateName)
 {
-    return in_array($sTemplateName,array('basic',
-    'bluengrey',
-    'business_grey',
-    'citronade',
-    'clear_logo',
-    'default',
-    'eirenicon',
-    'limespired',
-    'mint_idea',
-    'sherpa',
-    'vallendar'));
+    return Template::isStandardTemplate($sTemplateName);
 }
 
 /**
@@ -304,45 +294,14 @@ function getSurveyList($returnarray=false, $surveyid=false)
 
 function getTemplateList()
 {
-    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-    $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
-
-    if (!$usertemplaterootdir) {die("getTemplateList() no template directory");}
-    if ($handle = opendir($standardtemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn" && isStandardTemplate($file))
-            {
-                $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-            }
-        }
-        closedir($handle);
-    }
-
-    if ($handle = opendir($usertemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-            {
-                $list_of_files[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-            }
-        }
-        closedir($handle);
-    }
-    ksort($list_of_files);
-
-    return $list_of_files;
+    return Template::getTemplateList();
 }
 
 function getAdminThemeList()
 {
-    // $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
     $standardtemplaterootdir=Yii::app()->getConfig("styledir");
 
-    //    if (!$usertemplaterootdir) {die("getTemplateList() no template directory");}
-    if ($handle = opendir($standardtemplaterootdir))
+    if ($standardtemplaterootdir && $handle = opendir($standardtemplaterootdir))
     {
         while (false !== ($file = readdir($handle)))
         {
@@ -354,17 +313,7 @@ function getAdminThemeList()
         closedir($handle);
     }
 
-    /*    if ($handle = opendir($usertemplaterootdir))
-    {
-    while (false !== ($file = readdir($handle)))
-    {
-    if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-    {
-    $list_of_files[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-    }
-    }
-    closedir($handle);
-    }         */
+
     ksort($list_of_files);
 
     return $list_of_files;

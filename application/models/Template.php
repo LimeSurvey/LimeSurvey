@@ -88,7 +88,7 @@ class Template extends LSActiveRecord
             return $aTemplatePath[$sTemplateName];
 
         $sFilteredTemplateName=self::templateNameFilter($sTemplateName);
-        if (isStandardTemplate($sFilteredTemplateName))
+        if (self::isStandardTemplate($sFilteredTemplateName))
         {
             return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
         }
@@ -111,7 +111,7 @@ class Template extends LSActiveRecord
             return $aTemplateUrl[$sTemplateName];
 
         $sFiteredTemplateName=self::templateNameFilter($sTemplateName);
-        if (isStandardTemplate($sFiteredTemplateName))
+        if (self::isStandardTemplate($sFiteredTemplateName))
         {
             return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$sFiteredTemplateName;
         }
@@ -119,5 +119,67 @@ class Template extends LSActiveRecord
         {
             return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$sFiteredTemplateName;
         }
+    }
+
+    public static function getTemplateList()
+    {
+    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+    $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
+
+    $aTemplateList=array();
+
+    if ($handle = opendir($standardtemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            // Why not return directly standardTemplate list ?
+            if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
+            {
+                $aTemplateList[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+            }
+        }
+        closedir($handle);
+    }
+
+    if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            // Maybe $file[0] != "." to hide Linux hidden directory
+            if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+            {
+                $aTemplateList[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+            }
+        }
+        closedir($handle);
+    }
+    ksort($aTemplateList);
+
+    return $aTemplateList;
+    }
+
+    /**
+    * isStandardTemplate returns true if a template is a standard template
+    * This function does not check if a template actually exists
+    *
+    * @param mixed $sTemplateName template name to look for
+    * @return bool True if standard template, otherwise false
+    */
+    public static function isStandardTemplate($sTemplateName)
+    {
+        return in_array($sTemplateName,array(
+            'basic',
+            'bluengrey',
+            'business_grey',
+            'citronade',
+            'clear_logo',
+            'default',
+            'eirenicon',
+            'limespired',
+            'mint_idea',
+            'sherpa',
+            'vallendar',
+            )
+        );
     }
 }
