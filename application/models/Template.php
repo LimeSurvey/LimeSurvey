@@ -17,18 +17,19 @@ if (!defined('BASEPATH'))
 
 class Template extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
     /**
      * Returns the setting's table name to be used by the model
@@ -61,24 +62,62 @@ class Template extends LSActiveRecord
     {
         $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-        $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate');// !empty ?
-        if (!empty($sTemplateName) && is_dir("$usertemplaterootdir/{$sTemplateName}/"))// Maybe better validate is_file("$usertemplaterootdir/{$sTemplateName}/startpage.pstpl")
+        $sTemplateName=empty($sTemplateName) ? Yii::app()->getConfig('defaulttemplate') : $sTemplateName;
+
+        if (is_dir("{$usertemplaterootdir}/{$sTemplateName}/"))
         {
             return $sTemplateName;
         }
-        elseif (!empty($sTemplateName) && is_dir("$standardtemplaterootdir/{$sTemplateName}/"))
+        elseif (is_dir("{$standardtemplaterootdir}/{$sTemplateName}/"))
         {
             return $sTemplateName;
-        }
-        elseif (is_dir("$standardtemplaterootdir/{$sDefaultTemplate}/"))
-        {
-            return $sDefaultTemplate;
-        }
-        elseif (is_dir("$usertemplaterootdir/{$sDefaultTemplate}/"))
-        {
-            return $sDefaultTemplate;
         }
         return 'default';
+    }
 
+    /**
+    * Get the template path for any template : test if template if exist
+    *
+    * @param string $sTemplateName
+    * @return string template path
+    */
+    public static function getTemplatePath($sTemplateName = "")
+    {
+        static $aTemplatePath=array();
+        if(isset($aTemplatePath[$sTemplateName]))
+            return $aTemplatePath[$sTemplateName];
+
+        $sFilteredTemplateName=self::templateNameFilter($sTemplateName);
+        if (isStandardTemplate($sFilteredTemplateName))
+        {
+            return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
+        }
+        else
+        {
+            return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
+        }
+    }
+
+    /**
+    * This function returns the complete URL path to a given template name
+    *
+    * @param string $sTemplateName
+    * @return string template url
+    */
+    public static function getTemplateURL($sTemplateName="")
+    {
+        static $aTemplateUrl=array();
+        if(isset($aTemplateUrl[$sTemplateName]))
+            return $aTemplateUrl[$sTemplateName];
+
+        $sFiteredTemplateName=self::templateNameFilter($sTemplateName);
+        if (isStandardTemplate($sFiteredTemplateName))
+        {
+            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$sFiteredTemplateName;
+        }
+        else
+        {
+            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$sFiteredTemplateName;
+        }
     }
 }

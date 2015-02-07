@@ -5376,33 +5376,7 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 */
 function getTemplatePath($sTemplateName = false)
 {
-    if (!$sTemplateName)
-    {
-        $sTemplateName=Yii::app()->getConfig('defaulttemplate'); // if $sTemplateName is NULL or false or ""
-    }
-    if (isStandardTemplate($sTemplateName))
-    {
-        return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
-    }
-    else
-    {
-        if (is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName))
-        {
-            return Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
-        }
-        elseif (isStandardTemplate(Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
-        }
-        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.Yii::app()->getConfig('defaulttemplate');
-        }
-        else
-        {
-            return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
-        }
-    }
+    return Template::getTemplatePath($sTemplateName);
 }
 
 /**
@@ -5412,29 +5386,7 @@ function getTemplatePath($sTemplateName = false)
 */
 function getTemplateURL($sTemplateName)
 {
-    if (isStandardTemplate($sTemplateName))
-    {
-        return Yii::app()->getConfig("standardtemplaterooturl").'/'.$sTemplateName;
-    }
-    else
-    {
-        if (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName))
-        {
-            return Yii::app()->getConfig("usertemplaterooturl").'/'.$sTemplateName;
-        }
-        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("usertemplaterooturl").'/'.Yii::app()->getConfig('defaulttemplate');
-        }
-        elseif (file_exists(Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("standardtemplaterooturl").'/'.Yii::app()->getConfig('defaulttemplate');
-        }
-        else
-        {
-            return Yii::app()->getConfig("standardtemplaterooturl").'/default';
-        }
-    }
+    return Template::getTemplateURL($sTemplateName);
 }
 
 /**
