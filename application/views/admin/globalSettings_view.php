@@ -15,7 +15,7 @@
         <li><a href='#language'><?php eT("Language"); ?></a></li>
         <li><a href='#interfaces'><?php eT("Interfaces"); ?></a></li>
     </ul>
-    <?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'form30','id'=>'frmglobalsettings','name'=>'frmglobalsettings','autocomplete'=>'off'));?>
+    <?php echo CHtml::form(array("admin/globalsettings"), 'post', array('id'=>'frmglobalsettings','name'=>'frmglobalsettings','autocomplete'=>'off'));?>
         <div id='overview'>
         <?php
             // Overview in 2 part : summary and update
