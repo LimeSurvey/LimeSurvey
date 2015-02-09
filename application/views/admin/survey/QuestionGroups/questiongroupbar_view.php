@@ -32,7 +32,7 @@
                 <img src='<?php echo $imageurl; ?>edit.png' alt='<?php eT("Edit current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php } ?>
 
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
+        <?php if(App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
             { ?>
             <img id='separator6' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a  target='_blank' href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">

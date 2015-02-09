@@ -65,6 +65,8 @@ $internalConfig = array(
         ),
         'user' => array(
             'class' => 'LSWebUser',
+            'stateKeyPrefix' => 'LSWebUser',
+            'loginUrl' => ['users/login']
         ),
         'log' => array(
             'class' => 'CLogRouter',
@@ -124,6 +126,9 @@ $internalConfig = array(
         ],
         'yiiwheels' => [
             'class' => 'yiiwheels.YiiWheels'
+        ],
+        'authManager' => [
+            'class' => 'AuthManager'
         ]
     ),
     

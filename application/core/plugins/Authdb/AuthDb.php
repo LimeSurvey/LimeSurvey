@@ -46,26 +46,22 @@ class AuthDb extends AuthPluginBase
         return $this->_onepass;
     }
 
-    public function eventNewLoginForm(PluginEvent $event)
+    public function eventBeforeLoginForm(PluginEvent $event)
     {
-        $event->set('forms.' . $this->name, [
-        'serverkey' => array(
-            'type' => 'string',
-            'label' => 'Key to use for username e.g. PHP_AUTH_USER, LOGON_USER, REMOTE_USER. See phpinfo in global settings.',
-            'default' => 'REMOTE_USER',
-        ) ]);
+        $event->set('forms.' . $this->id, [
+            'label' => $this->name,
+            'settings' => [
+                'username' => [
+                    'type' => 'string',
+                    'label' => gT("Username"),
+                ],
+                'password' => [
+                    'type' => 'password',
+                    'label' => gT("Password"),
+                ],
+            ]
+        ]);
         return;
-        $sUserName='';
-        $sPassword='';
-        if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
-        {
-            $sUserName=Yii::app()->getConfig("defaultuser");
-            $sPassword=Yii::app()->getConfig("defaultpass");
-        }
-
-        $event->getContent($this)
-             ->addContent(CHtml::tag('li', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user',$sUserName,array('size'=>40,'maxlength'=>40))))
-             ->addContent(CHtml::tag('li', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password',$sPassword,array('size'=>40,'maxlength'=>40))));
     }
 
     public function eventNewUserSession(PluginEvent $event)
@@ -216,5 +212,23 @@ class AuthDb extends AuthPluginBase
         }
 
         $event->set('writer', $writer);
+    }
+    
+    /**
+     * This function performs username password configuration.
+     * @param \CHttpRequest $request
+     */
+    public function authenticate(\CHttpRequest $request) {
+        if ($request->isPostRequest) {
+            $username = $request->getParam('username');
+            $password = $request->getParam('password');
+            $user = \User::model()->findByAttributes(['users_name' => $username]);
+            if ($user->validatePassword($password)) {
+                return array_merge($user->attributes, [
+                    'id' => (int) $user->primaryKey, 
+                    'name' => $username
+                ]);
+            }
+        }
     }
 }

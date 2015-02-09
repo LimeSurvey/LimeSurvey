@@ -419,7 +419,7 @@ class Participant extends LSActiveRecord
     */
     function filterParticipantIDs($aParticipantIDs)
     {
-            if (!Permission::model()->hasGlobalPermission('superadmin','read')) // If not super admin filter the participant IDs first to owner only
+            if (!App()->user->checkAccess('superadmin')) // If not super admin filter the participant IDs first to owner only
             {
                 $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
                 $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);

@@ -29,7 +29,7 @@ class printablesurvey extends Survey_Common_Action
     function index($surveyid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
-        if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
+        if(!App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
         {
             $aData['surveyid'] = $surveyid;
             App()->getClientScript()->registerPackage('jquery-superfish');

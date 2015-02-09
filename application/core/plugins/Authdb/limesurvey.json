@@ -11,7 +11,7 @@
     },
     "events" : [
         "beforeLogin",
-        "newLoginForm",
+        "beforeLoginForm",
         "afterLoginFormSubmit",
         "newUserSession",
         "beforeDeactivate",

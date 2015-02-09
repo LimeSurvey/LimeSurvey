@@ -140,27 +140,27 @@ class AdminController extends LSYii_Controller
                 $this->redirect(array('/admin/update/sa/db'));
         }
 
-        if ($action != "update" && $action != "db")
-            if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
-            {
-                if (!empty($action) && $action != 'index')
-                    Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
-
-                App()->user->setReturnUrl(App()->request->requestUri);
-
-                $this->redirect(array('/admin/authentication/sa/login'));
-            }
-            elseif (!empty($this->user_id)  && $action != "remotecontrol")
-            {
-                if (Yii::app()->session['session_hash'] != hash('sha256',getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
-                {
-                    Yii::app()->session->clear();
-                    Yii::app()->session->close();
-                    $this->redirect(array('/admin/authentication/sa/login'));
-                }
-
-            }
-
+//        if ($action != "update" && $action != "db")
+//            if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
+//            {
+//                if (!empty($action) && $action != 'index')
+//                    Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
+//
+//                App()->user->setReturnUrl(App()->request->requestUri);
+//
+//                $this->redirect(array('/admin/authentication/sa/login'));
+//            }
+//            elseif (!empty($this->user_id)  && $action != "remotecontrol")
+//            {
+//                if (Yii::app()->session['session_hash'] != hash('sha256',getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
+//                {
+//                    Yii::app()->session->clear();
+//                    Yii::app()->session->close();
+//                    $this->redirect(array('/admin/authentication/sa/login'));
+//                }
+//
+//            }
+//
             return parent::run($action);
     }
 

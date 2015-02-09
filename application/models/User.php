@@ -292,4 +292,15 @@ class User extends LSActiveRecord
 			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
 		);
 	}
+    
+    public function validatePassword($password) {
+        // Check hash type.
+        if (strlen($this->password) == 64 && hash('sha256', $password) == $this->password) {
+            // Password is correct but needs rehashing.
+            $this->password = CPasswordHelper::hashPassword($password);
+            $this->save();
+        }
+        
+        return CPasswordHelper::verifyPassword($password, $this->password);
+    }
 }

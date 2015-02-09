@@ -26,19 +26,6 @@ if (!defined('BASEPATH'))
 class SurveyAdmin extends Survey_Common_Action
 {
     /**
-    * Initiates the survey action, checks for superadmin permission
-    *
-    * @access public
-    * @param CController $controller
-    * @param string $id
-    * @return void
-    */
-    public function __construct($controller, $id)
-    {
-        parent::__construct($controller, $id);
-    }
-
-    /**
     * Loads list of surveys and it's few quick properties.
     *
     * @access public
@@ -53,13 +40,6 @@ class SurveyAdmin extends Survey_Common_Action
             $this->_renderWrappedTemplate('super', 'firststeps');
         } else {
             Yii::app()->loadHelper('surveytranslator');
-
-            $aData['issuperadmin'] = false;
-            if (Permission::model()->hasGlobalPermission('superadmin','read'))
-            {
-                $aData['issuperadmin'] = true;
-            }
-
             $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
         }
     }
@@ -109,7 +89,7 @@ class SurveyAdmin extends Survey_Common_Action
     function newsurvey()
     {
         App()->getClientScript()->registerPackage('jqgrid');
-        if (!Permission::model()->hasGlobalPermission('surveys','create'))
+        if (!App()->user->checkAccess('surveys', ['crud' => 'create'])) 
             $this->getController()->error('No permission');
 
         $this->_registerScriptFiles();
@@ -146,7 +126,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $iSurveyID = (int) $iSurveyID;
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read') && !Permission::model()->hasGlobalPermission('surveys','read'))
+        if (!App()->user->checkAccess('surveysettings', ['crud' => 'read']) && !App()->user->checkAccess('surveys', ['crud' => 'read']))
             $this->getController()->error('No permission');
         if(Yii::app()->request->isPostRequest)
             $this->update($iSurveyID);
@@ -530,7 +510,7 @@ class SurveyAdmin extends Survey_Common_Action
         $owner_id = Yii::app()->session['loginID'];
         $query_condition = 'sid=:sid';
         $params[':sid']=$intSurveyId;
-        if (!Permission::model()->hasGlobalPermission('superadmin','create'))
+        if (!App()->user->checkAccess('superadmin', ['crud' => 'create']))
         {
             $query_condition .= ' AND owner_id=:uid';
             $params[':uid']=$owner_id;
@@ -566,7 +546,7 @@ class SurveyAdmin extends Survey_Common_Action
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
         $oSurvey = new Survey;
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!App()->user->checkAccess('superadmin'))
             $oSurvey->permission(Yii::app()->user->getId());
 
         $aSurveys = $oSurvey->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
@@ -625,7 +605,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
 
             //Set Owner
-            if(Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID']==$rows['owner_id'])
+            if(App()->user->checkAccess('superadmin') || Yii::app()->session['loginID']==$rows['owner_id'])
             {
                 $aSurveyEntry[] = $rows['users_name'] . ' (<a class="ownername_edit" translate_to="' . gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. gT('Edit') .'</a>)';
             }
@@ -706,7 +686,7 @@ class SurveyAdmin extends Survey_Common_Action
         {
             if (Yii::app()->request->getPost("delete") == 'yes')
             {
-                $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin','read');
+                $aData['issuperadmin'] = App()->user->checkAccess('superadmin');
                 $this->_deleteSurvey($iSurveyID);
                 Yii::app()->session['flashmessage'] = gT("Survey deleted.");
                 $this->getController()->redirect(array("admin/index"));
@@ -1069,15 +1049,13 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _generalTabNewSurvey()
     {
-        //Use the current user details for the default administrator name and email for this survey
-        $user=User::model()->findByPk(Yii::app()->session['loginID']);
-        $owner =$user->attributes;
-
+        $owner = App()->user->attributes;
         //Degrade gracefully to $siteadmin details if anything is missing.
         if (empty($owner['full_name']))
-            $owner['full_name'] = getGlobalSetting('siteadminname');
-        if (empty($owner['email']))
+            $owner['full_name'] =  getGlobalSetting('siteadminname');
+        if (empty($owner['email'])) {
             $owner['email'] = getGlobalSetting('siteadminemail');
+        }
 
         //Bounce setting by default to global if it set globally
         if (getGlobalSetting('bounceaccounttype') != 'off')
@@ -1539,7 +1517,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     function insert($iSurveyID=null)
     {
-        if (Permission::model()->hasGlobalPermission('surveys','create'))
+        if (App()->user->checkAccess('surveys', ['crud' => 'create']))
         {
             // Check if survey title was set
             if (!$_POST['surveyls_title'])

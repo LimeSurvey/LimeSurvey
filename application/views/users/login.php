@@ -2,16 +2,27 @@
     <div class="col-md-6 col-md-offset-3" style="margin-top: 50px;">
         <?php
             /* @var $this CController */
-            foreach($loginForms as $name => $settings) {
+        
+            foreach($loginForms as $id => $config) {
+                $settings = $config['settings'];
+                $settings['_logintype'] = [
+                    'type' => 'hidden',
+                    'current' => $id
+                ];
                 $tabs[] = [
-                    'label' => $name,
+                    'active' => !isset($tabs),
+                    'label' => $config['label'],
                     'content' => $this->widget('SettingsWidget', [
-                        'settings' => $settings
+                        'settings' => $settings,
+                        'buttons' => [
+                            gT('Log in') => [
+                                'type' => 'submit',
+                                'color' => 'primary'
+                            ]
+                        ]
                     ], true)
                 ];
             }
-            SettingsWidget::class;
-            $tabs[0]['active']= true;
             $this->widget('TbTabs', [
                 'type' => TbHtml::NAV_TYPE_PILLS,
                 'tabs' => $tabs

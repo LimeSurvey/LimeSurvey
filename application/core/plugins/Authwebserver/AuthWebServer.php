@@ -29,14 +29,13 @@ class AuthWebServer extends AuthPluginBase
     {
     }
 
-     public function eventNewLoginForm(PluginEvent $event)
+     public function eventBeforeLoginForm(PluginEvent $event)
     {
-        $event->set('forms.' . $this->name, [
-        'serverkey' => array(
-            'type' => 'string',
-            'label' => 'Key to use for username e.g. PHP_AUTH_USER, LOGON_USER, REMOTE_USER. See phpinfo in global settings.',
-            'default' => 'REMOTE_USER',
-        ) ]);
+        $event->set('forms.' . $this->id, [
+            'label' => $this->name,
+            'settings' => [
+            ]
+        ]);
         return;
     }
     public function eventBeforeLogin(PluginEvent $event)
@@ -133,5 +132,8 @@ class AuthWebServer extends AuthPluginBase
         
     }  
     
+    public function authenticate(\CHttpRequest $request) {
+        
+    }
     
 }

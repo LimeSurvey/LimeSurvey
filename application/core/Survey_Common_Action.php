@@ -69,7 +69,7 @@ class Survey_Common_Action extends CAction
             {
                 $this->getController()->error('Invalid survey id');
             }
-            elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
+            elseif (!App ()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $params['iSurveyId']]))
             {
                 $this->getController()->error('No permission');
             }
@@ -905,7 +905,7 @@ class Survey_Common_Action extends CAction
 
         if (!empty($ugid)) {
             $sQuery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = {$ugid}";
-            if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (!App()->user->checkAccess('superadmin'))
             {
                 $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
             }

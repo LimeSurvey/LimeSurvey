@@ -49,7 +49,7 @@
                 ),
             );
 
-            if (!Permission::model()->hasGlobalPermission('superadmin'))
+            if (!App()->user->checkAccess('superadmin'))
             {
                 unset($aOverviewSettings['phpinfo']);
             }

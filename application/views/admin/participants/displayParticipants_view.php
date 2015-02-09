@@ -171,8 +171,8 @@ else
     var ajaxUrl = "<?php echo Yii::app()->getConfig('adminimageurl') . "/ajax-loader.gif" ?>";
     var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";
     var searchconditions = "<?php echo $sSearchCondition; ?>";
-    var bEditPermission = <?php echo (Permission::model()->hasGlobalPermission('participantpanel','update'))? 'true' : 'false'; ?>;
-    var bDeletePermission = <?php echo (Permission::model()->hasGlobalPermission('participantpanel','delete'))? 'true' : 'false'; ?>;
+    var bEditPermission = <?php echo (App()->user->checkAccess('participantpanel', ['crud' => 'update']))? 'true' : 'false'; ?>;
+    var bDeletePermission = <?php echo (App()->user->checkAccess('participantpanel', ['crud' => 'delete']))? 'true' : 'false'; ?>;
     var colNames = '["participant_id","can_edit","<?php eT("First name") ?>","<?php eT("Last name") ?>","<?php eT("Email") ?>","<?php eT("Blacklisted") ?>","<?php eT("Surveys") ?>","<?php eT("Language") ?>","<?php eT("Owner name") ?>"<?php echo $columnNames; ?>]';
     var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';

@@ -160,7 +160,7 @@ class UserGroup extends LSActiveRecord {
 		$criteria->select='*';
 		$criteria->condition="ugid=:ugid";
         $aParams=array();
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!App()->user->checkAccess('superadmin'))
         {
             $criteria->condition.=" AND owner_id=:ownerid";
             $aParams[':ownerid']=$ownerid;
@@ -175,13 +175,13 @@ class UserGroup extends LSActiveRecord {
 	function requestViewGroup($ugid, $userid)
 	{
 		$sQuery = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid";
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!App()->user->checkAccess('superadmin'))
         {
             $sQuery.="  AND uid = :userid ";
         }
         $sQuery.=" ORDER BY name";
         $command = Yii::app()->db->createCommand($sQuery)->bindParam(":ugid", $ugid, PDO::PARAM_INT);
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!App()->user->checkAccess('superadmin'))
         {
             $command->bindParam(":userid", $userid, PDO::PARAM_INT);
         }
@@ -193,7 +193,7 @@ class UserGroup extends LSActiveRecord {
         $aParams=array();
         $aParams[':ugid']=$ugid;
         $sCondition="ugid = :ugid";
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!App()->user->checkAccess('superadmin'))
         {
             $sCondition.=" AND owner_id=:ownerid";
             $aParams[':ownerid']=$ownerid;

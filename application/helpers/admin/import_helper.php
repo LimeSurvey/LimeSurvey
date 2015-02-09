@@ -2027,7 +2027,7 @@ function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 
 function XSSFilterArray(&$array)
 {
-    if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'))
+    if(Yii::app()->getConfig('filterxsshtml') && !App()->user->checkAccess('superadmin'))
     {
         $filter = new CHtmlPurifier();
         $filter->options = array('URI.AllowedSchemes'=>array(

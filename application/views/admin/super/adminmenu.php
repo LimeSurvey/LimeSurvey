@@ -26,31 +26,31 @@
             <img src='<?php echo $sImageURL;?>separator.gif' id='separator1' class='separator' alt='' />
 
             <?php
-                if(Permission::model()->hasGlobalPermission('users','read'))
+                if(App()->user->checkAccess('users'))
                 {?>
                 <a href="<?php echo $this->createUrl("admin/user/sa/index"); ?>">
                     <img src='<?php echo $sImageURL;?>security.png' alt='<?php eT("Manage survey administrators");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php
                 };
-                if(Permission::model()->hasGlobalPermission('usergroups','read'))
+                if(App()->user->checkAccess('usergroups'))
                 {?>
                 <a href="<?php echo $this->createUrl("admin/usergroups/sa/index"); ?>">
                     <img src='<?php echo $sImageURL;?>usergroup.png' alt='<?php eT("Create/edit user groups");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php
                 }
-                if(Permission::model()->hasGlobalPermission('settings','read'))
+                if(App()->user->checkAccess('settings'))
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>">
                     <img src='<?php echo $sImageURL;?>global.png' alt='<?php eT("Global settings");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
                 <?php }
-                if(Permission::model()->hasGlobalPermission('settings','read'))
+                if(App()->user->checkAccess('settings'))
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
                     <img src='<?php echo $sImageURL;?>checkdb.png' alt='<?php eT("Check Data Integrity");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php
                 }
-                if(Permission::model()->hasGlobalPermission('superadmin','read'))
+                if(App()->user->checkAccess('superadmin'))
                 {
 
                     if (in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demoMode') == true)
@@ -70,7 +70,7 @@
 
                 <?php
                 }
-                if(Permission::model()->hasGlobalPermission('labelsets','read'))
+                if(App()->user->checkAccess('labelsets'))
                 {
                 ?>
 
@@ -78,19 +78,19 @@
                     <img src='<?php echo $sImageURL;?>labels.png'  alt='<?php eT("Edit label sets");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
                 <?php }
-                if(Permission::model()->hasGlobalPermission('templates','read'))
+                if(App()->user->checkAccess('templates'))
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
                     <img src='<?php echo $sImageURL;?>templates.png' alt='<?php eT("Template Editor");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php } ?>
             <img src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
             <?php
-                if(Permission::model()->hasGlobalPermission('participantpanel','read'))
+                if(App()->user->checkAccess('participantpanel'))
                 { 	 ?>
                 <a href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" >
                     <img src='<?php echo $sImageURL;?>cpdb.png' alt='<?php eT("Central participant database/panel");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
                 <?php }
-                if(Permission::model()->hasGlobalPermission('superadmin','read'))
+                if(App()->user->checkAccess('superadmin'))
                 {   ?>
             <a href="<?php echo $this->createUrl("plugins/"); ?>" >
                 <img src='<?php echo $sImageURL;?>plugin.png' alt='<?php eT("Plugin manager");?>' width='<?php echo $iconsize;?>' height='<?php echo $iconsize;?>'/></a>
@@ -106,7 +106,7 @@
             </a>
 
             <?php
-                if (Permission::model()->hasGlobalPermission('surveys','create'))
+                if (App()->user->checkAccess('surveys', ['crud' => 'create']))
                 { ?>
 
                 <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">

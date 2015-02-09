@@ -101,7 +101,7 @@
     var showBounceButton = <?php echo $showBounceButton; ?>;
     var showInviteButton = <?php echo $showInviteButton; ?>;
     var showRemindButton = <?php echo $showRemindButton; ?>;
-    <?php if (!Permission::model()->hasGlobalPermission('participantpanel','read')){?>
+    <?php if (!App()->user->checkAccess('participantpanel')){?>
     var bParticipantPanelPermission=false;
     <?php 
     } else {?>
@@ -185,7 +185,7 @@
     </table>
 </div>
 
-<?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
+<?php if (App()->user->checkAccess('participantpanel')) { ?>
     <div id="addcpdb" title="addsurvey" style="display:none">
         <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
         <p>

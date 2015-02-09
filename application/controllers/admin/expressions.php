@@ -22,7 +22,7 @@ class Expressions extends Survey_Common_Action {
 	    {
 	        $needpermission=true;
 	    }
-        if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
+        if($needpermission && !App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
         {
             App()->getClientScript()->registerPackage('jquery-superfish');
             $message['title']= gT('Access denied!');

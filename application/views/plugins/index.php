@@ -1,5 +1,4 @@
-<div class="header ui-widget-header"><?php eT('Plugins'); ?></div>
-<div style="width: 75%; margin: auto;">
+<div class="col-md-12">
 <?php
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
@@ -20,9 +19,9 @@
             'value' => function($data) {
                 if ($data['attributes']['active'] == 0)
                 { 
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/activate", "id" => $data['attributes']['name']));
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'active.png', gT('Activate'), array('width' => 16, 'height' => 16)), array("/plugins/activate", "id" => $data['id']));
                 } else {
-                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['attributes']['name'])); 
+                    $output = CHtml::link(CHtml::image(App()->getConfig('adminimageurl') . 'inactive.png', gT('Deactivate'), array('width' => 16, 'height' => 16)), array("/plugins/deactivate", "id" => $data['id'])); 
                 }
                 if(true || count($data['settings'])>0)
                 {
@@ -71,5 +70,26 @@
 //        'rowCssClassExpression'=> function ($index, $data) { return ($index % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
 //        'itemsCssClass' => 'items table-condensed table-bordered'
     ));
+    
+    foreach($loadedPlugins as $plugin) {
+        if($plugin instanceof IAuthManager) {
+            $authorizers[] = $plugin;
+        }
+    }
 ?>
+</div>
+<div class="col-md-6 col-md-offset-3">
+<?php
+    echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['plugins/setauthorizer'], 'post');
+    echo TbHtml::dropDownListControlGroup('authorizationPlugin', App()->getConfig('authorizationPlugin', null), TbHtml::listData($authorizers, 'id', 'name'), [
+        'label' => 'Authorization plugin:',
+        'labelOptions' => ['class' => 'col-md-6'],
+        'controlOptions' => ['class' => 'col-md-6'],
+    ]);
+    echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
+    echo TbHtml::submitButton(gT('Save'), ['color' => 'primary']);
+    echo TbHtml::closeTag('div');
+    echo TbHtml::endForm();
+?>
+    
 </div>

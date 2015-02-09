@@ -48,7 +48,7 @@ class export extends Survey_Common_Action {
     */
     public function surveyarchives()
     {
-        if ( ! Permission::model()->hasGlobalPermission('superadmin','read') )
+        if ( ! App()->user->checkAccess('superadmin') )
         {
             die('Access denied.');
         }

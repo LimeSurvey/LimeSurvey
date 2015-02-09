@@ -80,7 +80,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if(Permission::model()->hasGlobalPermission('superadmin','read'))
+            if(App()->user->checkAccess('superadmin'))
             {
                 if (Yii::app()->getConfig($sSetttingName) !== false)
                     return Yii::app()->getConfig($sSetttingName);
@@ -114,7 +114,7 @@ class remotecontrol_handle
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (Permission::model()->hasGlobalPermission('surveys','create'))
+            if (App()->user->checkAccess('surveys', ['crud' => 'create']))
             {
                 if( $sSurveyTitle=='' || $sSurveyLanguage=='' || !array_key_exists($sSurveyLanguage,getLanguageDataRestricted()) || !in_array($sformat, array('A','G','S')))
                     return array('status' => 'Faulty parameters');
@@ -207,7 +207,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (Permission::model()->hasGlobalPermission('surveys','create'))
+            if (App()->user->checkAccess('surveys', ['crud' => 'create']))
             {
                 if (!in_array($sImportDataType,array('zip','csv','txt','lss'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
@@ -1894,7 +1894,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey))
         {
             $oSurvey = new Survey;
-            if (!Permission::model()->hasGlobalPermission('superadmin','read') && ($sUsername == null))
+            if (!App()->user->checkAccess('superadmin') && ($sUsername == null))
             {
                 $oSurvey->permission(Yii::app()->user->getId());
             }
@@ -1938,7 +1938,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if( Permission::model()->hasGlobalPermission('superadmin','read') )
+            if( App()->user->checkAccess('superadmin') )
             {
                 $users = User::model()->findAll();
 
@@ -1980,7 +1980,7 @@ class remotecontrol_handle
     public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-        if (Permission::model()->hasGlobalPermission('surveys','create'))
+        if (App()->user->checkAccess('surveys', ['crud' => 'create']))
         {
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))

@@ -26,7 +26,7 @@ class GlobalSettings extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('settings','read')) {
+        if (!App()->user->checkAccess('settings')) {
             die();
         }
     }
@@ -117,7 +117,7 @@ class GlobalSettings extends Survey_Common_Action
             return;
         }
 
-        if (!Permission::model()->hasGlobalPermission('settings','update'))
+        if (!App()->user->checkAccess('settings', ['crud' => 'update']))
         {
             $this->getController()->redirect(array('/admin'));
         }

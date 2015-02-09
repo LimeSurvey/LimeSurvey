@@ -20,6 +20,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  * Implements global  config
  * @property CLogRouter $log Log router component.
  * @property \ls\pluginmanager\PluginManager $pluginManager 
+ * @property LSWebUser $user
  */
 class WebApplication extends CWebApplication
 {

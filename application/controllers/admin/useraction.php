@@ -44,7 +44,7 @@ class UserAction extends Survey_Common_Action
         $usrhimself = $userlist[0];
         unset($userlist[0]);
 
-        if (Permission::model()->hasGlobalPermission('superadmin','read')) {
+        if (App()->user->checkAccess('superadmin')) {
             $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
             $aData['noofsurveys'] = $noofsurveys;
         }
@@ -78,7 +78,7 @@ class UserAction extends Survey_Common_Action
     function adduser()
     {
 
-        if (!Permission::model()->hasGlobalPermission('users','create')) {
+        if (!App()->user->checkAccess('users', ['crud' => 'create'])) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
@@ -173,7 +173,7 @@ class UserAction extends Survey_Common_Action
     function deluser()
     {
 
-        if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
+        if (!App()->user->checkAccess('superadmin') && !App()->user->checkAccess('users', ['crud' => 'delete'])) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
@@ -195,13 +195,13 @@ class UserAction extends Survey_Common_Action
             if ($postuserid)
             {
                 $sresultcount = 0; // 1 if I am parent of $postuserid
-                if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+                if (!App()->user->checkAccess('superadmin'))
                 {
                     $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
                     $sresultcount = count($sresult);
                 }
 
-                if (Permission::model()->hasGlobalPermission('superadmin','read') || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID'])
+                if (App()->user->checkAccess('superadmin') || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID'])
                 {
                     $transfer_surveys_to = 0;
                     $ownerUser = User::model()->findAll();
@@ -312,8 +312,8 @@ class UserAction extends Survey_Common_Action
             $sresultcount = count($sresult);
 
 
-            if (Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID'] == $postuserid ||
-            (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) )
+            if (App()->user->checkAccess('superadmin') || Yii::app()->session['loginID'] == $postuserid ||
+            (App()->user->checkAccess('users', ['crud' => 'update']) && $sresultcount > 0) )
             {
                 $sresult = User::model()->parentAndUser($postuserid);
                 $aData['mur'] = $sresult;
@@ -350,8 +350,8 @@ class UserAction extends Survey_Common_Action
         $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
         $sresultcount = count($sresult);
 
-        if ((Permission::model()->hasGlobalPermission('superadmin','read') || $postuserid == Yii::app()->session['loginID'] ||
-        ($sresultcount > 0 && Permission::model()->hasGlobalPermission('users','update'))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
+        if ((App()->user->checkAccess('superadmin') || $postuserid == Yii::app()->session['loginID'] ||
+        ($sresultcount > 0 && App()->user->checkAccess('users', ['crud' => 'update']))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
         )
         {
             $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
@@ -476,14 +476,14 @@ class UserAction extends Survey_Common_Action
         }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
         if ($iUserID) {//Never update 1st admin
-            if(Permission::model()->hasGlobalPermission('superadmin','read'))
+            if(App()->user->checkAccess('superadmin'))
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID));
             else
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
         }
         // Check permissions
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-        if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+        if (!App()->user->checkAccess('superadmin')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
         {
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
             $aFilteredPermissions=array();
@@ -502,7 +502,7 @@ class UserAction extends Survey_Common_Action
             $aBasePermissions=$aFilteredPermissions;
         }
 
-        if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
+        if ($oUser && (App()->user->checkAccess('superadmin') || App()->user->checkAccess('users', ['crud' => 'update']) &&  Yii::app()->session['loginID'] != $iUserID) )
         {
             // Only the original superadmin (UID 1) may create new superadmins
             if (Yii::app()->session['loginID']!=1)
@@ -557,7 +557,7 @@ class UserAction extends Survey_Common_Action
         $postuserid = (int) Yii::app()->request->getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
-        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','update'))
+        if (App()->user->checkAccess('superadmin') || App()->user->checkAccess('templates', ['crud' => 'update']))
         {
             $aTemplatePermissions = array();
             $tresult = Template::model()->findAll();

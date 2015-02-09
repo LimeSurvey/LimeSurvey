@@ -237,7 +237,11 @@ use Plugin;
                     throw new \Exception("Only simple");
                 }                   
             }
-            return $this->plugins[$pluginConfig->id];
+            return $this->getPlugin($pluginConfig->id);
+        }
+        
+        public function getPlugin($id) {
+            return $this->plugins[$id];
         }
         
         /**
@@ -258,8 +262,9 @@ use Plugin;
          */
         public function loadPlugins()
         {
-            array_map([$this, 'loadPlugin'], PluginConfig::findAll());
+            $result = array_map([$this, 'loadPlugin'], PluginConfig::findAll());
             $this->dispatchEvent(new PluginEvent('afterPluginLoad'));    // Alow plugins to do stuff after all plugins are loaded
+            return $result;
         }
         
         public function registerNamespaces() 

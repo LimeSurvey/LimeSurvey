@@ -66,7 +66,6 @@
             // Add default form class.
             $this->formHtmlOptions['class'] = isset($this->formHtmlOptions['class']) ? $this->formHtmlOptions['class'] . " settingswidget form-horizontal" : 'settingswidget form-horizontal';
 
-
             // Start form
             $this->beginForm();
         }
@@ -76,8 +75,6 @@
             $htmlOptions = array_merge([
                 'type' => 'submit'
             ], $this->htmlOptions($metaData, null));
-
-            var_dump($htmlOptions);
             switch($htmlOptions['type']) {
                 case 'link':
                     var_dump( array_merge($htmlOptions, ['url' => $metaData['href']]));
@@ -186,7 +183,7 @@
         public function fixMetaData($name,$metaData){
 
             $defaults = array(
-                'class' => array(),
+                'class' => [],
                 'htmlOptions'=>array(),
                 'type' => 'string',
                 'htmlOptions' => array(),
@@ -394,28 +391,36 @@
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $htmlOptions = $this->htmlOptions($metaData,$form,array('size'=>50));
-            return CHtml::textField($name, $value, $htmlOptions);
+            return TbHtml::textField($name, $value, $htmlOptions);
+        }
+        public function renderHidden($name, array $metaData, $form = null)
+        {
+            $value = isset($metaData['current']) ? $metaData['current'] : '';
+            $htmlOptions = $this->htmlOptions($metaData,$form,array('size'=>50));
+            return CHtml::hiddenField($name, $value, $htmlOptions);
         }
 
         public function renderEmail($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $htmlOptions = $this->htmlOptions($metaData,$form,array('size'=>50));
-            return CHtml::emailField($name, $value, $htmlOptions);
+            return TbHtml::emailField($name, $value, $htmlOptions);
         }
 
         public function renderText($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $htmlOptions = $this->htmlOptions($metaData,$form);
-            return CHtml::textArea($name, $value, $htmlOptions);
+            return TbHtml::textArea($name, $value, $htmlOptions);
         }
+        
+        
 
         public function renderPassword($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             $htmlOptions = $this->htmlOptions($metaData,$form,array('autocomplete'=>'off','size'=>50));
-            return CHtml::passwordField($name,$value,$htmlOptions);
+            return TbHtml::passwordField($name,$value,$htmlOptions);
         }
 
         public function renderLink($name, array $metaData, $form = null)
@@ -423,7 +428,7 @@
             $metaData['class'][] = 'btn btn-link';
             $metaData['text']=isset($metaData['text'])?$metaData['text']:$metaData['label'];
             $htmlOptions = $this->htmlOptions($metaData,$form,array('id' => $name));
-            return CHtml::link($metaData['text'], $metaData['link'], $htmlOptions);
+            return TbHtml::link($metaData['text'], $metaData['link'], $htmlOptions);
         }
 
         public function renderList($name, array $metaData, $form = null)
@@ -491,8 +496,11 @@
             if(!empty($metaData['style']) && is_string($metaData['style']))
                 $htmlOptions['style']=$metaData['style'];
             if (isset($metaData['readOnly']))
-                $metaData['htmlOptions']["readonly"]= $metaData['readOnly'];
-
+                $htmlOptions["readonly"]= $metaData['readOnly'];
+            if (isset($metaData['color']))
+                $htmlOptions["color"]= $metaData['color'];
+            if (isset($metaData['name']))
+                $htmlOptions["name"]= $metaData['name'];
             return array_merge(array('form'=>$form),$aDefault,$htmlOptions,$aForced);
         }
     }

@@ -7,7 +7,7 @@ $aReplacementData=array();
 <div class='menubar-main'>
     <div class='menubar-left'>
         <img id='separator16' src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
+        <?php if(App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
             {
             ?>
                 <a accesskey='q' id='questionpreviewlink' ' href="<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>" target="_blank">
@@ -33,7 +33,7 @@ $aReplacementData=array();
                 <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php eT("Edit Current Question"); ?>' /></a>
             <?php } ?>
 
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
+        <?php if(App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
             { ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt=''  />
             <a target='_blank' href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>">
@@ -100,7 +100,7 @@ $aReplacementData=array();
 
 
 
-            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
+            if(App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
@@ -116,7 +116,7 @@ $aReplacementData=array();
 
 
 
-            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
+            if(App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]) && $qtypes[$qrrow['type']]['answerscales'] > 0)
             { ?>
             <a href='<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>answers.png' alt='<?php eT("Edit answer options for this question"); ?>' /></a>
@@ -129,7 +129,7 @@ $aReplacementData=array();
 
 
 
-            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
+            if(App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]) && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
             <a href='<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'>
                 <img src='<?php echo $sImageURL; ?>defaultanswers.png' alt='<?php eT("Edit default answers for this question"); ?>' /></a>

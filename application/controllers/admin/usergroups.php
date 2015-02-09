@@ -42,7 +42,7 @@ class Usergroups extends Survey_Common_Action
 
             // user must be in user group or superadmin
             $result = UserInGroup::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
-            if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (count($result) > 0 || App()->user->checkAccess('superadmin'))
             {
                 $criteria = new CDbCriteria;
                 $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
@@ -127,7 +127,7 @@ class Usergroups extends Survey_Common_Action
         $aViewUrls = array();
         $aData = array();
 
-        if (Permission::model()->hasGlobalPermission('usergroups','delete')) {
+        if (App()->user->checkAccess('usergroups', ['crud' => 'delete'])) {
 
             if (!empty($ugid) && ($ugid > -1)) {
                 $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
@@ -161,7 +161,7 @@ class Usergroups extends Survey_Common_Action
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
 
-        if (Permission::model()->hasGlobalPermission('usergroups','create')) {
+        if (App()->user->checkAccess('usergroups', ['crud' => 'create'])) {
 
             if ($action == "usergroupindb") {
                 $db_group_name = flattenText($_POST['group_name'],false,true,'UTF-8',true);
@@ -206,7 +206,7 @@ class Usergroups extends Survey_Common_Action
         $ugid = (int)$ugid;
         
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
-        if (Permission::model()->hasGlobalPermission('usergroups','update')) {
+        if (App()->user->checkAccess('usergroups',['crud' => 'update'])) {
             if ($action == "editusergroupindb") {
 
                 $ugid = (int)$_POST['ugid'];
@@ -295,7 +295,7 @@ class Usergroups extends Survey_Common_Action
 
                     //	output users
                     $userloop[$row]["rowclass"] = $bgcc;
-                    if (Permission::model()->hasGlobalPermission('superadmin','update')) {
+                    if (App()->user->checkAccess('superadmin', ['crud' => 'update']) {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;
@@ -329,7 +329,7 @@ class Usergroups extends Survey_Common_Action
 
     function user($ugid, $action = 'add')
     {
-        if (!Permission::model()->hasGlobalPermission('usergroups','read') || !in_array($action, array('add', 'remove')))
+        if (!App()->user->checkAccess('usergroups') || !in_array($action, array('add', 'remove')))
         {
             die('access denied');
         }

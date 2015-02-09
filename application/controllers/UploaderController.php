@@ -112,7 +112,6 @@ class UploaderController extends SurveyController {
                    $_SESSION[$sFieldName] = ls_json_encode($aFiles);
                 }
             }
-            //var_dump($sFileDir.$sFilename);
             // Return some json to do a beautiful text
             if (@unlink($sFileDir.$sFileName))
             {

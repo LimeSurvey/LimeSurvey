@@ -454,7 +454,7 @@ class responses extends Survey_Common_Action
 
 
 #        Yii::app()->loadHelper('surveytranslator');
-        $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
+        $aData['issuperadmin'] = App()->user->checkAccess('superadmin');
         $aData['surveyid']= $iSurveyID;
         $aData['column_model_txt']= $column_model_txt;
         $aData['column_names_txt']= $column_names_txt;

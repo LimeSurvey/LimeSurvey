@@ -413,7 +413,7 @@ class tokens extends Survey_Common_Action
         $bCreatePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create');
         $bTokenUpdatePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update');
         $bTokenDeletePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete');
-        $bGlobalPanelReadPermission = Permission::model()->hasGlobalPermission('participantpanel','read');
+        $bGlobalPanelReadPermission = App()->user->checkAccess('participantpanel');
         foreach ($tokens as $token)
         {
             $aRowToAdd = array();

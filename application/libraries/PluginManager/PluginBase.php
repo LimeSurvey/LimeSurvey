@@ -3,7 +3,7 @@ namespace ls\pluginmanager;
 /**
  * Base class for plugins.
  */
-abstract class PluginBase implements iPlugin {
+abstract class PluginBase extends \CComponent implements iPlugin {
     use PluginTrait;
     /**
      *
@@ -16,6 +16,7 @@ abstract class PluginBase implements iPlugin {
     private $store = null;
     protected $settings = array();
 
+    public $name;
     /**
      * This holds the pluginmanager that instantiated the plugin
      * 

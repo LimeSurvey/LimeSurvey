@@ -12,7 +12,7 @@
     "events" : [
         "beforeLogin",
         "newUserSession",
-        "newLoginForm"
+        "beforeLoginForm"
     ],
     "apiVersion" : "1.0"
 }

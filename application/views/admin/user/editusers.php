@@ -8,7 +8,7 @@
             <th style='width:15%'><?php eT("Username");?></th>
             <th style='width:20%'><?php eT("Email");?></th>
             <th style='width:20%'><?php eT("Full name");?></th>
-            <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+            <?php if(App()->user->checkAccess('superadmin')) { ?>
                 <th style='width:5%'><?php eT("No of surveys");?></th>
                 <?php } ?>
             <th style='width:15%'><?php eT("Created by");?></th>
@@ -21,7 +21,7 @@
                     <input type='hidden' name='uid' value='<?php echo htmlspecialchars($usrhimself['uid']);?>' />
                 </form>
 
-                <?php if ($usrhimself['parent_id'] != 0 && Permission::model()->hasGlobalPermission('users','delete') ) { ?>
+                <?php if ($usrhimself['parent_id'] != 0 && App()->user->checkAccess('users', ['crud' => 'delete']) ) { ?>
                 <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post', array('onsubmit'=>'return confirm("'.gT("Are you sure you want to delete this entry?","js").'")') );?>            
                         <input type='image' src='<?php echo $imageurl;?>token_delete.png' alt='<?php eT("Delete this user");?>' />
                         <input type='hidden' name='action' value='deluser' />
@@ -37,7 +37,7 @@
             <td><strong><?php echo htmlspecialchars($usrhimself['email']);?></strong></td>
             <td><strong><?php echo htmlspecialchars($usrhimself['full_name']);?></strong></td>
 
-            <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+            <?php if(App()->user->checkAccess('superadmin')) { ?>
                 <td><strong><?php echo $noofsurveys;?></strong></td>
                 <?php } ?>
 
@@ -54,7 +54,7 @@
             <tr>
 
                 <td style='padding:3px;'>          
-                    <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || $usr['uid'] == Yii::app()->session['loginID'] || (Permission::model()->hasGlobalPermission('users','update') && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
+                    <?php if (App()->user->checkAccess('superadmin') || $usr['uid'] == Yii::app()->session['loginID'] || (App()->user->checkAccess('users', ['crud' => 'update']) && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php eT("Edit this user");?>' />
                             <input type='hidden' name='action' value='modifyuser' />
@@ -62,9 +62,9 @@
                         </form>
                         <?php } ?>
 
-                    <?php if ( ((Permission::model()->hasGlobalPermission('superadmin','read') &&
+                    <?php if ( ((App()->user->checkAccess('superadmin') &&
                         $usr['uid'] != Yii::app()->session['loginID'] ) ||
-                        (Permission::model()->hasGlobalPermission('users','update') &&
+                        (App()->user->checkAccess('users', ['crud' => 'update']) &&
                         $usr['parent_id'] == Yii::app()->session['loginID'])) && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setuserpermissions'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>security_16.png' alt='<?php eT("Set global permissions for this user");?>' />
@@ -73,7 +73,7 @@
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php }
-                        if ((Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read'))  && $usr['uid']!=1) { ?>
+                        if ((App()->user->checkAccess('superadmin') || App()->user->checkAccess('templates'))  && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setusertemplates'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>templatepermissions_small.png' alt='<?php eT("Set template permissions for this user");?>' />
                             <input type='hidden' name='action' value='setusertemplates' />
@@ -81,7 +81,7 @@
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php }
-                        if ((Permission::model()->hasGlobalPermission('superadmin','read') || (Permission::model()->hasGlobalPermission('users','delete')  && $usr['parent_id'] == Yii::app()->session['loginID']))&& $usr['uid']!=1) { ?>
+                        if ((App()->user->checkAccess('superadmin') || (App()->user->checkAccess('users', ['crud' => 'delete'])  && $usr['parent_id'] == Yii::app()->session['loginID']))&& $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>token_delete.png' alt='<?php eT("Delete this user");?>' onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' />
                             <input type='hidden' name='action' value='deluser' />
@@ -104,7 +104,7 @@
                 <td><a href='mailto:<?php echo htmlspecialchars($usr['email']);?>'><?php echo htmlspecialchars($usr['email']);?></a></td>
                 <td><?php echo htmlspecialchars($usr['full_name']);?></td>
 
-                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+                <?php if(App()->user->checkAccess('superadmin')) { ?>
                     <td><?php echo $noofsurveyslist[$i];?></td>
                 <?php } ?>
 
@@ -125,7 +125,7 @@
             <?php $row++;
         } ?>
     </tbody></table><br />
-<?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','create')) { ?>
+<?php if(App()->user->checkAccess('superadmin') || App()->user->checkAccess('users', ['crud' => 'create'])) { ?>
     <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post');?>            
         <table class='users'><tr class='oddrow'>
                 <th><?php eT("Add user:");?></th>

@@ -29,43 +29,27 @@ class PluginsController extends LSYii_Controller
 
     public function accessRules()
     {
-        $aRules = array(
-            array('allow', 'roles' => array('superadmin')),
-            array('allow', 'actions' => array('direct')),
-            array('deny')
-        );
+        $rules = [
+            ['allow', 'roles' => ['superadmin']],
+            ['allow', 'actions' => ['direct']],
+            ['deny']
+        ];
 
 
         // Note the order; rules are numerically indexed and we want to
         // parents rules to be executed only if ours dont apply.
-        return array_merge($aRules, parent::accessRules());
+        return array_merge($rules, parent::accessRules());
     }
 
     public function actionActivate($id)
     {
-        $oPlugin = Plugin::model()->findByPk($id);
-        if (!is_null($oPlugin))
-        {
-            $iStatus = $oPlugin->active;
-            if ($iStatus == 0)
-            {
-                // Load the plugin:
-                App()->getPluginManager()->loadPlugin($oPlugin->name, $id);
-                $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $oPlugin->name);
-                if ($result->get('success', true))
-                {
-                    $iStatus = 1;
-                } else
-                {
-                    $sMessage = $result->get('message', gT('Failed to activate the plugin.'));
-                    App()->user->setFlash('pluginActivation', $sMessage);
-                    $this->redirect(array('plugins/'));
-                }
+        foreach (App()->pluginManager->scanPlugins() as $pluginConfig) {
+            if ($pluginConfig->id === $id) {
+                $pluginConfig->active = true;
+                $pluginConfig->save();
             }
-            $oPlugin->active = $iStatus;
-            $oPlugin->save();
         }
-        $this->redirect(array('plugins/'));
+        $this->redirect(['plugins/']);
     }
 
     public function actionConfigure($id)
@@ -76,9 +60,6 @@ class PluginsController extends LSYii_Controller
         if (App()->request->isPostRequest) {
             $plugin->saveSettings(App()->request->getPost($plugin->id));
         }
-//        var_dump($settings);
-//            var_dump($plugin);
-//            die();
 //        if ($arPlugin === null)
 //        {
 //            Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
@@ -166,11 +147,21 @@ class PluginsController extends LSYii_Controller
         }
     }
 
+    public function actionSetAuthorizer() {
+        if (App()->request->isPostRequest && null !== $id = App()->request->getParam('authorizationPlugin')) {
+            $plugin = App()->pluginManager->getPlugin($id);
+            if ($plugin instanceof IAuthManager) {
+                App()->setConfig('authorizationPlugin', App()->request->getParam('authorizationPlugin'));
+            }
+        }
+        $this->redirect(['plugins/index']);
+    }
     public function actionIndex()
     {
         
         $plugins = new CArrayDataProvider(App()->pluginManager->scanPlugins());
-        return $this->render('index', ['plugins' => $plugins]);
+        $loadedPlugins = App()->pluginManager->loadPlugins();
+        return $this->render('index', ['plugins' => $plugins, 'loadedPlugins' => $loadedPlugins]);
     }
 
     public function filters()

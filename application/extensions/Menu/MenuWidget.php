@@ -55,7 +55,7 @@
                 'image' => 'home.png',
             );
             $menu['items']['left'][] = 'separator';
-            if(Permission::model()->hasGlobalPermission('users','read'))
+            if(App()->user->checkAccess('users'))
             {
                 $menu['items']['left'][] = array(
                     'href' => array('admin/user'),
@@ -531,7 +531,7 @@
         
         protected function globalSettings()
         {
-            if (Permission::model()->hasGlobalPermission('settings','read'))
+            if (App()->user->checkAccess('settings'))
             {
                 return array(
                     'href' => array('admin/globalsettings'),
@@ -543,7 +543,7 @@
 
         protected function checkIntegrity()
         {
-            if (Permission::model()->hasGlobalPermission('settings','read'))
+            if (App()->user->checkAccess('settings'))
             {
                 return array(
                     'href' => array('admin/checkintegrity'),
@@ -556,7 +556,7 @@
         
         protected function createSurvey()
         {
-            if (Permission::model()->hasGlobalPermission('surveys','create'))
+            if (App()->user->checkAccess('surveys', ['crud' => 'create']))
             {
                 return array(
                     'href' => array('admin/survey', 'sa' => 'newsurvey'),
@@ -567,7 +567,7 @@
         }
         protected function dumpDatabase()
         {
-            if (Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (App()->user->checkAccess('superadmin'))
             {
                 if (in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demo_mode') == true)
                 {
@@ -590,7 +590,7 @@
 
         protected function editLabels()
         {
-            if (Permission::model()->hasGlobalPermission('labelsets','read'))
+            if (App()->user->checkAccess('labelsets'))
             {
                 return array(
                     'href' => array('admin/labels', 'sa' => 'view'),
@@ -602,7 +602,7 @@
 
         protected function editTemplates()
         {
-            if (Permission::model()->hasGlobalPermission('templates','read'))
+            if (App()->user->checkAccess('templates'))
             {
                 return array(
                     'href' => array('admin/templates/'),
@@ -614,7 +614,7 @@
         
         protected function userGroups()
         {
-            if(Permission::model()->hasGlobalPermission('usergroups','read'))
+            if(App()->user->checkAccess('usergroups'))
             {
                 return array(
                     'href' => array('admin/usergroups', 'sa' => 'index'),
@@ -626,7 +626,7 @@
 
         protected function participantDatabase()
         {
-            if (Permission::model()->hasGlobalPermission('participantpanel','read'))
+            if (App()->user->checkAccess('participantpanel'))
             {
                 return array(
                     'alt' => gT('Central participant database/panel'),
@@ -638,7 +638,7 @@
         
         protected function pluginManager()
         {
-            if (Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (App()->user->checkAccess('superadmin'))
             {
                 return array(
                     'href' => array('/plugins'),

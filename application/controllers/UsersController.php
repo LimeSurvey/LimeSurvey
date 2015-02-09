@@ -17,11 +17,26 @@ class UsersController extends LSYii_Controller
     }
 
     public function actionLogin() {
-        // Get all active auth plugins.
-        $event = new PluginEvent('newLoginForm');
-        $event->dispatch();
-        $loginForms = $event->get('forms');
-        return $this->render('login', ['loginForms' => $loginForms]);
+        $request = Yii::app()->request;
+        if ($request->getParam('_logintype') !== null) {
+            $plugin = App()->pluginManager->getPlugin($request->getParam('_logintype'));
+            if ($plugin instanceof \ls\pluginmanager\AuthPluginBase) {
+                $identity = new PluginIdentity($plugin);
+                if ($identity->authenticate());
+                
+                App()->user->login($identity);
+                $this->redirect(App()->user->returnUrl);
+            }
+        } else {
+            // Get all active auth plugins.
+            $event = new PluginEvent('beforeLoginForm');
+            $event->dispatch();
+            return $this->render('login', ['loginForms' => $event->get('forms', [])]);
+        }
+    }
+    
+    public function actionLogout() {
+        App()->user->logout();
     }
 
 }

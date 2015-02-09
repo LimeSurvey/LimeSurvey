@@ -172,7 +172,7 @@
                     <div class="action-buttons">
                         <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php eT('Predefined label sets...'); ?></button>
                         <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php eT('Quick add...'); ?></button>
-                        <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')){ ?>
+                        <?php if(App()->user->checkAccess('superadmin') || App()->user->checkAccess('labelsets', ['crud' => 'create'])){ ?>
                         <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php eT('Save as label set'); ?></button>
                         <?php } ?>
                     </div>

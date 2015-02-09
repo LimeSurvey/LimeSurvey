@@ -16,9 +16,6 @@ abstract class AuthPluginBase extends PluginBase {
     const ERROR_UNKNOWN_HANDLER = 99;
     const ERROR_UNKNOWN_IDENTITY = 100;
     
-    protected $_username = null;
-    protected $_password = null;
-    
     /**
      * Get the password (if set)
      * 
@@ -70,60 +67,5 @@ abstract class AuthPluginBase extends PluginBase {
         return $this;
     }
     
-    /**
-     * Set authentication result to failure.
-     * 
-     * @param int $code Any of the constants defined in this class
-     * @param string $message An optional message to return about the failure
-     * @return AuthPluginBase
-     */
-    public function setAuthFailure($code = self::ERROR_UNKNOWN_IDENTITY, $message = '')
-    {
-        $event = $this->getEvent();
-        $identity = $this->getEvent()->get('identity');
-        $identity->id = null;
-        $event->set('result', new LSAuthResult($code, $message));
-        
-        return $this;
-    }
-    
-    /**
-     * Set this plugin to handle the authentication
-     * 
-     * @return AuthPluginBase
-     */
-    public function setAuthPlugin(PluginEvent $event)
-    {
-        $identity = $this->getEvent()->get('identity');
-        $identity->plugin = get_class($this);
-        $this->getEvent()->stop();
-        
-        return $this;
-    }
-    
-    /**
-     * Set the password to use for authentication
-     * 
-     * @param string $password
-     * @return AuthPluginBase
-     */
-    protected function setPassword($event, $password)
-    {
-        $this->_password = $password;
-        $event->get('identity')->password = $password;
-        return $this;
-    }
-    
-    /**
-     * Set the username to use for authentication
-     * 
-     * @param string $username The username
-     * @return AuthPluginBase
-     */
-    protected function setUsername($event, $username)
-    {
-        $this->_username = $username;
-        $identity = $event->get('identity')->username = $username;
-        return $this;
-    }
+    abstract public function authenticate(\CHttpRequest $request);
 }

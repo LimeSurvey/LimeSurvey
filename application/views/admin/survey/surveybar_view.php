@@ -149,7 +149,7 @@
                 </li>
             <?php } ?> 
             
-            <?php if($surveyexport || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
+            <?php if($surveyexport || App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid])) { ?>
             <li><a href='#'>
                     <img src='<?php echo $sImageURL;?>display_export.png' alt='<?php eT("Display / Export");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
                     <ul>
@@ -185,7 +185,7 @@
 
                         </ul>
                     </li>
-                    <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
+                    <?php if(App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid])) { ?>
                         <?php if($onelanguage) { ?>
                             <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>print_30.png' alt='' /> <?php eT("Printable version");?></a></li>
