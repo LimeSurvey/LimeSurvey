@@ -57,21 +57,27 @@ class Template extends LSActiveRecord
     * Filter the template name : test if template if exist
     *
     * @param string $sTemplateName
+    * @return string existing $sTemplateName
     */
     public static function templateNameFilter($sTemplateName)
     {
-        $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-        $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-        $sTemplateName=empty($sTemplateName) ? Yii::app()->getConfig('defaulttemplate') : $sTemplateName;
+        $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
+        $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
 
-        if (is_dir("{$usertemplaterootdir}/{$sTemplateName}/"))
+        if (is_dir(Yii::app()->getConfig('usertemplaterootdir')."/{$sTemplateName}/"))
         {
             return $sTemplateName;
         }
-        elseif (is_dir("{$standardtemplaterootdir}/{$sTemplateName}/"))
+        if (is_dir(Yii::app()->getConfig('standardtemplaterootdir')."/{$sTemplateName}/"))
         {
             return $sTemplateName;
         }
+
+        // If needed recall the function widt default template
+        if($sTemplateName!=$sDefaulttemplate)
+            return self::templateNameFilter($sDefaulttemplate);
+
+        // Last solution is default
         return 'default';
     }
 
@@ -123,39 +129,39 @@ class Template extends LSActiveRecord
 
     public static function getTemplateList()
     {
-    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-    $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
+        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+        $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
 
-    $aTemplateList=array();
+        $aTemplateList=array();
 
-    if ($handle = opendir($standardtemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
+        if ($handle = opendir($standardtemplaterootdir))
         {
-            // Why not return directly standardTemplate list ?
-            if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
+            while (false !== ($file = readdir($handle)))
             {
-                $aTemplateList[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                // Why not return directly standardTemplate list ?
+                if (!is_file("$standardtemplaterootdir/$file") && self::isStandardTemplate($file))
+                {
+                    $aTemplateList[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                }
             }
+            closedir($handle);
         }
-        closedir($handle);
-    }
 
-    if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
+        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir))
         {
-            // Maybe $file[0] != "." to hide Linux hidden directory
-            if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+            while (false !== ($file = readdir($handle)))
             {
-                $aTemplateList[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                // Maybe $file[0] != "." to hide Linux hidden directory
+                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+                {
+                    $aTemplateList[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                }
             }
+            closedir($handle);
         }
-        closedir($handle);
-    }
-    ksort($aTemplateList);
+        ksort($aTemplateList);
 
-    return $aTemplateList;
+        return $aTemplateList;
     }
 
     /**
@@ -167,18 +173,19 @@ class Template extends LSActiveRecord
     */
     public static function isStandardTemplate($sTemplateName)
     {
-        return in_array($sTemplateName,array(
-            'basic',
-            'bluengrey',
-            'business_grey',
-            'citronade',
-            'clear_logo',
-            'default',
-            'eirenicon',
-            'limespired',
-            'mint_idea',
-            'sherpa',
-            'vallendar',
+        return in_array($sTemplateName,
+            array(
+                'basic',
+                'bluengrey',
+                'business_grey',
+                'citronade',
+                'clear_logo',
+                'default',
+                'eirenicon',
+                'limespired',
+                'mint_idea',
+                'sherpa',
+                'vallendar',
             )
         );
     }
