@@ -205,7 +205,6 @@ use Plugin;
 
                     }
                 }
-                \Yii::app()->cache->set($cacheKey, $plugins, 3600);
             }
 
             return $result;

@@ -1,5 +1,6 @@
 <?php 
 namespace ls\pluginmanager;
+use Yii;
 use User;
     /**
     * Class exposing a Limesurvey API to plugins.
