@@ -37,8 +37,18 @@ use Plugin;
         public function init() {
             parent::init();
             PluginConfig::$pluginManager = $this;
-            $this->registerNamespaces();
-            $this->loadPlugins();
+            if (empty($this->loadPlugins(true))) {
+                foreach($this->scanPlugins() as $config) {
+                    if (in_array($config->id, [
+                        'ls_core_plugins_AuthDb',
+                        'ls_core_plugins_PermissionDb'
+                    ])) {
+                        $config->active = true;
+                        $config->save();
+                    }
+                }
+                $this->loadPlugins(true);
+            }
         }
         /**
          * Return a list of installed plugins, but only if the files are still there
@@ -230,6 +240,8 @@ use Plugin;
          */
         public function loadPlugin(PluginConfig $pluginConfig)
         {
+            
+            $pluginConfig->registerNamespace($this->loader);
             if (!isset($this->plugins[$pluginConfig->id])) {
                 if ($pluginConfig->type == 'simple') {
                     $this->plugins[$pluginConfig->id] = $this->loadSimplePlugin($pluginConfig);
@@ -263,21 +275,14 @@ use Plugin;
          * For instance 'survey' for runtime or 'admin' for backend. This needs
          * some thinking before implementing.
          */
-        public function loadPlugins()
+        public function loadPlugins($refresh = false)
         {
-            $result = array_map([$this, 'loadPlugin'], PluginConfig::findAll());
+            $result = array_map([$this, 'loadPlugin'], PluginConfig::findAll(true, $refresh));
             $this->dispatchEvent(new PluginEvent('afterPluginLoad'));    // Alow plugins to do stuff after all plugins are loaded
             return $result;
         }
         
-        public function registerNamespaces() 
-        {
-            foreach (PluginConfig::findAll() as $pluginConfig) {
-                $pluginConfig->registerNamespace($this->loader);
-            }   
-        }
-        
-        public function getAuthenticators($activeOnly = false) {
+       public function getAuthenticators($activeOnly = false) {
             $result = array_filter($this->loadPlugins(), function ($plugin) {
                 return $plugin instanceOf AuthPluginBase;
             });

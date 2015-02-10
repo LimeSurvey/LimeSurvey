@@ -38,8 +38,8 @@ class PluginConfig extends \CFormModel
         }
     }
     
-    protected static function loadPluginConfig() {
-        if (!isset(self::$pluginConfig)) {
+    protected static function loadPluginConfig($refresh = false) {
+        if (!isset(self::$pluginConfig) || $refresh) {
             $file = \Yii::getPathOfAlias('application.config') . '/plugins.php';
             self::$pluginConfig = file_exists($file) ? include($file) : [];
         }
@@ -115,9 +115,9 @@ class PluginConfig extends \CFormModel
      * 
      * @return self[]
      */
-    public static function findAll($activeOnly = true) {
-        if (!isset(self::$plugins)) {
-            self::loadPluginConfig();
+    public static function findAll($activeOnly = true, $refresh = false) {
+        if (!isset(self::$plugins) || $refresh) {
+            self::loadPluginConfig($refresh);
             $plugins = [];
             foreach(self::$pluginConfig as $config) {
                 $instance = new self($config);
