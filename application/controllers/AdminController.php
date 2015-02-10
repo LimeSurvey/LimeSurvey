@@ -16,6 +16,10 @@ class AdminController extends LSYii_Controller
 {
     public $layout = false;
     protected $user_id = 0;
+    
+    public function actionIndex() {
+        $this->redirect(['surveys/index']);
+    }
 
     /**
     * Initialises this controller, does some basic checks and setups
@@ -199,7 +203,6 @@ class AdminController extends LSYii_Controller
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
         'limereplacementfields' => 'limereplacementfields',
-        'index'            => 'index',
         'labels'           => 'labels',
         'participants'     => 'participantsaction',
         'printablesurvey'  => 'printablesurvey',
