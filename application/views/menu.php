@@ -130,7 +130,7 @@
             ],
             [
                 'title' => gT('Logout') . ' ' . App()->user->name,
-                'url' => ['admin/authentication/sa/logout'],
+                'url' => ['users/logout'],
                 'icon' => 'off'
             ], [
                 'title' => gT('Preferences'),

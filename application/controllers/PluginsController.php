@@ -34,8 +34,6 @@ class PluginsController extends LSYii_Controller
             ['allow', 'actions' => ['direct']],
             ['deny']
         ];
-
-
         // Note the order; rules are numerically indexed and we want to
         // parents rules to be executed only if ours dont apply.
         return array_merge($rules, parent::accessRules());

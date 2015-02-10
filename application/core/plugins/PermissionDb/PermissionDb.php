@@ -17,14 +17,12 @@ class PermissionDb extends PluginBase implements \IAuthManager
     }
 
     public function checkAccess($itemName, $userId, $params = array()) {
-        return true;
         $defaults = [
             'entity' => 'global',
             'entity_id' => 0,
             'crud' => 'read'
         ];
         $params = array_merge($defaults, $params);
-        
         return \Permission::model()->hasPermission($params['entity_id'], $params['entity'], $itemName, $params['crud'], $userId);
     }
 
