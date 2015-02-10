@@ -131,15 +131,18 @@ class PluginConfig extends \CFormModel
 
     }
     public static function scan($directory) {
-        $iterator = new \RecursiveDirectoryIterator($directory, 
-            \FilesystemIterator::CURRENT_AS_PATHNAME +
-            \FilesystemIterator::KEY_AS_FILENAME + 
-            \FilesystemIterator::SKIP_DOTS +
-            \FilesystemIterator::UNIX_PATHS
-        );
-        foreach(new \RecursiveIteratorIterator($iterator) as $fileName => $filePath) {
-            if (strcmp($fileName, 'limesurvey.json') == 0) {
-                $result[] = $filePath;
+        $result = [];
+        if (is_dir($directory)) {
+            $iterator = new \RecursiveDirectoryIterator($directory, 
+                \FilesystemIterator::CURRENT_AS_PATHNAME +
+                \FilesystemIterator::KEY_AS_FILENAME + 
+                \FilesystemIterator::SKIP_DOTS +
+                \FilesystemIterator::UNIX_PATHS
+            );
+            foreach(new \RecursiveIteratorIterator($iterator) as $fileName => $filePath) {
+                if (strcmp($fileName, 'limesurvey.json') == 0) {
+                    $result[] = $filePath;
+                }
             }
         }
         return $result;
