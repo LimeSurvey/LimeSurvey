@@ -26,14 +26,15 @@ class UsersController extends LSYii_Controller
             if ($identity->authenticate()) {
                 App()->user->login($identity);
                 $this->redirect(App()->user->getReturnUrl(['admin/']));
+            } else {
+                App()->user->setFlash('error', gT("Authentication failed."));
             }
-        } else {
-            // Get all active auth plugins.
-            $forms = array_map(function(\ls\pluginmanager\AuthPluginBase $authenticator) {
-                return $authenticator->getLoginSettings();
-            }, $authenticators);
-            return $this->render('login', ['loginForms' => $forms]);
-        }
+        } 
+        // Get all active auth plugins.
+        $forms = array_map(function(\ls\pluginmanager\AuthPluginBase $authenticator) {
+            return $authenticator->getLoginSettings();
+        }, $authenticators);
+        return $this->render('login', ['loginForms' => $forms]);
     }
     
     public function actionLogout() {
