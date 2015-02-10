@@ -40,7 +40,8 @@ class PluginConfig extends \CFormModel
     
     protected static function loadPluginConfig() {
         if (!isset(self::$pluginConfig)) {
-            self::$pluginConfig = include(\Yii::getPathOfAlias('application.config') . '/plugins.php');
+            $file = \Yii::getPathOfAlias('application.config') . '/plugins.php';
+            self::$pluginConfig = file_exists($file) ? include($file) : [];
         }
     }
     public function loadJsonFile($configFile) {

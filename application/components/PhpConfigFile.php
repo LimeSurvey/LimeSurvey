@@ -17,7 +17,7 @@ class PhpConfigFile extends CComponent{
     }
     
     public function getFileConfig() {
-        return include $this->file;
+        return file_exists($this->file) ? include($this->file) : [];
     }
     
     public function getConfig() {
