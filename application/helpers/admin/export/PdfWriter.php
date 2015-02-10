@@ -70,8 +70,7 @@ class PdfWriter extends Writer
                 {
                     if (isset($values[$question['index']]) && isset($headers[$question['index']]))
                     {
-                        $qidattributes = getQuestionAttributeValues($question['qid']);
-                        if (isset($qidattributes['num_value_int_only']) && trim($qidattributes['num_value_int_only']) == "1")
+                        if ($question['type'] == 'N' || $question['type'] == 'K')
                         {
                             $sAuxValue=number_format(floatval($values[$question['index']]), 0, '', '');
                             $this->pdf->addAnswer($headers[$question['index']], $sAuxValue, false);
