@@ -340,6 +340,7 @@ $config['alternatepdffontfile']=array(
     'el'=>'dejavusans',
     'he'=>'freesans',
     'hi'=>'dejavusans',
+    'hr'=>'dejavusans',
     'hu'=>'dejavusans',
     'ja'=>'cid0jp',
     'ko'=>'cid0kr',
@@ -353,7 +354,6 @@ $config['alternatepdffontfile']=array(
     'ro'=>'dejavusans',
     'ru'=>'dejavusans',
     'sr'=>'dejavusans',
-    'hr'=>'freesans',
 );
 /**
 *  $notsupportlanguages - array of language where no font was found for PDF
