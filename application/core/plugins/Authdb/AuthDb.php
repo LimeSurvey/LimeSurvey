@@ -14,14 +14,6 @@ class AuthDb extends AuthPluginBase
     {
     }
 
-    public function eventBeforeDeactivate(PluginEvent $event)
-    {
-        $event->set('success', false);
-
-        // Optionally set a custom error message.
-        $event->set('message', gT('Core plugin can not be disabled.'));
-    }
-
     public function eventBeforeLogin(PluginEvent $event)
     {
         $event->set('default', get_class($this));   // This is the default login method, should be configurable from plugin settings
@@ -46,9 +38,9 @@ class AuthDb extends AuthPluginBase
         return $this->_onepass;
     }
 
-    public function eventBeforeLoginForm(PluginEvent $event)
+    public function getLoginSettings()
     {
-        $event->set('forms.' . $this->id, [
+        return [
             'label' => $this->name,
             'settings' => [
                 'username' => [
@@ -60,8 +52,7 @@ class AuthDb extends AuthPluginBase
                     'label' => gT("Password"),
                 ],
             ]
-        ]);
-        return;
+        ];
     }
 
     public function eventNewUserSession(PluginEvent $event)

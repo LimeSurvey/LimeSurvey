@@ -60,68 +60,25 @@ class PluginsController extends LSYii_Controller
         if (App()->request->isPostRequest) {
             $plugin->saveSettings(App()->request->getPost($plugin->id));
         }
-//        if ($arPlugin === null)
-//        {
-//            Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
-//            $this->redirect(array('plugins/'));
-//        }
-//        
-//        // If post handle data, yt0 seems to be the submit button
-//        if (App()->request->isPostRequest)
-//        {
-//
-//            $aSettings = $oPluginObject->getPluginSettings(false);
-//            $aSave     = array();
-//            foreach ($aSettings as $name => $setting)
-//            {
-//                $aSave[$name] = App()->request->getPost($name, null);
-//            }
-//            $oPluginObject->saveSettings($aSave);
-//            App()->user->setFlash('pluginmanager', 'Settings saved');
-//            if(!is_null(App()->request->getPost('redirect')))
-//            {
-//                $this->forward('plugins/index', true);
-//            }
-//        }
-//
-//        // Prepare settings to be send to the view.
-//        $aSettings = $oPluginObject->getPluginSettings();
-//        if (empty($aSettings))
-//        {
-//            // And show a message
-//            Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
-//            $this->forward('plugins/index', true);
-//        }
-//
-//        // Send to view plugin porperties: name and description
-//        $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
-
         $this->render('configure', ['plugin' => $plugin]);
     }
 
     public function actionDeactivate($id)
     {
-        $oPlugin = Plugin::model()->findByPk($id);
-        if (!is_null($oPlugin))
-        {
-            $iStatus = $oPlugin->active;
-            if ($iStatus == 1)
-            {
-                $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeDeactivate', $this), $oPlugin->name);
-                if ($result->get('success', true))
-                {
-                    $iStatus = 0;
-                } else
-                {
-                    $message = $result->get('message', gT('Failed to deactivate the plugin.'));
-                    App()->user->setFlash('pluginActivation', $message);
-                    $this->redirect(array('plugins/'));
-                }
-            }
-            $oPlugin->active = $iStatus;
-            $oPlugin->save();
+        if ($id === App()->authManager->authorizationPlugin->id) {
+            App()->user->setFlash('error', "Cannot disable currently active authorization plugin.");
+        } elseif (in_array($id, SettingGlobal::get('authenticationPlugins', []))) {
+            App()->user->setFlash('error', "Cannot disable currently active authentication plugin.");
         }
-        $this->redirect(array('plugins/'));
+        
+        
+        foreach (App()->pluginManager->scanPlugins() as $pluginConfig) {
+            if ($pluginConfig->id === $id) {
+                $pluginConfig->active = false;
+                $pluginConfig->save();
+            }
+        }
+        $this->redirect(['plugins/']);
     }
 
     public function actionDirect($plugin, $function)
@@ -147,29 +104,37 @@ class PluginsController extends LSYii_Controller
         }
     }
 
-    public function actionSetAuthorizer() {
-        if (App()->request->isPostRequest && null !== $id = App()->request->getParam('authorizationPlugin')) {
+    public function actionConfigureAuth() {
+        $request = App()->request;
+        if (App()->request->isPostRequest && null !== $id = $request->getParam('authorizationPlugin')) {
             $plugin = App()->pluginManager->getPlugin($id);
-            if ($plugin instanceof IAuthManager) {
-                App()->setConfig('authorizationPlugin', App()->request->getParam('authorizationPlugin'));
+            if ($plugin instanceof IAuthManager && SettingGlobal::set('authorizationPlugin', $request->getParam('authorizationPlugin'))) {
+                App()->user->setFlash('success', gT('Authorization configuration updated.'));
+            }
+            $authenticationPlugins = $request->getParam('authenticationPlugins');
+            if (is_array($authenticationPlugins) && array_intersect($authenticationPlugins, array_keys(App()->pluginManager->getAuthenticators())) == $authenticationPlugins) {
+                SettingGlobal::set('authenticationPlugins', $authenticationPlugins);
+                App()->user->setFlash('success', gT('Authorization and authentication configuration updated.'));
             }
         }
         $this->redirect(['plugins/index']);
     }
     public function actionIndex()
     {
-        
-        $plugins = new CArrayDataProvider(App()->pluginManager->scanPlugins());
-        $loadedPlugins = App()->pluginManager->loadPlugins();
-        return $this->render('index', ['plugins' => $plugins, 'loadedPlugins' => $loadedPlugins]);
+        $pm = App()->pluginManager;
+        $plugins = new CArrayDataProvider($pm->scanPlugins());
+        $loadedPlugins = $pm->loadPlugins();
+        return $this->render('index', [
+            'plugins' => $plugins, 
+            'loadedPlugins' => $loadedPlugins, 
+            'authorizers' => $pm->getAuthorizers(), 
+            'authenticators' => $pm->getAuthenticators()
+        ]);
     }
 
     public function filters()
     {
-        $aFilters = array(
-            'accessControl'
-        );
-        return array_merge(parent::filters(), $aFilters);
+        return array_merge(parent::filters(), ['accessControl']);
     }
 
 }

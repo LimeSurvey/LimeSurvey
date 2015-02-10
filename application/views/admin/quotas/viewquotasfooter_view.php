@@ -5,7 +5,7 @@
     <td><?php echo $totalcompleted;?></td>
     <td><?php echo $totalquotas;?></td>
     <td style="padding: 3px;">
-        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','create')) { ?>
+        <?php if (App()->user->checkAccess('quotas', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId])) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/newquota/surveyid/{$iSurveyId}"), 'post'); ?>
             <input name="submit" type="submit" class="quota_new" value="<?php eT("Add New Quota");?>" />
             <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />

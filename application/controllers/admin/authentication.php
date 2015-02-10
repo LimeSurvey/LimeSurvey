@@ -103,31 +103,9 @@ class Authentication extends Survey_Common_Action
                     $message = gT('Incorrect username and/or password!');
                 }
                 App()->user->setFlash('loginError', $message);
-                $this->getController()->redirect(array('/admin/authentication/sa/login'));
+                $this->getController()->redirect(['users/login']);
             }
         }
-    }
-
-    /**
-    * Logout user
-    */
-    public function logout()
-    {
-        // Fetch the current user
-        $plugin = App()->user->getState('plugin', null);    // Save for afterLogout, current user will be destroyed by then
-
-        /* Adding beforeLogout event */
-        $beforeLogout = new PluginEvent('beforeLogout');
-        App()->getPluginManager()->dispatchEvent($beforeLogout);
-
-        App()->user->logout();
-        App()->user->setFlash('loginmessage', gT('Logout successful.'));
-
-        /* Adding afterLogout event */
-        $event = new PluginEvent('afterLogout');
-        App()->getPluginManager()->dispatchEvent($event);
-
-        $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }
 
     /**

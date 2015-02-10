@@ -29,14 +29,13 @@ class AuthWebServer extends AuthPluginBase
     {
     }
 
-     public function eventBeforeLoginForm(PluginEvent $event)
+    public function getLoginSettings()
     {
-        $event->set('forms.' . $this->id, [
+        return [
             'label' => $this->name,
             'settings' => [
             ]
-        ]);
-        return;
+        ];
     }
     public function eventBeforeLogin(PluginEvent $event)
     {       

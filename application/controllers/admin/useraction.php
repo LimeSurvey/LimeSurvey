@@ -285,7 +285,7 @@ class UserAction extends Survey_Common_Action
         if ($postuserid == Yii::app()->session['loginID'])
         {
             session_destroy();    // user deleted himself
-            $this->getController()->redirect(array("admin/authentication/sa/logout"));
+            $this->getController()->redirect(['users/logout']);
             die();
         }
 

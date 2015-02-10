@@ -234,13 +234,16 @@ use Plugin;
                 if ($pluginConfig->type == 'simple') {
                     $this->plugins[$pluginConfig->id] = $this->loadSimplePlugin($pluginConfig);
                 } else {
-                    throw new \Exception("Only simple");
+                    throw new \Exception("Only simple is supported for now.");
                 }                   
             }
             return $this->getPlugin($pluginConfig->id);
         }
         
         public function getPlugin($id) {
+            if (!isset($this->plugins[$id])) {
+                throw new \Exception("Plugin $id not found.");
+            }
             return $this->plugins[$id];
         }
         
@@ -273,34 +276,21 @@ use Plugin;
                 $pluginConfig->registerNamespace($this->loader);
             }   
         }
-        public function loadModulePlugins() {
-//            foreach (PluginConfig::findAll() as $pluginConfig) {
-//                if ($pluginConfig->active && $pluginConfig->type == 'module') {
-//                    // Load module here.
-//                    Yii::app()->setModules([
-//                        $pluginConfig->
-//                    ], $merge)
-//                }
-//            }
+        
+        public function getAuthenticators($activeOnly = false) {
+            $result = array_filter($this->loadPlugins(), function ($plugin) {
+                return $plugin instanceOf AuthPluginBase;
+            });
+            if ($activeOnly) {
+                $authPlugins = \SettingGlobal::get('authenticationPlugins');
+                $result = array_intersect_key($result, array_flip($authPlugins));
+            }
+            return $result;
         }
-        
-        
-        
-        
-        
-        
-     
-        public function setPlugins($plugins) 
-        {
-//            $defaults = [];
-//            $app = \Yii::app();
-//            foreach($plugins as $name => $plugin) {
-//                $config = \CMap::mergeArray($defaults, $plugin);
-//                if($config['type'] == 'module') {
-//
-//                    $app->setModules([$name => $config]);
-//                }
-//            }
+        public function getAuthorizers() {
+            return array_filter($this->loadPlugins(), function ($plugin) {
+                return $plugin instanceOf \IAuthManager;
+            });
         }
         
     }

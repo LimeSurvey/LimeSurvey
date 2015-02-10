@@ -39,7 +39,7 @@ class database extends Survey_Common_Action
         $oFixCKeditor->fixCKeditor=true;
         $oFixCKeditor->xssfilter=false;
 
-        if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
+        if ($sAction == "updatedefaultvalues" && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
 
             $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -133,7 +133,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if ($sAction == "updateansweroptions" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
+        if ($sAction == "updateansweroptions" && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             Yii::app()->loadHelper('database');
             $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -206,7 +206,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if ($sAction == "updatesubquestions" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
+        if ($sAction == "updatesubquestions" && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             Yii::app()->loadHelper('database');
             $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -368,7 +368,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if (in_array($sAction, array('insertquestion', 'copyquestion')) && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','create'))
+        if (in_array($sAction, array('insertquestion', 'copyquestion')) && App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
@@ -614,7 +614,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if ($sAction == "updatequestion" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
+        if ($sAction == "updatequestion" && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
 
@@ -906,7 +906,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if (($sAction == "updatesurveylocalesettings") && Permission::model()->hasSurveyPermission($iSurveyID,'surveylocale','update'))
+        if (($sAction == "updatesurveylocalesettings") && App()->user->checkAccess('surveylocale', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $languagelist = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
             $languagelist[]=Survey::model()->findByPk($iSurveyID)->language;

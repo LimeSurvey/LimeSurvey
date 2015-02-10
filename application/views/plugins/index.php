@@ -70,22 +70,23 @@
 //        'rowCssClassExpression'=> function ($index, $data) { return ($index % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },
 //        'itemsCssClass' => 'items table-condensed table-bordered'
     ));
-    
-    foreach($loadedPlugins as $plugin) {
-        if($plugin instanceof IAuthManager) {
-            $authorizers[] = $plugin;
-        }
-    }
+
 ?>
 </div>
 <div class="col-md-6 col-md-offset-3">
 <?php
-    echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['plugins/setauthorizer'], 'post');
-    echo TbHtml::dropDownListControlGroup('authorizationPlugin', App()->getConfig('authorizationPlugin', null), TbHtml::listData($authorizers, 'id', 'name'), [
+    echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['plugins/configureAuth'], 'post');
+    echo TbHtml::dropDownListControlGroup('authorizationPlugin', SettingGlobal::get('authorizationPlugin', null), TbHtml::listData($authorizers, 'id', 'name'), [
         'label' => 'Authorization plugin:',
         'labelOptions' => ['class' => 'col-md-6'],
         'controlOptions' => ['class' => 'col-md-6'],
     ]);
+    echo TbHtml::checkBoxListControlGroup('authenticationPlugins', SettingGlobal::get('authenticationPlugins', []), TbHtml::listData($authenticators, 'id', 'name'), [
+        'label' => 'Authentication plugins:',
+        'labelOptions' => ['class' => 'col-md-6'],
+        'controlOptions' => ['class' => 'col-md-6'],
+    ]);
+    
     echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
     echo TbHtml::submitButton(gT('Save'), ['color' => 'primary']);
     echo TbHtml::closeTag('div');

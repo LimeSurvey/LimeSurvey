@@ -9,7 +9,7 @@
             array(
                 'title' => gT('Manage survey administrators'),
                 'url' => array('admin/survey'),
-                'icon' => 'user'
+                'icon' => 'folder-open'
             ),
             array(
                 'title' => gT('Create/edit user groups'),
@@ -41,27 +41,27 @@
                 'visible' => App()->user->checkAccess('superadmin') && App()->db->driverName != 'mysql'
             ),
             array(
-                'label' => gT('Edit label sets'),
+                'title' => gT('Edit label sets'),
                 'url' => array('admin/labels', 'sa' => 'view'),
-                'icon' => 'labels',
+                'icon' => 'list',
                 'visible' => App()->user->checkAccess('labelsets')
             ),
             array(
-                'label' => gT('Template Editor'),
+                'title' => gT('Template Editor'),
                 'url' => array('admin/templates/'),
-                'icon' => 'templates',
+                'icon' => 'eye-open',
                 'visible' => App()->user->checkAccess('templates')
             ),
             array(
-                'label' => gT('Central participant database/panel'),
+                'title' => gT('Central participant database/panel'),
                 'url' => array('admin/participants'),
-                'icon' => 'cpdb',
+                'icon' => 'user',
                 'visible' => App()->user->checkAccess('participantpanel')
             ),
             array(
-                'label' => gT('Plugin manager'),
+                'title' => gT('Plugin manager'),
                 'url' => array('/plugins'),
-                'icon' => 'plugin',
+                'icon' => 'wrench',
                 'visible' => App()->user->checkAccess('superadmin')
             ),
         ), [array(

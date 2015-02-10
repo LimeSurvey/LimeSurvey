@@ -100,7 +100,7 @@
                 </li>
             <?php } ?>
             
-            <?php if($surveydelete || $surveytranslate || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>            
+            <?php if($surveydelete || $surveytranslate || App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid])) { ?>            
             <li><a href="#">
                     <img src='<?php echo $sImageURL;?>tools.png' alt='<?php eT("Tools");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
                     <?php if ($surveydelete) { ?>
@@ -116,11 +116,11 @@
                                 <img src='<?php echo $sImageURL;?>translate_disabled_30.png' alt=''/> <?php eT("Quick-translation");?></a></li>
                             <?php } ?>
                         <?php } ?>
-                    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+                    <?php if (App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid])) { ?>
                         <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
                             <img src='<?php echo $sImageURL;?>expressionmanager_30.png' alt=''/> <?php eT("Expression Manager");?></a></li>
                         <?php } ?>
-                    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+                    <?php if (App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid])) { ?>
                         <li>
                             <?php if ($conditionscount>0){?>
                                 <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
@@ -312,7 +312,7 @@
 
 
 
-            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
+            <?php if(App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 {
                     if ($activated)
                     { ?>

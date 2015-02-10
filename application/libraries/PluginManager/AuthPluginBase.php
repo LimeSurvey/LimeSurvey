@@ -68,4 +68,7 @@ abstract class AuthPluginBase extends PluginBase {
     }
     
     abstract public function authenticate(\CHttpRequest $request);
+    
+    abstract public function getLoginSettings();
+    
 }

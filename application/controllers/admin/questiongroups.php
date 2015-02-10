@@ -101,7 +101,7 @@ class questiongroups extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $aViewUrls = $aData = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (App()->user->checkAccess('surveycontent', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
 
@@ -132,7 +132,7 @@ class questiongroups extends Survey_Common_Action
      */
     public function insert($surveyid)
     {
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
+        if (App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             Yii::app()->loadHelper('surveytranslator');
 
@@ -223,7 +223,7 @@ class questiongroups extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
 
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
+        if (App()->user->checkAccess('surveycontent', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
@@ -257,7 +257,7 @@ class questiongroups extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (App()->user->checkAccess('surveycontent', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             Yii::app()->session['FileManagerContext'] = "edit:group:{$surveyid}";
 
@@ -343,7 +343,7 @@ class questiongroups extends Survey_Common_Action
         $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
+        if (App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             Yii::app()->loadHelper('surveytranslator');
 

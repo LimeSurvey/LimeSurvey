@@ -323,7 +323,7 @@ if ($adding || $copying) {
     {
 
 
-        if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
+        if (App()->user->checkAccess('surveycontent', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $surveyid]))
         { ?>
         <br /><div class='header ui-widget-header'><?php eT("...or import a question"); ?></div>
         <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".gT("Please select a file to import!",'js')."');")); ?>

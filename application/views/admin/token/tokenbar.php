@@ -10,12 +10,12 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>"><img src='<?php echo $imageurl; ?>summary.png' alt='<?php eT("Show token summary"); ?>'/></a>
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')){ ?>
+            <?php if (App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid])){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>document.png' alt='<?php eT("Display tokens"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')){ ?>
+            <?php if (App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid])){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php eT("Add new token entry"); ?>' />
                 </a>
@@ -23,13 +23,13 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                     <img src='<?php echo $imageurl; ?>create_dummy_token.png' title='' alt='<?php eT("Create dummy tokens"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')){ ?>
+            <?php if (App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]) || App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID])){ ?>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>token_manage.png' title='' alt='<?php eT("Manage additional attribute fields"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'import')){ ?>
+            <?php if (App()->user->checkAccess('tokens', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $surveyid])){ ?>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$surveyid") ?>">
                     <img src='<?php echo $imageurl; ?>importcsv.png' title='' alt='<?php eT("Import tokens from CSV file"); ?>' />
@@ -38,12 +38,12 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                     <img src='<?php echo $imageurl; ?>importldap.png' alt='<?php eT("Import tokens from LDAP query"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'export')){ ?>
+            <?php if (App()->user->checkAccess('tokens', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $surveyid])){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>exportcsv.png' alt='<?php eT("Export tokens to CSV file"); ?>' />
                 </a>
             <?php } ?>
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')){ ?>
+            <?php if (App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid])){ ?>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
                 <a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $imageurl; ?>emailtemplates.png' alt='<?php eT("Edit email templates"); ?>' />
@@ -60,19 +60,19 @@ App()->getClientScript()->registerPackage('jqueryui-timepicker');
                 </a>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')){ ?>
+            <?php if (App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid])){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>bounce_settings.png' alt='<?php eT("Bounce settings"); ?>' />
                 </a>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
-            <?php if(App()->user->checkAccess('participantpanel') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'create')){ ?>
+            <?php if(App()->user->checkAccess('participantpanel') && App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid])){ ?>
                 <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
                     <img src='<?php echo $imageurl; ?>cpdb.png' alt='<?php eT("Central participant database/panel"); ?>' />
                 </a>
                 <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
             <?php } ?>
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($surveyid, 'tokens','delete')){ ?>
+            <?php if (App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]) || App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid])){ ?>
                 <a href="<?php echo $this->createUrl("admin/tokens/sa/kill/surveyid/$surveyid"); ?>">
                     <img src='<?php echo $imageurl; ?>delete.png' alt='<?php eT("Delete tokens table"); ?>' />
                 </a>

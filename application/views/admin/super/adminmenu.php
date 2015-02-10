@@ -115,7 +115,7 @@
 
 
             <img id='separator2' src='<?php echo $sImageURL;?>separator.gif' class='separator' alt='' />
-            <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>" >
+            <a href="<?php echo App()->createUrl('users/logout'); ?>" >
                 <img src='<?php echo $sImageURL;?>logout.png' alt='<?php eT("Logout");?>' /></a>
 
             <a href="http://manual.limesurvey.org" target="_blank">

@@ -73,7 +73,7 @@ class translate extends Survey_Common_Action {
         if ( ! empty($tolang) )
         {
             // Only save if the administration user has the correct permission
-			if ( $actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update') )
+			if ( $actionvalue == "translateSave" && App()->user->checkAccess('translations', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]) )
 			{
 				$this->_translateSave($iSurveyID, $tolang, $baselang, $tab_names);
 			}
@@ -219,7 +219,7 @@ class translate extends Survey_Common_Action {
 
 			$aData['all_fields_empty'] = $all_fields_empty;
 			$aData['translateFieldsFooter'] = $this->displayTranslateFieldsFooter();
-            $aData['bReadOnly']=!Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update');
+            $aData['bReadOnly']=!App()->user->checkAccess('translations', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
 			$aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatefieldsfooter_view", $aData, true);
 		} // end foreach
 

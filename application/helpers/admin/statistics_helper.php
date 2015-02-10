@@ -3109,7 +3109,7 @@ class statistics_helper {
         //only continue if we have something to output
         if ($results > 0)
         {
-            if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))
+            if($outputType=='html' && $browse === true && App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 //add a buttons to browse results
                 $statisticsoutput .= CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post',array('target'=>'_blank'))."\n"

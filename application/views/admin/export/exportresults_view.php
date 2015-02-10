@@ -150,7 +150,7 @@
                 echo "\t<img src='$imageurl/help.gif' alt='".gT("Help")."' onclick='javascript:alert(\"".gT("Please note: The export to Excel is currently limited to loading no more than 255 columns.","js")."\")'>";?>
                 <span id='columncount'>&nbsp;</span>
                 </fieldset>
-            <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')) { ?>
+            <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid])) { ?>
                 <fieldset><legend><?php eT("Token control");?></legend>
                     <?php eT("Choose token fields");?>:
                     <img src='<?php echo $imageurl;?>/help.gif' alt='<?php eT("Help");?>' onclick='javascript:alert("<?php gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js");?>")' /><br />

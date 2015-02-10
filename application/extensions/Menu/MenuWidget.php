@@ -132,7 +132,7 @@
 
             
             $menu['items']['right'][] = array(
-                'href' => array('admin/authentication', 'sa' => 'logout'),
+                'href' => ['users/logout'],
                 'alt' => gT('Logout'),
                 'image' => 'logout.png'
             );

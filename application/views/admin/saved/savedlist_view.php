@@ -18,12 +18,12 @@
                     <td><?php echo $oResult->scid; ?></td>
                     <td align='center'>
 
-                        <?php if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','update'))
+                        <?php if (App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
                             { ?>
                             <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $sImageURL; ?>edit_16.png'
                                 title='<?php eT('Edit entry'); ?>' onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" />
                             <?php }
-                            if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
+                            if (App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
                             { ?>
                             <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $sImageURL; ?>token_delete.png'
                                 title='<?php eT('Delete entry'); ?>' onclick="if (confirm('<?php eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" />

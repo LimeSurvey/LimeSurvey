@@ -445,7 +445,7 @@ class Participant extends LSActiveRecord
             $aSurveyIDs = Yii::app()->db->createCommand()->selectDistinct('survey_id')->from('{{survey_links}}')->where(array('in', 'participant_id', $aParticipantsIDs))->queryColumn();
             foreach ($aSurveyIDs as $iSurveyID)
             {
-                if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+                if (App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
                 {
                     $sTokenTable='{{tokens_'.intval($iSurveyID).'}}';
                     if (Yii::app()->db->schema->getTable($sTokenTable))
@@ -495,7 +495,7 @@ class Participant extends LSActiveRecord
                     $surveytable='{{survey_'.intval($value['survey_id']).'}}';
                     if ($datas=Yii::app()->db->schema->getTable($surveytable))
                     {
-                        if (!empty($token['token']) && isset($datas->columns['token']) && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')) //Make sure we have a token value, and that tokens are used to link to the survey
+                        if (!empty($token['token']) && isset($datas->columns['token']) && App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID])) //Make sure we have a token value, and that tokens are used to link to the survey
                         {
                             $gettoken = Yii::app()->db->createCommand()
                                                       ->select('*')
@@ -509,7 +509,7 @@ class Participant extends LSActiveRecord
                                           ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
                         }
                     }
-                    if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+                    if (App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
                     {
 
                         Yii::app()->db->createCommand()

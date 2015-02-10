@@ -26,12 +26,6 @@ ul,ol {
     font-size: 10pt;
 }
 
-p {
-    clear: left;
-    text-align:center;
-    padding-bottom: 1em;
-}
-
 hr{
     color:#efefef;
 }

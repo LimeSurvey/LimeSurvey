@@ -1636,7 +1636,7 @@ class ExpressionManager {
                 ++$errIndex;
             }
         }
-        if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        if($this->sid && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $this->sid]))
         {
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
@@ -1895,7 +1895,7 @@ class ExpressionManager {
                 else
                 {
                     // show original and errors in-line only if user have the rigth to update survey content
-                    if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+                    if($this->sid && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $this->sid]))
                     {
                         $resolvedPart = $this->GetPrettyPrintString();
                     }

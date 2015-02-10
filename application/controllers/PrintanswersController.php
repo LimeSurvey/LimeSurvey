@@ -89,7 +89,7 @@
             //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
             //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
-            if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+            if ($aSurveyInfo['printanswers'] == 'N' && !App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 throw new CHttpException(401, 'You are not allowed to print answers.');
             }

@@ -589,7 +589,7 @@ class participantsaction extends Survey_Common_Action
             }
             $surveylink = "";
             /* Check permissions of each survey before creating a link*/
-            if (!Permission::model()->hasSurveyPermission($row['survey_id'], 'tokens', 'read'))
+            if (!App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $row['survey_id']]))
             {
                 $surveylink = $row['survey_id'];
             } else

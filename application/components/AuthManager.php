@@ -6,7 +6,8 @@ class AuthManager implements IAuthManager {
      */
     public $authorizationPlugin;
     public function init() {
-        $this->authorizationPlugin = App()->pluginManager->getPlugin(App()->getConfig('authorizationPlugin', 'ls_core_plugins_PermissionDb'));
+        $id = SettingGlobal::get('authorizationPlugin', 'ls_core_plugins_PermissionDb');
+        $this->authorizationPlugin = App()->pluginManager->getPlugin($id);  
     }
     public function addItemChild($itemName, $childName) {
         return $this->authorizationPlugin->addItemChild($itemName, $childName);

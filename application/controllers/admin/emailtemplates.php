@@ -87,7 +87,7 @@ class emailtemplates extends Survey_Common_Action {
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod=Yii::app()->request->getPost('save','');
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale','update') && $sSaveMethod!='')
+        if (App()->user->checkAccess('surveylocale', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && $sSaveMethod!='')
         {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;

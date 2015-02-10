@@ -75,7 +75,7 @@ class dataentry extends Survey_Common_Action
 
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
-        if( Permission::model()->hasSurveyPermission($iSurveyId,'responses','create') )
+        if( App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]) )
         {
             if(tableExists("{{survey_$iSurveyId}}"))
             {
@@ -112,7 +112,7 @@ class dataentry extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $aData['surveyid'] = $surveyid;
         $aData['success'] = false;
-        if (Permission::model()->hasSurveyPermission($surveyid,'surveyactivation','update'))
+        if (App()->user->checkAccess('surveyactivation', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true')
             {
@@ -242,7 +242,7 @@ class dataentry extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($surveyid);
 
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','create'))
+        if(App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
             {
@@ -474,7 +474,7 @@ class dataentry extends Survey_Common_Action
         }
 
         $surveyinfo = getSurveyInfo($surveyid);
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
+        if (App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
@@ -511,7 +511,7 @@ class dataentry extends Survey_Common_Action
 
             //SHOW INDIVIDUAL RECORD
 
-            if ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
+            if ($subaction == "edit" && App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 $idquery = "SELECT * FROM $surveytable WHERE id=$id";
                 $idresult = dbExecuteAssoc($idquery) or safeDie ("Couldn't get individual record<br />$idquery<br />");
@@ -520,7 +520,7 @@ class dataentry extends Survey_Common_Action
                     $results[]=$idrow;
                 }
             }
-            elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
+            elseif ($subaction == "editsaved" && App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 if (isset($_GET['public']) && $_GET['public']=="true")
                 {
@@ -1294,16 +1294,16 @@ class dataentry extends Survey_Common_Action
 
             $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
 
-            if (!Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
+            if (!App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
             { // if you are not survey owner or super admin you cannot modify responses
                 $aDataentryoutput .= "<p><input type='button' value='".gT("Save")."' disabled='disabled'/></p>\n";
             }
-            elseif ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
+            elseif ($subaction == "edit" && App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 $aData['part'] = 'edit';
                 $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, TRUE);
             }
-            elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
+            elseif ($subaction == "editsaved" && App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 $aData['part'] = 'editsaved';
                 $aDataentryoutput .= $this->getController()->renderPartial('/admin/dataentry/edit', $aData, TRUE);
@@ -1337,7 +1337,7 @@ class dataentry extends Survey_Common_Action
         'id' => $id
         );
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','read') && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
+        if (App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]) && App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
             $aData['thissurvey'] = getSurveyInfo($surveyid);
@@ -1365,7 +1365,7 @@ class dataentry extends Survey_Common_Action
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');
 
-        if ($subaction == "update"  && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
+        if ($subaction == "update"  && App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
 
             $baselang = Survey::model()->findByPk($surveyid)->language;
@@ -1486,9 +1486,9 @@ class dataentry extends Survey_Common_Action
         'lang' => $lang
         );
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','create'))
+        if (App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
-            if ($subaction == "insert" && Permission::model()->hasSurveyPermission($surveyid,'responses','create'))
+            if ($subaction == "insert" && App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 $surveytable = "{{survey_{$surveyid}}}";
                 $thissurvey = getSurveyInfo($surveyid);
@@ -1864,7 +1864,7 @@ class dataentry extends Survey_Common_Action
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
+        if (App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
 
 

@@ -8,6 +8,13 @@
         public $layout = 'bare';
         public $defaultAction = 'publicList';
 
+        public function accessRules() {
+            return array_merge([
+                ['allow', 'actions' => ['index'], 'users' => ['@']],
+                ['allow', 'actions' => ['publicList']],
+                ['deny']
+            ], parent::accessRules());
+        }
         public function actionOrganize($surveyId)
         {
             $this->layout = 'main';
@@ -17,7 +24,11 @@
             $this->render('organize', compact('groups'));
         }
 
-
+        public function actionIndex() {
+            $this->layout = 'main';
+            $surveys = getSurveyList(true);
+            $this->render('index', ['surveys' => $surveys]);
+        }
 
         public function actionPublicList($sLanguage = null)
         {
@@ -33,19 +44,10 @@
 
             ));
         }
-
-        /**
-         * Load and set session vars
-         * @todo Remove this ugly code. Language settings should be moved to Application instead of Controller.
-         * @access protected
-         * @return void
-         */
-        protected function sessioncontrol()
+        
+        public function filters()
         {
-			if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
-                Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-
-            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
+            return array_merge(parent::filters(), ['accessControl']);
         }
     }
 ?>

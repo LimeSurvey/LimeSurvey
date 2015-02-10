@@ -9,13 +9,13 @@
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='11' />
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
 
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read'))
+            <?php if (App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>summary.png' title='' alt='<?php eT("Show summary information"); ?>' /></a>
                 <?php } ?>
         </div>
-        <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read'))
+        <?php if (App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
             { ?>
             <ul class='sf-menu'>
                 <li><a href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>'>
@@ -46,12 +46,12 @@
             <?php } ?>
         <div class='menubar-left'>
             <?php 
-                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
+                if (App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>dataentry.png' alt='<?php eT("Dataentry Screen for Survey"); ?>' /></a>
                 <?php }
-                if (Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read'))
+                if (App()->user->checkAccess('statistics', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>statistics.png' alt='<?php eT("Get statistics from these responses"); ?>' /></a>
@@ -62,7 +62,7 @@
                     <?php }
             } ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'export'))
+            <?php if (App()->user->checkAccess('responses', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>export.png' alt='<?php eT("Export results to application"); ?>' /></a>
@@ -71,7 +71,7 @@
                     <img src='<?php echo $sImageURL; ?>exportspss.png' alt="<?php eT("Export results to a SPSS/PASW command file"); ?>" /></a>
                 <?php
                 }
-                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
+                if (App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 {
                 ?>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/import/surveyid/$surveyid"); ?>'>
@@ -79,22 +79,22 @@
                 <?php } ?>
             <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
 
-            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read'))
+            <?php if (App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>saved.png' title='' alt='<?php eT("View Saved but not submitted Responses"); ?>' /></a>
                 <?php }
-                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'import'))
+                if (App()->user->checkAccess('responses', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/vvimport/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>importvv.png' alt='<?php eT("Import a VV survey file"); ?>' /></a>
                 <?php }
-                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'export'))
+                if (App()->user->checkAccess('responses', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 { ?>
                 <a href='<?php echo $this->createUrl("admin/export/sa/vvexport/surveyid/$surveyid"); ?>'>
                     <img src='<?php echo $sImageURL; ?>exportvv.png' title='' alt='<?php eT("Export a VV survey file"); ?>' /></a>
                 <?php }
-                if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
+                if (App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 {   ?>
                     <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' /> <?php
                     if ($thissurvey['anonymized'] == 'N' && $thissurvey['tokenanswerspersistence'] == 'Y')

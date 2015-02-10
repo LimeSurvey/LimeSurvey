@@ -17,26 +17,34 @@ class UsersController extends LSYii_Controller
     }
 
     public function actionLogin() {
-        $request = Yii::app()->request;
-        if ($request->getParam('_logintype') !== null) {
-            $plugin = App()->pluginManager->getPlugin($request->getParam('_logintype'));
-            if ($plugin instanceof \ls\pluginmanager\AuthPluginBase) {
-                $identity = new PluginIdentity($plugin);
-                if ($identity->authenticate());
-                
+        App()->pluginManager->scanPlugins();
+        $request = Yii::app()->request; 
+        $authenticators = App()->pluginManager->getAuthenticators(true);
+        if ($request->getParam('_logintype') !== null && isset($authenticators[$request->getParam('_logintype')])) {
+            $plugin = $authenticators[$request->getParam('_logintype')];
+            $identity = new PluginIdentity($plugin);
+            if ($identity->authenticate()) {
                 App()->user->login($identity);
-                $this->redirect(App()->user->returnUrl);
+                $this->redirect(App()->user->getReturnUrl(['admin/']));
             }
         } else {
             // Get all active auth plugins.
-            $event = new PluginEvent('beforeLoginForm');
-            $event->dispatch();
-            return $this->render('login', ['loginForms' => $event->get('forms', [])]);
+            $forms = array_map(function(\ls\pluginmanager\AuthPluginBase $authenticator) {
+                return $authenticator->getLoginSettings();
+            }, $authenticators);
+            return $this->render('login', ['loginForms' => $forms]);
         }
     }
     
     public function actionLogout() {
+        (new PluginEvent('beforeLogout'))->dispatch();
+        
+
         App()->user->logout();
+       
+        /* Adding afterLogout event */
+        (new PluginEvent('afterLogout'))->dispatch();
+        $this->redirect(['admin/']);
     }
 
 }

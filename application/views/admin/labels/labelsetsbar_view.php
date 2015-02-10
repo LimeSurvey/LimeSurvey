@@ -37,7 +37,7 @@
             <img src='<?php echo $sImageURL; ?>separator.gif'  alt='' />
             <img src='<?php echo $sImageURL; ?>blank.gif' width='5' height='20' alt='' />
 
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/sa/logout");?>', '_top')">
+            <a href="#" onclick="window.open('<?php echo $this->createUrl(['users/logout']);?>', '_top')">
                 <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php eT("Logout"); ?>' /></a>
 
             <a href="http://manual.limesurvey.org" target='_blank'>

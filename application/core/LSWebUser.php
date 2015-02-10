@@ -11,21 +11,7 @@
 
             Yii::app()->setLanguage(Yii::app()->session['adminlang']);
         }
-
-        public function setFlash($key, $value, $defaultValue = null) {
-            $this->setState("flash.$key", $value, $defaultValue);
-        }
-        public function hasFlash($key) {
-            $this->hasState("flash.$key");
-        }
-
-        public function getFlashes($delete = true)
-       	{
-            $result = $this->getState('flash', array());
-            $this->removeState('flash');
-            return $result;
-        }
-
+        
         /**
          * Removes a state variable.
          * @param string $key

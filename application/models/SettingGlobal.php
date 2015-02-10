@@ -71,5 +71,41 @@ class SettingGlobal extends LSActiveRecord
         }
 
     }
+    
+    public function getValue() {
+        if (substr_compare("__JSON__", $this->stg_value, 0, 8) === 0) {
+            return json_decode(substr($this->stg_value, 8), true);
+        } else {
+            return $this->stg_value;
+        }
+    }
+    
+    public function getName() {
+        return $this->stg_name;
+    }
+    public function setName($value) {
+        $this->stg_name = $value;
+    }
+    public function setValue($value) {
+        if (is_array($value)) {
+            $this->stg_value = "__JSON__" . json_encode($value);
+        }
+    }
+    public static function get($name, $default = null) {
+        if (null !== $model = self::model()->findByPk($name)) {
+            return $model->value;
+        }
+        return $default;
+    }
+    
+    public static function set($name, $value) {
+        if (null === $model = self::model()->findByPk($name)) {
+            $model = new SettingGlobal();
+            $model->name = $name;
+        }
+        
+        $model->value = $value;
+        return $model->save();
+    }
 }
 ?>
