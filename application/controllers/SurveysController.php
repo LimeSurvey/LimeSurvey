@@ -12,7 +12,6 @@
             return array_merge([
                 ['allow', 'actions' => ['index'], 'users' => ['@']],
                 ['allow', 'actions' => ['publicList']],
-                ['deny']
             ], parent::accessRules());
         }
         public function actionOrganize($surveyId)

@@ -295,7 +295,7 @@ class Usergroups extends Survey_Common_Action
 
                     //	output users
                     $userloop[$row]["rowclass"] = $bgcc;
-                    if (App()->user->checkAccess('superadmin', ['crud' => 'update']) {
+                    if (App()->user->checkAccess('superadmin', ['crud' => 'update'])) {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;

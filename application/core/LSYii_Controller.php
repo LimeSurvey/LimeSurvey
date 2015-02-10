@@ -41,6 +41,12 @@ abstract class LSYii_Controller extends CController
 		$this->_init();
 	}
 
+    public function accessRules() {
+        return array_merge([
+            ['allow', 'roles' => ['superadmin']],
+            ['deny']
+        ], parent::accessRules());
+    }
 	/**
 	 * Check that installation was already done by looking for config.php
 	 * Will redirect to the installer script if not exists.

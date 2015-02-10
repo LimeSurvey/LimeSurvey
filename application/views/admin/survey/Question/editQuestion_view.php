@@ -141,7 +141,7 @@ if ($adding || $copying) {
                                 $this->widget('WhSelect2', array(
                                     'data' => $groups,
                                     'name' => 'type',
-                                    'options' => array(
+                                    'pluginOptions' => array(
                                         'width' => '300px',
                                         'minimumResultsForSearch' => 1000
                                     ),

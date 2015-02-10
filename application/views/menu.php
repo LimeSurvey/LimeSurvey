@@ -3,12 +3,12 @@
         array(
             array(
                 'title' => gT('Default administration page'),
-                'url' => array('admin/survey'),
+                'url' => ['surveys/index'],
                 'icon' => 'home'
             ),
             array(
                 'title' => gT('Manage survey administrators'),
-                'url' => array('admin/survey'),
+                'url' => ['admin/user/sa/index'],
                 'icon' => 'folder-open'
             ),
             array(

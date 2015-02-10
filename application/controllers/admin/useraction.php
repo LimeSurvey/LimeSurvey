@@ -40,12 +40,8 @@ class UserAction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'users.js');
 
-        $userlist = getUserList();
-        $usrhimself = $userlist[0];
-        unset($userlist[0]);
-
         if (App()->user->checkAccess('superadmin')) {
-            $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
+            $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => App()->user->id));
             $aData['noofsurveys'] = $noofsurveys;
         }
         $aData['row'] = 0;
@@ -59,10 +55,6 @@ class UserAction extends Survey_Common_Action
         // other users
         $aData['usr_arr'] = $userlist;
         $noofsurveyslist = array();
-
-        //This loops through for each user and checks the amount of surveys against them.
-        for ($i = 1; $i <= count($userlist); $i++)
-            $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
 
         $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
         $aData['noofsurveyslist'] = $noofsurveyslist;

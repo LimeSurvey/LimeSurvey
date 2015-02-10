@@ -47,7 +47,12 @@ class UsersController extends LSYii_Controller
         (new PluginEvent('afterLogout'))->dispatch();
         $this->redirect(['admin/']);
     }
-
+    
+    
+    public function actionIndex() {
+        User::model()->findAll();
+        $this->render('index');
+    }
 }
 
 ?>
