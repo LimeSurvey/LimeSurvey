@@ -519,4 +519,36 @@ class Survey extends LSActiveRecord
             $this->questionindex = 0;
         }
     }
+    
+    public function getInfo($language = null) {
+        $language = !isset($language) ? $this->language : $language;
+        if (null !== $localization = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->primaryKey, 'surveyls_language' => $language])) {
+            $result =  array_merge($this->attributes, $localization->attributes);
+            $result['name']=$result['surveyls_title'];
+            $result['description']=$result['surveyls_description'];
+            $result['welcome']=$result['surveyls_welcometext'];
+            $result['templatedir']=$result['template'];
+            $result['adminname']=$result['admin'];
+            $result['tablename']='{{survey_'.$result['sid'] . '}}';
+            $result['urldescrip']=$result['surveyls_urldescription'];
+            $result['url']=$result['surveyls_url'];
+            $result['expiry']=$result['expires'];
+            $result['email_invite_subj']=$result['surveyls_email_invite_subj'];
+            $result['email_invite']=$result['surveyls_email_invite'];
+            $result['email_remind_subj']=$result['surveyls_email_remind_subj'];
+            $result['email_remind']=$result['surveyls_email_remind'];
+            $result['email_confirm_subj']=$result['surveyls_email_confirm_subj'];
+            $result['email_confirm']=$result['surveyls_email_confirm'];
+            $result['email_register_subj']=$result['surveyls_email_register_subj'];
+            $result['email_register']=$result['surveyls_email_register'];
+            $result['attributedescriptions'] = $this->tokenAttributes;
+            $result['attributecaptions'] = $localization->attributeCaptions;
+            if (!isset($result['adminname'])) {$result['adminname']=Yii::app()->getConfig('siteadminemail');}
+            if (!isset($result['adminemail'])) {$result['adminemail']=Yii::app()->getConfig('siteadminname');}
+            if (!isset($result['urldescrip']) || $result['urldescrip'] == '' ) {$result['urldescrip']=$result['surveyls_url'];}
+
+        }
+
+        return $result;
+    }
 }

@@ -41,24 +41,34 @@ class PluginsController extends LSYii_Controller
 
     public function actionActivate($id)
     {
-        foreach (App()->pluginManager->scanPlugins() as $pluginConfig) {
+        $pm = App()->pluginManager;
+        foreach ($pm->scanPlugins() as $pluginConfig) {
             if ($pluginConfig->id === $id) {
-                $pluginConfig->active = true;
-                $pluginConfig->save();
+                if ($pm->enablePlugin($id)) {
+                    App()->user->setFlash('success', gT("Plugin activated."));
+                } else {
+                    App()->user->setFlash('error', gT("Plugin activation failed."));
+                }
             }
         }
+        
         $this->redirect(['plugins/']);
     }
 
     public function actionConfigure($id)
     {
-        $pluginConfig = \ls\pluginmanager\PluginConfig::findAll(false)[$id];
-        $plugin = App()->pluginManager->loadPlugin($pluginConfig);
-        
-        if (App()->request->isPostRequest) {
-            $plugin->saveSettings(App()->request->getPost($plugin->id));
+        if (null !== $plugin = App()->pluginManager->getPlugin($id)) {
+            $pluginConfig = \ls\pluginmanager\PluginConfig::findAll(false)[$id];
+            $plugin = App()->pluginManager->loadPlugin($pluginConfig);
+
+            if (App()->request->isPostRequest) {
+                $plugin->saveSettings(App()->request->getPost($plugin->id));
+            }
+            $this->render('configure', ['plugin' => $plugin]);
+        } else {
+            throw new \CHttpException(404, "Plugin not found.");
         }
-        $this->render('configure', ['plugin' => $plugin]);
+        
     }
 
     public function actionDeactivate($id)
@@ -69,13 +79,17 @@ class PluginsController extends LSYii_Controller
             App()->user->setFlash('error', "Cannot disable currently active authentication plugin.");
         }
         
-        
-        foreach (App()->pluginManager->scanPlugins() as $pluginConfig) {
+        $pm = App()->pluginManager;
+        foreach ($pm->scanPlugins() as $pluginConfig) {
             if ($pluginConfig->id === $id) {
-                $pluginConfig->active = false;
-                $pluginConfig->save();
+                if ($pm->disablePlugin($id)) {
+                    App()->user->setFlash('success', gT("Plugin deactivated."));
+                } else {
+                    App()->user->setFlash('error', gT("Plugin deactivation failed."));
+                }
             }
         }
+        
         $this->redirect(['plugins/']);
     }
 
@@ -120,11 +134,9 @@ class PluginsController extends LSYii_Controller
     public function actionIndex()
     {
         $pm = App()->pluginManager;
-        $plugins = new CArrayDataProvider($pm->scanPlugins());
-        $loadedPlugins = $pm->loadPlugins();
+        $plugins = new CArrayDataProvider(array_values($pm->scanPlugins()));
         return $this->render('index', [
             'plugins' => $plugins, 
-            'loadedPlugins' => $loadedPlugins, 
             'authorizers' => $pm->getAuthorizers(), 
             'authenticators' => $pm->getAuthenticators()
         ]);

@@ -20,7 +20,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  * Implements global  config
  * @property CLogRouter $log Log router component.
  * @property \ls\pluginmanager\PluginManager $pluginManager 
- * @property LSWebUser $user
+ * @property WebUser $user
  */
 class WebApplication extends CWebApplication
 {
@@ -35,6 +35,19 @@ class WebApplication extends CWebApplication
      * @var LimesurveyApi
      */
     protected $api;
+    
+    protected $_supportedLanguages;
+    
+    public function setSupportedLanguages($value) {
+        foreach($value as $code => $language) {
+            $language['code'] = $code;
+            $this->_supportedLanguages[$code] = $language;
+        }
+    }
+    
+    public function getSupportedLanguages() {
+        return $this->_supportedLanguages;
+    }
     /**
      *
     * Initiates the application
@@ -84,11 +97,9 @@ class WebApplication extends CWebApplication
     public function initLanguage()
     {
         // Set language to use.
-        if ($this->request->getParam('lang') !== null)
-        {
+        if ($this->request->getParam('lang') !== null) {
             $this->setLanguage($this->request->getParam('lang'));
         }
-
     }
     /**
     * Loads a helper
@@ -188,6 +199,11 @@ class WebApplication extends CWebApplication
     */
     public function setLanguage( $sLanguage )
     {
+        global $counter;
+        $counter = isset($counter) ? $counter + 1 : 1;
+        if ($counter > 1) {
+            throw new Exception('SetLanguage');
+        }
         $this->messages->catalog = $sLanguage;
         parent::setLanguage($sLanguage);
     }

@@ -155,12 +155,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
-                "reference": "c315a4467ffbf2b37b4b082628b25533fb3a431d"
+                "reference": "7ffcc0060c23e92994a45c5b89ae990c32ef783a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/utility/zipball/c315a4467ffbf2b37b4b082628b25533fb3a431d",
-                "reference": "c315a4467ffbf2b37b4b082628b25533fb3a431d",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/7ffcc0060c23e92994a45c5b89ae990c32ef783a",
+                "reference": "7ffcc0060c23e92994a45c5b89ae990c32ef783a",
                 "shasum": ""
             },
             "type": "library",
@@ -180,7 +180,7 @@
                 }
             ],
             "description": "CakePHP Utility classes such as Inflector, String, Hash, and Security",
-            "time": "2015-01-01 19:38:39"
+            "time": "2015-02-01 19:26:47"
         },
         {
             "name": "crisu83/yiistrap",
@@ -307,12 +307,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/RingPHP.git",
-                "reference": "0b13b4f0d595c4e886ae8eecdfe27e049ba38375"
+                "reference": "a1da305d1c5c0175abf7bc912cb065e906de9500"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/0b13b4f0d595c4e886ae8eecdfe27e049ba38375",
-                "reference": "0b13b4f0d595c4e886ae8eecdfe27e049ba38375",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/a1da305d1c5c0175abf7bc912cb065e906de9500",
+                "reference": "a1da305d1c5c0175abf7bc912cb065e906de9500",
                 "shasum": ""
             },
             "require": {
@@ -350,7 +350,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-01-20 22:24:03"
+            "time": "2015-02-08 23:29:08"
         },
         {
             "name": "guzzlehttp/streams",
@@ -451,12 +451,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "80c6258146f99fbd276b620b13bbea6dcae3ee27"
+                "reference": "6fb0f62bd0305fd4dbecfd2aead8fcb9daa6a8c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/80c6258146f99fbd276b620b13bbea6dcae3ee27",
-                "reference": "80c6258146f99fbd276b620b13bbea6dcae3ee27",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/6fb0f62bd0305fd4dbecfd2aead8fcb9daa6a8c2",
+                "reference": "6fb0f62bd0305fd4dbecfd2aead8fcb9daa6a8c2",
                 "shasum": ""
             },
             "require": {
@@ -496,7 +496,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-02-02 11:17:48"
+            "time": "2015-02-04 15:48:45"
         },
         {
             "name": "react/promise",
@@ -611,12 +611,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "a0a00b25eee4a86f236c935c3b60976f537cbb07"
+                "reference": "c8b0f59fbdc474b0e3cb48bff3b23f9c1793c5ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/a0a00b25eee4a86f236c935c3b60976f537cbb07",
-                "reference": "a0a00b25eee4a86f236c935c3b60976f537cbb07",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/c8b0f59fbdc474b0e3cb48bff3b23f9c1793c5ae",
+                "reference": "c8b0f59fbdc474b0e3cb48bff3b23f9c1793c5ae",
                 "shasum": ""
             },
             "replace": {
@@ -654,7 +654,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-01-30 16:07:53"
+            "time": "2015-02-10 21:05:43"
         },
         {
             "name": "yiisoft/yii",
@@ -662,12 +662,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "4d601042682b393008debd65118504aa1e7638f7"
+                "reference": "e6323df53ccf76b6de99e92c3db85921d003bfcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/4d601042682b393008debd65118504aa1e7638f7",
-                "reference": "4d601042682b393008debd65118504aa1e7638f7",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/e6323df53ccf76b6de99e92c3db85921d003bfcc",
+                "reference": "e6323df53ccf76b6de99e92c3db85921d003bfcc",
                 "shasum": ""
             },
             "require": {
@@ -744,7 +744,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-01-27 22:25:04"
+            "time": "2015-02-09 11:46:59"
         }
     ],
     "packages-dev": [],

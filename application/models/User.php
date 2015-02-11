@@ -12,7 +12,7 @@
 *
 */
 
-class User extends LSActiveRecord
+class User extends LSActiveRecord implements ls\pluginmanager\iUser
 {
     /**
     * @var string Default value for user language
@@ -42,17 +42,6 @@ class User extends LSActiveRecord
     public function tableName()
     {
         return '{{users}}';
-    }
-
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return string
-    */
-    public function primaryKey()
-    {
-        return 'uid';
     }
 
     /**
@@ -209,45 +198,23 @@ class User extends LSActiveRecord
         return $result->row();
     }
 
-    /**
-    * Returns full name of user
-    *
-    * @access public
-    * @return string
-    */
-    public function getName($userid)
-    {
-        static $aOwnerCache = array();
-        
-        if (array_key_exists($userid, $aOwnerCache)) {
-            $result = $aOwnerCache[$userid];
-        } else {
-            $result = Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = :userid")->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
-            $aOwnerCache[$userid] = $result;
-        }
-        
-        return $result;
+    public function getName() {
+        return $this->full_name;
     }
     
+    public function getUserName() {
+        return $this->users_name;
+    }
     public function getuidfromparentid($parentid)
     {
         return Yii::app()->db->createCommand()->select('uid')->from('{{users}}')->where('parent_id = :parent_id')->bindParam(":parent_id", $parentid, PDO::PARAM_INT)->queryRow();
     }
     /**
-    * Returns id of user
-    *
-    * @access public
-    * @return string
-    */
-    public function getID($sUserName)
+     * Returns id of user
+     */
+    public function getId()
     {
-        $oUser = User::model()->findByAttributes(array(
-            'users_name' => $sUserName
-        ));
-        if ($oUser)
-        {
-            return $oUser->uid;
-        }
+        return $this->primaryKey;
     }
 
     /**
@@ -303,4 +270,82 @@ class User extends LSActiveRecord
         
         return CPasswordHelper::verifyPassword($password, $this->password);
     }
+
+    public function getLanguage() {
+        return $this->lang;
+    }
+
+    public function getSettings() {
+        return [
+            'name' => [
+                'label' => 'Display name',
+                'current' => $this->name,
+                'type' => 'string'
+            ],
+            'email' => [
+                'label' => 'Email',
+                'current' => $this->email,
+                'type' => 'string'
+            ],
+            'userName' => [
+                'label' => 'Username',
+                'current' => $this->userName,
+                'type' => 'string'
+            ],
+            'language' => [
+                'label' => 'Language',
+                'current' => $this->getLanguage(),
+                'type' => 'select',
+                'options' => TbHtml::listData(App()->supportedLanguages, 'code', function($data) { return "{$data['description']} - {$data['nativedescription']}"; })
+                    
+            ],
+            'oldPassword' => [
+                'label' => 'Current password',
+                'type' => 'password'
+            ],
+            'password1' => [
+                'label' => 'New password',
+                'type' => 'password'
+            ],
+            'password2' => [
+                'label' => 'Repeat password',
+                'type' => 'password'
+            ],
+            
+        ];
+        
+    }
+
+    /**
+     * 
+     * @param array $settings
+     * @return array Array of validation errors. [] on success.
+     */
+    public function setSettings($settings) {
+        $errors = [];
+        if ($settings['password1'] != $settings['password2']) {
+            $errors['password1'][] = 'New password and repeat password must match.';
+            $errors['password2'][] = 'New password and repeat password must match.';
+        }
+        
+        if (!empty($settings['password1']) && empty($settings['oldPassword'])) {
+            $errors['oldPassword'][] = 'Current password is required when changing password.';
+        }
+        
+        
+        if (empty($errors)) {
+            // Update password.
+            if (!empty($settings['password1'])) {
+                $this->password = CPasswordHelper::hashPassword($settings['password1']);
+            }
+            $this->email = $settings['email'];
+            $this->full_name = $settings['name'];
+            $this->users_name = $settings['userName'];
+            $this->lang = $settings['language'];
+            $this->save();
+        }
+        return $errors;
+        
+    }
+
 }

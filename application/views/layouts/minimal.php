@@ -12,16 +12,6 @@
         <title>Limesurvey Administration</title>
     </head>
     <body>
-        <?php
-            if (!App()->user->isGuest) {
-                echo CHtml::openTag('nav');
-                $this->widget('ext.yii-barmenu.BarMenu', array(
-                    'items' => require __DIR__ . '/../menu.php',
-                    'iconUrl' => App()->getConfig('adminimageurl')
-                ));
-                echo CHtml::closeTag('nav');
-            }
-		?>
         <div class="container">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <div id="content">

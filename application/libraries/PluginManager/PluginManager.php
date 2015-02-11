@@ -6,14 +6,12 @@ use Plugin;
      * Factory for limesurvey plugin objects.
      */
     class PluginManager extends \CApplicationComponent{
+        public $pluginFile;
+        public $enabledPluginDir;
         protected $_apis = [];
         public $apiMap;
-        /**
-         * Array mapping guids to question object class names.
-         * @var type 
-         */
-        protected $guidToQuestion = array();
-        
+  
+        protected $configs = [];
         protected $plugins = [];
         
         public $pluginDirs = [];
@@ -35,43 +33,28 @@ use Plugin;
          * a reference to an already constructed reference.
          */
         public function init() {
-            parent::init();
             PluginConfig::$pluginManager = $this;
-            if (empty($this->loadPlugins(true))) {
-                foreach($this->scanPlugins() as $config) {
-                    if (in_array($config->id, [
-                        'ls_core_plugins_AuthDb',
-                        'ls_core_plugins_PermissionDb'
-                    ])) {
-                        $config->active = true;
-                        $config->save();
-                    }
-                }
-                $this->loadPlugins(true);
+            $this->loadPlugins();
+            if (empty($this->getAuthenticators(true)) && $reload = true && null === $this->enablePlugin('ls_core_plugins_AuthDb')) {
+                throw new \Exception("No authentication plugins available.");
+            };
+            if ($this->getAuthorizer() == null && $reload = true && null === $this->enablePlugin('ls_core_plugins_PermissionDb')) {
+                throw new \Exception("No authorization plugin available.");
+            };
+            if ($reload) {
+                App()->controller->refresh();
             }
-        }
-        /**
-         * Return a list of installed plugins, but only if the files are still there
-         * 
-         * This prevents errors when a plugin was installed but the files were removed
-         * from the server.
-         * 
-         * @return array
-         */
-        public function getInstalledPlugins()
-        {
-            $pluginModel = Plugin::model();    
-            $records = $pluginModel->findAll();
             
-            $plugins = array();
-
-            foreach ($records as $record) {
-                // Only add plugins we can find
-                if ($this->loadPlugin($record->name) !== false) {
-                    $plugins[$record->id] = $record;
-                }
-            }
-            return $plugins;
+        }
+        
+        public function disablePlugin($id) {
+            return unlink("{$this->enabledPluginDir}/$id");
+        }
+        public function enablePlugin($id) {
+            return touch("{$this->enabledPluginDir}/$id");
+        }   
+        public function isActive($id) {
+            return !empty($id) && file_exists("{$this->enabledPluginDir}/$id");
         }
         
         /**
@@ -184,53 +167,21 @@ use Plugin;
          */
         public function scanPlugins()
         {
+            Yii::log('scanplugins');
             $plugins = [];
             foreach($this->pluginDirs as $pluginDir) {
-                $plugins = array_merge($plugins, \ls\pluginmanager\PluginConfig::registerAll($pluginDir));
+                $plugins = array_merge($plugins, \ls\pluginmanager\PluginConfig::readAll($pluginDir));
             }
+            // Write to file.
+            $file = new \PhpConfigFile($this->pluginFile);
+            $file->setConfig(array_map(function(PluginConfig $config) {
+                return $config->attributes;
+            }, $plugins), false);
+            $file->save();
             return $plugins;
         }
 
-        /**
-         * Gets the description of a plugin. 
-         * The description is accessed via a function inside the plugin class.
-         *
-         * @param string $pluginClass The classname of the plugin
-         */
-        public function getPluginInfo($pluginClass, $pluginDir = null)
-        {
-            die('deprecated getplugininfo');
-            $result = array();
-            
-            $class = "{$pluginClass}";
-            
-            if (!class_exists($class, false)) {
-                $found = false;
-                if (!is_null($pluginDir)) {
-                    $dirs = array($pluginDir);
-                } else {
-                    $dirs = $this->pluginDirs;
-                }
-                
-                foreach ($this->pluginDirs as $pluginDir) {
-                    $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
-                    if (file_exists($file)) {
-                        Yii::import($pluginDir . ".$pluginClass.*");
-                        $found = true;
-                        break;
-                    }
-                }
-                
-                if (!$found) {
-                    return false;
-                }
-            }
-            $plugin = new $class($this, null, false);
-            $result['description'] = $plugin->getDescription();
-            $result['pluginName'] = $plugin->getName();
-            $result['pluginClass'] = $class;            
-            return $result;
-        }
+       
         
         /**
          * Returns the instantiated plugin
@@ -240,25 +191,26 @@ use Plugin;
          */
         public function loadPlugin(PluginConfig $pluginConfig)
         {
-            
-            $pluginConfig->registerNamespace($this->loader);
-            if (!isset($this->plugins[$pluginConfig->id])) {
-                if ($pluginConfig->type == 'simple') {
-                    $this->plugins[$pluginConfig->id] = $this->loadSimplePlugin($pluginConfig);
-                } else {
-                    throw new \Exception("Only simple is supported for now.");
-                }                   
+            if ($pluginConfig->validate() && $this->isActive($pluginConfig->id)) {
+                $pluginConfig->registerNamespace($this->loader);
+                if (!isset($this->plugins[$pluginConfig->id])) {
+                    if ($pluginConfig->type == 'simple') {
+                        $this->plugins[$pluginConfig->id] = $this->loadSimplePlugin($pluginConfig);
+                    } else {
+                        throw new \Exception("Only simple is supported for now.");
+                    }                   
+                }
+                return $this->getPlugin($pluginConfig->id);
             }
-            return $this->getPlugin($pluginConfig->id);
         }
         
         public function getPlugin($id) {
-            if (!isset($this->plugins[$id])) {
-                throw new \Exception("Plugin $id not found.");
-            }
-            return $this->plugins[$id];
+            return isset($this->plugins[$id]) ? $this->plugins[$id] : null;
         }
         
+        public function getPlugins() {
+            return $this->plugins;
+        }
         /**
          * 
          * @param \ls\pluginmanager\PluginConfig $pluginConfig
@@ -275,16 +227,23 @@ use Plugin;
          * For instance 'survey' for runtime or 'admin' for backend. This needs
          * some thinking before implementing.
          */
-        public function loadPlugins($refresh = false)
+        protected function loadPlugins()
         {
-            $result = array_map([$this, 'loadPlugin'], PluginConfig::findAll(true, $refresh));
+            if (!file_exists($this->pluginFile)) {
+                $this->scanPlugins();
+            }
+            $config = include($this->pluginFile);
+            foreach (PluginConfig::loadMultiple($config) as $pluginConfig) {
+                $result[$pluginConfig->id] = $this->loadPlugin($pluginConfig);
+            }
+            
             $this->dispatchEvent(new PluginEvent('afterPluginLoad'));    // Alow plugins to do stuff after all plugins are loaded
-            return $result;
+            return empty($result);
         }
         
        public function getAuthenticators($activeOnly = false) {
-            $result = array_filter($this->loadPlugins(), function ($plugin) {
-                return $plugin instanceOf AuthPluginBase;
+            $result = array_filter($this->plugins, function ($plugin) {
+                return $plugin instanceOf iAuthenticationPlugin;
             });
             if ($activeOnly) {
                 $authPlugins = \SettingGlobal::get('authenticationPlugins');
@@ -292,10 +251,19 @@ use Plugin;
             }
             return $result;
         }
-        public function getAuthorizers() {
-            return array_filter($this->loadPlugins(), function ($plugin) {
-                return $plugin instanceOf \IAuthManager;
+        
+        public function getAuthorizer() {
+            $authorizers = $this->getAuthorizers(true);
+            $authPlugin = \SettingGlobal::get('authorizationPlugin');
+            if (isset($authorizers[$authPlugin])) {
+                return $authorizers[$authPlugin];
+            }
+        }
+        public function getAuthorizers($activeOnly = false) {
+            $result = array_filter($this->plugins, function ($plugin) {
+                return $plugin instanceOf iAuthorizationPlugin;
             });
+            return $result;
         }
         
     }

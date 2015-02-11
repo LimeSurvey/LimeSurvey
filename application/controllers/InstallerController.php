@@ -57,11 +57,9 @@ class InstallerController extends CController {
     */
     function _checkInstallation()
     {
-        if (file_exists(APPPATH . 'config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm')))
-        {
-            throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
-            exit();
-        }
+//        if (file_exists(__DIR__ . '/../config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
+//            throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
+//        }
     }
 
     /**
@@ -197,27 +195,7 @@ class InstallerController extends CController {
                     $this->populateDatabase();
                 } 
                 $this->redirect(['installer/optional']);
-                
-               
-//                    if (in_array($oModel->dbtype, array('mysql', 'mysqli'))) {
-//                        //for development - use mysql in the strictest mode  //Checked)
-//                        if (Yii::app()->getConfig('debug')>1) {
-//                            $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
-//                        }
-//                        @$this->connection->createCommand("SET CHARACTER SET 'utf8'")->execute();  //Checked
-//                        @$this->connection->createCommand("SET NAMES 'utf8'")->execute();  //Checked
-//                    }
-//
-//                    // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
-//                    if (in_array($oModel->dbtype, array('mssql', 'sqlsrv', 'dblib'))) {
-//                        @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();     //Checked
-//                        @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();     //Checked
-//                    }
-
-           
             } 
-
-            
         } 
         $this->render('config', $aData);
     }
@@ -339,56 +317,10 @@ class InstallerController extends CController {
 
         $this->render('optional', $aData);
     }
-
-   
-
-
-    
-
+  
     /**
-    * Executes an SQL file
-    *
-    * @param string $sFileName
-    * @param string $sDatabasePrefix
-    */
-    function _executeSQLFile($sFileName, $sDatabasePrefix)
-    {
-        $aMessages = array();
-        $sCommand = '';
-
-        if (!is_readable($sFileName)) {
-            return false;
-        } else {
-            $aLines = file($sFileName);
-        }
-        foreach ($aLines as $sLine) {
-            $sLine = rtrim($sLine);
-            $iLineLength = strlen($sLine);
-
-            if ($iLineLength && $sLine[0] != '#' && substr($sLine,0,2) != '--') {
-                if (substr($sLine, $iLineLength-1, 1) == ';') {
-                    $line = substr($sLine, 0, $iLineLength-1);
-                    $sCommand .= $sLine;
-                    $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
-
-                    try {
-                        $this->connection->createCommand($sCommand)->execute();
-                    } catch(Exception $e) {
-                        $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
-                    }
-
-                    $sCommand = '';
-                } else {
-                    $sCommand .= $sLine;
-                }
-            }
-        }
-        return $aMessages;
-    }
-
-    /**
-    * Function to write given database settings in APPPATH.'config/config.php'
-    */
+     * Function to write given database settings in APPPATH.'config/config.php'
+     */
     private function writeConfigFile(InstallerConfigForm $config)
     {
         // Settings array.
@@ -522,5 +454,28 @@ class InstallerController extends CController {
         . "/* Location: ./application/config/config.php */";
 
         return strlen($sConfig) <= file_put_contents(\Yii::app()->basePath . '/config/config.php', $sConfig);
+    }
+    
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['accessControl']);
+    }
+    
+public function accessRules()
+    {
+        $rules = [
+            ['allow', 
+                'actions' => ['index', 'license', 'precheck', 'config'],
+                'expression' => function() { return !file_exists(__DIR__ . '/../config/config.php'); }
+            ], 
+            ['allow', 
+                'actions' => ['optional'], 
+                'expression' => function() { return User::model()->count() == 0; }
+            ],
+            ['deny'],
+        ];
+        // Note the order; rules are numerically indexed and we want to
+        // parents rules to be executed only if ours dont apply.
+        return array_merge($rules, parent::accessRules());
     }
 }

@@ -91,44 +91,8 @@ div.htmleditor {
 /* Bootstrap overrides.                                                       */
 /******************************************************************************/
 label {display: inline-block;}/* override but leave admin template to override again */
-/* Fixes li not expanding to size of containing table. (Survey settings add language interface) */
-form li {
-    overflow: hidden;
-}
-/* Fix padding on table cell */
-table td, table th {
-    padding: 1px;
-}
-/* Fix select width, bootstrap set it for mobile */
-select {
-    width: auto;
-}
-/* Fix select and input width, taken from getskeleton and other */
-select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]
-{
-    max-width:99%;
-}
-/* Specific select ?*/
-.select{
-    margin-left: 10px;
-}
 
-.select * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-/* Think this can be in template/adminstyle.css */
-select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-    min-width: 6em;
-    width:auto;
-    margin-bottom: 0px;
-    font-size: 1em;
-    line-height: 1.5;
-}
-textarea,select[size]{
-    height: auto;
-}
+
 .ui-jqgrid{clear:both}
 .ui-jqgrid-btable.load{opacity:0.5}
 .ui-jqgrid select,.ui-jqgrid textarea,.ui-jqgrid input[type="text"]{

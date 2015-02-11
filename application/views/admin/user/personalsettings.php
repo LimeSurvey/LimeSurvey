@@ -6,20 +6,13 @@
     <?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44')); ?>
         <ul>
             <li>
-                <?php echo CHtml::label(gT("Interface language"), 'lang'); ?>:
-                <select id='lang' name='lang'>
-                    <option value='auto'<?php if ($sSavedLanguage == 'auto') { echo " selected='selected'"; } ?>>
-                        <?php eT("(Autodetect)"); ?>
-                    </option>
-                    <?php foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
-                    { ?>
-                    <option value='<?php echo $langkey; ?>'<?php if ($langkey == $sSavedLanguage) {
-                        echo " selected='selected'";
-                    } ?>>
-                    <?php echo $languagekind['nativedescription']; ?> - <?php echo $languagekind['description']; ?>
-                    </option>
-                    <?php } ?>
-                </select>
+                <?php 
+                echo CHtml::label(gT("Interface language"), 'lang');
+                $options = CHtml::listData(getLanguageData(true, App()->language), 'code', function($model) {
+                    return html_entity_decode($model['nativedescription']);
+                });
+                echo TbHtml::dropDownList('lang', App()->user->model->getLanguage(), $options, ['id' => 'lang']);
+                ?>
             </li>
 
             <li>

@@ -14,7 +14,8 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 @date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
 	'basePath' => __DIR__ . '/../',
-    
+    'sourceLanguage' => 'en',
+    'supportedLanguages' => include('locales.php'),
     'theme' => 'default',
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
 	'name' => 'LimeSurvey',
@@ -64,7 +65,7 @@ $internalConfig = array(
             'enableCookieValidation'=>false   // Enable to activate cookie protection
         ),
         'user' => array(
-            'class' => 'LSWebUser',
+            'class' => 'WebUser',
             'stateKeyPrefix' => 'LSWebUser',
             'loginUrl' => ['users/login']
         ),
@@ -106,17 +107,15 @@ $internalConfig = array(
             'cachingDuration'=>3600,
             'forceTranslation' => true,
             'useMoFile' => true,
-            'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
+            'basePath' => __DIR__ . '/../../locale'
         ),
         'pluginManager' => [
             'class' => "\\ls\\pluginmanager\\PluginManager",
             'apiMap' => [
                 "1.0" => "\\ls\\pluginmanager\\LimesurveyApi"
             ],
-            'oldPluginDirs' => [
-//                'webroot.plugins', // User plugins
-                'application.core.plugins' // Core plugins
-            ],
+            'pluginFile' => __DIR__ . '/plugins.php',
+            'enabledPluginDir' => __DIR__ . '/plugins',
             'pluginDirs' => [
                 __DIR__ . '/../core/plugins',
                 __DIR__ . '/../../plugins',

@@ -3,15 +3,15 @@
 class DevController extends CController {
     
     public function actionIndex() {
-        $result = "";
-        $dir = __DIR__ . '/../../plugins';
-        
-        $result .= print_r(App()->pluginManager->scanPlugins(), true);
-        
-//        $plugins = \ls\pluginmanager\PluginConfig::findAll(true);
-        
-//        App()->pluginManager->subscribe("test", function($event) { var_dump($event); });
-        
-        $this->renderText('<pre>' . $result . '</pre>');
+        $lines = file(__DIR__ . '/../config/locales.php', FILE_IGNORE_NEW_LINES + FILE_SKIP_EMPTY_LINES); 
+        $regex = '/^\$supportedLanguages\[\'(..)\'\]\[\'nativedescription\'\].*\'(.*)\';$/';
+        $closure = function($matches) {
+            return strtr($matches[0], [$matches[2] => html_entity_decode($matches[2])]);
+        };
+        foreach ($lines as &$line) {
+            $line = preg_replace_callback($regex, $closure, $line);
+        }
+        file_put_contents(__DIR__ . '/../config/locales.php', implode("\n", $lines));
+//        $this->renderText('<pre>' . $result . '</pre>');
     }
 }

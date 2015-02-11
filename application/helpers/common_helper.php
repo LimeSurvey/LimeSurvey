@@ -13,22 +13,6 @@
 Yii::import('application.helpers.sanitize_helper', true);
 
 /**
-* Simple function to sort the permissions by title
-*
-* @param mixed $aPermissionA  Permission A to compare
-* @param mixed $aPermissionB  Permission B to compare
-*/
-function comparePermission($aPermissionA,$aPermissionB)
-{
-    if($aPermissionA['title'] >$aPermissionB['title']) {
-        return 1;
-    }
-    else {
-        return -1;
-    }
-}
-
-/**
  * Translation helper function
  * @param string $sToTranslate
  * @param string $sEscapeMode
@@ -199,8 +183,6 @@ function getSurveyList($returnarray=false, $surveyid=false)
     static $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
-    App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
-
     if(is_null($cached)) {
         $args = array('order'=>'surveyls_title');
         if (!App()->user->checkAccess('superadmin'))
@@ -1101,68 +1083,9 @@ function getGroupListLang($gid, $language, $surveyid)
 * @param string $languagecode The language code - if not given the base language of the particular survey is used
 * @return array Returns array with survey info or false, if survey does not exist
 */
-function getSurveyInfo($surveyid, $languagecode='')
+function getSurveyInfo($surveyid, $languagecode= null)
 {
-    static $staticSurveyInfo = array();// Use some static
-    $surveyid=sanitize_int($surveyid);
-    $languagecode=sanitize_languagecode($languagecode);
-    $thissurvey=false;
-    // Do job only if this survey exist
-    if(!Survey::model()->findByPk($surveyid))
-    {
-        return false;
-    }
-    // if no language code is set then get the base language one
-    if ((!isset($languagecode) || $languagecode==''))
-    {
-        $languagecode=Survey::model()->findByPk($surveyid)->language;
-    }
-
-    if(isset($staticSurveyInfo[$surveyid][$languagecode]) )
-    {
-        $thissurvey=$staticSurveyInfo[$surveyid][$languagecode];
-    }
-    else
-    {
-        $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-        if (is_null($result)) {
-            // When additional language was added, but not saved it does not exists
-            // We should revert to the base language then
-            $languagecode=Survey::model()->findByPk($surveyid)->language;
-            $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-        }
-        if($result)
-        {
-            $thissurvey=array_merge($result->survey->attributes,$result->attributes);
-            $thissurvey['name']=$thissurvey['surveyls_title'];
-            $thissurvey['description']=$thissurvey['surveyls_description'];
-            $thissurvey['welcome']=$thissurvey['surveyls_welcometext'];
-            $thissurvey['templatedir']=$thissurvey['template'];
-            $thissurvey['adminname']=$thissurvey['admin'];
-            $thissurvey['tablename']='{{survey_'.$thissurvey['sid'] . '}}';
-            $thissurvey['urldescrip']=$thissurvey['surveyls_urldescription'];
-            $thissurvey['url']=$thissurvey['surveyls_url'];
-            $thissurvey['expiry']=$thissurvey['expires'];
-            $thissurvey['email_invite_subj']=$thissurvey['surveyls_email_invite_subj'];
-            $thissurvey['email_invite']=$thissurvey['surveyls_email_invite'];
-            $thissurvey['email_remind_subj']=$thissurvey['surveyls_email_remind_subj'];
-            $thissurvey['email_remind']=$thissurvey['surveyls_email_remind'];
-            $thissurvey['email_confirm_subj']=$thissurvey['surveyls_email_confirm_subj'];
-            $thissurvey['email_confirm']=$thissurvey['surveyls_email_confirm'];
-            $thissurvey['email_register_subj']=$thissurvey['surveyls_email_register_subj'];
-            $thissurvey['email_register']=$thissurvey['surveyls_email_register'];
-            $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
-            $thissurvey['attributecaptions'] = $result->attributeCaptions;
-            if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=Yii::app()->getConfig('siteadminemail');}
-            if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=Yii::app()->getConfig('siteadminname');}
-            if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
-
-            $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
-        }
-
-    }
-
-    return $thissurvey;
+    return Survey::model()->findByPk($surveyid)->getInfo($languagecode);
 }
 
 /**

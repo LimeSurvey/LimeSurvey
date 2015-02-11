@@ -51,9 +51,7 @@ class UserAction extends Survey_Common_Action
         }
 
 
-        $aData['usrhimself'] = $usrhimself;
         // other users
-        $aData['usr_arr'] = $userlist;
         $noofsurveyslist = array();
 
         $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
@@ -627,12 +625,8 @@ class UserAction extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("Your personal settings were successfully saved.");
         }
 
-        // Get user lang
-        $user = User::model()->findByPk(Yii::app()->session['loginID']);
-        $aData['sSavedLanguage'] = $user->lang;
-
         // Render personal settings view
-        $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
+        $this->_renderWrappedTemplate('user', 'personalsettings');
     }
 
     private function _getUserNameFromUid($uid)

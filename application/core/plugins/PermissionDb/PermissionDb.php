@@ -4,7 +4,7 @@ use ls\pluginmanager\PluginBase;
 use \ls\pluginmanager\PluginEvent;
 use \Yii;
 
-class PermissionDb extends PluginBase implements \IAuthManager 
+class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizationPlugin 
 {
     protected $storage = 'DbStorage';
     

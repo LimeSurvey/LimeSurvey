@@ -1,5 +1,4 @@
-<?php
-
+<?php   
     $list = '';
     foreach($publicSurveys as $survey)
     {

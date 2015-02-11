@@ -134,7 +134,7 @@
                 'icon' => 'off'
             ], [
                 'title' => gT('Preferences'),
-                'url' => ['admin/user/sa/personalsettings'],
+                'url' => ['users/profile'],
                 'icon' => 'edit'
             ],
             array(
@@ -150,6 +150,6 @@
     
     $event = new PluginEvent('afterAdminMenuLoad', $this);
 	$event->set('menu', $menu);
-
-	return App()->getPluginManager()->dispatchEvent($event)->get('menu');
+    $event->dispatch();
+	return $event->get('menu');
 ?>

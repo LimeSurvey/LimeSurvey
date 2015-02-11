@@ -1,10 +1,9 @@
 <?php
 namespace ls\core\plugins;
 
-use ls\pluginmanager\AuthPluginBase;
 use \ls\pluginmanager\PluginEvent;
 
-class AuthWebServer extends AuthPluginBase
+class AuthWebServer implements \ls\pluginmanager\iAuthenticationPlugin
 {
     protected $storage = 'DbStorage';    
     
@@ -18,11 +17,7 @@ class AuthWebServer extends AuthPluginBase
             'label' => 'Key to use for username e.g. PHP_AUTH_USER, LOGON_USER, REMOTE_USER. See phpinfo in global settings.',
             'default' => 'REMOTE_USER',
         ),
-        'is_default' => array(
-                'type' => 'checkbox',
-                'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
-                'default' => true,
-                )
+
     );
     
     public function init() 
@@ -132,7 +127,13 @@ class AuthWebServer extends AuthPluginBase
     }  
     
     public function authenticate(\CHttpRequest $request) {
-        
+        return false;
     }
-    
+
+    public function enumerable() {
+        return false;
+    }
+
+    public function getUsers() {}
+
 }

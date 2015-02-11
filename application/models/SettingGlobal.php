@@ -15,19 +15,11 @@
 
 class SettingGlobal extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
-
+    /**
+     * This caches request for the current request only.
+     */
+    protected static $requestCache = [];
+    
 	/**
 	 * Returns the setting's table name to be used by the model
 	 *
@@ -92,20 +84,29 @@ class SettingGlobal extends LSActiveRecord
         }
     }
     public static function get($name, $default = null) {
-        if (null !== $model = self::model()->findByPk($name)) {
-            return $model->value;
+        if (!array_key_exists($name, self::$requestCache)) {
+            if (null !== $model = self::model()->findByPk($name)) {
+                self::$requestCache[$name] = $model->value;
+            } else {
+                self::$requestCache[$name] = null;
+            }
         }
-        return $default;
+        return isset(self::$requestCache[$name]) ? self::$requestCache[$name] : $default;
     }
     
-    public static function set($name, $value) {
+    public static function set($name, $value, $events = true) {
         if (null === $model = self::model()->findByPk($name)) {
             $model = new SettingGlobal();
             $model->name = $name;
         }
-        
         $model->value = $value;
-        return $model->save();
+        if (!$events) {
+            $model->detachBehavior('PluginEventBehavior');
+        }
+        if (false !== $result = $model->save()) {
+            self::$requestCache[$name] = $value;
+        }
+        return $result;
     }
 }
 ?>

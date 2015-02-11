@@ -11,8 +11,6 @@
     },
     "events" : [
         "beforeLogin",
-        "afterLoginFormSubmit",
-        "newUserSession",
         "beforeDeactivate",
         "listExportPlugins",
         "listExportOptions",

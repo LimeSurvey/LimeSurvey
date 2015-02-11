@@ -1,9 +1,14 @@
 <?php
 namespace ls\pluginmanager;
+/**
+ * Validates plugin configuration and updates the main configuration file.
+ */
 class PluginConfig extends \CFormModel
 {
-    protected static $pluginConfig;
-    protected static $plugins;
+    /**
+     *
+     * @var PluginManager
+     */
     public static $pluginManager;
     public $name;
     public $description;
@@ -14,21 +19,21 @@ class PluginConfig extends \CFormModel
     public $vendor;
  
     public $class;
-    /**
-     * @var boolean
-     */
-    public $active = false;
-    
     public $path;
     public $autoload = [];
     
-    public $events = [];
+    private $_events = [];
     
     public $apiVersion;
     
+    public function setEvents($value) {
+        $this->_events = array_unique($value);
+    }
+    public function getEvents() {
+        return $this->_events;
+    }
     public function __construct($config) {
         parent::__construct('');
-        self::loadPluginConfig();
         if (is_string($config)) {
             $this->scenario = 'register';
             $this->loadJsonFile($config);
@@ -38,12 +43,6 @@ class PluginConfig extends \CFormModel
         }
     }
     
-    protected static function loadPluginConfig($refresh = false) {
-        if (!isset(self::$pluginConfig) || $refresh) {
-            $file = \Yii::getPathOfAlias('application.config') . '/plugins.php';
-            self::$pluginConfig = file_exists($file) ? include($file) : [];
-        }
-    }
     public function loadJsonFile($configFile) {
         if (!file_exists($configFile)) {
             throw new \Exception("Config file not found.");
@@ -55,9 +54,6 @@ class PluginConfig extends \CFormModel
             throw new \Exception("Config file not does not contain valid JSON.");
         }
         $this->path = dirname(realpath($configFile));
-        if (isset(self::$pluginConfig[$config['name']])) {
-            $this->setAttributes(self::$pluginConfig[$config['name']], false);
-        }
         $this->setAttributes($config);
     }
     
@@ -70,7 +66,7 @@ class PluginConfig extends \CFormModel
             ['apiVersion', 'in', 'range' => array_keys(self::$pluginManager->apiMap), 'on' => 'register', 'allowEmpty' => false],
             ['events', 'safe'],
             // Only trust these if they were loaded from our plugins.php
-            [['path', 'active', 'apiVersion'], 'safe', 'on' => 'load'],
+            [['path', 'apiVersion'], 'safe', 'on' => 'load'],
         ];
     }
     
@@ -94,42 +90,21 @@ class PluginConfig extends \CFormModel
         }
 //        var_dump($this->path);
     }
-    
-    /**
-     * Saves the plugin information to config/plugins.php
-     * @param boolean $runValidation
-     * @param boolean $write If false only updates static configuration array.
-     */
-    public function save($runValidation = true, $write = true) {
-        if ($this->validate()) {
-            $file = new \PhpConfigFile(\Yii::getPathOfAlias('application.config') . '/plugins.php');
-            self::$pluginConfig[$this->name] = $this->attributes;
-            $file->setConfig(self::$pluginConfig, false);
-            return $file->save();
-        }
-        return false;
-        
-    }
+
             
     /**
      * 
      * @return self[]
      */
-    public static function findAll($activeOnly = true, $refresh = false) {
-        if (!isset(self::$plugins) || $refresh) {
-            self::loadPluginConfig($refresh);
-            $plugins = [];
-            foreach(self::$pluginConfig as $config) {
-                $instance = new self($config);
-                $plugins[$instance->id] = $instance;
-            }
-            self::$plugins = $plugins;
+    public static function loadMultiple(array $configurations) {
+        $result = [];
+        foreach ($configurations as $config) {
+            $instance = new self($config);
+            $result[$instance->id] = $instance;
         }
-        return !$activeOnly ? self::$plugins : array_filter(self::$plugins, function(PluginConfig $config) {
-            return $config->active;
-        });
-
+        return $result;
     }
+    
     public static function scan($directory) {
         $result = [];
         if (is_dir($directory)) {
@@ -148,19 +123,20 @@ class PluginConfig extends \CFormModel
     }
     
     /**
-     * Scans the directory for plugins and registers them all in the plugins.php file.
+     * Scans the directory for plugins.
      * @param string $directory
      * @return array For each plugin an array with keys: success, name, errors.
      */
-    public static function registerAll($directory) {
+    public static function readAll($directory = []) {
+        \Yii::beginProfile('readAll');
         $files = self::scan($directory);
-        return array_map([__CLASS__, 'register'], $files);
-    }
-    
-    public static function register($configFile) {
-        $config = new PluginConfig($configFile);
-        $config->save();
-        return $config;
+        $configs = [];
+        foreach ($files as $file) {
+            $config = new self($file);
+            $configs[] = $config;
+        }
+        \Yii::endProfile('readAll');
+        return $configs;
     }
     
     public function registerNamespace(\Composer\Autoload\ClassLoader $loader, $runValidation = true) {
@@ -176,7 +152,6 @@ class PluginConfig extends \CFormModel
     
     public function attributeNames() {
         $names = parent::attributeNames();
-//        $names[] = 'qualifiedClassName';
         return $names;
     }
     
@@ -199,5 +174,17 @@ class PluginConfig extends \CFormModel
     
     public function getId() {
         return strtr($this->class, ['\\' => '_']);
+    }
+    
+    /**
+     * 
+     * @return iPlugin
+     */
+    public function getPlugin() {
+        return self::$pluginManager->getPlugin($this->id);
+    }
+    
+    public function getActive() {
+        return self::$pluginManager->isActive($this->id);
     }
 }

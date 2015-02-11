@@ -64,7 +64,7 @@
             Yii::app()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/settingswidget.js'));
 
             // Add default form class.
-            $this->formHtmlOptions['class'] = isset($this->formHtmlOptions['class']) ? $this->formHtmlOptions['class'] . " settingswidget form-horizontal" : 'settingswidget form-horizontal';
+            $this->formHtmlOptions['class'] = isset($this->formHtmlOptions['class']) ? $this->formHtmlOptions['class'] . "form-horizontal settingswidget" : 'form-horizontal settingswidget';
 
             // Start form
             $this->beginForm();
@@ -77,7 +77,6 @@
             ], $this->htmlOptions($metaData, null));
             switch($htmlOptions['type']) {
                 case 'link':
-                    var_dump( array_merge($htmlOptions, ['url' => $metaData['href']]));
                     $result = TbHtml::linkButton($label, array_merge($htmlOptions, ['url' => $metaData['href']]));
                     break;
                 default:
@@ -120,18 +119,26 @@
             // Find function
             $function = "render{$metaData['type']}";
 
-            // Construct the content
-            // The labels
-            $content  = $this->renderLabel($name, $metaData);
-            // The control
-            $content .= CHtml::openTag('div',$metaData['controlOptions']);
             // The input
-            $content .= $this->$function($name, $metaData, $form);
+            $input = $this->$function($name, $metaData, $form);
             // The help
-            $content .= $this->renderHelp($name, $metaData);
-            $content .= CHtml::closeTag('div');
+            $content = $this->renderHelp($name, $metaData);
+            $content = TbHtml::customControlGroup($input, $name, [
+                'help' => isset($metaData['errors']) ? implode(', ', $metaData['errors']) : '',
+                'label' => isset($metaData['label']) ? $metaData['label'] : $name,
+                'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
+                'controlWidthClass' => 'col-sm-12 col-md-7',
+                'labelWidthClass' => 'col-sm-12 col-md-5',
+                'groupOptions' => [
+                    'class' => "setting setting-{$metaData['type']} "
+                    . ((isset($metaData['errors']) && !empty($metaData['errors'])) ? TbHtml::$errorCss : ''),
+                    'data-name' => $name
+                            
+                ]
+                 
+            ]);
 
-            $result=CHtml::tag($wrapper,array('class'=>"setting form-group setting-{$metaData['type']}", 'data-name' => $name),$content);
+            $result = $metaData['type'] != 'hidden' ? $content : $input;
 
             if($return)
                 return $result;
@@ -198,15 +205,6 @@
             );
             $metaData = array_merge($defaults, $metaData);
 
-            // col-sm-X is here for bootsrap 3 when ready
-            $metaData['labelOptions']['class'].=" control-label col-sm-5";
-            // Set the witdth of control-option according to existence of label
-            if(!isset($metaData['label']))
-                $metaData['controlOptions']['class'].=" col-sm-12";
-            else
-                $metaData['controlOptions']['class'].=" col-sm-7";
-            $metaData['controlOptions']['class'].=" controls";
-
             if (is_string($metaData['class']))
             {
                 $metaData['class'] = array($metaData['class']);
@@ -237,18 +235,7 @@
             }
             return $metaData;
         }
-        /**
-        * render label according to type and $metaData['label']
-        *
-        */
-        public function renderLabel($name,$metaData){
-            if(!isset($metaData['label']))
-                return "";
-            if(!in_array($metaData['type'],array('list','boolean','logo','link','info')))
-                return CHtml::label($metaData['label'], $name, $metaData['labelOptions']);
-            else
-                return CHtml::tag('div',$metaData['labelOptions'], $metaData['label']);
-        }
+       
         /**
         * render help/desscription according to type and $metaData['help']
         *
@@ -367,9 +354,9 @@
             $htmlOptions = $this->htmlOptions($metaData,$form);
             $select2Options=array_merge(
                 array(
-                    'minimumResultsForSearch' => 1000,
+                    'minimumResultsForSearch' => 50,
                     'dropdownAutoWidth'=> true,
-                    'width' => 'resolve',
+//                    'width' => 'resolve',
                 ),(isset($metaData['selectOptions']) ? $metaData['selectOptions'] : array())
             );
             $properties = array(
@@ -384,26 +371,27 @@
             if (isset($metaData['submitonchange']) && $metaData['submitonchange']) {
                 $properties['events']['change']='js: function(e) { this.form.submit();}';
             }
-            return App()->getController()->widget('WhSelect2', $properties, true);
+            $result = App()->getController()->widget('WhSelect2', $properties, true);
+            return $result;
         }
 
         public function renderString($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            $htmlOptions = $this->htmlOptions($metaData,$form,array('size'=>50));
+            $htmlOptions = $this->htmlOptions($metaData, $form);
             return TbHtml::textField($name, $value, $htmlOptions);
         }
         public function renderHidden($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            $htmlOptions = $this->htmlOptions($metaData,$form,array('size'=>50));
+            $htmlOptions = $this->htmlOptions($metaData,$form);
             return CHtml::hiddenField($name, $value, $htmlOptions);
         }
 
         public function renderEmail($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            $htmlOptions = $this->htmlOptions($metaData,$form,array('size'=>50));
+            $htmlOptions = $this->htmlOptions($metaData,$form);
             return TbHtml::emailField($name, $value, $htmlOptions);
         }
 
@@ -419,7 +407,7 @@
         public function renderPassword($name, array $metaData, $form = null)
         {
             $value = isset($metaData['current']) ? $metaData['current'] : '';
-            $htmlOptions = $this->htmlOptions($metaData,$form,array('autocomplete'=>'off','size'=>50));
+            $htmlOptions = $this->htmlOptions($metaData,$form,array('autocomplete'=>'off'));
             return TbHtml::passwordField($name,$value,$htmlOptions);
         }
 

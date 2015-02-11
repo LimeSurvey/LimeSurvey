@@ -18,7 +18,7 @@
         public function run($sArgument)
         {
             if (!isset($sArgument) || !isset($sArgument[0]) || !isset($sArgument[1])) die('You have to set username and password on the command line like this: php console.php username password');
-            $iUserID=User::model()->getID($sArgument[0]);
+            $iUserID = User::model()->findByAttributes(['users_name' => $sArgument[0]]);
             if ($iUserID)
             {
               User::model()->updatePassword($iUserID,$sArgument[1]);  

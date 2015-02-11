@@ -1,0 +1,15 @@
+{
+    "name" : "Demo authentication plugin",
+    "vendor" : "Limesurvey Development Team",
+    "class" : "ls\\core\\plugins\\DemoAuth",
+    "description" : "Core: Demo authentication",
+    "type" : "simple",
+    "autoload" : {
+        "psr-4": {
+            "ls\\core\\plugins\\" : ""
+        }
+    },
+    "events" : [
+    ],
+    "apiVersion" : "1.0"
+}

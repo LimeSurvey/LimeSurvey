@@ -11,8 +11,8 @@ class UsersController extends LSYii_Controller
         // Note the order; rules are numerically indexed and we want to
         // parents rules to be executed only if ours dont apply.
         return array_merge([
-            ['allow' ,'actions' => 'login'],
-            ['allow' , 'actions' => 'logout', 'users' => '@'],
+            ['allow' ,'actions' => ['login']],
+            ['allow' , 'actions' => ['logout', 'profile'], 'users' => ['@']],
         ], parent::accessRules());
     }
 
@@ -31,7 +31,7 @@ class UsersController extends LSYii_Controller
             }
         } 
         // Get all active auth plugins.
-        $forms = array_map(function(\ls\pluginmanager\AuthPluginBase $authenticator) {
+        $forms = array_map(function(\ls\pluginmanager\iAuthenticationPlugin $authenticator) {
             return $authenticator->getLoginSettings();
         }, $authenticators);
         return $this->render('login', ['loginForms' => $forms]);
@@ -50,9 +50,31 @@ class UsersController extends LSYii_Controller
     
     
     public function actionIndex() {
-        User::model()->findAll();
-        $this->render('index');
+        $this->layout = 'main';
+        $this->render('index', ['authenticators' => App()->pluginManager->getAuthenticators(true)]);
     }
+    
+    public function actionProfile() {
+        $this->layout = 'main';
+        $user = App()->user->model;
+        $prefix = 'profileSettings';
+        if (App()->request->isPostRequest) {
+            $result = App()->user->model->setSettings(App()->request->getParam($prefix));
+        }
+        $settings = $user->getSettings();
+        if (isset($result)) {
+            foreach ($result as $field => $errors) {
+                $settings[$field]['errors'] = $errors;
+            }
+        }
+        $this->render('profile', ['user' => $user, 'prefix' => $prefix, 'settings' => $settings]);
+    }
+    
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['accessControl']);
+    }
+
 }
 
 ?>

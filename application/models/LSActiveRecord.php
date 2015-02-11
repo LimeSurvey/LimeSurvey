@@ -158,4 +158,12 @@ class LSActiveRecord extends CActiveRecord
 		$this->dispatchPluginModelEvent('beforeModelDeleteMany',				$criteria);
 		return parent::deleteAllByAttributes(array(), $criteria, array());
 	}
+    
+    public static function model($class = null) {
+        if (!isset($class)) {
+            $class = get_called_class();
+        }
+        return parent::model($class);
+        
+    }
 }

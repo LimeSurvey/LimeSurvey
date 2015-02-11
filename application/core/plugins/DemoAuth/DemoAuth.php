@@ -5,7 +5,7 @@ use \ls\pluginmanager\PluginEvent;
 use \Yii;
 use \CHtml;
 
-class AuthDb extends PluginBase implements \ls\pluginmanager\iAuthenticationPlugin
+class DemoAuth extends PluginBase implements \ls\pluginmanager\iAuthenticationPlugin
 {
     protected $storage = 'DbStorage';
     protected $_onepass = null;
@@ -18,13 +18,10 @@ class AuthDb extends PluginBase implements \ls\pluginmanager\iAuthenticationPlug
         return [
             'label' => $this->name,
             'settings' => [
-                'username' => [
-                    'type' => 'string',
-                    'label' => gT("Username"),
-                ],
-                'password' => [
-                    'type' => 'password',
-                    'label' => gT("Password"),
+                'id' => [
+                    'type' => 'select',
+                    'label' => gT("User"),
+                    'options' => CHtml::listData($this->getUsers()->data, 'id', 'name')
                 ],
             ]
         ];
@@ -124,10 +121,8 @@ class AuthDb extends PluginBase implements \ls\pluginmanager\iAuthenticationPlug
      */
     public function authenticate(\CHttpRequest $request) {
         if ($request->isPostRequest) {
-            $username = $request->getParam('username');
-            $password = $request->getParam('password');
-            $user = \User::model()->findByAttributes(['users_name' => $username]);
-            if ($user->validatePassword($password)) {
+            $user = \User::model()->findByPk($request->getParam('id'));
+            if (isset($user)) {
                 return $user;
             }
         }
