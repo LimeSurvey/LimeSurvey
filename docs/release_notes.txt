@@ -59,6 +59,63 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.05+ (build 141229) to 2.05+ (build 150211) Feb 11, 2014
+-Fixed issue #9397: List_surveys API does not return surveys that specified user owns (Carsten Schmitz)
+-Fixed issue #9407: Question and group export uses HTML content-type (Carsten Schmitz)
+-Fixed issue #9430: AuditLog: Password logged as modified every time an user is modified (Alfredo Esteban)
+-Fixed issue #9433: Auto translate not working for informal languages (mfaber)
+-Fixed issue #9435: Trying to get property of non-object with debug=2 and AuditLog enabled (Alfredo Esteban)
+-Fixed issue #9436: Forgotpassword functionality may disclose information about users (Alfredo Esteban)
+-Fixed issue #9441: refurl does not catch external referrer url (Alfredo Esteban)
+-Fixed issue #9446: Error when exporting question group to .lsg file with debugsql=1 (Denis Chenu)
+-Fixed issue #9447: Token sending email is unusuable with a lot of token (Alfredo Esteban)
+-Fixed issue #9453: URL parameters limited to 20 because of grid-issue (Carsten Schmitz)
+-Fixed issue #9458: Under specific condition : HTMLPurifier inserts ! characters at random into emailed surveys (Denis Chenu)
+-Fixed issue #9462: Regular expressions for validating fields don't validate if survey skips welcome screen (Carsten Schmitz)
+-Fixed issue #9463: E-mail subject for confirmation and admin notification use non static var (Denis Chenu)
+-Fixed issue #9465: Array (number)(with checkbox) question type highlight the rows that have been answered (Denis Chenu)
+-Fixed issue #9466: "Import response from deactivated table" doesn't import timing table (Carsten Schmitz)
+-Fixed issue #9467: Regenerate question code still usuable with activated survey (Denis Chenu)
+-Fixed issue #9475: question validation tip not evaluated dynamically when questions are answered (Denis Chenu)
+-Fixed issue #9476: wrongly rendered selectable years in dropbox date question (mfaber)
+-Fixed issue #9477: Change of date stamp in survey settings shows a strange hint (Carsten Schmitz)
+-Fixed issue #9481: RemoteControl function export_responses results is broken with JSON-RPC (Carsten Schmitz)
+-Fixed issue #9482: Missing check for duplicate question IDs on activation (Carsten Schmitz)
+-Fixed issue #9488: Radix separator is allways set to the base language in javascript (Denis Chenu)
+-Fixed issue #9507: Admin GUI: Decimal format in answers pdf export even for 'only intenger' numeric questions (Alfredo Esteban)
+-Fixed issue: Array (number) (default (dropdown)) question type don't remind actual answer (Denis Chenu)
+-Fixed issue: Useless line (Alfredo Esteban)
+-Fixed issue: Wrong hint text for Numeric question type when using min/max settings (Carsten Schmitz)
+#Updated translation: Albanian by Helda
+#Updated translation: Basque by ikt
+#Updated translation: Czech by slansky
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han, mdekker
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by morbid
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: Galician by Calidonia
+#Updated translation: German by actxcellence, Liam
+#Updated translation: German (Informal) by Liam
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by tebala, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Korean by kswcfe
+#Updated translation: Latvian by marcic
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Persian by ardalan
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado, holch
+#Updated translation: Russian by vipgroup, ddrmoscow
+#Updated translation: Spanish (Spain) by valdomir, aesteban, asntcrz, artasom, elkinjosetm
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by tomzt, L_S20
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by skipenko
+
 Changes from 2.05+ (build 141210) to 2.05+ (build 141229) Dec 29, 2014
 -Fixed issue #9171: Unable to subscribe to event (Alfredo Esteban)
 -Fixed issue #9326: High memory usage if non-superadmin imports survey with acivated XSS filter (Carsten Schmitz)
