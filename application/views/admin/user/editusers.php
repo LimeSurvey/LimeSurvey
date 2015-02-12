@@ -54,7 +54,7 @@
             <tr>
 
                 <td style='padding:3px;'>          
-                    <?php if (App()->user->checkAccess('superadmin') || $usr['uid'] == Yii::app()->session['loginID'] || (App()->user->checkAccess('users', ['crud' => 'update']) && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
+                    <?php if (App()->user->checkAccess('superadmin') || $usr['uid'] == App()->user->id || (App()->user->checkAccess('users', ['crud' => 'update']) && $usr['parent_id'] == App()->user->id)) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/modifyuser'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php eT("Edit this user");?>' />
                             <input type='hidden' name='action' value='modifyuser' />
@@ -63,9 +63,9 @@
                         <?php } ?>
 
                     <?php if ( ((App()->user->checkAccess('superadmin') &&
-                        $usr['uid'] != Yii::app()->session['loginID'] ) ||
+                        $usr['uid'] != App()->user->id ) ||
                         (App()->user->checkAccess('users', ['crud' => 'update']) &&
-                        $usr['parent_id'] == Yii::app()->session['loginID'])) && $usr['uid']!=1) { ?>
+                        $usr['parent_id'] == App()->user->id)) && $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/setuserpermissions'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>security_16.png' alt='<?php eT("Set global permissions for this user");?>' />
                             <input type='hidden' name='action' value='setuserpermissions' />
@@ -81,7 +81,7 @@
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php }
-                        if ((App()->user->checkAccess('superadmin') || (App()->user->checkAccess('users', ['crud' => 'delete'])  && $usr['parent_id'] == Yii::app()->session['loginID']))&& $usr['uid']!=1) { ?>
+                        if ((App()->user->checkAccess('superadmin') || (App()->user->checkAccess('users', ['crud' => 'delete'])  && $usr['parent_id'] == App()->user->id))&& $usr['uid']!=1) { ?>
                         <?php echo CHtml::form(array('admin/user/sa/deluser'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>token_delete.png' alt='<?php eT("Delete this user");?>' onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' />
                             <input type='hidden' name='action' value='deluser' />
@@ -89,7 +89,7 @@
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>
                         <?php } 
-                        if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
+                        if (App()->user->id == "1" && $usr['parent_id'] !=1 ) { ?>
 
                         <?php echo CHtml::form(array('admin/user/sa/setasadminchild'), 'post');?>            
                             <input type='image' src='<?php echo $imageurl;?>takeownership.png' alt='<?php eT("Take ownership");?>' />

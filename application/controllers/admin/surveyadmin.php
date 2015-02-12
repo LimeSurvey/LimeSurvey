@@ -499,7 +499,7 @@ class SurveyAdmin extends Survey_Common_Action
         header('Content-type: application/json');
         $intNewOwner = sanitize_int(Yii::app()->request->getPost("newowner"));
         $intSurveyId = sanitize_int(Yii::app()->request->getPost("surveyid"));
-        $owner_id = Yii::app()->session['loginID'];
+        $owner_id = App()->user->id;
         $query_condition = 'sid=:sid';
         $params[':sid']=$intSurveyId;
         if (!App()->user->checkAccess('superadmin', ['crud' => 'create']))
@@ -596,7 +596,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . App()->locale->getDateFormatter()->formatDateTime($rows['datecreated'], 'short', 'short');
 
             //Set Owner
-            if(App()->user->checkAccess('superadmin') || Yii::app()->session['loginID']==$rows['owner_id'])
+            if(App()->user->checkAccess('superadmin') || App()->user->id==$rows['owner_id'])
             {
                 $aSurveyEntry[] = $rows['users_name'] . ' (<a class="ownername_edit" translate_to="' . gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. gT('Edit') .'</a>)';
             }
@@ -1554,7 +1554,7 @@ class SurveyAdmin extends Survey_Common_Action
             'expires' => $sExpiryDate,
             'startdate' => $sStartDate,
             'template' => App()->request->getPost('template'),
-            'owner_id' => Yii::app()->session['loginID'],
+            'owner_id' => App()->user->id,
             'admin' => App()->request->getPost('admin'),
             'active' => 'N',
             'anonymized' => App()->request->getPost('anonymized'),
@@ -1656,7 +1656,7 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = $warning.gT("Survey was successfully added.");
 
             // Update survey permissions
-            Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+            Permission::model()->giveAllSurveyPermissions(App()->user->id, $iNewSurveyid);
 
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
         }

@@ -7,6 +7,6 @@
         <textarea cols='50' rows='4' id='description' name='description'><?php echo $esrow['description']; ?></textarea></li>
         <ul><p><input type='submit' value='<?php eT("Update user group"); ?>' />
         <input type='hidden' name='action' value='editusergroupindb' />
-        <input type='hidden' name='owner_id' value='<?php echo Yii::app()->session['loginID']; ?>' />
+        <input type='hidden' name='owner_id' value='<?php echo App()->user->id; ?>' />
         <input type='hidden' name='ugid' value='<?php echo $ugid; ?>' />
     </form>

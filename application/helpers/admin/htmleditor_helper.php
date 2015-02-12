@@ -25,7 +25,7 @@
         );
 
         if (Yii::app()->getConfig('demoMode') === false &&
-                isset(Yii::app()->session['loginID']) &&
+                isset(App()->user->id) &&
                 isset(Yii::app()->session['FileManagerContext']))
         {
             // disable upload at survey creation time

@@ -917,6 +917,7 @@ class templates extends Survey_Common_Action
         $thissurvey['active'] = 'N';
 
         // FAKE DATA FOR TEMPLATES
+        $thissurvey['sid'] = 12345;
         $thissurvey['name'] = gT("Template Sample");
         $thissurvey['description'] =
             "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".

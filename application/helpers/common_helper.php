@@ -1083,9 +1083,12 @@ function getGroupListLang($gid, $language, $surveyid)
 * @param string $languagecode The language code - if not given the base language of the particular survey is used
 * @return array Returns array with survey info or false, if survey does not exist
 */
-function getSurveyInfo($surveyid, $languagecode= null)
+function getSurveyInfo($surveyId, $languagecode= null)
 {
-    return Survey::model()->findByPk($surveyid)->getInfo($languagecode);
+    if (!is_numeric($surveyId)) {
+        throw new Exception("Survey ids must be numerical.");
+    }
+    return (null != $survey = Survey::model()->findByPk($surveyId)) ? $survey->getInfo($languagecode) : null;
 }
 
 /**
@@ -5880,7 +5883,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
 function accessDenied($action,$sid='')
 {
 
-    if (Yii::app()->session['loginID'])
+    if (App()->user->id)
     {
         $ugid = Yii::app()->getConfig('ugid');
         $accesssummary = "<p><strong>".gT("Access denied!")."</strong><br />\n";
@@ -6605,11 +6608,11 @@ function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 {
 
-    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
+    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {App()->user->id} ORDER BY name";
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
     if (!App()->user->checkAccess('superadmin'))
     {
-        $sQuery .="AND uid = ".Yii::app()->session['loginID'];
+        $sQuery .="AND uid = ".App()->user->id;
     }
     $sQuery .=  " ORDER BY name";
 
@@ -6629,7 +6632,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
         foreach($groupnames as $gn)
         {
             $selecter .= "<option ";
-            if(Yii::app()->session['loginID'] == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
+            if(App()->user->id == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
             //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}

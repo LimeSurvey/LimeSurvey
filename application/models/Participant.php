@@ -422,7 +422,7 @@ class Participant extends LSActiveRecord
             if (!App()->user->checkAccess('superadmin')) // If not super admin filter the participant IDs first to owner only
             {
                 $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
-                $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
+                $aParameter=array(':owner_uid'=>App()->user->id);
                 $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Participant::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
             }
             return $aParticipantIDs;
@@ -873,7 +873,7 @@ class Participant extends LSActiveRecord
     */
     function is_owner($participant_id)
     {
-        $userid = Yii::app()->session['loginID'];
+        $userid = App()->user->id;
         $is_owner = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
         $is_shared = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
         if ($is_shared > 0 || $is_owner > 0)
@@ -1328,7 +1328,7 @@ class Participant extends LSActiveRecord
                                         'email' => $tobeinserted['email'],
                                         'language' => $tobeinserted['language'],
                                         'blacklisted' => $black,
-                                        'owner_uid' => Yii::app()->session['loginID']);
+                                        'owner_uid' => App()->user->id);
                     Yii::app()->db
                               ->createCommand()
                               ->insert('{{participants}}', $writearray);

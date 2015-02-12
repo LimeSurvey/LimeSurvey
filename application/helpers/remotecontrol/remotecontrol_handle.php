@@ -120,7 +120,7 @@ class remotecontrol_handle
                     return array('status' => 'Faulty parameters');
 
                 $aInsertData = array('template' => 'default',
-                    'owner_id' => Yii::app()->session['loginID'],
+                    'owner_id' => App()->user->id,
                     'active' => 'N',
                     'language'=>$sSurveyLanguage,
                     'format' => $sformat
@@ -152,7 +152,7 @@ class remotecontrol_handle
 
                     $langsettings = new SurveyLanguageSetting;
                     $langsettings->insertNewSurvey($aInsertData);
-                    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+                    Permission::model()->giveAllSurveyPermissions(App()->user->id, $iNewSurveyid);
 
                     return (int)$iNewSurveyid;
                 }

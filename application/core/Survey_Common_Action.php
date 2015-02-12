@@ -907,7 +907,7 @@ class Survey_Common_Action extends CAction
             $sQuery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = {$ugid}";
             if (!App()->user->checkAccess('superadmin'))
             {
-                $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
+                $sQuery .=" AND gu.uid = ".App()->user->id;
             }
 
             $grpresult = Yii::app()->db->createCommand($sQuery)->queryRow();  //Checked

@@ -259,7 +259,7 @@ echo $colModels;
         $options[''] = gT("Select...");
         foreach ($names as $row)
         {
-            if (!(Yii::app()->session['loginID'] == $row['uid']))
+            if (!(App()->user->id == $row['uid']))
             {
                 $options[$row['uid']] = $row['full_name'];
             }

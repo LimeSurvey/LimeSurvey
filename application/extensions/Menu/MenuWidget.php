@@ -40,7 +40,7 @@
         protected function menuMain()
         {
             $title = CHtml::tag('strong', array(), gT('Administration'));
-            if(Yii::app()->session['loginID'])
+            if(App()->user->id)
             {
                 $title .= ' -- ' . gT("Logged in as:");
                 $text = ' ' . Yii::app()->session['user'] . ' ' . CHtml::image(Yii::app()->getConfig('adminimageurl'). 'profile_edit.png', gT("Edit your personal preferences"));

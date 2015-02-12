@@ -99,7 +99,7 @@ class participantsaction extends Survey_Common_Action
         {
             $iUserID = null;
         } else {
-            $iUserID = Yii::app()->session['loginID'];
+            $iUserID = App()->user->id;
         }
         $aAttributeIDs=array_combine($aAttributeIDs,$aAttributeIDs);
         $query = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
@@ -152,7 +152,7 @@ class participantsaction extends Survey_Common_Action
         {
             $iUserID = null;
         } else {
-            $iUserID = Yii::app()->session['loginID'];
+            $iUserID = App()->user->id;
         }
 
 
@@ -170,7 +170,7 @@ class participantsaction extends Survey_Common_Action
      */
     function index()
     {
-        $iUserID = Yii::app()->session['loginID'];
+        $iUserID = App()->user->id;
 
         // if superadmin all the records in the cpdb will be displayed
         if (App()->user->checkAccess('superadmin'))
@@ -327,7 +327,7 @@ class participantsaction extends Survey_Common_Action
         // otherwise only the shared participants by that user
         else
         {
-            $records = Participant::model()->getParticipantShared(Yii::app()->session['loginID']);
+            $records = Participant::model()->getParticipantShared(App()->user->id);
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
@@ -516,8 +516,8 @@ class participantsaction extends Survey_Common_Action
                 'email' => Yii::app()->request->getPost('email'),
                 'language' => Yii::app()->request->getPost('language'),
                 'blacklisted' => Yii::app()->request->getPost('blacklisted'),
-                'owner_uid' => Yii::app()->session['loginID'],
-                'created_by' => Yii::app()->session['loginID']
+                'owner_uid' => App()->user->id,
+                'created_by' => App()->user->id
             );
             Participant::model()->insertParticipant($aData);
         }
@@ -667,7 +667,7 @@ class participantsaction extends Survey_Common_Action
             }
             else
             {
-                $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
+                $query = Participant::model()->getParticipantsOwner(App()->user->id);
                 $count = count($query);
             }
 
@@ -717,7 +717,7 @@ class participantsaction extends Survey_Common_Action
             }
             else // get participants on which the user has right on
             {
-                $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
+                $query = Participant::model()->getParticipantsOwner(App()->user->id);
             }
 
             foreach ($query as $key => $value)
@@ -786,7 +786,7 @@ class participantsaction extends Survey_Common_Action
         {
             $iUserID = null;
         } else {
-            $iUserID = Yii::app()->session['loginID'];
+            $iUserID = App()->user->id;
         }
         $aData->records = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
         $aData->total = ceil($aData->records / $limit);
@@ -1300,7 +1300,7 @@ class participantsaction extends Survey_Common_Action
                          'firstname' => $writearray['firstname'],
                          'lastname' => $writearray['lastname'],
                          'email' => $writearray['email'],
-                         'owner_uid' => Yii::app()->session['loginID']
+                         'owner_uid' => App()->user->id
                          );
                 //HACK - converting into SQL instead of doing an array search
                 if(in_array('participant_id', $firstline)) {
@@ -1308,7 +1308,7 @@ class participantsaction extends Survey_Common_Action
                     $aData = "participant_id = ".Yii::app()->db->quoteValue($writearray['participant_id']);
                 } else {
                     $dupreason="nameemail";
-                    $aData = "firstname = ".Yii::app()->db->quoteValue($writearray['firstname'])." AND lastname = ".Yii::app()->db->quoteValue($writearray['lastname'])." AND email = ".Yii::app()->db->quoteValue($writearray['email'])." AND owner_uid = '".Yii::app()->session['loginID']."'";
+                    $aData = "firstname = ".Yii::app()->db->quoteValue($writearray['firstname'])." AND lastname = ".Yii::app()->db->quoteValue($writearray['lastname'])." AND email = ".Yii::app()->db->quoteValue($writearray['email'])." AND owner_uid = '".App()->user->id."'";
                 }
                 //End of HACK
                 $aData = Participant::model()->checkforDuplicate($aData, "participant_id");
@@ -1369,7 +1369,7 @@ class participantsaction extends Survey_Common_Action
                     if (!isset($writearray['blacklisted']) || $writearray['blacklisted'] == "") {
                         $writearray['blacklisted'] = "N";
                     }
-                    $writearray['owner_uid'] = Yii::app()->session['loginID'];
+                    $writearray['owner_uid'] = App()->user->id;
                     if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == '')) {
                         unset($writearray['validfrom']);
                     }

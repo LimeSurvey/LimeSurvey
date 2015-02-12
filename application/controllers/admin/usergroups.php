@@ -41,11 +41,11 @@ class Usergroups extends Survey_Common_Action
         if ($action == "mailsendusergroup") {
 
             // user must be in user group or superadmin
-            $result = UserInGroup::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
+            $result = UserInGroup::model()->findAllByPk(array('ugid' => $ugid, 'uid' => App()->user->id));
             if (count($result) > 0 || App()->user->checkAccess('superadmin'))
             {
                 $criteria = new CDbCriteria;
-                $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
+                $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(App()->user->id));
                 $eguresult = UserInGroup::model()->with('users')->findAll($criteria);
                 //die('me');
                 $to = array();
@@ -55,7 +55,7 @@ class Usergroups extends Survey_Common_Action
                     $to[] = $egurow->users->users_name . ' <' . $egurow->users->email . '>';
                 }
 
-                $from_user_result = User::model()->findByPk(Yii::app()->session['loginID']);
+                $from_user_result = User::model()->findByPk(App()->user->id);
                 $from_user_row = $from_user_result;
 
                 if ($from_user_row->full_name) {
@@ -103,7 +103,7 @@ class Usergroups extends Survey_Common_Action
         }
         else
         {
-            $where = array('and', 'a.ugid =' . $ugid, 'uid =' . Yii::app()->session['loginID']);
+            $where = array('and', 'a.ugid =' . $ugid, 'uid =' . App()->user->id);
             $join = array('where' => "{{user_in_groups}} AS b", 'on' => 'a.ugid = b.ugid');
             $result = UserGroup::model()->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), "{{user_groups}} AS a", $where, $join, 'name');
 
@@ -227,7 +227,7 @@ class Usergroups extends Survey_Common_Action
             }
             else
             {
-                $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
+                $result = UserGroup::model()->requestEditGroup($ugid, App()->user->id);
                 $aData['esrow'] = $result;
                 $aData['ugid'] = $result->ugid;
                 $aViewUrls = 'editUserGroup_view';
@@ -259,7 +259,7 @@ class Usergroups extends Survey_Common_Action
         $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
         
 
-        if (Yii::app()->session['loginID']) {
+        if (App()->user->id) {
 
             if ($ugid) {
                 $ugid = sanitize_int($ugid);
@@ -278,7 +278,7 @@ class Usergroups extends Survey_Common_Action
                 $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
                 $eguresult = dbExecuteAssoc($eguquery);
                 $aUserInGroupsResult = $eguresult->readAll();
-                $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = " . Yii::app()->session['loginID'];
+                $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = " . App()->user->id;
                 $result2 = dbSelectLimitAssoc($query2, 1);
                 $row2 = $result2->readAll();
                 $row = 1;
@@ -337,7 +337,7 @@ class Usergroups extends Survey_Common_Action
         
         $uid = (int) Yii::app()->request->getPost('uid');
 
-        $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
+        $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => App()->user->id));
 
         if (empty($group))
         {

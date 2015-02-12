@@ -482,30 +482,6 @@ class Survey extends LSActiveRecord
         }
     }
 
-    public function findByPk($pk, $condition = '', $params = array()) {
-        if (empty($condition) && empty($params)) {
-            if (array_key_exists($pk, $this->findByPkCache)) {
-                return $this->findByPkCache[$pk];
-            } else {
-                $result = parent::findByPk($pk, $condition, $params);
-                if (!is_null($result)) {
-                    $this->findByPkCache[$pk] = $result;
-                }
-
-                return $result;
-            }
-        }
-
-        return parent::findByPk($pk, $condition, $params);
-    }
-
-    /**
-     * findByPk uses a cache to store a result. Use this method to force clearing that cache.
-     */
-    public function resetCache() {
-        $this->findByPkCache = array();
-    }
-
     /**
      * Attribute renamed to questionindex in dbversion 169
      * Y maps to 1 otherwise 0;

@@ -331,7 +331,7 @@ class AdminController extends LSYii_Controller
         }
 
         //If user is not logged in, don't print the version number information in the footer.
-        if (empty(Yii::app()->session['loginID']))
+        if (empty(App()->user->id))
         {
             $aData['versionnumber']="";
             $aData['versiontitle']="";

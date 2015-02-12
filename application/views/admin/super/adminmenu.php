@@ -3,7 +3,7 @@
         <div class='menubar-title-left'>
             <strong><?php eT("Administration");?></strong>
             <?php
-                if(Yii::app()->session['loginID'])
+                if(App()->user->id)
                 { ?>
                 --  <?php eT("Logged in as:");?><strong>
                     <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">

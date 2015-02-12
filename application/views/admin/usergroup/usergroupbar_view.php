@@ -23,7 +23,7 @@
             <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='78' height='20' />
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt='' />
 
-            <?php if($ugid && $grpresultcount > 0 && (Yii::app()->session['loginID'] == $grow['owner_id'] || App()->user->checkAccess('usergroups', ['crud' => 'update'])))
+            <?php if($ugid && $grpresultcount > 0 && (App()->user->id == $grow['owner_id'] || App()->user->checkAccess('usergroups', ['crud' => 'update'])))
                 { ?>
                 <a href="<?php echo $this->createUrl("admin/usergroups/sa/edit/ugid/".$ugid); ?>">
                     <img src='<?php echo $imageurl; ?>edit.png' alt='<?php eT("Edit current user group"); ?>' name='EditUserGroup' /></a>
@@ -33,7 +33,7 @@
                 <img src='<?php echo $imageurl; ?>blank.gif' alt='' width='40' height='20' />
                 <?php }
 
-                if($ugid && $grpresultcount > 0 &&  (Yii::app()->session['loginID'] == $grow['owner_id'] || App()->user->checkAccess('usergroups', ['crud' => 'delete'])))
+                if($ugid && $grpresultcount > 0 &&  (App()->user->id == $grow['owner_id'] || App()->user->checkAccess('usergroups', ['crud' => 'delete'])))
                 { ?>
 
                 <a href='#' onclick="if (confirm('<?php eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/sa/delete/ugid/'.$ugid)); ?>}">

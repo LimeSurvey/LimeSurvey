@@ -131,7 +131,7 @@ class LSUserIdentity extends CUserIdentity {
         }
 
         // Do session setup
-        Yii::app()->session['loginID'] = (int) $user->uid;
+        App()->user->id = (int) $user->uid;
         Yii::app()->session['user'] = $user->users_name;
         Yii::app()->session['full_name'] = $user->full_name;
         Yii::app()->session['htmleditormode'] = $user->htmleditormode;
