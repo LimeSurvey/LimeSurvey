@@ -90,24 +90,12 @@ div.htmleditor {
 /******************************************************************************/
 /* Bootstrap overrides.                                                       */
 /******************************************************************************/
-label {display: inline-block;}/* override but leave admin template to override again */
 
 
 .ui-jqgrid{clear:both}
 .ui-jqgrid-btable.load{opacity:0.5}
 .ui-jqgrid select,.ui-jqgrid textarea,.ui-jqgrid input[type="text"]{
     padding: 2px;
-}
-.gridcontrol.disabled{visibility:hidden}
-label, legend {
-    width:auto;
-    min-height: 26px;
-    margin-bottom: 0px;
-    padding: 2px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    font-size: 1em;
 }
 
 /* Make line spacing more compact for advanced question settings */

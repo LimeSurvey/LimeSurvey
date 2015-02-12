@@ -1,17 +1,5 @@
-body {
-    font-family: verdana, arial, sans-serif;
-    text-align: left;
-    background-color: #fefefe;
-    color: #666;
-    margin: 0;
-    font-size: 9pt;
-}
 
 
-ul,ol {
-    text-align: left;
-    font-size: 10pt;
-}
 
 hr{
     color:#efefef;

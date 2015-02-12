@@ -103,6 +103,13 @@
         protected function renderSetting($name, $metaData, $form = null, $return = false,$wrapper='div')
         {
             // No type : invalid setting
+            if (is_string($metaData)) {
+                $metaData = [
+                    'label' => $name,
+                    'type' => 'info',
+                    'content' => $metaData
+                ];
+            }
             if(!isset($metaData['type']))
                 return "";
             // Fix $metaData

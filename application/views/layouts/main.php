@@ -32,6 +32,7 @@
             if (!App()->user->isGuest) {
                 $items = require __DIR__ . '/../menu.php';
                 $this->widget('TbNavbar', [
+                    'brandUrl' => ['surveys/index'],
                     'display' => null,
                     'fluid' => true,
                     'items' => [
@@ -52,7 +53,7 @@
                 
             }
 		?>
-        <div class="wrapper clearfix">
+        <div class="container-fluid">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <div id="content">
             <?php echo $content; ?>

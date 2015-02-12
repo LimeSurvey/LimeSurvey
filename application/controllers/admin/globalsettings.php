@@ -85,10 +85,7 @@ class GlobalSettings extends Survey_Common_Action
         }
         $data['thisupdatecheckperiod'] = getGlobalSetting('updatecheckperiod');
         $data['sUpdateNotification'] = getGlobalSetting('updatenotification');
-        Yii::app()->loadLibrary('Date_Time_Converter');
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = new date_time_converter(dateShift(getGlobalSetting("updatelastcheck"),'Y-m-d H:i:s',getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
-        $data['updatelastcheck']=$datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
+        $data['updatelastcheck']= App()->locale->getDateFormatter()->formatDateTime(SettingGlobal::get("updatelastcheck"));
 
         $data['updateavailable'] = (getGlobalSetting("updateavailable") &&  Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");

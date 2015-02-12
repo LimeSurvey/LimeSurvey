@@ -8,7 +8,7 @@
             ),
             array(
                 'title' => gT('Manage survey administrators'),
-                'url' => ['admin/user/sa/index'],
+                'url' => ['users/index'],
                 'icon' => 'folder-open'
             ),
             array(
@@ -64,11 +64,12 @@
                 'icon' => 'wrench',
                 'visible' => App()->user->checkAccess('superadmin')
             ),
-        ), [array(
-                'title' => gT('Detailed list of surveys'),
-                'url' => array('admin/survey', 'sa' => 'index'),
-                'icon' => 'list'
-            ),
+        ), [
+//            array(
+//                'title' => gT('Detailed list of surveys'),
+//                'url' => array('admin/survey', 'sa' => 'index'),
+//                'icon' => 'list'
+//            ),
             array(
                 'label' => gT('Surveys'),
                 'items' => array_map(function(Survey $survey) {
