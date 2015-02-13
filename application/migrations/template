@@ -10,7 +10,7 @@ class {ClassName} extends CDbMigration
      */
     public function safeUp()
 	{
-        return false
+        return false;
 	}
     
     /**

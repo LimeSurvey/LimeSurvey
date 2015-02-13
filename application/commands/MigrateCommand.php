@@ -7,5 +7,9 @@ class MigrateCommand extends \MigrateCommand {
         $this->migrationTable = \Yii::app()->db->tablePrefix . 'migration';
         parent::__construct($name, $runner);
     }
+    
+    public function getTemplate() {
+        return file_get_contents($this->migrationPath . '/template');
+    }
 }
 
