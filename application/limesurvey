@@ -12,7 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-require_once(__DIR__ . '/vendor/autoload.php'); 
+$loader = require_once(__DIR__ . '/vendor/autoload.php'); 
 class_exists('Yii');
 if (!isset($argv[0])) die();
 define('BASEPATH','.');

@@ -7,30 +7,9 @@ use \CHtml;
 
 class AuthDb extends PluginBase implements \ls\pluginmanager\iAuthenticationPlugin
 {
+    use \ls\pluginmanager\InternalUserDbTrait;
     protected $storage = 'DbStorage';
     protected $_onepass = null;
-
-    public function init()
-    {
-    }
-    public function getLoginSettings()
-    {
-        return [
-            'label' => $this->name,
-            'settings' => [
-                'username' => [
-                    'type' => 'string',
-                    'label' => gT("Username"),
-                ],
-                'password' => [
-                    'type' => 'password',
-                    'label' => gT("Password"),
-                ],
-            ]
-        ];
-    }
-
-
 
     // Now the export part:
     public function eventListExportOptions(PluginEvent $event)
@@ -134,23 +113,13 @@ class AuthDb extends PluginBase implements \ls\pluginmanager\iAuthenticationPlug
     }
     
     /**
-     * 
      * @return boolean True if all users for this authenticator can be listed.
      */
     public function enumerable() {
         return true;
     }
     
-    /**
-     * 
-     * @return \CActiveDataProvider
-     */
-    public function getUsers() {
-        return new \CActiveDataProvider('User');
-    }
     
-    public function getUser($id) {
-        return \User::model()->findByPk($id);
-    }
+    
     
 }

@@ -25,9 +25,13 @@
             "application/extensions/SettingsWidget",
             "application/core/db",
             "application/core",
-            "application/vendor/2amigos/yiiwheels"
+            "application/vendor/2amigos/yiiwheels",
+            "application/vendor/yiisoft/yii/framework/cli/commands"
         ],
         "psr-4" : {
+            "ls\\cli\\" : [
+                "application/commands"
+            ],
             "ls\\pluginmanager\\" : [
                 "application/libraries/PluginManager",
                 "application/libraries/PluginManager/Storage"

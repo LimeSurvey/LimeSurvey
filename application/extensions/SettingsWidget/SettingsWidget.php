@@ -72,10 +72,9 @@
 
         protected function renderButton($label, $metaData)
         {
-            $htmlOptions = array_merge([
-                'type' => 'submit'
-            ], $this->htmlOptions($metaData, null));
-            switch($htmlOptions['type']) {
+            $htmlOptions = $this->htmlOptions($metaData, null);
+            
+            switch($metaData['type']) {
                 case 'link':
                     $result = TbHtml::linkButton($label, array_merge($htmlOptions, ['url' => $metaData['href']]));
                     break;
@@ -87,16 +86,20 @@
 
         protected function renderButtons()
         {
+            
             if(!empty($this->buttons)) {
-                echo CHtml::openTag('div', ['class' => 'btn-group pull-right']);
+                
+//                echo CHtml::openTag('div', ['class' => 'btn-group pull-right']);
+                $buttons = [];
                 foreach ($this->buttons as $label => $htmlOptions) {
                     if (is_numeric($label)) {
                         $label = $htmlOptions;
                         $htmlOptions = [];
                     }
-                    echo $this->renderButton($label, $htmlOptions);
+                    $buttons[] = $this->renderButton($label, $htmlOptions);
                 }
-                echo CHtml::closeTag('div');
+                echo TbHtml::formActions($buttons);
+//                echo CHtml::closeTag('div');
             }
         }
 
@@ -313,7 +316,7 @@
             $value = isset($metaData['current']) ? $metaData['current'] : '';
             if (is_array($value)) { throw new CException('wrong type' . $name); }
             $htmlOptions = $this->htmlOptions($metaData,$form,array('step'=> 1,'pattern' => '\d+'));
-            return CHtml::numberField($name, $value, $htmlOptions);
+            return TbHtml::numberField($name, $value, $htmlOptions);
         }
 
         public function renderJson($name, array $metaData, $form = null)

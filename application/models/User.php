@@ -15,6 +15,11 @@
 class User extends LSActiveRecord implements ls\pluginmanager\iUser
 {
     /**
+     *
+     * @var \ls\pluginmanager\iAuthenticationPlugin
+     */
+    protected $_authenticator;
+    /**
     * @var string Default value for user language
     */
     public $lang='auto';
@@ -276,6 +281,32 @@ class User extends LSActiveRecord implements ls\pluginmanager\iUser
     }
 
     public function getSettings() {
+        $settings = $this->getProfileSettings();
+        unset($settings['oldPassword']);
+        return $settings;
+    }
+    public function setSettings($settings) {
+        $errors = [];
+        if ($settings['password1'] != $settings['password2']) {
+            $errors['password1'][] = 'New password and repeat password must match.';
+            $errors['password2'][] = 'New password and repeat password must match.';
+        }
+        
+        if (empty($errors)) {
+            // Update password.
+            if (!empty($settings['password1'])) {
+                $this->password = CPasswordHelper::hashPassword($settings['password1']);
+            }
+            $this->email = $settings['email'];
+            $this->full_name = $settings['name'];
+            $this->users_name = $settings['userName'];
+            $this->lang = $settings['language'];
+            $this->save();
+        }
+        return $errors;
+        
+    }
+    public function getProfileSettings() {
         return [
             'name' => [
                 'label' => 'Display name',
@@ -321,7 +352,7 @@ class User extends LSActiveRecord implements ls\pluginmanager\iUser
      * @param array $settings
      * @return array Array of validation errors. [] on success.
      */
-    public function setSettings($settings) {
+    public function setProfileSettings($settings) {
         $errors = [];
         if ($settings['password1'] != $settings['password2']) {
             $errors['password1'][] = 'New password and repeat password must match.';
@@ -346,6 +377,18 @@ class User extends LSActiveRecord implements ls\pluginmanager\iUser
         }
         return $errors;
         
+    }
+    
+    public function getAuthenticator() {
+        if (!isset($this->_authenticator)) {
+            return App()->pluginManager->getPlugin('ls_core_plugins_AuthDb');
+        } else {
+            return $this->_authenticator;
+        }
+    }
+    
+    public function setAuthenticator($value) {
+        $this->_authenticator = $value ;
     }
 
 }

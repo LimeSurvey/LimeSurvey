@@ -331,17 +331,11 @@
                         'type'=>'email',
                         'label'=>gt("Default site admin email"),
                         'current'=>getGlobalSetting('siteadminemail'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                     'siteadminname'=>array(
                         'type'=>'string',
                         'label'=>gt("Administrator name"),
                         'current'=>getGlobalSetting('siteadminname'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                 ),
             ));
@@ -368,9 +362,6 @@
                         ),
                         'label'=>gt("SMTP host"),
                         'current'=>getGlobalSetting('emailsmtphost'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                         'help'=>gT("Enter your hostname and port, e.g.: my.smtp.com:25"),
                     ),
                     'emailsmtpuser'=>array(
@@ -380,9 +371,6 @@
                         ),
                         'label'=>gt("SMTP username"),
                         'current'=>getGlobalSetting('emailsmtpuser'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                     'emailsmtppassword'=>array(
                         'type'=>'password',
@@ -391,9 +379,6 @@
                         ),
                         'label'=>gt("SMTP password"),
                         'current'=>getGlobalSetting('emailsmtppassword'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                     'emailsmtpssl'=>array(
                         'type'=>'select',
@@ -403,27 +388,21 @@
                         'label'=>gt("SMTP SSL/TLS"),
                         'options'=>array(''=>gT("Off"),'ssl'=>gT("SSL"),'tls'=>gT("TLS")),
                         'current'=>getGlobalSetting('emailsmtpssl'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                     'emailsmtpdebug'=>array(
                         'type'=>'select',
                         'label'=>gt("SMTP debug mode"),
                         'options'=>array('0'=>gT("Off"),'1'=>gT("On errors"),'2'=>gT("Always")),
                         'current'=>getGlobalSetting('emailsmtpdebug'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
+
                     ),
                     'maxemails'=>array(
                         'type'=>'int',
                         'label'=>gt("Email batch size"),
                         'current'=>getGlobalSetting('maxemails'),
-                        'htmlOptions'=>array(
-                            'min'=>'1',
-                            'style'=>'width:5em',
-                        ),
+//                        'htmlOptions'=>array(
+//                            'min'=>'1',
+//                        ),
                     ),
                 ),
             ));

@@ -27,7 +27,7 @@
 		?>
         <title>Limesurvey Administration</title>
     </head>
-    <body>
+    <body class="layout-main">
         <?php
             if (!App()->user->isGuest) {
                 $items = require __DIR__ . '/../menu.php';

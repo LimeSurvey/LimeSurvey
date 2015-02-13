@@ -41,10 +41,6 @@ use Plugin;
             if ($this->getAuthorizer() == null && $reload = true && null === $this->enablePlugin('ls_core_plugins_PermissionDb')) {
                 throw new \Exception("No authorization plugin available.");
             };
-            if ($reload) {
-                App()->controller->refresh();
-            }
-            
         }
         
         public function disablePlugin($id) {

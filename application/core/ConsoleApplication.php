@@ -8,7 +8,6 @@
 
     class ConsoleApplication extends CConsoleApplication
     {
-
         protected $config = array();
 
         /**
@@ -23,29 +22,29 @@
         protected $api;
 
         public function __construct($config = null) {
+            // Silent fail on unknown configuration keys.
+            foreach($config as $key => $value) {
+                if (!property_exists(__CLASS__, $key) && !$this->hasProperty($key)) {
+                    unset($config[$key]);
+                }
+            }
             parent::__construct($config);
-
+        }
+        
+        public function init() {
+            parent::init();
+            foreach ($this->commandRunner->commands as $command => &$config) {
+                $config = [
+                    'class' => "ls\\cli\\" . ucfirst($command) . "Command"
+                ];
+            }
+            $this->commandRunner->addCommands(Yii::getFrameworkPath() . '/cli/commands');
+            
             // Set webroot alias.
             Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
             // Load email settings.
             $email = require(Yii::app()->basePath. DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
             $this->config = array_merge($this->config, $email);
-
-            // Now initialize the plugin manager
-            $this->initPluginManager();
-
-        }
-
-        /**
-         * Get the Api object.
-         */
-        public function getApi()
-        {
-            if (!isset($this->api))
-            {
-                $this->api = new LimesurveyApi();
-            }
-            return $this->api;
         }
 
         /**
@@ -89,25 +88,10 @@
          */
         public function getPluginManager()
         {
-            return $this->pluginManager;
+            return $this->getComponent('PluginManager');
         }
 
-        /**
-         * This method handles initialization of the plugin manager
-         *
-         * When you want to insert your own plugin manager, or experiment with different settings
-         * then this is where you should do that.
-         */
-        public function initPluginManager()
-        {
-            $this->pluginManager = new \ls\pluginmanager\PluginManager($this->getApi());
-
-            // And load the active plugins
-            // Only load plugins if we have a config file.
-            if (file_exists(__DIR__ . '/../config/config.php')) {
-                $this->pluginManager->loadPlugins();
-            }
-        }
+       
 
         /**
          * Loads a helper

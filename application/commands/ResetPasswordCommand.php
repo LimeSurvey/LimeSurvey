@@ -1,4 +1,6 @@
 <?php
+namespace ls\cli;
+use CConsoleCommand;
     /*
     * LimeSurvey (tm)
     * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz

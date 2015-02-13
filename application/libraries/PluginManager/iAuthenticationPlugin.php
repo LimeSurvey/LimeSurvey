@@ -17,6 +17,11 @@ interface iAuthenticationPlugin {
     public function enumerable();
     
     /**
+     * @return boolean False if users from this authenticator can not be updated.
+     */
+    public function writable();
+    
+    /**
      * @return \IDataProvider
      */
     public function getUsers();

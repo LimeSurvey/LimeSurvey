@@ -70,6 +70,17 @@ class UsersController extends LSYii_Controller
         $this->render('profile', ['user' => $user, 'prefix' => $prefix, 'settings' => $settings]);
     }
     
+    public function actionUpdate($id, $plugin) {
+        $this->layout = 'main';
+        $pluginObject = App()->pluginManager->getPlugin($plugin);
+        if (isset($pluginObject) && $pluginObject instanceOf \ls\pluginmanager\iAuthenticationPlugin) {
+            $user = $pluginObject->getUser($id);
+            if (isset($user)) {
+                return $this->render('update', ['user' => $user]);
+            }
+        }
+        throw new \CHttpException(404, "Plugin or user not found.");
+    }
     public function filters()
     {
         return array_merge(parent::filters(), ['accessControl']);

@@ -11,7 +11,7 @@
         <link rel="icon" href="<?php echo App()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <title>Limesurvey Administration</title>
     </head>
-    <body>
+    <body class="layout-minimal">
         <div class="container">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <div id="content">
