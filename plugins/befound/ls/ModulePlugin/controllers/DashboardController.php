@@ -1,15 +1,32 @@
 <?php
     namespace befound\ls\ModulePlugin\controllers;
-    use \ls\pluginmanager\PluginController;
     
-    class DashboardController extends PluginController{
+    class DashboardController extends Controller {
+        public function __construct($id, $module = null) {
+            parent::__construct($id, $module);
+//            die('ok');
+        }
         public function accessRules() {
             return array_merge([
-                ['allow', 'roles' => ['superadmin']]
-                
+                ['allow', 'users' => ['@']],
+                ['allow', 'actions' => ['login']]
             ], parent::accessRules());
         }
         public function actionIndex() {
+            var_dump(App()->basePath);
+            var_dump(App()->user);
+            var_dump(App()->user->name);
+//            var_dump(App()->authManager);
+                   
+//            var_dump($this->module->user);
             echo 'nice';
+        }
+        
+        public function actionView() {
+            
+        }
+        
+        public function actionLogin() {
+            $this->render('login');
         }
     }

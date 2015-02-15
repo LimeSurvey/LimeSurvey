@@ -1,4 +1,6 @@
 <?php
+namespace ls\controllers;
+use \Yii;
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz

@@ -1,5 +1,6 @@
 <?php
-
+namespace ls\controllers;
+use \Yii;
 class GroupsController extends Controller {
     public $layout = 'main';
     public function actionView($id) {

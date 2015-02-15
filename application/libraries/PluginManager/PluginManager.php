@@ -44,10 +44,10 @@ use Plugin;
         }
         
         public function disablePlugin($id) {
-            return unlink("{$this->enabledPluginDir}/$id");
+            return !empty($id) && unlink("{$this->enabledPluginDir}/$id");
         }
         public function enablePlugin($id) {
-            return touch("{$this->enabledPluginDir}/$id");
+            return !empty($id) && touch("{$this->enabledPluginDir}/$id");
         }   
         public function isActive($id) {
             return !empty($id) && file_exists("{$this->enabledPluginDir}/$id");
@@ -193,7 +193,7 @@ use Plugin;
                     if ($pluginConfig->type == 'simple') {
                         $this->plugins[$pluginConfig->id] = $this->loadSimplePlugin($pluginConfig);
                     } else {
-                        throw new \Exception("Only simple is supported for now.");
+                        $this->plugins[$pluginConfig->id] = $this->loadModulePlugin($pluginConfig);
                     }                   
                 }
                 return $this->getPlugin($pluginConfig->id);
@@ -214,6 +214,32 @@ use Plugin;
          */
         public function loadSimplePlugin(PluginConfig $pluginConfig) {
             return $pluginConfig->createPlugin($this);
+        }
+        
+        /**
+         * 
+         * @param \ls\pluginmanager\PluginConfig $pluginConfig
+         * @return 
+         */
+        public function loadModulePlugin(PluginConfig $pluginConfig) {
+            $id = $pluginConfig->getId();
+            /* @var ls\pluginmanager\PluginModule $result */
+            App()->setModules([
+                $id => [
+                    'class' => $pluginConfig->class,
+                    'pluginConfig' => $pluginConfig
+                ]
+            ]);
+//            $module = App()->getModule($id);
+            
+            $shortId = strtolower(substr($id, strrpos($id, '_') + 1));
+            $rules = [
+                "$shortId/" => $pluginConfig->getId(),
+                "$shortId/<controller>/<action>" => "{$pluginConfig->getId()}/<controller>/<action>"
+            ];
+            App()->urlManager->addRules($rules);
+                
+            return $module;
         }
 
         /**

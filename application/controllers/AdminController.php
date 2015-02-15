@@ -11,7 +11,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-
+namespace ls\controllers;
+use \Yii;
 class AdminController extends Controller
 {
     public $layout = false;

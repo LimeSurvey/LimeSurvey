@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,7 +12,9 @@
  *
  */
 
-abstract class Controller extends CController
+namespace ls\controllers;
+use \Yii;
+abstract class Controller extends \CController
 {
     /**
      * The currently selected survey. Needed for the group menu.
@@ -50,7 +52,6 @@ abstract class Controller extends CController
 	public function __construct($id, $module = null)
 	{
 		parent::__construct($id, $module);
-		$this->_checkInstallation();
 
         Yii::app()->session->init();
 		$this->loadLibrary('LS.LS');
@@ -67,22 +68,7 @@ abstract class Controller extends CController
             ['deny']
         ], parent::accessRules());
     }
-	/**
-	 * Check that installation was already done by looking for config.php
-	 * Will redirect to the installer script if not exists.
-	 *
-	 * @access protected
-	 * @return void
-	 */
-	protected function _checkInstallation()
-	{
-		$file_name = Yii::app()->getConfig('rootdir').'/application/config/config.php';
-		if (!file_exists($file_name))
-        {
-			$this->redirect(array('/installer'));
-        }
-	}
-
+	
 	/**
 	 * Loads a helper
 	 *

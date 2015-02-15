@@ -1,5 +1,7 @@
 <?php
-
+namespace ls\controllers;
+use \Yii;
+use CArrayDataProvider;
 class PluginsController extends Controller
 {
 

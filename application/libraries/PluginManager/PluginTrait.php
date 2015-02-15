@@ -3,6 +3,7 @@ namespace ls\pluginmanager;
 
 trait PluginTrait
 {
+    protected $settings = [];
     /**
      * Provides meta data on the plugin settings that are available for this plugin.
      * This does not include enable / disable; a disabled plugin is never loaded.

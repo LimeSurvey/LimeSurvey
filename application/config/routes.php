@@ -42,4 +42,5 @@ $route['<controller>/<id:\d+>'] = [
     '<controller>/view',
     'verb' => 'GET',
 ];
+
 return $route;

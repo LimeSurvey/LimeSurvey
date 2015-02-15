@@ -3,43 +3,14 @@ namespace ls\pluginmanager;
 
 abstract class PluginModule extends \CWebModule implements iPlugin
 {
-    public $dir;
-    public $namespace;
-    private $_description;
+    use PluginTrait;
+    /**
+     *
+     * @var PluginConfig
+     */
+    protected $pluginConfig;
     
     public function getDescription() {
-        return $this->_description;
+        return $this->pluginConfig->description;
     }
-    
-    public function setDescription($value) {
-        $this->_description = $value;
-    }
-    /**
-     * Discard the name value.
-     * @param string $value
-     */
-    public function setName($value) {
-        
-    }
-    public function getEvent() {
-        
-    }
-
-    public function getPluginSettings($getValues = true) {
-        
-    }
-
-    public function getStore() {
-        
-    }
-
-    public function saveSettings($aSettings) {
-        
-    }
-
-    public function setEvent(PluginEvent $event) {
-        
-    }
-
-
 }

@@ -1,5 +1,5 @@
 <?php
-
+    namespace ls\controllers;
     /**
      * This class will handle survey creation and manipulation.
      */

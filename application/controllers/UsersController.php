@@ -1,5 +1,7 @@
 <?php
+namespace ls\controllers;
 use ls\pluginmanager\PluginEvent;
+use Yii;
 class UsersController extends Controller
 {
 

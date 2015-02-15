@@ -1,5 +1,6 @@
 <?php
-
+namespace ls\controllers;
+use \Yii;
 class QuestionsController extends Controller 
 {
     public $layout = 'main';

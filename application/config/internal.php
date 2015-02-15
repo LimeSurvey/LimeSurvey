@@ -15,6 +15,7 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 $internalConfig = array(
 	'basePath' => __DIR__ . '/../',
     'sourceLanguage' => 'en',
+    'controllerNamespace' => '\\ls\\controllers',
     'supportedLanguages' => include('locales.php'),
     'theme' => 'default',
 	'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
@@ -32,7 +33,10 @@ $internalConfig = array(
 		'application.controllers.*',
 		'application.modules.*',
 	),
-    'preload' => ['log', 'pluginManager'],
+    'preload' => [
+        'log', 
+        file_exists(__DIR__ . '/config.php') ? 'pluginManager' : null
+    ],
 	'components' => array(
         'bootstrap' => array(
             'class' => 'TbApi',

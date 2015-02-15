@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /*
 * LimeSurvey (tm)
 * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,6 +13,8 @@
 * @author Shubham Sachdeva
 */
 
+namespace ls\controllers;
+use \Yii;
 /**
 * Installer
 *
@@ -43,24 +45,11 @@ class InstallerController extends CController {
     public $stepTitle = '';
     public function run($action = 'index')
     {
-        self::_checkInstallation();
+
         self::_sessioncontrol();
         parent::run($action);
     }
 
-    /**
-    * Installer::_checkInstallation()
-    *
-    * Based on existance of 'sample_installer_file.txt' file, check if
-    * installation should proceed further or not.
-    * @return
-    */
-    function _checkInstallation()
-    {
-//        if (file_exists(__DIR__ . '/../config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm'))) {
-//            throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
-//        }
-    }
 
     /**
     * Load and set session vars

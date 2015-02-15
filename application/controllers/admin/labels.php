@@ -164,7 +164,7 @@ class labels extends Survey_Common_Action
 
         if (App()->user->checkAccess('labelsets'))
         {
-            if ($sa == "editlabelset" && App()->user->checkAccess('labelsets', ['crud' => 'update'])
+            if ($sa == "editlabelset" && App()->user->checkAccess('labelsets', ['crud' => 'update']))
             {
                 $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
@@ -311,7 +311,7 @@ class labels extends Survey_Common_Action
      */
     public function process()
     {
-        if ( App()->user->checkAccess('labelsets', ['crud' => 'update'])
+        if ( App()->user->checkAccess('labelsets', ['crud' => 'update']))
         {
             if (isset($_POST['method']) && get_magic_quotes_gpc())
                 $_POST['method'] = stripslashes($_POST['method']);

@@ -32,6 +32,9 @@
             "ls\\cli\\" : [
                 "application/commands"
             ],
+            "ls\\controllers\\" : [
+                "application/controllers"
+            ],
             "ls\\pluginmanager\\" : [
                 "application/libraries/PluginManager",
                 "application/libraries/PluginManager/Storage"

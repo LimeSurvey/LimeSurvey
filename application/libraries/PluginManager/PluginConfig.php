@@ -59,9 +59,9 @@ class PluginConfig extends \CFormModel
     
     public function rules() {
         return [
-            [['name', 'description', 'vendor'], 'required'],
+            [['name', 'description', 'vendor', 'class'], 'required'],
             ['type', 'in', 'range' => ['simple', 'module']],
-            ['class', 'match', 'pattern' => '/^[[:alnum:]]+(\\\[[:alnum:]]+)*$/'],
+            ['class', 'match', 'pattern' => '/^[[:alnum:]]+(\\\[[:alnum:]]+)*$/', 'allowEmpty' => false],
             ['autoload', 'validateAutoload'],
             ['apiVersion', 'in', 'range' => array_keys(self::$pluginManager->apiMap), 'on' => 'register', 'allowEmpty' => false],
             ['events', 'safe'],

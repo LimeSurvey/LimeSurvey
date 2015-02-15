@@ -1,5 +1,6 @@
 <?php
-
+namespace ls\controllers;
+use \Yii;
 class DevController extends CController {
     
     public function actionIndex() {
@@ -13,5 +14,10 @@ class DevController extends CController {
         $result = $runner->run($args);
         echo '<pre>' . htmlentities(ob_get_clean(), null, Yii::app()->charset);
         echo "Exit code: $result";
+    }
+    
+    public function actionModule() {
+        $id = array_keys(App()->modules)[0];
+//        die(App()->createUrl("$id/dashboard"));
     }
 }

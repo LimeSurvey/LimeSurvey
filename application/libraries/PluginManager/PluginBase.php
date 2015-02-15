@@ -14,7 +14,7 @@ abstract class PluginBase extends \CComponent implements iPlugin {
     protected $storage = 'DummyStorage';
 
     private $store = null;
-    protected $settings = array();
+    
 
     public $name;
     /**
