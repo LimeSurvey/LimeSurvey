@@ -19,7 +19,7 @@
 * @copyright 2011
 * @access public
 */
-class RegisterController extends LSYii_Controller {
+class RegisterController extends Controller {
 
     public $layout = 'bare';
 

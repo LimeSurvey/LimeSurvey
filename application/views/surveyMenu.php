@@ -16,6 +16,16 @@ $menu = [[ // Left side
         'visible' => !$this->survey->isActive
     ],
 ], [ // Right side
+    [
+        'label' => gT('Groups'),
+        'items' => array_map(function(QuestionGroup $group) {
+            return [
+                'url' => App()->createUrl('admin/survey/sa/view', ['surveyid' => $group->sid, 'gid' => $group->gid]),
+                'label' => $group->title
+            ];
+
+        }, QuestionGroup::model()->findAllByAttributes(['sid' => $this->survey->sid, 'language' => $this->survey->language]))
+    ], 
     
 ]];
     

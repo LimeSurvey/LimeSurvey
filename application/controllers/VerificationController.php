@@ -18,7 +18,7 @@
  * @package limesurvey_yii
  * @subpackage controllers
  */
-class VerificationController extends LSYii_Controller
+class VerificationController extends Controller
 {
     function actionImage($sid)
     {

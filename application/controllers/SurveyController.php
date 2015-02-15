@@ -11,7 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-class SurveyController extends LSYii_Controller
+class SurveyController extends Controller
 {
     public $lang = null;
 

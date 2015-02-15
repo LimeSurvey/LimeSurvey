@@ -70,59 +70,16 @@
 //                'url' => array('admin/survey', 'sa' => 'index'),
 //                'icon' => 'list'
 //            ),
-            array(
+            [
                 'label' => gT('Surveys'),
                 'items' => array_map(function(Survey $survey) {
                     return [
                         'url' => App()->createUrl('admin/survey/sa/view', ['surveyid' => $survey->sid]),
-                        'label' => $survey->localizedTitle . (($survey->active != 'Y') ? ' (' . gT('inactive') .')' : '')
+                        'label' => $survey->localizedTitle . (($survey->isActive) ? ' (' . gT('inactive') .')' : '')
                     ];
                     
                 }, Survey::model()->findAll())
-//                run(function() {
-//                    $result = array(
-//                        array(
-//                            'label' => gT('Active'),
-//                            'items' => 
-//                        ),
-//                        array(
-//                            'label' => gT('Inactive'),
-//                            'items' => array()
-//                        ),
-//                        array(
-//                            'label' => gT('Expired'),
-//                            'items' => array()
-//                        ),
-//
-//                    );
-//                    foreach ($surveys as $survey)
-//                    {
-//                        $item = array(
-//                            'label' => $survey->localizedTitle,
-//                            'url' => array('admin/survey/sa/view', 'surveyid' => $survey->sid)
-//
-//                        );
-//                        $result[] = $item;
-//                        if ($survey->active != 'Y')
-//                        {
-//                            $result[1]['items'][] = $item;
-//                        }
-//                        elseif ($survey->isExpired())
-//                        {
-//                            $result[2]['items'][] = $item;
-//                        }
-//                        else
-//                        {
-//                            $result[0]['items'][] = $item;
-//                        }
-
-
-//                    }
-//                    var_dump($result);
-//                    return $result;
-
-//                }),
-            ), 
+            ], 
             [
                 'title' => gT('Create, import, or copy a survey'),
                 'url' => array('admin/survey', 'sa' => 'newsurvey'),

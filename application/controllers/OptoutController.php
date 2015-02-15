@@ -19,7 +19,7 @@
  * @copyright 2011
   * @access public
  */
-class OptoutController extends LSYii_Controller {
+class OptoutController extends Controller {
 
      public $layout = 'bare';
      public $defaultAction = 'tokens';

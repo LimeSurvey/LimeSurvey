@@ -12,13 +12,28 @@
  *
  */
 
-abstract class LSYii_Controller extends CController
+abstract class Controller extends CController
 {
     /**
-     *
+     * The currently selected survey. Needed for the group menu.
+     * @todo This will need refactoring at some point, these variables should not be in all controllers.
      * @var Survey
      */
     public $survey;
+    /**
+     * The currently selected group. Needed for the group / question menu.
+     * @todo This will need refactoring at some point, these variables should not be in all controllers.
+     * @var QuestionGroup
+     */
+    public $group;
+   
+    /**
+     * The currently selected question. Needed for the group menu.
+     * @todo This will need refactoring at some point, these variables should not be in all controllers.
+     * @var Question
+     */
+    public $question;
+    
     /**
      * This array contains the survey / group / question id used by the menu widget.
      * @var array
@@ -176,5 +191,25 @@ abstract class LSYii_Controller extends CController
         }
         else 
             return parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
+    }
+    /**
+     * Base implementation for load model.
+     * Should be overwritten if the model for the controller is not standard or
+     * has no single PK.
+     * @param type $id
+     * @return type
+     * @throws \CHttpException
+     */
+    protected function loadModel($id) {
+        // Get the model name.
+        $modelClass = substr(get_class($this), 0, -strlen('sController'));
+        if (class_exists($modelClass)) {
+            $model = $modelClass::model()->findByPk($id);
+            if (!isset($model)) {
+                throw new \CHttpException(404, $modelClass . " not found.");
+            }
+            return $model;
+        } 
+        
     }
 }

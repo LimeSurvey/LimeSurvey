@@ -1,6 +1,6 @@
 <?php
 use ls\pluginmanager\PluginEvent;
-class UsersController extends LSYii_Controller
+class UsersController extends Controller
 {
 
     public $layout = 'minimal';

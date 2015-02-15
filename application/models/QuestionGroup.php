@@ -77,7 +77,11 @@
         */
         public function relations()
         {
-            return array('questions' => array(self::HAS_MANY, 'Question', 'gid'));
+            return [
+                'questions' => [self::HAS_MANY, 'Question', 'gid'],
+                'survey' => [self::BELONGS_TO, 'Survey', 'sid']
+            ];
+            
         }
 
         function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
@@ -175,6 +179,15 @@
                 $command->order($order);
             }
             return $command->query();
+        }
+        
+        /**
+         * This function is here to support proper naming of entity attributes.
+         * Since surveys have a title, I have decided all non-person entities have a title not a name.
+         * @return string
+         */
+        public function getTitle() {
+            return $this->group_name;
         }
     }
 ?>

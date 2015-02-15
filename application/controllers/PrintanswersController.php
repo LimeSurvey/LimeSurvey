@@ -19,7 +19,7 @@
     * @copyright 2011
     * @access public
     */
-    class PrintanswersController extends LSYii_Controller {
+    class PrintanswersController extends Controller {
 
 
 

@@ -12,7 +12,7 @@
 *
 */
 
-class AdminController extends LSYii_Controller
+class AdminController extends Controller
 {
     public $layout = false;
     protected $user_id = 0;

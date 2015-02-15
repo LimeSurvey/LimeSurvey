@@ -24,7 +24,7 @@
  *
  */
 
-class Statistics_userController extends LSYii_Controller {
+class Statistics_userController extends Controller {
 
 
     public function _remap($method, $params = array())

@@ -3,7 +3,7 @@
     /**
      * This class will handle survey creation and manipulation.
      */
-    class SurveysController extends LSYii_Controller
+    class SurveysController extends Controller
     {
         public $layout = 'bare';
         public $defaultAction = 'publicList';

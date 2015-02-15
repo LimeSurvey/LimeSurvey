@@ -51,7 +51,48 @@
                 if (isset($this->survey)) {
                     $items = require __DIR__ . '/../surveyMenu.php';
                     $this->widget('TbNavbar', [
-                    'brandUrl' => ['surveys/index'],
+                    'brandLabel' => false,
+                    'display' => null,
+                    'fluid' => true,
+                    'items' => [
+                    [
+                        'class' => 'TbNav',
+                        'items' => $items[0]
+                    ], 
+                    [
+                        'class' => 'TbNav',
+                        'htmlOptions' => [
+                            'class' => 'navbar-right'
+                        ],
+                        'items' => $items[1]
+                    ]]
+                ]);
+                    
+                }
+                if (isset($this->group)) {
+                    $items = require __DIR__ . '/../groupMenu.php';
+                    $this->widget('TbNavbar', [
+                    'brandLabel' => false,
+                    'display' => null,
+                    'fluid' => true,
+                    'items' => [
+                    [
+                        'class' => 'TbNav',
+                        'items' => $items[0]
+                    ], 
+                    [
+                        'class' => 'TbNav',
+                        'htmlOptions' => [
+                            'class' => 'navbar-right'
+                        ],
+                        'items' => $items[1]
+                    ]]
+                ]);
+                    
+                }
+                if (isset($this->question)) {
+                    $items = require __DIR__ . '/../questionMenu.php';
+                    $this->widget('TbNavbar', [
                     'brandLabel' => false,
                     'display' => null,
                     'fluid' => true,

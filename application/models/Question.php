@@ -66,8 +66,10 @@
             return array(
                 'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
-                'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
-
+                'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language"),
+                
+                'group' => [self::BELONGS_TO, 'QuestionGroup', 'gid'],
+                'survey' => [self::BELONGS_TO, 'Survey', 'sid'],
             );
         }
 
@@ -635,6 +637,14 @@
             asort($questionTypes);
             
             return $questionTypes;
+        }
+        
+        public function scopes() {
+            return [
+                'primary' => [
+                    'condition' => 'parent_qid = 0'
+                ]
+            ];
         }
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-class PluginsController extends LSYii_Controller
+class PluginsController extends Controller
 {
 
     public $layout = 'main';
