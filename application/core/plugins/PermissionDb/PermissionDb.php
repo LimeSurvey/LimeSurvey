@@ -23,7 +23,9 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
             'crud' => 'read'
         ];
         $params = array_merge($defaults, $params);
-        return \Permission::model()->hasPermission($params['entity_id'], $params['entity'], $itemName, $params['crud'], $userId);
+        // Check superadmin first.
+        $superAdmin = ($itemName != 'superadmin') && $this->checkAccess('superadmin', $userId);
+        return $superAdmin ?: \Permission::model()->hasPermission($params['entity_id'], $params['entity'], $itemName, $params['crud'], $userId);
     }
 
     public function clearAll() {

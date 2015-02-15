@@ -12,6 +12,7 @@
             return array_merge([
                 ['allow', 'actions' => ['index'], 'users' => ['@']],
                 ['allow', 'actions' => ['publicList']],
+                
             ], parent::accessRules());
         }
         public function actionOrganize($surveyId)
@@ -54,8 +55,9 @@
             $survey = Survey::model()->findByPk($id);
             if (!isset($survey)) {
                 throw new \CHttpException(404, "Survey not found.");
+            } elseif (!App()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $id])) {
+                throw new CHttpException(403);
             }
-            
             return $survey;
         }
     }
