@@ -199,11 +199,6 @@ class WebApplication extends CWebApplication
     */
     public function setLanguage( $sLanguage )
     {
-        global $counter;
-        $counter = isset($counter) ? $counter + 1 : 1;
-        if ($counter > 1) {
-            throw new Exception('SetLanguage');
-        }
         $this->messages->catalog = $sLanguage;
         parent::setLanguage($sLanguage);
     }

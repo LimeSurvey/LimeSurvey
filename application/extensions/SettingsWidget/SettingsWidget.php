@@ -78,6 +78,9 @@
                 case 'link':
                     $result = TbHtml::linkButton($label, array_merge($htmlOptions, ['url' => $metaData['href']]));
                     break;
+                case 'submit':
+                    $result = TbHtml::submitButton($label, $htmlOptions);
+                    break;
                 default:
                     $result = TbHtml::htmlButton($label, $htmlOptions);
             }

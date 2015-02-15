@@ -15,6 +15,11 @@
 abstract class LSYii_Controller extends CController
 {
     /**
+     *
+     * @var Survey
+     */
+    public $survey;
+    /**
      * This array contains the survey / group / question id used by the menu widget.
      * @var array
      */

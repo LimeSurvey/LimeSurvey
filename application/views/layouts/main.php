@@ -48,9 +48,28 @@
                         'items' => $items[1]
                     ]]
                 ]);
-//                    'title' => ,
-//                    'iconUrl' => App()->getConfig('adminimageurl')
-                
+                if (isset($this->survey)) {
+                    $items = require __DIR__ . '/../surveyMenu.php';
+                    $this->widget('TbNavbar', [
+                    'brandUrl' => ['surveys/index'],
+                    'brandLabel' => false,
+                    'display' => null,
+                    'fluid' => true,
+                    'items' => [
+                    [
+                        'class' => 'TbNav',
+                        'items' => $items[0]
+                    ], 
+                    [
+                        'class' => 'TbNav',
+                        'htmlOptions' => [
+                            'class' => 'navbar-right'
+                        ],
+                        'items' => $items[1]
+                    ]]
+                ]);
+                    
+                }
             }
 		?>
         <div class="container-fluid">

@@ -38,4 +38,8 @@ $route['optout/tokens/<surveyid:\d+>'] = array('optout/tokens','matchValue'=>tru
 $route['optin/tokens/<surveyid:\d+>'] = array('optin/tokens','matchValue'=>true);
 $route['statistics_user/<surveyid:\d+>'] =  array('statistics_user/action','matchValue'=>true);
 
+$route['<controller>/<id:\d+>'] = [
+    '<controller>/view',
+    'verb' => 'GET',
+];
 return $route;

@@ -38,9 +38,25 @@
             ));
         }
         
+        public function actionView($id) {
+            $this->layout = 'main';
+            $survey = $this->loadModel($id);
+            $this->survey = $survey;
+            $this->render('view', ['survey' => $survey]);
+        }
+        
         public function filters()
         {
             return array_merge(parent::filters(), ['accessControl']);
+        }
+        
+        protected function loadModel($id) {
+            $survey = Survey::model()->findByPk($id);
+            if (!isset($survey)) {
+                throw new \CHttpException(404, "Survey not found.");
+            }
+            
+            return $survey;
         }
     }
 ?>
