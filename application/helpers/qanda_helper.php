@@ -2909,7 +2909,7 @@ function do_audio_recording($ia)
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
 
     $rec_folder     = Yii::app()->getConfig('third_party') . 'audio-recorder/';
-    $record         = "<a id='record" . $ia[1] . "' href='#' onload='initAudio(\"" . $ia[1] . "\");' onclick='toggleRecording(this);'>"
+    $record         = "<a id='record" . $ia[1] . "' href='#' onclick='toggleRecording(this);'>"
             . "<img src='" . $rec_folder . "img/record.png' style='margin: 3px;' /></a>";
     $play           = "<audio id='play" . $ia[1]. "' controls style='display: none;'></audio>";
     $download       = "<a id='save" . $ia[1]. "' href='#' style='display: none;'>"
