@@ -22,7 +22,7 @@ var audioInput = null,
     audioRecorder = null,
     Recorder = null;
 var rafID = null;
-var analyserContext = null;
+var analyserContext = [];
 var canvasWidth, canvasHeight;
 var recIndex = 0;
 var questionCode;
@@ -91,16 +91,20 @@ function cancelAnalyserUpdates() {
     rafID = null;
 }
 
-function updateAnalysers(time) {
-    if (!analyserContext) {
-        var canvas = document.getElementById("analyser");
-        canvasWidth = canvas.width;
-        canvasHeight = canvas.height;
-        analyserContext = canvas.getContext('2d');
-    }
+function updateAnalysers() {
+    // For all analysers on the page... 
+    var canvases = document.getElementsByClassName('analyser');
+    for (n = 0; n < 1; ++n) {
+        var canvas = canvases[n]; 
 
-    // analyzer draw code here
-    {
+        // If there's no analyserContext, create it
+        if (!analyserContext[n]) {
+            canvasWidth = canvas.width;
+            canvasHeight = canvas.height;
+            analyserContext[n] = canvas.getContext('2d');
+        }
+
+        // Draw the analyserContext
         var SPACING = 3;
         var BAR_WIDTH = 1;
         var numBars = Math.round(canvasWidth / SPACING);
@@ -108,9 +112,9 @@ function updateAnalysers(time) {
 
         analyserNode.getByteFrequencyData(freqByteData); 
 
-        analyserContext.clearRect(0, 0, canvasWidth, canvasHeight);
-        analyserContext.fillStyle = '#F6D565';
-        analyserContext.lineCap = 'round';
+        analyserContext[n].clearRect(0, 0, canvasWidth, canvasHeight);
+        analyserContext[n].fillStyle = '#F6D565';
+        analyserContext[n].lineCap = 'round';
         var multiplier = analyserNode.frequencyBinCount / numBars;
 
         // Draw rectangle for each frequency bin.
@@ -122,11 +126,10 @@ function updateAnalysers(time) {
                 magnitude += freqByteData[offset + j];
             magnitude = magnitude / multiplier;
             var magnitude2 = freqByteData[i * multiplier];
-            analyserContext.fillStyle = "hsl( " + Math.round((i*360)/numBars) + ", 100%, 50%)";
-            analyserContext.fillRect(i * SPACING, canvasHeight, BAR_WIDTH, -magnitude);
+            analyserContext[n].fillStyle = "hsl( " + Math.round((i*360)/numBars) + ", 100%, 50%)";
+            analyserContext[n].fillRect(i * SPACING, canvasHeight, BAR_WIDTH, -magnitude);
         }
     }
-    
     rafID = window.requestAnimationFrame( updateAnalysers );
 }
 
