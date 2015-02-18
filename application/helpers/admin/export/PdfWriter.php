@@ -70,7 +70,15 @@ class PdfWriter extends Writer
                 {
                     if (isset($values[$question['index']]) && isset($headers[$question['index']]))
                     {
-                        $this->pdf->addAnswer($headers[$question['index']], $values[$question['index']], false);
+                        if ($question['type'] == 'N' || $question['type'] == 'K')
+                        {
+                            $sAuxValue=number_format(floatval($values[$question['index']]), 0, '', '');
+                            $this->pdf->addAnswer($headers[$question['index']], $sAuxValue, false);
+                        }
+                        else
+                        {
+                            $this->pdf->addAnswer($headers[$question['index']], $values[$question['index']], false);
+                        }
                     }
                 }
             }

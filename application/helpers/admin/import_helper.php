@@ -4633,7 +4633,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     // Do a model function for this can be a good idea (see activate_helper/activateSurvey)
     if (Yii::app()->db->driverName=='pgsql')
     {
-        $sSequenceName= Yii::app()->db->getSchema()->getTable("{{survey_{$iSurveyID}}}")->sequenceName;
+        $sSequenceName= Yii::app()->db->getSchema()->getTable("{{survey_{$iSurveyId}}}")->sequenceName;
         $iActualSerial=Yii::app()->db->createCommand("SELECT last_value FROM  {$sSequenceName}")->queryScalar();
         if($iActualSerial<$iMaxId)
         {

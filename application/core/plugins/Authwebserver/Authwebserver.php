@@ -72,7 +72,7 @@ class Authwebserver extends AuthPluginBase
     
     public function newUserSession()
     {
-        // Do nothing if this user is not Authdb type
+        // Do nothing if this user is not Authwebserver type
         $identity = $this->getEvent()->get('identity');
         if ($identity->plugin != 'Authwebserver')
         {
