@@ -31,7 +31,7 @@ class Survey_Common_Action extends CAction
         // Make sure viewHelper can be autoloaded
         Yii::import('application.helpers.viewHelper');
     }
-    
+
     /**
     * Override runWithParams() implementation in CAction to help us parse
     * requests with subactions.
@@ -344,7 +344,7 @@ class Survey_Common_Action extends CAction
 
         if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
             Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', $clang->gT('LimeSurvey online manual'));
-        
+
         $out = ob_get_contents();
         ob_clean();
         App()->getClientScript()->render($out);
@@ -816,7 +816,7 @@ class Survey_Common_Action extends CAction
 
         if ($aSurveyInfo['surveyls_url'] != "")
         {
-            $aData['endurl'] = " <a target='_blank' href=\"" . flattenText($aSurveyInfo['surveyls_url']) . "\" title=\"" . flattenText($aSurveyInfo['surveyls_url']) . "\">".flattenText($aSurveyInfo['surveyls_urldescription'])."</a>";
+            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">".flattenText($aSurveyInfo['surveyls_urldescription'])."</a>";
         }
         else
         {
@@ -922,7 +922,7 @@ class Survey_Common_Action extends CAction
             {
                 $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
             }
-            
+
             $grpresult = Yii::app()->db->createCommand($sQuery)->queryRow();  //Checked
 
             if ($grpresult) {

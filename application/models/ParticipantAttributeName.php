@@ -78,9 +78,9 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
+        // NOTE: you should only define rules for those attributes that will receive user inputs.
         return array(
+            array('defaultname','filter','filter' => 'strip_tags'),
             array('attribute_type, visible', 'required'),
             array('attribute_type', 'length', 'max'=>4),
             array('visible', 'length', 'max'=>5),
@@ -135,14 +135,14 @@ class ParticipantAttributeName extends LSActiveRecord
         ));
     }
 
-    
+
     function getAllAttributes()
     {
         $aResult=Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*')
                                               ->from('{{participant_attribute_names}}')
                                               ->order('{{participant_attribute_names}}.attribute_id')
                                               ->queryAll();
-        return $aResult;        
+        return $aResult;
     }
 
     function getAllAttributesValues()
@@ -152,7 +152,7 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
     * Get an array of CPDB attributes
-    * 
+    *
     * @param mixed $sLanguageFilter
     */
     function getVisibleAttributes($sLanguageFilter=null)
@@ -334,26 +334,28 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
     * Adds the data for a new attribute
-    * 
+    *
     * @param mixed $data
     */
     function storeAttribute($data)
-    {      
-        $insertnames = array('attribute_type' => $data['attribute_type'],
-            'defaultname'=> $data['defaultname'],
-            'visible' => $data['visible']);
+    {
         // Do not allow more than 60 attributes because queries will break because of too many joins
-        if (ParticipantAttributeName::model()->count()>59) 
+        if (ParticipantAttributeName::model()->count()>59)
         {
             return false;
         };
-        Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}',$insertnames);
-        $attribute_id = getLastInsertID($this->tableName());
-        $insertnameslang = array('attribute_id' => intval($attribute_id),
-            'attribute_name'=> $data['attribute_name'],
-            'lang' => Yii::app()->session['adminlang']);
-        Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
-        return $attribute_id;
+        $oParticipantAttributeName=new ParticipantAttributeName;
+        $oParticipantAttributeName->attribute_type=$data['attribute_type'];
+        $oParticipantAttributeName->defaultname=$data['defaultname'];
+        $oParticipantAttributeName->visible=$data['visible'];
+        $oParticipantAttributeName->save();
+        $iAttributeID = $oParticipantAttributeName->attribute_id;
+        $oParticipantAttributeNameLang=new ParticipantAttributeNameLang;
+        $oParticipantAttributeNameLang->attribute_id= intval($iAttributeID);
+        $oParticipantAttributeNameLang->attribute_name= $data['attribute_name'];
+        $oParticipantAttributeNameLang->lang= Yii::app()->session['adminlang'];
+        $oParticipantAttributeNameLang->save();
+        return $iAttributeID;
     }
 
     function editParticipantAttributeValue($data)
@@ -430,16 +432,18 @@ class ParticipantAttributeName extends LSActiveRecord
         }
         if (!empty($insertnames))
         {
-            self::model()->updateAll($insertnames, 'attribute_id = :id', array(':id' => $data['attribute_id']));
+            $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk($data['attribute_id']);
+            foreach ($insertnames as $sFieldname=>$sValue)
+            {
+               $oParticipantAttributeName->$sFieldname=$sValue;
+            }
+            $oParticipantAttributeName->save();
         }
         if (!empty($data['attribute_name']))
         {
-            Yii::app()->db->createCommand()
-                    ->update('{{participant_attribute_names_lang}}', array('attribute_name' => $data['attribute_name']),
-                                'attribute_id = :attribute_id AND lang=:lang', array(
-                                        ':lang' => Yii::app()->session['adminlang'],
-                                        ':attribute_id' => $data['attribute_id'],
-                                    ));
+            $oParticipantAttributeNameLang=ParticipantAttributeNameLang::model()->findByPk(array('attribute_id'=>$data['attribute_id'],'lang'=>Yii::app()->session['adminlang']));
+            $oParticipantAttributeNameLang->attribute_name=$data['attribute_name'];
+            $oParticipantAttributeNameLang->save();
         }
     }
 
@@ -448,19 +452,18 @@ class ParticipantAttributeName extends LSActiveRecord
         $query = Yii::app()->db->createCommand()->from('{{participant_attribute_names_lang}}')->where('attribute_id = :attribute_id AND lang = :lang')->select('*')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":lang", $data['lang'], PDO::PARAM_STR)->queryAll();
         if (count($query) == 0)
         {
-              // A record does not exist, insert one.
-               $record = array('attribute_id'=>$data['attribute_id'],'attribute_name'=>$data['attribute_name'],'lang'=>$data['lang']);
-               $query = Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $data);
+            // A record does not exist, insert one.
+            $oParticipantAttributeNameLang=new ParticipantAttributeNameLang;
+            $oParticipantAttributeNameLang->attribute_id=$data['attribute_id'];
+            $oParticipantAttributeNameLang->attribute_name=$data['attribute_name'];
+            $oParticipantAttributeNameLang->lang=$data['lang'];
+            $oParticipantAttributeNameLang->save();
         }
         else
         {
-             // A record does exist, update it.
-            $query = Yii::app()->db->createCommand()
-                ->update('{{participant_attribute_names_lang}}', array('attribute_name' => $data['attribute_name']),
-                            'attribute_id = :attribute_id  AND lang= :lang', array(
-                                    ':attribute_id' => $data['attribute_id'],
-                                    ':lang' => $data['lang'],
-                                ));
+            $oParticipantAttributeNameLang=ParticipantAttributeNameLang::model()->findByPk(array('attribute_id'=>$data['attribute_id'],'lang'=>$data['lang']));
+            $oParticipantAttributeNameLang->attribute_name=$data['attribute_name'];
+            $oParticipantAttributeNameLang->save();
         }
     }
 
@@ -473,17 +476,20 @@ class ParticipantAttributeName extends LSActiveRecord
 
     function storeAttributeCSV($data)
     {
-        $insertnames = array('attribute_type' => $data['attribute_type'],
-                            'defaultname' => $data['defaultname'],
-                            'visible' => $data['visible']);
-        Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
+        $oParticipantAttributeName=new ParticipantAttributeName;
+        $oParticipantAttributeName->attribute_type=$data['attribute_type'];
+        $oParticipantAttributeName->defaultname=$data['defaultname'];
+        $oParticipantAttributeName->visible=$data['visible'];
+        $oParticipantAttributeName->save();
+        $iAttributeID = $oParticipantAttributeName->attribute_id;
 
-        $insertid = getLastInsertID($this->tableName());
-        $insertnameslang = array('attribute_id' => $insertid,
-                                 'attribute_name'=>$data['defaultname'],
-                                 'lang' => Yii::app()->session['adminlang']);
-        Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $insertnameslang);
-        return $insertid;
+        $oParticipantAttributeNameLang=new ParticipantAttributeNameLang;
+        $oParticipantAttributeNameLang->attribute_id=$iAttributeID;
+        $oParticipantAttributeNameLang->attribute_name=$data['defaultname'];
+        $oParticipantAttributeNameLang->lang=Yii::app()->session['adminlang'];
+        $oParticipantAttributeNameLang->save();
+
+        return $iAttributeID;
     }
 
     //updates the attribute values in participant_attribute_values

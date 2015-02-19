@@ -400,9 +400,9 @@ class participantsaction extends Survey_Common_Action
         $aData->total = ceil(ParticipantAttributeName::model()->getCPDBAttributes(true) / $limit);
         $i = 0;
         foreach($records as $row) { //Iterate through each attribute
-            $sAttributeCaption=$row->defaultname; //Choose the first item by default
+            $sAttributeCaption=htmlspecialchars($row->defaultname); //Choose the first item by default
             foreach($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
-                if($names->lang == Yii::app()->session['adminlang']) {$sAttributeCaption= $sAttributeCaption." ({$names->attribute_name})";} //Override the default with the admin language version if found
+                if($names->lang == Yii::app()->session['adminlang']) {$sAttributeCaption= $sAttributeCaption.htmlspecialchars(" ({$names->attribute_name})");} //Override the default with the admin language version if found
             }
             $aData->rows[$i]['id'] = $row->attribute_id;
             $aData->rows[$i]['cell'] = array('', $sAttributeCaption, $attribute_types[$row->attribute_type], $row->visible);

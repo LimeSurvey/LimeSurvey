@@ -54,7 +54,7 @@ class LSYii_Validators extends CValidator {
         if($this->isUrl)
         {
             if ($object->$attribute== 'http://' || $object->$attribute=='https://') {$object->$attribute="";}
-            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"); // 140219 : Why not urlencode ?
+            $object->$attribute=str_replace(array('"',"'",' ','<','>'),'',html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8")); // 140219 : Why not urlencode ?
         }
         if($this->isLanguage)
         {
