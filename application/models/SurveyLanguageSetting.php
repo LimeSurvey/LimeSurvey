@@ -104,8 +104,8 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_url','LSYii_Validators','isUrl'=>true),
             array('surveyls_urldescription','LSYii_Validators'),
 
-            array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true), 
-            array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true), 
+            array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true),
+            array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
 
@@ -142,7 +142,7 @@ class SurveyLanguageSetting extends LSActiveRecord
 
          if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
     }
-                                                                              
+
 
     /**
      * Returns the token's captions
@@ -205,17 +205,17 @@ class SurveyLanguageSetting extends LSActiveRecord
 
     /**
      * Updates a single record identified by $condition with the
-     * key/value pairs in the $data array. 
-     * 
+     * key/value pairs in the $data array.
+     *
      * @param type $data
      * @param type $condition
      * @param type $xssfiltering
      * @return boolean
      */
     function updateRecord($data,$condition='', $xssfiltering = false)
-    {       
+    {
         if (isset($data['surveyls_url']) && $data['surveyls_url']== 'http://') {$data['surveyls_url']="";}
-        
+
         /*
          * Mdekker: don't think we need this anymore
 		if($xssfiltering)
@@ -235,14 +235,14 @@ class SurveyLanguageSetting extends LSActiveRecord
 				$data["endtext"] = $filter->purify($data["endtext"]);
 		}
          */
-        
+
         $record = $this->findByPk($condition);
         foreach ($data as $key => $value)
         {
             $record->$key = $value;
         }
         $record->save($xssfiltering);
-                    
+
         return true;
     }
 
