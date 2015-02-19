@@ -4984,7 +4984,7 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['help'] = (isset($row['help']) ? $row['help'] : '');
                 $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                 $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
-                $lastother=$insertdata['other'] = (isset($row['other']) ? $row['other'] : 'N');
+                $lastother = $insertdata['other'] = (isset($row['other']) ? $row['other'] : 'N'); // Keep trace of other settings for sub question
                 $insertdata['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
                 $insertdata['parent_qid'] = 0;
 
