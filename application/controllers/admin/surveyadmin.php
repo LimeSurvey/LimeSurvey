@@ -908,7 +908,7 @@ class SurveyAdmin extends Survey_Common_Action
             if ($action == 'importsurvey' && !$aData['bFailed'])
             {
                 $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
-                if (is_null($aImportResults) || isset($aImportResults['error']))
+                if (is_null($aImportResults) || !empty($aImportResults['error']))
                 {
                     $aData['sErrorMessage']=$aImportResults['error'];
                     $aData['bFailed'] = true;
@@ -936,7 +936,6 @@ class SurveyAdmin extends Survey_Common_Action
                 unlink($sFullFilepath);
             }
 
-            //            if (isset($aImportResults['error']) && $aImportResults['error']) safeDie($aImportResults['error']);
 
             if (!$aData['bFailed'])
             {
