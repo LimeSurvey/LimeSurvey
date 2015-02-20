@@ -382,7 +382,7 @@ class AdminController extends Controller
     public function _showadminmenu($surveyid = false)
     {
         if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
-            Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+            App()->user->setFlash(\TbHtml::ALERT_COLOR_DEFAULT, gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."));
         }
 
         $aData['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatenotification")!='never' && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );

@@ -22,7 +22,7 @@
     </head>
     <body>
         <div class="wrapper clearfix">
-            <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
+            <?php $this->widget('TbAlert'); ?>
             <div id="content">
             <?php echo $content; ?>
             </div>
