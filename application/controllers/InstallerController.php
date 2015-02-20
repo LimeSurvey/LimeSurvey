@@ -25,7 +25,7 @@ use \Yii;
 * @copyright 2011
 * @access public
 */
-class InstallerController extends CController {
+class InstallerController extends \CController {
     /**
     * clang
     */
