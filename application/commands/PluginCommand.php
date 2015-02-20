@@ -1,4 +1,5 @@
 <?php
+namespace ls\cli;
 use CConsoleCommand;
     /*
     * LimeSurvey (tm)

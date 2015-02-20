@@ -33,12 +33,12 @@
         
         public function init() {
             parent::init();
+            $this->commandRunner->addCommands(Yii::getFrameworkPath() . '/cli/commands');
             foreach ($this->commandRunner->commands as $command => &$config) {
                 $config = [
                     'class' => "ls\\cli\\" . ucfirst($command) . "Command"
                 ];
             }
-            $this->commandRunner->addCommands(Yii::getFrameworkPath() . '/cli/commands');
             
             // Set webroot alias.
             Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
@@ -54,7 +54,6 @@
         public function getController()
         {
             return $this;
-
         }
 
 
