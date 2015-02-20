@@ -272,7 +272,6 @@ class User extends LSActiveRecord implements ls\pluginmanager\iUser
             $this->password = CPasswordHelper::hashPassword($password);
             $this->save();
         }
-        
         return CPasswordHelper::verifyPassword($password, $this->password);
     }
 
@@ -301,7 +300,6 @@ class User extends LSActiveRecord implements ls\pluginmanager\iUser
             $this->full_name = $settings['name'];
             $this->users_name = $settings['userName'];
             $this->lang = $settings['language'];
-            $this->save();
         }
         return $errors;
         

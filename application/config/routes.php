@@ -42,5 +42,5 @@ $route['<controller>/<id:\d+>'] = [
     '<controller>/view',
     'verb' => 'GET',
 ];
-
+$route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
 return $route;

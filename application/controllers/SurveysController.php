@@ -1,11 +1,12 @@
 <?php
-    namespace ls\controllers;
+namespace ls\controllers;
+use Survey;
     /**
      * This class will handle survey creation and manipulation.
      */
     class SurveysController extends Controller
     {
-        public $layout = 'bare';
+        public $layout = 'minimal';
         public $defaultAction = 'publicList';
 
         public function accessRules() {

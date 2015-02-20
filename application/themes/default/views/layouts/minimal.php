@@ -6,13 +6,16 @@
         <?php
 			$this->widget('ext.LimeScript.LimeScript');
 			App()->bootstrap->register();
-            var_dump(App()->theme); die();
+            App()->clientScript->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 		?>
         <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="<?php echo App()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <title>Limesurvey Administration</title>
     </head>
     <body class="layout-minimal">
+        <div style="position: absolute; top: 5px; right: 5px;">
+            <?php echo TbHtml::link('Login', ['users/login']); ?> 
+        </div>
         <div class="alerts">
             <?php $this->widget('TbAlert'); ?>
         </div>

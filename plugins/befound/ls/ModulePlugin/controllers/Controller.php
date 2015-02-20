@@ -11,4 +11,9 @@
         public function accessRules() {
             return [['deny']];
         }
+        
+        public function init() {
+            parent::init();
+            $this->module->initIfActive();
+        }
     }

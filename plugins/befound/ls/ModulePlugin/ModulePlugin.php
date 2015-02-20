@@ -22,23 +22,20 @@
         public $originalComponents = [
             
         ];
-        /**
-         * Since this module does not get any config passed in, apply it here manually.
-         * @param type $config
-         */
-        public function configure($config) {
-            parent::configure($config);
-
+        
+        public function init() {
+            parent::init();
             $this->controllerNamespace = __NAMESPACE__ . '\\controllers';
+        }
+
+        /**
+         * This function is only called if the active controller belongs to this module.
+         */
+        public function initIfActive() {
             foreach($this->replaceComponents as $id => $config) {
                 $this->originalComponents[$id] = App()->getComponent($id, false);
             }
             \Yii::app()->setComponents($this->replaceComponents);
-        }
-        
-        public function __construct($id, $parent, $config = null) {
-            parent::__construct($id, $parent, $config);
-//            throw new \Exception('mp created');
         }
     }
 ?>

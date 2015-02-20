@@ -230,7 +230,7 @@ use Plugin;
                     'pluginConfig' => $pluginConfig
                 ]
             ]);
-//            $module = App()->getModule($id);
+            $module = App()->getModule($id);
             
             $shortId = strtolower(substr($id, strrpos($id, '_') + 1));
             $rules = [

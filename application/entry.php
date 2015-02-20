@@ -15,14 +15,11 @@
 	define('BASEPATH', true);
 	define('APPPATH', __DIR__);
 
-	if (file_exists(__DIR__ . '/debug'))
-    {
+	if (file_exists(__DIR__ . '/debug')) {
 		define('YII_DEBUG', true);
 		ini_set('display_errors', 1);
         error_reporting(E_ALL);
-    }
-    else
-    {
+    } else {
         error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
     }
 
@@ -35,5 +32,6 @@ Yii::$enableIncludePath = false;
 $config = require_once(__DIR__ . '/config/internal' . EXT);
 $config['loader'] = $loader;
 unset($loader);
-//var_dump($config); die();
+//var_dump($config['components']['themeManager']); die();
+
 Yii::createApplication('WebApplication', $config)->run();

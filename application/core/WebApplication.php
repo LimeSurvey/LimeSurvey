@@ -59,8 +59,6 @@ class WebApplication extends CWebApplication
     public function __construct($config = null)
     {
         parent::__construct($config);
-        
-        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         Yii::import('application.helpers.common_helper', true);
 
         // Load the default and environmental settings from different files into self.
@@ -69,24 +67,15 @@ class WebApplication extends CWebApplication
         $version_config = require(__DIR__ . '/../config/version.php');
         $settings = array_merge($ls_config, $version_config, $email_config);
 
-        if(file_exists(__DIR__ . '/../config/config.php'))
-        {
-            $ls_config = require(__DIR__ . '/../config/config.php');
-            if(is_array($ls_config['config']))
-            {
-                $settings = array_merge($settings, $ls_config['config']);
-            }
-        }
-
         foreach ($settings as $key => $value)
             $this->setConfig($key, $value);
 
-        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
     }
 
 
 	public function init() {
 		parent::init();
+        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
 		Yii::import('application.helpers.ClassFactory');

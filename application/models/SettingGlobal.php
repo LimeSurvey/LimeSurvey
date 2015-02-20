@@ -84,6 +84,7 @@ class SettingGlobal extends LSActiveRecord
         }
     }
     public static function get($name, $default = null) {
+        Yii::trace($name, "SettingGlobal");
         if (!array_key_exists($name, self::$requestCache)) {
             if (null !== $model = self::model()->findByPk($name)) {
                 self::$requestCache[$name] = $model->value;

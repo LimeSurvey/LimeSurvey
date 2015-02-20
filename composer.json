@@ -8,7 +8,7 @@
     },
     "require": {
         "crisu83/yiistrap": "dev-bs3",
-		"2amigos/yiiwheels": "dev-master",
+		"2amigos/yiiwheels": "dev-bs3",
 		"yiisoft/yii" : "dev-master",
 		"tecnick.com/tcpdf": "dev-master",
 		"phpmailer/phpmailer": "dev-master",

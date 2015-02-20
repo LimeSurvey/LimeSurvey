@@ -195,7 +195,9 @@ abstract class Controller extends \CController
                 throw new \CHttpException(404, $modelClass . " not found.");
             }
             return $model;
-        } 
+        } else {
+            throw new \Exception("Override loadModel when using a non standard class.");
+        }
         
     }
 }

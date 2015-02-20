@@ -2,6 +2,7 @@
 namespace ls\controllers;
 use ls\pluginmanager\PluginEvent;
 use Yii;
+use PluginIdentity;
 class UsersController extends Controller
 {
 
@@ -29,7 +30,7 @@ class UsersController extends Controller
                 App()->user->login($identity);
                 $this->redirect(App()->user->getReturnUrl(['admin/']));
             } else {
-                App()->user->setFlash('error', gT("Authentication failed."));
+                App()->user->setFlash(\TbHtml::ALERT_COLOR_DANGER, gT("Authentication failed."));
             }
         } 
         // Get all active auth plugins.

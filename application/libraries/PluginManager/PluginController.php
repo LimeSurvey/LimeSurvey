@@ -1,6 +1,6 @@
 <?php
 namespace ls\pluginmanager;
-abstract class PluginController extends \Controller {
+abstract class PluginController extends \ls\controllers\Controller{
     
     public function filters() {
         return [
