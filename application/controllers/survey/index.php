@@ -650,10 +650,7 @@ class index extends CAction {
 
     function _canUserPreviewSurvey($iSurveyID)
     {
-        if ( !isset($_SESSION['loginID']) ) // This is not needed because Permission::model()->hasSurveyPermission control connexion
-            return false;
-
-        return Permission::model()->hasSurveyPermission($iSurveyID,'surveycontent','read');
+       return App()->user->checkAccess('surveycontent', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
     }
 
     function _userHasPreviewAccessSession($iSurveyID){

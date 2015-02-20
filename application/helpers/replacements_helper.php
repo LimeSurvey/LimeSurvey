@@ -409,7 +409,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
     {
-        $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
+        $_saveall = doHtmlSaveAll(isset($move)?$move:NULL, $thissurvey['sid']);
     }
     else
     {
@@ -797,12 +797,11 @@ function PassthruReplace($line, $thissurvey)
 * @param string $move :
 * @return string
 **/
-function doHtmlSaveAll($move="")
+function doHtmlSaveAll($move = "", $surveyid)
 {
     static $aSaveAllButtons=array();
     if(isset($aSaveAllButtons[$move]))
         return $aSaveAllButtons[$move];
-    $surveyid=Yii::app()->getConfig('surveyID');
     $thissurvey=getsurveyinfo($surveyid);
 
     $aHtmlOptionsLoadall=array('type'=>'submit','id'=>'loadallbtn','value'=>'loadall','name'=>'loadall','class'=>"saveall submit button");

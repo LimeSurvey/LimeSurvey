@@ -169,7 +169,6 @@ class statistics extends Survey_Common_Action {
 		}
 		$aData['filters'] = $filters;
 
-		//var_dump($filters);
 		// SHOW ID FIELD
 
 		$grapherror = false;

@@ -1,4 +1,5 @@
 <?php
+namespace ls\AuditLog;
 use ls\pluginmanager\PluginBase;
     class AuditLog extends PluginBase {
 

@@ -162,9 +162,9 @@ class labels extends Survey_Common_Action
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
-        if (Permission::model()->hasGlobalPermission('labelsets','read'))
+        if (App()->user->checkAccess('labelsets'))
         {
-            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
+            if ($sa == "editlabelset" && App()->user->checkAccess('labelsets', ['crud' => 'update']))
             {
                 $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
@@ -181,7 +181,7 @@ class labels extends Survey_Common_Action
             $aData['action'] = $sa;
             $aData['lid'] = $lid;
 
-            if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','create'))
+            if ($sa == "newlabelset" && App()->user->checkAccess('labelsets', ['crud' => 'create']))
             {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = gT("Create new label set");
@@ -232,7 +232,7 @@ class labels extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
         App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
-        if (Permission::model()->hasGlobalPermission('labelsets','read'))
+        if (App()->user->checkAccess('labelsets'))
         {
             // Get a result containing labelset with the specified id
             $result = LabelSet::model()->findByAttributes(array('lid' => $lid));
@@ -311,7 +311,7 @@ class labels extends Survey_Common_Action
      */
     public function process()
     {
-        if ( Permission::model()->hasGlobalPermission('labelsets','update'))
+        if ( App()->user->checkAccess('labelsets', ['crud' => 'update']))
         {
             if (isset($_POST['method']) && get_magic_quotes_gpc())
                 $_POST['method'] = stripslashes($_POST['method']);

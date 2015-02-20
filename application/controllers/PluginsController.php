@@ -1,6 +1,8 @@
 <?php
-
-class PluginsController extends LSYii_Controller
+namespace ls\controllers;
+use \Yii;
+use CArrayDataProvider;
+class PluginsController extends Controller
 {
 
     public $layout = 'main';
@@ -9,17 +11,17 @@ class PluginsController extends LSYii_Controller
      * Stored dynamic properties set and unset via __get and __set.
      * @var array of mixed.
      */
-    protected $properties = array();
-
-    public function __get($property)
-    {
-        return $this->properties[$property];
-    }
-
-    public function __set($property, $value)
-    {
-        $this->properties[$property] = $value;
-    }
+//    protected $properties = array();
+//
+//    public function __get($property)
+//    {
+//        return $this->properties[$property];
+//    }
+//
+//    public function __set($property, $value)
+//    {
+//        $this->properties[$property] = $value;
+//    }
 
     public function _init()
     {
@@ -29,112 +31,68 @@ class PluginsController extends LSYii_Controller
 
     public function accessRules()
     {
-        $aRules = array(
-            array('allow', 'roles' => array('superadmin')),
-            array('allow', 'actions' => array('direct')),
-            array('deny')
-        );
-
-
+        $rules = [
+            ['allow', 'roles' => ['superadmin']],
+            ['allow', 'actions' => ['direct']],
+            ['deny']
+        ];
         // Note the order; rules are numerically indexed and we want to
         // parents rules to be executed only if ours dont apply.
-        return array_merge($aRules, parent::accessRules());
+        return array_merge($rules, parent::accessRules());
     }
 
     public function actionActivate($id)
     {
-        $oPlugin = Plugin::model()->findByPk($id);
-        if (!is_null($oPlugin))
-        {
-            $iStatus = $oPlugin->active;
-            if ($iStatus == 0)
-            {
-                // Load the plugin:
-                App()->getPluginManager()->loadPlugin($oPlugin->name, $id);
-                $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $oPlugin->name);
-                if ($result->get('success', true))
-                {
-                    $iStatus = 1;
-                } else
-                {
-                    $sMessage = $result->get('message', gT('Failed to activate the plugin.'));
-                    App()->user->setFlash('pluginActivation', $sMessage);
-                    $this->redirect(array('plugins/'));
+        $pm = App()->pluginManager;
+        foreach ($pm->scanPlugins() as $pluginConfig) {
+            if ($pluginConfig->id === $id) {
+                if ($pm->enablePlugin($id)) {
+                    App()->user->setFlash('success', gT("Plugin activated."));
+                } else {
+                    App()->user->setFlash('error', gT("Plugin activation failed."));
                 }
             }
-            $oPlugin->active = $iStatus;
-            $oPlugin->save();
         }
-        $this->redirect(array('plugins/'));
+        
+        $this->redirect(['plugins/']);
     }
 
     public function actionConfigure($id)
     {
-        $arPlugin      = Plugin::model()->findByPk($id)->attributes;
-        $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
+        if (null !== $plugin = App()->pluginManager->getPlugin($id)) {
+            $pluginConfig = \ls\pluginmanager\PluginConfig::findAll(false)[$id];
+            $plugin = App()->pluginManager->loadPlugin($pluginConfig);
 
-        if ($arPlugin === null)
-        {
-            Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
-            $this->redirect(array('plugins/'));
+            if (App()->request->isPostRequest) {
+                $plugin->saveSettings(App()->request->getPost($plugin->id));
+            }
+            $this->render('configure', ['plugin' => $plugin]);
+        } else {
+            throw new \CHttpException(404, "Plugin not found.");
         }
         
-        // If post handle data, yt0 seems to be the submit button
-        if (App()->request->isPostRequest)
-        {
-
-            $aSettings = $oPluginObject->getPluginSettings(false);
-            $aSave     = array();
-            foreach ($aSettings as $name => $setting)
-            {
-                $aSave[$name] = App()->request->getPost($name, null);
-            }
-            $oPluginObject->saveSettings($aSave);
-            Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
-            if(!is_null(App()->request->getPost('redirect')))
-            {
-                $this->forward('plugins/index', true);
-            }
-        }
-
-        // Prepare settings to be send to the view.
-        $aSettings = $oPluginObject->getPluginSettings();
-        if (empty($aSettings))
-        {
-            // And show a message
-            Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
-            $this->forward('plugins/index', true);
-        }
-
-        // Send to view plugin porperties: name and description
-        $aPluginProp = App()->getPluginManager()->getPluginInfo($arPlugin['name']);
-
-        $this->render('/plugins/configure', array('settings' => $aSettings, 'plugin' => $arPlugin, 'properties' => $aPluginProp));
     }
 
     public function actionDeactivate($id)
     {
-        $oPlugin = Plugin::model()->findByPk($id);
-        if (!is_null($oPlugin))
-        {
-            $iStatus = $oPlugin->active;
-            if ($iStatus == 1)
-            {
-                $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeDeactivate', $this), $oPlugin->name);
-                if ($result->get('success', true))
-                {
-                    $iStatus = 0;
-                } else
-                {
-                    $message = $result->get('message', gT('Failed to deactivate the plugin.'));
-                    App()->user->setFlash('pluginActivation', $message);
-                    $this->redirect(array('plugins/'));
+        if ($id === App()->authManager->authorizationPlugin->id) {
+            App()->user->setFlash('error', "Cannot disable currently active authorization plugin.");
+        } elseif (in_array($id, SettingGlobal::get('authenticationPlugins', []))) {
+            App()->user->setFlash('error', "Cannot disable currently active authentication plugin.");
+        }
+        
+        $pm = App()->pluginManager;
+        foreach ($pm->scanPlugins() as $pluginConfig) {
+            if ($pluginConfig->id === $id) {
+                if ($pm->disablePlugin($id)) {
+                    App()->user->setFlash('success', gT("Plugin deactivated."));
+                } else {
+                    App()->user->setFlash('error', gT("Plugin deactivation failed."));
                 }
             }
-            $oPlugin->active = $iStatus;
-            $oPlugin->save();
         }
-        $this->redirect(array('plugins/'));
+        
+        $this->redirect(['plugins/']);
     }
 
     public function actionDirect($plugin, $function)
@@ -160,62 +118,35 @@ class PluginsController extends LSYii_Controller
         }
     }
 
+    public function actionConfigureAuth() {
+        $request = App()->request;
+        if (App()->request->isPostRequest && null !== $id = $request->getParam('authorizationPlugin')) {
+            $plugin = App()->pluginManager->getPlugin($id);
+            if ($plugin instanceof IAuthManager && SettingGlobal::set('authorizationPlugin', $request->getParam('authorizationPlugin'))) {
+                App()->user->setFlash('success', gT('Authorization configuration updated.'));
+            }
+            $authenticationPlugins = $request->getParam('authenticationPlugins');
+            if (is_array($authenticationPlugins) && array_intersect($authenticationPlugins, array_keys(App()->pluginManager->getAuthenticators())) == $authenticationPlugins) {
+                SettingGlobal::set('authenticationPlugins', $authenticationPlugins);
+                App()->user->setFlash('success', gT('Authorization and authentication configuration updated.'));
+            }
+        }
+        $this->redirect(['plugins/index']);
+    }
     public function actionIndex()
     {
-		$oPluginManager = App()->getPluginManager();
-
-        // Scan the plugins folder.
-        $aDiscoveredPlugins = $oPluginManager->scanPlugins();
-        $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(function ($installedPlugin) {
-                return $installedPlugin->name;
-            }, $aInstalledPlugins);
-
-        // Install newly discovered plugins.
-        foreach ($aDiscoveredPlugins as $discoveredPlugin)
-        {
-            if (!in_array($discoveredPlugin['pluginClass'], $aInstalledNames))
-            {
-                $oPlugin         = new Plugin();
-                $oPlugin->name   = $discoveredPlugin['pluginClass'];
-                $oPlugin->active = 0;
-                $oPlugin->save();
-            }
-        }
-
-        $aoPlugins = Plugin::model()->findAll();
-        $data      = array();
-        foreach ($aoPlugins as $oPlugin)
-        {
-            /* @var $plugin Plugin */
-            if (array_key_exists($oPlugin->name, $aDiscoveredPlugins))
-            {
-                $aPluginSettings = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id)->getPluginSettings(false);
-                $data[]          = array(
-                    'id'          => $oPlugin->id,
-                    'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
-                    'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
-                    'active'      => $oPlugin->active,
-                    'settings'    => $aPluginSettings,
-                    'new'         => !in_array($oPlugin->name, $aInstalledNames)
-                );
-            } else
-            {
-                // This plugin is missing, maybe the files were deleted but the record was not removed from the database
-                // Now delete this record. Depending on the plugin the settings will be preserved
-                App()->user->setFlash('pluginDelete' . $oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
-                $oPlugin->delete();
-            }
-        }
-        echo $this->render('/plugins/index', compact('data'));
+        $pm = App()->pluginManager;
+        $plugins = new CArrayDataProvider(array_values($pm->scanPlugins()));
+        return $this->render('index', [
+            'plugins' => $plugins, 
+            'authorizers' => $pm->getAuthorizers(), 
+            'authenticators' => $pm->getAuthenticators()
+        ]);
     }
 
     public function filters()
     {
-        $aFilters = array(
-            'accessControl'
-        );
-        return array_merge(parent::filters(), $aFilters);
+        return array_merge(parent::filters(), ['accessControl']);
     }
 
 }

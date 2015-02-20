@@ -1,0 +1,14 @@
+{
+    "name" : "ModulePlugin",
+    "vendor" : "Befound",
+    "apiVersion" : "1.0",
+    "namespace" : "befound\\ls\\ModulePlugin\\",
+    "class" : "befound\\ls\\ModulePlugin\\ModulePlugin",
+    "autoload" : {
+        "psr-4": {
+            "befound\\ls\\ModulePlugin\\" : ""
+        }
+    },
+    "description" : "Example plugin that uses a Yii module.",
+    "type" : "module"
+}

@@ -19,13 +19,13 @@
 <input type='hidden' id='sid' name='sid' value="<?php echo $esrow['sid'];?>" />
 <input type='hidden' name='languageids' id='languageids' value="<?php echo $esrow['additional_languages'];?>" />
 <input type='hidden' name='language' value="<?php echo $esrow['language'];?>" />
-<?php if (Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')){?>
+<?php if (App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid])){?>
     <div class="hidden hide" id="submitsurveybutton">
     <p>
         <?php
             echo CHtml::htmlButton(gT('Save'),array('type'=>'submit','value'=>'update','name'=>'save'));
             echo CHtml::htmlButton(gT('Save and close'),array('type'=>'submit','value'=>$this->createUrl('admin/survey',array('sa'=>'view','surveyid'=>$surveyid)),'name'=>'redirect'));
-            if(Permission::model()->hasSurveyPermission($surveyid,'surveylocale','update'))
+            if(App()->user->checkAccess('surveylocale', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 echo CHtml::htmlButton(gT('Save & edit survey text elements'),array('type'=>'submit','value'=>$this->createUrl('admin/survey',array('sa'=>'editlocalsettings','surveyid'=>$surveyid)),'name'=>'redirect'));
         ?>
     </p>

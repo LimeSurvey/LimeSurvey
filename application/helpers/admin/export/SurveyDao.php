@@ -73,7 +73,7 @@ class SurveyDao
         $survey->languageSettings = $recordSet->read();
         $recordSet->close();
 
-        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id,'tokens','read'))
+        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $survey->id]))
         {
             // Now add the tokenFields
             $survey->tokenFields = getTokenFieldsAndNames($survey->id);
@@ -104,7 +104,7 @@ class SurveyDao
         foreach ($aSelectFields as &$sField)
            $sField ="{{survey_{$survey->id}}}.".$sField;
         $oRecordSet = Yii::app()->db->createCommand()->from('{{survey_' . $survey->id . '}}');
-        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id,'tokens','read'))
+        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $survey->id]))
         {
             $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}} tokentable','tokentable.token={{survey_' . $survey->id . '}}.token');
             $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . $survey->id . '}}')->getColumnNames();

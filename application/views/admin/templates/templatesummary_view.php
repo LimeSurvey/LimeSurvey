@@ -37,7 +37,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         <p>
             <?php 
 
-            if (Permission::model()->hasGlobalPermission('templates','update'))
+            if (App()->user->checkAccess('templates', ['crud' => 'update']))
             { 
 
                 if (is_writable($templates[$templatename])) { ?>
@@ -64,7 +64,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
             </select><br>
             <?php 
-            if (Permission::model()->hasGlobalPermission('templates','delete'))
+            if (App()->user->checkAccess('templates', ['crud' => 'delete']))
             { ?>
 
                 <input type='submit' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT("Are you sure you want to delete this file?","js"); ?>')"/>
@@ -79,7 +79,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         </div>
         <div style='margin-top:1em;'>
             <?php
-            if (Permission::model()->hasGlobalPermission('templates','update'))
+            if (App()->user->checkAccess('templates', ['crud' => 'update']))
             { ?>
 
                 <?php echo CHtml::form(array('admin/templates/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>

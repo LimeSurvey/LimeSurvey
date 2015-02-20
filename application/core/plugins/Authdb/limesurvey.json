@@ -1,0 +1,20 @@
+{
+    "name" : "LimeSurvey internal database",
+    "vendor" : "Limesurvey Development Team",
+    "class" : "ls\\core\\plugins\\AuthDb",
+    "description" : "Core: Database authentication + exports.",
+    "type" : "simple",
+    "autoload" : {
+        "psr-4": {
+            "ls\\core\\plugins\\" : ""
+        }
+    },
+    "events" : [
+        "beforeLogin",
+        "beforeDeactivate",
+        "listExportPlugins",
+        "listExportOptions",
+        "newExport"
+    ],
+    "apiVersion" : "1.0"
+}

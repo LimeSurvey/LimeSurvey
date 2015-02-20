@@ -43,7 +43,7 @@ class participantsaction extends Survey_Common_Action
 {
     public function runWithParams($params)
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel','read'))
+        if (!App()->user->checkAccess('participantpanel'))
         {
             die('No permission');
         }
@@ -95,11 +95,11 @@ class participantsaction extends Survey_Common_Action
         Yii::app()->loadHelper('export');
 
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (App()->user->checkAccess('superadmin'))
         {
             $iUserID = null;
         } else {
-            $iUserID = Yii::app()->session['loginID'];
+            $iUserID = App()->user->id;
         }
         $aAttributeIDs=array_combine($aAttributeIDs,$aAttributeIDs);
         $query = Participant::model()->getParticipants(0, 0, $aAttributeIDs, null, $search, $iUserID);
@@ -148,11 +148,11 @@ class participantsaction extends Survey_Common_Action
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
 
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (App()->user->checkAccess('superadmin'))
         {
             $iUserID = null;
         } else {
-            $iUserID = Yii::app()->session['loginID'];
+            $iUserID = App()->user->id;
         }
 
 
@@ -170,10 +170,10 @@ class participantsaction extends Survey_Common_Action
      */
     function index()
     {
-        $iUserID = Yii::app()->session['loginID'];
+        $iUserID = App()->user->id;
 
         // if superadmin all the records in the cpdb will be displayed
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (App()->user->checkAccess('superadmin'))
         {
             $iTotalRecords = Participant::model()->count();
         }
@@ -221,7 +221,7 @@ class participantsaction extends Survey_Common_Action
         //Should be all surveys owned by user (or all surveys for super admin)
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!App()->user->checkAccess('superadmin'))
             $surveys->permission(Yii::app()->user->getId());
 
         $aSurveyNames = $surveys->model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
@@ -306,7 +306,7 @@ class participantsaction extends Survey_Common_Action
         $aData->page = 1;
 
         // If super administrator all the share info in the links table will be shown
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (App()->user->checkAccess('superadmin'))
         {
             $records = Participant::model()->getParticipantSharedAll();
             $aData->records = count($records);
@@ -327,7 +327,7 @@ class participantsaction extends Survey_Common_Action
         // otherwise only the shared participants by that user
         else
         {
-            $records = Participant::model()->getParticipantShared(Yii::app()->session['loginID']);
+            $records = Participant::model()->getParticipantShared(App()->user->id);
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
@@ -460,7 +460,7 @@ class participantsaction extends Survey_Common_Action
      */
     function delParticipant()
     {
-        if (Permission::model()->hasGlobalPermission('participantpanel','delete'))
+        if (App()->user->checkAccess('participantpanel', ['crud' => 'delete']))
         {
             $selectoption = Yii::app()->request->getPost('selectedoption');
             $iParticipantId = Yii::app()->request->getPost('participant_id');
@@ -493,7 +493,7 @@ class participantsaction extends Survey_Common_Action
         $sOperation = Yii::app()->request->getPost('oper');
 
         // if edit it will update the row
-        if ($sOperation == 'edit' && Permission::model()->hasGlobalPermission('participantpanel','update') && Participant::model()->is_owner(Yii::app()->request->getPost('id')))
+        if ($sOperation == 'edit' && App()->user->checkAccess('participantpanel', ['crud' => 'update']) && Participant::model()->is_owner(Yii::app()->request->getPost('id')))
         {
             $aData = array(
                 'participant_id' => Yii::app()->request->getPost('id'),
@@ -506,7 +506,7 @@ class participantsaction extends Survey_Common_Action
             Participant::model()->updateRow($aData);
         }
         // if add it will insert a new row
-        elseif ($sOperation == 'add' && Permission::model()->hasGlobalPermission('participantpanel','create'))
+        elseif ($sOperation == 'add' && App()->user->checkAccess ('participantpanel',['crud' => 'create']))
         {
             $uuid = $this->gen_uuid();
             $aData = array(
@@ -516,8 +516,8 @@ class participantsaction extends Survey_Common_Action
                 'email' => Yii::app()->request->getPost('email'),
                 'language' => Yii::app()->request->getPost('language'),
                 'blacklisted' => Yii::app()->request->getPost('blacklisted'),
-                'owner_uid' => Yii::app()->session['loginID'],
-                'created_by' => Yii::app()->session['loginID']
+                'owner_uid' => App()->user->id,
+                'created_by' => App()->user->id
             );
             Participant::model()->insertParticipant($aData);
         }
@@ -589,7 +589,7 @@ class participantsaction extends Survey_Common_Action
             }
             $surveylink = "";
             /* Check permissions of each survey before creating a link*/
-            if (!Permission::model()->hasSurveyPermission($row['survey_id'], 'tokens', 'read'))
+            if (!App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $row['survey_id']]))
             {
                 $surveylink = $row['survey_id'];
             } else
@@ -661,13 +661,13 @@ class participantsaction extends Survey_Common_Action
         // if there is no search condition the participants will be counted on the basis of who is logged in
         else
         {
-            if (Permission::model()->hasGlobalPermission('superadmin','read')) //If super admin all the participants will be visible
+            if (App()->user->checkAccess('superadmin')) //If super admin all the participants will be visible
             {
                 $count = Participant::model()->getParticipantsCountWithoutLimit();
             }
             else
             {
-                $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
+                $query = Participant::model()->getParticipantsOwner(App()->user->id);
                 $count = count($query);
             }
 
@@ -695,7 +695,7 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($query as $key => $value)
             {
-                if (Permission::model()->hasGlobalPermission('superadmin','read'))
+                if (App()->user->checkAccess('superadmin'))
                 {
                     $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
                 } else
@@ -711,13 +711,13 @@ class participantsaction extends Survey_Common_Action
         else// if no search condition
         {
             $participantid = ""; // initiallise the participant id to blank
-            if (Permission::model()->hasGlobalPermission('superadmin','read')) //If super admin all the participants will be visible
+            if (App()->user->checkAccess('superadmin')) //If super admin all the participants will be visible
             {
                 $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
             }
             else // get participants on which the user has right on
             {
-                $query = Participant::model()->getParticipantsOwner(Yii::app()->session['loginID']);
+                $query = Participant::model()->getParticipantsOwner(App()->user->id);
             }
 
             foreach ($query as $key => $value)
@@ -782,11 +782,11 @@ class participantsaction extends Survey_Common_Action
         $aData = new stdClass;
 
         //If super admin all the participants will be visible
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (App()->user->checkAccess('superadmin'))
         {
             $iUserID = null;
         } else {
-            $iUserID = Yii::app()->session['loginID'];
+            $iUserID = App()->user->id;
         }
         $aData->records = Participant::model()->getParticipantsCount($attid, $search, $iUserID);
         $aData->total = ceil($aData->records / $limit);
@@ -1043,7 +1043,7 @@ class participantsaction extends Survey_Common_Action
         {
             $pid = explode('_',Yii::app()->request->getPost('participant_id'));
             $iAttributeId =  Yii::app()->request->getPost('attid');
-            if (Permission::model()->hasGlobalPermission('participantpanel','update') && Participant::model()->is_owner($pid[0]))
+            if (App()->user->checkAccess('participantpanel', ['crud' => 'update']) && Participant::model()->is_owner($pid[0]))
             {
                 $aData = array('participant_id' => $pid[0], 'attribute_id' => $iAttributeId, 'value' => Yii::app()->request->getPost('attvalue'));
                 ParticipantAttributeName::model()->editParticipantAttributeValue($aData);
@@ -1300,7 +1300,7 @@ class participantsaction extends Survey_Common_Action
                          'firstname' => $writearray['firstname'],
                          'lastname' => $writearray['lastname'],
                          'email' => $writearray['email'],
-                         'owner_uid' => Yii::app()->session['loginID']
+                         'owner_uid' => App()->user->id
                          );
                 //HACK - converting into SQL instead of doing an array search
                 if(in_array('participant_id', $firstline)) {
@@ -1308,7 +1308,7 @@ class participantsaction extends Survey_Common_Action
                     $aData = "participant_id = ".Yii::app()->db->quoteValue($writearray['participant_id']);
                 } else {
                     $dupreason="nameemail";
-                    $aData = "firstname = ".Yii::app()->db->quoteValue($writearray['firstname'])." AND lastname = ".Yii::app()->db->quoteValue($writearray['lastname'])." AND email = ".Yii::app()->db->quoteValue($writearray['email'])." AND owner_uid = '".Yii::app()->session['loginID']."'";
+                    $aData = "firstname = ".Yii::app()->db->quoteValue($writearray['firstname'])." AND lastname = ".Yii::app()->db->quoteValue($writearray['lastname'])." AND email = ".Yii::app()->db->quoteValue($writearray['email'])." AND owner_uid = '".App()->user->id."'";
                 }
                 //End of HACK
                 $aData = Participant::model()->checkforDuplicate($aData, "participant_id");
@@ -1369,7 +1369,7 @@ class participantsaction extends Survey_Common_Action
                     if (!isset($writearray['blacklisted']) || $writearray['blacklisted'] == "") {
                         $writearray['blacklisted'] = "N";
                     }
-                    $writearray['owner_uid'] = Yii::app()->session['loginID'];
+                    $writearray['owner_uid'] = App()->user->id;
                     if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == '')) {
                         unset($writearray['validfrom']);
                     }

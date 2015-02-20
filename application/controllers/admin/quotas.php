@@ -60,7 +60,7 @@ class quotas extends Survey_Common_Action
 
     private function _checkPermissions($iSurveyId, $sPermission)
     {
-        if (!empty($sPermission) && !(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission))) {
+        if (!empty($sPermission) && !(App()->user->checkAccess('quotas', ['entity_id' => $iSurveyId, 'entity' => 'survey', 'crud' => $sPermission]))) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->_redirectToIndex($iSurveyId);
         }
@@ -68,7 +68,7 @@ class quotas extends Survey_Common_Action
 
     function _redirectToIndex($iSurveyId)
     {
-        if(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','read'))
+        if(App()->user->checkAccess('quotas', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
         }
@@ -372,7 +372,7 @@ class quotas extends Survey_Common_Action
         $sBaseLang = $aData['sBaseLang'];
         $aViewUrls = array();
 
-        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
+        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && App()->user->checkAccess('quotas', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
             foreach ($result as $aQuotaDetails)
@@ -393,7 +393,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
+        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && App()->user->checkAccess('quotas', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_qid'));
             $sQuotaName = $aResults['name'];

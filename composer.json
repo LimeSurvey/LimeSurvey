@@ -8,25 +8,37 @@
     },
     "require": {
         "crisu83/yiistrap": "dev-bs3",
-		"2amigos/yiiwheels": "dev-master",
+		"2amigos/yiiwheels": "dev-bs3",
 		"yiisoft/yii" : "dev-master",
 		"tecnick.com/tcpdf": "dev-master",
 		"phpmailer/phpmailer": "dev-master",
 		"jsonrpc/jsonrpc" : "dev-master",
         "ar-php/ar-php": "dev-master",
-        "guzzlehttp/guzzle": "~5.0@dev"
+        "guzzlehttp/guzzle": "~5.0@dev",
+        "cakephp/utility": "dev-master"
     },
 	"require-dev" : {
 		
 	},
     "autoload" : {
         "classmap" : [
+            "application/extensions/SettingsWidget",
             "application/core/db",
             "application/core",
-            "application/vendor/2amigos/yiiwheels"
+            "application/vendor/2amigos/yiiwheels",
+            "application/vendor/yiisoft/yii/framework/cli/commands"
         ],
         "psr-4" : {
-            "ls\\pluginmanager\\" : "application/libraries/PluginManager"
+            "ls\\cli\\" : [
+                "application/commands"
+            ],
+            "ls\\controllers\\" : [
+                "application/controllers"
+            ],
+            "ls\\pluginmanager\\" : [
+                "application/libraries/PluginManager",
+                "application/libraries/PluginManager/Storage"
+            ]
         }
     }
 }

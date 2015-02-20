@@ -13,22 +13,6 @@
 Yii::import('application.helpers.sanitize_helper', true);
 
 /**
-* Simple function to sort the permissions by title
-*
-* @param mixed $aPermissionA  Permission A to compare
-* @param mixed $aPermissionB  Permission B to compare
-*/
-function comparePermission($aPermissionA,$aPermissionB)
-{
-    if($aPermissionA['title'] >$aPermissionB['title']) {
-        return 1;
-    }
-    else {
-        return -1;
-    }
-}
-
-/**
  * Translation helper function
  * @param string $sToTranslate
  * @param string $sEscapeMode
@@ -199,11 +183,9 @@ function getSurveyList($returnarray=false, $surveyid=false)
     static $cached = null;
 
     $timeadjust = getGlobalSetting('timeadjust');
-    App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
-
     if(is_null($cached)) {
         $args = array('order'=>'surveyls_title');
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!App()->user->checkAccess('superadmin'))
         {
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with('defaultlanguage')->findAll($args);
         } else {
@@ -1094,97 +1076,6 @@ function getGroupListLang($gid, $language, $surveyid)
     return $groupselecter;
 }
 
-
-function getUserList($outputformat='fullinfoarray')
-{
-
-
-    if (!empty(Yii::app()->session['loginID']))
-    {
-        $myuid=sanitize_int(Yii::app()->session['loginID']);
-    }
-    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
-    if (!Permission::model()->hasGlobalPermission('superadmin','read') && isset($usercontrolSameGroupPolicy) &&
-    $usercontrolSameGroupPolicy == true)
-    {
-        if (isset($myuid))
-        {
-            $sDatabaseType = Yii::app()->db->getDriverName();
-            if ($sDatabaseType=='mssql' || $sDatabaseType=="sqlsrv" || $sDatabaseType=="dblib")
-            {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,CAST(password as varchar) as password';
-            }
-            else
-            {
-                $sSelectFields = 'users_name,uid,email,full_name,parent_id,password';
-            }
-
-            // List users from same group as me + all my childs
-            // a subselect is used here because MSSQL does not like to group by text
-            // also Postgres does like this one better
-            $uquery = " SELECT {$sSelectFields} from {{users}} where uid in (
-                SELECT uid from {{user_in_groups}} where ugid in (
-                    SELECT ugid from {{user_in_groups}} where uid={$myuid}
-                    )
-                )
-            UNION
-            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
-            UNION
-            SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
-
-        }
-        else
-        {
-            return array(); // Or die maybe
-        }
-
-    }
-    else
-    {
-        $uquery = "SELECT * FROM {{users}} ORDER BY uid";
-    }
-
-    $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
-
-    if (count($uresult)==0)
-    //user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
-    {
-        $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=".$myuid;
-        $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll();//Checked
-    }
-
-    $userlist = array();
-    $userlist[0] = "Reserved for logged in user";
-    foreach ($uresult as $srow)
-    {
-        if ($outputformat != 'onlyuidarray')
-        {
-            if ($srow['uid'] != Yii::app()->session['loginID'])
-            {
-                $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'] );
-            }
-            else
-            {
-                $userlist[0] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'] );
-            }
-        }
-        else
-        {
-            if ($srow['uid'] != Yii::app()->session['loginID'])
-            {
-                $userlist[] = $srow['uid'];
-            }
-            else
-            {
-                $userlist[0] = $srow['uid'];
-            }
-        }
-
-    }
-    return $userlist;
-}
-
-
 /**
 * Gets all survey infos in one big array including the language specific settings
 *
@@ -1192,68 +1083,12 @@ function getUserList($outputformat='fullinfoarray')
 * @param string $languagecode The language code - if not given the base language of the particular survey is used
 * @return array Returns array with survey info or false, if survey does not exist
 */
-function getSurveyInfo($surveyid, $languagecode='')
+function getSurveyInfo($surveyId, $languagecode= null)
 {
-    static $staticSurveyInfo = array();// Use some static
-    $surveyid=sanitize_int($surveyid);
-    $languagecode=sanitize_languagecode($languagecode);
-    $thissurvey=false;
-    // Do job only if this survey exist
-    if(!Survey::model()->findByPk($surveyid))
-    {
-        return false;
+    if (!is_numeric($surveyId)) {
+        throw new Exception("Survey ids must be numerical.");
     }
-    // if no language code is set then get the base language one
-    if ((!isset($languagecode) || $languagecode==''))
-    {
-        $languagecode=Survey::model()->findByPk($surveyid)->language;
-    }
-
-    if(isset($staticSurveyInfo[$surveyid][$languagecode]) )
-    {
-        $thissurvey=$staticSurveyInfo[$surveyid][$languagecode];
-    }
-    else
-    {
-        $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-        if (is_null($result)) {
-            // When additional language was added, but not saved it does not exists
-            // We should revert to the base language then
-            $languagecode=Survey::model()->findByPk($surveyid)->language;
-            $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
-        }
-        if($result)
-        {
-            $thissurvey=array_merge($result->survey->attributes,$result->attributes);
-            $thissurvey['name']=$thissurvey['surveyls_title'];
-            $thissurvey['description']=$thissurvey['surveyls_description'];
-            $thissurvey['welcome']=$thissurvey['surveyls_welcometext'];
-            $thissurvey['templatedir']=$thissurvey['template'];
-            $thissurvey['adminname']=$thissurvey['admin'];
-            $thissurvey['tablename']='{{survey_'.$thissurvey['sid'] . '}}';
-            $thissurvey['urldescrip']=$thissurvey['surveyls_urldescription'];
-            $thissurvey['url']=$thissurvey['surveyls_url'];
-            $thissurvey['expiry']=$thissurvey['expires'];
-            $thissurvey['email_invite_subj']=$thissurvey['surveyls_email_invite_subj'];
-            $thissurvey['email_invite']=$thissurvey['surveyls_email_invite'];
-            $thissurvey['email_remind_subj']=$thissurvey['surveyls_email_remind_subj'];
-            $thissurvey['email_remind']=$thissurvey['surveyls_email_remind'];
-            $thissurvey['email_confirm_subj']=$thissurvey['surveyls_email_confirm_subj'];
-            $thissurvey['email_confirm']=$thissurvey['surveyls_email_confirm'];
-            $thissurvey['email_register_subj']=$thissurvey['surveyls_email_register_subj'];
-            $thissurvey['email_register']=$thissurvey['surveyls_email_register'];
-            $thissurvey['attributedescriptions'] = $result->survey->tokenAttributes;
-            $thissurvey['attributecaptions'] = $result->attributeCaptions;
-            if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=Yii::app()->getConfig('siteadminemail');}
-            if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=Yii::app()->getConfig('siteadminname');}
-            if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
-
-            $staticSurveyInfo[$surveyid][$languagecode]=$thissurvey;
-        }
-
-    }
-
-    return $thissurvey;
+    return (null != $survey = Survey::model()->findByPk($surveyId)) ? $survey->getInfo($languagecode) : null;
 }
 
 /**
@@ -6048,7 +5883,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
 function accessDenied($action,$sid='')
 {
 
-    if (Yii::app()->session['loginID'])
+    if (App()->user->id)
     {
         $ugid = Yii::app()->getConfig('ugid');
         $accesssummary = "<p><strong>".gT("Access denied!")."</strong><br />\n";
@@ -6773,11 +6608,11 @@ function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
 function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 {
 
-    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
+    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {App()->user->id} ORDER BY name";
     $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+    if (!App()->user->checkAccess('superadmin'))
     {
-        $sQuery .="AND uid = ".Yii::app()->session['loginID'];
+        $sQuery .="AND uid = ".App()->user->id;
     }
     $sQuery .=  " ORDER BY name";
 
@@ -6797,7 +6632,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
         foreach($groupnames as $gn)
         {
             $selecter .= "<option ";
-            if(Yii::app()->session['loginID'] == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
+            if(App()->user->id == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
             //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}

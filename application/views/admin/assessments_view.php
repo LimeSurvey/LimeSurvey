@@ -19,7 +19,7 @@ foreach($assessments as $assess) {
 else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['id'];?></td>
 <td>
-<?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','update')) { ?>
+<?php if (App()->user->checkAccess('assessments', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid])) { ?>
     <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post');?>
         <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php eT("Edit");?>' />
         <input type='hidden' name='action' value='assessmentedit' />
@@ -27,7 +27,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
     </form>
 <?php } ?>
 
-<?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','delete')) { ?>
+<?php if (App()->user->checkAccess('assessments', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid])) { ?>
      <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post');?>
      <input type='image' src='<?php echo $imageurl;?>/token_delete.png' alt='<?php eT("Delete");?>' onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' />
      <input type='hidden' name='action' value='assessmentdelete' />
@@ -61,7 +61,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <?php } ?>
 </tbody></table>
 
-<?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")) { ?>
+<?php if ((App()->user->checkAccess('assessments', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]) && $actionvalue=="assessmentupdate") || (App()->user->checkAccess('assessments', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid])&& $actionvalue=="assessmentadd")) { ?>
 <br />
 <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form30','id'=>'assessmentsform','name'=>'assessmentsform'));?>
 	<div class='header ui-widget-header'><?php echo $actiontitle;?></div>

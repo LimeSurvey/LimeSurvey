@@ -2,26 +2,7 @@
 namespace ls\pluginmanager;
 interface iPlugin {
 
-    /**
-     * Return the description for this plugin
-     */
-    public function getDescription();
-    
-    /**
-     * Get the current event this plugin is responding to
-     * 
-     * @return PluginEvent
-     */
-    public function getEvent();
-
-    /**
-     * Get the id of this plugin (set by PluginManager on instantiation)
-     * 
-     * @return int
-     */
-    public function getId();
-
-    /**
+       /**
      * Provides meta data on the plugin settings that are available for this plugin.
      * This does not include enable / disable; a disabled plugin is never loaded.
      * @param boolean $getValues Set to false to not get the current value for each plugin setting.
@@ -29,11 +10,6 @@ interface iPlugin {
      */
     public function getPluginSettings($getValues = true);
 
-    /**
-     * Gets the name for the plugin, this must be unique.
-     * @return string Plugin name, max length: 20.
-     */
-    public function getName();
     /**
      * Returns a reference to the storage interface for the plugin.
      * @return iPluginStorage 
@@ -45,9 +21,9 @@ interface iPlugin {
      * 
      * Assumes an array with valid key/value pairs is passed.
      * 
-     * @param array $aSettings An array with key/value pairs for all plugin settings
+     * @param array $settings An array with key/value pairs for all plugin settings
      */
-    public function saveSettings($aSettings);
+    public function saveSettings(array $settings);
     
     /**
      * Set the event to the plugin, this method is executed by the PluginManager

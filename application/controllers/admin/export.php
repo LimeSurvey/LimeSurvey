@@ -34,7 +34,7 @@ class export extends Survey_Common_Action {
         $action = Yii::app()->request->getParam('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
-        if ( Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') )
+        if ( App()->user->checkAccess('surveycontent', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]) )
         {
             $this->_surveyexport($action, $iSurveyID);
             return;
@@ -48,7 +48,7 @@ class export extends Survey_Common_Action {
     */
     public function surveyarchives()
     {
-        if ( ! Permission::model()->hasGlobalPermission('superadmin','read') )
+        if ( ! App()->user->checkAccess('superadmin') )
         {
             die('Access denied.');
         }
@@ -137,7 +137,7 @@ class export extends Survey_Common_Action {
 
 
 
-        if ( ! Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export') )
+        if ( ! App()->user->checkAccess('responses', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]) )
         {
             $this->getController()->error('Access denied!');
         }
@@ -621,7 +621,7 @@ class export extends Survey_Common_Action {
         $subaction = Yii::app()->request->getParam('subaction');
 
         //Exports all responses to a survey in special "Verified Voting" format.
-        if ( ! Permission::model()->hasSurveyPermission($iSurveyId, 'responses','export') )
+        if ( ! App()->user->checkAccess('responses', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyId]) )
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));

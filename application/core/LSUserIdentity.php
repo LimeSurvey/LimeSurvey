@@ -46,7 +46,7 @@ class LSUserIdentity extends CUserIdentity {
      *
      * @var string
      */
-    public $plugin = 'Authdb';
+    public $plugin = 'ls\\core\\plugins\\AuthDb';
 
     public function authenticate() {
         // First initialize the result, we can later retieve it to get the exact error code/message
@@ -131,7 +131,7 @@ class LSUserIdentity extends CUserIdentity {
         }
 
         // Do session setup
-        Yii::app()->session['loginID'] = (int) $user->uid;
+        App()->user->id = (int) $user->uid;
         Yii::app()->session['user'] = $user->users_name;
         Yii::app()->session['full_name'] = $user->full_name;
         Yii::app()->session['htmleditormode'] = $user->htmleditormode;

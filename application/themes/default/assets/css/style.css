@@ -1,0 +1,18 @@
+
+/**
+Stuff for alerts.
+
+*/
+.alerts {
+    position: absolute;
+    right: 20px; top: 20px;
+}
+
+.alerts .close{
+    padding-left: 10px;
+}
+
+
+#ajaxprogress {
+    display: none;
+}

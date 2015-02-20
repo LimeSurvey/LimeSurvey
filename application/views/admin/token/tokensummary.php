@@ -56,19 +56,19 @@
 <script type='text/javascript'>
     surveyid = '<?php echo $surveyid; ?>'
 </script>
-<?php /* if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update') || Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'delete'))
+<?php /* if (App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]) || App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid]))
 { ?>
     <div class='header ui-widget-header'><?php eT("Token database administration options"); ?></div>
     <div style='width:30%; margin:0 auto;'>
         <ul>
-                    <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'))
+                    <?php if (App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
                     { ?>
                 <li><a href='#' onclick="if( confirm('<?php eT("Are you really sure you want to reset all invitation records to NO?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites"); ?>}">
                         <?php eT("Set all entries to 'No invitation sent'."); ?></a></li>
                 <li><a href='#' onclick="if ( confirm('<?php eT("Are you sure you want to delete all unique token strings?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens"); ?>}">
                 <?php eT("Delete all unique token strings"); ?></a></li>
                     <?php }
-                    if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'delete'))
+                    if (App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid]))
                     { ?>
                 <li><a href='#' onclick=" if (confirm('<?php eT("Are you really sure you want to delete ALL token entries?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall"); ?>}">
         <?php eT("Delete all token entries"); ?></a></li>

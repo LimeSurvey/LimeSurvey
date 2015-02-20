@@ -4,81 +4,24 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bfd678d29cb6e5aa10be35f2048a843b",
+    "hash": "f79cf3cee67110f0575cbb8f2605fd24",
     "packages": [
         {
-            "name": "2amigos/yiistrap",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2amigos/yiistrap.git",
-                "reference": "db3352a9764806d042b882de57559777e9da7b96"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yiistrap/zipball/db3352a9764806d042b882de57559777e9da7b96",
-                "reference": "db3352a9764806d042b882de57559777e9da7b96",
-                "shasum": ""
-            },
-            "require-dev": {
-                "codeception/codeception": "@stable",
-                "crisu83/yii-composer": ">=1.0.0",
-                "yiisoft/yii": ">=1.1.13"
-            },
-            "type": "library",
-            "extra": {
-                "yii-install-writable": [
-                    "tests/_log"
-                ]
-            },
-            "autoload": {
-                "classmap": [
-                    "behaviors/",
-                    "components/",
-                    "form/",
-                    "helpers/",
-                    "widgets/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Christoffer Niska",
-                    "email": "christoffer.niska@gmail.com",
-                    "homepage": "http://www.cniska.net/"
-                },
-                {
-                    "name": "Antonio Ramirez",
-                    "email": "ramirez.cobos@gmail.com",
-                    "homepage": "http://www.ramirezcobos.com/"
-                }
-            ],
-            "description": "Twitter Bootstrap for the Yii PHP framework. Own maintained version.",
-            "keywords": [
-                "bootstrap",
-                "yii"
-            ],
-            "time": "2014-09-03 06:31:45"
-        },
-        {
             "name": "2amigos/yiiwheels",
-            "version": "dev-master",
+            "version": "dev-bs3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/2amigos/yiiwheels.git",
-                "reference": "ff48faf1c958da52743b15b7f2938a2bfa667ad7"
+                "reference": "0570b9fd9bb333edd967dad0cb31409ade0367c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yiiwheels/zipball/ff48faf1c958da52743b15b7f2938a2bfa667ad7",
-                "reference": "ff48faf1c958da52743b15b7f2938a2bfa667ad7",
+                "url": "https://api.github.com/repos/2amigos/yiiwheels/zipball/0570b9fd9bb333edd967dad0cb31409ade0367c8",
+                "reference": "0570b9fd9bb333edd967dad0cb31409ade0367c8",
                 "shasum": ""
             },
             "require": {
-                "2amigos/yiistrap": "dev-master"
+                "crisu83/yiistrap": "dev-bs3"
             },
             "require-dev": {
                 "php": ">=5.3.0",
@@ -101,7 +44,7 @@
                 "bootstrap",
                 "yii"
             ],
-            "time": "2014-12-15 17:42:40"
+            "time": "2015-01-23 15:56:34"
         },
         {
             "name": "ar-php/ar-php",
@@ -150,23 +93,57 @@
             "time": "2012-11-03 12:29:33"
         },
         {
+            "name": "cakephp/utility",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/utility.git",
+                "reference": "a98b99656b5c14d76d270b7e5751f3c522e59081"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/a98b99656b5c14d76d270b7e5751f3c522e59081",
+                "reference": "a98b99656b5c14d76d270b7e5751f3c522e59081",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cake\\Utility\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "http://cakephp.org"
+                }
+            ],
+            "description": "CakePHP Utility classes such as Inflector, String, Hash, and Security",
+            "time": "2015-02-09 09:53:51"
+        },
+        {
             "name": "crisu83/yiistrap",
             "version": "dev-bs3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crisu83/yiistrap.git",
-                "reference": "ade2580f39ce5eed6f73d162473019d2be5c1597"
+                "reference": "5ca23877eb15c5a3bc87ac3cf34213cc9e20020e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crisu83/yiistrap/zipball/ade2580f39ce5eed6f73d162473019d2be5c1597",
-                "reference": "ade2580f39ce5eed6f73d162473019d2be5c1597",
+                "url": "https://api.github.com/repos/crisu83/yiistrap/zipball/5ca23877eb15c5a3bc87ac3cf34213cc9e20020e",
+                "reference": "5ca23877eb15c5a3bc87ac3cf34213cc9e20020e",
                 "shasum": ""
             },
             "require": {
                 "twbs/bootstrap": ">=3.1.1"
             },
             "require-dev": {
+                "apigen/apigen": "~4.0",
                 "codeception/codeception": "@stable",
                 "crisu83/yii-composer": ">=1.0.0",
                 "yiisoft/yii": ">=1.1.13"
@@ -208,7 +185,7 @@
                 "bootstrap",
                 "yii"
             ],
-            "time": "2015-01-29 22:04:07"
+            "time": "2015-02-11 19:24:18"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -274,12 +251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/RingPHP.git",
-                "reference": "0b13b4f0d595c4e886ae8eecdfe27e049ba38375"
+                "reference": "a1da305d1c5c0175abf7bc912cb065e906de9500"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/0b13b4f0d595c4e886ae8eecdfe27e049ba38375",
-                "reference": "0b13b4f0d595c4e886ae8eecdfe27e049ba38375",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/a1da305d1c5c0175abf7bc912cb065e906de9500",
+                "reference": "a1da305d1c5c0175abf7bc912cb065e906de9500",
                 "shasum": ""
             },
             "require": {
@@ -317,7 +294,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-01-20 22:24:03"
+            "time": "2015-02-08 23:29:08"
         },
         {
             "name": "guzzlehttp/streams",
@@ -418,12 +395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "80c6258146f99fbd276b620b13bbea6dcae3ee27"
+                "reference": "40fa68edc8e095a1aa60a13b8b847cd3f2bfa173"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/80c6258146f99fbd276b620b13bbea6dcae3ee27",
-                "reference": "80c6258146f99fbd276b620b13bbea6dcae3ee27",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/40fa68edc8e095a1aa60a13b8b847cd3f2bfa173",
+                "reference": "40fa68edc8e095a1aa60a13b8b847cd3f2bfa173",
                 "shasum": ""
             },
             "require": {
@@ -463,7 +440,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-02-02 11:17:48"
+            "time": "2015-02-17 20:32:48"
         },
         {
             "name": "react/promise",
@@ -578,12 +555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "a0a00b25eee4a86f236c935c3b60976f537cbb07"
+                "reference": "504435e0b07e6c638df995959bb1f0a4a182ceca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/a0a00b25eee4a86f236c935c3b60976f537cbb07",
-                "reference": "a0a00b25eee4a86f236c935c3b60976f537cbb07",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/504435e0b07e6c638df995959bb1f0a4a182ceca",
+                "reference": "504435e0b07e6c638df995959bb1f0a4a182ceca",
                 "shasum": ""
             },
             "replace": {
@@ -621,7 +598,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-01-30 16:07:53"
+            "time": "2015-02-20 00:14:06"
         },
         {
             "name": "yiisoft/yii",
@@ -629,12 +606,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "4d601042682b393008debd65118504aa1e7638f7"
+                "reference": "ee39b8511c6c821f2e8863655d92151cc4931448"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/4d601042682b393008debd65118504aa1e7638f7",
-                "reference": "4d601042682b393008debd65118504aa1e7638f7",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/ee39b8511c6c821f2e8863655d92151cc4931448",
+                "reference": "ee39b8511c6c821f2e8863655d92151cc4931448",
                 "shasum": ""
             },
             "require": {
@@ -711,7 +688,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-01-27 22:25:04"
+            "time": "2015-02-14 02:19:42"
         }
     ],
     "packages-dev": [],
@@ -725,7 +702,8 @@
         "phpmailer/phpmailer": 20,
         "jsonrpc/jsonrpc": 20,
         "ar-php/ar-php": 20,
-        "guzzlehttp/guzzle": 20
+        "guzzlehttp/guzzle": 20,
+        "cakephp/utility": 20
     },
     "prefer-stable": false,
     "platform": [],

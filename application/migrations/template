@@ -1,0 +1,27 @@
+<?php
+namespace ls\migrations;
+use \CDbMigration;
+class {ClassName} extends CDbMigration
+{
+	/**
+     * Describe the migration in this PHPDOC.
+     * Implement it below.
+     * @return boolean True if migration was a success.
+     */
+    public function safeUp()
+	{
+        return false;
+	}
+    
+    /**
+     * @return boolean True if migration was a success.
+     */
+
+	public function safeDown()
+	{
+		echo "{ClassName} does not support migration down.\\n";
+		return false;
+        
+	}
+
+}

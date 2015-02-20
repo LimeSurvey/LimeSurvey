@@ -102,7 +102,7 @@ class responses extends Survey_Common_Action
 
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
-        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        if(App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
             $oBrowseLanguage = $aData['language'];
@@ -115,7 +115,7 @@ class responses extends Survey_Common_Action
             $fieldmap = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
 
             //add token to top of list if survey is not private
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
                 $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname');// or token:firstname ?
@@ -188,7 +188,7 @@ class responses extends Survey_Common_Action
                 $oPurifier=new CHtmlPurifier();
                 //SHOW INDIVIDUAL RECORD
                 $oCriteria = new CDbCriteria();
-                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+                if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyID}}}") && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
                 {
                     $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
                 }
@@ -308,7 +308,7 @@ class responses extends Survey_Common_Action
 
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
-        if (tableExists('{{tokens_' . $iSurveyID . '}}') && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+        if (tableExists('{{tokens_' . $iSurveyID . '}}') && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
             $aData['tokeninfo'] = Token::model($iSurveyID)->summary();
@@ -323,7 +323,7 @@ class responses extends Survey_Common_Action
     function browse($iSurveyID)
     {
 
-        if(!Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        if(!App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $aData['surveyid'] = $iSurveyID;
             $message['title']= gT('Access denied!');
@@ -454,7 +454,7 @@ class responses extends Survey_Common_Action
 
 
 #        Yii::app()->loadHelper('surveytranslator');
-        $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
+        $aData['issuperadmin'] = App()->user->checkAccess('superadmin');
         $aData['surveyid']= $iSurveyID;
         $aData['column_model_txt']= $column_model_txt;
         $aData['column_names_txt']= $column_names_txt;
@@ -472,7 +472,7 @@ class responses extends Survey_Common_Action
     */
     public function getResponses_json($iSurveyID)
     {
-        if(!Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        if(!App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             Yii::app()->end();
         }
@@ -550,7 +550,7 @@ class responses extends Survey_Common_Action
         // Old behaviour : ajax default request from jqgrid need sort / rows (limit) / page (start) / sidx for order by : use javacript log please ....
         $oCriteria = new CDbCriteria;
         //Create the query
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
         }
@@ -625,14 +625,14 @@ class responses extends Survey_Common_Action
         $all_rows = array();
         foreach ($dtresult as $row) {
             $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'><img src='" . $sImageURL . "/token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
-            if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','update')) {
+            if (App()->user->checkAccess('responses', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
                 $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "/edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
             }
             if (hasFileUploadQuestion($surveyid)) {
                 $action_html .= "<a><img id='downloadfile_" . $row['id'] . "' src='" . $sImageURL . "/down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
             }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
+            if (App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
                 $action_html .= "<a><img id='deleteresponse_" . $row['id'] . "' src='" . $sImageURL . "/token_delete.png' alt='" . gT('Delete this response') . "' class='deleteresponse'/></a>";
             }
 
@@ -644,7 +644,7 @@ class responses extends Survey_Common_Action
             // issue_9207 - added token fields for non-anon surveys.
             // /////////////////////////////////////////////////////////////////////////////////////////////////////////
             // If the survey is not anonymized, then add the token, firstname, lastname and email fields to the table
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 $aSurveyEntry[] = $row['token'];
                 $aSurveyEntry[] = $row['firstname'];
@@ -694,7 +694,7 @@ class responses extends Survey_Common_Action
         //Delete Individual answer using inrow delete buttons/links - checked
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked')
         {
-            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
+            if(App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 $iResponseID = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
                 Response::model($iSurveyID)->findByPk($iResponseID)->delete(true);
@@ -715,7 +715,7 @@ class responses extends Survey_Common_Action
             // Delete the marked responses - checked
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
             {
-                if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
+                if(App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
                 {
                     foreach (Response::model($iSurveyID)->findAllByPk(Yii::app()->request->getPost('markedresponses')) as $response)
                     {
@@ -742,7 +742,7 @@ class responses extends Survey_Common_Action
             // Download all files for all marked responses  - checked
             elseif (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') === 'marked')
             {
-                if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+                if(App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
                 {
                     // Now, zip all the files in the filelist
                     $zipfilename = "Responses_for_survey_{$iSurveyID}.zip";
@@ -753,7 +753,7 @@ class responses extends Survey_Common_Action
         // Download all files for this entry - checked
         elseif (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') != '' && Yii::app()->request->getPost('downloadfile') !== true)
         {
-            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+            if(App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 // Now, zip all the files in the filelist
                 $zipfilename = "Files_for_responses_" . Yii::app()->request->getPost('downloadfile') . ".zip";
@@ -762,7 +762,7 @@ class responses extends Survey_Common_Action
         }
         elseif (Yii::app()->request->getParam('downloadindividualfile') != '')
         {
-            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+            if(App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 $iId = (int) Yii::app()->request->getParam('id');
                 $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
@@ -802,7 +802,7 @@ class responses extends Survey_Common_Action
         * it containts
         *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
         */
-        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        if(App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             if (Yii::app()->request->getPost('sql'))
             {
@@ -811,7 +811,7 @@ class responses extends Survey_Common_Action
             //add token to top of list if survey is not private
             if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) ) //add token to top of list if survey is not private
             {
-                if(Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+                if(App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
                 {
                     $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
                     $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname');// or token:firstname ?
@@ -874,7 +874,7 @@ class responses extends Survey_Common_Action
             if(!$limit){$limit=50;}
             $oCriteria = new CDbCriteria;
             //Create the query
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
             }
@@ -993,7 +993,7 @@ class responses extends Survey_Common_Action
             die();
 
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked'
-        && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
+        && App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
             SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
@@ -1003,7 +1003,7 @@ class responses extends Survey_Common_Action
         if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
         {
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' &&
-            Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
+            App()->user->checkAccess('responses', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
                 {

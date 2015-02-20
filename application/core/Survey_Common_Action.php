@@ -69,7 +69,7 @@ class Survey_Common_Action extends CAction
             {
                 $this->getController()->error('Invalid survey id');
             }
-            elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
+            elseif (!App ()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $params['iSurveyId']]))
             {
                 $this->getController()->error('No permission');
             }
@@ -545,8 +545,8 @@ class Survey_Common_Action extends CAction
         $sumresult3 = Question::model()->findAllByAttributes($condition); //Checked
         $sumcount3 = count($sumresult3);
 
-        $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
-        $aData['candeactivate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
+        $aData['canactivate'] = $sumcount3 > 0 && App()->user->checkAccess('surveyactivation', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
+        $aData['candeactivate'] = App()->user->checkAccess('surveyactivation', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         $aData['expired'] = $surveyinfo['expires'] != '' && ($surveyinfo['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
         $aData['notstarted'] = ($surveyinfo['startdate'] != '') && ($surveyinfo['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
 
@@ -570,52 +570,52 @@ class Survey_Common_Action extends CAction
         $aData['hasadditionallanguages'] = (count($aData['additionallanguages']) > 0);
 
         // EDIT SURVEY TEXT ELEMENTS BUTTON
-        $aData['surveylocale'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
+        $aData['surveylocale'] = App()->user->checkAccess('surveylocale', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // EDIT SURVEY SETTINGS BUTTON
-        $aData['surveysettings'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
+        $aData['surveysettings'] = App()->user->checkAccess('surveysettings', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // Survey permission item
-        $aData['surveysecurity'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'read');
+        $aData['surveysecurity'] = App()->user->checkAccess('surveysecurity', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // CHANGE QUESTION GROUP ORDER BUTTON
-        $aData['surveycontent'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
+        $aData['surveycontent'] = App()->user->checkAccess('surveycontent', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         $aData['groupsum'] = (getGroupSum($iSurveyID, $surveyinfo['language']) > 1);
         // SET SURVEY QUOTAS BUTTON
-        $aData['quotas'] = Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'read');
+        $aData['quotas'] = App()->user->checkAccess('quotas', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // Assessment menu item
-        $aData['assessments'] = Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read');
+        $aData['assessments'] = App()->user->checkAccess('assessments', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // EDIT SURVEY TEXT ELEMENTS BUTTON
         // End if survey properties
         // Tools menu item
         // Delete survey item
-        $aData['surveydelete'] = Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete');
+        $aData['surveydelete'] = App()->user->checkAccess('survey', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // Translate survey item
-        $aData['surveytranslate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'read');
+        $aData['surveytranslate'] = App()->user->checkAccess('translations', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // RESET SURVEY LOGIC BUTTON
         //$sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$iSurveyID"; //Getting a count of conditions for this survey
         // TMSW Condition->Relevance:  How is conditionscount used?  Should Relevance do the same?
 
         $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
 
-        $aData['surveycontent'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
+        $aData['surveycontent'] = App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         $aData['conditionscount'] = ($iConditionCount > 0);
         // Eport menu item
-        $aData['surveyexport'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export');
+        $aData['surveyexport'] = App()->user->checkAccess('surveycontent', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // PRINTABLE VERSION OF SURVEY BUTTON
         // SHOW PRINTABLE AND SCANNABLE VERSION OF SURVEY BUTTON
         //browse responses menu item
-        $aData['respstatsread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export');
+        $aData['respstatsread'] = App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('statistics', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('responses', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // Data entry screen menu item
-        $aData['responsescreate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create');
-        $aData['responsesread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read');
+        $aData['responsescreate'] = App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
+        $aData['responsesread'] = App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         // TOKEN MANAGEMENT BUTTON
         $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
         if(!$bTokenExists)
-            $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
+            $aData['tokenmanagement'] = App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
         else
-            $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'import'); // and export / import ?
+            $aData['tokenmanagement'] = App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $iSurveyID]); // and export / import ?
 
         $aData['gid'] = $gid; // = $this->input->post('gid');
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
+        if (App()->user->checkAccess('surveycontent', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $aData['permission'] = true;
         }
@@ -834,11 +834,11 @@ class Survey_Common_Action extends CAction
         if ($activated == "N" && $sumcount3 == 0)
         {
             $aData['warnings'] = gT("Survey cannot be activated yet.") . "<br />\n";
-            if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create'))
+            if ($sumcount2 == 0 && App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add question groups") . "]</span><br />";
             }
-            if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create'))
+            if ($sumcount3 == 0 && App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
                 $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add questions") . "]</span><br />";
             }
@@ -905,9 +905,9 @@ class Survey_Common_Action extends CAction
 
         if (!empty($ugid)) {
             $sQuery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = {$ugid}";
-            if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (!App()->user->checkAccess('superadmin'))
             {
-                $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
+                $sQuery .=" AND gu.uid = ".App()->user->id;
             }
 
             $grpresult = Yii::app()->db->createCommand($sQuery)->queryRow();  //Checked

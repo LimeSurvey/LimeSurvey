@@ -30,9 +30,9 @@ class tokens extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $thissurvey = getSurveyInfo($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')
-            && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import')
-            && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
+        if (!App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])
+            && !App()->user->checkAccess('tokens', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $iSurveyId])
+            && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID])
             )
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -73,7 +73,7 @@ class tokens extends Survey_Common_Action
         }
         $thissurvey = getSurveyInfo($iSurveyId);
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             eT("We are sorry but you don't have permissions to do this.");
             return;
@@ -253,7 +253,7 @@ class tokens extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
         /* Check permissions */
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/tokens/sa/index/surveyid/{$iSurveyId}"));
@@ -266,10 +266,10 @@ class tokens extends Survey_Common_Action
         }
 
 	/* build JS variable to hide buttons forbidden for the current user */
-	$aData['showDelButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')?'true':'false';
-	$aData['showInviteButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
-	$aData['showBounceButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
-	$aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+	$aData['showDelButton'] = App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyId])?'true':'false';
+	$aData['showInviteButton'] = App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])?'true':'false';
+	$aData['showBounceButton'] = App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])?'true':'false';
+	$aData['showRemindButton'] = App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])?'true':'false';
 
         // Javascript
         App()->getClientScript()->registerPackage('jqgrid');
@@ -343,7 +343,7 @@ class tokens extends Survey_Common_Action
             eT("No token table.");// return json ? error not treated in js.
             return;
         }
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
             return;
@@ -409,11 +409,11 @@ class tokens extends Survey_Common_Action
             }
         }
 
-        $bReadPermission = Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read');
-        $bCreatePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create');
-        $bTokenUpdatePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update');
-        $bTokenDeletePermission = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete');
-        $bGlobalPanelReadPermission = Permission::model()->hasGlobalPermission('participantpanel','read');
+        $bReadPermission = App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]);
+        $bCreatePermission = App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]);
+        $bTokenUpdatePermission = App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]);
+        $bTokenDeletePermission = App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyId]);
+        $bGlobalPanelReadPermission = App()->user->checkAccess('participantpanel');
         foreach ($tokens as $token)
         {
             $aRowToAdd = array();
@@ -499,7 +499,7 @@ class tokens extends Survey_Common_Action
     */
     function editToken($iSurveyId)
     {
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             eT("We are sorry but you don't have permissions to do this.");// return json ? error not treated in js.
             return;
@@ -524,7 +524,7 @@ class tokens extends Survey_Common_Action
             $until = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
 
         // if edit it will update the row
-        if ($sOperation == 'edit' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if ($sOperation == 'edit' && App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             //            if (Yii::app()->request->getPost('language') == '')
             //            {
@@ -565,7 +565,7 @@ class tokens extends Survey_Common_Action
             echo $token->update();
         }
         // if add it will insert a new row
-        elseif ($sOperation == 'add'  && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
+        elseif ($sOperation == 'add'  && App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             if (Yii::app()->request->getPost('language') == '')
                 $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
@@ -593,7 +593,7 @@ class tokens extends Survey_Common_Action
             $token->setAttributes($aData, false);
             echo $token->save();
         }
-        elseif ($sOperation == 'del' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        elseif ($sOperation == 'del' && App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             $_POST['tid'] = Yii::app()->request->getPost('id');
             $this->delete($iSurveyId);
@@ -612,7 +612,7 @@ class tokens extends Survey_Common_Action
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -733,7 +733,7 @@ class tokens extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $iTokenId = sanitize_int($iTokenId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -837,7 +837,7 @@ class tokens extends Survey_Common_Action
         $iSurveyID = sanitize_int($iSurveyID);
         $sTokenIDs = Yii::app()->request->getPost('tid');
         /* Check permissions */
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyID}"));
@@ -849,7 +849,7 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyID);
         }
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+        if (App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $aTokenIds = explode(',', $sTokenIDs); //Make the tokenids string into an array
 
@@ -867,7 +867,7 @@ class tokens extends Survey_Common_Action
     function addDummies($iSurveyId, $subaction = '')
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1015,7 +1015,7 @@ class tokens extends Survey_Common_Action
     function managetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1065,7 +1065,7 @@ class tokens extends Survey_Common_Action
     function updatetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1112,7 +1112,7 @@ class tokens extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("No token table.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1171,7 +1171,7 @@ class tokens extends Survey_Common_Action
     function updatetokenattributedescriptions($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1222,7 +1222,7 @@ class tokens extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1579,7 +1579,7 @@ class tokens extends Survey_Common_Action
     {
         // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export'))//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+        if (!App()->user->checkAccess('tokens', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyId]))//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1678,7 +1678,7 @@ class tokens extends Survey_Common_Action
     public function importldap($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1946,7 +1946,7 @@ class tokens extends Survey_Common_Action
     function import($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -2246,7 +2246,7 @@ class tokens extends Survey_Common_Action
     function tokenify($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -2302,7 +2302,7 @@ class tokens extends Survey_Common_Action
     function kill($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete'))
+        if (!App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -2357,7 +2357,7 @@ class tokens extends Survey_Common_Action
     function bouncesettings($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update'))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -2461,7 +2461,7 @@ class tokens extends Survey_Common_Action
     function _newtokentable($iSurveyId)
     {
         $aSurveyInfo = getSurveyInfo($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens','create'))
+        if (!App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("Tokens have not been initialised for this survey.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));

@@ -1,36 +1,5 @@
-* {
-    margin: 0;
-}
 
-html, body {
-    height: 100%;
-}
 
-body {
-    font-family: verdana, arial, sans-serif;
-    text-align: left;
-    background-color: #fefefe;
-    color: #666;
-    margin: 0;
-    font-size: 9pt;
-}
-
-div, form {
-    margin: 0;
-    padding: 0;
-
-}
-
-ul,ol {
-    text-align: left;
-    font-size: 10pt;
-}
-
-p {
-    clear: left;
-    text-align:center;
-    padding-bottom: 1em;
-}
 
 hr{
     color:#efefef;
@@ -79,9 +48,6 @@ a:hover {
     text-decoration: underline;
 }
 
-th, p, div {
-    font-size: 10pt;
-}
 
 fieldset {
     padding:4px 8px 4px 8px;

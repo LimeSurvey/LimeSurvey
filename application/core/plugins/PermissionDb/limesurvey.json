@@ -1,0 +1,15 @@
+{
+    "name" : "LimeSurvey Authorization db",
+    "vendor" : "Limesurvey Development Team",
+    "class" : "ls\\core\\plugins\\PermissionDb",
+    "description" : "Core: Database authorization.",
+    "type" : "simple",
+    "autoload" : {
+        "psr-4": {
+            "ls\\core\\plugins\\" : ""
+        }
+    },
+    "events" : [
+    ],
+    "apiVersion" : "1.0"
+}

@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+namespace ls\controllers;
+use \Yii;
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,7 +13,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-class SurveyController extends LSYii_Controller
+class SurveyController extends Controller
 {
     public $lang = null;
 

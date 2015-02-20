@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+namespace ls\controllers;
+use \Yii;
 /*
  * LimeSurvey
  * Copyright (C) 2007-2014 The LimeSurvey Project Team / Carsten Schmitz
@@ -112,7 +114,6 @@ class UploaderController extends SurveyController {
                    $_SESSION[$sFieldName] = ls_json_encode($aFiles);
                 }
             }
-            //var_dump($sFileDir.$sFilename);
             // Return some json to do a beautiful text
             if (@unlink($sFileDir.$sFileName))
             {

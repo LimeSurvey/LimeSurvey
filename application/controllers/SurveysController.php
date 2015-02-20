@@ -1,13 +1,21 @@
 <?php
-
+namespace ls\controllers;
+use Survey;
     /**
      * This class will handle survey creation and manipulation.
      */
-    class SurveysController extends LSYii_Controller
+    class SurveysController extends Controller
     {
-        public $layout = 'bare';
+        public $layout = 'minimal';
         public $defaultAction = 'publicList';
 
+        public function accessRules() {
+            return array_merge([
+                ['allow', 'actions' => ['index'], 'users' => ['@']],
+                ['allow', 'actions' => ['publicList']],
+                
+            ], parent::accessRules());
+        }
         public function actionOrganize($surveyId)
         {
             $this->layout = 'main';
@@ -17,35 +25,41 @@
             $this->render('organize', compact('groups'));
         }
 
+        public function actionIndex() {
+            $this->layout = 'main';
+            $surveys = getSurveyList(true);
+            $this->render('index', ['surveys' => $surveys]);
+        }
 
-
-        public function actionPublicList($sLanguage = null)
+        public function actionPublicList()
         {
-            $this->sessioncontrol();
-            if (isset($sLanguage))
-            {
-                App()->setLanguage($sLanguage);
-            }
-
             $this->render('publicSurveyList', array(
                 'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
                 'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
 
             ));
         }
-
-        /**
-         * Load and set session vars
-         * @todo Remove this ugly code. Language settings should be moved to Application instead of Controller.
-         * @access protected
-         * @return void
-         */
-        protected function sessioncontrol()
+        
+        public function actionView($id) {
+            $this->layout = 'main';
+            $survey = $this->loadModel($id);
+            $this->survey = $survey;
+            $this->render('view', ['survey' => $survey]);
+        }
+        
+        public function filters()
         {
-			if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
-                Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-
-            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
+            return array_merge(parent::filters(), ['accessControl']);
+        }
+        
+        protected function loadModel($id) {
+            $survey = Survey::model()->findByPk($id);
+            if (!isset($survey)) {
+                throw new \CHttpException(404, "Survey not found.");
+            } elseif (!App()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $id])) {
+                throw new CHttpException(403);
+            }
+            return $survey;
         }
     }
 ?>

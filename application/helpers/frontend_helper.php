@@ -300,7 +300,6 @@ function makeLanguageChanger($sSelectedLanguage)
         foreach ($aLanguages as $sLangCode => $aLanguage)
             $aListLang[$sLangCode]=html_entity_decode($aLanguage['nativedescription'], ENT_COMPAT,'UTF-8').' - '.$aLanguage['description'];
         $sSelected=$sSelectedLanguage;
-
         $sHTMLCode= CHtml::beginForm(App()->createUrl('surveys/publiclist'),'get');
         $sHTMLCode.=CHtml::label(gT("Choose another language"), 'lang',array('class'=>'hide label'));
         $sHTMLCode.= CHtml::dropDownList('lang', $sSelected,$aListLang,array('class'=>$sClass));
@@ -1674,14 +1673,13 @@ function surveymover()
 */
 function doAssessment($surveyid, $returndataonly=false)
 {
-
-
-    $baselang=Survey::model()->findByPk($surveyid)->language;
-    if(Survey::model()->findByPk($surveyid)->assessments!="Y")
-    {
+    $survey = Survey::model()->findByPk($surveyid);
+    
+    if(!isset($survey) || $survey->assessments!="Y") {
         return false;
     }
-    $total=0;
+    $baselang = $survey->language;
+    $total = 0;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
     {
         $_SESSION['survey_'.$surveyid]['s_lang']=$baselang;

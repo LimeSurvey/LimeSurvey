@@ -1,5 +1,6 @@
 <?php
 namespace ls\pluginmanager;
+use PluginSetting;
 
 class DbStorage implements iPluginStorage {
 
@@ -42,7 +43,7 @@ class DbStorage implements iPluginStorage {
     protected function getGeneric(iPlugin $plugin, $key, $model, $id, $default) 
     {
         $attributes = array(
-            'plugin_id' => $plugin->getId(),
+            'plugin_id' => $plugin->id,
             'model'     => $model,
             'model_id'  => $id,
         );
@@ -217,7 +218,7 @@ class DbStorage implements iPluginStorage {
             throw new Exception("DbStorage::set cannot store setting for model $model without valid id.");
         }
         $attributes = array(
-            'plugin_id' => $plugin->getId(),
+            'plugin_id' => $plugin->id,
             'model'     => $model,
             'model_id'  => $id,
             'key'       => $key

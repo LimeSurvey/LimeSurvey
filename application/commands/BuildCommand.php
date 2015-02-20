@@ -1,5 +1,6 @@
 <?php
-
+namespace ls\cli;
+use CConsoleCommand;
 class BuildCommand extends CConsoleCommand 
 {
     public $releaseRepo = "SamMousa/Releases";

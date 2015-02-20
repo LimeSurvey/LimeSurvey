@@ -668,6 +668,9 @@
         {
             uasort($supportedLanguages,"userSort");
         }
+        foreach($supportedLanguages as $key => &$languageDetails) {
+            $languageDetails['code'] = $key;
+        }
 
         $result[$sLanguageCode][$bOrderByNative] = $supportedLanguages;
 

@@ -1,4 +1,6 @@
 <?php
+namespace ls\controllers;
+use \Yii;
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -24,7 +26,7 @@
  *
  */
 
-class Statistics_userController extends LSYii_Controller {
+class Statistics_userController extends Controller {
 
 
     public function _remap($method, $params = array())

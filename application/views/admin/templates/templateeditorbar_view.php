@@ -67,7 +67,7 @@
             {?>
                 <?php 
 
-                if (Permission::model()->hasGlobalPermission('templates','import'))
+                if (App()->user->checkAccess('templates', ['crud' => 'import']))
                 {
 
                     if (function_exists("zip_open")) {?>
@@ -77,14 +77,14 @@
                         <img src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php eT("zip library not supported by PHP, Import ZIP Disabled"); ?>' /></a>
                         <?php } 
                 }
-                if (Permission::model()->hasGlobalPermission('templates','export'))
+                if (App()->user->checkAccess('templates', ['crud' => 'export']))
                 {
                     ?>
                     <a href='<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>'>
                         <img src='<?php echo $sImageURL; ?>export.png' alt='<?php eT("Export Template"); ?>' /></a>
                     <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                     <?php 
-                    if (Permission::model()->hasGlobalPermission('templates','create'))
+                    if (App()->user->checkAccess('templates', ['crud' => 'create']))
                     { ?>
                         <a href='#' onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>',            '<?php echo $templatename; ?>', 'copy')">
                             <img src='<?php echo $sImageURL; ?>copy.png' alt='<?php eT("Copy Template"); ?>' /></a>
@@ -95,18 +95,18 @@
             else
             { 
 
-                if (Permission::model()->hasGlobalPermission('templates','import'))
+                if (App()->user->checkAccess('templates', ['crud' => 'import']))
                 { ?>
                     <img src='<?php echo $sImageURL; ?>import_disabled.png' alt='<?php echo gT("Import template").' - '.gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
                     <?php }
-                if (Permission::model()->hasGlobalPermission('templates','export'))
+                if (App()->user->checkAccess('templates', ['crud' => 'export']))
                 { ?>
                     <img src='<?php echo $sImageURL; ?>export_disabled.png' alt='<?php echo gT("Export template").' - '.gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
                     <?php 
                 } ?>
                 <img src='<?php echo $sImageURL; ?>separator.gif' class='separator' alt='' />
                 <?php 
-                if (Permission::model()->hasGlobalPermission('templates','create'))
+                if (App()->user->checkAccess('templates', ['crud' => 'create']))
                 { ?>
                     <img src='<?php echo $sImageURL; ?>copy_disabled.png' alt='<?php echo gT("Copy template").' - '.gT("Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."); ?>' />
                     <?php
@@ -115,13 +115,13 @@
 
             if (is_template_editable($templatename))
             { 
-                if (Permission::model()->hasGlobalPermission('templates','update'))
+                if (App()->user->checkAccess('templates', ['crud' => 'update']))
                 { ?>
                     <a href='#' onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
                         <img src='<?php echo $sImageURL; ?>edit.png' alt='<?php eT("Rename this template"); ?>' /></a>
                     <?php  
                 }
-                if (Permission::model()->hasGlobalPermission('templates','delete'))
+                if (App()->user->checkAccess('templates', ['crud' => 'delete']))
                 { ?>
                     <a href='#' onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")' >
                         <img src='<?php echo $sImageURL; ?>delete.png' alt='<?php eT("Delete this template"); ?>'/></a>
@@ -142,7 +142,7 @@
                 <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
             </select>
             <?php
-            if (Permission::model()->hasGlobalPermission('templates','create'))
+            if (App()->user->checkAccess('templates', ['crud' => 'create']))
             { ?>
                 <a href='#' onclick="javascript: copyprompt('<?php eT("Create new template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
                     <img src='<?php echo $sImageURL; ?>add.png' alt='<?php eT("Create new template"); ?>' /></a>

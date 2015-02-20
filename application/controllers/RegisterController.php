@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+namespace ls\controllers;
+use \Yii;
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -19,7 +21,7 @@
 * @copyright 2011
 * @access public
 */
-class RegisterController extends LSYii_Controller {
+class RegisterController extends Controller {
 
     public $layout = 'bare';
 

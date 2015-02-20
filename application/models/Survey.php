@@ -47,13 +47,44 @@ class Survey extends LSActiveRecord
      */
     public function getLocalizedTitle()
     {
-        if (isset($this->languagesettings[App()->language]))
-        {
-            return $this->languagesettings[App()->language]->surveyls_title;
-        }
-        else
-        {
-            return $this->languagesettings[$this->language]->surveyls_title;
+        return $this->localizedProperty('title');
+    }
+    
+    public function getLocalizedDescription() 
+    {
+        return $this->localizedProperty('description');
+    }
+    
+    public function getLocalizedWelcomeText() 
+    {
+        return $this->localizedProperty('welcometext');
+    }
+    
+    public function getLocalizedEndText() 
+    {
+        return $this->localizedProperty('endtext');
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLocalizedEndUrl() {
+        return $this->localizedProperty('url');
+    }
+    /**
+     * Getter to support proper casing of the property:
+     * $this->adminEmail instead of $this->adminemail
+     * @return string
+     */
+    public function getAdminEmail() {
+        return $this->attributes['adminemail'];
+    }
+    protected function localizedProperty($name) {
+        $property = 'surveyls_' . $name;
+        if (isset($this->languagesettings[App()->language])) {
+            return $this->languagesettings[App()->language]->$property;
+        } else {
+            return $this->languagesettings[$this->language]->$property;
         }
     }
     /**
@@ -128,6 +159,8 @@ class Survey extends LSActiveRecord
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
+            'questionCount' => [self::STAT, 'Question', 'sid', 'select' => 'COUNT(DISTINCT qid)'],
+            'groupCount' => [self::STAT, 'QuestionGroup', 'sid', 'select' => 'COUNT(DISTINCT gid)']
         );
     }
 
@@ -302,6 +335,91 @@ class Survey extends LSActiveRecord
         return $sLanguages;
     }
 
+    
+    public function getIsActive() {
+        return $this->active != 'N';
+    }
+    /**
+     * @return array
+     */
+    public function getHints() {
+        $result = [];
+         if (!$this->isActive && $this->questionCount == 0) {
+            $result[] = gT("Survey cannot be activated yet.");
+            if ($this->groupCount == 0 && App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $this->sid]))
+            {
+                $result[] = gT("You need to add question groups");
+            }
+            if ($this->questionCount == 0 && App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $this->sid]))
+            {
+                $result[] = gT("You need to add questions");
+            }
+        }
+        
+        if ($this->anonymized != "N") {
+            $result[] = gT("Responses to this survey are anonymized.");
+        } else {
+            $result[] = gT("Responses to this survey are NOT anonymized.");
+        }
+        
+        if ($this->format == "S") {
+            $result[] = gT("It is presented question by question.");
+        } elseif ($this->format == "G") {
+            $result[] = gT("It is presented group by group.");
+        } else {
+            $result[] = gT("It is presented on one single page.");
+        }
+        
+        if ($this->questionindex > 0)
+        {
+            if ($this->format == 'A')
+            {
+                $result[] = gT("No question index will be shown with this format.");
+            }
+            elseif ($this->questionindex == 1)
+            {
+                $result[] = gT("A question index will be shown; participants will be able to jump between viewed questions.");
+            }
+            elseif ($this->questionindex == 2)
+            {
+                $result[] = gT("A full question index will be shown; participants will be able to jump between relevant questions.");
+            }
+        }
+        if ($this->datestamp == "Y")
+        {
+            $result[] = gT("Responses will be date stamped.");
+        }
+        if ($this->ipaddr == "Y")
+        {
+            $result[] = gT("IP Addresses will be logged");
+        }
+        if ($this->refurl == "Y")
+        {
+            $result[] = gT("Referrer URL will be saved.");
+        }
+        if ($this->usecookie == "Y")
+        {
+            $result[] = gT("It uses cookies for access control.");
+        }
+        if ($this->allowregister == "Y")
+        {
+            $result[] = gT("If tokens are used, the public may register for this survey");
+        }
+        if ($this->allowsave == "Y" && $this->tokenanswerspersistence == 'N')
+        {
+            $result[] = gT("Participants can save partially finished surveys") . "<br />\n";
+        }
+        if ($this->emailnotificationto != '')
+        {
+            $result[] = gT("Basic email notification is sent to:") .' '. htmlspecialchars($this->emailnotificationto)."<br />\n";
+        }
+        if ($this->emailresponseto != '')
+        {
+            $result[] = gT("Detailed email notification with response data is sent to:") .' '. htmlspecialchars($this->emailresponseto)."<br />\n";
+        }
+        
+        return $result;
+    }
     /**
     * Returns the additional token attributes
     *
@@ -482,30 +600,6 @@ class Survey extends LSActiveRecord
         }
     }
 
-    public function findByPk($pk, $condition = '', $params = array()) {
-        if (empty($condition) && empty($params)) {
-            if (array_key_exists($pk, $this->findByPkCache)) {
-                return $this->findByPkCache[$pk];
-            } else {
-                $result = parent::findByPk($pk, $condition, $params);
-                if (!is_null($result)) {
-                    $this->findByPkCache[$pk] = $result;
-                }
-
-                return $result;
-            }
-        }
-
-        return parent::findByPk($pk, $condition, $params);
-    }
-
-    /**
-     * findByPk uses a cache to store a result. Use this method to force clearing that cache.
-     */
-    public function resetCache() {
-        $this->findByPkCache = array();
-    }
-
     /**
      * Attribute renamed to questionindex in dbversion 169
      * Y maps to 1 otherwise 0;
@@ -518,5 +612,37 @@ class Survey extends LSActiveRecord
         } else {
             $this->questionindex = 0;
         }
+    }
+    
+    public function getInfo($language = null) {
+        $language = !isset($language) ? $this->language : $language;
+        if (null !== $localization = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->primaryKey, 'surveyls_language' => $language])) {
+            $result =  array_merge($this->attributes, $localization->attributes);
+            $result['name']=$result['surveyls_title'];
+            $result['description']=$result['surveyls_description'];
+            $result['welcome']=$result['surveyls_welcometext'];
+            $result['templatedir']=$result['template'];
+            $result['adminname']=$result['admin'];
+            $result['tablename']='{{survey_'.$result['sid'] . '}}';
+            $result['urldescrip']=$result['surveyls_urldescription'];
+            $result['url']=$result['surveyls_url'];
+            $result['expiry']=$result['expires'];
+            $result['email_invite_subj']=$result['surveyls_email_invite_subj'];
+            $result['email_invite']=$result['surveyls_email_invite'];
+            $result['email_remind_subj']=$result['surveyls_email_remind_subj'];
+            $result['email_remind']=$result['surveyls_email_remind'];
+            $result['email_confirm_subj']=$result['surveyls_email_confirm_subj'];
+            $result['email_confirm']=$result['surveyls_email_confirm'];
+            $result['email_register_subj']=$result['surveyls_email_register_subj'];
+            $result['email_register']=$result['surveyls_email_register'];
+            $result['attributedescriptions'] = $this->tokenAttributes;
+            $result['attributecaptions'] = $localization->attributeCaptions;
+            if (!isset($result['adminname'])) {$result['adminname']=Yii::app()->getConfig('siteadminemail');}
+            if (!isset($result['adminemail'])) {$result['adminemail']=Yii::app()->getConfig('siteadminname');}
+            if (!isset($result['urldescrip']) || $result['urldescrip'] == '' ) {$result['urldescrip']=$result['surveyls_url'];}
+
+        }
+
+        return $result;
     }
 }

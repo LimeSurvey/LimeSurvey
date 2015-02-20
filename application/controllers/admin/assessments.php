@@ -52,7 +52,7 @@ class Assessments extends Survey_Common_Action
         if ($sAction == "assessmentdelete")
              $this->_delete($iSurveyID, $_POST['id']);
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
+        if (App()->user->checkAccess('assessments', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
             if ($iSurveyID == '') {
                 show_error(gT("No SID Provided"));
                 die();
@@ -88,7 +88,7 @@ class Assessments extends Survey_Common_Action
         $aData['actionvalue'] = "assessmentadd";
         $aData['editId'] = '';
 
-        if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
+        if ($action == "assessmentedit" && App()->user->checkAccess('assessments', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
             $aData = $this->_collectEditData($aData);
         }
 
@@ -144,7 +144,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _add($iSurveyID)
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
+        if (App()->user->checkAccess('assessments', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
             $bFirst = true;
             $iAssessmentID = -1;
             $aLanguages = Yii::app()->getConfig("assessmentlangs");
@@ -169,7 +169,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _update($iSurveyID)
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && isset($_POST['id'])) {
+        if (App()->user->checkAccess('assessments', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]) && isset($_POST['id'])) {
 
             $aid = sanitize_int($_POST['id']);
             $languages = Yii::app()->getConfig("assessmentlangs");
@@ -186,7 +186,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _delete($iSurveyID, $assessmentId)
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'delete')) {
+        if (App()->user->checkAccess('assessments', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
             Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
         }
     }

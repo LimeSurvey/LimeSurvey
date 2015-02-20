@@ -27,7 +27,7 @@ class saved extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $aViewUrls = array();
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
+        if (!App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             die();
         }

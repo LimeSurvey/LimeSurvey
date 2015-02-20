@@ -32,7 +32,7 @@ class surveypermission extends Survey_Common_Action {
 
         $imageurl = Yii::app()->getConfig('adminimageurl');
 
-        if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','read'))
+        if(App()->user->checkAccess('surveysecurity', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
             $userList=getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
@@ -97,9 +97,9 @@ class surveypermission extends Survey_Common_Action {
 
                         $surveysecurity .= "<td>\n";
 
-                        if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','update'))
+                        if(App()->user->checkAccess('surveysecurity', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
                         {
-                            if($PermissionRow['uid']!=Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin','read')) // Can not update own security
+                            if($PermissionRow['uid']!=Yii::app()->user->getId() || App()->user->checkAccess('superadmin')) // Can not update own security
                             {
                                 $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
                                 ."<input type='image' src='{$imageurl}edit_16.png' alt='".gT("Edit permissions")."' />"
@@ -109,7 +109,7 @@ class surveypermission extends Survey_Common_Action {
                                 ."</form>\n";
                             }
                         }
-                        if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','delete'))
+                        if(App()->user->checkAccess('surveysecurity', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid]))
                         {
                             $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/delete/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
                             ."<input type='image' src='{$imageurl}/token_delete.png' alt='".gT("Delete")."' onclick='return confirm(\"".gT("Are you sure you want to delete this entry?","js")."\")' />"
@@ -145,7 +145,7 @@ class surveypermission extends Survey_Common_Action {
                             $iPermissionCount=0;
                             foreach ($aPDetails as $sPDetailKey=>$sPDetailValue)
                             {
-                                if ($sPDetailValue && Permission::model()->hasSurveyPermission($surveyid,$sPKey,$sPDetailKey,$PermissionRow['uid']) && !($sPKey=='survey' && $sPDetailKey=='read')) $iCount++;
+                                if ($sPDetailValue && App()->authManager->checkAccess($sPKey, $PermissionRow['uid'], ['crud' => $sPDetailKey, 'entity' => 'survey', 'entity_id' => $surveyid]) && !($sPKey=='survey' && $sPDetailKey=='read')) $iCount++;
                                 if ($sPDetailValue) $iPermissionCount++;
                             }
                             if ($sPKey=='survey')  $iPermissionCount--;
@@ -173,7 +173,7 @@ class surveypermission extends Survey_Common_Action {
             {
 
             }
-            if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','create'))
+            if(App()->user->checkAccess('surveysecurity', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$surveyid}"), 'post', array('class'=>"form44"))."<ul>\n"
                 . "<li><label for='uidselect'>".gT("User").": </label><select id='uidselect' name='uid'>\n"
@@ -224,8 +224,8 @@ class surveypermission extends Survey_Common_Action {
             $addsummary = "<div class=\"header\">".gT("Add user group")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\" >\n";
 
-            $result = Survey::model()->findAll('sid = :surveyid AND owner_id = :owner_id',array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']));
-            if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')
+            $result = Survey::model()->findAll('sid = :surveyid AND owner_id = :owner_id',array(':surveyid' => $surveyid, ':owner_id' => App()->user->id));
+            if( App()->user->checkAccess('surveysecurity', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid])
                 && in_array($postusergroupid,getSurveyUserGroupList('simpleugidarray',$surveyid))
                 )
             {
@@ -308,8 +308,8 @@ class surveypermission extends Survey_Common_Action {
             $addsummary = "<div class='header ui-widget-header'>".gT("Add user")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
 
-            $result = Survey::model()->findAll('sid = :sid AND owner_id = :owner_id AND owner_id != :postuserid',array(':sid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
-            if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')
+            $result = Survey::model()->findAll('sid = :sid AND owner_id = :owner_id AND owner_id != :postuserid',array(':sid' => $surveyid, ':owner_id' => App()->user->id, ':postuserid' => $postuserid));
+            if( App()->user->checkAccess('surveysecurity', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid])
                 &&  in_array($postuserid,getUserList('onlyuidarray'))
                 )
             {
@@ -376,7 +376,7 @@ class surveypermission extends Survey_Common_Action {
         $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : null;
         if($action == "setsurveysecurity")
         {
-            if ( (!Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->user->getId()==$postuserid) // User can not change own security (except superadmin)
+            if ( (!App()->user->checkAccess('superadmin') && Yii::app()->user->getId()==$postuserid) // User can not change own security (except superadmin)
                 || !in_array($postuserid,getUserList('onlyuidarray')) // User can not set user security if it can not see it
                )
             {
@@ -385,7 +385,7 @@ class surveypermission extends Survey_Common_Action {
         }
         elseif( $action == "setusergroupsurveysecurity" )
         {
-            if ( !Permission::model()->hasGlobalPermission('superadmin','read') && !in_array($postusergroupid,getUserGroupList(null, 'simplegidarray')) ) // User can not change own security (except for superadmin ?)
+            if ( !App()->user->checkAccess('superadmin') && !in_array($postusergroupid,getUserGroupList(null, 'simplegidarray')) ) // User can not change own security (except for superadmin ?)
             {
                 $this->getController()->error('Access denied');
             }
@@ -396,7 +396,7 @@ class surveypermission extends Survey_Common_Action {
             //$this->getController()->error('Unknow action');
         }
 
-        if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update') )
+        if( App()->user->checkAccess('surveysecurity', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]) )
         {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "surveypermissions.js");
@@ -449,7 +449,7 @@ class surveypermission extends Survey_Common_Action {
                         if (!($sPermissionKey=='survey' && $sCRUDKey=='read'))
                         {
                             $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
-                            if($action=='setsurveysecurity' && Permission::model()->hasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
+                            if($action=='setsurveysecurity' && App()->authManager->checkAccess($sPermissionKey, $postuserid, ['crud' => $sCRUDKey, 'entity' => 'survey', 'entity_id' => $surveyid])) {
                                 $usersummary .= ' checked="checked" ';
                             }
                             $usersummary .=" />";
@@ -518,7 +518,7 @@ class surveypermission extends Survey_Common_Action {
             $addsummary = "<div class=\"header\">".gT("Deleting User")."</div>\n";
             $addsummary .= "<div class=\"messagebox\">\n";
 
-            if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete') )
+            if( App()->user->checkAccess('surveysecurity', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid]) )
             {
                 if (isset($postuserid))
                 {
@@ -570,16 +570,16 @@ class surveypermission extends Survey_Common_Action {
             $this->getController()->error('Access denied');
         }
 
-        if ($action == "surveyrights" && Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update'))
+        if ($action == "surveyrights" && App()->user->checkAccess('surveysecurity', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
         {
             $addsummary = "<div class='header ui-widget-header'>".gT("Edit survey permissions")."</div>\n";
             $addsummary .= "<div class='messagebox ui-corner-all'>\n";
             $where = ' ';
             if($postuserid){
-                if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+                if (!App()->user->checkAccess('superadmin'))
                 {
                     $where .= "sid = :surveyid AND owner_id != :postuserid AND owner_id = :owner_id";
-                    $resrow = Survey::model()->find($where,array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
+                    $resrow = Survey::model()->find($where,array(':surveyid' => $surveyid, ':owner_id' => App()->user->id, ':postuserid' => $postuserid));
                 }
             }
             else{
@@ -611,7 +611,7 @@ class surveypermission extends Survey_Common_Action {
 
             if (isset($postusergroupid) && $postusergroupid>0)
             {
-                $oResult = UserInGroup::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID',array(':ugid' => $postusergroupid, ':uid' => Yii::app()->session['loginID'], ':iOwnerID' => $iOwnerID));
+                $oResult = UserInGroup::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID',array(':ugid' => $postusergroupid, ':uid' => App()->user->id, ':iOwnerID' => $iOwnerID));
                 if(count($oResult) > 0)
                 {
                     foreach ($oResult as $aRow)

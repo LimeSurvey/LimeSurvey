@@ -5,7 +5,7 @@
     <div class='menubar-left'>
 
 
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+        <?php if(App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
             { ?>
             <img id='separator4' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a id="grouppreviewlink" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" target="_blank">
@@ -25,14 +25,14 @@
             <img src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <?php } ?>
 
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update'))
+        <?php if(App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
             { ?>
             <img id='separator5' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                 <img src='<?php echo $imageurl; ?>edit.png' alt='<?php eT("Edit current question group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
             <?php } ?>
 
-        <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
+        <?php if(App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
             { ?>
             <img id='separator6' src='<?php echo $imageurl; ?>separator.gif' class='separator' alt=''  />
             <a  target='_blank' href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
@@ -40,7 +40,7 @@
             <?php } ?>
 
         <?php
-            if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete'))
+            if (App()->user->checkAccess('surveycontent', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y"))
                 {
@@ -62,7 +62,7 @@
                 else
                 { ?><img src='<?php echo $imageurl; ?>blank.gif' alt='' height="<?php echo $iIconSize;?>"  width="<?php echo $iIconSize;?>" /><?php }
             }
-            if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export'))
+            if(App()->user->checkAccess('surveycontent', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $surveyid]))
             { ?>
 
             <a href='<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>'>
@@ -112,7 +112,7 @@
             <a href='#'>
                 <img src='<?php echo $imageurl; ?>add_disabled.png' title='' alt='<?php echo gT("Disabled").' - '.gT("This survey is currently active."); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>
             <?php }
-            elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create'))
+            elseif(App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $surveyid]))
             { ?>
             <a href='<?php echo $this->createUrl("admin/questions/sa/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'>
                 <img src='<?php echo $imageurl; ?>add.png' title='' alt='<?php eT("Add new question to group"); ?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>" /></a>

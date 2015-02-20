@@ -25,7 +25,7 @@
         );
 
         if (Yii::app()->getConfig('demoMode') === false &&
-                isset(Yii::app()->session['loginID']) &&
+                isset(App()->user->id) &&
                 isset(Yii::app()->session['FileManagerContext']))
         {
             // disable upload at survey creation time
@@ -38,7 +38,7 @@
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $surveyid = $contextarray[2];
 
-                if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
+                if (App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
                     if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
@@ -71,7 +71,7 @@
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $labelid = $contextarray[2];
                 // check if the user has label management right and labelid defined
-                if (Permission::model()->hasGlobalPermission('labelsets','update') && isset($labelid) && $labelid != '')
+                if (App()->user->checkAccess('labelsets', ['crud' => 'update']) && isset($labelid) && $labelid != '')
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";

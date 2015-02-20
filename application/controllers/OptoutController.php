@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,7 +11,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-
+namespace ls\controllers;
+use \Yii;
 /**
  * optout
  *
@@ -19,7 +20,7 @@
  * @copyright 2011
   * @access public
  */
-class OptoutController extends LSYii_Controller {
+class OptoutController extends Controller {
 
      public $layout = 'bare';
      public $defaultAction = 'tokens';

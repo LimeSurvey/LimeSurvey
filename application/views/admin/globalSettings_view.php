@@ -2,6 +2,7 @@
     $bDemoMode=Yii::app()->getConfig("demoMode");
     $sStringDemoMode=$bDemoMode?'*':'';
     $sClassDemoMode=$bDemoMode?'demomode':null;
+    App()->bootstrap->register();
 ?>
 <div class='header ui-widget-header'><?php eT("Global settings"); ?></div>
 <div id='tabs'>
@@ -15,54 +16,44 @@
         <li><a href='#language'><?php eT("Language"); ?></a></li>
         <li><a href='#interfaces'><?php eT("Interfaces"); ?></a></li>
     </ul>
-    <?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'form30','id'=>'frmglobalsettings','name'=>'frmglobalsettings','autocomplete'=>'off'));?>
+    <?php
+        echo TbHtml::beginFormTb('horizontal', ["admin/globalsettings"], 'post', ['name' => 'frmglobalsettings', 'autocomplete' => 'off']);
+        ?>
         <div id='overview'>
         <?php
             // Overview in 2 part : summary and update
             // Summary
-            $sContentSummary= CHtml::openTag('table',array('class'=>'statisticssummary'))
-                            . CHtml::openTag('tr').CHtml::tag('th',array(),gT("Users")).CHtml::tag('td',array(),$usercount).CHtml::closeTag('tr')
-                            . CHtml::openTag('tr').CHtml::tag('th',array(),gT("Surveys")).CHtml::tag('td',array(),$surveycount).CHtml::closeTag('tr')
-                            . CHtml::openTag('tr').CHtml::tag('th',array(),gT("Active surveys")).CHtml::tag('td',array(),$activesurveycount).CHtml::closeTag('tr')
-                            . CHtml::openTag('tr').CHtml::tag('th',array(),gT("Deactivated result tables")).CHtml::tag('td',array(),$deactivatedsurveys).CHtml::closeTag('tr')
-                            . CHtml::openTag('tr').CHtml::tag('th',array(),gT("Active token tables")).CHtml::tag('td',array(),$activetokens).CHtml::closeTag('tr');
+            $sContentSummary = [
+                gT("Users") => $usercount,
+                gT("Surveys") => $surveycount,
+                gT("Active surveys") => $activesurveycount,
+                gT("Deactivated result tables") => $deactivatedsurveys,
+                gT("Active token tables") => $activetokens
+            ]; 
             if(Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
             {
                 $fUsed=calculateTotalFileUploadUsage();
-                $sContentSummary.= CHtml::openTag('tr').CHtml::tag('th',array(),gT("Used/free space for file uploads")).CHtml::tag('td',array(),sprintf('%01.2F',$fUsed)." MB / ".sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed)).CHtml::closeTag('tr');
+                $sContentSummary[gT("Used/free space for file uploads")] = sprintf('%01.2F',$fUsed)." MB / ".sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed);
             }
-            $sContentSummary.= CHtml::closeTag('table',array('class'=>'statisticssummary'));
+          
 
-            $aOverviewSettings=array(
-                'summary'=>array(
-                    'type'=>'info',
-                    'content'=>$sContentSummary,
-                ),
-                'phpinfo'=>array(
+            if (!App()->user->checkAccess('superadmin')) {
+                $sContentSummary['phpinfo'] = [
                     'type'=>'link',
-                    'label'=>gT('Show PHPInfo'),
-                    'link'=>$this->createUrl('admin/globalsettings',array('sa'=>'showphpinfo')),
+                    'label'=> gT('Show PHPInfo'),
+                    'link'=> ['admin/globalsettings', 'sa'=>'showphpinfo'],
                     'text'=>gT('PHPInfo'),
-                    'htmlOptions'=>array(
-                        'target'=>'blank',
-                    ),
-                ),
-            );
-
-            if (!Permission::model()->hasGlobalPermission('superadmin'))
-            {
-                unset($aOverviewSettings['phpinfo']);
+                    'htmlOptions' => ['target' => '_blank']
+                ];
             }
-            $this->widget('ext.SettingsWidget.SettingsWidget', array(
+            
+            $this->widget('SettingsWidget', array(
                 //'id'=>'summary',
                 'title'=>gt("System overview"),
                 //'prefix' => 'globalSettings',
                 'form' => false,
-                'formHtmlOptions'=>array(
-                    'class'=>'form-core',
-                ),
                 'inlist'=>true,
-                'settings' => $aOverviewSettings,
+                'settings' => $sContentSummary,
             ));
 
             // Update
@@ -238,12 +229,12 @@
                     ),
                     'current'=>getGlobalSetting('defaulttemplateeditormode'),
                 ),
-                'timeadjust'=>array(
-                    'type'=>'float',
-                    'label'=>gt("Time difference (in hours)"),
-                    'current'=>str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60,
-                    'help'=>sprintf(gT("Server time: %s - Corrected time: %s"),convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'),convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'))
-                ),
+//                'timeadjust'=>array(
+//                    'type'=>'float',
+//                    'label'=>gt("Time difference (in hours)"),
+//                    'current'=>str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60,
+//                    'help'=>sprintf(gT("Server time: %s - Corrected time: %s"),convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'),convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'))
+//                ),
                 'iSessionExpirationTime'=>array(
                     // A place to put iSessionExpirationTime if needed
                 ),
@@ -340,17 +331,11 @@
                         'type'=>'email',
                         'label'=>gt("Default site admin email"),
                         'current'=>getGlobalSetting('siteadminemail'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                     'siteadminname'=>array(
                         'type'=>'string',
                         'label'=>gt("Administrator name"),
                         'current'=>getGlobalSetting('siteadminname'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                 ),
             ));
@@ -377,9 +362,6 @@
                         ),
                         'label'=>gt("SMTP host"),
                         'current'=>getGlobalSetting('emailsmtphost'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                         'help'=>gT("Enter your hostname and port, e.g.: my.smtp.com:25"),
                     ),
                     'emailsmtpuser'=>array(
@@ -389,9 +371,6 @@
                         ),
                         'label'=>gt("SMTP username"),
                         'current'=>getGlobalSetting('emailsmtpuser'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                     'emailsmtppassword'=>array(
                         'type'=>'password',
@@ -400,9 +379,6 @@
                         ),
                         'label'=>gt("SMTP password"),
                         'current'=>getGlobalSetting('emailsmtppassword'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                     'emailsmtpssl'=>array(
                         'type'=>'select',
@@ -412,27 +388,21 @@
                         'label'=>gt("SMTP SSL/TLS"),
                         'options'=>array(''=>gT("Off"),'ssl'=>gT("SSL"),'tls'=>gT("TLS")),
                         'current'=>getGlobalSetting('emailsmtpssl'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
                     ),
                     'emailsmtpdebug'=>array(
                         'type'=>'select',
                         'label'=>gt("SMTP debug mode"),
                         'options'=>array('0'=>gT("Off"),'1'=>gT("On errors"),'2'=>gT("Always")),
                         'current'=>getGlobalSetting('emailsmtpdebug'),
-                        'htmlOptions'=>array(
-                            'size'=>'50',
-                        ),
+
                     ),
                     'maxemails'=>array(
                         'type'=>'int',
                         'label'=>gt("Email batch size"),
                         'current'=>getGlobalSetting('maxemails'),
-                        'htmlOptions'=>array(
-                            'min'=>'1',
-                            'style'=>'width:5em',
-                        ),
+//                        'htmlOptions'=>array(
+//                            'min'=>'1',
+//                        ),
                     ),
                 ),
             ));

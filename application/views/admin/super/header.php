@@ -37,5 +37,5 @@
     </script>
     <?php } ?>
 <div class='wrapper'>
-    <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
+    <?php $this->widget('TbAlert'); ?>
     <div class='maintitle'><?php echo $sitename; ?></div>

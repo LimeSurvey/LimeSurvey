@@ -11,11 +11,16 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-
-class AdminController extends LSYii_Controller
+namespace ls\controllers;
+use \Yii;
+class AdminController extends Controller
 {
     public $layout = false;
     protected $user_id = 0;
+    
+    public function actionIndex() {
+        $this->redirect(['surveys/index']);
+    }
 
     /**
     * Initialises this controller, does some basic checks and setups
@@ -140,27 +145,27 @@ class AdminController extends LSYii_Controller
                 $this->redirect(array('/admin/update/sa/db'));
         }
 
-        if ($action != "update" && $action != "db")
-            if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
-            {
-                if (!empty($action) && $action != 'index')
-                    Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
-
-                App()->user->setReturnUrl(App()->request->requestUri);
-
-                $this->redirect(array('/admin/authentication/sa/login'));
-            }
-            elseif (!empty($this->user_id)  && $action != "remotecontrol")
-            {
-                if (Yii::app()->session['session_hash'] != hash('sha256',getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
-                {
-                    Yii::app()->session->clear();
-                    Yii::app()->session->close();
-                    $this->redirect(array('/admin/authentication/sa/login'));
-                }
-
-            }
-
+//        if ($action != "update" && $action != "db")
+//            if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
+//            {
+//                if (!empty($action) && $action != 'index')
+//                    Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
+//
+//                App()->user->setReturnUrl(App()->request->requestUri);
+//
+//                $this->redirect(array('/admin/authentication/sa/login'));
+//            }
+//            elseif (!empty($this->user_id)  && $action != "remotecontrol")
+//            {
+//                if (Yii::app()->session['session_hash'] != hash('sha256',getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
+//                {
+//                    Yii::app()->session->clear();
+//                    Yii::app()->session->close();
+//                    $this->redirect(array('/admin/authentication/sa/login'));
+//                }
+//
+//            }
+//
             return parent::run($action);
     }
 
@@ -199,7 +204,6 @@ class AdminController extends LSYii_Controller
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
         'limereplacementfields' => 'limereplacementfields',
-        'index'            => 'index',
         'labels'           => 'labels',
         'participants'     => 'participantsaction',
         'printablesurvey'  => 'printablesurvey',
@@ -328,7 +332,7 @@ class AdminController extends LSYii_Controller
         }
 
         //If user is not logged in, don't print the version number information in the footer.
-        if (empty(Yii::app()->session['loginID']))
+        if (empty(App()->user->id))
         {
             $aData['versionnumber']="";
             $aData['versiontitle']="";
@@ -378,7 +382,7 @@ class AdminController extends LSYii_Controller
     public function _showadminmenu($surveyid = false)
     {
         if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
-            Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+            App()->user->setFlash(\TbHtml::ALERT_COLOR_DEFAULT, gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."));
         }
 
         $aData['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatenotification")!='never' && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );

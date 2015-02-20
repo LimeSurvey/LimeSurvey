@@ -81,7 +81,7 @@
         <input type='submit' value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_top')" />
         <br /><br />
 
-        <?php if(isset($thisid) && Permission::model()->hasSurveyPermission($surveyid, 'responses','read')): ?>
+        <?php if(isset($thisid) && App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid])): ?>
 			<input type='submit' value='<?php eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
 			<br /><br />
         <?php endif; ?>

@@ -10,6 +10,7 @@ class DbConnection extends \CDbConnection
             'mssql' => 'MssqlSchema',
             'dblib' => 'MssqlSchema',
             'sqlsrv' => 'MssqlSchema',
+            'pgsql' => 'PgsqlSchema'
         ));
     }
     

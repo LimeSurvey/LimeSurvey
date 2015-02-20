@@ -93,7 +93,7 @@
                 echo CHtml::link(CHtml::image($export['src'], $export['alt']), '#',array('id'=>$export['id']));
                 echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
                 echo CHtml::link(CHtml::image($blacklist['src'], $blacklist['alt']), $this->createUrl('admin/participants/sa/blacklistControl'));
-                if (Permission::model()->hasGlobalPermission('superadmin','read'))
+                if (App()->user->checkAccess('superadmin'))
                 {
                     echo CHtml::link(CHtml::image($globalsettings['src'], $globalsettings['alt']), $this->createUrl('admin/participants/sa/userControl'));
                 }

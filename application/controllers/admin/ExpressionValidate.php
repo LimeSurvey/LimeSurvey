@@ -40,7 +40,7 @@ class ExpressionValidate extends Survey_Common_Action {
     */
     public function quota($iSurveyId,$quota,$lang=null)
     {
-        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','read'))
+        if(!App()->user->checkAccess('quotas', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
             throw new CHttpException(401,"401 Unauthorized");
         $iQuotaId=$quota;
         if(is_string($lang))
@@ -97,7 +97,7 @@ class ExpressionValidate extends Survey_Common_Action {
     */
     public function email($iSurveyId,$lang)
     {
-        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'read'))
+        if(!App()->user->checkAccess('surveysettings', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
             throw new CHttpException(401,"401 Unauthorized");
         $sType=Yii::app()->request->getQuery('type');
         $this->sLang=$sLang=$lang;

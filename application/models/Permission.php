@@ -298,10 +298,10 @@ class Permission extends LSActiveRecord
         if ($sEntityName=='global')
         {
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-            if (!Permission::model()->hasGlobalPermission('superadmin','read') && !$bBypassCheck) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+            if (!App()->user->checkAccess('superadmin') && !$bBypassCheck) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             {
                 // Make sure that he owns the user he wants to give global permissions for
-                $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
+                $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => App()->user->id));
                 if (!$oUser) {
                     die('You are not allowed to set permisisons for this user');
                 }
@@ -320,7 +320,7 @@ class Permission extends LSActiveRecord
                 }
                 $aBasePermissions=$aFilteredPermissions;        
             }
-            elseif (Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->session['loginID']!=1)
+            elseif (App()->user->checkAccess('superadmin') && App()->user->id!=1)
             {
                 unset($aBasePermissions['superadmin']);
             }
@@ -349,7 +349,7 @@ class Permission extends LSActiveRecord
         $result = App()->getPluginManager()->dispatchEvent($oEvent);
 
         // Only the original superadmin may change the superadmin permissions
-        if (Yii::app()->session['loginID']!=1)
+        if (App()->user->id!=1)
         {
             Permission::model()->deleteAllByAttributes($condition,"permission <> 'superadmin' AND entity <> 'template'");
         }
@@ -488,7 +488,7 @@ class Permission extends LSActiveRecord
 
         if (is_null($iUserID))
         {
-            if (!Yii::app()->user->getIsGuest()) $iUserID = Yii::app()->session['loginID'];
+            if (!Yii::app()->user->getIsGuest()) $iUserID = App()->user->id;
             else return false;
         }
 

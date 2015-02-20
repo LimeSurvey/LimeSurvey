@@ -17,11 +17,17 @@
  */
 require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 /**
-* Implements global  config
-* @property CLogRouter $log Log router component.
-*/
+ * Implements global  config
+ * @property CLogRouter $log Log router component.
+ * @property \ls\pluginmanager\PluginManager $pluginManager 
+ * @property WebUser $user
+ */
 class WebApplication extends CWebApplication
 {
+    /**
+     *
+     * @var Composer\Autoload\ClassLoader
+     */
     public $loader;
     protected $config = array();
 
@@ -29,6 +35,19 @@ class WebApplication extends CWebApplication
      * @var LimesurveyApi
      */
     protected $api;
+    
+    protected $_supportedLanguages;
+    
+    public function setSupportedLanguages($value) {
+        foreach($value as $code => $language) {
+            $language['code'] = $code;
+            $this->_supportedLanguages[$code] = $language;
+        }
+    }
+    
+    public function getSupportedLanguages() {
+        return $this->_supportedLanguages;
+    }
     /**
      *
     * Initiates the application
@@ -40,8 +59,6 @@ class WebApplication extends CWebApplication
     public function __construct($config = null)
     {
         parent::__construct($config);
-        
-        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         Yii::import('application.helpers.common_helper', true);
 
         // Load the default and environmental settings from different files into self.
@@ -50,24 +67,15 @@ class WebApplication extends CWebApplication
         $version_config = require(__DIR__ . '/../config/version.php');
         $settings = array_merge($ls_config, $version_config, $email_config);
 
-        if(file_exists(__DIR__ . '/../config/config.php'))
-        {
-            $ls_config = require(__DIR__ . '/../config/config.php');
-            if(is_array($ls_config['config']))
-            {
-                $settings = array_merge($settings, $ls_config['config']);
-            }
-        }
-
         foreach ($settings as $key => $value)
             $this->setConfig($key, $value);
 
-        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
     }
 
 
 	public function init() {
 		parent::init();
+        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
 		Yii::import('application.helpers.ClassFactory');
@@ -78,11 +86,9 @@ class WebApplication extends CWebApplication
     public function initLanguage()
     {
         // Set language to use.
-        if ($this->request->getParam('lang') !== null)
-        {
+        if ($this->request->getParam('lang') !== null) {
             $this->setLanguage($this->request->getParam('lang'));
         }
-
     }
     /**
     * Loads a helper
@@ -207,6 +213,19 @@ class WebApplication extends CWebApplication
         return $this->getComponent('pluginManager');
     }
 
-   
+    /**
+	 * Check that installation was already done by looking for config.php
+	 * Will redirect to the installer script if not exists.
+	 *
+	 * @access protected
+	 * @return void
+	 */
+	public function runController($route) {
+        $file_name = __DIR__ . '/../config/config.php';
+        if (!file_exists($file_name) && $route != 'installer') {
+			$this->request->redirect($this->urlManager->createUrl('/installer'));
+        }
+        return parent::runController($route);
+	}
 }
 

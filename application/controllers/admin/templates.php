@@ -26,7 +26,7 @@ class templates extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        if (!Permission::model()->hasGlobalPermission('templates','read'))
+        if (!App()->user->checkAccess('templates'))
         {
             die('No permission');
         }
@@ -44,7 +44,7 @@ class templates extends Survey_Common_Action
     */
     public function templatezip($templatename)
     {
-        if (!Permission::model()->hasGlobalPermission('templates','export'))
+        if (!App()->user->checkAccess('templates', ['crud' => 'export']))
         {
             die('No permission');
         }
@@ -95,7 +95,7 @@ class templates extends Survey_Common_Action
     */
     public function upload()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','import'))
+        if (!App()->user->checkAccess('templates', ['crud' => 'import']))
         {
             die('No permission');
         }
@@ -234,7 +234,7 @@ class templates extends Survey_Common_Action
     */
     public function uploadfile()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','import'))
+        if (!App()->user->checkAccess('templates', ['crud' => 'import']))
         {
             die('No permission');
         }
@@ -399,7 +399,7 @@ class templates extends Survey_Common_Action
     */
     public function templatefiledelete()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        if (!App()->user->checkAccess('templates', ['crud' => 'update']))
         {
             die('No permission');
         }
@@ -428,7 +428,7 @@ class templates extends Survey_Common_Action
     */
     public function templaterename()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        if (!App()->user->checkAccess('templates', ['crud' => 'update']))
         {
             die('No permission');
         }
@@ -464,7 +464,7 @@ class templates extends Survey_Common_Action
     */
     public function templatecopy()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','create'))
+        if (!App()->user->checkAccess('templates', ['crud' => 'create']))
         {
             die('No permission');
         }
@@ -510,7 +510,7 @@ class templates extends Survey_Common_Action
     */
     public function delete($templatename)
     {
-        if (!Permission::model()->hasGlobalPermission('templates','delete'))
+        if (!App()->user->checkAccess('templates', ['crud' => 'delete']))
         {
             die('No permission');
         }
@@ -545,7 +545,7 @@ class templates extends Survey_Common_Action
     */
     public function templatesavechanges()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','update'))
+        if (!App()->user->checkAccess('templates', ['crud' => 'update']))
         {
             die('No permission');
         }
@@ -917,6 +917,7 @@ class templates extends Survey_Common_Action
         $thissurvey['active'] = 'N';
 
         // FAKE DATA FOR TEMPLATES
+        $thissurvey['sid'] = 12345;
         $thissurvey['name'] = gT("Template Sample");
         $thissurvey['description'] =
             "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".

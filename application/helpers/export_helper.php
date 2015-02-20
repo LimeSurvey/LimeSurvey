@@ -378,7 +378,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
     $fieldno=0;
 
     $fields=array();
-    if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
+    if ($bTokenTableExists && $surveyprivate == 'N' && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
@@ -522,7 +522,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
     $query = App()->db->createCommand();
     $query->from('{{survey_' . $iSurveyID . '}} s');
     $columns = array('s.*');
-    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
+    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized && App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
         $tokenattributes=array_keys(getTokenFieldsAndNames($iSurveyID,false));
         foreach ($tokenattributes as $attributefield) {
             //Drop the token field, since it is in the survey too

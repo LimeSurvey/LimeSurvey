@@ -23,7 +23,7 @@
     <td <?php echo $highlight;?>><?php echo $completed;?></td>
     <td><?php echo $quotalisting['qlimit'];?></td>
     <td style="padding: 3px;">
-        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+        <?php if (App()->user->checkAccess('quotas', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/editquota/surveyid/{$iSurveyId}"), 'post'); ?>
                 <input name="submit" type="submit" class="submit" value="<?php eT("Edit");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
@@ -32,7 +32,7 @@
                 <input type="hidden" name="subaction" value="quota_editquota" />
             </form>
         <?php } ?>
-        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
+        <?php if (App()->user->checkAccess('quotas', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyId])) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/delquota/surveyid/{$iSurveyId}"), 'post'); ?>
                 <input name="submit" type="submit" class="submit" value="<?php eT("Remove");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
@@ -41,7 +41,7 @@
                 <input type="hidden" name="subaction" value="quota_delquota" />
             </form>
         <?php } ?>
-        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) {
+        <?php if (App()->user->checkAccess('quotas', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])) {
             echo CHtml::link(gT("Validate"),array('admin/validate','sa'=>'quota','sid'=>$surveyid,'quota'=>$quotalisting['id']),array('class'=>'btn btn-link','title'=>sprintf(gT("Validation of quota %s"),$quotalisting['name']),"target"=>"dialog"));
         } ?>
     </td></tr>
@@ -53,7 +53,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td style="padding: 3px;">
-        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+        <?php if (App()->user->checkAccess('quotas', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])) { ?>
             <?php echo CHtml::form(array("admin/quotas/sa/new_answer/surveyid/{$iSurveyId}"), 'post'); ?>
                 <input name="submit" type="submit" class="quota_new" value="<?php eT("Add answer");?>" />
                 <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />

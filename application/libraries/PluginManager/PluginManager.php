@@ -6,23 +6,21 @@ use Plugin;
      * Factory for limesurvey plugin objects.
      */
     class PluginManager extends \CApplicationComponent{
-       /**
-         * Object containing any API that the plugins can use.
-         * @var mixed $api The class name of the API class to load, or
-         */
-        public $api;
+        public $pluginFile;
+        public $enabledPluginDir;
+        protected $_apis = [];
+        public $apiMap;
+  
+        protected $configs = [];
+        protected $plugins = [];
+        
+        public $pluginDirs = [];
+        public $oldPluginDirs = [];
         /**
-         * Array mapping guids to question object class names.
-         * @var type 
+         *
+         * @var \Composer\Autoload\ClassLoader
          */
-        protected $guidToQuestion = array();
-        
-        protected $plugins = array();
-        
-        protected $pluginDirs = [
-            'webroot.plugins', // User plugins
-            'application.core.plugins' // Core plugins
-        ];
+        public $loader;
         
         protected $stores = array();
 
@@ -35,35 +33,24 @@ use Plugin;
          * a reference to an already constructed reference.
          */
         public function init() {
-            parent::init();
-            if (!is_object($this->api)) {
-                $class = $this->api;
-                $this->api = new $class;
-            }
+            PluginConfig::$pluginManager = $this;
             $this->loadPlugins();
+            if (empty($this->getAuthenticators(true)) && $reload = true && null === $this->enablePlugin('ls_core_plugins_AuthDb')) {
+                throw new \Exception("No authentication plugins available.");
+            };
+            if ($this->getAuthorizer() == null && $reload = true && null === $this->enablePlugin('ls_core_plugins_PermissionDb')) {
+                throw new \Exception("No authorization plugin available.");
+            };
         }
-        /**
-         * Return a list of installed plugins, but only if the files are still there
-         * 
-         * This prevents errors when a plugin was installed but the files were removed
-         * from the server.
-         * 
-         * @return array
-         */
-        public function getInstalledPlugins()
-        {
-            $pluginModel = Plugin::model();    
-            $records = $pluginModel->findAll();
-            
-            $plugins = array();
-
-            foreach ($records as $record) {
-                // Only add plugins we can find
-                if ($this->loadPlugin($record->name) !== false) {
-                    $plugins[$record->id] = $record;
-                }
-            }
-            return $plugins;
+        
+        public function disablePlugin($id) {
+            return !empty($id) && unlink("{$this->enabledPluginDir}/$id");
+        }
+        public function enablePlugin($id) {
+            return !empty($id) && touch("{$this->enabledPluginDir}/$id");
+        }   
+        public function isActive($id) {
+            return !empty($id) && file_exists("{$this->enabledPluginDir}/$id");
         }
         
         /**
@@ -75,6 +62,9 @@ use Plugin;
         {
             if (!isset($this->stores[$storageClass]))
             {
+                if (!class_exists($storageClass)) {
+                    $storageClass = "\\ls\\pluginmanager\\$storageClass";
+                }
                 $this->stores[$storageClass] = new $storageClass();
             }
             return $this->stores[$storageClass];
@@ -84,36 +74,44 @@ use Plugin;
         /**
          * This function returns an API object, exposing an API to each plugin.
          * In the current case this is the LimeSurvey API.
-         * @return LimesurveyApi
          */
-        public function getAPI()
+        public function getApi($version = "1.0")
         {
-            return $this->api;
+            if (!isset($this->_apis[$version])) {
+                if (!isset($this->apiMap[$version])) {
+                    throw new \Exception("Unknown API version: " . $version);
+                }
+                $class = $this->apiMap[$version];
+                $this->_apis[$version] = new $class;
+                
+                
+            }
+            return $this->_apis[$version];
         }
         /**
-         * Registers a plugin to be notified on some event.
-         * @param iPlugin $plugin Reference to the plugin.
+         * Registers a callback to be called on some event.
          * @param string $event Name of the event.
-         * @param string $function Optional function of the plugin to be called.
+         * @param callable $$callback.
          */
-        public function subscribe(iPlugin $plugin, $event, $function = null)
+        public function subscribe($event, callable $callback)
         {
-            if (!isset($this->subscriptions[$event]))
-            {
-                $this->subscriptions[$event] = array();
+            $this->subscriptions[$event][$this->hashCallable($callback)] = $callback;
+        }
+        
+        /**
+         * Generates a hash for any callable.
+         * Special handling for plugins; their id has a prefix.
+         * @param \ls\pluginmanager\callable $callback
+         * @return type
+         */
+        protected function hashCallable(callable $callback, $ignoreFunction = false) {
+            if ($callback instanceof \Closure) {
+                return spl_object_hash($callback);
+            } elseif (is_array($callback) && is_object($callback[0])) {
+                return md5(get_class($callback[0]) . spl_object_hash($callback[0])) . ($ignoreFunction ? '' : $callback[1]);
+            } elseif (is_string($callback)) {
+                return md5($callback);
             }
-            if (!$function)
-            {
-                $function = $event;
-            }
-            $subscription = array($plugin, $function);
-            // Subscribe only if not yet subscribed.
-            if (!in_array($subscription, $this->subscriptions[$event]))
-            {
-                $this->subscriptions[$event][] = $subscription;
-            }
-
-
         }
 
         /**
@@ -122,25 +120,19 @@ use Plugin;
          * @param string $event Name of the event. Use '*', to unsubscribe all events for the plugin.
          * @param string $function Optional function of the plugin that was registered.
          */
-        public function unsubscribe(iPlugin $plugin, $event)
+        public function unsubscribe($event, callable $callback)
         {
-            // Unsubscribe recursively.
-            if ($event == '*')
-            {
-                foreach ($this->subscriptions as $event)
-                {
-                    $this->unsubscribe($plugin, $event);
-                }
-            }
-            elseif (isset($this->subscriptions[$event]))
-            {
-                foreach ($this->subscriptions[$event] as $index => $subscription)
-                {
-                    if ($subscription[0] == $plugin)
-                    {
-                        unset($this->subscriptions[$event][$index]);
+            
+            if ($event == '*' && is_array($callback) && is_object($callback[0])) {
+                // Get object hash.
+                $hash = $this->hashCallable($callback, true);
+                foreach ($this->subscriptions as $event => $eventSubscriptions) {
+                    foreach ($eventSubscriptions as $index => $subscription) {
+                        die($hash);
                     }
                 }
+            } else {
+                unset($this->subscriptions[$event][$this->hashCallable($callback)]);
             }
         }
 
@@ -148,25 +140,17 @@ use Plugin;
         /**
          * This function dispatches an event to all registered plugins.
          * @param PluginEvent $event Object holding all event properties
-         * @param string|array $target Optional name of plugin to fire the event on
-         * 
          * @return PluginEvent
          */
-        public function dispatchEvent(PluginEvent $event, $target = array())
+        public function dispatchEvent(PluginEvent $event)
         {
-            $eventName = $event->getEventName();
-            if (is_string($target)) {
-                $target = array($target);
-            }
-            if (isset($this->subscriptions[$eventName]))
-            {
-                foreach($this->subscriptions[$eventName] as $subscription)
-                {
-                    if (!$event->isStopped() 
-                     && (empty($target) || in_array(get_class($subscription[0]), $target))) 
-                    {
-                        $subscription[0]->setEvent($event);
-                        call_user_func($subscription);
+            $eventName = $event->name;
+            if (isset($this->subscriptions[$eventName])) {
+                foreach($this->subscriptions[$eventName] as $subscription) {
+                    if (!$event->isStopped()) {
+                        call_user_func($subscription, $event);
+                    } else {
+                        break;
                     }
                 }
             }
@@ -175,110 +159,87 @@ use Plugin;
         }
 
         /**
-         * Scans the plugin directory for plugins.
-         * This function is not efficient so should only be used in the admin interface
-         * that specifically deals with enabling / disabling plugins.
+         * Scans the plugin directories for plugins.
          */
-        public function scanPlugins($forceReload = false)
+        public function scanPlugins()
         {
-            Yii::beginProfile('scanPlugins');
-            $cacheKey = 'scanPlugins';
-            if (false === $plugins = \Yii::app()->cache->get($cacheKey)) {
-                $plugins = [];
-                foreach ($this->pluginDirs as $pluginDir) {
-                    $currentDir = Yii::getPathOfAlias($pluginDir);
-                    foreach(\CFileHelper::findFiles($currentDir, [
-                        'fileTypes' => ['json']
-                    ]) as $file) {
-                        if (basename($file) == 'config.json') {
-                            $config = json_decode(file_get_contents($file), true);
-                            $config['dir'] = dirname($file);
-                            $plugins[$config['name']] = $config;
-
-                        }
-
-                    }
-                }
-                \Yii::app()->cache->set($cacheKey, $plugins, 3600);
+            Yii::log('scanplugins');
+            $plugins = [];
+            foreach($this->pluginDirs as $pluginDir) {
+                $plugins = array_merge($plugins, \ls\pluginmanager\PluginConfig::readAll($pluginDir));
             }
-            Yii::endProfile('scanPlugins');
+            // Write to file.
+            $file = new \PhpConfigFile($this->pluginFile);
+            $file->setConfig(array_map(function(PluginConfig $config) {
+                return $config->attributes;
+            }, $plugins), false);
+            $file->save();
             return $plugins;
-            
         }
 
-        /**
-         * Gets the description of a plugin. 
-         * The description is accessed via a function inside the plugin class.
-         *
-         * @param string $pluginClass The classname of the plugin
-         */
-        public function getPluginInfo($pluginClass, $pluginDir = null)
-        {
-            $result = array();
-            
-            $class = "{$pluginClass}";
-            
-            if (!class_exists($class, false)) {
-                $found = false;
-                if (!is_null($pluginDir)) {
-                    $dirs = array($pluginDir);
-                } else {
-                    $dirs = $this->pluginDirs;
-                }
-                
-                foreach ($this->pluginDirs as $pluginDir) {
-                    $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
-                    if (file_exists($file)) {
-                        Yii::import($pluginDir . ".$pluginClass.*");
-                        $found = true;
-                        break;
-                    }
-                }
-                
-                if (!$found) {
-                    return false;
-                }
-            }
-            $plugin = new $class($this, null, false);
-            $result['description'] = $plugin->getDescription();
-            $result['pluginName'] = $plugin->getName();
-            $result['pluginClass'] = $class;            
-            return $result;
-        }
+       
         
         /**
          * Returns the instantiated plugin
          *
-         * @param string $pluginName
-         * @param int $id Identifier used for identifying a specific plugin instance. 
-         * If ommitted will return the first instantiated plugin with the given name.
-         * @return iPlugin|null The plugin or null when missing
+         * @param PluginConfig $pluginConfig
+         * @return PluginBase The plugin or null when missing
          */
-        public function loadPlugin($pluginName, $id = null)
+        public function loadPlugin(PluginConfig $pluginConfig)
         {
-            // If the id is not set we search for the plugin.
-            if (!isset($id))
-            {
-                foreach ($this->plugins as $plugin)
-                {
-                    if (get_class($plugin) == $pluginName)
-                    {
-                        return $plugin;
-                    }
-                }
-            }
-            else
-            { 
-                if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName))
-                {
-                    if ($this->getPluginInfo($pluginName) !== false) {
-                        $this->plugins[$id] = new $pluginName($this, $id);
+            if ($pluginConfig->validate() && $this->isActive($pluginConfig->id)) {
+                $pluginConfig->registerNamespace($this->loader);
+                if (!isset($this->plugins[$pluginConfig->id])) {
+                    if ($pluginConfig->type == 'simple') {
+                        $this->plugins[$pluginConfig->id] = $this->loadSimplePlugin($pluginConfig);
                     } else {
-                        $this->plugins[$id] = null;
-                    }
+                        $this->plugins[$pluginConfig->id] = $this->loadModulePlugin($pluginConfig);
+                    }                   
                 }
-                return $this->plugins[$id];
+                return $this->getPlugin($pluginConfig->id);
             }
+        }
+        
+        public function getPlugin($id) {
+            return isset($this->plugins[$id]) ? $this->plugins[$id] : null;
+        }
+        
+        public function getPlugins() {
+            return $this->plugins;
+        }
+        /**
+         * 
+         * @param \ls\pluginmanager\PluginConfig $pluginConfig
+         * @return 
+         */
+        public function loadSimplePlugin(PluginConfig $pluginConfig) {
+            return $pluginConfig->createPlugin($this);
+        }
+        
+        /**
+         * 
+         * @param \ls\pluginmanager\PluginConfig $pluginConfig
+         * @return 
+         */
+        public function loadModulePlugin(PluginConfig $pluginConfig) {
+            $id = $pluginConfig->getId();
+            /* @var ls\pluginmanager\PluginModule $result */
+            App()->setModules([
+                $id => [
+                    'class' => $pluginConfig->class,
+                    'pluginConfig' => $pluginConfig
+                ]
+            ]);
+            $module = App()->getModule($id);
+            
+            $shortId = strtolower(substr($id, strrpos($id, '_') + 1));
+            $rules = [
+                "$shortId/" => $pluginConfig->getId(),
+                "$shortId/<controller>/<action>" => "{$pluginConfig->getId()}/<controller>/<action>"
+            ];
+            App()->urlManager->addRules($rules);
+                
+            return $module;
         }
 
         /**
@@ -288,101 +249,43 @@ use Plugin;
          * For instance 'survey' for runtime or 'admin' for backend. This needs
          * some thinking before implementing.
          */
-        public function loadPlugins()
+        protected function loadPlugins()
         {
-            try {
-                $pluginModel = Plugin::model();    
-                $records = $pluginModel->findAllByAttributes(array('active'=>1));
-            
-                foreach ($records as $record) {
-                    $this->loadPlugin($record->name, $record->id);
-                }
-            } catch (Exception $exc) {
-                // Something went wrong, maybe no database was present so we load no plugins
+            if (!file_exists($this->pluginFile)) {
+                $this->scanPlugins();
             }
-
-            $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this));    // Alow plugins to do stuff after all plugins are loaded
-        }
-        
-        /**
-         * Get a list of question objects and load some information about them.
-         * This registers the question object classes with Yii.
-         */
-        public function loadQuestionObjects($forceReload = false)
-        {
-            if (empty($this->guidToQuestion) || $forceReload)
-            {
-                $event = new PluginEvent('listQuestionPlugins');
-                $this->dispatchEvent($event);
-
-
-                foreach ($event->get('questionplugins', array()) as $pluginClass => $paths)
-                {
-                    foreach ($paths as $path)
-                    {
-
-                        Yii::import("webroot.plugins.$pluginClass.$path");
-                        $parts = explode('.', $path);
-
-                        // Get the class name.
-                        $className = array_pop($parts);
-
-                        // Get the GUID for the question object.
-                        $guid = forward_static_call(array($className, 'getGUID'));
-
-                        // Save the GUID-class mapping.
-                        $this->guidToQuestion[$guid] = array(
-                            'class' => $className,
-                            'guid' => $guid,
-                            'plugin' => $pluginClass,
-                            'name' => $className::$info['name']
-                        );
-                    }
-                }
+            $config = include($this->pluginFile);
+            foreach (PluginConfig::loadMultiple($config) as $pluginConfig) {
+                $result[$pluginConfig->id] = $this->loadPlugin($pluginConfig);
             }
             
-            return $this->guidToQuestion;
+            $this->dispatchEvent(new PluginEvent('afterPluginLoad'));    // Alow plugins to do stuff after all plugins are loaded
+            return empty($result);
         }
         
-        /**
-         * Construct a question object from a GUID.
-         * @param string $guid
-         * @param int $questionId,
-         * @param int $responseId
-         * @return iQuestion
-         */
-        public function constructQuestionFromGUID($guid, $questionId = null, $responseId = null)
-        {
-            $this->loadQuestionObjects();
-            if (isset($this->guidToQuestion[$guid]))
-            {
-                $questionClass = $this->guidToQuestion[$guid]['class'];
-                $questionObject = new $questionClass($this->loadPlugin($this->guidToQuestion[$guid]['plugin']), $this->api, $questionId, $responseId);
-                return $questionObject;
+       public function getAuthenticators($activeOnly = false) {
+            $result = array_filter($this->plugins, function ($plugin) {
+                return $plugin instanceOf iAuthenticationPlugin;
+            });
+            if ($activeOnly) {
+                $authPlugins = \SettingGlobal::get('authenticationPlugins');
+                $result = array_intersect_key($result, array_flip($authPlugins));
+            }
+            return $result;
+        }
+        
+        public function getAuthorizer() {
+            $authorizers = $this->getAuthorizers(true);
+            $authPlugin = \SettingGlobal::get('authorizationPlugin');
+            if (isset($authorizers[$authPlugin])) {
+                return $authorizers[$authPlugin];
             }
         }
-        
-        
-        private function createAutoloader($modules) {
-            $configPath = \Yii::getPathOfAlias('application.config');
-            $content = "<?php\n";
-            $content .= 'return '; 
-            $content .= strtr(var_export($modules, true), ["  " => "    "]);
-            $content .= ';';
-            file_put_contents($configPath . '/plugins.php', $content);
-        }
-        
-        public function setPlugins($plugins) 
-        {
-//            $defaults = [];
-//            $app = \Yii::app();
-//            foreach($plugins as $name => $plugin) {
-//                $config = \CMap::mergeArray($defaults, $plugin);
-//                if($config['type'] == 'module') {
-//
-//                    $app->setModules([$name => $config]);
-//                }
-//            }
+        public function getAuthorizers($activeOnly = false) {
+            $result = array_filter($this->plugins, function ($plugin) {
+                return $plugin instanceOf iAuthorizationPlugin;
+            });
+            return $result;
         }
         
     }

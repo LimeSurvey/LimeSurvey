@@ -23,21 +23,99 @@
         <?php
 			$this->widget('ext.LimeScript.LimeScript');
 			$this->widget('ext.LimeDebug.LimeDebug');
-			Yii::app()->bootstrap->register();
+			App()->bootstrap->register();
 		?>
         <title>Limesurvey Administration</title>
     </head>
-    <body>
-		<nav><?php
-			$this->widget('ext.yii-barmenu.BarMenu', array(
-				'items' => require __DIR__ . '/../menu.php',
-				'iconUrl' => App()->getConfig('adminimageurl')
-			));
-		?></nav>
-        <div class="wrapper clearfix">
-            <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
-            <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
-			<div id="content">
+    <body class="layout-main">
+        <?php
+            if (!App()->user->isGuest) {
+                $items = require __DIR__ . '/../menu.php';
+                $this->widget('TbNavbar', [
+                    'brandUrl' => ['surveys/index'],
+                    'display' => null,
+                    'fluid' => true,
+                    'items' => [
+                    [
+                        'class' => 'TbNav',
+                        'items' => $items[0]
+                    ], 
+                    [
+                        'class' => 'TbNav',
+                        'htmlOptions' => [
+                            'class' => 'navbar-right'
+                        ],
+                        'items' => $items[1]
+                    ]]
+                ]);
+                if (isset($this->survey)) {
+                    $items = require __DIR__ . '/../surveyMenu.php';
+                    $this->widget('TbNavbar', [
+                    'brandLabel' => false,
+                    'display' => null,
+                    'fluid' => true,
+                    'items' => [
+                    [
+                        'class' => 'TbNav',
+                        'items' => $items[0]
+                    ], 
+                    [
+                        'class' => 'TbNav',
+                        'htmlOptions' => [
+                            'class' => 'navbar-right'
+                        ],
+                        'items' => $items[1]
+                    ]]
+                ]);
+                    
+                }
+                if (isset($this->group)) {
+                    $items = require __DIR__ . '/../groupMenu.php';
+                    $this->widget('TbNavbar', [
+                    'brandLabel' => false,
+                    'display' => null,
+                    'fluid' => true,
+                    'items' => [
+                    [
+                        'class' => 'TbNav',
+                        'items' => $items[0]
+                    ], 
+                    [
+                        'class' => 'TbNav',
+                        'htmlOptions' => [
+                            'class' => 'navbar-right'
+                        ],
+                        'items' => $items[1]
+                    ]]
+                ]);
+                    
+                }
+                if (isset($this->question)) {
+                    $items = require __DIR__ . '/../questionMenu.php';
+                    $this->widget('TbNavbar', [
+                    'brandLabel' => false,
+                    'display' => null,
+                    'fluid' => true,
+                    'items' => [
+                    [
+                        'class' => 'TbNav',
+                        'items' => $items[0]
+                    ], 
+                    [
+                        'class' => 'TbNav',
+                        'htmlOptions' => [
+                            'class' => 'navbar-right'
+                        ],
+                        'items' => $items[1]
+                    ]]
+                ]);
+                    
+                }
+            }
+		?>
+        <div class="container-fluid">
+            <?php $this->widget('TbAlert'); ?>
+            <div id="content">
             <?php echo $content; ?>
             </div>
             <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center">

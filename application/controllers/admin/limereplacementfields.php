@@ -34,7 +34,7 @@ class limereplacementfields extends Survey_Common_Action
 
 
 
-        if (!Yii::app()->session['loginID']) {
+        if (!App()->user->id) {
             die ("Unauthenticated Access Forbiden");
         }
 

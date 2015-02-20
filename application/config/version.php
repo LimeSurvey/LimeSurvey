@@ -1,6 +1,6 @@
 <?php
 return array (
-  'versionnumber' => '2.06',
+  'versionnumber' => '3.0',
   'dbversionnumber' => 179,
   'buildnumber' => '',
   'updatable' => true,

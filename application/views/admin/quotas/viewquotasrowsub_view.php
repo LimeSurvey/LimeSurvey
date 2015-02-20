@@ -5,7 +5,7 @@
 	<td align="center">&nbsp;</td>
 	<td align="center">&nbsp;</td>
 	<td style="padding: 3px;" align="center">
-    <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+    <?php if (App()->user->checkAccess('quotas', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])) { ?>
         <?php echo CHtml::form(array("admin/quotas/sa/delans/surveyid/{$iSurveyId}"), 'post'); ?>
 			<input name="submit" type="submit" class="submit" value="<?php eT("Remove");?>" />
 			<input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />

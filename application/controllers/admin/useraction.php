@@ -40,12 +40,8 @@ class UserAction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'users.js');
 
-        $userlist = getUserList();
-        $usrhimself = $userlist[0];
-        unset($userlist[0]);
-
-        if (Permission::model()->hasGlobalPermission('superadmin','read')) {
-            $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
+        if (App()->user->checkAccess('superadmin')) {
+            $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => App()->user->id));
             $aData['noofsurveys'] = $noofsurveys;
         }
         $aData['row'] = 0;
@@ -55,14 +51,8 @@ class UserAction extends Survey_Common_Action
         }
 
 
-        $aData['usrhimself'] = $usrhimself;
         // other users
-        $aData['usr_arr'] = $userlist;
         $noofsurveyslist = array();
-
-        //This loops through for each user and checks the amount of surveys against them.
-        for ($i = 1; $i <= count($userlist); $i++)
-            $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
 
         $aData['imageurl'] = Yii::app()->getConfig("adminimageurl");
         $aData['noofsurveyslist'] = $noofsurveyslist;
@@ -78,7 +68,7 @@ class UserAction extends Survey_Common_Action
     function adduser()
     {
 
-        if (!Permission::model()->hasGlobalPermission('users','create')) {
+        if (!App()->user->checkAccess('users', ['crud' => 'create'])) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
@@ -100,7 +90,7 @@ class UserAction extends Survey_Common_Action
         elseif ($valid_email)
         {
             $new_pass = createPassword();
-            $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+            $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, App()->user->id, $new_email);
 
             if ($iNewUID) {
                 // add default template to template rights for user
@@ -173,7 +163,7 @@ class UserAction extends Survey_Common_Action
     function deluser()
     {
 
-        if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
+        if (!App()->user->checkAccess('superadmin') && !App()->user->checkAccess('users', ['crud' => 'delete'])) {
             Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
@@ -195,19 +185,19 @@ class UserAction extends Survey_Common_Action
             if ($postuserid)
             {
                 $sresultcount = 0; // 1 if I am parent of $postuserid
-                if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+                if (!App()->user->checkAccess('superadmin'))
                 {
-                    $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+                    $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => App()->user->id));
                     $sresultcount = count($sresult);
                 }
 
-                if (Permission::model()->hasGlobalPermission('superadmin','read') || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID'])
+                if (App()->user->checkAccess('superadmin') || $sresultcount > 0 || $postuserid == App()->user->id)
                 {
                     $transfer_surveys_to = 0;
                     $ownerUser = User::model()->findAll();
                     $aData['users'] = $ownerUser;
 
-                    $current_user = Yii::app()->session['loginID'];
+                    $current_user = App()->user->id;
                     if (count($ownerUser) == 2) {
                         $action = "finaldeluser";
                         foreach ($ownerUser as &$user)
@@ -282,10 +272,10 @@ class UserAction extends Survey_Common_Action
         // Delete user rights
         $dresult = Permission::model()->deleteAllByAttributes(array('uid' => $postuserid));
 
-        if ($postuserid == Yii::app()->session['loginID'])
+        if ($postuserid == App()->user->id)
         {
             session_destroy();    // user deleted himself
-            $this->getController()->redirect(array("admin/authentication/sa/logout"));
+            $this->getController()->redirect(['users/logout']);
             die();
         }
 
@@ -308,12 +298,12 @@ class UserAction extends Survey_Common_Action
     {
         if (isset($_POST['uid'])) {
             $postuserid = (int) Yii::app()->request->getPost("uid");
-            $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+            $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => App()->user->id));
             $sresultcount = count($sresult);
 
 
-            if (Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID'] == $postuserid ||
-            (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) )
+            if (App()->user->checkAccess('superadmin') || App()->user->id == $postuserid ||
+            (App()->user->checkAccess('users', ['crud' => 'update']) && $sresultcount > 0) )
             {
                 $sresult = User::model()->parentAndUser($postuserid);
                 $aData['mur'] = $sresult;
@@ -347,11 +337,11 @@ class UserAction extends Survey_Common_Action
         $addsummary = '';
         $aViewUrls = array();
 
-        $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+        $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => App()->user->id));
         $sresultcount = count($sresult);
 
-        if ((Permission::model()->hasGlobalPermission('superadmin','read') || $postuserid == Yii::app()->session['loginID'] ||
-        ($sresultcount > 0 && Permission::model()->hasGlobalPermission('users','update'))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
+        if ((App()->user->checkAccess('superadmin') || $postuserid == App()->user->id ||
+        ($sresultcount > 0 && App()->user->checkAccess('users', ['crud' => 'update']))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
         )
         {
             $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
@@ -418,7 +408,7 @@ class UserAction extends Survey_Common_Action
 
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
-        if (Yii::app()->session['loginID']==$iUserID) {
+        if (App()->user->id==$iUserID) {
             Yii::app()->setFlashMessage(gT("You are not allowed to edit your own user permissions."),"error");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
@@ -476,14 +466,14 @@ class UserAction extends Survey_Common_Action
         }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
         if ($iUserID) {//Never update 1st admin
-            if(Permission::model()->hasGlobalPermission('superadmin','read'))
+            if(App()->user->checkAccess('superadmin'))
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID));
             else
-                $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
+                $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => App()->user->id));
         }
         // Check permissions
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-        if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
+        if (!App()->user->checkAccess('superadmin')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
         {
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
             $aFilteredPermissions=array();
@@ -502,10 +492,10 @@ class UserAction extends Survey_Common_Action
             $aBasePermissions=$aFilteredPermissions;
         }
 
-        if ($oUser && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
+        if ($oUser && (App()->user->checkAccess('superadmin') || App()->user->checkAccess('users', ['crud' => 'update']) &&  App()->user->id != $iUserID) )
         {
             // Only the original superadmin (UID 1) may create new superadmins
-            if (Yii::app()->session['loginID']!=1)
+            if (App()->user->id!=1)
             {
                 unset($aBasePermissions['superadmin']);
             }
@@ -557,7 +547,7 @@ class UserAction extends Survey_Common_Action
         $postuserid = (int) Yii::app()->request->getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
-        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','update'))
+        if (App()->user->checkAccess('superadmin') || App()->user->checkAccess('templates', ['crud' => 'update']))
         {
             $aTemplatePermissions = array();
             $tresult = Template::model()->findAll();
@@ -614,7 +604,7 @@ class UserAction extends Survey_Common_Action
             'templateeditormode' => Yii::app()->request->getPost('templateeditormode')
             );
 
-            $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
+            $uresult = User::model()->updateByPk(App()->user->id, $aData);
 
             if (Yii::app()->request->getPost('lang')=='auto')
             {
@@ -635,12 +625,8 @@ class UserAction extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("Your personal settings were successfully saved.");
         }
 
-        // Get user lang
-        $user = User::model()->findByPk(Yii::app()->session['loginID']);
-        $aData['sSavedLanguage'] = $user->lang;
-
         // Render personal settings view
-        $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
+        $this->_renderWrappedTemplate('user', 'personalsettings');
     }
 
     private function _getUserNameFromUid($uid)
@@ -669,7 +655,7 @@ class UserAction extends Survey_Common_Action
             if (count($result) == 0) {
                 $post = new Template;
                 $post->folder = $tp;
-                $post->creator = Yii::app()->session['loginID'];
+                $post->creator = App()->user->id;
                 $post->save();
             }
         }
