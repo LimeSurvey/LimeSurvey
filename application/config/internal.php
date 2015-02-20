@@ -6,8 +6,10 @@
  *
  */
 
-if (file_exists(dirname(__FILE__) .  '/config.php')) {
-    $userConfig = require(dirname(__FILE__) . '/config.php');
+if (file_exists(__DIR__ . '/config.php')) {
+    $userConfig = require(__DIR__ . '/config.php');
+} else {
+    $userConfig = [];
 }
 @date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(

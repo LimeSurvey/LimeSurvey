@@ -15,6 +15,7 @@
 
 namespace ls\controllers;
 use \Yii;
+use PreCheck, InstallerConfigForm, User;
 /**
 * Installer
 *
@@ -43,37 +44,18 @@ class InstallerController extends \CController {
     public $progress = 0;
     
     public $stepTitle = '';
-    public function run($action = 'index')
-    {
-
-        self::_sessioncontrol();
-        parent::run($action);
-    }
-
-
-    /**
-    * Load and set session vars
-    *
-    * @access protected
-    * @return void
-    */
-    protected function _sessioncontrol()
-    {
-        if (empty(Yii::app()->session['installerLang']))
-            Yii::app()->session['installerLang'] = 'en';
-        Yii::app()->setLanguage(Yii::app()->session['installerLang']);
-    }
-
+  
     /**
     * welcome and language selection install step
     */
     public function actionIndex()
     {
         App()->session->destroy();
-        if (!is_null(Yii::app()->request->getPost('installerLang')))
-        {
-            Yii::app()->session['installerLang'] = Yii::app()->request->getPost('installerLang');
-            $this->redirect(array('installer/license'));
+        
+        if (App()->request->isPostRequest) {
+            App()->setLanguage(App()->request->getPost('installerLang'));
+            $this->redirect(['installer/license']);
+            die('no');
         }
         App()->loadHelper('surveytranslator');
 
@@ -101,11 +83,8 @@ class InstallerController extends \CController {
     */
     public function actionLicense()
     {
-
-        // $aData array contain all the information required by view.
         $this->stepTitle = gT('License');
-//        $aData['descp'] = gT('GNU General Public License:');
-        $this->progress = 15;
+      $this->progress = 15;
 
         if (App()->request->isPostRequest) {
             $this->redirect(array('installer/precheck'));
@@ -114,7 +93,6 @@ class InstallerController extends \CController {
          * Load PreCheck model here to allow it to check session stuff.
          */
         new PreCheck();
-        
         $this->render('license');
     }
     /**

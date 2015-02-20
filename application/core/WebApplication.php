@@ -87,7 +87,10 @@ class WebApplication extends CWebApplication
     {
         // Set language to use.
         if ($this->request->getParam('lang') !== null) {
-            $this->setLanguage($this->request->getParam('lang'));
+            $this->session->add('language', $this->request->getParam('lang'));
+        }
+        if (isset($this->session['language'])) {
+            $this->setLanguage($this->session['language']);
         }
     }
     /**
@@ -222,7 +225,7 @@ class WebApplication extends CWebApplication
 	 */
 	public function runController($route) {
         $file_name = __DIR__ . '/../config/config.php';
-        if (!file_exists($file_name) && $route != 'installer') {
+        if (!file_exists($file_name) && substr_compare('installer', $route, 0, 9) != 0) {
 			$this->request->redirect($this->urlManager->createUrl('/installer'));
         }
         return parent::runController($route);
