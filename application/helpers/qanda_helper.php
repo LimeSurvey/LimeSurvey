@@ -2027,11 +2027,13 @@ function do_listwithcomment($ia)
     }
     else //Dropdown list
     {
-        // --> START NEW FEATURE - SAVE
         $answer .= '<p class="select answer-item dropdown-item">
         <select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
         ';
-        // --> END NEW FEATURE - SAVE
+        if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+        {
+            $answer .= '<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n";
+        }
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
@@ -2046,15 +2048,12 @@ function do_listwithcomment($ia)
                 $maxoptionsize = strlen($ansrow['answer']);
             }
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
         {
-            if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' '))
+            $check_ans="";
+            if ( $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '' || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' )
             {
                 $check_ans = SELECTED;
-            }
-            elseif ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '')
-            {
-                $check_ans = '';
             }
             $answer .= '<option class="noanswer-item" value=""'.$check_ans.'>'.$clang->gT('No answer')."</option>\n";
         }
