@@ -59,11 +59,11 @@ class ParticipantAttributeNameLang extends LSActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
+		// NOTE: you should only define rules for those attributes that will receive user inputs.
 		return array(
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+            array('attribute_name','filter','filter' => 'strip_tags'),
+            // The following rule is used by search().
+            // Please remove those attributes that should not be searched.
 			array('attribute_id, attribute_name, lang', 'safe', 'on'=>'search'),
 		);
 	}

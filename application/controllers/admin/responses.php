@@ -868,8 +868,8 @@ class responses extends Survey_Common_Action
 
             $fncount = count($fnames);
 
-            $start = Yii::app()->request->getParam('start', 0);
-            $limit = Yii::app()->request->getParam('limit', 50);
+            $start = (int)Yii::app()->request->getParam('start', 0);
+            $limit = (int)Yii::app()->request->getParam('limit', 50);
             $order =  Yii::app()->request->getParam('order', 'asc');
             if(!$limit){$limit=50;}
             $oCriteria = new CDbCriteria;
