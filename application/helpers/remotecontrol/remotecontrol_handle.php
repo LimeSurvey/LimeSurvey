@@ -1111,7 +1111,8 @@ class remotecontrol_handle
                     $depented_on = getGroupDepsForConditions($oGroup->sid,"all",$iGroupID,"by-targgid");
                     //We do not allow groups with dependencies to change order - that would lead to broken dependencies
 
-                    if((isset($has_dependencies) || isset($depented_on))  && $sFieldName == 'group_order') {
+                    if((isset($has_dependencies) || isset($depented_on))  && $sFieldName == 'group_order')
+                    {
                         $aResults[$sFieldName]='Group with dependencies - Order cannot be changed';
                         continue;
                     }
@@ -1495,13 +1496,14 @@ class remotecontrol_handle
                     $is_criteria_question=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,"all",$iQuestionID,"by-targqid");
                     //We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies
 
-                    if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order'){
-                        $aResult[$sFieldName] = 'Questions with dependencies - Order cannot be changed';							
+                    if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order')
+                    {
+                        $aResult[$sFieldName] = 'Questions with dependencies - Order cannot be changed';
                         continue;
                     }
                     
-                    $oQuestion->setAttribute($sFieldName, $sValue);			
-					
+                    $oQuestion->setAttribute($sFieldName, $sValue);
+
                     try
                     {
                         $bSaveResult=$oQuestion->save(); // save the change to database
