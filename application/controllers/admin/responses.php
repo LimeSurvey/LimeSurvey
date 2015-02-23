@@ -125,7 +125,7 @@ class responses extends Survey_Common_Action
                     continue;
                 if ($field['type'] == 'answer_time')
                     continue;
-        
+
                 //$question = $field['question'];
                 $question = viewHelper::getFieldText($field);
 
@@ -359,8 +359,8 @@ class responses extends Survey_Common_Action
                     }
 
                     Response::model($iSurveyID)->deleteByPk(Yii::app()->request->getPost('markedresponses'));
-                        
-                    
+
+
                     Yii::app()->session['flashmessage'] = sprintf(ngT("%s response was successfully deleted.","%s responses were successfully deleted.",count(Yii::app()->request->getPost('markedresponses'))),count(Yii::app()->request->getPost('markedresponses')),'js');
                 }
                 else
@@ -396,7 +396,7 @@ class responses extends Survey_Common_Action
                 $iId = (int) Yii::app()->request->getParam('id');
                 $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
                 $fieldname = Yii::app()->request->getParam('fieldname');
-                
+
                 $oRow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
                 $phparray = json_decode_ls($oRow->$fieldname);
 
@@ -405,7 +405,7 @@ class responses extends Survey_Common_Action
                     if (rawurldecode($phparray[$i]['name']) == rawurldecode($downloadindividualfile))
                     {
                         $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $phparray[$i]['filename'];
-                        
+
                         if (file_exists($file))
                         {
                             @ob_clean();
@@ -497,8 +497,8 @@ class responses extends Survey_Common_Action
 
             $fncount = count($fnames);
 
-            $start = Yii::app()->request->getParam('start', 0);
-            $limit = Yii::app()->request->getParam('limit', 50);
+            $start = (int)Yii::app()->request->getParam('start', 0);
+            $limit = (int)Yii::app()->request->getParam('limit', 50);
             $order =  Yii::app()->request->getParam('order', 'asc');
             if(!$limit){$limit=50;}
             $oCriteria = new CDbCriteria;
@@ -527,7 +527,7 @@ class responses extends Survey_Common_Action
             //NOW LETS SHOW THE DATA
             if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
                 $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
-            
+
             if (!is_null($tokenRequest)) {
                 $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
             }
@@ -622,7 +622,7 @@ class responses extends Survey_Common_Action
         if ($aData['surveyinfo']['savetimings'] != "Y")
             die();
 
-        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' 
+        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked'
             && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
         {
             $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
@@ -632,7 +632,7 @@ class responses extends Survey_Common_Action
 
         if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
         {
-            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' && 
+            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' &&
                 Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
             {
                 foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
@@ -796,7 +796,7 @@ class responses extends Survey_Common_Action
          * @todo Move this to model.
          */
         Yii::app()->loadLibrary('admin/pclzip');
-        
+
         $tmpdir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR."surveys". DIRECTORY_SEPARATOR . $iSurveyID . DIRECTORY_SEPARATOR."files".DIRECTORY_SEPARATOR;
 
         $filelist = array();
