@@ -35,7 +35,7 @@ use Plugin;
         public function init() {
             PluginConfig::$pluginManager = $this;
             $this->loadPlugins();
-            if (empty($this->getAuthenticators(true)) && $reload = true && null === $this->enablePlugin('ls_core_plugins_AuthDb')) {
+            if (count($this->getAuthenticators(true)) == 0 && $reload = true && null === $this->enablePlugin('ls_core_plugins_AuthDb')) {
                 throw new \Exception("No authentication plugins available.");
             };
             if ($this->getAuthorizer() == null && $reload = true && null === $this->enablePlugin('ls_core_plugins_PermissionDb')) {
