@@ -268,7 +268,7 @@ use Plugin;
                 return $plugin instanceOf iAuthenticationPlugin;
             });
             if ($activeOnly) {
-                $authPlugins = \SettingGlobal::get('authenticationPlugins');
+                $authPlugins = \SettingGlobal::get('authenticationPlugins', []);
                 $result = array_intersect_key($result, array_flip($authPlugins));
             }
             return $result;
