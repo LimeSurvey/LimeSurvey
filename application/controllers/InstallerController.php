@@ -239,7 +239,7 @@ class InstallerController extends \CController {
                         $user->email=$sAdminEmail;
                         $user->save();
                         // Save permissions
-                        $permission=new Permission;
+                        $permission=new \Permission;
                         $permission->entity_id=0;
                         $permission->entity='global';
                         $permission->uid=$user->uid;
