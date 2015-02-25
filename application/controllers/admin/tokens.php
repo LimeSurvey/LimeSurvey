@@ -1429,11 +1429,13 @@ class tokens extends Survey_Common_Action
                         $modmessage = str_replace("@@SURVEYURL@@", $barebone_link, $modmessage);
                     }
 
-                    if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
+		    $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
+		    
+                    if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > convertDateTimeFormat($now, 'Y-m-d H:i:s', 'U') * 1)
                     {
                         $tokenoutput .= $emrow['tid'] . " " . ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.") . "<br />", $fieldsarray);
                     }
-                    elseif (trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
+                    elseif (trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < convertDateTimeFormat($now, 'Y-m-d H:i:s', 'U') * 1)
                     {
                         $tokenoutput .= $emrow['tid'] . " " . ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.") . "<br />", $fieldsarray);
                     }
