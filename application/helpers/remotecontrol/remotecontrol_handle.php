@@ -1507,7 +1507,7 @@ class remotecontrol_handle
                     try
                     {
                         $bSaveResult=$oQuestion->save(); // save the change to database
-                        Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->sid);
+                        Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
                         $aResult[$sFieldName]=$bSaveResult;
                         //unset fields that failed
                         if (!$bSaveResult)
