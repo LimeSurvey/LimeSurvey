@@ -25,22 +25,40 @@
 		 */
 
 		public static function model($className = null) {
-			if (!isset($className))
-			{
+			if (!isset($className)) {
 				$className =  get_called_class();
-			}
-			elseif (is_numeric($className))
-			{
+			} elseif (is_numeric($className)) {
 				$className = get_called_class() . '_' . $className;
 			}
+            if ($className == 'Response') {
+                throw new Exception('noo');
+            }
 			return parent::model($className);
 		}
 
-		public static function create($id, $scenario = 'insert')
+        public static function create($id, $scenario = 'insert')
 		{
 			$className = get_called_class() . '_' . $id;
 			return new $className($scenario);
 		}
+        
+        /**
+         * This function checks if a table with the specified $id can be opened.
+         * @param int $id
+         * @return boolean Returns true if the table is found.
+         */
+        public static function valid($id) 
+        {
+            $result = false;
+            if (is_numeric($id)) {
+                try {
+                    static::model($id);
+                } catch (\CDbException $e) {
+                    $result = false;
+                }
+            }
+            return $result;
+        }
 
 	}
 

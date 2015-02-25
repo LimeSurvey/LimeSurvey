@@ -82,10 +82,21 @@
 			return $result;
 		}
 
+        public function scopes() {
+            return [
+                'complete' => [
+                    'condition' => 'submitdate IS NOT NULL',
+                ],
+                'incomplete' => [
+                    'condition' => 'submitdate IS NULL'
+                ]
+            ];
+        }
 		public function tableName()
 		{
 			return '{{survey_' . $this->dynamicId . '}}';
 		}
+        
 	}
 
 ?>

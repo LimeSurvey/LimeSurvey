@@ -28,6 +28,12 @@ class Survey extends LSActiveRecord
     /* Set some setting not by default database */
     public $format = 'G';
 
+    public function attributeLabels() {
+        return [
+            
+            'localizedTitle' => 'Title'
+        ];
+    }
     /**
      * init to set default
      *
@@ -155,13 +161,11 @@ class Survey extends LSActiveRecord
     public function relations()
     {
         $alias = $this->getTableAlias();
-        return array(
+        return [
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
-            'questionCount' => [self::STAT, 'Question', 'sid', 'select' => 'COUNT(DISTINCT qid)'],
-            'groupCount' => [self::STAT, 'QuestionGroup', 'sid', 'select' => 'COUNT(DISTINCT gid)']
-        );
+        ];
     }
 
     /**
@@ -334,8 +338,24 @@ class Survey extends LSActiveRecord
         array_unshift($sLanguages,$baselang);
         return $sLanguages;
     }
-
     
+    /**
+     * Returns the status for this survey.
+     * Possible values are:
+     * - inactive
+     * - active
+     * - expired
+     */
+    public function getStatus() {
+        if (!$this->isActive) {
+            $result = 'inactive';
+        } elseif ($this->isExpired()) {
+            $result = 'expired';
+        } else {
+            $result = 'active';
+        }
+        return $result;
+    }
     public function getIsActive() {
         return $this->active != 'N';
     }
@@ -644,5 +664,37 @@ class Survey extends LSActiveRecord
         }
 
         return $result;
+    }
+    
+    /** 
+     * Scope to remove surveys for which the current user doesn't have access.
+     */
+    public function accessible() 
+    {
+        if (!App()->user->checkAccess('superadmin')) {
+            $this->permission(Yii::app()->user->id);
+        }
+        return $this;
+    }
+    
+    public function getCompletedResponseCount() {
+        return $this->isNewRecord || !Response::valid($this->sid) ? 0 : Response::model($this->sid)->complete()->count();
+    }
+    
+    public function getPartialResponseCount() {
+        return $this->isNewRecord || !Response::valid($this->sid) ? 0 : Response::model($this->sid)->incomplete()->count();
+    }
+    
+    public function getResponseCount() {
+        return $this->isNewRecord || !Response::valid($this->sid) ? 0 : Response::model($this->sid)->count();
+    }
+    
+    /**
+     * Returns the response rate of the survey as a float.
+     * @todo We should decide how to define this, a good metric would be sent completed / invitation count
+     * @return float
+     */
+    public function getResponseRate() {
+        return 0;
     }
 }

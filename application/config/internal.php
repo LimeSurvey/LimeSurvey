@@ -42,6 +42,9 @@ $internalConfig = array(
         'bootstrap' => [
             'class' => 'TbApi',
         ],
+        'format' => [
+            'class' => 'LocalizedFormatter'
+        ],
         'clientScript'=> [
             'class' => 'ext.ExtendedClientScript.ExtendedClientScript',
             'combineCss' => false,

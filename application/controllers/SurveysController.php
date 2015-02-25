@@ -27,8 +27,7 @@ use Survey;
 
         public function actionIndex() {
             $this->layout = 'main';
-            $surveys = getSurveyList(true);
-            $this->render('index', ['surveys' => $surveys]);
+            $this->render('index', ['surveys' => new \CActiveDataProvider(Survey::model()->accessible())]);
         }
 
         public function actionPublicList()
