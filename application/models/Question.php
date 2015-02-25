@@ -168,7 +168,7 @@
         function updateQuestionOrder($gid,$language,$position=0)
         {
             $data=Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and','gid=:gid','language=:language'))
+            ->where(array('and','gid=:gid','language=:language', 'parent_qid=0'))
             ->order('question_order, title ASC')
             ->from('{{questions}}')
             ->bindParam(':gid', $gid, PDO::PARAM_INT)
