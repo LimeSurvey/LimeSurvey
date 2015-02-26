@@ -295,7 +295,6 @@ class AdminController extends Controller
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
         $aData['admintheme'] = Yii::app()->getConfig("admintheme");
-        $aData['firebug'] = useFirebug();
 
         if (!empty(Yii::app()->session['dateformat']))
             $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);

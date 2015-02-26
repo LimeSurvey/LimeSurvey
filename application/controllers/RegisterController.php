@@ -440,7 +440,6 @@ class RegisterController extends Controller {
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-            useFirebug();
             $this->render('/register/display',$aViewData);
         }else{
             // urvey/index need renderPartial

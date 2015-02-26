@@ -165,6 +165,8 @@ class Survey extends LSActiveRecord
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
+            
+            'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid']
         ];
     }
 
@@ -458,7 +460,6 @@ class Survey extends LSActiveRecord
         if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)),'attribute_')===false)
         {
             // don't know why yet but this breaks normal tokenAttributes functionning
-            //$attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
         }
         elseif (is_null($attdescriptiondata))
         {

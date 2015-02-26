@@ -27,6 +27,8 @@
         }
         
         public function actionLogin() {
-            $this->render('login');
+            $model = new \befound\ls\ModulePlugin\models\LoginForm;
+            $form = new \TbForm('views.loginForm', $model);
+            $this->render('login', ['form' => $form]);
         }
     }

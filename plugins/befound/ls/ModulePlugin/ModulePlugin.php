@@ -6,7 +6,7 @@
     class ModulePlugin extends \ls\pluginmanager\PluginModule
     {
         public $defaultController = 'dashboard';
-        public $controllerNamespace;
+        public $controllerNamespace = "befound\ls\ModulePlugin\\controllers";
         
         protected $replaceComponents = [
             'user' => [
@@ -23,11 +23,6 @@
             
         ];
         
-        public function init() {
-            parent::init();
-            $this->controllerNamespace = __NAMESPACE__ . '\\controllers';
-        }
-
         /**
          * This function is only called if the active controller belongs to this module.
          */

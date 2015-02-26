@@ -753,7 +753,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 */
 function surveyGetXMLData($iSurveyID, $exclude = array())
 {
-    $xml = getXMLWriter();
+    $xml = new XMLWriter();
     $xml->openMemory();
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
@@ -785,7 +785,7 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
 */
 function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName='', $sFileName='', $bSetIndent=true)
 {
-    $xml = getXMLWriter();
+    $xml = new XMLWriter();
     if ($sFileName=='')
     {
         $xml->openMemory();
@@ -1507,7 +1507,7 @@ function concat()
 function group_export($action, $iSurveyID, $gid)
 {
     $fn = "limesurvey_group_$gid.lsg";
-    $xml = getXMLWriter();
+    $xml = new XMLWriter();
 
     header("Content-Type: application/force-download");
     header("Content-Disposition: attachment; filename=$fn");
@@ -1609,7 +1609,7 @@ function groupGetXMLStructure($xml,$gid)
 function questionExport($action, $iSurveyID, $gid, $qid)
 {
     $fn = "limesurvey_question_$qid.lsq";
-    $xml = getXMLWriter();
+    $xml = new XMLWriter();
 
     header("Content-Type: application/force-download");
     header("Content-Disposition: attachment; filename=$fn");

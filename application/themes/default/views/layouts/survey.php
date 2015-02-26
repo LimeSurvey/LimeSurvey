@@ -101,7 +101,12 @@
 		?>
         <div class="container-fluid">
             <?php $this->widget('TbAlert'); ?>
-            <div id="content">
+            <div id="survey-navigator" class="col-lg-2 col-md-3 col-sm-12">
+                <?php
+                    $this->renderPartial('/global/surveyNavigator');
+                ?>
+            </div>
+            <div id="content" class="col-lg-10 col-md-9 col-sm-12">
             <?php echo $content; ?>
             </div>
             <div id="ajaxprogress" title="Ajax request in progress" style="text-align: center;">

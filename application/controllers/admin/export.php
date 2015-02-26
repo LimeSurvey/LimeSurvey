@@ -897,7 +897,7 @@ class export extends Survey_Common_Action {
         $lids = array_map('sanitize_int', $lids);
 
         $fn = "limesurvey_labelset_" . implode('_', $lids) . ".lsl";
-        $xml = getXMLWriter();
+        $xml = new XMLWriter();
 
         $this->_addHeaders($fn, "application/force-download", "Mon, 26 Jul 1997 05:00:00 GMT", "cache");
 

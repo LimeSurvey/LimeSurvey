@@ -14,6 +14,7 @@
         
         public function init() {
             parent::init();
+            \Yii::setPathOfAlias('views', $this->viewPath);
             $this->module->initIfActive();
         }
     }

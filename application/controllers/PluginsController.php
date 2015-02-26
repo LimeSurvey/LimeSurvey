@@ -140,7 +140,8 @@ class PluginsController extends Controller
         return $this->render('index', [
             'plugins' => $plugins, 
             'authorizers' => $pm->getAuthorizers(), 
-            'authenticators' => $pm->getAuthenticators()
+            'authenticators' => $pm->getAuthenticators(),
+            'modules' => App()->getModules()
         ]);
     }
 

@@ -223,21 +223,21 @@ use Plugin;
          */
         public function loadModulePlugin(PluginConfig $pluginConfig) {
             $id = $pluginConfig->getId();
+            $shortId = strtolower(substr($id, strrpos($id, '_') + 1));
             /* @var ls\pluginmanager\PluginModule $result */
             App()->setModules([
-                $id => [
+                $shortId => [
                     'class' => $pluginConfig->class,
                     'pluginConfig' => $pluginConfig
                 ]
             ]);
-            $module = App()->getModule($id);
+            $module = App()->getModule($shortId);
             
-            $shortId = strtolower(substr($id, strrpos($id, '_') + 1));
-            $rules = [
-                "$shortId/" => $pluginConfig->getId(),
-                "$shortId/<controller>/<action>" => "{$pluginConfig->getId()}/<controller>/<action>"
-            ];
-            App()->urlManager->addRules($rules);
+//            $rules = [
+//                "$shortId/" => $pluginConfig->getId(),
+//                "$shortId/<controller>/<action>" => "{$id}/<controller>/<action>",
+//            ];
+//            App()->urlManager->addRules($rules);
                 
             return $module;
         }

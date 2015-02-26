@@ -20,7 +20,7 @@
                     'brandUrl' => ['moduleplugin'],
                     'brandLabel' => 'LS User Dashboard',
                     'display' => null,
-                    'fluid' => true,
+//                    'fluid' => true,
                     'items' => [
                     [
                         'class' => 'TbNav',
@@ -36,7 +36,7 @@
                 ]);
             }
 		?>
-        <div class="container-fluid">
+        <div class="container">
             <div id="content">
             <?php echo $content; ?>
             </div>

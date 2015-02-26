@@ -35,7 +35,6 @@ class index extends CAction {
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-touch-punch');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-        useFirebug();
 
         ob_start(function($buffer, $phase) {
             App()->getClientScript()->render($buffer);

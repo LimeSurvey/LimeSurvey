@@ -3,7 +3,7 @@ namespace ls\controllers;
 use \Yii;
 class QuestionsController extends Controller 
 {
-    public $layout = 'main';
+    public $layout = 'survey';
     public function actionView($id) {
         $this->question = $this->loadModel($id);
         $this->survey = $this->question->survey;
@@ -13,7 +13,7 @@ class QuestionsController extends Controller
     }
     
     protected function loadModel($id) {
-        return Question::model()->findByAttributes([
+        return \Question::model()->findByAttributes([
             'qid' => $id,
             'language' => App()->language
             

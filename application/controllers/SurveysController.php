@@ -40,7 +40,7 @@ use Survey;
         }
         
         public function actionView($id) {
-            $this->layout = 'main';
+            $this->layout = 'survey';
             $survey = $this->loadModel($id);
             $this->survey = $survey;
             $this->render('view', ['survey' => $survey]);

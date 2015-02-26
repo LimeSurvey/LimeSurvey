@@ -29,6 +29,9 @@
             "application/vendor/yiisoft/yii/framework/cli/commands"
         ],
         "psr-4" : {
+            "ls\\migrations\\" : [
+                "application/migrations"
+            ],
             "ls\\cli\\" : [
                 "application/commands"
             ],

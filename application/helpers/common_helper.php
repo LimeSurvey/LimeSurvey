@@ -4608,45 +4608,6 @@ function getEmailFormat($surveyid)
 
 }
 
-// Check if user has manage rights for a template
-function hasTemplateManageRights($userid, $templatefolder) {
-    $userid=sanitize_int($userid);
-    $templatefolder=sanitize_paranoid_string($templatefolder);
-    return Permission::model()->hasTemplatePermission($templatefolder, 'read', $userid);
-}
-
-/**
-* This function creates an incrementing answer code based on the previous source-code
-*
-* @param mixed $sourcecode The previous answer code
-*/
-function getNextCode($sourcecode)
-{
-    $i=1;
-    $found=true;
-    $foundnumber=-1;
-    while ($i<=strlen($sourcecode) && $found)
-    {
-        $found=is_numeric(substr($sourcecode,-$i));
-        if ($found)
-        {
-            $foundnumber=substr($sourcecode,-$i);
-            $i++;
-        }
-    }
-    if ($foundnumber==-1)
-    {
-        return($sourcecode);
-    }
-    else
-    {
-        $foundnumber++;
-        $result=substr($sourcecode,0,strlen($sourcecode)-strlen($foundnumber)).$foundnumber;
-        return($result);
-    }
-
-}
-
 /**
 * Translate links which are in any answer/question/survey/email template/label set to their new counterpart
 *
@@ -4716,8 +4677,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 }
 
 /**
-* put your comment there...
-*
+* @todo Move this to the Survey model.
 * @param mixed $id
 * @param mixed $type
 */
@@ -4847,20 +4807,6 @@ function filterForAttributes ($fieldname)
     if (strpos($fieldname,'attribute_')===false) return false; else return true;
 }
 
-/**
-* Retrieves the attribute field names from the related token table
-*
-* @param mixed $iSurveyID  The survey ID
-* @return array The fieldnames
-*/
-function GetAttributeFieldNames($iSurveyID)
-{
-    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
-        return Array();
-
-    return array_filter(array_keys($table->columns), 'filterForAttributes');
-
-}
 
 /**
 * Returns the full list of attribute token fields including the properties for each field
@@ -4875,22 +4821,6 @@ function GetParticipantAttributes($iSurveyID)
     return getTokenFieldsAndNames($iSurveyID,true);
 }
 
-
-
-
-
-/**
-* Retrieves the token field names usable for conditions from the related token table
-*
-* @param mixed $surveyid  The survey ID
-* @return array The fieldnames
-*/
-function getTokenConditionsFieldNames($surveyid)
-{
-    $extra_attrs=getAttributeFieldNames($surveyid);
-    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
-    return array_merge($basic_attrs,$extra_attrs);
-}
 
 /**
 * Retrieves the attribute names from the related token table
@@ -4988,25 +4918,6 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
     }
 }
 
-/**
-* Retrieves the token attribute value from the related token table
-*
-* @param mixed $surveyid  The survey ID
-* @param mixed $attrName  The token-attribute field name
-* @param mixed $token  The token code
-* @return string The token attribute value (or null on error)
-*/
-function getAttributeValue($surveyid,$attrName,$token)
-{
-    $attrName=strtolower($attrName);
-    if (!tableExists('tokens_'.$surveyid))
-    {
-        return null;
-    }
-
-    $token = Token::model($surveyid)->findByAttributes(array("token"=>$token));
-    return isset($token->$attrName) ? $token->$attrName : null;
-}
 
 /**
 * This function strips any content between and including <javascript> tags
@@ -5058,14 +4969,6 @@ function cleanTempDirectory()
     }
     closedir($dp);
 }
-
-function useFirebug()
-{
-    if(FIREBUG == true)
-    {
-        App()->getClientScript()->registerScriptFile('http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js');
-    };
-};
 
 /**
 * This is a convenience function for the coversion of datetime values
@@ -5192,20 +5095,6 @@ function updateCheck()
 }
 
 /**
-* Return the goodchars to be used when filtering input for numbers.
-*
-* @param $lang     string    language used, for localisation
-* @param $integer    bool    use only integer
-* @param $negative    bool    allow negative values
-*/
-function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
-    $goodchars = "0123456789";
-    if ($integer === false) $goodchars .= ".";    //Todo, add localisation
-    if ($negative === true) $goodchars .= "-";    //Todo, check databases
-    return $goodchars;
-}
-
-/**
 * This function returns the complete directory path to a given template name
 *
 * @param mixed $sTemplateName
@@ -5308,19 +5197,6 @@ function getSubQuestions($sid, $qid, $sLanguage) {
     }
     if (isset($subquestions[$sid][$sLanguage][$qid])) return $subquestions[$sid][$sLanguage][$qid];
     return array();
-}
-
-/**
-* Wrapper function to retrieve an xmlwriter object and do error handling if it is not compiled
-* into PHP
-*/
-function getXMLWriter() {
-    if (!extension_loaded('xmlwriter')) {
-        safeDie('XMLWriter class not compiled into PHP, please contact your system administrator');
-    } else {
-        $xmlwriter = new XMLWriter();
-    }
-    return $xmlwriter;
 }
 
 /**

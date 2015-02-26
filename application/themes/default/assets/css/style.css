@@ -16,3 +16,12 @@ Stuff for alerts.
 #ajaxprogress {
     display: none;
 }
+
+
+#survey-navigator .group {
+    font-size: 150%;
+}
+
+#survey-navigator .question {
+    padding-left: 30px;
+}

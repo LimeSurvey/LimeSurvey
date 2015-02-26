@@ -1,2 +1,2 @@
-Login to the limesurvey participant backend!
 <?php
+    echo $form->render();
