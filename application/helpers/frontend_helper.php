@@ -2057,10 +2057,8 @@ function checkCompletedQuota($surveyid,$return=false)
 *
 * @param mixed $mail
 * @param mixed $text
-* @param mixed $class
-* @param mixed $params
 */
-function encodeEmail($mail, $text="", $class="", $params=array())
+function encodeEmail($mail, $text="")
 {
     $encmail ="";
     for($i=0; $i<strlen($mail); $i++)

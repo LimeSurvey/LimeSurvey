@@ -81,24 +81,47 @@ class DevController extends \CController {
         
     }
     public function actionMigrateTest() {
-        var_dump(App()->migrationManager->migrationHistory);
-        $migrations  = App()->migrationManager->newMigrations;
-        if (!empty($migrations)) {
-            App()->migrationManager->migrateUp($migrations[0]);
+        App()->loadHelper('globalsettings');
+        var_dump(getUpdateInfo());
+        $zip = new \ZipArchive();
+        $zip->open('/tmp/ziptest.zip');
+        
+        // Hashes:
+        $hashesFrom = [];
+        $hashesTo = [];
+        $count = $zip->numFiles;
+        $start = microtime(true);
+        for ($i = 0; $i < $count; $i++) {
+            $hashesTo[$zip->getNameIndex($i)] = md5($zip->getFromIndex($i));
         }
         
+        for ($i = 0; $i < $count; $i++) {
+            $hashesFrom[$zip->getNameIndex($i)] = md5($zip->getFromIndex($i));
+        }
         
-        return;
-        $commandPath = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'commands';
-        $runner = new \CConsoleCommandRunner();
-        $runner->addCommands($commandPath);
-        $commandPath = Yii::getFrameworkPath() . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR . 'commands';
-        $runner->addCommands($commandPath);
-        $args = array('web', 'migrate', '--interactive=0');
-        ob_start();
-        $result = $runner->run($args);
-        echo '<pre>' . htmlentities(ob_get_clean(), null, Yii::app()->charset);
-        echo "Exit code: $result";
+        // Deleted files:
+        $deleted = array_diff_key($hashesFrom, $hashesTo);
+        
+        // Created files:
+        $created = array_diff_key($hashesTo, $hashesFrom);
+        
+        // Changed files:
+        $changed = [];
+        foreach($hashesFrom as $file => $hash) {
+            if (isset($hashesTo['file']) && $hashesTo['file'] != $hash) {
+                $changed[$file] = $hash;
+            }
+        }
+        
+        var_dump($deleted);
+        var_dump($created);
+        var_dump($changed);
+        var_dump($zip->numFiles);
+        
+        $end = microtime(true) - $start;
+        var_dump($end);
+
+        
     }
     
     public function actionModule() {

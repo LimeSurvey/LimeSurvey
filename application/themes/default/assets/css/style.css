@@ -25,3 +25,25 @@ Stuff for alerts.
 #survey-navigator .question {
     padding-left: 30px;
 }
+
+/*
+    Maintenance mode.
+
+*/
+body.maintenance:before {
+    content: "Maintenance mode active";
+    top: 0px;
+    z-index: 1000;
+    text-align: center;
+    position: fixed;
+    font-size: 30px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+    text-transform: uppercase;
+    background-color: rgba(255, 0, 0, 1);
+}
+
+body.maintenance {
+    padding-top: 50px;
+}

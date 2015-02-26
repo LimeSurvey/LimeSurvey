@@ -28,8 +28,7 @@
             ));
         }
     }
-    if(empty($list))
-    {
+    if(empty($list)) {
         $list=CHtml::openTag('li',array('class'=>'surveytitle')).gT("No available surveys").CHtml::closeTag('li');
     }
     echo $list;
@@ -44,5 +43,4 @@
     );
     
     $data['languagechanger'] = makeLanguageChanger(App()->language);
-
-?>
+    echo App()->format->format(trim(App()->getConfig("siteadminemail")), 'email');

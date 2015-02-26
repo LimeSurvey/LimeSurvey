@@ -5021,7 +5021,7 @@ function getUpdateInfo()
         'id' => md5(getGlobalSetting('SessionName')),
         'crosscheck' => 'true' // Passed as string, should be changed.
     ), '=', '&');
-    
+    var_dump($url);
     $opts = [
         'http' => [
             'method' => 'GET',

@@ -6,8 +6,6 @@
         <link rel="shortcut icon" href="<?php echo App()->theme->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="<?php echo App()->theme->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <?php
-			$this->widget('ext.LimeScript.LimeScript');
-			$this->widget('ext.LimeDebug.LimeDebug');
 			App()->bootstrap->register();
             App()->clientScript->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 		?>

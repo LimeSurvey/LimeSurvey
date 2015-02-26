@@ -1040,7 +1040,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _generalTabNewSurvey()
     {
-        $owner = App()->user->attributes;
+        $owner = App()->user->model->attributes;
         //Degrade gracefully to $siteadmin details if anything is missing.
         if (empty($owner['full_name']))
             $owner['full_name'] =  getGlobalSetting('siteadminname');

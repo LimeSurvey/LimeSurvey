@@ -8,25 +8,31 @@ class MigrationManager extends \CApplicationComponent
 {
     const BASE_MIGRATION='m000000_000000_base';
     public $migrationTable = 'tbl_migration';
-    public $migrationPath = __DIR__ . '/../migrations';
+    /**
+     *
+     * @var string[] The paths to folders containing migrations.
+     */
+    public $migrationPaths = [__DIR__ . '/../migrations'];
     
     protected function getNewMigrations()
 	{
-		$applied=array();
-		foreach($this->getMigrationHistory(-1) as $version=>$time)
-			$applied[substr($version,1,13)]=true;
+		$applied = [];
+		foreach($this->migrationHistory as $version => $time)
+			$applied[substr($version,1,13)] = true;
 
-		$migrations=array();
-		$handle=opendir($this->migrationPath);
-		while(($file=readdir($handle))!==false)
-		{
-			if($file==='.' || $file==='..')
-				continue;
-			$path=$this->migrationPath.DIRECTORY_SEPARATOR.$file;
-			if(preg_match('/^(m(\d{6}_\d{6})_.*?)\.php$/',$file,$matches) && is_file($path) && !isset($applied[$matches[2]]))
-				$migrations[]=$matches[1];
-		}
-		closedir($handle);
+		$migrations = [];
+        foreach ($this->migrationPaths as $migrationPath) {
+            $handle = opendir($migrationPath);
+            while(($file=readdir($handle))!==false)
+            {
+                if($file==='.' || $file==='..')
+                    continue;
+                $path = "$migrationPath/$file";
+                if(preg_match('/^(m(\d{6}_\d{6})_.*?)\.php$/',$file,$matches) && is_file($path) && !isset($applied[$matches[2]]))
+                    $migrations[]=$matches[1];
+            }
+            closedir($handle);
+        }
 		sort($migrations);
 		return $migrations;
 	}
@@ -73,8 +79,7 @@ class MigrationManager extends \CApplicationComponent
 		
         echo "*** applying $class\n";
         
-        sleep(5);
-		$start = microtime(true);
+        $start = microtime(true);
 		$migration = $this->instantiateMigration($class);
 		if($migration->up()!== false){
 			App()->db->createCommand()->insert($this->migrationTable, [
@@ -96,7 +101,10 @@ class MigrationManager extends \CApplicationComponent
     
     protected function instantiateMigration($class)
 	{
-        $class = "\\ls\\migrations\\" . $class;
+        // If classname is unqualified we prefix it.
+        if (strpos($class, '\\') === false) {
+            $class = "\\ls\\migrations\\" . $class;
+        }
 		$migration=new $class;
 		$migration->setDbConnection(App()->db);
 		return $migration;

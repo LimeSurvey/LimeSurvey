@@ -4,7 +4,6 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <?php
-			$this->widget('ext.LimeScript.LimeScript');
 			App()->bootstrap->register();
             App()->clientScript->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 		?>
@@ -12,7 +11,13 @@
         <link rel="icon" href="<?php echo App()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <title>Limesurvey Administration</title>
     </head>
-    <body class="layout-minimal">
+    <?php
+        $bodyClasses = "layout-minimal";
+        if (App()->maintenanceMode) {
+            $bodyClasses .= " maintenance";
+        }
+    ?>
+    <body class="<?=$bodyClasses; ?>">
         <div style="position: absolute; top: 5px; right: 5px;">
             <?php echo TbHtml::link('Login', ['users/login']); ?> 
         </div>

@@ -11,29 +11,6 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-//Ensure script is not run directly, avoid path disclosure
-//if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
-injectglobalsettings();
-
-
-function injectglobalsettings()
-{
-	$settings = SettingGlobal::model()->findAll();
-
-    //if ($dbvaluearray!==false)
-    if (count($settings) > 0)
-    {
-        //foreach  ($dbvaluearray as $setting)
-        foreach ($settings as $setting)
-        {
-            //if (Yii::app()->getConfig($setting->getAttribute('stg_name')) !== false)
-            //{
-                //$$setting['stg_name']=$setting['stg_value'];
-                Yii::app()->setConfig($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
-            //}
-        }
-    }
-}
 
 function getGlobalSetting($settingname)
 {
@@ -72,20 +49,8 @@ function setGlobalSetting($settingname, $settingvalue)
         return; //don't save
     }
 
-	if ($record = SettingGlobal::model()->findByPk($settingname))
-	{
-		$record->stg_value = $settingvalue;
-		$record->save();
-	}
-	else
-	{
-		$record = new SettingGlobal;
-		$record->stg_name = $settingname;
-		$record->stg_value = $settingvalue;
-		$record->save();
-	}
-
-    Yii::app()->setConfig($settingname, $settingvalue);
+    SettingGlobal::set($settingname, $settingvalue);
+    App()->setConfig($settingname, $settingvalue);
 }
 
 ?>

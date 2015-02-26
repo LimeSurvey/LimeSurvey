@@ -19,6 +19,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 /**
  * Implements global  config
  * @property CLogRouter $log Log router component.
+ * @property LocalizedFormatter $format
  * @property \ls\pluginmanager\PluginManager $pluginManager 
  * @property WebUser $user
  */
@@ -38,6 +39,25 @@ class WebApplication extends CWebApplication
     
     protected $_supportedLanguages;
     
+    public function getMaintenanceMode() {
+        return file_exists(__DIR__ . '/../config/MAINTENANCE');
+    }
+    public function setMaintenanceMode($value) {
+        @unlink(__DIR__ . '/../config/MAINTENANCE');
+    }
+    
+    public function onBeginRequest($event) {
+        parent::onBeginRequest($event);
+        /**
+         * Add support for maintenance mode.
+         */
+        if ($this->maintenanceMode) {
+            $this->catchAllRequest = [
+                'upgrade'
+            ];
+        }
+        return true;
+    }
     public function setSupportedLanguages($value) {
         foreach($value as $code => $language) {
             $language['code'] = $code;
@@ -75,7 +95,7 @@ class WebApplication extends CWebApplication
 
 	public function init() {
 		parent::init();
-        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
+        $this->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
 		Yii::import('application.helpers.ClassFactory');

@@ -595,6 +595,7 @@ class update extends Survey_Common_Action
     */
     function db($continue = null)
     {
+        throw new Exception('check for db upgrades here?!');
         Yii::app()->loadHelper("update/update");
         if(isset($continue) && $continue=="yes")
         {
