@@ -4722,10 +4722,10 @@ function XSSFilterArray(&$array)
     if(Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'))
     {
         $filter = new CHtmlPurifier();
-        $filter->options = array('URI.AllowedSchemes'=>array(
+        $filter->setOptions(array('URI.AllowedSchemes'=>array(
         'http' => true,
         'https' => true,
-        ));
+        )));
         foreach($array as &$value)
         {
             $value = $filter->purify($value);
