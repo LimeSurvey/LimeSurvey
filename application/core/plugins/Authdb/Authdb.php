@@ -131,13 +131,19 @@ class Authdb extends AuthPluginBase
         $onepass  = $this->getOnePass();
 
         $user = $this->api->getUserByName($username);
+        if ($user === null)
+        {
+            // If the user doesnt exist in the LS database, he can not login
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+            return;
+        }
 
         if ($user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
         {
             $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed to this user'));
             return;
         }
-        if ($user !== null and $username==$user->users_name) // Control of equality for uppercase/lowercase with mysql
+        if ($username==$user->users_name) // Control of equality for uppercase/lowercase with mysql
         {
             if (gettype($user->password)=='resource')
             {

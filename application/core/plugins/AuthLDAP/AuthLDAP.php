@@ -345,19 +345,18 @@ class AuthLDAP extends AuthPluginBase
         $password = $this->getPassword();
 
         $user = $this->api->getUserByName($username);
-
-        if ($user->uid == 1 || !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid))
-        {
-            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed to this user'));
-            return;
-        }
-        if ($user === null && $this->autoCreate === false)
+        if ($user === null)
         {
             // If the user doesnt exist in the LS database, he can not login
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
 
+        if ($user->uid == 1 || !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid))
+        {
+            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed to this user'));
+            return;
+        }
         if (empty($password))
         {
             // If password is null or blank reject login
