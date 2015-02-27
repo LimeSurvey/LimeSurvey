@@ -206,6 +206,31 @@ $config['auth_webserver_autocreate_permissions'] = Array(
 //			'htmleditormode' => 'inline');
 //}
 
+//hook_get_auth_webserver_permissions
+// The optionnal 'hook_get_auth_webserver_permissions' function is for advanced user usage only.
+// It is used to customize the permissions of the imported user
+// If set, the this function will overwrite the auth_webserver_autocreate_permissions
+// defined above by its return value
+//
+// You can use any external DB in order to build permissions for the user_name passed as the first parameter
+// A dummy example for the 'hook_get_auth_webserver_permissions' function is given below:
+//
+//function hook_get_auth_webserver_permissions($user_name)
+//{
+//    if ($user_name === "dani")
+//    {
+//        return Array('superadmin' => Array('read'=>true));
+//    } else {
+//        return Array(
+//            'surveys' => array(
+//                'create'=>true,
+//                'read'=>true,
+//                'update'=>true,
+//                'delete'=>true)
+//        );
+//    }
+//}
+
 
 // filterxsshtml
 // Enables filtering of suspicious html tags in survey, group, questions
