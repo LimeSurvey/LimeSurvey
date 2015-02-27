@@ -1,6 +1,7 @@
 // $Id: subquestions.js 9692 2011-01-15 21:31:10Z c_schmitz $
 var labelcache=[];
 $(document).ready(function(){
+    console.log(otherisreserved);
     removeCSRFDivs();
     $(document).on("click","#editsubquestionsform :submit", function() {//Validate duplicate before try to submit: surely some other javascript elsewhere
         return code_duplicates_check();
@@ -253,9 +254,8 @@ function code_duplicates_check()
             $notifycontainer.notify("create", 'error-notify', { message:duplicatesubquestioncode});
             cansubmit= false;
         }
-        if ($.inArray('other', codearray)!=-1)
+        if (otherisreserved && $.inArray('other', codearray)!=-1)
         {
-            //alert(otherisreserved);
             $notifycontainer.notify("create", 'error-notify', { message:otherisreserved});
             cansubmit= false;
         }

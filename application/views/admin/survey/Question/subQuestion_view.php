@@ -10,7 +10,7 @@
     var duplicatesubquestioncode='<?php eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
     var strNoLabelSet='<?php eT('There are no label sets which match the survey default language','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
-    var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.",'js'); ?>';
+    var otherisreserved='<?php ($aParentQuestion['other']=="Y") ? printf(gT("'%s' can not be used if question allow other.",'js'),'other') : ""; ?>';
     var sImageURL ='<?php echo Yii::app()->getConfig('adminimageurl'); ?>';
     var saveaslabletitle  = '<?php eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';

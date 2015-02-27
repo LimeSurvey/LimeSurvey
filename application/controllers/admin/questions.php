@@ -448,9 +448,9 @@ class questions extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $resultrow = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
+        $aParentQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
 
-        $sQuestiontype = $resultrow['type'];
+        $sQuestiontype = $aParentQuestion['type'];
         $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
         $iScaleCount = $aQuestiontypeInfo[$sQuestiontype]['subquestions'];
 
@@ -597,6 +597,7 @@ class questions extends Survey_Common_Action
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
+        $aData['aParentQuestion'] = $aParentQuestion;
         $aData['anslangs'] = $anslangs;
         $aData['maxsortorder'] = $maxsortorder;
 
@@ -1270,6 +1271,7 @@ EOD;
             }
         }
         $oQuestion->title=App()->request->getParam('title');
+        $oQuestion->other=App()->request->getParam('other');
         $oQuestion->validate();
 
         header('Content-type: application/json');

@@ -62,7 +62,7 @@
         */
         public function relations()
         {
-			$alias = $this->getTableAlias();
+            $alias = $this->getTableAlias();
             return array(
                 'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
@@ -107,8 +107,20 @@
                                         )
                                     ),
                                 'message' => gT('Subquestion codes must be unique.'));
+                // Disallow other title if question allow other
+                $oParentQuestion=Question::model()->findByPk(array("qid"=>$this->parent_qid,'language'=>$this->language));
+                if($oParentQuestion->other=="Y")
+                    $aRules[]= array('title', 'compare','compareValue'=>'other','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if question allow other."),"other"), 'except' => 'archiveimport');
             }
-            if($this->qid && $this->language)
+            else
+            {
+                // Disallow other if sub question have 'other' for title
+                $oSubquestionOther=Question::model()->find("parent_qid=:parent_qid and title='other'",array("parent_qid"=>$this->qid));
+                if($oSubquestionOther)
+                    $aRules[]= array('other', 'compare','compareValue'=>'Y','operator'=>'!=', 'message'=> sprintf(gT('Question can not allow other with a sub question code %s.'),'other'), 'except' => 'archiveimport' );
+
+            }
+            if(!$this->isNewRecord)
             {
                 $oActualValue=Question::model()->findByPk(array("qid"=>$this->qid,'language'=>$this->language));
                 if($oActualValue && $oActualValue->title==$this->title)
@@ -131,6 +143,7 @@
             else
             {
                 $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
+
             }
 
             return $aRules;
@@ -168,7 +181,7 @@
         function updateQuestionOrder($gid,$language,$position=0)
         {
             $data=Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and','gid=:gid','language=:language', 'parent_qid=0')
+            ->where(array('and','gid=:gid','language=:language', 'parent_qid=0'))
             ->order('question_order, title ASC')
             ->from('{{questions}}')
             ->bindParam(':gid', $gid, PDO::PARAM_INT)
