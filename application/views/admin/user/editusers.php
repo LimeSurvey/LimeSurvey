@@ -128,11 +128,22 @@
 <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','create')) { ?>
     <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post');?>            
         <table class='users'><tr class='oddrow'>
-                <th><?php $clang->eT("Add user:");?></th>
-                <td style='width:20%'><input type='text' name='new_user' /></td>
-                <td style='width:20%'><input type='text' name='new_email' /></td>
-                <td style='width:20%'><input type='text' name='new_full_name' /></td><td style='width:8%'>&nbsp;</td>
-                <td style='width:15%'><input type='submit' value='<?php $clang->eT("Add user");?>' />
-                    <input type='hidden' name='action' value='adduser' /></td>
+                <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
+                          echo "<td style='width:15%'>";
+                          echo CHtml::dropDownList('user_type', 'DB', array('DB' => gT("Internal database authentication"), 'LDAP' => gT("LDAP authentication")));
+                          echo "</td>";
+                      }
+                      else
+                      {
+                          echo "<td style='width:15%'>&nbsp;</td>";
+                          echo "<input type='hidden' id='user_type' name='user_type' value='DB'/>";
+                      }
+                ?>
+                <td style='width:20%'><input type='text' id='new_user' name='new_user' /></td>
+                <td style='width:20%'><input type='text' id='new_email' name='new_email' /></td>
+                <td style='width:20%'><input type='text' id='new_full_name' name='new_full_name' /></td>
+                <td style='width:20%'><input type='submit' value='<?php $clang->eT("Add user");?>' />
+                <input type='hidden' name='action' value='adduser' /></td>
+                <td style='width:5%'>&nbsp;</td>
             </tr></table></form><br />
-    <?php } ?>
+<?php } ?>
