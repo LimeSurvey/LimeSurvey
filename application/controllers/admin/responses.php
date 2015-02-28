@@ -351,7 +351,6 @@ class responses extends Survey_Common_Action
         // The first few colums are fixed.
         $column_model[] = array('name' => 'actions',   'model_name' => 'Actions',     'index'          => 'actions',     'sorttype' => 'string', 'sortable' => false, 'width' => '100', 'align' => 'left', 'editable' => false, 'search' => false);
         $fields = createFieldMap($iSurveyID,'full', true, false, $aData['language']);
-        tracevar($fields);
         // Specific columns at start
         $column_model[] = array(
             'name'=>'id',
@@ -561,9 +560,7 @@ class responses extends Survey_Common_Action
         //Get the filter data
         if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
             $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
-        if (!is_null(Yii::app()->request->getParam('token'))) {
-            $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
-        }
+
         $aKnowColumns=array_keys(SurveyDynamic::model($iSurveyID)->attributes);
         if($bHaveToken){
             $aKnowColumns[]='firstname';
@@ -597,6 +594,8 @@ class responses extends Survey_Common_Action
             {
                 if($value=Yii::app()->request->getParam($sFiltering))
                 {
+                    if($sFiltering=='token')
+                        $sFiltering='tokens.token';
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sFiltering),$value,true);
                 }
             }
