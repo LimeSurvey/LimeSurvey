@@ -230,9 +230,9 @@ $(function() {
             }
         }
     );
-    /* Grid resize : needed ? */
+    /* Grid resize : only heigth ? */
     jQuery("#displayresponses").jqGrid('gridResize', {
-        minWidth : 1400,
+        handles: "n, s",
         minHeight : 100
     });
 

@@ -339,37 +339,76 @@ class responses extends Survey_Common_Action
         extract($aData);
         $aViewUrls = array();
         $oBrowseLanguage = $aData['language'];
-
+        // Some specific column
+        $aSpecificColumns=array(
+            'submitdate', // Replaced by completed : TODO : add it if is a real date
+            'token', // Replaced by tokens.token
+            'id', // Allways adding it at start
+            'lastpage', // AFter id, before completed
+        );
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         $column_model = array();
         // The first few colums are fixed.
         $column_model[] = array('name' => 'actions',   'model_name' => 'Actions',     'index'          => 'actions',     'sorttype' => 'string', 'sortable' => false, 'width' => '100', 'align' => 'left', 'editable' => false, 'search' => false);
-
-        // All other columns are based on the questions.
+        $fields = createFieldMap($iSurveyID,'full', true, false, $aData['language']);
+        tracevar($fields);
+        // Specific columns at start
+        $column_model[] = array(
+            'name'=>'id',
+            'model_name'=>"<strong class='qcode'>id</strong><span class='questiontext'>".viewHelper::getFieldText($fields['id'],array('abbreviated'=>10))."</span>",
+            'index'=>'id',
+            'sorttype'=>'integer',
+            'sortable'=>true, 'width'=>'100',
+            'align'=>'center',
+            'editable'=>false,
+            'title'=>viewHelper::getFieldText($fields['id']),
+            );
+        $column_model[] = array(
+            'name'=>'lastpage',
+            'model_name'=>"<strong class='qcode'>lastpage</strong><span class='questiontext'>".viewHelper::getFieldText($fields['lastpage'],array('abbreviated'=>10))."</span>",
+            'index'=>'id',
+            'sorttype'=>'integer',
+            'sortable'=>true, 'width'=>'100',
+            'align'=>'center',
+            'editable'=>false,
+            'title'=>viewHelper::getFieldText($fields['lastpage']),
+            );
+        $column_model[] = array(
+            'name' => 'completed',
+            'model_name'=>gt('Completed'),
+            'index'=>'completed',
+            'sorttype'=>'string',
+            'sortable'=>true,
+            'width'=>'100',
+            'align'=>'center',
+            'editable'=> false
+        );
 
         //add token to top of list if survey is not private
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
         {
-            $column_model[] = array('name'=>'token', 'model_name'=>'Token', 'index'=>'token', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
-            $column_model[] = array('name'=>'firstname','model_name'=>gt('First name'), 'index'=>'firstname', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
-            $column_model[] = array('name'=>'lastname', 'model_name'=>gt('Last Name'), 'index'=>'lastname', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
-            $column_model[] = array('name'=>'email', 'model_name'=>gt('Email'), 'index'=>'email', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
+            $column_model[] = array(
+                'name'=>'token',
+                'model_name'=>"<strong class='qcode'>token</strong><span class='questiontext'>".gt('Token')."</span>",
+                'index'=>'token',
+                'sorttype'=>'string',
+                'sortable'=>true, 'width'=>'100',
+                'align'=>'left',
+                'editable'=>false
+                );
+            $column_model[] = array('name'=>'firstname','model_name'=>"<strong class='qcode'>firstname</strong><span class='questiontext'>".gt('First name')."</span>", 'index'=>'firstname', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
+            $column_model[] = array('name'=>'lastname', 'model_name'=>"<strong class='qcode'>lastname</strong><span class='questiontext'>".gt('Last Name')."</span>", 'index'=>'lastname', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
+            $column_model[] = array('name'=>'email', 'model_name'=>"<strong class='qcode'>email</strong><span class='questiontext'>".gt('Email')."</span>", 'index'=>'email', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
         }
 
-        $column_model[] = array('name' => 'completed', 'model_name'=>gt('Completed'), 'index'=>'completed', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=> false);
 
-        $fields = createFieldMap($iSurveyID,'full', true, false, $aData['language']);
-        // AN array to control unicity of $code (EM code)
+        // All other columns are based on the questions.
+        // An array to control unicity of $code (EM code)
         $aCodes=array();
         foreach ($fields as $fielddetails)
         {
-            if ($fielddetails['fieldname'] == 'lastpage' || $fielddetails['fieldname'] == 'submitdate')
+            if(in_array($fielddetails['fieldname'],$aSpecificColumns))
                 continue;
-
-            // Issue_9207 - Excluded token to prevent it from being included twice in the table.
-            if ($fielddetails['fieldname'] == 'token')
-                continue;
-
 
             // no headers for time data
             if ($fielddetails['type'] == 'interview_time')
@@ -477,7 +516,7 @@ class responses extends Survey_Common_Action
             Yii::app()->end();
         }
         $aData = $this->_getData($iSurveyID);
-
+        $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read');
         extract($aData);
         $aViewUrls = array();
         $oBrowseLanguage = $aData['language'];
@@ -485,64 +524,20 @@ class responses extends Survey_Common_Action
         $sImageURL 	= Yii::app()->getConfig('adminimageurl');
 
         $fnames = array();
-        //add token to top of list if survey is not private
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
-        {
-            $fnames[] = array("token", "Token", gT("Token ID"), 0);
-            $fnames[] = array("firstname", "First name", gT("First name"), 0);
-            $fnames[] = array("lastname", "Last name", gT("Last name"), 0);
-            $fnames[] = array("email", "Email", gT("Email"), 0);
-        }
-
+        $aSpecificColumns=array(
+            'submitdate', // Replaced by completed : TODO : add it if is a real date
+            'token', // Replaced by tokens.token
+            'id', // Allways adding it at start
+            'lastpage',
+            // Token columns
+            'firstname',
+            'lastname',
+            'email',
+        );
         $fields = createFieldMap($iSurveyID, 'full', true, false, $aData['language']);
-
-        foreach ($fields as $q)
-        {
-            if ($q['fieldname'] == 'lastpage' ||
-                $q['fieldname'] == 'submitdate' ||
-                $q['fieldname'] == 'token')
-                continue;
-
-            $question = $q['title'];
-            if (!is_a($q, 'QuestionModule') || !$q->fileUpload())
-            {
-                if (isset($q->sq) && $q->sq != '')
-                    $question .=' (' . $q->sq . ')';
-                if (isset($q->sq1) && isset($q->sq2))
-                    $question .=' (' . $q->sq1 . ':' . $q->sq2 . ')';
-                if (isset($q->scale))
-                    $question .='[' . $q->scale . ']';
-                $fnames[] = array($q['fieldname'], $question);
-            }
-            else
-            {
-                if ($q->aid !== 'filecount')
-                {
-                    $qidattributes = $q->getAttributeValues();
-
-                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-                    {
-                        if ($qidattributes['show_title'] == 1)
-                            $fnames[] = array($q['fieldname'], "File " . ($i + 1) . " - " . $q['title'] . "(Title)", "title", $i);
-
-                        if ($qidattributes['show_comment'] == 1)
-                            $fnames[] = array($q['fieldname'], "File " . ($i + 1) . " - " . $q['title'] . "(Comment)", "comment", $i);
-
-                        $fnames[] = array($q['fieldname'], "File " . ($i + 1) . " - " . $q['title'] . "(File name)", "name", $i);
-                        $fnames[] = array($q['fieldname'], "File " . ($i + 1) . " - " . $q['title'] . "(File size)", "size", $i);
-                    }
-                }
-                else
-                    $fnames[] = array($q['fieldname'], "File count");
-            }
-        }
-
 
         // Get the survey responses
 
-        // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // issue_9207 - added join of survey table with token table.
-        // ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         $sOrder=Yii::app()->request->getPost('sord') == 'desc' ? 'desc' : 'asc';
         $sOrderBy=Yii::app()->request->getPost('sidx','id');
         $iPage=Yii::app()->request->getPost('page',1);
@@ -570,8 +565,11 @@ class responses extends Survey_Common_Action
             $oCriteria->addCondition('t.token = ' . Yii::app()->db->quoteValue($tokenRequest));
         }
         $aKnowColumns=array_keys(SurveyDynamic::model($iSurveyID)->attributes);
-        // Fix $sOrderBy : add firstname/lastnamle and some other
-        
+        if($bHaveToken){
+            $aKnowColumns[]='firstname';
+            $aKnowColumns[]='lastname';
+            $aKnowColumns[]='email';
+        }
         switch ($sOrderBy)
         {
             case 'completed':
@@ -640,35 +638,38 @@ class responses extends Survey_Common_Action
 
             $aSurveyEntry[] = '<!--a-->' . $action_html;
 
-            // /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // issue_9207 - added token fields for non-anon surveys.
-            // /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // If the survey is not anonymized, then add the token, firstname, lastname and email fields to the table
-            if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
-            {
-                $aSurveyEntry[] = $row['token'];
-                $aSurveyEntry[] = $row['firstname'];
-                $aSurveyEntry[] = $row['lastname'];
-                $aSurveyEntry[] = $row['email'];
-            }
+            $aSurveyEntry[] = $row['id'];
+            $aSurveyEntry[] = $row['lastpage'];
             // completed
             $aSurveyEntry[] = empty($row['submitdate'])?'N':'Y';
-            // id
-            $aSurveyEntry[] = $row['id'];
+
+            if ($bHaveToken)
+            {
+                $aSurveyEntry[] = strip_tags($row['token']);
+                $aSurveyEntry[] = strip_tags($row['firstname']);
+                $aSurveyEntry[] = strip_tags($row['lastname']);
+                $aSurveyEntry[] = strip_tags($row['email']);
+            }
+
+
             // startlanguage
-            $aSurveyEntry[] = $row['startlanguage'];
+            //$aSurveyEntry[] = $row['startlanguage'];
 
             foreach ($row as $row_index => $row_value) {
 
+                if(in_array($row_index,$aSpecificColumns))
+                    continue;
                 // Ignore these fields
-                if (in_array($row_index, array( 'id', 'submitdate', 'lastpage', 'startlanguage', 'startdate',
-                                                'datestamp', 'token', 'email', 'firstname', 'lastname', 'tid',
+                /*
+                if (in_array($row_index, array( 'id', 'submitdate',
+                                                'token', 'email', 'firstname', 'lastname', 'tid',
                                                 'participant_id', 'emailstatus', 'blacklisted', 'language',
                                                 'remindersent', 'remindercount', 'usesleft', 'validfrom',
                                                 'validuntil', 'mpid', 'sent', 'completed'
                 ))) {
                     continue;
                 }
+                */
                 // Alternative to striptag : use CHtmlPurifier : but CHtmlPurifier use a lot of memory
                 $aSurveyEntry[] = strip_tags(getExtendedAnswer($iSurveyID, $row_index, $row_value, $oBrowseLanguage)); // This fix XSS and get the value
             }
@@ -676,7 +677,7 @@ class responses extends Survey_Common_Action
         }
 
         $aSurveyEntries->rows = $all_rows;
-        //viewHelper::disableHtmlLogging(); It's better with but we need to fix error actually
+        viewHelper::disableHtmlLogging();// It's better with but we need to fix error actually
         header('Content-type: application/json');
         echo json_encode($aSurveyEntries);
         Yii::app()->end();

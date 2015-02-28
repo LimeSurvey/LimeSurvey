@@ -181,7 +181,12 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
 }
 /* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
 /* Myabe use a pseudo fixd-y solution is a good idea */
-.ui-jqgrid,.ui-jqgrid-view,.ui-jqgrid-titlebar,.ui-jqgrid-toppager,.ui-jqgrid-pager{min-width:100%;max-width:100%;border-right-width:0;border-left-width:0}
+.ui-jqgrid,.ui-jqgrid-view,.ui-jqgrid-titlebar,.ui-jqgrid-toppager,.ui-jqgrid-pager{
+    min-width:100%;
+    max-width:100%;
+    margin-right:0;margin-left:0;
+    box-sizing: border-box
+}
 
 .ui-tooltip.tooltip-text{min-width:15em}
 .templateeditor {
