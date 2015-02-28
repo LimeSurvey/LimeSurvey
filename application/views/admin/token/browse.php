@@ -140,7 +140,7 @@
 
     function checkMandatoryAttr(value, colname)  {
         if (value  == '') 
-            return [false, 'Please enter a value for <strong>'+colname+'</strong>'];
+            return [false, '<?php $clang->eT("Please enter a value for: ") ?>'+colname];
         else 
             return [true,''];
     }
