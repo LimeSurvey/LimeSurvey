@@ -46,7 +46,11 @@
     {
         foreach ($attributes as $sFieldname=>$aData)
         {
-            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":75}';
+            $customEdit = '';
+            if($aData['mandatory'] == 'Y'){
+                $customEdit = ', editrules:{custom:true, custom_func:checkMandatoryAttr}';
+            }
+            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":75' . $customEdit . '}';
             $aColumnHeaders[]=$aData['description'];
         }
         $columnNames='"'.implode('","',$aColumnHeaders).'"';
@@ -133,6 +137,13 @@
     { "name":"validuntil", "index":"validuntil","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true}
     <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
     var colInformation=<?php echo $sJsonColumnInformation ?>
+
+    function checkMandatoryAttr(value, colname)  {
+        if (value  == '') 
+            return [false, '<?php $clang->eT("Please enter a value for: ") ?>'+colname];
+        else 
+            return [true,''];
+    }
 </script>
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>

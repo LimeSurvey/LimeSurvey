@@ -184,8 +184,7 @@ $(document).ready(function() {
                 .appendTo(jQuery(this).parent().parent())
                 .click(function()
                 {
-                    jQuery('#displaytokens').saveRow(row.attr('id'));
-                    func();
+                    jQuery('#displaytokens').saveRow(row.attr('id'), null, null, {}, function(){func();});
                 });
             });
             updatePageAfterGrid();
@@ -426,7 +425,18 @@ $(document).ready(function() {
         reloadAfterSubmit: true,
         closeOnEspace:true
     });
+	
+	// Center modal dialogs
+    $.jgrid.jqModal = $.extend($.jgrid.jqModal || {}, {
+        beforeOpen: centerInfoDialog
+    });
 });
+
+function centerInfoDialog() {
+    var infoDialog = $("#info_dialog");
+    var dialogparent = infoDialog.parent();
+    infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
+}
 
 function updatePageAfterGrid(){
     var oGrid=$("#displaytokens");
