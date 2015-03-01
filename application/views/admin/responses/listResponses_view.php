@@ -42,7 +42,7 @@
     var sRefreshTitle ='<?php eT("Reload responses list",'js');?>';
     var delBtnCaption ='<?php eT("Save",'js');?>';
     var sEmptyRecords ='<?php eT("There are currently no responses.",'js');?>';
-    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl('/admin/responses/getResponses_json/surveyid/'.$surveyid); ?>";
+    var jsonUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'getResponses_json', 'surveyid' => $surveyid)); ?>";
     //var sConfirmationExpireMessage='<?php eT("Are you sure you want to expire these surveys?",'js');?>';
     //var sConfirmationArchiveMessage='<?php eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
     // var editUrl = "<?php echo $this->createUrl('/admin/survey/editSurvey_json'); ?>";
