@@ -344,7 +344,7 @@ class responses extends Survey_Common_Action
             'submitdate', // Replaced by completed : TODO : add it if is a real date
             'token', // Replaced by tokens.token
             'id', // Allways adding it at start
-            'lastpage', // AFter id, before completed
+            'lastpage', // After id, before completed
         );
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         $column_model = array();
@@ -528,10 +528,6 @@ class responses extends Survey_Common_Action
             'token', // Replaced by tokens.token
             'id', // Allways adding it at start
             'lastpage',
-            // Token columns
-            'firstname',
-            'lastname',
-            'email',
         );
         $fields = createFieldMap($iSurveyID, 'full', true, false, $aData['language']);
 
@@ -547,6 +543,8 @@ class responses extends Survey_Common_Action
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists("{{tokens_{$iSurveyID}}}") && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
         {
             $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
+            $aSpecificColumns=array_merge($aSpecificColumns,TokenDynamic::model($iSurveyID)->getTableSchema()->getColumnNames());
+
         }
 
         if (incompleteAnsFilterState() == "incomplete")
@@ -644,7 +642,11 @@ class responses extends Survey_Common_Action
 
             if ($bHaveToken)
             {
-                $aSurveyEntry[] = strip_tags($row['token']);
+                if(is_null($row['tid']))
+                    $aSurveyEntry[] = strip_tags($row['token']);
+                else
+                    $aSurveyEntry[] = "<a href='".Yii::app()->createUrl("admin/tokens",array("sa"=>"edit","surveyid"=>$surveyid,"tokenid"=>$row['tid']))."'>".strip_tags($row['token'])."</a>";
+
                 $aSurveyEntry[] = strip_tags($row['firstname']);
                 $aSurveyEntry[] = strip_tags($row['lastname']);
                 $aSurveyEntry[] = strip_tags($row['email']);
@@ -658,17 +660,6 @@ class responses extends Survey_Common_Action
 
                 if(in_array($row_index,$aSpecificColumns))
                     continue;
-                // Ignore these fields
-                /*
-                if (in_array($row_index, array( 'id', 'submitdate',
-                                                'token', 'email', 'firstname', 'lastname', 'tid',
-                                                'participant_id', 'emailstatus', 'blacklisted', 'language',
-                                                'remindersent', 'remindercount', 'usesleft', 'validfrom',
-                                                'validuntil', 'mpid', 'sent', 'completed'
-                ))) {
-                    continue;
-                }
-                */
                 // Alternative to striptag : use CHtmlPurifier : but CHtmlPurifier use a lot of memory
                 $aSurveyEntry[] = strip_tags(getExtendedAnswer($iSurveyID, $row_index, $row_value, $oBrowseLanguage)); // This fix XSS and get the value
             }
