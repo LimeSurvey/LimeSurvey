@@ -235,7 +235,10 @@ li input+label { display: inline;}
 .hide {
     display: none !important;
 }
-
+.hidden { /* Bootstarp 3 */
+  display: none !important;
+  visibility: hidden !important;
+}
 #deleteMode input{
     margin-left:2em;
 }

@@ -192,12 +192,7 @@ class responses extends Survey_Common_Action
                 {
                     $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
                 }
-                // If admin ask an specific response, then show it
-                // Don't add incompleteAnsFilterState
-                #            if (incompleteAnsFilterState() == 'incomplete')
-                #                $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
-                #            elseif (incompleteAnsFilterState() == 'complete')
-                #                $oCriteria->addCondition('submitdate >= ' . mktime(0, 0, 0, 1, 1, 1980));
+
                 $oCriteria->addCondition("id = {$iId}");
                 $iIdresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
                 foreach ($iIdresult as $iIdrow)
@@ -349,38 +344,45 @@ class responses extends Survey_Common_Action
         // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
         $column_model = array();
         // The first few colums are fixed.
-        $column_model[] = array('name' => 'actions',   'model_name' => 'Actions',     'index'          => 'actions',     'sorttype' => 'string', 'sortable' => false, 'width' => '100', 'align' => 'left', 'editable' => false, 'search' => false);
+        $column_model[] = array(
+            'name' => 'actions',
+            'index'=> 'actions',
+            'sorttype' => 'string',
+            'sortable' => false,
+            'width' => '100',
+            'align' => 'left',
+            'label' => gt("Actions"),
+            'search' => false,
+            'hidedlg'=>true,
+        );
         $fields = createFieldMap($iSurveyID,'full', true, false, $aData['language']);
         // Specific columns at start
         $column_model[] = array(
             'name'=>'id',
-            'model_name'=>"<strong class='qcode'>id</strong><span class='questiontext'>".viewHelper::getFieldText($fields['id'],array('abbreviated'=>10))."</span>",
             'index'=>'id',
             'sorttype'=>'integer',
-            'sortable'=>true, 'width'=>'100',
+            'sortable'=>true,
+            'width'=>'100',
             'align'=>'center',
-            'editable'=>false,
             'title'=>viewHelper::getFieldText($fields['id']),
+            'hidedlg'=>true,
             );
         $column_model[] = array(
             'name'=>'lastpage',
-            'model_name'=>"<strong class='qcode'>lastpage</strong><span class='questiontext'>".viewHelper::getFieldText($fields['lastpage'],array('abbreviated'=>10))."</span>",
             'index'=>'id',
             'sorttype'=>'integer',
             'sortable'=>true, 'width'=>'100',
             'align'=>'center',
-            'editable'=>false,
             'title'=>viewHelper::getFieldText($fields['lastpage']),
             );
         $column_model[] = array(
             'name' => 'completed',
-            'model_name'=>gt('Completed'),
             'index'=>'completed',
             'sorttype'=>'string',
             'sortable'=>true,
             'width'=>'100',
             'align'=>'center',
-            'editable'=> false
+            'label' => gt("Completed"),
         );
 
         //add token to top of list if survey is not private
@@ -388,16 +390,39 @@ class responses extends Survey_Common_Action
         {
             $column_model[] = array(
                 'name'=>'token',
-                'model_name'=>"<strong class='qcode'>token</strong><span class='questiontext'>".gt('Token')."</span>",
                 'index'=>'token',
                 'sorttype'=>'string',
                 'sortable'=>true, 'width'=>'100',
                 'align'=>'left',
-                'editable'=>false
+                'title'=>gt('Token')
                 );
-            $column_model[] = array('name'=>'firstname','model_name'=>"<strong class='qcode'>firstname</strong><span class='questiontext'>".gt('First name')."</span>", 'index'=>'firstname', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
-            $column_model[] = array('name'=>'lastname', 'model_name'=>"<strong class='qcode'>lastname</strong><span class='questiontext'>".gt('Last Name')."</span>", 'index'=>'lastname', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
-            $column_model[] = array('name'=>'email', 'model_name'=>"<strong class='qcode'>email</strong><span class='questiontext'>".gt('Email')."</span>", 'index'=>'email', 'sorttype'=>'string', 'sortable'=>true, 'width'=>'100', 'align'=>'left', 'editable'=>false);
+            $column_model[] = array(
+                'name'=>'firstname',
+                'index'=>'firstname',
+                'sorttype'=>'string',
+                'sortable'=>true,
+                'width'=>'100',
+                'align'=>'left',
+                'title'=>gt('First name'),
+            );
+            $column_model[] = array(
+                'name'=>'lastname',
+                'index'=>'lastname',
+                'sorttype'=>'string',
+                'sortable'=>true,
+                'width'=>'100',
+                'align'=>'left',
+                'title'=>gt('Last Name'),
+            );
+            $column_model[] = array(
+                'name'=>'email',
+                'index'=>'email',
+                'sorttype'=>'string',
+                'sortable'=>true,
+                'width'=>'100',
+                'align'=>'left',
+                'title'=>gt('Email'),
+            );
         }
 
 
@@ -469,8 +494,7 @@ class responses extends Survey_Common_Action
             $text=viewHelper::getFieldText($fielddetails);
             $textabb=viewHelper::getFieldText($fielddetails,array('abbreviated'=>10));
             $column_model[] = array(
-                'name' => $fielddetails['fieldname'],
-                'model_name' => "<strong class='qcode'>{$code}</strong> <span class='questiontext'>{$textabb}</span>",
+                'name' => $code,
                 'index' => $fielddetails['fieldname'],
                 'sorttype' => 'string',// Depend of question type can be excellent
                 'sortable' => true,
@@ -485,7 +509,12 @@ class responses extends Survey_Common_Action
         $column_names = array();
         foreach ($column_model as $column)
         {
-            $column_names[] = $column['model_name'];
+            if(isset($column['title']))
+                $column_names[] = "<strong class='qcode'>{$column['name']}</strong> <span class='separator hidden'>:</span> <span class='questiontext'>".ellipsize($column['title'],30,0.6,"...")."</span>";
+            elseif(isset($column['label']))
+                $column_names[] = $column['label'];
+            else
+                $column_names[] = $column['name'];
         }
         $column_names_txt = ls_json_encode($column_names);
 
@@ -624,7 +653,7 @@ class responses extends Survey_Common_Action
                 $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "/edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
             }
             if (hasFileUploadQuestion($surveyid)) {
-                $action_html .= "<a><img id='downloadfile_" . $row['id'] . "' src='" . $sImageURL . "/down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
+                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"downloadfiles","surveyid"=>$surveyid,"responseid"=>$row['id']))."'><img src='" . $sImageURL . "/down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
@@ -673,6 +702,21 @@ class responses extends Survey_Common_Action
         Yii::app()->end();
     }
 
+    function downloadfiles($iSurveyID)
+    {
+        $iResponseId=Yii::app()->request->getParam('responseid');
+        if(!$iResponseId)
+        {
+            // TODO : search in $_POST value or send $iResponseId in json GET ?
+        }
+
+        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        {
+            // Now, zip all the files in the filelist
+            $zipfilename = "Files_for_survey_{$iSurveyID}.zip";
+            $this->_zipFiles($iSurveyID, $iResponseId, $zipfilename);
+        }
+    }
 
     function oldbrowse($iSurveyID)
     {

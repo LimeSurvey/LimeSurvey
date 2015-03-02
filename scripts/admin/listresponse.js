@@ -14,6 +14,39 @@ $(window).scroll(function(){
     });
 });
 
+/* Disable select/unselect on action link */
+$(document).on("click","#displayresponses a",function(event){
+    event.stopPropagation();
+    //event.preventDefault();
+});
+// Delete individual file
+$(document).on("click",".deleteresponse",function(event){
+    event.stopPropagation();
+    thisid=removechars($(this).attr('id'));
+    answer = confirm(strdeleteconfirm);
+    if (answer==true)
+    {
+        //~ $('#deleteanswer').val(thisid);
+        //~ $('.cbResponseMarker').attr('checked',false);
+        //$('#resulttableform').submit(); /* No form */
+
+    }
+});
+$(document).on("click","#imgDeleteMarkedResponses",function(){
+    if ($('.cbResponseMarker:checked').size()>0)
+    {
+        thisid=removechars($(this).attr('id'));
+        answer = confirm(strDeleteAllConfirm);
+        if (answer==true)
+        {
+            $('#deleteanswer').val('marked');
+            //$('#resulttableform').submit(); /* No form */
+        }
+    }
+    else
+        alert(noFilesSelectedForDeletion)
+});
+    
 $(function() {
     /* We don't use it actually ? */
     $("#addbutton").click(function() {
@@ -133,11 +166,17 @@ $(function() {
                 var col=i+1;
                 $("tr.ui-jqgrid-labels th:eq("+col+") .questiontext").attr('title',colModels[i]['title']);
             }
+            //~ $("tr.ui-jqgrid-labels th .questiontext").each(function(){
+                //~ $(this).closest("th").attr('title',$(this).text());
+            //~ });
             $(".ui-jqgrid-labels").tooltip();
         },
         loadComplete: function(){
             /* activate tooltip on answers : must be limited ? */
             $("#displayresponses").tooltip({ tooltipClass: "tooltip-text" });
+        },
+        beforeSelectRow: function(rowid, event) {
+            //console.log(event);
         }
     });
     /* Add navgrid */
@@ -238,20 +277,20 @@ $(function() {
 
     /* Trigger the inline search when the access list changes */
     $(document).on('change','#gs_completed_select',function() {
-        $("#gs_completed").val($('#gs_completed_select').val());
-        $("#gs_completed").trigger("keydown");
+        $("[name=completed]").val($('#gs_completed_select').val());
+        $("[name=completed]").trigger("keydown");
     });
 
     /* Change the text search above "Status" icons to a dropdown */
-    var parentDiv = $('#gs_completed').parent();
+    var parentDiv = $('[name=completed]').parent();
     parentDiv.prepend($('#gs_completed_select'));
     $('#gs_completed_select').css("display", "");
-    $('#gs_completed').css("display", "none");
+    $('[name=completed]').css("display", "none");
 
-    /* Disable search on the action column */
-    var parentDiv = $('#gs_actions').parent();
-    parentDiv.prepend($('#gs_no_filter'));
-    $('#gs_no_filter').css("display", "");
-    $('#gs_Actions').css("display", "none");
+    //~ /* Disable search on the action column */
+    //~ var parentDiv = $('#gs_actions').parent();
+    //~ parentDiv.prepend($('#gs_no_filter'));
+    //~ $('#gs_no_filter').css("display", "");
+    //~ $('#gs_Actions').css("display", "none");
 
 });
