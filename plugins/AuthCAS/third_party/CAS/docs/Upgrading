@@ -1,0 +1,100 @@
+################################
+### Upgrading 1.3.1 -> 1.3.2 ###
+################################
+
+Due to the missing validation of the CN of the SSL certifcate it may be that
+phpcas fails validation of CAS server certicates that do not match the IP/DNS
+name you use in the phpcas client() or proxy() setup.
+If this happens a quick workaround to change the setup to the old but unsecure
+behaviour. This can be seen in the no_ssl_cn_validation example.
+This is not a recommended setting and is no a secure setup!
+
+################################
+### Upgrading 1.2.x -> 1.3.0 ###
+################################
+
+
+------------------------------------------------------------------
+1. Changing of the default debug.log permissions:
+------------------------------------------------------------------
+
+The default debug log is now created with 0600 permissions to be only readable
+by the webserver
+
+-------------------------------------------------------
+2. Changing of the behaviour of proxied applications:
+-------------------------------------------------------
+
+If your application is being proxied (Another casified application is using
+proxy tickets to access your service you need to change your configuration. The
+new default configuration is now to deny any proxied use of your service unless
+it is exlicitly allowed:
+
+If you want your service to be proxied you have to enable it (default disabled)
+and define an accepable list of proxies that are allowed to proxy your service.
+
+Add each allowed proxy definition object. For the normal CAS_ProxyChain
+class, the constructor takes an array of proxies to match. The list is in
+reverse just as seen from the service. Proxies have to be defined in reverse
+from the service to the user. If a user hits service A and gets proxied via
+B to service C the list of acceptable on C would be array(B,A). The definition
+of an individual proxy can be either a string or a regexp (preg_match is used)
+that will be matched against the proxy list supplied by the cas server
+when validating the proxy tickets. The strings are compared starting from
+the beginning and must fully match with the proxies in the list.
+
+Examples:
+      phpCAS::allowProxyChain(new CAS_ProxyChain(array(
+              'https://app.example.com/'
+          )));
+or
+      phpCAS::allowProxyChain(new CAS_ProxyChain(array(
+              '/^https:\/\/app[0-9]\.example\.com\/rest\//',
+              'http://client.example.com/'
+          )));
+
+For quick testing or in certain production screnarios you might want to
+allow allow any other valid service to proxy your service. To do so, add
+the "Any" chain:
+
+      phpcas::allowProxyChain(new CAS_ProxyChain_Any);
+
+THIS SETTING IS HOWEVER NOT RECOMMENDED FOR PRODUCTION AND HAS SECURITY
+ IMPLICATIONS: YOU ARE ALLOWING ANY SERVICE TO ACT ON BEHALF OF A USER
+ ON THIS SERVICE.
+
+
+----------------------------------------------------------------
+3. Changing of the default PGT file storage location in proxy mode:
+----------------------------------------------------------------
+
+The default storage of the sensitive PGT session files is the
+session_save_path() now. This is a php environment dependent dir which is also
+used for storing your php session data. The default permissions are also changed
+to 0600 to be only readable by the webserver.
+
+
+
+
+------------------------------------------------------------------
+4. The setPGTStorageFile() function has changed it parameters.
+------------------------------------------------------------------
+
+The setPGTStorageFile() function no longer needs an storage "format" argument.
+Since the format functionality was never implemented it has now been dropped
+and only the path argument is necessary.
+
+------------------------------------------------------------------
+5. The startSession boolean in the constructor has been changed to
+changeSessionID
+------------------------------------------------------------------
+
+The last parameter of the constructor for has been changed from "start session"
+to "change session ID". This has no negative effects on existion integrations
+but will allow integration with other frameworks to take advantage of single
+sign-out if they switch to "true". phpCAS will then rename the session id
+(keeping all vars) and be able to single sign-out users.
+
+
+
+

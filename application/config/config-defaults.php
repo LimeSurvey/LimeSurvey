@@ -188,6 +188,15 @@ $config['auth_webserver_autocreate_permissions'] = Array(
 	'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true)
 );
 
+
+// auth_cas_autocreate_permissions
+// This is an array describing the default permissions to use for auto-created users
+// through the CAS authentication plugin
+// This profile will be the same for all users.
+$config['auth_cas_autocreate_permissions'] = Array(
+	'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'export'=>true)
+);
+
 // hook_get_auth_webserver_profile
 // The optionnal 'hook_get_auth_webserver_profile' function is for advanced user usage only.
 // It is used to customize the profile of the imported user
@@ -384,22 +393,6 @@ $config['pdfheaderstring'] = '';          // Header string (under title). If thi
 $config['quexmlshowprintablehelp'] = false;
 
 $config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
-
-// CAS Settings
-/**
-* Please note that CAS functionality is very basic and you have to modify the client to your needs.
-* At least the hard work is done.
-* The Client is deployed in Limesurvey and a file login_check_cas.php does what login_check.php does in normal mode.
-*
-* $casEnabled determines if CAS should be used or not for Authentication.
-* $casAuthServer the servername of the cas Auth Server. Without http://
-* $casAuthPort CAS Server listening Port
-* $casAuthUri relative uri from $casAuthServer to cas workingdirectory
-*/
-$config['casEnabled'] = false;
-$config['casAuthServer'] = 'localhost';
-$config['casAuthPort'] = 8443;
-$config['casAuthUri'] = '/cas-server/';
 
 
 /**
