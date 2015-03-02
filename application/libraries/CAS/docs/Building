@@ -1,0 +1,34 @@
+########################################
+### Build process for phpCAS package ###
+########################################
+
+1. Prepare your own build config:
+
+go to the utils/ dir and copy build-example.properties to a
+build.properties file and adjust the path for all needed binaries. You need
+at least php and doxygen for package creation. Git is needed as a developer with
+commit priviledges and upload right for the distribution package.
+
+2. Install necessary php packages:
+
+Install the pear package PEAR_PackageFileManager2 via the command
+
+"pear install PEAR_PackageFileManager2"
+
+
+3. Run the "ant" tasks to build the phpCAS package and other developer tasks:
+
+ant dist      # create a local package
+ant clean     # clear local packages and temporary files
+ant prepare   # The default action, tags, packages, and commits to the local git repository
+ant push      # Push the new commits and tags to the origin repository (github)
+ant upload    # Upload to jasig
+ant makeCurrentSymlink # Set the symbolic link on the jasig site for the most current packages
+ant revert    # To revert any "ant prepare" actions before they are pushed to the github repo
+
+The ant prepare target is equivalent to ant tag && ant dist && ant markdev.
+
+To revert the commits and tag additions added in the ant tag and ant markdev
+targets, use the new ant revert target. This should not be done after pushing.
+Running ant prepare is safe and can be followed by ant revert to get rid of the
+added commits and tag in your local repository.
