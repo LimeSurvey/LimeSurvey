@@ -525,6 +525,7 @@ class responses extends Survey_Common_Action
         $aData['surveyid']= $iSurveyID;
         $aData['column_model_txt']= $column_model_txt;
         $aData['column_names_txt']= $column_names_txt;
+        $aData['hasUpload']=hasFileUploadQuestion($iSurveyID);
 
 
         $this->_renderWrappedTemplate('responses', 'listResponses_view', $aData);
@@ -573,7 +574,6 @@ class responses extends Survey_Common_Action
         {
             $oCriteria = SurveyDynamic::model($iSurveyID)->addTokenCriteria($oCriteria);
             $aSpecificColumns=array_merge($aSpecificColumns,TokenDynamic::model($iSurveyID)->getTableSchema()->getColumnNames());
-
         }
 
         if (incompleteAnsFilterState() == "incomplete")
@@ -626,6 +626,12 @@ class responses extends Survey_Common_Action
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sFiltering),$value,true);
                 }
             }
+            if($sFilters=Yii::app()->request->getParam('filters'))
+            {
+                $aFilters=json_decode($sFilters);
+                // TODO : groupOp and rules
+            }
+            
         }
         // Elements for nav bar of jquery
         $iCount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
@@ -704,17 +710,33 @@ class responses extends Survey_Common_Action
 
     function downloadfiles($iSurveyID)
     {
-        $iResponseId=Yii::app()->request->getParam('responseid');
-        if(!$iResponseId)
-        {
-            // TODO : search in $_POST value or send $iResponseId in json GET ?
-        }
-
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
-            // Now, zip all the files in the filelist
-            $zipfilename = "Files_for_survey_{$iSurveyID}.zip";
-            $this->_zipFiles($iSurveyID, $iResponseId, $zipfilename);
+            $sResponseId=Yii::app()->request->getParam('responseid');
+            if(!$sResponseId) // No response id : get all survey files
+            {
+                $oCriteria = new CDbCriteria();
+                $oCriteria->select = "id";
+                $oSurvey = SurveyDynamic::model($iSurveyID);
+                $aResponseId = $oSurvey->getCommandBuilder()
+                    ->createFindCommand($oSurvey->tableSchema, $oCriteria)
+                    ->queryColumn();
+            }
+            else
+            {
+                $aResponseId=explode(",",$sResponseId);
+            }
+            if($aResponseId)
+            {
+                // Now, zip all the files in the filelist
+                if(count($aResponseId)==1)
+                    $zipfilename = "Files_for_survey_{$iSurveyID}_response_{$aResponseId[0]}.zip";
+                else
+                    $zipfilename = "Files_for_survey_{$iSurveyID}.zip";
+
+                $this->_zipFiles($iSurveyID, $aResponseId, $zipfilename);
+            }
+            //else// ??? redirect
         }
     }
 
@@ -773,26 +795,6 @@ class responses extends Survey_Common_Action
                 {
                     Yii::app()->session['flashmessage'] = gT("Access denied!",'js');
                 }
-            }
-            // Download all files for all marked responses  - checked
-            elseif (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') === 'marked')
-            {
-                if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
-                {
-                    // Now, zip all the files in the filelist
-                    $zipfilename = "Responses_for_survey_{$iSurveyID}.zip";
-                    $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('markedresponses'), $zipfilename);
-                }
-            }
-        }
-        // Download all files for this entry - checked
-        elseif (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') != '' && Yii::app()->request->getPost('downloadfile') !== true)
-        {
-            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
-            {
-                // Now, zip all the files in the filelist
-                $zipfilename = "Files_for_responses_" . Yii::app()->request->getPost('downloadfile') . ".zip";
-                $this->_zipFiles($iSurveyID, Yii::app()->request->getPost('downloadfile'), $zipfilename);
             }
         }
         elseif (Yii::app()->request->getParam('downloadindividualfile') != '')

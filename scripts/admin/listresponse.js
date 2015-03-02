@@ -14,11 +14,6 @@ $(window).scroll(function(){
     });
 });
 
-/* Disable select/unselect on action link */
-$(document).on("click","#displayresponses a",function(event){
-    event.stopPropagation();
-    //event.preventDefault();
-});
 // Delete individual file
 $(document).on("click",".deleteresponse",function(event){
     event.stopPropagation();
@@ -176,7 +171,9 @@ $(function() {
             $("#displayresponses").tooltip({ tooltipClass: "tooltip-text" });
         },
         beforeSelectRow: function(rowid, event) {
-            //console.log(event);
+            if($(event.target).is("a") || $(event.target).closest("a").length )
+                return false;
+            return true;
         }
     });
     /* Add navgrid */
@@ -184,41 +181,42 @@ $(function() {
         'navGrid',
         '#pager',
         {
-            deltitle : sDelTitle,
-            searchtitle : sSearchTitle,
-            refreshtitle : sRefreshTitle,
-            add : false,
-            del : false,
-            edit : false,
-            refresh : true,
-            search : true
+           searchtitle : sSearchTitle,
+           refreshtitle : sRefreshTitle,
+           edit: false,
+           add: false,
+           del: true,
+           search: true,
+           refresh: true,
+           view: false,
+           position: "left"
         },
-        {},
-        {},
+        {}, // edit options
+        {}, // add options
         {
             msg : delmsg,
             bSubmit : sDelCaption,
             caption : sDelCaption,
             bCancel : sCancel,
-            width : 700
-        },
+        }, // delete options : NOT DONE
         {
             caption : sSearchCaption,
             Find : sFind,
+            multipleSearch: true,
             odata : [ sOperator1, sOperator2, sOperator3,
                     sOperator4, sOperator5, sOperator6,
                     sOperator7, sOperator8, sOperator9,
                     sOperator10, sOperator11, sOperator12,
                     sOperator13, sOperator14 ],
             Reset : sReset
-        }
+        } // search options - define multiple search : TODO
     );
     /* quick search toolbar */
     jQuery("#displayresponses").jqGrid('filterToolbar', {
         searchOnEnter : false,
         defaultSearch : 'cn'
     });
-    /* navButton ? */
+    /* Column button */
     jQuery("#displayresponses").jqGrid(
         'navButtonAdd',
         '#pager',
@@ -269,6 +267,28 @@ $(function() {
             }
         }
     );
+    if(typeof sDownloadUrl!=="undefined")
+    {
+        jQuery("#displayresponses").navButtonAdd('#pager',{
+            caption:sDownLoad, // Remove it ? no it's more clear ;)
+            title:sDownLoad, // Todo dynamically update download selected , download all
+            buttonicon:"ui-icon-arrowstop-1-s", 
+            onClickButton: function(){
+                selectedlist=jQuery("#displayresponses").getGridParam('selarrrow');
+                if(selectedlist!="")
+                {
+                    sendPost(sDownloadUrl,null,["responseid"],[""+selectedlist]);
+                }
+                else
+                {
+                    if(confirm(sConfirmationArchiveMessage))
+                        window.location = sDownloadUrl;
+                        //sendPost(sDownloadUrl,null,"responseid",0);
+                }
+            }, 
+            position:"last",
+        });
+    }
     /* Grid resize : only heigth ? */
     jQuery("#displayresponses").jqGrid('gridResize', {
         handles: "n, s",

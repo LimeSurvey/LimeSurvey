@@ -44,12 +44,17 @@
     var sEmptyRecords ='<?php eT("There are currently no responses.",'js');?>';
     var jsonUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'getResponses_json', 'surveyid' => $surveyid)); ?>";
     //var sConfirmationExpireMessage='<?php eT("Are you sure you want to expire these surveys?",'js');?>';
-    //var sConfirmationArchiveMessage='<?php eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
     // var editUrl = "<?php echo $this->createUrl('/admin/survey/editSurvey_json'); ?>";
     var colNames = <?php echo $column_names_txt; ?>;
     var colModels = <?php echo $column_model_txt; ?>;
+    <?php if($hasUpload) { ?>
+        var sDownloadUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'downloadfiles', 'surveyid' => $surveyid)); ?>";
+        var sDownLoad='<?php eT("Download files"); ?>' ;
+        var sDownLoadMarked='<?php eT("Download marked files"); ?>' ;
+        var sDownLoadAll='<?php eT("Download all files"); ?>' ;
+        var sConfirmationArchiveMessage='<?php eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
 
-
+    <?php } ?>
 </script>
 <br/>
 
