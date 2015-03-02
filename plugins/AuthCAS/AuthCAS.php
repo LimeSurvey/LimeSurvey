@@ -146,7 +146,9 @@ class AuthCAS extends AuthPluginBase
         $cas_port = (int) $this->get('casAuthPort');
 
         // import phpCAS lib
-        Yii::import('application.libraries.CAS.*');
+        $basedir=dirname(__FILE__); 
+        Yii::setPathOfAlias('myplugin', $basedir);
+        Yii::import('myplugin.third_party.CAS.*');
         require_once('CAS.php');
         // Initialize phpCAS
         phpCAS::client(CAS_VERSION_2_0, $cas_host, $cas_port, $cas_context, false);
@@ -313,7 +315,9 @@ class AuthCAS extends AuthPluginBase
         $cas_context = $this->get('casAuthUri');
         $cas_port = (int) $this->get('casAuthPort');
         // import phpCAS lib
-        Yii::import('application.libraries.CAS.*');
+        $basedir=dirname(__FILE__); 
+        Yii::setPathOfAlias('myplugin', $basedir);
+        Yii::import('myplugin.third_party.CAS.*');
         require_once('CAS.php');
         // Initialize phpCAS
         phpCAS::client(CAS_VERSION_2_0, $cas_host, $cas_port, $cas_context, false);
