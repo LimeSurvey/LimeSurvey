@@ -1,5 +1,10 @@
-//$Id: listsurvey.js 9692 2012-12-10 21:31:10Z pradesh $
-//V1.1 Pradesh - Copied from listsurvey.js
+/*
+ * JavaScript functions for LimeSurvey response browse
+ *
+ */
+
+// @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
+
 
 /*
 * Scroll the pager and the footer when scrolling horizontally
@@ -14,107 +19,29 @@ $(window).scroll(function(){
     });
 });
 
-// Delete individual file
-$(document).on("click",".deleteresponse",function(event){
-    event.stopPropagation();
-    thisid=removechars($(this).attr('id'));
-    answer = confirm(strdeleteconfirm);
-    if (answer==true)
-    {
-        //~ $('#deleteanswer').val(thisid);
-        //~ $('.cbResponseMarker').attr('checked',false);
-        //$('#resulttableform').submit(); /* No form */
-
-    }
+$(document).on("click","[data-delete]",function(event){
+    event.preventDefault();
+    var responseid=$(this).data("delete")
+    var url=$(this).attr("href"); // Or replace responid  by post if needed
+    var buttons = {};
+    buttons[sDelCaption] = function(){
+        $.ajax({
+            url : url,
+            type : "POST",
+            })
+            .done(function() {
+                jQuery("#displayresponses").delRowData(responseid);
+            })
+        $( this ).dialog( "close" ); 
+    };
+    buttons[sCancel] = function(){ $( this ).dialog( "close" ); };
+    var dialog=$("<p>"+strdeleteconfirm+"</p>").dialog({
+        modal:true,
+        buttons: buttons
+    });
 });
-$(document).on("click","#imgDeleteMarkedResponses",function(){
-    if ($('.cbResponseMarker:checked').size()>0)
-    {
-        thisid=removechars($(this).attr('id'));
-        answer = confirm(strDeleteAllConfirm);
-        if (answer==true)
-        {
-            $('#deleteanswer').val('marked');
-            //$('#resulttableform').submit(); /* No form */
-        }
-    }
-    else
-        alert(noFilesSelectedForDeletion)
-});
-    
 $(function() {
-    /* We don't use it actually ? */
-    $("#addbutton").click(function() {
-                        id = 2;
-                        html = "<tr name='joincondition_"
-                                + id
-                                + "' id='joincondition_"
-                                + id
-                                + "'><td><select name='join_"
-                                + id
-                                + "' id='join_"
-                                + id
-                                + "'><option value='and'>AND</option><option value='or'>OR</option></td><td></td></tr><tr><td><select name='field_"
-                                + id
-                                + "' id='field_"
-                                + id
-                                + "'>\n\
-            <option value='completed'>"
-                                + colNames[2]
-                                + "</option>\n\
-        <option value='id'>"
-                                + colNames[3]
-                                + "</option>\n\
-        <option value='startlanguage'>"
-                                + colNames[4]
-                                + "</option>\n\
-        </select>\n\</td>\n\<td>\n\
-        <select name='condition_"
-                                + id
-                                + "' id='condition_"
-                                + id
-                                + "'>\n\
-        <option value='equal'>"
-                                + searchtypes[0]
-                                + "</option>\n\
-        <option value='contains'>"
-                                + searchtypes[1]
-                                + "</option>\n\
-        <option value='notequal'>"
-                                + searchtypes[2]
-                                + "</option>\n\
-        <option value='notcontains'>"
-                                + searchtypes[3]
-                                + "</option>\n\
-        <option value='greaterthan'>"
-                                + searchtypes[4]
-                                + "</option>\n\
-        <option value='lessthan'>"
-                                + searchtypes[5]
-                                + "</option>\n\
-        </select></td>\n\<td><input type='text' id='conditiontext_"
-                                + id
-                                + "' style='margin-left:10px;' /></td>\n\
-        <td><img src="
-                                + minusbutton
-                                + " onClick= $(this).parent().parent().remove();$('#joincondition_"
-                                + id
-                                + "').remove() id='removebutton'"
-                                + id
-                                + ">\n\
-        <img src="
-                                + addbutton
-                                + " id='addbutton'  onclick='addcondition();' style='margin-bottom:4px'></td></tr><tr></tr>";
-        $('#searchtable tr:last').after(html);
-    });
-    /* For advanced search button ? */
-    var searchconditions = {};
-    var field;
-    $('#searchbutton').click(function() {
-        // Must be done
-    });
 
-    var lastSel, lastSel2; /* not used */
     function returnColModel() {
         if ($.cookie("detailedresponsecolumns")) {
             hidden = $.cookie("detailedresponsecolumns").split(
@@ -133,14 +60,14 @@ $(function() {
         loadtext : sLoadText,
         align : "center",
         url : jsonUrl,
-        // editurl : editUrl,
+        editurl : jsonActionUrl,
         datatype : "json",
         mtype : "POST",
         colNames : colNames,
         colModel : returnColModel(),
         toppager : true,
         height : "100%",
-        shrinkToFit : false,
+        //shrinkToFit : false,
         ignoreCase : true,
         rowNum : 25,
         editable : false,
@@ -161,9 +88,6 @@ $(function() {
                 var col=i+1;
                 $("tr.ui-jqgrid-labels th:eq("+col+") .questiontext").attr('title',colModels[i]['title']);
             }
-            //~ $("tr.ui-jqgrid-labels th .questiontext").each(function(){
-                //~ $(this).closest("th").attr('title',$(this).text());
-            //~ });
             $(".ui-jqgrid-labels").tooltip();
         },
         loadComplete: function(){
@@ -171,6 +95,7 @@ $(function() {
             $("#displayresponses").tooltip({ tooltipClass: "tooltip-text" });
         },
         beforeSelectRow: function(rowid, event) {
+            /* deactivate row select on tools */
             if($(event.target).is("a") || $(event.target).closest("a").length )
                 return false;
             return true;
@@ -186,7 +111,7 @@ $(function() {
            edit: false,
            add: false,
            del: true,
-           search: true,
+           search: false, //true when https://github.com/LimeSurvey/LimeSurvey/commit/c710ac795b471c4370cc45027542c54f791e5950#diff-15547196721577f485345c4a68f0c5d0R629 is done
            refresh: true,
            view: false,
            position: "left"
@@ -194,12 +119,20 @@ $(function() {
         {}, // edit options
         {}, // add options
         {
-            msg : delmsg,
+            msg : strDeleteAllConfirm,
             bSubmit : sDelCaption,
             caption : sDelCaption,
             bCancel : sCancel,
-        }, // delete options : NOT DONE
-        {
+            width : 700,
+            afterShowForm: function($form) {
+                var dialog = $form.closest('div.ui-jqdialog'),
+                selRowId = jQuery("#displayresponses").jqGrid('getGridParam', 'selrow'),
+                selRowCoordinates = $('#'+selRowId).offset();
+                dialog.offset(selRowCoordinates);
+                $(document).scrollTop(selRowCoordinates.top);
+            },
+        },
+        { // Deactivate actually, leave the option.
             caption : sSearchCaption,
             Find : sFind,
             multipleSearch: true,
@@ -289,6 +222,7 @@ $(function() {
             position:"last",
         });
     }
+
     /* Grid resize : only heigth ? */
     jQuery("#displayresponses").jqGrid('gridResize', {
         handles: "n, s",
@@ -302,15 +236,6 @@ $(function() {
     });
 
     /* Change the text search above "Status" icons to a dropdown */
-    var parentDiv = $('[name=completed]').parent();
-    parentDiv.prepend($('#gs_completed_select'));
-    $('#gs_completed_select').css("display", "");
-    $('[name=completed]').css("display", "none");
-
-    //~ /* Disable search on the action column */
-    //~ var parentDiv = $('#gs_actions').parent();
-    //~ parentDiv.prepend($('#gs_no_filter'));
-    //~ $('#gs_no_filter').css("display", "");
-    //~ $('#gs_Actions').css("display", "none");
-
+    $('#gs_completed_select').insertAfter($('[name=completed]')).show();
+    $('[name=completed]').hide();
 });

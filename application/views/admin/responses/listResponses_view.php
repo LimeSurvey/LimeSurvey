@@ -7,9 +7,6 @@
 
 <br />
 <script type='text/javascript'>
-    var getuserurl = '<?php echo $this->createUrl('admin/survey/ajaxgetusers'); ?>';
-    var ownerediturl = '<?php echo $this->createUrl('admin/survey/ajaxowneredit'); ?>';
-    var delmsg ='<?php eT("Are you sure you want to delete these surveys?",'js');?>';
     var sCaption ='<?php eT("Survey Respones",'js');?>';
     var sSelectColumns ='<?php eT("Select columns",'js');?>';
     var sRecordText = '<?php eT("View {0} - {1} of {2}",'js');?>';
@@ -40,9 +37,11 @@
     var sCancel = '<?php eT("Cancel",'js');?>';
     var sSearchTitle ='<?php eT("Filter responses",'js');?>';
     var sRefreshTitle ='<?php eT("Reload responses list",'js');?>';
-    var delBtnCaption ='<?php eT("Save",'js');?>';
+    var delBtnCaption ='<?php eT("Delete",'js');?>';
     var sEmptyRecords ='<?php eT("There are currently no responses.",'js');?>';
-    var jsonUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'getResponses_json', 'surveyid' => $surveyid)); ?>";
+    var jsonUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'getResponses_json', 'surveyid' => $surveyid,'browselang'=>$language)); ?>";
+    var jsonActionUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'actionResponses', 'surveyid' => $surveyid,'browselang'=>$language)); ?>";
+
     //var sConfirmationExpireMessage='<?php eT("Are you sure you want to expire these surveys?",'js');?>';
     // var editUrl = "<?php echo $this->createUrl('/admin/survey/editSurvey_json'); ?>";
     var colNames = <?php echo $column_names_txt; ?>;

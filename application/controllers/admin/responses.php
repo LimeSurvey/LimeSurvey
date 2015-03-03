@@ -34,6 +34,11 @@
 class responses extends Survey_Common_Action
 {
 
+    /**
+    * @var string : Default layout is bare : temporary to real layout
+    */
+    public $layout = 'bare';
+
     function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
@@ -105,7 +110,7 @@ class responses extends Survey_Common_Action
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
-            $oBrowseLanguage = $aData['language'];
+            $sBrowseLanguage = $aData['language'];
 
             extract($aData);
 
@@ -253,7 +258,7 @@ class responses extends Survey_Common_Action
                             }
                             else
                             {
-                                $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fnames[$i][0], $iIdrow[$fnames[$i][0]], $oBrowseLanguage))), ENT_QUOTES);
+                                $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fnames[$i][0], $iIdrow[$fnames[$i][0]], $sBrowseLanguage))), ENT_QUOTES);
                             }
                         }
                         $aData['answervalue'] = $answervalue;
@@ -289,7 +294,7 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = $aData['language'];
+        $sBrowseLanguage = $aData['language'];
 
         /**
         * fnames is used as informational array
@@ -333,7 +338,7 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = $aData['language'];
+        $sBrowseLanguage = $aData['language'];
         // Some specific column
         $aSpecificColumns=array(
             'submitdate', // Replaced by completed : TODO : add it if is a real date
@@ -350,6 +355,7 @@ class responses extends Survey_Common_Action
             'sorttype' => 'string',
             'sortable' => false,
             'width' => '100',
+            'resizable' => true,
             'align' => 'left',
             'label' => gt("Actions"),
             'search' => false,
@@ -363,15 +369,18 @@ class responses extends Survey_Common_Action
             'sorttype'=>'integer',
             'sortable'=>true,
             'width'=>'100',
+            'resizable' => true,
             'align'=>'center',
             'title'=>viewHelper::getFieldText($fields['id']),
             'hidedlg'=>true,
             );
         $column_model[] = array(
             'name'=>'lastpage',
-            'index'=>'id',
+            'index'=>'lastpage',
             'sorttype'=>'integer',
-            'sortable'=>true, 'width'=>'100',
+            'sortable'=>true,
+            'width'=>'100',
+            'resizable' => true,// Strangely : don't work
             'align'=>'center',
             'title'=>viewHelper::getFieldText($fields['lastpage']),
             );
@@ -536,7 +545,8 @@ class responses extends Survey_Common_Action
     * Returns survey responses in json format for a given survey
     *
     * @access public
-    * @return void
+    * @param $iSurveyID : survey id
+    * @return json
     */
     public function getResponses_json($iSurveyID)
     {
@@ -548,8 +558,7 @@ class responses extends Survey_Common_Action
         $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID) && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read');
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = $aData['language'];
-
+        $sBrowseLanguage = $aData['language'];
         $sImageURL 	= Yii::app()->getConfig('adminimageurl');
 
         $fnames = array();
@@ -661,14 +670,13 @@ class responses extends Survey_Common_Action
             if (hasFileUploadQuestion($surveyid)) {
                 $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"downloadfiles","surveyid"=>$surveyid,"responseid"=>$row['id']))."'><img src='" . $sImageURL . "/down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
             }
-
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
-                $action_html .= "<a><img id='deleteresponse_" . $row['id'] . "' src='" . $sImageURL . "/token_delete.png' alt='" . gT('Delete this response') . "' class='deleteresponse'/></a>";
+                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'><img src='" . $sImageURL . "/token_delete.png' alt='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse'/></a>";
             }
 
             $aSurveyEntry = array();
 
-            $aSurveyEntry[] = '<!--a-->' . $action_html;
+            $aSurveyEntry[] = $action_html;
 
             $aSurveyEntry[] = $row['id'];
             $aSurveyEntry[] = $row['lastpage'];
@@ -696,7 +704,7 @@ class responses extends Survey_Common_Action
                 if(in_array($row_index,$aSpecificColumns))
                     continue;
                 // Alternative to striptag : use CHtmlPurifier : but CHtmlPurifier use a lot of memory
-                $aSurveyEntry[] = strip_tags(getExtendedAnswer($iSurveyID, $row_index, $row_value, $oBrowseLanguage)); // This fix XSS and get the value
+                $aSurveyEntry[] = strip_tags(getExtendedAnswer($iSurveyID, $row_index, $row_value, $sBrowseLanguage)); // This fix XSS and get the value
             }
             $all_rows[] = array('id' => $row['id'], 'cell' =>  $aSurveyEntry);
         }
@@ -708,7 +716,14 @@ class responses extends Survey_Common_Action
         Yii::app()->end();
     }
 
-    function downloadfiles($iSurveyID)
+    /**
+    * Construct a zip files from a list of response
+    *
+    * @access public
+    * @param $iSurveyID : survey id
+    * @return application/zip
+    */
+    public function downloadfiles($iSurveyID)
     {
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
@@ -740,64 +755,56 @@ class responses extends Survey_Common_Action
         }
     }
 
+    /**
+    * Do an actions on response
+    *
+    * @access public
+    * @param $iSurveyId : survey id
+    * @return void
+    */
+    public function actionResponses($iSurveyId)
+    {
+        $action=Yii::app()->request->getPost('oper');
+        $sResponseId=Yii::app()->request->getPost('id');
+        switch ($action)
+        {
+            case 'del':
+                $this->actionDelete($iSurveyId,$sResponseId);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+    * Delete response
+    * Allow to delete directly : leave it ? Can take $sResponseId by POST
+    * @access public
+    * @param $iSurveyId : survey id
+    * @param $sResponseId : list of response
+    * @return void
+    */
+    public function actionDelete($iSurveyId,$sResponseId)
+    {
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
+        {
+            $oSurvey=Survey::model()->findByPk($iSurveyId);
+            //SurveyDynamic::model($iSurveyId)->deleteByPk($sResponseId);
+            Response::model($iSurveyId)->findByPk($sResponseId)->delete(true);
+            if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
+                SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
+            }
+        }
+    }
     function oldbrowse($iSurveyID)
     {
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
-        $oBrowseLanguage = $aData['language'];
+        $sBrowseLanguage = $aData['language'];
         $tokenRequest = Yii::app()->request->getParam('token', null);
 
-        //Delete Individual answer using inrow delete buttons/links - checked
-        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked')
-        {
-            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
-            {
-                $iResponseID = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
-                Response::model($iSurveyID)->findByPk($iResponseID)->delete(true);
-                // delete timings if savetimings is set
-                if($aData['surveyinfo']['savetimings'] == "Y"){
-                    SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                }
-                Yii::app()->session['flashmessage'] = sprintf(gT("Response ID %s was successfully deleted."),$iResponseID);
-            }
-            else
-            {
-                Yii::app()->session['flashmessage'] = gT("Access denied!",'js');
-            }
-        }
-        // Marked responses -> deal with the whole batch of marked responses
-        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
-        {
-            // Delete the marked responses - checked
-            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
-            {
-                if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete'))
-                {
-                    foreach (Response::model($iSurveyID)->findAllByPk(Yii::app()->request->getPost('markedresponses')) as $response)
-                    {
-                        $response->deleteFiles();
-                        // delete timings if savetimings is set
-                        /**
-                        * @todo Move this to the Response model.
-                        */
-                        if($aData['surveyinfo']['savetimings'] == "Y"){
-                            SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                        }
-                    }
-
-                    Response::model($iSurveyID)->deleteByPk(Yii::app()->request->getPost('markedresponses'));
-
-
-                    Yii::app()->session['flashmessage'] = sprintf(ngT("%s response was successfully deleted.|%s responses were successfully deleted.",count(Yii::app()->request->getPost('markedresponses'))),count(Yii::app()->request->getPost('markedresponses')),'js');
-                }
-                else
-                {
-                    Yii::app()->session['flashmessage'] = gT("Access denied!",'js');
-                }
-            }
-        }
-        elseif (Yii::app()->request->getParam('downloadindividualfile') != '')
+        if (Yii::app()->request->getParam('downloadindividualfile') != '')
         {
             if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
             {
@@ -818,7 +825,7 @@ class responses extends Survey_Common_Action
                         {
                             @ob_clean();
                             header('Content-Description: File Transfer');
-                            header('Content-Type: application/octet-stream');
+                            header('Content-Type: application/zip');
                             header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]['name']) . '"');
                             header('Content-Transfer-Encoding: binary');
                             header('Expires: 0');
@@ -1002,7 +1009,7 @@ class responses extends Survey_Common_Action
                 }
                 $aData['dtrow'] = $dtrow;
                 $aData['bgcc'] = $bgcc;
-                $aData['oBrowseLanguage']=$oBrowseLanguage;
+                $aData['sBrowseLanguage']=$sBrowseLanguage;
                 $aViewUrls['browseallrow_view'][] = $aData;
             }
 

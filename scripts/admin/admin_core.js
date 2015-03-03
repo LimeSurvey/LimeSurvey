@@ -698,6 +698,8 @@ function linksInDialog()
             event.preventDefault();
             var src = $(this).attr("href");
             var title = $(this).attr("title");
+            if(!title && $(this).children("img[alt]"))
+                title = $(this).children("img[alt]").attr("alt");
             iframe.attr({
                 src: src,
             });
