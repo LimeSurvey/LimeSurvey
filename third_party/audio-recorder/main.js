@@ -58,6 +58,8 @@ function toggleRecording( e ) {
         e.classList.remove("recording");
         e.firstElementChild.src = getFolder() + 'img/record.png';
         audioRecorder.getBuffers( gotBuffers );
+        var analyser = document.getElementById('analyser' + questionCode);
+        analyser.style.display = 'none';
     } else {
         // start recording
         if (!audioRecorder)
@@ -73,6 +75,8 @@ function toggleRecording( e ) {
         save.style.display = 'none';
         var play = document.getElementById('play' + questionCode);
         play.style.display = 'none';
+        var analyser = document.getElementById('analyser' + questionCode);
+        analyser.style.display = 'inline';
     }
 }
 
@@ -94,7 +98,7 @@ function cancelAnalyserUpdates() {
 function updateAnalysers() {
     // For all analysers on the page... 
     var canvases = document.getElementsByClassName('analyser');
-    for (n = 0; n < 1; ++n) {
+    for (n = 0; n < canvases.length; ++n) {
         var canvas = canvases[n]; 
 
         // If there's no analyserContext, create it
