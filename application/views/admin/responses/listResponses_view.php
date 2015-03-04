@@ -59,13 +59,6 @@
 
 <table id="displayresponses"></table> <div id="pager"></div>
 
-<select id='gs_completed_select' style='display: none'>
-    <option value=''><?php eT("Any") ?></option>
-    <option value='Y'><?php eT("Yes") ?></option>
-    <option value='N'><?php eT("No") ?></option>
-</select>
-
-<div id='gs_no_filter'>&nbsp;</div>
 
 <br />
 

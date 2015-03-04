@@ -388,6 +388,15 @@ class responses extends Survey_Common_Action
             'name' => 'completed',
             'index'=>'completed',
             'sorttype'=>'string',
+            'stype'=>'select',
+            'editoptions'=>array(
+                'value'=>array(
+                    ""=>gt("All"),
+                    "Y"=>gt("Yes"),
+                    "N"=>gt("No"),
+                ),
+            ),
+
             'sortable'=>true,
             'width'=>'100',
             'align'=>'center',

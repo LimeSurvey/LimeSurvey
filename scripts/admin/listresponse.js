@@ -22,17 +22,17 @@ $(window).scroll(function(){
 $(document).on("click","[data-delete]",function(event){
     event.preventDefault();
     var responseid=$(this).data("delete")
-    var url=$(this).attr("href"); // Or replace responid  by post if needed
+    var url=$(this).attr("href"); // Or replace responseid  by post if needed
     var buttons = {};
     buttons[sDelCaption] = function(){
         $.ajax({
-            url : url,
-            type : "POST",
+                url : url,
+                type : "POST"
             })
             .done(function() {
                 jQuery("#displayresponses").delRowData(responseid);
-            })
-        $( this ).dialog( "close" ); 
+            });
+            $( this ).dialog( "close" ); 
     };
     buttons[sCancel] = function(){ $( this ).dialog( "close" ); };
     var dialog=$("<p>"+strdeleteconfirm+"</p>").dialog({
@@ -228,14 +228,4 @@ $(function() {
         handles: "n, s",
         minHeight : 100
     });
-
-    /* Trigger the inline search when the access list changes */
-    $(document).on('change','#gs_completed_select',function() {
-        $("[name=completed]").val($('#gs_completed_select').val());
-        $("[name=completed]").trigger("keydown");
-    });
-
-    /* Change the text search above "Status" icons to a dropdown */
-    $('#gs_completed_select').insertAfter($('[name=completed]')).show();
-    $('[name=completed]').hide();
 });
