@@ -75,6 +75,7 @@
 
         public static function createTable($surveyId, array $extraFields = [])
         {
+            $surveyId=intval($surveyId);// Really ?
             /**
              * @todo Specify "smaller" character sets and faster collations.
              */
@@ -111,7 +112,7 @@
             }
             
             $db = \Yii::app()->db;
-            $sTableName="{{tokens_".intval($surveyId)."}}";
+            $sTableName="{{tokens_{$surveyId}}}";
             
             $db->createCommand()->createTable($sTableName, $fields);
             /**
@@ -120,9 +121,8 @@
              */
             $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1,50000),  $sTableName,'token');
             
-            // Refresh schema cache just in case the table existed in the past
-            $db->schema->getTable($sTableName, true); 
-            
+            // Refresh schema cache just in case the table existed in the past, and return if table exist
+            return $db->schema->getTable($sTableName, true); 
         }
         public function findByToken($token)
         {

@@ -758,9 +758,17 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             {
                 Yii::app()->loadHelper("admin/token");
                 if (Token::createTable($aImportResults['newsid']))
+                {
                     $aTokenCreateResults = array('tokentablecreated' => true);
-                $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
-                $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);
+                    $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
+                    $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);
+                }
+                else
+                {
+                    $aTokenCreateResults = array('tokentablecreated' => false);
+                    $aTokenImportResults['warnings'][] = gt("Unable to create token table");
+
+                }
                 $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
                 $aImportResults['importwarnings']=array_merge($aImportResults['importwarnings'],$aImportResults['warnings']);
                 unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
