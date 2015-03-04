@@ -187,7 +187,12 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     margin-right:0;margin-left:0;
     box-sizing: border-box
 }
-
+.grid-wrapper{
+    max-width:100%;
+}
+#surveylist-wrapper{
+    overflow:hidden
+}
 .ui-tooltip.tooltip-text{min-width:15em}
 .templateeditor {
     float:left;

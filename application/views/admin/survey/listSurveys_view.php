@@ -61,7 +61,9 @@
         return cellText;
     }
 </script>
-<table id="displaysurveys"></table> <div id="pager"></div>
+<div id="surveylist-wrapper" class="grid-wrapper">
+    <table id="displaysurveys"></table> <div id="pager"></div>
+</div>
 <select id='gs_status_select' style='display: none'>
     <option value=''><?php eT("Any") ?></option>
     <option value='--a--'><?php eT("Expired") ?></option>
