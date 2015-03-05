@@ -335,40 +335,6 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
 
-
-        if (Yii::app()->request->getParam('downloadindividualfile') != '')
-        {
-            $iId = (int) Yii::app()->request->getParam('id');
-            $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
-            $fieldname = Yii::app()->request->getParam('fieldname');
-
-            $oRow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
-            $phparray = json_decode_ls($oRow->$fieldname);
-
-            for ($i = 0; $i < count($phparray); $i++)
-            {
-                if (rawurldecode($phparray[$i]['name']) == rawurldecode($downloadindividualfile))
-                {
-                    $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $phparray[$i]['filename'];
-                    if (file_exists($file))
-                    {
-                        @ob_clean();
-                        header('Content-Description: File Transfer');
-                        header('Content-Type: application/octet-stream');
-                        header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]['name']) . '"');
-                        header('Content-Transfer-Encoding: binary');
-                        header('Expires: 0');
-                        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                        header('Pragma: public');
-                        header('Content-Length: ' . filesize($file));
-                        readfile($file);
-                        exit;
-                    }
-                    break;
-                }
-            }
-        }
-
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
@@ -761,7 +727,7 @@ class responses extends Survey_Common_Action
 
                             $aSurveyEntry[] = $aFilesInfo[$iFileIndex]['title'];
                             $aSurveyEntry[] = $aFilesInfo[$iFileIndex]['comment'];
-                            $aSurveyEntry[] = CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$aFieldName}/id/{$row['id']}/surveyid/{$iSurveyID}",array('downloadindividualfile'=>$aFilesInfo[$iFileIndex]['name'])));
+                            $aSurveyEntry[] = CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$row['id'],"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) );
                             $aSurveyEntry[] = sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2));
                         }
                         else
@@ -835,6 +801,48 @@ class responses extends Survey_Common_Action
     }
 
     /**
+    * Download individual file by response and filename
+    *
+    * @access public
+    * @param $iSurveyId : survey id
+    * @param $iResponseId : response if
+    * @param $sFileName : The filename
+    * @return application/octet-stream
+    */
+    public function actionDownloadfile($iSurveyId,$iResponseId,$sFileName)
+    {
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        {
+            $oResponse = Response::model($iSurveyId)->findByPk($iResponseId);
+            foreach ($oResponse->getFiles() as $aFile)
+            {
+                if (rawurldecode($aFile['name']) == rawurldecode($sFileName))
+                {
+                    $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
+                    if (file_exists($sFileRealName))
+                    {
+                        @ob_clean();
+                        header('Content-Description: File Transfer');
+                        header('Content-Type: application/octet-stream');// Find the real type ?
+                        header('Content-Disposition: attachment; filename="' . rawurldecode($aFile['name']) . '"');
+                        header('Content-Transfer-Encoding: binary');
+                        header('Expires: 0');
+                        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                        header('Pragma: public');
+                        header('Content-Length: ' . filesize($sFileRealName));
+                        readfile($sFileRealName);
+                        exit;
+                    }
+                    break;
+                }
+            }
+            Yii::app()->setFlashMessage(gT("Sorry, This file was not found"),'error');
+            $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$surveyid));
+        }
+        
+    }
+
+    /**
     * Construct a zip files from a list of response
     *
     * @access public
@@ -877,6 +885,9 @@ class responses extends Survey_Common_Action
             }
         }
     }
+    /**
+    * @deprecated
+    * */
     function oldbrowse($iSurveyID)
     {
         $aData = $this->_getData($iSurveyID);
