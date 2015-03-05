@@ -350,7 +350,6 @@ class responses extends Survey_Common_Action
                 if (rawurldecode($phparray[$i]['name']) == rawurldecode($downloadindividualfile))
                 {
                     $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $phparray[$i]['filename'];
-
                     if (file_exists($file))
                     {
                         @ob_clean();
@@ -834,6 +833,7 @@ class responses extends Survey_Common_Action
             }
         }
     }
+
     /**
     * Construct a zip files from a list of response
     *
@@ -869,7 +869,12 @@ class responses extends Survey_Common_Action
 
                 $this->_zipFiles($iSurveyId, $aResponseId, $zipfilename);
             }
-            //else// ??? redirect
+            else
+            {
+                // No response : redirect to browse with a alert
+                Yii::app()->setFlashMessage(gT("Sorry, no reponse in this survey"),'error');
+                $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$surveyid));
+            }
         }
     }
     function oldbrowse($iSurveyID)
@@ -1297,6 +1302,9 @@ class responses extends Survey_Common_Action
                 exit;
             }
         }
+        // No files : redirect to browse with a alert
+        Yii::app()->setFlashMessage(gT("Sorry, no files for this response(s)"),'error');
+        $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$iSurveyID));
     }
 
     /**
