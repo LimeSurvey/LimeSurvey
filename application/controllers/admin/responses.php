@@ -28,8 +28,8 @@
 *
 *
 *
-* @package		LimeSurvey
-* @subpackage	Backend
+* @package        LimeSurvey
+* @subpackage    Backend
 */
 class responses extends Survey_Common_Action
 {
@@ -335,6 +335,41 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
 
+
+        if (Yii::app()->request->getParam('downloadindividualfile') != '')
+        {
+            $iId = (int) Yii::app()->request->getParam('id');
+            $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
+            $fieldname = Yii::app()->request->getParam('fieldname');
+
+            $oRow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
+            $phparray = json_decode_ls($oRow->$fieldname);
+
+            for ($i = 0; $i < count($phparray); $i++)
+            {
+                if (rawurldecode($phparray[$i]['name']) == rawurldecode($downloadindividualfile))
+                {
+                    $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $phparray[$i]['filename'];
+
+                    if (file_exists($file))
+                    {
+                        @ob_clean();
+                        header('Content-Description: File Transfer');
+                        header('Content-Type: application/zip');
+                        header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]['name']) . '"');
+                        header('Content-Transfer-Encoding: binary');
+                        header('Expires: 0');
+                        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                        header('Pragma: public');
+                        header('Content-Length: ' . filesize($file));
+                        readfile($file);
+                        exit;
+                    }
+                    break;
+                }
+            }
+        }
+
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
@@ -373,7 +408,7 @@ class responses extends Survey_Common_Action
             'align'=>'center',
             'title'=>viewHelper::getFieldText($fields['id']),
             'hidedlg'=>true,
-            );
+        );
         $column_model[] = array(
             'name'=>'lastpage',
             'index'=>'lastpage',
@@ -383,7 +418,7 @@ class responses extends Survey_Common_Action
             'resizable' => true,// Strangely : don't work
             'align'=>'center',
             'title'=>viewHelper::getFieldText($fields['lastpage']),
-            );
+        );
         $column_model[] = array(
             'name' => 'completed',
             'index'=>'completed',
@@ -413,7 +448,7 @@ class responses extends Survey_Common_Action
                 'sortable'=>true, 'width'=>'100',
                 'align'=>'left',
                 'title'=>gt('Token')
-                );
+            );
             $column_model[] = array(
                 'name'=>'firstname',
                 'index'=>'firstname',
@@ -461,41 +496,48 @@ class responses extends Survey_Common_Action
                 continue;
 
 
-            /*
+
             $question = $fielddetails['question'];
-            if ($fielddetails['type'] != "|")
+            if ($fielddetails['type'] == "|")
             {
-            if (isset($fielddetails['subquestion']) && $fielddetails['subquestion'] != '')
-            $question .=' (' . $fielddetails['subquestion'] . ')';
-            if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-            $question .=' (' . $fielddetails['subquestion1'] . ':' . $fielddetails['subquestion2'] . ')';
-            if (isset($fielddetails['scale_id']))
-            $question .='[' . $fielddetails['scale'] . ']';
-            $column_model[] = array('name' => $question,        'index'          => $fielddetails['fieldname'],     'sorttype' => 'string', 'sortable' => true, 'width' => '25', 'align' => 'left', 'editable' => false);
-            }
-            else
-            {
-            if ($fielddetails['aid'] !== 'filecount')
-            {
-            $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
+                $fnames=array();
+                $code=viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true));// This must be unique ......
 
-            for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
-            {
-            if ($qidattributes['show_title'] == 1)
-            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
+                if ($fielddetails['aid'] !== 'filecount')
+                {
+                    $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
 
-            if ($qidattributes['show_comment'] == 1)
-            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+                    {
+                        if ($qidattributes['show_title'] == 1)
+                            $fnames[] = array($code.'_'.$i.'_title', "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);
 
-            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
-            $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
-            //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
+                        if ($qidattributes['show_comment'] == 1)
+                            $fnames[] = array($code.'_'.$i.'_comment', "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Comment)", "type" => "|", "metadata" => "comment", "index" => $i);
+
+                        $fnames[] = array($code.'_'.$i.'_name', "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File name)", "type" => "|", "metadata" => "name", "index" => $i);
+                        $fnames[] = array($code.'_'.$i.'_size', "File " . ($i + 1) . " - " . $fielddetails['question'] . "(File size)", "type" => "|", "metadata" => "size", "index" => $i);
+                    }
+                }
+                else
+                    $fnames[] = array($code.'_count', "File count");
+                foreach ($fnames as $aFileInfoField)
+                {
+                    $column_model[] = array(
+                        'name' => $aFileInfoField[0],
+                        'index' => $aFileInfoField[0],
+                        'sorttype' => 'string',// Depend of question type can be excellent
+                        'sortable' => true,
+                        'width' => '100',
+                        'align' => 'left',
+                        'editable' => false,
+                        'title' => $aFileInfoField[1],
+                    );
+                }
+                continue;
+
             }
-            }
-            else
-            $fnames[] = array($fielddetails['fieldname'], "File count");
-            }
-            */
+
             // TODO: upload question type have more than one column (see before)
             // Construction of clean name and title
             $code=viewHelper::getFieldCode($fielddetails,array('LEMcompat'=>true));// This must be unique ......
@@ -534,15 +576,11 @@ class responses extends Survey_Common_Action
             else
                 $column_names[] = $column['name'];
         }
-        $column_names_txt = ls_json_encode($column_names);
 
-
-
-#        Yii::app()->loadHelper('surveytranslator');
         $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
         $aData['surveyid']= $iSurveyID;
         $aData['column_model_txt']= $column_model_txt;
-        $aData['column_names_txt']= $column_names_txt;
+        $aData['column_names_txt']= ls_json_encode($column_names);;
         $aData['hasUpload']=hasFileUploadQuestion($iSurveyID);
 
 
@@ -568,7 +606,7 @@ class responses extends Survey_Common_Action
         extract($aData);
         $aViewUrls = array();
         $sBrowseLanguage = $aData['language'];
-        $sImageURL 	= Yii::app()->getConfig('adminimageurl');
+        $sImageURL     = Yii::app()->getConfig('adminimageurl');
 
         $fnames = array();
         $aSpecificColumns=array(
@@ -577,7 +615,7 @@ class responses extends Survey_Common_Action
             'id', // Allways adding it at start
             'lastpage',
         );
-        $fields = createFieldMap($iSurveyID, 'full', true, false, $aData['language']);
+        $aFieldmap = createFieldMap($iSurveyID, 'full', true, false, $aData['language']);
 
         // Get the survey responses
 
@@ -603,8 +641,8 @@ class responses extends Survey_Common_Action
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
         //Get the filter data
-        if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
-            $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
+        //if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
+        //    $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
 
         $aKnowColumns=array_keys(SurveyDynamic::model($iSurveyID)->attributes);
         if($bHaveToken){
@@ -628,7 +666,7 @@ class responses extends Survey_Common_Action
         $oCriteria->order = "{$sOrderBy} {$sOrder}";
         if(Yii::app()->request->getParam('_search'))
         {
-            if(($value=Yii::app()->request->getParam('completed')) && !incompleteAnsFilterState()) // 
+            if(($value=Yii::app()->request->getParam('completed')) && !incompleteAnsFilterState()) //
             {
                 if($value=='Y')
                     $oCriteria->addCondition("submitdate IS NOT NULL");
@@ -649,7 +687,7 @@ class responses extends Survey_Common_Action
                 $aFilters=json_decode($sFilters);
                 // TODO : groupOp and rules
             }
-            
+
         }
         // Elements for nav bar of jquery
         $iCount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
@@ -672,15 +710,15 @@ class responses extends Survey_Common_Action
         $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
         $all_rows = array();
         foreach ($dtresult as $row) {
-            $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'><img src='" . $sImageURL . "/token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
+            $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'><img src='" . $sImageURL . "token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','update')) {
-                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "/edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
+                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
             }
             if (hasFileUploadQuestion($surveyid)) {
-                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"downloadfiles","surveyid"=>$surveyid,"responseid"=>$row['id']))."'><img src='" . $sImageURL . "/down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
+                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"downloadfiles","surveyid"=>$surveyid,"responseid"=>$row['id']))."'><img src='" . $sImageURL . "down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
-                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'><img src='" . $sImageURL . "/token_delete.png' alt='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse'/></a>";
+                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'><img src='" . $sImageURL . "token_delete.png' alt='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse'/></a>";
             }
 
             $aSurveyEntry = array();
@@ -707,13 +745,40 @@ class responses extends Survey_Common_Action
 
             // startlanguage
             //$aSurveyEntry[] = $row['startlanguage'];
+            foreach ($row as $aFieldName => $mFieldValue) {
 
-            foreach ($row as $row_index => $row_value) {
-
-                if(in_array($row_index,$aSpecificColumns))
+                if(in_array($aFieldName,$aSpecificColumns))
                     continue;
-                // Alternative to striptag : use CHtmlPurifier : but CHtmlPurifier use a lot of memory
-                $aSurveyEntry[] = strip_tags(getExtendedAnswer($iSurveyID, $row_index, $row_value, $sBrowseLanguage)); // This fix XSS and get the value
+                $sSurveyEntry=strip_tags(getExtendedAnswer($iSurveyID, $aFieldName, $mFieldValue, $sBrowseLanguage)); // This fix XSS and get the value
+                if($aFieldmap[$aFieldName]['type']=='|' && strpos($aFieldName,'filecount')===false)
+                {
+                    $aQuestionAttributes = getQuestionAttributeValues($aFieldmap[$aFieldName]['qid']);
+                    $aFilesInfo = json_decode_ls($mFieldValue);
+                    for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++)
+                    {
+
+                        if (isset($aFilesInfo[$iFileIndex]))
+                        {
+
+                            $aSurveyEntry[] = $aFilesInfo[$iFileIndex]['title'];
+                            $aSurveyEntry[] = $aFilesInfo[$iFileIndex]['comment'];
+                            $aSurveyEntry[] = CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$aFieldName}/id/{$row['id']}/surveyid/{$iSurveyID}",array('downloadindividualfile'=>$aFilesInfo[$iFileIndex]['name'])));
+                            $aSurveyEntry[] = sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2));
+                        }
+                        else
+                        {
+                            $aSurveyEntry[] = "";
+                            $aSurveyEntry[] = "";
+                            $aSurveyEntry[] = "";
+                            $aSurveyEntry[] = "";
+                        }
+
+                    }
+                }
+                else
+                {
+                    $aSurveyEntry[] = $sSurveyEntry;
+                }
             }
             $all_rows[] = array('id' => $row['id'], 'cell' =>  $aSurveyEntry);
         }
@@ -743,8 +808,8 @@ class responses extends Survey_Common_Action
                 $oCriteria->select = "id";
                 $oSurvey = SurveyDynamic::model($iSurveyID);
                 $aResponseId = $oSurvey->getCommandBuilder()
-                    ->createFindCommand($oSurvey->tableSchema, $oCriteria)
-                    ->queryColumn();
+                ->createFindCommand($oSurvey->tableSchema, $oCriteria)
+                ->queryColumn();
             }
             else
             {
@@ -813,42 +878,6 @@ class responses extends Survey_Common_Action
         $sBrowseLanguage = $aData['language'];
         $tokenRequest = Yii::app()->request->getParam('token', null);
 
-        if (Yii::app()->request->getParam('downloadindividualfile') != '')
-        {
-            if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
-            {
-                $iId = (int) Yii::app()->request->getParam('id');
-                $downloadindividualfile = Yii::app()->request->getParam('downloadindividualfile');
-                $fieldname = Yii::app()->request->getParam('fieldname');
-
-                $oRow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iId));
-                $phparray = json_decode_ls($oRow->$fieldname);
-
-                for ($i = 0; $i < count($phparray); $i++)
-                {
-                    if (rawurldecode($phparray[$i]['name']) == rawurldecode($downloadindividualfile))
-                    {
-                        $file = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $phparray[$i]['filename'];
-
-                        if (file_exists($file))
-                        {
-                            @ob_clean();
-                            header('Content-Description: File Transfer');
-                            header('Content-Type: application/zip');
-                            header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]['name']) . '"');
-                            header('Content-Transfer-Encoding: binary');
-                            header('Expires: 0');
-                            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                            header('Pragma: public');
-                            header('Content-Length: ' . filesize($file));
-                            readfile($file);
-                            exit;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
 
         /**
         * fnames is used as informational array

@@ -1576,18 +1576,20 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 }
                 break;
             case "|": //File upload
-                if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = gT("File count");
-                } else {
+                if (substr($sFieldCode, -9) != 'filecount') {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue);
                     $sValue = '';
                     if (is_array($files)) {
                         foreach ($files as $file) {
-                            $sValue .= $file->name .
-                            ' (' . $file->size . 'KB) ' .
-                            strip_tags($file->title) .
-                            ' - ' . strip_tags($file->comment) . "<br/>";
+                            $sValue .= rawurldecode($file->name) .
+                            ' (' . round($file->size) . 'KB) ' .
+                            strip_tags($file->title);
+                            if (!empty(trim(strip_tags($file->comment))))
+                            {
+                                $sValue .=' - ' . strip_tags($file->comment);
+                            }
+
                         }
                     }
                 }
