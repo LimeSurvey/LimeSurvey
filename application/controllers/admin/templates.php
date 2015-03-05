@@ -1012,47 +1012,29 @@ class templates extends Survey_Common_Action
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startgroup.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/groupdescription.pstpl", $aData));
 
-                $question = array(
-                'all' => gT("How many roads must a man walk down?"),// Still in use ?
-                'text' => gT("How many roads must a man walk down?"),
-                'code' => '1a',
-                'help' => 'helpful text',
-                'mandatory' => gT("*"),
-                'man_class' => ' mandatory',
-                'man_message' => '',
-                'valid_message' => '',
-                'file_valid_message' => '',
-                'essentials' => 'id="question1"',
-                'class' => 'list-radio',
-                'input_error_class' => '',
-                'number' => '1',
-                'type' => 'L'
+                $aReplacements = array(
+                'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
+                'QUESTION_CODE' => '1a',
+                'QUESTIONHELP' => 'helpful text',
+                'QUESTION_MANDATORY' => gT("*"),
+                'QUESTION_MAN_CLASS' => ' mandatory',
+                'QUESTION_ESSENTIALS' => 'id="question1"',
+                'QUESTION_CLASS' => 'list-radio',
+                'QUESTION_NUMBER' => '1',
                 );
-                $aData['question'] = $question;
-
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
-                $aData['answer'] = $answer;
+                $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
+                $aData['aReplacements'] = $aReplacements;
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
 
-                $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
-                $aData['answer'] = $answer;
-                $question = array(
-                'all' => gT("Please explain something in detail:"),// Still in use ?
-                'text' => gT('Please explain something in detail:'),
-                'code' => '2a',
-                'help' => '',
-                'mandatory' => '',
-                'man_message' => '',
-                'valid_message' => '',
-                'file_valid_message' => '',
-                'essentials' => 'id="question2"',
-                'class' => 'text-long',
-                'man_class' => 'mandatory',
-                'input_error_class' => '',
-                'number' => '2',
-                'type' => 'T'
+                $aReplacements = array(
+                'QUESTION_TEXT' => gT('Please explain something in detail:'),
+                'QUESTION_CODE' => '2a',
+                'QUESTION_ESSENTIALS' => 'id="question2"',
+                'QUESTION_CLASS' => 'text-long',
+                'QUESTION_NUMBER' => '2',
                 );
-                $aData['question'] = $question;
+                $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
+                $aData['aReplacements'] = $aReplacements;
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/endgroup.pstpl", $aData));
                 $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/navigator.pstpl", $aData));

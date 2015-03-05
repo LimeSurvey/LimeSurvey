@@ -1055,18 +1055,8 @@ class SurveyRuntimeHelper {
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                 $lastanswer = $qa[7];
 
-                $q_class = getQuestionClass($qinfo['info']['type']);
 
-                $man_class = '';
-                if ($qinfo['info']['mandatory'] == 'Y')
-                {
-                    $man_class .= ' mandatory';
-                }
 
-                if ($qinfo['anyUnanswered'] && $_SESSION[$LEMsessid]['maxstep'] != $_SESSION[$LEMsessid]['step'])
-                {
-                    $man_class .= ' missing';
-                }
 
                 $n_q_display = '';
                 if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
@@ -1074,48 +1064,33 @@ class SurveyRuntimeHelper {
                     continue; // skip this one
                 }
 
-                if ((!$qinfo['relevant']) || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
-                {
-                    $n_q_display = ' style="display: none;"';
-                }
 
+                $aReplacement=array();
                 $question = $qa[0];
                 //===================================================================
                 // The following four variables offer the templating system the
                 // capacity to fully control the HTML output for questions making the
                 // above echo redundant if desired.
-                $question['essentials'] = 'id="question' . $qa[4] . '"' . $n_q_display;
-                $question['class'] = $q_class;
-                $question['man_class'] = $man_class;
-                $question['code'] = $qa[5];
                 $question['sgq'] = $qa[7];
                 $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
-                $question['type']=$qinfo['info']['type'];
                 //===================================================================
-                $answer = $qa[1];
-                $help = $qinfo['info']['help'];   // $qa[2];
-
-                $redata = compact(array_keys(get_defined_vars()));
 
                 $question_template = file_get_contents($sTemplatePath.'question.pstpl');
+                // Fix old template : can we remove it ? Old template are surely already broken by another issue
                 if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
                 {
                     // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
                     $question_template = str_replace('{QUESTION_ESSENTIALS}', '', $question_template);
                     $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
-                    echo '
-                    <!-- NEW QUESTION -->
-                    <div id="question' . $qa[4] . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
-                    echo templatereplace($question_template, array(), $redata, false, false, $qa[4]);
-                    echo '</div>';
+                    $question_template ="<div {QUESTION_ESSENTIALS} class='{QUESTION_CLASS} {QUESTION_MAN_CLASS} {QUESTION_INPUT_ERROR_CLASS}'"
+                                        . $question_template
+                                        . "</div>";
                 }
-                else
-                {
-                    // TMSW - eventually refactor so that only substitutes the QUESTION_** fields - doesn't need full power of template replace
-                    // TMSW - also, want to return a string, and call templatereplace once on that result string once all done.
-                    echo templatereplace($question_template, array(), $redata, false, false, $qa[4]);
-                }
+                $redata = compact(array_keys(get_defined_vars()));
+                $aQuestionReplacement=$this->getQuestionReplacement($qa);
+                echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
+
             }
             if ($surveyMode == 'group') {
                 echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
@@ -1207,5 +1182,187 @@ class SurveyRuntimeHelper {
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
         }
         // Maybe remove one from index and allow empty $surveyid here.
+    }
+
+    /**
+    * Construction of replacement array, actually doing it with redata
+    * 
+    * @param $aQuestionQanda : array from qanda helper
+    * @return aray of replacement for question.psptl
+    **/
+    public static function getQuestionReplacement($aQuestionQanda)
+    {
+        
+        // Get the default replacement and set empty value by default
+        $aReplacement=array(
+            "QID"=>"",
+            //"GID"=>"", // Attention : set in replacement helper too (by gid).
+            "SGQ"=>"",
+            "AID"=>"",
+            "QUESTION_CODE"=>"",
+            "QUESTION_NUMBER"=>"",
+            "QUESTION"=>"",
+            "QUESTION_TEXT"=>"",
+            "QUESTIONHELP"=>"", // User help
+            "QUESTIONHELPPLAINTEXT"=>"",
+            "QUESTION_CLASS"=>"",
+            "QUESTION_MAN_CLASS"=>"",
+            "QUESTION_INPUT_ERROR_CLASS"=>"",
+            "ANSWER"=>"",
+            "QUESTION_HELP"=>"", // Core help
+            "QUESTION_VALID_MESSAGE"=>"",
+            "QUESTION_FILE_VALID_MESSAGE"=>"",
+            "QUESTION_MAN_MESSAGE"=>"",
+            "QUESTION_MANDATORY"=>"",
+            "QUESTION_ESSENTIALS"=>"",
+        );
+        if(!is_array($aQuestionQanda) || empty($aQuestionQanda[0]))
+        {
+            return $aReplacement;
+        }
+        $iQid=$aQuestionQanda[4];
+        $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
+        $iSurveyId=Yii::app()->getConfig('surveyID');// Or : by SGQA of question ? by Question::model($iQid)->sid;
+        $oSurveyId=Survey::model()->findByPk($iSurveyId);
+        $sType=$lemQuestionInfo['info']['type'];
+
+        // Core value : not replaced 
+        $aReplacement['QID']=$iQid;
+        $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory
+        $aReplacement['SGQ']=$aQuestionQanda[7];
+        $aReplacement['AID']=isset($aQuestionQanda[0]['aid']) ? $aQuestionQanda[0]['aid'] : "" ;
+        $aReplacement['QUESTION_CODE']=$aReplacement['QUESTION_NUMBER']="";
+        $sCode=$aQuestionQanda[5];
+        $iNumber=$aQuestionQanda[0]['number'];
+        switch (Yii::app()->getConfig('showqnumcode'))
+        {
+            case 'both':
+                $aReplacement['QUESTION_CODE']=$sCode;
+                $aReplacement['QUESTION_NUMBER']=$iNumber;
+                break;
+            case 'number':
+                $aReplacement['QUESTION_NUMBER']=$iNumber;
+                break;
+            case 'number':
+                $aReplacement['QUESTION_CODE']=$sCode;
+                break;
+            case 'choose':
+            default:
+                switch($oSurveyId->showqnumcode)
+                {
+                    case 'B': // Both
+                        $aReplacement['QUESTION_CODE']=$sCode;
+                        $aReplacement['QUESTION_NUMBER']=$iNumber;
+                        break;
+                    case 'N':
+                        $aReplacement['QUESTION_NUMBER']=$iNumber;
+                        break;
+                    case 'C':
+                        $aReplacement['QUESTION_CODE']=$sCode;
+                        break;
+                    case 'X':
+                    default:
+                        break;
+                }
+                break;
+        }
+        $aReplacement['QUESTION']=$aQuestionQanda[0]['all'] ; // Deprecated : only used in old template (very old)
+        // Core value : user text
+        $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];
+        if ($sType == '*')
+        {
+            $aReplacement['QUESTION_TEXT'] = '<div class="em_equation">' .$aReplacement['QUESTION_TEXT']. '</div>';
+        }
+        $aReplacement['QUESTIONHELP']=$lemQuestionInfo['info']['help'];// User help
+        // To be moved in a extra plugin : QUESTIONHELP img adding
+        $sTemplateDir=Template::model()->getTemplatePath($oSurveyId->template);
+        $sTemplateUrl=Template::model()->getTemplateURL($oSurveyId->template);
+        if(flattenText($aReplacement['QUESTIONHELP'], true,true) != '')
+        {
+            if (file_exists($sTemplateDir . '/help.gif'))
+            {
+                $helpicon = $sTemplateUrl . '/help.gif';
+            }
+            elseif (file_exists($sTemplateDir . '/help.png'))
+            {
+                $helpicon = $sTemplateUrl . '/help.png';
+            }
+            else
+            {
+                $helpicon=Yii::app()->getConfig('imageurl')."/help.gif";
+            }
+            $aReplacement['QUESTIONHELP']="<img src='{$helpicon}' alt='Help' align='left' />".$aReplacement['QUESTIONHELP'];
+        }
+        // Core value :the classes
+        $aReplacement['QUESTION_CLASS'] = Question::getQuestionClass($sType);
+        $aMandatoryClass = array();
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y')// $aQuestionQanda[0]['mandatory']=="*"
+        {
+            $aMandatoryClass[]= 'mandatory';
+        }
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_' . $iSurveyId]['maxstep'] != $_SESSION['survey_' . $iSurveyId]['step'])// This is working ?
+        {
+            $aMandatoryClass[]= 'missing';
+        }
+        $aReplacement['QUESTION_MAN_CLASS']=!empty($aMandatoryClass) ? " ".implode(" ",$aMandatoryClass) : "";
+        $aReplacement['QUESTION_INPUT_ERROR_CLASS']=$aQuestionQanda[0]['input_error_class'];
+        // Core value : LS text : EM and not
+        $aReplacement['ANSWER']=$aQuestionQanda[1];
+        $aReplacement['QUESTION_HELP']=$aQuestionQanda[0]['help'];// Core help only, not EM
+        $aReplacement['QUESTION_VALID_MESSAGE']=$aQuestionQanda[0]['valid_message'];// $lemQuestionInfo['validTip']
+        $aReplacement['QUESTION_FILE_VALID_MESSAGE']=$aQuestionQanda[0]['file_valid_message'];// $lemQuestionInfo['??']
+        $aReplacement['QUESTION_MAN_MESSAGE']=$aQuestionQanda[0]['man_message'];
+        $aReplacement['QUESTION_MANDATORY']=$aQuestionQanda[0]['mandatory'];
+        // For QUESTION_ESSENTIALS
+        $aHtmlOptions=array();
+        if ((!$lemQuestionInfo['relevant']) || ($lemQuestionInfo['hidden']))// && $lemQuestionInfo['info']['type'] == '*'))
+        {
+            $aHtmlOptions['style'] = 'display: none;';
+        }
+
+        // Launch the event
+        $event = new PluginEvent('beforeQuestionRender');
+        // Some helper
+        $event->set('surveyId', $iSurveyId);
+        $event->set('type', $sType);
+        $event->set('code', $sCode);
+        $event->set('qid', $iQid);
+        // User text
+        $event->set('text', $aReplacement['QUESTION_TEXT']);
+        $event->set('questionhelp', $aReplacement['QUESTIONHELP']);
+        // The classes
+        $event->set('class', $aReplacement['QUESTION_CLASS']);
+        $event->set('man_class', $aReplacement['QUESTION_MAN_CLASS']);
+        $event->set('input_error_class', $aReplacement['QUESTION_INPUT_ERROR_CLASS']);
+        // LS core text
+        $event->set('answers', $aReplacement['ANSWER']);
+        $event->set('help', $aReplacement['QUESTION_HELP']);
+        $event->set('man_message', $aReplacement['QUESTION_MAN_MESSAGE']);
+        $event->set('valid_message', $aReplacement['QUESTION_VALID_MESSAGE']);
+        $event->set('file_valid_message', $aReplacement['QUESTION_FILE_VALID_MESSAGE']);
+        // htmlOptions for container
+        $event->set('aHtmlOptions', $aHtmlOptions);
+
+        App()->getPluginManager()->dispatchEvent($event);
+        // User text
+        $aReplacement['QUESTION_TEXT'] = $event->get('text');
+        $aReplacement['QUESTIONHELP'] = $event->get('questionhelp');
+        $aReplacement['QUESTIONHELPPLAINTEXT']=strip_tags(addslashes($aReplacement['QUESTIONHELP']));
+        // The classes
+        $aReplacement['QUESTION_CLASS'] = $event->get('class');
+        $aReplacement['QUESTION_MAN_CLASS'] = $event->get('man_class');
+        $aReplacement['QUESTION_INPUT_ERROR_CLASS'] = $event->get('input_error_class');
+        // LS core text
+        $aReplacement['ANSWER'] = $event->get('answers');
+        $aReplacement['QUESTION_HELP'] = $event->get('help');
+        $aReplacement['QUESTION_MAN_MESSAGE'] = $event->get('man_message');
+        $aReplacement['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
+        $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $event->get('file_valid_message');
+        $aReplacement['QUESTION_MANDATORY'] = $event->get('mandatory',$aReplacement['QUESTION_MANDATORY']);
+        // Always add id for QUESTION_ESSENTIALS
+        $aHtmlOptions['id']="question{$iQid}";
+        $aReplacement['QUESTION_ESSENTIALS']=CHtml::renderAttributes($aHtmlOptions);
+
+        return $aReplacement;
     }
 }
