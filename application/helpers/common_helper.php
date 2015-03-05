@@ -1585,7 +1585,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                             $sValue .= rawurldecode($file->name) .
                             ' (' . round($file->size) . 'KB) ' .
                             strip_tags($file->title);
-                            if (!empty(trim(strip_tags($file->comment))))
+                            if (trim(strip_tags($file->comment))!="")
                             {
                                 $sValue .=' - ' . strip_tags($file->comment);
                             }
