@@ -355,7 +355,7 @@ class responses extends Survey_Common_Action
                     {
                         @ob_clean();
                         header('Content-Description: File Transfer');
-                        header('Content-Type: application/zip');
+                        header('Content-Type: application/octet-stream');
                         header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]['name']) . '"');
                         header('Content-Transfer-Encoding: binary');
                         header('Expires: 0');
