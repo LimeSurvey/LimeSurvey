@@ -200,22 +200,22 @@ $(function() {
             }
         }
     );
-    if(typeof sDownloadUrl!=="undefined")
+    if(typeof sDownLoad!=="undefined")
     {
         jQuery("#displayresponses").navButtonAdd('#pager',{
             caption:sDownLoad, // Remove it ? no it's more clear ;)
             title:sDownLoad, // Todo dynamically update download selected , download all
             buttonicon:"ui-icon-arrowstop-1-s", 
             onClickButton: function(){
-                selectedlist=jQuery("#displayresponses").getGridParam('selarrrow');
+                selectedlist=jQuery("#displayresponses").getGridParam('selarrrow').join(",");//  Or send like an array ?
                 if(selectedlist!="")
                 {
-                    sendPost(sDownloadUrl,null,["responseid"],[""+selectedlist]);
+                    sendPost(jsonActionUrl,null,["oper","responseid"],["downloadzip",selectedlist]);
                 }
                 else
                 {
                     if(confirm(sConfirmationArchiveMessage))
-                        window.location = sDownloadUrl;
+                        sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);;
                         //sendPost(sDownloadUrl,null,"responseid",0);
                 }
             }, 

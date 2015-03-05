@@ -526,11 +526,11 @@ class responses extends Survey_Common_Action
                     $column_model[] = array(
                         'name' => $aFileInfoField[0],
                         'index' => $aFileInfoField[0],
-                        'sorttype' => 'string',// Depend of question type can be excellent
-                        'sortable' => true,
+                        'sortable' => false,
                         'width' => '100',
                         'align' => 'left',
                         'editable' => false,
+                        'search' => false,
                         'title' => $aFileInfoField[1],
                     );
                 }
@@ -715,7 +715,7 @@ class responses extends Survey_Common_Action
                 $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
             }
             if (hasFileUploadQuestion($surveyid)) {
-                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"downloadfiles","surveyid"=>$surveyid,"responseid"=>$row['id']))."'><img src='" . $sImageURL . "down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
+                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."'><img src='" . $sImageURL . "down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
                 $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'><img src='" . $sImageURL . "token_delete.png' alt='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse'/></a>";
@@ -791,45 +791,6 @@ class responses extends Survey_Common_Action
     }
 
     /**
-    * Construct a zip files from a list of response
-    *
-    * @access public
-    * @param $iSurveyID : survey id
-    * @return application/zip
-    */
-    public function downloadfiles($iSurveyID)
-    {
-        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
-        {
-            $sResponseId=Yii::app()->request->getParam('responseid');
-            if(!$sResponseId) // No response id : get all survey files
-            {
-                $oCriteria = new CDbCriteria();
-                $oCriteria->select = "id";
-                $oSurvey = SurveyDynamic::model($iSurveyID);
-                $aResponseId = $oSurvey->getCommandBuilder()
-                ->createFindCommand($oSurvey->tableSchema, $oCriteria)
-                ->queryColumn();
-            }
-            else
-            {
-                $aResponseId=explode(",",$sResponseId);
-            }
-            if($aResponseId)
-            {
-                // Now, zip all the files in the filelist
-                if(count($aResponseId)==1)
-                    $zipfilename = "Files_for_survey_{$iSurveyID}_response_{$aResponseId[0]}.zip";
-                else
-                    $zipfilename = "Files_for_survey_{$iSurveyID}.zip";
-
-                $this->_zipFiles($iSurveyID, $aResponseId, $zipfilename);
-            }
-            //else// ??? redirect
-        }
-    }
-
-    /**
     * Do an actions on response
     *
     * @access public
@@ -842,6 +803,9 @@ class responses extends Survey_Common_Action
         $sResponseId=Yii::app()->request->getPost('id');
         switch ($action)
         {
+            case 'downloadzip':
+                $this->actionDownloadfiles($iSurveyId,$sResponseId);
+                break;
             case 'del':
                 $this->actionDelete($iSurveyId,$sResponseId);
                 break;
@@ -868,6 +832,44 @@ class responses extends Survey_Common_Action
             if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
                 SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
             }
+        }
+    }
+    /**
+    * Construct a zip files from a list of response
+    *
+    * @access public
+    * @param $iSurveyId : survey id
+    * @param $sResponseId : list of response
+    * @return application/zip
+    */
+    public function actionDownloadfiles($iSurveyId,$sResponseId)
+    {
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        {
+            if(!$sResponseId) // No response id : get all survey files
+            {
+                $oCriteria = new CDbCriteria();
+                $oCriteria->select = "id";
+                $oSurvey = SurveyDynamic::model($iSurveyId);
+                $aResponseId = $oSurvey->getCommandBuilder()
+                ->createFindCommand($oSurvey->tableSchema, $oCriteria)
+                ->queryColumn();
+            }
+            else
+            {
+                $aResponseId=explode(",",$sResponseId);
+            }
+            if(!empty($aResponseId))
+            {
+                // Now, zip all the files in the filelist
+                if(count($aResponseId)==1)
+                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
+                else
+                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
+
+                $this->_zipFiles($iSurveyId, $aResponseId, $zipfilename);
+            }
+            //else// ??? redirect
         }
     }
     function oldbrowse($iSurveyID)
