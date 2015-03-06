@@ -347,6 +347,7 @@ $config['alternatepdffontfile']=array(
     'el'=>'dejavusans',
     'he'=>'freesans',
     'hi'=>'dejavusans',
+    'hr'=>'dejavusans',
     'hu'=>'dejavusans',
     'ja'=>'cid0jp',
     'ko'=>'cid0kr',
