@@ -59,6 +59,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ to 2.06a1 (build 150306) Mar 06, 2015
+-New feature #6624 : Allow to validate expression in email template (Denis Chenu)
+-New feature #7048: Don't show EM error to respondant (Denis Chenu)
+-New feature #8351: Public registration page resending of already registered user's login details (Denis Chenu)
+-New feature #8659: Configurable proxy for comfort update (mfaber)
+-New feature #8757: Individual subquestion relevance (mfaber)
+-New feature #8823: Ability to use {QCODE} before it's declared (Denis Chenu)
+-New feature #8862: More option in export heading (Denis Chenu)
+-New feature #9006: Invalid mail addresses should be marked, not ignored (Denis Chenu)
+-New feature #9133: Quota HTML use completed.pstpl (Denis Chenu)
+-New feature #9427: A way to validate expression in Quota (Denis Chenu)
+-New feature #9442: Allow to save (not save and quit) in Plugin settings and global settings (Denis Chenu)
+-New feature #9500: Add ANSWER, QUESTIONHELP and other to beforeQuestionRender plugin event (Denis Chenu)
+-New feature #9534: Allow 'other' for sub question code (Denis Chenu)
+-New feature: Allow barebone URL for OPTOUTURL and OPTINURL (Denis Chenu)
+-New feature: allow extended htmlOptions in SettingsWidget (Denis Chenu)
+-New feature: Allow to download all files from a survey (Denis Chenu)
+-New feature: allow to select another language when exporting (Denis Chenu)
+-New feature: Allow to use own default controller and add new routes in config.php (Denis Chenu)
+-New feature: beforeHasPermission Plugin events (Denis Chenu)
+-New feature: Combine JS files for faster loading (Carsten Schmitz)
+-New feature: Export uncompleted (started or not) in export token (Denis Chenu)
+-New feature: Form action url contains surveyid (Denis Chenu)
+-New feature: Render results using gqGrid (pradeshc) (Carsten Schmitz)
+-Updated feature : Allow plugin or template to use HTML5 validation (Denis Chenu)
+-Updated feature: Answers export to PDF (user and admin gui) (Aestu)
+-Updated feature: Answers PDF export from admin GUI. (Alfredo Esteban)
+-Updated feature: Audit plugin logs login, logout and failed login attempt (Alfredo Esteban)
+-Updated feature: CHtml::dropDownList is quicker (Aestu)
+-Updated feature: geomap : allow multiple map on same page (Denis Chenu)
+
+
 Changes from 2.05+ (build 141110) to 2.05+ (build 141113) Nov 13, 2014
 -Fixed issue #8806: Questionindex to 2 allows invalid survey submitted (Denis Chenu)
 -Fixed issue #9198: Complete group's navigation can stop before clicked group (Denis Chenu)
