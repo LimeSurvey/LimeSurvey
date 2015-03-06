@@ -680,7 +680,11 @@ class responses extends Survey_Common_Action
                 $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
             }
             if (hasFileUploadQuestion($surveyid)) {
-                $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."'><img src='" . $sImageURL . "down.png' alt='" . gT('Download all files in this response as a zip file') . "' class='downloadfile'/></a>";
+                if(Response::model($surveyid)->findByPk($row['id'])->getFiles())
+                    $action_html .= CHtml::link(
+                        CHtml::image("{$sImageURL}down.png",gT('Download all files in this response as a zip file'),array("class"=>"downloadfile")),
+                        Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$row['id']))
+                    );
             }
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','delete')) {
                 $action_html .= "<a href='".Yii::app()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>$surveyid,"sResponseId"=>$row['id']))."' data-delete='".$row['id']."'><img src='" . $sImageURL . "token_delete.png' alt='" . sprintf(gT('Delete response %s'),$row['id']) . "' class='deleteresponse'/></a>";
@@ -721,10 +725,8 @@ class responses extends Survey_Common_Action
                     $aFilesInfo = json_decode_ls($mFieldValue);
                     for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++)
                     {
-
                         if (isset($aFilesInfo[$iFileIndex]))
                         {
-
                             $aSurveyEntry[] = $aFilesInfo[$iFileIndex]['title'];
                             $aSurveyEntry[] = $aFilesInfo[$iFileIndex]['comment'];
                             $aSurveyEntry[] = CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$row['id'],"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) );
