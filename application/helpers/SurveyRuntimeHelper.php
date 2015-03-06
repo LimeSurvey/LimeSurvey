@@ -1228,7 +1228,7 @@ class SurveyRuntimeHelper {
 
         // Core value : not replaced 
         $aReplacement['QID']=$iQid;
-        $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory
+        $aReplacement['GID']=$aQuestionQanda[6];// Not sure for aleatory : it's the real gid or the updated gid ? We need original gid or updated gid ?
         $aReplacement['SGQ']=$aQuestionQanda[7];
         $aReplacement['AID']=isset($aQuestionQanda[0]['aid']) ? $aQuestionQanda[0]['aid'] : "" ;
         $aReplacement['QUESTION_CODE']=$aReplacement['QUESTION_NUMBER']="";
@@ -1327,6 +1327,7 @@ class SurveyRuntimeHelper {
         $event->set('type', $sType);
         $event->set('code', $sCode);
         $event->set('qid', $iQid);
+        $event->set('gid', $aReplacement['GID']);
         // User text
         $event->set('text', $aReplacement['QUESTION_TEXT']);
         $event->set('questionhelp', $aReplacement['QUESTIONHELP']);
