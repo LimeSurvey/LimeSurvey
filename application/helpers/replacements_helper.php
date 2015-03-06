@@ -242,11 +242,17 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $event->set('type', $question['type']);
         $event->set('code', $question['code']);
         $event->set('qid', $question['qid']);
+        $event->set('answers',isset($answer) ? $answer : null);
+        $event->set('questionhelp',isset($help) ? $help : null);
+
         App()->getPluginManager()->dispatchEvent($event);
         $question['text'] = $event->get('text');
         $question['class'] = $event->get('class');
         $question['help'] = $event->get('help');
         $question['mandatory'] = $event->get('mandatory',$question['mandatory']);
+        $question['answers'] = $event->get('answers');
+        $question['questionhelp'] = $event->get('questionhelp');
+
         // answer part ?
         // $answer is set with answer part
         $_question = $question['all'];
@@ -415,8 +421,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_saveall = "";
     }
-
-    if(!isset($help)) $help = "";
+    $help= isset($question['questionhelp']) ? $question['questionhelp'] : isset($help) ? $help : "";
     if (flattenText($help, true,true) != '')
     {
         if (!isset($helpicon))
@@ -725,7 +730,7 @@ EOD;
     $coreReplacements = array();
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['AID'] = $question['aid'];
-    $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
+    $coreReplacements['ANSWER'] = isset($question['answers']) ? $question['answers'] : isset($answer) ? $answer : '';  // global
     $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers cleared");
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
