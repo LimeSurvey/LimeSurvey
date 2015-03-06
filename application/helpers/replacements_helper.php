@@ -242,6 +242,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $event->set('type', $question['type']);
         $event->set('code', $question['code']);
         $event->set('qid', $question['qid']);
+        $event->set('gid', $question['gid']);
+
         $event->set('answers',isset($answer) ? $answer : null);
         $event->set('questionhelp',isset($help) ? $help : null);
 
