@@ -732,7 +732,7 @@ EOD;
     $coreReplacements = array();
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['AID'] = $question['aid'];
-    $coreReplacements['ANSWER'] = isset($question['answers']) ? $question['answers'] : isset($answer) ? $answer : '';  // global
+    $coreReplacements['ANSWER'] = isset($question['answers']) ? $question['answers'] : (isset($answer) ? $answer : '');
     $coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers cleared");
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
