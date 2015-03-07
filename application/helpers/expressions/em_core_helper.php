@@ -2643,14 +2643,17 @@ function exprmgr_if($test,$ok,$error)
 }
 
 /**
- * Return true if the variable is an integer
+ * Return true if the variable is an integer for LimeSurvey
+ * Can not really use is_int due to SQL DECIMAL system
  * @param string $arg
  * @return boolean
  * @link http://php.net/is_int#82857
  */
 function exprmgr_int($arg)
 {
-    return (ctype_digit((string)$arg));// Accept empty value too before PHP 5.1 see http://php.net/ctype-digit#refsect1-function.ctype-digit-changelog
+    if(strpos($arg,"."))
+        $arg=preg_replace("/\.$/","",rtrim(strval($arg),"0"));// DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+    return (ctype_digit($arg));// Accept empty value too before PHP 5.1 see http://php.net/ctype-digit#refsect1-function.ctype-digit-changelog
 }
 /**
  * Join together $args[0-N] with ', '
