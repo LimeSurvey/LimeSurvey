@@ -15,7 +15,8 @@
 		"jsonrpc/jsonrpc" : "dev-master",
         "ar-php/ar-php": "dev-master",
         "guzzlehttp/guzzle": "~5.0@dev",
-        "cakephp/utility": "dev-master"
+        "cakephp/utility": "dev-master",
+        "sam-it/php-auto-update": "dev-master"
     },
 	"require-dev" : {
 		

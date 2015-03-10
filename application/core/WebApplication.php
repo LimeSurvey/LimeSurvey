@@ -84,8 +84,7 @@ class WebApplication extends CWebApplication
         // Load the default and environmental settings from different files into self.
         $ls_config = require(__DIR__ . '/../config/config-defaults.php');
         $email_config = require(__DIR__ . '/../config/email.php');
-        $version_config = require(__DIR__ . '/../config/version.php');
-        $settings = array_merge($ls_config, $version_config, $email_config);
+        $settings = array_merge($ls_config, $email_config);
 
         foreach ($settings as $key => $value)
             $this->setConfig($key, $value);

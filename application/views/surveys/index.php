@@ -3,7 +3,7 @@
         return $this->renderPartial('firstSteps');
     }
     
-    echo $this->widget('TbGridView', [
+    $this->widget('TbGridView', [
         'dataProvider' => $surveys,
         'filter' => new Survey(),
         'columns' => [

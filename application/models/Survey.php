@@ -89,8 +89,10 @@ class Survey extends LSActiveRecord
         $property = 'surveyls_' . $name;
         if (isset($this->languagesettings[App()->language])) {
             return $this->languagesettings[App()->language]->$property;
-        } else {
+        } elseif (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language]->$property;
+        } else {
+            return null;
         }
     }
     /**

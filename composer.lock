@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f79cf3cee67110f0575cbb8f2605fd24",
+    "hash": "0e5809db50a49d8eff1d8f1d0b727857",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -131,12 +131,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crisu83/yiistrap.git",
-                "reference": "5ca23877eb15c5a3bc87ac3cf34213cc9e20020e"
+                "reference": "94dfec5b642edc7f9bb50ffbabb476707f86e6ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crisu83/yiistrap/zipball/5ca23877eb15c5a3bc87ac3cf34213cc9e20020e",
-                "reference": "5ca23877eb15c5a3bc87ac3cf34213cc9e20020e",
+                "url": "https://api.github.com/repos/crisu83/yiistrap/zipball/94dfec5b642edc7f9bb50ffbabb476707f86e6ab",
+                "reference": "94dfec5b642edc7f9bb50ffbabb476707f86e6ab",
                 "shasum": ""
             },
             "require": {
@@ -185,7 +185,7 @@
                 "bootstrap",
                 "yii"
             ],
-            "time": "2015-02-11 19:24:18"
+            "time": "2015-02-27 14:48:18"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -251,12 +251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/RingPHP.git",
-                "reference": "a1da305d1c5c0175abf7bc912cb065e906de9500"
+                "reference": "c2397220e1c89a84e4776af71e53eeb30193fd03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/a1da305d1c5c0175abf7bc912cb065e906de9500",
-                "reference": "a1da305d1c5c0175abf7bc912cb065e906de9500",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/c2397220e1c89a84e4776af71e53eeb30193fd03",
+                "reference": "c2397220e1c89a84e4776af71e53eeb30193fd03",
                 "shasum": ""
             },
             "require": {
@@ -294,7 +294,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-02-08 23:29:08"
+            "time": "2015-02-26 22:31:51"
         },
         {
             "name": "guzzlehttp/streams",
@@ -395,12 +395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "40fa68edc8e095a1aa60a13b8b847cd3f2bfa173"
+                "reference": "3e3617d2950bf3155a55e24083c69af04d933104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/40fa68edc8e095a1aa60a13b8b847cd3f2bfa173",
-                "reference": "40fa68edc8e095a1aa60a13b8b847cd3f2bfa173",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/3e3617d2950bf3155a55e24083c69af04d933104",
+                "reference": "3e3617d2950bf3155a55e24083c69af04d933104",
                 "shasum": ""
             },
             "require": {
@@ -440,7 +440,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-02-17 20:32:48"
+            "time": "2015-03-06 15:45:33"
         },
         {
             "name": "react/promise",
@@ -485,6 +485,41 @@
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
             "time": "2014-12-30 13:32:42"
+        },
+        {
+            "name": "sam-it/php-auto-update",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SAM-IT/php-auto-update.git",
+                "reference": "5aa88cb6aeb9deb29dcb417d42b0ffa88ea15a32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SAM-IT/php-auto-update/zipball/5aa88cb6aeb9deb29dcb417d42b0ffa88ea15a32",
+                "reference": "5aa88cb6aeb9deb29dcb417d42b0ffa88ea15a32",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SamIT\\AutoUpdater\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam",
+                    "email": "sam@mousa.nl"
+                }
+            ],
+            "description": "Library for creating self-updating PHP applications.",
+            "time": "2015-03-06 16:17:28"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -555,12 +590,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "504435e0b07e6c638df995959bb1f0a4a182ceca"
+                "reference": "01aa0d840ab4a5a193ebf37446adee79fa81e5ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/504435e0b07e6c638df995959bb1f0a4a182ceca",
-                "reference": "504435e0b07e6c638df995959bb1f0a4a182ceca",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/01aa0d840ab4a5a193ebf37446adee79fa81e5ee",
+                "reference": "01aa0d840ab4a5a193ebf37446adee79fa81e5ee",
                 "shasum": ""
             },
             "replace": {
@@ -598,7 +633,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-02-20 00:14:06"
+            "time": "2015-03-06 00:42:12"
         },
         {
             "name": "yiisoft/yii",
@@ -606,12 +641,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "ee39b8511c6c821f2e8863655d92151cc4931448"
+                "reference": "b23b41babe97da6843241098acb525a2982bac42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/ee39b8511c6c821f2e8863655d92151cc4931448",
-                "reference": "ee39b8511c6c821f2e8863655d92151cc4931448",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/b23b41babe97da6843241098acb525a2982bac42",
+                "reference": "b23b41babe97da6843241098acb525a2982bac42",
                 "shasum": ""
             },
             "require": {
@@ -688,7 +723,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-02-14 02:19:42"
+            "time": "2015-03-05 15:20:05"
         }
     ],
     "packages-dev": [],
@@ -703,9 +738,11 @@
         "jsonrpc/jsonrpc": 20,
         "ar-php/ar-php": 20,
         "guzzlehttp/guzzle": 20,
-        "cakephp/utility": 20
+        "cakephp/utility": 20,
+        "sam-it/php-auto-update": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }

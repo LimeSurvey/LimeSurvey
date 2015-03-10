@@ -8,7 +8,7 @@
             <a class='subtitle' title='<?php eT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a>
         </li>
         <li>
-            <?php echo gT('Version') . " " .  App()->getConfig("versionnumber"); ?>
+            <?php echo gT('Version') . " " .  App()->params["version"]; ?>
         </li>
         <li>
             <?php echo App()->getConfig("buildnumber"); ?>

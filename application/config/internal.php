@@ -93,7 +93,7 @@ $internalConfig = array(
             )
         ),
         'cache'=>array(
-           'class' => YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
+           'class' => false && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
         ),
         'db' => array(
             'schemaCachingDuration' => 3600,
@@ -139,7 +139,10 @@ $internalConfig = array(
             'basePath' => __DIR__ . '/../themes'
         ]
     ],
-    
+    'params' => [
+        'version' => require __DIR__ . '/version.php',
+        'updateServer' => 'http://lsupdate.befound.nl/updates/'
+    ]
 );
 
 
