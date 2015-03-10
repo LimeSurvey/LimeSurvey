@@ -59,6 +59,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (build 150211) to 2.05+ (build 150310) Mar 10, 2014
+-New feature #9554: Added the possibility to change an answer value with plugin event beforeQuestionRender() (Denis Chenu)
+-Fixed Issue #9241: Behaviour of numeric question type (and multi numeric) (gabrieljenik)
+-Fixed issue #9454: Token edit fails after mandatory have been added (and left blank) (tpartner)
+-Fixed issue #9491: Id column and Primary key is not generated when the survey is re-activated. (Carsten Schmitz)
+-Fixed issue #9528: TSV show allways error screen without import information (Denis Chenu)
+-Fixed issue #9531: URL parameters in panel integration are duplicated when adding additional languages to the survey (Carsten Schmitz)
+-Fixed issue #9532: Standard user is not able to change his password, email or fullname (Alfredo Esteban)
+-Fixed issue #9535: List with comment (dropdown presentation) doesn't display "Please choose..." (Denis Chenu)
+-Fixed issue #9550: Numerical input integer evaluates incorrectly on survey load with token (Denis Chenu)
+-Fixed issue: On RemoteControl2, when reordering not possible, not message is set in results. (Gabriel Jenik)
+-Fixed issue: Reordering doesn't have to consider subquestions. (Gabriel Jenik)
+-Fixed issue: Several XSS issues fixed in administration - thanks to Stefan Peherstorfer from http://www.hackner-security.com (Carsten Schmitz)
+-Fixed issue: TSV export/import multiple with other add a other sub-question (Denis Chenu)
+#Updated translation: Czech by slansky, Artaud
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: German by madflow
+#Updated translation: Greek by kiolalis
+#Updated translation: Japanese by nomoto, yamatt
+#Updated translation: Korean by spn
+#Updated translation: Mongolian by baatar
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Portuguese (Brazil) by andrepacheco, mauriciofurtado, hugomusetti
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+#Updated translation: Ukrainian by myksyd
 
 Changes from 2.05+ (build 141229) to 2.05+ (build 150211) Feb 11, 2014
 -Fixed issue #9397: List_surveys API does not return surveys that specified user owns (Carsten Schmitz)
