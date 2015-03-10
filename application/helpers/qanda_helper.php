@@ -2904,11 +2904,10 @@ function do_audio_recording($ia)
 
     $clang = Yii::app()->lang;
 
-    // Fetch question attributes
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0]);
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
 
-    $rec_folder     = Yii::app()->getConfig('third_party') . 'audio-recorder/';
+    // Set the parts of the HTML question
+    $rec_folder     = Yii::app()->getConfig('third_party') . "audio-recorder/";
     $record         = "<a id='record" . $ia[1] . "' href='javascript:void(0)' onclick='toggleRecording(this);'>"
             . "<img src='" . $rec_folder . "img/record.png' style='margin: 3px;' /></a>";
     $play           = "<audio id='play" . $ia[1]. "' controls style='display: none;'></audio>";
@@ -2916,14 +2915,28 @@ function do_audio_recording($ia)
             . "<img src='" . $rec_folder . "img/download.png' style='margin: 3px;'/></a>";
     $canvas         = "<canvas id='analyser" . $ia[1]. "' class='analyser' width='100' height='24' style='margin: 3px; float: right; display: none;'></canvas>";
 
+    // Register the scripts
     Yii::app()->getClientScript()->registerScriptFile($rec_folder . 'main.js');
     Yii::app()->getClientScript()->registerScriptFile($rec_folder . '/recorderjs/recorder.js');
 
-    $answer = "<input type='hidden' id='" . $ia[1] . "' name='" . $ia[1] . "'/>";
-    $answer .= "<div style='height:30px; background-color:ivory;'>";
-    $answer .= $record . $play . $download. $canvas;
-    $answer .= "</div>";
+    // If there is an answer in our setting, set that in the hidden input, else just leave that blank
+    $current_answer = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]; 
+    $answer = "<input type='hidden' id='" . $ia[1] . "' name='" . $ia[1] . "' " . ($current_answer ? "value='" . $current_answer . "'" : "") . " />";
 
+    // Add the other parts of the question
+    $answer .= "<div style='height:30px; background-color:ivory;'>";
+    $answer .= $record . $play . $download . $canvas;
+    $answer .= "</div>";
+    
+    // Add the download functionality when the question has been answered already
+    if ($current_answer) 
+    {
+        $json = json_decode_ls($current_answer); 
+        $url = Yii::app()->getConfig('uploadurl') . "/surveys/" . Yii::app()->getConfig('surveyID') . "/files/" . $json[0]['filename'];
+        $answer .= "<script type='text/javascript'>document.onload = addDownload(\"" . $ia[1] . "\", \"" . $url . "\");</script>";
+    }
+    
+    // Return the answer
     $inputnames[] = $ia[1];
     return array($answer, $inputnames);
 }

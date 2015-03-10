@@ -17,6 +17,8 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFT
 DEALINGS IN THE SOFTWARE.
 */
 
+// Modified for use in LimeSurvey by Martijn van der Klis, 2015
+
 (function(window){
 
   var folder = getFolder();
@@ -109,24 +111,7 @@ DEALINGS IN THE SOFTWARE.
 
   Recorder.setupDownload = function(blob, questionCode){
     var url = (window.URL || window.webkitURL).createObjectURL(blob);
-    
-    // Update the download link
-    var save = document.getElementById('save' + questionCode);
-    save.href = url;
-    save.download = 'recording.wav';
-    save.style.display = 'inline';
-    
-    // Create the source element
-    var source = document.createElement('source');
-    source.src = url;
-    source.type = 'audio/wav';
-    
-    // Set the source element as child to the audio element
-    var play = document.getElementById('play' + questionCode);
-    while (play.firstChild) play.removeChild(play.firstChild);
-    play.appendChild(source);
-    play.style.display = 'inline';
-    play.load();
+    addDownload(questionCode, url);
     
     // Upload the blob via the upload function
     upload(blob);

@@ -23,13 +23,13 @@
             document.getElementById('Validation').style.display = 'none';
             document.getElementById('MandatorySelection').style.display='';
         }
-        else if (QuestionType == '|' || QuestionType == '(')
+        else if (QuestionType == '|')
         {
             document.getElementById('OtherSelection').style.display = 'none';
             document.getElementById('Validation').style.display = 'none';
             document.getElementById('MandatorySelection').style.display='none';
         }
-        else if (QuestionType == 'F' || QuestionType == 'H')
+        else if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == '(')
         {
             document.getElementById('OtherSelection').style.display = 'none';
             document.getElementById('Validation').style.display = 'none';

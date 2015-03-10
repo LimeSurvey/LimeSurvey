@@ -13,6 +13,8 @@
    limitations under the License.
 */
 
+// Modified for use in LimeSurvey by Martijn van der Klis, 2015
+
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var audioContext = new AudioContext();
@@ -46,14 +48,12 @@ function gotBuffers( buffers ) {
 }
 
 function doneEncoding( blob ) {
-    // Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
-    // recIndex++;
     Recorder.setupDownload( blob, questionCode );
 }
 
 function toggleRecording( e ) {
     if (e.classList.contains("recording")) {
-        // stop recording
+        // Stop recording
         audioRecorder.stop();
         e.classList.remove("recording");
         e.firstElementChild.src = getFolder() + 'img/record.png';
@@ -61,7 +61,7 @@ function toggleRecording( e ) {
         var analyser = document.getElementById('analyser' + questionCode);
         analyser.style.display = 'none';
     } else {
-        // start recording
+        // Start recording
         if (!audioRecorder)
             return;
         questionCode = e.id.substring(6); // id of element is record + questioncode
@@ -211,4 +211,25 @@ function getFolder() {
     return url.substring(0, index) + 'third_party/audio-recorder/';
 }
 
-window.addEventListener('load', initAudio );
+function addDownload(questionCode, url) {
+    // Update the download link
+    var save = document.getElementById('save' + questionCode);
+    save.href = url;
+    save.download = 'recording.wav';
+    save.style.display = 'inline';
+    
+    // Create the source element
+    var source = document.createElement('source');
+    source.src = url;
+    source.type = 'audio/wav';
+    
+    // Set the source element as child to the audio element
+    var play = document.getElementById('play' + questionCode);
+    while (play.firstChild) play.removeChild(play.firstChild);
+    play.appendChild(source);
+    play.style.display = 'inline';
+    play.load();
+}
+
+window.addEventListener('load', initAudio);
+
