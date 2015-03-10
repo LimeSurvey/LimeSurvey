@@ -1,2 +1,2 @@
 <?php
-return 'v3.0.0-rc1';
+return 'v3.0.0-alpha.0';

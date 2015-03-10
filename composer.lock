@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0e5809db50a49d8eff1d8f1d0b727857",
+    "hash": "2ef9acc5889630f7e026be3cf0a20927",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -636,6 +636,58 @@
             "time": "2015-03-10 00:47:51"
         },
         {
+            "name": "vierbergenlars/php-semver",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vierbergenlars/php-semver.git",
+                "reference": "25ceecc582f7e3b06e4bfde1222193e63e541554"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vierbergenlars/php-semver/zipball/25ceecc582f7e3b06e4bfde1222193e63e541554",
+                "reference": "25ceecc582f7e3b06e4bfde1222193e63e541554",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "simpletest/simpletest": "1.1.*"
+            },
+            "bin": [
+                "bin/semver",
+                "bin/update-versions"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "vierbergenlars\\SemVer\\": "src/",
+                    "vierbergenlars\\LibJs\\": "src/"
+                },
+                "classmap": [
+                    "src/vierbergenlars/SemVer/internal.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Vierbergen",
+                    "email": "vierbergenlars@gmail.com"
+                }
+            ],
+            "description": "The Semantic Versioner for PHP",
+            "keywords": [
+                "semantic",
+                "semver",
+                "versioning"
+            ],
+            "time": "2015-01-27 13:41:25"
+        },
+        {
             "name": "yiisoft/yii",
             "version": "dev-master",
             "source": {
@@ -739,7 +791,8 @@
         "ar-php/ar-php": 20,
         "guzzlehttp/guzzle": 20,
         "cakephp/utility": 20,
-        "sam-it/php-auto-update": 20
+        "sam-it/php-auto-update": 20,
+        "vierbergenlars/php-semver": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
