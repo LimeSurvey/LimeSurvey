@@ -2,6 +2,8 @@
 namespace ls\pluginmanager;
 use Yii;
 use User;
+use PluginDynamic;
+use SurveyDynamic;
     /**
     * Class exposing a Limesurvey API to plugins.
     * This class is instantiated by the plugin manager,

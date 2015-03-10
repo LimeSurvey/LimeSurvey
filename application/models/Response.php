@@ -86,6 +86,10 @@
 		{
 			return '{{survey_' . $this->dynamicId . '}}';
 		}
+        
+        public function getSurveyId() {
+            return $this->dynamicId;
+        }
 	}
 
 ?>

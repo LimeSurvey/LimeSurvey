@@ -1,5 +1,6 @@
 <?php
 namespace ls\pluginmanager;
+use PluginSetting;
 
 class DbStorage implements iPluginStorage {
 

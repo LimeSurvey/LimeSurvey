@@ -204,7 +204,7 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
     }
 }
 
-
+Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config)->run();
 
 /* End of file index.php */
