@@ -395,12 +395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "3e3617d2950bf3155a55e24083c69af04d933104"
+                "reference": "27cc5528ad8b3d1ad67d0eef561135fec7ccb90b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/3e3617d2950bf3155a55e24083c69af04d933104",
-                "reference": "3e3617d2950bf3155a55e24083c69af04d933104",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/27cc5528ad8b3d1ad67d0eef561135fec7ccb90b",
+                "reference": "27cc5528ad8b3d1ad67d0eef561135fec7ccb90b",
                 "shasum": ""
             },
             "require": {
@@ -440,7 +440,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-03-06 15:45:33"
+            "time": "2015-03-06 17:57:22"
         },
         {
             "name": "react/promise",
@@ -492,12 +492,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SAM-IT/php-auto-update.git",
-                "reference": "5aa88cb6aeb9deb29dcb417d42b0ffa88ea15a32"
+                "reference": "08e8a366f00b82ff77c84d943ec91a1d072554b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SAM-IT/php-auto-update/zipball/5aa88cb6aeb9deb29dcb417d42b0ffa88ea15a32",
-                "reference": "5aa88cb6aeb9deb29dcb417d42b0ffa88ea15a32",
+                "url": "https://api.github.com/repos/SAM-IT/php-auto-update/zipball/08e8a366f00b82ff77c84d943ec91a1d072554b8",
+                "reference": "08e8a366f00b82ff77c84d943ec91a1d072554b8",
                 "shasum": ""
             },
             "type": "library",
@@ -519,7 +519,7 @@
                 }
             ],
             "description": "Library for creating self-updating PHP applications.",
-            "time": "2015-03-06 16:17:28"
+            "time": "2015-03-10 10:00:07"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -590,12 +590,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "01aa0d840ab4a5a193ebf37446adee79fa81e5ee"
+                "reference": "1383b883288887a90e6f04c8752364f3c85ded2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/01aa0d840ab4a5a193ebf37446adee79fa81e5ee",
-                "reference": "01aa0d840ab4a5a193ebf37446adee79fa81e5ee",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/1383b883288887a90e6f04c8752364f3c85ded2a",
+                "reference": "1383b883288887a90e6f04c8752364f3c85ded2a",
                 "shasum": ""
             },
             "replace": {
@@ -633,7 +633,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-03-06 00:42:12"
+            "time": "2015-03-10 00:47:51"
         },
         {
             "name": "yiisoft/yii",

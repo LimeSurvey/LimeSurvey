@@ -113,7 +113,8 @@ class UpgradeController extends Controller
     protected function runPreCheck($version)
     {
         $preUpdate = new \SamIT\AutoUpdater\Executor\PreUpdate([
-            'basePath' => dirname(App()->basePath)
+//            'basePath' => dirname(App()->basePath)
+            'basePath' => '/tmp/ls'
         ]);
         $json = $this->getFileContentsCached(App()->params['updateServer'] . 'prepare', [
             'query' => ['from' => App()->params['version'], 'to' => $version]
@@ -170,10 +171,25 @@ class UpgradeController extends Controller
             'query' => ['from' => App()->params['version'], 'to' => $version]
         ]);
         $update = new \SamIT\AutoUpdater\Executor\Update([
-            'basePath' => App()->basePath
+            'basePath' => dirname(App()->basePath)
         ]);
         $update->loadFromFile(stream_get_meta_data($result)['uri'], null);
+        if ($update->run()) {
+        header('Content-type: application/json');
+        echo json_encode([
+            'step' => 'execute',
+            'success' => true,
+            'messages' => $update->getMessages()
+        ], JSON_PRETTY_PRINT);
+        } else {
+            echo json_encode([
+                'step' => 'execute',
+                'success' => false,
+                'messages' => $update->getMessages()
+            ], JSON_PRETTY_PRINT);
+        }
     }
+    
     public function filters()
     {
         return array_merge(parent::filters(), ['accessControl']);

@@ -63,7 +63,7 @@ echo TbHtml::closeTag('table');
 //]);
 ?></div><div class="col-md-3"><?php
     echo TbHtml::tag('h3', [], 'Details');
-    echo TbHtml::tag('div', ['id' => 'details']);
+    echo TbHtml::tag('div', ['id' => 'details', 'style' => 'white-space: pre;']);
 
         
         
@@ -73,9 +73,15 @@ function upgradeEvent(json) {
 //    debugger;
     if (json.success) {
         $('#step-' + json.step).addClass('success');
-        $('#details').html(json.messages);
+    } else {
+        $('#step-' + json.step).addClass('danger');
     }
-    console.log(json);
+    
+        var contents = '';
+        for (var i = 0; i < json.messages.length; i++) {
+            contents += '<li>' + json.messages[i] + '</li>';
+        }
+        $('#details').html(contents);
 }
 
 </script>
