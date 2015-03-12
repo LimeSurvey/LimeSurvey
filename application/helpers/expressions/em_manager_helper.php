@@ -4038,7 +4038,7 @@
                 'hidden'=>$hidden,
                 'gid'=>$groupNum,
                 'mandatory'=>$mandatory,
-                'eqn'=>(($type == '*') ? $question : ''),
+                'eqn'=>'',
                 'help'=>$help,
                 'qtext'=>$fielddata['question'],    // $question,
                 'code'=>$varName,
@@ -6565,7 +6565,8 @@
             elseif ($qInfo['type'] == '*')
             {
                 // Process relevant equations, even if hidden, and write the result to the database
-                $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
+                $textToParse=(isset($LEM->qattr[$qid]['equation']) && trim($LEM->qattr[$qid]['equation'])!="") ? $LEM->qattr[$qid]['equation'] : $qInfo['qtext'];
+                $result = flattenText($LEM->ProcessString($textToParse, $qInfo['qid'],NULL,false,1,1,false,false,true));// More numRecursionLevels ?
                 $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
                     if($LEM->knownVars[$sgqa]['onlynum'])
                     {
@@ -7312,11 +7313,9 @@
                     {
                         $relParts[] = "  // Write value from the question into the answer field\n";
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
-                        // Note, this will destroy embedded HTML in the equation (e.g. if it is a report)
-                        // Should be possible to use jQuery to remove just the LEMtailoring span, but not easy since done (the following doesn't work)
-                        // _tmpval = $('#question801 .em_equation').clone()
-                        // $(_tmpval).find('[id^=LEMtailor]').each(function(){ $(this).replaceWith(function(){ $(this).contents; }); })
-                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .em_equation').html())));\n";
+                        // Note, this will destroy embedded HTML in the equation (e.g. if it is a report, can use {QCODE.question} for this purpose)
+                        // This make same than flattenText to be same in JS and in PHP
+                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text()));\n";
                     }
                     $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";

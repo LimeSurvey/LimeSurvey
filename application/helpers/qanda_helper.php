@@ -857,7 +857,7 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
+
     $answer='';
 
     if (trim($aQuestionAttributes['time_limit'])!='')
@@ -873,16 +873,15 @@ function do_boilerplate($ia)
 
 function do_equation($ia)
 {
+    $aQuestionAttributes= getQuestionAttributeValues($ia[0], $ia[4]);
+    $sEquation=(trim($aQuestionAttributes['equation'])) ? $aQuestionAttributes['equation'] : $ia[3];
     $answer='<input type="hidden" name="'.$ia[1].'" id="java'.$ia[1].'" value="';
-    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
-    {
-        $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
-    }
+    $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
     $answer .= '">';
+    $answer .="<div class='em_equation hidden' style='display:none;visibility:hidden'>{$sEquation}</div>";
     $inputnames[]=$ia[1];
-    $mandatory=null;
 
-    return array($answer, $inputnames, $mandatory);
+    return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------

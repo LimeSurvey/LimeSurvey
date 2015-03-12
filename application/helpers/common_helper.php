@@ -2809,6 +2809,15 @@ function questionAttributes($returnByName=false)
         "help"=>gT('Enter a header text for the second scale'),
         "caption"=>gT('Header for second scale'));
 
+        $qattributes["equation"]=array(
+        "types"=>"*",
+        'category'=>gT('Logic'),
+        'sortorder'=>100,
+        'inputtype'=>'textarea',
+        "help"=>gT('Final equation to set in database, default to question text.'),
+        "caption"=>gT('Equation'),
+        "default"=>"");
+
         $qattributes["equals_num_value"]=array(
         "types"=>"K",
         'category'=>gT('Input'),

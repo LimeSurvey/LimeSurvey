@@ -1269,10 +1269,6 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION']=$aQuestionQanda[0]['all'] ; // Deprecated : only used in old template (very old)
         // Core value : user text
         $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];
-        if ($sType == '*')
-        {
-            $aReplacement['QUESTION_TEXT'] = '<div class="em_equation">' .$aReplacement['QUESTION_TEXT']. '</div>';
-        }
         $aReplacement['QUESTIONHELP']=$lemQuestionInfo['info']['help'];// User help
         // To be moved in a extra plugin : QUESTIONHELP img adding
         $sTemplateDir=Template::model()->getTemplatePath($oSurveyId->template);
