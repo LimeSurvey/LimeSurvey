@@ -857,7 +857,7 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
-
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer='';
 
     if (trim($aQuestionAttributes['time_limit'])!='')
