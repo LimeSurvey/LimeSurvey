@@ -36,7 +36,6 @@
             $langopts = $this->widgetOptions['langopts'];
             $language = $this->widgetOptions['language'];
             $defaultValues =  $this->widgetOptions['langopts'][$language][$questionrow['type']][0];
-            $clang = $this->widgetOptions['clang'];
 
             $emfield_css = '';
             $emValue = '';
@@ -60,13 +59,13 @@
                 $sElement_id = 'defaultanswerscale_0_' . $language;
 
                 $aList = array(
-                    'N'    => $clang->gT('No'),
-                    'Y'    => $clang->gT('YES'),
-                    'EM'   => $clang->gT('EM Value')
+                    'N'    => gT('No'),
+                    'Y'    => gT('YES'),
+                    'EM'   => gT('EM Value')
                 );
 
                 $aHtmlOptions = array(
-                    'empty'    => $clang->gT('<No default value>'),
+                    'empty'    => gT('<No default value>'),
                     'class'    => $sElement_id,
                     'onchange' => '// show EM Value Field
                                    if ($(this).val() == "EM"){

@@ -156,7 +156,6 @@
                                 'questionrow' => $questionrow,
                                 'qtproperties' => $qtproperties,
                                 'langopts' => $langopts,
-                                'clang' => $clang
                              );
                             $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', array('widgetOptions'=>$widgetOptions));
                             ?>
