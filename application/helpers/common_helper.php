@@ -2827,7 +2827,7 @@ function questionAttributes($returnByName=false)
         "caption"=>gT('Equals sum value'));
 
         $qattributes["em_validation_q"]=array(
-        "types"=>":;ABCDEFKMNPQRSTU",
+        "types"=>":;ABCDEFKMNOPQRSTU",
         'category'=>gT('Logic'),
         'sortorder'=>200,
         'inputtype'=>'textarea',
@@ -2835,7 +2835,7 @@ function questionAttributes($returnByName=false)
         "caption"=>gT('Question validation equation'));
 
         $qattributes["em_validation_q_tip"]=array(
-        "types"=>":;ABCDEFKMNPQRSTU",
+        "types"=>":;ABCDEFKMNOPQRSTU",
         'category'=>gT('Logic'),
         'sortorder'=>210,
         'inputtype'=>'textarea',

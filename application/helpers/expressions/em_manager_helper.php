@@ -1307,7 +1307,9 @@
                 }
 
                 // individual subquestion relevance
-                if ($hasSubqs & $type!='|' & $type!='!' & $type !='L')
+                if ($hasSubqs && 
+                    $type!='|' && $type!='!' && $type !='L' && $type !='O'
+                )
                 {
                     $subqs = $qinfo['subqs'];
                     $last_rowdivid = '--';
@@ -2911,6 +2913,7 @@
                                 case ':': //ARRAY (Multi Flexi) 1 to 10
                                 case 'M': //Multiple choice checkbox
                                 case 'N': //NUMERICAL QUESTION TYPE
+                                case 'O':
                                 case 'P': //Multiple choice with comments checkbox + text
                                 case 'R': //RANKING STYLE
                                 case 'S': //SHORT FREE TEXT
@@ -3929,7 +3932,7 @@
                     $jsVarName_on = '';
                 }
 
-                if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
+                if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || $type == 'O'  || !is_null($preg)
                 || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U' || $type == '|') {
                     if (!isset($q2subqInfo[$questionNum])) {
                         $q2subqInfo[$questionNum] = array(
@@ -3948,44 +3951,69 @@
                     if (!isset($q2subqInfo[$questionNum]['subqs'])) {
                         $q2subqInfo[$questionNum]['subqs'] = array();
                     }
-                    if ($type == 'L' || $type == '!')
+                    switch ($type)
                     {
-                        if (!is_null($ansArray))
-                        {
-                            foreach (array_keys($ansArray) as $key)
+                        case 'L':// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
+                        case '!':
+                            if (!is_null($ansArray))
                             {
-                                $parts = explode('~',$key);
-                                if ($parts[1] == '-oth-') {
-                                    $parts[1] = 'other';
+                                foreach (array_keys($ansArray) as $key)
+                                {
+                                    $parts = explode('~',$key);
+                                    if ($parts[1] == '-oth-') {
+                                        $parts[1] = 'other';
+                                    }
+                                    $q2subqInfo[$questionNum]['subqs'][] = array(
+                                    'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
+                                    'varName' => $varName,
+                                    'sqsuffix' => '_' . $parts[1],
+                                    );
                                 }
+                            }
+                            break;
+                        case 'O':
+                            if(strlen($varName) > 8 && substr_compare($varName,'_comment',-8)===0)// The comment subquestion More speediest than regexp
+                            {
                                 $q2subqInfo[$questionNum]['subqs'][] = array(
-                                'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
-                                'varName' => $varName,
-                                'sqsuffix' => '_' . $parts[1],
+                                    'varName' => $varName,
+                                    'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum.'comment',// Not sure we need it
+                                    'jsVarName' => $jsVarName,
+                                    'jsVarName_on' => $jsVarName_on,
+                                    'sqsuffix' => '_comment',
                                 );
                             }
-                        }
-                    }
-                    else if ($type == 'N'
-                        || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U')    // for $preg
-                        {
+                            else // The question list
+                            {
+                                $q2subqInfo[$questionNum]['subqs'][] = array(
+                                    'varName' => $varName,
+                                    'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                    'jsVarName' => $jsVarName,
+                                    'jsVarName_on' => $jsVarName_on,
+                                );
+                            }
+                            break;
+                        case 'N':
+                        case 'S':
+                        case 'D':
+                        case 'T':
+                        case 'U':
                             $q2subqInfo[$questionNum]['subqs'][] = array(
-                            'varName' => $varName,
-                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                            'jsVarName' => 'java' . $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                            'jsVarName_on' => $jsVarName_on,
+                                'varName' => $varName,
+                                'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                'jsVarName' => 'java' . $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                'jsVarName_on' => $jsVarName_on,
                             );
-                        }
-                        else
-                        {
+                            break;
+                        default:
                             $q2subqInfo[$questionNum]['subqs'][] = array(
-                            'rowdivid' => $rowdivid,
-                            'varName' => $varName,
-                            'jsVarName_on' => $jsVarName_on,
-                            'jsVarName' => $jsVarName,
-                            'csuffix' => $csuffix,
-                            'sqsuffix' => $sqsuffix,
+                                'rowdivid' => $rowdivid,
+                                'varName' => $varName,
+                                'jsVarName_on' => $jsVarName_on,
+                                'jsVarName' => $jsVarName,
+                                'csuffix' => $csuffix,
+                                'sqsuffix' => $sqsuffix,
                             );
+                            break;
                     }
                 }
 
@@ -4084,7 +4112,6 @@
                 }
                 $this->varNameAttr[$jsVarName] .= "}";
             }
-
             $this->q2subqInfo = $q2subqInfo;
 
             // Now set tokens
