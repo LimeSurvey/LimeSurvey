@@ -28,6 +28,14 @@ class Authentication extends Survey_Common_Action
 {
 
     /**
+    * Reused email message
+    *
+    * @var string
+    * @access private
+    */
+    private $sent_email_message = 'If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you';
+
+    /**
     * Show login screen and parse login data
     */
     public function index()
@@ -148,10 +156,10 @@ class Authentication extends Survey_Common_Action
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"),Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
 
-            if (count($aFields) < 1)
+            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid'])))
             {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT('If username and email that you specified are valid, a new password has been sent to you').'<br>';
+                $aData['message'] = '<br>'.gT($this->sent_email_message).'<br>';
             }
             else
             {
@@ -190,7 +198,7 @@ class Authentication extends Survey_Common_Action
         {
             User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
-            $sMessage = gT('If username and email that you specified are valid, a new password has been sent to you');
+            $sMessage = gT($this->sent_email_message);
         }
         else
         {

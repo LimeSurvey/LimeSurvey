@@ -67,6 +67,26 @@ use Plugin;
         }
         
         /**
+         * Return the status of plugin (true/active or false/desactive)
+         *
+         * @param sPluginName Plugin name
+         * @return boolean
+         */
+        public function isPluginActive($sPluginName)
+        {
+            $pluginModel = Plugin::model();
+            $record = $pluginModel->findByAttributes(array('name' => $sPluginName));
+            if ($record == false)
+            {
+                return false;
+            }
+            else
+            {
+                return $record->active;
+            }
+        }
+
+        /**
          * Returns the storage instance of type $storageClass.
          * If needed initializes the storage object.
          * @param string $storageClass

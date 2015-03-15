@@ -35,6 +35,10 @@
                             <input type="checkbox"  class="checkboxbtn" name='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>' <?php 
                                 if(Permission::model()->hasGlobalPermission( $sPermissionKey, $sCRUDKey, $oUser->uid)) {?>
                                 checked="checked"
+                                <?php } ?>
+                                 <?php
+                                if(substr($sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read') {?>
+                                style="visibility:hidden"
                                 <?php } ?>/>
                             <?php
                             }
