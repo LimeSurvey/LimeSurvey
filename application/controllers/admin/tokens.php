@@ -1565,7 +1565,7 @@ class tokens extends Survey_Common_Action
                 'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
                 . "<br/>&nbsp;<ul><li>" . gT("having a valid email address") . "</li>"
                 . "<li>" . gT("not having been sent an invitation already") . "</li>"
-                . "<li>" . gT("having already completed the survey") . "</li>"
+                . "<li>" . gT("not having already completed the survey") . "</li>"
                 . "<li>" . gT("having a token") . "</li></ul>"
                 )), $aData);
             }
