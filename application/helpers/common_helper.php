@@ -145,7 +145,12 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
-            $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
+            $auxatt = $result->attributes;
+            if (!empty($result->defaultlanguage->attributes))
+            {
+              $auxatt = array_merge($auxatt, $result->defaultlanguage->attributes);  
+            } 
+            $surveynames[] = $auxatt;
         }
 
         $cached = $surveynames;
