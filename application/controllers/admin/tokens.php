@@ -1578,7 +1578,7 @@ class tokens extends Survey_Common_Action
                 'message' => $clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
                 . "<br/>&nbsp;<ul><li>" . $clang->gT("having a valid email address") . "</li>"
                 . "<li>" . $clang->gT("not having been sent an invitation already") . "</li>"
-                . "<li>" . $clang->gT("having already completed the survey") . "</li>"
+                . "<li>" . $clang->gT("not having already completed the survey") . "</li>"
                 . "<li>" . $clang->gT("having a token") . "</li></ul>"
                 )), $aData);
             }
