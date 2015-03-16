@@ -62,7 +62,7 @@
         <?php if (count($tokenids)>0) { ?>
             <li>
                 <label><?php eT("Send reminder to token ID(s):"); ?></label>
-                <?php echo short_implode(", ", (array) $tokenids); ?>
+                <?php echo short_implode(", ", "-", (array) $tokenids); ?>
             </li>
         <?php } ?>
         <li><label for='bypassbademails'>
