@@ -88,7 +88,7 @@
             { ?>
                 <p>
                     <label><?php $clang->eT("Send invitation email to token ID(s):"); ?></label>
-                <?php echo short_implode(", ", (array) $tokenids); ?></p>
+                <?php echo short_implode(", ", "-", (array) $tokenids); ?></p>
             <?php } ?>
             <p>
                 <label for='bypassbademails'><?php $clang->eT("Bypass token with failing email addresses"); ?>:</label>

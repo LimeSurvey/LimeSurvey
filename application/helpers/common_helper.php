@@ -5636,7 +5636,7 @@ function isNumericInt($mStr)
 * @param array $aArray
 * @return string String showing array content
 */
-function short_implode($sDelimeter, $aArray)
+function short_implode($sDelimeter, $sHyphen, $aArray)
 {
     if (sizeof($aArray) < Yii::app()->getConfig('minlengthshortimplode'))
     {
@@ -5656,7 +5656,14 @@ function short_implode($sDelimeter, $aArray)
             }
             else
             {
-                $sResult = $sResult.', '.$aArray[$iIndexA];
+                if (strlen($sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3)
+                {
+                    return $sResult.$sDelimeter.'...';
+                }
+                else
+                {
+                    $sResult = $sResult.$sDelimeter.$aArray[$iIndexA];
+                }
             }
             $iIndexB = $iIndexA+1;
             if ($iIndexB < sizeof($aArray))
@@ -5667,7 +5674,7 @@ function short_implode($sDelimeter, $aArray)
                 }
                 if ($iIndexA < $iIndexB - 1)
                 {
-                    $sResult = $sResult.'-'.$aArray[$iIndexB-1];
+                    $sResult = $sResult.$sHyphen.$aArray[$iIndexB-1];
                 }
             }
             $iIndexA = $iIndexB;

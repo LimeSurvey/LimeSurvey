@@ -68,7 +68,7 @@
     { ?>
         <li>
             <label><?php $clang->eT("Send reminder to token ID(s):"); ?></label>
-        <?php echo short_implode(", ", (array) $tokenids); ?></li>
+        <?php echo short_implode(", ", "-", (array) $tokenids); ?></li>
     <?php } ?>
     <li><label for='bypassbademails'>
             <?php $clang->eT("Bypass token with failing email addresses"); ?>:</label>

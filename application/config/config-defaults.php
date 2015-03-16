@@ -385,6 +385,7 @@ $config['pdfheaderstring'] = '';          // Header string (under title). If thi
 $config['quexmlshowprintablehelp'] = false;
 
 $config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
+$config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of returned string
 
 /**
 *  Statistics chart settings
