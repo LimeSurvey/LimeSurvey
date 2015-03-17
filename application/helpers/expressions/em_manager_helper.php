@@ -6615,15 +6615,16 @@
                 }
             }
 
-            // Process Default : 1st part : update in DB if actually relevant
+            // Process Default : 1st part : update in DB if actually relevant and not already set
             if ($qrel && $grel)
             {
-                $sgqas = explode('|',$LEM->qid2code[$qid]);
-                foreach ($sgqas as $sgqa)
+                $allSQs = explode('|',$LEM->qid2code[$qid]);
+                foreach ($allSQs as $sgqa)
                 {
-                    if (!is_null($LEM->knownVars[$sgqa]['default']))
+                    if (!isset($_SESSION[$LEM->sessid][$sgqa]) && !is_null($LEM->knownVars[$sgqa]['default']))
                     {
-                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, false, 1, 1, false, false, true));// Static replace : can't update HTML inside a input
+                        $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, false, 1, 1, false, false, true);// Fill the $_SESSION to don't do it again a second time
+                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$_SESSION[$LEM->sessid][$sgqa]);
                     }
                 }
             }
@@ -6639,18 +6640,19 @@
                 }
             }
             // Regardless of whether relevant or hidden, allways set a $_SESSION for quanda_helper, use default value if exist
-            // Set this after testing relevance for default value hidden by relevance : ONLY for actual page, not needed after
+            // Set this after testing relevance for default value hidden by relevance
             $allSQs = explode('|', $LEM->qid2code[$qid]);
-            foreach($allSQs as $answer){
-                if(!isset($_SESSION[$LEM->sessid][$answer]))
+            foreach($allSQs as $sgqa)
+            {
+                if(!isset($_SESSION[$LEM->sessid][$sgqa]))
                 {
-                    if(!is_null($LEM->knownVars[$answer]['default']))
+                    if(!is_null($LEM->knownVars[$sgqa]['default']))
                     {
-                        $_SESSION[$LEM->sessid][$answer]=$LEM->ProcessString($LEM->knownVars[$answer]['default'],  $qInfo['qid'], NULL, false, 1, 1, false, false, true);
+                        $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'],  $qInfo['qid'], NULL, false, 1, 1, false, false, true);
                     }
                     else
                     {
-                        $_SESSION[$LEM->sessid][$answer]=null;
+                        $_SESSION[$LEM->sessid][$sgqa]=null;
                     }
                 }
             }
