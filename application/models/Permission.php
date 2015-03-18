@@ -491,6 +491,7 @@ class Permission extends LSActiveRecord
             // If you own a survey you have access to the whole survey
             if ($iUserID==$aSurveyInfo['owner_id']) return true;
         }
+
         // Check if superadmin and cache it
         if (!isset($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']))
         {
@@ -548,8 +549,8 @@ class Permission extends LSActiveRecord
     */
     function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID=null)
     {
-        return ($this->hasGlobalPermission('surveys',$sCRUD,$iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID));
-    }
+        return $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+    }        
 
     /**
     * Returns true if a user has permission to use a certain template
@@ -560,7 +561,7 @@ class Permission extends LSActiveRecord
     */
     function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
     {
-        return ($this->hasGlobalPermission('templates',$sCRUD,$iUserID) || $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID));
+        return $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
     }
 
     /**
