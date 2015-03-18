@@ -4909,8 +4909,8 @@
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
                             'qseq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
@@ -5053,7 +5053,6 @@
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                         $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                         $grel = $gRelInfo['result'];
-
                         if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']))
                         {
                             // redisplay the current question
@@ -5065,8 +5064,8 @@
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false), 
+                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
@@ -5086,8 +5085,8 @@
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
@@ -5127,8 +5126,8 @@
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
@@ -5545,8 +5544,8 @@
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
