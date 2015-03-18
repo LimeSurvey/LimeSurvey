@@ -549,8 +549,12 @@ class Permission extends LSActiveRecord
     */
     function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID=null)
     {
-        return $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
-    }        
+        // if($sPermission=='survey') : not needed : only global Permision on surveys, but this don't allow update etc ....
+        // For better management : set an array for surveycontent=>surveys,quotas=surveys etc ... but $sCRUD must be tested too : create => update
+        // See http://bugs.limesurvey.org/view.php?id=9571#c31846
+        // Actually this mange only view (Partial : survey can be tested only) and delete
+        return $this->hasGlobalPermission($sPermission.'s', $sCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+    }
 
     /**
     * Returns true if a user has permission to use a certain template

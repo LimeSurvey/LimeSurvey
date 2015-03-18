@@ -210,7 +210,7 @@ class Survey extends LSActiveRecord
 
     /**
     * permission scope for this model
-    *
+    * Actually only test if user have minimal access to survey (read)
     * @access public
     * @param int $loginID
     * @return CActiveRecord
@@ -218,6 +218,8 @@ class Survey extends LSActiveRecord
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
+        if(Permission::model()->hasGlobalPermission('surveys','read'))// Test global before adding criteria
+            return $this;
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
             'condition' => 'sid IN (SELECT entity_id FROM {{permissions}} WHERE entity = :entity AND  uid = :uid AND permission = :permission AND read_p = 1)

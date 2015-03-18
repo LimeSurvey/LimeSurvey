@@ -575,8 +575,7 @@ class SurveyAdmin extends Survey_Common_Action
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
         $oSurvey = new Survey;
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-            $oSurvey->permission(Yii::app()->user->getId());
+        $oSurvey->permission(Yii::app()->user->getId());
 
         $aSurveys = $oSurvey->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
         $aSurveyEntries = new stdClass();
