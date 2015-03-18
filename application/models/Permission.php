@@ -478,19 +478,9 @@ class Permission extends LSActiveRecord
         if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
         $sCRUD=$sCRUD.'_p';
 
-        if (is_null($iUserID))
-        {
-            if (!Yii::app()->user->getIsGuest()) $iUserID = Yii::app()->session['loginID'];
-            else return false;
-        }
-
-        if ($iEntityID>0 && $sEntityName=='survey')
-        {
-            $aSurveyInfo=getSurveyInfo($iEntityID);// OR find but then don't use $static
-            if (!$aSurveyInfo) return false;
-            // If you own a survey you have access to the whole survey
-            if ($iUserID==$aSurveyInfo['owner_id']) return true;
-        }
+        $iUserID=self::getUserId($iUserID);
+        if(!$iUserID)
+            return false;
 
         // Check if superadmin and cache it
         if (!isset($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']))
@@ -536,7 +526,7 @@ class Permission extends LSActiveRecord
     function hasGlobalPermission($sPermission, $sCRUD, $iUserID=null)
     {
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
-    }    
+    }
     
     /**
     * Checks if a user has a certain permission in the given survey
@@ -547,13 +537,22 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID=null)
+    function hasSurveyPermission($iSurveyID,$sPermission, $sCRUD, $iUserID=null)
     {
-        // if($sPermission=='survey') : not needed : only global Permision on surveys, but this don't allow update etc ....
-        // For better management : set an array for surveycontent=>surveys,quotas=surveys etc ... but $sCRUD must be tested too : create => update
-        // See http://bugs.limesurvey.org/view.php?id=9571#c31846
-        // Actually this mange only view (Partial : survey can be tested only) and delete
-        return $this->hasGlobalPermission($sPermission.'s', $sCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+        $oSurvey=Survey::Model()->findByPk($iSurveyID);
+        if (!$oSurvey) 
+            return false;
+        $iUserID=self::getUserId($iUserID);
+        if(!$iUserID)
+            return false;
+        // If you own a survey you have access to the whole survey
+        if ($iUserID==$oSurvey->owner_id) 
+            return true;
+
+        // Get global correspondance for surveys rigth
+        $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
+
+        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
@@ -577,5 +576,18 @@ class Permission extends LSActiveRecord
     private static function comparePermissionTitle($aApermission,$aBpermission)
     {
         return strcmp($aApermission['title'], $aBpermission['title']);
+    }
+
+    /**
+    /* get the default/fixed $iUserID
+    /* @param iUserID optionnal user id
+    /* @return integer user id
+    */
+    private static function getUserId($iUserID=null)
+    {
+        if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
+            $iUserID = Yii::app()->session['loginID'];
+        
+        return $iUserID;
     }
 }

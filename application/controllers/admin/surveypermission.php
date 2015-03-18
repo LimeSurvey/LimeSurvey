@@ -451,8 +451,17 @@ class surveypermission extends Survey_Common_Action {
                         if (!($sPermissionKey=='survey' && $sCRUDKey=='read'))
                         {
                             $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
-                            if($action=='setsurveysecurity' && Permission::model()->hasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
-                                $usersummary .= ' checked="checked" ';
+                            if($action=='setsurveysecurity')
+                            {
+                                if(Permission::model()->hasPermission('survey',$surveyid,$sPermissionKey,$sCRUDKey,$postuserid))
+                                {
+                                    $usersummary .= ' checked="checked" ';// User have this permission set for this survey
+
+                                }
+                                elseif(Permission::model()->hasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid))
+                                {
+                                    $usersummary .= ' data-indeterminate=true ';// User have this permission for this survey by another system (global or owner)
+                                }
                             }
                             $usersummary .=" />";
                         }
@@ -478,6 +487,7 @@ class surveypermission extends Survey_Common_Action {
             $usersummary .= "</form>\n";
 
             $aViewUrls['output'] = $usersummary;
+            App()->getClientScript()->registerScript("data-indeterminate","$(':checkbox[data-indeterminate]').prop('indeterminate', true);",CClientScript::POS_READY);
         }
         else
         {
