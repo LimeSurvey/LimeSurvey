@@ -135,7 +135,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
 
     if(is_null($cached)) {
         $args = array('order'=>'surveyls_title');
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!Permission::model()->hasGlobalPermission('surveys','read'))
         {
             $surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with('defaultlanguage')->findAll($args);
         } else {
@@ -7589,7 +7589,7 @@ function array_diff_assoc_recursive($array1, $array2) {
         $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
         $aParts = explode(':', $sSerial, 4);
-        return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : trim($aParts[2], '"');
+        return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : ( isset($aParts[2]) ? trim($aParts[2], '"') : null);
     }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
