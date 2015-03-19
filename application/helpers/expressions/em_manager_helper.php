@@ -4870,8 +4870,8 @@
                             'at_start'=>true,
                             'finished'=>false,
                             'message'=>$message,
-                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                            'unansweredSQs'=>'',
+                            'invalidSQs'=>'',
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -4909,8 +4909,8 @@
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
                             'qseq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),// This can never happen ?
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
@@ -5016,6 +5016,7 @@
                         if (is_null($result)) {
                             continue;   // this is an invalid group - skip it
                         }
+                        
                         $message .= $result['message'];
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                         if (!$result['relevant'] || $result['hidden'])
@@ -5058,14 +5059,15 @@
                             // redisplay the current question
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                            // We have an error : always show real last move result
                             $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false), 
-                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
+                            'mandViolation'=> $result['mandViolation'], 
+                            'valid'=> $result['valid'],
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
@@ -5077,6 +5079,7 @@
                         $LEM->currentQset = array();    // reset active list of questions
                         if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                         {
+                            // Redisplay the last question with error existing result
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
@@ -5085,8 +5088,8 @@
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
+                            'mandViolation'=> (isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                            'valid'=> (isset($result['valid']) ? $result['valid'] : false),
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
@@ -5109,7 +5112,6 @@
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                         $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                         $grel = $gRelInfo['result'];
-
                         if (!$grel || !$result['relevant'] || $result['hidden'])
                         {
                             // then skip this question - assume already saved?
@@ -5118,6 +5120,7 @@
                         else
                         {
                             // display new question
+                            // If it's new question : no mandatory error in lastMoveResult
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
@@ -5126,8 +5129,8 @@
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
+                            'mandViolation'=> false,
+                            'valid'=> true,
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
@@ -5544,8 +5547,8 @@
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->numQuestions > $LEM->currentQuestionSeq) ? $result['valid'] : false),
+                            'mandViolation'=> $result['mandViolation'],
+                            'valid'=> $result['valid'],
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                             );
@@ -5568,8 +5571,8 @@
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false), // Can set always false ?
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false), // Return always false ?
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
