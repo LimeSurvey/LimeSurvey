@@ -47,3 +47,19 @@ body.maintenance:before {
 body.maintenance {
     padding-top: 50px;
 }
+/*
+    Updater stuff.
+*/
+table.upgrade tr {
+    height: 50px;
+}
+table.upgrade td {
+    line-height: 34px !important;
+}
+table.upgrade .disabled button{
+    display: none;
+}
+
+table.upgrade tr.disabled {
+    background-color: rgba(127, 127, 127, 0.5);
+}

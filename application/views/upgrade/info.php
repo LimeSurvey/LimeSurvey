@@ -6,7 +6,7 @@
 <?php
 /* @var \SamIT\AutoUpdater\Executor\PreUpdate $preUpdate */
 echo TbHtml::tag('h3', [], 'Steps');
-echo TbHtml::openTag('table', ['style' => 'display:block;', 'class' => 'table']);
+echo TbHtml::openTag('table', ['style' => 'display:block;', 'class' => 'table upgrade']);
 echo TbHtml::openTag('tr');
 echo TbHtml::tag('th', ['style' => 'width: 15%;'], '#');
 echo TbHtml::tag('th', ['style' => 'width: 70%;'], 'Description');
@@ -33,7 +33,7 @@ $steps = [
 ];
 echo TbHtml::openTag('tbody');
 foreach($steps as $i => $step) {
-    echo TbHtml::openTag('tr', ['class' => "disabled", 'id' => "step-{$step['name']}"]);
+    echo TbHtml::openTag('tr', ['class' => $i > 0 ? "disabled" : "", 'id' => "step-{$step['name']}"]);
     echo TbHtml::tag('td', [], $i + 1);
     echo TbHtml::tag('td', [], $step['description']);
     echo TbHtml::tag('td', [], TbHtml::ajaxButton(TbHtml::icon(TbHtml::ICON_PLAY), $step['action'], ['success' => 'js:upgradeEvent']));
@@ -42,25 +42,6 @@ foreach($steps as $i => $step) {
 echo TbHtml::closeTag('tbody');        
 echo TbHtml::closeTag('table');
 
-//echo CHtml::tag('pre', [], "Change Log: " . implode("\n", $preUpdate->getChangeLog()));
-//echo CHtml::tag('pre', [], "Changed files: " . count($preUpdate->getChangedFiles()));
-//echo CHtml::tag('pre', [], "Created files: " . count($preUpdate->getCreatedFiles()));
-//echo CHtml::tag('pre', [], "Removed files: " . count($preUpdate->getRemovedFiles()));
-//echo TbHtml::well(implode('<br>', $preUpdate->getMessages()));
-//echo TbHtml::buttonGroup([
-//    [
-//        'url' => App()->createUrl('upgrade/info', ['version' => $preUpdate->getToVersion(), 'check' => true]),
-//        'label' => $check ? 'Re-run pre-check' : 'Run pre-check',
-//        'color' => $preCheckSuccess ? TbHtml::BUTTON_COLOR_DEFAULT : TbHtml::BUTTON_COLOR_PRIMARY
-//    ],
-//    [
-//        'label' => 'Upgrade to version ' . $preUpdate->getToVersion(),
-//        'visible' => $preCheckSuccess,
-//        'confirm' => 'Starting the upgrade will put limesurvey in maintenance mode',
-//        'url' => App()->createUrl('upgrade/download', ['version' => $preUpdate->getToVersion()]),
-//        'color' => TbHtml::BUTTON_COLOR_DANGER
-//    ]
-//]);
 ?></div><div class="col-md-3"><?php
     echo TbHtml::tag('h3', [], 'Details');
     echo TbHtml::tag('div', ['id' => 'details', 'style' => 'white-space: pre;']);
@@ -72,16 +53,30 @@ echo TbHtml::closeTag('table');
 function upgradeEvent(json) {
 //    debugger;
     if (json.success) {
+//        debugger;
         $('#step-' + json.step).addClass('success');
+        $('#step-' + json.step).removeClass('danger');
+        $('#step-' + json.step).next().removeClass('disabled');
     } else {
         $('#step-' + json.step).addClass('danger');
     }
     
-        var contents = '';
-        for (var i = 0; i < json.messages.length; i++) {
-            contents += '<li>' + json.messages[i] + '</li>';
+    var contents = '';
+    if (typeof json.changeLog != 'undefined' && json.changeLog.length > 0) {
+        contents += 'Changes in this version:';
+        contents += '<ul>';
+        for (var i = 0; i < json.changeLog.length; i++) {
+            contents += '<li>' + json.changeLog[i] + '</li>';
         }
-        $('#details').html(contents);
+        contents += '</ul>';
+    }
+    contents += 'Upgrade step results:';
+    contents += '<ul>';
+    for (var i = 0; i < json.messages.length; i++) {
+        contents += '<li>' + json.messages[i] + '</li>';
+    }
+    contents += '</ul>';
+    $('#details').html(contents);
 }
 
 </script>
