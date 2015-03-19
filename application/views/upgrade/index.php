@@ -2,6 +2,7 @@
 <div class="col-md-6 col-md-offset-3">
 <?php
     echo TbHtml::tag('h1', [], 'The following new versions are available:');
+    echo TbHtml::well("Note that currently all new versions are shown, no distinction between stable and unstable is made by the system.");
     $versions = array_reverse($versions);
     foreach($versions as $i => $version) {
         echo TbHtml::linkButton('Show details for version: ' . $version, [

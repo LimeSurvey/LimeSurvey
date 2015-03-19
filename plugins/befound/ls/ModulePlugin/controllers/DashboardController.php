@@ -13,13 +13,13 @@
             ], parent::accessRules());
         }
         public function actionIndex() {
-            var_dump(App()->basePath);
-            var_dump(App()->user);
-            var_dump(App()->user->name);
+//            var_dump(App()->basePath);
+//            var_dump(App()->user->name);
 //            var_dump(App()->authManager);
                    
 //            var_dump($this->module->user);
-            echo 'nice';
+//            echo 'nice';
+            $this->render('index');
         }
         
         public function actionView() {
@@ -27,8 +27,11 @@
         }
         
         public function actionLogin() {
-            $model = new \befound\ls\ModulePlugin\models\LoginForm;
+            $model = new \befound\ls\ModulePlugin\models\LoginForm('login');
             $form = new \TbForm('views.loginForm', $model);
+            if ($form->submitted() && $model->validate()) {
+                echo 'ok';
+            }
             $this->render('login', ['form' => $form]);
         }
     }

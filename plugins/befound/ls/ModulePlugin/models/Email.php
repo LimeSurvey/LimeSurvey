@@ -1,9 +1,11 @@
 <?php
 namespace befound\ls\ModulePlugin\models;
 
-class User extends ActiveRecord
+class Email extends ActiveRecord
 {
     public function tableName() {
-        return '{{user}}';
+        return '{{email}}';
     }
+    
+
 }

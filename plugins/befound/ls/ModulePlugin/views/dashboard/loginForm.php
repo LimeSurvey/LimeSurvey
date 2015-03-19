@@ -9,6 +9,13 @@ return [
         'password' => [
             'type' => 'password'
         ]
+    ],
+    'buttons' => [
+        'submit' => [
+            'type' => 'submit',
+            'label' => 'Log in',
+            'color' => 'primary'
+        ]
     ]
     
 ];

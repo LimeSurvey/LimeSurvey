@@ -8,4 +8,9 @@ return [[
         ],
     ], [
     // Right side
+        [
+            'label' => App()->user->name,
+            'url' => '#',
+            'icon' => 'user'
+        ],
     ]];

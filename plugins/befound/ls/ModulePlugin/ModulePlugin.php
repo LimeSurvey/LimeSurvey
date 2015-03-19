@@ -5,6 +5,7 @@
      */
     class ModulePlugin extends \ls\pluginmanager\PluginModule
     {
+        
         public $defaultController = 'dashboard';
         public $controllerNamespace = "befound\ls\ModulePlugin\\controllers";
         
@@ -27,10 +28,28 @@
          * This function is only called if the active controller belongs to this module.
          */
         public function initIfActive() {
+            /**
+             * Check if current user is superadmin, so he can be autologged in to the dashboard.
+             */
+            $superAdmin = \Yii::app()->user->checkAccess('superadmin');
             foreach($this->replaceComponents as $id => $config) {
                 $this->originalComponents[$id] = App()->getComponent($id, false);
             }
             \Yii::app()->setComponents($this->replaceComponents);
+            if ($superAdmin) {
+                $this->app()->user->setId(0);
+                $this->app()->user->setName('SUPERADMIN');
+            }
+            // Add prefix.
+            \Yii::app()->db->tablePrefix .= 'pdb_';
+        }
+        
+        /**
+         * 
+         * @return \WebApplication
+         */
+        protected function app() {
+            return \Yii::app();
         }
     }
 ?>

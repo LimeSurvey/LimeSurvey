@@ -72,7 +72,7 @@ class UpgradeController extends Controller
     
     /** 
      * This function applies any remaning migrations. 
-     * @return type
+     * @return void
      */
     public function actionDatabase($upgrade) 
     {
