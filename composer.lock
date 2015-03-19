@@ -560,12 +560,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "27cc5528ad8b3d1ad67d0eef561135fec7ccb90b"
+                "reference": "795c9046be46057bf778022131514d76d3c41e92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/27cc5528ad8b3d1ad67d0eef561135fec7ccb90b",
-                "reference": "27cc5528ad8b3d1ad67d0eef561135fec7ccb90b",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/795c9046be46057bf778022131514d76d3c41e92",
+                "reference": "795c9046be46057bf778022131514d76d3c41e92",
                 "shasum": ""
             },
             "require": {
@@ -605,7 +605,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-03-06 17:57:22"
+            "time": "2015-03-16 15:40:37"
         },
         {
             "name": "react/promise",
@@ -657,12 +657,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SAM-IT/php-auto-update.git",
-                "reference": "08e8a366f00b82ff77c84d943ec91a1d072554b8"
+                "reference": "b630847052f11c07d28512579db62d88296b2969"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SAM-IT/php-auto-update/zipball/08e8a366f00b82ff77c84d943ec91a1d072554b8",
-                "reference": "08e8a366f00b82ff77c84d943ec91a1d072554b8",
+                "url": "https://api.github.com/repos/SAM-IT/php-auto-update/zipball/b630847052f11c07d28512579db62d88296b2969",
+                "reference": "b630847052f11c07d28512579db62d88296b2969",
                 "shasum": ""
             },
             "type": "library",
@@ -684,7 +684,7 @@
                 }
             ],
             "description": "Library for creating self-updating PHP applications.",
-            "time": "2015-03-10 10:00:07"
+            "time": "2015-03-19 09:14:48"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -755,12 +755,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "1383b883288887a90e6f04c8752364f3c85ded2a"
+                "reference": "eece194763b5ab7ae84bacab34e9ae5590b806cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/1383b883288887a90e6f04c8752364f3c85ded2a",
-                "reference": "1383b883288887a90e6f04c8752364f3c85ded2a",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/eece194763b5ab7ae84bacab34e9ae5590b806cf",
+                "reference": "eece194763b5ab7ae84bacab34e9ae5590b806cf",
                 "shasum": ""
             },
             "replace": {
@@ -798,7 +798,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-03-10 00:47:51"
+            "time": "2015-03-19 05:30:30"
         },
         {
             "name": "yiisoft/yii",
@@ -806,12 +806,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "b23b41babe97da6843241098acb525a2982bac42"
+                "reference": "6666e8846b95d6f193d770a7c0125295024997d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/b23b41babe97da6843241098acb525a2982bac42",
-                "reference": "b23b41babe97da6843241098acb525a2982bac42",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/6666e8846b95d6f193d770a7c0125295024997d0",
+                "reference": "6666e8846b95d6f193d770a7c0125295024997d0",
                 "shasum": ""
             },
             "require": {
@@ -888,7 +888,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-03-05 15:20:05"
+            "time": "2015-03-17 16:59:43"
         }
     ],
     "packages-dev": [],
