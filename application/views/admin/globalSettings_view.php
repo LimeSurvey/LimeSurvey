@@ -57,73 +57,12 @@
             ));
 
             // Update
-            $aSettingsUpdate=array(
-                'updatecheckperiod'=>array(
-                    'type'=>'select',
-                    'label'=>gT("Automatically check for updates"),
-                    'options'=>array('0'=>gT("Never"),'1'=>gT("Every day"),'7'=>gT("Every week"),'14'=>gT("Every 2 weeks"),'30'=>gT("Every month")),
-                    'current'=>$thisupdatecheckperiod,
-                    'help'=>CHtml::link(gT("Check now"),$this->createUrl("admin/globalsettings",array('sa'=>"updatecheck")),array("class"=>"btn btn-link"))." ".CHtml::tag("em",array('id'=>"lastupdatecheck"),sprintf(gT("Last check: %s"),$updatelastcheck)),
-                ),
-                'updatenotification'=>array(
-                    'type'=>'select',
-                    'label'=>gT("Show update notifications"),
-                    'options'=>array('never'=>gT("Never"),'stable'=>gT("For stable versions"),'both'=>gT("For stable and unstable versions")),
-                    'current'=>$sUpdateNotification,
-                ),
-            );
-            if (isset($updateavailable) && $updateavailable==1 && is_array($aUpdateVersions))
-            {
-                $aSettingsUpdate['updateavailable']=array(
-                    'type'=>'info',
-                    'content'=>CHtml::tag('strong',array(),gT('The following LimeSurvey updates are available:')),
-                    );
-                $aUpdateAvailable=array();
-                foreach($aUpdateVersions as $aUpdateVersion)
-                {
-                    $sName="update_{$aUpdateVersion['versionnumber']}_{$aUpdateVersion['build']}";
-                    $sLabel="{$aUpdateVersion['versionnumber']} ({$aUpdateVersion['build']}) ".($aUpdateVersion['branch']!='master'?gT('(unstable)'):gT('(stable)'));
-                    $sDownloadLink=$aUpdateVersion['branch']!='master' ? "http://www.limesurvey.org/en/unstable-release/viewcategory/26-unstable-releases" : "http://www.limesurvey.org/en/stable-release";
-                    $aSettingsUpdate[$sName]=array(
-                        'type'=>'link',
-                        'label'=>$sLabel,
-                        'text'=>gt("Use ComfortUpdate"),
-                        'link'=>$this->createUrl("admin/update",array('sa'=>'index','build'=>$aUpdateVersion['build'])),// Build is not needed
-                        'htmlOptions'=>array(
-                            'class'=>'button',
-                            'target'=>'_top',
-                        ),
-                        'help'=>sprintf(gT('You can %s and % manually or use the %s'),
-                            CHtml::link(gT("download"),$sDownloadLink,array('target'=>'_blank')),
-                            CHtml::link(gT("update"),"http://manual.limesurvey.org/Upgrading_from_a_previous_version",array('target'=>'_blank')),
-                            CHtml::link(gT("3-Click ComfortUpdate"),"http://manual.limesurvey.org/ComfortUpdate",array('target'=>'_blank'))
-                        ),
-                    );
-                }
-            }
-            elseif(isset($updateinfo['errorcode']))
-            {
-                $aSettingsUpdate['updateavailable']=array(
-                    'type'=>'info',
-                    'label'=>sprintf(gT('There was an error on update check (%s)'),$updateinfo['errorcode']),
-                    'content'=>CHtml::tag('pre',array(),strip_tags($updateinfo['errorhtml'])),
-                    );
-            }
-            elseif ($updatable)
-            {
-                $aSettingsUpdate['updateavailable']=array(
-                    'type'=>'info',
-                    'content'=>gT('There is currently no newer LimeSurvey version available.'),
-                );
-            }
-            else
-            {
-                $aSettingsUpdate['updateavailable']=array(
-                    'type'=>'info',
-                    'content'=>sprintf(gT('This is an unstable version and cannot be updated using ComfortUpdate. Please check %s regularly for a newer version.'),CHtml::link(gT("our website"),"http://www.limesurvey.org")),
-                );
-            }
-
+            $aSettingsUpdate['updateavailable'] = [
+                'type'=> 'link',
+                'label' => 'Go to updater',
+                'link' => App()->createUrl('upgrade/index')
+            ];
+            
             $this->widget('ext.SettingsWidget.SettingsWidget', array(
                 //'id'=>'update',
                 'title'=>gt("Updates"),

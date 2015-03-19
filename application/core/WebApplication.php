@@ -94,7 +94,6 @@ class WebApplication extends CWebApplication
 
 	public function init() {
 		parent::init();
-        $this->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
 		Yii::import('application.helpers.ClassFactory');

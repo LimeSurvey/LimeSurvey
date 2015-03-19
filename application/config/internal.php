@@ -141,7 +141,7 @@ $internalConfig = array(
     ],
     'params' => [
         'version' => require __DIR__ . '/version.php',
-        'updateServer' => 'http://lsupdate.befound.nl/updates/'
+        'updateServer' => 'http://lsupdate.befound.nl/updates/',
     ]
 );
 

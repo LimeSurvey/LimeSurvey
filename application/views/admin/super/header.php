@@ -25,7 +25,6 @@
     <title><?php echo $sitename;?></title>
     <link rel="shortcut icon" href="<?php echo $baseurl;?>images/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo $baseurl;?>images/favicon.ico" type="image/x-icon" />
-    <?php echo $firebug ?>
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
