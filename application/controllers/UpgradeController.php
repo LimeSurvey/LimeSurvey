@@ -113,8 +113,7 @@ class UpgradeController extends Controller
     protected function runPreCheck($version)
     {
         $preUpdate = new \SamIT\AutoUpdater\Executor\PreUpdate([
-//            'basePath' => dirname(App()->basePath)
-            'basePath' => '/tmp/ls'
+            'basePath' => dirname(App()->basePath)
         ]);
         $json = $this->getFileContentsCached(App()->params['updateServer'] . 'prepare', [
             'query' => ['from' => App()->params['version'], 'to' => $version]

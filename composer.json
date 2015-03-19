@@ -17,7 +17,7 @@
         "guzzlehttp/guzzle": "~5.0@dev",
         "cakephp/utility": "dev-master",
         "sam-it/php-auto-update": "dev-master",
-        "vierbergenlars/php-semver": "dev-master"
+        "icecave/semver": "dev-master"
     },
 	"require-dev" : {
 		

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2ef9acc5889630f7e026be3cf0a20927",
+    "hash": "b253731656f358348161038e075b9935",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -347,6 +347,171 @@
             "time": "2015-01-22 00:01:34"
         },
         {
+            "name": "icecave/parity",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IcecaveStudios/parity.git",
+                "reference": "ccd81d359e94da09655edaf32c4a8a1e4e86105f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IcecaveStudios/parity/zipball/ccd81d359e94da09655edaf32c4a8a1e4e86105f",
+                "reference": "ccd81d359e94da09655edaf32c4a8a1e4e86105f",
+                "shasum": ""
+            },
+            "require": {
+                "icecave/repr": "~1",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "eloquent/liberator": "~1",
+                "icecave/archer": "~1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Icecave\\Parity\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au",
+                    "homepage": "https://github.com/jmalloc"
+                }
+            ],
+            "description": "A customizable deep comparison library.",
+            "homepage": "https://github.com/IcecaveStudios/parity",
+            "keywords": [
+                "compare",
+                "comparison",
+                "equal",
+                "equality",
+                "greater",
+                "less",
+                "sort",
+                "sorting"
+            ],
+            "time": "2014-11-18 02:59:18"
+        },
+        {
+            "name": "icecave/repr",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IcecaveStudios/repr.git",
+                "reference": "99f3e6e2ce65468bc88380a066c0e8eea5c182a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IcecaveStudios/repr/zipball/99f3e6e2ce65468bc88380a066c0e8eea5c182a4",
+                "reference": "99f3e6e2ce65468bc88380a066c0e8eea5c182a4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "icecave/archer": "~1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Icecave\\Repr\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au",
+                    "homepage": "https://github.com/jmalloc"
+                }
+            ],
+            "description": "A library for generating string representations of any value, inspired by Python's reprlib library.",
+            "homepage": "https://github.com/IcecaveStudios/repr",
+            "keywords": [
+                "human",
+                "readable",
+                "repr",
+                "representation",
+                "string"
+            ],
+            "time": "2015-02-04 23:25:18"
+        },
+        {
+            "name": "icecave/semver",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IcecaveStudios/semver.git",
+                "reference": "ca4277fb4000019e0cb50e72b272904d9e3d4557"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IcecaveStudios/semver/zipball/ca4277fb4000019e0cb50e72b272904d9e3d4557",
+                "reference": "ca4277fb4000019e0cb50e72b272904d9e3d4557",
+                "shasum": ""
+            },
+            "require": {
+                "icecave/parity": "~1",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "icecave/archer": "~1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Icecave\\SemVer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au",
+                    "homepage": "https://github.com/jmalloc"
+                }
+            ],
+            "description": "A semantic version parser and comparison library.",
+            "homepage": "https://github.com/IcecaveStudios/semver",
+            "keywords": [
+                "compare",
+                "comparison",
+                "semantic",
+                "semver",
+                "version"
+            ],
+            "time": "2015-03-09 04:51:38"
+        },
+        {
             "name": "jsonrpc/jsonrpc",
             "version": "dev-master",
             "source": {
@@ -636,58 +801,6 @@
             "time": "2015-03-10 00:47:51"
         },
         {
-            "name": "vierbergenlars/php-semver",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vierbergenlars/php-semver.git",
-                "reference": "25ceecc582f7e3b06e4bfde1222193e63e541554"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vierbergenlars/php-semver/zipball/25ceecc582f7e3b06e4bfde1222193e63e541554",
-                "reference": "25ceecc582f7e3b06e4bfde1222193e63e541554",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "simpletest/simpletest": "1.1.*"
-            },
-            "bin": [
-                "bin/semver",
-                "bin/update-versions"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "vierbergenlars\\SemVer\\": "src/",
-                    "vierbergenlars\\LibJs\\": "src/"
-                },
-                "classmap": [
-                    "src/vierbergenlars/SemVer/internal.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Lars Vierbergen",
-                    "email": "vierbergenlars@gmail.com"
-                }
-            ],
-            "description": "The Semantic Versioner for PHP",
-            "keywords": [
-                "semantic",
-                "semver",
-                "versioning"
-            ],
-            "time": "2015-01-27 13:41:25"
-        },
-        {
             "name": "yiisoft/yii",
             "version": "dev-master",
             "source": {
@@ -792,7 +905,7 @@
         "guzzlehttp/guzzle": 20,
         "cakephp/utility": 20,
         "sam-it/php-auto-update": 20,
-        "vierbergenlars/php-semver": 20
+        "icecave/semver": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

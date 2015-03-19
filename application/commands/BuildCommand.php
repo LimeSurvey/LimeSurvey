@@ -1,11 +1,12 @@
 <?php
 namespace ls\cli;
 use CConsoleCommand;
-use \vierbergenlars\SemVer\version;
+use Icecave\SemVer\Version;
 class BuildCommand extends CConsoleCommand 
 {
     public $releaseRepo = "SamMousa/Releases";
-    public $quiet = false;
+    public $quiet;
+    public $interactive;
     
     protected $_branch;
     protected $_buildNumber;
@@ -68,38 +69,52 @@ class BuildCommand extends CConsoleCommand
     protected function askVersionQuestions() 
     {
         $version = $this->getVersion();
+        $stabilities = [
+            'alpha',
+            'beta',
+            'rc',
+            'stable'
+        ];
         $this->out("Current version: " . $version);
-        if (!empty($version->getPrerelease())) {
+        if (!$version->isStable()) {
             $this->out("You are currently on an unstable version.");
-            if ($this->askBoolean("Does this release mark that version as stable?")) {
-                $version = new version(implode('.', [$version->getMajor(), $version->getMinor(), $version->getPatch()]));
+            if ($this->askBoolean("Does this change the stability?")) {
+                $next = $stabilities[array_search($version->preReleaseVersionParts()[0], $stabilities) + 1];
+                $stability = $this->ask("What is the new stability? Pick from: " . implode(', ', $stabilities), $next, "/" . implode('|', $stabilities) . "/");
+                if ($stability == 'stable') {
+                    $version->setPreReleaseVersion(null);
+                } else {
+                    $version->setPreReleaseVersion("$stability.1");
+                }
             } else {
-                $version->inc('prerelease');
+                $parts = $version->preReleaseVersionParts();
+                $parts[1]++;
+                $version->setPreReleaseVersion(implode('.', $parts));
             }
         } else {
             $major = $this->ask("Does this version change public API changes that are backwards-INCOMPATIBLE?", 'y', '/y|n/') === 'y';
             if (!$major) {
                 $minor = $this->ask("Does this version contain new features?", 'y', '/y|n/') === 'y';
                 if (!$minor) {
-                    $version->inc('patch');
+                    $version->setPatch($version->patch() + 1);
                 } else {
-                    $version->inc('minor');
+                    $version->setMinor($version->minor() + 1);
                 }
             } else {
-                $version->inc('major');
+                $version->setMajor($version->major() + 1);
             }
             
         }
-        return 'v' . $version->getVersion() . '+' . $this->getBuildNumber();
+        return $version->string() . '+' . $this->getBuildNumber();
     }
     
     public function actionRelease($interactive = 'true', $quiet = 'false', $branch = 'current', $test = 'false') {
         chdir(__DIR__ . '/../../');
-        $interactive = ($interactive === 'true');
-        $quiet = ($quiet === 'true');
+        $this->interactive = ($interactive === 'true');
+        $this->quiet = ($quiet === 'true');
         $test = ($test === 'true');
         $branch = ($branch != 'current') ? $branch : null;
-        if ($interactive) {
+        if ($this->interactive) {
             // Interactive first asks the user to specify a new version number.\
             $this->out("Interactive LimeSurvey build tool.");
             $version = $this->askVersionQuestions();
@@ -167,10 +182,10 @@ class BuildCommand extends CConsoleCommand
     
     /**
      * 
-     * @return version
+     * @return Version
      */
     public function getVersion() {
-        return new version(App()->params['version']);
+        return Version::parse(App()->params['version']);
     }
     
     protected function updateVersion($version, $file) {
@@ -224,7 +239,9 @@ class BuildCommand extends CConsoleCommand
         $sourceDir = __DIR__ . '/../../.git';
         $current = $this->git("--git-dir {$sourceDir} rev-parse  --verify HEAD")[0];
         if (isset($lastCommit) && $lastCommit == $current) {
-            throw new \Exception("Build aborted. No new commits in build.");
+            if (!$this->interactive || !$this->askBoolean('Build contains no new commits. Continue?')) {
+                throw new \Exception("Build aborted. No new commits in build.");
+            }
         }
         $this->out("Generating change log.");
         $changes = "(((" . $current . ")))\n";
