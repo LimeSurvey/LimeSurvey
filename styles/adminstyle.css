@@ -254,5 +254,7 @@ li input+label { display: inline;}
 
 #quotalist form{display:inline;}
 
+/* For Permissions settings */
+.mixed{opacity:0.4;}
 /* For the iframe in dialog */
 iframe#dialog{display:block; width:100%!important; height:100%!important;margin:0;padding:0;border:0}

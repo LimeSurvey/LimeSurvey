@@ -521,19 +521,9 @@ class Permission extends LSActiveRecord
         if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
         $sCRUD=$sCRUD.'_p';
 
-        if (is_null($iUserID))
-        {
-            if (!Yii::app()->user->getIsGuest()) $iUserID = Yii::app()->session['loginID'];
-            else return false;
-        }
-
-        if ($iEntityID>0 && $sEntityName=='survey')
-        {
-            $oSurvey=Survey::model()->findByPk($iEntityID);
-            if (!$oSurvey) return false;
-            // If you own a survey you have access to the whole survey
-            if ($iUserID==$oSurvey->owner_id) return true;
-        }
+        $iUserID=self::getUserId($iUserID);
+        if(!$iUserID)
+            return false;
 
         // Check if superadmin and cache it
         if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']))
@@ -592,7 +582,18 @@ class Permission extends LSActiveRecord
     */
     function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
     {
-        return $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+        $oSurvey=Survey::Model()->findByPk($iSurveyID);
+        if (!$oSurvey) 
+            return false;
+        $iUserID=self::getUserId($iUserID);
+        if(!$iUserID)
+            return false;
+        // If you own a survey you have access to the whole survey
+        if ($iUserID==$oSurvey->owner_id) 
+            return true;
+        // Get global correspondance for surveys rigth
+        $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
+        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
@@ -617,4 +618,17 @@ class Permission extends LSActiveRecord
     {
         return strcmp($aApermission['title'], $aBpermission['title']);
     }
+
+    /**
+    /* get the default/fixed $iUserID
+    /* @param iUserID optionnal user id
+    /* @return integer user id
+    */
+    private static function getUserId($iUserID=null)
+    {
+    if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
+        $iUserID = Yii::app()->session['loginID'];
+    return $iUserID;
+    }
+
 }

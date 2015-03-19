@@ -368,7 +368,7 @@ class surveypermission extends Survey_Common_Action {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
 
-        $action = $_POST['action'];
+        $action = App()->getRequest()->getPost('action');
 
 
         $imageurl = Yii::app()->getConfig('adminimageurl');
@@ -448,18 +448,18 @@ class surveypermission extends Survey_Common_Action {
                     {
                         if (!($sPermissionKey=='survey' && $sCRUDKey=='read'))
                         {
-                            $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
-                            if($action=='setsurveysecurity' && Permission::model()->hasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
-                                $usersummary .= ' checked="checked" ';
-                            }
-                            $usersummary .=" />";
+                            $usersummary .=CHtml::checkBox("perm_{$sPermissionKey}_{$sCRUDKey}",
+                                ($action=='setsurveysecurity' && Permission::model()->hasPermission('survey',$surveyid,$sPermissionKey,$sCRUDKey,$postuserid)), // checked
+                                array( // htmlOptions
+                                    'data-indeterminate'=>(bool)($action=='setsurveysecurity' && Permission::model()->hasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)),
+                                )
+                            );
                         }
                     }
                     $usersummary .= "</td>";
                 }
                 $usersummary .= "</tr>";
             }
-
             $usersummary .= "\n</table>"
             ."<p><input type='submit' value='".gT("Save Now")."' />"
             ."<input type='hidden' name='perm_survey_read' value='1' />"
