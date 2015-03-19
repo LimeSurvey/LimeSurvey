@@ -1,0 +1,1 @@
+This folder and all sub-folders have to be writeable. Set file permissions to 775 or 777 depending on your webserver configuration.
