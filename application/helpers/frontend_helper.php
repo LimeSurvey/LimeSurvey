@@ -620,7 +620,7 @@ function sendSubmitNotifications($surveyid)
 
     $aReplacementVars=array();
 
-    if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['survey_'.$surveyid]['scid']))
+    if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['survey_'.$surveyid]['scid']) && isset($_SESSION['survey_'.$surveyid]['holdname']))
     {
         $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['survey_'.$surveyid]['scid']."/loadname/".urlencode($_SESSION['survey_'.$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION['survey_'.$surveyid]['holdpass'])."/lang/".urlencode($clang->langcode));
         if ($bIsHTML)
