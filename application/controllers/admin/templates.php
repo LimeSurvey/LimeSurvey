@@ -344,7 +344,7 @@ class templates extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'templates.js');
         App()->getClientScript()->registerPackage('ace');
-        App()->getClientScript()->registerPackage('jquery-superfish');
+        
         $this->_renderWrappedTemplate('templates', $aViewUrls);
 
         if ($screenname != 'welcome')

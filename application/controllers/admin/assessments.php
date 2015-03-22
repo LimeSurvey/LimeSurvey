@@ -74,7 +74,7 @@ class Assessments extends Survey_Common_Action
     {
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'assessments.js');
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerPackage('jquery-superfish');
+        
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

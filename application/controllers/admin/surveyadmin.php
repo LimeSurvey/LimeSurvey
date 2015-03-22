@@ -267,6 +267,10 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function deactivate($iSurveyID = null)
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
+
+        $survey->deactivate();
+        die();
         $iSurveyID = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID = sanitize_int($iSurveyID);
         $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
@@ -412,10 +416,9 @@ class SurveyAdmin extends Survey_Common_Action
                 $survey->refurl = Yii::app()->request->getPost('refurl');
                 $survey->savetimings = Yii::app()->request->getPost('savetimings');
                 $survey->save();
-                Survey::model()->resetCache();  // Make sure the saved values will be picked up
             }
 
-            $aResult=activateSurvey($iSurveyID);
+            $aResult = $survey->activate();
             if (isset($aResult['error']))
             {
                 $aViewUrls['output']= "<br />\n<div class='messagebox ui-corner-all'>\n" .
@@ -1671,7 +1674,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'survey', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('jquery-superfish');
+        
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

@@ -528,7 +528,7 @@ class Survey_Common_Action extends CAction
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = ($surveyinfo['active'] == 'Y');
 
-        App()->getClientScript()->registerPackage('jquery-superfish');
+        
         App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveytoolbar.js');
 
@@ -884,7 +884,7 @@ class Survey_Common_Action extends CAction
         $aData['thissurvey'] = getSurveyInfo($iSurveyID);
         $aData['sImageURL'] = Yii::app()->getConfig("adminimageurl");
         $aData['surveyid'] = $iSurveyID;
-        App()->getClientScript()->registerPackage('jquery-superfish');
+        
 
         $tmp_survlangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $baselang = Survey::model()->findByPk($iSurveyID)->language;

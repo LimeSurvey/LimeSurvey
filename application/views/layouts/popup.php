@@ -6,7 +6,7 @@
         <?php 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('qTip2');
-            App()->getClientScript()->registerPackage('jquery-superfish'); // Needed by admin_core : to be fixed ?
+             // Needed by admin_core : to be fixed ?
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "admin_core.js");
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "jquery-ui/jquery-ui.css" );
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');

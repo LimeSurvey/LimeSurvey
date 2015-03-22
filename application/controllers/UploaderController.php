@@ -1,6 +1,9 @@
 <?php
 namespace ls\controllers;
 use \Yii;
+use \Survey;
+use \PluginEvent;
+use CClientScript;
 /*
  * LimeSurvey
  * Copyright (C) 2007-2014 The LimeSurvey Project Team / Carsten Schmitz
@@ -281,7 +284,6 @@ class UploaderController extends SurveyController {
 
         $meta = '';
         App()->getClientScript()->registerPackage('jqueryui');
-        App()->getClientScript()->registerPackage('jquery-superfish');
         $sNeededScriptVar='
             var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";

@@ -6,12 +6,12 @@ if (!isset($this->survey)) {
 $menu = [[ // Left side
     [
         'title' => gT('This survey is currently active.'),
-        'url' => ["admin/survey", 'sa' => 'deactivate', 'surveyid' => $this->survey->sid],
+        'url' => ["surveys/deactivate", 'id' => $this->survey->sid],
         'icon' => 'stop',
         'visible' => $this->survey->isActive
     ], [
         'title' => gT('This survey is currently not active'),
-        'url' => ["admin/survey", 'sa' => 'activate', 'surveyid' => $this->survey->sid],
+        'url' => ["surveys/activate", 'id' => $this->survey->sid],
         'icon' => 'play',
         'visible' => !$this->survey->isActive
     ],

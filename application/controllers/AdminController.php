@@ -32,6 +32,7 @@ class AdminController extends Controller
     {
         parent::_init();
         App()->getComponent('bootstrap');
+        App()->clientScript->registerPackage('jquery');
         $sUpdateLastCheck = getGlobalSetting('updatelastcheck');
 
         $this->_sessioncontrol();

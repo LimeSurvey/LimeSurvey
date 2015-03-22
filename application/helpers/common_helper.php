@@ -1506,20 +1506,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 
 /**
 * Validate an email address - also supports IDN email addresses
-* @returns True/false for valid/invalid
+* @returns boolean True/false for valid/invalid
 *
-* @param mixed $sEmailAddress  Email address to check
+* @param string $email  Email address to check
 */
-function validateEmailAddress($sEmailAddress){
-    require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
-    $oIdnConverter = new idna_convert();
-    $sEmailAddress=$oIdnConverter->encode($sEmailAddress);
-    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
-    if ($bResult!==false)
-    {
-        return true;
-    }
-    return false;
+function validateEmailAddress($email){
+    $validator = new CEmailValidator();
+    return $validator->validateValue($email);
 }
 
 /**
@@ -4884,8 +4877,12 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'showregister'=>'Y'
         ),
     );
-
-    $aExtraTokenFields=getAttributeFieldNames($surveyid);
+    
+    try {
+        $aExtraTokenFields = Token::model($surveyid)->attributeNames();
+    } catch (\Exception $ex) {
+        $aExtraTokenFields = [];
+    }
     $aSavedExtraTokenFields = Survey::model()->findByPk($surveyid)->tokenAttributes;
 
     // Drop all fields that are in the saved field description but not in the table definition

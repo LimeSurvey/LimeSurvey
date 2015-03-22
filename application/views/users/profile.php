@@ -1,3 +1,4 @@
+<div class="row">
 <div class="col-lg-4 col-lg-offset-4">
 <?php
     $this->widget('SettingsWidget', [
@@ -13,4 +14,5 @@
   
     
 ?>
+</div>
 </div>

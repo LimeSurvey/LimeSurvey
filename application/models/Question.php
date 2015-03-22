@@ -66,7 +66,7 @@
             return array(
                 'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
-                'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language"),
+                'subQuestions' => array(self::HAS_MANY, 'Question', 'parent_qid, language'),
                 
                 'group' => [self::BELONGS_TO, 'QuestionGroup', 'gid'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid'],
@@ -265,17 +265,6 @@
             ->bindParam(":sid", $sid, PDO::PARAM_INT)
             ->bindParam(":gid", $gid, PDO::PARAM_INT)
             ->bindParam(":language", $language, PDO::PARAM_STR)
-            ->query();
-        }
-
-        function getSubQuestions($parent_qid)
-        {
-            return Yii::app()->db->createCommand()
-            ->select()
-            ->from(self::tableName())
-            ->where('parent_qid=:parent_qid')
-            ->bindParam(":parent_qid", $parent_qid, PDO::PARAM_INT)
-            ->order('question_order asc')
             ->query();
         }
 
@@ -645,6 +634,85 @@
                     'condition' => 'parent_qid = 0'
                 ]
             ];
+        }
+        
+        public function getSgqa() {
+            return "{$this->sid}X{$this->gid}X{$this->qid}";
+        }
+        
+        public function getColumns() {
+            if ($this->parent_qid != 0) {
+                return [
+                    $this->title => 'string(5)'
+                ];
+            };
+            switch ($this->type) {
+                case "N":  //Numerical
+                case "K":  //Multiple Numerical
+                    $result = [$this->sgqa => "decimal (30,10)"];
+                    break;
+                case "S":  //SHORT TEXT
+                case "*":  //Equation
+                    $result = [$this->sgqa => "text"];
+                    break;
+                case "L":  //LIST (RADIO)
+                case "!":  //LIST (DROPDOWN)
+                    $result = [$this->sgqa => "string(5)"];
+                    break;
+                case "O":  //DROPDOWN LIST WITH COMMENT
+                    $result = [$this->sgqa => "string(5)", "{$this->sgqa}comment" => "text"];
+                    break;
+                case "M":  //Multiple choice
+                case "Q":  //Multiple short text    
+                    $result = call_user_func_array('array_merge', array_map(function(self $subQuestion) {
+                        $subResult = [];
+                        foreach ($subQuestion->columns as $name => $type) {
+                            $subResult[$this->sgqa . $name] = $type;
+                        }
+                        return $subResult;
+                    }, $this->subQuestions));
+                    break;
+                case "P":  //Multiple choice with comment
+                    $result = call_user_func_array('array_merge', array_map(function(self $subQuestion) {
+                        $subResult = [];
+                        foreach ($subQuestion->columns as $name => $type) {
+                            $subResult[$this->sgqa . $name] = $type;
+                            $subResult[$this->sgqa . $name . 'comment'] = 'text';
+                        }
+                        return $subResult;
+                    }, $this->subQuestions));
+                    break;
+                case "U":  //Huge text
+                case "T":  //LONG TEXT
+                case ";":  //Multi Flexi
+                case ":":  //Multi Flexi
+                    $result = [$this->sgqa => "text"];
+                    break;
+                case "D":  //DATE
+                    $result = [$this->sgqa => "datetime"];
+                    break;
+                case "5":  //5 Point Choice
+                case "G":  //Gender
+                case "Y":  //YesNo
+                case "X":  //Boilerplate
+                    $result = [$this->sgqa => "string(1)"];
+                    break;
+                case "I":  //Language switch
+                    $result = [$this->sgqa => "string(20)"];
+                    break;
+                case "|":
+                    $result = [
+                        $this->sgqa => "text",
+                        "{$this->sgqa}_filecount" => "int"
+                    ];
+                    
+                    break;
+                default:
+                    throw new \Exception("Don't know columns for question type: {$this->type}");
+                    
+            }
+            
+            return $result;
         }
     }
 

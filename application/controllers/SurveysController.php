@@ -45,7 +45,32 @@ use Survey;
             $this->survey = $survey;
             $this->render('view', ['survey' => $survey]);
         }
-        
+
+        public function actionActivate($id) {
+            $this->layout = 'survey';
+            $survey = $this->loadModel($id);
+            if (App()->request->isPostRequest) {
+                $survey->activate();
+                App()->user->setFlash('succcess', "Survey activated.");
+                $this->redirect(['surveys/view', 'id' => $survey->sid]);
+            }
+
+            $this->survey = $survey;
+            $this->render('activate', ['survey' => $survey]);
+        }
+
+        public function actionDeactivate($id) {
+            $this->layout = 'survey';
+            $survey = $this->loadModel($id);
+            if (App()->request->isPostRequest) {
+                $survey->deactivate();
+                App()->user->setFlash('succcess', "Survey deactivated.");
+                $this->redirect(['surveys/view', 'id' => $survey->sid]);
+            }
+
+            $this->survey = $survey;
+            $this->render('deactivate', ['survey' => $survey]);
+        }
         public function filters()
         {
             return array_merge(parent::filters(), ['accessControl']);

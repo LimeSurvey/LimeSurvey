@@ -74,7 +74,7 @@
                 'label' => gT('Surveys'),
                 'items' => array_map(function(Survey $survey) {
                     return [
-                        'url' => App()->createUrl('admin/survey/sa/view', ['surveyid' => $survey->sid]),
+                        'url' => App()->createUrl('surveys/view', ['id' => $survey->sid]),
                         'label' => $survey->localizedTitle . (($survey->isActive) ? ' (' . gT('inactive') .')' : '')
                     ];
                     
@@ -88,6 +88,7 @@
             ],
             [
                 'title' => gT('Logout') . ' ' . App()->user->name,
+                'label' => App()->user->name,
                 'url' => ['users/logout'],
                 'icon' => 'off'
             ], [

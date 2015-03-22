@@ -80,7 +80,7 @@ class PluginsController extends Controller
         } elseif (in_array($id, SettingGlobal::get('authenticationPlugins', []))) {
             App()->user->setFlash('error', "Cannot disable currently active authentication plugin.");
         }
-        
+
         $pm = App()->pluginManager;
         foreach ($pm->scanPlugins() as $pluginConfig) {
             if ($pluginConfig->id === $id) {
