@@ -75,11 +75,13 @@
     echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['plugins/configureAuth'], 'post');
     echo TbHtml::dropDownListControlGroup('authorizationPlugin', SettingGlobal::get('authorizationPlugin', null), TbHtml::listData($authorizers, 'id', 'name'), [
         'label' => 'Authorization plugin:',
+        'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
         'labelOptions' => ['class' => 'col-md-6'],
         'controlOptions' => ['class' => 'col-md-6'],
     ]);
     echo TbHtml::checkBoxListControlGroup('authenticationPlugins', SettingGlobal::get('authenticationPlugins', []), TbHtml::listData($authenticators, 'id', 'name'), [
         'label' => 'Authentication plugins:',
+        'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
         'labelOptions' => ['class' => 'col-md-6'],
         'controlOptions' => ['class' => 'col-md-6'],
     ]);
@@ -88,7 +90,6 @@
     echo TbHtml::closeTag('div');
     echo TbHtml::endForm();
     
-    var_dump($modules);
 ?>
     
 </div>

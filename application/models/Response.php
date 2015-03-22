@@ -22,6 +22,9 @@
 		 * @return Response
 		 */
 		public static function model($className = null) {
+            if (!is_numeric($className)) {
+                var_dump($className); die();
+            }
 			return parent::model($className);
 		}
 
@@ -124,11 +127,12 @@
             if (!isset($table)) {
                 // Table does not exist, create it.
                 App()->db->createCommand()->createTable($tableName, $columns);
+                App()->db->createCommand()->addPrimaryKey('', $tableName, ['id']);
                 $createdTables[] = $tableName;
                 $messages[] = gT("Response table created.");
             }
 
-            if ($survey->useTokens) {
+            if ($survey->bool_usetokens) {
                 App()->db->createCommand()->createIndex("token_{$surveyId}", $tableName, ['token']);
             }
 

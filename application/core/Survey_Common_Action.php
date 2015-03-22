@@ -750,13 +750,10 @@ class Survey_Common_Action extends CAction
             $aData['startdate'] = "-";
         }
 
-        if (trim($aSurveyInfo['expires']) != '')
-        {
-            //$constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
+        if (trim($aSurveyInfo['expires']) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($aSurveyInfo['expires'], 'Y-m-d H:i:s');
-            //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+            $aData['expdate'] = isset($dateformatdetails['phpdate']) ? $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i') : null;
         }
         else
         {

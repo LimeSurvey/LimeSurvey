@@ -5,16 +5,27 @@ if (!isset($this->survey)) {
 }
 $menu = [[ // Left side
     [
-        'title' => gT('This survey is currently active.'),
+        'title' => gT('Activate survey'),
+        'url' => $this->survey->isActive && $this->survey->isExpired ? ["surveys/unexpire", 'id' => $this->survey->sid] : ["surveys/activate", 'id' => $this->survey->sid],
+        'icon' => 'play',
+        'disabled' => $this->survey->isActive && !$this->survey->isExpired,
+    ], [
+        'title' => gT('Expire survey'),
+        'url' => $this->survey->isExpired ? '#' : ["surveys/expire", 'id' => $this->survey->sid],
+        'icon' => 'pause',
+        'disabled' => $this->survey->isExpired || !$this->survey->isActive
+
+    ], [
+        'title' => gT('Deactivate survey'),
         'url' => ["surveys/deactivate", 'id' => $this->survey->sid],
         'icon' => 'stop',
-        'visible' => $this->survey->isActive
+        'disabled' => !$this->survey->isActive
     ], [
-        'title' => gT('This survey is currently not active'),
-        'url' => ["surveys/activate", 'id' => $this->survey->sid],
-        'icon' => 'play',
-        'visible' => !$this->survey->isActive
-    ],
+        'title' => gT('Execute survey.'),
+        'icon' => 'certificate',
+        'disabled' => !$this->survey->isActive || $this->survey->isExpired,
+        'url' => !$this->survey->isActive || $this->survey->isExpired ? '#' : ["surveys/run", 'id' => $this->survey->sid]
+    ]
 ], [ // Right side
     [
         'label' => gT('Groups'),

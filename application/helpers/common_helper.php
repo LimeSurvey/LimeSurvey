@@ -18,7 +18,7 @@ Yii::import('application.helpers.sanitize_helper', true);
  * @param string $sEscapeMode
  * @param string $sLanguage
  */
-function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
+function gT($sToTranslate, $sEscapeMode = 'unescaped', $sLanguage = NULL)
 {
     return quoteText(Yii::t('',$sToTranslate,array(),null,$sLanguage),$sEscapeMode);
 }

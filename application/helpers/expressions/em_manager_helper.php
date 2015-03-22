@@ -5231,14 +5231,13 @@
                 }
 
                 $sdata = array_filter($sdata);
-                SurveyDynamic::sid($this->sid);
-                $oSurvey = new SurveyDynamic;
 
-                $iNewID = $oSurvey->insertRecords($sdata);
-                if ($iNewID)    // Checked
+
+                $oSurvey = Response::create($this->sid);
+                $oSurvey->setAttributes($sdata, false);
+                if ($oSurvey->save())    // Checked
                 {
-                    $srid = $iNewID;
-                    $_SESSION[$this->sessid]['srid'] = $iNewID;
+                    $_SESSION[$this->sessid]['srid'] = $srid = $oSurvey->id;
                 }
                 else
                 {
@@ -5329,12 +5328,14 @@
                     }
                 }
                 $query .= implode(', ', $setter);
-                $query .= " WHERE ID=";
+                $query .= " WHERE `id` = ";
 
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
-                    $query .= $_SESSION[$this->sessid]['srid'];
-
+                    /**
+                     * @todo Use proper active record instead of this manual sql creation.
+                     */
+                    $query .= "'{$_SESSION[$this->sessid]['srid']}'";
                     if (!dbExecuteAssoc($query))
                     {
                         echo submitfailed('');  // TODO - report SQL error?
@@ -5353,7 +5354,7 @@
                     if ($finished)
                     {
                         // Delete the save control record if successfully finalize the submission
-                        $query = "DELETE FROM {{saved_control}} where srid=".$_SESSION[$this->sessid]['srid'].' and sid='.$this->sid;
+                        $query = "DELETE FROM {{saved_control}} where `srid` = '{$_SESSION[$this->sessid]['srid']}' and `sid` = '{$this->sid}'";
                         Yii::app()->db->createCommand($query)->execute();
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -5384,7 +5385,7 @@
                             {
                                 $sQuery .= dbQuoteID('submitdate') . "=" . dbQuoteAll(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
                             }
-                            $sQuery .= " WHERE ID=".$_SESSION[$this->sessid]['srid'];
+                            $sQuery .= " WHERE `id` = '{$_SESSION[$this->sessid]['srid']}'";
                             dbExecuteAssoc($sQuery);   // Checked
                         }
                     }

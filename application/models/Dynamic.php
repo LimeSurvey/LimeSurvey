@@ -6,6 +6,7 @@
 	 */
 	abstract class Dynamic extends LSActiveRecord
 	{
+        private static $valid = [];
 		/**
          * Prefixed with _ to not collide with column names.
 		 * @var int The dynamic part of the class name.
@@ -20,7 +21,7 @@
 
 		/**
 		 *
-		 * @param type $className
+		 * @param int $className
 		 * @return Dynamic
 		 */
 
@@ -36,6 +37,11 @@
 			return parent::model($className);
 		}
 
+        /**
+         * @param $id
+         * @param string $scenario
+         * @return static
+         */
         public static function create($id, $scenario = 'insert')
 		{
 			$className = get_called_class() . '_' . $id;
@@ -51,11 +57,8 @@
         {
             $result = false;
             if (is_numeric($id)) {
-                try {
-                    static::model($id);
-                } catch (\CDbException $e) {
-                    $result = false;
-                }
+                $model = self::create($id, null);
+                $result = null != App()->db->schema->getTable($model->tableName());
             }
             return $result;
         }

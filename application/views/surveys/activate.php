@@ -1,43 +1,6 @@
 <?php
-if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck))
-{
-
-
-    ?>
-        <div class='header ui-widget-header'><?php eT("Activate Survey"); echo "($survey->sid)"; ?></div>
-        <div class='warningheader'><?php eT("Error"); ?><br />
-            <?php eT("Survey does not pass consistency check"); ?></div>
-        <p>
-            <strong><?php eT("The following problems have been found:"); ?></strong><br />
-        <ul>
-            <?php if (isset($failedcheck) && $failedcheck)
-            {
-                foreach ($failedcheck as $fc)
-                { ?>
-                    <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/'.$survey->sid.'/gid/'.$fc[3].'/qid/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
-                <?php }
-            }
-            if (isset($failedgroupcheck) && $failedgroupcheck)
-            {
-                foreach ($failedgroupcheck as $fg)
-                { ?>
-                    <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/'.$survey->sid.'/gid/'.$fg[0]); ?>'><?php echo $fg[1]; ?></a>")<?php echo $fg[2]; ?></li>
-                <?php }
-            } ?>
-        </ul>
-        <?php eT("The survey cannot be activated until these problems have been resolved."); ?>
-
-
-
-<?php }
-else
-{ ?>
-
-    <div class='warningheader'>
-        <?php eT("Warning"); ?><br />
-        <?php eT("READ THIS CAREFULLY BEFORE PROCEEDING"); ?>
-    </div>
-    <?php
+    echo TbHtml::labelTb(gT("Warning"), ['color' => 'danger']);
+    echo TbHtml::help(gT("READ THIS CAREFULLY BEFORE PROCEEDING"));
     eT("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.");
     echo TbHtml::openTag('ul');
     foreach([
@@ -49,12 +12,9 @@ else
         echo TbHtml::tag('li', [], $item);
     }
     echo TbHtml::closeTag('ul');
-    ?>
-    <div class='warningheader'>
-        <?php eT("The following settings cannot be changed when the survey is active.");?>
-    </div>
-    <?php eT("Please check these settings now, then click the button below.");?>
-    <?php
+    eT("The following settings cannot be changed when the survey is active.");
+    eT("Please check these settings now, then click the button below.");
+
     echo TbHtml::beginFormTb('horizontal', ["surveys/activate", 'id' => $survey->sid], 'post');
 
     echo TbHtml::well('These checkboxes are all ignored in LS3!@!', ['style' => 'background-color: #f2dede;']);
@@ -71,5 +31,4 @@ else
     echo TbHtml::submitButton(gT("Save / Activate survey"), ['color' => 'primary']);
     echo TbHtml::endForm();
     ?>
-</div><br />&nbsp;
-<?php } ?>
+</div>

@@ -221,7 +221,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}'))
+        if ($surveyExists == 1 && $thissurvey['usetokens'] == 'Y' && tableExists('{{tokens_'.$thissurvey['sid'].'}}'))
         {
             $tokensexist = 1;
         }

@@ -55,7 +55,6 @@ use Survey;
                 $this->redirect(['surveys/view', 'id' => $survey->sid]);
             }
 
-            $this->survey = $survey;
             $this->render('activate', ['survey' => $survey]);
         }
 
@@ -83,7 +82,41 @@ use Survey;
             } elseif (!App()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $id])) {
                 throw new CHttpException(403);
             }
+
+            if ($this->layout == 'survey') {
+                $this->survey = $survey;
+            }
             return $survey;
+        }
+
+        public function actionRun($id) {
+            // Redirect to old method.
+            $this->redirect(['survey/index', 'sid' => $id, 'newtest' => 'y']);
+
+        }
+
+        public function actionUnexpire($id) {
+            $this->layout = 'survey';
+
+            $survey = $this->loadModel($id);
+            if (App()->request->isPostRequest && $survey->unexpire()) {
+                App()->user->setFlash('success', gT("Survey expiry date removed."));
+                $this->redirect(['surveys/view', 'id' => $id]);
+            }
+            $this->render('unexpire', ['survey' => $survey]);
+        }
+
+        public function actionExpire($id)
+        {
+            throw new \CHttpException(500, "Not yet implemented.");
+
+        }
+
+        public function actionUpdate($id)
+        {
+            if (App()->request->isPostRequest && $survey = $this->loadModel($id)) {
+//                var_dump($_POST);
+            }
         }
     }
 ?>

@@ -19,13 +19,20 @@ if (!defined('BASEPATH'))
  */
 class Survey extends LSActiveRecord
 {
+
     /* Set some setting not by default database */
     public $format = 'G';
 
     public function attributeLabels() {
         return [
             
-            'localizedTitle' => 'Title'
+            'localizedTitle' => gT('Title'),
+            'bool_usecookie' => gT('Set cookie to prevent repeated participation?'),
+            'bool_listpublic' => gT('List survey publicly:'),
+            'startdate' => gT("Start date/time:"),
+            'expires' => gT("Expiry date/time:"),
+            'usecaptcha' => gT("Use CAPTCHA for")
+
         ];
     }
     /**
@@ -325,7 +332,7 @@ class Survey extends LSActiveRecord
     public function getStatus() {
         if (!$this->isActive) {
             $result = 'inactive';
-        } elseif ($this->isExpired()) {
+        } elseif ($this->isExpired) {
             $result = 'expired';
         } else {
             $result = 'active';
@@ -506,7 +513,7 @@ class Survey extends LSActiveRecord
         return $tokens[$iSurveyID];
     }
 
-	public function isExpired()
+	public function getIsExpired()
 	{
         return !empty($this->expires) && (new DateTime($this->expires)) < new DateTime();
 	}
@@ -684,16 +691,20 @@ class Survey extends LSActiveRecord
             'submitdate' => 'datetime',
             'lastpage' => 'int',
         ];
-        if ($this->ipaddr == 'Y') {
+        if ($this->bool_ipaddr) {
             $result['ipaddress'] = 'string(15)'; 
         }
-        if ($this->usetokens == 'Y') {
+        if ($this->bool_usetokens) {
+
             $result['token'] = "string({$this->tokenlength})";
         }
-        if ($this->refurl == 'Y') {
+        if ($this->bool_refurl) {
             $result['url'] = "string";
         }
-        
+
+        if ($this->use_series) {
+            $result['series_id'] = 'int';
+        }
         /**
          * @todo Add proper condition here.
          */
@@ -707,10 +718,6 @@ class Survey extends LSActiveRecord
         return $result;
     }
     
-    public function getUseTokens() {
-        return $this->usetokens =='Y';
-    }
-
     /**
      * Attempts to activate the survey.
      */
@@ -755,7 +762,8 @@ class Survey extends LSActiveRecord
                 if ($responseTable->count() == 0) {
                     $this->dbConnection->createCommand()->dropTable($responseTable->tableName());
                 } else {
-                    $this->dbConnection->createCommand()->renameTable($responseTable->tableName(), strtr($responseTable->tableName(), ['survey_' => 'survey_old_']));
+                    $name = strtr($responseTable->tableName(), ['survey_' => 'survey_old_']) . '_' . date('Y-m-d_H-i-s');
+                    $this->dbConnection->createCommand()->renameTable($responseTable->tableName(), $name);
                 }
             }
 
@@ -783,5 +791,79 @@ class Survey extends LSActiveRecord
     public function expire() {
         $this->expires = '0000-00-00 00:00:00';
         return $this->save();
+    }
+
+    public  function unexpire() {
+        $this->expires = null;
+        return $this->save();
+    }
+
+    public function getFeatures() {
+        $result = [];
+        foreach($this->getFeatureOptions() as $key => $value) {
+            if ($this->$key) {
+                $result[] = $key;
+            }
+        }
+        return $result;
+    }
+
+    public function setFeatures($value) {
+        foreach($this->getFeatureOptions() as $key => $value) {
+            /**
+             * @todo Could be optimized for less array searching.
+             */
+            $this->$key = in_array($key, $value);
+        }
+    }
+
+    public function getFeatureOptions() {
+        return [
+            'use_series' => gT("Response series"),
+            'bool_usetokens' => gT("Token support"),
+            'bool_anonymized' => gT("Anonymized responses"),
+            'bool_datestamp' => gT("Date stamps"),
+            'bool_ipaddr' => gT("Log IP address"),
+            'bool_refurl' => gT("Log referrer URL"),
+            'bool_savetimings' => gT("Save timing information")
+        ];
+    }
+
+    public function getCaptchaOptions() {
+        $a = gT("Survey Access");
+        $an = str_pad('', strlen($a), '-');
+        $r = gT("Registration");
+        $rn = str_pad('', strlen($r), '-');
+        $s = gT("Save & Load");
+        $sn = str_pad('', strlen($s), '-');
+        return [
+            'A' => implode(' / ', [$a, $r, $s]),
+            'B' => implode(' / ', [$a, $r, $sn]),
+            'C' => implode(' / ', [$a, $rn, $s]),
+            'D' => implode(' / ', [$an, $r, $s]),
+            'X' => implode(' / ', [$a, $rn, $sn]),
+            'R' => implode(' / ', [$an, $r, $sn]),
+            'S' => implode(' / ', [$an, $rn, $s]),
+            'N' => implode(' / ', [$an, $rn, $sn])
+        ];
+    }
+
+    public function __get($name)
+    {
+        if (substr($name, 0, 5) == 'bool_') {
+            $result = parent::__get(substr($name, 5)) === 'Y';
+        } else {
+            $result = parent::__get($name);
+        }
+        return $result;
+    }
+
+    public function __set($name, $value)
+    {
+        if (substr($name, 0, 5) == 'bool_') {
+            parent::__set(substr($name, 5), $value ? 'Y' : 'N');
+        } else {
+            parent::__set($name, $value);
+        }
     }
 }
