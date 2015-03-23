@@ -219,13 +219,13 @@ use SurveyDynamic;
 
         public function getResponses($surveyId, $attributes = array(), $condition = '', $params = array())
         {
-            return Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
+            return \Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
         }
 
 
         public function getToken($surveyId, $token)
         {
-            return Token::model($surveyId)->findByAttributes(array('token' => $token));
+            return \Token::model($surveyId)->findByAttributes(array('token' => $token));
         }
         /**
         * Gets a key value list using the group name as value and the group id
@@ -235,7 +235,7 @@ use SurveyDynamic;
         */
         public function getGroupList($surveyId)
         {
-            $result = QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
+            $result = \QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
             return $result;
         }
         
@@ -329,7 +329,7 @@ use SurveyDynamic;
         {
             $conditions['sid'] = $surveyId;
             $conditions['language'] = $language;
-            return Question::model()->with('subquestions')->findAllByAttributes($conditions);
+            return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
         }
         /**
          * Gets the metadata for a table.
