@@ -5496,23 +5496,17 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
 
         $criteria = new CDbCriteria;
         $criteria->condition="submitdate IS NOT NULL";
-        $aParams=array();
         foreach ($fields_list as $fieldname=>$aValue)
         {
             if(count($aValue)==1)
             {
-                // Quote columnName : starting with number broke mssql
-                $criteria->addCondition(Yii::app()->db->quoteColumnName($fieldname)." = :field{$fieldname}");
-                $aParams[":field{$fieldname}"]=$aValue[0];
+                $criteria->compare(Yii::app()->db->quoteColumnName($fieldname),$aValue[0]);// NO need params
             }
             else
             {
                 $criteria->addInCondition(Yii::app()->db->quoteColumnName($fieldname),$aValue); // NO need params : addInCondition bind automatically
             }
-            // We can use directly addInCondition, but don't know what is speediest.
         }
-        if(!empty($aParams))
-            $criteria->params=array_merge($criteria->params,$aParams);
         $result = SurveyDynamic::model($iSurveyId)->count($criteria);
     }
 
