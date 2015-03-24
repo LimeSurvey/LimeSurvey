@@ -1914,20 +1914,9 @@ function checkCompletedQuota($surveyid,$return=false)
         // $aQuotasInfo have an 'active' key, we don't use it ?
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
-        // Test only completed quota, other is not needed
-        $aQuotasCompleted=array();
-        foreach($aQuotasInfo as $aQuotaInfo)
-        {
-            $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);// Return a string
-            if(ctype_digit($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
-                $aQuotasCompleted[]=$aQuotaInfo;
-        }
-
-        if(empty($aQuotasCompleted))
-            return $aMatchedQuotas;
         // OK, we have some quota, then find if this $_SESSION have some set
-        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
-        foreach ($aQuotasCompleted as $aQuotaCompleted)
+        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
+        foreach ($aQuotasInfo as $aQuotaInfo)
         {
             $iMatchedAnswers=0;
             $bPostedField=false;
@@ -1935,7 +1924,7 @@ function checkCompletedQuota($surveyid,$return=false)
             $aQuotaFields=array();
             // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
             $aQuotaRelevantFieldnames=array();
-            foreach ($aQuotaCompleted['members'] as $aQuotaMember)
+            foreach ($aQuotaInfo['members'] as $aQuotaMember)
             {
                 $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
                 $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]=isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
@@ -1948,26 +1937,22 @@ function checkCompletedQuota($surveyid,$return=false)
                 {
                     $iMatchedAnswers++;
                 }
-                if(in_array($sFieldName,$aPostedFields))
+                if(in_array($sFieldName,$aPostedFields))// Need only one posted value
                     $bPostedField=true;
             }
-            if($iMatchedAnswers==count($aQuotaFields))
+            // Count only needed quotas
+            if($iMatchedAnswers==count($aQuotaFields) && ( $aQuotaInfo['action']!=2 || $bPostedField ) )
             {
-                switch ($aQuotaCompleted['action'])
-                {
-                    case '1':
-                    default:
-                        $aMatchedQuotas[]=$aQuotaCompleted;
-                        break;
-                    case '2':
-                        if($bPostedField)// Action 2 allow to correct last answers, then need to be posted
-                            $aMatchedQuotas[]=$aQuotaCompleted;
-                        break;
+                if((int)$aQuotaInfo['qlimit'] < 1){
+                    $aMatchedQuotas[]=$aQuotaInfo;
+                }else{
+                    $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);// Return a string
+                    if(ctype_digit($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
+                        $aMatchedQuotas[]=$aQuotaInfo;
                 }
             }
         }
     }
-
     if ($return)
         return $aMatchedQuotas;
     if(empty($aMatchedQuotas))

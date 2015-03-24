@@ -1161,7 +1161,6 @@ function getSurveyInfo($surveyid, $languagecode='')
         }
 
     }
-
     return $thissurvey;
 }
 
@@ -5440,14 +5439,13 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
         $oCriteria->condition="submitdate IS NOT NULL";
         foreach ($aQuotaColumns as $sColumn=>$aValue)
         {
-
             if(count($aValue)==1)
             {
                 $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind automatically
             }
             else
             {
-                $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind automatically
+                $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
             }
         }
         $result = SurveyDynamic::model($iSurveyId)->count($oCriteria);
