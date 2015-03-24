@@ -143,12 +143,12 @@ namespace ls\pluginmanager;
                 // This is a limesurvey relative path.
                 if (strpos('/', $fileName) === 0)
                 {
-                    $url = Yii::getPathOfAlias('webroot') . $fileName;
+                    $url = \Yii::getPathOfAlias('webroot') . $fileName;
                     
                 }
                 else // This is a plugin relative path.
                 {
-                    $path = Yii::getPathOfAlias('webroot.plugins.' . get_class($this)) . DIRECTORY_SEPARATOR . $fileName;
+                    $path = \Yii::getPathOfAlias('webroot.plugins.' . get_class($this)) . DIRECTORY_SEPARATOR . $fileName;
                     /*
                      * By using the asset manager the assets are moved to a publicly accessible path.
                      * This approach allows a locked down plugin directory that is not publicly accessible.

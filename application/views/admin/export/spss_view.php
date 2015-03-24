@@ -35,7 +35,7 @@
     <br/><ol>
         <li><?php eT("Download the data and the syntax file");?></li>
         <li><?php eT("Open the syntax file in SPSS in Unicode mode");?></li>
-        <li><?php eT("Edit the 4th line and complete the filename with a full path to the downloaded data file");?></li>
+        <li><?php echo sprintf(gT("Edit the %s line and complete the filename with a full path to the downloaded data file"),"'FILE='");?></li>
         <li><?php eT("Choose 'Run/All' from the menu to run the import");?></li>
     </ol><p>
 	<?php eT("Your data should be imported now");?></div>
