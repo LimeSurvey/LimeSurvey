@@ -1266,7 +1266,37 @@ function db_upgrade_all($iOldDBVersion) {
             alterColumn('{{participants}}', 'lastname', "string(150)", false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>179),"stg_name='DBVersion'");
         }
+        if ($iOldDBVersion < 180)
+        {
+            $aUsers = User::model()->findAll();
+            $aPerm = array(
+                'entity_id' => 0,
+                'entity' => 'global',
+                'uid' => 0,
+                'permission' => 'auth_db',
+                'create_p' => 0,
+                'read_p' => 1,
+                'update_p' => 0,
+                'delete_p' => 0,
+                'import_p' => 0,
+                'export_p' => 0
+            );
 
+            foreach ($aUsers as $oUser)
+            {
+                if (!Permission::model()->hasGlobalPermission('auth_db','read',$oUser->uid))
+                {
+                    $oPermission = new Permission;
+                    foreach ($aPerm as $k => $v)
+                    {
+                        $oPermission->$k = $v;
+                    }
+                    $oPermission->uid = $oUser->uid;
+                    $oPermission->save();
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>180),"stg_name='DBVersion'");
+        }
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;

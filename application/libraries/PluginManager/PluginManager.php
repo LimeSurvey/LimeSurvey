@@ -75,14 +75,14 @@ use Plugin;
         public function isPluginActive($sPluginName)
         {
             $pluginModel = Plugin::model();
-            $record = $pluginModel->findByAttributes(array('name' => $sPluginName));
+            $record = $pluginModel->findByAttributes(array('name' => $sPluginName, 'active' => '1'));
             if ($record == false)
             {
                 return false;
             }
             else
             {
-                return $record->active;
+                return true;
             }
         }
 
