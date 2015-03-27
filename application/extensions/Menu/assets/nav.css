@@ -18,11 +18,15 @@ nav ol {
 nav > ol.menubar-left {
     float: left;
 }
-
+.rtl nav > ol.menubar-left {
+    float: right;
+}
 nav > ol.menubar-right {
     float: right;
 }
-
+.rtl nav > ol.menubar-right {
+    float: left;
+}
 
 nav li {
     -moz-box-sizing: border-box;

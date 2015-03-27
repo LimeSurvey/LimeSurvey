@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html  lang="<?php echo Yii::app()->language ?>" <?php if(getLanguageRTL(Yii::app()->language)){ echo 'dir="rtl" class="rtl"'; } ?>>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,6 +13,11 @@
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+            if(getLanguageRTL(Yii::app()->language))
+            {
+                App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle-rtl.css" );
+                App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
+            }
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.css');
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery.multiselect.filter.css');
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");

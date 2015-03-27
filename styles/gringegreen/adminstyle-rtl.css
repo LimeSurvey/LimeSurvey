@@ -38,11 +38,6 @@ ul,ol {
     float: right;
 }
 
-.menubar-left img,
-.menubar-left a {
-    float: right;
-}
-
 .menubar-right {
     float: left;
 }

@@ -5,7 +5,6 @@
 .settingswidget .boolean label{
     margin-right: 10px;
 }
-
 .settingswidget {
     margin: 0 1em;
 }
@@ -34,6 +33,9 @@ margin-bottom: 5px;
 }
 .form-horizontal.col-sm-1,.form-horizontal .col-sm-2,.form-horizontal .col-sm-3,.form-horizontal .col-sm-4,.form-horizontal .col-sm-5,.form-horizontal .col-sm-6,.form-horizontal .col-sm-7,.form-horizontal .col-sm-8,.form-horizontal .col-sm-9,.form-horizontal .col-sm-10,.form-horizontal .col-sm-11,.form-horizontal .col-sm-12 {
     float: left;
+}
+.rtl .form-horizontal.col-sm-1,.rtl .form-horizontal .col-sm-2,.rtl .form-horizontal .col-sm-3,.rtl .form-horizontal .col-sm-4,.rtl .form-horizontal .col-sm-5,.rtl .form-horizontal .col-sm-6,.rtl .form-horizontal .col-sm-7,.rtl .form-horizontal .col-sm-8,.rtl .form-horizontal .col-sm-9,.rtl .form-horizontal .col-sm-10,.rtl .form-horizontal .col-sm-11,.rtl .form-horizontal .col-sm-12 {
+    float: right;
 }
 .form-horizontal .col-sm-12 {
 width: 100%;
@@ -74,6 +76,9 @@ width: 8.33333333%;
 .settingswidget .setting > .control-label {
     text-align: right;
     vertical-align: top;
+}
+.rtl .settingswidget .setting > .control-label {
+    text-align: left;
 }
 .form-horizontal textarea {
     height:auto;
