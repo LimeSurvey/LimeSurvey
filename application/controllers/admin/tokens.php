@@ -273,11 +273,11 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
 
-	/* build JS variable to hide buttons forbidden for the current user */
-	$aData['showDelButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')?'true':'false';
-	$aData['showInviteButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
-	$aData['showBounceButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
-	$aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+        /* build JS variable to hide buttons forbidden for the current user */
+        $aData['showDelButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')?'true':'false';
+        $aData['showInviteButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+        $aData['showBounceButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
+        $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')?'true':'false';
 
         // Javascript
         App()->getClientScript()->registerPackage('jqgrid');
@@ -378,6 +378,12 @@ class tokens extends Survey_Common_Action
         $condition->order = $sidx. " ". $sord;
         $condition->offset = ($page - 1) * $limit;
         $condition->limit = $limit;
+        // if not admin, only fetch tokens that are linked to participants that are owned by the current user
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+            $condition->join = " RIGHT JOIN {{participants}} p ON p.participant_id = t.participant_id ";
+            $iUserId = Yii::app()->session['loginID'];
+            $condition->addCondition("p.owner_uid = $iUserId");
+        }
 		$tokens = Token::model($iSurveyId)->findAll($condition);
 
         $condition->offset=0;

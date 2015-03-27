@@ -517,6 +517,15 @@ class responses extends Survey_Common_Action
                 $oCriteria->addCondition("submitdate IS NOT NULL");
             }
 
+            //if not admin, only show responses from participants that are owned by the current user
+            if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+                $oCriteria->select = "t.*, tokens.*";
+                $oCriteria->join = "LEFT JOIN {{tokens_" . $iSurveyID . "}} tokens ON t.token = tokens.token";
+                $oCriteria->join .= " LEFT JOIN {{participants}} p ON p.participant_id = tokens.participant_id ";
+                $iUserId = Yii::app()->session['loginID'];
+                $oCriteria->addCondition("p.owner_uid = $iUserId");
+            }
+
             $dtcount = SurveyDynamic::model($iSurveyID)->count($oCriteria);// or die("Couldn't get response data<br />");
 
             if ($limit > $dtcount)

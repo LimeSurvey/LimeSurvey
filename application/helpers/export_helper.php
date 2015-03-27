@@ -1704,34 +1704,42 @@ function tokensExport($iSurveyID)
     $oSurvey=Survey::model()->findByPk($iSurveyID);
     $bIsNotAnonymous= ($oSurvey->anonymized=='N' && $oSurvey->active=='Y');// db table exist (survey_$iSurveyID) ?
 
-    $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}}");
+//    $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}}");
+    $criteria = new CDbCriteria();
     $databasetype = Yii::app()->db->getDriverName();
-    $oRecordSet->where("1=1");
+//    $oRecordSet->where("1=1");
     if ($sEmailFiter!='')
     {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
         {
-            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
+            $criteria->addSearchCondition("CAST(email as varchar)", dbQuoteAll('%'.$sEmailFiter.'%', true));
+//            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
         }
         else
         {
-            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
+            $criteria->addSearchCondition('email', dbQuoteAll('%'.$sEmailFiter.'%', true));
+//            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
         }
     }
+
     if ($iTokenStatus==1)
     {
-        $oRecordSet->andWhere("completed<>'N'");
+        $criteria->addCondition("Completed<>'N'");
+//        $oRecordSet->andWhere("completed<>'N'");
     }
     elseif ($iTokenStatus==2)
     {
-        $oRecordSet->andWhere("completed='N'");
+        $criteria->addCondition("Completed='N'");
+//        $oRecordSet->andWhere("completed='N'");
         if ($bIsNotAnonymous)
         {
+            Token::model($iSurveyID)->select("token")->group("token")->findAll();
             $oRecordSet->andWhere("token not in (select token from {{survey_$iSurveyID}} group by token)");
         }
     }
     if ($iTokenStatus==3 && $bIsNotAnonymous)
     {
+        $criteria->addCondition("");
         $oRecordSet->andWhere("completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)");
     }
 
