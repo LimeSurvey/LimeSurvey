@@ -94,7 +94,9 @@
 
         public function rules() {
             return [
-                ['id', 'default', 'value' => \Cake\Utility\Text::uuid()]
+
+                ['id', 'default', 'value' => \Cake\Utility\Text::uuid()],
+                ['series_id', 'default', 'value' => \Cake\Utility\Text::uuid()],
             ];
         }
         public function scopes() {
@@ -164,6 +166,29 @@
                 }
 
             }
+
+        }
+
+        /**
+         * Create a new response that belongs to the same series.
+         * If copy is true then the response data from this response is copied to the new one.
+         * @return self
+         */
+        public function append($copy = false)
+        {
+            $result = self::create($this->surveyId);
+            $result->series_id = $this->series_id;
+            if ($copy) {
+                $result->setAttributes($this->attributes, false);
+                // Unset progress information.
+                $result->setAttributes([
+                    'submitdate' => null,
+                    'lastpage' => null,
+                    'id' => null
+                ], false);
+            }
+            return $result;
+
 
         }
 	}

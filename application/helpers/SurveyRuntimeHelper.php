@@ -413,6 +413,7 @@ class SurveyRuntimeHelper {
                 {
                     $_SESSION[$LEMsessid]['step'] = $moveResult['seq'] + 1;  // step is index base 1
                     $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+
                 }
                 if ($move == "movesubmit" && $moveResult['finished'] == false)
                 {

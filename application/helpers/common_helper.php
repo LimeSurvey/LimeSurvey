@@ -1088,7 +1088,7 @@ function getSurveyInfo($surveyId, $languagecode= null)
     if (!is_numeric($surveyId)) {
         throw new Exception("Survey ids must be numerical.");
     }
-    return (null != $survey = Survey::model()->findByPk($surveyId)) ? $survey->getInfo($languagecode) : null;
+    return (null != $survey = Survey::model()->cache(1)->findByPk($surveyId)) ? $survey->getInfo($languagecode) : null;
 }
 
 /**

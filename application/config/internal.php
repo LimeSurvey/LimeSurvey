@@ -81,6 +81,7 @@ $internalConfig = array(
             'routes' => array(
                 'CWebLogRoute' => array( // Use an associative array allow update in config
                     'class' => 'CWebLogRoute',
+                    'levels'=>'error, warning, trace, info',
                 ),
                 'trace' => array(
                     'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only

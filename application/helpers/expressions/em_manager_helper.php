@@ -662,26 +662,12 @@
         public static function &singleton()
         {
             $now = microtime(true);
-            if (isset($_SESSION['LEMdirtyFlag'])) {
-                $c = __CLASS__;
-                self::$instance = new $c;
-                unset($_SESSION['LEMdirtyFlag']);
+            if (!isset(self::$instance)) {
+                \Yii::beginProfile('construct lem');
+                self::$instance = new static();
+                \Yii::endProfile('construct lem');
             }
-            else if (!isset(self::$instance)) {
-                    if (isset($_SESSION['LEMsingleton'])) {
-                        self::$instance = unserialize($_SESSION['LEMsingleton']);
-                    }
-                    else {
-                        $c = __CLASS__;
-                        self::$instance = new $c;
-                    }
-                }
-                else {
-                    // does exist, and OK to cache
-                    return self::$instance;
-            }
-            // only record duration if have to create new (or unserialize) an instance
-            self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+
             return self::$instance;
         }
 

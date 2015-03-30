@@ -236,6 +236,9 @@ class Survey extends LSActiveRecord
             //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+
+            ['use_series', 'boolean'],
+            ['features', 'safe']
         );
     }
 
@@ -706,7 +709,7 @@ class Survey extends LSActiveRecord
         }
 
         if ($this->use_series) {
-            $result['series_id'] = 'int DEFAULT NULL';
+            $result['series_id'] = 'string(36) NOT NULL';
         }
         /**
          * @todo Add proper condition here.
@@ -812,7 +815,7 @@ class Survey extends LSActiveRecord
     }
 
     public function setFeatures($value) {
-        foreach($this->getFeatureOptions() as $key => $value) {
+        foreach($this->getFeatureOptions() as $key => $title) {
             /**
              * @todo Could be optimized for less array searching.
              */

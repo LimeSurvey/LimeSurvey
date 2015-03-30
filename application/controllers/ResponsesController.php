@@ -43,4 +43,19 @@ class ResponsesController extends Controller
         ]);
     }
 
+    /**
+     * This function appends a new response to the series of the response id given.
+     * If the current series_id is set to null it's initialized to 0.
+     *
+     * @param int $surveyId
+     * @param string $id
+     * @param bool $copy
+     */
+    public function actionAppend($surveyId, $id, $copy = false)
+    {
+        $response = \Response::model($surveyId)->findByPk($id);
+        $newResponse = $response->append($copy);
+        var_dump($response->attributes);
+        var_dump($newResponse->attributes);
+    }
 }

@@ -17,6 +17,7 @@
 
 	if (file_exists(__DIR__ . '/debug')) {
 		define('YII_DEBUG', true);
+        define('YII_TRACE_LEVEL', 5);
 		ini_set('display_errors', 1);
         error_reporting(E_ALL);
     } else {

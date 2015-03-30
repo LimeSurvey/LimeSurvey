@@ -14,12 +14,8 @@
             return App()->pluginManager->getPlugin($this->getState('authenticationPlugin'));
         }
 
-        /**
-         * This function is only called if 
-         */
         public function getModel() {
-            $this->setState('model', $this->getPlugin()->getUser($this->getId()));
-            return $this->getState('model');
+            return $this->getPlugin()->getUser($this->id);
         }
         
         public function getAuthManager() {

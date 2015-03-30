@@ -25,7 +25,7 @@ $menu = [[ // Left side
         'icon' => 'certificate',
         'disabled' => !$this->survey->isActive || $this->survey->isExpired,
         'linkOptions' => ['target' => '_blank'],
-        'url' => !$this->survey->isActive || $this->survey->isExpired ? '#' : ["surveys/run", 'id' => $this->survey->sid]
+        'url' => !$this->survey->isActive || $this->survey->isExpired ? '#' : ["surveys/start", 'id' => $this->survey->sid]
     ], [
         'title' => gT('Survey settings'),
         'icon' => 'wrench',

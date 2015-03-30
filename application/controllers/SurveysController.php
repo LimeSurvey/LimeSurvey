@@ -42,8 +42,13 @@ use Survey;
         public function actionUpdate($id) {
 
             $survey = $this->loadModel($id);
-            if (App()->request->isPostRequest && $survey = $this->loadModel($id)) {
-                var_dump($_POST);
+            if (App()->request->isPostRequest && isset($survey)) {
+                $survey->setAttributes($_POST['Survey']);
+                if ($survey->save()) {
+                    App()->user->setFlash('success', gT("Survey settings updated."));
+                }
+
+
             }
             $this->layout = 'survey';
             $this->survey = $survey;
@@ -78,13 +83,19 @@ use Survey;
         {
             return array_merge(parent::filters(), ['accessControl']);
         }
-        
+
+        /**
+         * @param type $id
+         * @return Survey
+         * @throws CHttpException
+         * @throws \CHttpException
+         */
         protected function loadModel($id) {
             $survey = Survey::model()->findByPk($id);
             if (!isset($survey)) {
                 throw new \CHttpException(404, "Survey not found.");
             } elseif (!App()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $id])) {
-                throw new CHttpException(403);
+                throw new \CHttpException(403);
             }
 
             if ($this->layout == 'survey') {
@@ -93,9 +104,53 @@ use Survey;
             return $survey;
         }
 
-        public function actionRun($id) {
-            // Redirect to old method.
-            $this->redirect(['survey/index', 'sid' => $id, 'newtest' => 'y']);
+        /**
+         * This function starts the survey.
+         * If a welcome screen is active it redirects to the welcome action.
+         * @param $id
+         */
+        public function actionStart($id, $token = null, $skipWelcome = false)
+        {
+            $survey = $this->loadModel($id);
+            $this->layout = 'bare';
+            if (!$survey->isActive) {
+                throw new \CHttpException(412, gT("The survey is not active."));
+            } elseif ($survey->bool_usetokens && !isset($token)) {
+                throw new \CHttpException(400, gT("Token required."));
+            } elseif ($survey->bool_usetokens && null === $token = \Token::model($id)->findByAttributes(['token' => $token])) {
+                throw new \CHttpException(404, gT("Token not found."));
+            }
+
+            $targetUrl = [
+                'surveys/execute',
+                'surveyId' => $id,
+            ];
+
+            if ($survey->bool_showwelcome && !$skipWelcome && $survey->format != 'A') {
+                $this->render('welcome', ['survey' => $survey]);
+            } else {
+                $response = \Response::create($id);
+                if (isset($token)) {
+                    /**
+                     * @todo Update token and check for anonymous.
+                     */
+                    $response->token = $token->token;
+                }
+                $response->save();
+                $this->redirect(['surveys/run', 'id' => $response->id, 'surveyId' => $id]);
+            }
+
+        }
+
+        public function actionRun($id, $surveyId)
+        {
+            $survey = $this->loadModel($surveyId);
+            $response = \Response::model($survey->sid)->findByPk($id);
+            if (!isset($response)) {
+                throw new \CHttpException(404, gT("Response not found."));
+            } else {
+                $this->redirect(['survey/index', 'sid' => $surveyId]);
+            }
 
         }
 

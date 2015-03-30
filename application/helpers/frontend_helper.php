@@ -1673,7 +1673,7 @@ function surveymover()
 */
 function doAssessment($surveyid, $returndataonly=false)
 {
-    $survey = Survey::model()->findByPk($surveyid);
+    $survey = Survey::model()->cache(1)->findByPk($surveyid);
     
     if(!isset($survey) || $survey->assessments!="Y") {
         return false;
@@ -2203,7 +2203,7 @@ function SetSurveyLanguage($surveyid, $sLanguage)
 
     if (isset($surveyid) && $surveyid>0)
     {
-        $default_survey_language= Survey::model()->findByPk($surveyid)->language;
+        $default_survey_language= Survey::model()->cache(1)->findByPk($surveyid)->language;
         $additional_survey_languages = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
         if (!isset($sLanguage) || ($sLanguage=='')
         || !( in_array($sLanguage,$additional_survey_languages) || $sLanguage==$default_survey_language)

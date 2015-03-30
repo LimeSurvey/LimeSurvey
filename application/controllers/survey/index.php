@@ -81,8 +81,9 @@ class index extends CAction {
             killSurveySession($surveyid);
         }
 
-        $surveyExists=($surveyid && Survey::model()->findByPk($surveyid));
-        $isSurveyActive=($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
+
+        $surveyExists=($surveyid && null != $survey = Survey::model()->findByPk($surveyid));
+        $isSurveyActive=($surveyExists && $survey->isActive);
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -611,7 +612,7 @@ class index extends CAction {
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang))
+        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->cache(1)->findByPk($mvSurveyIdOrBaseLang))
         {
             $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
         }
