@@ -5,7 +5,7 @@
             'tabs' => [
                 [
                     'label' => 'Properties',
-                    'content' => TbHtml::tag('pre', [], print_r($survey->attributes, true)),
+                    'content' => $this->renderPartial('view/properties', ['survey' => $survey], true),
                     'active' => true
                 ], [
                     'label' => gT('General'),

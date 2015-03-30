@@ -1,7 +1,10 @@
 <?php
 echo TbHtml::well("Features below can only be enabled / disabled when the survey is not active.");
-echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['surveys/update'], 'post');
+echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['surveys/update'], 'post', []);
 $options = $survey->featureOptions;
+echo TbHtml::openTag('fieldset', [
+    'disabled' => $survey->active
+]);
 foreach ($options as $key => &$label) {
     $label .= ' ' . TbHtml::link(TbHtml::icon('info-sign'), 'https://manual.limesurvey.org/Feature:' . $key, ['target' => '_blank']);
 }
@@ -13,4 +16,5 @@ echo TbHtml::submitButton('Save settings', [
     'disabled' => !$survey->isActive
 ]);
 echo TbHtml::closeTag('div');
+echo TbHtml::closeTag('fieldset');
 echo TbHtml::endForm();

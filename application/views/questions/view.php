@@ -1,3 +1,4 @@
 <?php
-
-echo TbHtml::tag('pre', [], print_r($question->attributes, true));
+$this->widget(WhDetailView::class, [
+    'data' => $question
+]);

@@ -1,6 +1,6 @@
 <nav>
 <?php 
-echo TbHtml::tag('h3', [],"Survey navigator");
+echo TbHtml::link(TbHtml::tag('h3', [], "{$this->survey->localizedTitle} ({$this->survey->sid})"), ['surveys/view', 'id' => $this->survey->sid]);
 $items = [];
 foreach ($this->survey->groups as $group) {
     $items[] = [

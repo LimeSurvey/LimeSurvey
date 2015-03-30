@@ -1,4 +1,4 @@
 <?php
 $this->widget(WhDetailView::class, [
-    'data' => $group
+    'data' => $survey
 ]);

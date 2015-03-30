@@ -58,7 +58,7 @@
             $result = false;
             if (is_numeric($id)) {
                 $model = self::create($id, null);
-                $result = null != App()->db->schema->getTable($model->tableName());
+                $result = null != App()->db->schema->getTable($model->tableName(), true);
             }
             return $result;
         }

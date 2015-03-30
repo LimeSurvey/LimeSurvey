@@ -39,11 +39,15 @@ use Survey;
             ));
         }
         
-        public function actionView($id) {
-            $this->layout = 'survey';
+        public function actionUpdate($id) {
+
             $survey = $this->loadModel($id);
+            if (App()->request->isPostRequest && $survey = $this->loadModel($id)) {
+                var_dump($_POST);
+            }
+            $this->layout = 'survey';
             $this->survey = $survey;
-            $this->render('view', ['survey' => $survey]);
+            $this->render('update', ['survey' => $survey]);
         }
 
         public function actionActivate($id) {
@@ -52,7 +56,7 @@ use Survey;
             if (App()->request->isPostRequest) {
                 $survey->activate();
                 App()->user->setFlash('succcess', "Survey activated.");
-                $this->redirect(['surveys/view', 'id' => $survey->sid]);
+                $this->redirect(['surveys/update', 'id' => $survey->sid]);
             }
 
             $this->render('activate', ['survey' => $survey]);
@@ -64,7 +68,7 @@ use Survey;
             if (App()->request->isPostRequest) {
                 $survey->deactivate();
                 App()->user->setFlash('succcess', "Survey deactivated.");
-                $this->redirect(['surveys/view', 'id' => $survey->sid]);
+                $this->redirect(['surveys/update', 'id' => $survey->sid]);
             }
 
             $this->survey = $survey;
@@ -108,15 +112,19 @@ use Survey;
 
         public function actionExpire($id)
         {
-            throw new \CHttpException(500, "Not yet implemented.");
+            $survey = $this->loadModel($id);
 
-        }
+            if (App()->request->isPostRequest) {
+//                $survey->deactivate();
+//                App()->user->setFlash('succcess', "Survey deactivated.");
+//                $this->redirect(['surveys/view', 'id' => $survey->sid]);
 
-        public function actionUpdate($id)
-        {
-            if (App()->request->isPostRequest && $survey = $this->loadModel($id)) {
-//                var_dump($_POST);
+
             }
+            $this->layout = 'survey';
+            $this->survey = $survey;
+            $this->render('expire', ['survey' => $survey]);
         }
+
     }
 ?>

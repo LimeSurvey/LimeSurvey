@@ -7,14 +7,14 @@ $menu = [[ // Left side
   
 ], [ // Right side
     [
-        'label' => gT('Questions'),
-        'items' => array_map(function(Question $question) {
-            return [
-                'url' => App()->createUrl('questions/view', ['id' => $question->qid]),
-                'label' => $question->title
-            ];
-
-        }, Question::model()->primary()->findAllByAttributes(['sid' => $this->survey->sid, 'language' => $this->survey->language]))
+//        'label' => gT('Questions'),
+//        'items' => array_map(function(Question $question) {
+//            return [
+//                'url' => App()->createUrl('questions/view', ['id' => $question->qid]),
+//                'label' => $question->title
+//            ];
+//
+//        }, Question::model()->primary()->findAllByAttributes(['sid' => $this->survey->sid, 'language' => $this->survey->language]))
     ], 
     
 ]];

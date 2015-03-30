@@ -21,7 +21,7 @@
                 'header' => 'Survey ID',
                 'class' => 'CLinkColumn',
                 'labelExpression' => function(Survey $survey, $row) { return $survey->sid; },
-                'urlExpression' => function(Survey $survey, $row) { return ['surveys/view', 'id' => $survey->sid]; }
+                'urlExpression' => function(Survey $survey, $row) { return ['surveys/update', 'id' => $survey->sid]; }
             ],
             'localizedTitle',
             'completedResponseCount',

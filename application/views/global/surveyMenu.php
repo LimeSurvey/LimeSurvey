@@ -27,22 +27,27 @@ $menu = [[ // Left side
         'linkOptions' => ['target' => '_blank'],
         'url' => !$this->survey->isActive || $this->survey->isExpired ? '#' : ["surveys/run", 'id' => $this->survey->sid]
     ], [
+        'title' => gT('Survey settings'),
+        'icon' => 'wrench',
+//        'disabled' => $this->survey->responseCount == 0,
+        'url' => ["surveys/update", 'id' => $this->survey->sid]
+    ], [
         'title' => gT('Responses'),
         'icon' => 'inbox',
         'disabled' => $this->survey->responseCount == 0,
         'url' => ["responses/index", 'id' => $this->survey->sid]
     ]
 ], [ // Right side
-    [
-        'label' => gT('Groups'),
-        'items' => array_map(function(QuestionGroup $group) {
-            return [
-                'url' => App()->createUrl('admin/survey/sa/view', ['surveyid' => $group->sid, 'gid' => $group->gid]),
-                'label' => $group->title
-            ];
-
-        }, QuestionGroup::model()->findAllByAttributes(['sid' => $this->survey->sid, 'language' => $this->survey->language]))
-    ], 
+//    [
+//        'label' => gT('Groups'),
+//        'items' => array_map(function(QuestionGroup $group) {
+//            return [
+//                'url' => App()->createUrl('admin/survey/sa/view', ['surveyid' => $group->sid, 'gid' => $group->gid]),
+//                'label' => $group->title
+//            ];
+//
+//        }, QuestionGroup::model()->findAllByAttributes(['sid' => $this->survey->sid, 'language' => $this->survey->language]))
+//    ],
     
 ]];
     

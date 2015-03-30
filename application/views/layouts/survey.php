@@ -34,28 +34,27 @@
                         'items' => $items[1]
                     ]]
                 ]);
-                if (isset($this->survey)) {
-                    $items = require __DIR__ . '/../global/surveyMenu.php';
+                if (isset($this->question)) {
+                    $items = require __DIR__ . '/../global/questionMenu.php';
                     $this->widget('TbNavbar', [
-                    'brandLabel' => false,
-                    'display' => null,
-                    'fluid' => true,
-                    'items' => [
-                    [
-                        'class' => 'TbNav',
-                        'items' => $items[0]
-                    ], 
-                    [
-                        'class' => 'TbNav',
-                        'htmlOptions' => [
-                            'class' => 'navbar-right'
-                        ],
-                        'items' => $items[1]
-                    ]]
-                ]);
-                    
-                }
-                if (isset($this->group)) {
+                        'brandLabel' => false,
+                        'display' => null,
+                        'fluid' => true,
+                        'items' => [
+                            [
+                                'class' => 'TbNav',
+                                'items' => $items[0]
+                            ],
+                            [
+                                'class' => 'TbNav',
+                                'htmlOptions' => [
+                                    'class' => 'navbar-right'
+                                ],
+                                'items' => $items[1]
+                            ]]
+                    ]);
+
+                } elseif (isset($this->group)) {
                     $items = require __DIR__ . '/../global/groupMenu.php';
                     $this->widget('TbNavbar', [
                     'brandLabel' => false,
@@ -75,27 +74,26 @@
                     ]]
                 ]);
                     
-                }
-                if (isset($this->question)) {
-                    $items = require __DIR__ . '/../global/questionMenu.php';
+                } elseif (isset($this->survey)) {
+                    $items = require __DIR__ . '/../global/surveyMenu.php';
                     $this->widget('TbNavbar', [
-                    'brandLabel' => false,
-                    'display' => null,
-                    'fluid' => true,
-                    'items' => [
-                    [
-                        'class' => 'TbNav',
-                        'items' => $items[0]
-                    ], 
-                    [
-                        'class' => 'TbNav',
-                        'htmlOptions' => [
-                            'class' => 'navbar-right'
-                        ],
-                        'items' => $items[1]
-                    ]]
-                ]);
-                    
+                        'brandLabel' => false,
+                        'display' => null,
+                        'fluid' => true,
+                        'items' => [
+                            [
+                                'class' => 'TbNav',
+                                'items' => $items[0]
+                            ],
+                            [
+                                'class' => 'TbNav',
+                                'htmlOptions' => [
+                                    'class' => 'navbar-right'
+                                ],
+                                'items' => $items[1]
+                            ]]
+                    ]);
+
                 }
             }
 		?>
