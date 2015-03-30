@@ -3,6 +3,7 @@
 	/**
 	 * Relations
 	 * @property Token $token
+     * @property int $surveyId
 	 * @property Survey $survey
 	 */
 	abstract class Response extends Dynamic
@@ -16,6 +17,13 @@
             return false;
         }
 
+        /**
+         * @return int
+         */
+        public function getSurveyId()
+        {
+            return $this->dynamicId;
+        }
         /**
 		 *
 		 * @param mixed $className Either the classname or the survey id.

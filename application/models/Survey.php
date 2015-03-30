@@ -666,7 +666,10 @@ class Survey extends LSActiveRecord
     public function getPartialResponseCount() {
         return $this->isNewRecord || !Response::valid($this->sid) ? 0 : Response::model($this->sid)->incomplete()->count();
     }
-    
+
+    /**
+     * @return int
+     */
     public function getResponseCount() {
         return $this->isNewRecord || !Response::valid($this->sid) ? 0 : Response::model($this->sid)->count();
     }
@@ -703,7 +706,7 @@ class Survey extends LSActiveRecord
         }
 
         if ($this->use_series) {
-            $result['series_id'] = 'int';
+            $result['series_id'] = 'int DEFAULT NULL';
         }
         /**
          * @todo Add proper condition here.

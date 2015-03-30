@@ -24,7 +24,13 @@ $menu = [[ // Left side
         'title' => gT('Execute survey.'),
         'icon' => 'certificate',
         'disabled' => !$this->survey->isActive || $this->survey->isExpired,
+        'linkOptions' => ['target' => '_blank'],
         'url' => !$this->survey->isActive || $this->survey->isExpired ? '#' : ["surveys/run", 'id' => $this->survey->sid]
+    ], [
+        'title' => gT('Responses'),
+        'icon' => 'inbox',
+        'disabled' => $this->survey->responseCount == 0,
+        'url' => ["responses/index", 'id' => $this->survey->sid]
     ]
 ], [ // Right side
     [
