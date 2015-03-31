@@ -1,3 +1,6 @@
+<?php
+App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "tokenbounce.js");
+?>
 <div class='header ui-widget-header'><?php $clang->eT("Bounce settings"); ?></div>
 <div id='bouncesettingsdiv'>
     <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/{$surveyid}"), 'post', array('id'=>'bouncesettings', 'name'=>'bouncesettings', 'class'=>'form30')); ?>
