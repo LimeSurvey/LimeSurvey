@@ -46,14 +46,13 @@ class ParticipantAttributeName extends LSActiveRecord
             // Fix the primary key, needed for PgSQL http://bugs.limesurvey.org/view.php?id=6707
             // First load the helper
             Yii::app()->loadHelper('update/updatedb');
-            $dbType = setsDBDriverName();
-            $table = 'participant_attribute_names';
+            $dbType = Yii::app()->db->driverName;
             if ($dbType == 'mysql') {
                 // Only for mysql first remove auto increment
                 alterColumn($model->tableName(), $model->primaryKey(), $model->tableSchema->getColumn($model->primaryKey())->dbType, false);
             }
-            dropPrimaryKey($table);
-            addPrimaryKey($table, (array) $model->primaryKey());
+            dropPrimaryKey('participant_attribute_names');// dropPrimaryKey add the prefix (not other ...)
+            addPrimaryKey($model->tableName(), (array) $model->primaryKey());
             if ($dbType == 'mysql') {
                 // Add back auto increment
                 alterColumn($model->tableName(), $model->primaryKey(), 'autoincrement');
