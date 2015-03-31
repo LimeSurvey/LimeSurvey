@@ -1943,11 +1943,11 @@ function checkCompletedQuota($surveyid,$return=false)
             // Count only needed quotas
             if($iMatchedAnswers==count($aQuotaFields) && ( $aQuotaInfo['action']!=2 || $bPostedField ) )
             {
-                if((int)$aQuotaInfo['qlimit'] < 1){
+                if($aQuotaInfo['qlimit'] == 0){ // Always add the quota if qlimit==0
                     $aMatchedQuotas[]=$aQuotaInfo;
                 }else{
-                    $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);// Return a string
-                    if(ctype_digit($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
+                    $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);
+                    if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
                         $aMatchedQuotas[]=$aQuotaInfo;
                 }
             }

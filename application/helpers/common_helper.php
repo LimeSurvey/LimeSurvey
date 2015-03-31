@@ -5411,13 +5411,12 @@ function enforceSSLMode()
 *
 * @param int $iSurveyId - Survey identification number
 * @param int $quotaid - quota id for which you want to compute the completed field
-* @return string - String value of matching entries in the result DB (ctype_digit) or 'N/A'
+* @return mixed - value of matching entries in the result DB or null
 */
 function getQuotaCompletedCount($iSurveyId, $quotaid)
 {
-    $result = "N/A";
     if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
-        return $result;
+        return;
     $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
     $aQuotas = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $aQuota = $aQuotas[0];
@@ -5432,7 +5431,7 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
             if(in_array($member['fieldname'],$aColumnName))
                 $aQuotaColumns[$member['fieldname']][] = $member['value'];
             else
-                return $result;// We return N/A even for activated survey : $member['fieldname'] don't exist anymore, broken quota
+                return;
         }
 
         $oCriteria = new CDbCriteria;
@@ -5448,12 +5447,8 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
                 $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
             }
         }
-        // Ensure to return a string, Yii count return a string (see http://www.yiiframework.com/doc/api/1.1/CActiveRecord#count-detail)
-        // But seems under certain condition, count return integer see http://bugs.limesurvey.org/view.php?id=9587#c31917
-        $result = strval(SurveyDynamic::model($iSurveyId)->count($oCriteria));
+        return SurveyDynamic::model($iSurveyId)->count($oCriteria);
     }
-
-    return $result;
 }
 
 /**
