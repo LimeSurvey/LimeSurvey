@@ -39,6 +39,9 @@ $internalConfig = array(
         file_exists(__DIR__ . '/config.php') ? 'pluginManager' : null
     ],
 	'components' => [
+        'surveySessionManager' => [
+            'class' => SurveySessionManager::class
+        ],
         'migrationManager' => [
             'class' => 'MigrationManager'
         ],

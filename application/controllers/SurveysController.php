@@ -106,10 +106,10 @@ use Survey;
 
         /**
          * This function starts the survey.
-         * If a welcome screen is active it redirects to the welcome action.
+         * If a welcome screen is active it shows the welcome screen.
          * @param $id
          */
-        public function actionStart($id, $token = null, $skipWelcome = false)
+        public function actionStart($id, $token = null)
         {
             $survey = $this->loadModel($id);
             $this->layout = 'bare';
@@ -126,9 +126,12 @@ use Survey;
                 'surveyId' => $id,
             ];
 
-            if ($survey->bool_showwelcome && !$skipWelcome && $survey->format != 'A') {
-                $this->render('welcome', ['survey' => $survey]);
-            } else {
+            if (App()->request->isPostRequest || $survey->format == 'A' || !$survey->bool_showwelcome) {
+
+                // Create response.
+                /**
+                 * @todo Check if we shoudl resume an existing response instead.
+                 */
                 $response = \Response::create($id);
                 if (isset($token)) {
                     /**
@@ -137,9 +140,11 @@ use Survey;
                     $response->token = $token->token;
                 }
                 $response->save();
-                $this->redirect(['surveys/run', 'id' => $response->id, 'surveyId' => $id]);
-            }
 
+                $this->render('start', ['url' => ['surveys/run', 'id' => $response->id, 'surveyId' => $id]]);
+            } else {
+                $this->render('welcome', ['survey' => $survey, 'id' => 'test']);
+            }
         }
 
         public function actionRun($id, $surveyId)

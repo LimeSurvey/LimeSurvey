@@ -618,7 +618,11 @@ class Survey extends LSActiveRecord
             $this->questionindex = 0;
         }
     }
-    
+
+    public function getFieldMap()
+    {
+
+    }
     public function getInfo($language = null) {
         $language = !isset($language) ? $this->language : $language;
         if (null !== $localization = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->primaryKey, 'surveyls_language' => $language])) {

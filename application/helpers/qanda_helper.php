@@ -285,7 +285,6 @@ function retrieveAnswers($ia)
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
-    //    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
     if (!isset($aQuestionAttributes['hide_tip']) || $aQuestionAttributes['hide_tip']==0) {
         $_vshow = true; // whether should initially be visible - TODO should also depend upon 'hidetip'?
     }
@@ -513,13 +512,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
 
 
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js');
-
-    /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
-    This just stops error messages occuring */
-    if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
-    {
-        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] = array();
-    }
 
     /* End */
 
@@ -1605,11 +1597,7 @@ function do_list_dropdown($ia)
             $answer .= 'none';
         }
 
-        //        // --> START BUG FIX - text field for other was not repopulating when returning to page via << PREV
         $answer .= '"';
-        //        $thisfieldname=$ia[1].'other';
-        //        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) { $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES).'" ';}
-        //        // --> END BUG FIX
 
         // --> START NEW FEATURE - SAVE
         $answer .= "  alt='".gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";

@@ -429,9 +429,13 @@ class SurveyRuntimeHelper {
 
             if ($surveyMode != 'survey' && $_SESSION[$LEMsessid]['step'] == 0)
             {
-                $_SESSION[$LEMsessid]['test']=time();
-                display_first_page();
-                Yii::app()->end(); // So we can still see debug messages
+//                $_SESSION[$LEMsessid]['test']=time();
+
+                $moveResult = LimeExpressionManager::JumpTo(1, false, false, true);
+                $_SESSION[$LEMsessid]['step']=1;
+//                display_first_page();
+//                Yii::app()->end(); // So we can still see debug messages
+//                $_SESSION[$LEMsessid]['step']++;
             }
 
             // TODO FIXME

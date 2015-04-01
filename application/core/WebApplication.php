@@ -22,7 +22,8 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  * @property LocalizedFormatter $format
  * @property \ls\pluginmanager\PluginManager $pluginManager
  * @property CDbConnection $db
- * @property CHttpRequest $request;
+ * @property SurveySessionManager $surveySessionManager
+ * @property \CHttpRequest $request;
  * @property WebUser $user
  */
 class WebApplication extends CWebApplication

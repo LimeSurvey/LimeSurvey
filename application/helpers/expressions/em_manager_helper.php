@@ -52,6 +52,8 @@
         * @var integer
         */
         private $sid;
+
+        private $lang = 'en';
         /**
         * sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
         * @var type
@@ -650,9 +652,6 @@
         {
             self::$instance =& $this;
             $this->em = new ExpressionManager();
-            if (!isset($_SESSION['LEMlang'])) {
-                $_SESSION['LEMlang'] = 'en';    // so that there is a default
-            }
         }
 
         /**
@@ -704,32 +703,18 @@
         */
         public static function SetSurveyId($sid=NULL)
         {
-            if (!is_null($sid)) {
-                if (isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
-                    // then trying to use a new survey - so clear the LEM cache
-                    self::SetDirtyFlag();
-                }
-                $_SESSION['LEMsid'] = $sid;
-            }
+            self::$instance->sid = $sid;
+
         }
 
         /**
         * Sets the language for Expression Manager.  If the language has changed, then EM cache must be invalidated and refreshed
         * @param <string> $lang
         */
-        public static function SetEMLanguage($lang=NULL)
+        public static function SetEMLanguage($lang)
         {
-            if (is_null($lang)) {
-                return; // should never happen
-            }
-            if (!isset($_SESSION['LEMlang'])) {
-                $_SESSION['LEMlang'] = $lang;
-            }
-            if ($_SESSION['LEMlang'] != $lang) {
-                // then changing languages, so clear cache
-                self::SetDirtyFlag();
-            }
-            $_SESSION['LEMlang'] = $lang;
+            self::$instance->lang = $lang;
+
         }
 
         /**
@@ -3167,7 +3152,7 @@
                 {
                     //Get date format of current question and convert date in help text accordingly
                     $LEM =& LimeExpressionManager::singleton();
-                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $questionNum,$_SESSION['LEMlang']);
+                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $questionNum,$this->lang);
                     $aDateFormatData=getDateFormatDataForQID($aAttributes[$questionNum],$LEM->surveyOptions);
                     $_minV = (($date_min == '') ? "''" : "if((strtotime(".$date_min.")), date('".$aDateFormatData['phpdate']."', strtotime(".$date_min.")),'')");
                     $_maxV = (($date_max == '') ? "''" : "if((strtotime(".$date_max.")), date('".$aDateFormatData['phpdate']."', strtotime(".$date_max.")),'')");
@@ -3495,7 +3480,7 @@
             $this->em->SetSurveyMode($this->surveyMode);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
-            $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
+            $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false, $this->lang);
             $this->sid= $surveyid;
 
             $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
@@ -3543,20 +3528,20 @@
             'D' => $this->gT("Decrease"),
             );
 
-            $this->gseq2info = $this->getGroupInfoForEM($surveyid,$_SESSION['LEMlang']);
+            $this->gseq2info = $this->getGroupInfoForEM($surveyid, $this->lang);
             foreach ($this->gseq2info as $aGroupInfo)
             {
                 $this->groupId2groupSeq[$aGroupInfo['gid']] = $aGroupInfo['group_order'];
             }
 
-            $qattr = $this->getQuestionAttributesForEM($surveyid,0,$_SESSION['LEMlang']);
+            $qattr = $this->getQuestionAttributesForEM($surveyid,0, $this->lang);
 
             $this->qattr = $qattr;
 
             $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getQuestionAttributesForEM',(microtime(true) - $now));
             $now = microtime(true);
 
-            $this->qans = $this->getAnswerSetsForEM($surveyid,NULL,$_SESSION['LEMlang']);
+            $this->qans = $this->getAnswerSetsForEM($surveyid,NULL,$this->lang);
 
             $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAnswerSetsForEM',(microtime(true) - $now));
             $now = microtime(true);
@@ -4680,11 +4665,11 @@
             if ($initializeVars)
             {
                 $LEM->em->StartProcessingGroup(
-                    isset($_SESSION['LEMsid']) ? $_SESSION['LEMsid'] : NULL,
+                    self::$sid,
                     '',
                     true
                 );
-                $LEM->setVariableAndTokenMappingsForExpressionManager($_SESSION['LEMsid']);
+                $LEM->setVariableAndTokenMappingsForExpressionManager(self::$sid);
             }
 
         }
@@ -6859,7 +6844,6 @@
 
             $LEM->initialized=false;    // so detect calls after done
             $LEM->ParseResultCache=array(); // don't need to persist it in session
-            $_SESSION['LEMsingleton']=serialize($LEM);
         }
 
         /*
@@ -8102,7 +8086,7 @@ EOD;
             $reverseAttributeMap = array_flip($attibutemap);
             foreach ($aSurveyIDs as $iSurveyID)
             {
-                $qattrs = $LEM->getQuestionAttributesForEM($iSurveyID,$onlythisqid,$_SESSION['LEMlang']);
+                $qattrs = $LEM->getQuestionAttributesForEM($iSurveyID,$onlythisqid,$LEM->lang);
                 foreach ($qattrs as $qid => $qattr)
                 {
                     $updates = array();
@@ -8143,18 +8127,9 @@ EOD;
             if(is_null($qid)) $qid=0;
             if(is_null($lang)) $lang='';
             // Fill $lang if possible
-            if(!$lang && isset($_SESSION['LEMlang']))
-                $lang=$_SESSION['LEMlang'];
-            // Actually seem uncesserry : only one call for each page, then commented
-#            static $aStaticQuestionAttributesForEM=array();
-#            if(isset($aStaticQuestionAttributesForEM[$surveyid][$qid][$lang]))
-#            {
-#                return $aStaticQuestionAttributesForEM[$surveyid][$qid][$lang];
-#            }
-#            if($qid && isset($aStaticQuestionAttributesForEM[$surveyid][0][$lang]))
-#            {
-#                return $aStaticQuestionAttributesForEM[$surveyid][0][$lang][$qid];
-#            }
+            if(!$lang && isset($this->lang))
+                $lang=$this->lang;
+
             $aQid=array();
             if($qid)
             {
@@ -8312,9 +8287,9 @@ EOD;
 
         function getGroupInfoForEM($surveyid,$lang=NULL)
         {
-            if (is_null($lang) && isset($_SESSION['LEMlang']))
+            if (is_null($lang) && isset($this->lang))
             {
-                $lang = $_SESSION['LEMlang'];
+                $lang = $this->lang;
             }
             elseif(is_null($lang))
             {
@@ -8409,7 +8384,7 @@ EOD;
                                 $value=trim($value);
                                 if ($value!="" && $value!='INVALID')
                                 {
-                                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
+                                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid, $LEM->lang);
                                     if (!isset($aAttributes[$qid])) {
                                         $aAttributes[$qid]=array();
                                     }
@@ -8736,7 +8711,7 @@ EOD;
                                 break;
                             case 'D': //DATE
                                 $LEM =& LimeExpressionManager::singleton();
-                                $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'],$_SESSION['LEMlang']);
+                                $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'], $LEM->lang);
                                 $aDateFormatData=getDateFormatDataForQID($aAttributes[$var['qid']],$LEM->surveyOptions);
                                 $shown='';
                                 if (strtotime($code))
@@ -8922,7 +8897,7 @@ EOD;
 
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode='logic';
-            $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
+            $aSurveyInfo=getSurveyInfo($sid,$LEM->lang);
 
             $allErrors = array();
             $warnings = 0;
@@ -8960,7 +8935,7 @@ EOD;
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                 return array(
                 'errors'=>1,
-                'html'=>sprintf($LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language %s'),$_SESSION['LEMlang'])
+                'html'=>sprintf($LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language %s'), $LEM->lang)
                 );
             }
 

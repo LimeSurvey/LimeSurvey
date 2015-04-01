@@ -5,10 +5,16 @@
 //    echo $survey->localizedWelcomeText;
     $sTemplatePath = __DIR__ . '/../../../templates/default/';
     App()->setConfig('surveyID', $survey->sid);
+    $navigator = TbHtml::beginForm(['surveys/run']);
+    $navigator .= TbHtml::submitButton(gT('Start survey'));
+    $navigator .= TbHtml::hiddenField('surveyId', $survey->sid);
+    $navigator .= TbHtml::hiddenField('responseId', $id);
+    $navigator .= TbHtml::endForm();
+
     $redata = [
 //        'TEMPLATEURL' => '/templates/basic/',
         'totalquestions' => count($survey->questions),
-        'navigator' => TbHtml::linkButton(gT('Start survey'), ['url' => ['surveys/start', 'id' => $survey->sid, 'skipWelcome' => true]])
+        'navigator' => $navigator
     ];
     echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata, 'SubmitStartpageI', false, NULL, array(), true );
     echo templatereplace(file_get_contents($sTemplatePath."welcome.pstpl"), array(), $redata) . "\n";

@@ -29,7 +29,10 @@
      */
     abstract class Token extends Dynamic
     {
-
+        /**
+         * @var string Captcha used in registration scenario.
+         */
+        public $captcha;
         public function attributeLabels() {
             $labels = array(
                 'tid' => gT('Token ID'),
@@ -139,7 +142,7 @@
             $length = $this->survey->tokenlength;
             $this->token = \Yii::app()->securityManager->generateRandomString($length);
             $counter = 0;
-            while (!$this->validate('token'))
+            while (!$this->validate(['token']))
             {
                 $this->token = \Yii::app()->securityManager->generateRandomString($length);
                 $counter++;
@@ -244,7 +247,7 @@
 
         public function rules()
         {
-            return array(
+            return [
                 array('token', 'unique', 'allowEmpty' => true),
                 array(implode(',', $this->tableSchema->columnNames), 'safe'),
                 array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
@@ -254,7 +257,13 @@
                 array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                 array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('emailstatus', 'default', 'value' => 'OK'),
-            );
+
+                ['email', 'email', 'on' => 'register'],
+                ['email', 'unique', 'on' => 'register'],
+                [['lastname', 'firstname'], 'safe', 'on' => 'register'],
+                ['captcha', 'captcha', 'on' => 'register'],
+
+            ];
         }
 
         public function scopes()
@@ -294,6 +303,10 @@
         public function tableName()
         {
             return '{{tokens_' . $this->dynamicId . '}}';
+        }
+
+        public function getSurveyId() {
+            return $this->dynamicId;
         }
     }
 
