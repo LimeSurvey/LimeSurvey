@@ -1752,7 +1752,7 @@ class remotecontrol_handle
 
                 foreach ($oGroupList as $oGroup)
                 {
-                    $aData[]= array('id'=>$oGroup->primaryKey,'group_name'=>$oGroup->attributes['group_name']);
+                    $aData[]= array('id'=>$oGroup->primaryKey,'group_name'=>$oGroup->attributes['group_name'], 'group_order'=>$oGroup->attributes['group_order']);
                 }
                 return $aData;
             }
@@ -1877,7 +1877,7 @@ class remotecontrol_handle
 
                 foreach ($aQuestionList as $oQuestion)
                 {
-                    $aData[]= array('id'=>$oQuestion->primaryKey,'title'=>$oQuestion->attributes['title'],'type'=>$oQuestion->attributes['type'], 'question'=>$oQuestion->attributes['question']);
+                    $aData[]= array('id'=>$oQuestion->primaryKey,'title'=>$oQuestion->attributes['title'],'type'=>$oQuestion->attributes['type'], 'question'=>$oQuestion->attributes['question'], 'gid'=>$oQuestion->attributes['gid'], 'question_order'=>$oQuestion->attributes['question_order'], 'relevance'=>$oQuestion->attributes['relevance']);
                 }
                 return $aData;
             }
