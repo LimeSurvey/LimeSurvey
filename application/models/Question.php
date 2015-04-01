@@ -160,7 +160,7 @@
         */
         public static function updateSortOrder($gid, $surveyid)
         {
-            $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language));
+            $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language), array('order'=>'question_order') );
             $p = 0;
             foreach ($questions as $question)
             {
