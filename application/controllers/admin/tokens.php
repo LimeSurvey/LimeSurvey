@@ -194,7 +194,7 @@ class tokens extends Survey_Common_Action
                                     'emailstatus' => 'bounced'
                                     );
                                     $condn = array('token' => $tokenBounce[1]);
-									$record = Token::model($iSurveyId)->findByAttributes($condn);
+                                    $record = Token::model($iSurveyId)->findByAttributes($condn);
                                     if ($record->emailstatus != 'bounced')
                                     {
                                         $record->emailstatus = 'bounced';
@@ -2371,11 +2371,11 @@ class tokens extends Survey_Common_Action
         $aData['thissurvey'] = $aData['settings'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
 
-        if (!empty($_POST))
+        if (Yii::app()->request->getPost('save')=='save')
         {
             $fieldvalue = array(
-            "bounceprocessing" => Yii::app()->request->getPost('bounceprocessing'),
-            "bounce_email" => Yii::app()->request->getPost('bounce_email'),
+                "bounceprocessing" => Yii::app()->request->getPost('bounceprocessing'),
+                "bounce_email" => Yii::app()->request->getPost('bounce_email'),
             );
 
             if (Yii::app()->request->getPost('bounceprocessing') == 'L')
@@ -2391,17 +2391,15 @@ class tokens extends Survey_Common_Action
             foreach ($fieldvalue as $k => $v)
                 $survey->$k = $v;
             $test=$survey->save();
+            App()->user->setFlash('bouncesettings', gT("Bounce settings have been saved."));
 
-            $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
-            'title' => gT("Bounce settings"),
-            'message' => gT("Bounce settings have been saved."),
-            'class' => 'successheader'
-            )), $aData);
+            //~ $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
+            //~ 'title' => gT("Bounce settings"),
+            //~ 'message' => gT("Bounce settings have been saved."),
+            //~ 'class' => 'successheader'
+            //~ )), $aData);
         }
-        else
-        {
-            $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
-        }
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
     }
 
     /**
