@@ -196,11 +196,18 @@ function upload(blob) {
     fd.append('qid', questionCode);
     xhr.open('POST', getFolder() + 'upload_wav.php', true);
     xhr.send(fd);
+	var recorders = document.getElementsByClassName('recorder');
+    for (n = 0; n < recorders.length; ++n) {
+		recorders[n].style.display = 'none';
+	}
 
     // Set result of request as the answer to the question
     xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             $('#' + questionCode).val(xhr.responseText);
+			for (n = 0; n < recorders.length; ++n) {
+				recorders[n].style.display = 'inline';
+			}
         }
     };
 }

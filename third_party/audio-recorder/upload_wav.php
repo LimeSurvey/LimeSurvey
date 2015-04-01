@@ -1,4 +1,4 @@
-<?php
+<?php	
     // Get the file and upload it to the directory. 
     $tmp_filename = $_FILES['output_wav']['tmp_name'];
     $tmp_size = 0.001 * $_FILES['output_wav']['size'];
@@ -14,5 +14,5 @@
             'filename'  => $filename,
             'ext'       => 'wav',
         ); 
-    echo '[' . json_encode($json_array) . ']';
+    echo '[' . addslashes(json_encode($json_array)) . ']';
     

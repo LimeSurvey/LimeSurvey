@@ -2908,7 +2908,7 @@ function do_audio_recording($ia)
 
     // Set the parts of the HTML question
     $rec_folder     = Yii::app()->getConfig('third_party') . "audio-recorder/";
-    $record         = "<a id='record" . $ia[1] . "' href='javascript:void(0)' onclick='toggleRecording(this);'>"
+    $record         = "<a id='record" . $ia[1] . "' class='recorder' href='javascript:void(0)' onclick='toggleRecording(this);'>"
             . "<img src='" . $rec_folder . "img/record.png' style='margin: 3px;' /></a>";
     $play           = "<audio id='play" . $ia[1]. "' controls style='display: none;'></audio>";
     $download       = "<a id='save" . $ia[1]. "' href='#' style='display: none;'>"
