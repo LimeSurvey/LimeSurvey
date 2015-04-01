@@ -9,11 +9,17 @@
 .settingswidget {
     margin: 0 1em;
 }
-.settingswidget > ul{
+ul.settings-list{
     margin:0;padding:0;
 }
-.settingswidget > ul > li{
+ul.settings-list > li
+{
 list-style: none;
+}
+fieldset.settingswidget, form.settingswidget > fieldset {
+border:0;
+padding:0;
+margin:0;
 }
 .form-horizontal .control-label,.form-horizontal .controls{
     -moz-box-sizing: border-box;

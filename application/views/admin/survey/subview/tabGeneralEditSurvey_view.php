@@ -9,12 +9,11 @@
 
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
         'id'=>'general',
-        //'title'=>gt("General"),
+        'title'=>gt("General"),
         'form' => false,
         'formHtmlOptions'=>array(
             'class'=>'form-core',
         ),
-        'inlist'=>true,
         'settings' => array(
 #            'baselanguage'=>array(
 #                'type'=>'info',
