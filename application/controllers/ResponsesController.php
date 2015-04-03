@@ -17,7 +17,7 @@ class ResponsesController extends Controller
 
         $dataProvider = new \CActiveDataProvider(\Response::model($id), [
             'pagination' => [
-                'pageSize' => 1
+                'pageSize' => 50
             ]
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);
@@ -55,7 +55,7 @@ class ResponsesController extends Controller
     {
         $response = \Response::model($surveyId)->findByPk($id);
         $newResponse = $response->append($copy);
-        var_dump($response->attributes);
-        var_dump($newResponse->attributes);
+        $newResponse->save();
+        $this->redirect(['responses/index', 'id' => $surveyId]);
     }
 }

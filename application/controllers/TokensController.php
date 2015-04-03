@@ -13,6 +13,101 @@ class TokensController extends Controller
         ];
     }
 
+    public function actionResponses($id, $surveyId) {
+        $this->layout = 'bare';
+        $survey = \Survey::model()->findByPk($surveyId);
+        $token = \Token::model($survey->sid)->findByPk($id);
+        $criteria = new \CDbCriteria();
+        $criteria->order = 'submitdate DESC';
+        $criteria->addColumnCondition(['token' => $token->token]);
+        $dataProvider = new \CActiveDataProvider(\Response::model($survey->sid), [
+            'criteria' => $criteria,
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => false
+        ]);
+        $this->survey = $survey;
+
+        if ($dataProvider->totalItemCount > 0) {
+            $this->render('/responses/index', [
+                'dataProvider' => $dataProvider,
+                'columns' => [
+                    'token',
+                    'submitdate',
+                    'series_id',
+                ],
+
+                'wrapper' => 'col-md-10 col-md-offset-2'
+            ]);
+            } else {
+            echo "No responses for this token.";
+        }
+    }
+    public function actionCreate($surveyId)
+    {
+        $survey = \Survey::model()->findByPk($surveyId);
+        $this->survey = $survey;
+        if (!$survey->bool_usetokens) {
+            throw new \CHttpException(412, "The survey you selected does not have tokens enabled.");
+        }
+
+        $token = \Token::create($survey->sid);
+        if (App()->request->isPostRequest) {
+            $token->setAttributes(App()->request->getPost(get_class($token)));
+
+            // Validate & safe.
+            if ($token->save()) {
+                // On success.
+                App()->user->setFlash('success', 'Token created.');
+                $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
+            }
+        }
+        $this->render('create', ['token' => $token, 'survey' => $survey]);
+    }
+
+
+    public function actionUpdate($surveyId, $id)
+    {
+        /**
+         * @todo Add permission check.
+         */
+        $survey = \Survey::model()->findByPk($surveyId);
+        $this->survey = $survey;
+
+        if (!$survey->bool_usetokens) {
+            throw new \CHttpException(412, "The survey you selected does not have tokens enabled.");
+        }
+
+        $token = \Token::model($survey->sid)->findByPk($id);
+        if (App()->request->isPostRequest) {
+            $token->setAttributes(App()->request->getPost(get_class($token)));
+
+            // Validate & safe.
+            if ($token->save()) {
+                // On success.
+                App()->user->setFlash('success', 'Token created.');
+                $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
+            }
+        }
+        $this->render('create', ['token' => $token, 'survey' => $survey]);
+    }
+
+    public function actionIndex($surveyId)
+    {
+        /**
+         * @todo Add permission check.
+         */
+        $survey = \Survey::model()->findByPk($surveyId);
+        $this->survey = $survey;
+
+        $dataProvider = new \CActiveDataProvider(\Token::model($survey->sid), [
+            'pagination' => [
+                'pageSize' => 50
+            ]
+        ]);
+        return $this->render('index', ['dataProvider' => $dataProvider]);
+    }
     public function actionRegister($surveyId)
     {
         $this->layout = 'minimal';

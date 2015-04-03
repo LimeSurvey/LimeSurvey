@@ -114,14 +114,17 @@
             }
             
             $db = \Yii::app()->db;
-            $sTableName="{{tokens_".intval($surveyId)."}}";
-            
+            $sTableName = self::constructTableName($surveyId);
+
             $db->createCommand()->createTable($sTableName, $fields);
             /**
-             * @todo Check if this random component in the index name is needed.
-             * As far as I (sam) know index names need only be unique per table.
+             * Random not needed for:
+             * - PostgreSQL
+             * - MySQL
+             * - MSSQL
+             *
              */
-            $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1,50000),  $sTableName,'token');
+            $db->createCommand()->createIndex("token_unique",  $sTableName,'token');
             
             // Refresh schema cache just in case the table existed in the past
             $db->schema->getTable($sTableName, true); 
@@ -238,7 +241,7 @@
         public function relations()
         {
             $result = array(
-                'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
+                'responses' => [self::HAS_MANY, 'Response_' . $this->dynamicId, ['token' => 'token']],
                 'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
                 'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
             );
@@ -300,9 +303,9 @@
             return $command->queryRow();
         }
 
-        public function tableName()
+        public static function constructTableName($id)
         {
-            return '{{tokens_' . $this->dynamicId . '}}';
+            return '{{tokens_' . $id . '}}';
         }
 
         public function getSurveyId() {

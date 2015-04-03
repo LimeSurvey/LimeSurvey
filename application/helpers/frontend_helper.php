@@ -209,7 +209,7 @@ function makegraph($currentstep, $total)
 */
 function makeLanguageChangerSurvey($sSelectedLanguage)
 {
-    $surveyid = Yii::app()->getConfig('surveyID');
+    $surveyid = App()->surveySessionManager->current->surveyId;
     Yii::app()->loadHelper("surveytranslator");
 
     $aSurveyLangs = Survey::model()->findByPk($surveyid)->getAllLanguages();
@@ -1202,7 +1202,7 @@ function buildsurveysession($surveyid,$preview=false)
 
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
-    // Fix totalquestions by substracting Test Display questions
+    // Fix totalquestions by substracting Text Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
     ." FROM {{questions}}"
     ." WHERE type in ('X','*')\n"
@@ -1210,28 +1210,10 @@ function buildsurveysession($surveyid,$preview=false)
     ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
     ." AND parent_qid=0")->read();
 
-    $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
-
-    //2. SESSION VARIABLE: totalsteps
-    //The number of "pages" that will be presented in this survey
-    //The number of pages to be presented will differ depending on the survey format
-    switch($thissurvey['format'])
-    {
-        case "A":
-            $_SESSION['survey_'.$surveyid]['totalsteps']=1;
-            break;
-        case "G":
-            if (isset($_SESSION['survey_'.$surveyid]['grouplist']))
-            {
-                $_SESSION['survey_'.$surveyid]['totalsteps']=count($_SESSION['survey_'.$surveyid]['grouplist']);
-            }
-            break;
-        case "S":
-            $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
-    }
 
 
-    if ($totalquestions == 0)    //break out and crash if there are no questions!
+
+    if (App()->surveySessionManager->current->survey->questionCount == 0)    //break out and crash if there are no questions!
     {
         sendCacheHeaders();
         doHeader();
@@ -1599,15 +1581,16 @@ function buildsurveysession($surveyid,$preview=false)
 */
 function surveymover()
 {
-    $surveyid=Yii::app()->getConfig('surveyID');
-    $thissurvey=getSurveyInfo($surveyid);
+    $session = App()->surveySessionManager->current;
+    $surveyid = $session->surveyId;
+    $thissurvey = getSurveyInfo($surveyid);
 
 
     $sMoveNext="movenext";
     $sMovePrev="";
-    $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
-    $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep']))?$_SESSION['survey_'.$surveyid]['maxstep']:false;
-    $iSessionTotalSteps=(isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
+    $iSessionStep = $session->step;
+    $iSessionMaxStep= $session->maxStep;
+    $iSessionTotalSteps= $session->survey->totalSteps;
     $sClass="submit button";
     $sSurveyMover = "";
 
@@ -2217,7 +2200,6 @@ function SetSurveyLanguage($surveyid, $sLanguage)
         App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
         $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
-        LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
     else
     {
@@ -2251,10 +2233,11 @@ function getMove()
     }
     if($move=='default')
     {
-        $surveyid=Yii::app()->getConfig('surveyID');
-        $thissurvey=getsurveyinfo($surveyid);
-        $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
-        $iSessionTotalSteps=(isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
+        $session = App()->surveySessionManager->current;
+        $surveyid = $session->surveyId;
+        $thissurvey = getsurveyinfo($surveyid);
+        $iSessionStep = $session->step;
+        $iSessionTotalSteps = $session->totalSteps;
         if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps)|| $thissurvey['format'] == 'A')
         {
             $move="movesubmit";

@@ -17,11 +17,11 @@
 
                 ], [
                     'label' => gT('Notification & data management'),
-                    'content' => "@todo",
+                    'content' => $this->renderPartial('view/data', ['survey' => $survey], true),
 
                 ], [
                     'label' => gT('Tokens'),
-                    'content' => "@todo",
+                    'content' => $this->renderPartial('view/tokens', ['survey' => $survey], true),
                     'visible' => $survey->bool_usetokens
 
                 ], [

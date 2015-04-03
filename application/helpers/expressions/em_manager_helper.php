@@ -47,11 +47,6 @@
         * @var type
         */
         private $groupRelevanceInfo;
-        /**
-        * The survey ID
-        * @var integer
-        */
-        private $sid;
 
         private $lang = 'en';
         /**
@@ -9874,14 +9869,6 @@ EOD;
                 $out[] = $tsv;
             }
             return $out;
-        }
-
-        /**
-        * Returns the survey ID of the EM singleton
-        */
-        public static function getLEMsurveyId() {
-                $LEM =& LimeExpressionManager::singleton();
-                return $LEM->sid;
         }
 
        /**

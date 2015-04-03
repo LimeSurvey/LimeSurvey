@@ -36,6 +36,11 @@ $menu = [[ // Left side
         'icon' => 'inbox',
         'disabled' => $this->survey->responseCount == 0,
         'url' => ["responses/index", 'id' => $this->survey->sid]
+    ], [
+        'title' => gT('Tokens'),
+        'icon' => 'bullhorn',
+        'disabled' => !$this->survey->bool_usetokens,
+        'url' => ["tokens/index", 'surveyId' => $this->survey->sid]
     ]
 ], [ // Right side
 //    [

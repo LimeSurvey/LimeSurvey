@@ -31,4 +31,5 @@ class MysqlSchema extends CMysqlSchema
         }
         return true;        
     }
+
 }

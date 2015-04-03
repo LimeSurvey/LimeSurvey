@@ -12,7 +12,7 @@ use Survey;
         public function accessRules() {
             return array_merge([
                 ['allow', 'actions' => ['index'], 'users' => ['@']],
-                ['allow', 'actions' => ['publicList']],
+                ['allow', 'actions' => ['publicList', 'run' ,'start']],
                 
             ], parent::accessRules());
         }
@@ -48,7 +48,7 @@ use Survey;
                     App()->user->setFlash('success', gT("Survey settings updated."));
                 }
 
-
+                $this->refresh();
             }
             $this->layout = 'survey';
             $this->survey = $survey;
@@ -111,7 +111,7 @@ use Survey;
          */
         public function actionStart($id, $token = null)
         {
-            $survey = $this->loadModel($id);
+            $survey = Survey::model()->findByPk($id);
             $this->layout = 'bare';
             if (!$survey->isActive) {
                 throw new \CHttpException(412, gT("The survey is not active."));
@@ -125,36 +125,35 @@ use Survey;
                 'surveys/execute',
                 'surveyId' => $id,
             ];
-
             if (App()->request->isPostRequest || $survey->format == 'A' || !$survey->bool_showwelcome) {
-
                 // Create response.
                 /**
-                 * @todo Check if we shoudl resume an existing response instead.
+                 * @todo Check if we should resume an existing response instead.
                  */
                 $response = \Response::create($id);
                 if (isset($token)) {
                     /**
                      * @todo Update token and check for anonymous.
                      */
-                    $response->token = $token->token;
+                    if (!$survey->bool_anonymized) {
+                        $response->token = $token->token;
+                    }
                 }
                 $response->save();
-
-                $this->render('start', ['url' => ['surveys/run', 'id' => $response->id, 'surveyId' => $id]]);
+                $session = App()->surveySessionManager->newSession($survey->sid, $response->id);
+                $this->redirect(['surveys/run', 'sessionId' => $session->id]);
             } else {
                 $this->render('welcome', ['survey' => $survey, 'id' => 'test']);
             }
         }
 
-        public function actionRun($id, $surveyId)
+        public function actionRun($sessionId)
         {
-            $survey = $this->loadModel($surveyId);
-            $response = \Response::model($survey->sid)->findByPk($id);
-            if (!isset($response)) {
+            $session = App()->surveySessionManager->getSession($sessionId);
+            if (!isset($session->response)) {
                 throw new \CHttpException(404, gT("Response not found."));
             } else {
-                $this->redirect(['survey/index', 'sid' => $surveyId]);
+                echo ' running!';
             }
 
         }

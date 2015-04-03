@@ -5,7 +5,7 @@
 //    echo $survey->localizedWelcomeText;
     $sTemplatePath = __DIR__ . '/../../../templates/default/';
     App()->setConfig('surveyID', $survey->sid);
-    $navigator = TbHtml::beginForm(['surveys/run']);
+    $navigator = TbHtml::beginForm();
     $navigator .= TbHtml::submitButton(gT('Start survey'));
     $navigator .= TbHtml::hiddenField('surveyId', $survey->sid);
     $navigator .= TbHtml::hiddenField('responseId', $id);

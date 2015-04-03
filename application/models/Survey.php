@@ -16,6 +16,7 @@ if (!defined('BASEPATH'))
 */
 /**
  * @property-read Question[] $questions
+ * @property boolean $bool_usetokens
  */
 class Survey extends LSActiveRecord
 {
@@ -29,6 +30,7 @@ class Survey extends LSActiveRecord
             'localizedTitle' => gT('Title'),
             'bool_usecookie' => gT('Set cookie to prevent repeated participation?'),
             'bool_listpublic' => gT('List survey publicly:'),
+            'bool_alloweditaftercompletion' => gT("Allow responses to be edited after completion"),
             'startdate' => gT("Start date/time:"),
             'expires' => gT("Expiry date/time:"),
             'usecaptcha' => gT("Use CAPTCHA for")
@@ -147,7 +149,8 @@ class Survey extends LSActiveRecord
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
             
             'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid'],
-            'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0"]
+            'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0"],
+            'questionCount' => [self::STAT, 'Question', 'sid', 'condition' => "parent_qid = 0"],
         ];
     }
 
@@ -743,6 +746,9 @@ class Survey extends LSActiveRecord
             if (Response::createTable($this, $messages)) {
 
             }
+            if ($this->bool_usetokens) {
+                Token::createTable($this->sid);
+            }
             if (Timing::createTable($this, $messages)) {
 
             }
@@ -763,7 +769,7 @@ class Survey extends LSActiveRecord
         // Precheck.
         if (true) {
             // We set active to false first; this ensures no new users entering the survey.
-            $this->active = 'N';
+            $this->bool_active = false;
             $this->save();
 
             if (Response::valid($this->sid)) {
@@ -776,6 +782,18 @@ class Survey extends LSActiveRecord
                     $this->dbConnection->createCommand()->renameTable($responseTable->tableName(), $name);
                 }
             }
+
+            if (Token::valid($this->sid)) {
+                $tokenTable = Token::model($this->sid);
+                // We drop the response table if it is empty.
+                if ($tokenTable->count() == 0) {
+                    $this->dbConnection->createCommand()->dropTable($tokenTable->tableName());
+                } else {
+                    $name = strtr($tokenTable->tableName(), ['survey_' => 'survey_old_']) . '_' . date('Y-m-d_H-i-s');
+                    $this->dbConnection->createCommand()->renameTable($tokenTable->tableName(), $name);
+                }
+            }
+
 
 
             // Remove entries in SavedControl
@@ -875,5 +893,30 @@ class Survey extends LSActiveRecord
         } else {
             parent::__set($name, $value);
         }
+    }
+
+    public function getTotalSteps() {
+        switch ($this->format) {
+            case "A":
+                $result = 1;
+                break;
+            case "G":
+                $result = QuestionGroup::model()->countByAttributes([
+                    'sid' => $this->sid,
+                    'language' => App()->language
+                ]);
+                break;
+            case "S":
+                $result = Question::model()->countByAttributes([
+                    'sid' => $this->sid,
+                    'language' => App()->language
+                ]);
+                break;
+            default:
+                throw new \Exception("Unknown survey display format.");
+
+        }
+        return $result;
+
     }
 }

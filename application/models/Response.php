@@ -109,9 +109,9 @@
                 ]
             ];
         }
-		public function tableName()
+		public static function constructTableName($id)
 		{
-			return '{{survey_' . $this->dynamicId . '}}';
+			return '{{survey_' . $id . '}}';
 		}
         
         
@@ -143,29 +143,29 @@
             }
 
             if ($survey->bool_usetokens) {
-                App()->db->createCommand()->createIndex("token_{$surveyId}", $tableName, ['token']);
+                App()->db->createCommand()->createIndex("token_{$survey->sid}", $tableName, ['token']);
             }
 
 
-            if ($survey->savetimings == "Y") {
-
-                throw new \Exception('Timings not supported in LS3');
-                $timingsfieldmap = createTimingsFieldMap($surveyId, "full", false, false, $survey->language);
-                $column = array();
-                $column['id'] = $createsurvey['id'];
-                foreach ($timingsfieldmap as $field => $fielddata) {
-                    $column[$field] = 'FLOAT';
-                }
-
-                $tabname = "{{survey_{$iSurveyID}_timings}}";
-                try {
-                    $execresult = Yii::app()->db->createCommand()->createTable($tabname, $column);
-                    Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
-                } catch (CDbException $e) {
-                    return array('error' => 'timingstablecreation');
-                }
-
-            }
+//            if ($survey->savetimings == "Y") {
+//
+//                throw new \Exception('Timings not supported in LS3');
+//                $timingsfieldmap = createTimingsFieldMap($surveyId, "full", false, false, $survey->language);
+//                $column = array();
+//                $column['id'] = $createsurvey['id'];
+//                foreach ($timingsfieldmap as $field => $fielddata) {
+//                    $column[$field] = 'FLOAT';
+//                }
+//
+//                $tabname = "{{survey_{$iSurveyID}_timings}}";
+//                try {
+//                    $execresult = Yii::app()->db->createCommand()->createTable($tabname, $column);
+//                    Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
+//                } catch (CDbException $e) {
+//                    return array('error' => 'timingstablecreation');
+//                }
+//
+//            }
 
         }
 

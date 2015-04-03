@@ -154,7 +154,8 @@ class SurveyRuntimeHelper {
             echo "</div>";
         }
 
-        if ($_SESSION[$LEMsessid]['maxstep'] == $_SESSION[$LEMsessid]['totalsteps'])
+        $session = App()->surveySessionManager->current;
+        if ($session->maxStep == $session->step)
         {
             echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
         }
@@ -186,10 +187,6 @@ class SurveyRuntimeHelper {
             $this->setJavascriptVar($surveyid, $thissurvey['language']);
         }
         $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
-        if (isset ($_SESSION['survey_'.$surveyid]['templatepath']))
-        {
-            $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
-        }
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel = 0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
         $LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
@@ -257,9 +254,6 @@ class SurveyRuntimeHelper {
                 buildsurveysession($surveyid);
                 $sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
 
-                if($surveyid != LimeExpressionManager::getLEMsurveyId())
-                    LimeExpressionManager::SetDirtyFlag();
-
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 $_SESSION[$LEMsessid]['step'] = 0;
                 if ($surveyMode == 'survey')
@@ -272,21 +266,10 @@ class SurveyRuntimeHelper {
                     $_SESSION[$LEMsessid]['step']=1;
                 }
             }
-            elseif($surveyid != LimeExpressionManager::getLEMsurveyId())
+            else
             {
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
-            }
-
-            $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
-
-            if (!isset($_SESSION[$LEMsessid]['totalsteps']))
-            {
-                $_SESSION[$LEMsessid]['totalsteps'] = 0;
-            }
-            if (!isset($_SESSION[$LEMsessid]['maxstep']))
-            {
-                $_SESSION[$LEMsessid]['maxstep'] = 0;
             }
 
             if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION[$LEMsessid]['LEMpostKey'])
@@ -366,7 +349,7 @@ class SurveyRuntimeHelper {
                     {
                         // may be submitting from the navigation bar, in which case need to process all intervening questions
                         // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
-                        $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps'] + 1, false);
+                        $moveResult = LimeExpressionManager::JumpTo(App()->surveySessionManager->current->survey->totalSteps + 1, false);
                     }
                 }
                 if (isset($move) && $move=='changelang')
@@ -401,7 +384,7 @@ class SurveyRuntimeHelper {
                 {
                     //LimeExpressionManager::JumpTo(-1, false, false, true);
                     LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
-                    $moveResult = LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['totalsteps']+1, false, false, false);// no preview, no save data and NO force
+                    $moveResult = LimeExpressionManager::JumpTo(App()->surveySessionManager->current->survey->totalSteps + 1, false, false, false);// no preview, no save data and NO force
                     if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
                         $moveResult['finished'] = true;
                 }
@@ -721,19 +704,8 @@ class SurveyRuntimeHelper {
 
         $redata = compact(array_keys(get_defined_vars()));
 
-        // IF GOT THIS FAR, THEN DISPLAY THE ACTIVE GROUP OF QUESTIONSs
-        //SEE IF $surveyid EXISTS ####################################################################
-        if ($surveyExists < 1)
-        {
-            //SURVEY DOES NOT EXIST. POLITELY EXIT.
-            echo templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata);
-            echo "\t<center><br />\n";
-            echo "\t" . gT("Sorry. There is no matching survey.") . "<br /></center>&nbsp;\n";
-            echo templatereplace(file_get_contents($sTemplatePath."endpage.pstpl"), array(), $redata);
-            doFooter();
-            exit;
-        }
-        createFieldMap($surveyid,'full',false,false,$_SESSION[$LEMsessid]['s_lang']);
+
+        createFieldMap(App()->surveySessionManager->current->surveyId,'full',false,false, App()->surveySessionManager->current->language);
         //GET GROUP DETAILS
 
         if ($surveyMode == 'group' && $previewgrp)
@@ -788,15 +760,6 @@ class SurveyRuntimeHelper {
                 $groupname = $stepInfo['gname'];
                 $groupdescription = $stepInfo['gtext'];
             }
-        }
-        if ($previewquestion)
-        {
-            $_SESSION[$LEMsessid]['step'] = 0; //maybe unset it after the question has been displayed?
-        }
-
-        if ($_SESSION[$LEMsessid]['step'] > $_SESSION[$LEMsessid]['maxstep'])
-        {
-            $_SESSION[$LEMsessid]['maxstep'] = $_SESSION[$LEMsessid]['step'];
         }
 
         // If the survey uses answer persistence and a srid is registered in SESSION
@@ -899,15 +862,16 @@ class SurveyRuntimeHelper {
             } //end iteration
         }
 
+        $session = App()->surveySessionManager->current;
         if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
         {
             if ($show_empty_group)
             {
-                $percentcomplete = makegraph($_SESSION[$LEMsessid]['totalsteps'] + 1, $_SESSION[$LEMsessid]['totalsteps']);
+                $percentcomplete = makegraph($session->survey->totalSteps + 1, $session->survey->totalSteps);
             }
             else
             {
-                $percentcomplete = makegraph($_SESSION[$LEMsessid]['step'], $_SESSION[$LEMsessid]['totalsteps']);
+                $percentcomplete = makegraph($session->step, $session->survey->totalSteps);
             }
         }
         if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey'))
@@ -963,11 +927,11 @@ class SurveyRuntimeHelper {
         $hiddenfieldnames = implode("|", $inputnames);
 
         if (isset($upload_file) && $upload_file)
-            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off'))."\n
+            echo CHtml::form('', 'post',array('enctype'=>'multipart/form-data','id'=>'limesurvey','name'=>'limesurvey', 'autocomplete'=>'off'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         else
-            echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off'))."\n
+            echo CHtml::form('', 'post',array('id'=>'limesurvey', 'name'=>'limesurvey', 'autocomplete'=>'off'))."\n
             <!-- INPUT NAMES -->
             <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         // <-- END FEATURE - SAVE
@@ -1074,7 +1038,7 @@ class SurveyRuntimeHelper {
                     $man_class .= ' mandatory';
                 }
 
-                if ($qinfo['anyUnanswered'] && $_SESSION[$LEMsessid]['maxstep'] != $_SESSION[$LEMsessid]['step'])
+                if ($qinfo['anyUnanswered'] && $session->maxStep != $session->step)
                 {
                     $man_class .= ' missing';
                 }

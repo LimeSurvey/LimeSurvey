@@ -19,7 +19,16 @@
             parent::__construct($scenario);
 		}
 
-		/**
+
+        public static function constructTableName($id)
+        {
+            return '{{' . strtolower(get_called_class()) . "_$id}}";
+        }
+
+        public function tableName() {
+            return static::constructTableName($this->dynamicId);
+        }
+        /**
 		 *
 		 * @param int $className
 		 * @return Dynamic
@@ -57,8 +66,12 @@
         {
             $result = false;
             if (is_numeric($id)) {
-                $model = self::create($id, null);
-                $result = null != App()->db->schema->getTable($model->tableName(), true);
+                try {
+                    App()->db->createCommand("SELECT 1 FROM " . static::constructTableName($id))->execute();
+                    $result = true;
+                } catch (\CDbException $e) {
+                    $result = false;
+                }
             }
             return $result;
         }
