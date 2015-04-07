@@ -777,9 +777,12 @@
             foreach ($aSurveyIDs as $surveyId )     {
                 // echo $surveyId.'<br>';flush();@ob_flush();
                 $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
-                foreach ($releqns as $key=>$value) {
-                    $sQuery = "UPDATE {{questions}} SET relevance=".Yii::app()->db->quoteValue($value)." WHERE qid=".$key;
-                    Yii::app()->db->createCommand($sQuery)->execute();
+                if ( !empty( $releqns) ) {
+                    foreach ($releqns as $key=>$value)
+                    {
+                        $sQuery = "UPDATE {{questions}} SET relevance=".Yii::app()->db->quoteValue($value)." WHERE qid=".$key;
+                        Yii::app()->db->createCommand($sQuery)->execute();
+                    }
                 }
             }
 
