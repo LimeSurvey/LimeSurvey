@@ -10,10 +10,9 @@
             echo CHtml::openTag('div', ['class' => 'col-sm-9']);
             echo CHtml::openTag('div', ['class' => 'form-control']);
             $current = $preCheck->$attribute;
-            if (is_bool($current)) {
-                echo TbHtml::icon($current ? TbHtml::ICON_OK : TbHtml::ICON_REMOVE);
-            } else {
-                echo $current;
+            echo TbHtml::icon(empty($errors) ? TbHtml::ICON_OK : TbHtml::ICON_REMOVE);
+            if (!is_bool($current)) {
+                echo " ".$current;
             }
 
             echo CHtml::closeTag('div');
