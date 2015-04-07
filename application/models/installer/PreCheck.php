@@ -40,7 +40,7 @@ class PreCheck extends CFormModel
     }
     
     public function getTempPath() {
-        return Yii::getPathOfAlias('webroot') . '/tjjmp';
+        return Yii::getPathOfAlias('webroot') . '/tmp';
     }
     
     public function getZipSupport() {
