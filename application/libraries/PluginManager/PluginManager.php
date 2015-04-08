@@ -187,6 +187,7 @@ use Plugin;
          */
         public function loadPlugin(PluginConfig $pluginConfig)
         {
+            Yii::log(__CLASS__, 'Loading plugin: ' . $pluginConfig->id);
             if ($pluginConfig->validate() && $this->isActive($pluginConfig->id)) {
                 $pluginConfig->registerNamespace($this->loader);
                 if (!isset($this->plugins[$pluginConfig->id])) {
@@ -197,6 +198,8 @@ use Plugin;
                     }                   
                 }
                 return $this->getPlugin($pluginConfig->id);
+            } else {
+                Yii::log(__CLASS__, 'Pluginconfig not valid' . print_r($pluginConfig->errors, true));
             }
         }
         
@@ -213,6 +216,7 @@ use Plugin;
          * @return 
          */
         public function loadSimplePlugin(PluginConfig $pluginConfig) {
+            Yii::log(__CLASS__, 'Loading simple plugin: ' . $pluginConfig->id);
             return $pluginConfig->createPlugin($this);
         }
         
