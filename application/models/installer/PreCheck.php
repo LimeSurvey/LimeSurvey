@@ -24,7 +24,7 @@ class PreCheck extends CFormModel
     }
     
     public function getPdoSupport() {
-        return count(PDO::getAvailableDrivers()) > 0;
+        return implode(",",PDO::getAvailableDrivers());
     }
     
     public function getMultiByteSupport() {
@@ -36,11 +36,11 @@ class PreCheck extends CFormModel
     }
     
     public function getUploadPath() {
-        return Yii::getPathOfAlias('application') . '/../upload';
+        return Yii::getPathOfAlias('webroot') . '/upload';
     }
     
     public function getTempPath() {
-        return Yii::getPathOfAlias('application') . '/../upload';
+        return Yii::getPathOfAlias('webroot') . '/tmp';
     }
     
     public function getZipSupport() {
