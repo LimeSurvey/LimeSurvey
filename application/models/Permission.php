@@ -586,8 +586,6 @@ class Permission extends LSActiveRecord
         if (!$oSurvey) 
             return false;
         $iUserID=self::getUserId($iUserID);
-        if(!$iUserID)
-            return false;
         // If you own a survey you have access to the whole survey
         if ($iUserID==$oSurvey->owner_id) 
             return true;
@@ -609,10 +607,10 @@ class Permission extends LSActiveRecord
     }
 
     /**
-    /* function used to order Permission by language string
-    /* @param aApermission array The first permission information
-    /* @param aBpermission array The second permission information
-    /* @return bool 
+    * function used to order Permission by language string
+    * @param aApermission array The first permission information
+    * @param aBpermission array The second permission information
+    * @return bool 
     */
     private static function comparePermissionTitle($aApermission,$aBpermission)
     {
@@ -620,9 +618,9 @@ class Permission extends LSActiveRecord
     }
 
     /**
-    /* get the default/fixed $iUserID
-    /* @param iUserID optionnal user id
-    /* @return integer user id
+    * get the default/fixed $iUserID
+    * @param iUserID optionnal user id
+    * @return integer user id
     */
     private static function getUserId($iUserID=null)
     {
