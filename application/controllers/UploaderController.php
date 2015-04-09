@@ -46,8 +46,8 @@ class UploaderController extends SurveyController {
 
         // Validate and filter and throw error if problems
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
-        $sFileGetContentFiltered=preg_replace('/[^a-z0-9_]/', '', $sFileGetContent);
-        $sFileNameFiltered = preg_replace('/[^a-z0-9_]/', '',$sFileName);
+        $sFileGetContentFiltered=preg_replace('/[^a-zA-Z0-9_]/', '', $sFileGetContent);
+        $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '',$sFileName);
         $sFieldNameFiltered=preg_replace('/[^X0-9]/', '', $sFieldName);
         if($sFileGetContent!=$sFileGetContentFiltered || $sFileName!=$sFileNameFiltered || $sFieldName!=$sFieldNameFiltered)
         {// If one seems to be a hack: Bad request

@@ -9,8 +9,20 @@ ul { list-style: none; }
     background-color: #99CCFF;
     margin: 10px auto;
     padding: 5px 20px;
+    list-style:none;
 }
-
+@media handled,screen and (max-width: 479px) {
+    .previewblock table{
+    display:block;
+    }
+    .previewblock table tr{
+    display:block;
+    }
+    .previewblock table td{
+    width:100% !important;
+    display:block;
+    }
+}
 img {
     display: block;
     margin: 5px;
@@ -43,25 +55,26 @@ img {
     margin: 0.5em 0.4em 0.5em 0;
     overflow: visible;
     padding: 0.6em 0.6em 0.6em 0.6em;
-    min-width: 100px;
+    min-width: 10em;
     text-align: center;
 }
 
-.success, .error {
+#notice .success,#notice  .error {
     border: 1px solid;
-    margin: 15px 200px 20px 200px;
-    padding:15px 60px 15px 60px;
+    margin: 1.3em auto 1.5em auto;
+    padding:1.3em 60px;
     background-repeat: no-repeat;
     background-position: 20px center;
+    max-width:40em;
 }
 
-.success {
+#notice .success {
     color: #4F8A10;
     background-color: #DFF2BF;
     background-image:url('../images/success_notice.png');
 }
 
-.error {
+#notice .error {
     color: #D8000C;
     background-color: #FFBABA;
     background-image: url('../images/error_notice.png');

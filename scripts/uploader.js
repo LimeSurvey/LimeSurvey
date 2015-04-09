@@ -1,7 +1,18 @@
 $(document).ready(function(){
     doFileUpload();
+    fixParentHeigth();
 });
 
+function fixParentHeigth()
+{
+    if(window != top)
+    {
+        frameheight=$('html').outerHeight();
+        $(parent.jQuery.find('#uploader')).css("height",frameheight+"px");
+        if(jQuery.isFunction(parent.resetUploaderPosition))
+            parent.resetUploaderPosition();
+    }
+}
 function doFileUpload(){
     var fieldname = $('#ia').val();
 
@@ -50,6 +61,7 @@ function doFileUpload(){
 
             // add file to the list
             $('#field'+fieldname+'_listfiles').append(previewblock);
+            fixParentHeigth();
         }
     }
 
@@ -188,6 +200,7 @@ function doFileUpload(){
             {
                 $('#notice').html('<p class="error">'+metadata.msg+'</p>');
             }
+            fixParentHeigth();
         }
     });
 
@@ -307,6 +320,7 @@ function deletefile(fieldname, count) {
     name=$("#"+fieldname+"_name_"+count).val();
     xmlhttp.open('GET',uploadurl+'/delete/1/fieldname/'+fieldname+'/filename/'+filename+'/name/'+encodeURI(name), true);
     xmlhttp.send();
+    fixParentHeigth();
 }
 
 
