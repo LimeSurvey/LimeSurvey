@@ -64,7 +64,6 @@ $(window).resize(function() {
 });
 /* Reset the position of the dialog (recenter) */
 function resetUploaderPosition(){
-    console.log('reset');
      $( "#uploader" ).dialog( "option", "position", $( "#uploader" ).dialog( "option", "position" ) );
 }
 /* Set the with of upload madal and uploader frame according to windows width */
