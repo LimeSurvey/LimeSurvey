@@ -202,7 +202,7 @@ class ExtendedClientScript extends CClientScript
 	private function combineAndCompress($type, $urls, $pos)
 	{
 		$this->fileUrl or $this->fileUrl = $this->getCoreScriptUrl();
-		$this->basePath or $this->basePath = realpath($_SERVER['DOCUMENT_ROOT']);
+        $this->basePath or $this->basePath = \Yii::getPathOfAlias('webroot');
 		$this->filePath or $this->filePath = $this->basePath.$this->fileUrl;
 
 		$optionsHash = ($type == 'js') ? md5($this->basePath . $this->compressJs . $this->ttlDays . $this->prefix)

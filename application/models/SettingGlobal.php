@@ -81,6 +81,8 @@ class SettingGlobal extends LSActiveRecord
     public function setValue($value) {
         if (is_array($value)) {
             $this->stg_value = "__JSON__" . json_encode($value);
+        } else {
+            $this->stg_value = $value;
         }
     }
     public static function get($name, $default = null) {

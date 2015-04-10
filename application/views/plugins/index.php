@@ -88,7 +88,7 @@
     echo TbHtml::closeTag('div');
     echo TbHtml::endForm();
     
-    var_dump($modules);
+
 ?>
     
 </div>
