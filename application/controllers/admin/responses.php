@@ -207,7 +207,7 @@ class responses extends Survey_Common_Action
                 }
                 $next = SurveyDynamic::model($iSurveyID)->next($iId);
                 $previous = SurveyDynamic::model($iSurveyID)->previous($iId);
-
+                $aData['bHasFile']=false;
                 if (isset($rlanguage))
                 {
                     $aData['rlanguage'] = $rlanguage;
@@ -246,15 +246,21 @@ class responses extends Survey_Common_Action
 
                                 if (isset($phparray[$index]))
                                 {
-                                    if ($metadata === "size")
-                                        $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
-                                    else if ($metadata === "name")
+                                    switch ($metadata)
+                                    {
+                                        case "size":
+                                            $answervalue = sprintf(gt("%s KB"),intval($phparray[$index][$metadata]));
+                                            break;
+                                        case "name":
                                             $answervalue = CHtml::link(
                                                 $oPurifier->purify(rawurldecode($phparray[$index][$metadata])),
                                                 $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$iId,"sFileName"=>$phparray[$index][$metadata]))
                                             );
-                                        else
-                                            $answervalue = rawurldecode($phparray[$index][$metadata]);
+                                            break;
+                                        default:
+                                            $answervalue = htmlspecialchars(strip_tags(stripJavaScript($phparray[$index][$metadata])));
+                                    }
+                                    $aData['bHasFile']=true;
                                 }
                                 else
                                     $answervalue = "";
