@@ -37,6 +37,9 @@ class UsersController extends Controller
         $forms = array_map(function(\ls\pluginmanager\iAuthenticationPlugin $authenticator) {
             return $authenticator->getLoginSettings();
         }, $authenticators);
+        if (empty($forms)) {
+            throw new \CHttpException(500, "No authentication methods could be loaded.");
+        }
         return $this->render('login', ['loginForms' => $forms]);
     }
     

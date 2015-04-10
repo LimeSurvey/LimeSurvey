@@ -35,8 +35,13 @@ use Plugin;
         public function init() {
             PluginConfig::$pluginManager = $this;
             $this->loadPlugins();
-            if (count($this->getAuthenticators(true)) == 0 && $reload = true && null === $this->enablePlugin('ls_core_plugins_AuthDb')) {
-                throw new \Exception("No authentication plugins available.");
+            if (count($this->getAuthenticators(true)) == 0) {
+
+                // Enable auth db.
+                $result = $this->enablePlugin('ls_core_plugins_AuthDb');
+                if (!$result) {
+                    throw new \Exception("No authentication plugins available.");
+                }
             };
             if ($this->getAuthorizer() == null && $reload = true && null === $this->enablePlugin('ls_core_plugins_PermissionDb')) {
                 throw new \Exception("No authorization plugin available.");
@@ -187,6 +192,7 @@ use Plugin;
          */
         public function loadPlugin(PluginConfig $pluginConfig)
         {
+            Yii::log(__CLASS__, 'Loading plugin: ' . $pluginConfig->id);
             if ($pluginConfig->validate() && $this->isActive($pluginConfig->id)) {
                 $pluginConfig->registerNamespace($this->loader);
                 if (!isset($this->plugins[$pluginConfig->id])) {
@@ -197,6 +203,8 @@ use Plugin;
                     }                   
                 }
                 return $this->getPlugin($pluginConfig->id);
+            } else {
+                Yii::log(__CLASS__, 'Pluginconfig not valid' . print_r($pluginConfig->errors, true));
             }
         }
         
@@ -213,6 +221,7 @@ use Plugin;
          * @return 
          */
         public function loadSimplePlugin(PluginConfig $pluginConfig) {
+            Yii::log(__CLASS__, 'Loading simple plugin: ' . $pluginConfig->id);
             return $pluginConfig->createPlugin($this);
         }
         
@@ -268,7 +277,8 @@ use Plugin;
                 return $plugin instanceOf iAuthenticationPlugin;
             });
             if ($activeOnly) {
-                $authPlugins = \SettingGlobal::get('authenticationPlugins', []);
+                // If no active plugins are in the configuration we give enable AuthDb.
+                $authPlugins = \SettingGlobal::get('authenticationPlugins', ['ls_core_plugins_AuthDb']);
                 $result = array_intersect_key($result, array_flip($authPlugins));
             }
             return $result;
@@ -276,7 +286,8 @@ use Plugin;
         
         public function getAuthorizer() {
             $authorizers = $this->getAuthorizers(true);
-            $authPlugin = \SettingGlobal::get('authorizationPlugin');
+            // If not set use PermissionDb.
+            $authPlugin = \SettingGlobal::get('authorizationPlugin', 'ls_core_plugins_PermissionDb');
             if (isset($authorizers[$authPlugin])) {
                 return $authorizers[$authPlugin];
             }

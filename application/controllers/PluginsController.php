@@ -127,9 +127,10 @@ class PluginsController extends Controller
             }
             $authenticationPlugins = $request->getParam('authenticationPlugins');
             if (is_array($authenticationPlugins) && array_intersect($authenticationPlugins, array_keys(App()->pluginManager->getAuthenticators())) == $authenticationPlugins) {
-                SettingGlobal::set('authenticationPlugins', $authenticationPlugins);
+                \SettingGlobal::set('authenticationPlugins', $authenticationPlugins);
                 App()->user->setFlash('success', gT('Authorization and authentication configuration updated.'));
             }
+
         }
         $this->redirect(['plugins/index']);
     }

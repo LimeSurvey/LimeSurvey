@@ -89,7 +89,7 @@
     echo TbHtml::submitButton(gT('Save'), ['color' => 'primary']);
     echo TbHtml::closeTag('div');
     echo TbHtml::endForm();
-    
+
 ?>
     
 </div>
