@@ -2734,8 +2734,6 @@ function do_file_upload($ia)
 {
     global $thissurvey;
 
-
-
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0]);
@@ -2743,52 +2741,53 @@ function do_file_upload($ia)
     // Fetch question attributes
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
 
-    $currentdir = getcwd();
-    $pos = stripos($currentdir, "admin");
     $scriptloc = Yii::app()->getController()->createUrl('uploader/index');
+    $bPreview=Yii::app()->request->getParam('action')=="previewgroup" || Yii::app()->request->getParam('action')=="previewquestion" || $thissurvey['active'] != "Y";
 
-    if ($pos)
+    if ($bPreview)
     {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1 ;
         $questgrppreview = 1;   // Preview is launched from Question or group level
 
     }
-    else if ($thissurvey['active'] != "Y")
-        {
-            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
-            $questgrppreview = 0;
-        }
-        else
-        {
-            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
-            $questgrppreview = 0;
+    elseif ($thissurvey['active'] != "Y")
+    {
+        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
+        $questgrppreview = 0;
+    }
+    else
+    {
+        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
+        $questgrppreview = 0;
     }
 
-    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' ";
+    $uploadbutton = "<div class='upload-button'><a id='upload_".$ia[1]."' class='upload' ";
     $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
-    $uploadbutton .=">" .gT('Upload files'). "</a></h2>";
+    $uploadbutton .=">" .gT('Upload files'). "</a></div>";
 
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
             var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
             uploadurl += '&preview={$questgrppreview}&show_title={$aQuestionAttributes['show_title']}';
-            uploadurl += '&show_comment={$aQuestionAttributes['show_comment']}&pos=".($pos?1:0)."';
+            uploadurl += '&show_comment={$aQuestionAttributes['show_comment']}';
             uploadurl += '&minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
             uploadurl += '&maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
             $('#upload_$ia[1]').attr('href',uploadurl);
         }
-        var translt = {
+        var uploadLang = {
              title: '" . gT('Upload your files','js') . "',
              returnTxt: '" . gT('Return to survey','js') . "',
              headTitle: '" . gT('Title','js') . "',
              headComment: '" . gT('Comment','js') . "',
-             headFileName: '" . gT('File name','js') . "'
+             headFileName: '" . gT('File name','js') . "',
+             deleteFile : '".gt('Delete')."',
+             editFile : '".gt('Edit')."'
             };
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
         var uploadurl =  '".$scriptloc."';
     </script>\n";
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js");
-
+    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
     // Modal dialog
     $answer .= $uploadbutton;
 
@@ -2821,8 +2820,7 @@ function do_file_upload($ia)
     var json = $("#"+fieldname).val();
     var show_title = "'.$aQuestionAttributes["show_title"].'";
     var show_comment = "'.$aQuestionAttributes["show_comment"].'";
-    var pos = "'.($pos ? 1 : 0).'";
-    displayUploadedFiles(json, filecount, fieldname, show_title, show_comment, pos);
+    displayUploadedFiles(json, filecount, fieldname, show_title, show_comment);
     });
     </script>';
 

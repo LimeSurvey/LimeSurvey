@@ -15,23 +15,14 @@
 class UploaderController extends SurveyController {
     function run($actionID)
     {
-        if(isset($_SESSION['LEMsid']) && $oSurvey=Survey::model()->findByPk($_SESSION['LEMsid'])){
-            $surveyid= $_SESSION['LEMsid'];
-        }else{
+        $surveyid=Yii::app()->session['LEMsid'];
+        $oSurvey=Survey::model()->findByPk($surveyid);
+        if(!$oSurvey)
             throw new CHttpException(400);// See for debug > 1
-        }
-        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
-        {
-            $sLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        }
-        else
-        {
-            $sLanguage='';
-        }
 
+        $sLanguage=isset(Yii::app()->session['survey_'.$surveyid]['s_lang']) ? Yii::app()->session['survey_'.$surveyid]['s_lang']: "";
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
-
         Yii::app()->loadHelper("database");
 
         // Fill needed var
@@ -45,8 +36,8 @@ class UploaderController extends SurveyController {
 
         // Validate and filter and throw error if problems
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
-        $sFileGetContentFiltered=preg_replace('/[^a-z0-9_]/', '', $sFileGetContent);
-        $sFileNameFiltered = preg_replace('/[^a-z0-9_]/', '',$sFileName);
+        $sFileGetContentFiltered=preg_replace('/[^a-zA-Z0-9_]/', '', $sFileGetContent);
+        $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '',$sFileName);
         $sFieldNameFiltered=preg_replace('/[^X0-9]/', '', $sFieldName);
         if($sFileGetContent!=$sFileGetContentFiltered || $sFileName!=$sFileNameFiltered || $sFieldName!=$sFieldNameFiltered)
         {// If one seems to be a hack: Bad request
@@ -149,13 +140,13 @@ class UploaderController extends SurveyController {
             $valid_extensions_array = array_map('trim',$valid_extensions_array);
 
             $pathinfo = pathinfo($_FILES['uploadfile']['name']);
-            $ext = $pathinfo['extension'];
+            $ext = strtolower($pathinfo['extension']);
             $randfilename = 'futmp_'.randomChars(15).'_'.$pathinfo['extension'];
             $randfileloc = $sTempUploadDir . $randfilename;
 
             // check to see that this file type is allowed
             // it is also  checked at the client side, but jst double checking
-            if (!in_array(strtolower($ext), $valid_extensions_array))
+            if (!in_array($ext, $valid_extensions_array))
             {
                 $return = array(
                                 "success" => false,
@@ -291,7 +282,7 @@ class UploaderController extends SurveyController {
             showpopups="'.Yii::app()->getConfig("showpopups").'";
         ';
         $sLangScriptVar="
-                translt = {
+                uploadLang = {
                      titleFld: '" . gT('Title','js') . "',
                      commentFld: '" . gT('Comment','js') . "',
                      errorNoMoreFiles: '" . gT('Sorry, no more files can be uploaded!','js') . "',
@@ -302,7 +293,9 @@ class UploaderController extends SurveyController {
                      errorMoreAllowed: '" . gT('If you wish, you may upload %s more file(s); else you may return back to survey.','js') . "',
                      errorMaxReached: '" . gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
                      errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
-                     errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "'
+                     errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "',
+                     deleteFile : '".gt('Delete','js') . "',
+                     editFile : '".gt('Edit','js') . "',
                     };
         ";
         $aSurveyInfo=getSurveyInfo($surveyid, $sLanguage);
@@ -321,6 +314,8 @@ class UploaderController extends SurveyController {
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js');
         App()->getClientScript()->registerScriptFile("{$sTemplateUrl}template.js");
         App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
+
         if (file_exists($sTemplateDir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
             Yii::app()->getClientScript()->registerCssFile("{$sTemplateUrl}jquery-ui-custom.css");
