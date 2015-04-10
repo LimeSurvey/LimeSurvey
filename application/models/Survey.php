@@ -14,24 +14,27 @@ if (!defined('BASEPATH'))
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-
+/**
+ * @property-read Question[] $questions
+ * @property boolean $bool_usetokens
+ */
 class Survey extends LSActiveRecord
 {
-    /**
-     * This is a static cache, it lasts only during the active request. If you ever need
-     * to clear it, like on activation of a survey when in the same request a row is read,
-     * saved and read again you can use resetCache() method.
-     *
-     * @var array
-     */
-    protected $findByPkCache = array();
+
     /* Set some setting not by default database */
     public $format = 'G';
 
     public function attributeLabels() {
         return [
             
-            'localizedTitle' => 'Title'
+            'localizedTitle' => gT('Title'),
+            'bool_usecookie' => gT('Set cookie to prevent repeated participation?'),
+            'bool_listpublic' => gT('List survey publicly:'),
+            'bool_alloweditaftercompletion' => gT("Allow responses to be edited after completion"),
+            'startdate' => gT("Start date/time:"),
+            'expires' => gT("Expiry date/time:"),
+            'usecaptcha' => gT("Use CAPTCHA for")
+
         ];
     }
     /**
@@ -95,29 +98,6 @@ class Survey extends LSActiveRecord
             return null;
         }
     }
-    /**
-     * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
-     * @param int $surveyId
-     */
-    public function expire($surveyId = null)
-    {
-        $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-        $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 day');
-
-        if (!isset($surveyId))
-        {
-            $this->expires = $dateTime;
-            if ($this->scenario == 'update')
-            {
-                return $this->save();
-            }
-        }
-        else
-        {
-            self::model()->updateByPk($surveyId,array('expires' => $dateTime));
-        }
-
-    }
 
     /**
     * Returns the table's name
@@ -168,7 +148,9 @@ class Survey extends LSActiveRecord
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
             
-            'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid']
+            'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid'],
+            'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0"],
+            'questionCount' => [self::STAT, 'Question', 'sid', 'condition' => "parent_qid = 0"],
         ];
     }
 
@@ -257,6 +239,9 @@ class Survey extends LSActiveRecord
             //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+
+            ['use_series', 'boolean'],
+            ['features', 'safe']
         );
     }
 
@@ -353,7 +338,7 @@ class Survey extends LSActiveRecord
     public function getStatus() {
         if (!$this->isActive) {
             $result = 'inactive';
-        } elseif ($this->isExpired()) {
+        } elseif ($this->isExpired) {
             $result = 'expired';
         } else {
             $result = 'active';
@@ -534,9 +519,9 @@ class Survey extends LSActiveRecord
         return $tokens[$iSurveyID];
     }
 
-	public function isExpired()
+	public function getIsExpired()
 	{
-		return !empty($this->expires) && $this->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+        return !empty($this->expires) && (new DateTime($this->expires)) < new DateTime();
 	}
     /**
     * Creates a new survey - does some basic checks of the suppplied data
@@ -636,7 +621,11 @@ class Survey extends LSActiveRecord
             $this->questionindex = 0;
         }
     }
-    
+
+    public function getFieldMap()
+    {
+
+    }
     public function getInfo($language = null) {
         $language = !isset($language) ? $this->language : $language;
         if (null !== $localization = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->primaryKey, 'surveyls_language' => $language])) {
@@ -687,7 +676,10 @@ class Survey extends LSActiveRecord
     public function getPartialResponseCount() {
         return $this->isNewRecord || !Response::valid($this->sid) ? 0 : Response::model($this->sid)->incomplete()->count();
     }
-    
+
+    /**
+     * @return int
+     */
     public function getResponseCount() {
         return $this->isNewRecord || !Response::valid($this->sid) ? 0 : Response::model($this->sid)->count();
     }
@@ -699,5 +691,232 @@ class Survey extends LSActiveRecord
      */
     public function getResponseRate() {
         return 0;
+    }
+    
+    /**
+     * Returns the generic survey response columns and the question specific columns.
+     * @return string[] Array containing field names and types.
+     */
+    public function getColumns() {
+        $result = [
+            'startlanguage' => 'string(20) NOT NULL',
+            'datestamp' => 'datetime NOT NULL',
+            'submitdate' => 'datetime',
+            'lastpage' => 'int',
+        ];
+        if ($this->bool_ipaddr) {
+            $result['ipaddress'] = 'string(15)'; 
+        }
+        if ($this->bool_usetokens) {
+
+            $result['token'] = "string({$this->tokenlength})";
+        }
+        if ($this->bool_refurl) {
+            $result['url'] = "string";
+        }
+
+        if ($this->use_series) {
+            $result['series_id'] = 'string(36) NOT NULL';
+        }
+        /**
+         * @todo Add proper condition here.
+         */
+        if (false) {
+            $result['startdate'] = 'datetime NOT NULL';
+        }
+        foreach($this->questions as $question) {
+            $result += $question->columns;
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Attempts to activate the survey.
+     */
+    public function activate()
+    {
+        $result = false;
+        // Precheck.
+
+        if (true) {
+
+            // Create tables.
+            $messages = [];
+            if (Response::createTable($this, $messages)) {
+
+            }
+            if ($this->bool_usetokens) {
+                Token::createTable($this->sid);
+            }
+            if (Timing::createTable($this, $messages)) {
+
+            }
+
+            // Set active to true.
+            $this->active = 'Y';
+            $result = $this->save();
+        }
+        return $result;
+    }
+
+    /**
+     * Attempts to deactivate the survey.
+     */
+    public function deactivate()
+    {
+        $result = false;
+        // Precheck.
+        if (true) {
+            // We set active to false first; this ensures no new users entering the survey.
+            $this->bool_active = false;
+            $this->save();
+
+            if (Response::valid($this->sid)) {
+                $responseTable = Response::model($this->sid);
+                // We drop the response table if it is empty.
+                if ($responseTable->count() == 0) {
+                    $this->dbConnection->createCommand()->dropTable($responseTable->tableName());
+                } else {
+                    $name = strtr($responseTable->tableName(), ['survey_' => 'survey_old_']) . '_' . date('Y-m-d_H-i-s');
+                    $this->dbConnection->createCommand()->renameTable($responseTable->tableName(), $name);
+                }
+            }
+
+            if (Token::valid($this->sid)) {
+                $tokenTable = Token::model($this->sid);
+                // We drop the response table if it is empty.
+                if ($tokenTable->count() == 0) {
+                    $this->dbConnection->createCommand()->dropTable($tokenTable->tableName());
+                } else {
+                    $name = strtr($tokenTable->tableName(), ['survey_' => 'survey_old_']) . '_' . date('Y-m-d_H-i-s');
+                    $this->dbConnection->createCommand()->renameTable($tokenTable->tableName(), $name);
+                }
+            }
+
+
+
+            // Remove entries in SavedControl
+            /**
+             * @todo
+             *
+             */
+
+            // Remove / rename timings table.
+            /**
+             * @todo
+             */
+
+            return true;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Attempts to expire the survey.
+     */
+    public function expire() {
+        $this->expires = '0000-00-00 00:00:00';
+        return $this->save();
+    }
+
+    public  function unexpire() {
+        $this->expires = null;
+        return $this->save();
+    }
+
+    public function getFeatures() {
+        $result = [];
+        foreach($this->getFeatureOptions() as $key => $value) {
+            if ($this->$key) {
+                $result[] = $key;
+            }
+        }
+        return $result;
+    }
+
+    public function setFeatures($value) {
+        foreach($this->getFeatureOptions() as $key => $title) {
+            /**
+             * @todo Could be optimized for less array searching.
+             */
+            $this->$key = in_array($key, $value);
+        }
+    }
+
+    public function getFeatureOptions() {
+        return [
+            'use_series' => gT("Response series"),
+            'bool_usetokens' => gT("Token support"),
+            'bool_anonymized' => gT("Anonymized responses"),
+            'bool_datestamp' => gT("Date stamps"),
+            'bool_ipaddr' => gT("Log IP address"),
+            'bool_refurl' => gT("Log referrer URL"),
+            'bool_savetimings' => gT("Save timing information")
+        ];
+    }
+
+    public function getCaptchaOptions() {
+        $a = gT("Survey Access");
+        $an = str_pad('', strlen($a), '-');
+        $r = gT("Registration");
+        $rn = str_pad('', strlen($r), '-');
+        $s = gT("Save & Load");
+        $sn = str_pad('', strlen($s), '-');
+        return [
+            'A' => implode(' / ', [$a, $r, $s]),
+            'B' => implode(' / ', [$a, $r, $sn]),
+            'C' => implode(' / ', [$a, $rn, $s]),
+            'D' => implode(' / ', [$an, $r, $s]),
+            'X' => implode(' / ', [$a, $rn, $sn]),
+            'R' => implode(' / ', [$an, $r, $sn]),
+            'S' => implode(' / ', [$an, $rn, $s]),
+            'N' => implode(' / ', [$an, $rn, $sn])
+        ];
+    }
+
+    public function __get($name)
+    {
+        if (substr($name, 0, 5) == 'bool_') {
+            $result = parent::__get(substr($name, 5)) === 'Y';
+        } else {
+            $result = parent::__get($name);
+        }
+        return $result;
+    }
+
+    public function __set($name, $value)
+    {
+        if (substr($name, 0, 5) == 'bool_') {
+            parent::__set(substr($name, 5), $value ? 'Y' : 'N');
+        } else {
+            parent::__set($name, $value);
+        }
+    }
+
+    public function getTotalSteps() {
+        switch ($this->format) {
+            case "A":
+                $result = 1;
+                break;
+            case "G":
+                $result = QuestionGroup::model()->countByAttributes([
+                    'sid' => $this->sid,
+                    'language' => App()->language
+                ]);
+                break;
+            case "S":
+                $result = Question::model()->countByAttributes([
+                    'sid' => $this->sid,
+                    'language' => App()->language
+                ]);
+                break;
+            default:
+                throw new \Exception("Unknown survey display format.");
+
+        }
+        return $result;
+
     }
 }

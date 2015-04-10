@@ -1,3 +1,4 @@
 <?php
-
-echo TbHtml::tag('pre', [], print_r($group->attributes, true));
+$this->widget(WhDetailView::class, [
+    'data' => $group
+]);

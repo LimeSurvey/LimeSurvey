@@ -20,7 +20,10 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  * Implements global  config
  * @property CLogRouter $log Log router component.
  * @property LocalizedFormatter $format
- * @property \ls\pluginmanager\PluginManager $pluginManager 
+ * @property \ls\pluginmanager\PluginManager $pluginManager
+ * @property CDbConnection $db
+ * @property SurveySessionManager $surveySessionManager
+ * @property \CHttpRequest $request;
  * @property WebUser $user
  */
 class WebApplication extends CWebApplication

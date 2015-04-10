@@ -32,7 +32,7 @@ class printablesurvey extends Survey_Common_Action
         if(!App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
         {
             $aData['surveyid'] = $surveyid;
-            App()->getClientScript()->registerPackage('jquery-superfish');
+            
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";

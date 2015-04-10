@@ -1,6 +1,9 @@
 <?php
 namespace ls\controllers;
 use \Yii;
+use \Survey;
+use \PluginEvent;
+use CClientScript;
 /*
  * LimeSurvey
  * Copyright (C) 2007-2014 The LimeSurvey Project Team / Carsten Schmitz
@@ -17,8 +20,8 @@ use \Yii;
 class UploaderController extends SurveyController {
     function run($actionID)
     {
-        if(isset($_SESSION['LEMsid']) && $oSurvey=Survey::model()->findByPk($_SESSION['LEMsid'])){
-            $surveyid= $_SESSION['LEMsid'];
+        if(isset(App()->surveySessionManager->current) && $oSurvey=Survey::model()->findByPk(App()->surveySessionManager->current->surveyId)){
+            $surveyid = App()->surveySessionManager->current->surveyId;
         }else{
             throw new CHttpException(400);// See for debug > 1
         }
@@ -281,7 +284,6 @@ class UploaderController extends SurveyController {
 
         $meta = '';
         App()->getClientScript()->registerPackage('jqueryui');
-        App()->getClientScript()->registerPackage('jquery-superfish');
         $sNeededScriptVar='
             var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";

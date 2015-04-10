@@ -41,7 +41,6 @@ $(document).ready(function(){
             duration: 'fast'
         }, $.datepicker.regional[LS.data.language]);
     }
-    $(".sf-menu").superfish({speed: 'fast'});
     doToolTip();
     $(".progressbar").each(function(){
         var pValue = parseInt($(this).attr('name'));

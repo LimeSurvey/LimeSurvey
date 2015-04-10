@@ -48,9 +48,6 @@ class index extends CAction {
 
     function action()
     {
-        global $surveyid;
-        global $thissurvey, $thisstep;
-        global $clienttoken, $tokensexist, $token;
 
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
@@ -69,8 +66,6 @@ class index extends CAction {
         Yii::app()->setConfig('move',$move);
         $clienttoken = trim($param['token']);
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
-        if (is_null($thissurvey) && !is_null($surveyid)) $thissurvey = getSurveyInfo($surveyid);
-
         // unused vars in this method (used in methods using compacted method vars)
         @$loadname = $param['loadname'];
         @$loadpass = $param['loadpass'];
@@ -81,8 +76,9 @@ class index extends CAction {
             killSurveySession($surveyid);
         }
 
-        $surveyExists=($surveyid && Survey::model()->findByPk($surveyid));
-        $isSurveyActive=($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
+
+        $surveyExists=($surveyid && null != $survey = Survey::model()->findByPk($surveyid));
+        $isSurveyActive=($surveyExists && $survey->isActive);
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -187,9 +183,8 @@ class index extends CAction {
         }
 
         //CHECK FOR REQUIRED INFORMATION (sid)
-        if ($surveyid && $surveyExists)
+        if (isset(App()->surveySessionManager->current))
         {
-            LimeExpressionManager::SetSurveyId($surveyid); // must be called early - it clears internal cache if a new survey is being used
             SetSurveyLanguage( $surveyid, $sDisplayLanguage);
             if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
             if (App()->language != $sOldLang)  // Update the Session var only if needed
@@ -209,8 +204,9 @@ class index extends CAction {
             $token=$clienttoken;
         }
 
+        $surveyid = App()->surveySessionManager->current->surveyId;
         //GET BASIC INFORMATION ABOUT THIS SURVEY
-        $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        $thissurvey = getSurveyInfo($surveyid, App()->surveySessionManager->current->language);
 
         $event = new PluginEvent('beforeSurveyPage');
         $event->set('surveyId', $surveyid);
@@ -221,7 +217,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}'))
+        if ($surveyExists == 1 && $thissurvey['usetokens'] == 'Y' && tableExists('{{tokens_'.$thissurvey['sid'].'}}'))
         {
             $tokensexist = 1;
         }
@@ -542,7 +538,8 @@ class index extends CAction {
                         buildsurveysession($surveyid);
                         if(!empty($oResponse->submitdate)) // alloweditaftercompletion
                         {
-                            $_SESSION['survey_'.$surveyid]['maxstep'] = $_SESSION['survey_'.$surveyid]['totalsteps'];
+                            App()->surveySessionManager->current->maxStep = App()->surveySessionManager->current->survey->totalSteps;
+                            App()->surveySessionManager->current->isFinished = true;
                         }
                         loadanswers();
                     }
@@ -611,7 +608,7 @@ class index extends CAction {
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang))
+        if ( is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->cache(1)->findByPk($mvSurveyIdOrBaseLang))
         {
             $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
         }
@@ -629,11 +626,6 @@ class index extends CAction {
     function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
-    }
-
-    function _isSurveyFinished($surveyid)
-    {
-        return isset($_SESSION['survey_'.$surveyid]['finished']) && $_SESSION['survey_'.$surveyid]['finished'] === true;
     }
 
     function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)

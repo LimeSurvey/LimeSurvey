@@ -42,14 +42,6 @@ use \Yii;
 
             Yii::app()->loadHelper('database');
 
-            if (isset($_SESSION['survey_'.$iSurveyID]['sid']))
-            {
-                $iSurveyID = $_SESSION['survey_'.$iSurveyID]['sid'];
-            }
-            else
-            {
-                //die('Invalid survey/session');
-            }
             // Get the survey inforamtion
             // Set the language for dispay
             if (isset($_SESSION['survey_'.$iSurveyID]['s_lang']))
@@ -70,7 +62,7 @@ use \Yii;
             //SET THE TEMPLATE DIRECTORY
              $sTemplate = $aSurveyInfo['template'];
             //Survey is not finished or don't exist
-            if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
+            if (!App()->surveySessionManager->isActive || !App()->surveySessionManager->current->isFinished)
             //display "sorry but your session has expired"
             {
                 sendCacheHeaders();
@@ -86,10 +78,7 @@ use \Yii;
                 exit;
             }
             //Fin session time out
-            $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
-            //Ensure script is not run directly, avoid path disclosure
-            //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
-
+            $sSRID = App()->surveySessionManager->current->responseId;
             //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
             if ($aSurveyInfo['printanswers'] == 'N' && !App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {

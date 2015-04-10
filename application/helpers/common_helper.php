@@ -18,7 +18,7 @@ Yii::import('application.helpers.sanitize_helper', true);
  * @param string $sEscapeMode
  * @param string $sLanguage
  */
-function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
+function gT($sToTranslate, $sEscapeMode = 'unescaped', $sLanguage = NULL)
 {
     return quoteText(Yii::t('',$sToTranslate,array(),null,$sLanguage),$sEscapeMode);
 }
@@ -1088,7 +1088,7 @@ function getSurveyInfo($surveyId, $languagecode= null)
     if (!is_numeric($surveyId)) {
         throw new Exception("Survey ids must be numerical.");
     }
-    return (null != $survey = Survey::model()->findByPk($surveyId)) ? $survey->getInfo($languagecode) : null;
+    return (null != $survey = Survey::model()->cache(1)->findByPk($surveyId)) ? $survey->getInfo($languagecode) : null;
 }
 
 /**
@@ -1506,20 +1506,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 
 /**
 * Validate an email address - also supports IDN email addresses
-* @returns True/false for valid/invalid
+* @returns boolean True/false for valid/invalid
 *
-* @param mixed $sEmailAddress  Email address to check
+* @param string $email  Email address to check
 */
-function validateEmailAddress($sEmailAddress){
-    require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
-    $oIdnConverter = new idna_convert();
-    $sEmailAddress=$oIdnConverter->encode($sEmailAddress);
-    $bResult=filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
-    if ($bResult!==false)
-    {
-        return true;
-    }
-    return false;
+function validateEmailAddress($email){
+    $validator = new CEmailValidator();
+    return $validator->validateValue($email);
 }
 
 /**
@@ -1680,14 +1673,10 @@ return $allfields;
 */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage) {
     global $aDuplicateQIDs;
-
+    \Yii::beginProfile('fieldmap');
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
 
-    //checks to see if fieldmap has already been built for this page.
-    if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
-        return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
-    }
 
     App()->setLanguage($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2252,6 +2241,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             }
             Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
         }
+        \Yii::endProfile('fieldmap');
         return $fieldmap;
     }
 }
@@ -3902,7 +3892,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     }
 
 
-    require_once(APPPATH.'/third_party/phpmailer/class.phpmailer.php');
     $mail = new PHPMailer;
     if (!$mail->SetLanguage($defaultlang,APPPATH.'/third_party/phpmailer/language/'))
     {
@@ -4884,8 +4873,12 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'showregister'=>'Y'
         ),
     );
-
-    $aExtraTokenFields=getAttributeFieldNames($surveyid);
+    
+    try {
+        $aExtraTokenFields = Token::model($surveyid)->attributeNames();
+    } catch (\Exception $ex) {
+        $aExtraTokenFields = [];
+    }
     $aSavedExtraTokenFields = Survey::model()->findByPk($surveyid)->tokenAttributes;
 
     // Drop all fields that are in the saved field description but not in the table definition

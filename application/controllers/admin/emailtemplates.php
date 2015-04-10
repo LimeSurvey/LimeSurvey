@@ -30,7 +30,7 @@ class emailtemplates extends Survey_Common_Action {
     function index($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        App()->getClientScript()->registerPackage('jquery-superfish');
+        
 
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');

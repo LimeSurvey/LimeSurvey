@@ -276,7 +276,8 @@ function retrieveAnswers($ia)
     }
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
+    $session = App()->surveySessionManager->current;
+    if ($session->step != $session->maxStep || ($session->step == $session->prevStep)) {
         $mandatory_msg = mandatory_message($ia);
     }
     else {
@@ -285,7 +286,6 @@ function retrieveAnswers($ia)
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
-    //    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
     if (!isset($aQuestionAttributes['hide_tip']) || $aQuestionAttributes['hide_tip']==0) {
         $_vshow = true; // whether should initially be visible - TODO should also depend upon 'hidetip'?
     }
@@ -297,7 +297,7 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
+    if ($session->step != $session->maxStep || ($session->step == $session->prevStep)) {
         $file_validation_msg = file_validation_message($ia);
     }
     else {
@@ -513,13 +513,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
 
 
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js');
-
-    /* The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
-    This just stops error messages occuring */
-    if(!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray']))
-    {
-        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] = array();
-    }
 
     /* End */
 
@@ -1605,11 +1598,7 @@ function do_list_dropdown($ia)
             $answer .= 'none';
         }
 
-        //        // --> START BUG FIX - text field for other was not repopulating when returning to page via << PREV
         $answer .= '"';
-        //        $thisfieldname=$ia[1].'other';
-        //        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) { $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES).'" ';}
-        //        // --> END BUG FIX
 
         // --> START NEW FEATURE - SAVE
         $answer .= "  alt='".gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";
@@ -1896,10 +1885,11 @@ function do_list_radio($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_listwithcomment($ia)
 {
-    global $maxoptionsize, $thissurvey;
+
+    $session = App()->surveySessionManager->current;
     $dropdownthreshold = Yii::app()->getConfig("dropdownthreshold");
 
-    if ($thissurvey['nokeyboard']=='Y')
+    if ($session->survey->bool_nokeyboard)
     {
         includeKeypad();
         $kpclass = "text-keypad";
@@ -1945,7 +1935,7 @@ function do_listwithcomment($ia)
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
+            if ($session->response[$ia[1]] == $ansrow['code'])
             {
                 $check_ans = CHECKED;
             }
@@ -1958,11 +1948,11 @@ function do_listwithcomment($ia)
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
+            if (empty($session->response[$ia[1]]))
             {
                 $check_ans = CHECKED;
             }
-            elseif (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != ''))
+            else
             {
                 $check_ans = '';
             }
@@ -1995,7 +1985,7 @@ function do_listwithcomment($ia)
         $answer .= '</textarea>
         </p>
 
-        <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" />
+        <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$session->response[$ia[1]].'" />
         ';
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
@@ -2733,7 +2723,8 @@ function do_multiplechoice_withcomments($ia)
 // ---------------------------------------------------------------
 function do_file_upload($ia)
 {
-    global $thissurvey;
+    return;
+    $session = App()->surveySessionManager->current;
 
 
 
@@ -2793,7 +2784,7 @@ function do_file_upload($ia)
     // Modal dialog
     $answer .= $uploadbutton;
 
-    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8')."' />";
+    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".htmlspecialchars($session->response[$ia[1]],ENT_QUOTES,'utf-8')."' />";
     $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
 
     if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
@@ -3794,7 +3785,7 @@ function do_longfreetext($ia)
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
+    $answer .= str_replace("\\", "", App()->surveySessionManager->current->response->$ia[1]);
 
     $answer .= "</textarea></p>\n";
 

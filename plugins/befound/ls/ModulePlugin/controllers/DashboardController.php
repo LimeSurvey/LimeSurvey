@@ -4,7 +4,6 @@
     class DashboardController extends Controller {
         public function __construct($id, $module = null) {
             parent::__construct($id, $module);
-//            die('ok');
         }
         public function accessRules() {
             return array_merge([

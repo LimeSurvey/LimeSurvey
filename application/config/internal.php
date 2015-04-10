@@ -11,9 +11,9 @@ if (file_exists(__DIR__ . '/config.php')) {
 } else {
     $userConfig = [];
 }
-@date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
 	'basePath' => __DIR__ . '/../',
+    'timeZone' => 'UTC',
     'sourceLanguage' => 'en',
     'controllerNamespace' => '\\ls\\controllers',
     'supportedLanguages' => include('locales.php'),
@@ -39,6 +39,9 @@ $internalConfig = array(
         file_exists(__DIR__ . '/config.php') ? 'pluginManager' : null
     ],
 	'components' => [
+        'surveySessionManager' => [
+            'class' => SurveySessionManager::class
+        ],
         'migrationManager' => [
             'class' => 'MigrationManager'
         ],
@@ -49,11 +52,11 @@ $internalConfig = array(
             'class' => 'LocalizedFormatter'
         ],
         'clientScript'=> [
-            'class' => 'ext.ExtendedClientScript.ExtendedClientScript',
-            'combineCss' => false,
-            'compressCss' => false,
-            'combineJs'=> YII_DEBUG,
-            'compressJs'=>false,
+//            'class' => 'ext.ExtendedClientScript.ExtendedClientScript',
+//            'combineCss' => false,
+//            'compressCss' => false,
+//            'combineJs'=> YII_DEBUG,
+//            'compressJs'=>false,
             'packages' => require('third_party.php'),
         ],
         'urlManager' => [
@@ -81,6 +84,7 @@ $internalConfig = array(
             'routes' => array(
                 'CWebLogRoute' => array( // Use an associative array allow update in config
                     'class' => 'CWebLogRoute',
+                    'levels'=>'error, warning, trace, info',
                 ),
                 'trace' => array(
                     'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only

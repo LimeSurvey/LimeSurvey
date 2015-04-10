@@ -74,35 +74,8 @@ class SurveyDynamic extends LSActiveRecord
         return 'id';
     }
 
-    /**
-     * Insert records from $data array
-     *
-     * @access public
-     * @param array $data
-     * @return boolean
-     */
-    public function insertRecords($data)
-    {
-        $record = new self;
-        foreach ($data as $k => $v)
-        {
-            $search = array('`', "'");
-            $k = str_replace($search, '', $k);
-            $v = str_replace($search, '', $v);
-            $record->$k = $v;
-        }
 
-        try
-        {
-            $record->save();
-            return $record->id;
-        }
-        catch(Exception $e)
-        {
-            return false;
-        }
-        
-    }
+    
 
     /**
      * Deletes some records from survey's table

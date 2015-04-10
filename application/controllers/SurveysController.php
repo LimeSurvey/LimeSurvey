@@ -12,7 +12,7 @@ use Survey;
         public function accessRules() {
             return array_merge([
                 ['allow', 'actions' => ['index'], 'users' => ['@']],
-                ['allow', 'actions' => ['publicList']],
+                ['allow', 'actions' => ['publicList', 'run' ,'start']],
                 
             ], parent::accessRules());
         }
@@ -39,26 +39,151 @@ use Survey;
             ));
         }
         
-        public function actionView($id) {
+        public function actionUpdate($id) {
+
+            $survey = $this->loadModel($id);
+            if (App()->request->isPostRequest && isset($survey)) {
+                $survey->setAttributes($_POST['Survey']);
+                if ($survey->save()) {
+                    App()->user->setFlash('success', gT("Survey settings updated."));
+                }
+
+                $this->refresh();
+            }
+            $this->layout = 'survey';
+            $this->survey = $survey;
+            $this->render('update', ['survey' => $survey]);
+        }
+
+        public function actionActivate($id) {
             $this->layout = 'survey';
             $survey = $this->loadModel($id);
-            $this->survey = $survey;
-            $this->render('view', ['survey' => $survey]);
+            if (App()->request->isPostRequest) {
+                $survey->activate();
+                App()->user->setFlash('succcess', "Survey activated.");
+                $this->redirect(['surveys/update', 'id' => $survey->sid]);
+            }
+
+            $this->render('activate', ['survey' => $survey]);
         }
-        
+
+        public function actionDeactivate($id) {
+            $this->layout = 'survey';
+            $survey = $this->loadModel($id);
+            if (App()->request->isPostRequest) {
+                $survey->deactivate();
+                App()->user->setFlash('succcess', "Survey deactivated.");
+                $this->redirect(['surveys/update', 'id' => $survey->sid]);
+            }
+
+            $this->survey = $survey;
+            $this->render('deactivate', ['survey' => $survey]);
+        }
         public function filters()
         {
             return array_merge(parent::filters(), ['accessControl']);
         }
-        
+
+        /**
+         * @param type $id
+         * @return Survey
+         * @throws CHttpException
+         * @throws \CHttpException
+         */
         protected function loadModel($id) {
             $survey = Survey::model()->findByPk($id);
             if (!isset($survey)) {
                 throw new \CHttpException(404, "Survey not found.");
             } elseif (!App()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $id])) {
-                throw new CHttpException(403);
+                throw new \CHttpException(403);
+            }
+
+            if ($this->layout == 'survey') {
+                $this->survey = $survey;
             }
             return $survey;
         }
+
+        /**
+         * This function starts the survey.
+         * If a welcome screen is active it shows the welcome screen.
+         * @param $id
+         */
+        public function actionStart($id, $token = null)
+        {
+            $survey = Survey::model()->findByPk($id);
+            $this->layout = 'bare';
+            if (!$survey->isActive) {
+                throw new \CHttpException(412, gT("The survey is not active."));
+            } elseif ($survey->bool_usetokens && !isset($token)) {
+                throw new \CHttpException(400, gT("Token required."));
+            } elseif ($survey->bool_usetokens && null === $token = \Token::model($id)->findByAttributes(['token' => $token])) {
+                throw new \CHttpException(404, gT("Token not found."));
+            }
+
+            $targetUrl = [
+                'surveys/execute',
+                'surveyId' => $id,
+            ];
+            if (App()->request->isPostRequest || $survey->format == 'A' || !$survey->bool_showwelcome) {
+                // Create response.
+                /**
+                 * @todo Check if we should resume an existing response instead.
+                 */
+                $response = \Response::create($id);
+                if (isset($token)) {
+                    /**
+                     * @todo Update token and check for anonymous.
+                     */
+                    if (!$survey->bool_anonymized) {
+                        $response->token = $token->token;
+                    }
+                }
+                $response->save();
+                $session = App()->surveySessionManager->newSession($survey->sid, $response->id);
+                $this->redirect(['surveys/run', 'sessionId' => $session->id]);
+            } else {
+                $this->render('welcome', ['survey' => $survey, 'id' => 'test']);
+            }
+        }
+
+        public function actionRun($sessionId)
+        {
+            $session = App()->surveySessionManager->getSession($sessionId);
+            if (!isset($session->response)) {
+                throw new \CHttpException(404, gT("Response not found."));
+            } else {
+                echo ' running!';
+            }
+
+        }
+
+        public function actionUnexpire($id) {
+            $this->layout = 'survey';
+
+            $survey = $this->loadModel($id);
+            if (App()->request->isPostRequest && $survey->unexpire()) {
+                App()->user->setFlash('success', gT("Survey expiry date removed."));
+                $this->redirect(['surveys/view', 'id' => $id]);
+            }
+            $this->render('unexpire', ['survey' => $survey]);
+        }
+
+        public function actionExpire($id)
+        {
+            $survey = $this->loadModel($id);
+
+            if (App()->request->isPostRequest) {
+//                $survey->deactivate();
+//                App()->user->setFlash('succcess', "Survey deactivated.");
+//                $this->redirect(['surveys/view', 'id' => $survey->sid]);
+
+
+            }
+            $this->layout = 'survey';
+            $this->survey = $survey;
+            $this->render('expire', ['survey' => $survey]);
+        }
+
     }
 ?>
