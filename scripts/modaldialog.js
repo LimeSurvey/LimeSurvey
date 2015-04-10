@@ -2,11 +2,6 @@ $(function() {
     openUploadModalDialog();
 });
 function openUploadModalDialog(){
-    $(document).on('click','.upload-edit',function(){
-        var fieldname=$(this).data('fieldname');
-        $('#upload_'+fieldname).click();
-    });
-
     $('.upload').click(function(e) {
         e.preventDefault();
         var $this = $(this);
@@ -62,8 +57,6 @@ function openUploadModalDialog(){
 }
 $(window).resize(function() { 
     setWidthUploader();
-
-
     if(typeof $("iframe#uploader")[0]!=="undefined" && jQuery.isFunction($("iframe#uploader")[0].contentWindow.fixParentHeigth))
         $("iframe#uploader")[0].contentWindow.fixParentHeigth();
 });
@@ -141,7 +134,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
                 display += '<td class="upload title">'+jsonobj[i].title+'</td>';
             if (show_comment != 0)                                                                                                  
                 display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="upload-edit" data-fieldname="'+fieldname+'">'+uploadLang.editFile+'</a></td></tr>';
+            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="upload-edit" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();">'+uploadLang.editFile+'</a></td></tr>';
         }
         display += '</tbody></table>';
 
