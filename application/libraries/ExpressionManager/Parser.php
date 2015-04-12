@@ -35,6 +35,7 @@ class Parser{
 
     public function parse($string) {
         // First tokenize it.
+        $this->error = null;
         $this->tokenizer = new Tokenizer();
         $tokens = $this->tokenizer->tokenize($string);
         $stack = new Stack();
@@ -410,10 +411,10 @@ class Parser{
         )
         || $tokens->rollback() || $stack->rollback()
         ) {
-            // Basically this is a unary operator.
+            // Basically this is a function operator.
             $operator = $stack->pop();
             $operand = $stack->pop();
-            $stack->push([$operator, $operand]);
+            $stack->push([$operator, [$operand]]);
 
         }
         // Always return true since this is an optional rule.
