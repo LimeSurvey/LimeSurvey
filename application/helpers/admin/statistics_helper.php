@@ -26,7 +26,7 @@
 *  @return                Name
 */
 function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache, $oLanguage, $sQuestionType)
-{
+{                    
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
        the "T" gets passed to this function from the statistics.js file in the first place! */
     if(substr($iSurveyID,0,1)=="T") {$iSurveyID=substr($iSurveyID,1);}
@@ -420,6 +420,7 @@ function buildSelects($allfields, $surveyid, $language) {
 
                     //we collect all the to be selected data in this array
                     $selects[]=$thisquestion;
+
                 }
 
                 //M - Multiple choice
@@ -633,7 +634,6 @@ class statistics_helper {
     *                       "qtype"=>The question type code
     */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage,$browse=true) {
-
         //Set up required variables
         $alist=array();
         $qtitle="";
@@ -1677,6 +1677,7 @@ class statistics_helper {
         }
         //loop though the array which contains all answer data
         $ColumnName_RM=array();
+     
         foreach ($outputs['alist'] as $al)
         {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
@@ -1761,6 +1762,7 @@ class statistics_helper {
                     }
                     else
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($rt)." = '$al[0]'";
+            
                 }
                 else
                 { // This is for the 'NoAnswer' case
@@ -1906,7 +1908,7 @@ class statistics_helper {
             {
                 if(!isset($showheadline) || $showheadline != false)
                 {
-                    if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
+                    if($outputs['qtype'] == "5" || $outputs['qtype'] == "A" || (($outputs['qtype'] == "F" || $outputs['qtype'] == "L") && (count($outputs['alist'])==6 || count($outputs['alist'])==7)))
                     {
                         switch($outputType)
                         {
@@ -2058,9 +2060,9 @@ class statistics_helper {
             else
             {
                 $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $row;
-            }
-
-
+            }          
+            
+            
         }    //end foreach -> loop through answer data
 
         //no filtering of incomplete answers and NO multiple option questions
@@ -2285,7 +2287,8 @@ class statistics_helper {
                         $gdata[$i] = 0;
 
                         //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
-                        if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A"))
+                          
+                        if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A" || ($outputs['qtype'] == "F" || $outputs['qtype'] == "L")&& (count($outputs['alist'])==6 || count($outputs['alist'])==7)))
                         {
                             $statisticsoutput .= "\t\t</td>";
                         }
@@ -2308,7 +2311,7 @@ class statistics_helper {
             else
             {
                 //check if data should be aggregated
-                if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A"))
+                if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A" || (($outputs['qtype'] == "F" || $outputs['qtype'] == "L") && (count($outputs['alist'])==6 || count($outputs['alist'])==7))))
                 {
                     //mark that we have done soemthing special here
                     $aggregated = true;
@@ -2525,18 +2528,40 @@ class statistics_helper {
         {
             //it's only useful to calculate standard deviation and arithmetic means for question types
             //5 = 5 Point Scale
-            //A = Array (5 Point Choice)
-            if($outputs['qtype'] == "5" || $outputs['qtype'] == "A")
+            //A = Array (5 Point Choice)           
+            
+            if($outputs['qtype'] == "5" || $outputs['qtype'] == "A" || (($outputs['qtype'] == "F" || $outputs['qtype'] == "L") && (count($outputs['alist'])==6 || count($outputs['alist'])==7)))
             {
                 $stddev = 0;
                 $stddevarray = array_slice($grawdata,0,5,true);
                 $am = 0;
+                $f5Scale = 0;
+                $fTop2 = 0;
 
                 //calculate arithmetic mean
                 if(isset($sumitems) && $sumitems > 0)
                 {
 
+                    for($x = 0; $x < 5; $x++)
+                    {
+                        //create product of item * value
+                        $f5Scale += ((5-$x) * $stddevarray[$x]);
+                        
+                    }
+                    $fTop2 = $stddevarray[0]+$stddevarray[1];
 
+                    //prevent division by zero
+                    if(isset($stddevarray) && array_sum($stddevarray) > 0)
+                    {
+                        $f5Scale = round($f5Scale / (array_sum($stddevarray)*5)* 100,2);
+                        $fTop2 = round($fTop2 / (array_sum($stddevarray))* 100,2);
+                    }
+                    else
+                    {
+                        $f5Scale = 0;
+                         $fTop2 = 0;
+                    }
+                    
                     //calculate and round results
                     //there are always 5 items
                     for($x = 0; $x < 5; $x++)
@@ -2611,12 +2636,20 @@ class statistics_helper {
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$statlang->gT("Standard deviation"));
                         $this->sheet->writeNumber($this->xlsRow,1,$stddev);
+                        $this->xlsRow++;
+                        $this->sheet->write($this->xlsRow,0,$statlang->gT("Agreement/Satisfaction Level (5 Scale)"));
+                        $this->sheet->writeNumber($this->xlsRow,1,$f5Scale / 100,$this->xlsPercents);
+                        $this->xlsRow++;
+                        $this->sheet->write($this->xlsRow,0,$statlang->gT("Agreement/Satisfaction Level (Top 2 boxes)"));
+                        $this->sheet->writeNumber($this->xlsRow,1,$fTop2 / 100,$this->xlsPercents);
                         break;
 
                     case 'pdf':
 
                         $tablePDF[] = array($statlang->gT("Arithmetic mean"),$am,'','');
                         $tablePDF[] = array($statlang->gT("Standard deviation"),$stddev,'','');
+                        $tablePDF[] = array($statlang->gT("Agreement/Satisfaction Level (5 Scale)"),$f5Scale ."%",'','');
+                        $tablePDF[] = array($statlang->gT("Agreement/Satisfaction Level (Top 2 boxes)"),$fTop2 ."%",'','');
 
                         break;
                     case 'html':
@@ -2625,6 +2658,11 @@ class statistics_helper {
                         $statisticsoutput .= "<td>&nbsp;</td><td align='center'> $am</td><td>&nbsp;</td></tr>";
                         $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Standard deviation")."</td>";    //German: "Fallzahl"
                         $statisticsoutput .= "<td>&nbsp;</td><td align='center'>$stddev</td><td>&nbsp;</td></tr>";
+
+                        $statisticsoutput .= "<tr><td align='center'><b>".$statlang->gT("Agreement/Satisfaction Level (5 Scale)")."</td>";    
+                        $statisticsoutput .= "<td>&nbsp;</td><td align='center'>".$f5Scale."%</b></td><td>&nbsp;</td></tr>";
+                        $statisticsoutput .= "<tr><td align='center'><b>".$statlang->gT("Agreement/Satisfaction Level (Top 2 boxes)")."</td>";    
+                        $statisticsoutput .= "<td>&nbsp;</td><td align='center'>".$fTop2."%</b></td><td>&nbsp;</td></tr>";
 
                         break;
                     default:
@@ -2811,7 +2849,7 @@ class statistics_helper {
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true)
     {
-
+print_r($q2show);
         $astatdata=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
@@ -3200,11 +3238,7 @@ class statistics_helper {
                 {
                     $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
                 }
-                $sSSL='';
-                if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off"){
-                    $sSSL='s';
-                }
-                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
+                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
                 ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
                 return $statisticsoutput;
 
