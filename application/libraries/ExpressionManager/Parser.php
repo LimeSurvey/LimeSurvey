@@ -38,12 +38,13 @@ class Parser{
         $this->tokenizer = new Tokenizer();
         $tokens = $this->tokenizer->tokenize($string);
         $stack = new Stack();
-        while($this->parseExpression($tokens, $stack)) {}
-        $color = isset($this->error['token']) ? '#ff0000' : '#00ff00';
+        $result = $this->parseExpression($tokens, $stack) && $tokens->end();
+        $color = !$result ? '#ff0000' : '#00ff00';
         echo "<pre style='background-color: $color;'>";
         echo "$string\n";
-        if (isset($this->error['token'])) {
-            echo "Error in expression, expected {$this->error['expected']} got {$this->error['token']->type}\n";
+        if (!$result) {
+            $got = isset($this->error['token']) ? $this->error['token']->type: 'NULL';
+            echo "Error in expression, expected {$this->error['expected']} got {$got}\n";
         }
         $parts = [];
         foreach($tokens->getItems() as $token) {
@@ -55,7 +56,9 @@ class Parser{
         }
         echo implode(' ', $parts) . "\n";
         echo '</pre>';
-        return $stack->pop();
+        if ($result) {
+            return $stack->pop();
+        }
     }
 
 
@@ -66,7 +69,7 @@ class Parser{
      * @param array $stack
      */
     protected function parseExpression(TokenStream $tokens, Stack $stack) {
-        echo "Parsing {$tokens->getRest()}\n";
+//        echo "Parsing {$tokens->getRest()}\n";
         return $this->parseLogicExpression($tokens, $stack);
     }
 
@@ -247,6 +250,8 @@ class Parser{
      */
     protected function parseFunc(TokenStream $tokens, Stack $stack)
     {
+        echo "Parsing function .. {$tokens->getRest()}\n";
+        ;
         if ((
             $tokens->begin() && $stack->begin()
             && $this->parseToken('WORD', $tokens, $stack, 'FUNC')

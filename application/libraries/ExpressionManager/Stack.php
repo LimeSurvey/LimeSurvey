@@ -45,4 +45,8 @@ class Stack {
         $this->transactions->pop();
         return true;
     }
+
+    public function count() {
+        return count($this->items);
+    }
 }
