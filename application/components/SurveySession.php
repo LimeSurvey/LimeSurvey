@@ -15,7 +15,9 @@
  * @property Survey $survey;
  */
 class SurveySession extends CComponent {
-
+    const FORMAT_GROUP = 'G';
+    const FORMAT_QUESTION = 'Q';
+    const FORMAT_SURVEY = 'A';
     /**
      * These variables are not serialized.
      */
@@ -36,6 +38,7 @@ class SurveySession extends CComponent {
     protected $responseId;
     protected $finished = false;
     protected $language = 'en';
+    protected $_step = 1;
     /**
      * @param int $surveyId
      * @param int $responseId
@@ -85,16 +88,24 @@ class SurveySession extends CComponent {
         return $this->_survey;
     }
     public function getStep() {
-        return 1;
+        return $this->_step;
 
     }
 
+
     public function getMaxStep() {
-        return 5;
+        switch($this->survey->format) {
+            case 'G':
+                return count($this->survey->groups);
+            case 'A':
+                return 1;
+            case' Q':
+                return count($this->survey->questions);
+        }
     }
 
     public function getPrevStep() {
-        return 1;
+        return $this->_step > 1 ? $this->_step - 1 : 1;
     }
 
     public function __sleep() {
@@ -105,5 +116,53 @@ class SurveySession extends CComponent {
             'finished',
             'language'
         ];
+    }
+
+    /**
+     * Returns the list of question groups.
+     * Ordered according to the randomization groups.
+     */
+    public function getGroups()
+    {
+        $groups = $this->survey->groups;
+
+        // Get all randomization groups in order.
+        $order = [];
+        $randomizationGroups = [];
+        foreach ($groups as $group) {
+            if (empty($group->randomization_group)) {
+                $order[] = $group->randomization_group;
+                $randomizationGroups[$group->randomization_group][] =$group;
+            } else {
+                $order[] = $group;
+            }
+        }
+        foreach ($order as $i => $group) {
+            if (is_string($group)) {
+                // Draw a random group from the randomizationGroups array.
+                /**
+                 * @todo This is not truly random. It would be better to use mt_rand with the response ID as seed
+                 * (so it's reproducible. But Suhosin doesn't allow seeding mt_rand.
+                 */
+                $seed = array_values(unpack('L',
+                    substr(md5($this->responseId . count($randomizationGroups[$group]), true), -4, 4)))[0];
+
+                $randomIndex = $seed % count($randomizationGroups[$group]);
+
+                $order[$i] = $randomizationGroups[$group][$randomIndex];
+                $ids[] = $order[$i]->gid;
+                unset($randomizationGroups[$group][$randomIndex]);
+                $randomizationGroups[$group] = array_values($randomizationGroups[$group]);
+            }
+        }
+        return $order;
+    }
+
+    /**
+     * Getter for the format. In the future we could allow override per session.
+     * @return FORMAT_QUESTION|FORMAT_GROUP|FORMAT_SURVEY;
+     */
+    public function getFormat() {
+        return $this->survey->format;
     }
 }

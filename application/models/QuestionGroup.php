@@ -13,6 +13,10 @@
        *	Files Purpose: lots of common functions
     */
 
+/**
+ * Class QuestionGroup
+ * @property string $randomization_group
+ */
     class QuestionGroup extends LSActiveRecord
     {
         /**

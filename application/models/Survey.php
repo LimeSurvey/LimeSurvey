@@ -17,6 +17,7 @@ if (!defined('BASEPATH'))
 /**
  * @property-read Question[] $questions
  * @property boolean $bool_usetokens
+ * @property-read QuestionGroup[] $groups
  */
 class Survey extends LSActiveRecord
 {
@@ -148,7 +149,7 @@ class Survey extends LSActiveRecord
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
             
-            'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid'],
+            'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid', 'order' => 'group_order ASC'],
             'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0"],
             'questionCount' => [self::STAT, 'Question', 'sid', 'condition' => "parent_qid = 0"],
         ];

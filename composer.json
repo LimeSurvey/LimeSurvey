@@ -17,7 +17,8 @@
         "guzzlehttp/guzzle": "~5.0@dev",
         "cakephp/utility": "dev-master",
         "sam-it/php-auto-update": "dev-master",
-        "icecave/semver": "dev-master"
+        "icecave/semver": "dev-master",
+        "hafriedlander/php-peg": "dev-master"
     },
 	"require-dev" : {
 		
@@ -39,6 +40,9 @@
             ],
             "ls\\controllers\\" : [
                 "application/controllers"
+            ],
+            "ls\\expressionmanager\\" : [
+                "application/libraries/ExpressionManager"
             ],
             "ls\\pluginmanager\\" : [
                 "application/libraries/PluginManager",

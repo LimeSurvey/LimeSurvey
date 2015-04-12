@@ -698,7 +698,8 @@
         */
         public static function SetSurveyId($sid=NULL)
         {
-            self::$instance->sid = $sid;
+
+            self::singleton()->sid = $sid;
 
         }
 
@@ -708,7 +709,7 @@
         */
         public static function SetEMLanguage($lang)
         {
-            self::$instance->lang = $lang;
+            self::singleton()->lang = $lang;
 
         }
 
@@ -4660,11 +4661,11 @@
             if ($initializeVars)
             {
                 $LEM->em->StartProcessingGroup(
-                    self::$sid,
+                    self::singleton()->sid,
                     '',
                     true
                 );
-                $LEM->setVariableAndTokenMappingsForExpressionManager(self::$sid);
+                $LEM->setVariableAndTokenMappingsForExpressionManager(self::singleton()->sid);
             }
 
         }

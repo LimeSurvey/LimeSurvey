@@ -3,7 +3,7 @@
 echo TbHtml::buttonGroup([
     [
         'icon' => 'plus',
-        'url' => ['tokens/create', 'id' => $this->survey->sid]
+        'url' => ['tokens/create', 'surveyId' => $this->survey->sid]
     ]
 ]);
 $columns = isset($dataProvider->data[0]) ? $dataProvider->data[0]->attributeNames() : [];

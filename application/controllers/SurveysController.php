@@ -153,9 +153,14 @@ use Survey;
             if (!isset($session->response)) {
                 throw new \CHttpException(404, gT("Response not found."));
             } else {
-                echo ' running!';
+                $renderer = new \SurveyRenderer($session);
+                echo $renderer->render();
             }
+        }
 
+        public function renderSurveyA(\SurveySession $session)
+        {
+            die('a');
         }
 
         public function actionUnexpire($id) {

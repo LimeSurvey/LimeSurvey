@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b253731656f358348161038e075b9935",
+    "hash": "e1059b389a6138ac2f5ce866e1395ae0",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -98,12 +98,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
-                "reference": "8b61fb03bf272df14dc003887ab227b374359e95"
+                "reference": "a8a82f8805b1f557be0de0d2f24d655e977e5653"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/utility/zipball/8b61fb03bf272df14dc003887ab227b374359e95",
-                "reference": "8b61fb03bf272df14dc003887ab227b374359e95",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/a8a82f8805b1f557be0de0d2f24d655e977e5653",
+                "reference": "a8a82f8805b1f557be0de0d2f24d655e977e5653",
                 "shasum": ""
             },
             "type": "library",
@@ -126,7 +126,7 @@
                 }
             ],
             "description": "CakePHP Utility classes such as Inflector, String, Hash, and Security",
-            "time": "2015-03-24 11:59:19"
+            "time": "2015-04-03 18:18:59"
         },
         {
             "name": "crisu83/yiistrap",
@@ -350,6 +350,50 @@
             "time": "2015-01-22 00:01:34"
         },
         {
+            "name": "hafriedlander/php-peg",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hafriedlander/php-peg.git",
+                "reference": "819c7185a18c2afc06f939762d638987f044b01d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hafriedlander/php-peg/zipball/819c7185a18c2afc06f939762d638987f044b01d",
+                "reference": "819c7185a18c2afc06f939762d638987f044b01d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "bin": [
+                "cli.php"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "GPLv2",
+                "BSD-3"
+            ],
+            "authors": [
+                {
+                    "name": "Hamish Friedlander",
+                    "email": "hamish@silverstripe.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PEG (parsing expression grammar) compiler for PHP",
+            "homepage": "https://github.com/hafriedlander/php-peg",
+            "keywords": [
+                "DSL",
+                "compiler",
+                "parser",
+                "peg"
+            ],
+            "time": "2014-05-22 03:21:34"
+        },
+        {
             "name": "icecave/parity",
             "version": "dev-develop",
             "source": {
@@ -563,12 +607,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "580e44da96fab82be9b525b262cfe35fad94b8c8"
+                "reference": "efd15582d946914a7d8a3beb2cb4dfa63dae9329"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/580e44da96fab82be9b525b262cfe35fad94b8c8",
-                "reference": "580e44da96fab82be9b525b262cfe35fad94b8c8",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/efd15582d946914a7d8a3beb2cb4dfa63dae9329",
+                "reference": "efd15582d946914a7d8a3beb2cb4dfa63dae9329",
                 "shasum": ""
             },
             "require": {
@@ -608,7 +652,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-03-29 16:15:40"
+            "time": "2015-04-04 20:57:20"
         },
         {
             "name": "react/promise",
@@ -758,12 +802,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "bb6af65ca6acc831092fa1fcb1c795dbe081ab4c"
+                "reference": "ff88cf9335b10926d2a190cb8042ac65f874a2be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/bb6af65ca6acc831092fa1fcb1c795dbe081ab4c",
-                "reference": "bb6af65ca6acc831092fa1fcb1c795dbe081ab4c",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/ff88cf9335b10926d2a190cb8042ac65f874a2be",
+                "reference": "ff88cf9335b10926d2a190cb8042ac65f874a2be",
                 "shasum": ""
             },
             "replace": {
@@ -801,7 +845,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-03-29 06:40:29"
+            "time": "2015-04-11 00:02:33"
         },
         {
             "name": "yiisoft/yii",
@@ -809,12 +853,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "78ede1c99d340d4de5d1e7ed8cdea90dee09f339"
+                "reference": "2bab7ec97aedd16937aa9b3d21c6ed37b19b70ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/78ede1c99d340d4de5d1e7ed8cdea90dee09f339",
-                "reference": "78ede1c99d340d4de5d1e7ed8cdea90dee09f339",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/2bab7ec97aedd16937aa9b3d21c6ed37b19b70ad",
+                "reference": "2bab7ec97aedd16937aa9b3d21c6ed37b19b70ad",
                 "shasum": ""
             },
             "require": {
@@ -891,7 +935,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-03-26 12:30:45"
+            "time": "2015-04-02 18:06:36"
         }
     ],
     "packages-dev": [],
@@ -908,7 +952,8 @@
         "guzzlehttp/guzzle": 20,
         "cakephp/utility": 20,
         "sam-it/php-auto-update": 20,
-        "icecave/semver": 20
+        "icecave/semver": 20,
+        "hafriedlander/php-peg": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
