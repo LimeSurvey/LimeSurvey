@@ -330,12 +330,13 @@ class Parser{
     }
 
     protected function error($type, TokenStream $tokens, Stack $stack) {
-        // Stores the last error.
-        if ($type != 'WS') {
+        // Stores the deepest error.
+        if ($type != 'WS' && (!isset($this->error['index']) || $tokens->getIndex() > $this->error['index'])) {
             $this->error = [
                 'expected' => $type,
                 'stack' => $stack,
-                'token' => $tokens->end() ? null : $tokens->peek()
+                'token' => $tokens->end() ? null : $tokens->peek(),
+                'index' => $tokens->getIndex()
             ];
         }
     }
