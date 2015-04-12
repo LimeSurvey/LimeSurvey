@@ -107,4 +107,12 @@ class TokenStream {
     {
         return $this->index;
     }
+
+    public function getRest() {
+        $result = '';
+        for ($i = $this->index; $i < count($this->items); $i++) {
+            $result .= "'{$this->items[$i]->value}'({$this->items[$i]->type}) ";
+        }
+        return $result;
+    }
 }

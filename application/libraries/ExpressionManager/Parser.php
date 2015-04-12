@@ -37,7 +37,7 @@ class Parser{
         // First tokenize it.
         $this->tokenizer = new Tokenizer();
         $tokens = $this->tokenizer->tokenize($string);
-        $stack = [];
+        $stack = new Stack();
         while($this->parseExpression($tokens, $stack)) {}
         $color = isset($this->error['token']) ? '#ff0000' : '#00ff00';
         echo "<pre style='background-color: $color;'>";
@@ -55,7 +55,7 @@ class Parser{
         }
         echo implode(' ', $parts) . "\n";
         echo '</pre>';
-        return $stack;
+        return $stack->pop();
     }
 
 
@@ -65,7 +65,8 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseExpression(TokenStream $tokens, array &$stack) {
+    protected function parseExpression(TokenStream $tokens, Stack $stack) {
+        echo "Parsing {$tokens->getRest()}\n";
         return $this->parseLogicExpression($tokens, $stack);
     }
 
@@ -74,24 +75,24 @@ class Parser{
      * @param TokenStream $tokens
      * @param array $stack
      */
-    protected function parseLogicExpression(TokenStream $tokens, array &$stack)
+    protected function parseLogicExpression(TokenStream $tokens, Stack $stack)
     {
         $result = $this->parseEqExpression($tokens, $stack);
         if ($result) {
             while ($result) {
                 $result = (
-                        $tokens->begin()
+                        $tokens->begin() && $stack->begin()
                         && $this->parseToken('LOGIC_OP', $tokens, $stack)
                         && $this->parseEqExpression($tokens, $stack)
-                        && $tokens->commit()
+                        && $tokens->commit() && $stack->commit()
                     )
-                    || $tokens->rollback();
+                    || $tokens->rollback() || $stack->rollback();
                 if ($result) {
                     // Combine.
-                    $operand2 = array_pop($stack);
-                    $operator = array_pop($stack);
-                    $operand1 = array_pop($stack);
-                    array_push($stack, [$operator, $operand1, $operand2]);
+                    $operand2 = $stack->pop();
+                    $operator = $stack->pop();
+                    $operand1 = $stack->pop();
+                    $stack->push([$operator, $operand1, $operand2]);
                 }
             }
             return true;
@@ -105,25 +106,25 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseEqExpression(TokenStream $tokens, array &$stack) {
+    protected function parseEqExpression(TokenStream $tokens, Stack $stack) {
         $result = $this->parseAddExpression($tokens, $stack);
         if ($result) {
             while ($result) {
                 $result = (
-                    $tokens->begin()
+                    $tokens->begin() && $stack->begin()
                     && $this->parseToken('EQ_OP', $tokens, $stack)
-                    && (var_dump($tokens->getIndex()) || var_dump($tokens->getItems())|| true)
+//                    && (var_dump($tokens->getIndex()) || var_dump($tokens->getItems())|| true)
 
                     && $this->parseAddExpression($tokens, $stack)
-                    && $tokens->commit()
+                    && $tokens->commit() && $stack->commit()
                 )
-                || $tokens->rollback();
+                || $tokens->rollback() || $stack->rollback();
                 if ($result) {
                     // Combine.
-                    $operand2 = array_pop($stack);
-                    $operator = array_pop($stack);
-                    $operand1 = array_pop($stack);
-                    array_push($stack, [$operator, $operand1, $operand2]);
+                    $operand2 = $stack->pop();
+                    $operator = $stack->pop();
+                    $operand1 = $stack->pop();
+                    $stack->push([$operator, $operand1, $operand2]);
                 }
             }
             return true;
@@ -137,23 +138,23 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseAddExpression(TokenStream $tokens, array &$stack) {
+    protected function parseAddExpression(TokenStream $tokens, Stack $stack) {
         $result = $this->parseMultiExpression($tokens, $stack);
         if ($result) {
             while ($result) {
                 $result = (
-                    $tokens->begin()
+                    $tokens->begin() && $stack->begin()
                     && $this->parseToken('ADD_OP', $tokens, $stack)
                     && $this->parseMultiExpression($tokens, $stack)
-                    && $tokens->commit()
+                    && $tokens->commit() && $stack->commit()
                 )
-                || $tokens->rollback();
+                || $tokens->rollback() || $stack->rollback();
                 if ($result) {
                     // Combine.
-                    $operand2 = array_pop($stack);
-                    $operator = array_pop($stack);
-                    $operand1 = array_pop($stack);
-                    array_push($stack, [$operator, $operand1, $operand2]);
+                    $operand2 = $stack->pop();
+                    $operator = $stack->pop();
+                    $operand1 = $stack->pop();
+                    $stack->push([$operator, $operand1, $operand2]);
                 }
             }
             return true;
@@ -167,23 +168,23 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseMultiExpression(TokenStream $tokens, array &$stack) {
+    protected function parseMultiExpression(TokenStream $tokens, Stack $stack) {
         $result = $this->parsePrimary($tokens, $stack);
         if ($result) {
             while ($result) {
                 $result = (
-                    $tokens->begin()
+                    $tokens->begin() && $stack->begin()
                     && $this->parseToken('MULTI_OP', $tokens, $stack)
                     && $this->parsePrimary($tokens, $stack)
-                    && $tokens->commit()
+                    && $tokens->commit() && $stack->commit()
                 )
-                || $tokens->rollback();
+                || $tokens->rollback() || $stack->rollback();
                 if ($result) {
                     // Combine.
-                    $operand2 = array_pop($stack);
-                    $operator = array_pop($stack);
-                    $operand1 = array_pop($stack);
-                    array_push($stack, [$operator, $operand1, $operand2]);
+                    $operand2 = $stack->pop();
+                    $operator = $stack->pop();
+                    $operand1 = $stack->pop();
+                    $stack->push([$operator, $operand1, $operand2]);
                 }
             }
             return true;
@@ -198,46 +199,71 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parsePrimary(TokenStream $tokens, array &$stack)
+    protected function parsePrimary(TokenStream $tokens, Stack $stack)
     {
         return (
-            $tokens->begin()
+            $tokens->begin() && $stack->begin()
             && $this->consumeToken('LP', $tokens, $stack)
             && $this->parseExpression($tokens, $stack)
             && $this->consumeToken('RP', $tokens, $stack)
-            && $tokens->commit()
+            && $tokens->commit() && $stack->commit()
         )
-        || $tokens->rollback()
+        || $tokens->rollback() || $stack->rollback()
         || $this->parseValue($tokens, $stack)
-        || (
-            $tokens->begin()
-            && $this->parseToken('UN_OP', $tokens, $stack)
-            && $this->parseExpression($tokens, $stack)
-            && $tokens->commit()
-        )
-        || $tokens->rollback()
+        || $this->parseUnaryExpression($tokens, $stack)
         || $this->parseFunc($tokens, $stack)
-        || $this->parseName($tokens, $stack);
-
+        || $this->parseName($tokens, $stack)
+        || $this->parseUnaryExpression($tokens, $stack, 'ADD_OP');
     }
 
+    /**
+     * This parses an unary expression and puts the result on the stack.
+     * The type argument allows using it for + and - as well (they can be used as binary and unary ops).
+     * Rule: UN_OP EXPR
+     *
+     * @param TokenStream $tokens
+     * @param Stack $stack
+     */
+    protected function parseUnaryExpression(TokenStream $tokens, Stack $stack, $type = 'UN_OP') {
+        if (($tokens->begin() && $stack->begin()
+            && $this->parseToken($type, $tokens, $stack)
+            && $this->parseExpression($tokens, $stack)
+            && $tokens->commit() && $stack->commit()
+        )
+        || $tokens->rollback() || $stack->rollback()) {
+            $operand = $stack->pop();
+            $operator = $stack->pop();
+            $stack->push([$operator, $operand]);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Rule: FUNC --> WORD LPAREN LIST RPAREN
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseFunc(TokenStream $tokens, array &$stack)
+    protected function parseFunc(TokenStream $tokens, Stack $stack)
     {
-        return (
-            $tokens->begin()
+        if ((
+            $tokens->begin() && $stack->begin()
             && $this->parseToken('WORD', $tokens, $stack, 'FUNC')
             && $this->consumeToken('LP', $tokens, $stack)
             && $this->parseList($tokens, $stack)
             && $this->consumeToken('RP', $tokens, $stack)
-            && $tokens->commit()
+            && $tokens->commit() && $stack->commit()
         )
-        || $tokens->rollback();
+        || $tokens->rollback() || $stack->rollback()) {
+            $operands = $stack->pop();
+            $operator = $stack->pop();
+            $stack->push([$operator, $operands]);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 
@@ -246,33 +272,35 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseList(TokenStream $tokens, array &$stack) {
+    protected function parseList(TokenStream $tokens, Stack $stack) {
         $result = $this->parseExpression($tokens, $stack);
         if ($result) {
             // List must be an array.
-            array_push($stack, [array_pop($stack)]);
+            $stack->push([$stack->pop()]);
             while ($result) {
                 $result = (
-                    $tokens->begin()
+                    $tokens->begin() && $stack->begin()
                     && $this->consumeToken('LISTSEPARATOR', $tokens, $stack)
                     && $this->parseExpression($tokens, $stack)
-                    && $tokens->commit()
+                    && $tokens->commit() && $stack->commit()
                 )
-                || $tokens->rollback();
+                || $tokens->rollback() || $stack->rollback();
                 if ($result) {
                     // Combine.
-                    $operand = array_pop($stack);
-                    $operands = array_pop($stack);
+                    $operand = $stack->pop();
+                    $operands = $stack->pop();
                     // Push new operand onto operands.
                     array_push($operands, $operand);
                     // Push operands onto stack.
-                    array_push($stack, $operands);
+                    $stack->push($operands);
                 }
             }
-            return true;
         } else {
-            return false;
+            // List must be an array.
+            $stack->push([]);
         }
+        // Always return true, empty list is valid.
+        return true;
 
     }
 
@@ -285,7 +313,7 @@ class Parser{
      * @param null $context
      * @return bool
      */
-    protected function parseToken($type, TokenStream $tokens, array &$stack, $context = null) {
+    protected function parseToken($type, TokenStream $tokens, Stack $stack, $context = null) {
         while($this->consumeToken('WS', $tokens, $stack)) {}
         if (!$tokens->end() && $tokens->peek()->type == $type) {
 
@@ -293,7 +321,7 @@ class Parser{
             if (isset($context)) {
                 $token->context = $context;
             }
-            array_push($stack, $token);
+            $stack->push($token);
             return true;
         } else {
             $this->error($type, $tokens, $stack);
@@ -301,7 +329,7 @@ class Parser{
         }
     }
 
-    protected function error($type, TokenStream $tokens, array &$stack) {
+    protected function error($type, TokenStream $tokens, Stack $stack) {
         // Stores the last error.
         if ($type != 'WS') {
             $this->error = [
@@ -311,7 +339,7 @@ class Parser{
             ];
         }
     }
-    protected function consumeToken($type, TokenStream $tokens, array &$stack) {
+    protected function consumeToken($type, TokenStream $tokens, Stack $stack) {
         // Consume white space if any.
         if ($type != 'WS') {
             $this->consumeToken('WS', $tokens, $stack);
@@ -330,7 +358,7 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseValue(TokenStream $tokens, array &$stack) {
+    protected function parseValue(TokenStream $tokens, Stack $stack) {
         return $this->parseToken('STRING', $tokens, $stack, 'LITERAL')
             || $this->parseToken('BOOL', $tokens, $stack, 'LITERAL')
             || $this->parseToken('NUMBER', $tokens, $stack, 'LITERAL');
@@ -341,22 +369,22 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseName(TokenStream $tokens, array &$stack) {
+    protected function parseName(TokenStream $tokens, Stack $stack) {
 //        echo "<span style='background-color: blue;>Parsing name.</span>";
         return (
-            $tokens->begin()
+            $tokens->begin() && $stack->begin()
             && $this->parseToken('SGQA', $tokens, $stack, 'VARIABLE')
             && $this->parseApply($tokens, $stack)
-            && $tokens->commit()
+            && $tokens->commit() && $stack->commit()
         )
-        || $tokens->rollback()
+        || $tokens->rollback() || $stack->rollback()
         || (
-            $tokens->begin()
+            $tokens->begin() && $stack->begin()
             && $this->parseToken('WORD', $tokens, $stack, 'VARIABLE')
             && $this->parseApply($tokens, $stack)
-            && $tokens->commit()
+            && $tokens->commit() && $stack->commit()
         )
-        || $tokens->rollback();
+        || $tokens->rollback() || $stack->rollback();
 
     }
 
@@ -366,20 +394,20 @@ class Parser{
      * @param array $tokens
      * @param array $stack
      */
-    protected function parseApply(TokenStream $tokens, array &$stack)
+    protected function parseApply(TokenStream $tokens, Stack $stack)
     {
         if ((
-            $tokens->begin()
+            $tokens->begin() && $stack->begin()
             && $this->consumeToken('APPLY', $tokens, $stack)
             && $this->parseToken('WORD', $tokens, $stack, 'FUNC')
-            && $tokens->commit()
+            && $tokens->commit() && $stack->commit()
         )
-        || $tokens->rollback()
+        || $tokens->rollback() || $stack->rollback()
         ) {
             // Basically this is a unary operator.
-            $operator = array_pop($stack);
-            $operand = array_pop($stack);
-            array_push($stack, [$operator, $operand]);
+            $operator = $stack->pop();
+            $operand = $stack->pop();
+            $stack->push([$operator, $operand]);
 
         }
         // Always return true since this is an optional rule.

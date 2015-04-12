@@ -26,8 +26,8 @@ class Token {
                 return $this->normalizeNumber($value);
             case 'STRING':
                 return  $this->normalizeString($value);
-            case 'BOOL': $this->normalizeBool($value);
-                return $this->normalizeString($value);
+            case 'BOOL':
+                return $this->normalizeBool($value);
             default:
                 return $value;
         }

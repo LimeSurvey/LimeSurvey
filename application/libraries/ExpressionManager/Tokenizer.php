@@ -54,6 +54,7 @@ class Tokenizer {
     public function classify($string) {
         foreach($this->tokens as $name => $regexes) {
             foreach(is_array($regexes) ? $regexes : [$regexes] as $regex) {
+                $regex = strtr($regex, ['\\b' => '']);
                 if (preg_match("#^{$regex}$#i", $string) == 1) {
                     return $name;
                 }
