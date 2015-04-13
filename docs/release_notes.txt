@@ -59,6 +59,34 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06a1 to 2.06a2 (build 150414) Apr 13, 2015
+-New feature #5983 : allow different value in Database tha shown in Equation question type (Denis Chenu)
+-New feature #9431: Create LDAP users taking email and full name from LDAP server (Alfredo Esteban)
+-New feature #9544: Question validation equation for List with comment (Denis Chenu)
+-New feature: New authentication method management (Alfredo Esteban)
+-Fixed issue #9577: wrong instructions (Marcel Minke)
+-Fixed issue #8028: File upload dialogue window can't be styled (Denis Chenu)
+-Fixed issue #8865: User not in LDAP or in WebServer can log again (Alfredo Esteban)
+-Fixed Issue #9241: Behaviour of numeric question type (and multi numeric...) (Gabriel Jenik)
+-Fixed issue #9447: Token sending email is unusuable with a lot of token (Alfredo Esteban)
+-Fixed issue #9509 (Sam)
+-Fixed issue #9540: Call to undefined function setsDBDriverName when managing token attribute (Denis Chenu)
+-Fixed issue #9544: List with comment : comment condition don't work in JS (Denis Chenu)
+-Fixed issue #9550: Numerical input integer evaluates incorrectly on survey load with token (Denis Chenu)
+-Fixed issue #9560: "Bounce settings" changeable although "Use global settings" were chosen (Denis Chenu)
+-Fixed issue #9563: Answer data don't register in a database (Denis Chenu)
+-Fixed issue #9571: Using global Survey rigths for final survey rigths (Denis Chenu)
+-Fixed issue #9573: Question by question survey : Empty mandatory subquestion are not shown with error (Denis Chenu)
+-Fixed issue #9587: Quotas do not work with PostgreSQL on some system (Denis Chenu)
+-Fixed issue #9591: Sometimes date_max / date_min validations for date/time questions doesn't allow to use the maximum date expected. (Gabriel Jenik)
+-Fixed issue #9594: EM nl2br() function doesn't work when content comes from current page (Denis Chenu)
+-Fixed issue #9595: PHP error when deleting a condition (Gabriele Mambrini)
+-Fixed issue: Default memory limit too low (Carsten Schmitz)
+-Fixed issue: Display of public statistics in LimeSpired template (Carsten Schmitz)
+-Fixed issue: PHP Notice with malformed tokenAttribute in survey and debug>1 (Denis Chenu)
+-Fixed issue: Question selector unusuable in RTL mode (Carsten Schmitz)
+-Fixed issue: Wrong message (Alfredo Esteban)
+
 Changes from 2.05+ to 2.06a1 (build 150306) Mar 06, 2015
 -New feature #6624 : Allow to validate expression in email template (Denis Chenu)
 -New feature #7048: Don't show EM error to respondant (Denis Chenu)
