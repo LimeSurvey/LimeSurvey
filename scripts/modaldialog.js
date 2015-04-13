@@ -30,6 +30,7 @@ function openUploadModalDialog(){
                 autoResize: false,
                 draggable: true,
                 closeOnEscape: false,
+                dialogClass: "dialog-upload",
                 beforeClose: function() {
                     var pass;
                     if(document.getElementById('uploader').contentDocument) {
@@ -63,6 +64,7 @@ $(window).resize(function() {
 /* Reset the position of the dialog (recenter) */
 function resetUploaderPosition(){
      $( "#uploader" ).dialog( "option", "position", $( "#uploader" ).dialog( "option", "position" ) );
+     
 }
 /* Set the with of upload madal and uploader frame according to windows width */
 function setWidthUploader(){

@@ -1,13 +1,14 @@
-body {font-family: verdana, arial, helvetica, sans-serif;font-size: 12px;color: black; direction: ltr;}
-h1 {color: #C7D92C;	font-size: 18px; font-weight: 400;}
-a {color: white;}
-a:hover, a.hover {color: #C7D92C;}
-ul { list-style: none; }
-#dialog-confirm { padding: 0 20px; float: left; width: 750px; }
+#dialog-confirm { padding: 0 20px; float: left; width: 750px; }/* Used .*/
 
 /* Using display:table and hack for IE6/7 */
-.files-list{display:table;table-layout:fixed;width:100%;list-style:none}
+.files-list{display:table;table-layout:fixed;width:100%;list-style:none;padding:0;margin:0;}
 .file-element{display:table-row;width:100%;padding:0.5em 0;}
+.file-info fieldset{
+border:0 none;
+padding:0;
+margin:0;
+}
+
 .file-preview,.file-info,.file-tool{
 display:table-cell;vertical-align:middle;
 * float:left 
@@ -39,7 +40,7 @@ text-align:left;
     clear:left;
     display:block;
     width:12em;
-    padding:0 1em;
+    padding:0 0.5em;
     line-height:1.5;
     text-align:right;
 }

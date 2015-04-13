@@ -339,7 +339,7 @@ class UploaderController extends SurveyController {
         $maxfiles = (int)Yii::app()->request->getParam('maxfiles');
         $qidattributes=getQuestionAttributeValues($qid);
         $qidattributes['max_filesize']=floor(min($qidattributes['max_filesize']*1024,getMaximumFileUploadSize())/1024);
-        $body = '</head><body>
+        $body = '</head><body class="uploader">
                 <div id="notice"></div>
                 <input type="hidden" id="ia"                value="'.$fn.'" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
