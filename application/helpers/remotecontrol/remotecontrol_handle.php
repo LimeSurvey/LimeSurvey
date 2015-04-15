@@ -10,7 +10,7 @@ class remotecontrol_handle
     protected $controller;
 
     /**
-    * Constructor, stores the action instance into this handle class
+    * Constructor, stores the action instance into this handle class.
     *
     * @access public
     * @param AdminController $controller
