@@ -453,7 +453,7 @@ class surveypermission extends Survey_Common_Action {
                             $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
                             if($action=='setsurveysecurity')
                             {
-                                if(Permission::model()->hasPermission('survey',$surveyid,$sPermissionKey,$sCRUDKey,$postuserid))
+                                if(Permission::model()->hasPermission($surveyid,'survey',$sPermissionKey,$sCRUDKey,$postuserid))
                                 {
                                     $usersummary .= ' checked="checked" ';// User have this permission set for this survey
 
