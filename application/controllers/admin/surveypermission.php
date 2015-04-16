@@ -449,7 +449,7 @@ class surveypermission extends Survey_Common_Action {
                         if (!($sPermissionKey=='survey' && $sCRUDKey=='read'))
                         {
                             $usersummary .=CHtml::checkBox("perm_{$sPermissionKey}_{$sCRUDKey}",
-                                ($action=='setsurveysecurity' && Permission::model()->hasPermission('survey',$surveyid,$sPermissionKey,$sCRUDKey,$postuserid)), // checked
+                                ($action=='setsurveysecurity' && Permission::model()->hasPermission($surveyid,'survey',$sPermissionKey,$sCRUDKey,$postuserid)),
                                 array( // htmlOptions
                                     'data-indeterminate'=>(bool)($action=='setsurveysecurity' && Permission::model()->hasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)),
                                 )
