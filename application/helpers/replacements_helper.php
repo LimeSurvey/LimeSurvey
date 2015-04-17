@@ -789,7 +789,7 @@ EOD;
     $coreReplacements['SAVEERROR'] = isset($errormsg) ? $errormsg : ''; // global - same as LOADERROR
     $coreReplacements['SAVEFORM'] = $_saveform;
     $coreReplacements['SAVEHEADING'] = $clang->gT("Save your unfinished survey");
-    $coreReplacements['SAVEMESSAGE'] = $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
+    $coreReplacements['SAVEMESSAGE'] = $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br /><span class='emailoptional'>\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."</span><br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
     $coreReplacements['SGQ'] = $question['sgq'];
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
     $coreReplacements['SITENAME'] = isset($sitename) ? $sitename : '';  // global
