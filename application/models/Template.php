@@ -64,16 +64,13 @@ class Template extends LSActiveRecord
         $sDefaulttemplate=Yii::app()->getConfig('defaulttemplate','default');
         $sTemplateName=empty($sTemplateName) ? $sDefaulttemplate : $sTemplateName;
 
-        if (is_dir(Yii::app()->getConfig('usertemplaterootdir')."/{$sTemplateName}/"))
-        {
+        /* Validate it's a real dir included in template allowed dir 
+        *  Alternative : use realpath("$dir/$sTemplateName")=="$dir/$sTemplateName" and is_dir
+        */
+        if(array_key_exists($sTemplateName,self::getTemplateList()))
             return $sTemplateName;
-        }
-        if (is_dir(Yii::app()->getConfig('standardtemplaterootdir')."/{$sTemplateName}/"))
-        {
-            return $sTemplateName;
-        }
 
-        // If needed recall the function widt default template
+        // If needed recall the function with default template
         if($sTemplateName!=$sDefaulttemplate)
             return self::templateNameFilter($sDefaulttemplate);
 

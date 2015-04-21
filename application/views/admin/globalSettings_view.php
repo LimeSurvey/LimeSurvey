@@ -178,7 +178,7 @@
                         'readonly'=>$bDemoMode,
                     ),
                     'options'=>array_combine($aTemplateNames,$aTemplateNames),
-                    'current'=>getGlobalSetting('defaulttemplate'),
+                    'current'=>Template::templateNameFilter(getGlobalSetting('defaulttemplate')),
                 ),
                 'admintheme'=>array(
                     'type'=>'select',
