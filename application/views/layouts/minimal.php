@@ -19,7 +19,9 @@
     ?>
     <body class="<?=$bodyClasses; ?>">
         <div style="position: absolute; top: 5px; right: 5px;">
-            <?php echo TbHtml::link('Login', ['users/login']); ?> 
+            <?php
+            echo TbHtml::link('Login', ['users/login']);
+            ?>
         </div>
         <div class="alerts">
             <?php $this->widget('TbAlert'); ?>

@@ -128,8 +128,8 @@ function retrieveAnswers($ia)
         case 'D': //DATE
             $values = do_date($ia);
             // if a drop box style date was answered incompletely (dropbox), print an error/help message
-            if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) ||
-                ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
+            if ((App()->surveySessionManager->current->getStep() != App()->surveySessionManager->current->getMaxStep()) ||
+                (App()->surveySessionManager->current->getStep() == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep']))
             {
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]]))
                 $question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]].'</span>';

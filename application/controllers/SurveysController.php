@@ -43,12 +43,13 @@ use Survey;
 
             $survey = $this->loadModel($id);
             if (App()->request->isPostRequest && isset($survey)) {
-                $survey->setAttributes($_POST['Survey']);
-                if ($survey->save()) {
-                    App()->user->setFlash('success', gT("Survey settings updated."));
-                }
 
-                $this->refresh();
+                $survey->setAttributes($_POST['Survey']);
+
+                if ($survey->save(true)) {
+                    App()->user->setFlash('success', gT("Survey settings updated."));
+                    $this->refresh();
+                }
             }
             $this->layout = 'survey';
             $this->survey = $survey;
@@ -112,7 +113,7 @@ use Survey;
         public function actionStart($id, $token = null)
         {
             $survey = Survey::model()->findByPk($id);
-            $this->layout = 'bare';
+            $this->layout = 'showsurvey';
             if (!$survey->isActive) {
                 throw new \CHttpException(412, gT("The survey is not active."));
             } elseif ($survey->bool_usetokens && !isset($token)) {
@@ -141,21 +142,47 @@ use Survey;
                 }
                 $response->save();
                 $session = App()->surveySessionManager->newSession($survey->sid, $response->id);
+                unset($_SESSION["survey_$id"]);
+                $_SESSION["survey_$id"]['srid'] = $response->id;
+                $this->redirect(['survey/index', 'sid' => $id]);
+
                 $this->redirect(['surveys/run', 'sessionId' => $session->id]);
             } else {
-                $this->render('welcome', ['survey' => $survey, 'id' => 'test']);
+                $this->render('execute/welcome', ['survey' => $survey]);
             }
         }
 
+
         public function actionRun($sessionId)
         {
+            $this->layout = 'showsurvey';
             $session = App()->surveySessionManager->getSession($sessionId);
             if (!isset($session->response)) {
                 throw new \CHttpException(404, gT("Response not found."));
-            } else {
-                $renderer = new \SurveyRenderer($session);
-                echo $renderer->render();
             }
+
+            if (App()->request->isPostRequest) {
+                // Handle post data.
+                // for now just store in response.
+                echo '<pre>';
+                var_dump(App()->request->getParam('answers'));
+                die();
+                foreach(App()->request->getParam('answers') as $qid => $answer) {
+                    $question = \Question::model()->findByPk(['qid' => $qid, 'language' => $session->language]);
+
+                    if (is_array($answer)) {
+                        foreach($answer as $subAnswer) {
+
+                        }
+                    }
+                    $session->response->{$question->sgqa} = $answer;
+                }
+                $session->step++;
+                $this->refresh();
+            }
+
+            $renderer = new \SurveyRenderer($session);
+            $this->render('execute/run', ['renderer' => $renderer]);
         }
 
         public function renderSurveyA(\SurveySession $session)

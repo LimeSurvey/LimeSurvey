@@ -17,6 +17,7 @@ if (!defined('BASEPATH'))
 /**
  * @property-read Question[] $questions
  * @property boolean $bool_usetokens
+ * @property-read boolean $isExpired
  * @property-read QuestionGroup[] $groups
  */
 class Survey extends LSActiveRecord
@@ -64,7 +65,15 @@ class Survey extends LSActiveRecord
     {
         return $this->localizedProperty('description');
     }
-    
+
+    public function getLocalizedDateFormat()
+    {
+        return $this->localizedProperty('dateformat');
+    }
+    public function getLocalizedNumberFormat()
+    {
+        return $this->localizedProperty('numberformat');
+    }
     public function getLocalizedWelcomeText() 
     {
         return $this->localizedProperty('welcometext');
@@ -224,7 +233,7 @@ class Survey extends LSActiveRecord
             array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),
             array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
             array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
-            array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),
+            ['format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true],
             array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
             array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
@@ -233,9 +242,10 @@ class Survey extends LSActiveRecord
             array('template', 'filter', 'filter'=>array($this,'filterTemplateSave')),
             array('language','LSYii_Validators','isLanguage'=>true),
             array('language', 'required', 'on' => 'insert'),
-            array('language', 'filter', 'filter'=>'trim'),
-            array('additional_languages', 'filter', 'filter'=>'trim'),
-            array('additional_languages','LSYii_Validators','isLanguageMulti'=>true),
+//            array('language', 'filter', 'filter'=>'trim'),
+            ['additionalLanguages', 'safe'],
+//            array('additional_languages', 'filter', 'filter'=>'array_filter'),
+//            array('additional_languages','LSYii_Validators','isLanguageMulti'=>true),
             // Date rules currently don't work properly with MSSQL, deactivating for now
             //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
@@ -315,6 +325,10 @@ class Survey extends LSActiveRecord
             return array();
     }
 
+
+    public function setAdditionalLanguages($value) {
+        $this->additional_languages = implode(' ', $value);
+    }
     /**
     * Returns all languages array
     *
@@ -522,7 +536,9 @@ class Survey extends LSActiveRecord
 
 	public function getIsExpired()
 	{
-        return !empty($this->expires) && (new DateTime($this->expires)) < new DateTime();
+        return !empty($this->expires)
+            && (new DateTime($this->expires)) < new DateTime()
+            && (new DateTime($this->validfrom)) > new DateTime();
 	}
     /**
     * Creates a new survey - does some basic checks of the suppplied data
@@ -627,6 +643,7 @@ class Survey extends LSActiveRecord
     {
 
     }
+
     public function getInfo($language = null) {
         $language = !isset($language) ? $this->language : $language;
         if (null !== $localization = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->primaryKey, 'surveyls_language' => $language])) {
@@ -914,7 +931,7 @@ class Survey extends LSActiveRecord
                 ]);
                 break;
             default:
-                throw new \Exception("Unknown survey display format.");
+                throw new \Exception("Unknown survey display format ({$this->format})");
 
         }
         return $result;

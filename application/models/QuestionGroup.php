@@ -82,7 +82,7 @@
         public function relations()
         {
             return [
-                'questions' => [self::HAS_MANY, 'Question', 'gid'],
+                'questions' => [self::HAS_MANY, 'Question', 'gid', 'on' => 'parent_qid = 0'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid']
             ];
             

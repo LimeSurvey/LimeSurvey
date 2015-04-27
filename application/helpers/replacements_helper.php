@@ -155,12 +155,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $surveyformat = "";
     }
-    if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat!="allinone")
+    if ((App()->surveySessionManager->current->getStep() % 2) && $surveyformat!="allinone")
     {
         $surveyformat .= " page-odd";
     }
 
-    if (isset($thissurvey['questionindex']) && $thissurvey['questionindex'] > 0 && $surveyformat!="allinone" && (isset(Yii::app()->session['step']) && Yii::app()->session['step']>0)){
+    if (isset($thissurvey['questionindex']) && $thissurvey['questionindex'] > 0 && $surveyformat!="allinone" && App()->surveySessionManager->current->getStep() > 0){
         $surveyformat .= " withindex";
     }
     if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
@@ -815,8 +815,8 @@ function doHtmlSaveAll($move = "", $surveyid)
     // Fill some test here, more clear ....
     $bTokenanswerspersistence=$thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
     $bAlreadySaved=isset($_SESSION['survey_'.$surveyid]['scid']);
-    $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
-    $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
+    $iSessionStep = App()->surveySessionManager->current->getStep();
+    $iSessionMaxStep = App()->surveySessionManager->current->getMaxStep();
 
     $sSaveAllButtons="";
     // Find out if the user has any saved data

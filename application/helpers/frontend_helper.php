@@ -75,8 +75,8 @@ function loadanswers()
             $oSavedSurvey=SavedControl::model()->find("identifier=:identifier AND access_code=:access_code",array(":identifier"=>$sLoadName,":access_code"=>md5($sLoadPass)));
             // We don't need to control if we have one, because we do the test before
             $_SESSION['survey_'.$surveyid]['scid'] = $oSavedSurvey->scid;
-            $_SESSION['survey_'.$surveyid]['step'] = ($oSavedSurvey->saved_thisstep>1)?$oSavedSurvey->saved_thisstep:1;
-            $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;// deprecated ?
+            App()->surveySessionManager->current->setStep(($oSavedSurvey->saved_thisstep>1)?$oSavedSurvey->saved_thisstep:1);
+            $thisstep = App()->surveySessionManager->current->getStep() - 1;// deprecated ?
             $_SESSION['survey_'.$surveyid]['srid'] = $oSavedSurvey->srid;// Seems OK without
             $_SESSION['survey_'.$surveyid]['refurl'] = $oSavedSurvey->refurl;
         }
@@ -95,8 +95,8 @@ function loadanswers()
             {
                 if(is_null($submitdate) || $submitdate=="N")
                 {
-                    $_SESSION['survey_'.$surveyid]['step']=($value>1? $value:1) ;
-                    $thisstep=$_SESSION['survey_'.$surveyid]['step']-1;
+                    App()->surveySessionManager->current->setStep($value > 1 ? $value : 1);
+                    $thisstep = App()->surveySessionManager->current->getStep()-1;
                 }
                 else
                 {
@@ -404,10 +404,9 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
         }
         if (isset($filenotvalidated))
         {
-            if (isset($move) && $move == "moveprev")
-                $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
-            if (isset($move) && $move == "movenext")
-                $_SESSION['survey_'.$surveyid]['step'] = $thisstep;
+            if (isset($move) &&
+                ($move == "moveprev" || $move == "movenext"))
+                App()->surveySessionManager->current->setStep($thisstep);
             return $filenotvalidated;
         }
     }
@@ -2004,7 +2003,7 @@ function checkCompletedQuota($surveyid,$return=false)
     // Add the navigator with Previous button if quota allow modification.
     if ($sAction == "2")
     {
-        $sQuotaStep= isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
+        $sQuotaStep= App()->surveySessionManager->current->getStep(); // Surely not needed
         $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button"));
         //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
         $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey'));

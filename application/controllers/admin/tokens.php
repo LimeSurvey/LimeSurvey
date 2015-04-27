@@ -392,8 +392,9 @@ class tokens extends Survey_Common_Action
 
         $format = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $aSurveyInfo = Survey::model()->findByPk($iSurveyId)->getAttributes(); //Get survey settings
-        $attributes  = getAttributeFieldNames($iSurveyId);
+        $survey = Survey::model()->findByPk($iSurveyId);
+        $aSurveyInfo = $survey->getAttributes(); //Get survey settings
+        $attributes  = json_decode($survey->attributedescriptions);
 
         // Now find all responses for the visible tokens
         $visibleTokens = array();

@@ -32,6 +32,25 @@
             return parent::model($class);
         }
 
+
+        public function __get($name)
+        {
+            if (substr($name, 0, 5) == 'bool_') {
+                $result = parent::__get(substr($name, 5)) === 'Y';
+            } else {
+                $result = parent::__get($name);
+            }
+            return $result;
+        }
+
+        public function __set($name, $value)
+        {
+            if (substr($name, 0, 5) == 'bool_') {
+                parent::__set(substr($name, 5), $value ? 'Y' : 'N');
+            } else {
+                parent::__set($name, $value);
+            }
+        }
         /**
         * Returns the setting's table name to be used by the model
         *
@@ -67,7 +86,7 @@
                 'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
                 'subQuestions' => array(self::HAS_MANY, 'Question', 'parent_qid, language'),
-                
+                'questionAttributes' => [self::HAS_MANY, QuestionAttribute::class, 'qid', 'index' => 'attribute'],
                 'group' => [self::BELONGS_TO, 'QuestionGroup', 'gid'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid'],
             );

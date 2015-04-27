@@ -24,7 +24,7 @@ class GroupRenderer extends Renderer {
              *
              */
             LimeExpressionManager::singleton()->_CreateSubQLevelRelevanceAndValidationEqns();
-            if ($question->)
+
         }
     }
 

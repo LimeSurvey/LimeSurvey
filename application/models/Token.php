@@ -311,6 +311,12 @@
         public function getSurveyId() {
             return $this->dynamicId;
         }
+
+        public function getIsExpired() {
+            return !empty($this->expires)
+            && (new DateTime($this->expires)) < new DateTime()
+            && (new DateTime($this->validfrom)) > new DateTime();
+        }
     }
 
 ?>

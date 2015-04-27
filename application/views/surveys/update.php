@@ -9,8 +9,10 @@
                     'active' => true
                 ], [
                     'label' => gT('General'),
-                    'content' => "@todo",
-
+                    'content' => $this->renderPartial('view/general', ['survey' => $survey], true),
+                ], [
+                    'label' => gT('Languages'),
+                    'content' => $this->renderPartial('view/languages', ['survey' => $survey], true),
                 ], [
                     'label' => gT('Presentation & Navigation'),
                     'content' => "@todo",

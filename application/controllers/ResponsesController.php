@@ -58,4 +58,10 @@ class ResponsesController extends Controller
         $newResponse->save();
         $this->redirect(['responses/index', 'id' => $surveyId]);
     }
+
+
+    public function actionUpdate($id, $surveyId) {
+        $_SESSION['survey_'.$surveyId]['srid'] = $id;
+        $this->redirect(['survey/index', 'sid' => 652359]);
+    }
 }

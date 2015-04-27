@@ -48,7 +48,6 @@ class index extends CAction {
 
     function action()
     {
-
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
         if(isset(Yii::app()->session->connectionID)) {
@@ -60,6 +59,11 @@ class index extends CAction {
         $param = $this->_getParameters(func_get_args(), $_POST);
 
         $surveyid = $param['sid'];
+        if (!isset(App()->surveySessionManager->current)) {
+            App()->surveySessionManager->newSession($surveyid);
+        }
+        App()->getClientScript()->registerScript('debug', "console.log('" . App()->surveySessionManager->current->responseId . "');");
+        header('X-ResponseId: ' . App()->surveySessionManager->current->responseId);
         Yii::app()->setConfig('surveyID',$surveyid);
         $thisstep = $param['thisstep'];
         $move=getMove();
@@ -70,12 +74,6 @@ class index extends CAction {
         @$loadname = $param['loadname'];
         @$loadpass = $param['loadpass'];
         $sitename = Yii::app()->getConfig('sitename');
-
-        if (isset($param['newtest']) && $param['newtest'] == "Y")
-        {
-            killSurveySession($surveyid);
-        }
-
 
         $surveyExists=($surveyid && null != $survey = Survey::model()->findByPk($surveyid));
         $isSurveyActive=($surveyExists && $survey->isActive);
@@ -96,7 +94,7 @@ class index extends CAction {
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
-        if ( $this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) // No test for response update
+        if ( App()->surveySessionManager->current->isFinished && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) // No test for response update
         {
             $aReloadUrlParam=array('lang'=>App()->language,'newtest'=>'Y');
             if($clienttoken){$aReloadUrlParam['token']=$clienttoken;}
@@ -189,7 +187,6 @@ class index extends CAction {
             if($previewmode) LimeExpressionManager::SetPreviewMode($previewmode);
             if (App()->language != $sOldLang)  // Update the Session var only if needed
             {
-                UpdateGroupList($surveyid, App()->language);   // to refresh the language strings in the group list session variable
                 UpdateFieldArray();                             // to refresh question titles and question text
             }
         }
@@ -338,7 +335,7 @@ class index extends CAction {
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
 		if ($tokensexist == 1 && isset($token) && $token!="" &&
-        isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
+        App()->surveySessionManager->current->getStep() > 0 && tableExists("tokens_{$surveyid}}}"))
         {
             // check also if it is allowed to change survey after completion
 			if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
@@ -482,9 +479,9 @@ class index extends CAction {
 
 
         //Check to see if a refering URL has been captured.
-        if (!isset($_SESSION['survey_'.$surveyid]['refurl']))
+        if (!isset(App()->surveySessionManager->current->response->refurl) && App()->surveySessionManager->current->response->hasAttribute('refurl'))
         {
-            $_SESSION['survey_'.$surveyid]['refurl']=GetReferringUrl(); // do not overwrite refurl
+            App()->surveySessionManager->current->response->refurl = GetReferringUrl(); // do not overwrite refurl
         }
 
         // Let's do this only if
@@ -525,14 +522,13 @@ class index extends CAction {
 
                     if (isset($oResponse))
                     {
-                        $_SESSION['survey_'.$surveyid]['srid'] = $oResponse->id;
                         if (!empty($oResponse->lastpage))
                         {
                             $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
                             // If the response was completed and user is allowed to edit after completion start at the beginning and not at the last page - just makes more sense
                             if (!($oResponse->submitdate && $thissurvey['alloweditaftercompletion'] == 'Y'))
                             {
-                                $_SESSION['survey_'.$surveyid]['step'] = $oResponse->lastpage;
+                                App()->surveySessionManager->current->setStep($oResponse->lastpage);
                             }
                         }
                         buildsurveysession($surveyid);
@@ -550,8 +546,6 @@ class index extends CAction {
         if ($previewmode)
         {
             // Unset all SESSION: be sure to have the last version
-            unset($_SESSION['fieldmap-' . $surveyid . App()->language]);// Needed by createFieldMap: else fieldmap can be outdated
-            unset($_SESSION['survey_'.$surveyid]);
             if ($param['action'] == 'previewgroup')
             {
                 $thissurvey['format'] = 'G';
@@ -674,7 +668,6 @@ class index extends CAction {
     function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
     {
 
-        killSurveySession($surveyid);
         $thissurvey=getSurveyInfo($surveyid);
         if($thissurvey)
         {
