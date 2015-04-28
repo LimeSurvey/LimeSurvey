@@ -1218,6 +1218,7 @@ class tokens extends Survey_Common_Action
             foreach ($languages as $language)
                 $captions[$language][$fieldname] = $_POST["caption_{$fieldname}_$language"];
         }
+
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
         foreach ($languages as $language)
         {
