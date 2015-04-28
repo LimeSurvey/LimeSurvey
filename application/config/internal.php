@@ -146,6 +146,7 @@ $internalConfig = array(
     'params' => [
         'version' => require __DIR__ . '/version.php',
         'updateServer' => 'http://lsupdate.befound.nl/updates/',
+        'bower-asset' => 'components'
     ]
 );
 

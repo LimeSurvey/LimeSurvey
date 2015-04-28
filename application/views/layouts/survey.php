@@ -9,8 +9,15 @@
 			$this->widget('ext.LimeScript.LimeScript');
 			$this->widget('ext.LimeDebug.LimeDebug');
 			App()->bootstrap->register();
-            App()->clientScript->registerCssFile(App()->theme->baseUrl . '/css/style.css');
-		?>
+            $cs = App()->clientScript;
+            $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
+            $cs->registerCssFile('http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css');
+            $cs->registerCssFile(App()->params['bower-asset'] . '/froala-editor/css/froala_editor.min.css');
+            $cs->registerCssFile(App()->params['bower-asset'] . '/froala-editor/css/froala_style.min.css');
+            $cs->registerScriptFile(App()->params['bower-asset'] . '/froala-editor/js/froala_editor.min.js');
+            $cs->registerScript('editors', "$('textarea.html').editable({inlineMode: false});");
+
+        ?>
         <title>Limesurvey Administration</title>
     </head>
     <body class="layout-main">

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "78aabbe3efea01b2a287570665a43a30",
+    "hash": "7ce66676f09a31ef8534a93932d43fcd",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -254,12 +254,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/RingPHP.git",
-                "reference": "06bab717fb6df6aca74faa9512ea46b55cc80c1a"
+                "reference": "2f75325d08c9ec39e5d3af54fcb6b9c0e7fd6114"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/06bab717fb6df6aca74faa9512ea46b55cc80c1a",
-                "reference": "06bab717fb6df6aca74faa9512ea46b55cc80c1a",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/2f75325d08c9ec39e5d3af54fcb6b9c0e7fd6114",
+                "reference": "2f75325d08c9ec39e5d3af54fcb6b9c0e7fd6114",
                 "shasum": ""
             },
             "require": {
@@ -297,7 +297,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-04-25 20:08:10"
+            "time": "2015-04-27 21:47:43"
         },
         {
             "name": "guzzlehttp/streams",
@@ -602,17 +602,54 @@
             "time": "2013-04-12 10:33:44"
         },
         {
+            "name": "npm-asset/froala-editor",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/froala/wysiwyg-editor.git",
+                "reference": "b02b09c643bbfe79e5c5f9fba819ded59121e34c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/froala/wysiwyg-editor/zipball/b02b09c643bbfe79e5c5f9fba819ded59121e34c",
+                "reference": "b02b09c643bbfe79e5c5f9fba819ded59121e34c",
+                "shasum": ""
+            },
+            "type": "npm-asset-library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.7-dev"
+                }
+            },
+            "description": "A beautiful jQuery WYSIWYG HTML text editor. High performance and modern design make it easy to use for developers and loved by users.",
+            "homepage": "http://editor.froala.com/",
+            "keywords": [
+                "editor",
+                "froala",
+                "html",
+                "javascript",
+                "jquery",
+                "jquery-plugin",
+                "rich editor",
+                "rich text editor",
+                "rte",
+                "text",
+                "wysiwyg"
+            ],
+            "time": "2015-04-22 10:20:53"
+        },
+        {
             "name": "phpmailer/phpmailer",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "9bb6a287618a4f4589576eb82c5b711fcbca8b07"
+                "reference": "ab36b539a6a76cbf06b394fa64d8af60cb2b024c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/9bb6a287618a4f4589576eb82c5b711fcbca8b07",
-                "reference": "9bb6a287618a4f4589576eb82c5b711fcbca8b07",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/ab36b539a6a76cbf06b394fa64d8af60cb2b024c",
+                "reference": "ab36b539a6a76cbf06b394fa64d8af60cb2b024c",
                 "shasum": ""
             },
             "require": {
@@ -654,7 +691,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-04-26 09:39:02"
+            "time": "2015-04-27 19:18:12"
         },
         {
             "name": "react/promise",
@@ -804,12 +841,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "d0926f2debde5e920ca369ad56a07e7c8bacdd89"
+                "reference": "421eacb1b1f53ea3e55b7961a87fd2d468a6da08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d0926f2debde5e920ca369ad56a07e7c8bacdd89",
-                "reference": "d0926f2debde5e920ca369ad56a07e7c8bacdd89",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/421eacb1b1f53ea3e55b7961a87fd2d468a6da08",
+                "reference": "421eacb1b1f53ea3e55b7961a87fd2d468a6da08",
                 "shasum": ""
             },
             "replace": {
@@ -847,7 +884,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-04-26 11:11:05"
+            "time": "2015-04-28 05:25:59"
         },
         {
             "name": "yiisoft/yii",
@@ -955,7 +992,8 @@
         "cakephp/utility": 20,
         "sam-it/php-auto-update": 20,
         "icecave/semver": 20,
-        "hafriedlander/php-peg": 20
+        "hafriedlander/php-peg": 20,
+        "npm-asset/froala-editor": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

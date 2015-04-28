@@ -37,6 +37,8 @@
         {
             if (substr($name, 0, 5) == 'bool_') {
                 $result = parent::__get(substr($name, 5)) === 'Y';
+            } elseif (substr($name, 0, 2) == 'a_') {
+                $result = isset($this->questionAttributes[substr($name, 2)]) ? $this->questionAttributes[substr($name, 2)]->value : null;
             } else {
                 $result = parent::__get($name);
             }
@@ -47,6 +49,15 @@
         {
             if (substr($name, 0, 5) == 'bool_') {
                 parent::__set(substr($name, 5), $value ? 'Y' : 'N');
+            } elseif (substr($name, 0, 2) == 'a_') {
+                throw new \Exception("Saving not yet supported");
+                /**
+                 * Several implementation options:
+                 * 1. Save to database on set. (Bad because the record might not get saved.)
+                 * 2. Save to memory, watch before/after Save and commit to db then. (Better but loses atomicity).
+                 * 3. Save to memory, override save and use a transaction.
+                 */
+
             } else {
                 parent::__set($name, $value);
             }
@@ -733,6 +744,33 @@
             
             return $result;
         }
+
+
+        /**
+         * This allows us to put question type specific code in a separate class.
+         *
+         * @param $attributes
+         * @return mixed
+         */
+        protected function instantiate($attributes) {
+            switch($attributes['type']) {
+                case 'N':
+                    $class = \ls\models\questions\NumericalQuestion::class;
+                    break;
+                case 'T':
+                    $class = \ls\models\questions\TextQuestion::class;
+                    break;
+                default:
+                    $class = get_class($this);
+            }
+
+            return new $class(null);
+        }
+
+
+
     }
+
+
 
 ?>
