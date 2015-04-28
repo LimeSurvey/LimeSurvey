@@ -1218,7 +1218,6 @@ class tokens extends Survey_Common_Action
             foreach ($languages as $language)
                 $captions[$language][$fieldname] = $_POST["caption_{$fieldname}_$language"];
         }
-
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
         foreach ($languages as $language)
         {
@@ -1926,7 +1925,11 @@ class tokens extends Survey_Common_Action
                 $filterblankemail = (Yii::app()->request->getPost('filterblankemail') && Yii::app()->request->getPost('filterblankemail') == 'on');
             }
 
-            $attrfieldnames = getAttributeFieldNames($iSurveyId);
+	    $allattrfieldnames = GetParticipantAttributes($iSurveyId);
+	    $attrfieldnames = array_keys($allattrfieldnames);
+	    $missingfieldnames = array("firstname","lastname","email");
+	    $missingfieldflag = false;
+
             $duplicatelist = array();
             $invalidemaillist = array();
             $invalidformatlist = array();
@@ -2010,11 +2013,24 @@ class tokens extends Survey_Common_Action
                                 $firstline[$index] = $aReplacedFields[$fieldname];
                             }
                         }
+			// get list of mandatory attributes
+			foreach ($allattrfieldnames as $fieldname => $attrname)
+			{
+			    if (strcasecmp($attrname["mandatory"],"Y") == 0) 
+			    {
+				if(!in_array($fieldname, $firstline))
+			    	    $missingfieldflag = true;
+				array_push($missingfieldnames, $fieldname);
+			    }
+			}
                         if (!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline))
                         {
+			    $missingfieldflag = true;
+                        }
+			if($missingfieldflag) {
                             $recordcount = count($tokenlistarray);
                             break;
-                        }
+			}
                     }
                     else
                     {
@@ -2136,7 +2152,9 @@ class tokens extends Survey_Common_Action
                 $aData['xz'] = $xz;
                 $aData['xv'] = $xv;
                 $aData['recordcount'] = $recordcount;
-                $aData['firstline'] = $firstline;
+                $aData['missingfieldnames'] = $missingfieldnames;
+                $aData['missingfieldflag'] = $missingfieldflag;
+                $aData['ignoredcolumns'] = $ignoredcolumns;
                 $aData['duplicatelist'] = $duplicatelist;
                 $aData['invalidformatlist'] = $invalidformatlist;
                 $aData['invalidemaillist'] = $invalidemaillist;
