@@ -127,7 +127,7 @@
     /* Presentation & navigation settings */
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
         'id'=>'presentation',
-        'title'=>gT("Presentation & navigation");,
+        'title'=>gT("Presentation & navigation"),
         'form' => false,
         'formHtmlOptions'=>array(
             'class'=>'form-core',
