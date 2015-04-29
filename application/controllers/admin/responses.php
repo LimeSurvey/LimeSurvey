@@ -329,12 +329,12 @@ class responses extends Survey_Common_Action
 
 
 
-    function browse($iSurveyID)
+    function browse($iSurveyId)
     {
 
-        if(!Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-            $aData['surveyid'] = $iSurveyID;
+            $aData['surveyid'] = $iSurveyId;
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
@@ -344,7 +344,7 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listresponse.js");
 
-        $aData = $this->_getData($iSurveyID);
+        $aData = $this->_getData($iSurveyId);
         extract($aData);
         $aViewUrls = array();
         $sBrowseLanguage = $aData['language'];
@@ -370,7 +370,7 @@ class responses extends Survey_Common_Action
             'search' => false,
             'hidedlg'=>true,
         );
-        $fields = createFieldMap($iSurveyID,'full', true, false, $aData['language']);
+        $fields = createFieldMap($iSurveyId,'full', true, false, $aData['language']);
         // Specific columns at start
         $column_model[] = array(
             'name'=>'id',
@@ -393,6 +393,11 @@ class responses extends Survey_Common_Action
             'align'=>'center',
             'title'=>viewHelper::getFieldText($fields['lastpage']),
         );
+        $bHidden=false;
+        if (isset($_SESSION['survey_'.$iSurveyId]['HiddenFields']))
+        {
+            $bHidden=in_array('completed',$_SESSION['survey_'.$iSurveyId]['HiddenFields']);
+        }
         $column_model[] = array(
             'name' => 'completed',
             'index'=>'completed',
@@ -407,13 +412,14 @@ class responses extends Survey_Common_Action
             ),
 
             'sortable'=>true,
+            'hidden'=>$bHidden,
             'width'=>'100',
             'align'=>'center',
             'label' => gt("Completed"),
         );
 
         //add token to top of list if survey is not private
-        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID)) //add token to top of list if survey is not private
+        if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId)) //add token to top of list if survey is not private
         {
             $column_model[] = array(
                 'name'=>'token',
@@ -495,6 +501,11 @@ class responses extends Survey_Common_Action
                 }
                 else
                     $fnames[] = array($code.'_count', "File count");
+                $bHidden=false;
+                if (isset($_SESSION['survey_'.$iSurveyId]['HiddenFields']))
+                {
+                    $bHidden=in_array($fielddetails['fieldname'],$_SESSION['survey_'.$iSurveyId]['HiddenFields']);
+                }
                 foreach ($fnames as $aFileInfoField)
                 {
                     $column_model[] = array(
@@ -505,6 +516,7 @@ class responses extends Survey_Common_Action
                         'align' => 'left',
                         'editable' => false,
                         'search' => false,
+                        'hidden' => $bHidden,
                         'title' => $aFileInfoField[1],
                     );
                 }
@@ -527,6 +539,11 @@ class responses extends Survey_Common_Action
             }
             $text=viewHelper::getFieldText($fielddetails);
             $textabb=viewHelper::getFieldText($fielddetails,array('abbreviated'=>10));
+            $bHidden=false;
+            if (isset($_SESSION['survey_'.$iSurveyId]['HiddenFields']))
+            {
+                $bHidden=in_array($fielddetails['fieldname'],$_SESSION['survey_'.$iSurveyId]['HiddenFields']);
+            }
             $column_model[] = array(
                 'name' => $code,
                 'index' => $fielddetails['fieldname'],
@@ -535,8 +552,10 @@ class responses extends Survey_Common_Action
                 'width' => '100',
                 'align' => 'left',
                 'editable' => false,
+                'hidden' => (bool)$bHidden,
                 'title' => $text,
             );
+            
         }
 
         $column_model_txt = ls_json_encode($column_model);
@@ -552,17 +571,18 @@ class responses extends Survey_Common_Action
         }
 
         $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
-        $aData['surveyid']= $iSurveyID;
+        $aData['surveyid']= $iSurveyId;
         $aData['column_model_txt']= $column_model_txt;
         $aData['column_names_txt']= ls_json_encode($column_names);;
-        $aData['hasUpload']=hasFileUploadQuestion($iSurveyID);
+        $aData['hasUpload']=hasFileUploadQuestion($iSurveyId);
 
 
         $this->_renderWrappedTemplate('responses', 'listResponses_view', $aData);
 
     }
 
-    /**
+    
+   /**
     * Returns survey responses in json format for a given survey
     *
     * @access public
@@ -765,7 +785,26 @@ class responses extends Survey_Common_Action
         echo json_encode($aSurveyEntries);
         Yii::app()->end();
     }
+   
+    
+    /**
+    * Saves the hidden columns for response browsing in the session
+    *
+    * @access public
+    * @param $iSurveyID : survey id
+    */
 
+    public function setHiddenColumns($iSurveyId)
+    {
+        debugbreak();
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        {
+           $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields')); 
+           $_SESSION['survey_'.$iSurveyId]['HiddenFields']=$aHiddenFields;
+        }
+    }
+    
+    
     /**
     * Do an actions on response
     *

@@ -38,6 +38,7 @@
     var sRefreshTitle ='<?php eT("Reload responses list",'js');?>';
     var delBtnCaption ='<?php eT("Delete",'js');?>';
     var sEmptyRecords ='<?php eT("There are currently no responses.",'js');?>';
+    var jsonBaseUrl = "<?php echo App()->createUrl('/admin/responses', array('surveyid'=>$surveyid, 'browselang'=>$language)); ?>";
     var jsonUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'getResponses_json', 'surveyid' => $surveyid,'browselang'=>$language)); ?>";
     var jsonActionUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'actionResponses', 'surveyid' => $surveyid,'browselang'=>$language)); ?>";
 

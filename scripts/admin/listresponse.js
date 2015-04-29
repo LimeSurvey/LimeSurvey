@@ -1,7 +1,7 @@
 /*
- * JavaScript functions for LimeSurvey response browse
- *
- */
+* JavaScript functions for LimeSurvey response browse
+*
+*/
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
@@ -26,13 +26,13 @@ $(document).on("click","[data-delete]",function(event){
     var buttons = {};
     buttons[sDelCaption] = function(){
         $.ajax({
-                url : url,
-                type : "POST"
-            })
-            .done(function() {
-                jQuery("#displayresponses").delRowData(responseid);
-            });
-            $( this ).dialog( "close" ); 
+            url : url,
+            type : "POST"
+        })
+        .done(function() {
+            jQuery("#displayresponses").delRowData(responseid);
+        });
+        $( this ).dialog( "close" ); 
     };
     buttons[sCancel] = function(){ $( this ).dialog( "close" ); };
     var dialog=$("<p>"+strdeleteconfirm+"</p>").dialog({
@@ -42,16 +42,6 @@ $(document).on("click","[data-delete]",function(event){
 });
 $(function() {
 
-    function returnColModel() {
-        if ($.cookie("detailedresponsecolumns")) {
-            hidden = $.cookie("detailedresponsecolumns").split(
-                    '|');
-            for (i = 0; i < hidden.length; i++)
-                if (hidden[i] != "false")
-                    colModels[i]['hidden'] = true;
-        }
-        return colModels;
-    }
     /* Launch jqgrid */
     jQuery("#displayresponses").jqGrid({
         recordtext : sRecordText,
@@ -64,7 +54,7 @@ $(function() {
         datatype : "json",
         mtype : "POST",
         colNames : colNames,
-        colModel : returnColModel(),
+        colModel : colModels,
         toppager : true,
         height : "100%",
         //shrinkToFit : false,
@@ -106,15 +96,15 @@ $(function() {
         'navGrid',
         '#pager',
         {
-           searchtitle : sSearchTitle,
-           refreshtitle : sRefreshTitle,
-           edit: false,
-           add: false,
-           del: true,
-           search: false, //true when https://github.com/LimeSurvey/LimeSurvey/commit/c710ac795b471c4370cc45027542c54f791e5950#diff-15547196721577f485345c4a68f0c5d0R629 is done
-           refresh: true,
-           view: false,
-           position: "left"
+            searchtitle : sSearchTitle,
+            refreshtitle : sRefreshTitle,
+            edit: false,
+            add: false,
+            del: true,
+            search: false, //true when https://github.com/LimeSurvey/LimeSurvey/commit/c710ac795b471c4370cc45027542c54f791e5950#diff-15547196721577f485345c4a68f0c5d0R629 is done
+            refresh: true,
+            view: false,
+            position: "left"
         },
         {}, // edit options
         {}, // add options
@@ -137,10 +127,10 @@ $(function() {
             Find : sFind,
             multipleSearch: true,
             odata : [ sOperator1, sOperator2, sOperator3,
-                    sOperator4, sOperator5, sOperator6,
-                    sOperator7, sOperator8, sOperator9,
-                    sOperator10, sOperator11, sOperator12,
-                    sOperator13, sOperator14 ],
+                sOperator4, sOperator5, sOperator6,
+                sOperator7, sOperator8, sOperator9,
+                sOperator10, sOperator11, sOperator12,
+                sOperator13, sOperator14 ],
             Reset : sReset
         } // search options - define multiple search : TODO
     );
@@ -159,44 +149,25 @@ $(function() {
             title : sSelectColumns,
             onClickButton : function() {
                 jQuery("#displayresponses").jqGrid(
-                                'columnChooser',
-                                {
-                                    caption : sSelectColumns,
-                                    bSubmit : sSubmit,
-                                    bCancel : sCancel,
-                                    done : function(
-                                            perm) {
-                                        if (perm) {
-                                            this
-                                                    .jqGrid(
-                                                            "remapColumns",
-                                                            perm,
-                                                            true);
-                                            var hidden = [];
-                                            $
-                                                    .each(
-                                                            $(
-                                                                    "#displayresponses")
-                                                                    .getGridParam(
-                                                                            "colModel"),
-                                                            function(
-                                                                    key,
-                                                                    val) {
-                                                                hidden
-                                                                        .push(val['hidden']);
-                                                            });
-                                            hidden
-                                                    .splice(
-                                                            0,
-                                                            1);
-                                            $
-                                                    .cookie(
-                                                            "detailedresponsecolumns",
-                                                            hidden
-                                                                    .join("|"));
+                    'columnChooser',
+                    {
+                        caption : sSelectColumns,
+                        bSubmit : sSubmit,
+                        bCancel : sCancel,
+                        done : function(perm) {
+                            if (perm) {
+                                this.jqGrid("remapColumns",perm,true);
+                                var hidden = [];
+                                $.each($("#displayresponses").getGridParam("colModel"),
+                                    function(i,obj) {
+                                        if(obj.hasOwnProperty('index') && obj.hidden){
+                                            hidden.push(obj.index);
                                         }
-                                    }
                                 });
+                                $.post( jsonBaseUrl+"&sa=setHiddenColumns", { aHiddenFields: hidden.join("|") } );
+                            }
+                        } 
+                });
             }
         }
     );
@@ -216,7 +187,7 @@ $(function() {
                 {
                     if(confirm(sConfirmationArchiveMessage))
                         sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);;
-                        //sendPost(sDownloadUrl,null,"responseid",0);
+                    //sendPost(sDownloadUrl,null,"responseid",0);
                 }
             }, 
             position:"last",
