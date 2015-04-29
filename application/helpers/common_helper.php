@@ -1762,7 +1762,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
-
+    $sOldLanguage=App()->language;
     App()->setLanguage($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
@@ -2299,6 +2299,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
         }
     }
+    App()->setLanguage($sOldLanguage);
 
     if (isset($fieldmap)) {
         if ($questionid == false)
