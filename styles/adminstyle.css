@@ -161,6 +161,8 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     height: auto;
     padding: 0 2px;
 }
+/* fix jqgrid pager width */
+#pager_left{width:auto !important}
 
 /* Fix height of browsettable */
 #gview_displayresponses th .qcode {
