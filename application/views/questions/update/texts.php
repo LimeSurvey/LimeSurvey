@@ -1,16 +1,23 @@
 <?php
 // This is an update view so we use PUT.
-echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['questions/update', 'id' => $question->qid], 'put', []);
+echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_VERTICAL, ['questions/update', 'id' => $question->qid], 'put', []);
 
-$options = ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL];
-echo TbHtml::openTag('fieldset', []);
-echo TbHtml::activeTextFieldControlGroup($question, 'title', $options);
-echo TbHtml::activeTextAreaControlGroup($question, 'question', array_merge($options, ['class' => 'html']));
-echo TbHtml::activeTextAreaControlGroup($question, 'help', array_merge($options, ['class' => 'html']));
+foreach ($question->survey->languages as $language) {
+    $tabs[] = [
+        'label' => App()->locale->getLanguage($language),
+        'active' => $language == $question->survey->language,
+        'id' => "texts-$language",
+        'content' => $this->renderPartial('update/textTab', ['question' => $question, 'language' => $language], true)
+    ];
+}
+$this->widget(TbTabs::class, [
+    'tabs' => $tabs
+]);
 echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
-echo TbHtml::submitButton('Save settings', [
-'color' => 'primary'
+echo TbHtml::submitButton('Save texts', [
+    'color' => 'primary',
+    'class' => 'ajaxSubmit'
 ]);
 echo TbHtml::closeTag('div');
-echo TbHtml::closeTag('fieldset');
+
 echo TbHtml::endForm();

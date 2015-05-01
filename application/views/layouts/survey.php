@@ -11,12 +11,12 @@
 			App()->bootstrap->register();
             $cs = App()->clientScript;
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
-            $cs->registerCssFile('http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css');
-            $cs->registerCssFile(App()->params['bower-asset'] . '/froala-editor/css/froala_editor.min.css');
-            $cs->registerCssFile(App()->params['bower-asset'] . '/froala-editor/css/froala_style.min.css');
-            $cs->registerScriptFile(App()->params['bower-asset'] . '/froala-editor/js/froala_editor.min.js');
-            $cs->registerScript('editors', "$('textarea.html').editable({inlineMode: false});");
+            $cs->registerScriptFile('/scripts/ajax.js');
 
+        $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
+
+        $cs->registerScriptFile(App()->params['bower-asset'] . '/tinymce/tinymce.min.js');
+        $cs->registerScriptFile('/scripts/htmleditor.js');
         ?>
         <title>Limesurvey Administration</title>
     </head>
@@ -106,7 +106,7 @@
 		?>
         <div class="container-fluid">
             <div class="row">
-                <?php $this->widget('TbAlert'); ?>
+                <?php $this->widget(TbAlert::class); ?>
                 <div id="survey-navigator" class="col-lg-2 col-md-3 col-sm-12">
                     <?php
                         $this->renderPartial('/global/surveyNavigator');

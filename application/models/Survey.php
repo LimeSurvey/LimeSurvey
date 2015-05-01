@@ -937,4 +937,11 @@ class Survey extends LSActiveRecord
         return $result;
 
     }
+
+    public function getLanguages() {
+
+        $result = $this->getAdditionalLanguages();
+        array_unshift($result, $this->language);
+        return $result;
+    }
 }

@@ -16,8 +16,29 @@
         * 	Files Purpose: lots of common functions
     */
 
+/**
+ * Class Question
+ * @property-read Translation[] $translations Relation added by translatable behavior
+ */
     class Question extends LSActiveRecord
     {
+
+        public function behaviors() {
+            return [
+                'json' => [
+                    'class' => SamIT\Yii1\Behaviors\JsonBehavior::class
+                ],
+                'translatable' => [
+                    'class' => SamIT\Yii1\Behaviors\TranslatableBehavior::class,
+                    'translationModel' => Translation::class,
+                    'model' => __CLASS__, // See TranslatableBehavior comments.
+                    'attributes' => [
+                        'question',
+                        'help'
+                    ]
+                ]
+            ];
+        }
 
         /**
         * Returns the static model of Settings table
@@ -119,7 +140,6 @@
                                         'params'=>array(':language'=>$this->language)
                                 ),
                                 'message'=>'{attribute} "{value}" is already in use.'),
-                        array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
                         array('title,question,help','LSYii_Validators'),
                         array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                         array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
@@ -139,14 +159,6 @@
                                         )
                                     ),
                                 'message' => gT('Subquestion codes must be unique.'));
-            }
-            if($this->qid && $this->language)
-            {
-                $oActualValue=Question::model()->findByPk(array("qid"=>$this->qid,'language'=>$this->language));
-                if($oActualValue && $oActualValue->title==$this->title)
-                {
-                    return $aRules; // We don't change title, then don't put rules on title
-                }
             }
             if(!$this->parent_qid)// 0 or empty
             {

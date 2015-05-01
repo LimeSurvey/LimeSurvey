@@ -19,7 +19,9 @@
         "sam-it/php-auto-update": "dev-master",
         "icecave/semver": "dev-master",
         "hafriedlander/php-peg": "dev-master",
-        "npm-asset/froala-editor": "~1.2@dev"
+        "bower-asset/tinymce": "~4.1@dev",
+        "bower-asset/remarkable-bootstrap-notify": "3.*",
+        "sam-it/yii1-translate": "dev-master"
     },
 	"require-dev" : {
 		

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7ce66676f09a31ef8534a93932d43fcd",
+    "hash": "793ce61e0ada3e383834258eceaffca2",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -91,6 +91,148 @@
             "description": "helper libaray for dealing with arabic language",
             "homepage": "http://www.ar-php.org/",
             "time": "2012-11-03 12:29:33"
+        },
+        {
+            "name": "bower-asset/bootstrap",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twbs/bootstrap.git",
+                "reference": "45c798a47b307025094015a0c17693ba59a2e393"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/45c798a47b307025094015a0c17693ba59a2e393",
+                "reference": "45c798a47b307025094015a0c17693ba59a2e393",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.9.1"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "less/bootstrap.less",
+                    "dist/js/bootstrap.js"
+                ],
+                "bower-asset-ignore": [
+                    "/.*",
+                    "_config.yml",
+                    "CNAME",
+                    "composer.json",
+                    "CONTRIBUTING.md",
+                    "docs",
+                    "js/tests",
+                    "test-infra"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+            "keywords": [
+                "css",
+                "framework",
+                "front-end",
+                "js",
+                "less",
+                "mobile-first",
+                "responsive",
+                "web"
+            ],
+            "time": "2015-04-30 10:11:19"
+        },
+        {
+            "name": "bower-asset/jquery",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jquery/jquery.git",
+                "reference": "225bde37c997f5ddd9fe00fdfb8e9a43545cfbbc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jquery/jquery/zipball/225bde37c997f5ddd9fe00fdfb8e9a43545cfbbc",
+                "reference": "225bde37c997f5ddd9fe00fdfb8e9a43545cfbbc",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "time": "2015-04-30 17:15:33"
+        },
+        {
+            "name": "bower-asset/remarkable-bootstrap-notify",
+            "version": "3.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mouse0270/bootstrap-notify.git",
+                "reference": "c6a3e3acafda0815cce3703103499b6262500cd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mouse0270/bootstrap-notify/zipball/c6a3e3acafda0815cce3703103499b6262500cd7",
+                "reference": "c6a3e3acafda0815cce3703103499b6262500cd7",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap": ">=2.0.0",
+                "bower-asset/jquery": ">=1.10.2"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "bootstrap-notify.js",
+                "bower-asset-ignore": []
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "This is a simple plugin that turns standard Bootstrap alerts into \"Growl-like\" notifications.",
+            "keywords": [
+                "bootstrap",
+                "growl",
+                "jquery",
+                "message",
+                "notice",
+                "notification",
+                "notifications",
+                "notify",
+                "remarkable"
+            ]
+        },
+        {
+            "name": "bower-asset/tinymce",
+            "version": "4.1.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tinymce/tinymce-dist.git",
+                "reference": "0c25116c95fe26532e04708c495ec047e7e5acc5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/0c25116c95fe26532e04708c495ec047e7e5acc5",
+                "reference": "0c25116c95fe26532e04708c495ec047e7e5acc5",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "tinymce.min.js",
+                "bower-asset-ignore": [
+                    "readme.md",
+                    "composer.json",
+                    "package.json"
+                ]
+            },
+            "license": [
+                "http://www.tinymce.com/license"
+            ],
+            "description": "Web based JavaScript HTML WYSIWYG editor control.",
+            "keywords": [
+                "editor",
+                "html",
+                "javascript",
+                "richtext",
+                "tinymce",
+                "wysiwyg"
+            ]
         },
         {
             "name": "cakephp/utility",
@@ -254,12 +396,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/RingPHP.git",
-                "reference": "2f75325d08c9ec39e5d3af54fcb6b9c0e7fd6114"
+                "reference": "2498ee848cd01639aecdcf3d5a257bace8665b7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/2f75325d08c9ec39e5d3af54fcb6b9c0e7fd6114",
-                "reference": "2f75325d08c9ec39e5d3af54fcb6b9c0e7fd6114",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/2498ee848cd01639aecdcf3d5a257bace8665b7c",
+                "reference": "2498ee848cd01639aecdcf3d5a257bace8665b7c",
                 "shasum": ""
             },
             "require": {
@@ -297,7 +439,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-04-27 21:47:43"
+            "time": "2015-05-01 04:57:09"
         },
         {
             "name": "guzzlehttp/streams",
@@ -602,54 +744,17 @@
             "time": "2013-04-12 10:33:44"
         },
         {
-            "name": "npm-asset/froala-editor",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/froala/wysiwyg-editor.git",
-                "reference": "b02b09c643bbfe79e5c5f9fba819ded59121e34c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/froala/wysiwyg-editor/zipball/b02b09c643bbfe79e5c5f9fba819ded59121e34c",
-                "reference": "b02b09c643bbfe79e5c5f9fba819ded59121e34c",
-                "shasum": ""
-            },
-            "type": "npm-asset-library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.7-dev"
-                }
-            },
-            "description": "A beautiful jQuery WYSIWYG HTML text editor. High performance and modern design make it easy to use for developers and loved by users.",
-            "homepage": "http://editor.froala.com/",
-            "keywords": [
-                "editor",
-                "froala",
-                "html",
-                "javascript",
-                "jquery",
-                "jquery-plugin",
-                "rich editor",
-                "rich text editor",
-                "rte",
-                "text",
-                "wysiwyg"
-            ],
-            "time": "2015-04-22 10:20:53"
-        },
-        {
             "name": "phpmailer/phpmailer",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "ab36b539a6a76cbf06b394fa64d8af60cb2b024c"
+                "reference": "b3577cf69428812c328c76d20aaba059cef22bda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/ab36b539a6a76cbf06b394fa64d8af60cb2b024c",
-                "reference": "ab36b539a6a76cbf06b394fa64d8af60cb2b024c",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/b3577cf69428812c328c76d20aaba059cef22bda",
+                "reference": "b3577cf69428812c328c76d20aaba059cef22bda",
                 "shasum": ""
             },
             "require": {
@@ -691,7 +796,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-04-27 19:18:12"
+            "time": "2015-04-30 14:14:28"
         },
         {
             "name": "react/promise",
@@ -773,17 +878,93 @@
             "time": "2015-03-19 09:14:48"
         },
         {
+            "name": "sam-it/yii1-json-behavior",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SAM-IT/yii1-json-behavior.git",
+                "reference": "9794a1b94b0e6a0dba8fa075a51ca8e147a5b946"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SAM-IT/yii1-json-behavior/zipball/9794a1b94b0e6a0dba8fa075a51ca8e147a5b946",
+                "reference": "9794a1b94b0e6a0dba8fa075a51ca8e147a5b946",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SamIT\\Yii1\\Behaviors\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam",
+                    "email": "sam@mousa.nl"
+                }
+            ],
+            "description": "Behavior for encoding model attribute(s) to json.",
+            "time": "2015-04-28 13:11:43"
+        },
+        {
+            "name": "sam-it/yii1-translate",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SAM-IT/yii1-translate.git",
+                "reference": "49c837258524fc4a4547dbff74b3b86e9c0be6a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SAM-IT/yii1-translate/zipball/49c837258524fc4a4547dbff74b3b86e9c0be6a9",
+                "reference": "49c837258524fc4a4547dbff74b3b86e9c0be6a9",
+                "shasum": ""
+            },
+            "require": {
+                "sam-it/yii1-json-behavior": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SamIT\\Yii1\\Behaviors\\": [
+                        "src/behavior"
+                    ],
+                    "SamIT\\Yii1\\Models\\": [
+                        "src/model"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam",
+                    "email": "sam@mousa.nl"
+                }
+            ],
+            "description": "Translatable model and behavior for Yii1",
+            "time": "2015-05-01 15:35:15"
+        },
+        {
             "name": "tecnick.com/tcpdf",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb"
+                "reference": "3dee9e7f3a414875fd1d9f4f1dfc2433493a86d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb",
-                "reference": "a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/3dee9e7f3a414875fd1d9f4f1dfc2433493a86d2",
+                "reference": "3dee9e7f3a414875fd1d9f4f1dfc2433493a86d2",
                 "shasum": ""
             },
             "require": {
@@ -833,7 +1014,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2015-01-28 18:51:40"
+            "time": "2015-04-29 16:13:58"
         },
         {
             "name": "twbs/bootstrap",
@@ -841,12 +1022,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "421eacb1b1f53ea3e55b7961a87fd2d468a6da08"
+                "reference": "45c798a47b307025094015a0c17693ba59a2e393"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/421eacb1b1f53ea3e55b7961a87fd2d468a6da08",
-                "reference": "421eacb1b1f53ea3e55b7961a87fd2d468a6da08",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/45c798a47b307025094015a0c17693ba59a2e393",
+                "reference": "45c798a47b307025094015a0c17693ba59a2e393",
                 "shasum": ""
             },
             "replace": {
@@ -884,7 +1065,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-04-28 05:25:59"
+            "time": "2015-04-30 10:11:19"
         },
         {
             "name": "yiisoft/yii",
@@ -993,7 +1174,8 @@
         "sam-it/php-auto-update": 20,
         "icecave/semver": 20,
         "hafriedlander/php-peg": 20,
-        "npm-asset/froala-editor": 20
+        "bower-asset/tinymce": 20,
+        "sam-it/yii1-translate": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
