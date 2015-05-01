@@ -13,9 +13,8 @@ echo TbHtml::activeTextAreaControlGroup($question, "translatedFields[$language][
     'class' => 'html',
     'label' => $question->getAttributeLabel('question')
 ]));
-//echo TbHtml::textAreaControlGroup("Question[translatedFields][$language][help]", $question->help, array_merge($options, [
-//    'class' => 'html',
-//    'label' => $question->getAttributeLabel('help')
-//
-//]));
+echo TbHtml::activeTextAreaControlGroup($question, "translatedFields[$language][question]", array_merge($options, [
+    'class' => 'html',
+    'label' => $question->getAttributeLabel('help')
+]));
 echo TbHtml::closeTag('fieldset');
