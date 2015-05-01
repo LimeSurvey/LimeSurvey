@@ -12,7 +12,7 @@ foreach ($this->survey->groups as $group) {
     foreach ($group->questions as $question) {
         $items[] = [
         'label' => "{$question->title} - {$question->question}",
-        'url' => ['questions/view', 'id' => $question->qid],
+        'url' => ['questions/update', 'id' => $question->qid],
         'class' => 'question',
         'active' => isset($this->question) && $this->question->qid === $question->qid
     ];
