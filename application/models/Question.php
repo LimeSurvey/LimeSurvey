@@ -23,6 +23,7 @@
     class Question extends LSActiveRecord
     {
 
+        public $before;
         public function behaviors() {
             return [
                 'json' => [
@@ -94,18 +95,7 @@
             return '{{questions}}';
         }
 
-        /**
-        * Returns the primary key of this table
-        *
-        * @access public
-        * @return string
-        */
-        public function primaryKey()
-        {
-            return array('qid', 'language');
-        }
-
-        /**
+              /**
         * Defines the relations for this model
         *
         * @access public
@@ -117,7 +107,7 @@
             return array(
                 'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
-                'subQuestions' => array(self::HAS_MANY, 'Question', 'parent_qid, language'),
+                'subQuestions' => array(self::HAS_MANY, 'Question', 'parent_qid'),
                 'questionAttributes' => [self::HAS_MANY, QuestionAttribute::class, 'qid', 'index' => 'attribute'],
                 'group' => [self::BELONGS_TO, 'QuestionGroup', 'gid'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid'],
@@ -131,52 +121,55 @@
         public function rules()
         {
             
-            $aRules= array(
-                        array('title','required','on' => 'update, insert'),// 140207 : Before was commented, put only on update/insert ?
-                        array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
-                        array('qid', 'numerical','integerOnly'=>true),
-                        array('qid', 'unique', 'criteria'=>array(
-                                        'condition'=>'language=:language',
-                                        'params'=>array(':language'=>$this->language)
-                                ),
-                                'message'=>'{attribute} "{value}" is already in use.'),
-                        array('title,question,help','LSYii_Validators'),
-                        array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-                        array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-                        array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-                        array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-                        array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-                    );
+            $aRules= [
+                /**
+                 * @todo Add a validation for regular expression.
+                 * Do this by trying to match it and catching an error,
+                 * http://stackoverflow.com/questions/362793/regexp-that-matches-valid-regexps
+                 */
+                ['preg', 'safe'],
+                ['before', 'numerical', 'on' => 'insert', 'integerOnly' => true],
+                ['gid', 'exist', 'className' => QuestionGroup::class, 'attributeName' => 'gid', 'allowEmpty' => false],
+                ['title','required','on' => 'update, insert'],
+                ['title','length', 'min' => 1, 'max'=>20,'on' => ['update', 'insert']],
+                ['qid', 'numerical','integerOnly' => true],
+                ['qid', 'unique', 'message'=>'{attribute} "{value}" is already in use.'],
+                ['title,question,help', 'LSYii_Validators'],
+                ['other', 'in', 'range' => ['Y','N'], 'allowEmpty' => true],
+                ['mandatory', 'in', 'range' => ['Y','N'], 'allowEmpty'=>true],
+                ['question_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
+                ['scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+                ['same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+            ];
             if($this->parent_qid)// Allways enforce unicity on Sub question code (DB issue).
             {
-                $aRules[]=array('title', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
-                                    'condition' => 'language=:language AND sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
-                                    'params' => array(
-                                        ':language' => $this->language,
-                                        ':sid' => $this->sid,
-                                        ':parent_qid' => $this->parent_qid,
-                                        ':scale_id' => $this->scale_id
-                                        )
-                                    ),
-                                'message' => gT('Subquestion codes must be unique.'));
-            }
-            if(!$this->parent_qid)// 0 or empty
-            {
-                $aRules[]=array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                                    'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
-                                    'params' => array(
-                                        ':language' => $this->language,
-                                        ':sid' => $this->sid
-                                        )
-                                    ),
-                                'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport');
-                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
-            }
-            else
-            {
-                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
-            }
+                $aRules[] = ['title', 'unique', 'caseSensitive' => false,
+                    'criteria' => [
+                        'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
+                        'params' => [
+                            ':sid' => $this->sid,
+                            ':parent_qid' => $this->parent_qid,
+                            ':scale_id' => $this->scale_id
+                        ]
+                    ],
+                    'message' => gT('Subquestion codes must be unique.')
+                ];
+                $aRules[] = ['title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport'];
+            } else {
+                $aRules[] = ['title', 'unique', 'caseSensitive'=>true,
+                    'criteria'=>[
+                        'condition' => 'sid=:sid AND parent_qid=0',
+                        'params' => [':sid' => $this->sid]
+                    ],
+                    'message' => gT('Question codes must be unique.'),
+                    'except' => 'archiveimport'
+                ];
 
+                $aRules[] = ['title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/',
+                    'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'),
+                    'except' => 'archiveimport'
+                ];
+            }
             return $aRules;
         }
 
@@ -308,25 +301,6 @@
             ->bindParam(":gid", $gid, PDO::PARAM_INT)
             ->bindParam(":language", $language, PDO::PARAM_STR)
             ->query();
-        }
-
-        function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
-        {
-            $command = Yii::app()->db->createCommand()
-            ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, ' . '{{groups}}.*')
-            ->from($this->tableName())
-            ->leftJoin('{{questions}} q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
-            ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
-            $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
-            if ($sCondition != FALSE)
-            {
-                $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
-                ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
-                ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
-            }
-            $command->order("{{groups}}.group_order asc, {{questions}}.question_order asc");
-
-            return $command->query()->readAll();
         }
 
         /**
@@ -662,6 +636,10 @@
                     'assessable' => 0,
                     'answerscales' => 0),
             );
+            // Makes it easier to work with in CHtml::listData
+            foreach($questionTypes as $type => &$details) {
+                $details['type'] = $type;
+            }
             /**
              * @todo Check if this actually does anything, since the values are arrays.
              */
@@ -765,6 +743,9 @@
          * @return mixed
          */
         protected function instantiate($attributes) {
+            if (!isset($attributes['type'])) {
+                throw new \Exception('noo');
+            }
             switch($attributes['type']) {
                 case 'N':
                     $class = \ls\models\questions\NumericalQuestion::class;
@@ -772,6 +753,8 @@
                 case 'T':
                     $class = \ls\models\questions\TextQuestion::class;
                     break;
+                case '|':
+
                 default:
                     $class = get_class($this);
             }
@@ -779,6 +762,20 @@
             return new $class(null);
         }
 
+        public function getTypeName() {
+            return $this->typeList()[$this->type]['description'];
+        }
+
+        public function getDisplayLabel() {
+            return strip_tags("{$this->title} - {$this->question}");
+        }
+
+        public function attributeLabels()
+        {
+            return [
+                'after' => gT('Position')
+            ];
+        }
 
 
     }

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "793ce61e0ada3e383834258eceaffca2",
+    "hash": "46ec159e1edafc0a85c1b65a21f23436",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -197,6 +197,68 @@
                 "notify",
                 "remarkable"
             ]
+        },
+        {
+            "name": "bower-asset/select2",
+            "version": "3.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/select2/select2.git",
+                "reference": "6633cda9061d9fc65075dd140c63f9a6adbcbd72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/select2/select2/zipball/6633cda9061d9fc65075dd140c63f9a6adbcbd72",
+                "reference": "6633cda9061d9fc65075dd140c63f9a6adbcbd72",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.7.1"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "select2.js",
+                    "select2.css",
+                    "select2.png",
+                    "select2x2.png",
+                    "select2-spinner.gif"
+                ]
+            }
+        },
+        {
+            "name": "bower-asset/select2-bootstrap-css",
+            "version": "v1.4.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/t0m/select2-bootstrap-css.git",
+                "reference": "dffa8740723d12cf5b9a56a28cc3dcd5e08ac3e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/t0m/select2-bootstrap-css/zipball/dffa8740723d12cf5b9a56a28cc3dcd5e08ac3e2",
+                "reference": "dffa8740723d12cf5b9a56a28cc3dcd5e08ac3e2",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/select2": ">=3.3.2,<4.0.0"
+            },
+            "require-dev": {
+                "bower-asset/bootstrap": "~3.3.0",
+                "bower-asset/bootstrap-sass-official": "3.3.3",
+                "bower-asset/respond": "~1.4.2"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "select2-bootstrap.css"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "components"
+                ]
+            }
         },
         {
             "name": "bower-asset/tinymce",
@@ -1022,12 +1084,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "45c798a47b307025094015a0c17693ba59a2e393"
+                "reference": "7b9f204cb4b8fa5cb06b2a9233324997c093f629"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/45c798a47b307025094015a0c17693ba59a2e393",
-                "reference": "45c798a47b307025094015a0c17693ba59a2e393",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/7b9f204cb4b8fa5cb06b2a9233324997c093f629",
+                "reference": "7b9f204cb4b8fa5cb06b2a9233324997c093f629",
                 "shasum": ""
             },
             "replace": {
@@ -1065,7 +1127,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-04-30 10:11:19"
+            "time": "2015-05-03 02:06:59"
         },
         {
             "name": "yiisoft/yii",

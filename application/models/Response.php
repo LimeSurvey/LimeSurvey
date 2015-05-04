@@ -93,11 +93,15 @@
 		}
 
         public function rules() {
-            return [
-
+            $rules = [
                 ['id', 'default', 'value' => \Cake\Utility\Text::uuid()],
-                ['series_id', 'default', 'value' => \Cake\Utility\Text::uuid()],
             ];
+            if ($this->survey->use_series) {
+                $rules[] = ['series_id', 'default', 'value' => \Cake\Utility\Text::uuid()];
+            }
+
+
+            return $rules;
         }
         public function scopes() {
             return [

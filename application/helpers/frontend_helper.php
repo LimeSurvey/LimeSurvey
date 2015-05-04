@@ -1845,6 +1845,8 @@ function UpdateGroupList($surveyid, $language)
         $groupList = $groupListCopy;
      }
      $_SESSION['survey_'.$surveyid]['grouplist'] = $groupList;
+    // Return it as well so we can remove session in the future.
+    return $groupList;
 }
 
 /**

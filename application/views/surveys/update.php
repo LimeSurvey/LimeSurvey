@@ -15,7 +15,7 @@
                     'content' => $this->renderPartial('view/languages', ['survey' => $survey], true),
                 ], [
                     'label' => gT('Presentation & Navigation'),
-                    'content' => "@todo",
+                    'content' => $this->renderPartial('view/presentation', ['survey' => $survey], true),
 
                 ], [
                     'label' => gT('Notification & data management'),

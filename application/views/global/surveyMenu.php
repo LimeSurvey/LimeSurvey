@@ -43,6 +43,7 @@ $menu = [[ // Left side
         'url' => ["tokens/index", 'surveyId' => $this->survey->sid]
     ]
 ], [ // Right side
+
 //    [
 //        'label' => gT('Groups'),
 //        'items' => array_map(function(QuestionGroup $group) {

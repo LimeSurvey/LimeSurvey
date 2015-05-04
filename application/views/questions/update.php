@@ -1,4 +1,7 @@
 <div class="row">
+    <?php
+        echo TbHtml::tag('h1', [], "Question {$this->question->title} ({$this->question->typeName})");
+    ?>
     <div class="col-md-12">
         <?php
         $this->widget('TbTabs', [
@@ -21,7 +24,7 @@
                     'content' => "@todo",
                 ], [
                     'label' => gT('Statistics'),
-                    'content' => "@todo",
+                    'content' => $this->renderPartial('update/statistics', ['question' => $question], true),
                 ]
             ]
         ]);

@@ -779,7 +779,7 @@ class SurveyRuntimeHelper {
         //Iterate through the questions about to be displayed:
         $inputnames = array();
 
-        foreach ($_SESSION[$LEMsessid]['grouplist'] as $gl)
+        foreach (UpdateGroupList(App()->surveySessionManager->current->surveyId, App()->language) as $gl)
         {
             $gid = $gl['gid'];
             $qnumber = 0;
@@ -794,7 +794,7 @@ class SurveyRuntimeHelper {
             }
 
             // TMSW - could iterate through LEM::currentQset instead
-            foreach ($_SESSION[$LEMsessid]['fieldarray'] as $key => $ia)
+            foreach (App()->surveySessionManager->current->fieldArray as $key => $ia)
             {
                 ++$qnumber;
                 $ia[9] = $qnumber; // incremental question count;

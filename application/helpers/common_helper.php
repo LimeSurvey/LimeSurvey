@@ -1784,7 +1784,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
-    . " AND a.language = b.language"
     . " AND a.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = ".$surveyid;
@@ -1807,7 +1806,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
-    . " AND a.language = b.language"
     . " AND a.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = ".$surveyid;
@@ -1829,7 +1827,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     ." FROM {{questions}} as questions, {{groups}} as groups"
     ." WHERE questions.gid=groups.gid AND "
     ." questions.sid=$surveyid AND "
-    ." questions.language='{$sLanguage}' AND "
     ." questions.parent_qid=0 AND "
     ." groups.language='{$sLanguage}' ";
     if ($questionid!==false)
@@ -5174,8 +5171,6 @@ function getSubQuestions($sid, $qid, $sLanguage) {
 
         $query = "SELECT sq.*, q.other FROM {{questions}} as sq, {{questions}} as q"
         ." WHERE sq.parent_qid=q.qid AND q.sid=".$sid
-        ." AND sq.language='".$sLanguage. "' "
-        ." AND q.language='".$sLanguage. "' "
         ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
 
         $query = Yii::app()->db->createCommand($query)->query();

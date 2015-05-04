@@ -337,7 +337,6 @@ if ($adding || $copying) {
                     <input name='translinksfields' id='translinksfields' type='checkbox' checked='checked'/>
                 </li>
             </ul>
-            <p>
             <input type='submit' value='<?php eT("Import Question"); ?>' />
             <input type='hidden' name='action' value='importquestion' />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />

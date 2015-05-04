@@ -7,6 +7,13 @@ $menu = [[ // Left side
   
 ], [ // Right side
     [
+        'title' => gT('Add question'),
+        'icon' => 'plus',
+        'disabled' => $this->survey->isActive,
+        'url' => ["questions/create", 'groupId' => $this->group->gid]
+//
+    ],
+    [
 //        'label' => gT('Questions'),
 //        'items' => array_map(function(Question $question) {
 //            return [

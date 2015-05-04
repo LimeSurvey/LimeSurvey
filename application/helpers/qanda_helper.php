@@ -2596,12 +2596,12 @@ function do_multiplechoice_withcomments($ia)
         $othertext=gT('Other:');
     }
 
-    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND parent_qid=0";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] ORDER BY ".dbRandom();
     } else {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] ORDER BY question_order";
     }
     $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked
     $anscount = count($ansresult)*2;

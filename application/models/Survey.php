@@ -157,9 +157,8 @@ class Survey extends LSActiveRecord
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
-            
             'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid', 'order' => 'group_order ASC'],
-            'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0"],
+            'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0", 'order' => 'question_order ASC'],
             'questionCount' => [self::STAT, 'Question', 'sid', 'condition' => "parent_qid = 0"],
         ];
     }
@@ -233,7 +232,7 @@ class Survey extends LSActiveRecord
             array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),
             array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
             array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
-            ['format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true],
+            ['format', 'in','range' => array_keys($this->formatOptions), 'allowEmpty'=>true],
             array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
             array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
@@ -644,6 +643,14 @@ class Survey extends LSActiveRecord
 
     }
 
+    public function getFormatOptions() {
+        return [
+            "S" => gT("Question by Question"),
+            "G" => gT("Group by Group"),
+            "A" => gT("All in one"),
+        ];
+    }
+
     public function getInfo($language = null) {
         $language = !isset($language) ? $this->language : $language;
         if (null !== $localization = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->primaryKey, 'surveyls_language' => $language])) {
@@ -855,6 +862,7 @@ class Survey extends LSActiveRecord
     }
 
     public function setFeatures($value) {
+        $value = is_array($value) ? $value : [];
         foreach($this->getFeatureOptions() as $key => $title) {
             /**
              * @todo Could be optimized for less array searching.

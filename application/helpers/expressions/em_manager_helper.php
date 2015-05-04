@@ -8140,7 +8140,7 @@ EOD;
             elseif($surveyid)
             {
                 $oQids= Question::model()->findAll(array(
-                    'select'=>'qid',
+                    'select'=> ['qid', 'type'],
                     'group'=>'qid',
                     'distinct'=>true,
                     'condition'=>"sid=:sid and parent_qid=0",
@@ -8249,7 +8249,7 @@ EOD;
                     $where = "1";
             }
             if (!is_null($lang)) {
-                $lang = " and a.language='".$lang."' and q.language='".$lang."'";
+                $lang = " and a.language='".$lang."'";
             }
 
             $query = "SELECT a.qid, a.code, a.answer, a.scale_id, a.assessment_value"
