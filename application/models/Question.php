@@ -36,7 +36,8 @@
                     'attributes' => [
                         'question',
                         'help'
-                    ]
+                    ],
+                    'baseLanguage' => function(Question $question) { return $question->survey->language; }
                 ]
             ];
         }
@@ -130,7 +131,7 @@
                 ['preg', 'safe'],
                 ['before', 'numerical', 'on' => 'insert', 'integerOnly' => true],
                 ['gid', 'exist', 'className' => QuestionGroup::class, 'attributeName' => 'gid', 'allowEmpty' => false],
-                ['title','required','on' => 'update, insert'],
+                ['title', 'required', 'on' => ['update', 'insert']],
                 ['title','length', 'min' => 1, 'max'=>20,'on' => ['update', 'insert']],
                 ['qid', 'numerical','integerOnly' => true],
                 ['qid', 'unique', 'message'=>'{attribute} "{value}" is already in use.'],

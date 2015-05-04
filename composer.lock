@@ -811,12 +811,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "b3577cf69428812c328c76d20aaba059cef22bda"
+                "reference": "07005ecbb80d11ec8c0f067bb37e8909cc7fcbb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/b3577cf69428812c328c76d20aaba059cef22bda",
-                "reference": "b3577cf69428812c328c76d20aaba059cef22bda",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/07005ecbb80d11ec8c0f067bb37e8909cc7fcbb7",
+                "reference": "07005ecbb80d11ec8c0f067bb37e8909cc7fcbb7",
                 "shasum": ""
             },
             "require": {
@@ -858,7 +858,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-04-30 14:14:28"
+            "time": "2015-05-04 12:37:21"
         },
         {
             "name": "react/promise",
@@ -980,12 +980,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SAM-IT/yii1-translate.git",
-                "reference": "49c837258524fc4a4547dbff74b3b86e9c0be6a9"
+                "reference": "9a21d3e22bd641b2b3c8ab392958e84aada33b32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SAM-IT/yii1-translate/zipball/49c837258524fc4a4547dbff74b3b86e9c0be6a9",
-                "reference": "49c837258524fc4a4547dbff74b3b86e9c0be6a9",
+                "url": "https://api.github.com/repos/SAM-IT/yii1-translate/zipball/9a21d3e22bd641b2b3c8ab392958e84aada33b32",
+                "reference": "9a21d3e22bd641b2b3c8ab392958e84aada33b32",
                 "shasum": ""
             },
             "require": {
@@ -1013,7 +1013,7 @@
                 }
             ],
             "description": "Translatable model and behavior for Yii1",
-            "time": "2015-05-01 15:35:15"
+            "time": "2015-05-04 15:26:24"
         },
         {
             "name": "tecnick.com/tcpdf",
