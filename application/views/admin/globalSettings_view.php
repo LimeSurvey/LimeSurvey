@@ -443,7 +443,7 @@
             // Bounce settings in one part
             $this->widget('ext.SettingsWidget.SettingsWidget', array(
                 'id'=>'bounce',
-                'title'=>gt("SMTP configuration"),
+                //'title'=>gt("Bounce settings"),
                 'form' => false,
                 'formHtmlOptions'=>array(
                     'class'=>'form-core',
@@ -521,7 +521,7 @@
                         'htmlOptions'=>array(
                             'readonly'=>$bDemoMode,
                         ),
-                        'help'=>gT("(XSS filtering is always disabled for the superadministrator.)")
+                        'help'=>gT("XSS filtering is always disabled for the superadministrator.")
                     ),
                     'usercontrolSameGroupPolicy'=>array(
                         'type'=>'select',
