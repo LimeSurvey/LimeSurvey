@@ -796,7 +796,6 @@ class responses extends Survey_Common_Action
 
     public function setHiddenColumns($iSurveyId)
     {
-        debugbreak();
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
            $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields')); 
