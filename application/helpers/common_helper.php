@@ -2358,6 +2358,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
+    $sOldLanguage=App()->language;
     App()->setLanguage($sLanguage);
 
     //checks to see if fieldmap has already been built for this page.
@@ -2387,6 +2388,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     }
 
     $timingsFieldMap[$surveyid][$style][$sLanguage] = $fieldmap;
+    App()->setLanguage($sOldLanguage);
     return $timingsFieldMap[$surveyid][$style][$sLanguage];
 }
 
