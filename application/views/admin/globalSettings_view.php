@@ -693,7 +693,7 @@
         <div class="hidden hide" id="submitglobalbutton">
             <p>
                 <?php if(Yii::app()->session['refurl']) { ?>
-                <button type="submit" name="action" value='savequit'><?php eT("Save and quit"); ?></button>
+                <button type="submit" name="action" value='savequit'><?php eT("Save and exit"); ?></button>
                 <?php } ?>
                 <button type="submit" name="action" value='save'><?php eT("Save"); ?></button>
             </p>
