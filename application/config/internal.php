@@ -64,16 +64,10 @@ $internalConfig = array(
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
-                'CWebLogRoute' => array( // Use an associative array allow update in config
+                'vardump' => [
                     'class' => 'CWebLogRoute',
-                ),
-                'trace' => array(
-                    'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
-                    'levels'                     => 'trace',        // you can include more separated by commas
-                    'categories'                 => 'vardump',      // show in firebug/console
-                    'showInFireBug'              => true,
-                    'enabled' => defined('YII_DEBUG') && YII_DEBUG
-                ),
+                    'categories' => 'vardump', // tracevar function
+                ],
                 'profile' => [
                     'class' => 'CProfileLogRoute'
                 ]
