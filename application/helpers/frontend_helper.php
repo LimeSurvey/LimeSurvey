@@ -1203,6 +1203,12 @@ function buildsurveysession($surveyid,$preview=false)
 
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
+    $sQuery= "select count(*) from {{groups}} 
+        left join {{questions}} on  {{groups}}.gid={{questions}}.gid 
+        where qid is null";
+    $iTotalGroupsWithoutQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
+    
+    
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
     ." FROM {{questions}}"
@@ -1232,7 +1238,7 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
 
-    if ($totalquestions == 0)    //break out and crash if there are no questions!
+    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions==0)    //break out and crash if there are no questions!
     {
         sendCacheHeaders();
         doHeader();
@@ -1242,7 +1248,15 @@ function buildsurveysession($surveyid,$preview=false)
         echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
         echo "\t<div id='wrapper'>\n"
         ."\t<p id='tokenmessage'>\n"
-        ."\t".gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
+        ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
+        echo "<ul>";
+        if ($totalquestions == 0){
+            echo '<li>'.gT("There are no questions in this survey.").'</li>';
+        }
+        if ($iTotalGroupsWithoutQuestions == 0){
+            echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
+        }
+        echo "</ul>"
         ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
         ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
