@@ -157,7 +157,10 @@
         if ($aSettings['config']['debug']>0)
         {
             define('YII_DEBUG', true);
-            error_reporting(E_ALL);
+	    if($aSettings['config']['debug']>1)
+		error_reporting(E_ALL);
+	    else
+		error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
         }
         else
         {
