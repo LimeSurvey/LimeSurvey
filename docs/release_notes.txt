@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.05+! 
+Welcome to LimeSurvey v2.06 RC1! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -58,6 +58,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.06a2 to 2.06RC1 (build 150414) May 7, 2015
+-Fixed issue #9555: Hiding columns in browse response can break Javascript (Carsten Schmitz)
+-Fixed issue #9566: Some strings are not from survey language the first time (Carsten Schmitz)
+-Fixed issue #9566: Survey language is mistakenly used for admin interface (Carsten Schmitz)
+-Fixed issue #9601: Allow uploads of font files in template editor (Carsten Schmitz)
+-Fixed issue #9603: Undefined variable: iSurveyID in /var/www/limesurvey/application/controllers/admin/tokens.php(36) (Alfredo Esteban)
+-Fixed issue #9605: Crash when trying to grant permission in specific survey to user without any global permission (Denis Chenu)
+-Fixed issue #9607: Unable to update from versions 2.0 (Denis Chenu)
+-Fixed issue #9611: High memory use of STATA export plugin (mfaber)
+-Fixed issue #9618: System error when starting a survey having  an empty question group (Carsten Schmitz)
+-Fixed issue #9622: DB updater kicks in after installation (Carsten Schmitz)
+-Fixed issue: delete_question API method shuffled questions, not keeping its original order. (Gabriel Jenik)
+-Fixed issue: Syntax error (Alfredo Esteban)
 
 Changes from 2.06a1 to 2.06a2 (build 150414) Apr 13, 2015
 -New feature #5983 : allow different value in Database tha shown in Equation question type (Denis Chenu)
