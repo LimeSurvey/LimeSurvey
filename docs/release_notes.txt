@@ -59,6 +59,33 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 2.05+ (build 150413) to 2.05+ (build 150508) May 7, 2015
+-Fixed issue #9603: Undefined variable: iSurveyID in /var/www/limesurvey/application/controllers/admin/tokens.php(36) (Alfredo Esteban)
+-Fixed issue #9605: Crash when trying to grant permission in specific survey to user without any global permission (Denis Chenu)
+-Fixed issue #9609: Template with dash (-) in the name cannot be used as default site template (Denis Chenu)
+-Fixed issue #9611: High memory use of STATA export plugin (mfaber)
+-Fixed issue: delete_question API method shuffled questions, not keeping its original order. (Gabriel Jenik)
+#Updated translation: Arabic by malbariqi, malkadi
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Danish by Vasilij, overfrakken, lovepade, docl
+#Updated translation: Dutch by c_schmitz
+#Updated translation: French (France) by arnaud21, odarteve
+#Updated translation: Galician by Calidonia
+#Updated translation: German by jweberhofer
+#Updated translation: German (Informal) by jweberhofer
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by lukacs
+#Updated translation: Japanese by nomoto
+#Updated translation: Korean by spn
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Slovak by gadeynebram
+#Updated translation: Spanish (Chile) by gabrieljenik
+#Updated translation: Spanish (Spain) by aesteban, larjona
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 150310) to 2.05+ (build 150413) Apr 13, 2015
 -Fixed issue 09577: Wrong instructions (Marcel Minke)
 -Fixed issue #9447: Token sending email is unusuable with a lot of token (Alfredo Esteban)
