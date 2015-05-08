@@ -5998,9 +5998,9 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
             if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
             {
                 $sOldCode=preg_quote($sOldCode,'/');
-                $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
+                $arQuestion->relevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->relevance,-1,$iCount);
                 $bModified = $bModified || $iCount;
-                $arQuestion->question=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->question,-1,$iCount);
+                $arQuestion->question=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->question,-1,$iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -6016,9 +6016,9 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
             $sOldCode=preg_quote($sOldCode,'/');
-            $arGroup->grelevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arGroup->grelevance,-1,$iCount);
+            $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
             $bModified = $bModified || $iCount;
-            $arGroup->description=preg_replace("/\b{$sOldCode}/",$sNewCode,$arGroup->description,-1,$iCount);
+            $arGroup->description=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->description,-1,$iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified)
