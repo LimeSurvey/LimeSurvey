@@ -763,7 +763,6 @@ class participantsaction extends Survey_Common_Action
     */
     function getParticipants_json($search = null)
     {
-       // debugbreak();
         $page = (int) Yii::app()->request->getPost('page');
         $limit = (int) Yii::app()->request->getPost('rows');
         $limit = empty($limit) ? 50:$limit; //Stop division by zero errors

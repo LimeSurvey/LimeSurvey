@@ -385,6 +385,7 @@ class labels extends Survey_Common_Action
         $lid = Yii::app()->getRequest()->getPost('lid');
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
+        $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues',array());
         //Create new label set
         $language = "";
         foreach ($answers as $lang => $answer) {
@@ -414,6 +415,7 @@ class labels extends Survey_Common_Action
                 $label->title = $ans;
                 $label->sortorder = $key;
                 $label->language = $lang;
+                $label->assessment_value = isset($aAssessmentValues[$key])?$aAssessmentValues[$key]:0;
                 if(!$label->save())
                     $res = 'fail';
             }

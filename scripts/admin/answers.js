@@ -427,18 +427,20 @@ function lspreview()
                             if (lsrows[z].title==null) {
                                 lsrows[z].title='';
                             }
-                            tabbody=tabbody+'><td>'+lsrows[z].code+'</td>';
-                            if (assessmentvisible)
+                            tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td';
+                            if (!assessmentvisible)
                             {
-                                tabbody=tabbody+'<td>'+lsrows[z].assessment_value+'</td>';
-                            }
+                                tabbody=tabbody+' style="display:none;"';
+                            }                                
+                            tabbody=tabbody+'>'+lsrows[z].assessment_value+'</td>';
                             tabbody=tabbody+'<td>'+htmlspecialchars(lsrows[z].title)+'</td></tr><tbody>';
                         }
-                        tabbody=tabbody+'<thead><tr><th>'+strcode+'</th>';
-                        if (assessmentvisible)
+                        tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th';
+                        if (!assessmentvisible)
                         {
-                            tabbody=tabbody+'<th>'+sAssessmentValue+'</th>';
-                        }
+                            tabbody=tabbody+' style="display:none;"';
+                        }                       
+                        tabbody=tabbody+'>'+sAssessmentValue+'</th>';
                         tabbody=tabbody+'<th>'+strlabel+'</th></tr></thead></table></div>';
                     }
                 }
@@ -739,7 +741,8 @@ function savelabel()
         {
         $('#dialog-confirm-replace').dialog({
             resizable: false,
-            height: 160,
+            height: 200,
+            width:350,
             modal: true,
             buttons: [{
                 text: ok,
@@ -791,6 +794,13 @@ function ajaxreqsave() {
             code.push($(this).val());
     });
 
+    // get assessment values for the current scale
+    var assessmentvalues = new Array();
+    $('.assessment').each(function(index) {
+        if($(this).attr('id').substr(-1) === scale_id)
+            assessmentvalues.push($(this).val());
+    });
+        
     answers = new Object();
     languages = langs.split(';');
 
@@ -804,7 +814,7 @@ function ajaxreqsave() {
     }
 
 
-    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers, }, function(data) {
+    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers, assessmentvalues:assessmentvalues }, function(data) {
         $("#saveaslabel").dialog('close');
         if(jQuery.parseJSON(data) == "ok")
             {
