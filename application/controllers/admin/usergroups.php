@@ -337,11 +337,18 @@ class Usergroups extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $uid = (int) Yii::app()->request->getPost('uid');
 
-        $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
+        {
+            $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid));
+        }
+        else    
+        {
+            $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
+        }
 
         if (empty($group))
         {
-            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('Group not found.')));
+            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => $clang->gT('Failed.') . ' ' . $clang->gT('You are ')));
         }
         else
         {
@@ -349,35 +356,36 @@ class Usergroups extends Survey_Common_Action
             {
                 if ($group->owner_id == $uid)
                 {
-                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('You can not add or remove the group owner from the group.')));
+                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed.') . ' ' . $clang->gT('You can not add or remove the group owner from the group.')));
                 }
+                else {
+                    $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
 
-                $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
+                    switch ($action)
+                    {
+                        case 'add' :
+                            if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
+                            {
+                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User added.')));
+                            }
+                            else
+                            {
+                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed to add user.') . ' ' . $clang->gT('User already exists in the group.')));
+                            }
 
-                switch ($action)
-                {
-                    case 'add' :
-                        if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
-                        {
-                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User added.')));
-                        }
-                        else
-                        {
-                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed to add user.') . '<br />' . $clang->gT('User already exists in the group.')));
-                        }
+                            break;
+                        case 'remove' :
+                            if (!empty($user_in_group) && UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
+                            {
+                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User removed.')));
+                            }
+                            else
+                            {
+                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed to remove user.') . ' ' . $clang->gT('User does not exist in the group.')));
+                            }
 
-                        break;
-                    case 'remove' :
-                        if (!empty($user_in_group) && UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
-                        {
-                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User removed.')));
-                        }
-                        else
-                        {
-                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed to remove user.') . '<br />' . $clang->gT('User does not exist in the group.')));
-                        }
-
-                        break;
+                            break;
+                    }
                 }
             }
             else
