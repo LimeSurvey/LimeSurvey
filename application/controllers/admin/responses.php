@@ -420,6 +420,10 @@ class responses extends Survey_Common_Action
                             readfile($file);
                             exit;
                         }
+                        else
+                        {
+                            Yii::app()->session['flashmessage']=gT("The requested file does not exist on the server.");
+                        }
                         break;
                     }
                 }
@@ -844,6 +848,8 @@ class responses extends Survey_Common_Action
                 exit;
             }
         }
+        else Yii::app()->session['flashmessage']=gT("The requested file does not exist on the server.");
+        
     }
 
     /**
