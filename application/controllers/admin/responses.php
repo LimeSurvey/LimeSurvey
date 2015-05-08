@@ -885,7 +885,7 @@ class responses extends Survey_Common_Action
                     break;
                 }
             }
-            Yii::app()->setFlashMessage(gT("Sorry, This file was not found"),'error');
+            Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
             $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$surveyid));
         }
         
@@ -929,7 +929,7 @@ class responses extends Survey_Common_Action
             else
             {
                 // No response : redirect to browse with a alert
-                Yii::app()->setFlashMessage(gT("Sorry, no reponse in this survey"),'error');
+                Yii::app()->setFlashMessage(gT("The requested files do not exist on the server."),'error');
                 $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$surveyid));
             }
         }
