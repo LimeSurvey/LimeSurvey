@@ -221,7 +221,7 @@
             </p>
         </div>
         <div id="dialog-confirm-replace" title="<?php eT('Replace label set?'); ?>" style='display:none;'>
-            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php eT('You are about to replace a given label set with the labels of this subquestions. Continue?'); ?></p>
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php eT("You are about to replace an existing label set with the labels of this subquestions. If the existing labels had assessment values set these will be lost!"); ?><br><?php eT("Do you want to continue?");?></p>
         </div>
 
         <div id="dialog-duplicate" title="<?php eT('Duplicate label set name'); ?>" style='display:none;'>
