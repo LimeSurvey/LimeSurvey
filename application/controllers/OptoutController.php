@@ -36,6 +36,7 @@ class OptoutController extends LSYii_Controller {
         $sToken=sanitize_token(Yii::app()->request->getQuery('token'));
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
+
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
             $this->redirect(array('/'));
@@ -57,15 +58,17 @@ class OptoutController extends LSYii_Controller {
         $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
         if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}")){
-            $sMessage = gT('This survey does not seem to exist.');
+            throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         }
         else
         {
+            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$sToken,false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token'=>$sToken));
 
             if (!isset($oToken))
             {
                 $sMessage = gT('You are not a participant in this survey.');
+                //throw new CHttpException(404, "You are not a participant in this survey.");
             }
             else
             {
@@ -126,11 +129,13 @@ class OptoutController extends LSYii_Controller {
 
         $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
-        if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}")){
-            $sMessage = gT('This survey does not seem to exist.');
+        if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}"))
+        {
+            throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         }
         else
         {
+            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$sToken,false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $sToken));
             if (!isset($oToken))
             {

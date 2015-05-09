@@ -9977,45 +9977,37 @@ EOD;
             {
                 $sToken = $_SESSION[$this->sessid]['token'];
             }
-            $token = Token::model($iSurveyId)->findByAttributes(array(
+
+            $oToken = Token::model($iSurveyId)->findByAttributes(array(
                 'token' => $sToken
             ));
 
-            $this->knownVars['TOKEN:TOKEN'] = array(
-                'code'=> $sToken,
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
-            );
-            if (isset($token))
+            if (!empty($oToken))
             {
-                foreach ($token->attributes as $key => $val)
+                foreach ($oToken->attributes as $attribute => $value)
                 {
                     if ($bAnonymize)
                     {
-                        $val = "";
+                        $value = "";
                     }
-                    $key = "TOKEN:" . strtoupper($key);
-                    $this->knownVars[$key] = array(
-                    'code'=>$val,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
+                    $this->knownVars["TOKEN:" . strtoupper($attribute)] = array(
+                        'code'=>$value,
+                        'jsName_on'=>'',
+                        'jsName'=>'',
+                        'readWrite'=>'N',
                     );
                 }
             }
             else
             {
                 // Read list of available tokens from the tokens table so that preview and error checking works correctly
-
                 $blankVal = array(
-                'code'=>'',
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
+                    'code'=>'',
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
                 );
-
-                foreach (getTokenFieldsAndNames($surveyId) as $field => $details)
+                foreach (getTokenFieldsAndNames($iSurveyId) as $field => $details)
                 {
                     if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $field))
                     {
