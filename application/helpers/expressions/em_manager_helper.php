@@ -9979,10 +9979,10 @@ EOD;
             }
 
             $oToken = Token::model($iSurveyId)->findByAttributes(array(
-                'token' => $sToken
+                'token' => $sToken // What for token===NULL or token==="" ?
             ));
 
-            if (!empty($oToken))
+            if (is_null($oToken))
             {
                 foreach ($oToken->attributes as $attribute => $value)
                 {

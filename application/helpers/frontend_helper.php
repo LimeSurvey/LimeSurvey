@@ -1197,17 +1197,16 @@ function buildsurveysession($surveyid,$preview=false)
     $sQuery = "SELECT count(*)\n"
     ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
     ." WHERE {{questions}}.sid=".$surveyid."\n"
-    ." AND {{groups}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
-    ." AND {{questions}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
+    ." AND {{groups}}.language='".App()->getLanguage()."'\n"
+    ." AND {{questions}}.language='".App()->getLanguage()."'\n"
     ." AND {{questions}}.parent_qid=0\n";
-
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
     $sQuery= "select count(*) from {{groups}} 
         left join {{questions}} on  {{groups}}.gid={{questions}}.gid 
         where qid is null";
     $iTotalGroupsWithoutQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
-    
+
     
     // Fix totalquestions by substracting Test Display questions
     $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
@@ -1238,7 +1237,7 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
 
-    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions==0)    //break out and crash if there are no questions!
+    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions>0)    //break out and crash if there are no questions!
     {
         sendCacheHeaders();
         doHeader();
