@@ -1364,7 +1364,6 @@ class tokens extends Survey_Common_Action
                     $sMessage[$language] = html_entity_decode($sMessage[$language], ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
             }
 
-            $attributes = array_keys(getTokenFieldsAndNames($iSurveyId,true));
             $tokenoutput = "";
             if ($emcount > 0)
             {
@@ -1376,16 +1375,10 @@ class tokens extends Survey_Common_Action
                     {
                         $to[] = ($emrow['firstname'] . " " . $emrow['lastname'] . " <{$sEmailaddress}>");
                     }
-                    $fieldsarray["{EMAIL}"] = $emrow['email'];
-                    $fieldsarray["{FIRSTNAME}"] = $emrow['firstname'];
-                    $fieldsarray["{LASTNAME}"] = $emrow['lastname'];
-                    $fieldsarray["{TOKEN}"] = $emrow['token'];
-                    $fieldsarray["{LANGUAGE}"] = $emrow['language'];
 
-                    foreach ($attributes as $attributefield)
+                    foreach ($emrow as $attribute => $value) // LimeExpressionManager::loadTokenInformation use $oToken->attributes
                     {
-                        $fieldsarray['{' . strtoupper($attributefield) . '}'] = $emrow[$attributefield];
-                        $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$emrow[$attributefield];
+                        $fieldsarray['{' . strtoupper($attribute) . '}'] = $value;
                     }
 
                     $emrow['language'] = trim($emrow['language']);

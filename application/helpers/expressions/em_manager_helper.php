@@ -9973,15 +9973,15 @@ EOD;
             {
                 return;
             }
-            if ($sToken == null && isset($_SESSION[$this->sessid]['token']))
+            if ($sToken === null && isset($_SESSION[$this->sessid]['token']))
             {
                 $sToken = $_SESSION[$this->sessid]['token'];
             }
 
             $oToken = Token::model($iSurveyId)->findByAttributes(array(
-                'token' => $sToken // What for token===NULL or token==="" ?
+                'token' => $sToken
             ));
-
+            
             if (is_null($oToken))
             {
                 foreach ($oToken->attributes as $attribute => $value)
@@ -10007,12 +10007,9 @@ EOD;
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
-                foreach (getTokenFieldsAndNames($iSurveyId) as $field => $details)
+                foreach (Token::model($iSurveyId)->tableSchema->columnNames as $attribute)
                 {
-                    if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $field))
-                    {
-                        $this->knownVars['TOKEN:' . strtoupper($field)] = $blankVal;
-                    }
+                    $this->knownVars['TOKEN:' . strtoupper($attribute)] = $blankVal;
                 }
             }
         }
