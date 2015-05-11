@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.06 RC1! 
+Welcome to LimeSurvey v2.06 RC2! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -12,7 +12,7 @@ by you or third parties or a failure of the program to operate with any other pr
 
 HOW TO INSTALL
 ---------------
-This release does have the following requirements:
+This release does have the following requirements: 
 
 *MySQL 4.1.0 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
 *PHP 5.3.0 or later with the following modules/libraries enabled:
@@ -59,7 +59,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.06a2 to 2.06RC1 (build 150414) May 7, 2015
+Changes from 2.06RC1 to 2.06RC2 (build 150511) May 11, 2015
+-Fixed issue #8098: Token attribute information is not available when using opt-out link from email (Denis Chenu)
+-Fixed issue #8917: Error in R export plugin when exporting Yes/No question results (Carsten Schmitz)
+-Fixed issue #9289: Unable to delete a member of a group (Carsten Schmitz)
+-Fixed issue #9299: Bad handling of broken links to uploaded files (Carsten Schmitz)
+-Fixed issue #9449: Label set updates clear out existing assessment values (Carsten Schmitz)
+-Fixed issue #9466: "Import response from deactivated table" doesn't import timing table (Carsten Schmitz)
+-Fixed issue #9614: False question codes are replaced in the question texts, too (Denis Chenu)
+-Fixed issue #9626: Survey with one group and one question can not be tested ? (Denis Chenu)
+-Updated feature #9391: Google Analytics update to use Universal Analytics standard (Carsten Schmitz)
+
+
+Changes from 2.06a2 to 2.06RC1 (build 150507) May 7, 2015
 -Fixed issue #9555: Hiding columns in browse response can break Javascript (Carsten Schmitz)
 -Fixed issue #9566: Some strings are not from survey language the first time (Carsten Schmitz)
 -Fixed issue #9566: Survey language is mistakenly used for admin interface (Carsten Schmitz)
