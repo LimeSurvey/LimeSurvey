@@ -2,7 +2,9 @@
 
 class MssqlSchema extends CMssqlSchema
 {
-    use SmartColumnTypeTrait;
+    use SmartColumnTypeTrait {
+        getColumnType as parentGetColumnType;
+    }
     public function __construct($conn) {
         parent::__construct($conn);
         /**
@@ -33,7 +35,7 @@ class MssqlSchema extends CMssqlSchema
          * Not confirmed.
          * If resulting type doesn't contain NULL then add it.
          */
-        $result = parent::getColumnType($type);
+        $result = $this->parentGetColumnType($type);
         
         if (stripos($result, 'NULL') === false) {
             $result .= ' NULL';
