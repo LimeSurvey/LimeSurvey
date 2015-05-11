@@ -8,7 +8,9 @@
 /** @var \Question $question */
 $options = ['formLayout' => TbHtml::FORM_LAYOUT_VERTICAL];
 $question->language = $language;
-echo TbHtml::openTag('fieldset', []);
+echo TbHtml::openTag('fieldset', [
+    'class' => 'col-md-12'
+]);
 echo TbHtml::activeTextAreaControlGroup($question, "translatedFields[$language][question]", array_merge($options, [
     'class' => 'html',
     'label' => $question->getAttributeLabel('question')

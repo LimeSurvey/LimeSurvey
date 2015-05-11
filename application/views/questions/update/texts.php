@@ -1,7 +1,5 @@
+<div class="form-vertical">
 <?php
-// This is an update view so we use PUT.
-echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_VERTICAL, ['questions/update', 'id' => $question->qid], 'put', []);
-
 foreach ($question->survey->languages as $language) {
     $tabs[] = [
         'label' => App()->locale->getLanguage($language),
@@ -13,11 +11,4 @@ foreach ($question->survey->languages as $language) {
 $this->widget(TbTabs::class, [
     'tabs' => $tabs
 ]);
-echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
-echo TbHtml::submitButton('Save texts', [
-    'color' => 'primary',
-    'class' => 'ajaxSubmit'
-]);
-echo TbHtml::closeTag('div');
-
-echo TbHtml::endForm();
+?></div>

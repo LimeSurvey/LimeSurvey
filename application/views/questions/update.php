@@ -4,6 +4,10 @@
     ?>
     <div class="col-md-12">
         <?php
+        // This is an update view so we use PUT.
+        // We specify layout per tab.
+        echo TbHtml::beginForm(['questions/update', 'id' => $question->qid], 'put', []);
+
         $this->widget('TbTabs', [
             'tabs' => [
                 [
@@ -25,10 +29,26 @@
                 ], [
                     'label' => gT('Statistics'),
                     'content' => $this->renderPartial('update/statistics', ['question' => $question], true),
+                ], [
+                    'label' => gT('Subquestions'),
+                    'visible' => is_subclass_of($question, \ls\models\questions\ChoiceQuestion::class) && $question->hasSubQuestions,
+                    // This will make sure we don't render if the tab is not visible.
+                    'content' => $this->renderPartial('update/subquestions', ['question' => $question], true),
+                ], [
+                    'label' => gT('Answers'),
+                    'visible' => is_subclass_of($question, \ls\models\questions\ChoiceQuestion::class) && $question->hasAnswers,
+                    // This will make sure we don't render if the tab is not visible.
+                    'content' => $this->renderPartial('update/answers', ['question' => $question], true),
                 ]
             ]
         ]);
-
+        echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
+        echo TbHtml::submitButton('Save settings', [
+            'color' => 'primary',
+//            'class' => 'ajaxSubmit'
+        ]);
+        echo TbHtml::closeTag('div');
+        echo TbHtml::endForm();
         ?>
     </div>
 
