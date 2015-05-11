@@ -30,10 +30,9 @@ class MssqlSchema extends CMssqlSchema
     public function getColumnType($type)
 	{
         /**
-         * @date 2015-1-11
-         * Bug should occur with DBLIB when specifying neither of NULL and NOT NULL.
-         * Not confirmed.
-         * If resulting type doesn't contain NULL then add it.
+         * @date 2015-5-11
+         * Bug occurs with DBLIB when specifying neither of NULL and NOT NULL.
+         * So if resulting type doesn't contain NULL then add it.
          */
         $result = $this->parentGetColumnType($type);
         
@@ -42,4 +41,13 @@ class MssqlSchema extends CMssqlSchema
         }
         return $result;
     }
+    
+    // Original function calls getColumnType twice for unkown reasons
+    public function alterColumn($table, $column, $type)
+    {
+        $sql='ALTER TABLE ' . $this->quoteTableName($table) . ' ALTER COLUMN '
+            . $this->quoteColumnName($column) . ' '
+            . $this->getColumnType($type);
+        return $sql;
+    }    
 }

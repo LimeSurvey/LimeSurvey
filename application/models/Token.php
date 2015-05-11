@@ -75,10 +75,15 @@
 
         public static function createTable($surveyId, array $extraFields = [])
         {
-            $surveyId=intval($surveyId);// Really ?
-            /**
-             * @todo Specify "smaller" character sets and faster collations.
-             */
+            $surveyId=intval($surveyId);
+            // Specify case sensitive collations for the token
+            $sCollation='';
+            if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
+                $sCollation="COLLATE 'utf8_bin'";
+            }
+            if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
+                $sCollation="COLLATE SQL_Latin1_General_CP1_CS_AS";
+            }             
             $fields = [
                 'tid' => 'pk',
                 'participant_id' => 'string(50)',
@@ -86,7 +91,7 @@
                 'lastname' => 'string(40)',
                 'email' => 'text',
                 'emailstatus' => 'text',
-                'token' => 'string(35)',
+                'token' => "string(35) {$sCollation}",
                 'language' => 'string(25)',
                 'blacklisted' => 'string(17)',
                 'sent' => "string(17) DEFAULT 'N'",

@@ -246,8 +246,6 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 * @param bool $simulate
 * @return string
 */
-
-
 function activateSurvey($iSurveyID, $simulate = false)
 {
     $createsurvey='';

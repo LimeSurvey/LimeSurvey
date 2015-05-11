@@ -1296,7 +1296,13 @@ function db_upgrade_all($iOldDBVersion) {
                 }
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>180),"stg_name='DBVersion'");
+            
         }
+        if ($iOldDBVersion < 181)
+        {
+            upgradeTokenTables181();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>181),"stg_name='DBVersion'");
+        }        
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1320,6 +1326,37 @@ function db_upgrade_all($iOldDBVersion) {
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf(gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
+}
+
+
+function upgradeTokenTables181()
+{
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if(Yii::app()->db->driverName!='pgsql')
+    {
+        $surveyidresult = dbGetTablesLike("tokens%");
+        if ($surveyidresult)
+        {
+            foreach ( $surveyidresult as $sTableName )
+            {
+                $oTableSchema=$oSchema->getTable($sTableName);
+                switch (Yii::app()->db->driverName){
+                    case 'sqlsrv':
+                    case 'dblib':
+                    case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
+                        alterColumn($sTableName, 'token', "string(35)"); //COLLATE SQL_Latin1_General_CP1_CS_AS
+                        $oDB->createCommand()->createIndex("idx_{$sTableName}_".rand(1,50000),  $sTableName,'token');
+                        break;
+                    case 'mysql':
+                    case 'mysqli':
+                        alterColumn($sTableName, 'token', "string(35) COLLATE 'utf8_bin'");
+                        break;
+                    default: die('Something went horribly wrong.');    
+                }   
+            }
+        }
+    }
 }
 
 
@@ -2153,10 +2190,9 @@ function fixLanguageConsistencyAllSurveys()
 function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL')
 {
     $oDB = Yii::app()->db;
-    if (Yii::app()->db->driverName=='mysqli') Yii::app()->db->driverName='mysql';
-    if (Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib') Yii::app()->db->driverName='mssql';
     switch (Yii::app()->db->driverName){
         case 'mysql':
+        case 'mysqli':
             $sType=$sFieldType;
             if ($bAllowNull!=true)
             {
@@ -2168,6 +2204,8 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
             }
             $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
             break;
+        case 'dblib':
+        case 'sqlsrv':
         case 'mssql':
             dropDefaultValueMSSQL($sColumn,$sTable);
             $sType=$sFieldType;
@@ -2199,7 +2237,6 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
             break;
         default: die('Unknown database type');
     }
-
 }
 
 
@@ -2271,6 +2308,30 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
     if ($aUniqueKeyName!=false)
     {
         Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} DROP CONSTRAINT {$aUniqueKeyName['Constraint_Name']}")->execute();
+    }
+}
+
+function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
+{
+    $oDB = Yii::app()->getDb();
+    $sQuery="select 
+    i.name as IndexName
+    from sys.indexes i 
+    join sys.objects o on i.object_id = o.object_id
+    join sys.index_columns ic on ic.object_id = i.object_id 
+    and ic.index_id = i.index_id
+    join sys.columns co on co.object_id = i.object_id 
+    and co.column_id = ic.column_id
+    where i.[type] = 2 
+    and i.is_unique = 0 
+    and i.is_primary_key = 0
+    and o.[type] = 'U'
+    and ic.is_included_column = 0
+    and o.name='{$sTableName}' and co.name='{$sFieldName}'";
+    $aKeyName = Yii::app()->getDb()->createCommand($sQuery)->queryScalar();
+    if ($aKeyName!=false)
+    {
+        try { $oDB->createCommand()->dropIndex($aKeyName,$sTableName); } catch(Exception $e) { }
     }
 }
 
