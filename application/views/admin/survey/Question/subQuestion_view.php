@@ -15,6 +15,7 @@
     var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/getAllSets'); ?>';
     var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/sa/ajaxSets'); ?>';
+    var sCheckLabelURL = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxchecklabel'); ?>';
     var lsdetailurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetdetails'); ?>';
     var lspickurl = '<?php echo Yii::app()->createUrl('/admin/questions/sa/ajaxlabelsetpicker'); ?>';
     var check = true;
@@ -198,7 +199,7 @@
             </p>
         </div>
         <div id="dialog-confirm-replace" title="<?php $clang->eT('Replace label set?'); ?>" style='display:none;'>
-            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT("You are about to replace an existing label set with the labels of this subquestions. If the existing labels had assessment values set these will be lost!"); ?><br><?php $clang->eT("Do you want to continue?");?></p>
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id='strReplaceMessage'></span></p>
         </div>
 
         <div id="dialog-duplicate" title="<?php $clang->eT('Duplicate label set name'); ?>" style='display:none;'>

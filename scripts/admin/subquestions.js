@@ -652,23 +652,27 @@ function savelabel()
     }
     else
         {
-        $('#dialog-confirm-replace').dialog({
-            resizable: false,
-            height: 230,
-            width:350,
-            modal: true,
-            buttons: [{
-                text: ok,
-                click: function() {
-                    $(this).dialog("close");
-                    ajaxreqsave();
-            }},{
-                text: cancel,
-                click: function() {
-                    check = false;
-                    $(this).dialog("close");
-            }}
-            ]
+        aLanguages = langs.split(';');
+        $.post(sCheckLabelURL, { languages: aLanguages, lid: lid, bCheckAssessments:1 }, function(data) {
+           $('#strReplaceMessage').html(data); 
+            $('#dialog-confirm-replace').dialog({
+                resizable: false,
+                height: 260,
+                width: 420,
+                modal: true,
+                buttons: [{
+                    text: ok,
+                    click: function() {
+                        $(this).dialog("close");
+                        ajaxreqsave();
+                }},{
+                    text: cancel,
+                    click: function() {
+                        check = false;
+                        $(this).dialog("close");
+                }}
+                ]
+            });
         });
     }
 }

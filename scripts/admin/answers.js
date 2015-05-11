@@ -739,23 +739,27 @@ function savelabel()
     }
     else
         {
-        $('#dialog-confirm-replace').dialog({
-            resizable: false,
-            height: 200,
-            width:350,
-            modal: true,
-            buttons: [{
-                text: ok,
-                click: function() {
-                    $(this).dialog("close");
-                    ajaxreqsave();
-            }},{
-                text: cancel,
-                click: function() {
-                    check = false;
-                    $(this).dialog("close");
-            }}
-            ]
+        aLanguages = langs.split(';');
+        $.post(sCheckLabelURL, { languages: aLanguages, lid: lid}, function(data) {
+           $('#strReplaceMessage').html(data); 
+            $('#dialog-confirm-replace').dialog({
+                resizable: false,
+                height: 200,
+                width:350,
+                modal: true,
+                buttons: [{
+                    text: ok,
+                    click: function() {
+                        $(this).dialog("close");
+                        ajaxreqsave();
+                }},{
+                    text: cancel,
+                    click: function() {
+                        check = false;
+                        $(this).dialog("close");
+                }}
+                ]
+            });
         });
     }
 }
