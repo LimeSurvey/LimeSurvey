@@ -1,7 +1,6 @@
 <?php
 echo TbHtml::well("Features below can be enabled / disabled while the survey is active.");
 
-echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['surveys/update'], 'post');
 $expires = TbHtml::activeDateTimeLocalField($survey, 'expires', ['class' => 'form-control']);
 $starts = TbHtml::activeDateTimeLocalField($survey, 'startdate', ['class' => 'form-control']);
 echo TbHtml::customActiveControlGroup($expires, $survey, 'expires', ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL]);
@@ -14,7 +13,3 @@ echo TbHtml::activeDropDownListControlGroup($survey, 'usecaptcha', $survey->capt
 echo TbHtml::activeCheckBoxControlGroup($survey, 'bool_usecookie', ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL]);
 
 echo TbHtml::activeCheckBoxControlGroup($survey, 'bool_listpublic', ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL]);
-echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
-echo TbHtml::submitButton('Save settings', ['color' => 'primary']);
-echo TbHtml::closeTag('div');
-echo TbHtml::endForm();

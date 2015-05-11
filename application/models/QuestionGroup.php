@@ -16,22 +16,10 @@
 /**
  * Class QuestionGroup
  * @property string $randomization_group
+ * @property Question[] $questions
  */
     class QuestionGroup extends LSActiveRecord
     {
-        /**
-        * Returns the static model of Settings table
-        *
-        * @static
-        * @access public
-        * @param string $class
-        * @return CActiveRecord
-        */
-        public static function model($class = __CLASS__)
-        {
-            return parent::model($class);
-        }
-
         /**
         * Returns the setting's table name to be used by the model
         *
@@ -43,17 +31,17 @@
             return '{{groups}}';
         }
 
-        /**
-        * Returns the primary key of this table
-        *
-        * @access public
-        * @return string
-        */
-        public function primaryKey()
-        {
-            return array('gid', 'language');
+        public function behaviors() {
+            return array_merge(parent::behaviors(), [
+                'translatable' => [
+                    'class' => SamIT\Yii1\Behaviors\TranslatableBehavior::class,
+                    'translationModel' => Translation::class,
+                    'model' => 'Group', // See TranslatableBehavior comments.
+                    'attributes' => ['group_name', 'description'],
+                    'baseLanguage' => function(QuestionGroup $group) { return $group->survey->language; }
+                ]
+            ]);
         }
-
 
     /**
     * Returns this model's validation rules
@@ -62,12 +50,6 @@
     public function rules()
     {
         return array(
-            array('gid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                            'condition'=>'language=:language',
-                            'params'=>array(':language'=>$this->language)
-                    ),
-                    'message'=>'{attribute} "{value}" is already in use.'),
-            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
             array('group_name,description','LSYii_Validators'),
             array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         );
@@ -82,10 +64,14 @@
         public function relations()
         {
             return [
-                'questions' => [self::HAS_MANY, 'Question', 'gid', 'on' => 'parent_qid = 0'],
+                'questions' => [self::HAS_MANY, Question::class, 'gid', 'on' => 'parent_qid = 0', 'order' => 'question_order'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid']
             ];
             
+        }
+
+        public function getQuestionCount() {
+            return Question::model()->countByAttributes(['gid' => $this->id, 'parent_qid' => 0]);
         }
 
         function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)

@@ -5,9 +5,9 @@ $items = [];
 foreach ($this->survey->groups as $group) {
     $items[] = [
         'label' => "{$group->title} - {$group->group_name}",
-        'url' => ['groups/view', 'id' => $group->gid],
+        'url' => ['groups/view', 'id' => $group->id],
         'class' => 'group',
-        'active' => isset($this->group) && $this->group->gid === $group->gid && !isset($this->question)
+        'active' => isset($this->group) && $this->group->id === $group->id && !isset($this->question)
     ];
     foreach ($group->questions as $question) {
         $items[] = [

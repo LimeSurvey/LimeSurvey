@@ -13,9 +13,9 @@ class m150510_082104_answer_remove_language extends CDbMigration
 	{
         // We are removing languages from the answer table and moving it to the translation table.
         $table = \Answer::model()->tableName();
-//        $this->dropPrimaryKey('', $table);
-//        $this->addColumn(\Answer::model()->tableName(), 'id', 'pk');
-//        $this->renameColumn($table, 'qid', 'question_id');
+        $this->dropPrimaryKey('', $table);
+        $this->addColumn(\Answer::model()->tableName(), 'id', 'pk');
+        $this->renameColumn($table, 'qid', 'question_id');
         $this->dbConnection->schema->getTable($table, true);
         $answers = \Answer::model()->findAll();
         $deleted = $created = 0;

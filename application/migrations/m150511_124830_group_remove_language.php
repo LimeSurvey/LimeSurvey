@@ -1,7 +1,7 @@
 <?php
 namespace ls\migrations;
 use \CDbMigration;
-class m150501_084027_question_remove_language extends CDbMigration
+class m150511_124830_group_remove_language extends CDbMigration
 {
 	/**
      * Describe the migration in this PHPDOC.
@@ -10,26 +10,28 @@ class m150501_084027_question_remove_language extends CDbMigration
      */
     public function safeUp()
 	{
-        // We are removing languages from the question table and moving it to the translation table.
-        $questions = \Question::model()->findAll();
+        // We are removing languages from the answer table and moving it to the translation table.
+        $table = \QuestionGroup::model()->tableName();
+//        $this->renameColumn($table, 'gid', 'id');
+        $this->dbConnection->schema->getTable($table, true);
+        $groups = \QuestionGroup::model()->findAll();
         $deleted = $created = 0;
-        /** @var \Question $question */
-        foreach ($questions as $question) {
-            $behaviorConfig = $question->behaviors()['translatable'];
+        /** @var \QuestionGroup $group */
+        foreach ($groups as $group) {
+            $behaviorConfig = $group->behaviors()['translatable'];
             // Get the base language
             $baseLanguage = isset($behaviorConfig['translatable']['baseLanguage']) ? $behaviorConfig['translatable']['baseLanguage'] : 'en';
-
             if ($baseLanguage instanceof \Closure) {
-                $baseLanguage = $baseLanguage($question);
+                $baseLanguage = $baseLanguage($group);
             }
-            if ($baseLanguage != $question->language) {
+            if ($baseLanguage != $group->language) {
                 // Create translation if not base language.
                 $translation = new \Translation();
-                $translation->language = $question->language;
-                $translation->model = 'Question'; // We have Single Table Inheritance so we use the base class.
-                $translation->model_id = $question->qid;
-                foreach ($question->translatableAttributes as $attribute) {
-                    $translation->$attribute = $question->$attribute;
+                $translation->language = $group->language;
+                $translation->model = 'Group'; // We have Single Table Inheritance so we use the base class.
+                $translation->model_id = $group->id;
+                foreach ($group->translatableAttributes as $attribute) {
+                    $translation->$attribute = $answer->$attribute;
                 }
                 try {
                     if ($translation->save()) {
@@ -41,7 +43,7 @@ class m150501_084027_question_remove_language extends CDbMigration
                         $created++;
                     }
                 }
-                if ($question->delete()) {
+                if ($group->delete()) {
                     $deleted++;
                 }
             }
@@ -50,14 +52,9 @@ class m150501_084027_question_remove_language extends CDbMigration
             throw new \Exception("Upgrade did not create expected number of translations. Aborted to prevent data loss.");
 
         }
-
-        // Now we can drop the language column.
-        $this->dropColumn(\Question::model()->tableName(), 'language');
-
-
-
-
-	}
+        // Create index for unique answer code (per question).
+        $this->dropColumn($table, 'language');
+    }
     
     /**
      * @return boolean True if migration was a success.
@@ -65,8 +62,8 @@ class m150501_084027_question_remove_language extends CDbMigration
 
 	public function safeDown()
 	{
-		echo "m150501_084027_question_remove_language does not support migration down.\\n";
-		return true;
+		echo "m150511_124830_group_remove_language does not support migration down.\\n";
+		return false;
         
 	}
 

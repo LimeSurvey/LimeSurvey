@@ -13,13 +13,43 @@ class QuestionsController extends Controller
     }
 
     public function actionUpdate($id) {
-        $this->question = $this->loadModel($id);
+        $this->question = $question = $this->loadModel($id);
         $this->survey = $this->question->survey;
         $this->group = $this->question->group;
         if (App()->request->isPutRequest) {
             // Update the question from data.
-            $this->question->setAttributes(App()->request->getParam(\CHtml::modelName($this->question)));
-            if ($this->question->save()) {
+            $error = false;
+            $answers = [];
+            if ($this->question->hasAnswers) {
+
+//                echo '<pre>';
+                // Remove all answers.
+                // Create new ones.
+                foreach(App()->request->getParam('Answer') as $data) {
+                    $answer = new \Answer();
+                    $answer->question_id = $this->question->qid;
+                    $answer->setAttributes($data);
+                    $answers[] = $answer;
+                    $error = $error || !$answer->validate();
+                }
+                $this->question->answers = $answers;
+            }
+
+
+            $this->question->setAttributes(App()->request->getParam(\CHtml::modelName($question)));
+            if (
+                // Validation error in dependent models
+                !$error
+                // Validate and save question.
+                && $this->question->save()
+                // Remove old answers. Use individual delete to handle removal of dependent records.
+                && array_reduce(\Answer::model()->findAllByAttributes(['question_id' => $question->qid]), function($carry, \Answer $answer) {
+                    return $carry && $answer->delete();
+                }, true)
+                // Save new answers.
+                && array_reduce($answers, function($carry, \Answer $answer) {
+                return $carry && $answer->save();
+                }, true)) {
                 App()->user->setFlash('success', "Question updated.");
             } else {
                 App()->user->setFlash('error', "Question could not be updated.");
@@ -58,6 +88,25 @@ class QuestionsController extends Controller
 
     }
 
+
+    /**
+     * Delete a question.
+     * @todo Access check
+     * @todo Method check, delete should always done via HTTP DELETE or DELETE over POST.
+     * @param $id
+     */
+    public function actionDelete($id)
+    {
+        $model = $this->loadModel($id);
+        if (isset($model) && $model->delete()) {
+            App()->user->setFlash('success', "Question deleted.");
+        }
+        if (isset($model)) {
+            $this->redirect(["surveys/update", "id" => $model->sid]);
+        } else {
+            $this->redirect('surveys/index');
+        }
+    }
     /**
      * @param int $id
      * @return \Question

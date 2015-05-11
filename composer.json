@@ -22,7 +22,8 @@
         "bower-asset/tinymce": "~4.1@dev",
         "bower-asset/remarkable-bootstrap-notify": "3.*",
         "bower-asset/select2-bootstrap-css": "1.*",
-        "sam-it/yii1-translate": "dev-master"
+        "sam-it/yii1-translate": "dev-master",
+        "bower-asset/jquery-ui": "1.*"
     },
 	"require-dev" : {
 		

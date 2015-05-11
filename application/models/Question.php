@@ -19,11 +19,23 @@
 /**
  * Class Question
  * @property-read Translation[] $translations Relation added by translatable behavior
+ * @property-read bool $hasSubQuestions
+ * @property-read bool $hasAnswers
  */
     class Question extends LSActiveRecord
     {
 
         public $before;
+
+        public function getHasSubQuestions()
+        {
+            return false;
+        }
+
+        public function getHasAnswers()
+        {
+            return false;
+        }
         public function behaviors() {
             return [
                 'json' => [
@@ -381,23 +393,6 @@
                                                         ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
         }
 
-        /**
-         * Returns the type of subquestions for this question:
-         * 0: No subquestions,
-         * 1: Subquestions on 1 scale.
-         * 2: Subquestions on 2 scales. (Used only by array(texts) and array(numbers) question types)
-         * @return integer
-         * @throws CException
-         */
-        public function getHasSubQuestions()
-        {
-            $types = self::typeList();
-            if (isset($types[$this->type]))
-            {
-                return $types[$this->type]['subquestions'];
-            }
-            throw new CException("Unknown question type: '{$this->type}'");
-        }
 
         /**
          * Returns the type of answers for this question:
@@ -753,6 +748,10 @@
                     break;
                 case 'T':
                     $class = \ls\models\questions\TextQuestion::class;
+                    break;
+                case 'O': // Single choice with comments.
+                case 'L': // Single choice (Radio);
+                    $class = \ls\models\questions\SingleChoiceQuestion::class;
                     break;
                 case '|':
 

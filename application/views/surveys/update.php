@@ -1,6 +1,8 @@
 <div class="row">
     <div class="col-md-12">
         <?php
+        echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, '', 'post', []);
+
         $this->widget('TbTabs', [
             'tabs' => [
                 [
@@ -46,6 +48,13 @@
 
             ]
         ]);
+
+        echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
+        echo TbHtml::submitButton('Save settings', [
+            'color' => 'primary'
+        ]);
+        echo TbHtml::closeTag('div');
+        echo TbHtml::endForm();
 
         ?>
     </div>

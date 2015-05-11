@@ -653,8 +653,9 @@ class Survey extends LSActiveRecord
 
     public function getInfo($language = null) {
         $language = !isset($language) ? $this->language : $language;
+        $result = $this->attributes;
         if (null !== $localization = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $this->primaryKey, 'surveyls_language' => $language])) {
-            $result =  array_merge($this->attributes, $localization->attributes);
+            $result =  array_merge($result, $localization->attributes);
             $result['name']=$result['surveyls_title'];
             $result['description']=$result['surveyls_description'];
             $result['welcome']=$result['surveyls_welcometext'];

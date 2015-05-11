@@ -1817,17 +1817,17 @@ function UpdateGroupList($surveyid, $language)
 {
 
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
-    $groupList = array();
-    foreach ($result->readAll() as $row)
+    $groups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid], ['order' => 'group_order']);
+    $groupList = [];
+    foreach ($groups as $group)
     {
-        $group = array(
-            'gid'         => $row['gid'],
-            'group_name'  => $row['group_name'],
-            'description' =>  $row['description']);
-        $groupList[] = $group;
-        $gidList[$row['gid']] = $group;
+        $data = [
+            'gid'         => $group->primaryKey,
+            'group_name'  => $group->group_name,
+            'description' =>  $group->description
+        ];
+        $groupList[] = $data;
+        $gidList[$group->primaryKey] = $data ;
     }
 
     if (!Yii::app()->getConfig('previewmode') && isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)

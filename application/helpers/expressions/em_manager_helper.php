@@ -8237,8 +8237,17 @@ EOD;
         * @return <type>
         */
 
-        function getAnswerSetsForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
+        function getAnswerSetsForEM($surveyId , $questionId, $language)
         {
+
+            $qans = [];
+            foreach (Answer::model()->findAllByAttributes([
+                'question_id' => $questionId
+            ]) as $answer) {
+                $qans[$answer->question_id][$answer->scale_id . '~' . $answer->code] = ($useAssessments ? $answer->assessment_value : '0') . '|' . $answer->answer;
+
+            }
+            return $qans;
             if (!is_null($qid)) {
                 $where = "a.qid = ".$qid;
             }
@@ -8291,19 +8300,19 @@ EOD;
             {
                 $lang=Survey::model()->findByPk($surveyid)->language;
             }
-            $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid and language=:language",'order'=>'group_order','params'=>array(":sid"=>$surveyid,':language'=>$lang)));
+            $groups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid], ['order'=>'group_order']);
             $qinfo = array();
             $_order=0;
-            foreach ($oQuestionGroups as $oQuestionGroup)
+            foreach ($groups as $group)
             {
-                $gid[$oQuestionGroup->gid] = array(
+                $gid[$group->primaryKey] = [
                     'group_order' => $_order,
-                    'gid' =>  $oQuestionGroup->gid,
-                    'group_name' => $oQuestionGroup->group_name,
-                    'description' =>  $oQuestionGroup->description,
-                    'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
-                );
-                $qinfo[$_order] = $gid[$oQuestionGroup->gid];
+                    'gid' =>  $group->primaryKey,
+                    'group_name' => $group->group_name,
+                    'description' =>  $group->description,
+                    'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $group->grelevance:1,
+                ];
+                $qinfo[$_order] = $gid[$group->primaryKey];
                 ++$_order;
             }
             // Needed for Randomization group.

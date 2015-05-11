@@ -63,3 +63,7 @@ table.upgrade .disabled button{
 table.upgrade tr.disabled {
     background-color: rgba(127, 127, 127, 0.5);
 }
+
+.tab-pane {
+    margin-top: 20px;
+}

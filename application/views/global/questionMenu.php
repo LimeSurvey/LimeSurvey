@@ -5,8 +5,14 @@ if (!isset($this->question)) {
 }
 $menu = [[ // Left side
     [
-        'test'
-    ]
+        'title' => gT('Remove question'),
+        'icon' => 'trash',
+        'linkOptions' => [
+            'confirm' => 'Are you sure?'
+        ],
+        'url' => ["questions/delete", 'id' => $this->question->primaryKey]
+//
+    ],
 ], [ // Right side
     [
     ], 

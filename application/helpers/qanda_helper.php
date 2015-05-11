@@ -1908,17 +1908,17 @@ function do_listwithcomment($ia)
 
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id = {$ia[0]} and scale_id=0 ORDER BY ".dbRandom();
     }
     //question attribute alphasort set?
     elseif ($aQuestionAttributes['alphasort']==1)
     {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id = $ia[0] and scale_id=0 ORDER BY answer";
     }
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id = $ia[0] and scale_id=0 ORDER BY sortorder, answer";
     }
 
     $ansresult=Yii::app()->db->createCommand($ansquery)->query()->readAll();

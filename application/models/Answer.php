@@ -15,19 +15,6 @@
 class Answer extends LSActiveRecord
 {
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return Answer
-     */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
-    }
-
-    /**
      * Returns the setting's table name to be used by the model
      *
      * @access public
@@ -38,15 +25,17 @@ class Answer extends LSActiveRecord
         return '{{answers}}';
     }
 
-    /**
-    * Returns the primary key of this table
-    *
-    * @access public
-    * @return array
-    */
-    public function primaryKey()
-    {
-        return array('qid', 'code','language','scale_id');
+
+    public function behaviors() {
+        return array_merge(parent::behaviors(), [
+            'translatable' => [
+                'class' => SamIT\Yii1\Behaviors\TranslatableBehavior::class,
+                'translationModel' => Translation::class,
+                'model' => __CLASS__, // See TranslatableBehavior comments.
+                'attributes' => ['answer'],
+                'baseLanguage' => function(Answer $answer) { return $answer->question->survey->language; }
+            ]
+        ]);
     }
 
     /**
@@ -57,15 +46,10 @@ class Answer extends LSActiveRecord
      */
     public function relations()
     {
-        $alias = $this->getTableAlias();
-        return array(
-            'questions' => array(self::HAS_ONE, 'Question', '',
-                'on' => "$alias.qid = questions.qid",
-            ),
-            'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'through' => 'questions',
-                'on' => 'questions.gid = groups.gid'
-            ),
-        );
+        return [
+            'question' => [self::BELONGS_TO, Question::class, 'question_id'],
+            'groups' => [self::BELONGS_TO, QuestionGroup::class, 'gid', 'through' => 'question']
+        ];
     }
 
     /**
@@ -75,24 +59,13 @@ class Answer extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('qid','numerical', 'integerOnly'=>true),
+            ['question_id','exist', 'className' => Question::class, 'attributeName' => 'qid'],
             array('code','length', 'min' => 1, 'max'=>5),
             array('answer','LSYii_Validators'),
             array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
             array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         );
-    }
-
-    function getAnswers($qid)
-    {
-        return Yii::app()->db->createCommand()
-            ->select()
-            ->from(self::tableName())
-            ->where(array('and', 'qid='.$qid))
-            ->order('code asc')
-            ->query();
     }
 
     /**
