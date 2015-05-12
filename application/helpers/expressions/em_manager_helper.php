@@ -6349,7 +6349,7 @@
                                     $numUnanswered=0;
                                     foreach ($sgqas as $s)
                                     {
-                                        if (strpos($s, $sq['rowdivid']) !== false)
+                                        if (strpos($s, $sq['rowdivid']."_") !== false) // Test complete subquestion code (#09493)
                                         {
                                             ++$rowCount;
                                             if (array_search($s,$unansweredSQs) !== false) {
