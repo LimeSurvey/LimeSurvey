@@ -1,6 +1,6 @@
 <div class="row">
     <?php
-        echo TbHtml::tag('h1', [], "Question {$this->question->title} ({$this->question->typeName})");
+        echo TbHtml::tag('h1', [], "Question {$this->question->title} ({$this->question->typeName}) -- class: " . get_class($question));
     ?>
     <div class="col-md-12">
         <?php
@@ -31,7 +31,7 @@
                     'content' => $this->renderPartial('update/statistics', ['question' => $question], true),
                 ], [
                     'label' => gT('Subquestions'),
-                    'visible' => is_subclass_of($question, \ls\models\questions\ChoiceQuestion::class) && $question->hasSubQuestions,
+                    'visible' => $question->hasSubQuestions,
                     // This will make sure we don't render if the tab is not visible.
                     'content' => $this->renderPartial('update/subquestions', ['question' => $question], true),
                 ], [

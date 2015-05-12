@@ -67,6 +67,34 @@
             return parent::model($class);
         }
 
+        public function beforeSave() {
+            if ($this->isNewRecord) {
+                // Set order.
+                if (empty($this->before)) {
+                    $criteria = (new CDbCriteria())
+                        ->addColumnCondition([
+                            'sid' => $this->sid,
+                            'parent_qid' => 0,
+                        ]);
+                    $criteria->order = 'question_order DESC';
+                    $criteria->limit = 1;
+                    $this->question_order = Question::model()->find($criteria)->question_order + 1;
+                } else {
+                    // Get the break point.
+                    $before = Question::model()->findByPk($this->before);
+                    $this->question_order = $before->question_order;
+                    $criteria = (new CDbCriteria())
+                        ->addColumnCondition([
+                            'sid' => $this->sid,
+                            'parent_qid' => 0,
+                        ])->addCondition("question_order >= " . $this->question_order);
+                    Question::updateAll([
+                        'question_order' => new CDbExpression('question_order + 1')
+                    ], $criteria);
+                }
+            }
+            return true;
+        }
 
         public function __get($name)
         {
@@ -142,11 +170,10 @@
                  */
                 ['preg', 'safe'],
                 ['before', 'numerical', 'on' => 'insert', 'integerOnly' => true],
-                ['gid', 'exist', 'className' => QuestionGroup::class, 'attributeName' => 'gid', 'allowEmpty' => false],
+                ['type', 'in', 'range' => array_keys($this->typeList())],
+                ['gid', 'exist', 'className' => QuestionGroup::class, 'attributeName' => 'id', 'allowEmpty' => false],
                 ['title', 'required', 'on' => ['update', 'insert']],
                 ['title','length', 'min' => 1, 'max'=>20,'on' => ['update', 'insert']],
-                ['qid', 'numerical','integerOnly' => true],
-                ['qid', 'unique', 'message'=>'{attribute} "{value}" is already in use.'],
                 ['title,question,help', 'LSYii_Validators'],
                 ['other', 'in', 'range' => ['Y','N'], 'allowEmpty' => true],
                 ['mandatory', 'in', 'range' => ['Y','N'], 'allowEmpty'=>true],
@@ -303,18 +330,6 @@
             return $aAttributeNames;
         }
 
-        function getQuestions($sid, $gid, $language)
-        {
-            return Yii::app()->db->createCommand()
-            ->select()
-            ->from(self::tableName())
-            ->where(array('and', 'sid=:sid', 'gid=:gid', 'language=:language', 'parent_qid=0'))
-            ->order('question_order asc')
-            ->bindParam(":sid", $sid, PDO::PARAM_INT)
-            ->bindParam(":gid", $gid, PDO::PARAM_INT)
-            ->bindParam(":language", $language, PDO::PARAM_STR)
-            ->query();
-        }
 
         /**
         * Insert an array into the questions table
@@ -746,16 +761,27 @@
                 case 'N':
                     $class = \ls\models\questions\NumericalQuestion::class;
                     break;
+                case 'U': // Huge free text
+                case 'S': // Short free text
                 case 'T':
                     $class = \ls\models\questions\TextQuestion::class;
                     break;
                 case 'O': // Single choice with comments.
+                case '!': // Single choice dropdown.
                 case 'L': // Single choice (Radio);
                     $class = \ls\models\questions\SingleChoiceQuestion::class;
                     break;
+                case 'Q': // Multiple (short) text.
+                    $class = \ls\models\questions\MultipleTextQuestion::class;
+                    break;
+                case 'R': // Ranking
+                    $class = \ls\models\questions\RankingQuestion::class;
+                    break;
                 case '|':
 
+
                 default:
+//                    die("noo class for type {$attributes['type']}");
                     $class = get_class($this);
             }
 

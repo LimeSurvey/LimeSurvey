@@ -44,16 +44,12 @@ $menu = [[ // Left side
     ]
 ], [ // Right side
 
-//    [
-//        'label' => gT('Groups'),
-//        'items' => array_map(function(QuestionGroup $group) {
-//            return [
-//                'url' => App()->createUrl('admin/survey/sa/view', ['surveyid' => $group->sid, 'gid' => $group->gid]),
-//                'label' => $group->title
-//            ];
-//
-//        }, QuestionGroup::model()->findAllByAttributes(['sid' => $this->survey->sid, 'language' => $this->survey->language]))
-//    ],
+    [
+        'title' => gT('Add group'),
+        'icon' => 'plus',
+        'disabled' => $this->survey->isActive,
+        'url' => ["groups/create", 'surveyId' => $this->survey->primaryKey]
+    ],
     
 ]];
     

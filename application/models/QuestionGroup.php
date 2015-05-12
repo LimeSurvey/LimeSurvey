@@ -20,6 +20,7 @@
  */
     class QuestionGroup extends LSActiveRecord
     {
+        public $before;
         /**
         * Returns the setting's table name to be used by the model
         *
@@ -49,10 +50,10 @@
     */
     public function rules()
     {
-        return array(
-            array('group_name,description','LSYii_Validators'),
-            array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-        );
+        return [
+            ['group_name,description','LSYii_Validators'],
+            ['group_name', 'required']
+        ];
     }
 
         /**
@@ -177,6 +178,10 @@
          * @return string
          */
         public function getTitle() {
+            return $this->group_name;
+        }
+
+        public function getDisplayLabel() {
             return $this->group_name;
         }
     }

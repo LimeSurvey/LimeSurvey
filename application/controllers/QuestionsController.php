@@ -20,15 +20,15 @@ class QuestionsController extends Controller
             // Update the question from data.
             $error = false;
             $answers = [];
-            if ($this->question->hasAnswers) {
+            if ($this->question->hasAnswers && App()->request->getParam('Answer', false) !== false) {
 
-//                echo '<pre>';
                 // Remove all answers.
                 // Create new ones.
-                foreach(App()->request->getParam('Answer') as $data) {
+                foreach(App()->request->getParam('Answer') as $i => $data) {
                     $answer = new \Answer();
                     $answer->question_id = $this->question->qid;
                     $answer->setAttributes($data);
+                    $answer->sortorder = $i;
                     $answers[] = $answer;
                     $error = $error || !$answer->validate();
                 }
@@ -52,7 +52,7 @@ class QuestionsController extends Controller
                 }, true)) {
                 App()->user->setFlash('success', "Question updated.");
             } else {
-                App()->user->setFlash('error', "Question could not be updated.");
+                App()->user->setFlash('danger', "Question could not be updated.");
             }
         }
 
@@ -63,7 +63,7 @@ class QuestionsController extends Controller
         /**
          * @todo Switch to findByPk after language has been removed from group table.
          */
-        $group = \QuestionGroup::model()->findByAttributes(['gid' => $groupId]);
+        $group = \QuestionGroup::model()->findByPk($groupId);
         $this->survey = $group->survey;
         if (!isset($this->survey)) {
             throw new \CHttpException(404, "Survey not found.");
@@ -72,14 +72,15 @@ class QuestionsController extends Controller
         }
         $question = new \Question();
         $question->sid = $group->sid;
-        $question->gid = $group->gid;
+        $question->gid = $group->primaryKey;
         if (App()->request->isPostRequest) {
             $question->setAttributes(App()->request->getPost('Question'));
             if ($question->save()) {
                 $this->redirect(['questions/update', 'id' => $question->primaryKey]);
             }
         } else {
-            $lastTitle = array_values($question->survey->questions)[count($question->survey->questions) - 1]->title;
+
+            $lastTitle = ([] != $values = array_values($question->survey->questions)) ? $values[count($question->survey->questions) - 1]->title : "q0";
             if (isset($lastTitle) && preg_match('/^(.*?)(\d+)$/', $lastTitle, $matches)) {
                 $question->title = $matches[1] . ($matches[2] + 1);
             }

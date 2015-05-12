@@ -60,14 +60,18 @@ class Answer extends LSActiveRecord
     {
         return array(
             ['question_id','exist', 'className' => Question::class, 'attributeName' => 'qid'],
-            array('code','length', 'min' => 1, 'max'=>5),
+            ['code','length', 'min' => 1, 'max'=>5, 'allowEmpty' => false],
+            ['sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
             array('answer','LSYii_Validators'),
-            array('sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+
             array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         );
     }
 
+    public function init() {
+        $this->code = 'A1';
+    }
     /**
      * Return the key=>value answer for a given $qid
      *

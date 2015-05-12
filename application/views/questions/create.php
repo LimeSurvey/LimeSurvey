@@ -10,14 +10,18 @@ echo TbHtml::openTag('fieldset', []);
 echo TbHtml::activeTextFieldControlGroup($question, 'title', array_merge($options, [
     'help' => "This is a suggestion based on the previous question title, feel free to change it."
 ]));
-echo TbHtml::customActiveControlGroup($this->widget(WhSelect2::class, [
-    'data' => CHtml::listData($question->group->questions, 'qid', function(Question $question) { return gT("Before") . ' ' . $question->displayLabel; }),
-    'model' => $question,
-    'attribute' => 'before',
-    'htmlOptions'=> [
-        'empty' => 'At end'
-    ]
-], true), $question, 'after', $options);
+if (!empty($question->group->questions)) {
+    echo TbHtml::customActiveControlGroup($this->widget(WhSelect2::class, [
+        'data' => CHtml::listData($question->group->questions, 'qid', function (Question $question) {
+            return gT("Before") . ' ' . $question->displayLabel;
+        }),
+        'model' => $question,
+        'attribute' => 'before',
+        'htmlOptions' => [
+            'empty' => 'At end'
+        ]
+    ], true), $question, 'after', $options);
+}
 $questionTypeOptions = CHtml::listData($question->typeList(), 'type', function($details) {
     return [
         'class' => 'questionType',
