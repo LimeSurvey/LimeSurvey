@@ -340,9 +340,15 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    $.post(inviteurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
-                        window.open('data:text/html;charset=utf-8,'+data);
-                    });
+                    var newForm = jQuery('<form>', {
+                        'action': remindurl,
+                        'target': 'inviteurl'
+                    }).append(jQuery('<input>', {
+                        'name': 'tokenids',
+                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();                        
                 }
             }
         });
@@ -359,9 +365,15 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    $.post(remindurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
-                        window.open('data:text/html;charset=utf-8,'+data);
-                    });
+                    var newForm = jQuery('<form>', {
+                        'action': remindurl,
+                        'target': '_blank'
+                    }).append(jQuery('<input>', {
+                        'name': 'tokenids',
+                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();                    
                 }
             }
         });
