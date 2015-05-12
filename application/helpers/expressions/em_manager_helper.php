@@ -6278,9 +6278,9 @@
                                 {
                                     $rowCount=0;
                                     $numUnanswered=0;
-                                    foreach ($sgqas as $s)
+                                    foreach ($sgqas as $s)// For each sub question (double), test if one is checked
                                     {
-                                        if (strpos($s, $sq['rowdivid']) !== false)
+                                        if (strpos($s, $sq['rowdivid']."_") !== false)// Filterd by Y : SGQASYCODE_SXCODE
                                         {
                                             ++$rowCount;
                                             if (array_search($s,$unansweredSQs) !== false) {
