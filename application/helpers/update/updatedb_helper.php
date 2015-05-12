@@ -1301,6 +1301,7 @@ function db_upgrade_all($iOldDBVersion) {
         if ($iOldDBVersion < 181)
         {
             upgradeTokenTables181();
+            upgradeSurveyTables181();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>181),"stg_name='DBVersion'");
         }        
         $oTransaction->commit();
@@ -1329,30 +1330,60 @@ function db_upgrade_all($iOldDBVersion) {
 }
 
 
-function upgradeTokenTables181()
+function upgradeSurveyTables181()
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
     if(Yii::app()->db->driverName!='pgsql')
     {
-        $surveyidresult = dbGetTablesLike("tokens%");
-        if ($surveyidresult)
+        $aTables = dbGetTablesLike("survey\_%");        
+        if ($aTables)
         {
-            foreach ( $surveyidresult as $sTableName )
+            foreach ( $aTables as $sTableName )
             {
                 $oTableSchema=$oSchema->getTable($sTableName);
+                if (!in_array('token',$oTableSchema->columnNames)) continue; // No token field in this table
                 switch (Yii::app()->db->driverName){
                     case 'sqlsrv':
                     case 'dblib':
                     case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
-                        alterColumn($sTableName, 'token', "string(35)"); //COLLATE SQL_Latin1_General_CP1_CS_AS
+                        alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
                         $oDB->createCommand()->createIndex("idx_{$sTableName}_".rand(1,50000),  $sTableName,'token');
                         break;
                     case 'mysql':
                     case 'mysqli':
                         alterColumn($sTableName, 'token', "string(35) COLLATE 'utf8_bin'");
                         break;
-                    default: die('Something went horribly wrong.');    
+                    default: die('Unknown database driver');    
+                }   
+            }
+        }
+    }
+}
+
+function upgradeTokenTables181()
+{
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if(Yii::app()->db->driverName!='pgsql')
+    {
+        $aTables = dbGetTablesLike("tokens%");
+        if ($aTables)
+        {
+            foreach ( $aTables as $sTableName )
+            {
+                switch (Yii::app()->db->driverName){
+                    case 'sqlsrv':
+                    case 'dblib':
+                    case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
+                        alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                        $oDB->createCommand()->createIndex("idx_{$sTableName}_".rand(1,50000),  $sTableName,'token');
+                        break;
+                    case 'mysql':
+                    case 'mysqli':
+                        alterColumn($sTableName, 'token', "string(35) COLLATE 'utf8_bin'");
+                        break;
+                    default: die('Unknown database driver');    
                 }   
             }
         }
@@ -1993,8 +2024,6 @@ function upgradeQuestionAttributes142()
 
 function upgradeSurveyTables139()
 {
-    global $modifyoutput;
-    $dbprefix = Yii::app()->getDb()->tablePrefix;
     $aTables = dbGetTablesLike("survey\_%");
     foreach ( $aTables as $sTable )
     {

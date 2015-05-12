@@ -337,7 +337,15 @@ function activateSurvey($iSurveyID, $simulate = false)
                     $createsurvey[$arow['fieldname']] = "string";
                 break;
             case "token":
-                    $createsurvey[$arow['fieldname']] = "string(36)";
+                    // Specify case sensitive collations for the token
+                    $sCollation='';
+                    if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
+                        $sCollation=" COLLATE 'utf8_bin'";
+                    }
+                    if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
+                        $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
+                    }                  
+                    $createsurvey[$arow['fieldname']] = 'string(35)'.$sCollation;
                 break;
             case '*': // Equation
                 $createsurvey[$arow['fieldname']] = "text";
