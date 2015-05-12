@@ -49,7 +49,7 @@
                         'question',
                         'help'
                     ],
-                    'baseLanguage' => function(Question $question) { return $question->survey->language; }
+                    'baseLanguage' => function(Question $question) { return $question->isNewRecord ? 'en' : $question->survey->language; }
                 ]
             ];
         }

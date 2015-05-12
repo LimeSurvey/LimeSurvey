@@ -9,9 +9,9 @@
     ];
     echo TbHtml::tag('div', [
         'class' => 'form-group'
-    ], TbHtml::activeLabel(new Answer(), "code", [
+    ], TbHtml::activeLabel(new Question(), "title", [
             'class' => 'col-sm-1'
-        ]) . TbHtml::activeLabel(new Answer(), "answer", [
+        ]) . TbHtml::activeLabel(new Question(), "question", [
             'class '=> 'col-sm-10',
         ]) . TbHtml::label(gT('Actions'), null, ['class' => 'col-sm-1'])
     );
@@ -30,14 +30,14 @@
         echo TbHtml::errorSummary($question);
         echo TbHtml::openTag('div', ['class' => 'form-group', 'data-index' => $i]);
         if ($first) {
-            echo TbHtml::activeTextField($question, "[{$i}]code", ['class' => 'col-sm-1 code']);
+            echo TbHtml::activeTextField($question, "[{$i}]title", ['class' => 'col-sm-1 code']);
         } else {
-            echo TbHtml::textField("code", $question->title, ['id' => "code_{$i}_$language", 'class' => 'col-sm-1 code']);
+            echo TbHtml::textField("code", $question->title, ['id' => "title{$i}_$language", 'class' => 'col-sm-1 code']);
         }
 
-        echo TbHtml::activeTextField($answer, "[{$i}]translatedFields[$language][answer]", [
+        echo TbHtml::activeTextField($question, "[{$i}]translatedFields[$language][question]", [
             'class' => 'col-sm-10',
-            'value' => $answer->answer
+            'value' => $question->question
             // TranslatableBehavior makes sure we copy the base language if no translation is found.
         ]);
         //        echo TbHtml::textField("Answer[{$i}]translatedFields[$language][answer]", $answer->answer, ['class' => 'col-sm-10']);
