@@ -2698,8 +2698,7 @@ function CSVImportSurvey($sFullFilePath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
 
 
-    // DO SURVEY_RIGHTS
-
+    // Create survey permissions
     Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSID);
 
     $importresults['deniedcountls'] =0;
@@ -4200,7 +4199,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-    // Set survey rights
+    // Set survey permissions
     Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSID);
     $aOldNewFieldmap=reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDReplacements);
     $results['FieldReMap']=$aOldNewFieldmap;

@@ -331,7 +331,13 @@ class tokens extends Survey_Common_Action
         $aData['order'] = $order;
         $aData['surveyprivate'] = $aData['thissurvey']['anonymized'];
         $aData['dateformatdetails'] = $dateformatdetails;
-
+        $aLanguageCodes=Survey::model()->findByPk($iSurveyId)->getAllLanguages();
+        $aLanguages=array();
+        foreach ($aLanguageCodes as $aCode)
+        {
+            $aLanguages[$aCode]=getLanguageNameFromCode($aCode,false);    
+        }
+        $aData['aLanguages'] = $aLanguages;
         $this->_renderWrappedTemplate('token', array('tokenbar', 'browse'), $aData);
     }
 

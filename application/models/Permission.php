@@ -407,18 +407,6 @@ class Permission extends LSActiveRecord
         $this->setPermissions($iUserID, $iSurveyID, 'survey', $aPermissionsToSet);
     }
 
-    function deleteSomeRecords($condition)
-    {
-        $criteria = new CDbCriteria;
-
-        foreach ($condition as $item => $value)
-        {
-            $criteria->addCondition($item."='".$value."'");
-        }
-
-        $this->deleteAll($criteria);
-    }
-
     function insertRecords($data)
     {
         foreach ($item as $data)
