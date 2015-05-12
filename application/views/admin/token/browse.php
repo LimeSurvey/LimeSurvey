@@ -1,21 +1,11 @@
 <?php
     // Build the options for additional languages
-    $j = 1;
-    $getlangvalues = getLanguageData(false,Yii::app()->session['adminlang']);
-    if (Yii::app()->session['adminlang'] != 'auto')
+    $aLanguageNames=array();
+    foreach ($aLanguages as $sCode => $sName)
     {
-        $lname[0] = Yii::app()->session['adminlang'] . ":" . $getlangvalues[Yii::app()->session['adminlang']]['description'];
+        $aLanguageNames[] = $sCode . ":" . str_replace(";", " -", $sName);
     }
-    foreach ($getlangvalues as $keycode => $keydesc)
-    {
-        if (Yii::app()->session['adminlang'] != $keycode)
-        {
-            $cleanlangdesc = str_replace(";", " -", $keydesc['description']);
-            $lname[$j] = $keycode . ":" . $cleanlangdesc;
-            $j++;
-        }
-    }
-    $langnames = implode(";", $lname);
+    $aLanguageNames = implode(";", $aLanguageNames);
     // Build the column information : columnname=>Description,search(true/false) (type ?)
     // Don't add id : because we don't really need it. This different from columnNames (no action).
     // TODO: Merge columnNames and aTokenColumns : need more option (name,index,search, type, editable ...)
@@ -127,7 +117,7 @@
     { "name":"email", "index":"email","align":"left","width":170, "sorttype":"string", "sortable": true, "editable":true},
     { "name":"emailstatus", "index":"emailstatus","align":"left","width":80,"sorttype":"string", "sortable": true, "editable":true},
     { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":150,"editable":true},
-    { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $langnames; ?>"}},
+    { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
     { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":130,"editable":true},
     { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
     { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true},
