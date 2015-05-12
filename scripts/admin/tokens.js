@@ -330,7 +330,7 @@ $(document).ready(function() {
                     alert(sSelectRowMsg );
                 }
                 else
-                {
+                {                              
                     $.post(inviteurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
                         var win=window.open();
                         with(win.document)
@@ -356,15 +356,15 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    $.post(remindurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
-                        var win=window.open();
-                        with(win.document)
-                        {
-                            open();
-                            write(data);
-                            close();
-                        }
-                    });
+                    var newForm = jQuery('<form>', {
+                        'action': remindurl,
+                        'target': '_blank'
+                    }).append(jQuery('<input>', {
+                        'name': 'tokenids',
+                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    }));
+                    newForm.submit();                    
                 }
             }
         });

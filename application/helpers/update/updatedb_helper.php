@@ -2160,10 +2160,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 function dropColumn($sTableName, $sColumnName)
 {
     $sDBDriverName=Yii::app()->db->getDriverName();
-    if ($sDBDriverName=='mysqli') $sDBDriverName='mysql';
-    if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib') $sDBDriverName='mssql';
-
-    if ($sDBDriverName=='mssql')
+    if ($sDBDriverName=='mssql' || $sDBDriverName=='sqlsrv' || $sDBDriverName=='dblib')
     {
         dropDefaultValueMSSQL($sColumnName,$sTableName);
     }
