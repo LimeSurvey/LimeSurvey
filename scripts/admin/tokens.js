@@ -331,15 +331,15 @@ $(document).ready(function() {
                 }
                 else
                 {                              
-                    $.post(inviteurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
-                        var win=window.open();
-                        with(win.document)
-                        {
-                            open();
-                            write(data);
-                            close();
-                        }
-                    });
+                    var newForm = jQuery('<form>', {
+                        'action': inviteurl,
+                        'target': '_blank'
+                    }).append(jQuery('<input>', {
+                        'name': 'tokenids',
+                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();      
                 }
             }
         });
@@ -363,7 +363,7 @@ $(document).ready(function() {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
-                    }));
+                    })).appendTo('body');
                     newForm.submit();                    
                 }
             }
