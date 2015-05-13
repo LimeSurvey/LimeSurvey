@@ -1,10 +1,10 @@
-<div class="form-horizontal"><?php
-
-$options = ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL];
+<?php
+/** @var TbActiveForm $form */
+//$form->layout = TbHtml::FORM_LAYOUT_HORIZONTAL;
 echo TbHtml::openTag('fieldset', []);
-echo TbHtml::activeTextFieldControlGroup($question, 'title', $options);
-echo TbHtml::activeTextFieldControlGroup($question, 'relevance', $options);
-echo TbHtml::activeTextFieldControlGroup($question, 'a_random_group', $options);
-echo TbHtml::activeCheckBoxControlGroup($question, 'bool_mandatory', $options);
+echo $form->textFieldControlGroup($question, 'title');
+echo $form->textFieldControlGroup($question, 'relevance');
+echo $form->textFieldControlGroup($question, 'a_random_group');
+echo $form->checkBoxControlGroup($question, 'bool_mandatory');
 echo TbHtml::closeTag('fieldset');
-?></div>
+?>

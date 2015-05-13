@@ -1,28 +1,27 @@
 <?php
-/** @var \ls\models\questions\ChoiceQuestion $question */
-if ($question->hasSubQuestions) {
-//    echo TbHtml::well("Answer options for this question: " . print_r(TbHtml::listData($question->answers, 'code', 'code'), true));
+/** @var \ls\models\forms\SubQuestions $subQuestions */
 
-    $first = true;
-    foreach ($question->survey->languages as $language) {
-        $tabs[] = [
-            'label' => App()->locale->getLanguage($language),
-            'active' => $language == $question->survey->language,
-            'id' => "questions-$language",
-            'content' => $this->renderPartial('update/subQuestionTab', ['question' => $question, 'language' => $language, 'first' => $first], true)
-        ];
-        $first = false;
-    }
-    echo TbHtml::well("To assist you with editing, the base language is shown for untranslated fields.");
-    $this->widget(TbTabs::class, [
-        'tabs' => $tabs,
-        'id' => 'questionTab'
-    ]);
-    echo TbHtml::button('Add question', ['id' => 'addquestion']);
-
+$first = true;
+foreach ($subQuestions->question->survey->languages as $language) {
+    $tabs[] = [
+        'label' => App()->locale->getLanguage($language),
+        'active' => $language == $subQuestions->question->survey->language,
+        'id' => "questions-$language",
+        'content' => $this->renderPartial('update/subQuestionTab', ['subQuestions' => $subQuestions, 'language' => $language, 'first' => $first, 'form' => $form], true)
+    ];
+    $first = false;
 }
+echo TbHtml::well("To assist you with editing, the base language is shown for untranslated fields.");
+$this->widget(TbTabs::class, [
+    'tabs' => $tabs,
+    'id' => 'subQuestionTab'
+]);
+echo TbHtml::button('Add question', ['id' => 'addquestion']);
+
+
 ?>
 <script>
+    /*
     $(document).ready(function() {
         function updateProperties(group, i) {
             var $group = $(group);
@@ -59,11 +58,11 @@ if ($question->hasSubQuestions) {
                 $clone.clone().appendTo($group.parent());
             });
         });
-        var $answerTab = $('#answerTab');
-        $answerTab.on('change', '.code', function (e) {
+        var $subQuestionTab = $('#subQuestionTab');
+        $subQuestionTab.on('change', '.code', function (e) {
             var i = $(this).closest('.form-group').attr('data-index');
             // Update the other inputs.
-            $answerTab.find('.form-group[data-index=' + i + '] .code').val($(this).val());
+            $subQuestionTab.find('.form-group[data-index=' + i + '] .code').val($(this).val());
         });
         $('.sortable').on('sortupdate', function (e) {
             // Update the others as well.
@@ -76,13 +75,13 @@ if ($question->hasSubQuestions) {
                 });
             });
             // After moving update properties.
-            renumber($answerTab.find('.sortable'));
+            renumber($subQuestionTab.find('.sortable'));
         });
         $('.sortable').sortable();
-        $answerTab.on('click', 'a.remove', function(e) {
+        $subQuestionTab.on('click', 'a.remove', function(e) {
             var index = $(this).closest('.form-group').attr('data-index');
-            $answerTab.find('.form-group[data-index="' + index + '"]').remove();
-            renumber($answerTab.find('.sortable'));
+            $subQuestionTab.find('.form-group[data-index="' + index + '"]').remove();
+            renumber($subQuestionTab.find('.sortable'));
         });
-    });
+    }); */
 </script>

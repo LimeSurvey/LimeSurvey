@@ -16,11 +16,13 @@
         * 	Files Purpose: lots of common functions
     */
 
+
 /**
  * Class Question
  * @property-read Translation[] $translations Relation added by translatable behavior
  * @property-read bool $hasSubQuestions
  * @property-read bool $hasAnswers
+ * @property-read Survey $survey
  */
     class Question extends LSActiveRecord
     {
@@ -68,7 +70,7 @@
         }
 
         public function beforeSave() {
-            if ($this->isNewRecord) {
+            if ($this->isNewRecord && empty($this->parent_qid)) {
                 // Set order.
                 if (empty($this->before)) {
                     $criteria = (new CDbCriteria())
@@ -161,7 +163,9 @@
         */
         public function rules()
         {
-            
+            throw new \Exception('noo');
+            var_dump($this->scenario);
+            die();
             $aRules= [
                 /**
                  * @todo Add a validation for regular expression.
@@ -181,35 +185,29 @@
                 ['scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
                 ['same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
             ];
-            if($this->parent_qid)// Allways enforce unicity on Sub question code (DB issue).
-            {
-                $aRules[] = ['title', 'unique', 'caseSensitive' => false,
-                    'criteria' => [
-                        'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
-                        'params' => [
-                            ':sid' => $this->sid,
-                            ':parent_qid' => $this->parent_qid,
-                            ':scale_id' => $this->scale_id
-                        ]
-                    ],
-                    'message' => gT('Subquestion codes must be unique.')
-                ];
-                $aRules[] = ['title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport'];
-            } else {
-                $aRules[] = ['title', 'unique', 'caseSensitive'=>true,
-                    'criteria'=>[
-                        'condition' => 'sid=:sid AND parent_qid=0',
-                        'params' => [':sid' => $this->sid]
-                    ],
-                    'message' => gT('Question codes must be unique.'),
-                    'except' => 'archiveimport'
-                ];
 
-                $aRules[] = ['title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/',
-                    'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'),
-                    'except' => 'archiveimport'
-                ];
-            }
+            $aRules[] = ['title', 'match', 'pattern' => '/^[a-z0-9]*$/i',
+                'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
+                'on' => ['updatesub', 'insertsub']
+            ];
+            $aRules[] = ['title', 'unique', 'caseSensitive'=>true,
+                'criteria'=>[
+                    'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
+                    // Use a deferred value since $this->sid might be set after validators are created.
+                    'params' => [
+                        ':sid' => new DeferredValue(function() { return $this->sid; }),
+                        ':parent_qid' => new DeferredValue(function() { return $this->parent_qid; }),
+                        ':scale_id' => new DeferredValue(function() { return $this->scale_id; })
+                    ]
+                ],
+                'message' => gT('Question codes must be unique.'),
+                'except' => 'archiveimport'
+            ];
+
+            $aRules[] = ['title', 'match', 'pattern' => '/^[a-z][a-z0-9]*$/i',
+                'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'),
+                'on' => ['update', 'insert']
+            ];
             return $aRules;
         }
 

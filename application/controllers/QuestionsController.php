@@ -1,5 +1,6 @@
 <?php
 namespace ls\controllers;
+use ls\models\forms\SubQuestions;
 use \Yii;
 class QuestionsController extends Controller 
 {
@@ -16,11 +17,13 @@ class QuestionsController extends Controller
         $this->question = $question = $this->loadModel($id);
         $this->survey = $this->question->survey;
         $this->group = $this->question->group;
+
+        $subQuestions = new SubQuestions($question);
         if (App()->request->isPutRequest) {
             // Update the question from data.
             $error = false;
             $answers = [];
-            if ($this->question->hasAnswers && App()->request->getParam('Answer', false) !== false) {
+            if ($question->hasAnswers && App()->request->getParam('Answer', false) !== false) {
 
                 // Remove all answers.
                 // Create new ones.
@@ -32,10 +35,23 @@ class QuestionsController extends Controller
                     $answers[] = $answer;
                     $error = $error || !$answer->validate();
                 }
-                $this->question->answers = $answers;
+                $question->answers = $answers;
             }
 
 
+            if ($question->hasSubQuestions && App()->request->getParam('SubQuestions', false) !== false) {
+                $subQuestions->setAttributes(App()->request->getParam('SubQuestions'));
+            }
+            if ($error) {
+                foreach($answers as $answer) {
+                    var_dump($answer->errors);
+                }
+                foreach($subQuestions as $subQuestion) {
+                    var_dump($subQuestion->errors);
+                    var_dump($subQuestion->title);
+                }
+                die('noo');
+            }
             $this->question->setAttributes(App()->request->getParam(\CHtml::modelName($question)));
             if (
                 // Validation error in dependent models
@@ -49,6 +65,13 @@ class QuestionsController extends Controller
                 // Save new answers.
                 && array_reduce($answers, function($carry, \Answer $answer) {
                 return $carry && $answer->save();
+                }, true)
+                && array_reduce(\Question::model()->findAllByAttributes(['parent_qid' => $question->qid]), function($carry, \Question $question) {
+                    return $carry && $question->delete();
+                }, true)
+                // Save new answers.
+                && array_reduce($subQuestions, function($carry, \Question $question) {
+                    return $carry && $question->save();
                 }, true)) {
                 App()->user->setFlash('success', "Question updated.");
             } else {
@@ -56,7 +79,7 @@ class QuestionsController extends Controller
             }
         }
 
-        $this->render('update', ['question' => $this->question, 'post' => $_POST, 'questionnames' => $this->question->translations]);
+        $this->render('update', ['question' => $this->question, 'post' => $_POST, 'questionnames' => $this->question->translations, 'subQuestions' => $subQuestions]);
     }
 
     public function actionCreate($groupId) {

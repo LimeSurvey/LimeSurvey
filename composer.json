@@ -54,8 +54,8 @@
                 "application/libraries/PluginManager",
                 "application/libraries/PluginManager/Storage"
             ],
-            "ls\\models\\questions\\" : [
-              "application/models/questions"
+            "ls\\models\\" : [
+              "application/models"
             ]
         }
     },

@@ -1,22 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 5/1/15
- * Time: 12:00 PM
- */
 /** @var \Question $question */
-$options = ['formLayout' => TbHtml::FORM_LAYOUT_VERTICAL];
+/** @var TbActiveForm $form */
+$form->layout = TbHtml::FORM_LAYOUT_VERTICAL;
 $question->language = $language;
 echo TbHtml::openTag('fieldset', [
-    'class' => 'col-md-12'
 ]);
-echo TbHtml::activeTextAreaControlGroup($question, "translatedFields[$language][question]", array_merge($options, [
+echo $form->textAreaControlGroup($question, "translatedFields[$language][question]", [
     'class' => 'html',
     'label' => $question->getAttributeLabel('question')
-]));
-echo TbHtml::activeTextAreaControlGroup($question, "translatedFields[$language][help]", array_merge($options, [
+]);
+echo $form->textAreaControlGroup($question, "translatedFields[$language][help]", [
     'class' => 'html',
     'label' => $question->getAttributeLabel('help')
-]));
+]);
 echo TbHtml::closeTag('fieldset');
