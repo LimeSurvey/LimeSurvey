@@ -648,6 +648,10 @@ class InstallerController extends CController {
                         }
                         // Save user
                         $user=new User;
+                        // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
+                        if (in_array($this->connection->getDriverName(), array('mysql', 'mysqli'))) {
+                            $user->uid=1;
+                        }
                         $user->users_name=$sDefaultAdminUserName;
                         $user->password=$sPasswordHash;
                         $user->full_name=$sDefaultAdminRealName;
