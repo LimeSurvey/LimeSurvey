@@ -302,7 +302,14 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->scale_id=$iScaleID;
                             }
                         }
-                        $bSubQuestionResult=$oSubQuestion->save();
+                        if ($oSubQuestion->qid) {
+                            switchMSSQLIdentityInsert('questions',true);
+                            $bSubQuestionResult=$oSubQuestion->save();
+                            switchMSSQLIdentityInsert('questions',false);
+                        }else
+                        {
+                            $bSubQuestionResult=$oSubQuestion->save();
+                        }
                         if($bSubQuestionResult)
                         {
                             if(substr($subquestionkey,0,3)!='new' && isset($aOldCodes[$iScaleID][$iPosition]) && $aCodes[$iScaleID][$iPosition] !== $aOldCodes[$iScaleID][$iPosition])
