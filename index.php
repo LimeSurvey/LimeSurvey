@@ -192,7 +192,7 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
     $runtimePath = $config['runtimePath'];
     if (!is_dir($runtimePath) || !is_writable($runtimePath)) {
         // @@TODO: present html page styled like the installer
-        die (sprintf('%s should be writable by the webserver (755 or 775).', $runtimePath));
+        die (sprintf('%s should be writable by the webserver (766 or 776).', $runtimePath));
     }
 }
 
