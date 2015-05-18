@@ -453,6 +453,8 @@ class quotas extends Survey_Common_Action
         $sBaseLang   = $aData['sBaseLang'];
         $clang       = $aData['clang'];
         $this->_checkPermissions($iSurveyId, 'read');
+		
+			
         $aQuestion = Question::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
         $aQuestionType = $aQuestion['type'];
 
@@ -473,7 +475,8 @@ class quotas extends Survey_Common_Action
                 'F' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Female"), 'code' => 'F'));
         } elseif ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!')
         {
-            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId));
+        	
+            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
 
@@ -481,6 +484,7 @@ class quotas extends Survey_Common_Action
             {
                 $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40), 'code' => $aDbAnsList['code']);
             }
+			
         } elseif ($aQuestionType == 'A')
         {
             $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
@@ -497,7 +501,7 @@ class quotas extends Survey_Common_Action
             }
         } elseif ($aQuestionType == 'B')
         {
-            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId));
+            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
 
