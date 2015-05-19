@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-05-17 23:06:19+00:00\n"
+"POT-Creation-Date: 2015-05-19 12:16:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -358,7 +358,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:941
 #: application/controllers/admin/printablesurvey.php:1046
 #: application/controllers/admin/printablesurvey.php:1062
-#: application/controllers/admin/quotas.php:515
+#: application/controllers/admin/quotas.php:519
 #: application/controllers/admin/surveyadmin.php:657
 #: application/controllers/admin/tokens.php:2207
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:220
@@ -600,7 +600,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:942
 #: application/controllers/admin/printablesurvey.php:1048
 #: application/controllers/admin/printablesurvey.php:1064
-#: application/controllers/admin/quotas.php:516
+#: application/controllers/admin/quotas.php:520
 #: application/controllers/admin/surveyadmin.php:661
 #: application/controllers/admin/tokens.php:2209
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:257
@@ -831,7 +831,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:718
 #: application/controllers/admin/printablesurvey.php:349
 #: application/controllers/admin/printablesurvey.php:664
-#: application/controllers/admin/quotas.php:473
+#: application/controllers/admin/quotas.php:475
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:242
 #: application/helpers/admin/statistics_helper.php:1459
 #: application/helpers/common_helper.php:1512
@@ -848,7 +848,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:719
 #: application/controllers/admin/printablesurvey.php:348
 #: application/controllers/admin/printablesurvey.php:665
-#: application/controllers/admin/quotas.php:472
+#: application/controllers/admin/quotas.php:474
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:246
 #: application/helpers/admin/statistics_helper.php:1460
 #: application/helpers/common_helper.php:1511
@@ -1128,107 +1128,107 @@ msgstr ""
 msgid "Default value settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:181
+#: application/controllers/admin/database.php:175
 #: application/views/admin/database/database_view.php:10
 msgid "Failed to update answers"
 msgstr ""
 
-#: application/controllers/admin/database.php:193
+#: application/controllers/admin/database.php:190
 msgid "Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."
 msgstr ""
 
-#: application/controllers/admin/database.php:197
+#: application/controllers/admin/database.php:194
 msgid "Answer options were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:234
+#: application/controllers/admin/database.php:231
 #: application/views/admin/database/database_view.php:28
 msgid "Failed to delete answer"
 msgstr ""
 
-#: application/controllers/admin/database.php:333
+#: application/controllers/admin/database.php:330
 msgid "Error on %s for subquestion %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:338
+#: application/controllers/admin/database.php:335
 msgid "Subquestions %s could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:352
+#: application/controllers/admin/database.php:349
 msgid "Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."
 msgstr ""
 
-#: application/controllers/admin/database.php:356
+#: application/controllers/admin/database.php:353
 msgid "Subquestions were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:376
+#: application/controllers/admin/database.php:373
 msgid "The question could not be added. You must enter at least a question code."
 msgstr ""
 
-#: application/controllers/admin/database.php:421
+#: application/controllers/admin/database.php:418
 msgid "Question could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:460
+#: application/controllers/admin/database.php:457
 msgid "Question in language %s could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:474
+#: application/controllers/admin/database.php:471
 #: application/views/admin/database/database_view.php:46
 msgid "Question could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:599
+#: application/controllers/admin/database.php:596
 msgid "Question was successfully added."
 msgstr ""
 
-#: application/controllers/admin/database.php:746
+#: application/controllers/admin/database.php:743
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."
 msgstr ""
 
-#: application/controllers/admin/database.php:819
+#: application/controllers/admin/database.php:816
 msgid "Question could not be updated with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:824
+#: application/controllers/admin/database.php:821
 msgid "Question could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:852
+#: application/controllers/admin/database.php:849
 msgid "Question was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:889
+#: application/controllers/admin/database.php:886
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
 msgid "Question could not be updated"
 msgstr ""
 
-#: application/controllers/admin/database.php:953
+#: application/controllers/admin/database.php:950
 msgid "Survey text elements successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1103
+#: application/controllers/admin/database.php:1100
 #: application/controllers/admin/surveyadmin.php:1562
 msgid "Warning! Notification email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/database.php:1110
+#: application/controllers/admin/database.php:1107
 #: application/controllers/admin/surveyadmin.php:1569
 msgid "Warning! Bounce email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/database.php:1160
+#: application/controllers/admin/database.php:1157
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1164
+#: application/controllers/admin/database.php:1161
 msgid "Error:"
 msgstr ""
 
-#: application/controllers/admin/database.php:1164
+#: application/controllers/admin/database.php:1161
 msgid "Survey could not be updated."
 msgstr ""
 
@@ -3977,7 +3977,7 @@ msgid "Try again! Connection with database failed."
 msgstr ""
 
 #: application/controllers/InstallerController.php:574
-#: application/controllers/InstallerController.php:1264
+#: application/controllers/InstallerController.php:1259
 msgid "Try again! Connection with database failed. Reason: "
 msgstr ""
 
@@ -4006,11 +4006,11 @@ msgstr ""
 msgid "Passwords don't match."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1124
+#: application/controllers/InstallerController.php:1119
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1125
+#: application/controllers/InstallerController.php:1120
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
