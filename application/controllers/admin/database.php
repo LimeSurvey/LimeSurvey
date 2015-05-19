@@ -176,7 +176,7 @@ class database extends Survey_Common_Action
                         }
                     }
                     // Updating code (oldcode!==null) => update condition with the new code
-                    $sOldCode=sanitize_paranoid_string(Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID));
+                    $sOldCode=Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);
                     if(isset($sOldCode) && $sCode !== $sOldCode)
                     {
                         Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$iQuestionID, ':value'=>$sOldCode));
