@@ -948,11 +948,6 @@ class InstallerController extends CController {
                 case 'mysqli':
                     $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
                     break;
-                case 'pgsql':
-                    if (version_compare($this->connection->getServerVersion(),'9','>=')) {
-                        $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." SET bytea_output='escape';")->execute();
-                    }
-                    break;
             }
         } catch(Exception $e) {
             return array($e->getMessage());
