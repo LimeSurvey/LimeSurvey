@@ -41,9 +41,6 @@
                     $sql_file = 'mysql';
                     break;
                 case 'pgsql':
-                    if (version_compare($this->connection->getServerVersion(),'9','>=')) {
-                        $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname')) ." SET bytea_output='escape';")->execute();
-                    }
                     $sql_file = 'pgsql';
                     break;
                 case 'dblib': 
