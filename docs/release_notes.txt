@@ -60,6 +60,47 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.05+ (build 150508) to 2.05+ (build 150520) May 20, 2015
+-New translation: Kyrgyz (Carsten Schmitz)
+-New translation: Polish (Informal) (elisa)
+-Fixed issue #8917: Error in R export plugin when exporting Yes/No question results (Carsten Schmitz)
+-Fixed issue #9289: Unable to delete a member of a group (Carsten Schmitz)
+-Fixed issue #9299: Bad handling of broken links to uploaded files (Carsten Schmitz)
+-Fixed issue #9448: Label set update : can remove existing language (Carsten Schmitz)
+-Fixed issue #9449: Label set updates clear out existing assessment values (Carsten Schmitz)
+-Fixed issue #9466: "Import response from deactivated table" doesn't import timing table (Carsten Schmitz)
+-Fixed issue #9485: Reminder/invitation mails are not coded right (Carsten Schmitz)
+-Fixed issue #9493: Mandatory check can fails with array filtered array (numbers) (Denis Chenu)
+-Fixed issue #9512: User without update permission can't create label in main label magement screen - partial fix (Carsten Schmitz)
+-Fixed issue #9521: Quota members are shown in the wrong translation for multilingual surveys (LouisGac)
+-Fixed issue #9529: Public statistics only available in base language (Carsten Schmitz)
+-Fixed issue #9530: When editing a token the language drop down menu lists all languages - should list only languages used (Carsten Schmitz)
+-Fixed issue #9569: Admin with uid>1 cannot set superadmin permissions (Carsten Schmitz)
+-Fixed issue #9592: Unable to run survey when using database sessions with Postgres (Carsten Schmitz)
+-Fixed issue #9614: False question codes are replaced in the question texts, too (Denis Chenu)
+-Fixed issue #9632: Conditions can be wrongfully substituted (answer code : 0) (Denis Chenu)
+-Fixed issue #9633: Error when you insert subquestions in a multilingual survey on MSSQL (Carsten Schmitz)
+-Fixed issue: Wrong information in installer error message (LouisGac)
+#Updated translation: Arabic by malbariqi
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Esperanto by Fabricio
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by jankal, actxcellence
+#Updated translation: German (Informal) by actxcellence
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Korean by spn
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Portuguese (Portugal) by efialho, samarta
+#Updated translation: Russian by vipgroup, nickdsl
+#Updated translation: Spanish (Spain) by arnaldoanez, aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.05+ (build 150413) to 2.05+ (build 150508) May 7, 2015
 -Fixed issue #9603: Undefined variable: iSurveyID in /var/www/limesurvey/application/controllers/admin/tokens.php(36) (Alfredo Esteban)
 -Fixed issue #9605: Crash when trying to grant permission in specific survey to user without any global permission (Denis Chenu)
