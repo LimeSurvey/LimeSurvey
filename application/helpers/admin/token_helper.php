@@ -165,6 +165,8 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		$from =  $fieldsarray["{ADMINEMAIL}"];
 		if($from ==  '')
 			$from = Yii::app()->getConfig('siteadminemail');
+		elseif (!empty($fieldsarray["{ADMINNAME}"]))
+                        $from = $fieldsarray["{ADMINNAME}"]." <".$from.">";
 
 		foreach ($attributes as $attributefield)
 		{
