@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8446a20b572b41e9cecddec440b5823d",
+    "hash": "e625c28238fcd9e7b6d2804c6855acd7",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -224,6 +224,41 @@
             ]
         },
         {
+            "name": "bower-asset/samit-forms",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SAM-IT/st-forms.git",
+                "reference": "d25711caa3d70ae3c07eba714ec5aa0356a86351"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SAM-IT/st-forms/zipball/d25711caa3d70ae3c07eba714ec5aa0356a86351",
+                "reference": "d25711caa3d70ae3c07eba714ec5aa0356a86351",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "samit-forms.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Form validation using html attributes only.",
+            "keywords": [
+                "form",
+                "html5",
+                "validation"
+            ]
+        },
+        {
             "name": "bower-asset/select2",
             "version": "3.5.2",
             "source": {
@@ -287,16 +322,16 @@
         },
         {
             "name": "bower-asset/tinymce",
-            "version": "4.1.9",
+            "version": "4.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "0c25116c95fe26532e04708c495ec047e7e5acc5"
+                "reference": "503d6fe1e69bd9830d39689b6e32a6c7ebffb861"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/0c25116c95fe26532e04708c495ec047e7e5acc5",
-                "reference": "0c25116c95fe26532e04708c495ec047e7e5acc5",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/503d6fe1e69bd9830d39689b6e32a6c7ebffb861",
+                "reference": "503d6fe1e69bd9830d39689b6e32a6c7ebffb861",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -327,12 +362,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
-                "reference": "0beb095ca3d2bdc5901a1d1de7d63ca156ade90d"
+                "reference": "1beb49dac903b55bcdf642d7a367f006c7589e6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/utility/zipball/0beb095ca3d2bdc5901a1d1de7d63ca156ade90d",
-                "reference": "0beb095ca3d2bdc5901a1d1de7d63ca156ade90d",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/1beb49dac903b55bcdf642d7a367f006c7589e6f",
+                "reference": "1beb49dac903b55bcdf642d7a367f006c7589e6f",
                 "shasum": ""
             },
             "type": "library",
@@ -355,7 +390,7 @@
                 }
             ],
             "description": "CakePHP Utility classes such as Inflector, String, Hash, and Security",
-            "time": "2015-04-19 06:55:19"
+            "time": "2015-05-12 16:20:41"
         },
         {
             "name": "crisu83/yiistrap",
@@ -421,26 +456,26 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "5.2.0",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "475b29ccd411f2fa8a408e64576418728c032cfa"
+                "reference": "f3c8c22471cb55475105c14769644a49c3262b93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/475b29ccd411f2fa8a408e64576418728c032cfa",
-                "reference": "475b29ccd411f2fa8a408e64576418728c032cfa",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f3c8c22471cb55475105c14769644a49c3262b93",
+                "reference": "f3c8c22471cb55475105c14769644a49c3262b93",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/ringphp": "~1.0",
+                "guzzlehttp/ringphp": "^1.1",
                 "php": ">=5.4.0"
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "~4.0",
-                "psr/log": "~1.0"
+                "phpunit/phpunit": "^4.0",
+                "psr/log": "^1.0"
             },
             "type": "library",
             "extra": {
@@ -475,7 +510,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2015-01-28 01:03:29"
+            "time": "2015-05-20 03:47:55"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -483,12 +518,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/RingPHP.git",
-                "reference": "2498ee848cd01639aecdcf3d5a257bace8665b7c"
+                "reference": "9465032ac5d6beaa55f10923403e6e1c36018d9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/2498ee848cd01639aecdcf3d5a257bace8665b7c",
-                "reference": "2498ee848cd01639aecdcf3d5a257bace8665b7c",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/9465032ac5d6beaa55f10923403e6e1c36018d9c",
+                "reference": "9465032ac5d6beaa55f10923403e6e1c36018d9c",
                 "shasum": ""
             },
             "require": {
@@ -506,7 +541,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -526,7 +561,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-05-01 04:57:09"
+            "time": "2015-05-21 17:23:02"
         },
         {
             "name": "guzzlehttp/streams",
@@ -836,12 +871,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "07005ecbb80d11ec8c0f067bb37e8909cc7fcbb7"
+                "reference": "199bd9698b9b2b2c6b09e046fd12118fd10a7f73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/07005ecbb80d11ec8c0f067bb37e8909cc7fcbb7",
-                "reference": "07005ecbb80d11ec8c0f067bb37e8909cc7fcbb7",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/199bd9698b9b2b2c6b09e046fd12118fd10a7f73",
+                "reference": "199bd9698b9b2b2c6b09e046fd12118fd10a7f73",
                 "shasum": ""
             },
             "require": {
@@ -883,7 +918,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-05-04 12:37:21"
+            "time": "2015-05-21 15:05:57"
         },
         {
             "name": "react/promise",
@@ -928,6 +963,44 @@
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
             "time": "2014-12-30 13:32:42"
+        },
+        {
+            "name": "sam-it/forms",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SAM-IT/php-form.git",
+                "reference": "623205c77f997ed241effac3a58a6a0ce343dcd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SAM-IT/php-form/zipball/623205c77f997ed241effac3a58a6a0ce343dcd8",
+                "reference": "623205c77f997ed241effac3a58a6a0ce343dcd8",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/samit-forms": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SamIT\\Form\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam",
+                    "email": "sam@mousa.nl"
+                }
+            ],
+            "description": "Form validation library",
+            "time": "2015-05-22 13:24:23"
         },
         {
             "name": "sam-it/php-auto-update",
@@ -1160,12 +1233,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "17e0a77bcf7dd5f6146468df23e7766356af16f8"
+                "reference": "34c57c359ad5f79a8ae573367fe7d426521d0d16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/17e0a77bcf7dd5f6146468df23e7766356af16f8",
-                "reference": "17e0a77bcf7dd5f6146468df23e7766356af16f8",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/34c57c359ad5f79a8ae573367fe7d426521d0d16",
+                "reference": "34c57c359ad5f79a8ae573367fe7d426521d0d16",
                 "shasum": ""
             },
             "require": {
@@ -1242,7 +1315,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-04-17 21:14:28"
+            "time": "2015-05-07 15:28:33"
         }
     ],
     "packages-dev": [],
@@ -1262,7 +1335,8 @@
         "icecave/semver": 20,
         "hafriedlander/php-peg": 20,
         "bower-asset/tinymce": 20,
-        "sam-it/yii1-translate": 20
+        "sam-it/yii1-translate": 20,
+        "sam-it/forms": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

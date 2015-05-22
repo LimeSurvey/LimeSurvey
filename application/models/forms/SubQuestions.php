@@ -5,10 +5,12 @@ namespace ls\models\forms;
 /**
  * Class SubQuestions
  * This model handles validation of subquestions.
+ * It does multiple validations.
  */
 class SubQuestions extends \CFormModel
 {
     public $titles = [];
+    public $dummy;
     /**
      * @var \Question
      */
@@ -16,7 +18,7 @@ class SubQuestions extends \CFormModel
     public $questions;
     public function rules() {
         return [
-            ['titles', 'validateUnique', 'clientValidate' => 'debugger;']
+            ['dummy', 'validateUnique', 'clientValidate' => 'clientValidateUnique']
         ];
     }
 
@@ -42,7 +44,10 @@ class SubQuestions extends \CFormModel
         }
     }
 
-
+    public function clientValidateUnique($attribute, $params) {
+        // Dummy validator.
+        return "debugger;";
+    }
     public function validateUnique($attribute, $params) {
         $length = count($this->$attribute);
         for ($i = 0; $i < $length - 1; $i++) {
@@ -53,5 +58,9 @@ class SubQuestions extends \CFormModel
                    }
             }
         }
+    }
+
+    public function save() {
+        return true;
     }
 }

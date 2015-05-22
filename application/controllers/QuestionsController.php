@@ -18,68 +18,95 @@ class QuestionsController extends Controller
         $this->survey = $this->question->survey;
         $this->group = $this->question->group;
 
-        $subQuestions = new SubQuestions($question);
         if (App()->request->isPutRequest) {
-            // Update the question from data.
+//            echo '<pre>';
+//            return $this->render(null, $_POST);
+//            var_dump($_POST);
+//            die('</pre>');
+//             Update the question from data.
             $error = false;
             $answers = [];
             if ($question->hasAnswers && App()->request->getParam('Answer', false) !== false) {
 
                 // Remove all answers.
                 // Create new ones.
+                $codes = [];
                 foreach(App()->request->getParam('Answer') as $i => $data) {
                     $answer = new \Answer();
-                    $answer->question_id = $this->question->qid;
+                    $answer->question_id = $question->qid;
                     $answer->setAttributes($data);
                     $answer->sortorder = $i;
                     $answers[] = $answer;
                     $error = $error || !$answer->validate();
+                    /**
+                     * @todo Find a better solution for this manual validation.
+                     */
+                    if (isset($codes[$answer->code])) {
+                        App()->user->setFlash('danger', gT("Error: You are trying to use duplicate answer codes."));
+                        $error = true;
+                    } else {
+                        $codes[$answer->code] = true;
+                    }
                 }
                 $question->answers = $answers;
             }
+            $subQuestions = [];
+            if ($question->hasSubQuestions && App()->request->getParam('SubQuestion', false) !== false) {
 
+                // Remove all subquestions.
+                // Create new ones.
+                $codes = [];
+                foreach(App()->request->getParam('SubQuestion') as $i => $data) {
+                    $subQuestion = new \Question();
+                    $subQuestion->question_id = $question->qid;
+                    $subQuestion->setAttributes($data);
+                    $subQuestion->sortorder = $i;
+                    $subQuestions[] = $subQuestion;
+                    $error = $error || !$subQuestion->validate();
+                    /**
+                     * @todo Find a better solution for this manual validation.
+                     */
+                    if (isset($codes[$subQuestion->title])) {
+                        App()->user->setFlash('danger', gT("Error: You are trying to use duplicate answer codes."));
+                        $error = true;
+                    } else {
+                        $codes[$subQuestion->title] = true;
+                    }
+                }
+                $question->subQuestions = $subQuestions;
+            }
 
-            if ($question->hasSubQuestions && App()->request->getParam('SubQuestions', false) !== false) {
-                $subQuestions->setAttributes(App()->request->getParam('SubQuestions'));
-            }
-            if ($error) {
-                foreach($answers as $answer) {
-                    var_dump($answer->errors);
+            if (!$error) {
+                $this->question->setAttributes(App()->request->getParam(\CHtml::modelName($question)));
+                if (// Validate and save question.
+                    $question->save()
+                    // Remove old answers. Use individual delete to handle removal of dependent records.
+                    && array_reduce(\Answer::model()->findAllByAttributes(['question_id' => $question->qid]),
+                        function ($carry, \Answer $answer) {
+                            return $carry && $answer->delete();
+                        }, true)
+                    // Save new answers.
+                    && array_reduce($answers, function ($carry, \Answer $answer) {
+                        return $carry && $answer->save();
+                    }, true)
+                    && array_reduce(\Question::model()->findAllByAttributes(['parent_qid' => $question->qid]),
+                        function ($carry, \Question $question) {
+                            return $carry && $question->delete();
+                        }, true)
+                    // Save new subquestions.
+                    && array_reduce($subQuestions, function ($carry, \Question $subQuestion) {
+                        return $carry && $subQuestion->save();
+                    }, true)
+
+                ) {
+                    App()->user->setFlash('success', "Question updated.");
+                } else {
+                    App()->user->setFlash('danger', "Question could not be updated.");
                 }
-                foreach($subQuestions as $subQuestion) {
-                    var_dump($subQuestion->errors);
-                    var_dump($subQuestion->title);
-                }
-                die('noo');
-            }
-            $this->question->setAttributes(App()->request->getParam(\CHtml::modelName($question)));
-            if (
-                // Validation error in dependent models
-                !$error
-                // Validate and save question.
-                && $this->question->save()
-                // Remove old answers. Use individual delete to handle removal of dependent records.
-                && array_reduce(\Answer::model()->findAllByAttributes(['question_id' => $question->qid]), function($carry, \Answer $answer) {
-                    return $carry && $answer->delete();
-                }, true)
-                // Save new answers.
-                && array_reduce($answers, function($carry, \Answer $answer) {
-                return $carry && $answer->save();
-                }, true)
-                && array_reduce(\Question::model()->findAllByAttributes(['parent_qid' => $question->qid]), function($carry, \Question $question) {
-                    return $carry && $question->delete();
-                }, true)
-                // Save new answers.
-                && array_reduce($subQuestions, function($carry, \Question $question) {
-                    return $carry && $question->save();
-                }, true)) {
-                App()->user->setFlash('success', "Question updated.");
-            } else {
-                App()->user->setFlash('danger', "Question could not be updated.");
             }
         }
 
-        $this->render('update', ['question' => $this->question, 'post' => $_POST, 'questionnames' => $this->question->translations, 'subQuestions' => $subQuestions]);
+        $this->render('update', ['question' => $this->question, 'questionnames' => $this->question->translations]);
     }
 
     public function actionCreate($groupId) {

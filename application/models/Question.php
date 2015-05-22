@@ -163,9 +163,6 @@
         */
         public function rules()
         {
-            throw new \Exception('noo');
-            var_dump($this->scenario);
-            die();
             $aRules= [
                 /**
                  * @todo Add a validation for regular expression.
@@ -184,6 +181,7 @@
                 ['question_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
                 ['scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
                 ['same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+                ['question', 'length', 'min' => 1, 'allowEmpty' => false]
             ];
 
             $aRules[] = ['title', 'match', 'pattern' => '/^[a-z0-9]*$/i',
@@ -670,7 +668,7 @@
         }
         
         public function getColumns() {
-            if ($this->parent_qid != 0) {
+            if (!empty($this->parent_qid)) {
                 return [
                     $this->title => 'string(5)'
                 ];
@@ -691,15 +689,21 @@
                 case "O":  //DROPDOWN LIST WITH COMMENT
                     $result = [$this->sgqa => "string(5)", "{$this->sgqa}comment" => "text"];
                     break;
-                case "M":  //Multiple choice
-                case "Q":  //Multiple short text    
-                    $result = call_user_func_array('array_merge', array_map(function(self $subQuestion) {
-                        $subResult = [];
-                        foreach ($subQuestion->columns as $name => $type) {
-                            $subResult[$this->sgqa . $name] = $type;
-                        }
-                        return $subResult;
-                    }, $this->subQuestions));
+                case "R": // Ranking
+                case "M": //Multiple choice
+                case "Q": //Multiple short text
+                    if (count($this->subQuestions) > 0) {
+                        $result = call_user_func_array('array_merge', array_map(function (self $subQuestion) {
+                            $subResult = [];
+                            foreach ($subQuestion->columns as $name => $type) {
+                                $subResult[$this->sgqa . $name] = $type;
+                            }
+
+                            return $subResult;
+                        }, $this->subQuestions));
+                    } else {
+                        $result = [];
+                    }
                     break;
                 case "P":  //Multiple choice with comment
                     $result = call_user_func_array('array_merge', array_map(function(self $subQuestion) {

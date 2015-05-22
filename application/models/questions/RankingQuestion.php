@@ -11,5 +11,10 @@ namespace ls\models\questions;
 
 class RankingQuestion extends \Question
 {
+    public function getHasSubQuestions()
+    {
+        return true;
+    }
+
 
 }

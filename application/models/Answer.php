@@ -12,6 +12,11 @@
  *
  */
 
+/**
+ * Class Answer
+ * @property string $answer
+ * @property string $code
+ */
 class Answer extends LSActiveRecord
 {
     /**
@@ -61,6 +66,8 @@ class Answer extends LSActiveRecord
         return array(
             ['question_id','exist', 'className' => Question::class, 'attributeName' => 'qid'],
             ['code','length', 'min' => 1, 'max'=>5, 'allowEmpty' => false],
+            ['code', 'required'],
+            ['code', 'match', 'pattern' => '/^[a-z0-9]*$/i', 'message' => gT('Answer codes may only contain alphanumeric characters.')],
             ['sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
             array('answer','LSYii_Validators'),
 

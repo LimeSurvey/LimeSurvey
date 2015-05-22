@@ -6,14 +6,25 @@
 (function($) {
 
     $(document).on('click', '.ajaxSubmit', function(e) {
-        var $this = $(this);
-        $this.addClass('ajaxBusy').attr('disabled', true);
-        var $form = $this.closest('form');
-        // Prevent regular submit.
-        e.preventDefault();
+        var $form = $(this).closest('form').data('button', $(this));
+        return;
+    });
+    $(document).on('submit', 'form', function(e) {
+        var $form = $(this);
+        if (typeof $form.data('button') != 'undefined') {
+            e.preventDefault();
+            var $button = $form.data('button');
+            $form.removeData('button');
+            ajaxSubmit($form, $button);
+        }
+        return;
+    });
+
+    var ajaxSubmit = function($form, $button) {
+        $button.addClass('ajaxBusy').attr('disabled', true);
 
         // Get submit URL.
-        var url = $this.attr('formaction') || $form.attr('action');
+        var url = $button.attr('formaction') || $form.attr('action');
         var method = $form.attr('method');
         /**
          * This allows file uploads via AJAX as well.
@@ -21,7 +32,7 @@
          */
         var data = new FormData($form[0]);
         // Add name of the submit button.
-        data.append($(this).attr('name'), 1);
+        data.append($button.attr('name'), 1);
 
         $.ajax(url, {
             "data": data,
@@ -30,11 +41,11 @@
             "processData": false,
             "dataType": "json",
             "complete" : function() {
-                $this.removeClass('ajaxBusy').attr('disabled', false);
+                $button.removeClass('ajaxBusy').attr('disabled', false);
             }
 
         });
-    });
+    };
 
     $(document).on('ajaxComplete', function(e, jqXHR, ajaxOptions) {
         console.log("Ajax success.");

@@ -1,39 +1,64 @@
 <?php
 /** @var \ls\models\questions\ChoiceQuestion $question */
-if (is_subclass_of($question, \ls\models\questions\ChoiceQuestion::class) && $question->hasAnswers) {
-//    echo TbHtml::well("Answer options for this question: " . print_r(TbHtml::listData($question->answers, 'code', 'code'), true));
+if (!$question->hasAnswers) return;
 
-    $first = true;
-    foreach ($question->survey->languages as $language) {
-        $tabs[] = [
-            'label' => App()->locale->getLanguage($language),
-            'active' => $language == $question->survey->language,
-            'id' => "answers-$language",
-            'content' => $this->renderPartial('update/answerTab', ['question' => $question, 'language' => $language, 'first' => $first], true)
-        ];
-        $first = false;
-    }
-    echo TbHtml::well("To assist you with editing, the base language is shown for untranslated fields.");
-    $this->widget(TbTabs::class, [
-        'tabs' => $tabs,
-        'id' => 'answerTab'
-    ]);
-    echo TbHtml::button('Add answer option', ['id' => 'addanswer']);
-
+$first = true;
+foreach ($question->survey->languages as $language) {
+    $tabs[] = [
+        'label' => App()->locale->getLanguage($language),
+        'active' => $language == $question->survey->language,
+        'id' => "answers-$language",
+        'content' => $this->renderPartial('update/answerTab', ['question' => $question, 'language' => $language, 'first' => $first, 'form' => $form], true)
+    ];
+    $first = false;
 }
+echo TbHtml::well("To assist you with editing, the base language is shown for untranslated fields.");
+App()->clientScript->registerScriptFile('/components/samit-forms/samit-forms.js');
+App()->clientScript->registerScript('stform', \SamIT\Form\FormHelper::activateForm('body'));
+$this->widget(TbTabs::class, [
+    'tabs' => $tabs,
+    'id' => 'answerTab',
+    'htmlOptions' => \SamIT\Form\FormHelper::createAttributesForForm('has-error', 'has-success')
+]);
+echo TbHtml::button('Add answer option', ['id' => 'addanswer']);
+
+/**
+ * @todo Create a css file for page specific fixes.
+ */
+App()->clientScript->registerCss('answer-form-margin-fix', '#answerTab .form-group { overflow: auto; }');
+
 ?>
 <script>
+    /**
+     * @todo Move this to a separate file, or even better create a generic purpose utility for dynamic forms.
+     */
     $(document).ready(function() {
+        /*
+            This function updates the indexes for the field, use it after copying a group.
+         */
         function updateProperties(group, i) {
             var $group = $(group);
             var j = $group.attr('data-index');
             $group.attr('data-index', i);
             $group.find('input').each(function(_, input) {
                 var $input = $(input);
-                $input.attr('name', $input.attr('name').replace('Answer[' + j + ']', 'Answer[' + i + ']'));
-                $input.attr('id', $input.attr('id').replace('Answer_' + j, 'Answer_' + i));
+                $input.attr('name', $input.attr('name').replace('[' + j + ']', '[' + i + ']'));
+                $input.attr('id', $input.attr('id').replace('_' + j, '_' + i));
             });
+            $group.find('[st-error]').each(function(_, err) {
+                var $err = $(err);
+                $err.attr('st-error', $err.attr('st-error').replace('[' + j + ']', '[' + i + ']'));
+            });
+
+            if ($group.is('[st-mark]')) {
+                $group.attr('st-mark', $group.attr('st-mark').replace('[' + j + ']', '[' + i + ']'));
+            }
         }
+
+        /**
+         * This function iterates over a set of elements and updates their indexes.
+         * @param elements
+         */
         function renumber(elements) {
             elements.each(function(i, elem) {
                 $(elem).find('.form-group').each(function (j, group) {
@@ -41,7 +66,12 @@ if (is_subclass_of($question, \ls\models\questions\ChoiceQuestion::class) && $qu
                 })
             });
         }
+
+        /**
+         * Add an answer option.
+         */
         $('#addanswer').on('click', function (e) {
+            e.preventDefault();
             $(this).closest('div').find('.tab-pane').each(function (i, pane) {
                 var $group = $(pane).find('.form-group:last');
                 var i = parseInt($group.attr('data-index')) + 1;
@@ -56,15 +86,24 @@ if (is_subclass_of($question, \ls\models\questions\ChoiceQuestion::class) && $qu
                 if (matches != null) {
                     $code.val(matches[1] + (1 + parseInt(matches[2])));
                 }
-                $clone.clone().appendTo($group.parent());
+                $clone.clone().appendTo($group.parent()).trigger('change');
             });
         });
+
+        /**
+         * Sync answer code between tabs.
+         * @type {*|jQuery|HTMLElement}
+         */
         var $answerTab = $('#answerTab');
-        $answerTab.on('change', '.code', function (e) {
+        $answerTab.on('input', '.code', function (e) {
             var i = $(this).closest('.form-group').attr('data-index');
             // Update the other inputs.
             $answerTab.find('.form-group[data-index=' + i + '] .code').val($(this).val());
         });
+
+        /**
+         * Sync sortorder between tabs.
+         */
         $('.sortable').on('sortupdate', function (e) {
             // Update the others as well.
             $this = $(this);
@@ -78,8 +117,16 @@ if (is_subclass_of($question, \ls\models\questions\ChoiceQuestion::class) && $qu
             // After moving update properties.
             renumber($answerTab.find('.sortable'));
         });
+        /**
+         * Activate sorting.
+         */
         $('.sortable').sortable();
+
+        /**
+         * Handle removal of answer options.
+         */
         $answerTab.on('click', 'a.remove', function(e) {
+            e.preventDefault();
             var index = $(this).closest('.form-group').attr('data-index');
             $answerTab.find('.form-group[data-index="' + index + '"]').remove();
             renumber($answerTab.find('.sortable'));

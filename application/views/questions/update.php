@@ -9,9 +9,11 @@
             'enableClientValidation' => true,
             'layout' => TbHtml::FORM_LAYOUT_VERTICAL,
             'action' => ['questions/update', 'id' => $question->qid],
-            'method' => 'put'
+            'method' => 'put',
+            'htmlOptions' => [
+                'validateOnSubmit' => true
+            ]
         ]);
-
 
         $this->widget('TbTabs', [
             'tabs' => [
@@ -38,12 +40,12 @@
                     'label' => gT('Subquestions'),
                     'visible' => $question->hasSubQuestions,
                     // This will make sure we don't render if the tab is not visible.
-                    'content' => $this->renderPartial('update/subquestions', ['subQuestions' => $subQuestions, 'form' => $form], true),
+                    'content' => $this->renderPartial('update/subquestions', ['question' => $question, 'form' => $form], true),
                 ], [
                     'label' => gT('Answers'),
-                    'visible' => is_subclass_of($question, \ls\models\questions\ChoiceQuestion::class) && $question->hasAnswers,
+                    'visible' => $question->hasAnswers,
                     // This will make sure we don't render if the tab is not visible.
-                    'content' => $this->renderPartial('update/answers', ['question' => $question], true),
+                    'content' => $this->renderPartial('update/answers', ['question' => $question, 'form' => $form], true),
                 ]
             ]
         ]);

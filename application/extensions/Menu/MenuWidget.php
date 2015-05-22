@@ -241,7 +241,7 @@
             
             $menu['items']['left'][] = array(
                 'type' => 'sub',
-                'href' => array('surveys/view', 'id' => $surveyId),
+                'href' => array('surveys/update', 'id' => $surveyId),
                 'image' => 'edit.png',
                 'items' => array(
                     array(
@@ -291,7 +291,7 @@
             );
             $menu['items']['left'][] = array(
                 'type' => 'sub',
-                'href' => array('surveys/view', 'id' => $surveyId),
+                'href' => array('surveys/update', 'id' => $surveyId),
                 'image' => 'tools.png',
                 'items' => array(
                     array(

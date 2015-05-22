@@ -196,7 +196,7 @@ use Survey;
             $survey = $this->loadModel($id);
             if (App()->request->isPostRequest && $survey->unexpire()) {
                 App()->user->setFlash('success', gT("Survey expiry date removed."));
-                $this->redirect(['surveys/view', 'id' => $id]);
+                $this->redirect(['surveys/update', 'id' => $id]);
             }
             $this->render('unexpire', ['survey' => $survey]);
         }
@@ -208,7 +208,7 @@ use Survey;
             if (App()->request->isPostRequest) {
 //                $survey->deactivate();
 //                App()->user->setFlash('succcess', "Survey deactivated.");
-//                $this->redirect(['surveys/view', 'id' => $survey->sid]);
+//                $this->redirect(['surveys/update', 'id' => $survey->sid]);
 
 
             }

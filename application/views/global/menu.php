@@ -74,7 +74,7 @@
                 'label' => gT('Surveys'),
                 'items' => array_map(function(Survey $survey) {
                     return [
-                        'url' => App()->createUrl('surveys/view', ['id' => $survey->sid]),
+                        'url' => App()->createUrl('surveys/update', ['id' => $survey->sid]),
                         'label' => $survey->localizedTitle . (($survey->isActive) ? ' (' . gT('inactive') .')' : '')
                     ];
                     

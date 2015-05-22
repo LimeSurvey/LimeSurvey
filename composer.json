@@ -23,7 +23,8 @@
         "bower-asset/remarkable-bootstrap-notify": "3.*",
         "bower-asset/select2-bootstrap-css": "1.*",
         "sam-it/yii1-translate": "dev-master",
-        "bower-asset/jquery-ui": "1.*"
+        "bower-asset/jquery-ui": "1.*",
+        "sam-it/forms": "dev-master"
     },
 	"require-dev" : {
 		
