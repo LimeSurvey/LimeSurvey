@@ -5905,7 +5905,7 @@
             $LEM =& $this;
             $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
 
-            $qrel=true;   // assume relevant unless discover otherwise
+            $qrel=true;   //  assume relevant unless discover otherwise
             $prettyPrintRelEqn='';    //  assume no relevance eqn by default
             $qid=$qInfo['qid'];
 

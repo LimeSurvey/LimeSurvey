@@ -1,6 +1,7 @@
 <?php
 namespace ls\controllers;
 use ls\models\forms\SubQuestions;
+use ls\models\questions\SubQuestion;
 use \Yii;
 class QuestionsController extends Controller 
 {
@@ -51,18 +52,21 @@ class QuestionsController extends Controller
                 $question->answers = $answers;
             }
             $subQuestions = [];
-            if ($question->hasSubQuestions && App()->request->getParam('SubQuestion', false) !== false) {
+            if ($question->hasSubQuestions && App()->request->getParam(\CHtml::modelName(SubQuestion::class), false) !== false) {
 
                 // Remove all subquestions.
                 // Create new ones.
                 $codes = [];
-                foreach(App()->request->getParam('SubQuestion') as $i => $data) {
-                    $subQuestion = new \Question();
-                    $subQuestion->question_id = $question->qid;
+                foreach(App()->request->getParam(\CHtml::modelName(SubQuestion::class)) as $i => $data) {
+                    $subQuestion = new SubQuestion();
+                    $subQuestion->parent_qid = $question->qid;
+                    $subQuestion->gid = $question->gid;
+                    $subQuestion->sid = $question->sid;
                     $subQuestion->setAttributes($data);
-                    $subQuestion->sortorder = $i;
+                    $subQuestion->question_order = $i;
                     $subQuestions[] = $subQuestion;
                     $error = $error || !$subQuestion->validate();
+
                     /**
                      * @todo Find a better solution for this manual validation.
                      */

@@ -181,7 +181,6 @@
                 ['question_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
                 ['scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
                 ['same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
-                ['question', 'length', 'min' => 1, 'allowEmpty' => false]
             ];
 
             $aRules[] = ['title', 'match', 'pattern' => '/^[a-z0-9]*$/i',
@@ -689,6 +688,7 @@
                 case "O":  //DROPDOWN LIST WITH COMMENT
                     $result = [$this->sgqa => "string(5)", "{$this->sgqa}comment" => "text"];
                     break;
+                case "F": // Array
                 case "R": // Ranking
                 case "M": //Multiple choice
                 case "Q": //Multiple short text
@@ -759,34 +759,41 @@
             if (!isset($attributes['type'])) {
                 throw new \Exception('noo');
             }
-            switch($attributes['type']) {
-                case 'N':
-                    $class = \ls\models\questions\NumericalQuestion::class;
-                    break;
-                case 'U': // Huge free text
-                case 'S': // Short free text
-                case 'T':
-                    $class = \ls\models\questions\TextQuestion::class;
-                    break;
-                case 'O': // Single choice with comments.
-                case '!': // Single choice dropdown.
-                case 'L': // Single choice (Radio);
-                    $class = \ls\models\questions\SingleChoiceQuestion::class;
-                    break;
-                case 'Q': // Multiple (short) text.
-                    $class = \ls\models\questions\MultipleTextQuestion::class;
-                    break;
-                case 'R': // Ranking
-                    $class = \ls\models\questions\RankingQuestion::class;
-                    break;
-                case '|':
+            if (!empty($attributes['parent_qid'])) {
+                $class = \ls\models\questions\SubQuestion::class;
+            } else {
+                switch ($attributes['type']) {
+                    case 'N':
+                        $class = \ls\models\questions\NumericalQuestion::class;
+                        break;
+                    case 'U': // Huge free text
+                    case 'S': // Short free text
+                    case 'T':
+                        $class = \ls\models\questions\TextQuestion::class;
+                        break;
+                    case 'O': // Single choice with comments.
+                    case '!': // Single choice dropdown.
+                    case 'L': // Single choice (Radio);
+                        $class = \ls\models\questions\SingleChoiceQuestion::class;
+                        break;
+                    case 'Q': // Multiple (short) text.
+                        $class = \ls\models\questions\MultipleTextQuestion::class;
+                        break;
+                    case 'R': // Ranking
+                        $class = \ls\models\questions\RankingQuestion::class;
+                        break;
+                    case 'F': // Array
+                        $class = \ls\models\questions\ArrayQuestion::class;
+                        break;
+                    case '5': // 5 point choice
+                    case '|':
+                        $class = get_class($this);
+                        break;
+                    default:
+                        die("noo class for type {$attributes['type']}");
 
-
-                default:
-//                    die("noo class for type {$attributes['type']}");
-                    $class = get_class($this);
+                }
             }
-
             return new $class(null);
         }
 

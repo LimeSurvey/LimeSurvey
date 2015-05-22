@@ -19,7 +19,8 @@ echo TbHtml::tag('div', [
 echo TbHtml::openTag('div', ['class' => 'sortable']);
 $i = 0;
 if (empty($question->subQuestions)) {
-    $subQuestion = new Question();
+    $subQuestion = new \ls\models\questions\SubQuestion();
+    $subQuestion->title = "SQ001";
     $subQuestion->parent_qid = $question->primaryKey;
     $subQuestions = [$subQuestion];
 } else {

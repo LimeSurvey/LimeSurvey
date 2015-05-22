@@ -3,15 +3,24 @@
 /**
  * @var Question $question;
  */
-// This is an update view so we use PUT.
-echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['questions/create', 'groupId' => $question->gid], 'post', []);
-$options = ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL];
+// This is a create view so we use POST.
+/** @var TbActiveForm $form */
+$form = $this->beginWidget(TbActiveForm::class, [
+    'enableAjaxValidation' => false,
+    'enableClientValidation' => true,
+    'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
+    'action' => ['questions/create', 'groupId' => $question->gid],
+    'method' => 'post',
+    'htmlOptions' => [
+        'validateOnSubmit' => true
+    ]
+]);
 echo TbHtml::openTag('fieldset', []);
-echo TbHtml::activeTextFieldControlGroup($question, 'title', array_merge($options, [
+echo $form->textFieldControlGroup($question, 'title', [
     'help' => "This is a suggestion based on the previous question title, feel free to change it."
-]));
+]);
 if (!empty($question->group->questions)) {
-    echo TbHtml::customActiveControlGroup($this->widget(WhSelect2::class, [
+    echo $form->customControlGroup($this->widget(WhSelect2::class, [
         'data' => CHtml::listData($question->group->questions, 'qid', function (Question $question) {
             return gT("Before") . ' ' . $question->displayLabel;
         }),
@@ -20,7 +29,7 @@ if (!empty($question->group->questions)) {
         'htmlOptions' => [
             'empty' => 'At end'
         ]
-    ], true), $question, 'after', $options);
+    ], true), $question, 'after');
 }
 $questionTypeOptions = CHtml::listData($question->typeList(), 'type', function($details) {
     return [
@@ -31,7 +40,7 @@ $questionTypeOptions = CHtml::listData($question->typeList(), 'type', function($
                 '*' => 'EQUATION'
             ]) . '.png'];
 });
-echo TbHtml::customActiveControlGroup($this->widget(WhSelect2::class, [
+echo $form->customControlGroup($this->widget(WhSelect2::class, [
     'data' => CHtml::listData($question->typeList(), 'type', 'description', 'group'),
     'model' => $question,
     'htmlOptions' => [
@@ -39,7 +48,7 @@ echo TbHtml::customActiveControlGroup($this->widget(WhSelect2::class, [
         'options' => $questionTypeOptions,
     ],
     'attribute' => 'type'
-], true), $question, 'type', $options);
+], true), $question, 'type');
 App()->clientScript->registerScript('test', "
 $('#Question_type').on('select2-close', function() {
     $('#preview').attr('src', $(this).find(':selected').data('preview'));
@@ -55,7 +64,7 @@ echo TbHtml::submitButton('Create question', [
 ]);
 echo TbHtml::closeTag('div');
 echo TbHtml::closeTag('fieldset');
-echo TbHtml::endForm();
+$this->endWidget();
 ?>
 </div>
 <img class="col-md-6" id="preview" src="<?= $questionTypeOptions[$question->type]['data-preview']?>">

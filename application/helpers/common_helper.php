@@ -1828,7 +1828,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     ], ['order' => 'group_order']);
 
     /** @var QuestionGroup $group */
-    $i = 0;
+    $questionSeq = 0;
     foreach($groups as $groupSeq => $group) {
         foreach ($group->questions as $question) {
             $fieldname = $question->getSgqa();
@@ -1869,7 +1869,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory'] = $question->mandatory;
                     $fieldmap[$fieldname]['hasconditions'] = $conditions;
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq'] = $i;
+                    $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                     if (isset($defaultValues[$question->primaryKey . '~0'])) {
                         $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$question->primaryKey . '~0'];
@@ -1940,7 +1940,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['mandatory'] = $question->mandatory;
                             $fieldmap[$fieldname]['hasconditions'] = $conditions;
                             $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
-                            $fieldmap[$fieldname]['questionSeq'] = $i;
+                            $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                             $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                         }
                         break;
@@ -2074,7 +2074,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $data = count($data);
                 $slots = $data;
                 for ($i = 1; $i <= $slots; $i++) {
-                    $fieldname = "{$question->sid}X{$arow['gid']}X{$question->qid}$i";
+                    $fieldname = "{$question->sgqa}$i";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$question->qid] = array(
                             'fieldname' => $fieldname,
@@ -2086,8 +2086,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         "fieldname" => $fieldname,
                         'type' => $question->type,
                         'sid' => $surveyid,
-                        "gid" => $arow['gid'],
-                        "qid" =>$question->qid,
+                        "gid" => $question->gid,
+                        "qid" => $question->qid,
                         "aid" => $i
                     );
                     if ($style == "full") {
@@ -2103,7 +2103,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     }
                 }
             } elseif ($question->type == "|") {
-                $qidattributes = getQuestionAttributeValues($arow['qid']);
+                $qidattributes = getQuestionAttributeValues($question->qid);
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
                 $fieldmap[$fieldname] = array(
                     "fieldname" => $fieldname,
@@ -2148,39 +2148,39 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 //MULTI ENTRY
                 $abrows = getSubQuestions($surveyid,$question->qid, $sLanguage);
                 foreach ($abrows as $abrow) {
-                    $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
+                    $fieldname = "{$question->sgqa}{$abrow['title']}";
 
                     if (isset($fieldmap[$fieldname])) {
-                        $aDuplicateQIDs[$arow['qid']] = array(
+                        $aDuplicateQIDs[$question->qid] = array(
                             'fieldname' => $fieldname,
-                            'question' => $arow['question'],
-                            'gid' => $arow['gid']
+                            'question' => $question->question,
+                            'gid' => $question->gid
                         );
                     }
                     $fieldmap[$fieldname] = array(
                         "fieldname" => $fieldname,
                         'type' => $question->type,
-                        'sid' => $surveyid,
-                        'gid' => $arow['gid'],
-                        'qid' =>$question->qid,
+                        'sid' => $question->sid,
+                        'gid' => $question->gid,
+                        'qid' => $question->qid,
                         'aid' => $abrow['title'],
                         'sqid' => $abrow['qid']
                     );
                     if ($style == "full") {
-                        $fieldmap[$fieldname]['title'] = $arow['title'];
-                        $fieldmap[$fieldname]['question'] = $arow['question'];
+                        $fieldmap[$fieldname]['title'] = $question->title;
+                        $fieldmap[$fieldname]['question'] = $question->question;
                         $fieldmap[$fieldname]['subquestion'] = $abrow['question'];
-                        $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
-                        $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                        $fieldmap[$fieldname]['group_name'] = $question->group->title;
+                        $fieldmap[$fieldname]['mandatory'] = $question->mandatory;
                         $fieldmap[$fieldname]['hasconditions'] = $conditions;
                         $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                         $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                         $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
-                        $fieldmap[$fieldname]['preg'] = $arow['preg'];
+                        $fieldmap[$fieldname]['preg'] = $question->preg;
                         // get SQrelevance from DB
                         $fieldmap[$fieldname]['SQrelevance'] = $abrow['relevance'];
-                        if (isset($defaultValues[$arow['qid'] . '~' . $abrow['qid']])) {
-                            $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'] . '~' . $abrow['qid']];
+                        if (isset($defaultValues[$question->qid . '~' . $abrow['qid']])) {
+                            $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$question->qid . '~' . $abrow['qid']];
                         }
                     }
                     if ($question->type == "P") {
@@ -2278,13 +2278,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 //set question relevance (uses last SQ's relevance field for question relevance)
                 $fieldmap[$fieldname]['relevance'] = $question->relevance;
                 $fieldmap[$fieldname]['grelevance'] = $group->grelevance;
-                $fieldmap[$fieldname]['questionSeq'] = $i;
+                $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                 $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                 $fieldmap[$fieldname]['preg'] = $question->preg;
                 $fieldmap[$fieldname]['other'] = $question->other;
                 $fieldmap[$fieldname]['help'] = $question->help;
             }
-            $i++;
+            $questionSeq++;
 
         }
     }
