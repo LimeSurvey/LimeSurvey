@@ -2283,8 +2283,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap[$fieldname]['preg'] = $question->preg;
                 $fieldmap[$fieldname]['other'] = $question->other;
                 $fieldmap[$fieldname]['help'] = $question->help;
+                $questionSeq++;
             }
-            $questionSeq++;
+
 
         }
     }

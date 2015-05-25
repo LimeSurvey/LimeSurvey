@@ -4604,7 +4604,7 @@ function do_array($ia)
 
     $caption="";// Just leave empty, are replaced after
     $checkconditionFunction = "checkconditions";
-    $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]}";
     $other = Yii::app()->db->createCommand($qquery)->queryScalar(); //Checked
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
@@ -4635,7 +4635,10 @@ function do_array($ia)
         $minrepeatheadings = 0;
     }
 
-    $lresult= Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND language=:language AND scale_id=0', 'params'=>array(':qid'=>$ia[0],':language'=>$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'])));
+
+    $lresult= Answer::model()->findAllByAttributes(['question_id' => $ia[0]], [
+        'order' => 'sortorder, code',
+    ]);
     $labelans=array();
     $labelcode=array();
     foreach ($lresult as $lrow)
@@ -4658,11 +4661,11 @@ function do_array($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} ORDER BY ".dbRandom();
         }
         else
         {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} ORDER BY question_order";
         }
         $ansresult = dbExecuteAssoc($ansquery); //Checked
         $aQuestions=$ansresult->readAll();
