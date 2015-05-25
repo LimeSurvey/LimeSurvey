@@ -811,11 +811,11 @@ class Survey extends LSActiveRecord
 
             if (Token::valid($this->sid)) {
                 $tokenTable = Token::model($this->sid);
-                // We drop the response table if it is empty.
+                // We drop the token table if it is empty.
                 if ($tokenTable->count() == 0) {
                     $this->dbConnection->createCommand()->dropTable($tokenTable->tableName());
                 } else {
-                    $name = strtr($tokenTable->tableName(), ['survey_' => 'survey_old_']) . '_' . date('Y-m-d_H-i-s');
+                    $name = strtr($tokenTable->tableName(), ['token_' => 'token_old_']) . '_' . date('Y-m-d_H-i-s');
                     $this->dbConnection->createCommand()->renameTable($tokenTable->tableName(), $name);
                 }
             }

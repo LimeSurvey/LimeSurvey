@@ -36,12 +36,6 @@ $config = array();
 
 // FILE LOCATIONS
 
-$config['rootdir']            =   getcwd(); //dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
-// If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
-// Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
-// If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
-
-
 // Site Info
 $config['sitename']           =   'LimeSurvey';     // The official name of the site (appears in the Window title)
 $config['scriptname']         =   'admin.php';      // The name of the admin script
@@ -540,9 +534,9 @@ $config['ckeditexpandtoolbar']     = true;
 * and should contain a space-separated list of language codes. If empty then no restrictions
 * are set and all languages are available
 *
-* @var string
+* @var array
 */
-$config['restrictToLanguages'] = '';
+$config['disabledLanguages'] = [];
 
 /**
 * This parameter enables/disables the RPC interface
@@ -621,14 +615,14 @@ $config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'
 $config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
 
 
-$config['publicdir']               = $config['rootdir'];                                   // The directory path of the public scripts
-$config['homedir']                 = $config['rootdir'];       // The directory path of the admin scripts
-$config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
-$config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
-$config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
-$config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
+$config['publicdir']               = \Yii::getPathOfAlias('webroot');                                   // The directory path of the public scripts
+$config['homedir']                 = \Yii::getPathOfAlias('webroot');       // The directory path of the admin scripts
+$config['tempdir']                 = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
+$config['imagedir']                = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
+$config['uploaddir']               = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR."upload";
+$config['standardtemplaterootdir'] = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
-$config['styledir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'styles';
+$config['styledir']                = \Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'styles';
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';

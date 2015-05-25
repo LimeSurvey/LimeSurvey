@@ -2103,7 +2103,7 @@ function display_first_page() {
 
     // Fill some necessary var for template
     $navigator = surveymover();
-    $sitename = Yii::app()->getConfig('sitename');
+    $sitename = App()->name;
     $languagechanger=makeLanguageChangerSurvey(App()->language);
 
     sendCacheHeaders();

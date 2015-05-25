@@ -4,6 +4,8 @@ use \Yii;
 use Plugin;
     /**
      * Factory for limesurvey plugin objects.
+     * @property-read iAuthenticationPlugin[] $authenticators
+     * @property-read iAuthorizationPlugin $authorizer
      */
     class PluginManager extends \CApplicationComponent{
         public $pluginFile;
@@ -271,8 +273,12 @@ use Plugin;
             $this->dispatchEvent(new PluginEvent('afterPluginLoad'));    // Alow plugins to do stuff after all plugins are loaded
             return empty($result);
         }
-        
-       public function getAuthenticators($activeOnly = false) {
+
+        /**
+         * @param bool $activeOnly
+         * @return iAuthenticationPlugin[]
+         */
+        public function getAuthenticators($activeOnly = false) {
             $result = array_filter($this->plugins, function ($plugin) {
                 return $plugin instanceOf iAuthenticationPlugin;
             });
@@ -283,7 +289,10 @@ use Plugin;
             }
             return $result;
         }
-        
+
+        /**
+         * @return iAuthorizationPlugin
+         */
         public function getAuthorizer() {
             $authorizers = $this->getAuthorizers(true);
             // If not set use PermissionDb.

@@ -909,7 +909,7 @@ class templates extends Survey_Common_Action
             $normalfiles[] = $fl["name"];
 
         // Some global data
-        $aData['sitename'] = Yii::app()->getConfig('sitename');
+        $aData['sitename'] = App()->name;
         $siteadminname = Yii::app()->getConfig('siteadminname');
         $siteadminemail = Yii::app()->getConfig('siteadminemail');
 

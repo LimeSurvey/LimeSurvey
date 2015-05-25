@@ -45,6 +45,8 @@
             // Load email settings.
             $email = require(Yii::app()->basePath. DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'email.php');
             $this->config = array_merge($this->config, $email);
+
+            $this->name = SettingGlobal::get('sitename', 'LimeSurvey');
         }
 
         /**

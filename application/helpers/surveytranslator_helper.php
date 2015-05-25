@@ -929,19 +929,20 @@
     }
 
     function getLanguageDataRestricted($bOrderByNative=false,$sLanguageCode='en') {
-        $aLanguageData=getLanguageData($bOrderByNative, $sLanguageCode);
+        $aLanguageData = getLanguageData($bOrderByNative, $sLanguageCode);
+        $result = [];
 
-        if (trim(Yii::app()->getConfig('restrictToLanguages'))!='')
-        {
-            foreach(explode(' ',trim(Yii::app()->getConfig('restrictToLanguages'))) AS $key) {
-                $aArray[$key] = $aLanguageData[$key];
+        $activeLanguages = SettingGlobal::get('restrictToLanguages');
+
+        if (!empty($activeLanguages)) {
+            foreach($activeLanguages as $language) {
+                $result[$language] = $aLanguageData[$language];
             }
+        } else {
+            $result = $aLanguageData;
         }
-        else
-        {
-            $aArray=$aLanguageData;
-        }
-        return $aArray;
+
+        return $result;
     }
 
 

@@ -41,30 +41,8 @@ class SettingGlobal extends LSActiveRecord
 	{
 		return 'stg_name';
 	}
-	function updateSetting($settingname, $settingvalue)
-    {
 
-        $data = array(
-            'stg_name' => $settingname,
-            'stg_value' => $settingvalue
-        );
-
-        $user = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-        $query = $user->queryRow('settings_global');
-        $user1 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-        if(count($query) == 0)
-        {
-            return $user1->insert('{{settings_global}}', $data);
-        }
-        else
-        {
-            $user2 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where('stg_name = :setting_name')->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-            return $user2->update('{{settings_global}}', array('stg_value' => $settingvalue));
-        }
-
-    }
-    
-    public function getValue() {
+	public function getValue() {
         if (substr_compare("__JSON__", $this->stg_value, 0, 8) === 0) {
             return json_decode(substr($this->stg_value, 8), true);
         } else {
@@ -111,5 +89,7 @@ class SettingGlobal extends LSActiveRecord
         }
         return $result;
     }
+
+
 }
 ?>

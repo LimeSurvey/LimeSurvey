@@ -5476,7 +5476,7 @@ function includeKeypad()
 
 
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
+    $localefile = Yii::getPathOfAlias('webroot').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
     if (App()->language != 'en' && file_exists($localefile))
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.App()->language.'.js');

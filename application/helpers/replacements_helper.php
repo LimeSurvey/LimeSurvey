@@ -99,7 +99,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $thissurvey=getSurveyInfo($_surveyid,$s_lang);
     }
     if (!isset($captchapath)) { $captchapath = ''; }
-    if (!isset($sitename)) { $sitename=Yii::app()->getConfig('sitename'); }
+    if (!isset($sitename)) { $sitename=App()->name; }
     if (!isset($saved_id) && isset(Yii::app()->session['survey_'.$_surveyid]['srid'])) { $saved_id=Yii::app()->session['survey_'.$_surveyid]['srid'];}
 
 
@@ -155,7 +155,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $surveyformat = "";
     }
-    if ((App()->surveySessionManager->current->getStep() % 2) && $surveyformat!="allinone")
+    if (isset(App()->surveySessionManager->current) && (App()->surveySessionManager->current->getStep() % 2) && $surveyformat!="allinone")
     {
         $surveyformat .= " page-odd";
     }
@@ -815,8 +815,8 @@ function doHtmlSaveAll($move = "", $surveyid)
     // Fill some test here, more clear ....
     $bTokenanswerspersistence=$thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
     $bAlreadySaved=isset($_SESSION['survey_'.$surveyid]['scid']);
-    $iSessionStep = App()->surveySessionManager->current->getStep();
-    $iSessionMaxStep = App()->surveySessionManager->current->getMaxStep();
+    $iSessionStep = isset(App()->surveySessionManager->current) ? App()->surveySessionManager->current->step : 0;
+    $iSessionMaxStep =  isset(App()->surveySessionManager->current) ? App()->surveySessionManager->current->maxStep : 0;
 
     $sSaveAllButtons="";
     // Find out if the user has any saved data

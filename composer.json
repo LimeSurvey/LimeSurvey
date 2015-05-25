@@ -36,7 +36,8 @@
             "application/core",
             "application/vendor/2amigos/yiiwheels",
             "application/vendor/yiisoft/yii/framework/cli/commands",
-            "application/components"
+            "application/components",
+            "application/helpers"
         ],
         "psr-4" : {
             "ls\\migrations\\" : [

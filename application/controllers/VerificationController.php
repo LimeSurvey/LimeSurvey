@@ -26,7 +26,7 @@ class VerificationController extends Controller
     {
         $iSurveyID=(int)$sid;
         Yii::app()->loadHelper('database');
-        $rootdir = Yii::app()->getConfig('rootdir');
+        $rootdir = Yii::getPathOfAlias('webroot');
 
         // header for png
         Header("Content-Type: image/png");

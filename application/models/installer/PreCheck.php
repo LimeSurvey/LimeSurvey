@@ -225,7 +225,7 @@ class PreCheck extends CFormModel
         // ** file and directory permissions checking **
 
         // config directory
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/application/config', $aData, 'config', 'derror') )
+        if (!check_DirectoryWriteable(Yii::getPathOfAlias('webroot').'/application/config', $aData, 'config', 'derror') )
             $bProceed = false;
 
         // templates directory check

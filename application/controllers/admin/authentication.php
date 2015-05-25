@@ -153,7 +153,7 @@ class Authentication extends Survey_Common_Action
         $sTo = $sEmailAddr;
         $sSubject = gT('User data');
         $sNewPass = createPassword();
-        $sSiteName = Yii::app()->getConfig('sitename');
+        $sSiteName = App()->name;
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
         $username = sprintf(gT('Username: %s'), $aFields[0]['users_name']);
@@ -161,7 +161,7 @@ class Authentication extends Survey_Common_Action
         $password = sprintf(gT('New password: %s'), $sNewPass);
 
         $body   = array();
-        $body[] = sprintf(gT('Your user data for accessing %s'), Yii::app()->getConfig('sitename'));
+        $body[] = sprintf(gT('Your user data for accessing %s'), App()->name);
         $body[] = $username;
         $body[] = $password;
         $body   = implode("\n", $body);

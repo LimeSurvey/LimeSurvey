@@ -92,7 +92,7 @@
                 <ul>
                     <?php
                         foreach ($answers as $answer) {?>
-                        <li>QID:<?php echo $answer['qid'];?> <?php eT("Code:");?> <?php eT("Reason:");?> <?php echo $answer['reason'];?></li><?php
+                        <li>QID:<?php echo $answer['question_id'];?> <?php eT("Code:");?> <?php eT("Reason:");?> <?php echo $answer['reason'];?></li><?php
                     }?>
                 </ul>
             </li>
@@ -217,7 +217,7 @@
         <?php } else
         {?>
         <br /><?php eT("Should we proceed with the delete?"); ?> <br />
-        <?php echo CHtml::form(array("admin/checkintegrity/fixintegrity"), 'post');?>
+        <?php echo CHtml::form(["admin/checkintegrity", 'sa' => "fixintegrity"]);?>
             <input type='hidden' name='ok' value='Y' />
             <input type='submit' value='<?php eT("Yes - Delete Them!"); ?>' />
         </form>

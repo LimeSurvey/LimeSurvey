@@ -33,7 +33,7 @@ class PdfWriter extends Writer
         // create new PDF document
         $this->pdf = new pdf();
         $this->surveyName = $survey->info['surveyls_title'];
-        $this->pdf->initAnswerPDF($survey->info, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);
+        $this->pdf->initAnswerPDF($survey->info, $aPdfLanguageSettings, App()->name, $this->surveyName);
         $this->separator="\t";
         $this->rowCounter = 0;
         $this->aGroupMap = $this->setGroupMap($survey, $oOptions);

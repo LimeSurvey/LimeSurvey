@@ -191,7 +191,7 @@ class TokensController extends Controller
                 $token->save();
             }
         }
-        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, Yii::app()->getConfig('sitename'),$useHtmlEmail,$sBounce))
+        elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, App()->name,$useHtmlEmail,$sBounce))
         {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));

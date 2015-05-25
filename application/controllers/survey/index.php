@@ -73,7 +73,7 @@ class index extends CAction {
         // unused vars in this method (used in methods using compacted method vars)
         @$loadname = $param['loadname'];
         @$loadpass = $param['loadpass'];
-        $sitename = Yii::app()->getConfig('sitename');
+        $sitename = App()->name;
 
         $surveyExists=($surveyid && null != $survey = Survey::model()->findByPk($surveyid));
         $isSurveyActive=($surveyExists && $survey->isActive);

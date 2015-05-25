@@ -245,7 +245,7 @@ class RegisterController extends Controller {
         $sFrom = "{$aSurveyInfo['adminname']} <{$aSurveyInfo['adminemail']}>";
         $sBounce=getBounceEmail($iSurveyId);
         $sTo=$oToken->email;
-        $sitename =  Yii::app()->getConfig('sitename');
+        $sitename =  App()->name;
         // Plugin event for email handling (Same than admin token but with register type)
         $event = new PluginEvent('beforeTokenEmail');
         $event->set('type', 'register');
@@ -422,7 +422,7 @@ class RegisterController extends Controller {
         $sTemplate=getTemplatePath($aData['thissurvey']['template']);
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
         $aData['languagechanger']=makeLanguageChangerSurvey($sLanguage);
-        $aData['sitename']=Yii::app()->getConfig('sitename');
+        $aData['sitename']=App()->name;
         $aData['aRegisterErrors']=$this->aRegisterErrors;
         $aData['sMessage']=$this->sMessage;
 

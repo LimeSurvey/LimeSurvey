@@ -79,7 +79,6 @@ class CheckIntegrity extends Survey_Common_Action
     public function fixintegrity()
     {
         $aData = array();
-
         if (App()->user->checkAccess('settings', ['crud' => 'update']) && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
 
@@ -216,7 +215,7 @@ class CheckIntegrity extends Survey_Common_Action
     private function _deleteAnswers(array $answers, array $aData)
     {
         foreach ($answers as $aAnswer) {
-            Answer::model()->deleteAll('qid=:qid AND code=:code',array(':qid'=>$aAnswer['qid'],':code'=>$aAnswer['code']));
+            Answer::model()->deleteAll('question_id = :qid AND code=:code',array(':qid'=>$aAnswer['question_id'],':code'=>$aAnswer['code']));
             if (Answer::model()->hasErrors()) safeDie(Answer::model()->getError());
         }
         $aData['messages'][] = sprintf(gT('Deleting answers: %u answers deleted'), count($answers));
@@ -523,13 +522,13 @@ class CheckIntegrity extends Survey_Common_Action
         /*     Check answers                                                  */
         /**********************************************************************/
         $oCriteria = new CDbCriteria;
-        $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
+        $oCriteria->join = 'LEFT JOIN {{questions}} q ON t. question_id = q.qid';
         $oCriteria->condition = '(q.qid IS NULL)';
 
         $answers = Answer::model()->findAll($oCriteria);
         foreach ($answers as $answer)
         {
-            $aDelete['answers'][] = array('qid' => $answer['qid'], 'code' => $answer['code'], 'reason' => gT('No matching question'));
+            $aDelete['answers'][] = array('question_id' => $answer->question_id, 'code' => $answer->code, 'reason' => gT('No matching question'));
         }
         /***************************************************************************/
         /*   Check survey languagesettings and restore them if they don't exist    */
@@ -585,8 +584,8 @@ class CheckIntegrity extends Survey_Common_Action
         /*     Check questions                                                */
         /**********************************************************************/
         $oCriteria = new CDbCriteria;
-        $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.sid=s.sid LEFT JOIN {{groups}} g ON t.gid=g.gid';
-        $oCriteria->condition = '(g.gid IS NULL) OR (s.sid IS NULL)';
+        $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.sid=s.sid LEFT JOIN {{groups}} g ON t.gid = g.id';
+        $oCriteria->condition = '(g.id IS NULL) OR (s.sid IS NULL)';
         $questions = Question::model()->findAll($oCriteria);
         if (Question::model()->hasErrors()) safeDie(Question::model()->getError());
         foreach ($questions as $question)
@@ -716,6 +715,8 @@ class CheckIntegrity extends Survey_Common_Action
             } else {
                 foreach ($aFullOldTokenSIDs[$iOldTokenSID] as $sTableName)
                 {
+                    var_dump($sTableName);
+                    die();
                     list($sOldText, $sTokensText, $iSurveyID, $sDateTime) = explode('_', substr($sTableName, strlen($sDBPrefix)));
                     $iYear = substr($sDateTime, 0, 4);
                     $iMonth = substr($sDateTime, 4, 2);
