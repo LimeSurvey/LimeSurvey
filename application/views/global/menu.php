@@ -19,7 +19,7 @@
             ),
             array(
                 'title' => gT('Global settings'),
-                'url' => array('admin/globalsettings'),
+                'url' => ['settings/index'],
                 'icon' => 'pencil',
                 'visible' => App()->user->checkAccess('settings')
             ),
