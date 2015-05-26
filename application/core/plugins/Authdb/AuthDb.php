@@ -112,14 +112,4 @@ class AuthDb extends PluginBase implements \ls\pluginmanager\iAuthenticationPlug
         }
     }
     
-    /**
-     * @return boolean True if all users for this authenticator can be listed.
-     */
-    public function enumerable() {
-        return true;
-    }
-    
-    
-    
-    
 }

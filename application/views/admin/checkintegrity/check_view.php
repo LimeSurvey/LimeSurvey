@@ -1,3 +1,5 @@
+<div class="row">
+<div class="col-md-4 col-md-offset-4">
 <div class='messagebox ui-corner-all data-integrity consistency'>
     <div class='header ui-widget-header'><?php eT("Data consistency check"); ?><br />
         <span class='hint'><?php eT("If errors are showing up you might have to execute this script repeatedly."); ?></span>
@@ -268,4 +270,6 @@
         </form><?php
     } ?>
 
+</div>
+</div>
 </div>

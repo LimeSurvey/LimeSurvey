@@ -203,7 +203,6 @@ class labels extends Survey_Common_Action
 
             $aViewUrls['editlabel_view'][] = $aData;
         }
-
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
 
     }

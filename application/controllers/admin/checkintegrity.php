@@ -790,6 +790,14 @@ class CheckIntegrity extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array())
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        $this->controller->layout = 'main';
+        if (is_array($aViewUrls) && count($aViewUrls > 1)) {
+            return parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
+        } else {
+            $view = $sAction . '/' . (is_array($aViewUrls) ? $aViewUrls[0] : $aViewUrls);
+            return $this->controller->render($view, $aData);
+        }
+
+
     }
 }

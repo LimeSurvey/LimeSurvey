@@ -45,19 +45,19 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
     }
 
     public function getAuthAssignment($itemName, $userId) {
-        
+//        \Permission::model()->findAllByAttributes(['uid' => $userId]);
     }
 
     public function getAuthAssignments($userId) {
-        
+        return \Permission::model()->findAllByAttributes(['uid' => $userId]);
     }
 
     public function getAuthItem($name) {
-        
+
     }
 
     public function getAuthItems($type = null, $userId = null) {
-        
+        return \Permission::getGlobalBasePermissions();
     }
 
     public function getItemChildren($itemName) {
@@ -69,7 +69,14 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
     }
 
     public function isAssigned($itemName, $userId) {
-        
+        if (strpos($itemName, '.')) {
+            list($itemName, $crud) = explode('.', $itemName);
+            return \Permission::model()->countByAttributes([
+                'entity' => 'global',
+                'entity_id' => 0,
+                "{$crud}_p" => 1
+            ]) > 0;
+        }
     }
 
     public function removeAuthItem($name) {

@@ -8,6 +8,5 @@ echo TbHtml::openTag('fieldset', [
 foreach ($options as $key => &$label) {
     $label .= ' ' . TbHtml::link(TbHtml::icon('info-sign'), 'https://manual.limesurvey.org/Feature:' . $key, ['target' => '_blank']);
 }
-echo TbHtml::activeCheckBoxListControlGroup($survey, 'features', $options, ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL]);
-echo TbHtml::hiddenField('id', $survey->sid);
+echo $form->checkBoxListControlGroup($survey, 'features', $options);
 echo TbHtml::closeTag('fieldset');

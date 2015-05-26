@@ -11,8 +11,36 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
+/**
+ * Class SurveyLanguageSetting
+ * @property string $surveyls_title
+ * @property string $surveyls_description
+ * @property string $surveyls_welcometext
+ * @property string $surveyls_endtext
+ * @property string $surveyls_url
+ * @property string $surveyls_urldescription
+ * @property string $surveyls_language
+ * @property int $surveyls_dateformat
+ * @property int $surveyls_numberformat
+ */
 class SurveyLanguageSetting extends LSActiveRecord
 {
+    public function attributeLabels()
+    {
+        return [
+            'surveyls_title' => gT("Survey title"),
+            'surveyls_endtext' => gT("End message"),
+            'surveyls_welcometext' => gT('Welcome message'),
+            'surveyls_description' => gT('Description'),
+            'surveyls_url' => gT("End URL"),
+            'surveyls_urldescription' => gT('URL description'),
+            'surveyls_dateformat' => gT('Date format'),
+            'surveyls_numberformat' => gT('Decimal mark'),
+
+        ];
+    }
+
     /**
      * Returns the table's name
      *
@@ -228,5 +256,12 @@ class SurveyLanguageSetting extends LSActiveRecord
         foreach ($data as $k => $v)
             $lang->$k = $v;
         return $lang->save();
+    }
+
+    public function getDateFormatOptions() {
+        return array_map(function($e) { return $e['dateformat']; }, getDateFormatData());
+    }
+    public function getNumberFormatOptions() {
+        return array_map(function($e) { return $e['desc']; }, getRadixPointData());
     }
 }

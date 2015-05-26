@@ -18,6 +18,7 @@ if (!defined('BASEPATH'))
  * @property-read Question[] $questions
  * @property boolean $bool_usetokens
  * @property-read boolean $isExpired
+ * @property-read SurveyLanguageSetting[] $languagesettings
  * @property-read QuestionGroup[] $groups
  */
 class Survey extends LSActiveRecord
@@ -249,7 +250,7 @@ class Survey extends LSActiveRecord
             //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-
+            ['translatedFields', 'safe'],
             ['use_series', 'boolean'],
             ['features', 'safe']
         );
@@ -952,5 +953,33 @@ class Survey extends LSActiveRecord
         $result = $this->getAdditionalLanguages();
         array_unshift($result, $this->language);
         return $result;
+    }
+
+
+    public function getTranslatedFields() {
+        /** @var SurveyLanguageSetting $languageSetting */
+        $result = [];
+        foreach($this->languagesettings as $languageSetting) {
+            $result[$languageSetting->surveyls_language] = $languageSetting->attributes;
+        }
+        return $result;
+    }
+
+    /**
+     * We save this immediately if / when we move to TranslatableBehavior, saving will happen automatically when
+     * saving the main record.
+     * @param $value
+     */
+    public function setTranslatedFields($value) {
+        foreach($value as $language => $fields) {
+            if (!isset($this->languagesettings[$language])) {
+                $this->languagesettings[$language] = $languageSetting = new SurveyLanguageSetting();
+                $languageSetting->surveyls_language = $language;
+            } else {
+                $languageSetting = $this->languagesettings[$language];
+            }
+            $languageSetting->attributes = $fields;
+            $languageSetting->save();
+        }
     }
 }

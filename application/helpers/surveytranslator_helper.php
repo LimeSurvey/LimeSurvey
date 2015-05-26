@@ -27,11 +27,10 @@
     * If $iDateFormat is given only the particual dateformat will be returned
     *
     * @param $iDateFormat integer
-    * @param $sLanguageCode string
     * @returns array
     *
     */
-    function getDateFormatData($iDateFormat=0,$sLanguageCode='en')
+    function getDateFormatData($iDateFormat=0)
     {
         $aDateFormats= array(
         1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'dd.mm.yy', 'dateformat' => gT('dd.mm.yyyy')),

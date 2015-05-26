@@ -26,7 +26,7 @@ $this->widget(WhDetailView::class, [
             'label' => gT('Environment'),
             'type' => 'raw',
             'visible' => App()->user->checkAccess('superadmin'),
-            'value' => TbHtml::link(gT('Show PHPInfo'), ['admin/globalsettings', 'sa'=>'showphpinfo'])
+            'value' => TbHtml::link(gT('Show PHPInfo'), ['settings/info'])
         ],
         [
             'label' => gT('Current version'),

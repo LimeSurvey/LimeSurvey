@@ -26,4 +26,16 @@ class SettingsController extends Controller {
         }
     }
 
+    public function actionInfo()
+    {
+        /**
+         * @todo Technically this renders invalid HTML since phpinfo() adds its own HTML tag.
+         */
+        ob_start();
+        phpinfo();
+        return $this->renderText(ob_get_clean());
+
+//        $this->renderText(phpinfo());
+    }
+
 }
