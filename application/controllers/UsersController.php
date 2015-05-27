@@ -1,5 +1,6 @@
 <?php
 namespace ls\controllers;
+use ls\pluginmanager\iAuthorizationPlugin;
 use ls\pluginmanager\PluginEvent;
 use Yii;
 use PluginIdentity;
@@ -85,6 +86,22 @@ class UsersController extends Controller
                 return $this->render('update', ['user' => $user]);
             }
         }
+        throw new \CHttpException(404, "Plugin or user not found.");
+    }
+
+    public function actionPermissions($id, $plugin) {
+        $this->layout = 'main';
+        /** @var iAuthorizationPlugin $pluginObject */
+        $pluginObject = App()->pluginManager->getPlugin($plugin);
+
+        if (isset($pluginObject) && $pluginObject instanceOf \ls\pluginmanager\iAuthorizationPlugin) {
+            return $this->render('permissions', [
+                'permissions' => \Permission::getGlobalBasePermissions(),
+                'plugin' => $pluginObject,
+                'userId' => $id
+            ]);
+        }
+
         throw new \CHttpException(404, "Plugin or user not found.");
     }
     public function filters()

@@ -10,7 +10,7 @@ class SurveySessionManager extends CApplicationComponent
     /**
      * @var SurveySession
      */
-    protected $current;
+    protected $_current;
     /*
      * @var \CTypedMap
      */
@@ -25,16 +25,16 @@ class SurveySessionManager extends CApplicationComponent
             $session->add('SSM', $this->sessions = new CTypedMap('SurveySession'));
         }
         if ((null !== $current = App()->request->getParam('SSM')) && isset($this->sessions[$current])) {
-            $this->current = $this->sessions[$current];
+            $this->_current = $this->sessions[$current];
         }
     }
 
     public function getActive() {
-        return isset($this->current);
+        return isset($this->_current);
     }
 
     public function getCurrent() {
-        return $this->current;
+        return $this->_current;
     }
 
     /**
@@ -64,7 +64,7 @@ class SurveySessionManager extends CApplicationComponent
                 throw new \Exception("Duplicate session detected.");
             }
         }
-        $this->current = $this->sessions[] = new SurveySession($surveyId, $responseId, count($this->sessions));
+        $this->_current = $this->sessions[] = new SurveySession($surveyId, $responseId, count($this->sessions));
         return $this->current;
     }
 

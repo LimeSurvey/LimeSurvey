@@ -41,10 +41,13 @@ $menu = [[ // Left side
         'icon' => 'bullhorn',
         'disabled' => !$this->survey->bool_usetokens,
         'url' => ["tokens/index", 'surveyId' => $this->survey->sid]
-    ]
+    ],
 ], [ // Right side
-
     [
+        'title' => gT('Export'),
+        'icon' => 'download',
+        'url' => ["surveys/export", 'id' => $this->survey->sid]
+    ], [
         'title' => gT('Add group'),
         'icon' => 'plus',
         'disabled' => $this->survey->isActive,

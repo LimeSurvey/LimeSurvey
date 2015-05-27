@@ -150,7 +150,7 @@
                 <?php 
             }
             ?>
-            <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
+            <a href="<?php echo $this->createUrl("users/logout"); ?>">
                 <img src='<?php echo $sImageURL; ?>logout.png' alt='<?php eT("Logout"); ?>' /></a>
             <img src='<?php echo $sImageURL; ?>blank.gif' alt='' width='20'  />
         </div>

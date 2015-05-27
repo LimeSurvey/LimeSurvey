@@ -1,7 +1,7 @@
 <?php
     echo TbHtml::tag('h1', [], App()->name);
 
-    
+    $list = '';
     foreach($publicSurveys as $survey)
     {
         $list .= CHtml::openTag('li');

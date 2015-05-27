@@ -8,6 +8,27 @@
 	 */
 	abstract class Response extends Dynamic
 	{
+        /**
+         * This adds support for translating SGQA to a label that uses the question code.
+         * This is not really efficient since it gets all question codes individually.
+         * @param string $attribute
+         * @return string
+         */
+        public function getAttributeLabel($attribute)
+        {
+            if (preg_match('/\d+X\d+X(\d+)(.+)?/', $attribute, $matches)) {
+                /**
+                 * Cache for 1 second so the query doesn't run again within this request,
+                 * but the caching is unlikely to cause trouble later.
+                 */
+                $code = Question::model()->cache(1)->findByPk($matches[1])->title;
+                return $code . (isset($matches[2]) ? " {$matches[2]}" : "");
+            } else {
+                return parent::getAttributeLabel($attribute);
+            }
+        }
+
+
         public function beforeDelete() {
             if (parent::beforeDelete())
             {
@@ -42,8 +63,9 @@
 		 * @param string $scenario
 		 * @return Response Description
 		 */
-		public static function create($surveyId, $scenario = 'insert') {
-			return parent::create($surveyId, $scenario);
+		public static function create($surveyId, $scenario = 'insert')
+        {
+            return parent::create($surveyId, $scenario);
 		}
 
 		/**
@@ -121,6 +143,7 @@
         
         public static function createTable(Survey $survey, &$messages = [])
         {
+            $db = App()->db;
             //Check for any additional fields for this survey and create necessary fields (token and datestamp)
             $columns['id'] = 'string(36) NOT NULL';
             $columns += $survey->columns;
@@ -128,9 +151,9 @@
 
             $createdTables = [];
             // Check if table exists with same column names.
-            if ((null !== $table = App()->db->schema->getTable($tableName, true)) && Response::model($survey->sid)->count() == 0) {
+            if ((null !== $table = $db->schema->getTable($tableName, true)) && Response::model($survey->sid)->count() == 0) {
                 // Table exists but is empty..
-                App()->db->createCommand()->dropTable($tableName);
+                $db->createCommand()->dropTable($tableName);
                 unset($table);
                 $messages[] = gT("Old empty response table deleted.");
             } elseif (isset($table) && $table->columnNames !== array_keys($columns)) {
@@ -140,8 +163,8 @@
 
             if (!isset($table)) {
                 // Table does not exist, create it.
-                App()->db->createCommand()->createTable($tableName, $columns);
-                App()->db->createCommand()->addPrimaryKey('', $tableName, ['id']);
+                $db->createCommand()->createTable($tableName, $columns);
+                $db->createCommand()->addPrimaryKey('', $tableName, ['id']);
                 $createdTables[] = $tableName;
                 $messages[] = gT("Response table created.");
             }
@@ -150,6 +173,8 @@
                 App()->db->createCommand()->createIndex("token_{$survey->sid}", $tableName, ['token']);
             }
 
+            // Refresh the table schema
+            App()->db->schema->getTable($tableName, true);
         }
 
         /**

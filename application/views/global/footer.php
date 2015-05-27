@@ -1,8 +1,7 @@
 <div class= "row footer">
-    <div style='display: inline-block; width: 33%; text-align:left;'>
-        <a href='http://manual.limesurvey.org'><img alt='LimeSurvey - <?php eT("Online Manual"); ?>' title='LimeSurvey - <?php eT("Online manual"); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>docs.png' /></a>
+    <div style='display: inline-block; width: 33%;'>
     </div>
-    
+
     <ul class='subtitle' style="display: inline-block; width: 33%; text-align: center; list-style-type: none;">
         <li>
             <a class='subtitle' title='<?php eT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a>

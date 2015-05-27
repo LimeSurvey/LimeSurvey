@@ -5,9 +5,11 @@ echo TbHtml::openTag('div', ['class' => isset($wrapper) ? $wrapper : 'col-md-12'
     if (!isset($columns)) {
         $columns = isset($dataProvider->data[0]) ? $dataProvider->data[0]->attributeNames() : [];
     }
-
     $columns = array_merge([
         [
+            'class' => \CCheckBoxColumn::class,
+            'selectableRows' => 2
+        ], [
             'header' => gT("Actions"),
             'class' => TbButtonColumn::class,
             'deleteButtonUrl' => function(Response $model, $row) {
@@ -42,7 +44,11 @@ echo TbHtml::openTag('div', ['class' => isset($wrapper) ? $wrapper : 'col-md-12'
             ]
         ]
     ], $columns);
+
+//    $template = "{summary}\n{items}\n{pager}\n{extendedSummary}";
+//    $template = TbHtml::tag('div', [], '') . $template;
     $this->widget(WhGridView::class, [
+//        'template' => $template,
         'dataProvider' => $dataProvider,
         'columns' => $columns,
         'responsiveTable' => true,

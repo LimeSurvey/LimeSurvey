@@ -146,28 +146,33 @@ class SurveyLanguageSetting extends LSActiveRecord
     */
     public function lsdefault($attribute,$params)
     {
-        $oSurvey=Survey::model()->findByPk($this->surveyls_survey_id);
-        $sEmailFormat=$oSurvey->htmlemail=='Y'?'html':'';
-        $aDefaultTexts=templateDefaultTexts($this->surveyls_language,'unescaped', $sEmailFormat);
+        if (isset($this->surveyls_survey_id)) {
+            $oSurvey = Survey::model()->findByPk($this->surveyls_survey_id);
+            $sEmailFormat = $oSurvey->htmlemail == 'Y' ? 'html' : '';
+            $aDefaultTexts = templateDefaultTexts($this->surveyls_language, 'unescaped', $sEmailFormat);
 
-         $aDefaultTextData=array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
-                        'surveyls_email_invite' => $aDefaultTexts['invitation'],
-                        'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
-                        'surveyls_email_remind' => $aDefaultTexts['reminder'],
-                        'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
-                        'surveyls_email_confirm' => $aDefaultTexts['confirmation'],
-                        'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
-                        'surveyls_email_register' => $aDefaultTexts['registration'],
-                        'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
-                        'email_admin_notification' => $aDefaultTexts['admin_notification'],
-                        'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
-                        'email_admin_responses' => $aDefaultTexts['admin_detailed_notification']);
-        if ($sEmailFormat == "html")
-        {
-            $aDefaultTextData['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
+            $aDefaultTextData = array(
+                'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
+                'surveyls_email_invite' => $aDefaultTexts['invitation'],
+                'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
+                'surveyls_email_remind' => $aDefaultTexts['reminder'],
+                'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
+                'surveyls_email_confirm' => $aDefaultTexts['confirmation'],
+                'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
+                'surveyls_email_register' => $aDefaultTexts['registration'],
+                'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
+                'email_admin_notification' => $aDefaultTexts['admin_notification'],
+                'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
+                'email_admin_responses' => $aDefaultTexts['admin_detailed_notification']
+            );
+            if ($sEmailFormat == "html") {
+                $aDefaultTextData['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification_css'] . $aDefaultTexts['admin_detailed_notification'];
+            }
+
+            if (empty($this->$attribute)) {
+                $this->$attribute = $aDefaultTextData[$attribute];
+            }
         }
-
-         if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
     }
 
 

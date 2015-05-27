@@ -11,12 +11,12 @@
                 'url' => ['users/index'],
                 'icon' => 'folder-open'
             ),
-            array(
+            [
                 'title' => gT('Create/edit user groups'),
                 'url' => array('admin/usergroups', 'sa' => 'index'),
                 'icon' => 'tags',
-                'visible' => App()->user->checkAccess('usergroups')
-            ),
+                'visible' => false && App()->user->checkAccess('usergroups')
+            ],
             array(
                 'title' => gT('Global settings'),
                 'url' => ['settings/index'],
@@ -75,14 +75,14 @@
                 'items' => array_map(function(Survey $survey) {
                     return [
                         'url' => App()->createUrl('surveys/update', ['id' => $survey->sid]),
-                        'label' => $survey->localizedTitle . (($survey->isActive) ? ' (' . gT('inactive') .')' : '')
+                        'label' => $survey->localizedTitle . ((!$survey->isActive) ? ' (' . gT('inactive') .')' : '')
                     ];
                     
                 }, Survey::model()->findAll())
             ], 
             [
                 'title' => gT('Create, import, or copy a survey'),
-                'url' => array('admin/survey', 'sa' => 'newsurvey'),
+                'url' => ['surveys/create'],
                 'icon' => 'plus',
                 'visible' => App()->user->checkAccess('surveys', ['crud' => 'create'])
             ],

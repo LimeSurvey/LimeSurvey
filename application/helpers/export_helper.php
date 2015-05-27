@@ -639,8 +639,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
         //Answer table
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
-        WHERE {{answers}}.language={{questions}}.language
-        AND {{answers}}.qid={{questions}}.qid
+        WHERE {{answers}}.question_id ={{questions}}.qid
         AND {{questions}}.sid=$iSurveyID";
         buildXMLFromQuery($xmlwriter,$aquery);
     }
@@ -663,7 +662,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 
     //Default values
     $query = "SELECT {{defaultvalues}}.*
-    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID AND {{questions}}.language={{defaultvalues}}.language ";
+    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID";
 
     buildXMLFromQuery($xmlwriter,$query);
 
@@ -671,7 +670,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE sid=$iSurveyID
-    ORDER BY gid";
+    ORDER BY id";
     buildXMLFromQuery($xmlwriter,$gquery);
 
     //Questions
@@ -695,12 +694,12 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
+        group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
+        group by qa.qid, qa.attribute, qa.value";
     }
 
     buildXMLFromQuery($xmlwriter,$query,'question_attributes');

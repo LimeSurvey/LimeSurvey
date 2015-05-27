@@ -23,7 +23,6 @@ if (!defined('BASEPATH'))
  */
 class Survey extends LSActiveRecord
 {
-
     /* Set some setting not by default database */
     public $format = 'G';
 
@@ -61,8 +60,8 @@ class Survey extends LSActiveRecord
     {
         return $this->localizedProperty('title');
     }
-    
-    public function getLocalizedDescription() 
+
+    public function getLocalizedDescription()
     {
         return $this->localizedProperty('description');
     }
@@ -252,7 +251,10 @@ class Survey extends LSActiveRecord
             //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             ['translatedFields', 'safe'],
             ['use_series', 'boolean'],
-            ['features', 'safe']
+            ['features', 'safe'],
+            ['sid', 'default' , 'value' => randomChars(6, '123456789')],
+
+            ['bool_listpublic', 'boolean']
         );
     }
 
@@ -327,7 +329,11 @@ class Survey extends LSActiveRecord
 
 
     public function setAdditionalLanguages($value) {
-        $this->additional_languages = implode(' ', $value);
+        if (is_array($value)) {
+            $this->additional_languages = implode(' ', $value);
+        } else {
+            $this->additional_languages = $value;
+        }
     }
     /**
     * Returns all languages array

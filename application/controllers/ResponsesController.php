@@ -17,7 +17,7 @@ class ResponsesController extends Controller
 
         $dataProvider = new \CActiveDataProvider(\Response::model($id), [
             'pagination' => [
-                'pageSize' => 50
+                'pageSize' => 20
             ]
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);

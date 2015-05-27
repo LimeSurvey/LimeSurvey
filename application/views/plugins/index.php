@@ -1,4 +1,4 @@
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-12">
 <?php
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
@@ -70,20 +70,29 @@
 
 ?>
 </div>
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-12">
+
 <?php
+    echo TbHtml::well(
+        gT('Configure global authentication and authorization settings below.') .
+        gT('Multiple authentication plugins can be active at the same time.') .
+        gT('Only one authorization plugin can be active at any time.')
+
+    );
     echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['plugins/configureAuth'], 'post');
     echo TbHtml::dropDownListControlGroup('authorizationPlugin', SettingGlobal::get('authorizationPlugin', null), TbHtml::listData($authorizers, 'id', 'name'), [
-        'label' => 'Authorization plugin:',
+        'label' => gT('Authorization plugin'),
+        'help' => gT('Authorization is the process of deciding if a user is allowed to do what he or she is attempting to do.'),
         'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
         'labelOptions' => ['class' => 'col-md-6'],
         'controlOptions' => ['class' => 'col-md-6'],
     ]);
     echo TbHtml::checkBoxListControlGroup('authenticationPlugins', SettingGlobal::get('authenticationPlugins', []), TbHtml::listData($authenticators, 'id', 'name'), [
-        'label' => 'Authentication plugins:',
+        'label' => gT('Authentication plugins'),
         'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
         'labelOptions' => ['class' => 'col-md-6'],
         'controlOptions' => ['class' => 'col-md-6'],
+        'help' => gT('Authorization is the process of deciding if the user is who he or she claims to be.'),
     ]);
     echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
     echo TbHtml::submitButton(gT('Save'), ['color' => 'primary']);
