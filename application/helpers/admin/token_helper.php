@@ -119,6 +119,33 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 	$aSurveyLangs = $oSurvey->additionalLanguages;
 	array_unshift($aSurveyLangs, $oSurvey->language);
 
+	$thisSurvey = getSurveyInfo($iSurveyID);
+	$aRelevantAttachments = array();
+
+	if (isset($thisSurvey['attachments']))
+	{
+		$aAttachments = unserialize($thisSurvey['attachments']);
+		if (!empty($aAttachments))
+		{
+			if($sType == 'invite')
+				$sTemplate = "invitation";
+			else if ($sType == 'remind')
+				$sTemplate = "reminder";
+
+			if (isset($aAttachments[$sTemplate]))
+			{
+				foreach ($aAttachments[$sTemplate] as $aAttachment)
+				{
+					if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance']))
+					{
+						$aRelevantAttachments[] = $aAttachment['url'];
+					}
+				}
+			}
+		}
+	}
+
+
 	//Convert result to associative array to minimize SurveyLocale access attempts
 	foreach($oSurveyLocale as $rows)
 	{
@@ -237,7 +264,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 		}
 		else
 		{
-			if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyID), null, $customheaders))
+			if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyID), $aRelevantAttachments, $customheaders))
 			{
 			   $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
 													'email'=>$fieldsarray["{EMAIL}"],
