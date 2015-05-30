@@ -5502,7 +5502,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             {
                 $oldgid = $fname['gid'];
                 if (LimeExpressionManager::GroupIsRelevant($fname['gid']) || $bHonorConditions==false) {
-                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name'], QuestionGroup::model()->getGroupDescription($fname['gid'], $sLanguageCode));
                 }
             }
         }

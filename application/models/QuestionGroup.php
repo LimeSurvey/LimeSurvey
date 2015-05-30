@@ -150,6 +150,18 @@
             return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         }
 
+        /**
+        * Get group description
+        *
+        * @param int iGroupId
+        * @param string sLanguage
+        */
+        public function getGroupDescription($iGroupId, $sLanguage)
+        {
+            $solover = $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
+            return $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
+        }
+
         private static function getQuestionIdsInGroup($groupId) {
             $questions = Yii::app()->db->createCommand()
             ->select('qid')

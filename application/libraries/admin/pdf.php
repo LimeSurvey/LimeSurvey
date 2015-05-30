@@ -714,28 +714,34 @@ class pdf extends TCPDF {
   /**
    *
    * Add GID text to PDF
-   * @param $sFname - Answer field text
+   * @param $sGroupName - Group name
+   * @param $sGroupDescription - Group description
    * @param $bAllowBreakPage - Allow break cell in two pages
    * @return unknown_type
    */
-  function addGidAnswer($sFname, $bAllowBreakPage=false)
+  function addGidAnswer($sGroupName, $sGroupDescription, $bAllowBreakPage=false)
   {
     $oPurifier = new CHtmlPurifier();
-    $sAnswerHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sFname)),ENT_COMPAT);
+    $sGroupName = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupName)),ENT_COMPAT);
+    $sGroupDescription = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupDescription)),ENT_COMPAT);
     $sData['thissurvey']=$this->_aSurveyInfo;
-    $sAnswerHTML = templatereplace($sAnswerHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+    $sGroupName = templatereplace($sGroupName, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+    $sGroupDescription = templatereplace($sGroupDescription, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
 
     $startPage = $this->getPage();
     $this->startTransaction();
     $this->ln(6);
+    $this->SetFontSize($this->_ibaseAnswerFontSize + 4);
+    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sGroupName, 0, 1, false, true, 'C');
+    $this->ln(2);
     $this->SetFontSize($this->_ibaseAnswerFontSize + 2);
-    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sAnswerHTML, 0, 1, false, true, 'L');
+    $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sGroupDescription, 0, 1, false, true, 'L');
     $this->ln(2);
     if ($this->getPage() != $startPage && !$bAllowBreakPage)
     {
       $this->rollbackTransaction(true);
       $this->AddPage();
-      $this->addGidAnswer($sFname,true); // Second param = true avoid an endless loop if a cell is longer than a page
+      $this->addGidAnswer($sGroupName, $sGroupDescription, true); // Second param = true avoid an endless loop if a cell is longer than a page
     }
     else
     {
