@@ -51,6 +51,8 @@ function doNumericSlider(qID,jsonOptions) {
 				step: parseFloat(jsonOptions.slider_step),
 				create: function() {
 					$('#slider-callout-'+myfname).appendTo($('#container-'+myfname+' .ui-slider-handle').get(0));
+					startvalue=''+startvalue;
+					startvalue=startvalue.replace(/\./,LSvar.sLEMradix);
 				},
 				slide: function( event, ui ) {
 					displayvalue=''+ui.value;
