@@ -307,6 +307,21 @@ use Plugin;
             });
             return $result;
         }
-        
+
+        /**
+         * Iterates over all active authenticators looking for a user with $id.
+         * Since the $id should be globally unique will return only the first result.
+         * @param $id
+         */
+        public function getUser($id)
+        {
+            foreach($this->getAuthenticators(true) as $authenticator) {
+                if (null !== $result = $authenticator->getUser($id)) {
+                    return $result;
+                }
+            }
+    }
+
+
     }
 ?>

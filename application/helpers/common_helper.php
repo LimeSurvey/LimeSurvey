@@ -56,6 +56,21 @@ function egT($sToTranslate, $iCount, $sEscapeMode = 'html')
     echo ngT($sToTranslate,$iCount,$sEscapeMode);
 }
 
+/**
+ * @param String $file
+ * @param Array $context
+ */
+function requireFile($file, $context = [], $thisObject = null) {
+    // Clean up scope.
+
+    $closure = function() {
+        extract(func_get_arg(1));
+        return require func_get_arg(0);
+    };
+    $require = $closure->bindTo($thisObject);
+    return $require($file, $context);
+}
+
 
 /**
 * Quotes a translation according to purpose
@@ -2006,7 +2021,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             } elseif ($question->type == "1") {
                 $abrows = getSubQuestions($surveyid,$question->qid, $sLanguage);
                 foreach ($abrows as $abrow) {
-                    $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
+                    $fieldname = "{$question->sgqa}{$abrow['title']}#0";
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$arow['qid']] = array(
                             'fieldname' => $fieldname,

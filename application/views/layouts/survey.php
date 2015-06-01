@@ -25,94 +25,17 @@
     </head>
     <body class="layout-main">
         <?php
-            if (!App()->user->isGuest) {
-                $items = require __DIR__ . '/../global/menu.php';
-                $this->widget('TbNavbar', [
-                    'brandUrl' => ['surveys/index'],
-                    'display' => null,
-                    'fluid' => true,
-                    'items' => [
-                    [
-                        'class' => 'TbNav',
-                        'items' => $items[0]
-                    ], 
-                    [
-                        'class' => 'TbNav',
-                        'htmlOptions' => [
-                            'class' => 'navbar-right'
-                        ],
-                        'items' => $items[1]
-                    ]]
-                ]);
-                if (isset($this->question)) {
-                    $items = require __DIR__ . '/../global/questionMenu.php';
-                    $this->widget('TbNavbar', [
-                        'brandLabel' => false,
-                        'display' => null,
-                        'fluid' => true,
-                        'items' => [
-                            [
-                                'class' => 'TbNav',
-                                'items' => $items[0]
-                            ],
-                            [
-                                'class' => 'TbNav',
-                                'htmlOptions' => [
-                                    'class' => 'navbar-right'
-                                ],
-                                'items' => $items[1]
-                            ]]
-                    ]);
-
-                } elseif (isset($this->group)) {
-                    $items = require __DIR__ . '/../global/groupMenu.php';
-                    $this->widget('TbNavbar', [
-                    'brandLabel' => false,
-                    'display' => null,
-                    'fluid' => true,
-                    'items' => [
-                    [
-                        'class' => 'TbNav',
-                        'items' => $items[0]
-                    ], 
-                    [
-                        'class' => 'TbNav',
-                        'htmlOptions' => [
-                            'class' => 'navbar-right'
-                        ],
-                        'items' => $items[1]
-                    ]]
-                ]);
-                    
-                } elseif (isset($this->survey)) {
-                    $items = require __DIR__ . '/../global/surveyMenu.php';
-                    $this->widget('TbNavbar', [
-                        'brandLabel' => false,
-                        'display' => null,
-                        'fluid' => true,
-                        'items' => [
-                            [
-                                'class' => 'TbNav',
-                                'items' => $items[0]
-                            ],
-                            [
-                                'class' => 'TbNav',
-                                'htmlOptions' => [
-                                    'class' => 'navbar-right'
-                                ],
-                                'items' => $items[1]
-                            ]]
-                    ]);
-
-                }
-            }
-		?>
+        /** @var \ls\controllers\Controller $this */
+        if (!App()->user->isGuest) {
+            $this->renderPartial('/global/menus');
+        }
+        ?>
         <div class="container-fluid">
             <div class="row">
                 <?php $this->widget(TbAlert::class); ?>
                 <div id="survey-navigator" class="col-lg-2 col-md-3 col-sm-12">
                     <?php
-                        $this->renderPartial('/global/surveyNavigator');
+                        $this->renderPartial('/global/surveyNavigator', ['survey' => $this->models['survey']]);
                     ?>
                 </div>
                 <div id="content" class="col-lg-10 col-md-9 col-sm-12">

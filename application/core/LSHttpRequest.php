@@ -11,33 +11,15 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-
 /**
- * Description of HttpRequest
- *
- *
- * Used in WebApplication.php
- * <pre>
- *    'request'=>array(
- *        'class'=>'HttpRequest',
- *        'noCsrfValidationRoutes'=>array(
- *            '^services/wsdl.*$'
- *        ),
- *        'enableCsrfValidation'=>true,
- *        'enableCookieValidation'=>true,
- *    ),
- * </pre>
- *
- * Every route will be interpreted as a regex pattern.
- *
+ * Class LSHttpRequest
+ * Adds functionality for excluding routes from CSRF validation.
  */
-class LSHttpRequest extends CHttpRequest {
+class LSHttpRequest extends HttpRequest {
     public $noCsrfValidationRoutes = array();
 
     protected function normalizeRequest(){
-        parent::normalizeRequest();
-        
-        if(!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'POST') return;
+        if (strcasecmp('post', $this->psr7->getMethod()) === 0) return;
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
         if($this->enableCsrfValidation){

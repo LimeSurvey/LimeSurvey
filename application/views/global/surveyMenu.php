@@ -1,57 +1,57 @@
 <?php
-/* @var Survey $survey */
-if (!isset($this->survey)) {
+/* @var Survey $model */
+if (!isset($model) || !$model instanceof Survey) {
     throw new Exception("Survey must be set for survey menu.");
 }
 $menu = [[ // Left side
     [
         'title' => gT('Activate survey'),
-        'url' => $this->survey->isActive && $this->survey->isExpired ? ["surveys/unexpire", 'id' => $this->survey->sid] : ["surveys/activate", 'id' => $this->survey->sid],
+        'url' => $model->isActive && $model->isExpired ? ["surveys/unexpire", 'id' => $model->sid] : ["surveys/activate", 'id' => $model->sid],
         'icon' => 'play',
-        'disabled' => $this->survey->isActive && !$this->survey->isExpired,
+        'disabled' => $model->isActive && !$model->isExpired,
     ], [
         'title' => gT('Expire survey'),
-        'url' => $this->survey->isExpired ? '#' : ["surveys/expire", 'id' => $this->survey->sid],
+        'url' => $model->isExpired ? '#' : ["surveys/expire", 'id' => $model->sid],
         'icon' => 'pause',
-        'disabled' => $this->survey->isExpired || !$this->survey->isActive
+        'disabled' => $model->isExpired || !$model->isActive
 
     ], [
         'title' => gT('Deactivate survey'),
-        'url' => ["surveys/deactivate", 'id' => $this->survey->sid],
+        'url' => ["surveys/deactivate", 'id' => $model->sid],
         'icon' => 'stop',
-        'disabled' => !$this->survey->isActive
+        'disabled' => !$model->isActive
     ], [
         'title' => gT('Execute survey.'),
         'icon' => 'certificate',
-        'disabled' => !$this->survey->isActive || $this->survey->isExpired,
+        'disabled' => !$model->isActive || $model->isExpired,
         'linkOptions' => ['target' => '_blank'],
-        'url' => !$this->survey->isActive || $this->survey->isExpired ? '#' : ["surveys/start", 'id' => $this->survey->sid]
+        'url' => !$model->isActive || $model->isExpired ? '#' : ["surveys/start", 'id' => $model->sid]
     ], [
         'title' => gT('Survey settings'),
         'icon' => 'wrench',
-//        'disabled' => $this->survey->responseCount == 0,
-        'url' => ["surveys/update", 'id' => $this->survey->sid]
+//        'disabled' => $model->responseCount == 0,
+        'url' => ["surveys/update", 'id' => $model->sid]
     ], [
         'title' => gT('Responses'),
         'icon' => 'inbox',
-        'disabled' => $this->survey->responseCount == 0,
-        'url' => ["responses/index", 'id' => $this->survey->sid]
+        'disabled' => $model->responseCount == 0,
+        'url' => ["responses/index", 'id' => $model->sid]
     ], [
         'title' => gT('Tokens'),
         'icon' => 'bullhorn',
-        'disabled' => !$this->survey->bool_usetokens,
-        'url' => ["tokens/index", 'surveyId' => $this->survey->sid]
+        'disabled' => !$model->bool_usetokens,
+        'url' => ["tokens/index", 'surveyId' => $model->sid]
     ],
 ], [ // Right side
     [
         'title' => gT('Export'),
         'icon' => 'download',
-        'url' => ["surveys/export", 'id' => $this->survey->sid]
+        'url' => ["surveys/export", 'id' => $model->sid]
     ], [
         'title' => gT('Add group'),
         'icon' => 'plus',
-        'disabled' => $this->survey->isActive,
-        'url' => ["groups/create", 'surveyId' => $this->survey->primaryKey]
+        'disabled' => $model->isActive,
+        'url' => ["groups/create", 'surveyId' => $model->primaryKey]
     ],
     
 ]];

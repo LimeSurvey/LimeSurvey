@@ -24,7 +24,11 @@
         "bower-asset/select2-bootstrap-css": "1.*",
         "sam-it/yii1-translate": "dev-master",
         "bower-asset/jquery-ui": "1.*",
-        "sam-it/forms": "dev-master"
+        "sam-it/forms": "dev-master",
+        "bower-asset/papaparse": "4.1",
+        "zendframework/zend-diactoros": "^1.0@dev",
+        "bower-asset/ajaxq": "^0.0.3@dev",
+        "bower-asset/jquery": "2.*"
     },
 	"require-dev" : {
 		

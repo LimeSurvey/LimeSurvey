@@ -7,17 +7,19 @@ class QuestionsController extends Controller
 {
     public $layout = 'survey';
     public function actionView($id) {
-        $this->question = $this->loadModel($id);
-        $this->survey = $this->question->survey;
-        $this->group = $this->question->group;
+        $this->models['question'] = $question = $this->loadModel($id);
+        $this->models['group'] = $question->group;
+        $this->models['survey'] = $question->survey;
+
         
-        $this->render('view', ['question' => $this->question]);
+        $this->render('view', ['question' => $question]);
     }
 
     public function actionUpdate($id) {
-        $this->question = $question = $this->loadModel($id);
-        $this->survey = $this->question->survey;
-        $this->group = $this->question->group;
+        $this->models['question'] = $question = $this->loadModel($id);
+        $this->models['group'] = $question->group;
+        $this->models['survey'] = $question->survey;
+
 
         if (App()->request->isPutRequest) {
 //            echo '<pre>';
@@ -81,7 +83,7 @@ class QuestionsController extends Controller
             }
 
             if (!$error) {
-                $this->question->setAttributes(App()->request->getParam(\CHtml::modelName($question)));
+                $question->setAttributes(App()->request->getParam(\CHtml::modelName($question)));
                 if (// Validate and save question.
                     $question->save()
                     // Remove old answers. Use individual delete to handle removal of dependent records.
@@ -110,7 +112,7 @@ class QuestionsController extends Controller
             }
         }
 
-        $this->render('update', ['question' => $this->question, 'questionnames' => $this->question->translations]);
+        $this->render('update', ['question' => $question, 'questionnames' => $question->translations]);
     }
 
     public function actionCreate($groupId) {

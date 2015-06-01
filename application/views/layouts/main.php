@@ -7,94 +7,16 @@
         <link rel="icon" href="<?php echo App()->theme->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <?php
 			App()->bootstrap->register();
-            App()->clientScript->registerCssFile(App()->theme->baseUrl . '/css/style.css');
+            $cs = App()->clientScript;
+            $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
+            $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
 		?>
         <title>Limesurvey Administration</title>
     </head>
     <body class="layout-main">
         <?php
             if (!App()->user->isGuest) {
-                $items = require __DIR__ . '/../global/menu.php';
-                $this->widget('TbNavbar', [
-                    'brandUrl' => ['surveys/index'],
-                    'display' => null,
-                    'fluid' => true,
-                    'items' => [
-                    [
-                        'class' => 'TbNav',
-                        'items' => $items[0]
-                    ], 
-                    [
-                        'class' => 'TbNav',
-                        'htmlOptions' => [
-                            'class' => 'navbar-right'
-                        ],
-                        'items' => $items[1]
-                    ]]
-                ]);
-                if (isset($this->survey)) {
-                    $items = require __DIR__ . '/../global/surveyMenu.php';
-                    $this->widget('TbNavbar', [
-                    'brandLabel' => false,
-                    'display' => null,
-                    'fluid' => true,
-                    'items' => [
-                    [
-                        'class' => 'TbNav',
-                        'items' => $items[0]
-                    ], 
-                    [
-                        'class' => 'TbNav',
-                        'htmlOptions' => [
-                            'class' => 'navbar-right'
-                        ],
-                        'items' => $items[1]
-                    ]]
-                ]);
-                    
-                }
-                if (isset($this->group)) {
-                    $items = require __DIR__ . '/../global/groupMenu.php';
-                    $this->widget('TbNavbar', [
-                    'brandLabel' => false,
-                    'display' => null,
-                    'fluid' => true,
-                    'items' => [
-                    [
-                        'class' => 'TbNav',
-                        'items' => $items[0]
-                    ], 
-                    [
-                        'class' => 'TbNav',
-                        'htmlOptions' => [
-                            'class' => 'navbar-right'
-                        ],
-                        'items' => $items[1]
-                    ]]
-                ]);
-                    
-                }
-                if (isset($this->question)) {
-                    $items = require __DIR__ . '/../global/questionMenu.php';
-                    $this->widget('TbNavbar', [
-                    'brandLabel' => false,
-                    'display' => null,
-                    'fluid' => true,
-                    'items' => [
-                    [
-                        'class' => 'TbNav',
-                        'items' => $items[0]
-                    ], 
-                    [
-                        'class' => 'TbNav',
-                        'htmlOptions' => [
-                            'class' => 'navbar-right'
-                        ],
-                        'items' => $items[1]
-                    ]]
-                ]);
-                    
-                }
+                $this->renderPartial('/global/menus');
             }
 		?>
         <div class="container-fluid">

@@ -1,26 +1,26 @@
 <?php
 /* @var Controller $this*/
-/** @var QuestionGroup $this->group */
-if (!isset($this->group)) {
+/** @var QuestionGroup $model */
+if (!isset($model) || !$model instanceof QuestionGroup) {
     throw new Exception("Group must be set for group menu.");
 }
 $menu = [[ // Left side
     [
         'title' => gT('Remove group'),
         'icon' => 'trash',
-        'disabled' => $this->group->questionCount > 0,
+        'disabled' => $model->questionCount > 0,
         'linkOptions' => [
             'confirm' => 'Are you sure?'
         ],
-        'url' => ["groups/delete", 'id' => $this->group->primaryKey]
+        'url' => ["groups/delete", 'id' => $model->primaryKey]
 //
     ],
 ], [ // Right side
     [
         'title' => gT('Add question'),
         'icon' => 'plus',
-        'disabled' => $this->survey->isActive,
-        'url' => ["questions/create", 'groupId' => $this->group->primaryKey]
+        'disabled' => $model->survey->isActive,
+        'url' => ["questions/create", 'groupId' => $model->primaryKey]
 //
     ],
     [

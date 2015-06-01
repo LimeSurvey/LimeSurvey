@@ -14,21 +14,14 @@
  * 	Files Purpose: lots of common functions
  */
 
+/**
+ * Class ParticipantAttribute
+ * @property string $value;
+ * @property int $attribute_id;
+ * @property string $participant_id;
+ */
 class ParticipantAttribute extends LSActiveRecord
 {
-
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
 
     /**
      * Returns the setting's table name to be used by the model
@@ -49,16 +42,14 @@ class ParticipantAttribute extends LSActiveRecord
      */
     public function primaryKey()
     {
-        return array('participant_id', 'attribute_id');
+        return ['participant_id', 'attribute_id'];
     }
 
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return array(
-            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
-        );
+        return [
+            'name' => [self::BELONGS_TO, ParticipantAttributeName::class, 'attribute_id']
+        ];
     }
 
     function getAttributeInfo($participantid)

@@ -24,23 +24,16 @@
  * @property string $language
  * @property string $blacklisted
  * @property integer $owner_uid
+ * @property ParticipantAttribute[] $customAttributes;
  */
 class Participant extends LSActiveRecord
 {
-
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return Participants
+     * Array that holds participant attribute models and saves them in before save.
+     * @var ParticipantAttribute[]
      */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
-    }
-
+    private $customAttributeCache = [];
+    private static $customAttributes;
     /**
      * @return string the associated database table name
      */
@@ -49,36 +42,63 @@ class Participant extends LSActiveRecord
         return '{{participants}}';
     }
 
+    public static function customAttributeNames() {
+        if (!isset(self::$customAttributes)) {
+            self::$customAttributes = \CHtml::listData(ParticipantAttributeName::model()->findAll(), 'defaultname', 'attribute_id');
+        }
+        return self::$customAttributes;
+
+    }
     /**
      * @return array validation rules for model attributes.
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
-        return array(
-            array('participant_id, blacklisted, owner_uid', 'required'),
-            array('owner_uid', 'numerical', 'integerOnly' => true),
-            array('participant_id', 'length', 'max' => 50),
-            array('firstname, lastname, language', 'length', 'max' => 40),
-            array('firstname, lastname, language', 'LSYii_Validators'),
-            array('email', 'length', 'max' => 254),
-            array('blacklisted', 'length', 'max' => 1),
+        $rules = [
+            ['blacklisted', 'default', 'value' => 'N'],
+            ['participant_id', 'length', 'max' => 50],
+            ['firstname, lastname', 'length', 'max' => 150],
+            /**
+             * @todo This is not a text field, it should use a range validator!
+             */
+            ['language', 'length', 'max' => 15],
+            ['email', 'email'],
+            ['blacklisted', 'in', 'range' => ['Y', 'N']],
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('participant_id, firstname, lastname, email, language, blacklisted, owner_uid', 'safe', 'on' => 'search'),
-        );
+            ['participant_id, firstname, lastname, email, language, blacklisted, owner_uid', 'safe', 'on' => 'search'],
+
+            // Set some default values.
+            ['participant_id', UuidDefaultValidator::class],
+            ['created', 'default', 'value' => date(DateTime::ATOM), 'safe' => false],
+            ['owner_uid', 'default', 'value' => App()->user->id, 'safe' => false],
+            ['created_by', 'default', 'value' => App()->user->id, 'safe' => false],
+            // Always update modified.
+            ['modified', 'default', 'value' => date(DateTime::ATOM), 'setOnEmpty' => false, 'safe' => false]
+
+        ];
+
+        $rules[] = [
+            array_keys($this->customAttributeNames()),
+            'safe'
+        ];
+
+        return $rules;
     }
 
+    public function getOwner() {
+        return App()->pluginManager->getUser($this->owner_uid);
+    }
     /**
      * @return array relational rules.
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return array(
-        );
+        return [
+            'surveyCount' => [self::STAT, SurveyLink::class, 'participant_id'],
+            'customAttributes' => [self::HAS_MANY, ParticipantAttribute::class, 'participant_id', 'index' => 'attribute_id'],
+            'attributeCount' => [self::STAT, ParticipantAttribute::class, 'participant_id'],
+        ];
     }
 
     /**
@@ -88,8 +108,8 @@ class Participant extends LSActiveRecord
     {
         return array(
             'participant_id' => 'Participant',
-            'firstname' => 'Firstname',
-            'lastname' => 'Lastname',
+            'firstname' => 'First name',
+            'lastname' => 'Last name',
             'email' => 'Email',
             'language' => 'Language',
             'blacklisted' => 'Blacklisted',
@@ -121,115 +141,45 @@ class Participant extends LSActiveRecord
         ));
     }
 
-    /*
-     * funcion for generation of unique id
-     */
 
-    function gen_uuid()
-    {
-        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x', mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0x0fff) | 0x4000, mt_rand(0, 0x3fff) | 0x8000, mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
-        );
-    }
-
-    /*
-     * This function is responsible for adding the participant to the database
-     * Parameters : participant data
-     * Return Data : true on success, false on failure
-     */
-     function insertParticipant($aData)
-     {
-         $oParticipant = new self;
-         foreach ($aData as $sField => $sValue){
-             $oParticipant->$sField = $sValue;
-         }
-         try
-         {
-             $oParticipant->save();
-             return true;
-         }
-         catch(Exception $e)
-         {
-             return false;
-         }
-     }
 
     /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
+     * Scope that limits participants to owned or shared with.
+     * @param int $userId
+     * @return self
      */
-    public function primaryKey() {
-        return 'participant_id';
-    }
-
-    /**
-     * This function updates the data edited in the jqgrid
-     *
-     * @param aray $data
-     */
-    function updateRow($data)
-    {
-        $record = $this->findByPk($data['participant_id']);
-        foreach ($data as $key => $value)
-        {
-            $record->$key = $value;
+    public function accessibleTo($userId) {
+        if (App()->authManager->checkAccess('superadmin', $userId)) {
+            return $this;
         }
-        $record->save();
-    }
+        // Separate query, simpler than join and not a lot of performance difference.
+        // Note that Yii2 does this by default instead of joining.
+        $this->dbCriteria->addColumnCondition([
+            'owner_uid' => $userId
+        ]);
+        $sharedIds = array_map(function(ParticipantShare $model) { return $model->participant_id; }, ParticipantShare::model()->findAllByAttributes(['share_uid' => $userId]));
+        if (!empty($sharedIds)) {
+            $this->dbCriteria->addInCondition('participant_id', $sharedIds, 'OR');
+        }
 
-    /*
-     * This function returns a list of participants who are either owned or shared
-     * with a specific user
-     *
-     * @params int $userid The ID of the user that we are listing participants for
-     *
-     * @return object containing all the users
-     */
-    function getParticipantsOwner($userid)
-    {
-        $subquery = Yii::app()->db->createCommand()
-            ->select('{{participants}}.participant_id,{{participant_shares}}.can_edit')
-            ->from('{{participants}}')
-            ->leftJoin('{{participant_shares}}', ' {{participants}}.participant_id={{participant_shares}}.participant_id')
-            ->where('owner_uid = :userid1 OR share_uid = :userid2')
-            ->group('{{participants}}.participant_id,{{participant_shares}}.can_edit');
-
-        $command = Yii::app()->db->createCommand()
-                ->select('p.*, ps.can_edit')
-                ->from('{{participants}} p')
-                ->join('(' . $subquery->getText() . ') ps', 'ps.participant_id = p.participant_id')
-                ->bindParam(":userid1", $userid, PDO::PARAM_INT)
-                ->bindParam(":userid2", $userid, PDO::PARAM_INT);
-
-        return $command->queryAll();
-    }
-
-    function getParticipantsOwnerCount($userid)
-    {
-        $command = Yii::app()->db->createCommand()
-                        ->select('count(*)')
-                        ->from('{{participants}} p')
-                        ->leftJoin('{{participant_shares}} ps', 'ps.participant_id = p.participant_id')
-                        ->where('p.owner_uid = :userid1 OR ps.share_uid = :userid2')
-                        ->bindParam(":userid1", $userid, PDO::PARAM_INT)
-                        ->bindParam(":userid2", $userid, PDO::PARAM_INT);
-        return $command->queryScalar();
+        return $this;
     }
 
     /**
-     * Get the number of participants, no restrictions
-     *
-     * @return int
+     * Scope that limits participant to owned only.
      */
-    function getParticipantsCountWithoutLimit()
-    {
-        return Participant::model()->count();
+    public function ownedBy($userId) {
+        $this->dbCriteria->addColumnCondition([
+            'owner_uid' => $userId
+        ]);
+        return $this;
     }
 
-    function getParticipantsWithoutLimit()
-    {
-        return Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
+    public function blacklisted() {
+        $this->dbCriteria->addColumnCondition([
+            'blacklisted' => 'Y'
+        ]);
+        return $this;
     }
 
     /**
@@ -244,15 +194,6 @@ class Participant extends LSActiveRecord
     {
         $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
         return $count;
-    }
-
-    function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
-    {
-        $data = $this->getParticipantsSelectCommand(false, $attid, $search, $userid, $page, $limit, $order);
-
-        $allData = $data->queryAll();
-
-        return $allData;
     }
 
     /**
@@ -279,7 +220,7 @@ class Participant extends LSActiveRecord
         $selectValue[] = "luser.full_name as ownername";
         $selectValue[] = "luser.users_name as username";
 
-        $aAllAttributes = ParticipantAttributeName::model()->getAllAttributes();
+        $aAllAttributes = ParticipantAttributeName::model()->findAll();
         foreach ($aAllAttributes as $aAttribute)
         {
             if(!is_null($search) && strpos($search->condition,'attribute'.$aAttribute['attribute_id'])!==false)
@@ -368,12 +309,6 @@ class Participant extends LSActiveRecord
         }
 
         return $data;
-    }
-
-    function getSurveyCount($participant_id)
-    {
-        $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{survey_links}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $participant_id, PDO::PARAM_INT)->queryScalar();
-        return $count;
     }
 
     /**
@@ -1321,7 +1256,7 @@ class Participant extends LSActiveRecord
                 {
                     /* Create entry in participants table */
                     $black = !empty($tobeinserted['blacklisted']) ? $tobeinserted['blacklised'] : 'N';
-                    $pid=!empty($tobeinserted['participant_id']) ? $tobeinserted['participant_id'] : $this->gen_uuid();
+                    $pid=!empty($tobeinserted['participant_id']) ? $tobeinserted['participant_id'] : \Cake\Utility\Text::uuid();
                     $writearray = array('participant_id' => $pid,
                                         'firstname' => $tobeinserted['firstname'],
                                         'lastname' => $tobeinserted['lastname'],
@@ -1400,35 +1335,85 @@ class Participant extends LSActiveRecord
         return $returndata;
     }
 
-    /*
-     * The purpose of this function is to check for duplicate in participants
+
+
+
+    public function __set($name, $value)
+    {
+        if (isset($this->customAttributeNames()[$name])) {
+            $this->setCustomAttribute($name, $value);
+        } else {
+            parent::__set($name, $value);
+        }
+    }
+
+    public function __get($name) {
+        if (isset($this->customAttributeNames()[$name])) {
+            return $this->getCustomAttribute($name);
+        } else {
+            return parent::__get($name);
+        }
+    }
+
+    public function __isset($name) {
+        if (isset($this->customAttributeNames()[$name])) {
+            return $this->getCustomAttribute($name) != null;
+        } else {
+            return parent::__isset($name);
+        }
+    }
+
+    public function setCustomAttribute($name, $value) {
+        $attributeId = $this->customAttributeNames()[$name];
+        /** @var ParticipantAttribute $attribute */
+        $attribute = (!$this->isNewRecord && isset($this->customAttributes[$attributeId])) ? $this->customAttributes[$attributeId]: new ParticipantAttribute();
+        $attribute->value = $value;
+        $attribute->attribute_id = $attributeId;
+        $this->customAttributeCache[$attributeId] = $attribute;
+    }
+
+    public function getCustomAttribute($name)
+    {
+        // We read from the cache first and otherwise from the relation.
+        $attributeId = $this->customAttributeNames()[$name];
+        if (isset($this->customAttributeCache[$attributeId])) {
+            $result = $this->customAttributeCache[$attributeId]->value;
+        } elseif (isset($this->customAttributes[$attributeId])) {
+            $result = $this->customAttributes[$attributeId]->value;
+        } else {
+            $result = null;
+        }
+        return $result;
+    }
+
+    /**
+     * We save custom attributes first.
+     * 1. We have a UUID so we know what the foreign key value is.
+     * 2. If saving the main model fails at some point we can clean up the custom attributes since their parent record does not exist.
+     * 3. We can cancel the save if we run into trouble.
+     *
+     * - A "nicer" solution would be to use a transaction, but it will also make it a lot slower.
+     * @return bool
      */
-
-    function checkforDuplicate($fields, $output="bool")
+    protected function beforeSave()
     {
-        $query = Yii::app()->db->createCommand()->select('participant_id')->where($fields)->from('{{participants}}')->queryAll();
-        if (count($query) > 0)
-        {
-            if($output=="bool") {return true;}
-            return $query[0][$output];
+        $result = parent::beforeSave();
+        $errors = [];
+        foreach($this->customAttributeCache as $attributeId => $model) {
+            $model->participant_id = $this->participant_id;
+            $result = $result && $model->save();
+            $errors = array_merge($errors, $model->errors);
         }
-        else
-        {
-            return false;
-        }
+        $this->addErrors($errors);
+        return $result;
     }
 
-    function insertParticipantCSV($data)
-    {
-        $insertData = array(
-            'participant_id' => $data['participant_id'],
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'email' => $data['email'],
-            'language' => $data['language'],
-            'blacklisted' => $data['blacklisted'],
-            'created_by' => $data['owner_uid'],
-            'owner_uid' => $data['owner_uid']);
-        Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
+    public function getNewCustomAttributes() {
+        return array_filter($this->customAttributeCache, function(ParticipantAttribute $attribute) {
+            $attribute->participant_id = $this->participant_id;
+            return $attribute->isNewRecord;
+        });
     }
+
+
 }

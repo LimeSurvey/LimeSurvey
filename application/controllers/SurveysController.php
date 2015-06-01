@@ -52,7 +52,7 @@ class SurveysController extends Controller
             }
         }
         $this->layout = 'survey';
-        $this->survey = $survey;
+        $this->models['survey'] = $survey;
         $this->render('update', ['survey' => $survey]);
     }
 
@@ -77,7 +77,7 @@ class SurveysController extends Controller
             $this->redirect(['surveys/update', 'id' => $survey->sid]);
         }
 
-        $this->survey = $survey;
+        $this->models['survey'] = $survey;
         $this->render('deactivate', ['survey' => $survey]);
     }
     public function filters()
@@ -100,7 +100,7 @@ class SurveysController extends Controller
         }
 
         if ($this->layout == 'survey') {
-            $this->survey = $survey;
+            $this->models['survey'] = $survey;
         }
         return $survey;
     }
@@ -211,7 +211,7 @@ class SurveysController extends Controller
 
         }
         $this->layout = 'survey';
-        $this->survey = $survey;
+        $this->models['survey'] = $survey;
         $this->render('expire', ['survey' => $survey]);
     }
 

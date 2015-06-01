@@ -1,0 +1,44 @@
+.sortable .form-group > * {
+    float: none;
+}
+.hide-inputs .control-label {
+    width: 100%;
+    padding-top: 0px;
+    text-align: center;
+}
+
+.hide-inputs .form-group {
+    margin-bottom: 0px;
+}
+.hide-inputs input {
+    display: none;
+}
+
+.sortable {
+    min-height: 34px;
+    height: auto;
+}
+
+.memoryUsage {
+    height: 100px;
+    display: flex;
+    border: 1px solid black;
+    align-items: flex-end;
+}
+
+.memoryUsage > div {
+    display: flex;
+    border: 1px solid #dddddd;
+    background-color: #11ff11;
+}
+
+#importForm.busy #participantForm, #importForm.busy #mapForm {
+    display: none;
+}
+
+#importForm #progress{
+    display: none;
+}
+#importForm.busy #progress {
+    display: inherit;
+}

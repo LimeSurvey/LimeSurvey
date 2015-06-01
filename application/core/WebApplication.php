@@ -23,7 +23,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  * @property \ls\pluginmanager\PluginManager $pluginManager
  * @property CDbConnection $db
  * @property SurveySessionManager $surveySessionManager
- * @property \CHttpRequest $request;
+ * @property \HttpRequest $request;
  * @property WebUser $user
  */
 class WebApplication extends CWebApplication
@@ -234,7 +234,7 @@ class WebApplication extends CWebApplication
     /**
      * Get the pluginManager
      *
-     * @return PluginManager
+     * @return \ls\pluginmanager\PluginManager
      */
     public function getPluginManager()
     {
@@ -255,5 +255,6 @@ class WebApplication extends CWebApplication
         }
         return parent::runController($route);
 	}
+
 }
 

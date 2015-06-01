@@ -118,7 +118,7 @@
             $rules = [
                 ['id', 'default', 'value' => \Cake\Utility\Text::uuid()],
             ];
-            if ($this->survey->use_series) {
+            if ($this->hasAttribute('series_id')) {
                 $rules[] = ['series_id', 'default', 'value' => \Cake\Utility\Text::uuid()];
             }
 

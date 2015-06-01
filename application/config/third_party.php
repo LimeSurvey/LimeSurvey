@@ -6,9 +6,9 @@
  */
 return array(
     'jquery' => array(
-        'baseUrl' => 'third_party/jquery/',
+        'baseUrl' => 'components/jquery/dist', // This should use app->params[bower-asset] but that's not yet avialable at this point.
         'js' => array(
-            'jquery-1.11.1.min.js'
+            'jquery.min.js'
         )
     ),
     'jqgrid' => array(

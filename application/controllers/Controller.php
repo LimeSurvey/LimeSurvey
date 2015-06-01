@@ -17,24 +17,9 @@ use \Yii;
 abstract class Controller extends \CController
 {
     /**
-     * The currently selected survey. Needed for the group menu.
-     * @todo This will need refactoring at some point, these variables should not be in all controllers.
-     * @var Survey
+     * @var Array of active menus, keys are the menu names, values will be passed to the view.
      */
-    public $survey;
-    /**
-     * The currently selected group. Needed for the group / question menu.
-     * @todo This will need refactoring at some point, these variables should not be in all controllers.
-     * @var QuestionGroup
-     */
-    public $group;
-   
-    /**
-     * The currently selected question. Needed for the group menu.
-     * @todo This will need refactoring at some point, these variables should not be in all controllers.
-     * @var Question
-     */
-    public $question;
+    public $menus = [];
     
     /**
      * This array contains the survey / group / question id used by the menu widget.

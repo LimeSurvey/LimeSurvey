@@ -134,16 +134,6 @@ class ParticipantAttributeName extends LSActiveRecord
         ));
     }
 
-    
-    function getAllAttributes()
-    {
-        $aResult=Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*')
-                                              ->from('{{participant_attribute_names}}')
-                                              ->order('{{participant_attribute_names}}.attribute_id')
-                                              ->queryAll();
-        return $aResult;        
-    }
-
     function getAllAttributesValues()
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_values}}')->queryAll();

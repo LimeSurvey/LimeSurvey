@@ -1,8 +1,8 @@
 <nav>
 <?php 
-echo TbHtml::link(TbHtml::tag('h3', [], "{$this->survey->localizedTitle} ({$this->survey->sid})"), ['surveys/update', 'id' => $this->survey->sid]);
+echo TbHtml::link(TbHtml::tag('h3', [], "{$survey->localizedTitle} ({$survey->sid})"), ['surveys/update', 'id' => $survey->sid]);
 $items = [];
-foreach ($this->survey->groups as $group) {
+foreach ($survey->groups as $group) {
     $items[] = [
         'label' => "{$group->title} - {$group->group_name}",
         'url' => ['groups/view', 'id' => $group->id],

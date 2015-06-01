@@ -4,9 +4,9 @@ use \Yii;
 class GroupsController extends Controller {
     public $layout = 'survey';
     public function actionView($id) {
-        $this->group = $this->loadModel($id);
-        $this->survey = $this->group->survey;
-        return $this->render('view', ['group' => $this->group]);
+        $this->models['group'] = $group = $this->loadModel($id);
+        $this->models['survey'] = $group->survey;
+        return $this->render('view', ['group' => $group]);
     }
 
     /**
@@ -38,11 +38,11 @@ class GroupsController extends Controller {
         /**
          * @todo Switch to findByPk after language has been removed from group table.
          */
-        $survey = \Survey::model()->findByPk($surveyId);
-        $this->survey = $survey;
-        if (!isset($this->survey)) {
+        $this->models['survey'] = $survey = \Survey::model()->findByPk($surveyId);
+
+        if (!isset($survey)) {
             throw new \CHttpException(404, "Survey not found.");
-        } elseif ($this->survey->isActive) {
+        } elseif ($survey->isActive) {
             throw new \CHttpException(421, "Cannot add groups to active survey.");
         }
         $group = new \QuestionGroup();

@@ -58,7 +58,7 @@ class participantsaction extends Survey_Common_Action
      */
     private function _loadjqGrid($sScript = '', $aData = array())
     {
-        $aData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
+        $aData['aAttributes'] = ParticipantAttributeName::model()->findAll();
         App()->getClientScript()->registerPackage('jqgrid');
         if (!empty($sScript))
         {
@@ -115,7 +115,7 @@ class participantsaction extends Survey_Common_Action
         // If attribute fields are selected, add them to the output
         if ($aAttributeIDs==null)
         {
-            $aAttributes = ParticipantAttributeName::model()->getAllAttributes();
+            $aAttributes = ParticipantAttributeName::model()->findAll();
         }
         else
         {
@@ -187,7 +187,7 @@ class participantsaction extends Survey_Common_Action
             'totalrecords' => $iTotalRecords,
             'owned' => Participant::model()->count('owner_uid = ' . $iUserID),
             'shared' => Participant::model()->getParticipantsSharedCount($iUserID),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'aAttributes' => ParticipantAttributeName::model()->findAll(),
             'attributecount' => ParticipantAttributeName::model()->count(),
             'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
         );
@@ -201,7 +201,7 @@ class participantsaction extends Survey_Common_Action
     function importCSV()
     {
         $aData = array(
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->findAll()
         );
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'),$aData);
     }
@@ -241,13 +241,13 @@ class participantsaction extends Survey_Common_Action
         $aData = array(
             'names' => User::model()->findAll(),
             'attributes' => ParticipantAttributeName::model()->getVisibleAttributes(),
-            'allattributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'allattributes' => ParticipantAttributeName::model()->findAll(),
             'attributeValues' => ParticipantAttributeName::model()->getAllAttributesValues(),
             'surveynames' => $aSurveyNames,
             'tokensurveynames' => $tSurveyNames,
             'urlsearch' => $urlSearch,
             'sSearchCondition' => $sSearchCondition,
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->findAll()
         );
         App()->getClientScript()->registerPackage('jqgrid');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl')  . 'displayParticipants.css');
@@ -269,7 +269,7 @@ class participantsaction extends Survey_Common_Action
             'hideblacklisted' => Yii::app()->getConfig('hideblacklisted'),
             'deleteblacklisted' => Yii::app()->getConfig('deleteblacklisted'),
             'allowunblacklist' => Yii::app()->getConfig('allowunblacklist'),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->findAll()
         );
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
     }
@@ -281,7 +281,7 @@ class participantsaction extends Survey_Common_Action
     {
         $aData = array(
             'userideditable' => Yii::app()->getConfig('userideditable'),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->findAll()
         );
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'userControl'), $aData);
     }
@@ -646,6 +646,8 @@ class participantsaction extends Survey_Common_Action
      */
     function getaddtosurveymsg()
     {
+        /** @var Participant $participant */
+        $participant = Participant::model();
         $searchcondition = basename(Yii::app()->request->getPost('searchcondition'));
 
         // If there is a search condition in the url of the jqGrid
@@ -661,15 +663,12 @@ class participantsaction extends Survey_Common_Action
         // if there is no search condition the participants will be counted on the basis of who is logged in
         else
         {
-            if (App()->user->checkAccess('superadmin')) //If super admin all the participants will be visible
+            if (!App()->user->checkAccess('superadmin')) //If super admin all the participants will be visible
             {
-                $count = Participant::model()->getParticipantsCountWithoutLimit();
+                $participant->accessibleTo(App()->user->id);
             }
-            else
-            {
-                $query = Participant::model()->getParticipantsOwner(App()->user->id);
-                $count = count($query);
-            }
+
+            $count = $participant->count();
 
             printf(gT("%s participant(s) are to be copied "), $count);
         }
@@ -713,11 +712,11 @@ class participantsaction extends Survey_Common_Action
             $participantid = ""; // initiallise the participant id to blank
             if (App()->user->checkAccess('superadmin')) //If super admin all the participants will be visible
             {
-                $query = Participant::model()->getParticipantsWithoutLimit(); // get all the participant id if it is a super admin
+                $query = Participant::model()->findAll(); // get all the participant id if it is a super admin
             }
             else // get participants on which the user has right on
             {
-                $query = Participant::model()->getParticipantsOwner(App()->user->id);
+                $query = Participant::model()->accessibleTo(App()->user->id)->findAll();
             }
 
             foreach ($query as $key => $value)
@@ -945,7 +944,7 @@ class participantsaction extends Survey_Common_Action
             'attributes' => ParticipantAttributeName::model()->getAttribute($iAttributeId),
             'attributenames' => ParticipantAttributeName::model()->getAttributeNames($iAttributeId),
             'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->findAll()
         );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'participants.css');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'viewAttribute.css');
@@ -1072,7 +1071,7 @@ class participantsaction extends Survey_Common_Action
         else
         {
             $templateData['errorinupload']['error'] = gT("This is not a .csv file.");
-            $templateData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
+            $templateData['aAttributes'] = ParticipantAttributeName::model()->findAll();
             $templateData['aGlobalErrors'] = array();
           //  $errorinupload = array('error' => $this->upload->display_errors());
           //  Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
@@ -1086,7 +1085,7 @@ class participantsaction extends Survey_Common_Action
             $templateData['error_msg'] = sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
             $errorinupload = array('error' => $this->upload->display_errors());
             Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
-            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->getAllAttributes()));
+            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->findAll()));
         }
         else
         {
@@ -1436,7 +1435,7 @@ class participantsaction extends Survey_Common_Action
 
     function summaryview()
     {
-        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->getAllAttributes()));
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'),array('aAttributes' => ParticipantAttributeName::model()->findAll()));
     }
 
     /*
