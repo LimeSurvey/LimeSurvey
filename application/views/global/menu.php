@@ -54,7 +54,7 @@
             ),
             array(
                 'title' => gT('Central participant database/panel'),
-                'url' => array('admin/participants'),
+                'url' => array('participants/index'),
                 'icon' => 'user',
                 'visible' => App()->user->checkAccess('participantpanel')
             ),
