@@ -219,17 +219,19 @@
 
                 },
                 success: function(data) {
-                    if (typeof progress == 'undefined') {
-                        console.log('Done!');
-                        $progress.data('progress', 100);
-                    } else {
-                        $progress.data('progress', $progress.data('progress') + 100 * progress);
-                    }
+                    $progress.data('progress', $progress.data('progress') + 100 * progress);
                     $('<div/>').addClass('memory').css('height', (data.memory * 100).toPrecision(2)).appendTo($('#resourceUsage'));
                     $('<div/>').addClass('time').css('height', (data.time * 100).toPrecision(2)).appendTo($('#resourceUsage'));
                     $('#resourceUsage').children().css('width', (100 / $('#resourceUsage').children().length) + '%');
 
                     $progress.css('width', $progress.data('progress') + '%');
+                    if ($progress.data('progress') == 100) {
+                        $.notify(
+                            "Import complete!"
+                        , {
+                            type: 'success'
+                        });
+                    }
                 }
             });
         };

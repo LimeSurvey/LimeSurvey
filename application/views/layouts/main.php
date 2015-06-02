@@ -10,6 +10,7 @@
             $cs = App()->clientScript;
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
             $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
+            $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
 		?>
         <title>Limesurvey Administration</title>
     </head>
@@ -20,7 +21,7 @@
             }
 		?>
         <div class="container-fluid">
-            <?php $this->widget('TbAlert'); ?>
+            <?php $this->widget(TbAlert::class); ?>
             <div id="content">
             <?php echo $content; ?>
             </div>
