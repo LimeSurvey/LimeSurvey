@@ -4,6 +4,9 @@ use Participant;
 
 class ParticipantsController extends Controller
 {
+    public $menus = [
+        'participant' => []
+    ];
     public function accessRules()
     {
         return array_merge([
@@ -15,12 +18,9 @@ class ParticipantsController extends Controller
 
     public function actionIndex() {
         $dataProvider = new \CActiveDataProvider(Participant::model()->accessibleTo(App()->user->id)->with('surveyCount'));
-
-        $this->menus['participant'] = [];
         $this->render('index', ['dataProvider' => $dataProvider]);
     }
     public function actionSummary() {
-        $this->menus['participant'] = [];
         $data = array(
             'totalrecords' => false && App()->user->checkAccess('superadmin') ? Participant::model()->count() : Participant::model()->accessibleTo(App()->user->id)->count(),
             'owned' => Participant::model()->ownedBy(App()->user->id)->count(),
