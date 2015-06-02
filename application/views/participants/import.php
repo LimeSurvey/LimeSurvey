@@ -4,11 +4,13 @@
     $cs->registerCssFile(App()->theme->baseUrl . '/css/csvimport.css');
     echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_VERTICAL, ['participants/import', 'step' => 'map'], 'post', ['enctype' => 'multipart/form-data', 'id' => 'importForm']);
 ?>
+<div class="overlay">
+    <span>Please wait for the worker thread to end. This can take a while depending on your configured chunk size.</span>
+</div>
 <div class="row form-horizontal" id="participantForm">
     <div class="col-md-3 col-md-offset-2">
         <?php
         /** @var CActiveDataProvider $attributes */
-        echo TbHtml::well(gT("Welcome to our new CSV uploader!"));
         App()->clientScript->registerScriptFile(App()->params['bower-asset'] . '/papaparse/papaparse.js');
         echo TbHtml::fileFieldControlGroup('file', null, [
             'label' => gT("CSV File"),
@@ -37,28 +39,28 @@
             'controlWidthClass' => 'col-sm-6',
         ]);
 
-        echo TbHtml::numberFieldControlGroup('batchSize', 20000, [
+        echo TbHtml::numberFieldControlGroup('batchSize', 5000, [
             'label' => gT("Batch size for uploading"),
             'required' => true,
             'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
             'labelWidthClass' => 'col-sm-6',
             'controlWidthClass' => 'col-sm-6',
-            'help' => gT("Bigger chunks will give less frequent status updates but have a (slightly) better performance."),
+//            'help' => gT("Bigger chunks will give less frequent status updates but have a (slightly) better performance."),
 
         ]);
-        echo TbHtml::numberFieldControlGroup('querySize', 20000, [
+        echo TbHtml::numberFieldControlGroup('querySize', 2500, [
             'label' => gT("Batch size for queries"),
             'required' => true,
             'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
             'labelWidthClass' => 'col-sm-6',
             'controlWidthClass' => 'col-sm-6',
-            'help' => gT("Bigger batches will increase memory usage for better performance."),
+//            'help' => gT("Bigger batches will increase memory usage for better performance."),
         ]);
         echo TbHtml::numberFieldControlGroup('chunkSize', 1024*1024, [
             'label' => gT("Chunk size for reading"),
             'required' => true,
             'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
-            'help' => gT("Bigger chunks will give less frequent status updates but have a (slightly) better performance."),
+//            'help' => gT("Bigger chunks will give less frequent status updates but have a (slightly) better performance."),
             'labelWidthClass' => 'col-sm-6',
             'controlWidthClass' => 'col-sm-6',
         ]);
@@ -94,15 +96,36 @@
 <?=$this->renderPartial('map'); ?>
 <div class="row">
     <div class="col-md-8 col-md-offset-2" style="margin-bottom:15px; margin-top:15px;">
-        <div class="pull-right btn-group">
+        <div class="btn-row pull-right">
         <?php
-        echo TbHtml::submitButton('Import participants', [
-            'color' => 'primary'
+
+        echo Html::buttonRow([
+            gT('Import participants') => [
+                'color' => 'primary',
+                'class' => 'not-busy'
+            ],
+            gT('Restart import') => [
+                'type' => Html::BUTTON_TYPE_SUBMIT,
+                'id' => 'restart',
+                'class' => 'stopped'
+
+            ],
+            gT('Reconfigure') => [
+                'id' => 'reconfigure',
+                'type' => Html::BUTTON_TYPE_HTML,
+                'class' => 'stopped',
+                'color' => 'primary'
+            ],
+
+            gT('Stop import') => [
+                'type' => Html::BUTTON_TYPE_HTML,
+                'color' => 'danger',
+                'id' => 'stop',
+                'class' => 'busy not-stopped'
+            ],
+
         ]);
-        echo TbHtml::button('Stop import', [
-            'id' => 'stop',
-            'color' => 'danger'
-        ]);
+
         ?>
         </div>
     </div>
@@ -121,10 +144,10 @@
             'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL
         ]);
         echo TbHtml::customControlGroup(TbHtml::tag('div', [
-            'id' => 'memory',
-            'class' => 'memoryUsage'
+            'id' => 'resourceUsage',
+            'class' => 'resourceUsage'
         ], ''), '', [
-            'label' => gT("PHP Memory usage (%)"),
+            'label' => gT("PHP Resource usage (memory / time)"),
             'formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL
         ]);
         ?>
@@ -152,16 +175,28 @@
     });
 
     $('#stop').on('click', function(e) {
+        console.log('aborted');
         $.ajaxq.abort('csvimport');
-        $('#importForm').addClass('aborted');
+        if ($('#readProgress').data('progress') < 100) {
+            $('#importForm').addClass('aborted');
+        }
+        $('#importForm').addClass('stopped')
+
     });
+
+    $('#reconfigure').on('click', function(e) {
+        $('#importForm').removeClass('busy').removeClass('stopped');
+    })
 
     function runImport() {
         // Get map.
         var map = {};
-        $('#importForm').addClass('busy');
+        $('#importForm').addClass('busy').removeClass('aborted').removeClass('stopped');
+        $('#resourceUsage').empty();
         $('#sendProgress').data('progress', 0);
+        $('#sendProgress').css('width', 0);
         $('#readProgress').css('width', 0);
+        $('body').animate({scrollTop: 0}, 'slow');
         var batchSize = $('#batchSize').val();
         $('.csvColumn').filter(function(i, elem) { return $(elem).find('input').val() != ''; }).each(function(i, elem) {
             map[$(elem).attr('data-column')] = $(elem).find('input').val();
@@ -171,14 +206,18 @@
 
         var config = getConfig();
         var queue = [];
-        var sendData = function(data, i, progress) {
+        var sendData = function(data, progress) {
             var $progress = $('#sendProgress');
             $.ajaxq('csvimport', {
-                url: "<?=App()->createUrl('participants/import');?>",
+                url: "<?=App()->createUrl('participants/ajaximport');?>",
                 data: data,
                 method: 'post',
                 timeout: 0,
                 contentType: 'application/json',
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $.ajaxq.abort('csvimport');
+
+                },
                 success: function(data) {
                     if (typeof progress == 'undefined') {
                         console.log('Done!');
@@ -186,9 +225,9 @@
                     } else {
                         $progress.data('progress', $progress.data('progress') + 100 * progress);
                     }
-                    var memoryPercent = (data.memory * 100).toPrecision(2);
-                    $('<div/>').css('height', memoryPercent).appendTo($('#memory'));
-                    $('#memory').children().css('width', ($progress.data('progress') / 100) * (100 / $('#memory').children().length) + '%');
+                    $('<div/>').addClass('memory').css('height', (data.memory * 100).toPrecision(2)).appendTo($('#resourceUsage'));
+                    $('<div/>').addClass('time').css('height', (data.time * 100).toPrecision(2)).appendTo($('#resourceUsage'));
+                    $('#resourceUsage').children().css('width', (100 / $('#resourceUsage').children().length) + '%');
 
                     $progress.css('width', $progress.data('progress') + '%');
                 }
@@ -201,9 +240,12 @@
         config.chunk = function(result, reader) {
             if ($('#importForm').is('.aborted')) {
                 reader.abort();
+                $('#importForm').removeClass('aborted');
                 return;
             }
-            $('#readProgress').css('width', (result.meta.cursor / fileSize * 100) + '%');
+            var progress = (result.meta.cursor / fileSize * 100);
+            $('#readProgress').data('progress', progress).css('width', progress + '%');
+
             var rows = [];
             for (var i = 0; i < result.data.length; i++) {
                 var row = {};
@@ -223,7 +265,7 @@
                         'YII_CSRF_TOKEN': $('input[name=YII_CSRF_TOKEN]').val()
                     });
                     rows = [];
-                    sendData(data, i, batchSize / result.data.length * (config.chunkSize / fileSize));
+                    sendData(data, batchSize / result.data.length * (config.chunkSize > fileSize ? 1 : config.chunkSize / fileSize));
                     i++;
                 }
             }
@@ -232,7 +274,7 @@
                 'map' : map,
                 'YII_CSRF_TOKEN': $('input[name=YII_CSRF_TOKEN]').val()
             });
-            sendData(data, i, batchSize / result.meta.cursor * (config.chunkSize / fileSize));
+            sendData(data, rows.length / result.data.length * (config.chunkSize > fileSize ? 1 : config.chunkSize / fileSize));
         }
 
 

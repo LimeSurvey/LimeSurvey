@@ -188,7 +188,7 @@ abstract class Controller extends \CController
 
     public function getActionParams()
     {
-        return array_merge($_GET, $_POST);
+        return App()->request->psr7->getParsedBody();
     }
 
 

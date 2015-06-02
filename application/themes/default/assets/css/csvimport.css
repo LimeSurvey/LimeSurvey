@@ -19,19 +19,24 @@
     height: auto;
 }
 
-.memoryUsage {
+.resourceUsage {
     height: 100px;
     display: flex;
     border: 1px solid black;
     align-items: flex-end;
 }
 
-.memoryUsage > div {
+.resourceUsage > div {
     display: flex;
-    border: 1px solid #dddddd;
-    background-color: #11ff11;
 }
 
+.resourceUsage > div.time {
+    background-color: #681818;
+}
+
+.resourceUsage > div.memory {
+    background-color: #6ce26c;
+}
 #importForm.busy #participantForm, #importForm.busy #mapForm {
     display: none;
 }
@@ -42,3 +47,44 @@
 #importForm.busy #progress {
     display: inherit;
 }
+
+#importForm {
+    position: relative;
+
+}
+.overlay {
+    background-color: rgba(255,0,0,0.5);
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 10;
+}
+
+#importForm .overlay {
+    display: none;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 4em;
+}
+
+#importForm.aborted .overlay {
+    display: inline-block;
+}
+
+#importForm.busy .busy,
+#importForm.stopped .stopped,
+#importForm .not-busy{
+    display: inline-block;;
+}
+
+#importForm .busy,
+#importForm .stopped,
+#importForm.busy .not-busy,
+#importForm.stopped .not-stopped{
+    display: none;
+}
+
+

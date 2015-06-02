@@ -12,6 +12,7 @@ class Batch {
 
     protected $defaultCategory;
     public $batchSize;
+    public $commitCount = 0;
     protected $data = [];
 
     public function __construct(Closure $callback, $batchSize = 5000, $defaultCategory = 'default') {
@@ -41,8 +42,10 @@ class Batch {
     }
 
     public function commitCategory($category) {
+
         $callback = $this->callback;
         $callback($this->data[$category], $category);
+        $this->commitCount++;
         unset($this->data[$category]);
     }
     public function commit() {

@@ -45,12 +45,47 @@ class ParticipantsController extends Controller
     }
 
 
-    public function actionImport() {
-        $start = microtime(true);
+    public function actionImport()
+    {
+        $this->render('import');
+    }
+
+
+    public function actionAjaxImport(array $items, $querySize = 1000)
+    {
+        header('Content-Type: application/json');
+        // Set response code so on errors (max execution time, memory limit) we don't get http 200.
+        http_response_code(501);
+        set_time_limit(3);
+        ini_set('memory_limit', '92M');
+        $return_bytes = function($val) {
+            $val = trim($val);
+            $last = strtolower($val[strlen($val)-1]);
+            switch($last) {
+                // The 'G' modifier is available since PHP 5.1.0
+                case 'g':
+                    $val *= 1024;
+                case 'm':
+                    $val *= 1024;
+                case 'k':
+                    $val *= 1024;
+            }
+
+            return $val;
+        };
+        $start = App()->request->psr7->getServerParams()['REQUEST_TIME_FLOAT'];
+        $memoryLimit = $return_bytes(ini_get('memory_limit'));
+
+
+
+
+
         $participant = new Participant();
         $regularFields = $participant->safeAttributeNames;
         $tableName = $participant->tableName();
         $attributeTableName = \ParticipantAttribute::model()->tableName();
+
+        $fields = array_flip($regularFields);
         $batchInserter = new \Batch(function(array $batch, $category = null) {
             if (!empty($batch)) {
                 \Yii::beginProfile('query');
@@ -65,66 +100,40 @@ class ParticipantsController extends Controller
             }
         }, 1000, $tableName);
 
-        $fields = array_flip($regularFields);
-        if (isset(App()->request->psr7->getParsedBody()['items'])) {
-            if (isset(App()->request->psr7->getParsedBody()['querySize'])) {
-                $batchInserter->batchSize = App()->request->psr7->getParsedBody()['querySize'];
+
+        $initialAttributes = $participant->getAttributes();
+        array_map(function($row) use ($batchInserter, $attributeTableName, $participant, $initialAttributes) {
+            \Yii::beginProfile('row');
+            $participant->setAttributes($initialAttributes, false);
+            \Yii::beginProfile('alternative');
+            foreach($row as $key => $value) {
+                if (isset($fields[$key])) {
+                    $participant->$key = $value;
+                }
             }
-            \Yii::beginProfile('import');
-            $count = 0;
-            // Custom validation for better performance.
-//            $validators = $participant->getValidators();
-            $initialAttributes = $participant->getAttributes();
-            array_map(function($row) use ($batchInserter, $attributeTableName, $participant, $initialAttributes) {
-                \Yii::beginProfile('row');
-              $participant->setAttributes($initialAttributes, false);
-//                 Manual for better performance.
-                \Yii::beginProfile('alternative');
-                foreach($row as $key => $value) {
-                    if (isset($fields[$key])) {
-                        $participant->$key = $value;
-                    }
-                }
-                \Yii::endProfile('alternative');
+            \Yii::endProfile('alternative');
 
-                if ($participant->validate()) {
-                    $batchInserter->add($participant->getAttributes());
-                    $batchInserter->add($participant->getNewCustomAttributes(), $attributeTableName);
-                } else {
-                    var_dump($participant->errors);
+            if ($participant->validate()) {
+                $batchInserter->add($participant->getAttributes());
+                $batchInserter->add($participant->getNewCustomAttributes(), $attributeTableName);
+            } else {
+                var_dump($participant->errors);
 
-                }
+            }
 
-                \Yii::endProfile('row');
-            }, App()->request->psr7->getParsedBody()['items']);
-            unset($batchInserter);
-            \Yii::endProfile('import');
-
-            $return_bytes = function($val) {
-                $val = trim($val);
-                $last = strtolower($val[strlen($val)-1]);
-                switch($last) {
-                    // The 'G' modifier is available since PHP 5.1.0
-                    case 'g':
-                        $val *= 1024;
-                    case 'm':
-                        $val *= 1024;
-                    case 'k':
-                        $val *= 1024;
-                }
-
-                return $val;
-            };
-            header('Content-Type: application/json');
-            echo json_encode([
-                'memory' => memory_get_peak_usage() / $return_bytes(ini_get('memory_limit')),
-                'time' => microtime(true) - $start
-            ]);
+            \Yii::endProfile('row');
+        }, $items);
+        \Yii::endProfile('import');
 
 
-        } else {
-            $this->render('import');
-        }
+
+        http_response_code(200);
+        echo json_encode([
+            'memory' => memory_get_peak_usage() / $memoryLimit,
+            'time' => (microtime(true) - $start) / ini_get('max_execution_time'),
+            'queries' => $batchInserter->commitCount
+        ]);
+
+
     }
-
 }
