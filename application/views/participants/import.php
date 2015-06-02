@@ -219,19 +219,26 @@
 
                 },
                 success: function(data) {
-                    $progress.data('progress', $progress.data('progress') + 100 * progress);
+                    if ($.ajaxq.isRunning('csvimport')) {
+                        $progress.data('progress', $progress.data('progress') + 100 * progress);
+                    } else {
+                        $progress.data('progress', 100);
+                    }
+
                     $('<div/>').addClass('memory').css('height', (data.memory * 100).toPrecision(2)).appendTo($('#resourceUsage'));
                     $('<div/>').addClass('time').css('height', (data.time * 100).toPrecision(2)).appendTo($('#resourceUsage'));
                     $('#resourceUsage').children().css('width', (100 / $('#resourceUsage').children().length) + '%');
 
                     $progress.css('width', $progress.data('progress') + '%');
                     if ($progress.data('progress') == 100) {
+                        $('#importForm').addClass('stopped')
                         $.notify(
                             "Import complete!"
                         , {
                             type: 'success'
                         });
                     }
+
                 }
             });
         };

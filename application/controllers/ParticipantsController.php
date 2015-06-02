@@ -1,5 +1,7 @@
 <?php
 namespace ls\controllers;
+use ls\models\forms\ParticipantDatabaseSettings;
+use ls\models\forms\Settings;
 use Participant;
 
 class ParticipantsController extends Controller
@@ -57,7 +59,7 @@ class ParticipantsController extends Controller
         header('Content-Type: application/json');
         // Set response code so on errors (max execution time, memory limit) we don't get http 200.
         http_response_code(501);
-        set_time_limit(3);
+        set_time_limit(20);
         ini_set('memory_limit', '92M');
         $return_bytes = function($val) {
             $val = trim($val);
@@ -103,7 +105,7 @@ class ParticipantsController extends Controller
 
 
         $initialAttributes = $participant->getAttributes();
-        array_map(function($row) use ($batchInserter, $attributeTableName, $participant, $initialAttributes) {
+        array_map(function($row) use ($batchInserter, $attributeTableName, $participant, $initialAttributes, $fields) {
             \Yii::beginProfile('row');
             $participant->setAttributes($initialAttributes, false);
             \Yii::beginProfile('alternative');
@@ -136,5 +138,18 @@ class ParticipantsController extends Controller
         ]);
 
 
+    }
+
+
+    public function actionSettings() {
+        $settings = new ParticipantDatabaseSettings();
+        if (App()->request->isPutRequest) {
+            $settings->setAttributes(App()->request->getParam(\CHtml::modelName($settings)));
+            if ($settings->save()) {
+                App()->user->setFlash('success', gT('Settings updated.'));
+                $this->refresh();
+            }
+        }
+        $this->render('settings', ['settings' => $settings]);
     }
 }
