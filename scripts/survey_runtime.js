@@ -19,6 +19,7 @@ tableCellAdapters();
 activateLanguageChanger();
 $(document).ready(function()
 {
+    doToolTipTable();
     navbuttonsJqueryUi();
     showStartPopups();
     addClassEmpty();
@@ -579,5 +580,11 @@ function maxlengthtextarea(){
             // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
             return false;
         }
+    });
+}
+function doToolTipTable()
+{
+   $(document).on("mouseover"," td.answer-item",function(){
+        $( this).attr('title',$(this).find("label").text());
     });
 }
