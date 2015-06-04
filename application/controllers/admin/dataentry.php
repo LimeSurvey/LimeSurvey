@@ -1487,7 +1487,9 @@ class dataentry extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
-        $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
+        $sURL = isset($_POST['langselect']) ? Yii::app()->request->getPost('langselect') : NULL;
+        $aURL = explode('/', $sURL);
+        $lang = end($aURL);
 
         $aData = array(
         'surveyid' => $surveyid,
@@ -1623,7 +1625,7 @@ class dataentry extends Survey_Common_Action
                     $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
                     $insert_data = array();
 
-                    $_POST['startlanguage'] = $baselang;
+                    $_POST['startlanguage'] = isset($lang) ? $lang : $baselang;
                     if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
                     if (isset($_POST['closerecord']))
                     {
