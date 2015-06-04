@@ -23,6 +23,8 @@ $(document).ready(function()
     showStartPopups();
     addClassEmpty();
     noScrollOnSelect();
+    doToolTipTable();
+
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
@@ -583,5 +585,12 @@ function maxlengthtextarea(){
             // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
             return false;
         }
+    });
+}
+/* add a title on cell with answer */
+function doToolTipTable()
+{
+   $(document).on("mouseover"," td.answer-item",function(){
+        $( this).attr('title',$(this).find("label").text());
     });
 }
