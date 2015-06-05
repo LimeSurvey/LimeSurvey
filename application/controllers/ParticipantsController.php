@@ -35,6 +35,10 @@ class ParticipantsController extends Controller
         $this->render('summary', ['data' => $data]);
     }
 
+    /**
+     *
+     * @param $id
+     */
     public function actionAttributes($id) {
         $searchModel = \ParticipantAttribute::model();
         $searchModel->dbCriteria->addColumnCondition(['participant_id' => $id]);
@@ -47,6 +51,10 @@ class ParticipantsController extends Controller
         }
     }
 
+    public function actionManageAttributes() {
+        $dataProvider = new \CActiveDataProvider(\ParticipantAttributeName::class);
+        $this->render('manageAttributes', ['dataProvider' => $dataProvider]);
+    }
 
     public function actionImport()
     {
@@ -54,9 +62,10 @@ class ParticipantsController extends Controller
     }
 
 
-    public function actionAjaxImport(array $items, $querySize = 1000)
+    public function actionAjaxImport(array $items, array $map, $querySize = 1000)
     {
         header('Content-Type: application/json');
+
         // Set response code so on errors (max execution time, memory limit) we don't get http 200.
         http_response_code(501);
         set_time_limit(20);
@@ -84,11 +93,32 @@ class ParticipantsController extends Controller
 
 
         $participant = new Participant();
-        $regularFields = $participant->safeAttributeNames;
         $tableName = $participant->tableName();
         $attributeTableName = \ParticipantAttribute::model()->tableName();
 
-        $fields = array_flip($regularFields);
+        $participant->getSafeAttributeNames();
+        $fields = array_flip($participant->safeAttributeNames);
+
+        foreach($map as $csvName => $targetName) {
+            if (!isset($fields[$targetName])) {
+                // Create it.
+                $model = new \ParticipantAttributeName();
+                $model->name = $targetName;
+                if (!$model->save()) {
+                    var_dump($model->errors);
+                } else {
+                    unset($participant);
+                }
+            }
+        }
+        if (!isset($participant)) {
+            $participant = new Participant();
+            $participant->customAttributeNames(true);
+        }
+
+        $fields = array_flip($participant->safeAttributeNames);
+
+
         $batchInserter = new \Batch(function(array $batch, $category = null) {
             if (!empty($batch)) {
                 \Yii::beginProfile('query');
@@ -151,5 +181,19 @@ class ParticipantsController extends Controller
             }
         }
         $this->render('settings', ['settings' => $settings]);
+    }
+
+
+    public function actionUpdate($id)
+    {
+        $participant = Participant::model()->with('customAttributes')->findByPk($id);
+        if (strcasecmp(App()->request->psr7->getMethod(), 'put') === 0 && isset(App()->request->psr7->getParsedBody()['Participant'])) {
+            $participant->setAttributes(App()->request->psr7->getParsedBody()['Participant']);
+            if ($participant->save()) {
+                App()->user->setFlash('success', gT("Participant information updated."));
+                $this->redirect(['participants/index']);
+            }
+        }
+        $this->render('update', ['participant' => $participant]);
     }
 }

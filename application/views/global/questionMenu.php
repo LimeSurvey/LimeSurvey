@@ -1,6 +1,6 @@
 <?php
 /* @var Controller $this*/
-if (!isset($this->question)) {
+if (!isset($model) || !$model instanceof Question) {
     throw new Exception("Question must be set for question menu.");
 }
 $menu = [[ // Left side
@@ -10,7 +10,7 @@ $menu = [[ // Left side
         'linkOptions' => [
             'confirm' => 'Are you sure?'
         ],
-        'url' => ["questions/delete", 'id' => $this->question->primaryKey]
+        'url' => ["questions/delete", 'id' => $model->primaryKey]
 //
     ],
 ], [ // Right side

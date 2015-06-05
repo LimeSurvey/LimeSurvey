@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -34,40 +34,15 @@ class ParticipantAttribute extends LSActiveRecord
         return '{{participant_attribute}}';
     }
 
-    /**
-     * Returns the primary key of this table
-     *
-     * @access public
-     * @return string
-     */
-    public function primaryKey()
-    {
-        return ['participant_id', 'attribute_id'];
-    }
-
     public function relations()
     {
         return [
-            'name' => [self::BELONGS_TO, ParticipantAttributeName::class, 'attribute_id']
+            'name' => [self::BELONGS_TO, ParticipantAttributeName::class, 'attribute_id'],
+            'participant' => [self::BELONGS_TO, ParticipantAttributeName::class, 'participant_id']
         ];
     }
 
-    function getAttributeInfo($participantid)
-    {
-        return self::model()->findAllByAttributes(array('participant_id' => $participantid));
-    }
-    function updateParticipantAttributeValue($data)
-    {
-        $query = Yii::app()->db->createCommand()->select('*')->where('participant_id="'.$data['participant_id'].'" AND attribute_id = '.$data['attribute_id'])->from('{{participant_attribute}}')->queryAll();
-        if (count($query) > 0)
-        {
-            Yii::app()->db->createCommand()
-                  ->update('{{participant_attribute}}', $data, 'participant_id = "'.$data['participant_id'].'" AND attribute_id = '.$data['attribute_id']);
-        } else {
-            Yii::app()->db->createCommand()
-                  ->insert('{{participant_attribute}}', $data);
-        }
-    }
+
 
 }
 

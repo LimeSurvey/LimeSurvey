@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "da2dce7fa491553e62694941b2dc0713",
+    "hash": "bb0e65a805cd84ae1d73e9e7c14bb52d",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -987,6 +987,44 @@
             "time": "2013-04-12 10:33:44"
         },
         {
+            "name": "mk-j/php_xlsxwriter",
+            "version": "0.21",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mk-j/PHP_XLSXWriter.git",
+                "reference": "930a0f37914da6d1efe5a9b19d52e417c6952b68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mk-j/PHP_XLSXWriter/zipball/930a0f37914da6d1efe5a9b19d52e417c6952b68",
+                "reference": "930a0f37914da6d1efe5a9b19d52e417c6952b68",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.3.*"
+            },
+            "type": "project",
+            "autoload": {
+                "classmap": [
+                    "xlsxwriter.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP Library to write XLSX files",
+            "homepage": "https://github.com/mk-j/PHP_XLSXWriter",
+            "keywords": [
+                "excel",
+                "library",
+                "php",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2014-11-18 20:44:25"
+        },
+        {
             "name": "phpmailer/phpmailer",
             "version": "dev-master",
             "source": {
@@ -1407,7 +1445,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/6c02c4e68c59c4fb835acd4be1a5413a7cf4c5aa",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/eda86c729658b0d2b652b0a261899507af3d9159",
                 "reference": "34c57c359ad5f79a8ae573367fe7d426521d0d16",
                 "shasum": ""
             },
@@ -1497,7 +1535,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/4da4b5b28b334f8166cdd35223f26390bab5a398",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/6cb6fad598a125309a317df7823e5f0e7d4c39ca",
                 "reference": "61a1f9b4e8b1d8cdc8ea4e8acfb0bf533d2e05ed",
                 "shasum": ""
             },

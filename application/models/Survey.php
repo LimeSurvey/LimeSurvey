@@ -647,6 +647,8 @@ class Survey extends LSActiveRecord
 
     public function getFieldMap()
     {
+        return createFieldMap($this->sid);
+
 
     }
 
@@ -987,5 +989,13 @@ class Survey extends LSActiveRecord
             $languageSetting->attributes = $fields;
             $languageSetting->save();
         }
+    }
+
+    /**
+     * @return Response[]
+     */
+    public function getResponses()
+    {
+        return Response::model($this->sid)->findAll();
     }
 }

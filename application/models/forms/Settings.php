@@ -8,7 +8,6 @@ namespace ls\models\forms;
  */
 class Settings extends \CFormModel
 {
-
     /**
      * These are on the general tab.
      */
@@ -151,6 +150,7 @@ class Settings extends \CFormModel
             'pdflogowidth' => gT("Width of PDF header logo"),
             'pdfheadertitle' => gT("PDF header title (if empty, site name will be used)"),
             'pdfheaderstring' => gT("PDF header string (if empty, survey name will be used)")
+
         ];
     }
 

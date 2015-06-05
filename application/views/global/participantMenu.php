@@ -17,16 +17,12 @@ $menu = [[ // Left side
         'url' => ['participants/export'],
         'icon' => 'export',
     ], [
-        'title' => gT('Blacklist'),
-        'url' => ['participants/blacklist'],
-        'icon' => 'ban-circle',
-    ], [
         'title' => gT('Settings'),
         'url' => ['participants/settings'],
         'icon' => 'wrench',
     ], [
         'title' => gT('Attribute management'),
-        'url' => ['participants/attributes'],
+        'url' => ['participants/manageAttributes'],
         'icon' => 'text-background',
     ], [
         'title' => gT('Share panel'),

@@ -42,9 +42,9 @@ class Participant extends LSActiveRecord
         return '{{participants}}';
     }
 
-    public static function customAttributeNames() {
-        if (!isset(self::$customAttributes)) {
-            self::$customAttributes = \CHtml::listData(ParticipantAttributeName::model()->findAll(), 'defaultname', 'attribute_id');
+    public static function customAttributeNames($refresh = false) {
+        if ($refresh || !isset(self::$customAttributes)) {
+            self::$customAttributes = \CHtml::listData(ParticipantAttributeName::model()->findAll(), 'name', 'id');
         }
         return self::$customAttributes;
 
@@ -73,6 +73,7 @@ class Participant extends LSActiveRecord
             ['created', 'default', 'value' => date(DateTime::ATOM), 'safe' => false],
             ['owner_uid', 'default', 'value' => App()->user->id, 'safe' => false],
             ['created_by', 'default', 'value' => App()->user->id, 'safe' => false],
+            ['language', 'default', 'value' => App()->language, 'safe' => false],
             // Always update modified.
             ['modified', 'default', 'value' => date(DateTime::ATOM), 'setOnEmpty' => false, 'safe' => false]
 
@@ -196,20 +197,7 @@ class Participant extends LSActiveRecord
         return $count;
     }
 
-    /**
-     * Duplicated from getparticipants, only to have a count
-     *
-     * @param type $attid
-     * @param type $order
-     * @param CDbCriteria $search
-     * @param type $userid
-     * @return type
-     */
-    function getParticipantsCount($attid, $search = null, $userid = null) {
-        $data = $this->getParticipantsSelectCommand(true, $attid, $search, $userid);
 
-        return $data->queryScalar();
-    }
 
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {

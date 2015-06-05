@@ -23,7 +23,7 @@ echo TbHtml::openTag('div', ['class' => isset($wrapper) ? $wrapper : 'col-md-12'
             }
         ], [
             'header' => gT("Series"),
-            'visible' => $this->survey->use_series,
+            'visible' => $survey->use_series,
             'class' => TbButtonColumn::class,
             'template' => "{appendNew}{appendCopy}",
             'buttons' => [

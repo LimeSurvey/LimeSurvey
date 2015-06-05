@@ -6,36 +6,36 @@
 *
 * TODO Write more docs here
 */
+
+use \ls\models\forms\FormattingOptions;
 abstract class Writer implements IWriter
 {
-    protected $sLanguageCode;
+    protected $language;
     protected $translator;
-    public $filename;
+    /**
+     * @var FormattingOptions
+     */
+    protected $options;
+
     
-    protected function translate($key, $sLanguageCode)
+    protected function translate($key, $language)
     {
-        return $this->translator->translate($key, $sLanguageCode);
+        return $this->translator->translate($key, $language);
     }
 
     /**
-    * An initialization method that implementing classes can override to gain access
-    * to any information about the survey, language, or formatting options they
-    * may need for setup.
-    *
-    * @param Survey $oSurvey
-    * @param mixed $sLanguageCode
-    * @param FormattingOptions $oOptions
+    * @param FormattingOptions $options
     */
-    public function init(SurveyObj $oSurvey, $sLanguageCode, FormattingOptions $oOptions)
+    public function __construct(\ls\models\forms\FormattingOptions $options)
     {
-        $this->languageCode = $sLanguageCode;
         $this->translator = new Translator();
-        if ($oOptions->output == 'file') {
-            $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
-            $this->filename = $sRandomFileName;
-        }
+        $this->options = $options;
+        $this->init();
     }
 
+    public function init() {
+
+    }
     /**
     * Return map of questions groups
     *
@@ -43,7 +43,7 @@ abstract class Writer implements IWriter
     * @param FormattingOptions $oOptions
     * @return array
     */
-    public function setGroupMap(SurveyObj $survey, FormattingOptions $oOptions)
+    public function setGroupMap(Survey $survey, FormattingOptions $oOptions)
     {
         $aGroupMap = array();
         $index = 0;
@@ -69,10 +69,10 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getAbbreviatedHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    public function getAbbreviatedHeading(Survey $oSurvey, $fieldName)
     {
-        $oOptions->headingTextLength=((int)$oOptions->headingTextLength)?(int)$oOptions->headingTextLength:15;
-        return $this->getHeadingText($oSurvey, $oOptions, $fieldName);
+        $this->options->headingTextLength=((int)$this->options->headingTextLength)?(int)$this->options->headingTextLength:15;
+        return $this->getHeadingText($oSurvey, $fieldName);
     }
 
     /**
@@ -85,10 +85,10 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getFullHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    public function getFullHeading(Survey $oSurvey, $fieldName)
     {
-        $oOptions->headingTextLength=null;
-        return $this->getHeadingText($oSurvey, $oOptions, $fieldName);
+        $this->options->headingTextLength=null;
+        return $this->getHeadingText($oSurvey, $fieldName);
     }
 
     /**
@@ -99,7 +99,7 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getFullFieldSubHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    public function getFullFieldSubHeading(Survey $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         if (isset($oSurvey->fieldMap[$fieldName]))
         {
@@ -120,12 +120,12 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getFullQuestionHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    public function getFullQuestionHeading(Survey $oSurvey, $fieldName)
     {
         if (isset($oSurvey->fieldMap[$fieldName]))
         {
             $aField=$oSurvey->fieldMap[$fieldName];
-            return viewHelper::flatEllipsizeText($aField['question'],true,$oOptions->headingTextLength,".. ");
+            return viewHelper::flatEllipsizeText($aField['question'],true,$this->options->headingTextLength,".. ");
         }
         return false;
     }
@@ -138,11 +138,11 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getHeadingCode(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    public function getHeadingCode(Survey $survey, $fieldName)
     {
-        if (isset($oSurvey->fieldMap[$fieldName]))
+        if (isset($survey->fieldMap[$fieldName]))
         {
-            return viewHelper::getFieldCode($oSurvey->fieldMap[$fieldName],array('separator'=>array('[',']'),'LEMcompat'=>$oOptions->useEMCode));
+            return viewHelper::getFieldCode($survey->fieldMap[$fieldName],array('separator'=>array('[',']'),'LEMcompat'=> $this->options->useEMCode));
         }
         else
         {
@@ -158,11 +158,11 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getHeadingText(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    public function getHeadingText(Survey $oSurvey, $fieldName)
     {
         if (isset($oSurvey->fieldMap[$fieldName]))
         {
-            $textHead = $this->getFullQuestionHeading($oSurvey,$oOptions,$fieldName).$this->getFullFieldSubHeading($oSurvey,$oOptions,$fieldName);
+            $textHead = $this->getFullQuestionHeading($oSurvey, $fieldName).$this->getFullFieldSubHeading($oSurvey, $fieldName);
         }
         elseif(isset($oSurvey->tokenFields[$fieldName]))
         {
@@ -188,12 +188,11 @@ abstract class Writer implements IWriter
     * @param string $sValue
     * @return string
     */
-    public function getLongAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
+    public function getLongAnswer(Survey $oSurvey, $fieldName,$sValue)
     {
         return $this->transformResponseValue(
                 $oSurvey->getFullAnswer($fieldName, $sValue, $this->translator, $this->languageCode),
                 $oSurvey->fieldMap[$fieldName]['type'],
-                $oOptions,
                 $fieldName
                );
     }
@@ -207,14 +206,13 @@ abstract class Writer implements IWriter
     * @param string $sValue
     * @return string
     */
-    public function getShortAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
+    public function getShortAnswer(Survey $survey, $fieldName, $value)
     {
         return $this->transformResponseValue(
-                $oSurvey->$sValue,
-                $oSurvey->fieldMap[$fieldName]['type'],
-                $oOptions,
-                $fieldName
-               );
+            $value,
+            $survey->fieldMap[$fieldName]['type'],
+            $fieldName
+       );
     }
 
     /**
@@ -231,21 +229,21 @@ abstract class Writer implements IWriter
     * @param string $column The name of the column
     * @return string
     */
-    protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions, $column = null)
+    protected function transformResponseValue($value, $fieldType, $column = null)
     {
         //The following if block handles transforms of Ys and Ns.
-        if (($oOptions->convertN || $oOptions->convertY) &&
-        isset($fieldType) &&
-        ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y'))
-        {
-            if (($value == 'N' || ($value == '' && !is_null($value)))  && $oOptions->convertN)
+        if (($this->options->nValue != 'N' || $this->options->yValue != 'Y')
+            && isset($fieldType)
+            && ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y')
+        ) {
+            if (($value == 'N' || ($value == '' && !is_null($value))))
             {
-                return $oOptions->nValue;
+                return $this->options->nValue;
             }
-            else if ($value == 'Y' && $oOptions->convertY)
-                {
-                    return $oOptions->yValue;
-                }
+            else if ($value == 'Y')
+            {
+                return $this->options->yValue;
+            }
         }
 
         //This spot should only be reached if no transformation occurs.
@@ -264,70 +262,74 @@ abstract class Writer implements IWriter
     * All extending classes must implement the internalWrite function which is
     * the code that is called after all initialization is completed.
     *
-    * @param Survey $oSurvey
-    * @param string $sLanguageCode
-    * @param FormattingOptions $oOptions
-    * @param boolean $bOutputHeaders Set if header should be given back
+    * @param Survey $survey
+    * @param string $language
+    * @param FormattingOptions $options
+    * @param Psr\Http\Message\StreamInterface $stream
     */
-    final public function write(SurveyObj $oSurvey, $sLanguageCode, FormattingOptions $oOptions, $bOutputHeaders=true)
+    final public function write(Survey $survey, $language, \Psr\Http\Message\StreamInterface $stream = null)
     {
-
-        //Output the survey.
-        $headers = array();
-        if ($bOutputHeaders)
-        {
-            foreach ($oOptions->selectedColumns as $sColumn)
-            {
-                //Survey question field, $column value is a field name from the getFieldMap function.
-                switch ($oOptions->headingFormat)
-                {
-                    case 'abbreviated':
-                        $value = $this->getAbbreviatedHeading($oSurvey, $oOptions, $sColumn);
-                        break;
-                    case 'full':
-                        $value = $this->getFullHeading($oSurvey, $oOptions, $sColumn);
-                        break;
-                    case 'codetext':
-                        $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn).$oOptions->headCodeTextSeparator.$this->getHeadingText($oSurvey, $oOptions, $sColumn);
-                        break;
-                    case 'code':
-                    default:
-                        $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn);
-                        break;
-                }
-                $headers[] = $value;
-            }
+        if (!isset($stream)) {
+            $size = 1024 * 1024 * 10; // Allow 10 mb to be stored in memory, after that use a file.
+            $stream = fopen("php://temp/maxmemory:$size", 'w+');
         }
-        //Output the results.
-        $sFile='';
-        
-        // If empty survey, prepare an empty responses array, and output just 1 empty record with header.
-        if ($oSurvey->responses->rowCount == 0)
+        //Output the survey.
+        $headers = [];
+        /**
+         * @todo Introduce constants?
+         */
+        foreach ($this->options->selectedColumns as $sColumn)
         {
-             foreach ($oOptions->selectedColumns as $column)
+            //Survey question field, $column value is a field name from the getFieldMap function.
+            switch ($this->options->headingFormat)
+            {
+                case 'abbreviated':
+                    $value = $this->getAbbreviatedHeading($survey, $sColumn);
+                    break;
+                case 'full':
+                    $value = $this->getFullHeading($survey, $sColumn);
+                    break;
+                case 'codetext':
+                    $value = $this->getHeadingCode($survey, $sColumn). $this->options->headCodeTextSeparator . $this->getHeadingText($survey, $sColumn);
+                    break;
+                case 'code':
+                default:
+                    $value = $this->getHeadingCode($survey, $sColumn);
+                    break;
+            }
+            $headers[] = $value;
+        }
+
+        // If empty survey, prepare an empty responses array, and output just 1 empty record with header.
+        if (null !== $fileHeader = $this->beforeRenderRecords($headers)) {
+            fwrite($stream, $fileHeader);
+        }
+        if ($survey->responseCount == 0)
+        {
+             foreach ($this->options->selectedColumns as $column)
              {
              	$elementArray[]="";
              }
-        	$this->outputRecord($headers, $elementArray, $oOptions);
+        	fwrite($stream, $this->renderRecord($headers, $elementArray));
         }
-        		
+
         // If no empty survey, render/export responses array.
-        foreach($oSurvey->responses as $response)
+        foreach($survey->responses as $response)
         {
             $elementArray = array();
 
-            foreach ($oOptions->selectedColumns as $column)
+            foreach ($this->options->selectedColumns as $column)
             {
                 $value = $response[$column];
-                if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type']!='answer_time' && $oSurvey->fieldMap[$column]['type']!='page_time' && $oSurvey->fieldMap[$column]['type']!='interview_time')
+                if (isset($survey->fieldMap[$column]) && $survey->fieldMap[$column]['type']!='answer_time' && $survey->fieldMap[$column]['type']!='page_time' && $survey->fieldMap[$column]['type']!='interview_time')
                 {
-                    switch ($oOptions->answerFormat) {
+                    switch ($this->options->answerFormat) {
                         case 'long':
-                            $elementArray[] = $this->getLongAnswer($oSurvey, $oOptions, $column,$value);
+                            $elementArray[] = $this->getLongAnswer($survey, $column, $value);
                             break;
                         default:
                         case 'short':
-                            $elementArray[] = $this->getShortAnswer($oSurvey, $oOptions, $column,$value);
+                            $elementArray[] = $this->getShortAnswer($survey, $column, $value);
                             break;
                     }
                 }
@@ -336,14 +338,10 @@ abstract class Writer implements IWriter
                     $elementArray[]=$value;
                 }
             }
-            if ($oOptions->output=='display')
-            {
-                $this->outputRecord($headers, $elementArray, $oOptions);
-            } else {
-                $sFile.=$this->outputRecord($headers, $elementArray, $oOptions);
-            }
+
+            fwrite($stream, $this->renderRecord($headers, $elementArray));
         }
-        return $sFile;
+        return $stream;
     }
 
     protected function stripTagsFull($string)
@@ -357,7 +355,7 @@ abstract class Writer implements IWriter
     * No core plugin seems to use it, and function name seem broken (?)
     * @deprecated
     */
-    public function getCodeHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    public function getCodeHeading(Survey $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         return $this->getFullQuestionHeading($oSurvey,$oOptions,$fieldName).$this->getCodeFieldSubHeading($oSurvey,$oOptions,$fieldName);
     }
@@ -366,7 +364,7 @@ abstract class Writer implements IWriter
     * No core plugin seems to use it, and function name seem broken (?)
     * @deprecated
     */
-    public function getCodeFieldSubHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
+    public function getCodeFieldSubHeading(Survey $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         $fieldName['question']="";
         return $this->getFullFieldSubHeading($oSurvey,$oOptions,$fieldName);
@@ -382,6 +380,18 @@ abstract class Writer implements IWriter
     * @param array $headers
     * @param array $values
     * @param FormattingOptions $oOptions
+    * @return string The rendered record.
     */
-    abstract protected function outputRecord($headers, $values, FormattingOptions $oOptions);
+    abstract protected function renderRecord($headers, $values);
+
+    /**
+     * This function is called before any records are rendered.
+     * Use it to add document headers.
+     */
+    public function beforeRenderRecords($headers) {
+
+    }
+    public function getFileName(Survey $survey, $language) {
+        return "export_responses.dat";
+    }
 }

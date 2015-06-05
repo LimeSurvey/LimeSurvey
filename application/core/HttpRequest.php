@@ -21,6 +21,11 @@ class HttpRequest extends \CHttpRequest
 
     protected function initRequest() {
         $this->_request = Zend\Diactoros\ServerRequestFactory::fromGlobals();
+        // Support _method.
+        if (isset($this->_request->getParsedBody()['_method'])) {
+            $this->_request = $this->_request->withMethod($this->_request->getParsedBody()['_method']);
+        }
+
 
         // Add support for JSON requests.
         if ($this->_request->getHeaderLine('Content-Type') == 'application/json'

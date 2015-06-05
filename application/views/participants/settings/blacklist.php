@@ -10,4 +10,3 @@ echo $form->checkBoxControlGroup($settings, 'hideblacklisted', ['uncheckedValue'
 echo $form->checkBoxControlGroup($settings, 'allowunblacklist', ['uncheckedValue' => 'N', 'checkedValue' => 'Y']);
 echo $form->checkBoxControlGroup($settings, 'deleteblacklisted', ['uncheckedValue' => 'N', 'checkedValue' => 'Y']);
 echo TbHtml::closeTag('fieldset');
-?>

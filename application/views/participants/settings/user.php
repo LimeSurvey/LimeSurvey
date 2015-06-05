@@ -1,8 +1,6 @@
 <?php
 /** @var TbActiveForm $form */
-/** @var \ls\models\forms\Settings $settings */
-//$form->layout = TbHtml::FORM_LAYOUT_HORIZONTAL;
-
-
+/** @var \ls\models\forms\ParticipantDatabaseSettings $settings */
+echo TbHtml::openTag('fieldset', []);
+echo $form->checkBoxControlGroup($settings, 'userideditable', ['uncheckedValue' => 'N', 'checkedValue' => 'Y']);
 echo TbHtml::closeTag('fieldset');
-?>

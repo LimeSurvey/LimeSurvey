@@ -43,4 +43,5 @@ $route['<controller>/<id:\d+>'] = [
     'verb' => 'GET',
 ];
 $route['<_controller:\w+>/<_action:\w+>'] = '<_controller>/<_action>';
+
 return $route;

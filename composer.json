@@ -28,7 +28,8 @@
         "bower-asset/papaparse": "4.1",
         "zendframework/zend-diactoros": "^1.0@dev",
         "bower-asset/ajaxq": "^0.0.3@dev",
-        "bower-asset/jquery": "2.*"
+        "bower-asset/jquery": "2.*",
+        "mk-j/php_xlsxwriter": "0.*"
     },
 	"require-dev" : {
 		

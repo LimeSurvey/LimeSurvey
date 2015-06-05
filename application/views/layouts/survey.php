@@ -35,7 +35,7 @@
                 <?php $this->widget(TbAlert::class); ?>
                 <div id="survey-navigator" class="col-lg-2 col-md-3 col-sm-12">
                     <?php
-                        $this->renderPartial('/global/surveyNavigator', ['survey' => $this->models['survey']]);
+                        $this->renderPartial('/global/surveyNavigator', ['survey' => $this->menus['survey']]);
                     ?>
                 </div>
                 <div id="content" class="col-lg-10 col-md-9 col-sm-12">

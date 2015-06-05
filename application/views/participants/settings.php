@@ -2,7 +2,7 @@
     <?php
     //    echo TbHtml::tag('h1', [], "Group {$group->displayLabel}");
     ?>
-    <div class="col-md-12">
+    <div class="col-md-offset-4 col-md-4">
         <?php
         // This is an update view so we use PUT.
         /** @var TbActiveForm $form */

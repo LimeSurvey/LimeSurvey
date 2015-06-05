@@ -25,8 +25,9 @@ class PluginConfig extends \CFormModel
     private $_events = [];
     
     public $apiVersion;
-    
-    public function setEvents($value) {
+
+
+public function setEvents($value) {
         $this->_events = array_unique($value);
     }
     public function getEvents() {
@@ -152,6 +153,7 @@ class PluginConfig extends \CFormModel
     
     public function attributeNames() {
         $names = parent::attributeNames();
+        $names[] = 'events';
         return $names;
     }
     
@@ -164,8 +166,8 @@ class PluginConfig extends \CFormModel
         foreach($this->events as $event) {
             $function = "event" . ucfirst($event);
             $callable = [$instance, $function];
-            if (!is_callable($callable, false, $name)) {
-                throw new \Exception("Could not register event $event for plugin {$this->name}, does $name exist?");
+            if (!is_callable($callable, false, $function)) {
+                throw new \Exception("Could not register event $event for plugin {$this->name}, does $function exist?");
             }
             $manager->subscribe($event, $callable);
         }

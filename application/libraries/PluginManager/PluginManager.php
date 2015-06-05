@@ -51,7 +51,7 @@ use Plugin;
         }
         
         public function disablePlugin($id) {
-            return !empty($id) && unlink("{$this->enabledPluginDir}/$id");
+            return !empty($id) && (!file_exists("{$this->enabledPluginDir}/$id") || unlink("{$this->enabledPluginDir}/$id"));
         }
         public function enablePlugin($id) {
             return !empty($id) && touch("{$this->enabledPluginDir}/$id");
@@ -235,7 +235,7 @@ use Plugin;
         public function loadModulePlugin(PluginConfig $pluginConfig) {
             $id = $pluginConfig->getId();
             $shortId = strtolower(substr($id, strrpos($id, '_') + 1));
-            /* @var ls\pluginmanager\PluginModule $result */
+            /* @var PluginModule $result */
             App()->setModules([
                 $shortId => [
                     'class' => $pluginConfig->class,

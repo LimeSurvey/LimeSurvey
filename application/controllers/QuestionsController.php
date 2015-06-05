@@ -7,18 +7,18 @@ class QuestionsController extends Controller
 {
     public $layout = 'survey';
     public function actionView($id) {
-        $this->models['question'] = $question = $this->loadModel($id);
-        $this->models['group'] = $question->group;
-        $this->models['survey'] = $question->survey;
+        $this->menus['question'] = $question = $this->loadModel($id);
+        $this->menus['group'] = $question->group;
+        $this->menus['survey'] = $question->survey;
 
         
         $this->render('view', ['question' => $question]);
     }
 
     public function actionUpdate($id) {
-        $this->models['question'] = $question = $this->loadModel($id);
-        $this->models['group'] = $question->group;
-        $this->models['survey'] = $question->survey;
+        $this->menus['question'] = $question = $this->loadModel($id);
+        $this->menus['group'] = $question->group;
+        $this->menus['survey'] = $question->survey;
 
 
         if (App()->request->isPutRequest) {

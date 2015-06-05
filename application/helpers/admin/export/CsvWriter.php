@@ -1,98 +1,14 @@
 <?php
+use ls\models\forms\FormattingOptions;
 class CsvWriter extends Writer
 {
-    private $output;
-    private $separator;
+    private $separator = ',';
     private $hasOutputHeader;
-    /**
-     * The open filehandle
-     */
-    private $file = null;
-    
-    /**
-     * The filename to use for the resulting file when output = display
-     * 
-     * @var string 
-     */
-    protected $csvFilename = '';
-    
-    /**
-     * Should headers be output? For example spss and r export use more or less 
-     * the same output but do not need headers at all.
-     *
-     * @var boolean
-     */
-    protected $doHeaders = true;
 
-    function __construct()
+    protected function renderRecord($headers, $values)
     {
-        $this->output = '';
-        $this->separator = ',';
-        $this->hasOutputHeader = false;
-    }
-
-    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
-    {
-        parent::init($survey, $sLanguageCode, $oOptions);
-        
-        $this->csvFilename = "results-survey".$survey->id.".csv";
-        
-        if ($oOptions->output == 'file') {
-            $this->file = fopen($this->filename, 'w');
-        }
-        
-    }
-    
-    protected function outputRecord($headers, $values, FormattingOptions $oOptions)
-    {
-        $sRecord='';
-        if(!$this->hasOutputHeader)
-        {
-            if ($oOptions->output=='display') {
-                header("Content-Disposition: attachment; filename=" . $this->csvFilename);
-                header("Content-type: text/comma-separated-values; charset=UTF-8");
-            }
-            
-            // If we don't want headers in our csv, for example in exports like r/spss etc. we suppress the header by setting this switch in the init
-            if ($this->doHeaders == true) {
-                $index = 0;
-                foreach ($headers as $header)
-                {
-                    $headers[$index] = $this->csvEscape($header);
-                    $index++;
-                }
-                //Output the header...once and only once.
-                $sRecord.=implode($this->separator, $headers) . PHP_EOL;
-            }
-            $this->hasOutputHeader = true;
-        }
         //Output the values.
-        $index = 0;
-        foreach ($values as $value)
-        {
-            $values[$index] = $this->csvEscape($value);
-            $index++;
-        }
-        $sRecord.= implode($this->separator, $values) . PHP_EOL;
-        if ($oOptions->output=='display')
-        {
-            echo $sRecord; 
-            $this->output = '';
-        } elseif ($oOptions->output == 'file') {
-            $this->output .= $sRecord;
-            fwrite($this->file, $this->output);
-            $this->output='';
-        }
-    }
-
-    public function close()
-    {
-        // Output white line at the end, better for R import
-        echo "\n";
-        if (!is_null($this->file)) {
-            fwrite($this->file, "\n");
-            fclose($this->file);
-        }
+        return implode(array_map([$this, 'csvEscape'], $values), $this->separator) . "\n";
     }
 
     /**
@@ -103,6 +19,23 @@ class CsvWriter extends Writer
     */
     protected function csvEscape($value)
     {
-        return CSVEscape($value);
+        return '"' . str_replace('"','""', preg_replace('~\R~u', "\n", $value)) . '"';
     }
+
+    public function getMimeType()
+    {
+        return 'text/csv';
+    }
+
+    public function getFileName(Survey $survey, $language)
+    {
+        return "responses_{$this->options->surveyId}.csv";
+    }
+
+    public function beforeRenderRecords($headers)
+    {
+        return $this->renderRecord($headers, $headers);
+    }
+
+
 }

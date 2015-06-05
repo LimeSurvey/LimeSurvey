@@ -77,7 +77,7 @@ class PluginsController extends Controller
     {
         if ($id === App()->authManager->authorizationPlugin->id) {
             App()->user->setFlash('error', "Cannot disable currently active authorization plugin.");
-        } elseif (in_array($id, SettingGlobal::get('authenticationPlugins', []))) {
+        } elseif (in_array($id, \SettingGlobal::get('authenticationPlugins', []))) {
             App()->user->setFlash('error', "Cannot disable currently active authentication plugin.");
         }
 
@@ -137,6 +137,7 @@ class PluginsController extends Controller
     public function actionIndex()
     {
         $pm = App()->pluginManager;
+        $pm->scanPlugins();
         $plugins = new CArrayDataProvider(array_values($pm->scanPlugins()));
         return $this->render('index', [
             'plugins' => $plugins, 
