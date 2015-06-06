@@ -504,12 +504,12 @@
         $supportedLanguages['pl']['dateformat'] = 1;
         $supportedLanguages['pl']['radixpoint'] = 1;
 
-        // Polish
-        $supportedLanguages['pl']['description'] = $clang->gT('Polish (Informal)');
-        $supportedLanguages['pl']['nativedescription'] = 'Polski (nieformalny)';
-        $supportedLanguages['pl']['rtl'] = false;
-        $supportedLanguages['pl']['dateformat'] = 1;
-        $supportedLanguages['pl']['radixpoint'] = 1;
+        // Polish (Informal)
+        $supportedLanguages['pl-informal']['description'] = $clang->gT('Polish (Informal)');
+        $supportedLanguages['pl-informal']['nativedescription'] = 'Polski (nieformalny)';
+        $supportedLanguages['pl-informal']['rtl'] = false;
+        $supportedLanguages['pl-informal']['dateformat'] = 1;
+        $supportedLanguages['pl-informal']['radixpoint'] = 1;
         
         // Portuguese
         $supportedLanguages['pt']['description'] = $clang->gT('Portuguese');
