@@ -1704,62 +1704,69 @@ function tokensExport($iSurveyID)
     $oSurvey=Survey::model()->findByPk($iSurveyID);
     $bIsNotAnonymous= ($oSurvey->anonymized=='N' && $oSurvey->active=='Y');// db table exist (survey_$iSurveyID) ?
 
-    $bquery = "SELECT * FROM {{tokens_$iSurveyID}} where 1=1";
+//    $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}}");
+    $criteria = new CDbCriteria();
     $databasetype = Yii::app()->db->getDriverName();
+//    $oRecordSet->where("1=1");
     if ($sEmailFiter!='')
     {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
         {
-            $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$sEmailFiter.'%', true);
+            $criteria->addSearchCondition("CAST(email as varchar)", dbQuoteAll('%'.$sEmailFiter.'%', true));
+//            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
         }
         else
         {
-            $bquery .= ' and email like '.dbQuoteAll('%'.$sEmailFiter.'%', true);
+            $criteria->addSearchCondition('email', dbQuoteAll('%'.$sEmailFiter.'%', true));
+//            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
         }
     }
+
     if ($iTokenStatus==1)
     {
-        $bquery .= " and completed<>'N'";
+        $criteria->addCondition("Completed<>'N'");
+//        $oRecordSet->andWhere("completed<>'N'");
     }
     elseif ($iTokenStatus==2)
     {
-        $bquery .= " and completed='N'";
+        $criteria->addCondition("Completed='N'");
+//        $oRecordSet->andWhere("completed='N'");
         if ($bIsNotAnonymous)
         {
-            $bquery .=" and token not in (select token from {{survey_$iSurveyID}} group by token)";
+            Token::model($iSurveyID)->select("token")->group("token")->findAll();
+            $oRecordSet->andWhere("token not in (select token from {{survey_$iSurveyID}} group by token)");
         }
     }
     if ($iTokenStatus==3 && $bIsNotAnonymous)
     {
-        $bquery .= " and completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)";
+        $criteria->addCondition("");
+        $oRecordSet->andWhere("completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)");
     }
 
     if ($iInvitationStatus==1)
     {
-        $bquery .= " and sent<>'N'";
+        $oRecordSet->andWhere("sent<>'N'");
     }
     if ($iInvitationStatus==2)
     {
-        $bquery .= " and sent='N'";
+        $oRecordSet->andWhere("sent='N'");
     }
 
     if ($iReminderStatus==1)
     {
-        $bquery .= " and remindersent<>'N'";
+        $oRecordSet->andWhere("remindersent<>'N'");
     }
     if ($iReminderStatus==2)
     {
-        $bquery .= " and remindersent='N'";
+        $oRecordSet->andWhere("remindersent='N'");
     }
 
     if ($sTokenLanguage!='')
     {
-        $bquery .= " and language=".dbQuoteAll($sTokenLanguage);
+        $oRecordSet->andWhere("language=".dbQuoteAll($sTokenLanguage));
     }
-    $bquery .= " ORDER BY tid";
-    Yii::app()->loadHelper('database');
-
-    $bresult = Yii::app()->db->createCommand($bquery)->query(); //dbExecuteAssoc($bquery) is faster but deprecated!
+    $oRecordSet->order("tid");
+    $bresult = $oRecordSet->query();
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_".$iSurveyID.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");

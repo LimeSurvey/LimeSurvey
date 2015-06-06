@@ -132,6 +132,14 @@ class SurveyDao
         $selection = '{{survey_' . $survey->id . '}}.id >= :min AND {{survey_' . $survey->id . '}}.id <= :max';
         $oRecordSet->where($selection, $aParams);
 
+        // if not admin, only export results of owned participants
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+            $oRecordSet->leftJoin("{{participants}} p", "p.participant_id = tokentable.participant_id");
+            $iUserId = null;
+            $iUserId = Yii::app()->session['loginID'];
+            $oRecordSet->andWhere("p.owner_uid = $iUserId");
+        }
+
         if ($sFilter!='') {
             $oRecordSet->andWhere($sFilter);
         }

@@ -181,10 +181,19 @@ class SurveyDynamic extends LSActiveRecord
 
         $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON $alias.token = tokens.token";
 
+        // if not admin, only show responses for participants that are owned by the user
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+            $newCriteria->join .= " LEFT JOIN {{participants}} p ON p.participant_id = tokens.participant_id ";
+            $iUserId = null;
+            $iUserId = Yii::app()->session['loginID'];
+            $newCriteria->addCondition("p.owner_uid = $iUserId");
+        }
+
         $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
         $aTokenFields=array_diff($aTokenFields, array('token'));
         
-        $newCriteria->select = $aTokenFields;  // Otherwise we don't get records from the token table
+        $newCriteria->select = "t.*, tokens.*";
+
         $newCriteria->mergeWith($criteria);
 
         return $newCriteria;
