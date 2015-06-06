@@ -392,7 +392,7 @@
         $supportedLanguages['ckb']['radixpoint'] = 1;
         
         // Kyrgyz
-        $supportedLanguages['ky']['description'] = $clang->gT('Kyrgyz');
+        $supportedLanguages['ky']['description'] = gT('Kyrgyz');
         $supportedLanguages['ky']['nativedescription'] = '&#1050;&#1099;&#1088;&#1075;&#1099;&#1079;&#1095;&#1072;';
         $supportedLanguages['ky']['rtl'] = false;
         $supportedLanguages['ky']['dateformat'] = 1;                        
@@ -504,11 +504,11 @@
         $supportedLanguages['pl']['radixpoint'] = 1;
 
         // Polish
-        $supportedLanguages['pl']['description'] = $clang->gT('Polish (Informal)');
-        $supportedLanguages['pl']['nativedescription'] = 'Polski (nieformalny)';
-        $supportedLanguages['pl']['rtl'] = false;
-        $supportedLanguages['pl']['dateformat'] = 1;
-        $supportedLanguages['pl']['radixpoint'] = 1;
+        $supportedLanguages['pl-informal']['description'] = gT('Polish (Informal)');
+        $supportedLanguages['pl-informal']['nativedescription'] = 'Polski (nieformalny)';
+        $supportedLanguages['pl-informal']['rtl'] = false;
+        $supportedLanguages['pl-informal']['dateformat'] = 1;
+        $supportedLanguages['pl-informal']['radixpoint'] = 1;
         
         // Portuguese
         $supportedLanguages['pt']['description'] = gT('Portuguese');
