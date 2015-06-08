@@ -14,6 +14,7 @@ class Authdb extends AuthPluginBase
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
+        $this->subscribe('createNewUser');
         $this->subscribe('beforeLogin');
         $this->subscribe('newLoginForm');
         $this->subscribe('afterLoginFormSubmit');
@@ -25,6 +26,46 @@ class Authdb extends AuthPluginBase
         $this->subscribe('listExportOptions');
         $this->subscribe('newExport');
         
+    }
+
+    /**
+     * Create a DB user
+     *
+     * @return unknown_type
+     */
+    public function createNewUser()
+    {
+        // Do nothing if the user to be added is not DB type
+        if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB')
+        {
+            return;
+        }
+        $oEvent = $this->getEvent();
+        $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
+        $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
+        if (!validateEmailAddress($new_email))
+        {
+            $oEvent->set('errorCode',self::ERROR_INVALID_EMAIL);
+            $oEvent->set('errorMessageTitle',gT("Failed to add user"));
+            $oEvent->set('errorMessageBody',gT("The email address is not valid."));
+            return;
+        }
+        $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
+        $new_pass = createPassword();
+        $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+        if (!$iNewUID)
+        {
+            $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorMessageTitle','');
+            $oEvent->set('errorMessageBody',gT("Failed to add user"));
+            return;
+        }
+
+        $this->setAuthPermission($iNewUID,'auth_db');
+
+        $oEvent->set('newUserID',$iNewUID);
+        $oEvent->set('newPassword',$new_pass);
+        $oEvent->set('errorCode',self::ERROR_NONE);
     }
 
     public function beforeDeactivate()
@@ -90,8 +131,19 @@ class Authdb extends AuthPluginBase
         $onepass  = $this->getOnePass();
 
         $user = $this->api->getUserByName($username);
+        if ($user === null)
+        {
+            // If the user doesnt exist in the LS database, he can not login
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+            return;
+        }
 
-        if ($user !== null and $username==$user->users_name) // Control of equality for uppercase/lowercase with mysql
+        if ($user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
+        {
+            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed to this user'));
+            return;
+        }
+        if ($username==$user->users_name) // Control of equality for uppercase/lowercase with mysql
         {
             if (gettype($user->password)=='resource')
             {

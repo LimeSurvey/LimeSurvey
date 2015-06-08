@@ -242,6 +242,36 @@ class Permission extends LSActiveRecord
             'description' => gT("Unlimited administration permissions"),
             'img' => 'superadmin'
         );
+        $aPermissions['auth_db'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use internal database authentication"),
+            'description' => gT("Use internal database authentication"),
+            'img' => 'usergroup'
+        );
+        $aPermissions['auth_ldap'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use LDAP authentication"),
+            'description' => gT("Use LDAP authentication"),
+            'img' => 'usergroup'
+        );
+        $aPermissions['auth_webserver'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use web server authentication"),
+            'description' => gT("Use web server authentication"),
+            'img' => 'usergroup'
+        );
 
         foreach ($aPermissions as &$permission)
         {

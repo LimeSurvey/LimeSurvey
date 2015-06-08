@@ -153,6 +153,10 @@ class Authentication extends Survey_Common_Action
                 // wrong or unknown username and/or email
                 $aData['message'] = '<br>'.gT('If username and email that you specified are valid, a new password has been sent to you').'<br>';
             }
+            else if (!Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid']))
+            {
+                $aData['message'] = '<br>'.gT('User is not allowed to use internal database authentication, contact your Administrator').'</br>';
+            }
             else
             {
                 $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields).'</br>';

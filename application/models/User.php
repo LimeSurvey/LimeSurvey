@@ -145,11 +145,21 @@ class User extends LSActiveRecord
     * @access public
     * @return string
     */
-    public static function insertUser($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
+    public static function insertUser($new_user, $new_pass,$new_full_name,$parent_user,$new_email,$bHashPassword=true)
     {
         $oUser = new self;
         $oUser->users_name = $new_user;
-        $oUser->password = hash('sha256', $new_pass);
+
+        // This param is a temporary solution until issue #8865 is fixed because
+        // we will be able to recognize LDAP users by an attribute
+        if ($bHashPassword)
+        {
+            $oUser->password = hash('sha256', $new_pass);
+        }
+        else
+        {
+            $oUser->password = $new_pass;
+        }
         $oUser->full_name = $new_full_name;
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
