@@ -3,8 +3,8 @@
     <?php if (empty($tokenlistarray)) { ?>
         <div class='warningheader'><?php $clang->eT("Failed to open the uploaded file!"); ?></div>
         <?php } ?>
-    <?php if (!in_array('firstname', $firstline) || !in_array('lastname', $firstline) || !in_array('email', $firstline)) { ?>
-        <div class='warningheader'><?php printf($clang->gT("Error: Your uploaded file is missing one or more of the mandatory columns (%s)"),"firstname, lastname, email"); ?></div>
+    <?php if ( $missingfieldflag )  { ?>
+        <div class='warningheader'><?php printf($clang->gT("Error: Your uploaded file is missing one or more of the mandatory columns (%s)"),implode(",",$missingfieldnames)); ?></div>
         <?php } ?>
     <?php if ($xz != 0) { ?>
         <div class='successheader'><?php $clang->eT("Successfully created token entries"); ?></div>
@@ -18,7 +18,7 @@
         <li><?php printf($clang->gT("%s records imported"), $xz); ?></li>
     </ul>
 
-    <?php if (!empty($duplicatelist) || !empty($invalidformatlist) || !empty($invalidemaillist) || !empty($errorlist)) { ?>
+    <?php if (!empty($duplicatelist) || !empty($invalidformatlist) || !empty($invalidemaillist) || !empty($errorlist) || !empty($ignoredcolumns)) { ?>
 
         <div class='warningheader'><?php $clang->eT('Warnings'); ?></div>
 
@@ -30,6 +30,19 @@
                     <div class='badtokenlist' id='duplicateslist' style='display: none;'>
                         <ul>
                             <?php foreach ($duplicatelist as $aData) { ?>
+                                <li><?php echo $aData; ?></li>
+                                <?php } ?>
+                        </ul>
+                    </div>
+                </li>
+                <?php } ?>
+            <?php if (!empty($ignoredcolumns)) { ?>
+                <li>
+                    <?php printf($clang->gT("%s columns ignored"), count($ignoredcolumns)); ?>
+                    [<a href='#' onclick='$("#ignoredcolumns").toggle();'><?php $clang->eT("List"); ?></a>]
+                    <div class='badtokenlist' id='ignoredcolumns' style='display: none;'>
+                        <ul>
+                            <?php foreach ($ignoredcolumns as $aData) { ?>
                                 <li><?php echo $aData; ?></li>
                                 <?php } ?>
                         </ul>
