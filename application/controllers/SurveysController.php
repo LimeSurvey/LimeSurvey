@@ -140,6 +140,10 @@ class SurveysController extends Controller
                     $response->token = $token->token;
                 }
             }
+            // Capture referer.
+            if ($survey->bool_refurl && isset(App()->request->psr7->getServerParams()['HTTP_REFERER'])) {
+                $response->url = App()->request->psr7->getServerParams()['HTTP_REFERER'];
+            }
             $response->save();
             $session = App()->surveySessionManager->newSession($survey->sid, $response->id);
             $this->redirect(['survey/index', 'sid' => $id, 'SSM' => $session->getId()]);
@@ -150,45 +154,7 @@ class SurveysController extends Controller
         }
     }
 
-
-    public function actionRun($sessionId)
-    {
-        $this->layout = 'showsurvey';
-        $session = App()->surveySessionManager->getSession($sessionId);
-        if (!isset($session->response)) {
-            throw new \CHttpException(404, gT("Response not found."));
-        }
-
-        if (App()->request->isPostRequest) {
-            // Handle post data.
-            // for now just store in response.
-            echo '<pre>';
-            var_dump(App()->request->getParam('answers'));
-            die();
-            foreach(App()->request->getParam('answers') as $qid => $answer) {
-                $question = \Question::model()->findByPk(['qid' => $qid, 'language' => $session->language]);
-
-                if (is_array($answer)) {
-                    foreach($answer as $subAnswer) {
-
-                    }
-                }
-                $session->response->{$question->sgqa} = $answer;
-            }
-            $session->step++;
-            $this->refresh();
-        }
-
-        $renderer = new \SurveyRenderer($session);
-        $this->render('execute/run', ['renderer' => $renderer]);
-    }
-
-    public function renderSurveyA(\SurveySession $session)
-    {
-        die('a');
-    }
-
-    public function actionUnexpire($id) {
+   public function actionUnexpire($id) {
         $this->layout = 'survey';
 
         $survey = $this->loadModel($id);
@@ -264,6 +230,28 @@ class SurveysController extends Controller
             }
         }
         $this->render('create', ['survey' => $survey, 'languageSetting' => $languageSetting]);
+    }
+
+
+    public function actionAbort()
+    {
+        $this->layout = 'bare';
+        $ssm = App()->surveySessionManager;
+        if ($ssm->active
+            && !$ssm->current->isFinished
+        ) {
+            $surveyId = $ssm->current->surveyId;
+            if (!isset($ssm->current->response) || $ssm->current->response->delete(true)) {
+                $ssm->destroySession();
+
+            }
+        }
+
+        $templatePath = getTemplatePath('default');
+        return $this->render('abort', [
+            'templatePath' => $templatePath,
+            'surveyId' => isset($surveyId) ? $surveyId : null
+        ]);
     }
 }
 ?>

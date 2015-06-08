@@ -5,7 +5,7 @@ class FormattingOptions extends \CFormModel
 {
     public $type = 'csv';
 
-    public $surveyId;
+    protected $_surveyId;
     /**
     * The columns that have been selected for output.  The values must be
     * in fieldMap format.
@@ -87,6 +87,18 @@ class FormattingOptions extends \CFormModel
     }
 
 
+    /**
+     * Use setter so we can auto select all columns.
+     * @param $value
+     */
+    public function setSurveyId($value) {
+        $this->_surveyId = $value;
+        $this->selectedColumns = array_keys($this->getSelectedColumnOptions());
+    }
+
+    public function getSurveyId() {
+        return $this->_surveyId;
+    }
     public function toString()
     {
         return $this->format.','.$this->headingFormat.','
@@ -96,6 +108,7 @@ class FormattingOptions extends \CFormModel
         .$this->convertN.','.$this->nValue.','
         .implode(',',$this->selectedColumns);
     }
+
 
 
     public function rules() {

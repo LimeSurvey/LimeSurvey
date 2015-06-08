@@ -69,6 +69,7 @@ class ExcelWriter implements IWriter {
             $headers[] = $value;
         }
 
+
         // If empty survey, prepare an empty responses array, and output just 1 empty record with header.
         if ($this->options->headingFormat != 'none') {
             $this->writeLine($headers);
@@ -95,16 +96,15 @@ class ExcelWriter implements IWriter {
                 {
                     switch ($this->options->answerFormat) {
                         case 'long':
-                            $elementArray[] = $this->getLongAnswer($survey, $column, $value);
+                            $elementArray[] = $response->getLongAnswer($column);
                             break;
                         default:
                         case 'short':
-                            $elementArray[] = $this->getShortAnswer($survey, $column, $value);
+                            $elementArray[] = $this->getShortAnswer($column);
                             break;
                     }
-                }
-                else //Token table value
-                {
+                } else {
+                    // Token table value
                     $elementArray[]=$value;
                 }
             }
@@ -120,7 +120,6 @@ class ExcelWriter implements IWriter {
 
         stream_copy_to_stream(fopen($file, 'r'), $stream);
         unlink($file);
-        die();
         return $stream;
 
     }
@@ -141,13 +140,47 @@ class ExcelWriter implements IWriter {
      */
     protected function getHeadingCode(Survey $survey, $fieldName)
     {
-        if (isset($survey->fieldMap[$fieldName]))
-        {
-            return viewHelper::getFieldCode($survey->fieldMap[$fieldName],array('separator'=>array('[',']'),'LEMcompat'=> $this->options->useEMCode));
+        $fieldMap = $survey->fieldMap;
+        if (isset($fieldMap[$fieldName])) {
+            $result = viewHelper::getFieldCode($fieldMap[$fieldName],array('separator'=>array('[',']'),'LEMcompat'=> $this->options->useEMCode));
+        } else {
+            $result = $fieldName;
         }
-        else
-        {
-            return $fieldName;
+        return $result;
+    }
+
+    /**
+     * Performs a transformation of the response value based on the value, the
+     * type of field the value is a response for, and the FormattingOptions.
+     * All transforms should be processed during the execution of this function!
+     *
+     * The final step in the transform is to apply a stripTagsFull on the $value.
+     * This occurs for ALL values whether or not any other transform is applied.
+     *
+     * @param string $value
+     * @param string $fieldType
+     * @param FormattingOptions $oOptions
+     * @param string $column The name of the column
+     * @return string
+     */
+    protected function transformResponseValue($value, $fieldType, $column = null)
+    {
+        //The following if block handles transforms of Ys and Ns.
+        if (($this->options->nValue != 'N' || $this->options->yValue != 'Y')
+            && isset($fieldType)
+            && ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y')
+        ) {
+            if (($value == 'N' || ($value == '' && !is_null($value))))
+            {
+                return $this->options->nValue;
+            }
+            else if ($value == 'Y')
+            {
+                return $this->options->yValue;
+            }
         }
+
+        //This spot should only be reached if no transformation occurs.
+        return $value;
     }
 }

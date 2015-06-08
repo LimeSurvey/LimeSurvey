@@ -380,19 +380,20 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_linkreplace='';
     }
 
-    if(isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active']=='Y')
-    {
-        $iscompleted=SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
-    }
-    else
-    {
-        $iscompleted=false;
-    }
+
+    $iscompleted = App()->surveySessionManager->active && App()->surveySessionManager->current->isFinished;
+
     if (isset($surveyid) && !$iscompleted)
     {
-        $_clearall=CHtml::htmlButton(gT("Exit and clear survey"),array('type'=>'submit','id'=>"clearall",'value'=>'clearall','name'=>'clearall','class'=>'clearall button','data-confirmedby'=>'confirm-clearall','title'=>gT("This action need confirmation.")));
-        $_clearall.=CHtml::checkBox("confirm-clearall",false,array('id'=>'confirm-clearall','value'=>'confirm','class'=>'hide jshide'));
-        $_clearall.=CHtml::label(gT("Are you sure you want to clear all your responses?"),'confirm-clearall',array('class'=>'hide jshide'));
+        $_clearall = CHtml::htmlButton(gT("Exit and clear survey"), [
+            'type'=> 'submit',
+            'formaction' => App()->surveySessionManager->createUrl('surveys/abort'),
+            'id'=>"clearall",
+            'value'=>'clearall',
+            'name'=>'clearall',
+            'class'=>'clearall button',
+            'confirm'=> gT("Are you sure you want to clear all your responses?")
+        ]);
     }
     else
     {
@@ -460,7 +461,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         elseif($s_lang)
             $restartparam['lang']=$s_lang;
         $restartparam['newtest']="Y";
-        $restarturl=Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$restartparam);
+        $restartparam['id'] = $surveyid;
+        $restarturl= App()->createUrl("surveys/start", $restartparam);
         $_restart = "<a href='{$restarturl}'>".gT("Restart this Survey")."</a>";
     }
     else
@@ -649,7 +651,7 @@ EOD;
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = "<noscript><span class='warningjs'>".gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>";
     $coreReplacements['CLEARALL'] = $_clearall;
-    $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".gT("Close this window")."</a>";
+//    $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".gT("Close this window")."</a>";
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;

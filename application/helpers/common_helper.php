@@ -2343,10 +2343,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             }
             \Yii::endProfile('fieldmap');
 
-            $requestCache[$key] = $fieldmap;
+
         }
-        return $requestCache[$key];
+        $requestCache[$key] = $fieldmap;
+
     }
+    return $requestCache[$key];
 }
 
 /**

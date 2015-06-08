@@ -80,7 +80,11 @@
                         ]);
                     $criteria->order = 'question_order DESC';
                     $criteria->limit = 1;
-                    $this->question_order = Question::model()->find($criteria)->question_order + 1;
+                    if (null != $last = Question::model()->find($criteria)) {
+                        $this->question_order = $last->question_order + 1;
+                    } else {
+                        $this->question_order = 0;
+                    }
                 } else {
                     // Get the break point.
                     $before = Question::model()->findByPk($this->before);

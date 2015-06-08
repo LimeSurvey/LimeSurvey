@@ -5200,7 +5200,7 @@
                 $sdata = array_filter($sdata);
 
 
-                $oSurvey = Response::create($this->sid);
+                $oSurvey = App()->surveySessionManager->current->response;
                 $oSurvey->setAttributes($sdata, false);
                 if ($oSurvey->save())    // Checked
                 {

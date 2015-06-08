@@ -49,7 +49,7 @@ class SurveyRuntimeHelper {
                 $classes = implode(' ', array(
                     'row',
                     $stepInfo['anyUnanswered'] ? 'missing' : '',
-                    App()->surveySessionManager->current->getStep() == $group['step'] ? 'current' : ''
+                    $ssm->current->getStep() == $group['step'] ? 'current' : ''
 
                 ));
                 $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'),array('type'=>'submit','value'=>$group['step'],'name'=>'move','class'=>'jshide'));
@@ -142,7 +142,7 @@ class SurveyRuntimeHelper {
 
             ++$v;
 
-            $class = ($n == App()->surveySessionManager->current->getStep() - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
+            $class = ($n == $ssm->current->getStep() - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
             if ($v % 2)
                 $class .= " odd";
 
@@ -154,7 +154,7 @@ class SurveyRuntimeHelper {
             echo "</div>";
         }
 
-        $session = App()->surveySessionManager->current;
+        $session = $ssm->current;
         if ($session->maxStep == $session->step)
         {
             echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
@@ -173,10 +173,10 @@ class SurveyRuntimeHelper {
     function run($surveyid,$args) {
         global $errormsg;
         extract($args);
+        $ssm = App()->surveySessionManager;
 
-        if (!$thissurvey) {
-            $thissurvey = getSurveyInfo($surveyid);
-        }
+        $thissurvey = getSurveyInfo($surveyid);
+
         $LEMsessid = 'survey_' . $surveyid;
         if (isset($_SESSION[$LEMsessid]['s_lang']))
         {
@@ -249,7 +249,7 @@ class SurveyRuntimeHelper {
         else
         {
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
-            if (App()->surveySessionManager->current->getStep() == 0)
+            if ($ssm->current->getStep() == 0)
             {
                 buildsurveysession($surveyid);
                 $sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
@@ -263,13 +263,13 @@ class SurveyRuntimeHelper {
                 elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
                     LimeExpressionManager::JumpTo(1, false, false, true);
-                    App()->surveySessionManager->current->setStep(1);
+                    $ssm->current->setStep(1);
                 }
             }
             else
             {
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
-                LimeExpressionManager::JumpTo(App()->surveySessionManager->current->getStep(), false, false);
+                LimeExpressionManager::JumpTo($ssm->current->getStep(), false, false);
             }
 
             if (isset($_SESSION[$LEMsessid]['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION[$LEMsessid]['LEMpostKey'])
@@ -294,29 +294,29 @@ class SurveyRuntimeHelper {
             }
             if(isset($move) && $move=="clearcancel")
             {
-                $moveResult = LimeExpressionManager::JumpTo(App()->surveySessionManager->current->getStep(), false, true, false, true);
+                $moveResult = LimeExpressionManager::JumpTo($ssm->current->getStep(), false, true, false, true);
                 //$backpopup=gT("Clear all need confirmation.");
             }
             if (isset($move))
             {
-                if(!in_array($move,array("clearall","changelang","saveall","reload")))
-                    $_SESSION[$LEMsessid]['prevstep'] = App()->surveySessionManager->current->getStep();
+                if(!in_array($move,array("changelang","saveall","reload")))
+                    $_SESSION[$LEMsessid]['prevstep'] = $ssm->current->getStep();
                 else // Accepted $move without error
                     $_SESSION[$LEMsessid]['prevstep']= $move;
             }
             if (!isset($_SESSION[$LEMsessid]['prevstep']))
             {
-                $_SESSION[$LEMsessid]['prevstep']=App()->surveySessionManager->current->getStep()-1;   // this only happens on re-load
+                $_SESSION[$LEMsessid]['prevstep'] = $ssm->current->getStep()-1;   // this only happens on re-load
             }
 
             if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
             {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
-                if(App()->surveySessionManager->current->getMaxStep() > App()->surveySessionManager->current->getStep())
+                if($ssm->current->getMaxStep() > $ssm->current->getStep())
                 {
-                    LimeExpressionManager::JumpTo(App()->surveySessionManager->current->getMaxStep(), false, false);
+                    LimeExpressionManager::JumpTo($ssm->current->getMaxStep(), false, false);
                 }
-                $moveResult = LimeExpressionManager::JumpTo(App()->surveySessionManager->current->getStep(),false,false);   // if late in the survey, will re-validate contents, which may be overkill
+                $moveResult = LimeExpressionManager::JumpTo($ssm->current->getStep(),false,false);   // if late in the survey, will re-validate contents, which may be overkill
                 unset($_SESSION[$LEMsessid]['LEMtokenResume']);
             }
             else if (!$LEMskipReprocessing)
@@ -327,7 +327,7 @@ class SurveyRuntimeHelper {
                     $moveResult = LimeExpressionManager::NavigateBackwards();
                     if ($moveResult['at_start'])
                     {
-                        App()->surveySessionManager->current->setStep(0);
+                        $ssm->current->setStep(0);
                         unset($moveResult); // so display welcome page again
                     }
                 }
@@ -345,18 +345,18 @@ class SurveyRuntimeHelper {
                     {
                         // may be submitting from the navigation bar, in which case need to process all intervening questions
                         // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
-                        $moveResult = LimeExpressionManager::JumpTo(App()->surveySessionManager->current->survey->totalSteps + 1, false);
+                        $moveResult = LimeExpressionManager::JumpTo($ssm->current->survey->totalSteps + 1, false);
                     }
                 }
                 if (isset($move) && $move=='changelang')
                 {
                     // jump to current step using new language, processing POST values
-                    $moveResult = LimeExpressionManager::JumpTo(App()->surveySessionManager->current->getStep(), false, true, true, true);  // do process the POST data
+                    $moveResult = LimeExpressionManager::JumpTo($ssm->current->getStep(), false, true, true, true);  // do process the POST data
                 }
                 if (isset($move) && isNumericInt($move) && $thissurvey['questionindex'] == 1)
                 {
                     $move = (int) $move;
-                    if ($move > 0 && ($move <= App()->surveySessionManager->current->getStep() || $move <= App()->surveySessionManager->current->getMaxStep()))
+                    if ($move > 0 && ($move <= $ssm->current->getStep() || $move <= $ssm->current->getMaxStep()))
                     {
                         $moveResult = LimeExpressionManager::JumpTo($move, false);
                     }
@@ -366,7 +366,7 @@ class SurveyRuntimeHelper {
                     $move = (int) $move;
                     $moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
                 }
-                if (!isset($moveResult) && !($surveyMode != 'survey' && App()->surveySessionManager->current->getStep() == 0))
+                if (!isset($moveResult) && !($surveyMode != 'survey' && $ssm->current->getStep() == 0))
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
                     $moveResult = LimeExpressionManager::GetLastMoveResult(true);
@@ -380,7 +380,7 @@ class SurveyRuntimeHelper {
                 {
                     //LimeExpressionManager::JumpTo(-1, false, false, true);
                     LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
-                    $moveResult = LimeExpressionManager::JumpTo(App()->surveySessionManager->current->survey->totalSteps + 1, false, false, false);// no preview, no save data and NO force
+                    $moveResult = LimeExpressionManager::JumpTo($ssm->current->survey->totalSteps + 1, false, false, false);// no preview, no save data and NO force
                     if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
                         $moveResult['finished'] = true;
                 }
@@ -390,7 +390,7 @@ class SurveyRuntimeHelper {
                 }
                 else
                 {
-                    App()->surveySessionManager->current->setStep($moveResult['seq'] + 1);  // step is index base 1
+                    $ssm->current->setStep($moveResult['seq'] + 1);  // step is index base 1
                     $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
 
                 }
@@ -402,16 +402,11 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
-            // Previously we used to keep the session and redirect the user to the
-            // submit page.
-
-            if ($surveyMode != 'survey' && App()->surveySessionManager->current->getStep() == 0)
+            if ($surveyMode != 'survey' && $ssm->current->getStep() == 0)
             {
-//                $_SESSION[$LEMsessid]['test']=time();
 
                 $moveResult = LimeExpressionManager::JumpTo(1, false, false, true);
-                App()->surveySessionManager->current->setStep(1);
+                $ssm->current->setStep(1);
             }
 
             // TODO FIXME
@@ -423,7 +418,7 @@ class SurveyRuntimeHelper {
             {
                 $bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid);
                 // must do this here to process the POSTed values
-                $moveResult = LimeExpressionManager::JumpTo(App()->surveySessionManager->current->getStep(), false);   // by jumping to current step, saves data so far
+                $moveResult = LimeExpressionManager::JumpTo($ssm->current->getStep(), false);   // by jumping to current step, saves data so far
                 if (!isset($_SESSION[$LEMsessid]['scid']) && !$bTokenAnswerPersitance )
                 {
                     $cSave->showsaveform(); // generates a form and exits, awaiting input
@@ -435,7 +430,7 @@ class SurveyRuntimeHelper {
                     // the previous page when we return.
                     $iResponseID = $_SESSION[$LEMsessid]['srid'];
                     $oResponse = SurveyDynamic::model($surveyid)->findByPk($iResponseID);
-                    $oResponse->lastpage = App()->surveySessionManager->current->getStep();
+                    $oResponse->lastpage = $ssm->current->getStep();
                     $oResponse->save();
                 }
             }
@@ -492,7 +487,7 @@ class SurveyRuntimeHelper {
             //SEE IF THIS GROUP SHOULD DISPLAY
             $show_empty_group = false;
 
-            if (App()->surveySessionManager->current->getStep() == 0)
+            if ($ssm->current->getStep() == 0)
                 $show_empty_group = true;
 
             $redata = compact(array_keys(get_defined_vars()));
@@ -500,14 +495,6 @@ class SurveyRuntimeHelper {
             //SUBMIT ###############################################################################
             if ((isset($move) && $move == "movesubmit"))
             {
-                //                setcookie("limesurvey_timers", "", time() - 3600); // remove the timers cookies   //@todo fix - sometimes results in headers already sent error
-                if ($thissurvey['refurl'] == "Y")
-                {
-                    if (!in_array("refurl", $_SESSION[$LEMsessid]['insertarray'])) //Only add this if it doesn't already exist
-                    {
-                        $_SESSION[$LEMsessid]['insertarray'][] = "refurl";
-                    }
-                }
                 resetTimers();
 
                 //Before doing the "templatereplace()" function, check the $thissurvey['url']
@@ -556,7 +543,7 @@ class SurveyRuntimeHelper {
                 }
                 else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
                 {
-                    if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
+                    if ($ssm->current->survey->bool_usetokens) //don't use cookies if tokens are being used
                     {
                         setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
                     }
@@ -698,7 +685,7 @@ class SurveyRuntimeHelper {
         $redata = compact(array_keys(get_defined_vars()));
 
 
-        createFieldMap(App()->surveySessionManager->current->surveyId,'full',false,false, App()->surveySessionManager->current->language);
+        createFieldMap($ssm->current->surveyId,'full',false,false, $ssm->current->language);
         //GET GROUP DETAILS
 
         if ($surveyMode == 'group' && $previewgrp)
@@ -721,7 +708,7 @@ class SurveyRuntimeHelper {
             }
             if (isset($moveResult))
             {
-                App()->surveySessionManager->current->setStep($moveResult['seq'] + 1);  // step is index base 1?
+                $ssm->current->setStep($moveResult['seq'] + 1);  // step is index base 1?
             }
 
             $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
@@ -771,7 +758,7 @@ class SurveyRuntimeHelper {
         //PRESENT SURVEY
         //******************************************************************************************************
 
-        $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || $_SESSION[$LEMsessid]['prevstep'] == App()->surveySessionManager->current->getStep()));
+        $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || $_SESSION[$LEMsessid]['prevstep'] == $ssm->current->getStep()));
 
         Yii::app()->getController()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
@@ -779,7 +766,7 @@ class SurveyRuntimeHelper {
         //Iterate through the questions about to be displayed:
         $inputnames = array();
 
-        foreach (UpdateGroupList(App()->surveySessionManager->current->surveyId, App()->language) as $gl)
+        foreach (UpdateGroupList($ssm->current->surveyId, App()->language) as $gl)
         {
             $gid = $gl['gid'];
             $qnumber = 0;
@@ -794,7 +781,7 @@ class SurveyRuntimeHelper {
             }
 
             // TMSW - could iterate through LEM::currentQset instead
-            foreach (App()->surveySessionManager->current->fieldArray as $key => $ia)
+            foreach ($ssm->current->fieldArray as $key => $ia)
             {
                 ++$qnumber;
                 $ia[9] = $qnumber; // incremental question count;
@@ -855,7 +842,7 @@ class SurveyRuntimeHelper {
             } //end iteration
         }
 
-        $session = App()->surveySessionManager->current;
+        $session = $ssm->current;
         if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
         {
             if ($show_empty_group)
@@ -902,12 +889,12 @@ class SurveyRuntimeHelper {
         //if(count($aPopup))
         Yii::app()->clientScript->registerScript('startPopup',"startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
-        if ($surveyMode != 'survey' && App()->surveySessionManager->current->getStep() != $_SESSION[$LEMsessid]['prevstep'] ||
+        if ($surveyMode != 'survey' && $ssm->current->getStep() != $_SESSION[$LEMsessid]['prevstep'] ||
         (isset($_SESSION[$LEMsessid]['stepno']) && $_SESSION[$LEMsessid]['stepno'] % 2))
         {
             if (!isset($_SESSION[$LEMsessid]['stepno']))
                 $_SESSION[$LEMsessid]['stepno'] = 0;
-            if (App()->surveySessionManager->current->getStep() != $_SESSION[$LEMsessid]['prevstep'])
+            if ($ssm->current->getStep() != $_SESSION[$LEMsessid]['prevstep'])
                 ++$_SESSION[$LEMsessid]['stepno'];
             if ($_SESSION[$LEMsessid]['stepno'] % 2)
             {
@@ -1126,7 +1113,7 @@ class SurveyRuntimeHelper {
                 $this->createFullQuestionIndex($LEMsessid, $surveyMode);
             }
 
-            $step = App()->surveySessionManager->current->getStep();
+            $step = $ssm->current->getStep();
             echo "<input type='hidden' name='thisstep' value='{$step}' id='thisstep' />\n";
             echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
             echo "<input type='hidden' name='SSM' value='{$session->getId()}' id='sid' />\n";

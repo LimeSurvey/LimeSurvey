@@ -13,6 +13,7 @@
  * @property int $surveyId
  * @property string $language
  * @property Survey $survey;
+ * @property Response $response;
  */
 class SurveySession extends CComponent {
     const FORMAT_GROUP = 'G';
@@ -214,7 +215,13 @@ class SurveySession extends CComponent {
      */
     public function getFieldArray() {
         $result = [];
-        foreach (createFieldMap($this->surveyId, 'full', true, false, $this->language) as $field)
+        $fieldMap = createFieldMap($this->surveyId, 'full', true, false, $this->language);
+        if (!is_array($fieldMap)) {
+            echo "Field map should be an array.";
+            var_dump($fieldMap);
+            die();
+        }
+        foreach ($fieldMap as $field)
         {
             if (isset($field['qid']) && $field['qid']!='')
             {

@@ -69,7 +69,6 @@ class ResponsesController extends Controller
             ];
             $response = new Response($writer->write($survey, App()->language), 200, $headers);
 
-
             (new Response\SapiEmitter())->emit($response);
             // Disable weblogroutes.
             foreach(App()->log->routes as $route) {

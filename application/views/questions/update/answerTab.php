@@ -22,7 +22,7 @@ echo TbHtml::openTag('div', ['class' => 'sortable']);
 $i = 0;
 if (empty($question->answers)) {
     $answer = new Answer();
-    $answer->question_id = $this->question->primaryKey;
+    $answer->question_id = $question->primaryKey;
     $answers = [$answer];
 } else {
     $answers = $question->answers;

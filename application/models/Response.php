@@ -102,7 +102,7 @@
             {
                 $this->deleteFiles();
             }
-            parent::delete();
+            return parent::delete();
         }
 		public function relations()
 		{
@@ -145,8 +145,7 @@
         {
             $db = App()->db;
             //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-            $columns['id'] = 'string(36) NOT NULL';
-            $columns += $survey->columns;
+            $columns = $survey->columns;
             $tableName = "{{survey_{$survey->sid}}}";
 
             $createdTables = [];
@@ -199,6 +198,202 @@
 
 
         }
-	}
+
+
+        /**
+         * Returns the full answer for the question that matches $fieldName
+         * and the answer that matches the $answerCode.  If a match cannot
+         * be made then false is returned.
+         *
+         * The name of the variable $answerCode is not strictly an answerCode
+         * but could also be a comment entered by a participant.
+         *
+         * @param string $fieldName
+         * @param string $answerCode
+         * @param string $language
+         * @return string
+         */
+        public function getLongAnswer($fieldName)
+        {
+            if (!preg_match('/\^d+X\d+X\d+.*$/', $fieldName)) {
+                return $this->$fieldName;
+            }
+            $fullAnswer = null;
+            var_dump($fieldName);
+            die();
+            $fieldType = $this->survey;
+            $question = $this->fieldMap[$fieldName];
+            $questionId = $question['qid'];
+            $answer = null;
+            if ($questionId)
+            {
+                $answers = $this->getAnswers($questionId);
+                if (isset($answers[$answerCode]))
+                {
+                    $answer = $answers[$answerCode]['answer'];
+                }
+            }
+
+            //echo "\n$fieldName: $fieldType = $answerCode";
+            switch ($fieldType)
+            {
+                case 'R':   //RANKING TYPE
+                    $fullAnswer = $answer;
+                    break;
+
+                case '1':   //Array dual scale
+                    if (mb_substr($fieldName, -1) == 0)
+                    {
+                        $answers = $this->getAnswers($questionId, 0);
+                    }
+                    else
+                    {
+                        $answers = $this->getAnswers($questionId, 1);
+                    }
+                    if (array_key_exists($answerCode, $answers))
+                    {
+                        $fullAnswer = $answers[$answerCode]['answer'];
+                    }
+                    else
+                    {
+                        $fullAnswer = null;
+                    }
+                    break;
+
+                case 'L':   //DROPDOWN LIST
+                case '!':
+                    if (mb_substr($fieldName, -5, 5) == 'other')
+                    {
+                        $fullAnswer = $answerCode;
+                    }
+                    else
+                    {
+                        if ($answerCode == '-oth-')
+                        {
+                            $fullAnswer = $translator->translate('Other', $sLanguageCode);
+                        }
+                        else
+                        {
+                            $fullAnswer = $answer;
+                        }
+                    }
+                    break;
+
+                case 'O':   //DROPDOWN LIST WITH COMMENT
+                    if (isset($answer))
+                    {
+                        //This is one of the dropdown list options.
+                        $fullAnswer = $answer;
+                    }
+                    else
+                    {
+                        //This is a comment.
+                        $fullAnswer = $answerCode;
+                    }
+                    break;
+
+                case 'Y':   //YES/NO
+                    switch ($answerCode)
+                    {
+                        case 'Y':
+                            $fullAnswer = $translator->translate('Yes', $sLanguageCode);
+                            break;
+
+                        case 'N':
+                            $fullAnswer = $translator->translate('No', $sLanguageCode);
+                            break;
+
+                        default:
+                            $fullAnswer = $translator->translate('N/A', $sLanguageCode);
+                    }
+                    break;
+
+                case 'G':
+                    switch ($answerCode)
+                    {
+                        case 'M':
+                            $fullAnswer = $translator->translate('Male', $sLanguageCode);
+                            break;
+
+                        case 'F':
+                            $fullAnswer = $translator->translate('Female', $sLanguageCode);
+                            break;
+
+                        default:
+                            $fullAnswer = $translator->translate('N/A', $sLanguageCode);
+                    }
+                    break;
+
+                case 'M':   //MULTIOPTION
+                case 'P':
+                    if (mb_substr($fieldName, -5, 5) == 'other' || mb_substr($fieldName, -7, 7) == 'comment')
+                    {
+                        //echo "\n -- Branch 1 --";
+                        $fullAnswer = $answerCode;
+                    }
+                    else
+                    {
+                        if ($answerCode == 'Y')
+                        {
+                            $fullAnswer = $translator->translate('Yes', $sLanguageCode);
+                        }
+                        elseif ($answerCode == 'N' || $answerCode === '')   // Strict check for empty string to find null values
+                        {
+                            $fullAnswer = $translator->translate('No', $sLanguageCode);
+                        } else {
+                            $fullAnswer = $translator->translate('N/A', $sLanguageCode);
+                        }
+                    }
+                    break;
+
+                case 'C':
+                    switch ($answerCode)
+                    {
+                        case 'Y':
+                            $fullAnswer = $translator->translate('Yes', $sLanguageCode);
+                            break;
+
+                        case 'N':
+                            $fullAnswer = $translator->translate('No', $sLanguageCode);
+                            break;
+
+                        case 'U':
+                            $fullAnswer = $translator->translate('Uncertain', $sLanguageCode);
+                            break;
+                    }
+                    break;
+
+                case 'E':
+                    switch ($answerCode)
+                    {
+                        case 'I':
+                            $fullAnswer = $translator->translate('Increase', $sLanguageCode);
+                            break;
+
+                        case 'S':
+                            $fullAnswer = $translator->translate('Same', $sLanguageCode);
+                            break;
+
+                        case 'D':
+                            $fullAnswer = $translator->translate('Decrease', $sLanguageCode);
+                            break;
+                    }
+                    break;
+
+                case 'F':
+                case 'H':
+                    $answers = $this->getAnswers($questionId, 0);
+                    $fullAnswer = (isset($answers[$answerCode])) ? $answers[$answerCode]['answer'] : "";
+                    break;
+
+                default:
+
+                    $fullAnswer .= $answerCode;
+            }
+
+            return $fullAnswer;
+        }
+
+    }
 
 ?>

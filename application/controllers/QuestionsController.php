@@ -120,10 +120,10 @@ class QuestionsController extends Controller
          * @todo Switch to findByPk after language has been removed from group table.
          */
         $group = \QuestionGroup::model()->findByPk($groupId);
-        $this->survey = $group->survey;
-        if (!isset($this->survey)) {
+        $this->menus['survey'] = $group->survey;
+        if (!isset($group->survey)) {
             throw new \CHttpException(404, "Survey not found.");
-        } elseif ($this->survey->isActive) {
+        } elseif ($group->survey->isActive) {
             throw new \CHttpException(421, "Cannot add questions to active survey.");
         }
         $question = new \Question();

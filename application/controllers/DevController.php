@@ -38,12 +38,14 @@ class DevController extends \CController {
     }
 
     public function actionSession() {
-        echo '<pre>';
         $copy = $_SESSION;
         unset($copy['LSWebUsermodel']);
 //        unset($copy['SSM']);
         unset($copy['fieldmap-652359en']);
-        var_dump($copy);
+
+        echo '<pre>';
+        var_dump(App()->surveySessionManager->sessions->toArray());
+
 
     }
 

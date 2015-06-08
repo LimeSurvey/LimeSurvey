@@ -35,7 +35,20 @@ $menu = [[ // Left side
         'title' => gT('Responses'),
         'icon' => 'inbox',
         'disabled' => $model->responseCount == 0,
-        'url' => ["responses/index", 'id' => $model->sid]
+        'items' => [
+            [
+                'label' => gT('Show responses'),
+                'icon' => 'eye-open',
+
+                'url' => ["responses/index", 'id' => $model->sid],2
+            ], [
+                'label' => gT('Export'),
+                'icon' => 'download',
+//                'disabled' => $model->responseCount == 0,
+                'url' => ["responses/export", 'id' => $model->sid],
+            ]
+
+        ]
     ], [
         'title' => gT('Tokens'),
         'icon' => 'bullhorn',
@@ -44,7 +57,7 @@ $menu = [[ // Left side
     ],
 ], [ // Right side
     [
-        'title' => gT('Export'),
+        'title' => gT('Export survey'),
         'icon' => 'download',
         'url' => ["surveys/export", 'id' => $model->sid]
     ], [

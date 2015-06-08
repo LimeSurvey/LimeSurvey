@@ -4,8 +4,8 @@ use \Yii;
 class GroupsController extends Controller {
     public $layout = 'survey';
     public function actionView($id) {
-        $this->models['group'] = $group = $this->loadModel($id);
-        $this->models['survey'] = $group->survey;
+        $this->menus['group'] = $group = $this->loadModel($id);
+        $this->menus['survey'] = $group->survey;
         return $this->render('view', ['group' => $group]);
     }
 
@@ -38,7 +38,7 @@ class GroupsController extends Controller {
         /**
          * @todo Switch to findByPk after language has been removed from group table.
          */
-        $this->models['survey'] = $survey = \Survey::model()->findByPk($surveyId);
+        $this->menus['survey'] = $survey = \Survey::model()->findByPk($surveyId);
 
         if (!isset($survey)) {
             throw new \CHttpException(404, "Survey not found.");

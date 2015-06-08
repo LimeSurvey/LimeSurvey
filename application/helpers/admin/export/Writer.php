@@ -11,7 +11,6 @@ use \ls\models\forms\FormattingOptions;
 abstract class Writer implements IWriter
 {
     protected $language;
-    protected $translator;
     /**
      * @var FormattingOptions
      */
@@ -20,7 +19,7 @@ abstract class Writer implements IWriter
     
     protected function translate($key, $language)
     {
-        return $this->translator->translate($key, $language);
+        return gT($key, 'html', $language);
     }
 
     /**
@@ -28,7 +27,6 @@ abstract class Writer implements IWriter
     */
     public function __construct(\ls\models\forms\FormattingOptions $options)
     {
-        $this->translator = new Translator();
         $this->options = $options;
         $this->init();
     }
@@ -191,7 +189,7 @@ abstract class Writer implements IWriter
     public function getLongAnswer(Survey $oSurvey, $fieldName,$sValue)
     {
         return $this->transformResponseValue(
-                $oSurvey->getFullAnswer($fieldName, $sValue, $this->translator, $this->languageCode),
+                $oSurvey->getFullAnswer($fieldName, $sValue, $this->options->lang),
                 $oSurvey->fieldMap[$fieldName]['type'],
                 $fieldName
                );

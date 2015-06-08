@@ -23,6 +23,7 @@ if (!defined('BASEPATH'))
  */
 class Survey extends LSActiveRecord
 {
+    private $_fieldMap;
     /* Set some setting not by default database */
     public $format = 'G';
 
@@ -129,19 +130,6 @@ class Survey extends LSActiveRecord
     public function primaryKey()
     {
         return 'sid';
-    }
-
-    /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return Survey
-    */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
     }
 
     /**
@@ -647,7 +635,10 @@ class Survey extends LSActiveRecord
 
     public function getFieldMap()
     {
-        return createFieldMap($this->sid);
+        if (!isset($this->_fieldMap)) {
+            $this->_fieldMap = createFieldMap($this->sid);
+        }
+        return $this->_fieldMap;
 
 
     }
@@ -734,6 +725,7 @@ class Survey extends LSActiveRecord
      */
     public function getColumns() {
         $result = [
+            'id' =>  'string(36) NOT NULL',
             'startlanguage' => 'string(20) NOT NULL',
             'datestamp' => 'datetime NOT NULL',
             'submitdate' => 'datetime',
@@ -937,10 +929,7 @@ class Survey extends LSActiveRecord
                 $result = 1;
                 break;
             case "G":
-                $result = QuestionGroup::model()->countByAttributes([
-                    'sid' => $this->sid,
-                    'language' => App()->language
-                ]);
+                $result = QuestionGroup::model()->countByAttributes(['sid' => $this->sid]);
                 break;
             case "S":
                 $result = Question::model()->countByAttributes([
@@ -996,6 +985,11 @@ class Survey extends LSActiveRecord
      */
     public function getResponses()
     {
-        return Response::model($this->sid)->findAll();
+        $result = Response::model($this->sid)->findAll();
+        // Forward load the survey object.
+        foreach($result as $response) {
+            $response->survey = $this;
+        }
+        return $result;
     }
 }
