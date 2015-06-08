@@ -1,0 +1,17 @@
+{
+    "name" : "LimeSurvey core exports",
+    "vendor" : "Limesurvey Development Team",
+    "class" : "ls\\core\\plugins\\ExportDefaults",
+    "description" : "Core: exports.",
+    "type" : "simple",
+    "autoload" : {
+        "psr-4": {
+            "ls\\core\\plugins\\" : ""
+        }
+    },
+    "events" : [
+        "listExportPlugins",
+        "newExport"
+    ],
+    "apiVersion" : "1.0"
+}

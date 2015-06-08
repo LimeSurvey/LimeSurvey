@@ -168,7 +168,7 @@ class FormattingOptions extends \CFormModel
         $event = new \PluginEvent('listExportPlugins');
         $event->dispatch();
         $result = [];
-        foreach ($event->get('exportplugins') as $type => $details) {
+        foreach ($event->get('exportplugins', []) as $type => $details) {
             $result[$type] = $details['label'];
         };
         return $result;
