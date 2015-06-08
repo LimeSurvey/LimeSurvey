@@ -10,6 +10,8 @@
 use \ls\models\forms\FormattingOptions;
 abstract class Writer implements IWriter
 {
+
+    protected $groupMap = [];
     protected $language;
     /**
      * @var FormattingOptions
@@ -41,16 +43,16 @@ abstract class Writer implements IWriter
     * @param FormattingOptions $oOptions
     * @return array
     */
-    public function setGroupMap(Survey $survey, FormattingOptions $oOptions)
+    public function createGroupMap(Survey $survey)
     {
         $aGroupMap = array();
         $index = 0;
-        foreach ($oOptions->selectedColumns as $column) {
-            if (isset($survey->fieldMap[$column])) {
-                $question = $survey->fieldMap[$column];
+        foreach ($this->options->selectedColumns as $column) {
+            if (isset($survey->getFieldMap('full')[$column])) {
+                $question = $survey->getFieldMap('full')[$column];
             } else {
                 // Token field
-                $question = array('gid'=>0, 'qid'=>'');
+                $question = ['gid'=>0, 'qid'=>''];
             }
             $question['index'] = $index;
             $aGroupMap[intval($question['gid'])][] = $question;
@@ -298,8 +300,9 @@ abstract class Writer implements IWriter
             $headers[] = $value;
         }
 
+        $this->groupMap = $this->createGroupMap($survey);
         // If empty survey, prepare an empty responses array, and output just 1 empty record with header.
-        if (null !== $fileHeader = $this->beforeRenderRecords($headers)) {
+        if (null !== $fileHeader = $this->beforeRenderRecords($headers, $survey)) {
             fwrite($stream, $fileHeader);
         }
         if ($survey->responseCount == 0)
@@ -338,6 +341,10 @@ abstract class Writer implements IWriter
             }
 
             fwrite($stream, $this->renderRecord($headers, $elementArray));
+        }
+
+        if (null !== $fileFooter = $this->afterRenderRecords($headers, $survey)) {
+            fwrite($stream, $fileFooter);
         }
         return $stream;
     }
@@ -386,7 +393,7 @@ abstract class Writer implements IWriter
      * This function is called before any records are rendered.
      * Use it to add document headers.
      */
-    public function beforeRenderRecords($headers) {
+    public function beforeRenderRecords($headers, Survey $survey) {
 
     }
     public function getFileName(Survey $survey, $language) {

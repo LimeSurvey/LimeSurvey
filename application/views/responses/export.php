@@ -4,7 +4,7 @@
         echo TbHtml::tag('h1', [], gT("Export responses"));
 
     ?>
-    <div class="col-md-4">
+    <div class="column col-md-4">
         <?php
         /** @var TbActiveForm $form */
         $form = $this->beginWidget(TbActiveForm::class, [
@@ -27,7 +27,7 @@
         echo $form->textFieldControlGroup($options, 'nValue');
         echo $form->textFieldControlGroup($options, 'yValue');
     ?>
-    </div><div class="col-md-4">
+    </div><div class="column col-md-4">
         <?php
             echo $form->numberFieldControlGroup($options, 'offset');
             echo $form->numberFieldControlGroup($options, 'limit');
@@ -35,14 +35,15 @@
             echo $form->radioButtonListControlGroup($options, 'headingFormat', $options->headingFormatOptions);
             echo $form->checkBoxControlGroup($options, 'headerSpacesToUnderscores');
         ?>
-
-
-    </div><div class="col-md-4">
+    </div><div class="column col-md-4">
         <?php
-
         echo $form->listBoxControlGroup($options, 'selectedColumns', $options->selectedColumnOptions, [
-            'multiple' => true
+            'multiple' => true,
         ]);
+        $attribute = 'selectedColumns';
+        $id = TbHtml::getIdByName(TbHtml::resolveName($options, $attribute));
+        App()->clientScript->registerScript($id, "$('#{$id}').css('height', Math.max.apply(null, $('.column').map(function() { return $(this).height(); }).get()));");
+//        die($id);
 
         ?>
 

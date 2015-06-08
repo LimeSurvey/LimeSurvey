@@ -633,12 +633,12 @@ class Survey extends LSActiveRecord
         }
     }
 
-    public function getFieldMap()
+    public function getFieldMap($style = 'short')
     {
-        if (!isset($this->_fieldMap)) {
-            $this->_fieldMap = createFieldMap($this->sid);
+        if (!isset($this->_fieldMap[$style])) {
+            $this->_fieldMap[$style] = createFieldMap($this->sid, $style);
         }
-        return $this->_fieldMap;
+        return $this->_fieldMap[$style];
 
 
     }

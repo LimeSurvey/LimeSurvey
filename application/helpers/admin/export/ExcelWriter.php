@@ -85,6 +85,7 @@ class ExcelWriter implements IWriter {
         }
 
         // If no empty survey, render/export responses array.
+        /** @var Response $response */
         foreach($survey->responses as $response)
         {
             $elementArray = array();
@@ -100,7 +101,7 @@ class ExcelWriter implements IWriter {
                             break;
                         default:
                         case 'short':
-                            $elementArray[] = $this->getShortAnswer($column);
+                            $elementArray[] = $this->transformResponseValue($value, $survey->fieldMap[$column]['type']);
                             break;
                     }
                 } else {
@@ -163,7 +164,7 @@ class ExcelWriter implements IWriter {
      * @param string $column The name of the column
      * @return string
      */
-    protected function transformResponseValue($value, $fieldType, $column = null)
+    protected function transformResponseValue($value, $fieldType)
     {
         //The following if block handles transforms of Ys and Ns.
         if (($this->options->nValue != 'N' || $this->options->yValue != 'Y')

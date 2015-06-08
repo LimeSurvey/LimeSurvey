@@ -15,12 +15,11 @@ class PdfWriter extends Writer
      */
     private $aGroupMap = array();
 
-    public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
+    public function init()
     {
-        parent::init($survey, $sLanguageCode, $oOptions);
+        parent::init();
         $pdforientation=Yii::app()->getConfig('pdforientation');
-
-        if ($oOptions->output=='file')
+        if ($this->options->output=='file')
         {
             $this->pdfDestination = 'F';
         } else {
@@ -32,17 +31,16 @@ class PdfWriter extends Writer
 
         // create new PDF document
         $this->pdf = new pdf();
-        $this->surveyName = $survey->info['surveyls_title'];
         $this->pdf->initAnswerPDF($survey->info, $aPdfLanguageSettings, App()->name, $this->surveyName);
         $this->separator="\t";
         $this->rowCounter = 0;
-        $this->aGroupMap = $this->setGroupMap($survey, $oOptions);
+        $this->aGroupMap = $this->setGroupMap($survey, $this->options);
     }
 
-    public function outputRecord($headers, $values, FormattingOptions $oOptions)
+    public function renderRecord($headers, $values)
     {
         $this->rowCounter++;
-        if ($oOptions->answerFormat == 'short')
+        if ($this->options->answerFormat == 'short')
         {
             $pdfstring = '';
             foreach ($values as $value)
@@ -51,7 +49,7 @@ class PdfWriter extends Writer
             }
             $this->pdf->intopdf($pdfstring);
         }
-        elseif ($oOptions->answerFormat == 'long')
+        elseif ($this->options->answerFormat == 'long')
         {
             if ($this->rowCounter != 1)
             {
@@ -75,7 +73,7 @@ class PdfWriter extends Writer
         }
         else
         {
-            safeDie('An invalid answer format was encountered: '.$oOptions->answerFormat);
+            safeDie('An invalid answer format was encountered: '.$this->options->answerFormat);
         }
 
     }
@@ -93,5 +91,9 @@ class PdfWriter extends Writer
             $filename = $this->translate($this->surveyName, $this->languageCode).'.pdf';
         }
         $this->pdf->Output($filename, $this->pdfDestination);
+    }
+
+    public function getMimeType() {
+        return 'application/pdf';
     }
 }
