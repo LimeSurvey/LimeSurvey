@@ -83,8 +83,9 @@ class WebApplication extends CWebApplication
     */
     public function __construct($config = null)
     {
+        $this->installed = isset($config['components']['db']['connectionString']);
         parent::__construct($config);
-        $this->installed = isset($config['db']['connectionString']);
+
 
         Yii::import('application.helpers.common_helper', true);
 
