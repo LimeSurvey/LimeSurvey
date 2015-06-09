@@ -15,6 +15,11 @@
 
 class SettingGlobal extends LSActiveRecord
 {
+    public function behaviors()
+    {
+        return App()->installed ? parent::behaviors() : [];
+    }
+
     /**
      * This caches request for the current request only.
      */
@@ -65,6 +70,9 @@ class SettingGlobal extends LSActiveRecord
     }
     public static function get($name, $default = null) {
         Yii::trace($name, "SettingGlobal");
+        if (!App()->installed) {
+            return $default;
+        }
         if (!array_key_exists($name, self::$requestCache)) {
             if (null !== $model = self::model()->findByPk($name)) {
                 self::$requestCache[$name] = $model->value;

@@ -28,6 +28,8 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  */
 class WebApplication extends CWebApplication
 {
+
+    public $installed = false;
     /**
      *
      * @var Composer\Autoload\ClassLoader
@@ -82,6 +84,8 @@ class WebApplication extends CWebApplication
     public function __construct($config = null)
     {
         parent::__construct($config);
+        $this->installed = isset($config['db']['connectionString']);
+
         Yii::import('application.helpers.common_helper', true);
 
         // Load the default and environmental settings from different files into self.
