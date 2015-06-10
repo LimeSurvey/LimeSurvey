@@ -1032,11 +1032,11 @@ class questions extends Survey_Common_Action
         $aErrorMessages=array();
         if ($bCheckAssessments && $iLabelsWithAssessmentValues)
         {
-            $aErrorMessages[]=gT('The existing label has assessment values assigned.').'<strong>'.gT('If you replace the label set the existing asssessment values will be lost.').'</strong>';
+            $aErrorMessages[]=gT('The existing label set has assessment values assigned.').'<strong>'.gT('If you replace the label set the existing asssessment values will be lost.').'</strong>';
         }
         if (count(array_diff($aLabelSetLanguages,$aNewLanguages)))
         {
-            $aErrorMessages[]=gT('The existing label has different/more languages.').'<strong>'.gT('If you replace the label set these translations will be lost.').'</strong>';
+            $aErrorMessages[]=gT('The existing label set has different/more languages.').'<strong>'.gT('If you replace the label set these translations will be lost.').'</strong>';
         }
         if (count($aErrorMessages)){
             foreach ($aErrorMessages as $sErrorMessage)
@@ -1047,7 +1047,7 @@ class questions extends Survey_Common_Action
         }
         else
         {
-            eT('You are about to replace a given label set with the current answer options');
+            eT('You are about to replace an existing label set with the current answer options.');
             echo '<br>';
             eT('Continue?');
         }

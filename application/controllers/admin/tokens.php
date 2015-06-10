@@ -1998,7 +1998,7 @@ class tokens extends Survey_Common_Action
             */
             if(strtolower($oFile->getExtensionName())!='csv')// && !in_array($oFile->getType(),$aCsvMimetypes)
             {
-                Yii::app()->setFlashMessage(gT("Only csv file are allowed."),'error');
+                Yii::app()->setFlashMessage(gT("Only CSV files are allowed."),'error');
             }
             elseif (!@$oFile->saveAs($sFileName)) //!@move_uploaded_file($sFileTmpName, $sFileName))
             {

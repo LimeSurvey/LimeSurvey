@@ -110,14 +110,14 @@
                 // Disallow other title if question allow other
                 $oParentQuestion=Question::model()->findByPk(array("qid"=>$this->parent_qid,'language'=>$this->language));
                 if($oParentQuestion->other=="Y")
-                    $aRules[]= array('title', 'compare','compareValue'=>'other','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if question allow other."),"other"), 'except' => 'archiveimport');
+                    $aRules[]= array('title', 'compare','compareValue'=>'other','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),"other"), 'except' => 'archiveimport');
             }
             else
             {
                 // Disallow other if sub question have 'other' for title
                 $oSubquestionOther=Question::model()->find("parent_qid=:parent_qid and title='other'",array("parent_qid"=>$this->qid));
                 if($oSubquestionOther)
-                    $aRules[]= array('other', 'compare','compareValue'=>'Y','operator'=>'!=', 'message'=> sprintf(gT('Question can not allow other with a sub question code %s.'),'other'), 'except' => 'archiveimport' );
+                    $aRules[]= array('other', 'compare','compareValue'=>'Y','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),'other'), 'except' => 'archiveimport' );
 
             }
             if(!$this->isNewRecord)

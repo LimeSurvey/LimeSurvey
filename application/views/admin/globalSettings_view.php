@@ -600,7 +600,7 @@
                     ),
                     'pdflogowidth'=>array(
                         'type'=>'int',
-                        'label'=>gT("Wigth of PDF header logo"),
+                        'label'=>gT("Width of PDF header logo"),
                         'current'=>getGlobalSetting('pdflogowidth'),
                     ),
                     'pdfheadertitle'=>array(

@@ -47,7 +47,7 @@
             $sValShowgroupinfo="D";
             break;
         case 'none':
-            $aShowgroupinfoOptions=array("X"=>gT("Hide both (Forced by the system administrator"));
+            $aShowgroupinfoOptions=array("X"=>gT("Hide both (Forced by the system administrator)"));
             $bDisableShowgroupinfo=true;
             $sValShowgroupinfo="X";
             break;
@@ -158,7 +158,7 @@
             ),
             'preview'=>array(
                 'type'=>'info',
-                'label'=>gT("Template Preview"),
+                'label'=>gT("Template preview"),
                 'content'=>CHtml::image(getTemplateURL($esrow['template']).'/preview.png',gT("Template preview image"),array('id'=>'preview','class'=>'img-thumbnail')),
             ),
             'showwelcome'=>array(

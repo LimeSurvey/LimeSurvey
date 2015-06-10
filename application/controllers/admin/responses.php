@@ -1363,7 +1363,7 @@ class responses extends Survey_Common_Action
             }
         }
         // No files : redirect to browse with a alert
-        Yii::app()->setFlashMessage(gT("Sorry, no files for this response(s)"),'error');
+        Yii::app()->setFlashMessage(gT("Sorry, there are no files for this response."),'error');
         $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$iSurveyID));
     }
 

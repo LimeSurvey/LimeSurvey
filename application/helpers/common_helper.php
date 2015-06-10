@@ -2813,7 +2813,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Logic'),
         'sortorder'=>100,
         'inputtype'=>'textarea',
-        "help"=>gT('Final equation to set in database, default to question text.'),
+        "help"=>gT('Final equation to set in database, defaults to question text.'),
         "caption"=>gT('Equation'),
         "default"=>"");
 

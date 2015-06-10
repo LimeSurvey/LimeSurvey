@@ -102,7 +102,7 @@ class Authwebserver extends ls\pluginmanager\AuthPluginBase
             }
             else
             {
-                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed to this user'));
+                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed for this user'));
                 return;
             }
         }
