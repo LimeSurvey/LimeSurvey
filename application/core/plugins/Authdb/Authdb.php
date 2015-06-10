@@ -136,7 +136,7 @@ class Authdb extends AuthPluginBase
 
         if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
         {
-            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed to this user'));
+            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed for this user'));
             return;
         }
         if ($user !== null and $username==$user->users_name) // Control of equality for uppercase/lowercase with mysql

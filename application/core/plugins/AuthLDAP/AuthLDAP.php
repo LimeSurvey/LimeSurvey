@@ -358,7 +358,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         }
         if ($user->uid == 1 || !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid))
         {
-            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed to this user'));
+            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
             return;
         }
 
