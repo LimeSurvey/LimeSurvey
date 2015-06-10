@@ -4,10 +4,10 @@
  * Use STATAs xmluse command to import. eg.: xmluse "\survey_844845_STATA.xml", doctype(dta)
  * In contrast to importing a plain CSV or xls-file, the data is fully labelled with variable- and value labels.
  * Date and time strings are converted to STATAs time format (milliseconds since 1960/01/01), so they can be directly used in calculations
- * Limitations: 
+ * Limitations:
  *  STATA versions 8 through 12? only support strings up to 244 bytes, version 13 up to 2045 bytes.....longer answers (ie. text fields) will be cut.
  *  STATA only supports attaching value labels to numerical values. So to achieve short answers (usually one or two digits) and
- *  have these properly labelled, one should use numerical answer-codes in LimeSurvey (1=Totally agree). 
+ *  have these properly labelled, one should use numerical answer-codes in LimeSurvey (1=Totally agree).
  *  If non-numerical answer codes are used (A=Totally agree), then the complete answer text will be used as answer (eg.: 'Totally agree').
  */
 
@@ -20,7 +20,7 @@ class STATAxmlWriter extends Writer
     private $minByte = -127; // min value of STATA byte var
     private $maxInt = 32740; // max value of STATA int var
     private $minInt = -32767; // min value of STATA int var
-    
+
     /**
      * The open filehandle
      */
@@ -30,23 +30,23 @@ class STATAxmlWriter extends Writer
     protected $headers = array();
     protected $headersSGQA = array();
     protected $aQIDnonumericalAnswers = array();
-    
+
     function __construct($pluginsettings)
     {
         $this->output          = '';
         $this->separator       = ',';
         $this->hasOutputHeader = false;
         $this->statafileversion = $pluginsettings['statafileversion']['current'];
-        if ($this->statafileversion>=117)  // 117 is the version number of the .dta/xml format for stata version 13 
+        if ($this->statafileversion>=117)  // 117 is the version number of the .dta/xml format for stata version 13
         {
             $this->maxStringLength = 2045; // for Stata version 13 and above
         }
         else
         {
             $this->maxStringLength = 244; // for older Stata versions
-        }    
+        }
     }
-    
+
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
@@ -64,17 +64,17 @@ class STATAxmlWriter extends Writer
         }
         $this->headersSGQA       = $oOptions->selectedColumns;
         $oOptions->headingFormat = 'code'; // Always use fieldcodes
-        
+
         $this->customFieldmap = $this->createStataFieldmap($survey, $sLanguageCode, $oOptions);
     }
-    
-    
+
+
     protected function out($content)
     {
         fwrite($this->handle, $content . "\n");
     }
-    
-    
+
+
     /* Returns an array with vars, labels, survey info
      * For STATA-XML, we basically need:
      * Header: Number of Variables, Number of observations, SurveyTitle, Timestamp
@@ -85,21 +85,21 @@ class STATAxmlWriter extends Writer
      * variable_labels: code, vardescription (question text)
      * Data: ObservationNumber(ID), code, value
      * Valuelabels: Setname, Answercode, Answer
-     * 
+     *
      * Some things depending on the responses (eg. STATA data type and format, some reoding),
      * are done later in updateResponsemap()
      */
     function createStataFieldmap($survey, $sLanguage, $oOptions)
     {
-        $clang = new Limesurvey_lang($sLanguage); // get survey language...eg. for value labels
-        
+        App()->setLanguage($sLanguage);
+
         $yvalue = $oOptions->convertY ? $oOptions->yValue : '1'; // set value for Y if it is set in export settings (needed for correct value label)
         $nvalue = $oOptions->convertN ? $oOptions->nValue : '2'; // set value for N if it is set in export settings (needed for correct value label)
-        
+
         //create fieldmap only with the columns (variables) selected
         $aFieldmap['questions'] = array_intersect_key($survey->fieldMap, array_flip($oOptions->selectedColumns));
-        
-        //tokens need to be "smuggled" into the fieldmap as additional questions 
+
+        //tokens need to be "smuggled" into the fieldmap as additional questions
         $aFieldmap['tokenFields'] = array_intersect_key($survey->tokenFields, array_flip($oOptions->selectedColumns));
         foreach ($aFieldmap['tokenFields'] as $key=>$value)
         {
@@ -115,10 +115,10 @@ class STATAxmlWriter extends Writer
             $aUsedQIDs[] = $question['qid'];
         }
         $aFieldmap['answers'] = array_intersect_key($survey->answers, array_flip($aUsedQIDs));
-        
+
         // add per-survey info
         $aFieldmap['info'] = $survey->info;
-        
+
         // STATA only uses value labels on numerical variables. If the answer codes are not numerical we later replace them with the text-answer
         // here we go through the answers-array and check whether answer-codes are numerical. If they are not, we save the respective QIDs
         // so responses can later be set to full answer test of Question or SQ'
@@ -135,12 +135,12 @@ class STATAxmlWriter extends Writer
                 }
             }
         }
-        
+
         // go through the questions array and create/modify vars for STATA-output
         foreach ($aFieldmap['questions'] as $sSGQAkey => $aQuestion)
         {
             // STATA does not support attaching value labels to non-numerical values
-            // We therefore set a flag in questions array for non-numerical answer codes. 
+            // We therefore set a flag in questions array for non-numerical answer codes.
             // The respective codes are later recoded to contain the full answers
             if (array_key_exists($aQuestion['qid'], $this->aQIDnonumericalAnswers))
             {
@@ -150,11 +150,11 @@ class STATAxmlWriter extends Writer
             {
                 $aFieldmap['questions'][$sSGQAkey]['nonnumericanswercodes'] = false;
             }
-            
-            
+
+
             // create 'varname' from Question/Subquestiontitles
             $aQuestion['varname'] = viewHelper::getFieldCode($aFieldmap['questions'][$sSGQAkey]);
-            
+
             //set field types for standard vars
             if ($aQuestion['varname'] == 'submitdate' || $aQuestion['varname'] == 'startdate' || $aQuestion['varname'] == 'datestamp')
             {
@@ -184,11 +184,11 @@ class STATAxmlWriter extends Writer
             {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
             }
-            
-            
+
+
             //Rename the variables if original name is not STATA-compatible
             $aQuestion['varname'] = $this->STATAvarname($aQuestion['varname']);
-            
+
             // create variable labels
             $aQuestion['varlabel'] = $aQuestion['question'];
             if (isset($aQuestion['scale']))
@@ -199,10 +199,10 @@ class STATAxmlWriter extends Writer
                 $aQuestion['varlabel'] = "[{$aQuestion['subquestion2']}] " . $aQuestion['varlabel'];
             if (isset($aQuestion['subquestion1']))
                 $aQuestion['varlabel'] = "[{$aQuestion['subquestion1']}] " . $aQuestion['varlabel'];
-            
+
             //write varlabel back to fieldmap
             $aFieldmap['questions'][$sSGQAkey]['varlabel'] = $aQuestion['varlabel'];
-            
+
             //create value labels for question types with "fixed" answers (YES/NO etc.)
             if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr($aQuestion['fieldname'], -7) == 'comment')
             {
@@ -211,93 +211,93 @@ class STATAxmlWriter extends Writer
             else
             {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = false;
-                
-                
+
+
                 if ($aQuestion['type'] == 'M')
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
-                        'answer' => $clang->gT('Yes')
+                        'answer' => gT('Yes')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0']     = array(
                         'code' => 0,
-                        'answer' => $clang->gT('Not Selected')
+                        'answer' => gT('Not Selected')
                     );
                 }
                 elseif ($aQuestion['type'] == "P")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
-                        'answer' => $clang->gT('Yes')
+                        'answer' => gT('Yes')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0']     = array(
                         'code' => 0,
-                        'answer' => $clang->gT('Not Selected')
+                        'answer' => gT('Not Selected')
                     );
                 }
                 elseif ($aQuestion['type'] == "G")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 'F',
-                        'answer' => $clang->gT('Female')
+                        'answer' => gT('Female')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 'M',
-                        'answer' => $clang->gT('Male')
+                        'answer' => gT('Male')
                     );
                 }
                 elseif ($aQuestion['type'] == "Y")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
-                        'answer' => $clang->gT('Yes')
+                        'answer' => gT('Yes')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$nvalue] = array(
                         'code' => $nvalue,
-                        'answer' => $clang->gT('No')
+                        'answer' => gT('No')
                     );
                 }
                 elseif ($aQuestion['type'] == "C")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
-                        'answer' => $clang->gT('Yes')
+                        'answer' => gT('Yes')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 2,
-                        'answer' => $clang->gT('No')
+                        'answer' => gT('No')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['9'] = array(
                         'code' => 3,
-                        'answer' => $clang->gT('Uncertain')
+                        'answer' => gT('Uncertain')
                     );
                 }
                 elseif ($aQuestion['type'] == "E")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1']  = array(
                         'code' => 1,
-                        'answer' => $clang->gT('Increase')
+                        'answer' => gT('Increase')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0']  = array(
                         'code' => 2,
-                        'answer' => $clang->gT('Same')
+                        'answer' => gT('Same')
                     );
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['-1'] = array(
                         'code' => 3,
-                        'answer' => $clang->gT('Decrease')
+                        'answer' => gT('Decrease')
                     );
-                } 
+                }
             } // close: no-other/comment variable
         $aFieldmap['questions'][$sSGQAkey]['varname']=$aQuestion['varname'];     //write changes back to array
         } // close foreach question
-        
-        
+
+
         // clean up fieldmap (remove HTML tags, CR/LS, etc.)
         $aFieldmap = $this->stripArray($aFieldmap);
         return $aFieldmap;
     }
-    
-    
+
+
     /*  return a STATA-compatible variable name
      *    strips some special characters and fixes variable names starting with a number
      */
@@ -326,8 +326,8 @@ class STATAxmlWriter extends Writer
         ), $sVarname);
         return $sVarname;
     }
-    
-    
+
+
     /*  strip html tags, blanks and other stuff from array, flattens text
      */
     protected function stripArray($tobestripped)
@@ -340,8 +340,8 @@ class STATAxmlWriter extends Writer
         array_walk_recursive($tobestripped, 'clean');
         return ($tobestripped);
     }
-    
-    
+
+
     /* Function is called for every response
      * Here we just use it to create arrays with variable names and data
      */
@@ -359,8 +359,8 @@ class STATAxmlWriter extends Writer
         // gradually fill response array...
         $this->customResponsemap[] = $values;
     }
-    
-    /* 
+
+    /*
     This function updates the fieldmap and recodes responses
     so output to XML in close() is a piece of cake...
     */
@@ -374,7 +374,7 @@ class STATAxmlWriter extends Writer
             {
                 $response=trim($response);
                 //recode answercode=answer if codes are non-numeric (cannot be used with value labels)
-                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['nonnumericanswercodes'] == true 
+                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['nonnumericanswercodes'] == true
                     && $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['commentother'] == false)
                 {
                     // set $iScaleID to the scale_id of the respective question, if it exists...if not set to '0'
@@ -448,7 +448,7 @@ class STATAxmlWriter extends Writer
                     {
                         $numberresponse = str_replace(',', '.', $response); // replace comma with dot so STATA can use float variables
                     }
-                    
+
                     if (is_numeric($numberresponse)) // deal with numeric responses/variables
                     {
                         if (ctype_digit($numberresponse)) // if it contains only digits (no dot) --> non-float number
@@ -549,8 +549,8 @@ class STATAxmlWriter extends Writer
             }
         }
     }
-    
-    /* Utilizes customFieldmap[], customResponsemap[], headers[] and xmlwriter() 
+
+    /* Utilizes customFieldmap[], customResponsemap[], headers[] and xmlwriter()
      * to output STATA-xml code in the following order
      * - headers
      * - descriptors: data types, list of variables, sorting variable, variable formatting, list of value labels, variable label
@@ -559,13 +559,13 @@ class STATAxmlWriter extends Writer
      */
     public function close()
     {
-        
+
         $this->updateCustomresponsemap();
-        
+
         $xml = new XMLWriter();
         $xml->openMemory();
         $xml->setIndent(true);
-        
+
         //header
         $xml->startDocument('1.0', 'US-ASCII');
         $xml->startElement('dta');
@@ -578,11 +578,11 @@ class STATAxmlWriter extends Writer
         $xml->writeElement('data_label', $this->customFieldmap['info']['surveyls_title'] . ' (SID: ' . $this->customFieldmap['info']['sid'] . ')');
         $xml->writeElement('time_stamp', date('d M Y H:i'));
         $xml->endElement(); // close header
-        
+
         //open descriptors
         $xml->startElement('descriptors');
-        
-        
+
+
         //typelist
         $xml->startElement('typelist');
         foreach ($this->customFieldmap['questions'] as $question)
@@ -593,7 +593,7 @@ class STATAxmlWriter extends Writer
             $xml->endElement();
         }
         $xml->endElement(); // close typelist
-        
+
         //varlist
         $xml->startElement('varlist');
         foreach ($this->customFieldmap['questions'] as $question)
@@ -603,7 +603,7 @@ class STATAxmlWriter extends Writer
             $xml->endElement(); // close variable
         }
         $xml->endElement(); // close varlist
-        
+
         //fmtlist
         $xml->startElement('fmtlist');
         foreach ($this->customFieldmap['questions'] as $question)
@@ -614,7 +614,7 @@ class STATAxmlWriter extends Writer
             $xml->endElement(); //close fmt
         }
         $xml->endElement(); // close fmtlist
-        
+
         //lbllist
         $xml->startElement('lbllist');
         foreach ($this->customFieldmap['questions'] as $question)
@@ -630,7 +630,7 @@ class STATAxmlWriter extends Writer
         }
         $xml->endElement(); // close lbllist
         $xml->endElement(); // close descriptors
-        
+
         //variable labels
         $xml->startElement('variable_labels');
         foreach ($this->customFieldmap['questions'] as $question)
@@ -641,7 +641,7 @@ class STATAxmlWriter extends Writer
             $xml->endElement(); //close vlabel
         }
         $xml->endElement(); // close variable_labels
-        
+
         // data
         $xml->startElement('data');
         $iObsnumber = 0;
@@ -660,7 +660,7 @@ class STATAxmlWriter extends Writer
             $xml->endElement(); // close o (participant's response array)
         }
         $xml->endElement(); // close data
-        
+
         //value labels
         $xml->startElement('value_labels');
         foreach ($this->customFieldmap['answers'] as $iQid => $aScales)
@@ -680,17 +680,17 @@ class STATAxmlWriter extends Writer
                     }
                     $xml->endElement(); // close vallab
                 }
-                
+
             }
-            
+
         }
         $xml->endElement(); // close value_labels
-        
+
         $xml->endElement(); // close dta
         $xml->endDocument();
-        
+
         $this->out($xml->outputMemory(), 1);
-        
+
         fclose($this->handle);
     }
 }

@@ -1,18 +1,18 @@
 <table <?php echo $showstyle; ?> id='surveydetails'>
     <tr>
         <td>
-            <strong><?php $clang->eT("Title");?>:</strong>
+            <strong><?php eT("Title");?>:</strong>
         </td>
         <td class='settingentryhighlight'>
-            <?php echo flattenText($surveyinfo['surveyls_title'])." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?>
+            <?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?>
         </td>
     </tr>
     <tr>
         <td>
-            <strong><?php echo $clang->gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
+            <strong><?php echo gT("Survey URL") ." - ".getLanguageNameFromCode($surveyinfo['language'],false).":";?></strong>
         </td>
         <td>
-        <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$surveyinfo['language']}"); ?>
+        <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
         <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
         </td>
     </tr>
@@ -24,7 +24,7 @@
                 <strong><?php echo getLanguageNameFromCode($langname,false).":";?></strong>
             </td>
             <td>
-            <?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}/lang/{$langname}"); ?>
+            <?php $tmp_url = $this->createAbsoluteUrl("/survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$langname)); ?>
             <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
             </td>
         </tr>
@@ -33,7 +33,7 @@
         } ?>
     <tr>
         <td>
-            <strong><?php $clang->eT("Description:");?></strong>
+            <strong><?php eT("Description:");?></strong>
         </td>
         <td>
             <?php
@@ -47,7 +47,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("Welcome:");?></strong>
+            <strong><?php eT("Welcome:");?></strong>
         </td>
         <td>
             <?php
@@ -58,7 +58,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("End message:");?></strong>
+            <strong><?php eT("End message:");?></strong>
         </td>
         <td>
             <?php
@@ -69,7 +69,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("Administrator:");?></strong>
+            <strong><?php eT("Administrator:");?></strong>
         </td>
         <td>
             <?php echo flattenText("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
@@ -78,7 +78,7 @@
     <?php if (trim($surveyinfo['faxto'])!='') { ?>
         <tr>
             <td>
-                <strong><?php $clang->eT("Fax to:");?></strong>
+                <strong><?php eT("Fax to:");?></strong>
             </td>
             <td>
                 <?php echo flattenText($surveyinfo['faxto']);?>
@@ -87,7 +87,7 @@
     <?php } ?>
     <tr>
         <td>
-            <strong><?php $clang->eT("Start date/time:");?></strong>
+            <strong><?php eT("Start date/time:");?></strong>
         </td>
         <td>
             <?php echo $startdate;?>
@@ -95,7 +95,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("Expiry date/time:");?></strong>
+            <strong><?php eT("Expiry date/time:");?></strong>
         </td>
         <td>
             <?php echo $expdate;?>
@@ -103,7 +103,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("Template:");?></strong>
+            <strong><?php eT("Template:");?></strong>
         </td>
         <td>
             <?php echo $surveyinfo['template'];?>
@@ -111,7 +111,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("Base language:");?></strong>
+            <strong><?php eT("Base language:");?></strong>
         </td>
         <td>
             <?php echo $language;?>
@@ -119,12 +119,12 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("Additional languages:");?></strong>
+            <strong><?php eT("Additional languages:");?></strong>
         </td>
             <?php echo $additionnalLanguages;?>
     <tr>
         <td>
-            <strong><?php $clang->eT("End URL");?>:</strong>
+            <strong><?php eT("End URL");?>:</strong>
         </td>
         <td>
             <?php echo $endurl;?>
@@ -132,7 +132,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("Number of questions/groups");?>:</strong>
+            <strong><?php eT("Number of questions/groups");?>:</strong>
         </td>
         <td>
             <?php echo $sumcount3."/".$sumcount2;?>
@@ -140,7 +140,7 @@
     </tr>
     <tr>
         <td>
-            <strong><?php $clang->eT("Survey currently active");?>:</strong>
+            <strong><?php eT("Survey currently active");?>:</strong>
         </td>
         <td>
             <?php echo $activatedlang;?>
@@ -149,7 +149,7 @@
     <?php if($activated=="Y") { ?>
     <tr>
         <td>
-            <strong><?php $clang->eT("Survey table name");?>:</strong>
+            <strong><?php eT("Survey table name");?>:</strong>
         </td>
         <td>
             <?php echo $surveydb;?>
@@ -158,7 +158,7 @@
     <?php } ?>
     <tr>
         <td>
-            <strong><?php $clang->eT("Hints");?>:</strong>
+            <strong><?php eT("Hints");?>:</strong>
         </td>
         <td>
             <?php echo $warnings.$hints;?>
@@ -168,12 +168,12 @@
             if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
                 $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
-                <tr><td><strong><?php $clang->eT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
-                <tr><td><strong><?php $clang->eT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
+                <tr><td><strong><?php eT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                <tr><td><strong><?php eT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
             <?php }
             elseif (($arrCols['dbtype'] == 'mssql')||($arrCols['dbtype'] == 'postgre')||($arrCols['dbtype'] == 'dblib')){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2); ?>
-                <tr><td><strong><?php $clang->eT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                <tr><td><strong><?php eT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
             <?php }
         } ?>
 </table>

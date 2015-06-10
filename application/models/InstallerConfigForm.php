@@ -72,7 +72,7 @@ class InstallerConfigForm extends CFormModel
 			array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
 			array('adminEmail', 'email', 'on' => 'optional'),
 			array('surveylang', 'in', 'range' => array_keys(getLanguageData(true, Yii::app()->session['installerLang'])), 'on' => 'optional'),
-            array('adminLoginPwd', 'compare', 'compareAttribute' => 'confirmPwd', 'message' => Yii::app()->getController()->lang->gT('Passwords do not match!'), 'strict' => true, 'on' => 'optional'),
+            array('adminLoginPwd', 'compare', 'compareAttribute' => 'confirmPwd', 'message' => gT('Passwords do not match!'), 'strict' => true, 'on' => 'optional'),
         );
     }
 

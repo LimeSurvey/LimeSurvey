@@ -29,7 +29,6 @@ class emailtemplates extends Survey_Common_Action {
      */
     function index($iSurveyId)
     {
-        $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         App()->getClientScript()->registerPackage('jquery-superfish');
 
@@ -66,7 +65,7 @@ class emailtemplates extends Survey_Common_Action {
         }
         foreach ($grplangs as $key => $grouplang)
         {
-            $aData['bplangs'][$key] = new limesurvey_lang($grouplang);
+            $aData['bplangs'][$key] = $grouplang;
             $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
             $aData['attrib'][$key]['attachments'] = unserialize($aData['attrib'][$key]['attachments']);
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key],$sEscapeMode);
@@ -88,7 +87,6 @@ class emailtemplates extends Survey_Common_Action {
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod=Yii::app()->request->getPost('save','');
-        $clang = $this->getController()->lang;
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale','update') && $sSaveMethod!='')
         {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
@@ -146,7 +144,7 @@ class emailtemplates extends Survey_Common_Action {
                 );
                 $usquery = SurveyLanguageSetting::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
             }
-            Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
+            Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
             $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/'.$iSurveyId));
         }
         if($sSaveMethod=='saveclose')

@@ -1,12 +1,12 @@
 <script type="text/javascript">
     var url = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttributeBox"); ?>";
-    var attname = "<?php $clang->eT("Attribute name:"); ?>";
+    var attname = "<?php eT("Attribute name:"); ?>";
     removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
-<div class='header ui-widget-header'><strong><?php $clang->eT("Attribute settings"); ?></strong></div><br/>
+<div class='header ui-widget-header'><strong><?php eT("Attribute settings"); ?></strong></div><br/>
 <?php
     $aOptions = array();
-    $aOptions[''] = $clang->gT('Select...');
+    $aOptions[''] = gT('Select...');
     foreach (getLanguageData(false, Yii::app()->session['adminlang']) as $langkey2 => $langname)
     {
         $aOptions[$langkey2] = $langname['description'];
@@ -14,10 +14,10 @@
     echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>'form44'));
 ?>
 <ul>
-    <li><label for="atttype"><?php $clang->eT('Default attribute name:'); ?></label>
+    <li><label for="atttype"><?php eT('Default attribute name:'); ?></label>
         <?php echo CHtml::textField('defaultname', $attributes['defaultname'],array('required'=>'required')); ?>
     </li>
-    <li><label for="atttype"><?php $clang->eT('Attribute type:'); ?></label>
+    <li><label for="atttype"><?php eT('Attribute type:'); ?></label>
         <?php 
             echo CHtml::dropDownList('attribute_type', $attributes['attribute_type'], array(
                 'TB' => 'Text box',
@@ -25,7 +25,7 @@
                 'DP' => 'Date'));
         ?>
     </li>
-    <li><label for='attvisible' id='attvisible'><?php $clang->eT('Attribute visible:') ?></label>
+    <li><label for='attvisible' id='attvisible'><?php eT('Attribute visible:') ?></label>
         <?php  echo CHtml::checkbox('visible', ($attributes['visible'] == "TRUE"),array('value'=>'TRUE','uncheckValue'=>'FALSE')); ?>
     </li>
 </ul>
@@ -33,7 +33,7 @@
 <div id='ddtable' style='display: none'>
     <table class='hovertable'>
         <tr>
-            <th colspan='2'><?php $clang->eT('Values:'); ?></th>
+            <th colspan='2'><?php eT('Values:'); ?></th>
         </tr>
         <?php
             foreach ($attributevalues as $row => $value)
@@ -50,26 +50,26 @@
                 <td class='actions'>
                     <?php
                         $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'cancel_16.png',
-                            'alt' => $clang->gT("Cancel editing"),
+                            'alt' => gT("Cancel editing"),
                             'width' => '16',
                             'class' => 'cancel',
                             'height' => '16',
-                            'title' => $clang->gT("Cancel editing"));
+                            'title' => gT("Cancel editing"));
                         echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
                         $edit = array('src' => Yii::app()->getConfig('adminimageurl') . 'edit_16.png',
-                            'alt' => $clang->gT("Edit value"),
+                            'alt' => gT("Edit value"),
                             'width' => '15',
                             'class' => 'edit',
                             'name' => $value['value_id'],
                             'height' => '15',
-                            'title' => $clang->gT("Edit value"));
+                            'title' => gT("Edit value"));
                         echo CHtml::image($edit['src'], $edit['alt'], array_slice($edit, 2));
                         $del = array('src' => Yii::app()->getConfig('adminimageurl') . 'delete.png',
-                            'alt' => $clang->gT("Delete value"),
+                            'alt' => gT("Delete value"),
                             'width' => '15',
                             'height' => '15',
                             'class'=> 'delete',
-                            'title' => $clang->gT("Delete value"));
+                            'title' => gT("Delete value"));
                         echo CHtml::link(CHtml::image($del['src'], $del['alt'], array_slice($del, 2)), $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']));
                 ?></td>
             </tr>
@@ -82,7 +82,7 @@
             <td></td>
             <td class='actions'>
                 <a href='#' class='add'>
-                    <img src = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>plus.png" alt='<?php $clang->eT("Add value") ?>' title='<?php $clang->eT("Add value") ?>' id='addsign' name='addsign'>
+                    <img src = "<?php echo Yii::app()->getConfig('adminimageurl'); ?>plus.png" alt='<?php eT("Add value") ?>' title='<?php eT("Add value") ?>' id='addsign' name='addsign'>
                 </a>
             </td>
         </tr>
@@ -93,15 +93,15 @@
     <table width='400' >
         <tr>
             <th colspan='2'>
-                <?php $clang->eT('Add a language:'); ?>
+                <?php eT('Add a language:'); ?>
             </th>
         </tr>
         <tr>
             <td class='data'>
                 <?php
                     $plus = array('src' => Yii::app()->getConfig('adminimageurl') . "plus.png",
-                        'alt' => $clang->gT('Add language'),
-                        'title' => $clang->gT('Add language'),
+                        'alt' => gT('Add language'),
+                        'title' => gT('Add language'),
                         'id' => 'add',
                         'hspace' => 2,
                         'vspace' => -6);
@@ -145,7 +145,7 @@
                     <tr>
                         <th>
                             <label for='attname' id='attname'>
-                                <?php $clang->eT('Attribute name:'); ?>
+                                <?php eT('Attribute name:'); ?>
                             </label>
                         </th>
                     </tr>
@@ -168,7 +168,7 @@
 <br/>
 <p>
     <?php
-        echo CHtml::submitButton('submit', array('value' => $clang->gT('Save')));
+        echo CHtml::submitButton('submit', array('value' => gT('Save')));
         echo CHtml::endForm();
     ?>
 </p>

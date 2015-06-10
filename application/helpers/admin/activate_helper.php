@@ -83,7 +83,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
 */
 function checkGroup($postsid)
 {
-    $clang = Yii::app()->lang;
+    
 
     $baselang = Survey::model()->findByPk($postsid)->language;
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
@@ -92,7 +92,7 @@ function checkGroup($postsid)
     { //TIBO
         if ($row['count'] == 0)
         {
-            $failedgroupcheck[]=array($row['gid'], $row['group_name'], ": ".$clang->gT("This group does not contain any question(s)."));
+            $failedgroupcheck[]=array($row['gid'], $row['group_name'], ": ".gT("This group does not contain any question(s)."));
         }
     }
     if(isset($failedgroupcheck))
@@ -109,7 +109,7 @@ function checkGroup($postsid)
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {
-    $clang = Yii::app()->lang;
+    
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
@@ -136,7 +136,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             $chacount=count($charesult);
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no subquestions."), $chkrow['gid']);
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question has no subquestions."), $chkrow['gid']);
             }
         }
         if ($qtypes[$chkrow['type']]['answerscales']>0)
@@ -146,7 +146,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             $chacount=count($charesult);
             if ($chacount == 0)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question has no answers."), $chkrow['gid']);
+                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question has no answers."), $chkrow['gid']);
             }
         }
     }
@@ -156,7 +156,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow)
     {
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'type' set."), $chkrow['gid']);
+        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
     }
 
 
@@ -166,14 +166,14 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$iSurveyID} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach($chkresult as $chkrow){
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires answers, but none are set."), $chkrow['gid']);
+        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
     } // while
 
     //CHECK THAT DUAL Array has answers set
     $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$iSurveyID} AND type='1' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow){
-        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second answer set but none is set."), $chkrow['gid']);
+        $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
@@ -218,7 +218,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             }
             if ($qidfound == 1)
             {
-                $failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".$clang->gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
+                $failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
             }
             $b++;
         }
@@ -246,8 +246,6 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 * @param bool $simulate
 * @return string
 */
-
-
 function activateSurvey($iSurveyID, $simulate = false)
 {
     $createsurvey='';
@@ -268,7 +266,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         switch($arow['type'])
         {
             case 'startlanguage':
-                $createsurvey[$arow['fieldname']] = "VARCHAR(20) NOT NULL";
+                $createsurvey[$arow['fieldname']] = "string(20) NOT NULL";
                 break;
             case 'id':
                 $createsurvey[$arow['fieldname']] = "pk";
@@ -288,13 +286,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 $createsurvey[$arow['fieldname']] = "decimal (30,10)";
                 break;
             case "S":  //SHORT TEXT
-
-                if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')    {$createsurvey[$arow['fieldname']] = "text";}
-                elseif (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib')
-                {
-                    $createsurvey[$arow['fieldname']] = "nvarchar(255)";
-                }
-                else  {$createsurvey[$arow['fieldname']] = "string";}
+                $createsurvey[$arow['fieldname']] = "text";
                 break;
             case "L":  //LIST (RADIO)
             case "!":  //LIST (DROPDOWN)
@@ -303,7 +295,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "O":  //DROPDOWN LIST WITH COMMENT
                 if ($arow['aid'] != 'other' && strpos($arow['aid'],'comment')===false && strpos($arow['aid'],'othercomment')===false)
                 {
-                    $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
+                    $createsurvey[$arow['fieldname']] = "string(5)";
                 }
                 else
                 {
@@ -324,10 +316,10 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "G":  //Gender
             case "Y":  //YesNo
             case "X":  //Boilerplate
-                $createsurvey[$arow['fieldname']] = "VARCHAR(1)";
+                $createsurvey[$arow['fieldname']] = "string(1)";
                 break;
             case "I":  //Language switch
-                $createsurvey[$arow['fieldname']] = "VARCHAR(20)";
+                $createsurvey[$arow['fieldname']] = "string(20)";
                 break;
             case "|":
                 $createsurveydirectory = true;
@@ -338,23 +330,31 @@ function activateSurvey($iSurveyID, $simulate = false)
                 break;
             case "ipaddress":
                 if ($prow->ipaddr == "Y")
-                    $createsurvey[$arow['fieldname']] = "text";
+                    $createsurvey[$arow['fieldname']] = "string";
                 break;
             case "url":
                 if ($prow->refurl == "Y")
-                    $createsurvey[$arow['fieldname']] = "text";
+                    $createsurvey[$arow['fieldname']] = "string";
                 break;
             case "token":
-                    $createsurvey[$arow['fieldname']] = "VARCHAR(36)";
+                    // Specify case sensitive collations for the token
+                    $sCollation='';
+                    if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
+                        $sCollation=" COLLATE 'utf8_bin'";
+                    }
+                    if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
+                        $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
+                    }                  
+                    $createsurvey[$arow['fieldname']] = 'string(35)'.$sCollation;
                 break;
             case '*': // Equation
                 $createsurvey[$arow['fieldname']] = "text";
                 break;
             default:
-                $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
+                $createsurvey[$arow['fieldname']] = "string(5)";
         }
     if ($prow->anonymized == 'N' && !array_key_exists('token',$createsurvey)) {
-        $createsurvey['token'] = "VARCHAR(36)";
+        $createsurvey['token'] = "string(36)";
     }
         if ($simulate){
             $tempTrim = trim($createsurvey);
@@ -366,13 +366,6 @@ function activateSurvey($iSurveyID, $simulate = false)
                 $type = substr($tempTrim,0,2);
             }
             $arrSim[] = array($type);
-        }
-        if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib')
-        {
-           if ($createsurvey[$arow['fieldname']] == "text")
-           {
-               $createsurvey[$arow['fieldname']] = "ntext";
-           }
         }
     }
 
@@ -386,8 +379,8 @@ function activateSurvey($iSurveyID, $simulate = false)
     $tabname = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
     try
-    {
-        $execresult = createTable($tabname, $createsurvey);
+    {   
+        $execresult = Yii::app()->db->createCommand()->createTable($tabname, $createsurvey);
         Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
     }
     catch (CDbException $e)
@@ -441,7 +434,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         $tabname = "{{survey_{$iSurveyID}_timings}}";
         try
         {
-            $execresult = createTable($tabname,$column);
+            $execresult = Yii::app()->db->createCommand()->createTable($tabname,$column);
             Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
         }
         catch (CDbException $e)

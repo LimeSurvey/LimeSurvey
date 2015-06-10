@@ -1,4 +1,7 @@
 <?php
+use ls\pluginmanager\AuthPluginBase;
+use ls\pluginmanager\PluginManager;
+
 class Authdb extends AuthPluginBase
 {
     protected $storage = 'DbStorage';
@@ -14,17 +17,58 @@ class Authdb extends AuthPluginBase
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
+        $this->subscribe('createNewUser');
         $this->subscribe('beforeLogin');
         $this->subscribe('newLoginForm');
         $this->subscribe('afterLoginFormSubmit');
         $this->subscribe('newUserSession');
         $this->subscribe('beforeDeactivate');
-
         // Now register for the core exports
         $this->subscribe('listExportPlugins');
         $this->subscribe('listExportOptions');
         $this->subscribe('newExport');
-        
+    }
+
+    /**
+     * Create a DB user
+     *
+     * @return unknown_type
+     */
+    public function createNewUser()
+    {
+        // Do nothing if the user to be added is not DB type
+        if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB')
+        {
+            return;
+        }
+        $oEvent = $this->getEvent();
+        $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
+        $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
+        if (!validateEmailAddress($new_email))
+        {
+            $oEvent->set('errorCode',self::ERROR_INVALID_EMAIL);
+            $oEvent->set('errorMessageTitle',gT("Failed to add user"));
+            $oEvent->set('errorMessageBody',gT("The email address is not valid."));
+            return;
+        }
+        $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
+        $new_pass = createPassword();
+        $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+        if (!$iNewUID)
+        {
+            $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorMessageTitle','');
+            $oEvent->set('errorMessageBody',gT("Failed to add user"));
+            return;
+        }
+
+        $this->setAuthPermission($iNewUID,'auth_db');
+
+        $oEvent->set('newUserID',$iNewUID);
+        $oEvent->set('newPassword',$new_pass);
+        $oEvent->set('newEmail',$new_email);
+        $oEvent->set('newFullName',$new_full_name);
+        $oEvent->set('errorCode',self::ERROR_NONE);
     }
 
     public function beforeDeactivate()
@@ -38,9 +82,8 @@ class Authdb extends AuthPluginBase
     public function beforeLogin()
     {
         $this->getEvent()->set('default', get_class($this));   // This is the default login method, should be configurable from plugin settings
-        
+
         // We can skip the login form here and set username/password etc.
-        
         $request = $this->api->getRequest();
         if (!is_null($request->getParam('onepass'))) {
             // We have a one time password, skip the login form
@@ -84,13 +127,18 @@ class Authdb extends AuthPluginBase
             return;
         }
 
-        // Here we do the actual authentication       
+        // Here we do the actual authentication
         $username = $this->getUsername();
         $password = $this->getPassword();
         $onepass  = $this->getOnePass();
 
         $user = $this->api->getUserByName($username);
 
+        if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
+        {
+            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed to this user'));
+            return;
+        }
         if ($user !== null and $username==$user->users_name) // Control of equality for uppercase/lowercase with mysql
         {
             if (gettype($user->password)=='resource')
@@ -115,12 +163,13 @@ class Authdb extends AuthPluginBase
             $this->setAuthSuccess($user);
             return;
         }
-        
+
         if ($sStoredPassword !== hash('sha256', $password))
         {
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }
+
         $this->setAuthSuccess($user);
     }
 
@@ -145,32 +194,27 @@ class Authdb extends AuthPluginBase
         $type = $event->get('type');
         
         switch ($type) {
-            case 'csv':                 
+            case 'csv':
                 $event->set('label', gT("CSV"));
                 $event->set('default', true);
                 break;
-                
             case 'xls':
                 $label = gT("Microsoft Excel");
                 if (!function_exists('iconv')) {
-                    $label .= '<font class="warningtitle">'.$clang->gT("(Iconv Library not installed)").'</font>';
+                    $label .= '<font class="warningtitle">'.gT("(Iconv Library not installed)").'</font>';
                 }
                 $event->set('label', $label);
                 break;
-                
             case 'doc':
                 $event->set('label', gT("Microsoft Word"));
-                $event->set('onclick', 'document.getElementById("ansfull").checked=true;document.getElementById("ansabbrev").disabled=true;');
+                $event->set('onclick', 'document.getElementById("answers-long").checked=true;document.getElementById("answers-short").disabled=true;');
                 break;
-            
             case 'pdf':
                 $event->set('label', gT("PDF"));
                 break;
-            
             case 'html':
                 $event->set('label', gT("HTML"));
                 break;
-            
             case 'json':    // Not in the interface, only for RPC
             default:
                 break;
@@ -184,7 +228,7 @@ class Authdb extends AuthPluginBase
     {
         $event = $this->getEvent();
         $exports = $event->get('exportplugins');
-        
+
         // Yes we overwrite existing classes if available
         $className = get_class();
         $exports['csv'] = $className;
@@ -193,7 +237,7 @@ class Authdb extends AuthPluginBase
         $exports['html'] = $className;
         $exports['json'] = $className;
         $exports['doc'] = $className;
-        
+
         $event->set('exportplugins', $exports);
     }
 
@@ -204,7 +248,7 @@ class Authdb extends AuthPluginBase
     {
         $event = $this->getEvent();
         $type = $event->get('type');
-                
+
         switch ($type) {
             case "doc":
                 $writer = new DocWriter();
@@ -226,7 +270,7 @@ class Authdb extends AuthPluginBase
                 $writer = new CsvWriter();
                 break;
         }
-        
+
         $event->set('writer', $writer);
     }
 }

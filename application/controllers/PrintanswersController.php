@@ -63,14 +63,10 @@
                 $iSurveyID=0;
                 $sLanguage = Yii::app()->getConfig("defaultlang");
             }
-            $clang = SetSurveyLanguage($iSurveyID, $sLanguage);
+            SetSurveyLanguage($iSurveyID, $sLanguage);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             //SET THE TEMPLATE DIRECTORY
-            if (!isset($aSurveyInfo['templatedir']) || !$aSurveyInfo['templatedir'])
-            {
-                $aSurveyInfo['templatedir']=Yii::app()->getConfig('defaulttemplate');
-            }
-            $sTemplate = validateTemplateDir($aSurveyInfo['templatedir']);
+             $sTemplate = $aSurveyInfo['template'];
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
             //display "sorry but your session has expired"
@@ -79,9 +75,9 @@
                 doHeader();
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array());
                 echo "<center><br />\n"
-                ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
-                ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-                ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
+                ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
+                ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
+                ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
                 echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array());
                 doFooter();
@@ -91,13 +87,13 @@
             $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
             //Ensure script is not run directly, avoid path disclosure
             //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
-            
+
             //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
             if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
             {
                 throw new CHttpException(401, 'You are not allowed to print answers.');
             }
-            
+
             //CHECK IF SURVEY IS ACTIVATED AND EXISTS
             $sSurveyName = $aSurveyInfo['surveyls_title'];
             $sAnonymized = $aSurveyInfo['anonymized'];
@@ -106,8 +102,8 @@
             if ($sExportType != 'pdf')
             {
                 $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
-                ."<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
-                $sOutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
+                ."<center><input type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+                $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
                 LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
@@ -170,10 +166,10 @@
 
                 Yii::import('application.libraries.admin.pdf', true);
                 Yii::import('application.helpers.pdfHelper');
-                $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($clang->langcode);
+                $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings(App()->language);
 
                 $oPDF = new pdf();
-                $sDefaultHeaderString = $sSurveyName." (".$clang->gT("ID",'unescaped').":".$iSurveyID.")";
+                $sDefaultHeaderString = $sSurveyName." (".gT("ID",'unescaped').":".$iSurveyID.")";
                 $oPDF->initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $sSurveyName, $sDefaultHeaderString);
 
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page

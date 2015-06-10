@@ -507,6 +507,13 @@ $config['ipInfoDbAPIKey'] = '';
 
 $config['googleMapsAPIKey'] = '';
 
+/**
+* GeoNames username for API. http://www.geonames.org/export/web-services.html
+* default limesurvey username is limited to 2000 credits/hour and 30 000 crdits/day see : http://www.geonames.org/export/ Terms and conditions
+*/
+$config['GeoNamesUsername'] = 'limesurvey';
+
+
 // Google Translate API key:  https://code.google.com/apis/language/translate/v2/getting_started.html
 $googletranslateapikey = '';
 

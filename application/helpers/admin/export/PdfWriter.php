@@ -6,7 +6,6 @@ class PdfWriter extends Writer
     private $rowCounter;
     private $pdfDestination;
     private $surveyName;
-    private $clang;
 
     /**
      * Map of questions groups
@@ -20,7 +19,6 @@ class PdfWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         $pdforientation=Yii::app()->getConfig('pdforientation');
-        $this->clang = new limesurvey_lang($sLanguageCode);
 
         if ($oOptions->output=='file')
         {
@@ -59,7 +57,7 @@ class PdfWriter extends Writer
             {
                 $this->pdf->AddPage();
             }
-            $this->pdf->addTitle(sprintf($this->clang->gT("Survey response %d"), $this->rowCounter));
+            $this->pdf->addTitle(sprintf(gT("Survey response %d"), $this->rowCounter));
             foreach ($this->aGroupMap as $gid => $questions)
             {
                 if ($gid != 0)
@@ -70,15 +68,7 @@ class PdfWriter extends Writer
                 {
                     if (isset($values[$question['index']]) && isset($headers[$question['index']]))
                     {
-                        if ($question['type'] == 'N' || $question['type'] == 'K')
-                        {
-                            $sAuxValue=number_format(floatval($values[$question['index']]), 0, '', '');
-                            $this->pdf->addAnswer($headers[$question['index']], $sAuxValue, false);
-                        }
-                        else
-                        {
-                            $this->pdf->addAnswer($headers[$question['index']], $values[$question['index']], false);
-                        }
+                        $this->pdf->addAnswer($headers[$question['index']], $values[$question['index']], false);
                     }
                 }
             }

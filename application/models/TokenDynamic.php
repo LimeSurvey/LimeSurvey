@@ -76,8 +76,7 @@ class TokenDynamic extends LSActiveRecord
     {
         return 'tid';
     }
-    
-    
+
     /**
     * Returns this model's validation rules
     *
@@ -86,21 +85,18 @@ class TokenDynamic extends LSActiveRecord
     {
         return array(
             array('token', 'unique', 'allowEmpty'=>true),// 'caseSensitive'=>false only for mySql
-            array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+            array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('email','filter','filter'=>'trim'),
-            array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true), 
+            array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true,'except'=>'allowinvalidemail'),
             array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('emailstatus', 'default', 'value' => 'OK'),
-//        array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
-//        array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),                          
-// Date rules currently don't work properly with MSSQL, deactivating for now
-        );  
-    }    
-    
-
-
+            array('emailstatus', 'default', 'value' => $this->emailstatus),
+            // array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
+            // array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),                          
+            // Date rules currently don't work properly with MSSQL, deactivating for now
+        );
+    }
 
     /**
     * Checks to make sure that all required columns exist in this tokens table
@@ -119,12 +115,10 @@ class TokenDynamic extends LSActiveRecord
         if(count($missingcolumns)>0) //Some columns are missing - we need to create them
         {
             Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
-            setVarchar(); //Set the appropriate varchar settings according to the database
-            $sVarchar = Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
             $columninfo=array('validfrom'=>'datetime',
                               'validuntil'=>'datetime',
-                              'blacklisted'=>$sVarchar.'(17)',
-                              'participant_id'=>$sVarchar.'(50)',
+                              'blacklisted'=> 'string(17)',
+                              'participant_id'=> 'string(50)',
                               'remindercount'=>"integer DEFAULT '0'",
                               'usesleft'=>'integer NOT NULL default 1'); //Not sure if any other fields would ever turn up here - please add if you can think of any others
             foreach($missingcolumns as $columnname) {
@@ -140,9 +134,7 @@ class TokenDynamic extends LSActiveRecord
                 $definition = $tableSchema->getColumn($columnname);
                 if ($definition->allowNull != true) {
                     Yii::app()->loadHelper('update/updatedb'); //Load the admin helper to allow column creation
-                    setVarchar(); //Set the appropriate varchar settings according to the database
-                    $sVarchar = Yii::app()->getConfig('varchar'); //Retrieve the db specific varchar setting
-                    Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, sprintf('%s(%s)', Yii::app()->getConfig('varchar'), $definition->size));
+                    Yii::app()->db->createCommand()->alterColumn($sTableName, $columnname, "string({$definition->size}})");
                     Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
                 }
             }
@@ -374,8 +366,7 @@ class TokenDynamic extends LSActiveRecord
 
         return array($newtokencount,count($tkresult));
     }
-    
-    
+
      /**
      * This method is invoked before saving a record (after validation, if any).
      * The default implementation raises the {@link onBeforeSave} event.
@@ -420,7 +411,7 @@ class TokenDynamic extends LSActiveRecord
             'criteria'=>$criteria,
         ));
     }
-    
+
     /**
      * Get CDbCriteria for a json search string
      * 
@@ -486,7 +477,7 @@ class TokenDynamic extends LSActiveRecord
         
         return $command;
     }
-    
+
     function deleteToken($tokenid)
     {
         $dlquery = "DELETE FROM ".TokenDynamic::tableName()." WHERE tid=:tokenid";

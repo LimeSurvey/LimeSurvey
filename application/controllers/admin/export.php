@@ -129,15 +129,13 @@ class export extends Survey_Common_Action {
 
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
-        if ( ! isset($exportstyle) ) { $exportstyle = returnGlobal('exportstyle'); }
-        if ( ! isset($answers) ) { $answers = returnGlobal('answers'); }
-        if ( ! isset($type) ) { $type = returnGlobal('type'); }
+
         if ( ! isset($convertyto1) ) { $convertyto1 = returnGlobal('convertyto1'); }
         if ( ! isset($convertnto2) ) { $convertnto2 = returnGlobal('convertnto2'); }
         if ( ! isset($convertyto) ) { $convertyto = returnGlobal('convertyto'); }
         if ( ! isset($convertnto) ) { $convertnto = returnGlobal('convertnto'); }
-        if ( ! isset($convertspacetous) ) { $convertspacetous = returnGlobal('convertspacetous'); }
-        $clang = Yii::app()->lang;
+
+
 
         if ( ! Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export') )
         {
@@ -149,6 +147,15 @@ class export extends Survey_Common_Action {
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . '/exportresults.js');
 
+        $sExportType = Yii::app()->request->getPost('type');
+        $sHeadingFormat = Yii::app()->request->getPost('headstyle');
+        $sAnswerFormat = Yii::app()->request->getPost('answers');
+        $bHeaderSpacesToUnderscores =  Yii::app()->request->getPost('headspacetounderscores');
+        $bConvertY = Yii::app()->request->getPost('converty');
+        $bConvertN = Yii::app()->request->getPost('convertn');
+        $sYValue = Yii::app()->request->getPost('convertyto');
+        $sNValue = Yii::app()->request->getPost('convertnto');
+
         $surveybaselang = Survey::model()->findByPk($iSurveyID)->language;
         $exportoutput = "";
 
@@ -159,7 +166,7 @@ class export extends Survey_Common_Action {
         $resultsService = new ExportSurveyResultsService();
         $exports = $resultsService->getExports();
 
-        if ( ! $exportstyle )
+        if ( ! $sExportType )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
             $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
@@ -207,7 +214,7 @@ class export extends Survey_Common_Action {
             $data['surveyid'] = $iSurveyID;
             $data['imageurl'] = Yii::app()->getConfig('imageurl');
             $data['thissurvey'] = $thissurvey;
-            $data['display']['menu_bars']['browse'] = $clang->gT("Export results");
+            $data['display']['menu_bars']['browse'] = gT("Export results");
 
             // Export plugins, leave out all entries that are not plugin
             $exports = array_filter($exports);
@@ -224,8 +231,20 @@ class export extends Survey_Common_Action {
                     'tooltip' => $event->get('tooltip', null)
                     );
             }
-
             $data['exports'] = $exportData;    // Pass available exports
+            $data['headexports'] =array(
+                'code'=>array('label'=>gT("Question code"),'help'=>null,'checked'=>false),
+                'abbreviated'=>array('label'=>gT("Abbreviated question text"),'help'=>null,'checked'=>false),
+                'full'=>array('label'=>gT("Full question text"),'help'=>null,'checked'=>true),
+                'codetext'=>array('label'=>gT("Question code and question text"),'help'=>null,'checked'=>false),
+            );
+            // Add a plugin for adding headexports : a public function getRegistereddPlugins($event) can help here.
+            $aLanguagesCode=Survey::model()->findByPk($iSurveyID)->getAllLanguages();
+            $aLanguages=array();
+            foreach ($aLanguagesCode as $sLanguage){
+                $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
+            }
+            $data['aLanguages'] = $aLanguages;    // Pass available exports
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
 
@@ -237,8 +256,7 @@ class export extends Survey_Common_Action {
         // * the alang object is used to translate headers and hardcoded answers
         // In the future it might be possible to 'post' the 'export language' from
         // the exportresults form
-        $explang = $surveybaselang;
-        $elang = new limesurvey_lang($explang);
+        $explang = Yii::app()->request->getPost('exportlang',$surveybaselang);
 
         //Get together our FormattingOptions and then call into the exportSurvey
         //function.
@@ -246,25 +264,19 @@ class export extends Survey_Common_Action {
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
         $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from'));
         $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to'));
-        $options->answerFormat = $answers;
-        $options->convertN = $convertnto2;
-        $options->output = 'display';
+        $options->answerFormat = $sAnswerFormat;
+        $options->convertY = $bConvertY;
+        $options->yValue = ($bConvertY)?$sYValue:null;
+        $options->convertN = $bConvertN;
+        $options->nValue = ($bConvertN)?$sNValue:null;
+        $options->headingTextLength = (Yii::app()->request->getPost('abbreviatedtext'))?(int)Yii::app()->request->getPost('abbreviatedtextto'):null;
+        $options->useEMCode = Yii::app()->request->getPost('emcode');
+        $options->headCodeTextSeparator = Yii::app()->request->getPost('codetextseparator');
 
-        if ( $options->convertN )
-        {
-            $options->nValue = $convertnto;
-        }
-
-        $options->convertY = $convertyto1;
-
-        if ( $options->convertY )
-        {
-            $options->yValue = $convertyto;
-        }
-
-        $options->headerSpacesToUnderscores = $convertspacetous;
-        $options->headingFormat = $exportstyle;
+        $options->headerSpacesToUnderscores = $bHeaderSpacesToUnderscores;
+        $options->headingFormat = $sHeadingFormat;
         $options->responseCompletionState = incompleteAnsFilterState();
+        $options->output = 'display';
 
         // Replace token information by the column name
         if ( in_array('first_name', Yii::app()->request->getPost('attribute_select', array())) )
@@ -299,7 +311,7 @@ class export extends Survey_Common_Action {
             $sFilter='';
         }
         viewHelper::disableHtmlLogging();
-        $resultsService->exportSurvey($iSurveyID, $explang, $type, $options, $sFilter);
+        $resultsService->exportSurvey($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
         exit;
     }
@@ -322,7 +334,6 @@ class export extends Survey_Common_Action {
     {
         global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
-        $clang = $this->getController()->lang;
         //for scale 1=nominal, 2=ordinal, 3=scale
 
         //		$typeMap = $this->_getTypeMap();
@@ -387,7 +398,7 @@ class export extends Survey_Common_Action {
             $data['selectshow'] = $selectshow;
             $data['spssver'] = $spssver;
             $data['surveyid'] = $iSurveyID;
-            $data['display']['menu_bars']['browse'] = $clang->gT('Export results');
+            $data['display']['menu_bars']['browse'] = gT('Export results');
 
             $this->_renderWrappedTemplate('export', 'spss_view', $data);
             return;
@@ -395,7 +406,8 @@ class export extends Survey_Common_Action {
 
         // Get Base language:
         $language = Survey::model()->findByPk($iSurveyID)->language;
-        $clang = new limesurvey_lang($language);
+        App()->setLanguage($language);
+
         Yii::app()->loadHelper("admin/exportresults");
         viewHelper::disableHtmlLogging();
 
@@ -609,11 +621,9 @@ class export extends Survey_Common_Action {
         $subaction = Yii::app()->request->getParam('subaction');
 
         //Exports all responses to a survey in special "Verified Voting" format.
-        $clang = $this->getController()->lang;
-
         if ( ! Permission::model()->hasSurveyPermission($iSurveyId, 'responses','export') )
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
+            Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
@@ -621,7 +631,7 @@ class export extends Survey_Common_Action {
         {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
-            $aData['display']['menu_bars']['browse'] = $clang->gT("Export VV file");
+            $aData['display']['menu_bars']['browse'] = gT("Export VV file");
             $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
 
             Survey::model()->findByPk($iSurveyId)->language;
@@ -771,7 +781,7 @@ class export extends Survey_Common_Action {
         }
 
         // Setting the selected language for printout
-        $clang = new limesurvey_lang($surveyprintlang);
+        App()->setLanguage($surveyprintlang);
 
         Yii::import("application.libraries.admin.quexmlpdf", TRUE);
         $quexmlpdf = new quexmlpdf($this->getController());
@@ -799,7 +809,7 @@ class export extends Survey_Common_Action {
         file_put_contents($f1, $quexmlpdf->getLayout());
         file_put_contents($f2, $quexmlpdf->Output("quexml_$qid.pdf", 'S'));
         file_put_contents($f3, $quexml);
-        file_put_contents($f4, $clang->gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
+        file_put_contents($f4, gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
 
         Yii::app()->loadLibrary('admin.pclzip');
         $zipfile="$tempdir/quexmlpdf_{$qid}_{$surveyprintlang}.zip";

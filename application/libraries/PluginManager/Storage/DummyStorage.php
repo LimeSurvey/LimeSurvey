@@ -1,5 +1,5 @@
 <?php
-
+namespace ls\pluginmanager;
 
     class DummyStorage implements iPluginStorage
     {

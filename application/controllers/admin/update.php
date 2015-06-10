@@ -34,7 +34,7 @@ class update extends Survey_Common_Action
         }
         return 'https://';
     }
-    
+
     /**
     * Default Controller Action
     */
@@ -42,9 +42,7 @@ class update extends Survey_Common_Action
     {
         updateCheck();
         $this->_RunUpdaterUpdate();
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-
-        $clang = $this->getController()->lang;
+        require_once(APPPATH.'/third_party/http/http.php');
         $iCurrentBuildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $iDestinationBuild = Yii::app()->request->getParam('build',getGlobalSetting("updatebuild"));
@@ -58,7 +56,7 @@ class update extends Survey_Common_Action
                 setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
             }
         }
-        
+
         $error = false;
 
         if (!is_writable($tempdir)) {
@@ -80,8 +78,8 @@ class update extends Survey_Common_Action
 
     private function _getChangedFiles($buildnumber, $updaterversion)
     {
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-        $http = new httpRequestIt;
+        require_once(APPPATH.'/third_party/http/http.php');
+        $http = new http_class;
         $httperror = $this->_requestChangedFiles($http, $buildnumber, $updaterversion);
 
         if ($httperror != '') {
@@ -89,11 +87,11 @@ class update extends Survey_Common_Action
         }
         return $this->_readChangelog($http);
     }
-    
+
     private function _getChangelog($buildnumber, $updaterversion)
     {
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-        $http = new httpRequestIt;
+        require_once(APPPATH.'/third_party/http/http.php');
+        $http = new http_class;
         $httperror = $this->_requestChangelog($http, $buildnumber, $updaterversion);
 
         if ($httperror != '') {
@@ -102,7 +100,7 @@ class update extends Survey_Common_Action
         return $this->_readChangelog($http);
     }
 
-    private function _readChangelog(httpRequestIt $http)
+    private function _readChangelog(http_class $http)
     {
         $szLines = '';
         $szResponse = '';
@@ -117,7 +115,7 @@ class update extends Survey_Common_Action
         }
     }
 
-    private function _requestChangelog(httpRequestIt $http, $buildnumber, $updaterversion)
+    private function _requestChangelog(http_class $http, $buildnumber, $updaterversion)
     {
         $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
@@ -130,8 +128,8 @@ class update extends Survey_Common_Action
 
         return $http->SendRequest($arguments);
     }
-    
-    private function _requestChangedFiles(httpRequestIt $http, $buildnumber, $updaterversion)
+
+    private function _requestChangedFiles(http_class $http, $buildnumber, $updaterversion)
     {
         $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
@@ -144,11 +142,10 @@ class update extends Survey_Common_Action
 
         return $http->SendRequest($arguments);
     }
-    
+
     function step2()
     {
         $aReadOnlyFiles=array();
-        $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $updatebuild = getGlobalSetting("updatebuild");
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild);
@@ -235,7 +232,6 @@ class update extends Survey_Common_Action
 
     function step3()
     {
-        $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $updatebuild = getGlobalSetting("updatebuild");
@@ -244,7 +240,7 @@ class update extends Survey_Common_Action
         $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
         $aDatabasetype = Yii::app()->db->getDriverName();
-        $aData = array('clang' => $clang);
+        $aData = array();
         // Request the list with changed files from the server
 
         if (!isset( Yii::app()->session['updateinfo']))
@@ -282,10 +278,10 @@ class update extends Survey_Common_Action
         $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
         if ($v_list == 0) {
-            $aFileBackup= array('class'=>'error','text'=>sprintf($clang->gT("Error on file backup: %s"),$archive->errorInfo(true)));
+            $aFileBackup= array('class'=>'error','text'=>sprintf(gT("Error on file backup: %s"),$archive->errorInfo(true)));
         }
         else{
-            $aFileBackup= array('class'=>'success','text'=>sprintf($clang->gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
+            $aFileBackup= array('class'=>'success','text'=>sprintf(gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
         }
         $aData['aFileBackup']=$aFileBackup;
 
@@ -307,22 +303,22 @@ class update extends Survey_Common_Action
                     $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
                     unlink($sfilename);
                     if ($v_list == 0) {// Unknow reason because backup of DB work ?
-                        $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                        $aSQLBackup=array('class'=>'warning','text'=>gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                     }
                     else
                     {
-                        $aSQLBackup=array('class'=>'success','text'=>sprintf($clang->gT('DB backup created: %s'),htmlspecialchars($dfilename)));
+                        $aSQLBackup=array('class'=>'success','text'=>sprintf(gT('DB backup created: %s'),htmlspecialchars($dfilename)));
                     }
                 }
                 else
                 {
-                    $aSQLBackup=array('class'=>'warning','text'=>$clang->gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                    $aSQLBackup=array('class'=>'warning','text'=>gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
                 }
             }
         }
         else
         {
-            $aSQLBackup=array('class'=>'warning','text'=>$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
+            $aSQLBackup=array('class'=>'warning','text'=>gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
         }
         $aData['aSQLBackup']=$aSQLBackup;
         if($aFileBackup['class']=="success" && $aSQLBackup['class']=="success") {
@@ -338,7 +334,6 @@ class update extends Survey_Common_Action
 
     function step4()
     {
-        $clang = $this->getController()->lang;
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
         $updatebuild = getGlobalSetting("updatebuild");
@@ -366,7 +361,7 @@ class update extends Survey_Common_Action
         $downloaderror=false;
         Yii::import('application.libraries.admin.http.httpRequestIt');
         $http=new httpRequestIt;
-        
+
         $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
@@ -436,8 +431,8 @@ class update extends Survey_Common_Action
                 }
             }
         }
-        
-        
+
+
         $aData['new_files'] = $new_files;
         $aData['downloaderror'] = $downloaderror;
 
@@ -468,7 +463,7 @@ class update extends Survey_Common_Action
         Yii::app()->getController()->redirect(array('/admin/update/sa/step4b'));
     }
 
-    
+
     function step4b()
     {
         if (!isset(Yii::app()->session['installlstep4b'])) die();
@@ -479,14 +474,13 @@ class update extends Survey_Common_Action
 
     private function _RunUpdaterUpdate()
     {
-        $clang = $this->getController()->lang;
         $versionnumber = Yii::app()->getConfig("versionnumber");
         $buildnumber = Yii::app()->getConfig("buildnumber");
         $tempdir = Yii::app()->getConfig("tempdir");
 
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-        $oHTTPRequest=new httpRequestIt;
-        
+        require_once(APPPATH.'/third_party/http/http.php');
+        $oHTTPRequest=new http_class;
+
         $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
@@ -539,8 +533,11 @@ class update extends Survey_Common_Action
         // Create DB and file backups now
 
         $downloaderror=false;
-        Yii::import('application.libraries.admin.http.httpRequestIt');
-        $oHTTPRequest=new httpRequestIt;
+        require_once(APPPATH.'/third_party/http/http.php');
+        $oHTTPRequest=new http_class;
+
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
 
         $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
         $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
@@ -598,7 +595,6 @@ class update extends Survey_Common_Action
     */
     function db($continue = null)
     {
-        $clang = $this->getController()->lang;
         Yii::app()->loadHelper("update/update");
         if(isset($continue) && $continue=="yes")
         {

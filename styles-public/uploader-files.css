@@ -1,0 +1,44 @@
+
+img.uploaded{
+display:block;
+margin:5px auto;
+max-width:96%;
+* width:100%;
+height:auto;
+max-height:100px;
+}
+
+
+.delete-file{
+cursor:pointer;
+margin:0 auto;
+display:block;
+width:35px;
+height:35px;
+overflow:hidden;
+text-indent: 40px;
+background:url("img/upload-delete.png") 50% 50% no-repeat;
+border: 0 none;
+}
+.upload-placeholder
+{
+display:block;
+margin:0 auto;
+width:60px;
+height:70px;
+overflow:hidden;
+text-indent: 70px;
+background:url("img/upload-placeholder.png") 50% 50% no-repeat;
+}
+.upload-edit
+{
+cursor:pointer;
+display:block;
+width:35px;
+height:35px;
+overflow:hidden;
+text-indent: 40px;
+background:url("img/upload-edit.png") 50% 50% no-repeat;
+border: 0 none;
+}
+

@@ -958,11 +958,7 @@ class remotecontrol_handle
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
                 file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
 
-                if (strtolower($sImportDataType)=='csv')
-                {
-                    $aImportResults = CSVImportGroup($sFullFilePath, $iSurveyID);
-                }
-                elseif ( strtolower($sImportDataType)=='lsg')
+                if ( strtolower($sImportDataType)=='lsg')
                 {
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
@@ -1113,11 +1109,11 @@ class remotecontrol_handle
 
                     if((isset($has_dependencies) || isset($depented_on))  && $sFieldName == 'group_order')
                     {
-                        $aResults[$sFieldName]='Group with dependencies - Order cannot be changed';
+                        $aResult[$sFieldName]='Group with dependencies - Order cannot be changed';
                         continue;
                     }
                     $oGroup->setAttribute($sFieldName,$sValue);
-
+                    
                     try
                     {
                         // save the change to database - one by one to allow for validation to work
@@ -1253,11 +1249,7 @@ class remotecontrol_handle
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
                 file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
 
-                if (strtolower($sImportDataType)=='csv')
-                {
-                    $aImportResults = CSVImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
-                }
-                elseif ( strtolower($sImportDataType)=='lsq')
+                if ( strtolower($sImportDataType)=='lsq')
                 {
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
@@ -1350,6 +1342,7 @@ class remotecontrol_handle
                 array_push($aBasicDestinationFields,'attributes')    ;
                 array_push($aBasicDestinationFields,'attributes_lang')    ;
                 array_push($aBasicDestinationFields,'answeroptions')    ;
+                array_push($aBasicDestinationFields,'defaultvalue');
                 $aQuestionSettings=array_intersect($aQuestionSettings,$aBasicDestinationFields);
 
                 if (empty($aQuestionSettings))
@@ -1426,7 +1419,11 @@ class remotecontrol_handle
                         else
                             $aResult['answeroptions']='No available answer options';
                     }
-                    else
+                    else if ($sPropertyName == 'defaultvalue')
+                    {
+					    $aResult['defaultvalue'] = DefaultValue::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage))->defaultvalue;
+					}
+					else
                     {
                         $aResult[$sPropertyName]=$oQuestion->$sPropertyName;
                     }
@@ -1496,13 +1493,12 @@ class remotecontrol_handle
                     $is_criteria_question=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,"all",$iQuestionID,"by-targqid");
                     //We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies
 
-                    if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order')
+                    if((isset($dependencies) || isset($is_criteria_question))  && $sFieldName == 'question_order')
                     {
-                        $aResult[$sFieldName] = 'Questions with dependencies - Order cannot be changed';
+                        $aResult[$sFieldName]='Questions with dependencies - Order cannot be changed';
                         continue;
                     }
-                    
-                    $oQuestion->setAttribute($sFieldName, $sValue);
+                    $oQuestion->setAttribute($sFieldName,$sValue);
 
                     try
                     {
@@ -2007,7 +2003,7 @@ class remotecontrol_handle
                 $aAttributeFields=array_unique($aAttributeFields);
             }
             Yii::app()->loadHelper('admin/token');
-            if (createTokenTable($iSurveyID, $aAttributeFields))
+            if (Token::createTable($iSurveyID, $aAttributeFields))
             {
                 return array('status' => 'OK');
             }
@@ -2312,7 +2308,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
-        if(!$maxId = SurveyDynamic::model($iSurveyID)->getMaxId()) return array('status' => 'No Data, could not get max id.');
+        if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (is_null($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
@@ -2321,26 +2317,26 @@ class remotecontrol_handle
             // Cut down to the first 255 fields
             $aFields=array_slice($aFields,0,255);
         }
-        $oFomattingOptions=new FormattingOptions();
+        $oFormattingOptions=new FormattingOptions();
 
-        if($iFromResponseID !=null)
-            $oFomattingOptions->responseMinRecord=$iFromResponseID;
+        if($iFromResponseID !=null)   
+            $oFormattingOptions->responseMinRecord=$iFromResponseID;
         else
-            $oFomattingOptions->responseMinRecord=1;
+            $oFormattingOptions->responseMinRecord=1;
 
-        if($iToResponseID !=null)
-            $oFomattingOptions->responseMaxRecord=$iToResponseID;
+        if($iToResponseID !=null)   
+            $oFormattingOptions->responseMaxRecord=$iToResponseID;
         else
-            $oFomattingOptions->responseMaxRecord = $maxId;
+            $oFormattingOptions->responseMaxRecord = $maxId;
 
-        $oFomattingOptions->selectedColumns=$aFields;
-        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
-        $oFomattingOptions->headingFormat=$sHeadingType;
-        $oFomattingOptions->answerFormat=$sResponseType;
-        $oFomattingOptions->output='file';
+        $oFormattingOptions->selectedColumns=$aFields;
+        $oFormattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFormattingOptions->headingFormat=$sHeadingType;
+        $oFormattingOptions->answerFormat=$sResponseType;
+        $oFormattingOptions->output='file';
 
         $oExport=new ExportSurveyResultsService();
-        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, '');
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFormattingOptions, '');
         return new BigFile($sTempFile, true, 'base64');
     }
 
@@ -2366,7 +2362,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
         if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
-        if(!$maxId = SurveyDynamic::model($iSurveyID)->getMaxId()) return array('status' => 'No Data, could not get max id.');
+        if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
 
         if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
@@ -2376,29 +2372,21 @@ class remotecontrol_handle
             // Cut down to the first 255 fields
             $aFields=array_slice($aFields,0,255);
         }
-        $oFomattingOptions=new FormattingOptions();
+        $oFormattingOptions=new FormattingOptions();
+        $oFormattingOptions->responseMinRecord=1;
+        $oFormattingOptions->responseMaxRecord = $maxId;
 
-        if($iFromResponseID !=null)
-            $oFomattingOptions->responseMinRecord=$iFromResponseID;
-        else
-            $oFomattingOptions->responseMinRecord=1;
-
-        if($iToResponseID !=null)
-            $oFomattingOptions->responseMaxRecord=$iToResponseID;
-        else
-            $oFomattingOptions->responseMaxRecord = $maxId;
-
-        $oFomattingOptions->selectedColumns=$aFields;
-        $oFomattingOptions->responseCompletionState=$sCompletionStatus;
-        $oFomattingOptions->headingFormat=$sHeadingType;
-        $oFomattingOptions->answerFormat=$sResponseType;
-        $oFomattingOptions->output='file';
+        $oFormattingOptions->selectedColumns=$aFields;
+        $oFormattingOptions->responseCompletionState=$sCompletionStatus;
+        $oFormattingOptions->headingFormat=$sHeadingType;
+        $oFormattingOptions->answerFormat=$sResponseType;
+        $oFormattingOptions->output='file';
 
         $oExport=new ExportSurveyResultsService();
 
         $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
 
-        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFomattingOptions, "$sTableName.token='$sToken'");
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFormattingOptions, "$sTableName.token='$sToken'");
         return new BigFile($sTempFile, true, 'base64');
 
     }

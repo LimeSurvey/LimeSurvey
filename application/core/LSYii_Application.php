@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -24,16 +24,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 class LSYii_Application extends CWebApplication
 {
     protected $config = array();
-    /**
-     * @var Limesurvey_lang 
-     */
-    public $lang = null;
 
-    /**
-     *
-     * @var PluginManager
-     */
-    protected $pluginManager;
     /**
      * @var LimesurveyApi
      */
@@ -48,78 +39,6 @@ class LSYii_Application extends CWebApplication
     */
     public function __construct($config = null)
     {
-        if (is_string($config) && !file_exists($config))
-        {
-            $config = __DIR__ . '/../config/config-sample-mysql' . EXT;
-        } 
-        if(is_string($config)) {
-            $config = require($config);
-        }
-
-        if (isset($config['config']['debug']) && $config['config']['debug'] == 2)
-        {
-            // If debug = 2 we add firebug / console logging for all trace messages
-            // If you want to var_dump $config you could do:
-            // 
-            // Yii::trace(CVarDumper::dumpAsString($config), 'vardump');
-            // 
-            // or shorter:
-            // 
-            //traceVar($config);
-            // 
-            // This statement won't cause any harm or output when debug is 1 or 0             
-            $config['preload'][] = 'log';
-            if (array_key_exists('components', $config) && array_key_exists('log', $config['components'])) {
-                // We already have some custom logging, only add our own
-            } else {
-                // No logging yet, set it up
-                $config['components']['log'] = array(
-                    'class' => 'CLogRouter');
-            }
-            // Add logging of trace
-            $config['components']['log']['routes'][] = array(
-                'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
-                'levels'                     => 'trace',        // you can include more separated by commas
-                'categories'                 => 'vardump',      // show in firebug/console
-                'showInFireBug'              => true
-            );
-            
-            // if debugsql = 1 we add sql logging to the output
-            if (array_key_exists('debugsql', $config['config']) && $config['config']['debugsql'] == 1) {
-                // Add logging of trace
-                $config['components']['log']['routes'][] = array(
-                    'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
-                    'levels'                     => 'trace',        // you can include more separated by commas
-                    'categories'                 => 'system.db.*',      // show in firebug/console
-                    'showInFireBug'              => true
-                );
-                $config['components']['db']['enableProfiling'] = true;
-                $config['components']['db']['enableParamLogging'] = true;
-            }
-        }
-
-        if (!isset($config['components']['request']))
-        {
-            $config['components']['request']=array();
-        }
-        if (!isset($config['components']['session']))
-        {
-            $config['components']['session']=array();
-        }        
-        $config['components']['session']=array_merge_recursive($config['components']['session'],array(
-            'cookieParams' => array(
-                'httponly' => true,
-            ),
-        ));        
-
-        if (!isset($config['components']['assetManager']))
-        {
-            $config['components']['assetManager']=array();
-        }        
-        $config['components']['assetManager']=array_merge_recursive($config['components']['assetManager'],array(
-            'basePath'=> dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'assets'   // Enable to activate cookie protection
-        ));
-
         parent::__construct($config);
         Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.
@@ -127,7 +46,7 @@ class LSYii_Application extends CWebApplication
         $email_config = require(__DIR__ . '/../config/email.php');
         $version_config = require(__DIR__ . '/../config/version.php');
         $settings = array_merge($ls_config, $version_config, $email_config);
-        
+
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
             $ls_config = require(__DIR__ . '/../config/config.php');
@@ -141,35 +60,27 @@ class LSYii_Application extends CWebApplication
             $this->setConfig($key, $value);
 
         App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
-        // Now initialize the plugin manager
-        $this->initPluginManager(); 
-        
     }
 
 
 	public function init() {
 		parent::init();
+        $this->initLanguage();
+        // These take care of dynamically creating a class for each token / response table.
 		Yii::import('application.helpers.ClassFactory');
 		ClassFactory::registerClass('Token_', 'Token');
 		ClassFactory::registerClass('Response_', 'Response');
 	}
-    /**
-     * This method handles initialization of the plugin manager
-     * 
-     * When you want to insert your own plugin manager, or experiment with different settings
-     * then this is where you should do that.
-     */
-    public function initPluginManager()
+
+    public function initLanguage()
     {
-        Yii::import('application.libraries.PluginManager.*');
-        Yii::import('application.libraries.PluginManager.Storage.*');
-        Yii::import('application.libraries.PluginManager.Question.*');
-        $this->pluginManager = new PluginManager($this->getApi());
-        
-        // And load the active plugins
-        $this->pluginManager->loadPlugins();
+        // Set language to use.
+        if ($this->request->getParam('lang') !== null)
+        {
+            $this->setLanguage($this->request->getParam('lang'));
+        }
+
     }
-    
     /**
     * Loads a helper
     *
@@ -206,17 +117,17 @@ class LSYii_Application extends CWebApplication
     {
         $this->config[$name] = $value;
     }
-    
+
     /**
-     * Set a 'flash message'. 
-     * 
+     * Set a 'flash message'.
+     *
      * A flahs message will be shown on the next request and can contain a message
      * to tell that the action was successful or not. The message is displayed and
      * cleared when it is shown in the view using the widget:
      * <code>
      * $this->widget('application.extensions.FlashMessage.FlashMessage');
-     * </code> 
-     * 
+     * </code>
+     *
      * @param string $message
      * @param string $type
      * @return LSYii_Application Provides a fluent interface
@@ -264,33 +175,33 @@ class LSYii_Application extends CWebApplication
     * For future use, cache the language app wise as well.
     *
     * @access public
-    * @param Limesurvey_lang
     * @return void
     */
-    public function setLang(Limesurvey_lang $lang)
+    public function setLanguage( $sLanguage )
     {
-        $this->lang = $lang;
+        $this->messages->catalog = $sLanguage;
+        parent::setLanguage($sLanguage);
     }
-    
+
     /**
      * Get the Api object.
      */
     public function getApi()
     {
         if (!isset($this->api))
-        {            
+        {
             $this->api = new LimesurveyApi();
         }
         return $this->api;
     }
     /**
      * Get the pluginManager
-     * 
+     *
      * @return PluginManager
      */
     public function getPluginManager()
     {
-        return $this->pluginManager;
+        return $this->getComponent('pluginManager');
     }
 
 

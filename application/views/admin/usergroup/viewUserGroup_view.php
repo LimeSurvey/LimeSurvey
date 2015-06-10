@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php $clang->eT("Group members"); ?></div>
+<div class='header ui-widget-header'><?php eT("Group members"); ?></div>
 <?php
 if(isset($headercfg))
 {
@@ -20,7 +20,7 @@ if(isset($groupfound))
 { ?>
 <table width='100%' border='0'>
 	<tr><td align='justify' colspan='2' height='4'>
- 	<font size='2' ><strong><?php $clang->eT("Description: ");?></strong>
+ 	<font size='2' ><strong><?php eT("Description: ");?></strong>
     <?php echo htmlspecialchars($usergroupdescription);?></font></td></tr>
 </table>
 <?php
@@ -30,9 +30,9 @@ if(isset($groupfound))
 <?php if (!empty($userloop)) { ?>
     <table class='users'>
         <thead><tr>
-            <th><?php $clang->eT("Action");?></th>
-            <th><?php $clang->eT("Username");?></th>
-            <th><?php $clang->eT("Email");?></th>
+            <th><?php eT("Action");?></th>
+            <th><?php eT("Username");?></th>
+            <th><?php eT("Email");?></th>
             </tr></thead>
         <tbody>
         <?php
@@ -45,7 +45,7 @@ if(isset($groupfound))
                 if(isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true)
                 { ?>
                     <?php echo CHtml::form(array("admin/usergroups/sa/user/ugid/{$ugid}/action/remove"), 'post'); ?>
-                    <input type='image' src='<?php echo Yii::app()->getConfig('adminimageurl')?>/token_delete.png' alt='<?php $clang->eT("Delete this user from group");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
+                    <input type='image' src='<?php echo Yii::app()->getConfig('adminimageurl')?>/token_delete.png' alt='<?php eT("Delete this user from group");?>' onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' />
                     <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
                     </form>
                     <?php
@@ -82,7 +82,7 @@ if (!empty($useradddialog))
                             <select name='uid'>
                                 <?php echo $useraddusers; ?>
                             </select>
-                            <input type='submit' value='<?php $clang->eT("Add user"); ?>' />
+                            <input type='submit' value='<?php eT("Add user"); ?>' />
                         </td>
                     </tr>
                 </tbody>

@@ -1,4 +1,5 @@
 <?php
+use ls\pluginmanager\AuthPluginBase;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -77,32 +78,37 @@ class UserAction extends Survey_Common_Action
 
     function adduser()
     {
-        $clang = Yii::app()->lang;
+
         if (!Permission::model()->hasGlobalPermission('users','create')) {
-            Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
-        $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
-        $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
         $aViewUrls = array();
-        $valid_email = true;
-        if (!validateEmailAddress($new_email)) {
-            $valid_email = false;
-            $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("The email address is not valid."), 'class'=> 'warningheader');
-        }
         if (empty($new_user)) {
-            $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("A username was not supplied or the username is invalid."), 'class'=> 'warningheader');
+            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("A username was not supplied or the username is invalid."), 'class'=> 'warningheader');
         }
         elseif (User::model()->find("users_name=:users_name",array(':users_name'=>$new_user))) {
-            $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("The username already exists."), 'class'=> 'warningheader');
+            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("The username already exists."), 'class'=> 'warningheader');
         }
-        elseif ($valid_email)
+        else
         {
-            $new_pass = createPassword();
-            $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+            $event = new PluginEvent('createNewUser');
+            $event->set('errorCode',AuthPluginBase::ERROR_NOT_ADDED);
+            $event->set('errorMessageTitle',gT("Failed to add user"));
+            $event->set('errorMessageBody',gT("Plugin is not active"));
+            App()->getPluginManager()->dispatchEvent($event);
 
-            if ($iNewUID) {
+            if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE)
+            {
+                $aViewUrls['message'] = array('title' => $event->get('errorMessageTitle'), 'message' => $event->get('errorMessageBody'), 'class'=> 'warningheader');
+            }
+            else
+            {
+                $iNewUID = $event->get('newUserID');
+                $new_pass = $event->get('newPassword');
+                $new_email = $event->get('newEmail');
+                $new_full_name = $event->get('newFullName');
                 // add default template to template rights for user
                 Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => Yii::app()->getConfig("defaulttemplate"), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
                 // add new user to userlist
@@ -116,51 +122,48 @@ class UserAction extends Survey_Common_Action
                 "manage_label" => $srow['manage_label']));
 
                 // send Mail
-                $body = sprintf($clang->gT("Hello %s,"), $new_full_name) . "<br /><br />\n";
-                $body .= sprintf($clang->gT("this is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename")) . "<br /><br />\n";
-                $body .= $clang->gT("You can use now the following credentials to log into the site:") . "<br />\n";
-                $body .= $clang->gT("Username") . ": " . htmlspecialchars($new_user) . "<br />\n";
-                if (Yii::app()->getConfig("auth_webserver") === false) { // authent is not delegated to web server
+                $body = sprintf(gT("Hello %s,"), $new_full_name) . "<br /><br />\n";
+                $body .= sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename")) . "<br /><br />\n";
+                $body .= gT("You can use now the following credentials to log into the site:") . "<br />\n";
+                $body .= gT("Username") . ": " . htmlspecialchars($new_user) . "<br />\n";
+                // authent is not delegated to web server or LDAP server
+                if (Yii::app()->getConfig("auth_webserver") === false  && Permission::model()->hasGlobalPermission('auth_db','read',$iNewUID)) {
                     // send password (if authorized by config)
                     if (Yii::app()->getConfig("display_user_password_in_email") === true) {
-                        $body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
+                        $body .= gT("Password") . ": " . $new_pass . "<br />\n";
                     }
                     else
                     {
-                        $body .= $clang->gT("Password") . ": " . $clang->gT("Please contact your LimeSurvey administrator for your password.") . "<br />\n";
+                        $body .= gT("Password") . ": " . gT("Please contact your LimeSurvey administrator for your password.") . "<br />\n";
                     }
                 }
 
-                $body .= "<a href='" . $this->getController()->createAbsoluteUrl("/admin") . "'>" . $clang->gT("Click here to log in.") . "</a><br /><br />\n";
-                $body .= sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail")) . "<br />\n";
+                $body .= "<a href='" . $this->getController()->createAbsoluteUrl("/admin") . "'>" . gT("Click here to log in.") . "</a><br /><br />\n";
+                $body .= sprintf(gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail")) . "<br />\n";
 
-                $subject = sprintf($clang->gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
+                $subject = sprintf(gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
                 $to = $new_user . " <$new_email>";
                 $from = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
                 $extra = '';
                 $classMsg = '';
                 if (SendEmailMessage($body, $subject, $to, $from, Yii::app()->getConfig("sitename"), true, Yii::app()->getConfig("siteadminbounce"))) {
-                    $extra .= "<br />" . $clang->gT("Username") . ": $new_user<br />" . $clang->gT("Email") . ": $new_email<br />";
-                    $extra .= "<br />" . $clang->gT("An email with a generated password was sent to the user.");
+                    $extra .= "<br />" . gT("Username") . ": $new_user<br />" . gT("Email") . ": $new_email<br />";
+                    $extra .= "<br />" . gT("An email with a generated password was sent to the user.");
                     $classMsg = 'successheader';
-                    $sHeader= $clang->gT("Success");
+                    $sHeader= gT("Success");
                 }
                 else
                 {
                     // has to be sent again or no other way
-                    $tmp = str_replace("{NAME}", "<strong>" . $new_user . "</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
+                    $tmp = str_replace("{NAME}", "<strong>" . $new_user . "</strong>", gT("Email to {NAME} ({EMAIL}) failed."));
                     $extra .= "<br />" . str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
                     $classMsg = 'warningheader';
-                    $sHeader= $clang->gT("Warning");
+                    $sHeader= gT("Warning");
                 }
 
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Add user"), $sHeader, $classMsg, $extra,
-                $this->getController()->createUrl("admin/user/sa/setuserpermissions"), $clang->gT("Set user permissions"),
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Add user"), $sHeader, $classMsg, $extra,
+                $this->getController()->createUrl("admin/user/sa/setuserpermissions"), gT("Set user permissions"),
                 array('action' => 'setuserpermissions', 'user' => $new_user, 'uid' => $iNewUID));
-            }
-            else
-            {
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Failed to add user"), $clang->gT("The user name already exists."), 'warningheader');
             }
         }
 
@@ -172,9 +175,9 @@ class UserAction extends Survey_Common_Action
     */
     function deluser()
     {
-        $clang = Yii::app()->lang;
+
         if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
-            Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $action = Yii::app()->request->getPost("action");
@@ -187,7 +190,7 @@ class UserAction extends Survey_Common_Action
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
         {
-            Yii::app()->setFlashMessage($clang->gT("Initial Superadmin cannot be deleted!"),'error');
+            Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         else
@@ -238,13 +241,13 @@ class UserAction extends Survey_Common_Action
                 }
                 else
                 {
-                    Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
+                    Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
                     $this->getController()->redirect(array("admin/user/sa/index"));
                 }
             }
             else
             {
-                Yii::app()->setFlashMessage($clang->gT("Could not delete user. User was not supplied."),'error');
+                Yii::app()->setFlashMessage(gT("Could not delete user. User was not supplied."),'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
@@ -254,14 +257,14 @@ class UserAction extends Survey_Common_Action
 
     function deleteFinalUser($result, $transfer_surveys_to)
     {
-        $clang = Yii::app()->lang;
+
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         // Never delete initial admin (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
         if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
         {
-            Yii::app()->setFlashMessage($clang->gT("Initial Superadmin cannot be deleted!"),'error');
+            Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         if (isset($_POST['transfer_surveys_to'])) {
@@ -289,15 +292,15 @@ class UserAction extends Survey_Common_Action
             die();
         }
 
-        $extra = "<br />" . sprintf($clang->gT("User '%s' was successfully deleted."),$postuser)."<br /><br />\n";
+        $extra = "<br />" . sprintf(gT("User '%s' was successfully deleted."),$postuser)."<br /><br />\n";
         if ($transfer_surveys_to > 0 && $iSurveysTransferred>0) {
             $user = User::model()->findByPk($transfer_surveys_to);
             $sTransferred_to = $user->users_name;
             //$sTransferred_to = $this->getController()->_getUserNameFromUid($transfer_surveys_to);
-            $extra = sprintf($clang->gT("All of the user's surveys were transferred to %s."), $sTransferred_to);
+            $extra = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferred_to);
         }
 
-        $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", $clang->gT("Success!"), "successheader", $extra);
+        $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", gT("Success!"), "successheader", $extra);
         $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
@@ -323,11 +326,11 @@ class UserAction extends Survey_Common_Action
             }
             else
             {
-                Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+                Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
         }
-        Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+        Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         $this->getController()->redirect(array("admin/user/sa/index"));
         //echo accessDenied('modifyuser');
         //die();
@@ -338,7 +341,7 @@ class UserAction extends Survey_Common_Action
     */
     function moduser()
     {
-        $clang = Yii::app()->lang;
+
         $postuserid = (int) Yii::app()->request->getPost("uid");
         $postuser = flattenText(Yii::app()->request->getPost("user"));
         $postemail = flattenText(Yii::app()->request->getPost("email"));
@@ -362,8 +365,8 @@ class UserAction extends Survey_Common_Action
             $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
 
             if (!validateEmailAddress($email)) {
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data."), "warningheader", $clang->gT("Email address is not valid."),
-                $this->getController()->createUrl('admin/user/modifyuser'), $clang->gT("Back"), array('uid' => $postuserid));
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Could not modify user data."), "warningheader", gT("Email address is not valid."),
+                $this->getController()->createUrl('admin/user/modifyuser'), gT("Back"), array('uid' => $postuserid));
             }
             else
             {
@@ -377,8 +380,8 @@ class UserAction extends Survey_Common_Action
                 $uresult = $oRecord->save();    // store result of save in uresult
 
                 if (empty($sPassword)) {
-                    $extra = $clang->gT("Username") . ": {$oRecord->users_name}<br />" . $clang->gT("Password") . ": (" . $clang->gT("Unchanged") . ")<br />\n";
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
+                    $extra = gT("Username") . ": {$oRecord->users_name}<br />" . gT("Password") . ": (" . gT("Unchanged") . ")<br />\n";
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Success!"), "successheader", $extra);
                 }
                 elseif ($uresult && !empty($sPassword)) // When saved successfully
                 {
@@ -395,42 +398,42 @@ class UserAction extends Survey_Common_Action
                         $displayedPwd = preg_replace('/./', '*', $sPassword);
                     }
 
-                    $extra = $clang->gT("Username") . ": {$oRecord->users_name}<br />" . $clang->gT("Password") . ": {$displayedPwd}<br />\n";
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
+                    $extra = gT("Username") . ": {$oRecord->users_name}<br />" . gT("Password") . ": {$displayedPwd}<br />\n";
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Success!"), "successheader", $extra);
                 }
                 else
                 {   //Saving the user failed for some reason, message about email is not helpful here
                     // Username and/or email adress already exists.
-                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data."), 'warningheader');
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Editing user"), gT("Could not modify user data."), 'warningheader');
                 }
             }
         }
         else
         {
-            Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
         }
         $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
-    
+
     function savepermissions()
     {
-        $clang = Yii::app()->lang;
+
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
         if (Yii::app()->session['loginID']==$iUserID) {
-            Yii::app()->setFlashMessage($clang->gT("You are not allowed to edit your own user permissions."),"error");
+            Yii::app()->setFlashMessage(gT("You are not allowed to edit your own user permissions."),"error");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
         if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
         {
-            Yii::app()->setFlashMessage($clang->gT("Initial Superadmin permissions cannot be updated!"),'error');
+            Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
-        
+
         $aPermissions=array();
         foreach ($aBaseUserPermissions as $sPermissionKey=>$aCRUDPermissions)
         {
@@ -453,17 +456,17 @@ class UserAction extends Survey_Common_Action
 
         if (Permission::model()->setPermissions($iUserID, 0, 'global', $aPermissions))
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Permissions were successfully updated.");
+            Yii::app()->session['flashmessage'] = gT("Permissions were successfully updated.");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         else
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("There was a problem updating the user permissions.");
+            Yii::app()->session['flashmessage'] = gT("There was a problem updating the user permissions.");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
 
     }
-    
+
     function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
@@ -471,7 +474,7 @@ class UserAction extends Survey_Common_Action
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
         if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
         {
-            Yii::app()->setFlashMessage(Yii::app()->lang->gT("Initial Superadmin permissions cannot be updated!"),'error');
+            Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
@@ -485,7 +488,7 @@ class UserAction extends Survey_Common_Action
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
         if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
         {
-            Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
+            Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
             $aFilteredPermissions=array();
             foreach  ($aBasePermissions as $PermissionName=>$aPermission)
             {
@@ -511,17 +514,17 @@ class UserAction extends Survey_Common_Action
             }
             $aData['aBasePermissions']=$aBasePermissions;
             $data['sImageURL'] = Yii::app()->getConfig("imageurl");
-            
+
             $aData['oUser'] =$oUser;
             App()->getClientScript()->registerPackage('jquery-tablesorter');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "userpermissions.js");
             $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
-        } 
+        }
         else
         {
-            Yii::app()->setFlashMessage(Yii::app()->lang->gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
-        } 
+        }
     }
 
     function setusertemplates()
@@ -553,7 +556,7 @@ class UserAction extends Survey_Common_Action
 
     function usertemplates()
     {
-        $clang = Yii::app()->lang;
+
         $postuserid = (int) Yii::app()->request->getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
@@ -584,17 +587,17 @@ class UserAction extends Survey_Common_Action
                 $uresult = $oPermission->save();
             }
             if ($uresult !== false) {
-                Yii::app()->setFlashMessage($clang->gT("Template permissions were updated successfully."));
+                Yii::app()->setFlashMessage(gT("Template permissions were updated successfully."));
             }
             else
             {
-                Yii::app()->setFlashMessage($clang->gT("Error while updating template permissions."),'error');
+                Yii::app()->setFlashMessage(gT("Error while updating template permissions."),'error');
             }
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         else
         {
-            Yii::app()->setFlashMessage($clang->gT("You do not have sufficient rights to access this page."),'error');
+            Yii::app()->setFlashMessage(gT("You do not have sufficient rights to access this page."),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
     }
@@ -604,7 +607,6 @@ class UserAction extends Survey_Common_Action
     */
     function personalsettings()
     {
-
         // Save Data
         if (Yii::app()->request->getPost("action")) {
             $aData = array(
@@ -627,14 +629,13 @@ class UserAction extends Survey_Common_Action
             }
 
             Yii::app()->session['adminlang'] = $sLanguage;
-            Yii::app()->lang=new limesurvey_lang($sLanguage);
-            $clang = Yii::app()->lang;
+            Yii::app()->setLanguage($sLanguage);
 
             Yii::app()->session['htmleditormode'] = Yii::app()->request->getPost('htmleditormode');
             Yii::app()->session['questionselectormode'] = Yii::app()->request->getPost('questionselectormode');
             Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');
             Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
-            Yii::app()->session['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");
+            Yii::app()->session['flashmessage'] = gT("Your personal settings were successfully saved.");
         }
 
         // Get user lang
@@ -736,9 +737,9 @@ class UserAction extends Survey_Common_Action
 
     private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
-        $clang = Yii::app()->lang;
+
         $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/index');
-        $urlText = (!empty($urlText)) ? $urlText : $clang->gT("Continue");
+        $urlText = (!empty($urlText)) ? $urlText : gT("Continue");
 
         $aData['title'] = $title;
         $aData['message'] = $message;

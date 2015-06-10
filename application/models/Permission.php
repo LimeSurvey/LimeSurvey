@@ -242,6 +242,36 @@ class Permission extends LSActiveRecord
             'description' => gT("Unlimited administration permissions"),
             'img' => 'superadmin'
         );
+        $aPermissions['auth_db'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use internal database authentication"),
+            'description' => gT("Use internal database authentication"),
+            'img' => 'usergroup'
+        );
+        $aPermissions['auth_ldap'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use LDAP authentication"),
+            'description' => gT("Use LDAP authentication"),
+            'img' => 'usergroup'
+        );
+        $aPermissions['auth_webserver'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use web server authentication"),
+            'description' => gT("Use web server authentication"),
+            'img' => 'usergroup'
+        );
 
         foreach ($aPermissions as &$permission)
         {
@@ -460,9 +490,22 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD, $iUserID=null)
+    function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
     {
-        static $aPermissionCache;
+        static $aPermissionStatic;
+
+        $oEvent=new PluginEvent('beforeHasPermission');
+        $oEvent->set('iEntityID',$iEntityID);
+        $oEvent->set('sEntityName',$sEntityName);
+        $oEvent->set('sPermission',$sPermission);
+        $oEvent->set('sCRUD',$sCRUD);
+        $oEvent->set('iUserID',$iUserID);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $pluginbPermission=$oEvent->get('bPermission');
+        // isset — Determine if a variable is set and is not NULL. And isset seems little speedest.
+        if (isset($pluginbPermission)) 
+             return $pluginbPermission;
+
         if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
         $sCRUD=$sCRUD.'_p';
 
@@ -471,7 +514,7 @@ class Permission extends LSActiveRecord
             return false;
 
         // Check if superadmin and cache it
-        if (!isset($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']))
+        if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']))
         {
             $aPermission = $this->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
             $bPermission = is_null($aPermission) ? array() : $aPermission->attributes;
@@ -483,11 +526,11 @@ class Permission extends LSActiveRecord
             {
                 $bPermission=true;
             }
-            $aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
+            $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
         }
-        
-        if ($aPermissionCache[0]['global'][$iUserID]['superadmin']['read_p']) return true;
-        if (!isset($aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
+
+        if ($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) return true;
+        if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
         {
             $query = $this->findByAttributes(array("entity_id"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
             $bPermission = is_null($query) ? array() : $query->attributes;
@@ -499,9 +542,9 @@ class Permission extends LSActiveRecord
             {
                 $bPermission=true;
             }
-            $aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]=$bPermission;
+            $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]=$bPermission;
         }
-        return $aPermissionCache[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD];
+        return $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD];
     }
     
     /**
@@ -511,11 +554,11 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasGlobalPermission($sPermission, $sCRUD, $iUserID=null)
+    function hasGlobalPermission($sPermission, $sCRUD='read', $iUserID=null)
     {
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
     }
-    
+
     /**
     * Checks if a user has a certain permission in the given survey
     *
@@ -525,26 +568,22 @@ class Permission extends LSActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasSurveyPermission($iSurveyID,$sPermission, $sCRUD, $iUserID=null)
+    function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
     {
         $oSurvey=Survey::Model()->findByPk($iSurveyID);
         if (!$oSurvey) 
             return false;
         $iUserID=self::getUserId($iUserID);
-        if(!$iUserID)
-            return false;
         // If you own a survey you have access to the whole survey
         if ($iUserID==$oSurvey->owner_id) 
             return true;
-
         // Get global correspondance for surveys rigth
         $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
-
         return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
-    * Returns true if a user has permission to use a certain template
+    * Returns true if a user has permission to read/create/update a certain template
     * @param $sPermission string Name of the permission - see function getGlobalPermissions
     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
     * @param $iUserID integer User ID - if not given the one of the current user is used
@@ -552,14 +591,14 @@ class Permission extends LSActiveRecord
     */
     function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
     {
-        return $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
+        return $this->hasPermission(0, 'global', 'templates', $sCRUD, $iUserID) || $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
     }
 
     /**
-    /* function used to order Permission by language string
-    /* @param aApermission array The first permission information
-    /* @param aBpermission array The second permission information
-    /* @return bool 
+    * function used to order Permission by language string
+    * @param aApermission array The first permission information
+    * @param aBpermission array The second permission information
+    * @return bool 
     */
     private static function comparePermissionTitle($aApermission,$aBpermission)
     {
@@ -567,15 +606,15 @@ class Permission extends LSActiveRecord
     }
 
     /**
-    /* get the default/fixed $iUserID
-    /* @param iUserID optionnal user id
-    /* @return integer user id
+    * get the default/fixed $iUserID
+    * @param iUserID optionnal user id
+    * @return integer user id
     */
     private static function getUserId($iUserID=null)
     {
-        if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
-            $iUserID = Yii::app()->session['loginID'];
-        
-        return $iUserID;
+    if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
+        $iUserID = Yii::app()->session['loginID'];
+    return $iUserID;
     }
+
 }

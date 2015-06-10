@@ -25,7 +25,7 @@ class OptinController extends LSYii_Controller {
 
      public $layout = 'bare';
      public $defaultAction = 'tokens';
-    
+
     function actiontokens($surveyid, $token, $langcode = '')
     {
         Yii::app()->loadHelper('database');
@@ -46,32 +46,28 @@ class OptinController extends LSYii_Controller {
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-            Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($sBaseLanguage);
         }
         else
         {
-            $sLanguageCode = sanitize_languagecode($sLanguageCode);
-            Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang($sLanguageCode);
-            $sBaseLanguage = $sLanguageCode;
+            $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
 
-        Yii::app()->lang = $clang;
+        Yii::app()->setLanguage($sBaseLanguage);
 
         $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
         if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))
         {
-            $sMessage = $clang->gT('This survey does not seem to exist.');
+            throw new CHttpException(404, "This survey does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         }
         else
         {
+            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$token,false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
 
             if (!isset($oToken))
             {
-                $sMessage = $clang->gT('You are not a participant in this survey.');
+                $sMessage = gT('You are not a participant in this survey.');
             }
             else
             {
@@ -79,15 +75,15 @@ class OptinController extends LSYii_Controller {
                 {
                     $oToken->emailstatus = 'OK';
                     $oToken->save();
-                    $sMessage = $clang->gT('You have been successfully added back to this survey.');
+                    $sMessage = gT('You have been successfully added back to this survey.');
                 }
                 elseif ($oToken->emailstatus == 'OK')
                 {
-                    $sMessage = $clang->gT('You are already a part of this survey.');
+                    $sMessage = gT('You are already a part of this survey.');
                 }
                 else
                 {
-                    $sMessage = $clang->gT('You have been already removed from this survey.');
+                    $sMessage = gT('You have been already removed from this survey.');
                 }
             }
         }
@@ -101,14 +97,14 @@ class OptinController extends LSYii_Controller {
         {
             $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
         }
-        $this->_renderHtml($sMessage,$sTemplate,$clang,$aSurveyInfo);
+        $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo);
     }
 
-    private function _renderHtml($html,$thistpl, $oLanguage, $aSurveyInfo)
+    private function _renderHtml($html,$thistpl, $aSurveyInfo)
     {
         sendCacheHeaders();
         doHeader();
-        $aSupportData=array('thissurvey'=>$aSurveyInfo, 'clang'=>$oLanguage);
+        $aSupportData=array('thissurvey'=>$aSurveyInfo);
         echo templatereplace(file_get_contents($thistpl.DIRECTORY_SEPARATOR.'startpage.pstpl'),array(), $aSupportData);
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;

@@ -17,7 +17,7 @@
 
 function updateset($lid)
 {
-    $clang = Yii::app()->lang;
+    
 
     // Get added and deleted languagesid arrays
     $postlanguageids=Yii::app()->getRequest()->getPost('languageids');
@@ -90,7 +90,7 @@ function insertlabelset()
 {
     //global $labelsoutput;
     //	$labelsoutput.= $_POST['languageids'];  For debug purposes
-    $clang = Yii::app()->lang;
+    
 
     $postlanguageids=sanitize_languagecodeS(Yii::app()->getRequest()->getPost('languageids'));
     $postlabel_name=flattenText(Yii::app()->getRequest()->getPost('label_name'),false,true,'UTF-8',true);
@@ -104,7 +104,7 @@ function insertlabelset()
     $result=LabelSet::model()->insertRecords($data);
     if (!$result)
     {
-        Yii::app()->session['flashmessage'] = $clang->gT("Inserting the label set failed.");
+        Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
     }
     else
     {
@@ -118,7 +118,7 @@ function modlabelsetanswers($lid)
 
     //global  $labelsoutput;
 
-    $clang = Yii::app()->lang;
+    
 
     $ajax = false;
 
@@ -126,7 +126,7 @@ function modlabelsetanswers($lid)
         $ajax = true;
     }
     if (!isset($_POST['method'])) {
-        $_POST['method'] = $clang->gT("Save");
+        $_POST['method'] = gT("Save");
     }
 
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
@@ -184,16 +184,16 @@ function modlabelsetanswers($lid)
         }
         if(count($aErrors))
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Not all labels were updated successfully.");
+            Yii::app()->session['flashmessage'] = gT("Not all labels were updated successfully.");
         }
         else
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("Labels sucessfully updated");
+            Yii::app()->session['flashmessage'] = gT("Labels sucessfully updated");
         }
     }
     else
     {
-        Yii::app()->setFlashMessage($clang->gT("Can't update labels because you are using duplicated codes"),'error');
+        Yii::app()->setFlashMessage(gT("Can't update labels because you are using duplicated codes"),'error');
     }
 
     if ($ajax){ die(); }
@@ -206,7 +206,7 @@ function modlabelsetanswers($lid)
 */
 function fixorder($lid) {
 
-    $clang = Yii::app()->lang;
+    
 
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();

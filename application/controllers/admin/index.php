@@ -16,12 +16,12 @@ class Index extends Survey_Common_Action
 
     public function run()
     {
-        $clang = Yii::app()->lang;
+        
 
         if (Yii::app()->session['just_logged_in'])
         {
             $aViewUrls = array('message' => array(
-                'title' => $clang->gT("Logged in"),
+                'title' => gT("Logged in"),
                 'message' => Yii::app()->session['loginsummary']
             ));
             unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);

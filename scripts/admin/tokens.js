@@ -1,3 +1,12 @@
+/*
+* Scroll the pager when scrolling horizontally
+*/
+$(window).scroll(function(){
+    $('.ui-jqgrid-pager').css({
+        'left': $(this).scrollLeft()
+    });
+});
+
 var conditionid=1;
 function checkbounces() {
     $("#dialog-modal").dialog('open');
@@ -330,16 +339,16 @@ $(document).ready(function() {
                     alert(sSelectRowMsg );
                 }
                 else
-                {                              
+                {
                     var newForm = jQuery('<form>', {
-                        'action': inviteurl,
-                        'target': '_blank'
+                        'action': remindurl,
+                        'target': 'inviteurl'
                     }).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
                     })).appendTo('body');
-                    newForm.submit();      
+                    newForm.submit();                        
                 }
             }
         });
@@ -425,7 +434,6 @@ $(document).ready(function() {
         reloadAfterSubmit: true,
         closeOnEspace:true
     });
-	
 	// Center modal dialogs
     $.jgrid.jqModal = $.extend($.jgrid.jqModal || {}, {
         beforeOpen: centerInfoDialog

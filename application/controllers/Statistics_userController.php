@@ -51,7 +51,6 @@ class Statistics_userController extends LSYii_Controller {
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-touch-punch');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-
         $data = array();
 
         if(!isset($iSurveyID))
@@ -138,7 +137,7 @@ class Statistics_userController extends LSYii_Controller {
             $sLanguage=sanitize_languagecode($sLanguage);
         }
         //set survey language for translations
-        $clang = SetSurveyLanguage($iSurveyID, $sLanguage);
+        SetSurveyLanguage($iSurveyID, $sLanguage);
         //Create header
         sendCacheHeaders();
         $condition = false;
@@ -252,7 +251,7 @@ class Statistics_userController extends LSYii_Controller {
                     break;
                 case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
                 case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-                case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+                case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
                 case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
                 case "F": // FlEXIBLE ARRAY
                 case "H": // ARRAY (By Column)
@@ -346,20 +345,13 @@ class Statistics_userController extends LSYii_Controller {
         $thissurvey = getSurveyInfo($surveyid,$sLanguage);
 
         //SET THE TEMPLATE DIRECTORY
-        if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
-        {
-            $data['sTemplatePath'] = validateTemplateDir(Yii::app()->getConfig("defaulttemplate"));
-        }
-        else
-        {
-            $data['sTemplatePath'] = validateTemplateDir($thissurvey['templatedir']);
-        }
+        $data['sTemplatePath'] = $surveyinfo['template'];// surveyinfo=getSurveyInfo and if survey don't exist : stop before. 
 
 
         //---------- CREATE STATISTICS ----------
         $redata = compact(array_keys(get_defined_vars()));
         doHeader();
-        echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir($data['sTemplatePath'])).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
+        echo templatereplace(file_get_contents(getTemplatePath($data['sTemplatePath']).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
 
 
         //some progress bar stuff
@@ -372,9 +364,9 @@ class Statistics_userController extends LSYii_Controller {
         $prb->setFrame();    // set ProgressBar Frame
         $prb->frame['left'] = 50;    // Frame position from left
         $prb->frame['top'] =     80;    // Frame position from top
-        $prb->addLabel('text','txt1',$clang->gT("Please wait ..."));    // add Text as Label 'txt1' and value 'Please wait'
+        $prb->addLabel('text','txt1',gT("Please wait ..."));    // add Text as Label 'txt1' and value 'Please wait'
         $prb->addLabel('percent','pct1');    // add Percent as Label 'pct1'
-        $prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$iSurveyID);    // add Button as Label 'btn1' and action '?restart=1'
+        $prb->addButton('btn1',gT('Go back'),'?action=statistics&amp;sid='.$iSurveyID);    // add Button as Label 'btn1' and action '?restart=1'
 
         //progress bar starts with 35%
         $process_status = 35;
@@ -383,7 +375,7 @@ class Statistics_userController extends LSYii_Controller {
 
         // 1: Get list of questions with answers chosen
         //"Getting Questions and Answer ..." is shown above the bar
-        $prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
+        $prb->setLabelValue('txt1',gT('Getting questions and answers ...'));
         $prb->moveStep(5);
 
         // creates array of post variable names
@@ -393,7 +385,6 @@ class Statistics_userController extends LSYii_Controller {
         }
         $data['thisSurveyTitle'] = $thisSurveyTitle;
         $data['totalrecords'] = $totalrecords;
-        $data['clang'] = $clang;
         $data['summary'] = $summary;
         //show some main data at the beginnung
         // CHANGE JSW_NZ - let's allow html formatted questions to show
@@ -406,7 +397,7 @@ class Statistics_userController extends LSYii_Controller {
         if (isset($summary) && $summary)
         {
             //"Generating Summaries ..." is shown above the progress bar
-            $prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
+            $prb->setLabelValue('txt1',gT('Generating summaries ...'));
             $prb->moveStep($process_status);
 
             //let's run through the survey // Fixed bug 3053 with array_unique
@@ -431,7 +422,7 @@ class Statistics_userController extends LSYii_Controller {
         //done! set progress bar to 100%
         if (isset($prb))
         {
-            $prb->setLabelValue('txt1',$clang->gT('Completed'));
+            $prb->setLabelValue('txt1',gT('Completed'));
             $prb->moveStep(100);
             $prb->hide();
         }

@@ -2,6 +2,9 @@
 <div id='<?php echo "tab-$grouplang-$tab"; ?>'>
 <ul>
     <li>
+        <?php echo CHtml::link(sprintf(gT("Validate expression in %s"),$details['title']),array('admin/validate','sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab),array('title'=>$details['title'],"target"=>"dialog")); ?>
+    </li>
+    <li>
         <label for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
         <?php echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$details['field']['subject'],array('size'=>80)); ?>
         <?php echo CHtml::button(gT("Reset"),array('class'=>'fillin','data-target'=>"email_{$tab}_subj_{$grouplang}",'data-value'=>$details['default']['subject'])); ?>
@@ -17,14 +20,14 @@
     <li>
         <label for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
         <div style="float: left; width: 60%;">
-        <button class="add-attachment" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php $clang->eT("Add file"); ?></button>
+        <button class="add-attachment" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button>
         
         <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments" style="width: 500px">
             <tr>
-                <th><?php $clang->eT("Action"); ?></th>
-                <th><?php $clang->eT("File name"); ?></th>
-                <th><?php $clang->eT("Size"); ?></th>
-                <th><?php $clang->eT("Relevance"); ?></th>
+                <th><?php eT("Action"); ?></th>
+                <th><?php eT("File name"); ?></th>
+                <th><?php eT("Size"); ?></th>
+                <th><?php eT("Relevance"); ?></th>
             </tr>
             <?php
             

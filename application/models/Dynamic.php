@@ -7,7 +7,9 @@
 	abstract class Dynamic extends LSActiveRecord
 	{
 		/**
+         * Prefixed with _ to not collide with column names.
 		 * @var int The dynamic part of the class name.
+         *
 		 */
 		protected $dynamicId;
 
@@ -19,7 +21,7 @@
 		/**
 		 *
 		 * @param type $className
-		 * @return Dynamic2
+		 * @return Dynamic
 		 */
 
 		public static function model($className = null) {

@@ -18,6 +18,23 @@
  * and Contributors (http://phpjs.org/authors)
  */
 
+/* Default event to trigger on answer part 
+ * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations 
+ * Actually only for list with comment
+ **/
+$(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not([onkeyup])",function(event){
+    // 'keyup' can be replaced by event.type (but not really needed)
+    // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
+    if($(this).data("number"))// data-type ?
+    {
+        fixnum_checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup', $(this).data("integer"))
+    }
+    else
+    {
+        checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
+    }
+});
+
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty
@@ -718,15 +735,13 @@ function LEMval(alias)
  */
 function LEMfixnum(value)
 {
-    var newval = String(value);
-    if (parseFloat(newval) != value) {
-        return value;   // unchanged
-    }
     if (LEMradix===',') {
-        newval = newval.split('.').join(',');
+        var newval = String(value);
         if (parseFloat(newval) != value) {
             return value;   // unchanged
         }
+        newval= newval.split('.').join(',');
+        return newval;
     }
     return value;
 }

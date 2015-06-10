@@ -502,6 +502,7 @@ th.admincell {
 
 .btnaddanswer,
 .btndelanswer,
+.btntogglerelevance,
 .header_statistics img {
     cursor:pointer;
 }
@@ -778,7 +779,7 @@ ul.assessmentscope li label:first-child {
 .answertable th {
     font-weight:bold;
     font-size: 8pt;
-    padding:3px;
+    padding:3px 3px 3px 1px;
 }
 
 .answertable tr {

@@ -221,7 +221,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     $length_vallabel = 120;
-    $clang = Yii::app()->lang;
+
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
     $answers=array();
@@ -280,30 +280,30 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         }
     } elseif ($field['LStype'] == 'M' && substr($field['code'],-5) != 'other' && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
-        $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
+        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+        $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
     } elseif ($field['LStype'] == "P" && substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment')
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
-        $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
+        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+        $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
     } elseif ($field['LStype'] == "G" && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Female'));
-        $answers[] = array('code'=>2, 'value'=>$clang->gT('Male'));
+        $answers[] = array('code'=>1, 'value'=>gT('Female'));
+        $answers[] = array('code'=>2, 'value'=>gT('Male'));
     } elseif ($field['LStype'] == "Y" && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
-        $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
+        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+        $answers[] = array('code'=>2, 'value'=>gT('No'));
     } elseif ($field['LStype'] == "C" && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
-        $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
-        $answers[] = array('code'=>3, 'value'=>$clang->gT('Uncertain'));
+        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+        $answers[] = array('code'=>2, 'value'=>gT('No'));
+        $answers[] = array('code'=>3, 'value'=>gT('Uncertain'));
     } elseif ($field['LStype'] == "E" && $field['size'] > 0)
     {
-        $answers[] = array('code'=>1, 'value'=>$clang->gT('Increase'));
-        $answers[] = array('code'=>2, 'value'=>$clang->gT('Same'));
-        $answers[] = array('code'=>3, 'value'=>$clang->gT('Decrease'));
+        $answers[] = array('code'=>1, 'value'=>gT('Increase'));
+        $answers[] = array('code'=>2, 'value'=>gT('Same'));
+        $answers[] = array('code'=>3, 'value'=>gT('Decrease'));
     }
     if (count($answers)>0) {
         //check the max width of the answers
@@ -328,42 +328,41 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 * @param $prefix string prefix for the variable ID
 * @return array
 */
-function SPSSFieldMap($iSurveyID, $prefix = 'V') {
-    global $clang, $surveyprivate;
-
+function SPSSFieldMap($iSurveyID, $prefix = 'V')
+{
     $typeMap = array(
-'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
-'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
-'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
-'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
-'1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
-'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
-'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
-'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
-'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
-'D'=>Array('name'=>'Date','size'=>20,'SPSStype'=>'DATETIME23.2'),
-'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
-'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
-'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
-'!'=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'F'),
-'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'F'),
-'Z'=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'F'),
-'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
-'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
-'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
-'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
-'M'=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
-'P'=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
-'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
-'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
-'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
-'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
-'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
-':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
-';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
-'|'=>Array('name'=>'File upload','size'=>1,'SPSStype'=>'A'),
-'*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
-);
+        '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
+        'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+        'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+        'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
+        '1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
+        'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
+        'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
+        'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
+        'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
+        'D'=>Array('name'=>'Date','size'=>20,'SPSStype'=>'DATETIME23.2'),
+        'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
+        'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
+        'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
+        '!'=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'F'),
+        'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'F'),
+        'Z'=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'F'),
+        'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
+        'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
+        'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
+        'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
+        'M'=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
+        'P'=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
+        'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
+        'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
+        'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
+        'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
+        'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
+        ':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
+        ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
+        '|'=>Array('name'=>'File upload','size'=>1,'SPSStype'=>'A'),
+        '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
+    );
 
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
@@ -1507,11 +1506,10 @@ function concat()
 
 function group_export($action, $iSurveyID, $gid)
 {
-    viewHelper::disableHtmlLogging();
-
     $fn = "limesurvey_group_$gid.lsg";
     $xml = getXMLWriter();
 
+    viewHelper::disableHtmlLogging();
     header("Content-Type: application/force-download");
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -1706,30 +1704,30 @@ function tokensExport($iSurveyID)
 
     $bquery = "SELECT * FROM {{tokens_$iSurveyID}} where 1=1";
     $databasetype = Yii::app()->db->getDriverName();
-    if ($sEmailFiter!='')
+    if (trim($sEmailFiter)!='')
     {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
         {
-            $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$sEmailFiter.'%', true);
+            $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
         }
         else
         {
-            $bquery .= ' and email like '.dbQuoteAll('%'.$sEmailFiter.'%', true);
+            $bquery .= ' and email like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
         }
     }
-    if ($iTokenStatus==1)
+    if ($_POST['tokenstatus']==1)
     {
         $bquery .= " and completed<>'N'";
     }
     elseif ($iTokenStatus==2)
     {
         $bquery .= " and completed='N'";
-        if ($bIsNotAnonymous)
-        {
-            $bquery .=" and token not in (select token from {{survey_$iSurveyID}} group by token)";
-        }
     }
-    if ($iTokenStatus==3 && $bIsNotAnonymous)
+    elseif($iTokenStatus==3 && $bIsNotAnonymous)
+    {
+        $bquery .= " and completed='N' and token not in (select token from {{survey_$iSurveyID}} group by token)";
+    }
+    elseif($iTokenStatus==4 && $bIsNotAnonymous)
     {
         $bquery .= " and completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)";
     }

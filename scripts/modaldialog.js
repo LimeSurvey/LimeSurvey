@@ -1,18 +1,16 @@
 $(function() {
     openUploadModalDialog();
 });
-
 function openUploadModalDialog(){
     $('.upload').click(function(e) {
         e.preventDefault();
         var $this = $(this);
-
         var show_title   = getQueryVariable('show_title', this.href);
         var show_comment = getQueryVariable('show_comment', this.href);
         var pos          = getQueryVariable('pos', this.href);
         var fieldname    = getQueryVariable('fieldname', this.href);
         var buttonsOpts = {};
-        buttonsOpts[translt.returnTxt] = function() {
+        buttonsOpts[uploadLang.returnTxt] = function() {
             $(this).dialog("close");
         };
         var windowwidth = $(window).width()-30;
@@ -20,7 +18,7 @@ function openUploadModalDialog(){
 
         $('#uploader').dialog('destroy').remove(); // destroy the old modal dialog
         $('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-                title: translt.title,
+                title: uploadLang.title,
                 autoOpen: true,
                 width: dialogwidth,
                 height: 'auto',
@@ -32,6 +30,7 @@ function openUploadModalDialog(){
                 autoResize: false,
                 draggable: true,
                 closeOnEscape: false,
+                dialogClass: "dialog-upload",
                 beforeClose: function() {
                     var pass;
                     if(document.getElementById('uploader').contentDocument) {
@@ -59,12 +58,13 @@ function openUploadModalDialog(){
 }
 $(window).resize(function() { 
     setWidthUploader();
-    if($("iframe#uploader") && jQuery.isFunction($("iframe#uploader")[0].contentWindow.fixParentHeigth))
+    if(typeof $("iframe#uploader")[0]!=="undefined" && jQuery.isFunction($("iframe#uploader")[0].contentWindow.fixParentHeigth))
         $("iframe#uploader")[0].contentWindow.fixParentHeigth();
 });
 /* Reset the position of the dialog (recenter) */
 function resetUploaderPosition(){
      $( "#uploader" ).dialog( "option", "position", $( "#uploader" ).dialog( "option", "position" ) );
+     
 }
 /* Set the with of upload madal and uploader frame according to windows width */
 function setWidthUploader(){
@@ -104,7 +104,7 @@ function isValueInArray(arr, val) {
     return inArray;
 }
 
-function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show_comment, pos) {
+function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show_comment) {
     var jsonobj;
     var i;
     var display = '';
@@ -115,37 +115,28 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
     }
 
     if (jsonstring !== '')
-        {
+    {
         jsonobj = eval('(' + jsonstring + ')');
         display = '<table width="100%" class="question uploadedfiles"><thead><tr><td width="20%">&nbsp;</td>';
         if (show_title != 0)
-            display += '<th>'+translt.headTitle+'</th>';
+            display += '<th>'+uploadLang.headTitle+'</th>';
         if (show_comment != 0)
-            display += '<th>'+translt.headComment+'</th>';
-        display += '<th>'+translt.headFileName+'</th><th class="edit"></th></tr></thead><tbody>';
+            display += '<th>'+uploadLang.headComment+'</th>';
+        display += '<th>'+uploadLang.headFileName+'</th><th class="edit"></th></tr></thead><tbody>';
         var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
 
         for (i = 0; i < filecount; i++)
-            {
-            if (pos)
-                {
-                if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td class="upload image"><img src="' + uploadurl + '/sid/'+surveyid+'/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
-                else
-                    display += '<tr><td class="upload placeholder"><img src="'+imageurl+'/placeholder.png" height=100px /></td>';
-            }
+        {
+            if (isValueInArray(image_extensions, jsonobj[i].ext))
+                display += '<tr><td class="upload image"><img src="' + uploadurl + '/filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" class="uploaded" /></td>';
             else
-                {
-                if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td class="upload image"><img src="' + uploadurl + 'filegetcontents/'+decodeURIComponent(jsonobj[i].filename)+'" height=100px /></td>';
-                else
-                    display += '<tr><td class="upload placeholder"><img src="'+imageurl+'/placeholder.png" height=100px /></td>';
-            }
+                display += '<tr><td class="upload placeholder"><div class="upload-placeholder" /></td>';
+
             if (show_title != 0)
                 display += '<td class="upload title">'+jsonobj[i].title+'</td>';
             if (show_comment != 0)                                                                                                  
                 display += '<td class="upload comment">'+jsonobj[i].comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="'+imageurl+'/edit.png" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();" style="cursor:pointer"></td></tr>';
+            display +='<td class="upload edit">'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<a class="upload-edit" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();">'+uploadLang.editFile+'</a></td></tr>';
         }
         display += '</tbody></table>';
 

@@ -1,5 +1,5 @@
 <?php
-class Authwebserver extends AuthPluginBase
+class Authwebserver extends ls\pluginmanager\AuthPluginBase
 {
     protected $storage = 'DbStorage';    
     
@@ -23,8 +23,7 @@ class Authwebserver extends AuthPluginBase
                 )
     );
     
-    public function __construct(PluginManager $manager, $id) {
-        parent::__construct($manager, $id);
+    public function init() {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle
@@ -96,8 +95,16 @@ class Authwebserver extends AuthPluginBase
                 $aUserProfile=$this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            $this->setAuthSuccess($oUser);
-            return;
+            if (Permission::model()->hasGlobalPermission('auth_webserver','read',$oUser->uid))
+            {
+                $this->setAuthSuccess($oUser);
+                return;
+            }
+            else
+            {
+                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed to this user'));
+                return;
+            }
         }
 
         if ($this->api->getConfigKey('auth_webserver_autocreate_user') && isset($aUserProfile) && is_null($oUser))
@@ -114,6 +121,7 @@ class Authwebserver extends AuthPluginBase
             {
                 $permission=new Permission;
                 $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
+                $this->setAuthPermission($oUser->uid,'auth_webserver');
 
                 // read again user from newly created entry
                 $this->setAuthSuccess($oUser);

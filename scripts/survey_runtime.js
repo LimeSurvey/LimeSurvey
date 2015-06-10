@@ -19,11 +19,12 @@ tableCellAdapters();
 activateLanguageChanger();
 $(document).ready(function()
 {
-    doToolTipTable();
     navbuttonsJqueryUi();
     showStartPopups();
     addClassEmpty();
     noScrollOnSelect();
+    doToolTipTable();
+
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
@@ -86,10 +87,13 @@ function limesurveySubmitHandler(){
     $(document).on("click",".disabled",function(){return false});
     $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
 
-    $(document).on('click',".button", function(event){
-        $(this).prop('active',true).addClass('active');
-        $(".button.ui-button" ).not($(this)).button( "option", "disabled", true );
-        $(".button").not($(this)).prop('disabled',true).addClass('disabled');
+    $(document).on('click',"#limesurvey .button", function(event){
+        if(!$("#limesurvey :invalid").length)
+        {
+            $(this).prop('active',true).addClass('active');
+            $("#limesurvey .button.ui-button" ).not($(this)).button( "option", "disabled", true );
+            $("#limesurvey .button").not($(this)).prop('disabled',true).addClass('disabled');
+        }
     });
     if (document.all && !document.querySelector) { // IE7 or lower
         $(function() { 
@@ -145,6 +149,7 @@ function checkconditions(value, name, type, evt_type)
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
+
 /**
  * fixnum_checkconditions : javascript function attach to some element 
  * Update the answer of the user to be numeric and launch checkconditions
@@ -582,6 +587,7 @@ function maxlengthtextarea(){
         }
     });
 }
+/* add a title on cell with answer */
 function doToolTipTable()
 {
    $(document).on("mouseover"," td.answer-item",function(){

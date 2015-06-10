@@ -1,6 +1,6 @@
 <?php
 if (count($_POST) == 0) {
-    $clang = Yii::app()->lang;
+    
 
     $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
     . "from {{surveys_languagesettings}} as a join {{surveys}} as b on a.surveyls_survey_id = b.sid"
@@ -47,7 +47,7 @@ EOD;
 }
 else {
 
-    $clang = Yii::app()->lang;
+    
 
     $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
     $surveyid = sanitize_int($surveyInfo[0]);

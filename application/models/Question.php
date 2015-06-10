@@ -62,7 +62,7 @@
         */
         public function relations()
         {
-			$alias = $this->getTableAlias();
+            $alias = $this->getTableAlias();
             return array(
                 'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
@@ -77,7 +77,7 @@
         */
         public function rules()
         {
-            $clang = Yii::app()->lang;
+            
             $aRules= array(
                         array('title','required','on' => 'update, insert'),// 140207 : Before was commented, put only on update/insert ?
                         array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
@@ -107,8 +107,20 @@
                                         )
                                     ),
                                 'message' => gT('Subquestion codes must be unique.'));
+                // Disallow other title if question allow other
+                $oParentQuestion=Question::model()->findByPk(array("qid"=>$this->parent_qid,'language'=>$this->language));
+                if($oParentQuestion->other=="Y")
+                    $aRules[]= array('title', 'compare','compareValue'=>'other','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if question allow other."),"other"), 'except' => 'archiveimport');
             }
-            if($this->qid && $this->language)
+            else
+            {
+                // Disallow other if sub question have 'other' for title
+                $oSubquestionOther=Question::model()->find("parent_qid=:parent_qid and title='other'",array("parent_qid"=>$this->qid));
+                if($oSubquestionOther)
+                    $aRules[]= array('other', 'compare','compareValue'=>'Y','operator'=>'!=', 'message'=> sprintf(gT('Question can not allow other with a sub question code %s.'),'other'), 'except' => 'archiveimport' );
+
+            }
+            if(!$this->isNewRecord)
             {
                 $oActualValue=Question::model()->findByPk(array("qid"=>$this->qid,'language'=>$this->language));
                 if($oActualValue && $oActualValue->title==$this->title)
@@ -131,6 +143,7 @@
             else
             {
                 $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
+
             }
 
             return $aRules;
@@ -635,6 +648,52 @@
             asort($questionTypes);
             
             return $questionTypes;
+        }
+        /**
+         * This function return the class by question type
+         * @param string question type
+         * @return string Question class to be added to the container
+         *
+         * Maybe move class in typeList ?
+         */
+        public static function getQuestionClass($sType)
+        {
+            switch($sType)
+            {
+                case "1": return 'array-flexible-duel-scale';
+                case '5': return 'choice-5-pt-radio';
+                case 'A': return 'array-5-pt';
+                case 'B': return 'array-10-pt';
+                case 'C': return 'array-yes-uncertain-no';
+                case 'D': return 'date';
+                case 'E': return 'array-increase-same-decrease';
+                case 'F': return 'array-flexible-row';
+                case 'G': return 'gender';
+                case 'H': return 'array-flexible-column';
+                case 'I': return 'language';
+                case 'K': return 'numeric-multi';
+                case 'L': return 'list-radio';
+                case 'M': return 'multiple-opt';
+                case 'N': return 'numeric';
+                case 'O': return 'list-with-comment';
+                case 'P': return 'multiple-opt-comments';
+                case 'Q': return 'multiple-short-txt';
+                case 'R': return 'ranking';
+                case 'S': return 'text-short';
+                case 'T': return 'text-long';
+                case 'U': return 'text-huge';
+                //case 'W': return 'list-dropdown-flexible'; //   LIST drop-down (flexible label)
+                case 'X': return 'boilerplate';
+                case 'Y': return 'yes-no';
+                case 'Z': return 'list-radio-flexible';
+                case '!': return 'list-dropdown';
+                //case '^': return 'slider';          //  SLIDER CONTROL
+                case ':': return 'array-multi-flexi';
+                case ";": return 'array-multi-flexi-text';
+                case "|": return 'upload-files';
+                case "*": return 'equation';
+                default:  return 'generic_question'; // fallback
+            };
         }
     }
 

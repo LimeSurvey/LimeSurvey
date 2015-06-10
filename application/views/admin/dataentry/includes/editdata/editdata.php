@@ -21,21 +21,21 @@
 	<tr>
 		<td align='left'>
 			<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' />
-			<label for='closerecord'>".$clang->gT("Finalize response submission")."</label>
+			<label for='closerecord'>".gT("Finalize response submission")."</label>
 		</td>
 	</tr>
     <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')); ?>' />
     <tr>
     	<td align='left'>
     		<input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' />
-    		<label for='save'><?php $clang->eT("Save for further completion by survey user"); ?></label>
+    		<label for='save'><?php eT("Save for further completion by survey user"); ?></label>
         </td>
    	</tr>
 </table>
 
 <div name='saveoptions' id='saveoptions' style='display: none'>
 	<table class='outlinetable'>
-    	<tr><td align='right'><?php $clang->eT("Identifier:"); ?></td>
+    	<tr><td align='right'><?php eT("Identifier:"); ?></td>
     		<td>
     			<input type='text' name='save_identifier'"
 	    			<?php if (returnGlobal('identifier')) { ?>
@@ -54,7 +54,7 @@
 </div>
 <tr>
 	<td align='center'>
-		<input type='submit' value='<?php $clang->eT("Submit"); ?>' />
+		<input type='submit' value='<?php eT("Submit"); ?>' />
 		<input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
 		<input type='hidden' name='subaction' value='insert' />
 		<input type='hidden' name='language' value='<?php echo $sDataEntryLanguage; ?>' />

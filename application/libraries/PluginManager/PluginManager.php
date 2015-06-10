@@ -1,14 +1,16 @@
 <?php
+namespace ls\pluginmanager;
+use \Yii;
+use Plugin;
     /**
      * Factory for limesurvey plugin objects.
      */
-    class PluginManager {
-
-        /**
+    class PluginManager extends \CApplicationComponent{
+       /**
          * Object containing any API that the plugins can use.
-         * @var object
+         * @var mixed $api The class name of the API class to load, or
          */
-        protected $api = null;
+        public $api;
         /**
          * Array mapping guids to question object class names.
          * @var type 
@@ -17,7 +19,10 @@
         
         protected $plugins = array();
         
-        protected $pluginDirs = array();
+        protected $pluginDirs = [
+            'webroot.plugins', // User plugins
+            'application.core.plugins' // Core plugins
+        ];
         
         protected $stores = array();
 
@@ -26,24 +31,17 @@
         /**
          * Creates the plugin manager.
          * 
-         * @param mixed $api The class name of the API class to load, or
+         * 
          * a reference to an already constructed reference.
          */
-        public function __construct($api) 
-        {
-            if (is_object($api))
-            {
-                $this->api = $api;
+        public function init() {
+            parent::init();
+            if (!is_object($this->api)) {
+                $class = $this->api;
+                $this->api = new $class;
             }
-            else 
-            {
-                $this->api = new $api();
-            }
-            
-            $this->pluginDirs[] = 'webroot.plugins';           // User plugins
-            $this->pluginDirs[] = 'application.core.plugins';  // Core plugins
+            $this->loadPlugins();
         }
-        
         /**
          * Return a list of installed plugins, but only if the files are still there
          * 
@@ -69,12 +67,36 @@
         }
         
         /**
+         * Return the status of plugin (true/active or false/desactive)
+         *
+         * @param sPluginName Plugin name
+         * @return boolean
+         */
+        public function isPluginActive($sPluginName)
+        {
+            $pluginModel = Plugin::model();
+            $record = $pluginModel->findByAttributes(array('name' => $sPluginName, 'active' => '1'));
+            if ($record == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /**
          * Returns the storage instance of type $storageClass.
          * If needed initializes the storage object.
          * @param string $storageClass
          */
         public function getStore($storageClass)
         {
+            if (!class_exists($storageClass)
+                    && class_exists('ls\\pluginmanager\\' . $storageClass)) {
+                $storageClass = 'ls\\pluginmanager\\' . $storageClass;
+            }
             if (!isset($this->stores[$storageClass]))
             {
                 $this->stores[$storageClass] = new $storageClass();
@@ -181,13 +203,13 @@
          * This function is not efficient so should only be used in the admin interface
          * that specifically deals with enabling / disabling plugins.
          */
-        public function scanPlugins()
+        public function scanPlugins($forceReload = false)
         {
             $result = array();
             foreach ($this->pluginDirs as $pluginDir) {
                 $currentDir = Yii::getPathOfAlias($pluginDir);
                 if (is_dir($currentDir)) {
-                    foreach (new DirectoryIterator($currentDir) as $fileInfo)
+                    foreach (new \DirectoryIterator($currentDir) as $fileInfo)
                     {
                         if (!$fileInfo->isDot() && $fileInfo->isDir())
                         {
@@ -274,6 +296,9 @@
                 {
                     if ($this->getPluginInfo($pluginName) !== false) {
                         $this->plugins[$id] = new $pluginName($this, $id);
+                        if (method_exists($this->plugins[$id], 'init')) {
+                            $this->plugins[$id]->init();
+                        }
                     } else {
                         $this->plugins[$id] = null;
                     }
@@ -301,7 +326,7 @@
             } catch (Exception $exc) {
                 // Something went wrong, maybe no database was present so we load no plugins
             }
-            
+
             $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this));    // Alow plugins to do stuff after all plugins are loaded
         }
         
