@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-06-10 12:16:16+00:00\n"
+"POT-Creation-Date: 2015-06-10 12:54:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -436,15 +436,15 @@ msgid "Survey administrator %s (%s)"
 msgstr ""
 
 #: application/controllers/RegisterController.php:285
-msgid "You are registred but an error happen when trying to send the email, please contact the survey administrator."
+msgid "You are registered but an error happened when trying to send the email - please contact the survey administrator."
 msgstr ""
 
 #: application/controllers/RegisterController.php:313
-msgid "The mail address you have entered is already registered an the survey has been completed."
+msgid "The email address you have entered is already registered and the survey has been completed."
 msgstr ""
 
 #: application/controllers/RegisterController.php:317
-msgid "This email address is already registered but someone ask to not receive new email again."
+msgid "This email address cannot be used because it was opted out of this survey."
 msgstr ""
 
 #: application/controllers/RegisterController.php:321
@@ -2732,7 +2732,7 @@ msgid "You are not authorized to delete questions."
 msgstr ""
 
 #: application/controllers/admin/questions.php:1035
-msgid "The existing label has assessment values assigned."
+msgid "The existing label set has assessment values assigned."
 msgstr ""
 
 #: application/controllers/admin/questions.php:1035
@@ -2740,7 +2740,7 @@ msgid "If you replace the label set the existing asssessment values will be lost
 msgstr ""
 
 #: application/controllers/admin/questions.php:1039
-msgid "The existing label has different/more languages."
+msgid "The existing label set has different/more languages."
 msgstr ""
 
 #: application/controllers/admin/questions.php:1039
@@ -2752,7 +2752,7 @@ msgid "Do you really want to continue?"
 msgstr ""
 
 #: application/controllers/admin/questions.php:1050
-msgid "You are about to replace a given label set with the current answer options"
+msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
 #: application/controllers/admin/quotas.php:167
@@ -2908,7 +2908,7 @@ msgid "Group"
 msgstr ""
 
 #: application/controllers/admin/responses.php:1366
-msgid "Sorry, no files for this response(s)"
+msgid "Sorry, there are no files for this response."
 msgstr ""
 
 #: application/controllers/admin/saved.php:52
@@ -3857,7 +3857,7 @@ msgid "Can't connect to the LDAP directory"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2001
-msgid "Only csv file are allowed."
+msgid "Only CSV files are allowed."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2005
@@ -4563,7 +4563,7 @@ msgid "HTML"
 msgstr ""
 
 #: application/core/plugins/Authwebserver/Authwebserver.php:105
-msgid "Web server authentication method is not allowed to this user"
+msgid "Web server authentication method is not allowed for this user"
 msgstr ""
 
 #: application/core/plugins/ExportR/ExportR.php:27
@@ -5902,7 +5902,7 @@ msgid "Header for second scale"
 msgstr ""
 
 #: application/helpers/common_helper.php:2816
-msgid "Final equation to set in database, default to question text."
+msgid "Final equation to set in database, defaults to question text."
 msgstr ""
 
 #: application/helpers/common_helper.php:2817
@@ -9244,13 +9244,8 @@ msgstr ""
 msgid "Subquestion codes must be unique."
 msgstr ""
 
-#: application/models/Question.php:113
-#: application/views/admin/survey/Question/subQuestion_view.php:13
-msgid "'%s' can not be used if question allow other."
-msgstr ""
-
-#: application/models/Question.php:120
-msgid "Question can not allow other with a sub question code %s."
+#: application/models/Question.php:113 application/models/Question.php:120
+msgid "'%s' can not be used if the 'Other' option for this question is activated."
 msgstr ""
 
 #: application/models/Question.php:140
@@ -10218,15 +10213,15 @@ msgid "Text abbreviated"
 msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:105
-msgid "Number of caracters"
+msgid "Number of characters"
 msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:110
-msgid "Use expression manager code"
+msgid "Use Expression Manager code"
 msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:111
-msgid "Code an texte separator"
+msgid "Code/text separator"
 msgstr ""
 
 #: application/views/admin/export/exportresults_view.php:121
@@ -10878,7 +10873,7 @@ msgid "Show header in answers export PDFs?"
 msgstr ""
 
 #: application/views/admin/globalSettings_view.php:603
-msgid "Wigth of PDF header logo"
+msgid "Width of PDF header logo"
 msgstr ""
 
 #: application/views/admin/globalSettings_view.php:608
@@ -13134,6 +13129,10 @@ msgstr ""
 msgid "Error: You are trying to use duplicate subquestion codes."
 msgstr ""
 
+#: application/views/admin/survey/Question/subQuestion_view.php:13
+msgid "'%s' can not be used if question allow other."
+msgstr ""
+
 #: application/views/admin/survey/Question/subQuestion_view.php:29
 msgid "Edit subquestions"
 msgstr ""
@@ -14000,7 +13999,8 @@ msgid "Show group description only (Forced by the system administrator)"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:50
-msgid "Hide both (Forced by the system administrator"
+#: application/views/admin/survey/subview/tabPresentation_view.php:85
+msgid "Hide both (Forced by the system administrator)"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:75
@@ -14009,10 +14009,6 @@ msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:80
 msgid "Show question code only (Forced by the system administrator)"
-msgstr ""
-
-#: application/views/admin/survey/subview/tabPresentation_view.php:85
-msgid "Hide both (Forced by the system administrator)"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:130
@@ -14029,7 +14025,7 @@ msgid "Template"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:161
-msgid "Template Preview"
+msgid "Template preview"
 msgstr ""
 
 #: application/views/admin/survey/subview/tabPresentation_view.php:162
@@ -15747,7 +15743,7 @@ msgid "Description"
 msgstr ""
 
 #: application/views/register/registerForm.php:3
-msgid "A table with registering information"
+msgid "A table with a registration form"
 msgstr ""
 
 #: application/views/statistics_user_view.php:7
