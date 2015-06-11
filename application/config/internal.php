@@ -65,7 +65,8 @@ $internalConfig = array(
             'showScriptName' => true,
         ],
         'assetManager' => [
-            'baseUrl' => '/tmp/assets',
+            'class' => \AssetManager::class,
+            'baseUrl' => '{baseUrl}/tmp/assets',
             'basePath'=> __DIR__ . '/../../tmp/assets'
         ],
         'request' => [
@@ -140,7 +141,7 @@ $internalConfig = array(
             'class' => 'AuthManager'
         ],
         'themeManager' => [
-            'class' => 'ThemeManager',
+            'class' => ThemeManager::class,
             'basePath' => __DIR__ . '/../themes'
         ]
     ],
