@@ -5,7 +5,7 @@ use Plugin;
     /**
      * Factory for limesurvey plugin objects.
      */
-    class PluginManager extends \CApplicationComponent{
+    class PluginManager extends \PluginManager {
        /**
          * Object containing any API that the plugins can use.
          * @var mixed $api The class name of the API class to load, or
@@ -265,7 +265,7 @@ use Plugin;
             
             $result['description'] = call_user_func(array($class, 'getDescription'));
             $result['pluginName'] = call_user_func(array($class, 'getName'));
-            $result['pluginClass'] = $class;            
+            $result['pluginClass'] = $class;
             return $result;
         }
         
@@ -296,6 +296,8 @@ use Plugin;
                 {
                     if ($this->getPluginInfo($pluginName) !== false) {
                         $this->plugins[$id] = new $pluginName($this, $id);
+
+
                         if (method_exists($this->plugins[$id], 'init')) {
                             $this->plugins[$id]->init();
                         }

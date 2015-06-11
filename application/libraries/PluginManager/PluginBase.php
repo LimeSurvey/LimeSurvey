@@ -33,11 +33,11 @@ namespace ls\pluginmanager;
 
         /**
          * Constructor for the plugin
-         * 
+         * @todo Add proper type hint in 3.0
          * @param PluginManager $manager    The plugin manager instantiating the object
          * @param int           $id         The id for storage
          */
-        public function __construct(PluginManager $manager, $id)
+        public function __construct(\PluginManager $manager, $id)
         {
             $this->pluginManager = $manager;
             $this->id = $id;
