@@ -225,4 +225,33 @@ class viewHelper
         $oPurifier = new CHtmlPurifier();
         return $oPurifier->purify($sHtml);
      }
+    /**
+     * Show clean string, leaving ONLY tag for Expression
+     * @param string : Html to clean
+     * @return string
+     */
+     public static function stripTagsEM($sHtml)
+     {
+        $oPurifier = new CHtmlPurifier();
+        $oPurifier->options = array(
+            'HTML.Allowed'=>'span[title|class],a[class|title|href]',
+            'Attr.AllowedClasses'=>array(
+                'em-expression',
+                'em-haveerror',
+                'em-var-string',
+                'em-function',
+                'em-var-static',
+                'em-var-before',
+                'em-var-after',
+                'em-var-inpage',
+                'em-var-error',
+                '.em-error',
+            ),    
+            'URI.AllowedSchemes'=>array( // Maybe only local ?
+                'http' => true,
+                'https' => true,
+                )
+        );
+        return $oPurifier->purify($sHtml);
+     }
 }
