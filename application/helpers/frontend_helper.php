@@ -1204,7 +1204,7 @@ function buildsurveysession($surveyid,$preview=false)
 
     $sQuery= "select count(*) from {{groups}} 
         left join {{questions}} on  {{groups}}.gid={{questions}}.gid 
-        where qid is null";
+        where {{groups}}.sid={$surveyid} and qid is null";
     $iTotalGroupsWithoutQuestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
     
