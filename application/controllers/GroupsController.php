@@ -64,8 +64,8 @@ class GroupsController extends Controller {
     }
 
     public function actionUpdate($id) {
-        $this->group = $group = $this->loadModel($id);
-        $this->survey = $group->survey;
+        $this->menus['group'] = $group = $this->loadModel($id);
+        $this->menus['survey'] = $group->survey;
         $this->render('update', ['group' => $group]);
     }
     protected function loadModel($id)
