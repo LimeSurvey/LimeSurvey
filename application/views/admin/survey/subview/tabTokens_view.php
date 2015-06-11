@@ -25,7 +25,7 @@
                     {
                         if (document.getElementById('anonymized').value == 'Y')
                         {
-                            alert('<?php $clang->eT("Warning"); ?>: <?php $clang->eT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.","js"); ?>');
+                            alert('<?php eT("Warning"); ?>: <?php eT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.","js"); ?>');
                         }
                     }
                     //--></script></label>
