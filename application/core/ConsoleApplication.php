@@ -9,6 +9,7 @@
     class ConsoleApplication extends CConsoleApplication
     {
         protected $config = array();
+        public $installed;
 
         /**
          *
@@ -22,6 +23,7 @@
         protected $api;
 
         public function __construct($config = null) {
+            $this->installed = isset($config['components']['db']['connectionString']);
             // Silent fail on unknown configuration keys.
             foreach($config as $key => $value) {
                 if (!property_exists(__CLASS__, $key) && !$this->hasProperty($key)) {
