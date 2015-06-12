@@ -72,7 +72,7 @@ function loadanswers()
         // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
         if (Yii::app()->request->getParam('loadall') == "reload")
         {
-            $oSavedSurvey=SavedControl::model()->find("identifier=:identifier AND access_code=:access_code",array(":identifier"=>$sLoadName,":access_code"=>md5($sLoadPass)));
+            $oSavedSurvey=SavedControl::model()->find("identifier=:identifier AND (access_code=:access_code OR access_code=:sha256_code)",array(':identifier'=>$sLoadName,':access_code'=>md5($sLoadPass),':sha256_code'=>hash('sha256',$sLoadPass)));
             // We don't need to control if we have one, because we do the test before
             $_SESSION['survey_'.$surveyid]['scid'] = $oSavedSurvey->scid;
             App()->surveySessionManager->current->setStep(($oSavedSurvey->saved_thisstep>1)?$oSavedSurvey->saved_thisstep:1);
