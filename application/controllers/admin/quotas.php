@@ -63,7 +63,7 @@ class quotas extends Survey_Common_Action
     {
         $clang=$this->getController()->lang;
         if (!empty($sPermission) && !(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission))) {
-            Yii::app()->session['flashmessage'] = $clang->gT('Access denied!');
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
             $this->_redirectToIndex($iSurveyId);
         }
     }
@@ -77,7 +77,7 @@ class quotas extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->session['flashmessage'] = $clang->gT('Access denied!');
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
             $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyId"));
         }
     }
@@ -164,7 +164,7 @@ class quotas extends Survey_Common_Action
             header("Content-Disposition: attachment; filename=results-survey" . $iSurveyId . ".csv");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
             header("Pragma: public");
-            echo $clang->gT("Quota name") . "," . $clang->gT("Limit") . "," . $clang->gT("Completed") . "," . $clang->gT("Remaining") . "\r\n";
+            echo gT("Quota name") . "," . gT("Limit") . "," . gT("Completed") . "," . gT("Remaining") . "\r\n";
             foreach ($csvoutput as $line)
             {
                 echo $line;
@@ -354,7 +354,7 @@ class quotas extends Survey_Common_Action
             $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
             if ($first)
             {
-                $aTabTitles[$sLanguage].= ' (' . $clang->gT("Base language") . ')';
+                $aTabTitles[$sLanguage].= ' (' . gT("Base language") . ')';
                 $first = false;
             }
             $aData['langquotainfo'] = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLanguage));
@@ -471,8 +471,8 @@ class quotas extends Survey_Common_Action
         } elseif ($aQuestionType == 'G')
         {
             $aAnswerList = array(
-                'M' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
-                'F' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Female"), 'code' => 'F'));
+                'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
+                'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
         } elseif ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!')
         {
         	
@@ -516,8 +516,8 @@ class quotas extends Survey_Common_Action
         } elseif ($aQuestionType == 'Y')
         {
             $aAnswerList = array(
-                'Y' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
-                'N' => array('Title' => $aQuestion['title'], 'Display' => $clang->gT("No"), 'code' => 'N'));
+                'Y' => array('Title' => $aQuestion['title'], 'Display' => gT("Yes"), 'code' => 'Y'),
+                'N' => array('Title' => $aQuestion['title'], 'Display' => gT("No"), 'code' => 'N'));
         } elseif ($aQuestionType == 'I')
         {
             $slangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
