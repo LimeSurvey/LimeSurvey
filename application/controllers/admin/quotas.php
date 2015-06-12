@@ -47,7 +47,6 @@ class quotas extends Survey_Common_Action
     {
         // Set the variables in an array
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
-        $aData['clang'] = $this->getController()->lang;
         $aData['sBaseLang'] = Survey::model()->findByPk($iSurveyId)->language;
         $aData['aLangs'] = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
         array_unshift($aData['aLangs'], $aData['sBaseLang']);
@@ -61,7 +60,6 @@ class quotas extends Survey_Common_Action
 
     private function _checkPermissions($iSurveyId, $sPermission)
     {
-        $clang=$this->getController()->lang;
         if (!empty($sPermission) && !(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission))) {
             Yii::app()->session['flashmessage'] =gT('Access denied!');
             $this->_redirectToIndex($iSurveyId);
@@ -70,7 +68,6 @@ class quotas extends Survey_Common_Action
 
     function _redirectToIndex($iSurveyId)
     {
-        $clang=$this->getController()->lang;
         if(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','read'))
         {
             $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
@@ -94,7 +91,6 @@ class quotas extends Survey_Common_Action
             $aViewUrls[] = 'viewquotas_view';
         }
 
-        $clang = $aData['clang'];
         $totalquotas = 0;
         $totalcompleted = 0;
         $csvoutput = array();
@@ -342,7 +338,6 @@ class quotas extends Survey_Common_Action
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
         $aLangs = $aData['aLangs'];
-        $clang = $aData['clang'];
         $aViewUrls = array();
 
         $aQuotaInfo = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
@@ -375,7 +370,6 @@ class quotas extends Survey_Common_Action
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
         $sBaseLang = $aData['sBaseLang'];
-        $clang = $aData['clang'];
         $aViewUrls = array();
 
         if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
@@ -428,7 +422,6 @@ class quotas extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'create');
         $aData = $this->_getData($iSurveyId);
-        $clang = $aData['clang'];
 
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['langs'] = $aData['aLangs'];
@@ -451,7 +444,6 @@ class quotas extends Survey_Common_Action
         $iQuotaId    = sanitize_int($iQuotaId);
         $aData       = $this->_getData($iSurveyId);
         $sBaseLang   = $aData['sBaseLang'];
-        $clang       = $aData['clang'];
         $this->_checkPermissions($iSurveyId, 'read');
 		
 			
