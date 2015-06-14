@@ -245,8 +245,9 @@ class viewHelper
                 'em-var-after',
                 'em-var-inpage',
                 'em-var-error',
-                '.em-error',
-            ),    
+                'em-assign',
+                'em-error',
+            ),
             'URI.AllowedSchemes'=>array( // Maybe only local ?
                 'http' => true,
                 'https' => true,
