@@ -4,7 +4,7 @@
     unset($aAvailableLang[$esrow['language']]);
     $aLang=array();
     foreach ($aAvailableLang as $lang => $aLanguage) {
-        $aLang[$lang]="{$aLanguage['description']} (".html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8').")";
+        $aLang[$lang]=html_entity_decode($aLanguage['description'], ENT_QUOTES, 'UTF-8')." (".html_entity_decode($aLanguage['nativedescription'], ENT_QUOTES, 'UTF-8').")";
     }
 
     $this->widget('ext.SettingsWidget.SettingsWidget', array(
@@ -25,12 +25,10 @@
                 'type'=>'select',
                 'label'=>gT('Base language'),
                 'options'=>array(
-                    $esrow['language']=getLanguageNameFromCode($esrow['language'],false),
+                    $esrow['language']=html_entity_decode(getLanguageNameFromCode($esrow['language'],false), ENT_QUOTES, 'UTF-8'),
                 ),
                 'htmlOptions'=>array(
                     'disabled'=>true,
-                ),
-                'selectOptions'=>array(
                 ),
                 'current'=>$esrow['language'],
             ),
@@ -39,7 +37,6 @@
                 'label'=>gT('Additional Languages'),
                 'htmlOptions'=>array(
                     'multiple'=>true,
-
                 ),
                 'options'=>$aLang,
                 'current'=>Survey::model()->findByPk($surveyid)->additionalLanguages,

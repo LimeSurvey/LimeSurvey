@@ -77,7 +77,7 @@
                 'updatenotification'=>array(
                     'type'=>'select',
                     'label'=>gT("Show update notifications"),
-                    'options'=>array('never'=>gT("Never"),'stable'=>gT("For stable versions"),'both'=>gT("For stable and unstable versions")),
+                    'options'=>array('never'=>gT("Never",'unescaped'),'stable'=>gT("For stable versions",'unescaped'),'both'=>gT("For stable and unstable versions",'unescaped')),
                     'current'=>$sUpdateNotification,
                 ),
             );
@@ -202,9 +202,9 @@
                         'readonly'=>$bDemoMode,
                     ),
                     'options'=>array(
-                        'none'=>gT("No HTML editor"),
-                        'inline'=>gT("Inline HTML editor (default)"),
-                        'popup'=>gT("Popup HTML editor")
+                        'none'=>gT("No HTML editor",'unescaped'),
+                        'inline'=>gT("Inline HTML editor (default)",'unescaped'),
+                        'popup'=>gT("Popup HTML editor",'unescaped')
                     ),
                     'current'=>getGlobalSetting('defaulthtmleditormode'),
                 ),
@@ -218,8 +218,8 @@
                         'readonly'=>$bDemoMode,
                     ),
                     'options'=>array(
-                        'default'=>gT("Full selector (default)"),
-                        'none'=>gT("Simple selector"),
+                        'default'=>gT("Full selector (default)",'unescaped'),
+                        'none'=>gT("Simple selector",'unescaped'),
                     ),
                     'current'=>getGlobalSetting('defaultquestionselectormode'),
                 ),
@@ -233,8 +233,8 @@
                         'readonly'=>$bDemoMode,
                     ),
                     'options'=>array(
-                        'default'=>gT("Full template editor (default)"),
-                        'none'=>gT("Simple template editor"),
+                        'default'=>gT("Full template editor (default)",'unescaped'),
+                        'none'=>gT("Simple template editor",'unescaped'),
                     ),
                     'current'=>getGlobalSetting('defaulttemplateeditormode'),
                 ),
@@ -366,7 +366,7 @@
                         'type'=>'select',
                         'label'=>gt("Email method"),
                         'options'=>array(
-                            'mail'=>gT("PHP (default)"),'smtp'=>gT("SMTP"),'sendmail'=>gT("Sendmail"),'qmail'=>gT("Qmail"),
+                            'mail'=>gT("PHP (default)",'unescaped'),'smtp'=>gT("SMTP",'unescaped'),'sendmail'=>gT("Sendmail",'unescaped'),'qmail'=>gT("Qmail",'unescaped'),
                         ),
                         'current'=>getGlobalSetting('emailmethod'),
                     ),
@@ -410,7 +410,7 @@
                             'smtp-on',
                         ),
                         'label'=>gt("SMTP SSL/TLS"),
-                        'options'=>array(''=>gT("Off"),'ssl'=>gT("SSL"),'tls'=>gT("TLS")),
+                        'options'=>array(''=>gT("Off",'unescaped'),'ssl'=>gT("SSL",'unescaped'),'tls'=>gT("TLS",'unescaped')),
                         'current'=>getGlobalSetting('emailsmtpssl'),
                         'htmlOptions'=>array(
                             'size'=>'50',
@@ -419,7 +419,7 @@
                     'emailsmtpdebug'=>array(
                         'type'=>'select',
                         'label'=>gt("SMTP debug mode"),
-                        'options'=>array('0'=>gT("Off"),'1'=>gT("On errors"),'2'=>gT("Always")),
+                        'options'=>array('0'=>gT("Off",'unescaped'),'1'=>gT("On errors",'unescaped'),'2'=>gT("Always",'unescaped')),
                         'current'=>getGlobalSetting('emailsmtpdebug'),
                         'htmlOptions'=>array(
                             'size'=>'50',
@@ -458,7 +458,7 @@
                     'bounceaccounttype'=>array(
                         'type'=>'select',
                         'label'=>gT("Server type"),
-                        'options'=>array('off'=>gT("Off"),'IMAP'=>gT("IMAP"),'POP'=>gT("POP")),
+                        'options'=>array('off'=>gT("Off",'unescaped'),'IMAP'=>gT("IMAP",'unescaped'),'POP'=>gT("POP",'unescaped')),
                         'current'=>getGlobalSetting('bounceaccounttype'),
                     ),
                     'bounceaccounthost'=>array(
@@ -480,7 +480,7 @@
                     'bounceencryption'=>array(
                         'type'=>'select',
                         'label'=>gT("Encryption type"),
-                        'options'=>array('off'=>gT("Off"),'SSL'=>gT("SSL"),'TLS'=>gT("TLS")),
+                        'options'=>array('off'=>gT("Off",'unescaped'),'SSL'=>gT("SSL",'unescaped'),'TLS'=>gT("TLS",'unescaped')),
                         'current'=>getGlobalSetting('bounceencryption'),
                     ),
                 )
@@ -507,7 +507,7 @@
                     'surveyPreview_require_Auth'=>array(
                         'type'=>'select',
                         'label'=>gt("Survey preview only for administration users"),
-                        'options'=>array('1'=>gT("Yes"),'0'=>gT("No")),
+                        'options'=>array('1'=>gT("Yes",'unescaped'),'0'=>gT("No",'unescaped')),
                         'current'=>getGlobalSetting('surveyPreview_require_Auth'),
                     ),
                     'filterxsshtml'=>array(
@@ -516,7 +516,7 @@
                         'labelOptions'=>array(
                             'class'=>$sClassDemoMode,
                         ),
-                        'options'=>array('1'=>gT("Yes"),'0'=>gT("No")),
+                        'options'=>array('1'=>gT("Yes",'unescaped'),'0'=>gT("No",'unescaped')),
                         'current'=>getGlobalSetting('surveyPreview_require_Auth'),
                         'htmlOptions'=>array(
                             'readonly'=>$bDemoMode,
@@ -526,13 +526,13 @@
                     'usercontrolSameGroupPolicy'=>array(
                         'type'=>'select',
                         'label'=>gt("Group member can only see own group"),
-                        'options'=>array('1'=>gT("Yes"),'0'=>gT("No")),
+                        'options'=>array('1'=>gT("Yes",'unescaped'),'0'=>gT("No",'unescaped')),
                         'current'=>getGlobalSetting('usercontrolSameGroupPolicy'),
                     ),
                     'force_ssl'=>array(
                         'type'=>'select',
                         'label'=>gt("Force HTTPS"),
-                        'options'=>array('neither'=>gT("Don't force on or off"),'on'=>gT("On"),'off'=>gT('Off')),
+                        'options'=>array('neither'=>gT("Don't force on or off",'unescaped'),'on'=>gT("On",'unescaped'),'off'=>gT('Off','unescaped')),
                         'current'=>getGlobalSetting('force_ssl'),
                         'help'=>$sForceSslHelp,
                     ),
@@ -551,7 +551,7 @@
                     'shownoanswer'=>array(
                         'type'=>'select',
                         'label'=>gT("Show 'no answer' option for non-mandatory questions"),
-                        'options'=>array("1"=>gT('Yes'),"0"=>gT('No'),"2"=>gT('Survey admin can choose')),
+                        'options'=>array("1"=>gT('Yes','unescaped'),"0"=>gT('No','unescaped'),"2"=>gT('Survey admin can choose','unescaped')),
                         'current'=>getGlobalSetting('shownoanswer'),
                     ),
                     'repeatheadings'=>array(
@@ -566,19 +566,19 @@
                     'showxquestions'=>array(
                         'type'=>'select',
                         'label'=>gT('Show "There are X questions in this survey"'),
-                        'options'=>array('choose'=>gT('Survey admin can choose'),'show'=>gT('Yes'),'hide'=>gT('No')),
+                        'options'=>array('choose'=>gT('Survey admin can choose','unescaped'),'show'=>gT('Yes','unescaped'),'hide'=>gT('No','unescaped')),
                         'current'=>getGlobalSetting('showxquestions'),
                     ),
                     'showgroupinfo'=>array(
                         'type'=>'select',
                         'label'=>gT('Show question group name and/or description'),
-                        'options'=>array('choose'=>gT('Survey admin can choose'),'show'=>gT('Show both'),'name'=>gT('Show group name only'),'description'=>gT('Show group description only'),'none'=>gT('Hide both')),
+                        'options'=>array('choose'=>gT('Survey admin can choose','unescaped'),'show'=>gT('Show both','unescaped'),'name'=>gT('Show group name only','unescaped'),'description'=>gT('Show group description only','unescaped'),'none'=>gT('Hide both','unescaped')),
                         'current'=>getGlobalSetting('showgroupinfo'),
                     ),
                     'showqnumcode'=>array(
                         'type'=>'select',
                         'label'=>gT('Show question number and/or question code'),
-                        'options'=>array('choose'=>gT('Survey admin can choose'),'show'=>gT('Show both'),'number'=>gT('Show question number only'),'code'=>gT('Show question code only'),'none'=>gT('Hide both')),
+                        'options'=>array('choose'=>gT('Survey admin can choose','unescaped'),'show'=>gT('Show both','unescaped'),'number'=>gT('Show question number only','unescaped'),'code'=>gT('Show question code only','unescaped'),'none'=>gT('Hide both','unescaped')),
                         'current'=>getGlobalSetting('showqnumcode'),
                     ),
                     'pdffontsize'=>array(
@@ -593,14 +593,14 @@
                         'type'=>'select',
                         'label'=>gT("Show header in answers export PDFs?"),
                         'options'=>array(
-                            'Y' => gT("Yes"),
-                            'N' => gT("No"),
+                            'Y' => gT("Yes",'unescaped'),
+                            'N' => gT("No",'unescaped'),
                         ),
                         'current'=>getGlobalSetting('pdfshowheader'),
                     ),
                     'pdflogowidth'=>array(
                         'type'=>'int',
-                        'label'=>gT("Width of PDF header logo"),
+                        'label'=>gT("Width of PDF header logo",'unescaped'),
                         'current'=>getGlobalSetting('pdflogowidth'),
                     ),
                     'pdfheadertitle'=>array(
@@ -627,7 +627,7 @@
             $aLanguages=array();
             foreach (getLanguageData(true) as  $sLanguage=>$aLanguage)
             {
-                $aLanguages[$sLanguage]="{$aLanguage['description']} (".html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8').")";
+                $aLanguages[$sLanguage]=html_entity_decode($aLanguage['description'], ENT_QUOTES, 'UTF-8')." (".html_entity_decode($aLanguage['nativedescription'], ENT_QUOTES, 'UTF-8').")";
             }
             $aAvailableLang=getLanguageDataRestricted ();
             $this->widget('ext.SettingsWidget.SettingsWidget', array(
@@ -644,6 +644,9 @@
                             'class'=>$sClassDemoMode,
                         ),
                         'options'=>$aLanguages,
+                        'selectOptions'=>array(
+                            'minimumResultsForSearch'=>15,
+                        ),
                         'current'=>getGlobalSetting('defaultlang'),
                     ),
                     'restrictToLanguages'=>array(
@@ -673,7 +676,7 @@
                         'RPCInterface'=>array(
                             'type'=>'select',
                             'label'=>gT("RPC interface enabled"),
-                            'options'=>array('off'=>gT("Off"),'json'=>gT("JSON-RPC"),'xml'=>gT("XML-RPC")),
+                            'options'=>array('off'=>gT("Off",'unescaped'),'json'=>gT("JSON-RPC",'unescaped'),'xml'=>gT("XML-RPC",'unescaped')),
                             'current'=>getGlobalSetting('RPCInterface'),
                         ),
                         'RPCurl'=>array(
@@ -684,7 +687,7 @@
                         'rpc_publish_api'=>array(
                             'type'=>'select',
                             'label'=>gT("Publish API on /admin/remotecontrol"),
-                            'options'=>array('0'=>gT("No"),'1'=>gT("Yes")),
+                            'options'=>array('0'=>gT("No",'unescaped'),'1'=>gT("Yes",'unescaped')),
                             'current'=>getGlobalSetting('rpc_publish_api'),
                         ),
                     )

@@ -14,8 +14,10 @@
             gT('Save plugin settings'),
             gT('Save and return to plugins list')=>array(
                 'type'=>'submit',
-                'name'=>'redirect',
-                'value'=>App()->createUrl('plugins/index'), // This allow to use App()->request->getPost('redirect')) for forward (not used actually)
+                'htmlOptions'=>array(
+                    'name'=>'redirect',
+                    'value'=>App()->createUrl('plugins/index'), // This allow to use App()->request->getPost('redirect')) for forward (not used actually)
+                ),
             ),
             gT('Cancel') => array(
                 'type' => 'link',

@@ -91,9 +91,9 @@ class PluginsController extends LSYii_Controller
             }
             $oPluginObject->saveSettings($aSave);
             Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
-            if(!is_null(App()->request->getPost('redirect')))
+            if(App()->request->getPost('redirect'))
             {
-                $this->forward('plugins/index', true);
+                $this->redirect(App()->request->getPost('redirect'), true);
             }
         }
 
@@ -103,7 +103,7 @@ class PluginsController extends LSYii_Controller
         {
             // And show a message
             Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
-            $this->forward('plugins/index', true);
+            $this->redirect('plugins/index', true);
         }
 
         // Send to view plugin porperties: name and description
