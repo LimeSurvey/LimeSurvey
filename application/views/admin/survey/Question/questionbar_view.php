@@ -163,15 +163,15 @@ $aReplacementData=array();
     <tr><td><strong>
             <?php eT("Question:"); ?></strong></td><td>
             <?php
-                templatereplace(FlattenText($qrrow['question']),array(),$aReplacementData,'Unspecified', false ,$qid);
-                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                templatereplace($qrrow['question'],array(),$aReplacementData,'Unspecified', false ,$qid);
+                echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
         ?></td></tr>
     <tr><td><strong>
             <?php eT("Help:"); ?></strong></td><td>
             <?php
                 if (trim($qrrow['help'])!=''){
-                    templatereplace(FlattenText($qrrow['help']),array(),$aReplacementData,'Unspecified', false ,$qid);
-                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                    templatereplace($qrrow['help'],array(),$aReplacementData,'Unspecified', false ,$qid);
+                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
             } ?>
         </td></tr>
     <?php if ($qrrow['preg'])

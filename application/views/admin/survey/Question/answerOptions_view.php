@@ -200,7 +200,7 @@
             </p>
         </div>
 
-        <div id="dialog-confirm-replace" title="<?php $clang->eT('Replace label set?'); ?>" style='display:none;'>
+        <div id="dialog-confirm-replace" title="<?php eT('Replace label set?'); ?>" style='display:none;'>
         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id='strReplaceMessage'></span></p>
         </div>
 

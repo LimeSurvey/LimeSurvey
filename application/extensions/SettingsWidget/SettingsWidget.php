@@ -379,7 +379,7 @@
                 array(
                     'minimumResultsForSearch' => 1000,
                     'dropdownAutoWidth'=> true,
-                    'width' => 'resolve',
+                    'width' => "js: function(){ return Math.max.apply(null, $(this.element).find('option').map(function() { return $(this).text().length; }))+'em' }",
                 ),(isset($metaData['selectOptions']) ? $metaData['selectOptions'] : array())
             );
             $properties = array(

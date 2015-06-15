@@ -138,3 +138,5 @@ width: 8.33333333%;
 .setting-list .settings .setting:after {
     clear: none;
 }
+.select2-container{min-width:6em}
+.select2-container{max-width:100%}
