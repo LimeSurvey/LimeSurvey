@@ -110,21 +110,6 @@
             }
         }
 
-        /**
-        * Insert an array into the groups table
-        * Returns false if insertion fails, otherwise the new GID
-        *
-        * @param array $data                           array_merge
-        */
-        public function insertRecords($data)
-        {
-            $group = new self;
-            foreach ($data as $k => $v)
-                $group->$k = $v;
-            if  (!$group->save()) return false;
-            else return $group->gid;
-        }
-
         function getGroups($surveyid) {
             $language = Survey::model()->findByPk($surveyid)->language;
             return Yii::app()->db->createCommand()

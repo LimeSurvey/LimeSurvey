@@ -23,9 +23,12 @@ if (!defined('BASEPATH'))
  */
 class Survey extends LSActiveRecord
 {
+    const FORMAT_GROUP = 'G';
+    const FORMAT_ALL_IN_ONE = 'A';
+    const FORMAT_QUESTION = 'S';
     private $_fieldMap;
     /* Set some setting not by default database */
-    public $format = 'G';
+    public $format = self::FORMAT_GROUP;
 
     public function attributeLabels() {
         return [

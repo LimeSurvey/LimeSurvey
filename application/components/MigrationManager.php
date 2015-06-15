@@ -7,7 +7,7 @@
 class MigrationManager extends \CApplicationComponent
 {
     const BASE_MIGRATION='m000000_000000_base';
-    public $migrationTable = 'tbl_migration';
+    public $migrationTable = '{{migration}}';
     /**
      *
      * @var string[] The paths to folders containing migrations.
@@ -54,7 +54,7 @@ class MigrationManager extends \CApplicationComponent
 
 	protected function createMigrationHistoryTable()
 	{
-		$db=$this->getDbConnection();
+        $db = App()->db;
         echo '<pre>';
 		echo 'Creating migration history table "'.$this->migrationTable.'"...';
         $db->createCommand()->createTable($this->migrationTable,array(
@@ -74,7 +74,7 @@ class MigrationManager extends \CApplicationComponent
 		if ( $class === self::BASE_MIGRATION) {
 			return;
         }
-        ob_end_flush();
+        @ob_end_flush();
         echo '<pre>';
 		
         echo "*** applying $class\n";

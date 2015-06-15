@@ -31,7 +31,7 @@ class m150511_124830_group_remove_language extends CDbMigration
                 $translation->model = 'Group'; // We have Single Table Inheritance so we use the base class.
                 $translation->model_id = $group->id;
                 foreach ($group->translatableAttributes as $attribute) {
-                    $translation->$attribute = $answer->$attribute;
+                    $translation->$attribute = $group->$attribute;
                 }
                 try {
                     if ($translation->save()) {

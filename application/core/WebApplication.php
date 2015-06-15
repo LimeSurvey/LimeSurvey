@@ -51,17 +51,18 @@ class WebApplication extends CWebApplication
         @unlink(__DIR__ . '/../config/MAINTENANCE');
     }
     
-    public function onBeginRequest($event) {
-        parent::onBeginRequest($event);
+
+    public function processRequest()
+    {
         /**
          * Add support for maintenance mode.
          */
-        if ($this->maintenanceMode) {
+        if ($this->maintenanceMode && strncmp('upgrade', $this->getUrlManager()->parseUrl($this->getRequest()), 7) != 0) {
             $this->catchAllRequest = [
                 'upgrade'
             ];
         }
-        return true;
+        return parent::processRequest();
     }
     public function setSupportedLanguages($value) {
         foreach($value as $code => $language) {

@@ -19,7 +19,7 @@
             'id' => 'abort', 
             'url' => App()->createUrl('upgrade/database', ['upgrade' => 'abort']),
             'color' => 'danger',
-            'confirm' => 'Are you sure you wisth to exist maintenance mode? Exiting maintenance mode without finishing database upgrades could result in a degraded user experience.'
+            'confirm' => 'Are you sure you wish to exist maintenance mode? Exiting maintenance mode without finishing database upgrades could result in a degraded user experience.'
         ]);
     }
 ?>
