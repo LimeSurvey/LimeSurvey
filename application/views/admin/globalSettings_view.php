@@ -421,7 +421,7 @@
                     ),
                     'filterxsshtml'=>array(
                         'type'=>'select',
-                        'label'=>gt("Survey preview only for administration users").$sStringDemoMode,
+                        'label'=>gt("Filter HTML for XSS").$sStringDemoMode,
                         'labelOptions'=>array(
                             'class'=>$sClassDemoMode,
                         ),
