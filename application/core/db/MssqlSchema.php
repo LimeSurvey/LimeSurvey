@@ -40,14 +40,5 @@ class MssqlSchema extends CMssqlSchema
             $result .= ' NULL';
         }
         return $result;
-    }
-    
-    // Original function calls getColumnType twice for unkown reasons
-    public function alterColumn($table, $column, $type)
-    {
-        $sql='ALTER TABLE ' . $this->quoteTableName($table) . ' ALTER COLUMN '
-            . $this->quoteColumnName($column) . ' '
-            . $this->getColumnType($type);
-        return $sql;
-    }    
+    }   
 }
