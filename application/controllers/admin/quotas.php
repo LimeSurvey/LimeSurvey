@@ -74,7 +74,7 @@ class quotas extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->session['flashmessage'] = gT('Access denied!');
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
             $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyId"));
         }
     }
@@ -431,7 +431,7 @@ class quotas extends Survey_Common_Action
     }
 
     /**
-     *
+     * 
      * @param type $iQuestionId
      * @param type $iSurveyId
      * @param type $iQuotaId
@@ -445,6 +445,8 @@ class quotas extends Survey_Common_Action
         $aData       = $this->_getData($iSurveyId);
         $sBaseLang   = $aData['sBaseLang'];
         $this->_checkPermissions($iSurveyId, 'read');
+		
+			
         $aQuestion = Question::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
         $aQuestionType = $aQuestion['type'];
 
@@ -465,14 +467,16 @@ class quotas extends Survey_Common_Action
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
         } elseif ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!')
         {
-            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId));
+        	
+            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
 
-            foreach ($aAnsResults as $aDbAnsList)
+            foreach ($aAnsResults as $aDbAnsList) 
             {
                 $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40), 'code' => $aDbAnsList['code']);
             }
+			
         } elseif ($aQuestionType == 'A')
         {
             $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
@@ -489,7 +493,7 @@ class quotas extends Survey_Common_Action
             }
         } elseif ($aQuestionType == 'B')
         {
-            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId));
+            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
 
@@ -521,7 +525,7 @@ class quotas extends Survey_Common_Action
         if (empty($aAnswerList))
         {
             return array();
-        }
+        } 
         else
         {
             // Now we mark answers already used in this quota as such

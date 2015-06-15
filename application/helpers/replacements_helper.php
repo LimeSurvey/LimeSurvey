@@ -27,6 +27,7 @@
 */
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false)
 {
+
     /*
     global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode;
     global $s_lang,$errormsg,$saved_id, $languagechanger,$captchapath,$loadname;
@@ -40,7 +41,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'languagechanger', 'printoutput', 'captchapath', 'loadname');
     */
     $allowedvars = array(
-    'answer',
     'assessments',
     'captchapath',
     'clienttoken',
@@ -48,7 +48,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'errormsg',
     'groupdescription',
     'groupname',
-    'help',
     'imageurl',
     'languagechanger',
     'loadname',
@@ -56,7 +55,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'navigator',
     'percentcomplete',
     'privacy',
-    'question',
     's_lang',
     'saved_id',
     'showgroupinfo',
@@ -219,96 +217,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_groupdescription = '';
     };
 
-    if (isset($question) && is_array($question))
-    {
-        $question['sgq'] = (isset($question['sgq']) ? $question['sgq'] : '');
-        if($question['sgq'])
-            list($question['sid'],$question['gid'],$question['qid'])=explode("X",$question['sgq']);
-        else
-            list($question['sid'],$question['gid'],$question['qid'])=array('','','');
-        $question['aid']= (isset($question['aid']) ? $question['aid'] : '');
-        /**
-         * This event fires before each question is rendered. 
-         * Currenty 3 parameters are set:
-         * @param string text The question text
-         * @param string class The class for div around the whole question
-         * @param string help The help text
-         */
-        $event = new PluginEvent('beforeQuestionRender');
-        $event->set('surveyId', $question['sid']);// or $thissurvey['sid']
-        $event->set('text', $question['text']);
-        $event->set('class', $question['class']);
-        $event->set('help', $question['help']);
-        $event->set('type', $question['type']);
-        $event->set('code', $question['code']);
-        $event->set('qid', $question['qid']);
-        App()->getPluginManager()->dispatchEvent($event);
-        $question['text'] = $event->get('text');
-        $question['class'] = $event->get('class');
-        $question['help'] = $event->get('help');
-        $question['mandatory'] = $event->get('mandatory',$question['mandatory']);
-        // answer part ?
-        // $answer is set with answer part
-        $_question = $question['all'];
-        $_question_text = $question['text'];
-        $_question_help = $question['help'];
-        $_question_mandatory = $question['mandatory'];
-        $_question_man_message = $question['man_message'];
-        $_question_valid_message = $question['valid_message'];
-        $_question_file_valid_message = $question['file_valid_message'];
-        $_question_essentials = $question['essentials'];
-        $_getQuestionClass = $question['class'];
-        $_question_man_class = $question['man_class'];
-        $_question_input_error_class = $question['input_error_class'];
-        $_question_number = $question['number'];
-        $_question_code = $question['code'];
-        $_question_type = $question['type'];
-    }
-    else
-    {
-        $_question = isset($question) ? $question : '';
-        $_question_text = '';
-        $_question_help = '';
-        $_question_mandatory = '';
-        $_question_man_message = '';
-        $_question_valid_message = '';
-        $_question_file_valid_message = '';
-        $_question_essentials = '';
-        $_getQuestionClass = '';
-        $_question_man_class = '';
-        $_question_input_error_class = '';
-        $_question_number = '';
-        $_question_code = '';
-        $_question_type = '';
-        $question = array_fill_keys(array('sid','gid','qid','aid','sgq'), '');
-    };
-
-    if ($_question_type == '*')
-    {
-        $_question_text = '<div class="em_equation">' .$_question_text. '</div>';
-    }
-
-    if (!(
-    $showqnumcode == 'both' ||
-    $showqnumcode == 'number' ||
-    ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
-    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
-    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
-    ))
-    {
-        $_question_number = '';
-    };
-    if (!(
-    $showqnumcode == 'both' ||
-    $showqnumcode == 'code' ||
-    ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
-    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
-    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
-    ))
-    {
-        $_question_code = '';
-    }
-
     if(!isset($totalquestions)) $totalquestions = 0;
     $_totalquestionsAsked = $totalquestions;
     if (
@@ -415,31 +323,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     else
     {
         $_saveall = "";
-    }
-
-    if(!isset($help)) $help = "";
-    if (flattenText($help, true,true) != '')
-    {
-        if (!isset($helpicon))
-        {
-            if (file_exists($templatedir . '/help.gif'))
-            {
-                $helpicon = $templateurl . 'help.gif';
-            }
-            elseif (file_exists($templatedir . '/help.png'))
-            {
-                $helpicon = $templateurl . 'help.png';
-            }
-            else
-            {
-                $helpicon=Yii::app()->getConfig('imageurl')."/help.gif";
-            }
-        }
-        $_questionhelp =  "<img src='{$helpicon}' alt='Help' align='left' />".$help;
-    }
-    else
-    {
-        $_questionhelp = $help;
     }
 
     if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N")
@@ -581,17 +464,17 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             case '1':
                 // Default Google Tracking
                 $_googleAnalyticsJavaScript = <<<EOD
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '$_googleAnalyticsAPIKey']);
-  _gaq.push(['_trackPageview']);
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+ga('create', '$_googleAnalyticsAPIKey', 'auto');  // Replace with your property ID.
+ga('send', 'pageview');
+
 </script>
+
 EOD;
                 break;
             case '2':
@@ -618,16 +501,16 @@ EOD;
                 }
                 $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
                 $_googleAnalyticsJavaScript = <<<EOD
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '$_googleAnalyticsAPIKey']);
-  _gaq.push(['_trackPageview','$_trackURL']);
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+ga('create', '$_googleAnalyticsAPIKey', 'auto');  // Replace with your property ID.
+ga('send', 'pageview');
+ga('send', 'pageview', '$_trackURL');
+
 </script>
 EOD;
                 break;
@@ -643,8 +526,6 @@ EOD;
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
-    $coreReplacements['AID'] = $question['aid'];
-    $coreReplacements['ANSWER'] = isset($answer) ? $answer : '';  // global
     $coreReplacements['ANSWERSCLEARED'] = gT("Answers cleared");
     $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
@@ -656,7 +537,7 @@ EOD;
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;
     $coreReplacements['EXPIRY'] = $_dateoutput;
-    $coreReplacements['GID'] = ($question['gid']) ? $question['gid'] : Yii::app()->getConfig('gid','');// Use the gid of the question, except if we are not in question (Randomization group name)
+    $coreReplacements['GID'] = Yii::app()->getConfig('gid','');// Use the gid of the question, except if we are not in question (Randomization group name)
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
     $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
     $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
@@ -673,22 +554,6 @@ EOD;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".gT("A Note On Privacy")."</span><br />".gT("This survey is anonymous.")."<br />".gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.");
-    $coreReplacements['QID'] = $question['qid'];
-    $coreReplacements['QUESTION'] = $_question;
-    $coreReplacements['QUESTIONHELP'] = $_questionhelp;
-    $coreReplacements['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($help)); // global
-    $coreReplacements['QUESTION_CLASS'] = $_getQuestionClass;
-    $coreReplacements['QUESTION_CODE'] = $_question_code;
-    $coreReplacements['QUESTION_ESSENTIALS'] = $_question_essentials;
-    $coreReplacements['QUESTION_FILE_VALID_MESSAGE'] = $_question_file_valid_message;
-    $coreReplacements['QUESTION_HELP'] = $_question_help;
-    $coreReplacements['QUESTION_INPUT_ERROR_CLASS'] = $_question_input_error_class;
-    $coreReplacements['QUESTION_MANDATORY'] = $_question_mandatory;
-    $coreReplacements['QUESTION_MAN_CLASS'] = $_question_man_class;
-    $coreReplacements['QUESTION_MAN_MESSAGE'] = $_question_man_message;
-    $coreReplacements['QUESTION_NUMBER'] = $_question_number;
-    $coreReplacements['QUESTION_TEXT'] = $_question_text;
-    $coreReplacements['QUESTION_VALID_MESSAGE'] = $_question_valid_message;
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
     $coreReplacements['SAVE'] = $_saveall;
@@ -697,8 +562,7 @@ EOD;
     $coreReplacements['SAVEERROR'] = isset($errormsg) ? $errormsg : ''; // global - same as LOADERROR
     $coreReplacements['SAVEFORM'] = $_saveform;
     $coreReplacements['SAVEHEADING'] = gT("Save your unfinished survey");
-    $coreReplacements['SAVEMESSAGE'] = gT("Enter a name and password for this survey and click save below.")."<br />\n".gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
-    $coreReplacements['SGQ'] = $question['sgq'];
+    $coreReplacements['SAVEMESSAGE'] = gT("Enter a name and password for this survey and click save below.")."<br />\n".gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n<span class='emailoptional'>".gT("If you give an email address, an email containing the details will be sent to you.")."</span><br /><br />\n".gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
     $coreReplacements['SITENAME'] = isset($sitename) ? $sitename : '';  // global
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;
@@ -718,7 +582,11 @@ EOD;
     $coreReplacements['TOKEN'] = (!$anonymized ? $_token : '');// Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
-
+    if(!isset($replacements['QID']))
+    {
+        Yii::import('application.helpers.SurveyRuntimeHelper');
+        $coreReplacements = array_merge($coreReplacements, SurveyRuntimeHelper::getQuestionReplacement(null));   // so $replacements overrides core values
+    }
     if (!is_null($replacements) && is_array($replacements))
     {
         $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values

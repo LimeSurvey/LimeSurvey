@@ -59,10 +59,11 @@ class OptinController extends Controller {
 
         if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))
         {
-            $sMessage = gT('This survey does not seem to exist.');
+            throw new CHttpException(404, "This survey does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         }
         else
         {
+            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$token,false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
 
             if (!isset($oToken))

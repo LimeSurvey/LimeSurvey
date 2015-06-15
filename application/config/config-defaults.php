@@ -76,11 +76,11 @@ $config['allowunblacklist']     =  'N';             // Allow participant to unbl
 $config['userideditable']     =  'N';               // Allow editing of user IDs
 $config['defaulttemplate']    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
 
-$config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js';  // File types allowed to be uploaded in the templates section.
+$config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md';  // File types allowed to be uploaded in the templates section.
 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
-$config['memory_limit']        =  '32';   // This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
+$config['memory_limit']        =  '128';   // This sets how much memory LimeSurvey can access in megabytes. 128 MB is the minimum recommended - if you are using PDF functions up to 256 MB may be needed
 
 $config['showpopups']         =   1;                // Show popup messages if mandatory or conditional questions have not been answered correctly.
 // 1=Show popup message, 0=Show message on page instead.
@@ -310,6 +310,13 @@ $config['showsgqacode'] =  false;
 $config['showrelevance'] =  false;
 
 /**
+* To prevent brute force against forgotten password functionality, there is a random delay
+* that prevent attacker from knowing whether username and email address are valid or not.
+*/
+$config['minforgottenpasswordemaildelay'] =  500000;
+$config['maxforgottenpasswordemaildelay'] =  1500000;
+
+/**
 *  PDF Export Settings
 *  This feature configures PDF export for Export Answers
 *  PDF core fonts are not included in PDF: make ligther pdf
@@ -334,6 +341,7 @@ $config['alternatepdffontfile']=array(
     'el'=>'dejavusans',
     'he'=>'freesans',
     'hi'=>'dejavusans',
+    'hr'=>'dejavusans',
     'hu'=>'dejavusans',
     'ja'=>'cid0jp',
     'ko'=>'cid0kr',
@@ -370,22 +378,8 @@ $config['pdfheaderstring'] = '';          // Header string (under title). If thi
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
 $config['quexmlshowprintablehelp'] = false;
 
-// CAS Settings
-/**
-* Please note that CAS functionality is very basic and you have to modify the client to your needs.
-* At least the hard work is done.
-* The Client is deployed in Limesurvey and a file login_check_cas.php does what login_check.php does in normal mode.
-*
-* $casEnabled determines if CAS should be used or not for Authentication.
-* $casAuthServer the servername of the cas Auth Server. Without http://
-* $casAuthPort CAS Server listening Port
-* $casAuthUri relative uri from $casAuthServer to cas workingdirectory
-*/
-$config['casEnabled'] = false;
-$config['casAuthServer'] = 'localhost';
-$config['casAuthPort'] = 8443;
-$config['casAuthUri'] = '/cas-server/';
-
+$config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
+$config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of returned string
 
 /**
 *  Statistics chart settings

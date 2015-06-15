@@ -866,16 +866,15 @@ function do_boilerplate($ia)
 
 function do_equation($ia)
 {
+    $aQuestionAttributes= getQuestionAttributeValues($ia[0], $ia[4]);
+    $sEquation=(trim($aQuestionAttributes['equation'])) ? $aQuestionAttributes['equation'] : $ia[3];
     $answer='<input type="hidden" name="'.$ia[1].'" id="java'.$ia[1].'" value="';
-    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
-    {
-        $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
-    }
+    $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES);
     $answer .= '">';
+    $answer .="<div class='em_equation hidden' style='display:none;visibility:hidden'>{$sEquation}</div>";
     $inputnames[]=$ia[1];
-    $mandatory=null;
 
-    return array($answer, $inputnames, $mandatory);
+    return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
@@ -941,7 +940,7 @@ function do_date($ia)
         };";
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'/jstoolbox/date.js');
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'jstoolbox/date.js');
     $checkconditionFunction = "checkconditions";
 
     $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
@@ -1109,15 +1108,16 @@ function do_date($ia)
                     * yearmin = Minimum year value for dropdown list, if not set default is 1900
                     * yearmax = Maximum year value for dropdown list, if not set default is 2037
                     * if full dates (format: YYYY-MM-DD) are given, only the year is used
+                    * expressions are not supported because contents of dropbox cannot be easily updated dynamically
                     */
-                    $yearmin = (int)substr(LimeExpressionManager::ProcessString($mindate),0,4);
-                    if (!isset($yearmin) || $yearmin==0)
+                    $yearmin = (int)substr($mindate,0,4);
+                    if (!isset($yearmin) || $yearmin<1900 || $yearmin>2037)
                     {
                         $yearmin = 1900;
                     }
 
-                    $yearmax = (int)substr(LimeExpressionManager::ProcessString($maxdate), 0, 4);
-                    if (!isset($yearmax) || $yearmax==0)
+                    $yearmax = (int)substr($maxdate, 0, 4);
+                    if (!isset($yearmax) || $yearmax<1900 || $yearmax>2037)
                     {
                         $yearmax = 2037;
                     }
@@ -1992,11 +1992,13 @@ function do_listwithcomment($ia)
     }
     else //Dropdown list
     {
-        // --> START NEW FEATURE - SAVE
         $answer .= '<p class="select answer-item dropdown-item">
         <select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
         ';
-        // --> END NEW FEATURE - SAVE
+        if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+        {
+            $answer .= '<option class="noanswer-item" value=""'.SELECTED.'>'.gT('Please choose...').'</option>'."\n";
+        }
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
@@ -2011,15 +2013,12 @@ function do_listwithcomment($ia)
                 $maxoptionsize = strlen($ansrow['answer']);
             }
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
         {
-            if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') ||($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' '))
+            $check_ans="";
+            if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) == '')
             {
                 $check_ans = SELECTED;
-            }
-            elseif ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '')
-            {
-                $check_ans = '';
             }
             $answer .= '<option class="noanswer-item" value=""'.$check_ans.'>'.gT('No answer')."</option>\n";
         }
@@ -2726,8 +2725,6 @@ function do_file_upload($ia)
     return;
     $session = App()->surveySessionManager->current;
 
-
-
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes=\QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -2735,52 +2732,53 @@ function do_file_upload($ia)
     // Fetch question attributes
     $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
 
-    $currentdir = getcwd();
-    $pos = stripos($currentdir, "admin");
     $scriptloc = Yii::app()->getController()->createUrl('uploader/index');
+    $bPreview=Yii::app()->request->getParam('action')=="previewgroup" || Yii::app()->request->getParam('action')=="previewquestion" || $thissurvey['active'] != "Y";
 
-    if ($pos)
+    if ($bPreview)
     {
         $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1 ;
         $questgrppreview = 1;   // Preview is launched from Question or group level
 
     }
-    else if ($thissurvey['active'] != "Y")
-        {
-            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
-            $questgrppreview = 0;
-        }
-        else
-        {
-            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
-            $questgrppreview = 0;
+    elseif ($thissurvey['active'] != "Y")
+    {
+        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 1;
+        $questgrppreview = 0;
+    }
+    else
+    {
+        $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['preview'] = 0;
+        $questgrppreview = 0;
     }
 
-    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' ";
+    $uploadbutton = "<div class='upload-button'><a id='upload_".$ia[1]."' class='upload' ";
     $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
-    $uploadbutton .=">" .gT('Upload files'). "</a></h2>";
+    $uploadbutton .=">" .gT('Upload files'). "</a></div>";
 
     $answer = "<script type='text/javascript'>
         function upload_$ia[1]() {
             var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
             uploadurl += '&preview={$questgrppreview}&show_title={$aQuestionAttributes['show_title']}';
-            uploadurl += '&show_comment={$aQuestionAttributes['show_comment']}&pos=".($pos?1:0)."';
+            uploadurl += '&show_comment={$aQuestionAttributes['show_comment']}';
             uploadurl += '&minfiles=' + LEMval('{$aQuestionAttributes['min_num_of_files']}');
             uploadurl += '&maxfiles=' + LEMval('{$aQuestionAttributes['max_num_of_files']}');
             $('#upload_$ia[1]').attr('href',uploadurl);
         }
-        var translt = {
+        var uploadLang = {
              title: '" . gT('Upload your files','js') . "',
              returnTxt: '" . gT('Return to survey','js') . "',
              headTitle: '" . gT('Title','js') . "',
              headComment: '" . gT('Comment','js') . "',
-             headFileName: '" . gT('File name','js') . "'
+             headFileName: '" . gT('File name','js') . "',
+             deleteFile : '".gt('Delete')."',
+             editFile : '".gt('Edit')."'
             };
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
         var uploadurl =  '".$scriptloc."';
     </script>\n";
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js");
-
+    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
     // Modal dialog
     $answer .= $uploadbutton;
 
@@ -2813,8 +2811,7 @@ function do_file_upload($ia)
     var json = $("#"+fieldname).val();
     var show_title = "'.$aQuestionAttributes["show_title"].'";
     var show_comment = "'.$aQuestionAttributes["show_comment"].'";
-    var pos = "'.($pos ? 1 : 0).'";
-    displayUploadedFiles(json, filecount, fieldname, show_title, show_comment, pos);
+    displayUploadedFiles(json, filecount, fieldname, show_title, show_comment);
     });
     </script>';
 
@@ -3972,7 +3969,7 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
@@ -4143,7 +4140,7 @@ function do_array_5point($ia)
 function do_array_10point($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
@@ -4275,7 +4272,7 @@ function do_array_10point($ia)
 function do_array_yesnouncertain($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
@@ -4436,7 +4433,7 @@ function do_array_yesnouncertain($ia)
 function do_array_increasesamedecrease($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass ="";
 
@@ -4596,7 +4593,7 @@ function do_array_increasesamedecrease($ia)
 function do_array($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
@@ -4946,7 +4943,7 @@ function do_array($ia)
 function do_array_multitext($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
@@ -5331,7 +5328,7 @@ EOD;
 function do_array_multiflexi($ia)
 {
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
@@ -5705,7 +5702,7 @@ function do_array_multiflexi($ia)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_arraycolumns($ia)
 {
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $extraclass = "";
     $checkconditionFunction = "checkconditions";
@@ -5857,7 +5854,7 @@ function do_array_dual($ia)
 {
 
     global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult(true);
+    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");

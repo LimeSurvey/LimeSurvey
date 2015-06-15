@@ -14,6 +14,20 @@
                             alert(<?=json_encode(gT("Warning: If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")); ?>);
                         }
                     }
+                    function alertDateStampAnonymization()
+                    {
+                        if (document.getElementById('anonymized').value == 'Y')
+                        {
+                            alert('<?php eT("Warning: If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.","js"); ?>');
+                        }
+                    }
+                    function alertDateStampAnonymization()
+                    {
+                        if (document.getElementById('anonymized').value == 'Y')
+                        {
+                            alert('<?php eT("Warning"); ?>: <?php eT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.","js"); ?>');
+                        }
+                    }
                     //--></script></label>
             <?php if ($esrow['active'] == "Y") {
                     if ($esrow['anonymized'] == "N") { ?>
@@ -118,4 +132,4 @@
             <input type="number" min="5" max="36" step="1"  pattern="\d*" value="<?php echo $esrow['tokenlength']; ?>" name='tokenlength' id='tokenlength' style='width:4em' />
         </li>
     </ul></div>
-    
+

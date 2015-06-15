@@ -452,5 +452,10 @@
 
         }
     }
+        
+        public function getSurveyId() {
+            return $this->dynamicId;
+        }
+	}
 
 ?>

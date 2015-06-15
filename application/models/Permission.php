@@ -221,9 +221,6 @@ class Permission extends LSActiveRecord
                 'img' => 'cpdb'
             ),
         );
-        
-        $event = new ls\pluginmanager\PluginEvent('getPermissions');
-        $event->dispatch();
         uasort($aPermissions, array(__CLASS__,"comparePermissionTitle"));
         $aPermissions['superadmin'] = array(
             'create' => false,
@@ -234,6 +231,36 @@ class Permission extends LSActiveRecord
             'title' => gT("Superadministrator"),
             'description' => gT("Unlimited administration permissions"),
             'img' => 'superadmin'
+        );
+        $aPermissions['auth_db'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use internal database authentication"),
+            'description' => gT("Use internal database authentication"),
+            'img' => 'usergroup'
+        );
+        $aPermissions['auth_ldap'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use LDAP authentication"),
+            'description' => gT("Use LDAP authentication"),
+            'img' => 'usergroup'
+        );
+        $aPermissions['auth_webserver'] = array(
+            'create' => false,
+            'update' => false,
+            'delete' => false,
+            'import' => false,
+            'export' => false,
+            'title' => gT("Use web server authentication"),
+            'description' => gT("Use web server authentication"),
+            'img' => 'usergroup'
         );
 
         foreach ($aPermissions as &$permission)
@@ -275,8 +302,6 @@ class Permission extends LSActiveRecord
                 if ($aPermissionDetail['export']) $aPermissionDetail['export']=($oCurrentPermissions?(boolean)$oCurrentPermissions->export_p:false);
             }
         }     
-        var_dump($aBasePermissions);
-        die();
         return $aBasePermissions;
     }
      
@@ -402,18 +427,6 @@ class Permission extends LSActiveRecord
         $this->setPermissions($iUserID, $iSurveyID, 'survey', $aPermissionsToSet);
     }
 
-    function deleteSomeRecords($condition)
-    {
-        $criteria = new CDbCriteria;
-
-        foreach ($condition as $item => $value)
-        {
-            $criteria->addCondition($item."='".$value."'");
-        }
-
-        $this->deleteAll($criteria);
-    }
-
     function insertRecords($data)
     {
         foreach ($item as $data)
@@ -492,14 +505,6 @@ class Permission extends LSActiveRecord
             else return false;
         }
 
-        if ($iEntityID>0 && $sEntityName=='survey')
-        {
-            $oSurvey=Survey::model()->findByPk($iEntityID);
-            if (!$oSurvey) return false;
-            // If you own a survey you have access to the whole survey
-            if ($iUserID==$oSurvey->owner_id) return true;
-        }
-
         // Check if superadmin and cache it
         if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']))
         {
@@ -557,7 +562,16 @@ class Permission extends LSActiveRecord
     */
     function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
     {
-        return $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+        $oSurvey=Survey::Model()->findByPk($iSurveyID);
+        if (!$oSurvey) 
+            return false;
+        $iUserID=self::getUserId($iUserID);
+        // If you own a survey you have access to the whole survey
+        if ($iUserID==$oSurvey->owner_id) 
+            return true;
+        // Get global correspondance for surveys rigth
+        $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
+        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
@@ -573,13 +587,26 @@ class Permission extends LSActiveRecord
     }
 
     /**
-    /* function used to order Permission by language string
-    /* @param aApermission array The first permission information
-    /* @param aBpermission array The second permission information
-    /* @return bool 
+    * function used to order Permission by language string
+    * @param aApermission array The first permission information
+    * @param aBpermission array The second permission information
+    * @return bool 
     */
     private static function comparePermissionTitle($aApermission,$aBpermission)
     {
         return strcmp($aApermission['title'], $aBpermission['title']);
     }
+
+    /**
+    * get the default/fixed $iUserID
+    * @param iUserID optionnal user id
+    * @return integer user id
+    */
+    private static function getUserId($iUserID=null)
+    {
+    if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
+        $iUserID = Yii::app()->session['loginID'];
+    return $iUserID;
+    }
+
 }

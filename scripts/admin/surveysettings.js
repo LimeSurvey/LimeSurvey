@@ -31,6 +31,7 @@ $(document).ready(function(){
         pginput: false,
         pgbuttons: false,
         viewrecords: true,
+        rowNum: 100,
         sortorder: "asc",
         editurl: jsonUrl, // this is dummy existing url
         emptyrecords : sNoParametersDefined,
@@ -77,7 +78,7 @@ function PostParameterGrid()
     if (($('#allowregister').val()=='Y' || $.trim($('#emailresponseto').val())!='' || $.trim($('#emailnotificationto').val())!='')&& $.trim($('#adminemail').val())=='')
     {
         alert (sAdminEmailAddressNeeded);
-        $("#tabs").tabs("select", 0); 
+        $("#tabs").tabs("select", 0);
          $('#adminemail').focus();
         return false;
     }

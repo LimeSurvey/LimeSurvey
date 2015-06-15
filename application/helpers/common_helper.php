@@ -173,17 +173,7 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 */
 function isStandardTemplate($sTemplateName)
 {
-    return in_array($sTemplateName,array('basic',
-    'bluengrey',
-    'business_grey',
-    'citronade',
-    'clear_logo',
-    'default',
-    'eirenicon',
-    'limespired',
-    'mint_idea',
-    'sherpa',
-    'vallendar'));
+    return Template::isStandardTemplate($sTemplateName);
 }
 
 /**
@@ -301,45 +291,14 @@ function getSurveyList($returnarray=false, $surveyid=false)
 
 function getTemplateList()
 {
-    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-    $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
-
-    if (!$usertemplaterootdir) {die("getTemplateList() no template directory");}
-    if ($handle = opendir($standardtemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn" && isStandardTemplate($file))
-            {
-                $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-            }
-        }
-        closedir($handle);
-    }
-
-    if ($handle = opendir($usertemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-            {
-                $list_of_files[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-            }
-        }
-        closedir($handle);
-    }
-    ksort($list_of_files);
-
-    return $list_of_files;
+    return Template::getTemplateList();
 }
 
 function getAdminThemeList()
 {
-    // $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
     $standardtemplaterootdir=Yii::app()->getConfig("styledir");
 
-    //    if (!$usertemplaterootdir) {die("getTemplateList() no template directory");}
-    if ($handle = opendir($standardtemplaterootdir))
+    if ($standardtemplaterootdir && $handle = opendir($standardtemplaterootdir))
     {
         while (false !== ($file = readdir($handle)))
         {
@@ -351,17 +310,7 @@ function getAdminThemeList()
         closedir($handle);
     }
 
-    /*    if ($handle = opendir($usertemplaterootdir))
-    {
-    while (false !== ($file = readdir($handle)))
-    {
-    if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-    {
-    $list_of_files[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-    }
-    }
-    closedir($handle);
-    }         */
+
     ksort($list_of_files);
 
     return $list_of_files;
@@ -690,44 +639,7 @@ function getMaxQuestionOrder($gid,$surveyid)
 */
 function getQuestionClass($input)
 {
-
-    switch($input)
-    {   // I think this is a bad solution to adding classes to question
-        // DIVs but I can't think of a better solution. (eric_t_cruiser)
-
-        case 'X': return 'boilerplate';     //  BOILERPLATE QUESTION
-        case '5': return 'choice-5-pt-radio';   //  5 POINT CHOICE radio-buttons
-        case 'D': return 'date';        //  DATE
-        case 'Z': return 'list-radio-flexible'; //  LIST Flexible radio-button
-        case 'L': return 'list-radio';      //  LIST radio-button
-        case 'W': return 'list-dropdown-flexible'; //   LIST drop-down (flexible label)
-        case '!': return 'list-dropdown';   //  List - dropdown
-        case 'O': return 'list-with-comment';   //  LIST radio-button + textarea
-        case 'R': return 'ranking';     //  RANKING STYLE
-        case 'M': return 'multiple-opt';    //  Multiple choice checkbox
-        case 'I': return 'language';        //  Language Question
-        case 'P': return 'multiple-opt-comments'; //    Multiple choice with comments checkbox + text
-        case 'Q': return 'multiple-short-txt';  //  TEXT
-        case 'K': return 'numeric-multi';   //  MULTIPLE NUMERICAL QUESTION
-        case 'N': return 'numeric';     //  NUMERICAL QUESTION TYPE
-        case 'S': return 'text-short';      //  SHORT FREE TEXT
-        case 'T': return 'text-long';       //  LONG FREE TEXT
-        case 'U': return 'text-huge';       //  HUGE FREE TEXT
-        case 'Y': return 'yes-no';      //  YES/NO radio-buttons
-        case 'G': return 'gender';      //  GENDER drop-down list
-        case 'A': return 'array-5-pt';      //  ARRAY (5 POINT CHOICE) radio-buttons
-        case 'B': return 'array-10-pt';     //  ARRAY (10 POINT CHOICE) radio-buttons
-        case 'C': return 'array-yes-uncertain-no'; //   ARRAY (YES/UNCERTAIN/NO) radio-buttons
-        case 'E': return 'array-increase-same-decrease'; // ARRAY (Increase/Same/Decrease) radio-buttons
-        case 'F': return 'array-flexible-row';  //  ARRAY (Flexible) - Row Format
-        case 'H': return 'array-flexible-column'; //    ARRAY (Flexible) - Column Format
-            //      case '^': return 'slider';          //  SLIDER CONTROL
-        case ':': return 'array-multi-flexi';   //  ARRAY (Multi Flexi) 1 to 10
-        case ";": return 'array-multi-flexi-text';
-        case "1": return 'array-flexible-duel-scale'; //    Array dual scale
-        case "*": return 'equation';    // Equation
-        default:  return 'generic_question';    //  Should have a default fallback
-    };
+    Question::getQuestionClass($input);
 };
 
 /**
@@ -1477,18 +1389,20 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 }
                 break;
             case "|": //File upload
-                if (substr($sFieldCode, -9) == 'filecount') {
-                    $this_answer = gT("File count");
-                } else {
+                if (substr($sFieldCode, -9) != 'filecount') {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($sValue);
                     $sValue = '';
                     if (is_array($files)) {
                         foreach ($files as $file) {
-                            $sValue .= $file->name .
-                            ' (' . $file->size . 'KB) ' .
-                            strip_tags($file->title) .
-                            ' - ' . strip_tags($file->comment) . "<br/>";
+                            $sValue .= rawurldecode($file->name) .
+                            ' (' . round($file->size) . 'KB) ' .
+                            strip_tags($file->title);
+                            if (trim(strip_tags($file->comment))!="")
+                            {
+                                $sValue .=' - ' . strip_tags($file->comment);
+                            }
+
                         }
                     }
                 }
@@ -2308,6 +2222,22 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
             }
         }
+        if (isset($fieldmap[$fieldname]))
+        {
+            //set question relevance (uses last SQ's relevance field for question relevance)
+            $fieldmap[$fieldname]['relevance']=$question['relevance'];
+            $fieldmap[$fieldname]['grelevance']=$question['grelevance'];
+            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+            $fieldmap[$fieldname]['preg']=$arow['preg'];
+            $fieldmap[$fieldname]['other']=$arow['other'];
+            $fieldmap[$fieldname]['help']=$arow['help'];
+        }
+        else
+        {
+            --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
+        }
+    }
 
 
         if (isset($fieldmap)) {
@@ -2378,6 +2308,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
+    $sOldLanguage=App()->language;
     App()->setLanguage($sLanguage);
 
     //checks to see if fieldmap has already been built for this page.
@@ -2407,6 +2338,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     }
 
     $timingsFieldMap[$surveyid][$style][$sLanguage] = $fieldmap;
+    App()->setLanguage($sOldLanguage);
     return $timingsFieldMap[$surveyid][$style][$sLanguage];
 }
 
@@ -2735,6 +2667,15 @@ function questionAttributes($returnByName=false)
         "help"=>gT('Enter a header text for the second scale'),
         "caption"=>gT('Header for second scale'));
 
+        $qattributes["equation"]=array(
+        "types"=>"*",
+        'category'=>gT('Logic'),
+        'sortorder'=>100,
+        'inputtype'=>'textarea',
+        "help"=>gT('Final equation to set in database, defaults to question text.'),
+        "caption"=>gT('Equation'),
+        "default"=>"");
+
         $qattributes["equals_num_value"]=array(
         "types"=>"K",
         'category'=>gT('Input'),
@@ -2744,7 +2685,7 @@ function questionAttributes($returnByName=false)
         "caption"=>gT('Equals sum value'));
 
         $qattributes["em_validation_q"]=array(
-        "types"=>":;ABCDEFKMNPQRSTU",
+        "types"=>":;ABCDEFKMNOPQRSTU",
         'category'=>gT('Logic'),
         'sortorder'=>200,
         'inputtype'=>'textarea',
@@ -2752,7 +2693,7 @@ function questionAttributes($returnByName=false)
         "caption"=>gT('Question validation equation'));
 
         $qattributes["em_validation_q_tip"]=array(
-        "types"=>":;ABCDEFKMNPQRSTU",
+        "types"=>":;ABCDEFKMNOPQRSTU",
         'category'=>gT('Logic'),
         'sortorder'=>210,
         'inputtype'=>'textarea',
@@ -4977,33 +4918,7 @@ function removeBOM($str=""){
 */
 function getTemplatePath($sTemplateName = false)
 {
-    if (!$sTemplateName)
-    {
-        $sTemplateName=Yii::app()->getConfig('defaulttemplate'); // if $sTemplateName is NULL or false or ""
-    }
-    if (isStandardTemplate($sTemplateName))
-    {
-        return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
-    }
-    else
-    {
-        if (is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName))
-        {
-            return Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
-        }
-        elseif (isStandardTemplate(Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName;
-        }
-        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.Yii::app()->getConfig('defaulttemplate');
-        }
-        else
-        {
-            return Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
-        }
-    }
+    return Template::getTemplatePath($sTemplateName);
 }
 
 /**
@@ -5013,29 +4928,7 @@ function getTemplatePath($sTemplateName = false)
 */
 function getTemplateURL($sTemplateName)
 {
-    if (isStandardTemplate($sTemplateName))
-    {
-        return Yii::app()->getConfig("standardtemplaterooturl").'/'.$sTemplateName;
-    }
-    else
-    {
-        if (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName))
-        {
-            return Yii::app()->getConfig("usertemplaterooturl").'/'.$sTemplateName;
-        }
-        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("usertemplaterooturl").'/'.Yii::app()->getConfig('defaulttemplate');
-        }
-        elseif (file_exists(Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
-        {
-            return Yii::app()->getConfig("standardtemplaterooturl").'/'.Yii::app()->getConfig('defaulttemplate');
-        }
-        else
-        {
-            return Yii::app()->getConfig("standardtemplaterooturl").'/default';
-        }
-    }
+    return Template::getTemplateURL($sTemplateName);
 }
 
 /**
@@ -5126,13 +5019,12 @@ function enforceSSLMode()
 *
 * @param int $iSurveyId - Survey identification number
 * @param int $quotaid - quota id for which you want to compute the completed field
-* @return mixed - Integer of matching entries in the result DB or 'N/A'
+* @return mixed - value of matching entries in the result DB or null
 */
 function getQuotaCompletedCount($iSurveyId, $quotaid)
 {
-    $result = "N/A";
     if(!tableExists("survey_{$iSurveyId}")) // Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}' are not updated even after Yii::app()->db->schema->refresh();
-        return $result;
+        return;
     $aColumnName=SurveyDynamic::model($iSurveyId)->getTableSchema()->getColumnNames();
     $aQuotas = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $aQuota = $aQuotas[0];
@@ -5147,27 +5039,24 @@ function getQuotaCompletedCount($iSurveyId, $quotaid)
             if(in_array($member['fieldname'],$aColumnName))
                 $aQuotaColumns[$member['fieldname']][] = $member['value'];
             else
-                return $result;// We return N/A even for activated survey
+                return;
         }
 
         $oCriteria = new CDbCriteria;
         $oCriteria->condition="submitdate IS NOT NULL";
         foreach ($aQuotaColumns as $sColumn=>$aValue)
         {
-
             if(count($aValue)==1)
             {
-                $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind automatically
+                $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
             }
             else
             {
-                $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind automatically
+                $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
             }
         }
-        $result = SurveyDynamic::model($iSurveyId)->count($oCriteria);
+        return SurveyDynamic::model($iSurveyId)->count($oCriteria);
     }
-
-    return $result;
 }
 
 /**
@@ -5218,7 +5107,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             {
                 $oldgid = $fname['gid'];
                 if (LimeExpressionManager::GroupIsRelevant($fname['gid']) || $bHonorConditions==false) {
-                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name'], QuestionGroup::model()->getGroupDescription($fname['gid'], $sLanguageCode));
                 }
             }
         }
@@ -5274,22 +5163,6 @@ function isNumericInt($mStr)
     return false;
 }
 
-
-/**
-* Include Keypad headers
-*/
-function includeKeypad()
-{
-
-
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
-    $localefile = Yii::getPathOfAlias('webroot').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
-    if (App()->language != 'en' && file_exists($localefile))
-    {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.App()->language.'.js');
-    }
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
-}
 
 /**
 * getQuotaInformation() returns quota information for the current survey
@@ -5597,9 +5470,9 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
             if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
             {
                 $sOldCode=preg_quote($sOldCode,'/');
-                $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
+                $arQuestion->relevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->relevance,-1,$iCount);
                 $bModified = $bModified || $iCount;
-                $arQuestion->question=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->question,-1,$iCount);
+                $arQuestion->question=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->question,-1,$iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -5615,9 +5488,9 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
             $sOldCode=preg_quote($sOldCode,'/');
-            $arGroup->grelevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arGroup->grelevance,-1,$iCount);
+            $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
             $bModified = $bModified || $iCount;
-            $arGroup->description=preg_replace("/\b{$sOldCode}/",$sNewCode,$arGroup->description,-1,$iCount);
+            $arGroup->description=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->description,-1,$iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified)
@@ -7108,8 +6981,18 @@ function array_diff_assoc_recursive($array1, $array2) {
         $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
         $aParts = explode(':', $sSerial, 4);
-        return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : trim($aParts[2], '"');
+        return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : (isset($aParts[2]) ? trim($aParts[2], '"') : null);
     }
+
+    /**
+    * Checks if a string looks like it is a MD5 hash
+    *
+    * @param mixed $md5
+    */
+    function isMd5($sMD5 ='') {
+        return strlen($sMD5) == 32 && ctype_xdigit($sMD5);
+    }
+
 // Closing PHP tag intentionally omitted - yes, it is okay
 
 

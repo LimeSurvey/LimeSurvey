@@ -39,13 +39,14 @@ function loadanswers()
         if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
         {
             // To be validated with mssql, think it's not needed
-            $oCriteria->addCondition(" CAST({{saved_control}}.access_code as varchar(32))=:access_code");
+            $oCriteria->addCondition("(CAST({{saved_control}}.access_code as varchar(64))=:md5_code OR CAST({{saved_control}}.access_code as varchar(64))=:sha256_code)");
         }
         else
         {
-            $oCriteria->addCondition("{{saved_control}}.access_code=:access_code");
+            $oCriteria->addCondition("({{saved_control}}.access_code=:md5_code OR {{saved_control}}.access_code=:sha256_code)");
         }
-        $aParams[':access_code']=md5($sLoadPass);
+        $aParams[':md5_code']=md5($sLoadPass);
+        $aParams[':sha256_code']=hash('sha256',$sLoadPass);
     }
     elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
     {
@@ -680,17 +681,17 @@ function sendSubmitNotifications($surveyid)
         {
             if (substr($sFieldname,0,4)=='gid_')
             {
-                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
                 $ResultTableText .="\n{$fname[0]}\n\n";
             }
             elseif (substr($sFieldname,0,4)=='qid_')
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>".strip_tags($fname[0])."</td></tr>\n";
                 $ResultTableText .="\n{$fname[0]}\n";
             }
             else
             {
-                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
+                $ResultTableHTML .= "\t<tr class='printanswersquestion'><td>".strip_tags("{$fname[0]} {$fname[1]}")."</td><td class='printanswersanswertext'>".CHtml::encode($fname[2])."</td></tr>\n";
                 $ResultTableText .="     {$fname[0]} {$fname[1]}: {$fname[2]}\n";
             }
         }
@@ -699,8 +700,7 @@ function sendSubmitNotifications($surveyid)
         $ResultTableText .= "\n\n";
         if ($bIsHTML)
         {
-            $filter = new CHtmlPurifier();
-            $aReplacementVars['ANSWERTABLE']=$filter->purify($ResultTableHTML);
+            $aReplacementVars['ANSWERTABLE']=$ResultTableHTML;
         }
         else
         {
@@ -886,10 +886,10 @@ function buildsurveysession($surveyid,$preview=false)
             && isset($_GET['loadname']) && isset($_GET['loadpass']))
             {
                 echo "
-                <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
                 <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-                <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
+                <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
             }
 
             echo "
@@ -970,10 +970,10 @@ function buildsurveysession($surveyid,$preview=false)
             && isset($_GET['loadname']) && isset($_GET['loadpass']))
             {
                 echo "
-                <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
                 <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-                <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
+                <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
             }
             echo "</li>";
 
@@ -1112,10 +1112,10 @@ function buildsurveysession($surveyid,$preview=false)
                         if (isset($_GET['loadall']) && isset($_GET['scid'])
                         && isset($_GET['loadname']) && isset($_GET['loadpass']))
                         {
-                            echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                            echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
                             <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                            <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-                            <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                            <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
+                            <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
                         }
 
                         echo '<label for="token">'.gT("Token")."</label><input class='text' type='password' id='token' name='token'></li>";
@@ -1131,10 +1131,10 @@ function buildsurveysession($surveyid,$preview=false)
                     if (isset($_GET['loadall']) && isset($_GET['scid'])
                     && isset($_GET['loadname']) && isset($_GET['loadpass']))
                     {
-                        echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                        echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'],ENT_QUOTES, 'UTF-8')."' id='loadall' />
                         <input type='hidden' name='scid' value='".returnGlobal('scid',true)."' id='scid' />
-                        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-                        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'],ENT_QUOTES, 'UTF-8')."' id='loadname' />
+                        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'],ENT_QUOTES, 'UTF-8')."' id='loadpass' />";
                     }
                     echo '<label for="token">'.gT("Token:")."</label><span id='token'>$gettoken</span>"
                     ."<input type='hidden' name='token' value='$gettoken'></li>";
@@ -1168,7 +1168,7 @@ function buildsurveysession($surveyid,$preview=false)
     unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
-    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language 
+    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
     if (returnGlobal('lang',true))
     {
         $language_to_set=returnGlobal('lang',true);
@@ -1195,10 +1195,9 @@ function buildsurveysession($surveyid,$preview=false)
     $sQuery = "SELECT count(*)\n"
     ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
     ." WHERE {{questions}}.sid=".$surveyid."\n"
-    ." AND {{groups}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
-    ." AND {{questions}}.language='".$_SESSION['survey_'.$surveyid]['s_lang']."'\n"
+    ." AND {{groups}}.language='".App()->getLanguage()."'\n"
+    ." AND {{questions}}.language='".App()->getLanguage()."'\n"
     ." AND {{questions}}.parent_qid=0\n";
-
     $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
     // Fix totalquestions by substracting Text Display questions
@@ -1222,7 +1221,15 @@ function buildsurveysession($surveyid,$preview=false)
         echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"),array(),$redata,'frontend_helper[1915]');
         echo "\t<div id='wrapper'>\n"
         ."\t<p id='tokenmessage'>\n"
-        ."\t".gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
+        ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
+        echo "<ul>";
+        if ($totalquestions == 0){
+            echo '<li>'.gT("There are no questions in this survey.").'</li>';
+        }
+        if ($iTotalGroupsWithoutQuestions == 0){
+            echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
+        }
+        echo "</ul>"
         ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
         ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
@@ -1896,20 +1903,9 @@ function checkCompletedQuota($surveyid,$return=false)
         // $aQuotasInfo have an 'active' key, we don't use it ?
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
-        // Test only completed quota, other is not needed
-        $aQuotasCompleted=array();
-        foreach($aQuotasInfo as $aQuotaInfo)
-        {
-            $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);// Return a string
-            if(ctype_digit($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
-                $aQuotasCompleted[]=$aQuotaInfo;
-        }
-
-        if(empty($aQuotasCompleted))
-            return $aMatchedQuotas;
         // OK, we have some quota, then find if this $_SESSION have some set
-        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
-        foreach ($aQuotasCompleted as $aQuotaCompleted)
+        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
+        foreach ($aQuotasInfo as $aQuotaInfo)
         {
             $iMatchedAnswers=0;
             $bPostedField=false;
@@ -1917,7 +1913,7 @@ function checkCompletedQuota($surveyid,$return=false)
             $aQuotaFields=array();
             // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
             $aQuotaRelevantFieldnames=array();
-            foreach ($aQuotaCompleted['members'] as $aQuotaMember)
+            foreach ($aQuotaInfo['members'] as $aQuotaMember)
             {
                 $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
                 $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]=isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
@@ -1930,26 +1926,22 @@ function checkCompletedQuota($surveyid,$return=false)
                 {
                     $iMatchedAnswers++;
                 }
-                if(in_array($sFieldName,$aPostedFields))
+                if(in_array($sFieldName,$aPostedFields))// Need only one posted value
                     $bPostedField=true;
             }
-            if($iMatchedAnswers==count($aQuotaFields))
+            // Count only needed quotas
+            if($iMatchedAnswers==count($aQuotaFields) && ( $aQuotaInfo['action']!=2 || $bPostedField ) )
             {
-                switch ($aQuotaCompleted['action'])
-                {
-                    case '1':
-                    default:
-                        $aMatchedQuotas[]=$aQuotaCompleted;
-                        break;
-                    case '2':
-                        if($bPostedField)// Action 2 allow to correct last answers, then need to be posted
-                            $aMatchedQuotas[]=$aQuotaCompleted;
-                        break;
+                if($aQuotaInfo['qlimit'] == 0){ // Always add the quota if qlimit==0
+                    $aMatchedQuotas[]=$aQuotaInfo;
+                }else{
+                    $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);
+                    if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
+                        $aMatchedQuotas[]=$aQuotaInfo;
                 }
             }
         }
     }
-
     if ($return)
         return $aMatchedQuotas;
     if(empty($aMatchedQuotas))

@@ -1,4 +1,5 @@
 <?php
+use ls\pluginmanager\AuthPluginBase;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -73,26 +74,31 @@ class UserAction extends Survey_Common_Action
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
-        $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
-        $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
         $aViewUrls = array();
-        $valid_email = true;
-        if (!validateEmailAddress($new_email)) {
-            $valid_email = false;
-            $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("The email address is not valid."), 'class'=> 'warningheader');
-        }
         if (empty($new_user)) {
             $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("A username was not supplied or the username is invalid."), 'class'=> 'warningheader');
         }
         elseif (User::model()->find("users_name=:users_name",array(':users_name'=>$new_user))) {
             $aViewUrls['message'] = array('title' => gT("Failed to add user"), 'message' => gT("The username already exists."), 'class'=> 'warningheader');
         }
-        elseif ($valid_email)
+        else
         {
-            $new_pass = createPassword();
-            $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, App()->user->id, $new_email);
+            $event = new PluginEvent('createNewUser');
+            $event->set('errorCode',AuthPluginBase::ERROR_NOT_ADDED);
+            $event->set('errorMessageTitle',gT("Failed to add user"));
+            $event->set('errorMessageBody',gT("Plugin is not active"));
+            App()->getPluginManager()->dispatchEvent($event);
 
-            if ($iNewUID) {
+            if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE)
+            {
+                $aViewUrls['message'] = array('title' => $event->get('errorMessageTitle'), 'message' => $event->get('errorMessageBody'), 'class'=> 'warningheader');
+            }
+            else
+            {
+                $iNewUID = $event->get('newUserID');
+                $new_pass = $event->get('newPassword');
+                $new_email = $event->get('newEmail');
+                $new_full_name = $event->get('newFullName');
                 // add default template to template rights for user
                 Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => Yii::app()->getConfig("defaulttemplate"), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
                 // add new user to userlist
@@ -110,7 +116,8 @@ class UserAction extends Survey_Common_Action
                 $body .= sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename")) . "<br /><br />\n";
                 $body .= gT("You can use now the following credentials to log into the site:") . "<br />\n";
                 $body .= gT("Username") . ": " . htmlspecialchars($new_user) . "<br />\n";
-                if (Yii::app()->getConfig("auth_webserver") === false) { // authent is not delegated to web server
+                // authent is not delegated to web server or LDAP server
+                if (Yii::app()->getConfig("auth_webserver") === false  && Permission::model()->hasGlobalPermission('auth_db','read',$iNewUID)) {
                     // send password (if authorized by config)
                     if (Yii::app()->getConfig("display_user_password_in_email") === true) {
                         $body .= gT("Password") . ": " . $new_pass . "<br />\n";
@@ -147,10 +154,6 @@ class UserAction extends Survey_Common_Action
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Add user"), $sHeader, $classMsg, $extra,
                 $this->getController()->createUrl("admin/user/sa/setuserpermissions"), gT("Set user permissions"),
                 array('action' => 'setuserpermissions', 'user' => $new_user, 'uid' => $iNewUID));
-            }
-            else
-            {
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(gT("Failed to add user"), gT("The user name already exists."), 'warningheader');
             }
         }
 

@@ -18,7 +18,7 @@
                 <span class='annotation'> <?php eT("Cannot be changed"); ?></span>
                 <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown ??>
                 <?php } else { ?>
-                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes"),"N"=>gT("No")),array('onchange'=>'alertPrivacy();')); ?>
+                    <?php echo CHtml::dropDownList('datestamp', $esrow['datestamp'],array("Y"=>gT("Yes"),"N"=>gT("No")),array('onchange'=>'alertDateStampAnonymization();')); ?>
                 <?php } ?>
         </li>
 

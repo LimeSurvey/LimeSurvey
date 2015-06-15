@@ -229,7 +229,9 @@
 
         protected static function xmlrpc_echo_stream($data)
         {
+            echo '<string>'; // a Base64 tag would be more sensible here but it would break all current implementations
             $data->render();
+            echo '</string>';
         }
 
         protected static function xmlrpc_echo_string($data)
@@ -270,12 +272,10 @@
 
         protected function echo_base64()
         {
-            echo '<string>'; // a Base64 tag would be more sensible here but it would break all current implementations
             $fileHandle = fopen($this->fileName, 'r');
             stream_filter_append($fileHandle, 'convert.base64-encode', STREAM_FILTER_READ);
             fpassthru($fileHandle);
             fclose($fileHandle);
-            echo '</string>';
         }
     }
 

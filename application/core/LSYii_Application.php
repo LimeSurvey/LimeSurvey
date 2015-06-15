@@ -247,20 +247,6 @@ class WebApplication extends CWebApplication
         return $this->getComponent('pluginManager');
     }
 
-    /**
-	 * Check that installation was already done by looking for config.php
-	 * Will redirect to the installer script if not exists.
-	 *
-	 * @access protected
-	 * @return void
-	 */
-	public function runController($route) {
-        $file_name = __DIR__ . '/../config/config.php';
-        if (!file_exists($file_name) && substr_compare('installer', $route, 0, 9) != 0) {
-			$this->request->redirect($this->urlManager->createUrl('/installer'));
-        }
-        return parent::runController($route);
-	}
-
+   
 }
 

@@ -1,5 +1,10 @@
-//$Id: listsurvey.js 9692 2012-12-10 21:31:10Z pradesh $
-//V1.1 Pradesh - Copied from listsurvey.js
+/*
+* JavaScript functions for LimeSurvey response browse
+*
+*/
+
+// @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
+
 
 /*
 * Scroll the pager and the footer when scrolling horizontally
@@ -14,89 +19,29 @@ $(window).scroll(function(){
     });
 });
 
+$(document).on("click","[data-delete]",function(event){
+    event.preventDefault();
+    var responseid=$(this).data("delete")
+    var url=$(this).attr("href"); // Or replace responseid  by post if needed
+    var buttons = {};
+    buttons[sDelCaption] = function(){
+        $.ajax({
+            url : url,
+            type : "POST"
+        })
+        .done(function() {
+            jQuery("#displayresponses").delRowData(responseid);
+        });
+        $( this ).dialog( "close" ); 
+    };
+    buttons[sCancel] = function(){ $( this ).dialog( "close" ); };
+    var dialog=$("<p>"+strdeleteconfirm+"</p>").dialog({
+        modal:true,
+        buttons: buttons
+    });
+});
 $(function() {
-    /* We don't use it actually ? */
-    $("#addbutton").click(function() {
-                        id = 2;
-                        html = "<tr name='joincondition_"
-                                + id
-                                + "' id='joincondition_"
-                                + id
-                                + "'><td><select name='join_"
-                                + id
-                                + "' id='join_"
-                                + id
-                                + "'><option value='and'>AND</option><option value='or'>OR</option></td><td></td></tr><tr><td><select name='field_"
-                                + id
-                                + "' id='field_"
-                                + id
-                                + "'>\n\
-            <option value='completed'>"
-                                + colNames[2]
-                                + "</option>\n\
-        <option value='id'>"
-                                + colNames[3]
-                                + "</option>\n\
-        <option value='startlanguage'>"
-                                + colNames[4]
-                                + "</option>\n\
-        </select>\n\</td>\n\<td>\n\
-        <select name='condition_"
-                                + id
-                                + "' id='condition_"
-                                + id
-                                + "'>\n\
-        <option value='equal'>"
-                                + searchtypes[0]
-                                + "</option>\n\
-        <option value='contains'>"
-                                + searchtypes[1]
-                                + "</option>\n\
-        <option value='notequal'>"
-                                + searchtypes[2]
-                                + "</option>\n\
-        <option value='notcontains'>"
-                                + searchtypes[3]
-                                + "</option>\n\
-        <option value='greaterthan'>"
-                                + searchtypes[4]
-                                + "</option>\n\
-        <option value='lessthan'>"
-                                + searchtypes[5]
-                                + "</option>\n\
-        </select></td>\n\<td><input type='text' id='conditiontext_"
-                                + id
-                                + "' style='margin-left:10px;' /></td>\n\
-        <td><img src="
-                                + minusbutton
-                                + " onClick= $(this).parent().parent().remove();$('#joincondition_"
-                                + id
-                                + "').remove() id='removebutton'"
-                                + id
-                                + ">\n\
-        <img src="
-                                + addbutton
-                                + " id='addbutton'  onclick='addcondition();' style='margin-bottom:4px'></td></tr><tr></tr>";
-        $('#searchtable tr:last').after(html);
-    });
-    /* For advanced search button ? */
-    var searchconditions = {};
-    var field;
-    $('#searchbutton').click(function() {
-        // Must be done
-    });
 
-    var lastSel, lastSel2; /* not used */
-    function returnColModel() {
-        if ($.cookie("detailedresponsecolumns")) {
-            hidden = $.cookie("detailedresponsecolumns").split(
-                    '|');
-            for (i = 0; i < hidden.length; i++)
-                if (hidden[i] != "false")
-                    colModels[i]['hidden'] = true;
-        }
-        return colModels;
-    }
     /* Launch jqgrid */
     jQuery("#displayresponses").jqGrid({
         recordtext : sRecordText,
@@ -105,14 +50,14 @@ $(function() {
         loadtext : sLoadText,
         align : "center",
         url : jsonUrl,
-        // editurl : editUrl,
+        editurl : jsonActionUrl,
         datatype : "json",
         mtype : "POST",
         colNames : colNames,
-        colModel : returnColModel(),
+        colModel : colModels,
         toppager : true,
         height : "100%",
-        shrinkToFit : false,
+        //shrinkToFit : false,
         ignoreCase : true,
         rowNum : 25,
         editable : false,
@@ -138,6 +83,12 @@ $(function() {
         loadComplete: function(){
             /* activate tooltip on answers : must be limited ? */
             $("#displayresponses").tooltip({ tooltipClass: "tooltip-text" });
+        },
+        beforeSelectRow: function(rowid, event) {
+            /* deactivate row select on tools */
+            if($(event.target).is("a") || $(event.target).closest("a").length )
+                return false;
+            return true;
         }
     });
     /* Add navgrid */
@@ -145,41 +96,50 @@ $(function() {
         'navGrid',
         '#pager',
         {
-            deltitle : sDelTitle,
             searchtitle : sSearchTitle,
             refreshtitle : sRefreshTitle,
-            add : false,
-            del : false,
-            edit : false,
-            refresh : true,
-            search : true
+            edit: false,
+            add: false,
+            del: true,
+            search: false, //true when https://github.com/LimeSurvey/LimeSurvey/commit/c710ac795b471c4370cc45027542c54f791e5950#diff-15547196721577f485345c4a68f0c5d0R629 is done
+            refresh: true,
+            view: false,
+            position: "left"
         },
-        {},
-        {},
+        {}, // edit options
+        {}, // add options
         {
-            msg : delmsg,
+            msg : strDeleteAllConfirm,
             bSubmit : sDelCaption,
             caption : sDelCaption,
             bCancel : sCancel,
-            width : 700
+            width : 700,
+            afterShowForm: function($form) {
+                var dialog = $form.closest('div.ui-jqdialog'),
+                selRowId = jQuery("#displayresponses").jqGrid('getGridParam', 'selrow'),
+                selRowCoordinates = $('#'+selRowId).offset();
+                dialog.offset(selRowCoordinates);
+                $(document).scrollTop(selRowCoordinates.top);
+            },
         },
-        {
+        { // Deactivate actually, leave the option.
             caption : sSearchCaption,
             Find : sFind,
+            multipleSearch: true,
             odata : [ sOperator1, sOperator2, sOperator3,
-                    sOperator4, sOperator5, sOperator6,
-                    sOperator7, sOperator8, sOperator9,
-                    sOperator10, sOperator11, sOperator12,
-                    sOperator13, sOperator14 ],
+                sOperator4, sOperator5, sOperator6,
+                sOperator7, sOperator8, sOperator9,
+                sOperator10, sOperator11, sOperator12,
+                sOperator13, sOperator14 ],
             Reset : sReset
-        }
+        } // search options - define multiple search : TODO
     );
     /* quick search toolbar */
     jQuery("#displayresponses").jqGrid('filterToolbar', {
         searchOnEnter : false,
         defaultSearch : 'cn'
     });
-    /* navButton ? */
+    /* Column button */
     jQuery("#displayresponses").jqGrid(
         'navButtonAdd',
         '#pager',
@@ -189,69 +149,54 @@ $(function() {
             title : sSelectColumns,
             onClickButton : function() {
                 jQuery("#displayresponses").jqGrid(
-                                'columnChooser',
-                                {
-                                    caption : sSelectColumns,
-                                    bSubmit : sSubmit,
-                                    bCancel : sCancel,
-                                    done : function(
-                                            perm) {
-                                        if (perm) {
-                                            this
-                                                    .jqGrid(
-                                                            "remapColumns",
-                                                            perm,
-                                                            true);
-                                            var hidden = [];
-                                            $
-                                                    .each(
-                                                            $(
-                                                                    "#displayresponses")
-                                                                    .getGridParam(
-                                                                            "colModel"),
-                                                            function(
-                                                                    key,
-                                                                    val) {
-                                                                hidden
-                                                                        .push(val['hidden']);
-                                                            });
-                                            hidden
-                                                    .splice(
-                                                            0,
-                                                            1);
-                                            $
-                                                    .cookie(
-                                                            "detailedresponsecolumns",
-                                                            hidden
-                                                                    .join("|"));
+                    'columnChooser',
+                    {
+                        caption : sSelectColumns,
+                        bSubmit : sSubmit,
+                        bCancel : sCancel,
+                        done : function(perm) {
+                            if (perm) {
+                                this.jqGrid("remapColumns",perm,true);
+                                var hidden = [];
+                                $.each($("#displayresponses").getGridParam("colModel"),
+                                    function(i,obj) {
+                                        if(obj.hasOwnProperty('index') && obj.hidden){
+                                            hidden.push(obj.index);
                                         }
-                                    }
                                 });
+                                $.post( jsonBaseUrl+"&sa=setHiddenColumns", { aHiddenFields: hidden.join("|") } );
+                            }
+                        } 
+                });
             }
         }
     );
-    /* Grid resize : needed ? */
+    if(typeof sDownLoad!=="undefined")
+    {
+        jQuery("#displayresponses").navButtonAdd('#pager',{
+            caption:sDownLoad, // Remove it ? no it's more clear ;)
+            title:sDownLoad, // Todo dynamically update download selected , download all
+            buttonicon:"ui-icon-arrowstop-1-s", 
+            onClickButton: function(){
+                selectedlist=jQuery("#displayresponses").getGridParam('selarrrow').join(",");//  Or send like an array ?
+                if(selectedlist!="")
+                {
+                    sendPost(jsonActionUrl,null,["oper","responseid"],["downloadzip",selectedlist]);
+                }
+                else
+                {
+                    if(confirm(sConfirmationArchiveMessage))
+                        sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);;
+                    //sendPost(sDownloadUrl,null,"responseid",0);
+                }
+            }, 
+            position:"last",
+        });
+    }
+
+    /* Grid resize : only heigth ? */
     jQuery("#displayresponses").jqGrid('gridResize', {
-        minWidth : 1400,
+        handles: "n, s",
         minHeight : 100
     });
-
-    /* Trigger the inline search when the access list changes */
-    $(document).on('change','#gs_completed_select',function() {
-        $("#gs_completed").val($('#gs_completed_select').val());
-        $("#gs_completed").trigger("keydown");
-    });
-
-    /* Change the text search above "Status" icons to a dropdown */
-    var parentDiv = $('#gs_completed').parent();
-    parentDiv.prepend($('#gs_completed_select'));
-    $('#gs_completed_select').css("display", "");
-    $('#gs_completed').css("display", "none");
-
-    /* Disable search on the action column */
-    var parentDiv = $('#gs_actions').parent();
-    parentDiv.prepend($('#gs_no_filter'));
-    $('#gs_no_filter').css("display", "");
-    $('#gs_Actions').css("display", "none");
-
 });

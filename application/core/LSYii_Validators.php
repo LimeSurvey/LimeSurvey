@@ -42,6 +42,8 @@ class LSYii_Validators extends CValidator {
 
     public function __construct()
     {
+        if(Yii::app()->getConfig('DBVersion')< 172) // Permission::model exist only after 172 DB version
+            return $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
         $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !App()->user->checkAccess('superadmin'));
     }
 
@@ -50,11 +52,15 @@ class LSYii_Validators extends CValidator {
         if($this->xssfilter)
         {
             $object->$attribute=$this->xssFilter($object->$attribute);
+            if($this->isUrl)
+            {
+                $object->$attribute=str_replace('javascript:','',html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8")); 
+            }
         }
         if($this->isUrl)
         {
             if ($object->$attribute== 'http://' || $object->$attribute=='https://') {$object->$attribute="";}
-            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"); // 140219 : Why not urlencode ?
+            $object->$attribute=str_replace(array('"',"'",' ','<','>'),'',html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8")); // 140219 : Why not urlencode ?
         }
         if($this->isLanguage)
         {

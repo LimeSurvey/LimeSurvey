@@ -448,9 +448,9 @@ class questions extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $resultrow = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
+        $aParentQuestion = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
 
-        $sQuestiontype = $resultrow['type'];
+        $sQuestiontype = $aParentQuestion['type'];
         $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
         $iScaleCount = $aQuestiontypeInfo[$sQuestiontype]['subquestions'];
 
@@ -597,6 +597,7 @@ class questions extends Survey_Common_Action
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
+        $aData['aParentQuestion'] = $aParentQuestion;
         $aData['anslangs'] = $anslangs;
         $aData['maxsortorder'] = $maxsortorder;
 
@@ -1020,6 +1021,39 @@ class questions extends Survey_Common_Action
         echo ls_json_encode($resultdata);
     }
 
+    public function ajaxchecklabel()
+    {
+        $iLabelID = (int) Yii::app()->request->getParam('lid');
+        $aNewLanguages = Yii::app()->request->getParam('languages');
+        $bCheckAssessments = Yii::app()->request->getParam('bCheckAssessments',0);
+        $arLabelSet=LabelSet::model()->find('lid=:lid',array(':lid' => $iLabelID)); 
+        $iLabelsWithAssessmentValues=Label::model()->count('lid=:lid AND assessment_value<>0',array(':lid' => $iLabelID));
+        $aLabelSetLanguages=explode(' ',$arLabelSet->languages);
+        $aErrorMessages=array();
+        if ($bCheckAssessments && $iLabelsWithAssessmentValues)
+        {
+            $aErrorMessages[]=gT('The existing label set has assessment values assigned.').'<strong>'.gT('If you replace the label set the existing asssessment values will be lost.').'</strong>';
+        }
+        if (count(array_diff($aLabelSetLanguages,$aNewLanguages)))
+        {
+            $aErrorMessages[]=gT('The existing label set has different/more languages.').'<strong>'.gT('If you replace the label set these translations will be lost.').'</strong>';
+        }
+        if (count($aErrorMessages)){
+            foreach ($aErrorMessages as $sErrorMessage)
+            {
+                echo  $sErrorMessage.'<br>';
+            }
+            eT('Do you really want to continue?');
+        }
+        else
+        {
+            eT('You are about to replace an existing label set with the current answer options.');
+            echo '<br>';
+            eT('Continue?');
+        }
+    }
+
+    
     /**
     * Load preview of a question screen.
     *
@@ -1270,6 +1304,7 @@ EOD;
             }
         }
         $oQuestion->title=App()->request->getParam('title');
+        $oQuestion->other=App()->request->getParam('other');
         $oQuestion->validate();
 
         header('Content-type: application/json');

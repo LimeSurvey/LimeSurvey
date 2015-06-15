@@ -1532,43 +1532,22 @@ class ExpressionManager {
                                 $descriptor .= ': ';
                             }
 
-                            if (version_compare(phpversion(), "5.2.3")>=0)
+                            $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
+                            if ($ansList != '')
                             {
-                                // 4th parameter to htmlspecialchars only became available in PHP version 5.2.3
-                                $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
-                                if ($ansList != '')
-                                {
-                                    $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
+                                $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
+                            }
+                            if ($code != '') {
+                                if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
+                                    $shown = $this->GetVarAttribute($token[0], 'shown', '');
+                                    $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
+                                            . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
                                 }
-                                if ($code != '') {
-                                    if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                        $shown = $this->GetVarAttribute($token[0], 'shown', '');
-                                        $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
-                                                . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
-                                    }
-                                    else {
-                                        $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
-                                    }
+                                else {
+                                    $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
                                 }
                             }
-                            else
-                            {
-                                $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8');
-                                if ($ansList != '')
-                                {
-                                    $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8');
-                                }
-                                if ($code != '') {
-                                    if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                        $shown = $this->GetVarAttribute($token[0], 'shown', '');
-                                        $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8') . '] '
-                                                . htmlspecialchars($shown,ENT_QUOTES,'UTF-8');
-                                    }
-                                    else {
-                                        $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8');
-                                    }
-                                }
-                            }
+
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
                                 $class = 'em-var-static'; 
                             }
@@ -1589,12 +1568,15 @@ class ExpressionManager {
                         $message = implode('; ',$messages);
                         $message = str_replace(array('{','}'), array('{ ', ' }'), $message);
 
-                        $stringParts[] = "<span title='"  . $message . "' class='em-var {$class}'";
-                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0) {
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0)
+                        {
                             $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
-                            $stringParts[] = " data-link='{$editlink}'";
+                            $stringParts[] = "<a title='{$message}' class='em-var {$class}' href='{$editlink}' >";
                         }
-                        $stringParts[] = ">";
+                        else
+                        {
+                            $stringParts[] = "<span title='"  . $message . "' class='em-var {$class}' >";
+                        }
                         if ($this->sgqaNaming)
                         {
                             $sgqa = substr($jsName,4);
@@ -1609,7 +1591,14 @@ class ExpressionManager {
                         {
                             $stringParts[] = $displayName;
                         }
-                        $stringParts[] = "</span>";
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0)
+                        {
+                            $stringParts[] = "</a>";
+                        }
+                        else
+                        {
+                            $stringParts[] = "</span>";
+                        }
                     }
                     break;
                 case 'ASSIGN':
@@ -2650,14 +2639,17 @@ function exprmgr_if($test,$ok,$error)
 }
 
 /**
- * Return true if the variable is an integer
+ * Return true if the variable is an integer for LimeSurvey
+ * Can not really use is_int due to SQL DECIMAL system
  * @param string $arg
  * @return boolean
  * @link http://php.net/is_int#82857
  */
 function exprmgr_int($arg)
 {
-    return (ctype_digit((string)$arg));// Accept empty value too before PHP 5.1 see http://php.net/ctype-digit#refsect1-function.ctype-digit-changelog
+    if(strpos($arg,"."))
+        $arg=preg_replace("/\.$/","",rtrim(strval($arg),"0"));// DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+    return (ctype_digit($arg));// Accept empty value too before PHP 5.1 see http://php.net/ctype-digit#refsect1-function.ctype-digit-changelog
 }
 /**
  * Join together $args[0-N] with ', '

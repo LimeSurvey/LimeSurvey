@@ -193,8 +193,7 @@ $(document).ready(function() {
                 .appendTo(jQuery(this).parent().parent())
                 .click(function()
                 {
-                    jQuery('#displaytokens').saveRow(row.attr('id'));
-                    func();
+                    jQuery('#displaytokens').saveRow(row.attr('id'), null, null, {}, function(){func();});
                 });
             });
             updatePageAfterGrid();
@@ -341,9 +340,15 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    $.post(inviteurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
-                        window.open('data:text/html;charset=utf-8,'+data);
-                    });
+                    var newForm = jQuery('<form>', {
+                        'action': remindurl,
+                        'target': 'inviteurl'
+                    }).append(jQuery('<input>', {
+                        'name': 'tokenids',
+                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();                        
                 }
             }
         });
@@ -360,9 +365,15 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    $.post(remindurl, {tokenids: $("#displaytokens").getGridParam("selarrrow").join("|")}, function (data) {
-                        window.open('data:text/html;charset=utf-8,'+data);
-                    });
+                    var newForm = jQuery('<form>', {
+                        'action': remindurl,
+                        'target': '_blank'
+                    }).append(jQuery('<input>', {
+                        'name': 'tokenids',
+                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();                    
                 }
             }
         });
@@ -423,7 +434,17 @@ $(document).ready(function() {
         reloadAfterSubmit: true,
         closeOnEspace:true
     });
+	// Center modal dialogs
+    $.jgrid.jqModal = $.extend($.jgrid.jqModal || {}, {
+        beforeOpen: centerInfoDialog
+    });
 });
+
+function centerInfoDialog() {
+    var infoDialog = $("#info_dialog");
+    var dialogparent = infoDialog.parent();
+    infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
+}
 
 function updatePageAfterGrid(){
     var oGrid=$("#displaytokens");

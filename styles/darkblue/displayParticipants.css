@@ -24,3 +24,7 @@ background-image:url('images/search.gif');
 	margin: 8px;
 
 }
+
+#displayparticipants tr.ui-widget-content {
+	border: 0 none;
+}

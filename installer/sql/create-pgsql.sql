@@ -576,4 +576,4 @@ create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, u
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '179');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '181');
