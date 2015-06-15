@@ -266,6 +266,16 @@
             return $aAttributeNames;
         }
 
+        function getQuestionById($qid)
+        {
+            return Yii::app()->db->createCommand()
+            ->select()
+            ->from(self::tableName())
+            ->where('qid=:qid')
+            ->bindParam(":qid", $qid, PDO::PARAM_INT)
+            ->queryRow();
+        }
+
         function getQuestions($sid, $gid, $language)
         {
             return Yii::app()->db->createCommand()

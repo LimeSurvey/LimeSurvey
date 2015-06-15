@@ -1013,6 +1013,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $AOrgData = array();
         parse_str($_POST['orgdata'], $AOrgData);
+
         $grouporder = 0;
         foreach ($AOrgData['list'] as $ID => $parent)
         {
@@ -1022,14 +1023,18 @@ class SurveyAdmin extends Survey_Common_Action
             }
             elseif ($ID[0] == 'q')
             {
-                if (!isset($questionorder[(int)substr($parent, 1)]))
-                    $questionorder[(int)substr($parent, 1)] = 0;
+                $qid = (int)substr($ID, 1);
+                $gid = (int)substr($parent, 1);
+                if (!isset($questionorder[$gid]))
+                    $questionorder[$gid] = 0;
+                $oldgid=Question::model()->getQuestionById($qid)['gid'];
+                if($oldgid != $gid) {
+                        fixMovedQuestionConditions($qid,$oldgid,$gid,$iSurveyID);
+                }
+                Question::model()->updateAll(array('question_order' => $questionorder[$gid], 'gid' => $gid), 'qid=:qid', array(':qid' => $qid));
+                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
 
-                Question::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent, 1)], 'gid' => (int)substr($parent, 1)), 'qid=:qid', array(':qid' => (int)substr($ID, 1)));
-
-                Question::model()->updateAll(array('gid' => (int)substr($parent, 1)), 'parent_qid=:parent_qid', array(':parent_qid' => (int)substr($ID, 1)));
-
-                $questionorder[(int)substr($parent, 1)]++;
+                $questionorder[$gid]++;
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
