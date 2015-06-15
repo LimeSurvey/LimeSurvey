@@ -7,7 +7,7 @@ trait SmartColumnTypeTrait {
      */
     public function getColumnType($type)
 	{
-        if (preg_match('/([[:alpha:]]+)\s*(\(.+?\))(.*)/', $type, $matches)) {
+        if (preg_match('/^([[:alpha:]]+)\s*(\(.+?\))(.*)$/', $type, $matches)) {
             $baseType = parent::getColumnType($matches[1] . ' ' . $matches[3]);
             $param = $matches[2];
             $result = preg_replace('/\(.+?\)/', $param, $baseType, 1);
