@@ -123,7 +123,7 @@ class conditionsaction extends Survey_Common_Action {
             $conditionsoutput .= CHtml::submitButton(gT("Main admin screen"), array(
             'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
             )).$br;
-            safeDie($conditionsoutput);
+            throw new \CHttpException(500, $conditionsoutput);
             return;
         }
 
@@ -177,7 +177,7 @@ class conditionsaction extends Survey_Common_Action {
             $conditionsoutput .= CHtml::submitButton(gT("Main admin screen"), array(
             'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
             )).$br;
-            safeDie($conditionsoutput);
+            throw new \CHttpException(500, $conditionsoutput);
             return;
         }
 
@@ -428,8 +428,9 @@ class conditionsaction extends Survey_Common_Action {
                 ."WHERE cid in (";
                 $query .= implode(", ", $copyconditionsfrom);
                 $query .= ")";
-                $result = Yii::app()->db->createCommand($query)->query() or
-                safeDie("Couldn't get conditions for copy<br />$query<br />");
+                if (!ii::app()->db->createCommand($query)->query()) {
+                    throw new \CHttpException(500, "Couldn't get conditions for copy<br />$query<br />");
+                }
 
                 foreach ($result->readAll() as $row)
                 {
@@ -727,7 +728,7 @@ class conditionsaction extends Survey_Common_Action {
                 { // Multiflexi
 
                     //Get question attribute for $canswers
-                    $qidattributes=getQuestionAttributeValues($rows['qid'], $rows['type']);
+                    $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($rows['qid'], $rows['type']);
                     if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
                         $maxvalue=floatval($qidattributes['multiflexible_max']);
                     } else {
@@ -778,11 +779,14 @@ class conditionsaction extends Survey_Common_Action {
                     AND sq.scale_id=1
                     ORDER BY sq.question_order";
 
-                    $x_axis_db=Yii::app()->db->createCommand($aquery)
+
+                    if (false == $x_axis_db=Yii::app()->db->createCommand($aquery)
                         ->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
-                        ->query() or safeDie ("Couldn't get answers to Array questions<br />$aquery<br />");
+                        ->query()) {
+                        throw new \CHttpException(500, "Couldn't get answers to Array questions<br />$aquery<br />");
+                    }
 
                     foreach ($x_axis_db->readAll() as $frow)
                     {
@@ -813,7 +817,7 @@ class conditionsaction extends Survey_Common_Action {
 
                     foreach ($aresult as $arows)
                     {
-                        $attr = getQuestionAttributeValues($rows['qid']);
+                        $attr = \QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                         $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
                         // dualscale_header are allways set, but can be empty
                         $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gt('Scale 1') : $attr['dualscale_headerA'][$sLanguage];

@@ -510,20 +510,20 @@ function buildSelects($allfields, $surveyid, $language) {
                     //Date equals
                     if (substr($pv, -2) == "eq")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-3))." = ".dbQuoteAll($_POST[$pv]);
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-3))." = ".App()->db->quoteValue($_POST[$pv]);
                     }
                     else
                     {
                         //date less than
                         if (substr($pv, -4) == "less")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " >= ".dbQuoteAll($_POST[$pv]);
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " >= ".App()->db->quoteValue($_POST[$pv]);
                         }
 
                         //date greater than
                         if (substr($pv, -4) == "more")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " <= ".dbQuoteAll($_POST[$pv]);
+                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " <= ".App()->db->quoteValue($_POST[$pv]);
                         }
                     }
                 }
@@ -538,7 +538,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                         $sDateValue=$datetimeobj->convert("Y-m-d");
 
-                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".dbQuoteAll($sDateValue." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".dbQuoteAll($sDateValue." 23:59:59");
+                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".App()->db->quoteValue($sDateValue." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".App()->db->quoteValue($sDateValue." 23:59:59");
                     }
                     else
                     {
@@ -547,7 +547,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                             $sDateValue=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < ".dbQuoteAll($sDateValue);
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < ".App()->db->quoteValue($sDateValue);
                         }
 
                         //timestamp greater than
@@ -555,7 +555,7 @@ function buildSelects($allfields, $surveyid, $language) {
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
                             $sDateValue=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > ".dbQuoteAll($sDateValue);
+                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > ".App()->db->quoteValue($sDateValue);
                         }
                     }
                 }
@@ -852,7 +852,7 @@ class statistics_helper {
             $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
 
             /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
-            $result=db_execute_num($query) or safeDie("Couldn't get list of subquestions for multitype<br />$query<br />");
+            $result=db_execute_num($query) or throw new \CHttpException(500, "Couldn't get list of subquestions for multitype<br />$query<br />");
 
             //loop through multiple answers
             while ($row=$result->FetchRow())
@@ -1381,7 +1381,7 @@ class statistics_helper {
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
-                    $aQuestionAttributes=getQuestionAttributeValues($qiqid);
+                    $aQuestionAttributes=\QuestionAttribute::model()->getQuestionAttributes($qiqid);
                     if (trim($aQuestionAttributes['multiflexible_max'])!='') {
                         $maxvalue=$aQuestionAttributes['multiflexible_max'];
                     }
@@ -1491,7 +1491,7 @@ class statistics_helper {
                     $sSubquestion = flattenText($questionDesc['question']);
 
                     //get question attributes
-                    $aQuestionAttributes=getQuestionAttributeValues($qqid);
+                    $aQuestionAttributes=\QuestionAttribute::model()->getQuestionAttributes($qqid);
 
 
                     //check last character -> label 1
@@ -2693,7 +2693,7 @@ class statistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($outputs['parentqid'], substr($rt, 0, 1));
+        $aattr = \QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid'], substr($rt, 0, 1));
 
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
@@ -2750,7 +2750,7 @@ class statistics_helper {
                         case 'html':
                             $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
 
-                            $aattr = getQuestionAttributeValues($qqid, $firstletter);
+                            $aattr = \QuestionAttribute::model()->getQuestionAttributes($qqid, $firstletter);
                             if ($bShowMap) {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 

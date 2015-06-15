@@ -63,19 +63,19 @@ class ExportSurveyResultsService
         //Do some input validation.
         if (empty($iSurveyId))
         {
-            safeDie('A survey ID must be supplied.');
+            throw new \CHttpException(500, 'A survey ID must be supplied.');
         }
         if (empty($sLanguageCode))
         {
-            safeDie('A language code must be supplied.');
+            throw new \CHttpException(500, 'A language code must be supplied.');
         }
         if (empty($oOptions))
         {
-            safeDie('Formatting options must be supplied.');
+            throw new \CHttpException(500, 'Formatting options must be supplied.');
         }
         if (empty($oOptions->selectedColumns))
         {
-            safeDie('At least one column must be selected for export.');
+            throw new \CHttpException(500, 'At least one column must be selected for export.');
         }
         //echo $oOptions->toString().PHP_EOL;
         $writer = null;

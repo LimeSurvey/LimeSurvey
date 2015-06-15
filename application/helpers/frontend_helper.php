@@ -336,7 +336,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
             {
                 if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount"))
                 {
-                    $validation= getQuestionAttributeValues($fieldmap[$field]['qid']);
+                    $validation= \QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
 
                     $filecount = 0;
 
@@ -1707,14 +1707,14 @@ function doAssessment($surveyid, $returndataonly=false)
                         {
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                             {
-                                $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
+                                $aAttributes=\QuestionAttribute::model()->getQuestionAttributes($field['qid'],$field['type']);
                                 $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
                                 $total=$total+(int)$aAttributes['assessment_value'];
                             }
                         }
                         else  // Single choice question
                         {
-                            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".dbQuoteAll($_SESSION['survey_'.$surveyid][$field['fieldname']]);
+                            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".App()->db->quoteValue($_SESSION['survey_'.$surveyid][$field['fieldname']]);
                             $usresult = dbExecuteAssoc($usquery);          //Checked
                             if ($usresult)
                             {

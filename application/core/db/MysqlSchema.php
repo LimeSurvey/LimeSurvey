@@ -2,6 +2,8 @@
 
 class MysqlSchema extends CMysqlSchema
 {
+    const ENGINE_INNODB = 'InnoDB';
+    const ENGINE_MYISAM = 'MyISAM';
     use SmartColumnTypeTrait;
     public function __construct($conn) {
         parent::__construct($conn);
@@ -15,7 +17,7 @@ class MysqlSchema extends CMysqlSchema
 
     public function createTable($table, $columns, $options = null) {
         $result = parent::createTable($table, $columns, $options);
-        $result .= ' ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
+        $result .= ' DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
         return $result;
     }
     
@@ -30,6 +32,16 @@ class MysqlSchema extends CMysqlSchema
             return false;
         }
         return true;        
+    }
+
+    public function alterEngine($table, $engine) {
+        $sql = "ALTER TABLE `$table` ENGINE=$engine";
+        try {
+            $this->dbConnection->createCommand($sql)->execute();
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 
 }

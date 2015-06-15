@@ -200,7 +200,7 @@ class printablesurvey extends Survey_Common_Action
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
 
-                    $qidattributes=getQuestionAttributeValues($deqrow['qid'],$deqrow['type']);
+                    $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'],$deqrow['type']);
                     if ($qidattributes['hidden'] == 1 && $deqrow['type'] != '*')
                     {
                         continue;
@@ -466,7 +466,7 @@ class printablesurvey extends Survey_Common_Action
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$lang}'";
                                         $ansresult= Question::model()->findAll($condition);
-                                        $cqidattributes = getQuestionAttributeValues($conrow['cqid'], $conrow['type']);
+                                        $cqidattributes = \QuestionAttribute::model()->getQuestionAttributes($conrow['cqid'], $conrow['type']);
                                         if ($labelIndex == 0)
                                         {
                                             if (trim($cqidattributes['dualscale_headerA'][$surveyprintlang]) != '') {

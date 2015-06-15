@@ -305,7 +305,7 @@
 
         public static function constructTableName($id)
         {
-            return '{{tokens_' . $id . '}}';
+            return '{{token_' . $id . '}}';
         }
 
         public function getSurveyId() {

@@ -4,10 +4,24 @@
 	 * Relations
 	 * @property Token $token
      * @property int $surveyId
+     * @property Question[] $questions
 	 * @property Survey $survey
 	 */
 	abstract class Response extends Dynamic
 	{
+        private $_questions;
+        /**
+         * @return Question[]
+         */
+        public function getQuestions() {
+            if (!isset($this->_questions)) {
+                $this->_questions = Question::model()->findAllByAttributes([
+                    'sid' => $this->surveyId,
+                    'parent_qid' => 0
+                ], ['index' => 'title']);
+            }
+            return $this->_questions;
+        }
         /**
          * This adds support for translating SGQA to a label that uses the question code.
          * This is not really efficient since it gets all question codes individually.
@@ -109,7 +123,7 @@
             $t = $this->getTableAlias();
 			$result = array(
 				'token' => array(self::BELONGS_TO, 'Token_' . $this->dynamicId, array('token' => 'token')),
-				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}" )
+				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}" ),
 			);
 			return $result;
 		}
@@ -394,6 +408,49 @@
             return $fullAnswer;
         }
 
+        /**
+         * Sets the value for a specific question code to the passed value.
+         * If code cannot be resolved to a column will call the $invalidCode callback.
+         *
+         * @param string $code
+         * @param string $value
+         * @param callable $invalidCode
+         * @return boolean True if the value was set, false if it was not set (invalid code or invalid value);
+         */
+        public function setAnswer($code, $value, callable $invalidCode = null)
+        {
+            // Get column.
+            $column = $this->getColumn($code);
+            if (!$this->hasAttribute($column)) {
+                $invalidCode();
+                $result = false;
+            } else {
+                /**
+                 * @todo Validate the value.
+                 */
+                $result = $this->setAttribute($column, $value);
+            }
+            return $result;
+
+        }
+
+        public function getColumn($code) {
+            if (strpos($code, '_') !== false) {
+                list($title, $rest) = explode('_', $code);
+                $rest = "_" . $rest;
+            } else {
+                $title = $code;
+                $rest = '';
+            }
+            // Get all questions.
+            if (isset($this->questions[$title])) {
+                $question = $this->questions[$title];
+                // Check if what column we need.
+                $column = "{$this->surveyId}X{$question->gid}X{$question->qid}";
+                return $column;
+            }
+
+        }
     }
 
 ?>

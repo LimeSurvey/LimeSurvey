@@ -26,7 +26,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
-    if ($xml==false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
+    if ($xml==false || $xml->LimeSurveyDocType!='Group') throw new \CHttpException(500, 'This is not a valid LimeSurvey group structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $results['defaultvalues']=0;
@@ -350,7 +350,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid)
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
-    if ($xml->LimeSurveyDocType!='Question') safeDie('This is not a valid LimeSurvey question structure XML file.');
+    if ($xml->LimeSurveyDocType!='Question') throw new \CHttpException(500, 'This is not a valid LimeSurvey question structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $aSQIDReplacements=array(0=>0);
@@ -595,7 +595,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
 
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
-    if ($xml->LimeSurveyDocType!='Label set') safeDie('This is not a valid LimeSurvey label set structure XML file.');
+    if ($xml->LimeSurveyDocType!='Label set') throw new \CHttpException(500, 'This is not a valid LimeSurvey label set structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
     $csarray=buildLabelSetCheckSumArray();
     $aLSIDReplacements=array();
@@ -906,7 +906,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $results['importwarnings'][]=sprintf(gT("This survey setting has not been imported: %s => %s"),$key,$value);
         }
 
-        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie(gT("Error").": Failed to insert data [1]<br />");
+        if (false == $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata)) {
+            throw new \CHttpException(500, gT("Error").": Failed to insert data [1]<br />");
+        }
 
         $results['surveys']++;
     }
@@ -950,7 +952,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
 
 
-        $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or safeDie(gT("Error").": Failed to insert data [2]<br />");
+        if (false == $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata)) {
+            throw new \CHttpException(500, gT("Error").": Failed to insert data [2]<br />");
+        }
     }
 
 
@@ -959,6 +963,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     if (isset($xml->groups->rows->row))
     {
+        /** @var SimpleXMLElement $rows */
+        $rows = $xml->groups->rows;
+
         foreach ($xml->groups->rows->row as $row)
         {
             $insertdata=array();
@@ -966,10 +973,10 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata[(string)$key]=(string)$value;
             }
-            if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
+            if (isset($insertdata['language']) && !in_array($insertdata['language'],$aLanguagesSupported)) continue;
             $iOldSID=$insertdata['sid'];
             $insertdata['sid']=$iNewSID;
-            $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
+            $oldgid = isset($insertdata['gid']) ? $insertdata['gid'] : null; unset($insertdata['gid']); // save the old qid
 
             // now translate any links
             if ($bTranslateInsertansTags)
@@ -983,7 +990,10 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 switchMSSQLIdentityInsert('groups',true);
                 $insertdata['gid']=$aGIDReplacements[$oldgid];
             }
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+            echo '<pre>'; var_dump($insertdata); die();
+            if (false == $newgid = QuestionGroup::model()->insertRecords($insertdata)){
+                throw new \CHttpException(500, gT("Error").": Failed to insert data [3]<br />");
+            }
             $results['groups']++;
 
             if (!isset($aGIDReplacements[$oldgid]))
@@ -1074,12 +1084,12 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $attempts++;
                 if ($attempts > 10)
                 {
-                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                    throw new \CHttpException(500, gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
                 }
             }
             if (!$oQuestion->save())
             {
-                // safeDie(gT("Error while saving: "). print_r($oQuestion->errors, true));
+                // throw new \CHttpException(500, gT("Error while saving: "). print_r($oQuestion->errors, true));
                 //
                 // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                 // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -1182,12 +1192,12 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $attempts++;
                 if ($attempts > 10)
                 {
-                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                    throw new \CHttpException(500, gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
                 }
             }
             if (!$question->save())
             {
-                // safeDie(gT("Error while saving: "). print_r($question->errors, true));
+                // throw new \CHttpException(500, gT("Error while saving: "). print_r($question->errors, true));
                 //
                 // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
                 // Problem is that it is the default PHP version on Ubuntu 12.04 LTS (which is currently very common in use)
@@ -1283,12 +1293,17 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                     $insertdata['language']=$sLanguage;
                     if ($insertdata)
                         XSSFilterArray($insertdata);
-                    $result=QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[7]<br />");
+
+                    if (false == $result=QuestionAttribute::model()->insertRecords($insertdata)) {
+                        throw new \CHttpException(500, gT("Error").": Failed to insert data[7]<br />");
+                    }
                 }
             }
             else
             {
-                $result=QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[8]<br />");
+                if (false == $result=QuestionAttribute::model()->insertRecords($insertdata)) {
+                    throw new \CHttpException(500, gT("Error").": Failed to insert data[8]<br />");
+                }
             }
             $results['question_attributes']++;
         }
@@ -1312,7 +1327,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if ($insertdata)
                 XSSFilterArray($insertdata);
             // now translate any links
-            $result=DefaultValue::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[9]<br />");
+            if (false == $result=DefaultValue::model()->insertRecords($insertdata)) {
+                throw new \CHttpException(500, gT("Error").": Failed to insert data[9]<br />");
+            }
             $results['defaultvalues']++;
         }
     }
@@ -1415,7 +1432,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['sid']=$iNewSID; // remap the survey id
             unset($insertdata['id']);
             // now translate any links
-            $result=Assessment::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[11]<br />");
+            if (false == $result=Assessment::model()->insertRecords($insertdata)) {
+                throw new \CHttpException(500, gT("Error").": Failed to insert data[11]<br />");
+            }
             $results['assessments']++;
         }
     }
@@ -1436,7 +1455,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $oldid=$insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result=Quota::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[12]<br />");
+            if (false == $result=Quota::model()->insertRecords($insertdata)) {
+                throw new \CHttpException(500, gT("Error").": Failed to insert data[12]<br />");
+            }
             $aQuotaReplacements[$oldid] = getLastInsertID('{{quota}}');
             $results['quota']++;
         }
@@ -1458,7 +1479,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['quota_id']=$aQuotaReplacements[(int)$insertdata['quota_id']]; // remap the qid
             unset($insertdata['id']);
             // now translate any links
-            $result=QuotaMember::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[13]<br />");
+            if (false  == $result=QuotaMember::model()->insertRecords($insertdata)) {
+                throw new \CHttpException(500, gT("Error").": Failed to insert data[13]<br />");
+            }
             $results['quotamembers']++;
         }
     }
@@ -1476,7 +1499,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             $insertdata['quotals_quota_id']=$aQuotaReplacements[(int)$insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            $result=QuotaLanguageSetting::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data<br />");
+            if (false == $result=QuotaLanguageSetting::model()->insertRecords($insertdata)) {
+                throw new \CHttpException(500, gT("Error").": Failed to insert data<br />");
+            }
             $results['quotals']++;
         }
     }
@@ -1502,7 +1527,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['targetqid'] =$aQIDReplacements[(int)$insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result=SurveyURLParameter::model()->insertRecord($insertdata) or safeDie(gT("Error").": Failed to insert data[14]<br />");
+            if (false == $result=SurveyURLParameter::model()->insertRecord($insertdata)) {
+                throw new \CHttpException(500, gT("Error").": Failed to insert data[14]<br />");
+            }
             $results['survey_url_parameters']++;
         }
     }
@@ -1515,7 +1542,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     translateInsertansTags($iNewSID,$iOldSID,$aOldNewFieldmap);
     replaceExpressionCodes($iNewSID,$aQuestionCodeReplacements);
     if (count($aQuestionCodeReplacements)) {
-          array_unshift($results['importwarnings'] , "<span class='warningtitle'>".gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span)>');
+          array_unshift($results['importwarnings'] , "<span class='warningtitle'>".gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span>');
     }
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
@@ -1675,7 +1702,9 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
                         }
                     }
 
-                    $result = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie(gT("Error").": Failed to insert data[16]<br />");
+                    if (false == $result = SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData)) {
+                        throw new \CHttpException(500, gT("Error") . ": Failed to insert data[16]<br />");
+                    }
                     $results['responses']++;
                 }
             }
@@ -1940,12 +1969,13 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     // Do a model function for this can be a good idea (see activate_helper/activateSurvey)
     if (Yii::app()->db->driverName=='pgsql')
     {
-        $sSequenceName= Yii::app()->db->getSchema()->getTable("{{survey_{$iSurveyID}}}")->sequenceName;
+
+        $sSequenceName= Yii::app()->db->getSchema()->getTable("{{survey_{$iSurveyId}}}")->sequenceName;
         $iActualSerial=Yii::app()->db->createCommand("SELECT last_value FROM  {$sSequenceName}")->queryScalar();
         if($iActualSerial<$iMaxId)
         {
             $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyId}}}', 'id'),{$iMaxId},false);";
-            $result = @Yii::app()->db->createCommand($sQuery)->execute();
+            $result = Yii::app()->db->createCommand($sQuery)->execute();
         }
     }
 
@@ -2015,7 +2045,9 @@ function XMLImportTimings($sFullFilePath,$iSurveyID,$aFieldReMap=array())
             $insertdata[$key]=(string)$value;
         }
 
-        $result = SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[17]<br />");
+        if (false == $result = SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata)) {
+            throw new \CHttpException(500, gT("Error").": Failed to insert data[17]<br />");
+        }
 
         $results['responses']++;
     }
@@ -2044,7 +2076,7 @@ function XSSFilterArray(&$array)
 /**
 * Import survey from an TSV file template that does not require or allow assigning of GID or QID values.
 * NOTE:  This currently only supports import of one language
-* @param type $sFullFilePath
+* @param string $sFullFilePath
 * @return type
 *
 * @author TMSWhite
@@ -2168,7 +2200,7 @@ function TSVImportSurvey($sFullFilePath)
     $surveyinfo['startdate']=NULL;
     $surveyinfo['active']='N';
    // unset($surveyinfo['datecreated']);
-    $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) ; //or safeDie(gT("Error").": Failed to insert survey<br />");
+    $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) ; //or throw new \CHttpException(500, gT("Error").": Failed to insert survey<br />");
     if ($iNewSID==false)
     {
         $results['error'] = Survey::model()->getErrors();
@@ -2477,7 +2509,7 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['language']= (isset($row['language']) ? $row['language'] : $baselang);
                 $insertdata['assessment_value'] = (int) (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['sortorder'] = ++$aseq;
-                $result = Answer::model()->insertRecords($insertdata); // or safeDie("Error: Failed to insert answer<br />");
+                $result = Answer::model()->insertRecords($insertdata); // or throw new \CHttpException(500, "Error: Failed to insert answer<br />");
                 if(!$result){
                     $results['error'][] = gT("Error")." : ".gT("Could not insert answer").". ".gT("Text file row number ").$rownumber;
                 }

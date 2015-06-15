@@ -42,7 +42,7 @@ class limereplacementfields extends Survey_Common_Action
 
         if ($isInstertAnswerEnabled === true) {
             if (empty($surveyid)) {
-                safeDie("No SID provided.");
+                throw new \CHttpException(500, "No SID provided.");
             }
 
             //2: Get all other questions that occur before this question that are pre-determined answer types
@@ -104,7 +104,7 @@ class limereplacementfields extends Survey_Common_Action
             case 'editgroup_desc':
             case 'translategroup':
                 if (empty($gid)) {
-                    safeDie("No GID provided.");
+                    throw new \CHttpException(500, "No GID provided.");
                 }
 
                 if ($question['gid'] == $gid) {
@@ -114,7 +114,7 @@ class limereplacementfields extends Survey_Common_Action
 
             case 'addquestion':
                 if (empty($gid)) {
-                    safeDie("No GID provided.");
+                    throw new \CHttpException(500, "No GID provided.");
                 }
 
                 if (!is_null($previousQuestion) && $previousQuestion['gid'] == $gid && $question['gid'] != $gid ) {
@@ -128,10 +128,10 @@ class limereplacementfields extends Survey_Common_Action
             case 'translatequestion':
             case 'translateanswer':
                 if (empty($gid)) {
-                    safeDie("No GID provided.");
+                    throw new \CHttpException(500, "No GID provided.");
                 }
                 if (empty($qid)) {
-                    safeDie("No QID provided.");
+                    throw new \CHttpException(500, "No QID provided.");
                 }
 
                 if ($question['gid'] == $gid && $question['qid'] == $qid) {
@@ -142,7 +142,7 @@ class limereplacementfields extends Survey_Common_Action
                 // this is the case for email-conf
                 return true;
             default:
-                safeDie("No Action provided.");
+                throw new \CHttpException(500, "No Action provided.");
         }
     }
 

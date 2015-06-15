@@ -1769,7 +1769,7 @@ function upgradeTables143()
     $answerresult = $oDB->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
-        modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".dbQuoteAll($row['language']).",'',".dbQuoteAll($row['code']).")"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".App()->db->quoteValue($row['language']).",'',".App()->db->quoteValue($row['code']).")"); echo $modifyoutput; flush();@ob_flush();
     }
 
     // Convert answers to subquestions
@@ -1805,7 +1805,7 @@ function upgradeTables143()
         }
         if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
         {
-            modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".dbQuoteAll($row['language']).",'','Y')"); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".App()->db->quoteValue($row['language']).",'','Y')"); echo $modifyoutput; flush();@ob_flush();
         }
     }
     // Sanitize data
@@ -1823,20 +1823,20 @@ function upgradeTables143()
     $answerresult = $oDB->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
-        $labelquery="Select * from {{labels}} where lid={$row['lid']} and language=".dbQuoteAll($row['language']);
+        $labelquery="Select * from {{labels}} where lid={$row['lid']} and language=".App()->db->quoteValue($row['language']);
         $labelresult = $oDB->createCommand($labelquery)->queryAll();
         foreach ( $labelresult as $lrow )
         {
-            modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".App()->db->quoteValue($lrow['code']).",".App()->db->quoteValue($lrow['title']).",{$lrow['sortorder']},".App()->db->quoteValue($lrow['language']).",{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
             //$labelids[]
         }
         if ($row['type']=='1')
         {
-            $labelquery="Select * from {{labels}} where lid={$row['lid1']} and language=".dbQuoteAll($row['language']);
+            $labelquery="Select * from {{labels}} where lid={$row['lid1']} and language=".App()->db->quoteValue($row['language']);
             $labelresult = $oDB->createCommand($labelquery)->queryAll();
             foreach ( $labelresult as $lrow )
             {
-                modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",1,{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
+                modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".App()->db->quoteValue($lrow['code']).",".App()->db->quoteValue($lrow['title']).",{$lrow['sortorder']},".App()->db->quoteValue($lrow['language']).",1,{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
             }
         }
     }
@@ -1846,7 +1846,7 @@ function upgradeTables143()
     $answerresult = $oDB->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
-        $labelquery="Select * from {{labels}} where lid={$row['lid']} and language=".dbQuoteAll($row['language']);
+        $labelquery="Select * from {{labels}} where lid={$row['lid']} and language=".App()->db->quoteValue($row['language']);
         $labelresult = $oDB->createCommand($labelquery)->queryAll();
         foreach ( $labelresult as $lrow )
         {

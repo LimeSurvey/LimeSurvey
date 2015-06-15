@@ -89,7 +89,7 @@ class DocWriter extends Writer
         }
         else
         {
-            safeDie('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
+            throw new \CHttpException(500, 'An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
         }
         if ($oOptions->output=='display'){
             echo  $this->output;

@@ -530,7 +530,7 @@ class statistics extends Survey_Common_Action {
             $aFieldmap=createFieldMap($qsid,'full',false,false,$sStatisticsLanguage);
             $qtype=$aFieldmap[$_POST['id']]['type'];
             $qqid=$aFieldmap[$_POST['id']]['qid'];
-            $aattr = getQuestionAttributeValues($qqid);
+            $aattr = \QuestionAttribute::model()->getQuestionAttributes($qqid);
             $field = substr($_POST['id'], 1);
 
 	        switch ($_POST['cmd']) {

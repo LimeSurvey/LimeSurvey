@@ -83,7 +83,7 @@ function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerro
     {
         $dataset=false;
     }
-    if (!$dataset && $dieonerror) {safeDie('Error executing query in dbSelectLimitAssoc:'.$query->text);}
+    if (!$dataset && $dieonerror) {throw new \CHttpException(500, 'Error executing query in dbSelectLimitAssoc:'.$query->text);}
     return $dataset;
 }
 

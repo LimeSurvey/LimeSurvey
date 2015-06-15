@@ -86,7 +86,7 @@ $internalConfig = array(
                 'CWebLogRoute' => array( // Use an associative array allow update in config
                     'class' => 'CWebLogRoute',
                     'levels'=>'error, warning, trace, info',
-                    'enabled' => false
+                    'enabled' => true
                 ),
                 'trace' => array(
                     'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
@@ -104,8 +104,8 @@ $internalConfig = array(
         'db' => array(
             'schemaCachingDuration' => 3600,
             'class' => 'DbConnection',
-            'enableProfiling' => YII_DEBUG,
-            'enableParamLogging' => YII_DEBUG,
+            'enableProfiling' => true,
+            'enableParamLogging' => true,
             'charset' => 'utf8',
         ),
         'session' => [

@@ -65,7 +65,7 @@ class Statistics_userController extends Controller {
         if (!$iSurveyID)
         {
             //This next line ensures that the $iSurveyID value is never anything but a number.
-            safeDie('You have to provide a valid survey ID.');
+            throw new \CHttpException(500, 'You have to provide a valid survey ID.');
         }
 
 
@@ -74,7 +74,7 @@ class Statistics_userController extends Controller {
             $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $iSurveyID, ':active' => 'Y'));      //Checked
             if (count($actresult) == 0)
             {
-                safeDie('You have to provide a valid survey ID.');
+                throw new \CHttpException(500, 'You have to provide a valid survey ID.');
             }
             else
             {
@@ -85,7 +85,7 @@ class Statistics_userController extends Controller {
                 $thisSurveyCssPath = getTemplateURL($surveyinfo["template"]);
                 if ($surveyinfo['publicstatistics']!='Y')
                 {
-                    safeDie('The public statistics for this survey are deactivated.');
+                    throw new \CHttpException(500, 'The public statistics for this survey are deactivated.');
                 }
 
                 //check if graphs should be shown for this survey

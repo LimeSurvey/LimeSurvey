@@ -125,6 +125,8 @@ class DevController extends \CController {
     }
 
     public function actionIndex() {
+        $a = false;
+        $b = $a || (throw new \Exception('no'));
         echo '<pre>';
         var_dump(get_declared_classes()); die();
         $parser = new Parser();

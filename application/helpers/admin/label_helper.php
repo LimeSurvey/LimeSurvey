@@ -156,7 +156,7 @@ function modlabelsetanswers($lid)
 
 
             $actualcode = $codeObj->{'code'};
-            //$codeid = dbQuoteAll($codeid,true);
+            //$codeid = App()->db->quoteValue($codeid,true);
 
             $assessmentvalue = (int)($codeObj->{'assessmentvalue'});
             foreach($data->{'langs'} as $lang){
@@ -215,7 +215,7 @@ function fixorder($lid) {
     foreach ($lslanguages as $lslanguage)
     {
         $query = "SELECT lid, code, title, sortorder FROM {{labels}} WHERE lid=:lid and language=:lang ORDER BY sortorder, code";
-        $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safeDie("Can't read labels table: $query // (lid=$lid, language=$lslanguage) "
+        $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or throw new \CHttpException(500, "Can't read labels table: $query // (lid=$lid, language=$lslanguage) "
         $position=0;
         foreach ($result->readAll() as $row)
         {

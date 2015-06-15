@@ -2032,7 +2032,9 @@ class tokens extends Survey_Common_Action
                     if ($iRecordCount == 0)
                     {
                         // Parse first line (header) from CSV
-                        $buffer = removeBOM($buffer);
+                        if(substr($buffer, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+                            $buffer=substr($buffer, 3);
+                        }
                         // We alow all field except tid because this one is really not needed.
                         $aAllowedFieldNames = array('participant_id','firstname','lastname','email','emailstatus','token','language','blacklisted','sent','remindersent','remindercount','validfrom','validuntil','completed','usesleft');
                         $aAllowedFieldNames = array_merge($aAttrFieldNames, $aAllowedFieldNames);

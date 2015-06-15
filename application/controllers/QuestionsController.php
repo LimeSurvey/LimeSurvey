@@ -15,6 +15,12 @@ class QuestionsController extends Controller
         $this->render('view', ['question' => $question]);
     }
 
+
+    /**
+     * Update happens inside a transaction so we can remove answers / subquestions and cancel if needed.
+     * @param $id
+     */
+
     public function actionUpdate($id) {
         $this->menus['question'] = $question = $this->loadModel($id);
         $this->menus['group'] = $question->group;
@@ -22,16 +28,15 @@ class QuestionsController extends Controller
 
 
         if (App()->request->isPutRequest) {
-//            echo '<pre>';
-//            return $this->render(null, $_POST);
-//            var_dump($_POST);
-//            die('</pre>');
-//             Update the question from data.
+            $transaction = App()->db->beginTransaction();
             $error = false;
             $answers = [];
             if ($question->hasAnswers && App()->request->getParam('Answer', false) !== false) {
 
                 // Remove all answers.
+                array_map(function (\Answer $answer) {
+                    return $answer->delete();
+                }, \Answer::model()->findAllByAttributes(['question_id' => $question->qid]));
                 // Create new ones.
                 $codes = [];
                 foreach(App()->request->getParam('Answer') as $i => $data) {
@@ -57,6 +62,10 @@ class QuestionsController extends Controller
             if ($question->hasSubQuestions && App()->request->getParam(\CHtml::modelName(SubQuestion::class), false) !== false) {
 
                 // Remove all subquestions.
+                array_map(function (\Question $question) {
+                    return $question->delete();
+                }, \Question::model()->findAllByAttributes(['parent_qid' => $question->qid]));
+
                 // Create new ones.
                 $codes = [];
                 foreach(App()->request->getParam(\CHtml::modelName(SubQuestion::class)) as $i => $data) {
@@ -73,7 +82,8 @@ class QuestionsController extends Controller
                      * @todo Find a better solution for this manual validation.
                      */
                     if (isset($codes[$subQuestion->title])) {
-                        App()->user->setFlash('danger', gT("Error: You are trying to use duplicate answer codes."));
+                        App()->user->setFlash('danger', gT("Error: You are trying to use duplicate question codes."));
+                        die('no');
                         $error = true;
                     } else {
                         $codes[$subQuestion->title] = true;
@@ -86,29 +96,24 @@ class QuestionsController extends Controller
                 $question->setAttributes(App()->request->getParam(\CHtml::modelName($question)));
                 if (// Validate and save question.
                     $question->save()
-                    // Remove old answers. Use individual delete to handle removal of dependent records.
-                    && array_reduce(\Answer::model()->findAllByAttributes(['question_id' => $question->qid]),
-                        function ($carry, \Answer $answer) {
-                            return $carry && $answer->delete();
-                        }, true)
                     // Save new answers.
                     && array_reduce($answers, function ($carry, \Answer $answer) {
                         return $carry && $answer->save();
                     }, true)
-                    && array_reduce(\Question::model()->findAllByAttributes(['parent_qid' => $question->qid]),
-                        function ($carry, \Question $question) {
-                            return $carry && $question->delete();
-                        }, true)
                     // Save new subquestions.
                     && array_reduce($subQuestions, function ($carry, \Question $subQuestion) {
                         return $carry && $subQuestion->save();
                     }, true)
-
                 ) {
+                    $transaction->commit();
                     App()->user->setFlash('success', "Question updated.");
                 } else {
+                    $transaction->rollback();
                     App()->user->setFlash('danger', "Question could not be updated.");
+
                 }
+            } elseif (count(App()->user->getFlashes(false)) == 0) {
+                App()->user->setFlash('danger', "Unknown error.");
             }
         }
 

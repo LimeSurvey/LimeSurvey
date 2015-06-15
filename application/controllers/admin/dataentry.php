@@ -619,7 +619,7 @@ class dataentry extends Survey_Common_Action
                     //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                     if(isset($fname['qid']) && isset($fname['type']))
                     {
-                        $qidattributes = getQuestionAttributeValues($fname['qid'], $fname['type']);
+                        $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($fname['qid'], $fname['type']);
                     }
                     switch ($fname['type'])
                     {
@@ -715,7 +715,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "L": //LIST drop-down
                         case "!": //List (Radio)
-                            $qidattributes=getQuestionAttributeValues($fname['qid']);
+                            $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -786,7 +786,7 @@ class dataentry extends Survey_Common_Action
                                 }
 
                                 $oquery="SELECT other FROM {{questions}} WHERE qid={$fname['qid']} AND {{questions}}.language = '{$sDataEntryLanguage}'";
-                                $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery."<br />");
+                                $oresult=dbExecuteAssoc($oquery) or throw new \CHttpException(500, "Couldn't get other for list question<br />".$oquery."<br />");
                                 foreach($oresult->readAll() as $orow)
                                 {
                                     $fother=$orow['other'];
@@ -896,7 +896,7 @@ class dataentry extends Survey_Common_Action
                             break;
 
                         case "M": //Multiple choice checkbox
-                            $qidattributes=getQuestionAttributeValues($fname['qid']);
+                            $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (trim($qidattributes['display_columns'])!='')
                             {
                                 $dcols=$qidattributes['display_columns'];
@@ -995,7 +995,7 @@ class dataentry extends Survey_Common_Action
                             if ($fname['aid']!=='filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0))
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
-                                $qAttributes = getQuestionAttributeValues($fname['qid']);
+                                $qAttributes = \QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                                 for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
@@ -1200,7 +1200,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case ":": //ARRAY (Multi Flexi) (Numbers)
-                            $qidattributes=getQuestionAttributeValues($fname['qid']);
+                            $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                                 $maxvalue=$qidattributes['multiflexible_max'];
                                 $minvalue=1;
@@ -1412,7 +1412,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     {
-                        $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
+                        $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($irow['qid'], $irow['type']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
                         $this->getController()->loadLibrary('Date_Time_Converter');
@@ -1439,22 +1439,22 @@ class dataentry extends Survey_Common_Action
                     }
                     elseif (isset($_POST['completed']) && $thisvalue=="")
                     {
-                        $updateqr .= dbQuoteID($fieldname)." = " . dbQuoteAll($_POST['completed']) . ", \n";
+                        $updateqr .= dbQuoteID($fieldname)." = " . App()->db->quoteValue($_POST['completed']) . ", \n";
                     }
                     else
                     {
-                        $updateqr .= dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue) . ", \n";
+                        $updateqr .= dbQuoteID($fieldname)." = " . App()->db->quoteValue($thisvalue) . ", \n";
                     }
                 }
                 else
                 {
-                    $updateqr .= dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue) . ", \n";
+                    $updateqr .= dbQuoteID($fieldname)." = " . App()->db->quoteValue($thisvalue) . ", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);
             $updateqr .= " WHERE id=$id";
 
-            $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
+            $updateres = dbExecuteAssoc($updateqr) or throw new \CHttpException(500, "Update failed:<br />\n<br />$updateqr");
 
             $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
             $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
@@ -1507,7 +1507,7 @@ class dataentry extends Survey_Common_Action
                 if (isset($_POST['token']))
                 {
                     $tokencompleted = "";
-                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
+                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".App()->db->quoteValue($_POST['token']);
                     $tcresult = dbExecuteAssoc($tcquery);
                     $tcresult = $tcresult->readAll();
                     $tccount = count($tcresult);
@@ -1529,7 +1529,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     { // token is valid, survey not anonymous, try to get last recorded response id
-                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
+                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".App()->db->quoteValue($_POST['token']);
                         $aresult = dbExecuteAssoc($aquery);
                         foreach ($aresult->readAll() as $arow)
                         {
@@ -1676,7 +1676,7 @@ class dataentry extends Survey_Common_Action
                             elseif ($irow['type'] == 'D')
                             {
                                 Yii::app()->loadLibrary('Date_Time_Converter');
-                                $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
+                                $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($irow['qid'], $irow['type']);
                                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                                 $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                                 $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
@@ -1705,7 +1705,7 @@ class dataentry extends Survey_Common_Action
                         { $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
 
                         // check how many uses the token has left
-                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
+                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".App()->db->quoteValue($_POST['token']);
                         $usesresult = dbExecuteAssoc($usesquery);
                         $usesrow = $usesresult->readAll(); //$usesresult->row_array()
                         if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
@@ -1734,7 +1734,7 @@ class dataentry extends Survey_Common_Action
                                 $utquery .= "SET usesleft=usesleft-1\n";
                             }
                         }
-                        $utquery .= "WHERE token=".dbQuoteAll($_POST['token']);
+                        $utquery .= "WHERE token=".App()->db->quoteValue($_POST['token']);
                         $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
@@ -1833,7 +1833,7 @@ class dataentry extends Survey_Common_Action
                         }
                         else
                         {
-                            safeDie("Unable to insert record into saved_control table.<br /><br />");
+                            throw new \CHttpException(500, "Unable to insert record into saved_control table.<br /><br />");
                         }
 
                     }
@@ -1927,7 +1927,7 @@ class dataentry extends Survey_Common_Action
                 foreach ($deqrows as $deqrow)
                 {
                     $cdata = array();
-                    $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
+                    $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'], $deqrow['type']);
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
@@ -1939,7 +1939,7 @@ class dataentry extends Survey_Common_Action
                     $relevance = trim($qinfo['info']['relevance']);
                     $explanation = trim($qinfo['relEqn']);
                     $validation = trim($qinfo['prettyValidTip']);
-                    $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                    $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                     $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
@@ -2004,7 +2004,7 @@ class dataentry extends Survey_Common_Action
                             $cdata['dearesult'] = $dearesult->readAll();
 
                             $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
-                            $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery);
+                            $oresult=dbExecuteAssoc($oquery) or throw new \CHttpException(500, "Couldn't get other for list question<br />".$oquery);
                             foreach($oresult->readAll() as $orow)
                             {
                                 $cdata['fother']=$orow['other'];
@@ -2014,7 +2014,7 @@ class dataentry extends Survey_Common_Action
 
                         case "L": //LIST drop-down/radio-button list
                         case "!":
-                            //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                            //                            $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                             if ($deqrow['type']=='!' && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -2074,7 +2074,7 @@ class dataentry extends Survey_Common_Action
                             }
 
                             $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
-                            $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />");
+                            $oresult=dbExecuteAssoc($oquery) or throw new \CHttpException(500, "Couldn't get other for list question<br />");
                             foreach($oresult->readAll() as $orow)
                             {
                                 $fother=$orow['other'];
@@ -2159,7 +2159,7 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case "|":
-                            //                            $qidattributes = getQuestionAttributeValues($deqrow['qid']);
+                            //                            $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                             $cdata['qidattributes'] = $qidattributes;
 
                             $maxfiles = $qidattributes['max_num_of_files'];
@@ -2191,7 +2191,7 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case ":": //ARRAY (Multi Flexi)
-                            //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                            //                            $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                             $minvalue=1;
                             $maxvalue=10;
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {

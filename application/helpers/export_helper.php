@@ -98,7 +98,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
             $num_fields = count($row);
 
             //This shouldn't occur, but just to be safe:
-            if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
+            if (count($fields)<>$num_fields) throw new \CHttpException(500, "Database inconsistency error");
 
             // Add column headers (used by R export)
             if($header==TRUE)
@@ -251,7 +251,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     } elseif ($field['LStype'] == ':') {
         $displayvaluelabel = 0;
         //Get the labels that could apply!
-        if (is_null($qidattributes)) $qidattributes=getQuestionAttributeValues($field["qid"], $field['LStype']);
+        if (is_null($qidattributes)) $qidattributes=\QuestionAttribute::model()->getQuestionAttributes($field["qid"], $field['LStype']);
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
         } else {
@@ -477,7 +477,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
                 //Get default scale for this type
                 if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
                 //But allow override
-                $aQuestionAttribs = getQuestionAttributeValues($qid,$ftype);
+                $aQuestionAttribs = \QuestionAttribute::model()->getQuestionAttributes($qid,$ftype);
                 if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
             }
 
@@ -607,7 +607,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
                     {
                         if (is_numeric($Key[0])) $Key='_'.$Key; // mask invalid element names with an underscore
                         $Key=str_replace('#','-',$Key);
-                        if (!$xmlwriter->startElement($Key)) safeDie('Invalid element key: '.$Key);
+                        if (!$xmlwriter->startElement($Key)) throw new \CHttpException(500, 'Invalid element key: '.$Key);
                         // Remove invalid XML characters
                         if ($Value!=='') {
                             $Value=str_replace(']]>','',$Value);
@@ -1706,11 +1706,11 @@ function tokensExport($iSurveyID)
     {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
         {
-            $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
+            $bquery .= ' and CAST(email as varchar) like '.App()->db->quoteValue('%'.$_POST['filteremail'].'%', true);
         }
         else
         {
-            $bquery .= ' and email like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
+            $bquery .= ' and email like '.App()->db->quoteValue('%'.$_POST['filteremail'].'%', true);
         }
     }
     if ($_POST['tokenstatus']==1)
@@ -1750,7 +1750,7 @@ function tokensExport($iSurveyID)
 
     if ($sTokenLanguage!='')
     {
-        $bquery .= " and language=".dbQuoteAll($sTokenLanguage);
+        $bquery .= " and language=".App()->db->quoteValue($sTokenLanguage);
     }
     $bquery .= " ORDER BY tid";
     Yii::app()->loadHelper('database');

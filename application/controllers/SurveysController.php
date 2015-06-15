@@ -1,6 +1,8 @@
 <?php
 namespace ls\controllers;
 use Survey;
+use Zend\Diactoros\ServerRequest;
+
 /**
  * This class will handle survey creation and manipulation.
  */
@@ -110,8 +112,9 @@ class SurveysController extends Controller
      * If a welcome screen is active it shows the welcome screen.
      * @param $id
      */
-    public function actionStart($id, $token = null)
+    public function actionStart($id, $token = null, array $pre = [])
     {
+        /** @var Survey $survey */
         $survey = Survey::model()->findByPk($id);
         $this->layout = 'showsurvey';
         if (!$survey->isActive) {
@@ -126,7 +129,7 @@ class SurveysController extends Controller
             'surveys/execute',
             'surveyId' => $id,
         ];
-        if (App()->request->isPostRequest || $survey->format == 'A' || !$survey->bool_showwelcome) {
+        if (App()->request->isPostRequest || $survey->format == Survey::FORMAT_ALL_IN_ONE || !$survey->bool_showwelcome) {
             // Create response.
             /**
              * @todo Check if we should resume an existing response instead.
@@ -144,7 +147,15 @@ class SurveysController extends Controller
             if ($survey->bool_refurl && isset(App()->request->psr7->getServerParams()['HTTP_REFERER'])) {
                 $response->url = App()->request->psr7->getServerParams()['HTTP_REFERER'];
             }
+
+            // Check if there are parameters for prefilling.
+            foreach($pre as $key => $value) {
+                $response->setAnswer($key, $value, function() {
+                    throw new \CHttpException(400, gT("Invalid answer code in URL"));
+                });
+            }
             $response->save();
+
             $session = App()->surveySessionManager->newSession($survey->sid, $response->id);
             $this->redirect(['survey/index', 'sid' => $id, 'SSM' => $session->getId()]);
 

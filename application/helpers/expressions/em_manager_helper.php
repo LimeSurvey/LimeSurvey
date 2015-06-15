@@ -5243,14 +5243,14 @@
                         $thisstep = 1;
                         break;
                 }
-                $setter[] = dbQuoteID('lastpage') . "=" . dbQuoteAll($thisstep);
+                $setter[] = dbQuoteID('lastpage') . "=" . App()->db->quoteValue($thisstep);
 
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                     $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-                    $setter[] = dbQuoteID('datestamp') . "=" . dbQuoteAll(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
+                    $setter[] = dbQuoteID('datestamp') . "=" . App()->db->quoteValue(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
                 }
                 if ($this->surveyOptions['ipaddr']) {
-                    $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll(getIPAddress());
+                    $setter[] = dbQuoteID('ipaddr') . "=" . App()->db->quoteValue(getIPAddress());
                 }
 
                 foreach ($updatedValues as $key=>$value)
@@ -5291,7 +5291,7 @@
                     }
                     else
                     {
-                        $setter[] = dbQuoteID($key) . "=" . dbQuoteAll($val);
+                        $setter[] = dbQuoteID($key) . "=" . App()->db->quoteValue($val);
                     }
                 }
                 $query .= implode(', ', $setter);
@@ -5346,11 +5346,11 @@
                             if($this->surveyOptions['datestamp'])
                             {
                                 // Replace with date("Y-m-d H:i:s") ? See timeadjust
-                                $sQuery .= dbQuoteID('submitdate') . "=" . dbQuoteAll(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
+                                $sQuery .= dbQuoteID('submitdate') . "=" . App()->db->quoteValue(dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']));
                             }
                             else
                             {
-                                $sQuery .= dbQuoteID('submitdate') . "=" . dbQuoteAll(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
+                                $sQuery .= dbQuoteID('submitdate') . "=" . App()->db->quoteValue(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
                             }
                             $sQuery .= " WHERE `id` = '{$_SESSION[$this->sessid]['srid']}'";
                             dbExecuteAssoc($sQuery);   // Checked

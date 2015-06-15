@@ -73,7 +73,7 @@ class PdfWriter extends Writer
         }
         else
         {
-            safeDie('An invalid answer format was encountered: '.$this->options->answerFormat);
+            throw new \CHttpException(500, 'An invalid answer format was encountered: '.$this->options->answerFormat);
         }
 
     }

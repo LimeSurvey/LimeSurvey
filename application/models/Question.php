@@ -22,6 +22,7 @@
  * @property-read Translation[] $translations Relation added by translatable behavior
  * @property-read bool $hasSubQuestions
  * @property-read bool $hasAnswers
+ * @property string $title
  * @property-read Survey $survey
  */
     class Question extends LSActiveRecord

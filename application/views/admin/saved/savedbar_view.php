@@ -13,5 +13,5 @@
     </div>
 </div>
 <div class='header ui-widget-header'>
-    <?php eT('Saved Responses:'); ?> <?php echo getSavedCount($iSurveyId); ?>
+    <?php eT('Saved Responses:'); ?> <?php echo SavedControl::model()->countByAttributes(['sid' => $iSurveyId]); ?>
 </div>

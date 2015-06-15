@@ -160,7 +160,7 @@ class Save {
                 }
                 else
                 {
-                    safeDie("Unable to insert record into survey table.<br /><br />");
+                    throw new \CHttpException(500, "Unable to insert record into survey table.<br /><br />");
                 }
             }
             //CREATE ENTRY INTO "saved_control"
@@ -191,7 +191,7 @@ class Save {
             }
             else
             {
-                safeDie("Unable to insert record into saved_control table.<br /><br />");
+                throw new \CHttpException(500, "Unable to insert record into saved_control table.<br /><br />");
             }
 
             $_SESSION['survey_'.$surveyid]['holdname'] = $_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
