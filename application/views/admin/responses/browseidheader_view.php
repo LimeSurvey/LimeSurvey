@@ -25,10 +25,10 @@
                     { ?>
                     <img src='<?php echo $sImageURL; ?>delete_disabled.png' alt='<?php eT("You don't have permission to delete this entry."); ?>'/>
                     <?php }
-                    if (hasFileUploadQuestion($surveyid))
+                    if ($bHasFile)
                     { ?>
-                    <a href='#' title='<?php eT("Download files for this entry"); ?>' >
-                        <img id='downloadfile_<?php echo $id;?>' src='<?php echo $sImageURL; ?>download.png' alt='<?php eT("Download files for this entry"); ?>' class='downloadfile'></a>
+                    <a href='<?php echo Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$id)); ?>' title='<?php eT("Download files for this entry"); ?>' >
+                        <img src='<?php echo $sImageURL; ?>download.png' alt='<?php eT("Download files for this entry"); ?>' class='downloadfile'></a>
                     <?php } ?>
 
                 <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>' title='<?php eT("Export this Response"); ?>' >

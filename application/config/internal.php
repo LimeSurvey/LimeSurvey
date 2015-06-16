@@ -83,11 +83,11 @@ $internalConfig = array(
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
-                'CWebLogRoute' => array( // Use an associative array allow update in config
+                'vardump' => [
                     'class' => 'CWebLogRoute',
                     'levels'=>'error, warning, trace, info',
                     'enabled' => true
-                ),
+                ],
                 'trace' => array(
                     'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
                     'levels'                     => 'trace',        // you can include more separated by commas
@@ -150,7 +150,9 @@ $internalConfig = array(
         'updateServer' => 'http://lsupdate.befound.nl/updates/',
         'bower-asset' => 'components'
     ]
+
 );
+
 
 
 $result = CMap::mergeArray($internalConfig, $userConfig);

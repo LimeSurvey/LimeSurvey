@@ -4,7 +4,7 @@ define('BASEPATH', true);
 $yiit = __DIR__ . '/../../framework/yiit.php';
 
 require_once($yiit);
-require_once __DIR__ . '/../core/WebApplication.php';
+require_once __DIR__ . '/../core/LSYii_Application.php';
 $config = include(__DIR__ . '/../config/internal.php');
 //require_once(dirname(__FILE__).'/WebTestCase.php');
 unset ($config['defaultController']);

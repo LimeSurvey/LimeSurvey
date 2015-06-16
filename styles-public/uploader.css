@@ -1,23 +1,65 @@
-body {font-family: verdana, arial, helvetica, sans-serif;font-size: 12px;color: black; direction: ltr;}
-h1 {color: #C7D92C;	font-size: 18px; font-weight: 400;}
-a {color: white;}
-a:hover, a.hover {color: #C7D92C;}
-ul { list-style: none; }
-#dialog-confirm { padding: 0 20px; float: left; width: 750px; }
+#dialog-confirm { padding: 0 20px; float: left; width: 750px; }/* Used .*/
 
-.previewblock {
-    background-color: #99CCFF;
-    margin: 10px auto;
-    padding: 5px 20px;
+/* Using display:table and hack for IE6/7 */
+.files-list{display:table;table-layout:fixed;width:100%;list-style:none;padding:0;margin:0;}
+.file-element{display:table-row;width:100%;padding:0.5em 0;}
+.file-info fieldset{
+border:0 none;
+padding:0;
+margin:0;
 }
 
-img {
-    display: block;
-    margin: 5px;
-    border: 0 none;
-    border-style: solid;
+.file-preview,.file-info,.file-tool{
+display:table-cell;vertical-align:middle;
+* float:left 
+}
+.file-preview{width:50%;text-align:center;min-height:80px;}
+.file-info{
+text-align:left;
+* width:40%
+}
+.file-tool{width:50px;text-align:center}
+
+@media handled,screen and (max-width: 479px) {
+    .files-list{
+    display:block;
+    }
+    .file-element{
+    display:block;
+    }
+    .file-preview,.file-info,.file-tool{
+    width:100%;
+    display:block;
+    }
 }
 
+
+
+.file-info label{
+    float:left;
+    clear:left;
+    display:block;
+    width:12em;
+    padding:0 0.5em;
+    line-height:1.5;
+    text-align:right;
+}
+
+.file-info .input-container{
+    display:block;
+    margin-left:13em;
+}
+@media only screen and (max-width: 767px) {
+    .file-info label{
+    display:bloc;
+    float:none;
+    width:auto;
+    text-align:left;
+    }
+    .file-info .input-container{
+        margin-left:0;
+    }
+}
 .upload-div{
     text-align: center;
 }
@@ -43,26 +85,27 @@ img {
     margin: 0.5em 0.4em 0.5em 0;
     overflow: visible;
     padding: 0.6em 0.6em 0.6em 0.6em;
-    min-width: 100px;
+    min-width: 10em;
     text-align: center;
 }
 
-.success, .error {
+#notice .success,#notice  .error {
     border: 1px solid;
-    margin: 15px 200px 20px 200px;
-    padding:15px 60px 15px 60px;
+    margin: 1.3em auto 1.5em auto;
+    padding:1.3em 60px;
     background-repeat: no-repeat;
     background-position: 20px center;
+    max-width:40em;
 }
 
-.success {
+#notice .success {
     color: #4F8A10;
     background-color: #DFF2BF;
-    background-image:url('../images/success_notice.png');
+    background-image:url('img/upload-success.png');
 }
 
-.error {
+#notice .error {
     color: #D8000C;
     background-color: #FFBABA;
-    background-image: url('../images/error_notice.png');
+    background-image: url('img/upload-error.png');
 }

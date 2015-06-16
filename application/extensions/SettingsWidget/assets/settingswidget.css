@@ -11,8 +11,21 @@
 .settingswidget > ul{
     margin:0;padding:0;
 }
-.settingswidget > ul > li{
+ul.settings-list > li
+{
 list-style: none;
+}
+fieldset.settingswidget, form.settingswidget > fieldset {
+border:0;
+padding:0;
+margin:0;
+}
+.form-horizontal .control-label,.form-horizontal .controls{
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+form li.control-group{
+overflow:visible;
 }
 
 .form-core .control-group{
@@ -68,3 +81,6 @@ margin-bottom: 5px;
     padding: 0px;
     border: none;
 }
+
+.select2-container{min-width:6em}
+.select2-container{max-width:100%}

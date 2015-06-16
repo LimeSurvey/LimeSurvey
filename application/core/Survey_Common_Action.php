@@ -803,7 +803,7 @@ class Survey_Common_Action extends CAction
 
         if ($aSurveyInfo['surveyls_url'] != "")
         {
-            $aData['endurl'] = " <a target='_blank' href=\"" . flattenText($aSurveyInfo['surveyls_url']) . "\" title=\"" . flattenText($aSurveyInfo['surveyls_url']) . "\">".flattenText($aSurveyInfo['surveyls_urldescription'])."</a>";
+            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">".flattenText($aSurveyInfo['surveyls_urldescription'])."</a>";
         }
         else
         {

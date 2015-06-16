@@ -28,7 +28,7 @@
 function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache, $oLanguage, $sQuestionType)
 {
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
-       the "T" gets passed to this function from the statistics.js file in the first place! */
+    the "T" gets passed to this function from the statistics.js file in the first place! */
     if(substr($iSurveyID,0,1)=="T") {$iSurveyID=substr($iSurveyID,1);}
     static $bErrorGenerate=false;
 
@@ -120,7 +120,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         }
 
         /* Totatllines is the number of entries to show in the key and we need to reduce the font
-           and increase the size of the chart if there are lots of them (ie more than 15) */
+        and increase the size of the chart if there are lots of them (ie more than 15) */
         $totallines=$i;
         if ($totallines>15)
         {
@@ -164,7 +164,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                     }
                     else{
                         $lblout[]= $Arabic->utf8Glyphs( $kkey.' )'.$kval.'(');
-                     }
+                    }
                 }
             }
             elseif (getLanguageRTL($language))
@@ -222,7 +222,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
                 unset($graph);
             }
-        }	//end if (bar chart)
+        }    //end if (bar chart)
 
         //Pie Chart
         else
@@ -258,7 +258,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                     }
                     else{
                         $lblout[]= $Arabic->utf8Glyphs( $kkey.' )'.$kval.'(');
-                     }
+                    }
                 }
             }
             elseif (getLanguageRTL($language))
@@ -304,7 +304,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
                 unset($graph);
             }
-        }	//end else -> pie charts
+        }    //end else -> pie charts
     }
 
     return $cachefilename;
@@ -362,7 +362,7 @@ function buildSelects($allfields, $surveyid, $language) {
     // creates array of post variable names
     for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;}
 
-   /*
+    /*
     * Iterate through postvars to create "nice" data for SQL later.
     *
     * Remember there might be some filters applied which have to be put into an SQL statement
@@ -380,91 +380,91 @@ function buildSelects($allfields, $surveyid, $language) {
             //Only do this if there is actually a value for the $pv
 
             if (
-                    in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap)
-                    || (
-                            (
-                                $pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K'
-                            )
-                            && (in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap) || in_array(substr($pv,1,strlen($pv)-3),$aQuestionMap) || in_array(substr($pv,1,strlen($pv)-5),$aQuestionMap))
-                       )
-               )
-            {
-                $firstletter=substr($pv,0,1);
-                /*
-                * these question types WON'T be handled here:
-                * M = Multiple choice
-                * T - Long Free Text
-                * Q - Multiple Short Text
-                * D - Date
-                * N - Numerical Input
-                * | - File Upload
-                * K - Multiple Numerical Input
-                */
-                if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
-                $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
-                $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
+                in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap)
+                || (
+                    (
+                        $pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K'
+                    )
+                    && (in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap) || in_array(substr($pv,1,strlen($pv)-3),$aQuestionMap) || in_array(substr($pv,1,strlen($pv)-5),$aQuestionMap))
+                )
+                )
                 {
-                    //put together some SQL here
-                    $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
-
-                    foreach ($_POST[$pv] as $condition)
+                    $firstletter=substr($pv,0,1);
+                    /*
+                    * these question types WON'T be handled here:
+                    * M = Multiple choice
+                    * T - Long Free Text
+                    * Q - Multiple Short Text
+                    * D - Date
+                    * N - Numerical Input
+                    * | - File Upload
+                    * K - Multiple Numerical Input
+                    */
+                    if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
+                    $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
+                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
                     {
-                        $thisquestion .= "'$condition', ";
+                        //put together some SQL here
+                        $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
+
+                        foreach ($_POST[$pv] as $condition)
+                        {
+                            $thisquestion .= "'$condition', ";
+                        }
+
+                        $thisquestion = substr($thisquestion, 0, -2)
+                        . ")";
+
+                        //we collect all the to be selected data in this array
+                        $selects[]=$thisquestion;
                     }
 
-                    $thisquestion = substr($thisquestion, 0, -2)
-                    . ")";
-
-                    //we collect all the to be selected data in this array
-                    $selects[]=$thisquestion;
-                }
-
-                //M - Multiple choice
-                //P - Multiple choice with comments
-                elseif ($firstletter == "M"  || $firstletter == "P")
-                {
-                    $mselects=array();
-                    //create a list out of the $pv array
-                    list($lsid, $lgid, $lqid) = explode("X", $pv);
-
-                    $aresult=Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(":parent_qid"=>$lqid)));
-                    foreach ($aresult as $arow)
+                    //M - Multiple choice
+                    //P - Multiple choice with comments
+                    elseif ($firstletter == "M"  || $firstletter == "P")
                     {
-                        // only add condition if answer has been chosen
-                        if (in_array($arow['title'], $_POST[$pv]))
+                        $mselects=array();
+                        //create a list out of the $pv array
+                        list($lsid, $lgid, $lqid) = explode("X", $pv);
+
+                        $aresult=Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(":parent_qid"=>$lqid)));
+                        foreach ($aresult as $arow)
                         {
-                            $mselects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)).$arow['title'])." = 'Y'";
+                            // only add condition if answer has been chosen
+                            if (in_array($arow['title'], $_POST[$pv]))
+                            {
+                                $mselects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)).$arow['title'])." = 'Y'";
+                            }
+                        }
+                        /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
+                        if ($mselects)
+                        {
+                            $thismulti=implode(" OR ", $mselects);
+                            $selects[]="($thismulti)";
+                            unset($mselects);
                         }
                     }
-                    /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
-                    if ($mselects)
-                    {
-                        $thismulti=implode(" OR ", $mselects);
-                        $selects[]="($thismulti)";
-                        unset($mselects);
-                    }
-                }
 
-                //N - Numerical Input
-                //K - Multiple Numerical Input
-                elseif ($firstletter == "N" || $firstletter == "K")
-                {
-                    //value greater than
-                    if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
+                    //N - Numerical Input
+                    //K - Multiple Numerical Input
+                    elseif ($firstletter == "N" || $firstletter == "K")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
+                        //value greater than
+                        if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
+                        {
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
+                        }
+
+                        //value less than
+                        if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
+                        {
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
+                        }
                     }
 
-                    //value less than
-                    if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
+                    //| - File Upload Question Type
+                    else if ($firstletter == "|")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
-                    }
-                }
-
-                //| - File Upload Question Type
-                else if ($firstletter == "|")
-                {
                         // no. of files greater than
                         if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                             $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
@@ -472,93 +472,83 @@ function buildSelects($allfields, $surveyid, $language) {
                         // no. of files less than
                         if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                             $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
-                }
+                    }
 
-                //"id" is a built in field, the unique database id key of each response row
-                elseif (substr($pv, 0, 2) == "id")
-                {
-                    if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
+                    //"id" is a built in field, the unique database id key of each response row
+                    elseif (substr($pv, 0, 2) == "id")
                     {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > ".sanitize_int($_POST[$pv]);
-                    }
-                    if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-                    {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < ".sanitize_int($_POST[$pv]);
-                    }
-                }
-
-                //T - Long Free Text
-                //Q - Multiple Short Text
-                elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
-                {
-                    $selectSubs = array();
-                    //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
-                    $pvParts = explode(",",str_replace('*','%', str_replace(' OR ',',',$_POST[$pv])));
-                    if(is_array($pvParts) AND count($pvParts)){
-                        foreach($pvParts AS $pvPart){
-                            $selectSubs[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)))." LIKE '".trim($pvPart)."'";
-                        }
-                        if(count($selectSubs)){
-                            $selects[] = ' ('.implode(' OR ',$selectSubs).') ';
-                        }
-                    }
-                }
-
-                //D - Date
-                elseif ($firstletter == "D" && $_POST[$pv] != "")
-                {
-                    //Date equals
-                    if (substr($pv, -2) == "eq")
-                    {
-                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-3))." = ".App()->db->quoteValue($_POST[$pv]);
-                    }
-                    else
-                    {
-                        //date less than
-                        if (substr($pv, -4) == "less")
+                        if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " >= ".App()->db->quoteValue($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > ".sanitize_int($_POST[$pv]);
                         }
-
-                        //date greater than
-                        if (substr($pv, -4) == "more")
+                        if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                         {
-                            $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " <= ".App()->db->quoteValue($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < ".sanitize_int($_POST[$pv]);
                         }
                     }
-                }
 
-                //check for datestamp of given answer
-                elseif (substr($pv, 0, 9) == "datestamp")
-                {
-                    //timestamp equals
-                    $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
-                    if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
+                    //T - Long Free Text
+                    //Q - Multiple Short Text
+                    elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
                     {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                        $sDateValue=$datetimeobj->convert("Y-m-d");
-
-                        $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".App()->db->quoteValue($sDateValue." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".App()->db->quoteValue($sDateValue." 23:59:59");
+                        $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-3))." = ".dbQuoteAll($_POST[$pv]);
                     }
-                    else
+
+                    //D - Date
+                    elseif ($firstletter == "D" && $_POST[$pv] != "")
                     {
-                        //timestamp less than
-                        if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
+                        //Date equals
+                        if (substr($pv, -2) == "eq")
+                        {
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-3))." = ".dbQuoteAll($_POST[$pv]);
+                        }
+                        else
+                        {
+                            //date less than
+                            if (substr($pv, -4) == "less")
+                            {
+                                $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " >= ".dbQuoteAll($_POST[$pv]);
+                            }
+
+                            //date greater than
+                            if (substr($pv, -4) == "more")
+                            {
+                                $selects[]= Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)-5)) . " <= ".dbQuoteAll($_POST[$pv]);
+                            }
+                        }
+                    }
+
+                    //check for datestamp of given answer
+                    elseif (substr($pv, 0, 9) == "datestamp")
+                    {
+                        //timestamp equals
+                        $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
+                        if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                            $sDateValue=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < ".App()->db->quoteValue($sDateValue);
-                        }
+                            $sDateValue=$datetimeobj->convert("Y-m-d");
 
-                        //timestamp greater than
-                        if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
+                            $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".dbQuoteAll($sDateValue." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".dbQuoteAll($sDateValue." 23:59:59");
+                        }
+                        else
                         {
-                            $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                            $sDateValue=$datetimeobj->convert("Y-m-d H:i:s");
-                            $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > ".App()->db->quoteValue($sDateValue);
+                            //timestamp less than
+                            if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
+                            {
+                                $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                                $sDateValue=$datetimeobj->convert("Y-m-d H:i:s");
+                                $selects[]= Yii::app()->db->quoteColumnName('datestamp')." < ".dbQuoteAll($sDateValue);
+                            }
+
+                            //timestamp greater than
+                            if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
+                            {
+                                $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
+                                $sDateValue=$datetimeobj->convert("Y-m-d H:i:s");
+                                $selects[]= Yii::app()->db->quoteColumnName('datestamp')." > ".dbQuoteAll($sDateValue);
+                            }
                         }
                     }
-                }
             }
     }    //end foreach -> loop through filter options to create SQL
 
@@ -585,33 +575,33 @@ function square($number)
 
 class statistics_helper {
     /**
-     * @var pdf
-     */
-     protected $pdf;
+    * @var pdf
+    */
+    protected $pdf;
 
-     /**
-      * The Excel worksheet we are working on
-      *
-      * @var Spreadsheet_Excel_Writer_Worksheet
-      */
-     protected $sheet;
+    /**
+    * The Excel worksheet we are working on
+    *
+    * @var Spreadsheet_Excel_Writer_Worksheet
+    */
+    protected $sheet;
 
-     protected $xlsPercents;
+    protected $xlsPercents;
 
-     protected $formatBold;
-     /**
-      * The current Excel workbook we are working on
-      *
-      * @var Xlswriter
-      */
-     protected $workbook;
+    protected $formatBold;
+    /**
+    * The current Excel workbook we are working on
+    *
+    * @var Xlswriter
+    */
+    protected $workbook;
 
-     /**
-      * Keeps track of the current row in Excel sheet
-      *
-      * @var int
-      */
-     protected $xlsRow = 0;
+    /**
+    * Keeps track of the current row in Excel sheet
+    *
+    * @var int
+    */
+    protected $xlsRow = 0;
 
     /**
     * Builds an array containing information about this particular question/answer combination
@@ -673,9 +663,9 @@ class statistics_helper {
 
             //1. Get list of answers
             $result=Question::model()->findAll(array('order'=>'question_order',
-                                                      'condition'=>'language=:language AND parent_qid=:qid AND scale_id=0',
-                                                      'params'=>array(':language'=>$language, ':qid'=>$qqid)
-                                                      ));
+                'condition'=>'language=:language AND parent_qid=:qid AND scale_id=0',
+                'params'=>array(':language'=>$language, ':qid'=>$qqid)
+            ));
             foreach ($result as $row)
             {
                 $mfield=substr($rt, 1, strlen($rt)).$row['title'];
@@ -686,7 +676,7 @@ class statistics_helper {
             if ($qother == "Y")
             {
                 $mfield=substr($rt, 1, strlen($rt))."other";
-                $alist[]=array($statlang->gT("Other"), $statlang->gT("Other"), $mfield);
+                $alist[]=array(gT("Other"), gT("Other"), $mfield);
             }
         }
 
@@ -712,8 +702,8 @@ class statistics_helper {
             // So, instead of building an array of predefined answers like we do with lists & other types,
             // we instead create two "types" of possible answer - either there is a response.. or there isn't.
             // This question type then can provide a % of the question answered in the summary.
-            $alist[]=array("Answer", $statlang->gT("Answer"), $mfield);
-            $alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
+            $alist[]=array("Answer", gT("Answer"), $mfield);
+            $alist[]=array("NoAnswer", gT("No answer"), $mfield);
         }
 
         //Q - Multiple short text
@@ -737,9 +727,9 @@ class statistics_helper {
 
             //get answers / subquestion text
             $nresult = Question::model()->find(array('order'=>'question_order',
-                                                      'condition'=>'language=:language AND parent_qid=:parent_qid AND title=:title',
-                                                      'params'=>array(':language'=>$language, ':parent_qid'=>$qqid, ':title'=>$qaid)
-                                                      ));
+                'condition'=>'language=:language AND parent_qid=:parent_qid AND title=:title',
+                'params'=>array(':language'=>$language, ':parent_qid'=>$qqid, ':title'=>$qaid)
+            ));
             $atext=flattenText($nresult->question);
             //add this to the question title
             $qtitle .= " [$atext]";
@@ -751,8 +741,8 @@ class statistics_helper {
             // So, instead of building an array of predefined answers like we do with lists & other types,
             // we instead create two "types" of possible answer - either there is a response.. or there isn't.
             // This question type then can provide a % of the question answered in the summary.
-            $alist[]=array("Answer", $statlang->gT("Answer"), $mfield);
-            $alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
+            $alist[]=array("Answer", gT("Answer"), $mfield);
+            $alist[]=array("NoAnswer", gT("No answer"), $mfield);
         }
 
         //RANKING OPTION
@@ -772,7 +762,7 @@ class statistics_helper {
                 $nrow=array_values($nrow);
                 $qtitle=flattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
                 $qtype=$nrow[1];
-                $qquestion=flattenText($nrow[2]). "[".$statlang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+                $qquestion=flattenText($nrow[2]). "[".gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
             }
 
             //get answers
@@ -823,8 +813,8 @@ class statistics_helper {
 
             foreach ($result->readAll() as $row)
             {
-                $showem[]=array($statlang->gT("Total number of files"), $row['sum']);
-                $showem[]=array($statlang->gT("Average no. of files per respondent"), $row['avg']);
+                $showem[]=array(gT("Total number of files"), $row['sum']);
+                $showem[]=array(gT("Average no. of files per respondent"), $row['avg']);
             }
 
 
@@ -847,9 +837,9 @@ class statistics_helper {
                 }
                 $responsecount++;
             }
-            $showem[] = array($statlang->gT("Total size of files"), $size." KB");
-            $showem[] = array($statlang->gT("Average file size"), $size/$filecount . " KB");
-            $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
+            $showem[] = array(gT("Total size of files"), $size." KB");
+            $showem[] = array(gT("Average file size"), $size/$filecount . " KB");
+            $showem[] = array(gT("Average size per respondent"), $size/$responsecount . " KB");
 
             /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
             $result=db_execute_num($query) or throw new \CHttpException(500, "Couldn't get list of subquestions for multitype<br />$query<br />");
@@ -868,7 +858,7 @@ class statistics_helper {
             switch($outputType)
             {
                 case 'xls':
-                    $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+                    $xlsTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                     $xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
                     $this->xlsRow++;
                     $this->xlsRow++;
@@ -877,8 +867,8 @@ class statistics_helper {
                     $this->xlsRow++;
                     $this->sheet->write($this->xlsRow, 0,$xlsDesc);
                     $this->xlsRow++;
-                    $this->sheet->write($this->xlsRow, 0,$statlang->gT("Calculation"));
-                    $this->sheet->write($this->xlsRow, 1,$statlang->gT("Result"));
+                    $this->sheet->write($this->xlsRow, 0,gT("Calculation"));
+                    $this->sheet->write($this->xlsRow, 1,gT("Result"));
                     break;
 
                 case 'pdf':
@@ -886,22 +876,22 @@ class statistics_helper {
                     $tablePDF = array();
                     $footPDF = array();
 
-                    $pdfTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+                    $pdfTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                     $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
 
-                    $headPDF[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
+                    $headPDF[] = array(gT("Calculation"),gT("Result"));
 
                     break;
 
                 case 'html':
                     $statisticsoutput .= "\n<table class='statisticstable' >\n"
-                    ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf($statlang->gT("Field summary for %s"),$qtitle).":</strong>"
+                    ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf(gT("Field summary for %s"),$qtitle).":</strong>"
                     ."</th></tr>\n"
                     ."\t<tr><th colspan='2' align='center'><strong>$qquestion</strong></th></tr>\n"
                     ."\t<tr>\n\t\t<th width='50%' align='center' ><strong>"
-                    .$statlang->gT("Calculation")."</strong></th>\n"
+                    .gT("Calculation")."</strong></th>\n"
                     ."\t\t<th width='50%' align='center' ><strong>"
-                    .$statlang->gT("Result")."</strong></th>\n"
+                    .gT("Result")."</strong></th>\n"
                     ."\t</tr></thead>\n";
 
                     foreach ($showem as $res)
@@ -948,7 +938,7 @@ class statistics_helper {
                 switch($outputType)
                 {
                     case 'xls':
-                        $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+                        $xlsTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                         $xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
                         $this->xlsRow++;
                         $this->xlsRow++;
@@ -958,8 +948,8 @@ class statistics_helper {
                         $this->xlsRow++;
                         $this->sheet->write($this->xlsRow,0,$xlsDesc);
                         $this->xlsRow++;
-                        $this->sheet->write($this->xlsRow,0,$statlang->gT("Calculation"));
-                        $this->sheet->write($this->xlsRow,1,$statlang->gT("Result"));
+                        $this->sheet->write($this->xlsRow,0,gT("Calculation"));
+                        $this->sheet->write($this->xlsRow,1,gT("Result"));
                         break;
 
                     case 'pdf':
@@ -968,22 +958,22 @@ class statistics_helper {
                         $tablePDF = array();
                         $footPDF = array();
 
-                        $pdfTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+                        $pdfTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                         $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
 
-                        $headPDF[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
+                        $headPDF[] = array(gT("Calculation"),gT("Result"));
 
                         break;
                     case 'html':
 
                         $statisticsoutput .= "\n<table class='statisticstable' >\n"
-                        ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf($statlang->gT("Field summary for %s"),$qtitle).":</strong>"
+                        ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf(gT("Field summary for %s"),$qtitle).":</strong>"
                         ."</th></tr>\n"
                         ."\t<tr><th colspan='2' align='center'><strong>$qquestion</strong></th></tr>\n"
                         ."\t<tr>\n\t\t<th width='50%' align='center' ><strong>"
-                        .$statlang->gT("Calculation")."</strong></th>\n"
+                        .gT("Calculation")."</strong></th>\n"
                         ."\t\t<th width='50%' align='center' ><strong>"
-                        .$statlang->gT("Result")."</strong></th>\n"
+                        .gT("Result")."</strong></th>\n"
                         ."\t</tr></thead>\n";
 
                         break;
@@ -1061,10 +1051,10 @@ class statistics_helper {
                 foreach ($result as $row)
                 {
                     //put translation of mean and calculated data into $showem array
-                    $showem[]=array($statlang->gT("Sum"), $row['sum']);
-                    $showem[]=array($statlang->gT("Standard deviation"), round($row['stdev'],2));
-                    $showem[]=array($statlang->gT("Average"), round($row['average'],2));
-                    $showem[]=array($statlang->gT("Minimum"), $row['minimum']);
+                    $showem[]=array(gT("Sum"), $row['sum']);
+                    $showem[]=array(gT("Standard deviation"), round($row['stdev'],2));
+                    $showem[]=array(gT("Average"), round($row['average'],2));
+                    $showem[]=array(gT("Minimum"), $row['minimum']);
 
                     //Display the maximum and minimum figures after the quartiles for neatness
                     $maximum=$row['maximum'];
@@ -1080,104 +1070,104 @@ class statistics_helper {
                 $quartiles[3] = $this->getQuartile(3, $fieldname, $surveyid, $sql, $excludezeros);
 
                 //we just put the total number of records at the beginning of this array
-                array_unshift($showem, array($statlang->gT("Count"), $medcount));
+                array_unshift($showem, array(gT("Count"), $medcount));
 
                 /* IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT */
                 /* IF YOU DON'T UNDERSTAND WHAT QUARTILES ARE DO NOT MODIFY THIS CODE */
                 /* Quartiles and Median values are NOT related to average, and the sum is irrelevent */
 
-                if (isset($quartiles[1])) $showem[]=array($statlang->gT("1st quartile (Q1)"), $quartiles[1]);
-                if (isset($quartiles[2])) $showem[]=array($statlang->gT("2nd quartile (Median)"), $quartiles[2]);
-                if (isset($quartiles[3])) $showem[]=array($statlang->gT("3rd quartile (Q3)"), $quartiles[3]);
-                $showem[]=array($statlang->gT("Maximum"), $maximum);
+                if (isset($quartiles[1])) $showem[]=array(gT("1st quartile (Q1)"), $quartiles[1]);
+                if (isset($quartiles[2])) $showem[]=array(gT("2nd quartile (Median)"), $quartiles[2]);
+                if (isset($quartiles[3])) $showem[]=array(gT("3rd quartile (Q3)"), $quartiles[3]);
+                $showem[]=array(gT("Maximum"), $maximum);
 
-                    //output results
-                    foreach ($showem as $shw)
-                    {
-                        switch($outputType)
-                        {
-                            case 'xls':
-
-                                $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow, 0,html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
-                                $this->sheet->write($this->xlsRow, 1,html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
-
-                                break;
-                            case 'pdf':
-
-                                $tablePDF[] = array(html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'),html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
-
-                                break;
-                            case 'html':
-
-                                $statisticsoutput .= "\t<tr>\n"
-                                ."\t\t<td align='center' >$shw[0]</td>\n"
-                                ."\t\t<td align='center' >$shw[1]</td>\n"
-                                ."\t</tr>\n";
-
-                                break;
-                            default:
-
-
-                                break;
-                        }
-                    }
+                //output results
+                foreach ($showem as $shw)
+                {
                     switch($outputType)
                     {
                         case 'xls':
 
                             $this->xlsRow++;
-                            $this->sheet->write($this->xlsRow, 0,$statlang->gT("Null values are ignored in calculations"));
-                            $this->xlsRow++;
-                            $this->sheet->write($this->xlsRow, 0,sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
-
-                            $footXLS[] = array($statlang->gT("Null values are ignored in calculations"));
-                            $footXLS[] = array(sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
+                            $this->sheet->write($this->xlsRow, 0,html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
+                            $this->sheet->write($this->xlsRow, 1,html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
 
                             break;
                         case 'pdf':
 
-                            $footPDF[] = array($statlang->gT("Null values are ignored in calculations"));
-                            $footPDF[] = array(sprintf($statlang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$statlang->gT("minitab method")."</a>"));
-                            $this->pdf->AddPage('P','A4');
-                            $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
-                            $this->pdf->titleintopdf($pdfTitle,$titleDesc);
-
-                            $this->pdf->headTable($headPDF, $tablePDF);
-
-                            $this->pdf->tablehead($footPDF);
+                            $tablePDF[] = array(html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'),html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
 
                             break;
                         case 'html':
 
-                            //footer of question type "N"
                             $statisticsoutput .= "\t<tr>\n"
-                            ."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
-                            ."\t\t\t<font size='1'>".$statlang->gT("Null values are ignored in calculations")."<br />\n"
-                            ."\t\t\t".sprintf($statlang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$statlang->gT("minitab method")."</a>")
-                            ."</font>\n"
-                            ."\t\t</td>\n"
+                            ."\t\t<td align='center' >$shw[0]</td>\n"
+                            ."\t\t<td align='center' >$shw[1]</td>\n"
                             ."\t</tr>\n";
-                            if($browse)
-                            {
-                                $statisticsoutput .= "\t<tr>\n"
-                                ."\t\t<td align='center'  colspan='4'>
-                                <input type='button' class='statisticsbrowsebutton numericalbrowse' value='"
-                                .$statlang->gT("Browse")."' id='$fieldname' /></td>\n</tr>";
-                                $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
-                                    <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
-                            }
-                            $statisticsoutput .= "</table>\n";
 
                             break;
                         default:
 
 
-                            break;
+                        break;
                     }
+                }
+                switch($outputType)
+                {
+                    case 'xls':
 
-                    //clean up
-                    unset($showem);
+                        $this->xlsRow++;
+                        $this->sheet->write($this->xlsRow, 0,gT("Null values are ignored in calculations"));
+                        $this->xlsRow++;
+                        $this->sheet->write($this->xlsRow, 0,sprintf(gT("Q1 and Q3 calculated using %s"), gT("minitab method")));
+
+                        $footXLS[] = array(gT("Null values are ignored in calculations"));
+                        $footXLS[] = array(sprintf(gT("Q1 and Q3 calculated using %s"), gT("minitab method")));
+
+                        break;
+                    case 'pdf':
+
+                        $footPDF[] = array(gT("Null values are ignored in calculations"));
+                        $footPDF[] = array(sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>"));
+                        $this->pdf->AddPage('P','A4');
+                        $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
+                        $this->pdf->titleintopdf($pdfTitle,$titleDesc);
+
+                        $this->pdf->headTable($headPDF, $tablePDF);
+
+                        $this->pdf->tablehead($footPDF);
+
+                        break;
+                    case 'html':
+
+                        //footer of question type "N"
+                        $statisticsoutput .= "\t<tr>\n"
+                        ."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
+                        ."\t\t\t<font size='1'>".gT("Null values are ignored in calculations")."<br />\n"
+                        ."\t\t\t".sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>")
+                        ."</font>\n"
+                        ."\t\t</td>\n"
+                        ."\t</tr>\n";
+                        if($browse)
+                        {
+                            $statisticsoutput .= "\t<tr>\n"
+                            ."\t\t<td align='center'  colspan='4'>
+                            <input type='button' class='statisticsbrowsebutton numericalbrowse' value='"
+                            .gT("Browse")."' id='$fieldname' /></td>\n</tr>";
+                            $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
+                            <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
+                        }
+                        $statisticsoutput .= "</table>\n";
+
+                        break;
+                    default:
+
+
+                        break;
+                }
+
+                //clean up
+                unset($showem);
 
 
                 //not enough (<1) results for calculation
@@ -1187,12 +1177,12 @@ class statistics_helper {
                     {
                         case 'xls':
                             $this->xlsRow++;
-                            $this->sheet->write($this->xlsRow, 0, $statlang->gT("Not enough values for calculation"));
+                            $this->sheet->write($this->xlsRow, 0, gT("Not enough values for calculation"));
                             break;
 
                         case 'pdf':
                             $tablePDF = array();
-                            $tablePDF[] = array($statlang->gT("Not enough values for calculation"));
+                            $tablePDF[] = array(gT("Not enough values for calculation"));
                             $this->pdf->AddPage('P','A4');
                             $this->pdf->Bookmark($this->pdf->delete_html($qquestion), 1, 0);
                             $this->pdf->titleintopdf($pdfTitle,$titleDesc);
@@ -1203,7 +1193,7 @@ class statistics_helper {
 
                             //output
                             $statisticsoutput .= "\t<tr>\n"
-                            ."\t\t<td align='center'  colspan='4'>".$statlang->gT("Not enough values for calculation")."</td>\n"
+                            ."\t\t<td align='center'  colspan='4'>".gT("Not enough values for calculation")."</td>\n"
                             ."\t</tr>\n</table><br />\n";
 
                             break;
@@ -1317,7 +1307,7 @@ class statistics_helper {
 
 
 
-                    //Array of Yes/No/$statlang->gT("Uncertain")
+                    //Array of Yes/No/gT("Uncertain")
                 case "C":
                     $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                     $qresult=Yii::app()->db->createCommand($qquery)->query();
@@ -1327,9 +1317,9 @@ class statistics_helper {
                     {
                         $qrow=array_values($qrow);
                         //add results
-                        $alist[]=array("Y", $statlang->gT("Yes"));
-                        $alist[]=array("N", $statlang->gT("No"));
-                        $alist[]=array("U", $statlang->gT("Uncertain"));
+                        $alist[]=array("Y", gT("Yes"));
+                        $alist[]=array("N", gT("No"));
+                        $alist[]=array("U", gT("Uncertain"));
                         $atext=flattenText($qrow[1]);
                     }
                     //output
@@ -1339,7 +1329,7 @@ class statistics_helper {
 
 
 
-                    //Array of Yes/No/$statlang->gT("Uncertain")
+                    //Array of Yes/No/gT("Uncertain")
                     //same as above
                 case "E":
                     $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
@@ -1347,9 +1337,9 @@ class statistics_helper {
                     foreach ($qresult->readAll() as $qrow)
                     {
                         $qrow=array_values($qrow);
-                        $alist[]=array("I", $statlang->gT("Increase"));
-                        $alist[]=array("S", $statlang->gT("Same"));
-                        $alist[]=array("D", $statlang->gT("Decrease"));
+                        $alist[]=array("I", gT("Increase"));
+                        $alist[]=array("S", gT("Same"));
+                        $alist[]=array("D", gT("Decrease"));
                         $atext=flattenText($qrow[1]);
                     }
                     $qquestion .= $linefeed."[".$atext."]";
@@ -1453,15 +1443,15 @@ class statistics_helper {
 
 
                 case "G": //Gender
-                    $alist[]=array("F", $statlang->gT("Female"));
-                    $alist[]=array("M", $statlang->gT("Male"));
+                    $alist[]=array("F", gT("Female"));
+                    $alist[]=array("M", gT("Male"));
                     break;
 
 
 
                 case "Y": //Yes\No
-                    $alist[]=array("Y", $statlang->gT("Yes"));
-                    $alist[]=array("N", $statlang->gT("No"));
+                    $alist[]=array("Y", gT("Yes"));
+                    $alist[]=array("N", gT("No"));
                     break;
 
 
@@ -1572,19 +1562,19 @@ class statistics_helper {
                     if ((($qtype == "L" || $qtype == "!") && $qother == "Y"))
                     {
                         //add "other"
-                        $alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$fielddata['fieldname'].'other');
+                        $alist[]=array(gT("Other"),gT("Other"),$fielddata['fieldname'].'other');
                     }
                     if ( $qtype == "O")
                     {
                         //add "comment"
-                        $alist[]=array($statlang->gT("Comments"),$statlang->gT("Comments"),$fielddata['fieldname'].'comment');
+                        $alist[]=array(gT("Comments"),gT("Comments"),$fielddata['fieldname'].'comment');
                     }
 
             }    //end switch question type
 
             //moved because it's better to have "no answer" at the end of the list instead of the beginning
             //put data into array
-            $alist[]=array("", $statlang->gT("No answer"));
+            $alist[]=array("", gT("No answer"));
 
         }
 
@@ -1602,11 +1592,10 @@ class statistics_helper {
     * @param mixed $sql
     * @param mixed $usegraph
     */
-    protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $oLanguage) {
+    protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage) {
 
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
-        $statlang = $oLanguage;
         $statisticsoutput="";
         $sDatabaseType = Yii::app()->db->getDriverName();
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -1627,7 +1616,7 @@ class statistics_helper {
         {
             case 'xls':
 
-                $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($outputs['qtitle'],ENT_QUOTES,'UTF-8'));
+                $xlsTitle = sprintf(gT("Field summary for %s"),html_entity_decode($outputs['qtitle'],ENT_QUOTES,'UTF-8'));
                 $xlsDesc = html_entity_decode($outputs['qquestion'],ENT_QUOTES,'UTF-8');
 
                 $this->xlsRow++;
@@ -1643,7 +1632,7 @@ class statistics_helper {
             case 'pdf':
 
                 $sPDFQuestion=flattenText($outputs['qquestion'],false,true);
-                $pdfTitle = $this->pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),html_entity_decode($outputs['qtitle'],ENT_QUOTES,'UTF-8')));
+                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Field summary for %s"),html_entity_decode($outputs['qtitle'],ENT_QUOTES,'UTF-8')));
                 $titleDesc = $sPDFQuestion;
 
                 $this->pdf->AddPage('P','A4');
@@ -1659,7 +1648,7 @@ class statistics_helper {
                 ."\t<thead><tr><th colspan='4' align='center'><strong>"
 
                 //headline
-                .sprintf($statlang->gT("Field summary for %s"),$outputs['qtitle'])."</strong>"
+                .sprintf(gT("Field summary for %s"),$outputs['qtitle'])."</strong>"
                 ."</th></tr>\n"
                 ."\t<tr><th colspan='4' align='center'><strong>"
 
@@ -1681,7 +1670,7 @@ class statistics_helper {
             {
 
                 //handling for "other" option
-                if ($al[0] == $statlang->gT("Other"))
+                if ($al[0] == gT("Other"))
                 {
                     if($outputs['qtype']=='!' || $outputs['qtype']=='L')
                     {
@@ -1807,11 +1796,11 @@ class statistics_helper {
 
             //"no answer" handling
             if ($al[0] === "")
-                {$fname=$statlang->gT("No answer");}
+                {$fname=gT("No answer");}
 
             //"other" handling
             //"Answer" means that we show an option to list answer to "other" text field
-            elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === $statlang->gT("Comments")) || $outputs['qtype'] === "P")
+            elseif ($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P")
             {
                 if ($outputs['qtype'] == "P") $sColumnName = $al[2]."comment";
                 else  $sColumnName = $al[2];
@@ -1821,11 +1810,11 @@ class statistics_helper {
                 }
                 $fname="$al[1]";
                 if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
-                    .$statlang->gT("Browse")."' id='$sColumnName' />";
+                    .gT("Browse")."' id='$sColumnName' />";
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
-                    $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
+                    $headPDF2[] = array(gT("ID"),gT("Response"));
                     $tablePDF2 = array();
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1838,7 +1827,7 @@ class statistics_helper {
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='xls') {
                     $headXLS = array();
                     $tableXLS = array();
-                    $headXLS[] = array($statlang->gT("ID"),$statlang->gT("Response"));
+                    $headXLS[] = array(gT("ID"),gT("Response"));
 
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1863,14 +1852,14 @@ class statistics_helper {
             elseif ($outputs['qtype'] == "S" || $outputs['qtype'] == "U" || $outputs['qtype'] == "T" || $outputs['qtype'] == "Q")
             {
                 $headPDF = array();
-                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                 //show free text answers
                 if ($al[0] == "Answer")
                 {
                     $fname= "$al[1]";
                     if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton' value='"
-                        . $statlang->gT("Browse")."' id='$sColumnName' />";
+                        . gT("Browse")."' id='$sColumnName' />";
                 }
                 elseif ($al[0] == "NoAnswer")
                 {
@@ -1879,14 +1868,14 @@ class statistics_helper {
 
                 $statisticsoutput .= "</th>\n"
                 ."\t\t<th width='25%' align='center' >"
-                ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                ."<strong>".gT("Count")."</strong></th>\n"
                 ."\t\t<th width='25%' align='center' >"
-                ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                ."<strong>".gT("Percentage")."</strong></th>\n"
                 ."\t</tr></thead>\n";
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
                     $headPDF2 = array();
-                    $headPDF2[] = array($statlang->gT("ID"),$statlang->gT("Response"));
+                    $headPDF2[] = array(gT("ID"),gT("Response"));
                     $tablePDF2 = array();
                     $result2= $this->_listcolumn($surveyid,$sColumnName);
 
@@ -1909,27 +1898,27 @@ class statistics_helper {
                         {
                             case 'xls':
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
-                                $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
-                                $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
-                                $this->sheet->write($this->xlsRow,3,$statlang->gT("Sum"));
+                                $this->sheet->write($this->xlsRow,0,gT("Answer"));
+                                $this->sheet->write($this->xlsRow,1,gT("Count"));
+                                $this->sheet->write($this->xlsRow,2,gT("Percentage"));
+                                $this->sheet->write($this->xlsRow,3,gT("Sum"));
                                 break;
 
                             case 'pdf':
 
                                 $headPDF = array();
-                                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
+                                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"),gT("Sum"));
 
                                 break;
                             case 'html':
                                 //four columns
-                                $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
+                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
                                 ."\t\t<th width='15%' align='center' >"
-                                ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                                ."<strong>".gT("Count")."</strong></th>\n"
                                 ."\t\t<th width='20%' align='center' >"
-                                ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                                ."<strong>".gT("Percentage")."</strong></th>\n"
                                 ."\t\t<th width='15%' align='center' >"
-                                ."<strong>".$statlang->gT("Sum")."</strong></th>\n"
+                                ."<strong>".gT("Sum")."</strong></th>\n"
                                 ."\t</tr></thead>\n";
                                 break;
                             default:
@@ -1946,24 +1935,24 @@ class statistics_helper {
                         {
                             case 'xls':
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
-                                $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
-                                $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
+                                $this->sheet->write($this->xlsRow,0,gT("Answer"));
+                                $this->sheet->write($this->xlsRow,1,gT("Count"));
+                                $this->sheet->write($this->xlsRow,2,gT("Percentage"));
                                 break;
 
                             case 'pdf':
 
                                 $headPDF = array();
-                                $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+                                $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                                 break;
                             case 'html':
                                 //three columns
-                                $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></td>\n"
+                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></td>\n"
                                 ."\t\t<th width='25%' align='center' >"
-                                ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                                ."<strong>".gT("Count")."</strong></th>\n"
                                 ."\t\t<th width='25%' align='center' >"
-                                ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                                ."<strong>".gT("Percentage")."</strong></th>\n"
                                 ."\t</tr></thead>\n";
                                 break;
                             default:
@@ -1990,24 +1979,24 @@ class statistics_helper {
                     {
                         case 'xls':
                             $this->xlsRow++;
-                            $this->sheet->write($this->xlsRow,0,$statlang->gT("Answer"));
-                            $this->sheet->write($this->xlsRow,1,$statlang->gT("Count"));
-                            $this->sheet->write($this->xlsRow,2,$statlang->gT("Percentage"));
+                            $this->sheet->write($this->xlsRow,0,gT("Answer"));
+                            $this->sheet->write($this->xlsRow,1,gT("Count"));
+                            $this->sheet->write($this->xlsRow,2,gT("Percentage"));
                             break;
 
                         case 'pdf':
 
                             $headPDF = array();
-                            $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+                            $headPDF[] = array(gT("Answer"),gT("Count"),gT("Percentage"));
 
                             break;
                         case 'html':
                             //three columns
-                            $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
+                            $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
                             ."\t\t<th width='25%' align='center' >"
-                            ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                            ."<strong>".gT("Count")."</strong></th>\n"
                             ."\t\t<th width='25%' align='center' >"
-                            ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                            ."<strong>".gT("Percentage")."</strong></th>\n"
                             ."\t</tr></thead>\n";
                             break;
                         default:
@@ -2106,11 +2095,11 @@ class statistics_helper {
                 //output
                 if ((incompleteAnsFilterState() != "complete"))
                 {
-                    $fname=$statlang->gT("Not completed or Not displayed");
+                    $fname=gT("Not completed or Not displayed");
                 }
                 else
                 {
-                    $fname=$statlang->gT("Not displayed");
+                    $fname=gT("Not displayed");
                 }
 
                 //we need some data
@@ -2138,11 +2127,11 @@ class statistics_helper {
                 //edit labels and put them into another array
                 if ((incompleteAnsFilterState() != "complete"))
                 {
-                    $lbl[wordwrap(flattenText($statlang->gT("Not completed or Not displayed")), 20, "\n")] = $TotalIncomplete;
+                    $lbl[wordwrap(flattenText(gT("Not completed or Not displayed")), 20, "\n")] = $TotalIncomplete;
                 }
                 else
                 {
-                    $lbl[wordwrap(flattenText($statlang->gT("Not displayed")), 20, "\n")] = $TotalIncomplete;
+                    $lbl[wordwrap(flattenText(gT("Not displayed")), 20, "\n")] = $TotalIncomplete;
                 }
             }    //end else -> noncompleted NOT checked
         }
@@ -2186,11 +2175,11 @@ class statistics_helper {
                 {
                     if ((incompleteAnsFilterState() != "complete"))
                     {
-                        $fname=$statlang->gT("Not completed or Not displayed");
+                        $fname=gT("Not completed or Not displayed");
                     }
                     else
                     {
-                        $fname=$statlang->gT("Not displayed");
+                        $fname=gT("Not displayed");
                     }
                     $label[]= $fname;
                     //we need some data
@@ -2347,8 +2336,8 @@ class statistics_helper {
                             }
 
                         default:
-                            $aggregatedPercentage = 'na';
-                            break;
+                        $aggregatedPercentage = 'na';
+                        break;
                     }
 
 
@@ -2424,35 +2413,35 @@ class statistics_helper {
                             case 'xls':
 
 
-                                $footXLS[] = array($statlang->gT("Sum")." (".$statlang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
-                                $footXLS[] = array($statlang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
+                                $footXLS[] = array(gT("Sum")." (".gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
+                                $footXLS[] = array(gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
 
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,$statlang->gT("Sum")." (".$statlang->gT("Answers").")");
+                                $this->sheet->write($this->xlsRow,0,gT("Sum")." (".gT("Answers").")");
                                 $this->sheet->writeNumber($this->xlsRow,1,$sumitems);
                                 $this->sheet->writeNumber($this->xlsRow,2,$sumpercentage/100, $this->xlsPercents);
                                 $this->sheet->writeNumber($this->xlsRow,3,$sumpercentage/100, $this->xlsPercents);
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow,0,$statlang->gT("Number of cases"));
+                                $this->sheet->write($this->xlsRow,0,gT("Number of cases"));
                                 $this->sheet->writeNumber($this->xlsRow,1,$TotalCompleted);
                                 $this->sheet->writeNumber($this->xlsRow,2,$casepercentage/100, $this->xlsPercents);
 
                                 break;
                             case 'pdf':
 
-                                $footPDF[] = array($statlang->gT("Sum")." (".$statlang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
-                                $footPDF[] = array($statlang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
+                                $footPDF[] = array(gT("Sum")." (".gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
+                                $footPDF[] = array(gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
 
                                 break;
                             case 'html':
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
-                                $statisticsoutput .= "<tr><td align='center'><strong>".$statlang->gT("Sum")." (".$statlang->gT("Answers").")</strong></td>";
+                                $statisticsoutput .= "<tr><td align='center'><strong>".gT("Sum")." (".gT("Answers").")</strong></td>";
                                 $statisticsoutput .= "<td align='center' ><strong>".$sumitems."</strong></td>";
                                 $statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
                                 $statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
 
-                                $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Number of cases")."</td>";    //German: "Fallzahl"
+                                $statisticsoutput .= "<tr><td align='center'>".gT("Number of cases")."</td>";    //German: "Fallzahl"
                                 $statisticsoutput .= "<td align='center' >".$TotalCompleted."</td>";
                                 $statisticsoutput .= "<td align='center' >$casepercentage%</td>";
                                 //there has to be a whitespace within the table cell to display correctly
@@ -2603,24 +2592,24 @@ class statistics_helper {
                 {
                     case 'xls':
                         $this->xlsRow++;
-                        $this->sheet->write($this->xlsRow,0,$statlang->gT("Arithmetic mean"));
+                        $this->sheet->write($this->xlsRow,0,gT("Arithmetic mean"));
                         $this->sheet->writeNumber($this->xlsRow,1,$am);
                         $this->xlsRow++;
-                        $this->sheet->write($this->xlsRow,0,$statlang->gT("Standard deviation"));
+                        $this->sheet->write($this->xlsRow,0,gT("Standard deviation"));
                         $this->sheet->writeNumber($this->xlsRow,1,$stddev);
                         break;
 
                     case 'pdf':
 
-                        $tablePDF[] = array($statlang->gT("Arithmetic mean"),$am,'','');
-                        $tablePDF[] = array($statlang->gT("Standard deviation"),$stddev,'','');
+                        $tablePDF[] = array(gT("Arithmetic mean"),$am,'','');
+                        $tablePDF[] = array(gT("Standard deviation"),$stddev,'','');
 
                         break;
                     case 'html':
                         //calculate standard deviation
-                        $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Arithmetic mean")."</td>";    //German: "Fallzahl"
+                        $statisticsoutput .= "<tr><td align='center'>".gT("Arithmetic mean")."</td>";    //German: "Fallzahl"
                         $statisticsoutput .= "<td>&nbsp;</td><td align='center'> $am</td><td>&nbsp;</td></tr>";
-                        $statisticsoutput .= "<tr><td align='center'>".$statlang->gT("Standard deviation")."</td>";    //German: "Fallzahl"
+                        $statisticsoutput .= "<tr><td align='center'>".gT("Standard deviation")."</td>";    //German: "Fallzahl"
                         $statisticsoutput .= "<td>&nbsp;</td><td align='center'>$stddev</td><td>&nbsp;</td></tr>";
 
                         break;
@@ -2704,12 +2693,12 @@ class statistics_helper {
             $bShowPieChart = ($bAllowPieChart && (isset($aattr["statistics_graphtype"]) && $aattr["statistics_graphtype"] == "1"));
 
             $astatdata[$rt] = array(
-            'id' => $rt,
-            'sg' => $bShowGraph,
-            'ap' => $bAllowPieChart,
-            'am' => $bAllowMap,
-            'sm' => $bShowMap,
-            'sp' => $bShowPieChart
+                'id' => $rt,
+                'sg' => $bShowGraph,
+                'ap' => $bAllowPieChart,
+                'am' => $bAllowMap,
+                'sm' => $bShowMap,
+                'sp' => $bShowPieChart
             );
 
             $stats=Yii::app()->session['stats'];
@@ -2722,7 +2711,7 @@ class statistics_helper {
 
             if ($bShowGraph == true)
             {
-                $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $statlang, $outputs['qtype']);
+                $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 if($cachefilename) // Add the image only if constructed
                 {
                     //introduce new counter
@@ -2755,10 +2744,10 @@ class statistics_helper {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
                                 $agmapdata[$rt] = array (
-                                "coord" => getQuestionMapData(substr($rt, 1), $qsid),
-                                "zoom" => $aattr['location_mapzoom'],
-                                "width" => $aattr['location_mapwidth'],
-                                "height" => $aattr['location_mapheight']
+                                    "coord" => getQuestionMapData(substr($rt, 1), $qsid),
+                                    "zoom" => $aattr['location_mapzoom'],
+                                    "width" => $aattr['location_mapwidth'],
+                                    "height" => $aattr['location_mapheight']
                                 );
                             }
                             break;
@@ -2777,12 +2766,12 @@ class statistics_helper {
                 $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
                 $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
-                ."<img class='stats-hidegraph' src='$sImgUrl/chart_disabled.png' title='". $statlang->gT("Disable chart") ."' />"
-                ."<img class='stats-showgraph' src='$sImgUrl/chart.png' title='". $statlang->gT("Enable chart") ."' />"
-                ."<img class='stats-showbar' src='$sImgUrl/chart_bar.png' title='". $statlang->gT("Display as bar chart") ."' />"
-                ."<img class='stats-showpie' src='$sImgUrl/chart_pie.png' title='". $statlang->gT("Display as pie chart") ."' />"
-                ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png' title='". $statlang->gT("Disable map display") ."' />"
-                ."<img class='stats-hidemap' src='$sImgUrl/map.png' title='". $statlang->gT("Enable map display") ."' />"
+                ."<img class='stats-hidegraph' src='$sImgUrl/chart_disabled.png' title='". gT("Disable chart") ."' />"
+                ."<img class='stats-showgraph' src='$sImgUrl/chart.png' title='". gT("Enable chart") ."' />"
+                ."<img class='stats-showbar' src='$sImgUrl/chart_bar.png' title='". gT("Display as bar chart") ."' />"
+                ."<img class='stats-showpie' src='$sImgUrl/chart_pie.png' title='". gT("Display as pie chart") ."' />"
+                ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png' title='". gT("Disable map display") ."' />"
+                ."<img class='stats-hidemap' src='$sImgUrl/map.png' title='". gT("Enable map display") ."' />"
                 ."</div></td></tr>";
 
             }
@@ -2806,10 +2795,10 @@ class statistics_helper {
     * @param mixed $browse  Show browse buttons
     * @return buffer
     */
-    public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true)
+    public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
 
-        $astatdata=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
+        $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
         
@@ -2820,16 +2809,12 @@ class statistics_helper {
 
         $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
-
-        // Used for getting coordinates for google maps
-        $agmapdata = array();
-
         //pick the best font file if font setting is 'auto'
-        if (is_null($statlangcode))
+        if (is_null($sLanguageCode))
         {
-            $statlangcode =  getBaseLanguageFromSurveyID($surveyid);
+            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
         }
-        $statlang = new Limesurvey_lang($statlangcode);
+        Yii::app()->setLanguage($sLanguageCode);
 
         /*
         * this variable is used in the function shortencode() which cuts off a question/answer title
@@ -2837,7 +2822,7 @@ class statistics_helper {
         */
         $maxchars = 13;
         //we collect all the html-output within this variable
-        $statisticsoutput ='';
+        $sOutputHTML ='';
         /**
         * $outputType: html || pdf ||
         */
@@ -2852,10 +2837,10 @@ class statistics_helper {
         $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
 
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $statlangcode);
+        $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
 
         // Set language for questions and answers to base language of this survey
-        $language=$statlangcode;
+        $language=$sLanguageCode;
 
         if($q2show=='all' )
         {
@@ -2939,9 +2924,9 @@ class statistics_helper {
             // set document information
             $this->pdf->SetCreator(PDF_CREATOR);
             $this->pdf->SetAuthor('LimeSurvey');
-            $this->pdf->SetTitle(sprintf($statlang->gT("Statistics survey %s"),$surveyid));
+            $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"),$surveyid));
             $this->pdf->SetSubject($surveyInfo['surveyls_title']);
-            $this->pdf->SetKeywords('LimeSurvey,'.$statlang->gT("Statistics").', '.sprintf($statlang->gT("Survey %s"),$surveyid));
+            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"),$surveyid));
             $this->pdf->SetDisplayMode('fullpage', 'two');
             $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
@@ -2952,7 +2937,7 @@ class statistics_helper {
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             $headerlogo = 'statistics.gif';
-            $this->pdf->SetHeaderData($headerlogo, 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
+            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics",'unescaped') , gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
             $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -2966,7 +2951,7 @@ class statistics_helper {
 
             if($pdfOutput=='F')
             {
-                $sFileName = $tempdir.'/statistic-survey'.$surveyid.'.xls';
+                $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';
                 $this->workbook = new Xlswriter($sFileName);
             }
             else
@@ -2975,12 +2960,12 @@ class statistics_helper {
             $this->workbook->setVersion(8);
             // Inform the module that our data will arrive as UTF-8.
             // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            $this->workbook->setTempDir($tempdir);
+            $this->workbook->setTempDir($sTempDir);
 
             // Inform the module that our data will arrive as UTF-8.
             // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
-            if (!empty($tempdir)) {
-                $this->workbook->setTempDir($tempdir);
+            if (!empty($sTempDir)) {
+                $this->workbook->setTempDir($sTempDir);
             }
             if ($pdfOutput!='F')
                 $this->workbook->send('statistic-survey'.$surveyid.'.xls');
@@ -3038,16 +3023,16 @@ class statistics_helper {
         {
             case "xls":
                 $this->xlsRow = 0;
-                $this->sheet->write($this->xlsRow,0,$statlang->gT("Number of records in this query:",'unescaped'));
+                $this->sheet->write($this->xlsRow,0,gT("Number of records in this query:",'unescaped'));
                 $this->sheet->writeNumber($this->xlsRow,1,$results);
                 $this->xlsRow++;
-                $this->sheet->write($this->xlsRow,0,$statlang->gT("Total records in survey:",'unescaped'));
+                $this->sheet->write($this->xlsRow,0,gT("Total records in survey:",'unescaped'));
                 $this->sheet->writeNumber($this->xlsRow,1,$total);
 
                 if($total)
                 {
                     $this->xlsRow++;
-                    $this->sheet->write($this->xlsRow,0,$statlang->gT("Percentage of total:",'unescaped'));
+                    $this->sheet->write($this->xlsRow,0,gT("Percentage of total:",'unescaped'));
                     $this->sheet->writeNumber($this->xlsRow,1,$results/$total, $this->xlsPercents);
                 }
 
@@ -3056,36 +3041,36 @@ class statistics_helper {
             case 'pdf':
                 // add summary to pdf
                 $array = array(
-                    array($statlang->gT("Number of records in this query:",'unescaped'), $results),
-                    array($statlang->gT("Total records in survey:",'unescaped'), $total)
+                    array(gT("Number of records in this query:",'unescaped'), $results),
+                    array(gT("Total records in survey:",'unescaped'), $total)
                 );
                 if($total)
                 {
-                    $array[] = array($statlang->gT("Percentage of total:",'unescaped'), $percent."%");
+                    $array[] = array(gT("Percentage of total:",'unescaped'), $percent."%");
                 }
                 $this->pdf->AddPage('P', ' A4');
-                $this->pdf->Bookmark($statlang->gT("Results",'unescaped'), 0, 0);
-                $this->pdf->titleintopdf($statlang->gT("Results",'unescaped'),$statlang->gT("Survey",'unescaped')." ".$surveyid);
+                $this->pdf->Bookmark(gT("Results",'unescaped'), 0, 0);
+                $this->pdf->titleintopdf(gT("Results",'unescaped'),gT("Survey",'unescaped')." ".$surveyid);
                 $this->pdf->tableintopdf($array);
                 break;
 
             case 'html':
 
-                $statisticsoutput .= "<br />\n<table class='statisticssummary' >\n"
-                ."\t<thead><tr><th colspan='2'>".$statlang->gT("Results")."</th></tr></thead>\n"
-                ."\t<tr><th >".$statlang->gT("Number of records in this query:").'</th>'
+                $sOutputHTML .= "<br />\n<table class='statisticssummary' >\n"
+                ."\t<thead><tr><th colspan='2'>".gT("Results")."</th></tr></thead>\n"
+                ."\t<tr><th >".gT("Number of records in this query:").'</th>'
                 ."<td>$results</td></tr>\n"
-                ."\t<tr><th>".$statlang->gT("Total records in survey:").'</th>'
+                ."\t<tr><th>".gT("Total records in survey:").'</th>'
                 ."<td>$total</td></tr>\n";
 
                 //only calculate percentage if $total is set
                 if ($total)
                 {
                     $percent=sprintf("%01.2f", ($results/$total)*100);
-                    $statisticsoutput .= "\t<tr><th align='right'>".$statlang->gT("Percentage of total:").'</th>'
+                    $sOutputHTML .= "\t<tr><th align='right'>".gT("Percentage of total:").'</th>'
                     ."<td>$percent%</td></tr>\n";
                 }
-                $statisticsoutput .="</table>\n";
+                $sOutputHTML .="</table>\n";
 
                 break;
             default:
@@ -3112,21 +3097,21 @@ class statistics_helper {
             if($outputType=='html' && $browse === true && App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $surveyid]))
             {
                 //add a buttons to browse results
-                $statisticsoutput .= CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post',array('target'=>'_blank'))."\n"
+                $sOutputHTML .= CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post',array('target'=>'_blank'))."\n"
                 ."\t\t<p>"
-                ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
+                ."\t\t\t<input type='submit' value='".gT("Browse")."'  />\n"
                 ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
                 ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
                 ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
                 ."\t\t</p>"
                 ."\t\t</form>\n";
             }
-        }	//end if (results > 0)
+        }    //end if (results > 0)
 
         /* Show Summary results
-         * The $summary array contains each fieldname that we want to display statistics for
-         *
-         * */
+        * The $summary array contains each fieldname that we want to display statistics for
+        *
+        * */
 
         if (isset($summary) && $summary)
         {
@@ -3140,27 +3125,27 @@ class statistics_helper {
             {
 
                 //Step 1: Get information about this response field (SGQA) for the summary
-                $outputs=$this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $statlang);
-                $statisticsoutput .= $outputs['statisticsoutput'];
+                $outputs=$this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
+                $sOutputHTML .= $outputs['statisticsoutput'];
                 //2. Collect and Display results #######################################################################
                 if (isset($outputs['alist']) && $outputs['alist']) //Make sure there really is an answerlist, and if so:
                 {
-                    $display=$this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $statlang);
-                    $statisticsoutput .= $display['statisticsoutput'];
-                    $astatdata = array_merge($astatdata, $display['astatdata']);
-                }	//end if -> collect and display results
+                    $display=$this->displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
+                    $sOutputHTML .= $display['statisticsoutput'];
+                    $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
+                }    //end if -> collect and display results
 
 
                 //Delete Build Outputs data
                 unset($outputs);
                 unset($display);
-            }	// end foreach -> loop through all questions
+            }    // end foreach -> loop through all questions
 
             //output
             if($outputType=='html')
-                $statisticsoutput .= "<br />&nbsp;\n";
+            $sOutputHTML .= "<br />&nbsp;\n";
 
-        }	//end if -> show summary results
+        }    //end if -> show summary results
 
         switch($outputType)
         {
@@ -3183,12 +3168,12 @@ class statistics_helper {
 
                 if($pdfOutput=='F')
                 { // This is only used by lsrc to send an E-Mail attachment, so it gives back the filename to send and delete afterwards
-                    $tempfilename = $tempdir."/Survey_".$surveyid.".pdf";
+                    $tempfilename = $sTempDir."/Survey_".$surveyid.".pdf";
                     $this->pdf->Output($tempfilename, $pdfOutput);
                     return $tempfilename;
                 }
                 else
-                    return $this->pdf->Output($statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+                    return $this->pdf->Output(gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
 
                 break;
             case 'html':
@@ -3201,13 +3186,13 @@ class statistics_helper {
                 if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off"){
                     $sSSL='s';
                 }
-                $statisticsoutput .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
-                ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aGMapData=".ls_json_encode($agmapdata)	.";var aStatData=".ls_json_encode($astatdata)."</script>";
-                return $statisticsoutput;
+                $sOutputHTML .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
+                ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='".Yii::app()->getConfig("tempurl")."';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aStatData=".ls_json_encode($aStatisticsData)."</script>";
+                return $sOutputHTML;
 
                 break;
             default:
-                return $statisticsoutput;
+                return $sOutputHTML;
 
                 break;
         }
@@ -3215,30 +3200,30 @@ class statistics_helper {
     }
 
     /**
-     * Get the quartile using minitab method
-     *
-     * L=(1/4)(n+1), U=(3/4)(n+1)
-     * Minitab linear interpolation between the two
-     * closest data points. Minitab would let L = 2.5 and find the value half way between the
-     * 2nd and 3rd data points. In our example, that would be (4+9)/2 =
-     * 6.5. Similarly, the upper quartile value would be half way between
-     * the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
-     * were 2.25, Minitab would find the value one fourth of the way
-     * between the 2nd and 3rd data points and if L were 2.75, Minitab
-     * would find the value three fourths of the way between the 2nd and
-     * 3rd data points.
-     *
-     * @staticvar null $sid
-     * @staticvar int $recordCount
-     * @staticvar null $field
-     * @staticvar null $allRows
-     * @param 0|1|2|3 $quartile use 0 for return of recordcount, otherwise will return Q1,Q2,Q3
-     * @param string $fieldname
-     * @param int $surveyid
-     * @param string $sql
-     * @param bool $excludezeros
-     * @return null|float
-     */
+    * Get the quartile using minitab method
+    *
+    * L=(1/4)(n+1), U=(3/4)(n+1)
+    * Minitab linear interpolation between the two
+    * closest data points. Minitab would let L = 2.5 and find the value half way between the
+    * 2nd and 3rd data points. In our example, that would be (4+9)/2 =
+    * 6.5. Similarly, the upper quartile value would be half way between
+    * the 7th and 8th data points, which would be (49+64)/2 = 56.5. If L
+    * were 2.25, Minitab would find the value one fourth of the way
+    * between the 2nd and 3rd data points and if L were 2.75, Minitab
+    * would find the value three fourths of the way between the 2nd and
+    * 3rd data points.
+    *
+    * @staticvar null $sid
+    * @staticvar int $recordCount
+    * @staticvar null $field
+    * @staticvar null $allRows
+    * @param 0|1|2|3 $quartile use 0 for return of recordcount, otherwise will return Q1,Q2,Q3
+    * @param string $fieldname
+    * @param int $surveyid
+    * @param string $sql
+    * @param bool $excludezeros
+    * @return null|float
+    */
     protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros) {
         static $sid = null;
         static $recordCount = 0;
@@ -3330,7 +3315,7 @@ class statistics_helper {
         if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
         {
             foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
-                 $search['condition'] .= " AND $sql";
+                $search['condition'] .= " AND $sql";
             }
         }
 

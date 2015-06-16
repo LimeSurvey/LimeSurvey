@@ -36,31 +36,43 @@ function validateQuestion(jqObject){
     if(typeof jqObject=="undefined"){jqObject=$([]);}
     $.post(
         validateUrl,
-        { title: $('#frmeditquestion [name="title"]:first').val() },
+        { 
+            title: $('#frmeditquestion [name="title"]:first').val(),
+            other: $('#frmeditquestion [name="other"]:checked:first').val(),
+
+        },
         function(data){
+                // Remove all custom validity
+                if(hasFormValidation)
+                {
+                    $('#frmeditquestion input.has-error').each(function(){
+                        if(hasFormValidation)
+                        {
+                            $(this)[0].setCustomValidity('');
+                        }
+                        $(this).removeClass("has-error");
+                        $(this).next('.errorMessage').remove();
+                    });
+                }
+                // No error : submit
                 if($.isEmptyObject(data))
                 {
-                    if(hasFormValidation)
-                    {
-                        $('#frmeditquestion [type!=hidden][name="title"]').filter(":first")[0].setCustomValidity('');// Just title actually, more input needed after ($.each)
-                    }
-                    $('#frmeditquestion [type!=hidden][name="title"]').removeClass("has-error");
-                    $('#frmeditquestion [type!=hidden][name="title"]').next('.errorMessage').remove();
                     if($(jqObject).is(":submit")){
                         $(jqObject).trigger('click', { validated: true });
                     }
                 }
                 else
                 {
+                    // Add error information for each input
                     $.each(data, function(name, aError) {
                         if($(jqObject).is(":submit")){
                             $("#frmeditquestion").closest("#tabs").find(".ui-tabs-anchor:first").click();
                             $('#frmeditquestion [type!=hidden][name="'+name+'"]').focus();// Focus on the first input
                         }
                         $('#frmeditquestion [type!=hidden][name="'+name+'"]').addClass("has-error");
-                        if(!$('#frmeditquestion [type!=hidden][name="'+name+'"]').next('.errorMessage').length)// $.each ?
+                        if(!$('#frmeditquestion [type!=hidden][name="'+name+'"]:last').next('.errorMessage').length)// :last for radio list
                         {
-                            $("<span class='errorMessage text-error' />").insertAfter('#frmeditquestion [type!=hidden][name="'+name+'"]');
+                            $("<span class='errorMessage text-error' />").insertAfter('#frmeditquestion [type!=hidden][name="'+name+'"]:last');
                         }
                         $.each(aError,function(i,error){
                             if(hasFormValidation)

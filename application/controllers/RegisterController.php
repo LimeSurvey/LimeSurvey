@@ -284,7 +284,7 @@ class RegisterController extends Controller {
         {
             $this->sMessage="<div id='wrapper' class='message tokenmessage'>"
                 . "<p>".gT("Thank you for registering to participate in this survey.")."</p>\n"
-                . "<p>".gT("You are registred but an error happen when trying to send the email, please contact the survey administrator.")."</p>\n"
+                . "<p>".gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.")."</p>\n"
                 . "<p>".sprintf(gT("Survey administrator %s (%s)"),$aSurveyInfo['adminname'],$aSurveyInfo['adminemail'])."</p>"
                 . "</div>\n";
         }
@@ -312,11 +312,11 @@ class RegisterController extends Controller {
          {
             if($oToken->usesleft<1 && $aSurveyInfo['alloweditaftercompletion']!='Y')
             {
-                $this->aRegisterErrors[]=gT("The mail address you have entered is already registered an the survey has been completed.");
+                $this->aRegisterErrors[]=gT("The email address you have entered is already registered and the survey has been completed.");
             }
             elseif(strtolower(substr(trim($oToken->emailstatus),0,6))==="optout")// And global blacklisting ?
             {
-                $this->aRegisterErrors[]=gT("This email address is already registered but someone ask to not receive new email again.");
+                $this->aRegisterErrors[]=gT("This email address cannot be used because it was opted out of this survey.");
             }
             elseif(!$oToken->emailstatus && $oToken->emailstatus!="OK")
             {

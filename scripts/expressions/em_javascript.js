@@ -13,9 +13,27 @@
  * @author Thomas M. White (TMSWhite)
  * @author Denis Chenu (Shnoulle)
  *
- * Portion from php.js is copyright 2012 Kevin van Zonneveld.
- * php.js is dual licensed under the MIT licenses.
+ * Portion from php.js licensed under the MIT licenses.
+ * Copyright (c) 2013 Kevin van Zonneveld (http://kvz.io) 
+ * and Contributors (http://phpjs.org/authors)
  */
+
+/* Default event to trigger on answer part 
+ * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations 
+ * Actually only for list with comment
+ **/
+$(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not([onkeyup])",function(event){
+    // 'keyup' can be replaced by event.type (but not really needed)
+    // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
+    if($(this).data("number"))// data-type ?
+    {
+        fixnum_checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup', $(this).data("integer"))
+    }
+    else
+    {
+        checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
+    }
+});
 
 function LEMcount()
 {
@@ -1414,29 +1432,28 @@ function ltrim (str, charlist) {
     return (str + '').replace(re, '');
 }
 
-function nl2br (str, is_xhtml) {
-    // Converts newlines to HTML line breaks
-    //
-    // version: 1107.2516
-    // discuss at: http://phpjs.org/functions/nl2br
-    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   improved by: Philip Peterson
-    // +   improved by: Onno Marsman
-    // +   improved by: Atli Þór
-    // +   bugfixed by: Onno Marsman
-    // +      input by: Brett Zamir (http://brett-zamir.me)
-    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   improved by: Brett Zamir (http://brett-zamir.me)
-    // +   improved by: Maximusya
-    // *     example 1: nl2br('Kevin\nvan\nZonneveld');
-    // *     returns 1: 'Kevin\nvan\nZonneveld'
-    // *     example 2: nl2br("\nOne\nTwo\n\nThree\n", false);
-    // *     returns 2: '<br>\nOne<br>\nTwo<br>\n<br>\nThree<br>\n'
-    // *     example 3: nl2br("\nOne\nTwo\n\nThree\n", true);
-    // *     returns 3: '\nOne\nTwo\n\nThree\n'
-    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '' : '<br>';
+function nl2br(str, is_xhtml) {
+  //  discuss at: http://phpjs.org/functions/nl2br/
+  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // improved by: Philip Peterson
+  // improved by: Onno Marsman
+  // improved by: Atli Þór
+  // improved by: Brett Zamir (http://brett-zamir.me)
+  // improved by: Maximusya
+  // bugfixed by: Onno Marsman
+  // bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  //    input by: Brett Zamir (http://brett-zamir.me)
+  //   example 1: nl2br('Kevin\nvan\nZonneveld');
+  //   returns 1: 'Kevin<br />\nvan<br />\nZonneveld'
+  //   example 2: nl2br("\nOne\nTwo\n\nThree\n", false);
+  //   returns 2: '<br>\nOne<br>\nTwo<br>\n<br>\nThree<br>\n'
+  //   example 3: nl2br("\nOne\nTwo\n\nThree\n", true);
+  //   returns 3: '<br />\nOne<br />\nTwo<br />\n<br />\nThree<br />\n'
 
-    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+  var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br ' + '/>' : '<br>'; // Adjust comment to avoid issue on phpjs.org display
+
+  return (str + '')
+    .replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
 function number_format (number, decimals, dec_point, thousands_sep) {

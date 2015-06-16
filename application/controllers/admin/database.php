@@ -153,12 +153,6 @@ class database extends Survey_Common_Action
                 for ($iSortOrderID=1;$iSortOrderID<$iMaxCount;$iSortOrderID++)
                 {
                     $sCode=sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
-                    if (Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID)) {
-                        $sOldCode=sanitize_paranoid_string(Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID));
-                        if($sCode !== $sOldCode) {
-                            Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$iQuestionID, ':value'=>$sOldCode));
-                        }
-                    }
 
                     $iAssessmentValue=(int) Yii::app()->request->getPost('assessment_'.$iSortOrderID.'_'.$iScaleID);
                     foreach ($aSurveyLanguages as $sLanguage)
@@ -179,7 +173,9 @@ class database extends Survey_Common_Action
                         {
                             Yii::app()->setFlashMessage(gT("Failed to update answers"),'error');
                         }
-                    } // foreach ($alllanguages as $language)
+                    } 
+                    // Updating code (oldcode!==null) => update condition with the new code
+                    $sOldCode=Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);
                     if(isset($sOldCode) && $sCode !== $sOldCode) {
                         Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$iQuestionID, ':value'=>$sOldCode));
                     }
@@ -309,7 +305,14 @@ class database extends Survey_Common_Action
                                 $oSubQuestion->relevance=$aRelevance[$iScaleID][$iPosition];
                             }
                         }
-                        $bSubQuestionResult=$oSubQuestion->save();
+                        if ($oSubQuestion->qid) {
+                            switchMSSQLIdentityInsert('questions',true);
+                            $bSubQuestionResult=$oSubQuestion->save();
+                            switchMSSQLIdentityInsert('questions',false);
+                        }else
+                        {
+                            $bSubQuestionResult=$oSubQuestion->save();
+                        }
                         if($bSubQuestionResult)
                         {
                             if(substr($subquestionkey,0,3)!='new' && isset($aOldCodes[$iScaleID][$iPosition]) && $aCodes[$iScaleID][$iPosition] !== $aOldCodes[$iScaleID][$iPosition])

@@ -117,6 +117,7 @@ use \Yii;
                     if (substr($sFieldname,0,4) == 'gid_')
                     {
                             $sOutput .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
+                            $sOutput .= "\t<tr class='printanswersgroupdesc'><td colspan='2'>{$fname[1]}</td></tr>\n";
                     }
                     elseif ($sFieldname=='submitdate')
                     {
@@ -182,7 +183,7 @@ use \Yii;
                 {
                     if (substr($sFieldname,0,4) == 'gid_')
                     {
-                        $oPDF->addGidAnswer($fname[0]);
+                        $oPDF->addGidAnswer($fname[0], $fname[1]);
                     }
                     elseif ($sFieldname=='submitdate')
                     {

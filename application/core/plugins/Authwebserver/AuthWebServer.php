@@ -95,8 +95,16 @@ class AuthWebServer implements \ls\pluginmanager\iAuthenticationPlugin
                 $aUserProfile=$this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            $this->setAuthSuccess($oUser);
-            return;
+            if (Permission::model()->hasGlobalPermission('auth_webserver','read',$oUser->uid))
+            {
+                $this->setAuthSuccess($oUser);
+                return;
+            }
+            else
+            {
+                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed for this user'));
+                return;
+            }
         }
 
         if ($this->api->getConfigKey('auth_webserver_autocreate_user') && isset($aUserProfile) && is_null($oUser))
@@ -113,6 +121,7 @@ class AuthWebServer implements \ls\pluginmanager\iAuthenticationPlugin
             {
                 $permission=new Permission;
                 $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
+                $this->setAuthPermission($oUser->uid,'auth_webserver');
 
                 // read again user from newly created entry
                 $this->setAuthSuccess($oUser);

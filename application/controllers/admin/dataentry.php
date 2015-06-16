@@ -292,6 +292,7 @@ class dataentry extends Survey_Common_Action
             }
             else
             {
+                $aSRIDConversions=array();
                 $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $sourceTable = PluginDynamic::model($_POST['table']);
                 $sourceSchema = $sourceTable->getTableSchema();
@@ -327,7 +328,7 @@ class dataentry extends Survey_Common_Action
 				$sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
                 foreach ($sourceResponses as $sourceResponse)
                 {
-
+                   $iOldID=$sourceResponse->id;
                     // Using plugindynamic model because I dont trust surveydynamic.
                    $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
 
@@ -337,37 +338,36 @@ class dataentry extends Survey_Common_Action
                    }
                    $imported++;
                    $targetResponse->save();
+                   $aSRIDConversions[$iOldID]=$targetResponse->id;
                    unset($targetResponse);
                 }
 
 
 
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-                $sOldTimingsTable=substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_'));
-                $sNewTimingsTable = "{{{$surveyid}_timings}}";
+                $sOldTimingsTable=substr(substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_')),strlen(Yii::app()->db->tablePrefix));
+                $sNewTimingsTable = "survey_{$surveyid}_timings";
 
                 if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
                 {
                     // Import timings
-                    $aFieldsOldTimingTable=array_values($schema->getTable($sOldTimingsTable)->columnNames);
-                    $aFieldsNewTimingTable=array_values($schema->getTable($sNewTimingsTable)->columnNames);
+                    $arDestination=SurveyTimingDynamic::model($surveyid);
+                    $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
+                    $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
 
                     $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
 
-                    $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
-                    $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
+                    $sQueryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
+                    $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll();   //Checked
                     $iRecordCountT=0;
-                    $aSRIDConversions=array();
-                    foreach ($resultOldValues->readAll() as $sTable)
+                    foreach ($aQueryOldValues as $sRecord)
                     {
-                        if (isset($aSRIDConversions[$sTable['id']]))
+                        if (isset($aSRIDConversions[$sRecord['id']]))
                         {
-                            $sTable['id']=$aSRIDConversions[$sTable['id']];
+                            $sRecord['id']=$aSRIDConversions[$sRecord['id']];
                         }
                         else continue;
-                        //$sInsertSQL=Yii::app()->db->GetInsertSQL($sNewTimingsTable,$row);
-                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($sTable))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($sTable))).")";
-                        $aTables = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                        Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}",$sRecord);
                         $iRecordCountT++;
                     }
                     Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);

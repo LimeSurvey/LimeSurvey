@@ -758,9 +758,17 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             {
                 Yii::app()->loadHelper("admin/token");
                 if (Token::createTable($aImportResults['newsid']))
+                {
                     $aTokenCreateResults = array('tokentablecreated' => true);
-                $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
-                $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);
+                    $aImportResults = array_merge($aTokenCreateResults, $aImportResults);
+                    $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], $aImportResults['newsid']);
+                }
+                else
+                {
+                    $aTokenCreateResults = array('tokentablecreated' => false);
+                    $aTokenImportResults['warnings'][] = gt("Unable to create token table");
+
+                }
                 $aImportResults = array_merge_recursive($aTokenImportResults, $aImportResults);
                 $aImportResults['importwarnings']=array_merge($aImportResults['importwarnings'],$aImportResults['warnings']);
                 unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename']);
@@ -2278,6 +2286,7 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['grelevance'] = (isset($row['relevance']) ? $row['relevance'] : '');
                 $insertdata['description'] = (isset($row['text']) ? $row['text'] : '');
                 $insertdata['language'] = $glang;
+                $insertdata['randomization_group'] = (isset($row['random_group']) ? $row['random_group'] : '');
 
                 // For multi language survey: same gid/sort order across all languages
                 if (isset($ginfo[$sGroupseq]))
@@ -2320,7 +2329,7 @@ function TSVImportSurvey($sFullFilePath)
                 $insertdata['help'] = (isset($row['help']) ? $row['help'] : '');
                 $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                 $insertdata['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
-                $insertdata['other'] = (isset($row['other']) ? $row['other'] : 'N');
+                $lastother = $insertdata['other'] = (isset($row['other']) ? $row['other'] : 'N'); // Keep trace of other settings for sub question
                 $insertdata['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
                 $insertdata['parent_qid'] = 0;
 
@@ -2420,11 +2429,12 @@ function TSVImportSurvey($sFullFilePath)
                 {
                     ;   // these are fake rows to show naming of comment and filecount fields
                 }
-                elseif ($sqname == 'other' && ($qtype == '!' || $qtype == 'L'))
+                elseif ($sqname == 'other' && $lastother=="Y") // If last question have other to Y : it's not a real SQ row
+                {
+                    if($qtype=="!" || $qtype=="L")
                     {
-                        // only want to set default value for 'other' in these cases - not a real SQ row
-                        // TODO - this isn't working
-                        if (isset($row['default']))
+                        // only used to set default value for 'other' in these cases
+                        if (isset($row['default']) && $row['default']!="")
                         {
                             $insertdata=array();
                             $insertdata['qid'] = $qid;
@@ -2438,6 +2448,7 @@ function TSVImportSurvey($sFullFilePath)
                             }
                             $results['defaultvalues']++;
                         }
+                    }
                 }
                 else
                 {
@@ -2483,7 +2494,7 @@ function TSVImportSurvey($sFullFilePath)
                     }
 
                     // insert default value
-                    if (isset($row['default']))
+                    if (isset($row['default']) && $row['default']!="")
                     {
                         $insertdata=array();
                         $insertdata['qid'] = $qid;

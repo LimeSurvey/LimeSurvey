@@ -23,6 +23,8 @@ $(document).ready(function()
     showStartPopups();
     addClassEmpty();
     noScrollOnSelect();
+    doToolTipTable();
+
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
@@ -147,6 +149,7 @@ function checkconditions(value, name, type, evt_type)
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
+
 /**
  * fixnum_checkconditions : javascript function attach to some element 
  * Update the answer of the user to be numeric and launch checkconditions
@@ -154,6 +157,10 @@ function checkconditions(value, name, type, evt_type)
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
     newval = new String(value);
+
+    /**
+     * If have to use parsed value.
+     */
     if(!bNumRealValue)
     {
         if (typeof intonly !=='undefined' && intonly==1) {
@@ -173,8 +180,43 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             newval = '';
         }
     }
+
+    /**
+     * If have to fix numbers automatically.
+     */    
     if(bFixNumAuto)
     {
+
+        /**
+         * Work on length of the number
+         * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator. 
+         */
+        var midval = newval;
+        var aNewval = midval.split('.');
+        var newval = '';
+        
+        // Treat integer part            
+        if (aNewval.length > 0) {                           
+            var intpart = aNewval[0];
+            newval = (intpart.length > 20) ? '99999999999999999999' : intpart;
+        }
+
+        // Treat decimal part, if there is one.             
+        // Trim after 10th decimal if larger than 10 decimals.
+        if (aNewval.length > 1) {                
+            var decpart = aNewval[1];
+            if (decpart.length > 10){       
+                decpart = decpart.substr(0,10);
+            }
+            else {
+                decpart = aNewval[1];                
+            }
+            newval = newval + "." + decpart;
+        }
+
+        /**
+         * Set display value
+         */ 
         displayVal = newval;
         if (LEMradix === ',') {
             displayVal = displayVal.split('.').join(',');
@@ -184,6 +226,10 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         }
         $('#answer'+name).val(displayVal);
     }
+
+    /**
+     * Check conditions
+     */
     if (typeof evt_type === 'undefined')
     {
         evt_type = 'onchange';
@@ -539,5 +585,12 @@ function maxlengthtextarea(){
             // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
             return false;
         }
+    });
+}
+/* add a title on cell with answer */
+function doToolTipTable()
+{
+   $(document).on("mouseover"," td.answer-item",function(){
+        $( this).attr('title',$(this).find("label").text());
     });
 }

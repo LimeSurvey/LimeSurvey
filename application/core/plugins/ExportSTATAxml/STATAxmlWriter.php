@@ -351,7 +351,7 @@ class STATAxmlWriter extends Writer
         if (empty($this->headers))
         {
             $this->headers = $headers;
-            foreach ($this->headers as $iKey => $sVarname)
+            foreach ($this->headers as $iKey => &$sVarname)
             {
                 $this->headers[$iKey] = $this->STATAvarname($sVarname);
             }
@@ -366,10 +366,11 @@ class STATAxmlWriter extends Writer
     */
     protected function updateCustomresponsemap()
     {
-        //create array that holds each values' data type
-        foreach ($this->customResponsemap as $iRespId => $aResponses)
+        //go through each particpants' responses
+        foreach ($this->customResponsemap as $iRespId => &$aResponses)
         {
-            foreach ($aResponses as $iVarid => $response)
+           // go through variables and response items
+           foreach ($aResponses as $iVarid => &$response)
             {
                 $response=trim($response);
                 //recode answercode=answer if codes are non-numeric (cannot be used with value labels)
@@ -382,18 +383,15 @@ class STATAxmlWriter extends Writer
                     {
                         $iScaleID = $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['scale_id'];
                     }
-                    $iQID                                       = $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['qid'];
+                    $iQID = $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['qid'];
                     if (isset($this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']))
                     {
                         $response = trim($this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']); // get answertext instead of answercode
                     }
                 }
-
-                if ($response == '')
-                {
-                    $aDatatypes[$this->headersSGQA[$iVarid]][$iRespId] = 'emptystr';
-                }
-                else
+                
+                
+                if ($response != '')
                 {
                     // recode some values from letters to numeric, so we can attach value labels and have more time doing statistics
                     switch ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'])
@@ -434,8 +432,17 @@ class STATAxmlWriter extends Writer
                             $response = strtotime($response . ' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
                             break;
                     }
-
-                    // look at each of the responses and fill $aDatatypes with the respective STATA data type
+                    
+                    /* look at each of the responses and determine STATA data type and format of the respective variables
+                       datatypes coded as follows:
+                       1=""
+                       2=byte
+                       3=int
+                       4=long
+                       5=float
+                       6=double
+                       7=string
+                    */
                     $numberresponse = trim($response);
                     if ($this->customFieldmap['info']['surveyls_numberformat'] == 1) // if settings: decimal seperator==','
                     {
@@ -448,83 +455,98 @@ class STATAxmlWriter extends Writer
                         {
                             if ($numberresponse >= $this->minByte && $numberresponse <= $this->maxByte)
                             {
-                                $aDatatypes[$this->headersSGQA[$iVarid]][$iRespId] = 'byte'; //this response is of STATA type 'byte'
+                                $iDatatype=2;  //this response is of STATA type 'byte'
                             }
                             elseif ($numberresponse >= $this->minInt && $numberresponse <= $this->maxInt)
                             {
-                                $aDatatypes[$this->headersSGQA[$iVarid]][$iRespId] = 'int'; // and this is is 'int'
+                                $iDatatype=3; // and this is is 'int'
                             }
                             else
                             {
                                 if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') // if datefield then a 'double' data type is needed
                                 {
-                                    $aDatatypes[$this->headersSGQA[$iVarid]][$iRespId] = 'double';
+                                    $iDatatype=6; // double
                                 }
                                 else
                                 {
-                                    $aDatatypes[$this->headersSGQA[$iVarid]][$iRespId] = 'long';
+                                    $iDatatype=4; //long
                                 }
                             }
                         }
                         else //non-integer numeric response
                         {
-                            $aDatatypes[$this->headersSGQA[$iVarid]][$iRespId] = 'float';
+                            $iDatatype=5;  // float
                             $response = $numberresponse;     //replace in customResponsemap: value with '.' as decimal
                         }
                     }
                     else // non-numeric response
                     {
-                        $aDatatypes[$this->headersSGQA[$iVarid]][$iRespId]  = 'string';
-                        $strlenarray[$this->headersSGQA[$iVarid]][$iRespId] = strlen($response); //for strings we need the length as well for the data type
+                        $iDatatype=7;   //string
+                        $iStringlength=strlen($response);  //for strings we need the length for the format and the data type
                     }
                 }
-                $this->customResponsemap[$iRespId][$iVarid]=$response;  //write the recoded response back to the response array
+                else
+                {
+                    $iDatatype=1;    // response = "" 
+                }
+                
+                // initialize format and type (default: empty)
+                if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['type']))
+                    $aStatatypelist[$this->headersSGQA[$iVarid]]['type']=1;
+                if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['format']))
+                    $aStatatypelist[$this->headersSGQA[$iVarid]]['format']=0;
+                
+                // Does the variable need a higher datatype because of the current response?
+                if ($aStatatypelist[$this->headersSGQA[$iVarid]]['type'] < $iDatatype)
+                    $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
+                
+                // if datatype is a string, set needed stringlength
+                if ($iDatatype==7)
+                {
+                    // Does the variable need a higher stringlength because of the current response?
+                    if ($aStatatypelist[$this->headersSGQA[$iVarid]]['format'] < $iStringlength)
+                        $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = $iStringlength;
+                    
+                }
+                //write the recoded response back to the response array
+                $this->customResponsemap[$iRespId][$iVarid]=$response;
             }
         }
-        // create an array $typelist from $aDatatypes with content: variable=> data type and data format
-        foreach ($aDatatypes as $variable => $responses)
+        
+        // translate coding into STATA datatypes, format and length
+        foreach ($aStatatypelist as $variable => $data)
         {
-            if (in_array('string', $responses, true))
+          switch ($data['type'])
             {
-                $max                           = max($strlenarray[$variable]); // get maximum string length per string variable
-                // cap str[length] at $maxStringLength
-                $typelist[$variable]['type']   = 'str' . $max = $max > $this->maxStringLength ? $this->maxStringLength : $max;
-                $typelist[$variable]['format'] = '%' . $max = $max > $this->maxStringLength ? $this->maxStringLength : $max . 's';
+                case 7: 
+                    $this->customFieldmap['questions'][$variable]['statatype']   = 'str'. min($data['format'], $this->maxStringLength);
+                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%' . min($data['format'], $this->maxStringLength) . 's';
+                    break;
+                case 6: 
+                    $this->customFieldmap['questions'][$variable]['statatype']   = 'double';
+                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%tc';
+                    break;
+                case 5: 
+                    $this->customFieldmap['questions'][$variable]['statatype']   = 'float';
+                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
+                    break;
+                case 4: 
+                    $this->customFieldmap['questions'][$variable]['statatype']   = 'long';
+                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
+                    break;
+                case 3: 
+                    $this->customFieldmap['questions'][$variable]['statatype']   = 'int';
+                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
+                    break;
+                case 2: 
+                    $this->customFieldmap['questions'][$variable]['statatype']   = 'byte';
+                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
+                    break;
+                case 1: 
+                    $this->customFieldmap['questions'][$variable]['statatype']   = 'byte';
+                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%9.0g';
+                    break;
             }
-            elseif (in_array('double', $responses, true)) // only used for dates/times (milliseconds passed since 1960)
-            {
-                $typelist[$variable]['type']   = 'double';
-                $typelist[$variable]['format'] = '%tc';
-            }
-            elseif (in_array('float', $responses, true))
-            {
-                $typelist[$variable]['type'] = 'float';
-                $typelist[$variable]['format'] = '%10.0g';
-            }
-            elseif (in_array('long', $responses, true))
-            {
-                $typelist[$variable]['type'] = 'long';
-                $typelist[$variable]['format'] = '%10.0g';
-            }
-            elseif (in_array('int', $responses, true))
-            {
-                $typelist[$variable]['type'] = 'int';
-                $typelist[$variable]['format'] = '%10.0g';
-            }
-            elseif (in_array('byte', $responses, true))
-            {
-                $typelist[$variable]['type'] = 'byte';
-                $typelist[$variable]['format'] = '%10.0g';
-            }
-            elseif (in_array('emptystr', $responses, true))
-            {
-                $typelist[$variable]['type'] = 'byte'; //variables that only contain '' as responses will be a byte...
-                $typelist[$variable]['format'] = '%9.0g';
-            }
-            $this->customFieldmap['questions'][$variable]['statatype']   = $typelist[$variable]['type'];
-            $this->customFieldmap['questions'][$variable]['stataformat'] = $typelist[$variable]['format'];
-
-
         }
     }
 

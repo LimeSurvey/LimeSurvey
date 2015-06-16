@@ -28,6 +28,14 @@ class Authentication extends Survey_Common_Action
 {
 
     /**
+    * Reused email message
+    *
+    * @var string
+    * @access private
+    */
+    private $sent_email_message = 'If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you';
+
+    /**
     * Show login screen and parse login data
     */
     public function index()
@@ -82,7 +90,7 @@ class Authentication extends Survey_Common_Action
             {
                 FailedLoginAttempt::model()->deleteAttempts();
                 App()->user->setState('plugin', $authMethod);
-                $this->getController()->_GetSessionUserRights(App()->user->id);
+                $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                 Yii::app()->session['just_logged_in'] = true;
                 Yii::app()->session['loginsummary'] = $this->_getSummary();
 
@@ -103,9 +111,28 @@ class Authentication extends Survey_Common_Action
                     $message = gT('Incorrect username and/or password!');
                 }
                 App()->user->setFlash('loginError', $message);
-                $this->getController()->redirect(['users/login']);
+                $this->getController()->redirect(array('/admin/authentication/sa/login'));
             }
         }
+    }
+
+    /**
+    * Logout user
+    */
+    public function logout()
+    {
+        /* Adding beforeLogout event */
+        $beforeLogout = new PluginEvent('beforeLogout');
+        App()->getPluginManager()->dispatchEvent($beforeLogout);
+
+        App()->user->logout();
+        App()->user->setFlash('loginmessage', gT('Logout successful.'));
+
+        /* Adding afterLogout event */
+        $event = new PluginEvent('afterLogout');
+        App()->getPluginManager()->dispatchEvent($event);
+
+        $this->getController()->redirect(array('/admin/authentication/sa/login'));
     }
 
     /**
@@ -126,18 +153,19 @@ class Authentication extends Survey_Common_Action
 
             $aFields = User::model()->findAllByAttributes(array('users_name' => $sUserName, 'email' => $sEmailAddr));
 
-            if (count($aFields) < 1)
+            // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
+            usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"),Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
+
+            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid'])))
             {
-                // wrong or unknown username and/or email
-                $aData['errormsg'] = gT('User name and/or email not found!');
-                $aData['maxattempts'] = '';
-                $this->_renderWrappedTemplate('authentication', 'error', $aData);
+                // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
+                $aData['message'] = '<br>'.gT($this->sent_email_message).'<br>';
             }
             else
             {
-                $aData['message'] = $this->_sendPasswordEmail($sEmailAddr, $aFields);
-                $this->_renderWrappedTemplate('authentication', 'message', $aData);
+                $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields).'</br>';
             }
+            $this->_renderWrappedTemplate('authentication', 'message', $aData);
         }
     }
 
@@ -153,7 +181,7 @@ class Authentication extends Survey_Common_Action
         $sTo = $sEmailAddr;
         $sSubject = gT('User data');
         $sNewPass = createPassword();
-        $sSiteName = App()->name;
+        $sSiteName = Yii::app()->getConfig('sitename');
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
         $username = sprintf(gT('Username: %s'), $aFields[0]['users_name']);
@@ -161,7 +189,7 @@ class Authentication extends Survey_Common_Action
         $password = sprintf(gT('New password: %s'), $sNewPass);
 
         $body   = array();
-        $body[] = sprintf(gT('Your user data for accessing %s'), App()->name);
+        $body[] = sprintf(gT('Your user data for accessing %s'), Yii::app()->getConfig('sitename'));
         $body[] = $username;
         $body[] = $password;
         $body   = implode("\n", $body);
@@ -169,12 +197,12 @@ class Authentication extends Survey_Common_Action
         if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce))
         {
             User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
-            $sMessage = $username . '<br />' . $email . '<br /><br />' . gT('An email with your login data was sent to you.');
+            // For security reasons, we don't show a successful message
+            $sMessage = gT($this->sent_email_message);
         }
         else
         {
-            $sTmp = str_replace("{NAME}", '<strong>' . $aFields[0]['users_name'] . '</strong>', gT("Email to {NAME} ({EMAIL}) failed."));
-            $sMessage = str_replace("{EMAIL}", $sEmailAddr, $sTmp) . '<br />';
+            $sMessage = gT('Email failed');
         }
 
         return $sMessage;

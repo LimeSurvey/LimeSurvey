@@ -45,12 +45,11 @@ class PluginEvent extends \CComponent
     {
        $this->_name = $name;
     }
-    
-    public function dispatch() 
+
+    public function dispatch()
     {
         \Yii::app()->pluginManager->dispatchEvent($this);
     }
-
     /**
      * Get a value for the given key. 
      * 

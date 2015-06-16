@@ -17,27 +17,25 @@
          */
         public $form = true;
         public $formHtmlOptions = array();
+        public $fieldHtmlOptions = array();
+
         public $method = 'post';
         public $prefix;
         public $settings = array();
-        /**
-         * Set to true to render elements in a lit (ul/li)
-         * @var boolean
-         */
-        public $inlist=false;
+
         public $title;
-
-
+        public $inlist=true;// Leave before removing
         public function beginForm()
         {
             if ($this->form)
             {
-                echo CHtml::beginForm($this->action, $this->method, $this->formHtmlOptions);
+                echo CHtml::beginForm($this->action, $this->method,$this->formHtmlOptions);
             }
             else
             {
-                echo CHtml::openTag('div', array('class' => $this->formHtmlOptions['class'], 'id' => $this->getId()));
+                $this->fieldHtmlOptions=array_replace($this->formHtmlOptions,$this->fieldHtmlOptions);
             }
+            echo CHtml::openTag('fieldset', array_replace($this->fieldHtmlOptions, array('id' => $this->getId())));
             if (isset($this->title))
             {
                 echo CHtml::tag('legend', array(), $this->title);
@@ -46,13 +44,10 @@
 
         public function endForm()
         {
+            echo CHtml::closeTag('fieldset');
             if ($this->form)
             {
                 echo CHtml::endForm();
-            }
-            else
-            {
-                echo CHtml::closeTag('div');
             }
         }
         public function init() {
@@ -83,6 +78,32 @@
                     break;
                 default:
                     $result = TbHtml::htmlButton($label, $htmlOptions);
+            }
+
+            $metaData['class'][]='btn';
+            if (isset($metaData['type']) && $metaData['type'] == 'link')
+            {
+                $metaData['class'][]='btn-link';
+                $metaData['class'][]='button';
+            }
+            $htmlOptions = $this->htmlOptions($metaData);
+
+            if (isset($metaData['type']) && $metaData['type'] == 'link')
+            {
+                return CHtml::link($label,$metaData['href'],$htmlOptions); // This allow cancel without js
+            }
+            elseif(isset($metaData['type']))
+            {
+                $htmlOptions['type']=$metaData['type'];
+                return CHtml::htmlButton($label, $htmlOptions);
+            }
+            elseif(isset($htmlOptions['type'])) // Allow type button or cancel in pluginSettings>settings>button
+            {
+                return CHtml::htmlButton($label, $htmlOptions);
+            }
+            else
+            {
+                return CHtml::submitButton($label, $htmlOptions);
             }
             return $result;
         }
@@ -161,25 +182,12 @@
 
         protected function renderSettings()
         {
-            if($this->inlist)
-            {
-                echo CHtml::openTag('ul');
-            }
+            echo CHtml::openTag('ul',array('class'=>"settings-list"));
             foreach($this->settings as $name => $metaData)
             {
-                if($this->inlist)
-                {
-                    $this->renderSetting($name, $metaData, null, false,'li');
-                }
-                else
-                {
-                    $this->renderSetting($name, $metaData);
-                }
+                $this->renderSetting($name, $metaData, null, false,'li');
             }
-            if($this->inlist)
-            {
-                echo CHtml::closeTag('ul');
-            }
+            echo CHtml::closeTag('ul');
         }
 
 
@@ -369,7 +377,7 @@
                 array(
                     'minimumResultsForSearch' => 50,
                     'dropdownAutoWidth'=> true,
-//                    'width' => 'resolve',
+                    'width' => "js: function(){ return Math.max.apply(null, $(this.element).find('option').map(function() { return $(this).text().length; }))+'em' }",
                 ),(isset($metaData['selectOptions']) ? $metaData['selectOptions'] : array())
             );
             $properties = array(

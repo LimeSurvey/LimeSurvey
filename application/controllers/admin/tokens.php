@@ -32,7 +32,7 @@ class tokens extends Survey_Common_Action
         $thissurvey = getSurveyInfo($iSurveyId);
         if (!App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])
             && !App()->user->checkAccess('tokens', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('tokens', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $iSurveyId])
-            && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID])
+            && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])
             )
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
@@ -194,7 +194,7 @@ class tokens extends Survey_Common_Action
                                     'emailstatus' => 'bounced'
                                     );
                                     $condn = array('token' => $tokenBounce[1]);
-									$record = Token::model($iSurveyId)->findByAttributes($condn);
+                                    $record = Token::model($iSurveyId)->findByAttributes($condn);
                                     if ($record->emailstatus != 'bounced')
                                     {
                                         $record->emailstatus = 'bounced';
@@ -323,7 +323,13 @@ class tokens extends Survey_Common_Action
         $aData['order'] = $order;
         $aData['surveyprivate'] = $aData['thissurvey']['anonymized'];
         $aData['dateformatdetails'] = $dateformatdetails;
-
+        $aLanguageCodes=Survey::model()->findByPk($iSurveyId)->getAllLanguages();
+        $aLanguages=array();
+        foreach ($aLanguageCodes as $aCode)
+        {
+            $aLanguages[$aCode]=getLanguageNameFromCode($aCode,false);    
+        }
+        $aData['aLanguages'] = $aLanguages;
         $this->_renderWrappedTemplate('token', array('tokenbar', 'browse'), $aData);
     }
 
@@ -858,7 +864,7 @@ class tokens extends Survey_Common_Action
             SurveyLink::model()->deleteTokenLink($aTokenIds, $iSurveyID);
 
             //Then delete the tokens
-			Token::model($iSurveyID)->deleteByPk($aTokenIds);
+            Token::model($iSurveyID)->deleteByPk($aTokenIds);
         }
     }
 
@@ -1066,7 +1072,7 @@ class tokens extends Survey_Common_Action
     function updatetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1113,7 +1119,7 @@ class tokens extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT("No token table.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
-        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1172,7 +1178,7 @@ class tokens extends Survey_Common_Action
     function updatetokenattributedescriptions($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
+        if (!App()->user->checkAccess('tokens', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]) && !App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
@@ -1365,7 +1371,6 @@ class tokens extends Survey_Common_Action
                     $sMessage[$language] = html_entity_decode($sMessage[$language], ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
             }
 
-            $attributes = array_keys(getTokenFieldsAndNames($iSurveyId,true));
             $tokenoutput = "";
             if ($emcount > 0)
             {
@@ -1377,16 +1382,10 @@ class tokens extends Survey_Common_Action
                     {
                         $to[] = ($emrow['firstname'] . " " . $emrow['lastname'] . " <{$sEmailaddress}>");
                     }
-                    $fieldsarray["{EMAIL}"] = $emrow['email'];
-                    $fieldsarray["{FIRSTNAME}"] = $emrow['firstname'];
-                    $fieldsarray["{LASTNAME}"] = $emrow['lastname'];
-                    $fieldsarray["{TOKEN}"] = $emrow['token'];
-                    $fieldsarray["{LANGUAGE}"] = $emrow['language'];
 
-                    foreach ($attributes as $attributefield)
+                    foreach ($emrow as $attribute => $value) // LimeExpressionManager::loadTokenInformation use $oToken->attributes
                     {
-                        $fieldsarray['{' . strtoupper($attributefield) . '}'] = $emrow[$attributefield];
-                        $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$emrow[$attributefield];
+                        $fieldsarray['{' . strtoupper($attribute) . '}'] = $value;
                     }
 
                     $emrow['language'] = trim($emrow['language']);
@@ -1566,7 +1565,7 @@ class tokens extends Survey_Common_Action
                 'message' => gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
                 . "<br/>&nbsp;<ul><li>" . gT("having a valid email address") . "</li>"
                 . "<li>" . gT("not having been sent an invitation already") . "</li>"
-                . "<li>" . gT("having already completed the survey") . "</li>"
+                . "<li>" . gT("not having already completed the survey") . "</li>"
                 . "<li>" . gT("having a token") . "</li></ul>"
                 )), $aData);
             }
@@ -2000,7 +1999,7 @@ class tokens extends Survey_Common_Action
             */
             if(strtolower($oFile->getExtensionName())!='csv')// && !in_array($oFile->getType(),$aCsvMimetypes)
             {
-                Yii::app()->setFlashMessage(gT("Only csv file are allowed."),'error');
+                Yii::app()->setFlashMessage(gT("Only CSV files are allowed."),'error');
             }
             elseif (!@$oFile->saveAs($sFileName)) //!@move_uploaded_file($sFileTmpName, $sFileName))
             {
@@ -2374,11 +2373,11 @@ class tokens extends Survey_Common_Action
         $aData['thissurvey'] = $aData['settings'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
 
-        if (!empty($_POST))
+        if (Yii::app()->request->getPost('save')=='save')
         {
             $fieldvalue = array(
-            "bounceprocessing" => Yii::app()->request->getPost('bounceprocessing'),
-            "bounce_email" => Yii::app()->request->getPost('bounce_email'),
+                "bounceprocessing" => Yii::app()->request->getPost('bounceprocessing'),
+                "bounce_email" => Yii::app()->request->getPost('bounce_email'),
             );
 
             if (Yii::app()->request->getPost('bounceprocessing') == 'L')
@@ -2394,17 +2393,9 @@ class tokens extends Survey_Common_Action
             foreach ($fieldvalue as $k => $v)
                 $survey->$k = $v;
             $test=$survey->save();
-
-            $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
-            'title' => gT("Bounce settings"),
-            'message' => gT("Bounce settings have been saved."),
-            'class' => 'successheader'
-            )), $aData);
+            App()->user->setFlash('bouncesettings', gT("Bounce settings have been saved."));
         }
-        else
-        {
-            $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
-        }
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
     }
 
     /**

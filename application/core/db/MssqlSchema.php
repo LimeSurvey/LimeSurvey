@@ -2,7 +2,9 @@
 
 class MssqlSchema extends CMssqlSchema
 {
-    use SmartColumnTypeTrait;
+    use SmartColumnTypeTrait {
+        getColumnType as parentGetColumnType;
+    }
     public function __construct($conn) {
         parent::__construct($conn);
         /**
@@ -28,12 +30,11 @@ class MssqlSchema extends CMssqlSchema
     public function getColumnType($type)
 	{
         /**
-         * @date 2015-1-11
-         * Bug should occur with DBLIB when specifying neither of NULL and NOT NULL.
-         * Not confirmed.
-         * If resulting type doesn't contain NULL then add it.
+         * @date 2015-5-11
+         * Bug occurs with DBLIB when specifying neither of NULL and NOT NULL.
+         * So if resulting type doesn't contain NULL then add it.
          */
-        $result = parent::getColumnType($type);
+        $result = $this->parentGetColumnType($type);
         
         if (stripos($result, 'NULL') === false) {
             $result .= ' NULL';
@@ -52,5 +53,5 @@ class MssqlSchema extends CMssqlSchema
             return false;
         }
         return true;
-    }
+    }   
 }

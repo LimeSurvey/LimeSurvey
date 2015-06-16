@@ -20,7 +20,7 @@
                 eT("Terminate survey with warning");
         } ?>
     </td>
-    <td <?php echo $highlight;?>><?php echo $completed;?></td>
+    <td <?php echo $highlight;?>><?php echo is_null($completed) ? gt("N/A"): $completed ;?></td>
     <td><?php echo $quotalisting['qlimit'];?></td>
     <td style="padding: 3px;">
         <?php if (App()->user->checkAccess('quotas', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyId])) { ?>

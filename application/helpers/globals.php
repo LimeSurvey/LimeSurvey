@@ -8,7 +8,7 @@
 
     /**
      * Helper function to replace calls to Yii::app() and enable correct code completion.
-     * @return WebApplication
+     * @return LSYii_Application
      */
     function App()
     {

@@ -387,10 +387,16 @@
         $supportedLanguages['ckb']['description'] = gT('Kurdish (Sorani)');
         $supportedLanguages['ckb']['nativedescription'] = '&#1705;&#1608;&#1585;&#1583;&#1740;&#1740; &#1606;&#1575;&#1608;&#1749;&#1606;&#1583;&#1740;';
         $supportedLanguages['ckb']['rtl'] = true;
-        $supportedLanguages['ckb']['dateformat'] = 1;
+        $supportedLanguages['ckb']['dateformat'] = 1;                        
         $supportedLanguages['ckb']['radixpoint'] = 1;
         
-        
+        // Kyrgyz
+        $supportedLanguages['ky']['description'] = gT('Kyrgyz');
+        $supportedLanguages['ky']['nativedescription'] = '&#1050;&#1099;&#1088;&#1075;&#1099;&#1079;&#1095;&#1072;';
+        $supportedLanguages['ky']['rtl'] = false;
+        $supportedLanguages['ky']['dateformat'] = 1;                        
+        $supportedLanguages['ky']['radixpoint'] = 1;
+
         // Lithuanian
         $supportedLanguages['lt']['description'] = gT('Lithuanian');
         $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
@@ -496,6 +502,13 @@
         $supportedLanguages['pl']['dateformat'] = 1;
         $supportedLanguages['pl']['radixpoint'] = 1;
 
+        // Polish
+        $supportedLanguages['pl-informal']['description'] = gT('Polish (Informal)');
+        $supportedLanguages['pl-informal']['nativedescription'] = 'Polski (nieformalny)';
+        $supportedLanguages['pl-informal']['rtl'] = false;
+        $supportedLanguages['pl-informal']['dateformat'] = 1;
+        $supportedLanguages['pl-informal']['radixpoint'] = 1;
+        
         // Portuguese
         $supportedLanguages['pt']['description'] = gT('Portuguese');
         $supportedLanguages['pt']['nativedescription'] = 'Portugu&#234;s';

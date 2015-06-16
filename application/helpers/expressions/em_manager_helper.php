@@ -1,7 +1,7 @@
 <?php
     /**
     * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -12,12 +12,13 @@
     *
     */
     /**
-    * Description of LimeExpressionManager
+    * LimeExpressionManager
     * This is a wrapper class around ExpressionManager that implements a Singleton and eases
     * passing of LimeSurvey variable values into ExpressionManager
     *
     * @author LimeSurvey Team (limesurvey.org)
     * @author Thomas M. White (TMSWhite)
+    * @author Denis Chenu <http://sondages.pro>
     */
     include_once('em_core_helper.php');
     Yii::app()->loadHelper('database');
@@ -465,6 +466,13 @@
         */
         private $maxGroupSeq;
         /**
+        * the maximum Question reached sequencly ordered, used to show error to the user if we stop before this step with indexed survey.
+        * In question by question mode : $maxQuestionSeq==$_SESSION['survey_'.surveyid]['maxstep'], use it ?
+        * @var integer
+        */
+        private $maxQuestionSeq=-1;
+        /**
+        /**
         * mapping of questions to information about their subquestions.
         * One entry per question, indexed on qid
         *
@@ -736,9 +744,12 @@
             foreach ($aSurveyIDs as $surveyId )     {
                 // echo $surveyId.'<br>';flush();@ob_flush();
                 $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
-                foreach ($releqns as $key=>$value) {
-                    $sQuery = "UPDATE {{questions}} SET relevance=".Yii::app()->db->quoteValue($value)." WHERE qid=".$key;
-                    Yii::app()->db->createCommand($sQuery)->execute();
+                if ( !empty( $releqns) ) {
+                    foreach ($releqns as $key=>$value)
+                    {
+                        $sQuery = "UPDATE {{questions}} SET relevance=".Yii::app()->db->quoteValue($value)." WHERE qid=".$key;
+                        Yii::app()->db->createCommand($sQuery)->execute();
+                    }
                 }
             }
 
@@ -1274,7 +1285,9 @@
                 }
 
                 // individual subquestion relevance
-                if ($hasSubqs & $type!='|' & $type!='!' & $type !='L')
+                if ($hasSubqs && 
+                    $type!='|' && $type!='!' && $type !='L' && $type !='O'
+                )
                 {
                     $subqs = $qinfo['subqs'];
                     $last_rowdivid = '--';
@@ -1525,7 +1538,7 @@
                                     }
 
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    $sq_name = '(is_empty(' . $sq_name . ') || ('. $sq_name . ' >= ' . $date_min . '))';
+                                    $sq_name = '(is_empty(' . $sq_name . ') || ('. $sq_name . ' >= date("Y-m-d H:i", strtotime(' . $date_min . ')) ))';
                                     $subqValidSelector = '';
                                     break;
                                 default:
@@ -1594,7 +1607,7 @@
                                     }
 
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
-                                    $sq_name = '(is_empty(' . $sq_name . ') || is_empty(' . $date_max . ') || ('. $sq_name . ' <= ' . $date_max . '))';
+                                    $sq_name = '(is_empty(' . $sq_name . ') || is_empty(' . $date_max . ') || ('. $sq_name . ' <= date("Y-m-d H:i", strtotime(' . $date_max . ')) ))';
                                     $subqValidSelector = '';
                                     break;
                                 default:
@@ -2878,6 +2891,7 @@
                                 case ':': //ARRAY (Multi Flexi) 1 to 10
                                 case 'M': //Multiple choice checkbox
                                 case 'N': //NUMERICAL QUESTION TYPE
+                                case 'O':
                                 case 'P': //Multiple choice with comments checkbox + text
                                 case 'R': //RANKING STYLE
                                 case 'S': //SHORT FREE TEXT
@@ -3896,7 +3910,7 @@
                     $jsVarName_on = '';
                 }
 
-                if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
+                if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || $type == 'O'  || !is_null($preg)
                 || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U' || $type == '|') {
                     if (!isset($q2subqInfo[$questionNum])) {
                         $q2subqInfo[$questionNum] = array(
@@ -3915,44 +3929,69 @@
                     if (!isset($q2subqInfo[$questionNum]['subqs'])) {
                         $q2subqInfo[$questionNum]['subqs'] = array();
                     }
-                    if ($type == 'L' || $type == '!')
+                    switch ($type)
                     {
-                        if (!is_null($ansArray))
-                        {
-                            foreach (array_keys($ansArray) as $key)
+                        case 'L':// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
+                        case '!':
+                            if (!is_null($ansArray))
                             {
-                                $parts = explode('~',$key);
-                                if ($parts[1] == '-oth-') {
-                                    $parts[1] = 'other';
+                                foreach (array_keys($ansArray) as $key)
+                                {
+                                    $parts = explode('~',$key);
+                                    if ($parts[1] == '-oth-') {
+                                        $parts[1] = 'other';
+                                    }
+                                    $q2subqInfo[$questionNum]['subqs'][] = array(
+                                    'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
+                                    'varName' => $varName,
+                                    'sqsuffix' => '_' . $parts[1],
+                                    );
                                 }
+                            }
+                            break;
+                        case 'O':
+                            if(strlen($varName) > 8 && substr_compare($varName,'_comment',-8)===0)// The comment subquestion More speediest than regexp
+                            {
                                 $q2subqInfo[$questionNum]['subqs'][] = array(
-                                'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
-                                'varName' => $varName,
-                                'sqsuffix' => '_' . $parts[1],
+                                    'varName' => $varName,
+                                    'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum.'comment',// Not sure we need it
+                                    'jsVarName' => $jsVarName,
+                                    'jsVarName_on' => $jsVarName_on,
+                                    'sqsuffix' => '_comment',
                                 );
                             }
-                        }
-                    }
-                    else if ($type == 'N'
-                        || $type == 'S' || $type == 'D' || $type == 'T' || $type == 'U')    // for $preg
-                        {
+                            else // The question list
+                            {
+                                $q2subqInfo[$questionNum]['subqs'][] = array(
+                                    'varName' => $varName,
+                                    'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                    'jsVarName' => $jsVarName,
+                                    'jsVarName_on' => $jsVarName_on,
+                                );
+                            }
+                            break;
+                        case 'N':
+                        case 'S':
+                        case 'D':
+                        case 'T':
+                        case 'U':
                             $q2subqInfo[$questionNum]['subqs'][] = array(
-                            'varName' => $varName,
-                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                            'jsVarName' => 'java' . $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                            'jsVarName_on' => $jsVarName_on,
+                                'varName' => $varName,
+                                'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                'jsVarName' => 'java' . $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                                'jsVarName_on' => $jsVarName_on,
                             );
-                        }
-                        else
-                        {
+                            break;
+                        default:
                             $q2subqInfo[$questionNum]['subqs'][] = array(
-                            'rowdivid' => $rowdivid,
-                            'varName' => $varName,
-                            'jsVarName_on' => $jsVarName_on,
-                            'jsVarName' => $jsVarName,
-                            'csuffix' => $csuffix,
-                            'sqsuffix' => $sqsuffix,
+                                'rowdivid' => $rowdivid,
+                                'varName' => $varName,
+                                'jsVarName_on' => $jsVarName_on,
+                                'jsVarName' => $jsVarName,
+                                'csuffix' => $csuffix,
+                                'sqsuffix' => $sqsuffix,
                             );
+                            break;
                     }
                 }
 
@@ -4005,7 +4044,7 @@
                 'hidden'=>$hidden,
                 'gid'=>$groupNum,
                 'mandatory'=>$mandatory,
-                'eqn'=>(($type == '*') ? $question : ''),
+                'eqn'=>'',
                 'help'=>$help,
                 'qtext'=>$fielddata['question'],    // $question,
                 'code'=>$varName,
@@ -4051,7 +4090,6 @@
                 }
                 $this->varNameAttr[$jsVarName] .= "}";
             }
-
             $this->q2subqInfo = $q2subqInfo;
 
             // Now set tokens
@@ -4822,16 +4860,16 @@
                     {
                         $LEM->currentQset = array();    // reset active list of questions
                         if (is_null($LEM->currentGroupSeq)) {$LEM->currentGroupSeq=0;} // If moving backwards in preview mode and a question was removed then $LEM->currentGroupSeq is NULL and an endless loop occurs.
-                        if (--$LEM->currentGroupSeq < 0)
+                        if (--$LEM->currentGroupSeq < 0) // Stop at start
                         {
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'at_start'=>true,
-                            'finished'=>false,
-                            'message'=>$message,
-                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                                'at_start'=>true,
+                                'finished'=>false,
+                                'message'=>$message,
+                                'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                                'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -4852,15 +4890,15 @@
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'at_start'=>false,
-                            'finished'=>false,
-                            'message'=>$message,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentGroupSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'at_start'=>false,
+                                'finished'=>false,
+                                'message'=>$message,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentGroupSeq,
+                                'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                                'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -4873,16 +4911,16 @@
                     while (true)
                     {
                         $LEM->currentQset = array();    // reset active list of questions
-                        if (--$LEM->currentQuestionSeq < 0)
+                        if (--$LEM->currentQuestionSeq < 0) // Stop at start : can be a question
                         {
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'at_start'=>true,
-                            'finished'=>false,
-                            'message'=>$message,
-                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                                'at_start'=>true,
+                                'finished'=>false,
+                                'message'=>$message,
+                                'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                                'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -4892,9 +4930,8 @@
                         $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                         $LEM->currentQID=$qInfo['qid'];
                         $LEM->currentGroupSeq=$qInfo['gseq'];
-                        if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
+                        if ($LEM->currentGroupSeq > $LEM->maxGroupSeq)// Did we need it ?
                             $LEM->maxGroupSeq = $LEM->currentGroupSeq;
-                        }
 
                         $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                         $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
@@ -4910,20 +4947,20 @@
                         }
                         else
                         {
-                            // display new question
+                            // display new question : Ging backward : maxQuestionSeq>currentQuestionSeq is always true.
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             return array(
-                            'at_start'=>false,
-                            'finished'=>false,
-                            'message'=>$message,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentQuestionSeq,
-                            'qseq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'at_start'=>false,
+                                'finished'=>false,
+                                'message'=>$message,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentQuestionSeq,
+                                'qseq'=>$LEM->currentQuestionSeq,
+                                'mandViolation'=> $result['mandViolation'],
+                                'valid'=> $result['valid'],
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                         }
                     }
@@ -4964,14 +5001,14 @@
                     $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished);
                     $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                     $LEM->lastMoveResult = array(
-                    'finished'=>$finished,
-                    'message'=>$message,
-                    'gseq'=>1,
-                    'seq'=>1,
-                    'mandViolation'=>$result['mandViolation'],
-                    'valid'=>$result['valid'],
-                    'unansweredSQs'=>$result['unansweredSQs'],
-                    'invalidSQs'=>$result['invalidSQs'],
+                        'finished'=>$finished,
+                        'message'=>$message,
+                        'gseq'=>1,
+                        'seq'=>1,
+                        'mandViolation'=>$result['mandViolation'],
+                        'valid'=>$result['valid'],
+                        'unansweredSQs'=>$result['unansweredSQs'],
+                        'invalidSQs'=>$result['invalidSQs'],
                     );
                     return $LEM->lastMoveResult;
                     break;
@@ -4991,14 +5028,14 @@
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>false,
-                            'message'=>$message,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentGroupSeq,
-                            'mandViolation'=>$result['mandViolation'],
-                            'valid'=>$result['valid'],
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'finished'=>false,
+                                'message'=>$message,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentGroupSeq,
+                                'mandViolation'=>$result['mandViolation'],
+                                'valid'=>$result['valid'],
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5011,14 +5048,14 @@
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>true,
-                            'message'=>$message,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentGroupSeq,
-                            'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
-                            'valid'=>(isset($result['valid']) ? $result['valid'] : false),
-                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                                'finished'=>true,
+                                'message'=>$message,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentGroupSeq,
+                                'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'valid'=>(isset($result['valid']) ? $result['valid'] : false), // Why return invalid if it's not set ?
+                                'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                                'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5040,14 +5077,14 @@
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>false,
-                            'message'=>$message,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentGroupSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'finished'=>false,
+                                'message'=>$message,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentGroupSeq,
+                                'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                                'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5064,22 +5101,21 @@
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                         $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                         $grel = $gRelInfo['result'];
-
                         if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']))
                         {
-                            // redisplay the current question
+                            // redisplay the current question with all error
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>false,
-                            'message'=>$message,
-                            'qseq'=>$LEM->currentQuestionSeq,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'finished'=>false,
+                                'message'=>$message,
+                                'qseq'=>$LEM->currentQuestionSeq,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentQuestionSeq,
+                                'mandViolation'=> $result['mandViolation'],
+                                'valid'=> $result['valid'],
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5087,20 +5123,20 @@
                     while (true)
                     {
                         $LEM->currentQset = array();    // reset active list of questions
-                        if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
+                        if (++$LEM->currentQuestionSeq >= $LEM->numQuestions) // Move next with finished, but without submit. 
                         {
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>true,
-                            'message'=>$message,
-                            'qseq'=>$LEM->currentQuestionSeq,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                                'finished'=>true,
+                                'message'=>$message,
+                                'qseq'=>$LEM->currentQuestionSeq,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentQuestionSeq,
+                                'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
+                                'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                                'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5124,24 +5160,25 @@
 
                         if (!$grel || !$result['relevant'] || $result['hidden'])
                         {
-                            // then skip this question - assume already saved?
+                            // then skip this question, $LEM->updatedValues updated in _ValidateQuestion
                             continue;
                         }
                         else
                         {
-                            // display new question
+                            // Display new question
+                            // Show error only if this question are not viewed before (question hidden by condition before <= maxQuestionSeq>currentQuestionSeq)
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>false,
-                            'message'=>$message,
-                            'qseq'=>$LEM->currentQuestionSeq,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'finished'=>false,
+                                'message'=>$message,
+                                'qseq'=>$LEM->currentQuestionSeq,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentQuestionSeq,
+                                'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : false),
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5427,26 +5464,24 @@
                     $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished);// This happen too for $processPOST=false : need to fix it ?
                     $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                     $LEM->lastMoveResult = array(
-                    'finished'=>$finished,
-                    'message'=>$message,
-                    'gseq'=>1,
-                    'seq'=>1,
-                    'mandViolation'=>$result['mandViolation'],
-                    'valid'=>$result['valid'],
-                    'unansweredSQs'=>$result['unansweredSQs'],
-                    'invalidSQs'=>$result['invalidSQs'],
+                        'finished'=>$finished,
+                        'message'=>$message,
+                        'gseq'=>1,
+                        'seq'=>1,
+                        'mandViolation'=>$result['mandViolation'],
+                        'valid'=>$result['valid'],
+                        'unansweredSQs'=>$result['unansweredSQs'],
+                        'invalidSQs'=>$result['invalidSQs'],
                     );
                     return $LEM->lastMoveResult;
                     break;
                 case 'group':
                     // First validate the current group
                     $LEM->StartProcessingPage();
-                    if ($processPOST) {
+                    if ($processPOST)
                         $updatedValues=$LEM->ProcessCurrentResponses();
-                    }
-                    else  {
+                    else
                         $updatedValues = array();
-                    }
                     $message = '';
                     if (!$force && $LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) // only re-validate if jumping forward
                     {
@@ -5455,18 +5490,18 @@
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                         if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                         {
-                            // redisplay the current group
+                            // redisplay the current group, showing error
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>false,
-                            'message'=>$message,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentGroupSeq,
-                            'mandViolation'=>$result['mandViolation'],
-                            'valid'=>$result['valid'],
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'finished'=>false,
+                                'message'=>$message,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentGroupSeq,
+                                'mandViolation'=>$result['mandViolation'],
+                                'valid'=>$result['valid'],
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5482,14 +5517,14 @@
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>true,
-                            'message'=>$message,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentGroupSeq,
-                            'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
-                            'valid'=>(isset($result['valid']) ? $result['valid'] : false),
-                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                                'finished'=>true,
+                                'message'=>$message,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentGroupSeq,
+                                'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'valid'=>(isset($result['valid']) ? $result['valid'] : false),
+                                'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                                'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5534,12 +5569,10 @@
                     break;
                 case 'question':
                     $LEM->StartProcessingPage();
-                    if ($processPOST) {
+                    if ($processPOST)
                         $updatedValues=$LEM->ProcessCurrentResponses();
-                    }
-                    else  {
+                    else 
                         $updatedValues = array();
-                    }
                     $message = '';
                     if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq)
                     {
@@ -5550,19 +5583,19 @@
                         $grel = $gRelInfo['result'];
                         if ($grel && ($result['mandViolation'] || !$result['valid']))
                         {
-                            // redisplay the current question
+                            // Redisplay the current question, qhowning error
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>false,
-                            'message'=>$message,
-                            'qseq'=>$LEM->currentQuestionSeq,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'finished'=>false,
+                                'message'=>$message,
+                                'qseq'=>$LEM->currentQuestionSeq,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentQuestionSeq,
+                                'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5578,15 +5611,15 @@
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>true,
-                            'message'=>$message,
-                            'qseq'=>$LEM->currentQuestionSeq,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                                'finished'=>true,
+                                'message'=>$message,
+                                'qseq'=>$LEM->currentQuestionSeq,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentQuestionSeq,
+                                'mandViolation'=> (isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'valid'=> (isset($result['valid']) ? $result['valid'] : false),
+                                'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                                'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5616,11 +5649,7 @@
                             // then skip this question
                             continue;
                         }
-                        else if (!$preview && !$grel)
-                        {
-                            continue;
-                        }
-                        else if (!$preview && !($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq)
+                        elseif (!$preview && !($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq)
                         {
                             // if there is a violation while moving forward, need to stop and ask that set of questions
                             // if there are no violations, can skip this group as long as changed values are saved.
@@ -5628,19 +5657,20 @@
                         }
                         else
                         {
-                            // display new question
+                            // Display new question
+                            // Showing error if question are before the maxstep
                             $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
-                            'finished'=>false,
-                            'message'=>$message,
-                            'qseq'=>$LEM->currentQuestionSeq,
-                            'gseq'=>$LEM->currentGroupSeq,
-                            'seq'=>$LEM->currentQuestionSeq,
-                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                                'finished'=>false,
+                                'message'=>$message,
+                                'qseq'=>$LEM->currentQuestionSeq,
+                                'gseq'=>$LEM->currentGroupSeq,
+                                'seq'=>$LEM->currentQuestionSeq,
+                                'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
+                                'unansweredSQs'=>$result['unansweredSQs'],
+                                'invalidSQs'=>$result['invalidSQs'],
                             );
                             return $LEM->lastMoveResult;
                         }
@@ -5904,8 +5934,10 @@
         {
             $LEM =& $this;
             $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
-
-            $qrel=true;   //  assume relevant unless discover otherwise
+            // We try to validate this question, then update the maxQuestionSeq, TODO : validate if we can update the maxGroupSeq too.
+            if($questionSeq > $LEM->maxQuestionSeq) // max() take a little time more (2/3)
+                $LEM->maxQuestionSeq=$questionSeq;
+            $qrel=true;   // assume relevant unless discover otherwise
             $prettyPrintRelEqn='';    //  assume no relevance eqn by default
             $qid=$qInfo['qid'];
 
@@ -6285,7 +6317,7 @@
                                     $numUnanswered=0;
                                     foreach ($sgqas as $s)
                                     {
-                                        if (strpos($s, $sq['rowdivid']) !== false)
+                                        if (strpos($s, $sq['rowdivid']."_") !== false) // Test complete subquestion code (#09493)
                                         {
                                             ++$rowCount;
                                             if (array_search($s,$unansweredSQs) !== false) {
@@ -6533,7 +6565,8 @@
             elseif ($qInfo['type'] == '*')
             {
                 // Process relevant equations, even if hidden, and write the result to the database
-                $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
+                $textToParse=(isset($LEM->qattr[$qid]['equation']) && trim($LEM->qattr[$qid]['equation'])!="") ? $LEM->qattr[$qid]['equation'] : $qInfo['qtext'];
+                $result = flattenText($LEM->ProcessString($textToParse, $qInfo['qid'],NULL,false,1,1,false,false,true));// More numRecursionLevels ?
                 $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
                     if($LEM->knownVars[$sgqa]['onlynum'])
                     {
@@ -6555,15 +6588,16 @@
                 }
             }
 
-            // Process Default : 1st part : update in DB if actually relevant
+            // Process Default : 1st part : update in DB if actually relevant and not already set
             if ($qrel && $grel)
             {
-                $sgqas = explode('|',$LEM->qid2code[$qid]);
-                foreach ($sgqas as $sgqa)
+                $allSQs = explode('|',$LEM->qid2code[$qid]);
+                foreach ($allSQs as $sgqa)
                 {
-                    if (!is_null($LEM->knownVars[$sgqa]['default']))
+                    if (!isset($_SESSION[$LEM->sessid][$sgqa]) && !is_null($LEM->knownVars[$sgqa]['default']))
                     {
-                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, false, 1, 1, false, false, true));// Static replace : can't update HTML inside a input
+                        $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, false, 1, 1, false, false, true);// Fill the $_SESSION to don't do it again a second time
+                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$_SESSION[$LEM->sessid][$sgqa]);
                     }
                 }
             }
@@ -6579,18 +6613,19 @@
                 }
             }
             // Regardless of whether relevant or hidden, allways set a $_SESSION for quanda_helper, use default value if exist
-            // Set this after testing relevance for default value hidden by relevance : ONLY for actual page, not needed after
+            // Set this after testing relevance for default value hidden by relevance
             $allSQs = explode('|', $LEM->qid2code[$qid]);
-            foreach($allSQs as $answer){
-                if(!isset($_SESSION[$LEM->sessid][$answer]))
+            foreach($allSQs as $sgqa)
+            {
+                if(!isset($_SESSION[$LEM->sessid][$sgqa]))
                 {
-                    if(!is_null($LEM->knownVars[$answer]['default']))
+                    if(!is_null($LEM->knownVars[$sgqa]['default']))
                     {
-                        $_SESSION[$LEM->sessid][$answer]=$LEM->ProcessString($LEM->knownVars[$answer]['default'],  $qInfo['qid'], NULL, false, 1, 1, false, false, true);
+                        $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'],  $qInfo['qid'], NULL, false, 1, 1, false, false, true);
                     }
                     else
                     {
-                        $_SESSION[$LEM->sessid][$answer]=null;
+                        $_SESSION[$LEM->sessid][$sgqa]=null;
                     }
                 }
             }
@@ -7279,11 +7314,9 @@
                     {
                         $relParts[] = "  // Write value from the question into the answer field\n";
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
-                        // Note, this will destroy embedded HTML in the equation (e.g. if it is a report)
-                        // Should be possible to use jQuery to remove just the LEMtailoring span, but not easy since done (the following doesn't work)
-                        // _tmpval = $('#question801 .em_equation').clone()
-                        // $(_tmpval).find('[id^=LEMtailor]').each(function(){ $(this).replaceWith(function(){ $(this).contents; }); })
-                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .em_equation').html())));\n";
+                        // Note, this will destroy embedded HTML in the equation (e.g. if it is a report, can use {QCODE.question} for this purpose)
+                        // This make same than flattenText to be same in JS and in PHP
+                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text()));\n";
                     }
                     $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
@@ -9666,6 +9699,7 @@ EOD;
                         $row['relevance'] = $grelevance;
                         $row['text'] = $gtext;
                         $row['language'] = $lang;
+                        $row['random_group'] = $ginfo['randomization_group'];
                         $rows[] = $row;
                     }
 
@@ -9897,54 +9931,43 @@ EOD;
             {
                 return;
             }
-            if ($sToken == null && isset($_SESSION[$this->sessid]['token']))
+            if ($sToken === null && isset($_SESSION[$this->sessid]['token']))
             {
                 $sToken = $_SESSION[$this->sessid]['token'];
             }
-            $token = Token::model($iSurveyId)->findByAttributes(array(
+
+            $oToken = Token::model($iSurveyId)->findByAttributes(array(
                 'token' => $sToken
             ));
-
-            $this->knownVars['TOKEN:TOKEN'] = array(
-                'code'=> $sToken,
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
-            );
-            if (isset($token))
+            
+            if (is_null($oToken))
             {
-                foreach ($token->attributes as $key => $val)
+                foreach ($oToken->attributes as $attribute => $value)
                 {
                     if ($bAnonymize)
                     {
-                        $val = "";
+                        $value = "";
                     }
-                    $key = "TOKEN:" . strtoupper($key);
-                    $this->knownVars[$key] = array(
-                    'code'=>$val,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
+                    $this->knownVars["TOKEN:" . strtoupper($attribute)] = array(
+                        'code'=>$value,
+                        'jsName_on'=>'',
+                        'jsName'=>'',
+                        'readWrite'=>'N',
                     );
                 }
             }
             else
             {
                 // Read list of available tokens from the tokens table so that preview and error checking works correctly
-
                 $blankVal = array(
-                'code'=>'',
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
+                    'code'=>'',
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
                 );
-
-                foreach (getTokenFieldsAndNames($surveyId) as $field => $details)
+                foreach (Token::model($iSurveyId)->tableSchema->columnNames as $attribute)
                 {
-                    if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $field))
-                    {
-                        $this->knownVars['TOKEN:' . strtoupper($field)] = $blankVal;
-                    }
+                    $this->knownVars['TOKEN:' . strtoupper($attribute)] = $blankVal;
                 }
             }
         }

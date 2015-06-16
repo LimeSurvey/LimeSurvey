@@ -1,6 +1,6 @@
 <?php echo CHtml::form($urlAction,'post',array('id'=>'limesurvey')); ?>
     <input type="hidden" name="lang" value="<?php echo $sLanguage; ?>" id="register_lang" />
-    <table class="register register-form-table" summary="<?php eT('A table with registering information'); ?>">
+    <table class="register register-form-table" summary="<?php eT('A table with a registration form'); ?>">
     <tbody>
     <tr class="register-form-row register-form-fname">
         <th class="register-form-label label-cell"><label for='register_firstname'><?php eT("First name"); ?></label></th>

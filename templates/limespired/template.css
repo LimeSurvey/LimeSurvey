@@ -1334,6 +1334,8 @@ table.statisticstable td {
 
 table.statisticstable img {
   margin: 12px auto;
+  width: 680px;
+  border:none;
 }
 
 table.statisticstable strong {

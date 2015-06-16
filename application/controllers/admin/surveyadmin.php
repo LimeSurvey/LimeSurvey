@@ -645,7 +645,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $tokenscompleted = $summary['completed'];
 
                     $aSurveyEntry[] = $tokens;
-                    $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1);
+                    $aSurveyEntry[] = ($tokens == 0) ? 0 : round($tokenscompleted / $tokens * 100, 1).' %';
                 }
                 else
                 {
@@ -880,9 +880,9 @@ class SurveyAdmin extends Survey_Common_Action
             if ($action == 'importsurvey' && !$aData['bFailed'])
             {
                 $aImportResults=importSurveyFile($sFullFilepath,(isset($_POST['translinksfields'])));
-                if (is_null($aImportResults) || isset($aImportResults['error']))
+                if (is_null($aImportResults) || !empty($aImportResults['error']))
                 {
-                    $aData['sErrorMessage']=$aImportResults['error'];
+                    $aData['sErrorMessage']=isset($aImportResults['error']) ? $aImportResults['error'] : gt("Unknow error.");
                     $aData['bFailed'] = true;
                 }
             }
@@ -908,7 +908,6 @@ class SurveyAdmin extends Survey_Common_Action
                 unlink($sFullFilepath);
             }
 
-            //            if (isset($aImportResults['error']) && $aImportResults['error']) throw new \CHttpException(500, $aImportResults['error']);
 
             if (!$aData['bFailed'])
             {
@@ -1240,12 +1239,12 @@ class SurveyAdmin extends Survey_Common_Action
     function getUrlParamsJSON($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
-        Yii::app()->loadHelper('database');
-        $oResult = dbExecuteAssoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $sQuery = "select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
         left join {{questions}} q on q.qid=up.targetqid
         left join {{questions}} sq on sq.qid=up.targetsqid
-        where up.sid={$iSurveyID}");
-        $oResult= $oResult->readAll();
+        where up.sid={$iSurveyID} and q.language='{$sBaseLanguage}' and (sq.language='{$sBaseLanguage}' or sq.language is null)";
+        $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
         $i = 0;
         $aData = new stdClass();
         foreach ($oResult as $oRow)

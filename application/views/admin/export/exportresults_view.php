@@ -102,13 +102,13 @@
                     <li><?php echo CHTML::checkBox('abbreviatedtext',false,array('value'=>'1','id'=>'abbreviatedtext'));
                         echo CHTML::label(gT("Text abbreviated"),'abbreviatedtext');?>
                         <ul>
-                        <li><?php echo CHTML::label(gT("Number of caracters"),'abbreviatedtextto');
+                        <li><?php echo CHTML::label(gT("Number of characters"),'abbreviatedtextto');
                         echo CHTML::numberField('abbreviatedtextto','15',array('id'=>'abbreviatedtextto','size'=>'4','min'=>'1','step'=>'1')); ?></li>
                         </ul>
                     </li>
                     <li><?php echo CHTML::checkBox('emcode',false,array('value'=>'emcode','id'=>'emcode'));
-                        echo CHTML::label(gT("Use expression manager code"),'emcode'); ?></li>
-                    <li><?php echo CHTML::label(gT("Code an texte separator"),'codetextseparator');
+                        echo CHTML::label(gT("Use Expression Manager code"),'emcode'); ?></li>
+                    <li><?php echo CHTML::label(gT("Code/text separator"),'codetextseparator');
                     echo CHTML::textField('codetextseparator','. ',array('id'=>'codetextseparator','size'=>'4')); ?></li>
                 </ul>
             </fieldset>

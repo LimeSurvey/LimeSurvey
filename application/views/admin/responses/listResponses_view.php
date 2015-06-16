@@ -2,15 +2,11 @@
     var strdeleteconfirm='<?php eT('Do you really want to delete this response?', 'js'); ?>';
     var strDeleteAllConfirm='<?php eT('Do you really want to delete all marked responses?', 'js'); ?>';
     var noFilesSelectedForDeletion = '<?php eT('Please select at least one file for deletion', 'js'); ?>';
-    var noFilesSelectedForDnld = '<?php eT('Please select at least one file for download', 'js'); ?>';
 </script>
 
 <br />
 <script type='text/javascript'>
-    var getuserurl = '<?php echo $this->createUrl('admin/survey/ajaxgetusers'); ?>';
-    var ownerediturl = '<?php echo $this->createUrl('admin/survey/ajaxowneredit'); ?>';
-    var delmsg ='<?php eT("Are you sure you want to delete these surveys?",'js');?>';
-    var sCaption ='<?php eT("Survey Respones",'js');?>';
+    var sCaption ='<?php eT("Survey responses",'js');?>';
     var sSelectColumns ='<?php eT("Select columns",'js');?>';
     var sRecordText = '<?php eT("View {0} - {1} of {2}",'js');?>';
     var sPageText = '<?php eT("Page {0} of {1}",'js');?>';
@@ -40,28 +36,25 @@
     var sCancel = '<?php eT("Cancel",'js');?>';
     var sSearchTitle ='<?php eT("Filter responses",'js');?>';
     var sRefreshTitle ='<?php eT("Reload responses list",'js');?>';
-    var delBtnCaption ='<?php eT("Save",'js');?>';
+    var delBtnCaption ='<?php eT("Delete",'js');?>';
     var sEmptyRecords ='<?php eT("There are currently no responses.",'js');?>';
-    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl('/admin/responses/getResponses_json/surveyid/'.$surveyid); ?>";
-    //var sConfirmationExpireMessage='<?php eT("Are you sure you want to expire these surveys?",'js');?>';
-    //var sConfirmationArchiveMessage='<?php eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
-    // var editUrl = "<?php echo $this->createUrl('/admin/survey/editSurvey_json'); ?>";
+    var jsonBaseUrl = "<?php echo App()->createUrl('/admin/responses', array('surveyid'=>$surveyid, 'browselang'=>$language)); ?>";
+    var jsonUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'getResponses_json', 'surveyid' => $surveyid,'browselang'=>$language)); ?>";
+    var jsonActionUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'actionResponses', 'surveyid' => $surveyid,'browselang'=>$language)); ?>";
+
     var colNames = <?php echo $column_names_txt; ?>;
     var colModels = <?php echo $column_model_txt; ?>;
-
-
+    <?php if($hasUpload) { ?>
+        var sDownLoad='<?php eT("Download files"); ?>' ;
+        var sDownLoadMarked='<?php eT("Download marked files"); ?>' ;
+        var sDownLoadAll='<?php eT("Download all files"); ?>' ;
+        var sConfirmationArchiveMessage='<?php eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
+    <?php } ?>
 </script>
 <br/>
 
 <table id="displayresponses"></table> <div id="pager"></div>
 
-<select id='gs_completed_select' style='display: none'>
-    <option value=''><?php eT("Any") ?></option>
-    <option value='Y'><?php eT("Yes") ?></option>
-    <option value='N'><?php eT("No") ?></option>
-</select>
-
-<div id='gs_no_filter'>&nbsp;</div>
 
 <br />
 
