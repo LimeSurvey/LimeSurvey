@@ -2277,7 +2277,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         $requestCache[$key] = $fieldmap;
 
-    }
     return $requestCache[$key];
 }
 
