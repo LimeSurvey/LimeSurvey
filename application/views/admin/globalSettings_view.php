@@ -572,13 +572,13 @@
                     'showgroupinfo'=>array(
                         'type'=>'select',
                         'label'=>gT('Show question group name and/or description'),
-                        'options'=>array('choose'=>gT('Survey admin can choose','unescaped'),'show'=>gT('Show both','unescaped'),'name'=>gT('Show group name only','unescaped'),'description'=>gT('Show group description only','unescaped'),'none'=>gT('Hide both','unescaped')),
+                        'options'=>array('choose'=>gT('Survey admin can choose','unescaped'),'both'=>gT('Show both','unescaped'),'name'=>gT('Show group name only','unescaped'),'description'=>gT('Show group description only','unescaped'),'none'=>gT('Hide both','unescaped')),
                         'current'=>getGlobalSetting('showgroupinfo'),
                     ),
                     'showqnumcode'=>array(
                         'type'=>'select',
                         'label'=>gT('Show question number and/or question code'),
-                        'options'=>array('choose'=>gT('Survey admin can choose','unescaped'),'show'=>gT('Show both','unescaped'),'number'=>gT('Show question number only','unescaped'),'code'=>gT('Show question code only','unescaped'),'none'=>gT('Hide both','unescaped')),
+                        'options'=>array('choose'=>gT('Survey admin can choose','unescaped'),'both'=>gT('Show both','unescaped'),'number'=>gT('Show question number only','unescaped'),'code'=>gT('Show question code only','unescaped'),'none'=>gT('Hide both','unescaped')),
                         'current'=>getGlobalSetting('showqnumcode'),
                     ),
                     'pdffontsize'=>array(
