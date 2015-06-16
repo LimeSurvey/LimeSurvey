@@ -4,11 +4,11 @@
   *
   *      @desc CMS integration code: Drupal
   *   @package KCFinder
-  *   @version 2.51
+  *   @version 3.12
   *    @author Dany Alejandro Cabrera <otello2040@gmail.com>
-  * @copyright 2010, 2011 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+  * @copyright 2010-2014 KCFinder Project
+  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
   *      @link http://kcfinder.sunhater.com
   */
 
@@ -109,7 +109,5 @@ function CheckAuthentication($drupal_path) {
 }
 
 CheckAuthentication(get_drupal_path());
-
-spl_autoload_register('__autoload');
 
 ?>

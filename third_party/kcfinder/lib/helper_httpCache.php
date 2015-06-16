@@ -4,26 +4,28 @@
   *
   *      @desc HTTP cache helper class
   *   @package KCFinder
-  *   @version 2.51
-  *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010, 2011 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+  *   @version 3.12
+  *    @author Pavel Tzonkov <sunhater@sunhater.com>
+  * @copyright 2010-2014 KCFinder Project
+  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
   *      @link http://kcfinder.sunhater.com
   */
+
+namespace kcfinder;
 
 class httpCache {
     const DEFAULT_TYPE = "text/html";
     const DEFAULT_EXPIRE = 604800; // in seconds
 
-  /** Cache a file. The $type parameter might define the MIME type of the file
-    * or path to magic file to autodetect the MIME type. If you skip $type
-    * parameter the method will try with the default magic file. Autodetection
-    * of MIME type requires Fileinfo PHP extension used in file::getMimeType()
-    * @param string $file
-    * @param string $type
-    * @param integer $expire
-    * @param array $headers */
+/** Cache a file. The $type parameter might define the MIME type of the file
+  * or path to magic file to autodetect the MIME type. If you skip $type
+  * parameter the method will try with the default magic file. Autodetection
+  * of MIME type requires Fileinfo PHP extension used in file::getMimeType()
+  * @param string $file
+  * @param string $type
+  * @param integer $expire
+  * @param array $headers */
 
     static function file($file, $type=null, $expire=null, array $headers=null) {
         $mtime = @filemtime($file);
@@ -39,13 +41,13 @@ class httpCache {
         self::content(@file_get_contents($file), $mtime, $type, $expire, $headers, false);
     }
 
-  /** Cache the given $content with $mtime modification time.
-    * @param binary $content
-    * @param integer $mtime
-    * @param string $type
-    * @param integer $expire
-    * @param array $headers
-    * @param bool $checkMTime */
+/** Cache the given $content with $mtime modification time.
+  * @param binary $content
+  * @param integer $mtime
+  * @param string $type
+  * @param integer $expire
+  * @param array $headers
+  * @param bool $checkMTime */
 
     static function content($content, $mtime, $type=null, $expire=null, array $headers=null, $checkMTime=true) {
         if ($checkMTime) self::checkMTime($mtime);
@@ -62,11 +64,12 @@ class httpCache {
         echo $content;
     }
 
-  /** Check if given modification time is newer than client-side one. If not,
-    * the method will tell the client to get the content from its own cache.
-    * Afterwards the script process will be terminated. This feature requires
-    * the PHP to be configured as Apache module.
-    * @param integer $mtime */
+/** Check if given modification time is newer than client-side one. If not,
+  * the method will tell the client to get the content from its own cache.
+  * Afterwards the script process will be terminated. This feature requires
+  * the PHP to be configured as Apache module.
+  * @param integer $mtime
+  * @param mixed $sendHeaders */
 
     static function checkMTime($mtime, $sendHeaders=null) {
         header("Last-Modified: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
@@ -87,12 +90,11 @@ class httpCache {
                         header($header);
                 elseif ($sendHeaders !== null)
                     header($sendHeaders);
-
-
                 die;
             }
         }
     }
+
 }
 
 ?>

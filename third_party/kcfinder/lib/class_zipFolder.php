@@ -5,13 +5,15 @@
   *
   *      @desc Directory to ZIP file archivator
   *   @package KCFinder
-  *   @version 2.51
-  *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010, 2011 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+  *   @version 3.12
+  *    @author Pavel Tzonkov <sunhater@sunhater.com>
+  * @copyright 2010-2014 KCFinder Project
+  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
   *      @link http://kcfinder.sunhater.com
   */
+
+namespace kcfinder;
 
 class zipFolder {
     protected $zip;
@@ -19,14 +21,14 @@ class zipFolder {
     protected $ignored;
 
     function __construct($file, $folder, $ignored=null) {
-        $this->zip = new ZipArchive();
+        $this->zip = new \ZipArchive();
 
         $this->ignored = is_array($ignored)
             ? $ignored
             : ($ignored ? array($ignored) : array());
 
-        if ($this->zip->open($file, ZIPARCHIVE::CREATE) !== TRUE)
-            throw new Exception("cannot open <$file>\n");
+        if ($this->zip->open($file, \ZipArchive::CREATE) !== TRUE)
+            throw new \Exception("cannot open <$file>\n");
 
         $folder = rtrim($folder, '/');
 
@@ -43,7 +45,7 @@ class zipFolder {
         $full_path = "{$this->root}$parent$folder";
         $zip_path = "$parent$folder";
         $this->zip->addEmptyDir($zip_path);
-        $dir = new DirectoryIterator($full_path);
+        $dir = new \DirectoryIterator($full_path);
         foreach ($dir as $file)
             if (!$file->isDot()) {
                 $filename = $file->getFilename();

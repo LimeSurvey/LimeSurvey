@@ -4,16 +4,17 @@
   *
   *      @desc Upload calling script
   *   @package KCFinder
-  *   @version 2.51
-  *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010, 2011 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+  *   @version 3.12
+  *    @author Pavel Tzonkov <sunhater@sunhater.com>
+  * @copyright 2010-2014 KCFinder Project
+  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
   *      @link http://kcfinder.sunhater.com
   */
 
-require "core/autoload.php";
-$uploader = new uploader();
+require "core/bootstrap.php";
+$uploader = "kcfinder\\uploader";  // To execute core/bootstrap.php on older
+$uploader = new $uploader();       // PHP versions (even PHP 4)
 $uploader->upload();
 
 ?>

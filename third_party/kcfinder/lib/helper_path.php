@@ -4,20 +4,22 @@
   *
   *      @desc Path helper class
   *   @package KCFinder
-  *   @version 2.51
-  *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010, 2011 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+  *   @version 3.12
+  *    @author Pavel Tzonkov <sunhater@sunhater.com>
+  * @copyright 2010-2014 KCFinder Project
+  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
   *      @link http://kcfinder.sunhater.com
   */
 
+namespace kcfinder;
+
 class path {
 
-  /** Get the absolute URL path of the given one. Returns FALSE if the URL
-    * is not valid or the current directory cannot be resolved (getcwd())
-    * @param string $path
-    * @return string */
+/** Get the absolute URL path of the given one. Returns FALSE if the URL
+  * is not valid or the current directory cannot be resolved (getcwd())
+  * @param string $path
+  * @return string */
 
     static function rel2abs_url($path) {
         if (substr($path, 0, 1) == "/") return $path;
@@ -39,10 +41,10 @@ class path {
         return $return;
     }
 
-  /** Resolve full filesystem path of given URL. Returns FALSE if the URL
-    * cannot be resolved
-    * @param string $url
-    * @return string */
+/** Resolve full filesystem path of given URL. Returns FALSE if the URL
+  * cannot be resolved
+  * @param string $url
+  * @return string */
 
     static function url2fullPath($url) {
         $url = self::normalize($url);
@@ -84,17 +86,19 @@ class path {
         }
     }
 
-  /** Normalize the given path. On Windows servers backslash will be replaced
-    * with slash. Remobes unnecessary doble slashes and double dots. Removes
-    * last slash if it exists. Examples:
-    * path::normalize("C:\\any\\path\\") returns "C:/any/path"
-    * path::normalize("/your/path/..//home/") returns "/your/home"
-    * @param string $path
-    * @return string */
+/** Normalize the given path. On Windows servers backslash will be replaced
+  * with slash. Removes unnecessary double slashes and double dots. Removes
+  * last slash if it exists. Examples:
+  * path::normalize("C:\\any\\path\\") returns "C:/any/path"
+  * path::normalize("/your/path/..//home/") returns "/your/home"
+  * @param string $path
+  * @return string */
 
     static function normalize($path) {
+
+        // Backslash to slash convert
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN") {
-            $path = preg_replace('/([^\\\])\\\([^\\\])/', "$1/$2", $path);
+            $path = preg_replace('/([^\\\])\\\+([^\\\])/s', "$1/$2", $path);
             if (substr($path, -1) == "\\") $path = substr($path, 0, -1);
             if (substr($path, 0, 1) == "\\") $path = "/" . substr($path, 1);
         }
@@ -114,9 +118,9 @@ class path {
         return $path;
     }
 
-  /** Encode URL Path
-    * @param string $path
-    * @return string */
+/** Encode URL Path
+  * @param string $path
+  * @return string */
 
     static function urlPathEncode($path) {
         $path = self::normalize($path);
@@ -127,9 +131,9 @@ class path {
         return $encoded;
     }
 
-  /** Decode URL Path
-    * @param string $path
-    * @return string */
+/** Decode URL Path
+  * @param string $path
+  * @return string */
 
     static function urlPathDecode($path) {
         $path = self::normalize($path);
@@ -139,6 +143,7 @@ class path {
         $decoded = substr($decoded, 0, -1);
         return $decoded;
     }
+
 }
 
 ?>
