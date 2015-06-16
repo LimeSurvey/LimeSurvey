@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -97,7 +97,8 @@ CKEDITOR.dtd = (function()
 		 * @type Object
 		 * @example
 		 */
-        $empty : {area:1,base:1,br:1,col:1,hr:1,img:1,input:1,link:1,meta:1,param:1,wbr:1,source:1,track:1},
+		$empty : {area:1,base:1,br:1,col:1,hr:1,img:1,input:1,link:1,meta:1,param:1,wbr:1},
+
 		/**
 		 * List of list item elements, like "li" or "dd".
 		 * @type Object
@@ -254,10 +255,9 @@ CKEDITOR.dtd = (function()
 		keygen : L,
 		output : L,
 		progress : O,
-        audio : X({source:1,track:1}, O),
-        video : X({source:1,track:1}, O),
-        source : {},
-        track : {},		details : O,
+		audio : O,
+		video : O,
+		details : O,
 		datagrid : O,
 		datalist : O
     };
