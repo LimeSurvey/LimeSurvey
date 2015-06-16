@@ -7,7 +7,7 @@ echo TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_HORIZONTAL, ['groups/create', 'surv
 $options = ['formLayout' => TbHtml::FORM_LAYOUT_HORIZONTAL];
 echo TbHtml::openTag('fieldset', []);
 echo TbHtml::activeTextFieldControlGroup($group, 'group_name', array_merge($options, [
-    'help' => "This is a suggestion based on the previous question title, feel free to change it."
+    'help' => "This is a suggestion based on the previous group title, feel free to change it."
 ]));
 if (!empty($group->survey->groups)) {
     echo TbHtml::customActiveControlGroup($this->widget(WhSelect2::class, [
@@ -23,7 +23,7 @@ if (!empty($group->survey->groups)) {
 }
 
 echo TbHtml::openTag('div', ['class' => 'pull-right btn-group']);
-echo TbHtml::submitButton('Create question', [
+echo TbHtml::submitButton(gT('Create group'), [
     'color' => 'primary'
 ]);
 echo TbHtml::closeTag('div');

@@ -166,13 +166,12 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteGroups(array $groups, array $aData)
     {
-        foreach ($groups as $group) $gids[] = $group['gid'];
+        foreach ($groups as $group) $gids[] = $group['id'];
 
         $criteria = new CDbCriteria;
-        $criteria->addInCondition('gid', $gids);
-        QuestionGroup::model()->deleteAll($criteria);
-        if (QuestionGroup::model()->hasErrors()) throw new \CHttpException(500, QuestionGroup::model()->getError());
-        $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), count($groups));
+        $criteria->addInCondition('id', $gids);
+        $result = QuestionGroup::model()->deleteAll($criteria);
+        $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), $result);
         return $aData;
     }
 
@@ -596,16 +595,15 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check groups                                                   */
         /**********************************************************************/
-        $surveys = Survey::model()->findAll();
-        if (Survey::model()->hasErrors()) throw new \CHttpException(500, Survey::model()->getError());
-        $sids = array();
-        foreach ($surveys as $survey) $sids[] = $survey['sid'];
         $oCriteria = new CDbCriteria;
-        $oCriteria->addNotInCondition('sid', $sids);
+        $oCriteria->addNotInCondition('sid', array_map(function(Survey $survey) {
+            return $survey->primaryKey;
+        }, Survey::model()->findAll()));
         $groups = QuestionGroup::model()->findAll($oCriteria);
+        /** @var QuestionGroup $group */
         foreach ($groups as $group)
         {
-            $aDelete['groups'][] = array('gid' => $group['gid'], 'reason' => gT('There is no matching survey.') . ' SID:' . $group['sid']);
+            $aDelete['groups'][] = ['id' => $group->id, 'reason' => gT('There is no matching survey.') . ' SID:' . $group->sid];
         }
 
         /**********************************************************************/

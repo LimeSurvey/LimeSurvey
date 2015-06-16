@@ -1,6 +1,8 @@
 <?php
-    use \ls\pluginmanager\PluginEvent;
-	class PluginEventBehavior extends CModelBehavior
+    namespace ls\pluginmanager;
+    use \CEvent;
+    use \CModelEvent;
+	class PluginEventBehavior extends \CModelBehavior
 	{
 		public function events()
 		{

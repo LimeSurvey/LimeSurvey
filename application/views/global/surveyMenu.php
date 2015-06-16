@@ -57,6 +57,18 @@ $menu = [[ // Left side
     ],
 ], [ // Right side
     [
+        'title' => gT('Delete survey'),
+        'icon' => 'trash',
+        'linkOptions' => [
+            'data-method' => 'delete',
+            'confirm' => gT('Are you sure?')
+
+
+        ] ,
+        'url' => ["surveys/delete", 'id' => $model->sid]
+
+    ],
+    [
         'title' => gT('Export survey'),
         'icon' => 'download',
         'url' => ["surveys/export", 'id' => $model->sid]

@@ -66,6 +66,7 @@
         {
             return [
                 'questions' => [self::HAS_MANY, Question::class, 'gid', 'on' => 'parent_qid = 0', 'order' => 'question_order'],
+                'assessments' => [self::HAS_MANY, Assessment::class, 'gid'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid']
             ];
             
@@ -154,6 +155,44 @@
 
         public function getDisplayLabel() {
             return $this->group_name;
+        }
+
+
+        /**
+         * Returns the relations that map to dependent records.
+         * Dependent records should be deleted when this object gets deleted.
+         * @return string[]
+         */
+        public function dependentRelations() {
+            return [
+                'questions',
+                'assessments'
+            ];
+        }
+
+        /**
+         * Deletes this record and all dependent records.
+         * @throws CDbException
+         */
+        public function deleteDependent() {
+            if (App()->db->getCurrentTransaction() != null) {
+                $transaction = App()->db->beginTransaction();
+            }
+            foreach($this->dependentRelations() as $relation) {
+                /** @var CActiveRecord $record */
+                foreach($this->$relation as $record) {
+                    if (method_exists($record, 'deleteDependent')) {
+                        $record->deleteDependent();
+                    } else {
+                        $record->delete();
+                    }
+                }
+            }
+            $this->delete();
+
+            if (isset($transaction)) {
+                $transaction->commit();
+            }
         }
     }
 ?>

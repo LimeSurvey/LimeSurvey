@@ -18,6 +18,7 @@
         $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
         $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
         $cs->registerScriptFile(App()->params['bower-asset'] . '/tinymce/tinymce.min.js');
+        $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ujs/src/rails.js');
         $cs->registerScriptFile('/scripts/htmleditor.js');
         $cs->registerScript('links', "$('body').on('click', '.disabled a', function (e) { e.preventDefault(); });");
         ?>

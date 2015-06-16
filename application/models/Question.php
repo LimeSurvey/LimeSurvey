@@ -159,6 +159,9 @@
                 'questionAttributes' => [self::HAS_MANY, QuestionAttribute::class, 'qid', 'index' => 'attribute'],
                 'group' => [self::BELONGS_TO, 'QuestionGroup', 'gid'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid'],
+                'conditions' => [self::HAS_MANY, Condition::class, 'qid'],
+                'answers' => [self::HAS_MANY, Answer::class, 'question_id'],
+                'defaultValues' => [self::HAS_MANY, DefaultValue::class, 'qid']
             );
         }
 
@@ -861,6 +864,47 @@
             return [
                 'after' => gT('Position')
             ];
+        }
+
+
+        /**
+         * Returns the relations that map to dependent records.
+         * Dependent records should be deleted when this object gets deleted.
+         * @return string[]
+         */
+        public function dependentRelations() {
+            return [
+                'subQuestions',
+                'questionAttributes',
+                'conditions',
+                'answers',
+                'defaultValues'
+            ];
+        }
+
+        /**
+         * Deletes this record and all dependent records.
+         * @throws CDbException
+         */
+        public function deleteDependent() {
+            if (App()->db->getCurrentTransaction() != null) {
+                $transaction = App()->db->beginTransaction();
+            }
+            foreach($this->dependentRelations() as $relation) {
+                /** @var CActiveRecord $record */
+                foreach($this->$relation as $record) {
+                    if (method_exists($record, 'deleteDependent')) {
+                        $record->deleteDependent();
+                    } else {
+                        $record->delete();
+                    }
+                }
+            }
+            $this->delete();
+
+            if (isset($transaction)) {
+                $transaction->commit();
+            }
         }
 
 

@@ -268,4 +268,25 @@ class SurveysController extends Controller
             'surveyId' => isset($surveyId) ? $surveyId : null
         ]);
     }
+
+
+    public function actionDelete($id) {
+        $survey = $this->loadModel($id);
+        if (App()->request->getIsDeleteRequest()
+            && !$survey->isActive
+            && App()->user->checkAccess('survey', [
+                'entity' => 'survey',
+                'entity_id' => $survey->primaryKey,
+                'crud' => 'delete'
+            ])) {
+            $survey->deleteDependent();
+            App()->user->setFlash('success', gT("Survey deleted"));
+            $this->redirect(['surveys/index']);
+        } else {
+            if ($survey->isActive) {
+                App()->user->setFlash('danger', gT("Active surveys can not be deleted"));
+            }
+            $this->redirect(['surveys/update', 'id' => $survey->id]);
+        }
+    }
 }

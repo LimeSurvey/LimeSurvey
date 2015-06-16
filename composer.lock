@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb0e65a805cd84ae1d73e9e7c14bb52d",
+    "hash": "0bd2f47bea30a46bc2a0a9f16bfb965b",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -253,6 +253,41 @@
             }
         },
         {
+            "name": "bower-asset/jquery-ujs",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rails/jquery-ujs.git",
+                "reference": "4574a79b0b080c84c244b57ecc1472cbe40a079d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rails/jquery-ujs/zipball/4574a79b0b080c84c244b57ecc1472cbe40a079d",
+                "reference": "4574a79b0b080c84c244b57ecc1472cbe40a079d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">1.8.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "src/rails.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "Gemfile*",
+                    "Rakefile",
+                    "bower_components",
+                    "script",
+                    "test"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Ruby on Rails unobtrusive scripting adapter for jQuery",
+            "time": "2015-06-12 02:34:00"
+        },
+        {
             "name": "bower-asset/papaparse",
             "version": "4.1.0",
             "source": {
@@ -483,12 +518,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
-                "reference": "1beb49dac903b55bcdf642d7a367f006c7589e6f"
+                "reference": "447c2ddd76e583989a40d44ffe2ed2241650c8cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/utility/zipball/8be14cb3af4cdb44b29bfd246e122f711cdfe241",
-                "reference": "1beb49dac903b55bcdf642d7a367f006c7589e6f",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/447c2ddd76e583989a40d44ffe2ed2241650c8cf",
+                "reference": "447c2ddd76e583989a40d44ffe2ed2241650c8cf",
                 "shasum": ""
             },
             "type": "library",
@@ -511,7 +546,7 @@
                 }
             ],
             "description": "CakePHP Utility classes such as Inflector, String, Hash, and Security",
-            "time": "2015-05-12 16:20:41"
+            "time": "2015-06-04 21:45:21"
         },
         {
             "name": "crisu83/yiistrap",
@@ -577,16 +612,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "5.3.0",
+            "version": "5.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f3c8c22471cb55475105c14769644a49c3262b93"
+                "reference": "fd861570a9c3c28d98f418feea1f43f6268bdfa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f3c8c22471cb55475105c14769644a49c3262b93",
-                "reference": "f3c8c22471cb55475105c14769644a49c3262b93",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/fd861570a9c3c28d98f418feea1f43f6268bdfa0",
+                "reference": "fd861570a9c3c28d98f418feea1f43f6268bdfa0",
                 "shasum": ""
             },
             "require": {
@@ -595,15 +630,9 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0",
-                "psr/log": "^1.0"
+                "phpunit/phpunit": "^4.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "GuzzleHttp\\": "src/"
@@ -631,7 +660,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2015-05-20 03:47:55"
+            "time": "2015-06-03 05:11:42"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -1030,12 +1059,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "199bd9698b9b2b2c6b09e046fd12118fd10a7f73"
+                "reference": "9cbd8bf1cb6ca47a1c6ece7c00f4f6a5b25ef7a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/199bd9698b9b2b2c6b09e046fd12118fd10a7f73",
-                "reference": "199bd9698b9b2b2c6b09e046fd12118fd10a7f73",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/9cbd8bf1cb6ca47a1c6ece7c00f4f6a5b25ef7a8",
+                "reference": "9cbd8bf1cb6ca47a1c6ece7c00f4f6a5b25ef7a8",
                 "shasum": ""
             },
             "require": {
@@ -1077,7 +1106,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-05-21 15:05:57"
+            "time": "2015-06-13 20:00:01"
         },
         {
             "name": "psr/http-message",
@@ -1178,16 +1207,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SAM-IT/php-form.git",
-                "reference": "623205c77f997ed241effac3a58a6a0ce343dcd8"
+                "reference": "323801850a6a283567e7fe6440bf6f1df4e460b2"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/SAM-IT/php-form/zipball/323801850a6a283567e7fe6440bf6f1df4e460b2",
-                "reference": "623205c77f997ed241effac3a58a6a0ce343dcd8",
+                "reference": "323801850a6a283567e7fe6440bf6f1df4e460b2",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/samit-forms": "^1.0"
+                "bower-asset/samit-forms": "1.*"
             },
             "type": "library",
             "autoload": {
@@ -1208,7 +1237,7 @@
                 }
             ],
             "description": "Form validation library",
-            "time": "2015-05-22 13:24:23"
+            "time": "2015-05-22 13:27:16"
         },
         {
             "name": "sam-it/php-auto-update",
@@ -1390,12 +1419,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "7b9f204cb4b8fa5cb06b2a9233324997c093f629"
+                "reference": "5a8d0143b3fa9de883a5672d4a1f44d472657a8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/3487898a6af8c1d5b12f7b040d30e71b19e34923",
-                "reference": "7b9f204cb4b8fa5cb06b2a9233324997c093f629",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/5a8d0143b3fa9de883a5672d4a1f44d472657a8a",
+                "reference": "5a8d0143b3fa9de883a5672d4a1f44d472657a8a",
                 "shasum": ""
             },
             "replace": {
@@ -1433,7 +1462,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-05-03 02:06:59"
+            "time": "2015-06-11 11:53:46"
         },
         {
             "name": "yiisoft/yii",
@@ -1441,12 +1470,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "34c57c359ad5f79a8ae573367fe7d426521d0d16"
+                "reference": "eda86c729658b0d2b652b0a261899507af3d9159"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/yiisoft/yii/zipball/eda86c729658b0d2b652b0a261899507af3d9159",
-                "reference": "34c57c359ad5f79a8ae573367fe7d426521d0d16",
+                "reference": "eda86c729658b0d2b652b0a261899507af3d9159",
                 "shasum": ""
             },
             "require": {
@@ -1523,7 +1552,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-05-07 15:28:33"
+            "time": "2015-06-02 20:16:15"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -1531,16 +1560,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "61a1f9b4e8b1d8cdc8ea4e8acfb0bf533d2e05ed"
+                "reference": "a6b66c7d70a0fd50b932528c33041ab64520a37a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/6cb6fad598a125309a317df7823e5f0e7d4c39ca",
-                "reference": "61a1f9b4e8b1d8cdc8ea4e8acfb0bf533d2e05ed",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/a6b66c7d70a0fd50b932528c33041ab64520a37a",
+                "reference": "a6b66c7d70a0fd50b932528c33041ab64520a37a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5",
+                "php": ">=5.4",
                 "psr/http-message": "~1.0"
             },
             "provide": {
@@ -1548,7 +1577,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.6",
-                "squizlabs/php_codesniffer": "~2.0"
+                "squizlabs/php_codesniffer": "^2.3.1"
             },
             "type": "library",
             "extra": {
@@ -1573,7 +1602,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2015-05-26 17:18:55"
+            "time": "2015-06-12 17:11:33"
         }
     ],
     "packages-dev": [],
@@ -1596,7 +1625,8 @@
         "sam-it/yii1-translate": 20,
         "sam-it/forms": 20,
         "zendframework/zend-diactoros": 20,
-        "bower-asset/ajaxq": 20
+        "bower-asset/ajaxq": 20,
+        "bower-asset/jquery-ujs": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

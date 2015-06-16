@@ -39,7 +39,12 @@ class Survey extends LSActiveRecord
             'bool_alloweditaftercompletion' => gT("Allow responses to be edited after completion"),
             'startdate' => gT("Start date/time:"),
             'expires' => gT("Expiry date/time:"),
-            'usecaptcha' => gT("Use CAPTCHA for")
+            'usecaptcha' => gT("Use CAPTCHA for"),
+            'completedResponseCount' => gT("Completed"),
+            'partialResponseCount' => gT("Partial"),
+            'responseCount' => gT("Total"),
+            'responseRate' => gT('Rate')
+
 
         ];
     }
@@ -151,6 +156,9 @@ class Survey extends LSActiveRecord
             'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid', 'order' => 'group_order ASC'],
             'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0", 'order' => 'question_order ASC'],
             'questionCount' => [self::STAT, 'Question', 'sid', 'condition' => "parent_qid = 0"],
+            'savedControls' => [self::HAS_MANY, SavedControl::class, 'sid'],
+            'surveyLinks' => [self::HAS_MANY, SurveyLink::class, 'survey_id'],
+            'quota' => [self::HAS_MANY, Quota::class, 'sid']
         ];
     }
 
@@ -574,57 +582,6 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * Deletes a survey and all its data
-    *
-    * @access public
-    * @param int $iSurveyID
-    * @param bool @recursive
-    * @return void
-    */
-    public function deleteSurvey($iSurveyID, $recursive=true)
-    {
-        Survey::model()->deleteByPk($iSurveyID);
-
-        if ($recursive == true)
-        {
-            if (tableExists("{{survey_".intval($iSurveyID)."}}"))  //delete the survey_$iSurveyID table
-            {
-                Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."}}");
-            }
-
-            if (tableExists("{{survey_".intval($iSurveyID)."_timings}}"))  //delete the survey_$iSurveyID_timings table
-            {
-                Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."_timings}}");
-            }
-
-            if (tableExists("{{tokens_".intval($iSurveyID)."}}")) //delete the tokens_$iSurveyID table
-            {
-                Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
-            }
-
-            $oResult = Question::model()->findAllByAttributes(array('sid' => $iSurveyID));
-            foreach ($oResult as $aRow)
-            {
-                Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
-                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-            }
-
-            Question::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            QuestionGroup::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-            Permission::model()->deleteAllByAttributes(array('entity_id' => $iSurveyID, 'entity'=>'survey'));
-            SavedControl::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
-            //Remove any survey_links to the CPDB
-            SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
-            Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
-        }
-    }
-
-    /**
      * Attribute renamed to questionindex in dbversion 169
      * Y maps to 1 otherwise 0;
      * @param type $value
@@ -997,4 +954,46 @@ class Survey extends LSActiveRecord
         }
         return $result;
     }
+
+    /**
+     * Returns the relations that map to dependent records.
+     * Dependent records should be deleted when this object gets deleted.
+     * @return string[]
+     */
+    public function dependentRelations() {
+        return [
+            'languagesettings',
+            'groups',
+            'savedControls',
+            'surveyLinks',
+            'quota'
+        ];
+    }
+
+    /**
+     * Deletes this record and all dependent records.
+     * @throws CDbException
+     */
+    public function deleteDependent() {
+        if (App()->db->getCurrentTransaction() == null) {
+            $transaction = App()->db->beginTransaction();
+        }
+        foreach($this->dependentRelations() as $relation) {
+            /** @var CActiveRecord $record */
+            foreach($this->$relation as $record) {
+                if (method_exists($record, 'deleteDependent')) {
+                    $record->deleteDependent();
+                } else {
+                    $record->delete();
+                }
+            }
+        }
+        $this->delete();
+
+        if (isset($transaction)) {
+            $transaction->commit();
+        }
+    }
+
+
 }

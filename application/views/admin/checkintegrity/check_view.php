@@ -166,7 +166,7 @@
                 <ul>
                     <?php
                         foreach ($groups as $group) {?>
-                        <li>GID:<?php echo $group['gid'];?> <?php eT("Reason:");?> <?php echo $group['reason'];?></li><?php
+                        <li>GID:<?php echo $group['id'];?> <?php eT("Reason:");?> <?php echo $group['reason'];?></li><?php
                     }?>
                 </ul>
             </li>

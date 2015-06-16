@@ -11,6 +11,7 @@
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
             $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
             $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
+            $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ujs/src/rails.js');
 		?>
         <title>Limesurvey Administration</title>
     </head>

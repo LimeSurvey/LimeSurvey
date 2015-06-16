@@ -10,7 +10,8 @@ $menu = [[ // Left side
         'icon' => 'trash',
         'disabled' => $model->questionCount > 0,
         'linkOptions' => [
-            'confirm' => 'Are you sure?'
+            'data-confirm' => 'Are you sure?',
+            'data-method' => 'delete'
         ],
         'url' => ["groups/delete", 'id' => $model->primaryKey]
 //

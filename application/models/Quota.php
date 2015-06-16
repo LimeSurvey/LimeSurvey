@@ -40,17 +40,6 @@ class Quota extends LSActiveRecord
 	}
 
 	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'id';
-	}
-
-	/**
 	 * Returns the relations
 	 *
 	 * @access public
@@ -59,10 +48,9 @@ class Quota extends LSActiveRecord
 	public function relations()
 	{
 		$alias = $this->getTableAlias();
-		return array(
-			'languagesettings' => array(self::HAS_MANY, 'QuotaLanguageSetting', '',
-				'on' => "$alias.id = languagesettings.quotals_quota_id"),
-		);
+		return [
+			'languagesettings' => [self::HAS_MANY, QuotaLanguageSetting::class, 'quotals_quota_id']
+		];
 	}
 
     /**
@@ -80,23 +68,7 @@ class Quota extends LSActiveRecord
         );
     }
 
-    function insertRecords($data)
-    {
-        $quota = new self;
-        foreach ($data as $k => $v){
-            $quota->$k = $v;
-            }
-        try
-        {
-            $quota->save();
-            return $quota->id;
-        }
-        catch(Exception $e)
-        {
-            return false;
-        }
-    }
-    
+
     function deleteQuota($condition = false, $recursive = true)
     {
         if ($recursive == true)
@@ -110,6 +82,43 @@ class Quota extends LSActiveRecord
         }
 
         Quota::model()->deleteAllByAttributes($condition);
+    }
+
+
+    /**
+     * Returns the relations that map to dependent records.
+     * Dependent records should be deleted when this object gets deleted.
+     * @return string[]
+     */
+    public function dependentRelations() {
+        return [
+            'languagesettings',
+        ];
+    }
+
+    /**
+     * Deletes this record and all dependent records.
+     * @throws CDbException
+     */
+    public function deleteDependent() {
+        if (App()->db->getCurrentTransaction() != null) {
+            $transaction = App()->db->beginTransaction();
+        }
+        foreach($this->dependentRelations() as $relation) {
+            /** @var CActiveRecord $record */
+            foreach($this->$relation as $record) {
+                if (method_exists($record, 'deleteDependent')) {
+                    $record->deleteDependent();
+                } else {
+                    $record->delete();
+                }
+            }
+        }
+        $this->delete();
+
+        if (isset($transaction)) {
+            $transaction->commit();
+        }
     }
 }
 ?>
