@@ -841,6 +841,7 @@
                         break;
                     case '5': // 5 point choice
                     case '|':
+                    case 'X': // Text display
                         $class = get_class($this);
                         break;
                     default:

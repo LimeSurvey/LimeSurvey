@@ -286,7 +286,7 @@ class SurveysController extends Controller
             if ($survey->isActive) {
                 App()->user->setFlash('danger', gT("Active surveys can not be deleted"));
             }
-            $this->redirect(['surveys/update', 'id' => $survey->id]);
+            $this->redirect(['surveys/update', 'id' => $survey->primaryKey]);
         }
     }
 }

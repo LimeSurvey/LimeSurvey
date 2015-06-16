@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0bd2f47bea30a46bc2a0a9f16bfb965b",
+    "hash": "bb0e65a805cd84ae1d73e9e7c14bb52d",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -251,41 +251,6 @@
                 ],
                 "bower-asset-ignore": []
             }
-        },
-        {
-            "name": "bower-asset/jquery-ujs",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rails/jquery-ujs.git",
-                "reference": "4574a79b0b080c84c244b57ecc1472cbe40a079d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rails/jquery-ujs/zipball/4574a79b0b080c84c244b57ecc1472cbe40a079d",
-                "reference": "4574a79b0b080c84c244b57ecc1472cbe40a079d",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/jquery": ">1.8.0"
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": "src/rails.js",
-                "bower-asset-ignore": [
-                    "**/.*",
-                    "Gemfile*",
-                    "Rakefile",
-                    "bower_components",
-                    "script",
-                    "test"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Ruby on Rails unobtrusive scripting adapter for jQuery",
-            "time": "2015-06-12 02:34:00"
         },
         {
             "name": "bower-asset/papaparse",
@@ -1625,8 +1590,7 @@
         "sam-it/yii1-translate": 20,
         "sam-it/forms": 20,
         "zendframework/zend-diactoros": 20,
-        "bower-asset/ajaxq": 20,
-        "bower-asset/jquery-ujs": 20
+        "bower-asset/ajaxq": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

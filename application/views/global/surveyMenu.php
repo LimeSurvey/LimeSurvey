@@ -61,7 +61,7 @@ $menu = [[ // Left side
         'icon' => 'trash',
         'linkOptions' => [
             'data-method' => 'delete',
-            'confirm' => gT('Are you sure?')
+            'data-confirm' => gT('Are you sure?')
 
 
         ] ,

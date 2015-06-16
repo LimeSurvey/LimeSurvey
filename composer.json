@@ -29,8 +29,7 @@
         "zendframework/zend-diactoros": "^1.0@dev",
         "bower-asset/ajaxq": "^0.0.3@dev",
         "bower-asset/jquery": "2.*",
-        "mk-j/php_xlsxwriter": "0.*",
-        "bower-asset/jquery-ujs": "dev-master"
+        "mk-j/php_xlsxwriter": "0.*"
     },
 	"require-dev" : {
 		
