@@ -49,12 +49,13 @@ class GroupsController extends Controller {
         $group->sid = $survey->primaryKey;
         if (App()->request->isPostRequest) {
             $group->setAttributes(App()->request->getPost('QuestionGroup'));
+
             if ($group->save()) {
-                $this->redirect(['groups/update', 'id' => $group->primaryKey]);
+                return $this->redirect(['groups/update', 'id' => $group->primaryKey]);
             }
         } else {
 
-            $lastTitle = ([] != $values = array_values($group->survey->groups)) ? $values[count($group->survey->groups) - 1]->group_name : "q0";
+            $lastTitle = ([] != $values = array_values($group->survey->groups)) ? $values[count($group->survey->groups) - 1]->group_name : "g0";
             if (isset($lastTitle) && preg_match('/^(.*?)(\d+)$/', $lastTitle, $matches)) {
                 $group->group_name = $matches[1] . ($matches[2] + 1);
             }

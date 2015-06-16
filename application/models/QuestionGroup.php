@@ -75,23 +75,6 @@
             return Question::model()->countByAttributes(['gid' => $this->id, 'parent_qid' => 0]);
         }
 
-        function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
-        {
-            $query = Yii::app()->db->createCommand()->select('*')->from('{{groups}}');
-
-            if ($condition != FALSE)
-            {
-                $query->where($condition);
-            }
-
-            if($order != FALSE)
-            {
-                $query->order($order);
-            }
-
-            return ( $return_query ) ? $query->queryAll() : $query;
-        }
-
         function updateGroupOrder($sid,$lang,$position=0)
         {
             $data=Yii::app()->db->createCommand()->select('gid')
@@ -159,16 +142,7 @@
             return $questionIds;
         }
 
-        function getAllGroups($condition, $order=false)
-        {
-            $command = Yii::app()->db->createCommand()->where($condition)->select('*')->from($this->tableName());
-            if ($order != FALSE)
-            {
-                $command->order($order);
-            }
-            return $command->query();
-        }
-        
+
         /**
          * This function is here to support proper naming of entity attributes.
          * Since surveys have a title, I have decided all non-person entities have a title not a name.
