@@ -53,12 +53,6 @@
             
             echo CHtml::openTag('div', array('class' => 'col-sm-8'));
             echo $row['control'];
-//            
-//            echo CHtml::closeTag('div');
-//            if (isset($row['description']))
-//            {
-//                echo CHtml::tag('div', array('class' => 'description-field'), $row['description']);
-//            }
             echo CHtml::closeTag('div');
         echo CHtml::closeTag('div');
     }

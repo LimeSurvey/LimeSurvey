@@ -7,15 +7,14 @@
         "vendor-dir": "application/vendor"
     },
     "require": {
-        "crisu83/yiistrap": "dev-bs3",
-		"2amigos/yiiwheels": "dev-bs3",
-		"yiisoft/yii" : "dev-master",
+		"2amigos/yiiwheels": "2.*",
+		"yiisoft/yii" : "1.*",
 		"tecnick.com/tcpdf": "dev-master",
 		"phpmailer/phpmailer": "dev-master",
 		"jsonrpc/jsonrpc" : "dev-master",
         "ar-php/ar-php": "dev-master",
         "guzzlehttp/guzzle": "~5.0@dev",
-        "cakephp/utility": "dev-master",
+        "cakephp/utility": "3.*",
         "sam-it/php-auto-update": "dev-master",
         "icecave/semver": "dev-master",
         "hafriedlander/php-peg": "dev-master",

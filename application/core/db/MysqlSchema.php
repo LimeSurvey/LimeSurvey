@@ -27,7 +27,7 @@ class MysqlSchema extends CMysqlSchema
     
     public function createDatabase($name) {
         try {
-            $this->connection->createCommand("CREATE DATABASE `$name` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+            $this->dbConnection->createCommand("CREATE DATABASE `$name` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
         } catch (Exception $e) {
             return false;
         }

@@ -3,6 +3,8 @@
  * Application component that manages Yii migrations.
  * Most of the protected functions have been copies from CMigrateCommand,
  * where needed adaptations have been made to use them from a WebApplication.
+ *
+ * @property string[] $newMigrations
  */
 class MigrationManager extends \CApplicationComponent
 {
@@ -55,26 +57,28 @@ class MigrationManager extends \CApplicationComponent
 	protected function createMigrationHistoryTable()
 	{
         $db = App()->db;
-        echo '<pre>';
-		echo 'Creating migration history table "'.$this->migrationTable.'"...';
-        $db->createCommand()->createTable($this->migrationTable,array(
+        return $db->createCommand()->createTable($this->migrationTable,array(
 			'version'=>'varchar(180) NOT NULL PRIMARY KEY',
 			'apply_time'=>'integer',
-		));
-		$db->createCommand()->insert($this->migrationTable,array(
+		))
+            && $db->createCommand()->insert($this->migrationTable,array(
 			'version'=>self::BASE_MIGRATION,
 			'apply_time'=>time(),
 		));
-		echo "done.\n";
-        echo '</pre>';
+
 	}
-    
-    public function migrateUp($class)
+
+    /**
+     * @param string $class The name of the migration class
+     * @return bool Result
+     */
+    public function migrateUp($class, $captureOutput = false)
 	{
-		if ( $class === self::BASE_MIGRATION) {
-			return;
+        if (!$captureOutput) {
+            @ob_end_flush();
+        } else {
+            ob_start();
         }
-        @ob_end_flush();
         echo '<pre>';
 		
         echo "*** applying $class\n";
@@ -90,13 +94,16 @@ class MigrationManager extends \CApplicationComponent
 			$time = microtime(true) - $start;
 			echo "*** applied $class (time: ".sprintf("%.3f",$time)."s)\n\n";
             echo '</pre>';
+            $result = true;
 		} else {
 			$time = microtime(true) - $start;
             echo "*** failed to apply $class (time: ".sprintf("%.3f",$time)."s)\n\n";
             echo '</pre>';
-			return false;
+			$result = false;
 		}
-        
+
+        // If capturing output and migration succeeded, return the captured output.
+        return $captureOutput && $result ? ob_get_clean() : ob_end_clean() && $result;
 	}
     
     protected function instantiateMigration($class)

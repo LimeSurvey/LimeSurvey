@@ -5,16 +5,14 @@ $this->widget(\TbNavbar::class, [
     'display' => null,
     'fluid' => true,
     'items' => [
-    [
-        'class' => TbNav::class,
-        'items' => $items[0]
-    ],
-    [
-        'class' => TbNav::class,
-        'htmlOptions' => [
-        'class' => 'navbar-right'
+        [
+            'class' => TbNav::class,
+            'items' => $items[0],
         ],
-        'items' => $items[1]
+        [
+            'class' => TbNav::class,
+            'htmlOptions' => ['class' => 'navbar-right'],
+            'items' => $items[1],
         ]
     ]
 ]);

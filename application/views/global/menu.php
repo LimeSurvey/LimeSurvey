@@ -72,6 +72,7 @@
 //            ),
             [
                 'label' => gT('Surveys'),
+                'url' => ['surveys/index'],
                 'items' => array_map(function(Survey $survey) {
                     return [
                         'url' => App()->createUrl('surveys/update', ['id' => $survey->sid]),

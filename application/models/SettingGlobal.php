@@ -17,7 +17,7 @@ class SettingGlobal extends LSActiveRecord
 {
     public function behaviors()
     {
-        return App()->installed ? parent::behaviors() : [];
+        return App()->isInstalled ? parent::behaviors() : [];
     }
 
     /**
@@ -70,7 +70,7 @@ class SettingGlobal extends LSActiveRecord
     }
     public static function get($name, $default = null) {
         Yii::trace($name, "SettingGlobal");
-        if (!App()->installed) {
+        if (!App()->isInstalled) {
             return $default;
         }
         if (!array_key_exists($name, self::$requestCache)) {

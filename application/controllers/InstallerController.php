@@ -27,11 +27,6 @@ use PreCheck, InstallerConfigForm, User;
 * @access public
 */
 class InstallerController extends \CController {
-    /**
-    * clang
-    */
-    public $lang = null;
-
     public $layout = 'installer';
     /**
     * Checks for action specific authorization and then executes an action
@@ -51,11 +46,10 @@ class InstallerController extends \CController {
     public function actionIndex()
     {
         App()->session->destroy();
-        
+        App()->cache->flush();
         if (App()->request->isPostRequest) {
             App()->setLanguage(App()->request->getPost('installerLang'));
-            $this->redirect(['installer/license']);
-            die('no');
+            return $this->redirect(['installer/license']);
         }
         App()->loadHelper('surveytranslator');
 
@@ -84,10 +78,10 @@ class InstallerController extends \CController {
     public function actionLicense()
     {
         $this->stepTitle = gT('License');
-      $this->progress = 15;
+        $this->progress = 15;
 
         if (App()->request->isPostRequest) {
-            $this->redirect(array('installer/precheck'));
+            $this->redirect(['installer/precheck']);
         }
         /** 
          * Load PreCheck model here to allow it to check session stuff.
@@ -160,9 +154,27 @@ class InstallerController extends \CController {
                  */
                 if ($isEmpty) {
                     $this->populateDatabase();
-                } 
-                $this->redirect(['installer/optional']);
-            } 
+                }
+
+                $output = \TbHtml::tag('p', [], gT('The database has been prepared.'))
+                    . \TbHtml::linkButton('Continue', ['url' => ['installer/optional'], 'color' => 'primary']);
+
+                $newMigrations = App()->migrationManager->newMigrations;
+                if (!empty($newMigrations)) {
+                    $output .= \TbHtml::tag('h2', [], gT('The following migrations were applied:'));
+                }
+                foreach ($newMigrations as $i => $migration) {
+                    $result = App()->migrationManager->migrateUp($migration, true);
+                    if ($result === false) {
+                        throw new \CHttpException(500, "One of the database migrations failed to apply.");
+                        break;
+                    } else {
+                        $output .= $result;
+                    }
+                }
+                $this->renderText($output);
+                return;
+            }
         } 
         $this->render('config', $aData);
     }
@@ -173,8 +185,9 @@ class InstallerController extends \CController {
     */
     protected function populateDatabase()
     {
+        $db = App()->db;
        /* @todo Use Yii as it supports various db types and would better handle this process */
-        switch (Yii::app()->db->driverName)
+        switch ($db->driverName)
         {
             case 'mysqli':
             case 'mysql':
@@ -189,9 +202,9 @@ class InstallerController extends \CController {
                 $sql_file = 'pgsql';
                 break;
             default:
-                throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
+                throw new Exception(sprintf('Unknown database type "%s".', $db->driverName));
         }
-        Yii::app()->db->executeFile(Yii::getPathOfAlias('application') . "/../installer/sql/create-$sql_file.sql", Yii::app()->db->tablePrefix);
+        $db->executeFile(Yii::getPathOfAlias('application') . "/../installer/sql/create-$sql_file.sql", $db->tablePrefix);
     }
 
     /**
@@ -199,9 +212,9 @@ class InstallerController extends \CController {
     */
     public function actionOptional()
     {
-        Yii::app()->cache->flush();
+        App()->cache->flush();
         // Check if password was not changed.
-        $aData['confirmation'] = Yii::app()->session['optconfig_message'];
+        $aData['confirmation'] = App()->session['optconfig_message'];
         $this->stepTitle = gT("Optional settings");
         $aData['descp'] = gT("Optional settings to give you a head start");
         $this->progress = 80;
@@ -213,9 +226,9 @@ class InstallerController extends \CController {
         $sDefaultSiteName = $model->siteName;
         $sDefaultSiteLanguage = $model->surveylang;
         $sDefaultAdminEmail = $model->adminEmail;
-        if(!is_null(Yii::app()->request->getPost('InstallerConfigForm')))
+        if(!is_null(App()->request->getPost('InstallerConfigForm')))
         {
-            $model->attributes = Yii::app()->request->getPost('InstallerConfigForm');
+            $model->attributes = App()->request->getPost('InstallerConfigForm');
             
             //run validation, if it fails, load the view again else proceed to next step.
             if($model->validate()) {
@@ -232,7 +245,7 @@ class InstallerController extends \CController {
                         // Save user
                         $user=new User;
                         // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
-                        if (in_array($this->connection->getDriverName(), array('mysql', 'mysqli'))) {
+                        if (in_array(App()->db->getDriverName(), array('mysql', 'mysqli'))) {
                             $user->uid=1;
                         }
                         $user->users_name=$sAdminUserName;
@@ -277,16 +290,27 @@ class InstallerController extends \CController {
                 }
                 $this->stepTitle = gT("Setup finished!");
                 $this->progress = 100;
-                $this->render('success', $aData);
-                return;
+                App()->session->add('user', $aData['user']);
+                App()->session->add('password', $aData['pwd']);
+                return $this->redirect(['installer/success']);
             } else {
                 // if passwords don't match, redirect to proper link.
                 Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT("Passwords don't match."));
-                $this->redirect(array('installer/optional'));
+                $this->redirect(['installer/optional']);
             }
         }
 
         $this->render('optional', $aData);
+    }
+
+    public function actionSuccess()
+    {
+        $this->stepTitle = gT("Setup finished!");
+        $this->progress = 100;
+        return $this->render('success', [
+            'user' => App()->session->remove('user'),
+            'password' => App()->session->remove('password')
+        ]);
     }
   
     /**
@@ -429,21 +453,33 @@ class InstallerController extends \CController {
     
     public function filters()
     {
-        return array_merge(parent::filters(), ['accessControl']);
+        return array_merge(parent::filters(), [
+            'accessControl'
+        ]);
     }
-    
-public function accessRules()
+
+    public function accessRules()
     {
         $rules = [
-            ['allow', 
+            [
+                'allow',
+                'actions' => ['success']
+            ],
+            [
+                'allow',
                 'actions' => ['index', 'license', 'precheck', 'config'],
-                'expression' => function() { return !file_exists(__DIR__ . '/../config/config.php'); }
-            ], 
-            ['allow', 
+                'expression' => function() { return !App()->isInstalled; }
+            ],
+            ['allow',
                 'actions' => ['optional'], 
                 'expression' => function() { return User::model()->count() == 0; }
             ],
-            ['deny'],
+            [
+                'deny',
+                'deniedCallback' => function() {
+                    throw new \CHttpException(403, "Installer not accessible. Please remove config.php to run the installer.");
+                }
+            ],
         ];
         // Note the order; rules are numerically indexed and we want to
         // parents rules to be executed only if ours dont apply.

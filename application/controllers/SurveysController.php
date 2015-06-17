@@ -228,9 +228,11 @@ class SurveysController extends Controller
         $survey->owner_id = App()->user->id;
         $languageSetting = new \SurveyLanguageSetting();
         $request = App()->request;
+
         if ($request->isPostRequest) {
             $survey->setAttributes($request->getParam('Survey'));
             $languageSetting->setAttributes($request->getParam('SurveyLanguageSetting'));
+
             // Validate both before saving either.
             if ($survey->validate()
                 && $languageSetting->validate()
@@ -241,7 +243,7 @@ class SurveysController extends Controller
             ) {
 
                 App()->user->setFlash('success', gT('Survey created'));
-                $this->redirect(['surveys/update', 'id' => $survey->sid]);
+                return $this->redirect(['surveys/update', 'id' => $survey->sid]);
             }
         }
         $this->render('create', ['survey' => $survey, 'languageSetting' => $languageSetting]);

@@ -88,6 +88,7 @@ class UpgradeController extends Controller
                     $result = App()->migrationManager->migrateUp($migration);
                     if (!$result) {
                         echo "One migration failed, aborting other migrations.";
+                        break;
                     }
                 }
 

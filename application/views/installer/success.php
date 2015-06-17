@@ -12,7 +12,7 @@
         <label class="control-label col-sm-4"><?=gT("Password"); ?></label>
         <div class="col-sm-8">
             <div class="form-control">
-                <?=$pwd ?>
+                <?=$password ?>
             </div>
         </div>
     </div>

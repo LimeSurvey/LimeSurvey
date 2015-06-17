@@ -13,11 +13,12 @@
  *
  */
 $loader = require_once(__DIR__ . '/vendor/autoload.php'); 
-class_exists('Yii');
-if (!isset($argv[0])) die();
+class_exists(Yii::class);
+if (!isset($argv[0])) die("This must be run from the console.\n");
+
 define('BASEPATH','.');
 $config = require __DIR__ . '/config/internal.php';
 unset ($config['defaultController']);
 unset ($config['config']);
-Yii::createApplication('ConsoleApplication', $config)->run();
+Yii::createApplication(ConsoleApplication::class, $config)->run();
 ?>

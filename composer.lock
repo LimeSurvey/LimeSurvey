@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb0e65a805cd84ae1d73e9e7c14bb52d",
+    "hash": "6212616a00cd605b0ca44a053a4e937e",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
-            "version": "dev-bs3",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/2amigos/yiiwheels.git",
-                "reference": "0570b9fd9bb333edd967dad0cb31409ade0367c8"
+                "reference": "1e9ab513e2694149dcca13f196ea1d2be4264346"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yiiwheels/zipball/0570b9fd9bb333edd967dad0cb31409ade0367c8",
-                "reference": "0570b9fd9bb333edd967dad0cb31409ade0367c8",
+                "url": "https://api.github.com/repos/2amigos/yiiwheels/zipball/1e9ab513e2694149dcca13f196ea1d2be4264346",
+                "reference": "1e9ab513e2694149dcca13f196ea1d2be4264346",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "bootstrap",
                 "yii"
             ],
-            "time": "2015-01-23 15:56:34"
+            "time": "2014-09-08 09:45:36"
         },
         {
             "name": "ar-php/ar-php",
@@ -479,7 +479,7 @@
         },
         {
             "name": "cakephp/utility",
-            "version": "dev-master",
+            "version": "3.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
@@ -1431,16 +1431,16 @@
         },
         {
             "name": "yiisoft/yii",
-            "version": "dev-master",
+            "version": "1.1.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii.git",
-                "reference": "eda86c729658b0d2b652b0a261899507af3d9159"
+                "reference": "bca0420b6799b0b2a7966aa90bcd15cb4aa73563"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii/zipball/eda86c729658b0d2b652b0a261899507af3d9159",
-                "reference": "eda86c729658b0d2b652b0a261899507af3d9159",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/bca0420b6799b0b2a7966aa90bcd15cb4aa73563",
+                "reference": "bca0420b6799b0b2a7966aa90bcd15cb4aa73563",
                 "shasum": ""
             },
             "require": {
@@ -1517,7 +1517,7 @@
                 "framework",
                 "yii"
             ],
-            "time": "2015-06-02 20:16:15"
+            "time": "2014-12-21 19:30:17"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -1574,15 +1574,11 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "crisu83/yiistrap": 20,
-        "2amigos/yiiwheels": 20,
-        "yiisoft/yii": 20,
         "tecnick.com/tcpdf": 20,
         "phpmailer/phpmailer": 20,
         "jsonrpc/jsonrpc": 20,
         "ar-php/ar-php": 20,
         "guzzlehttp/guzzle": 20,
-        "cakephp/utility": 20,
         "sam-it/php-auto-update": 20,
         "icecave/semver": 20,
         "hafriedlander/php-peg": 20,

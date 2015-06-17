@@ -130,17 +130,6 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * Returns the table's primary key
-    *
-    * @access public
-    * @return string
-    */
-    public function primaryKey()
-    {
-        return 'sid';
-    }
-
-    /**
     * Returns this model's relations
     *
     * @access public

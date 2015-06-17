@@ -25,11 +25,14 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  * @property SurveySessionManager $surveySessionManager
  * @property \HttpRequest $request;
  * @property WebUser $user
+ * @property CCache $cache
+ * @property CHttpSession $session
+ * @property CClientScript $clientScript
+ * @property MigrationManager $migrationManager
  */
 class WebApplication extends CWebApplication
 {
 
-    public $installed = false;
     /**
      *
      * @var Composer\Autoload\ClassLoader
@@ -55,6 +58,14 @@ class WebApplication extends CWebApplication
     public function processRequest()
     {
         /**
+         * Hook installer.
+         */
+        if (!$this->isInstalled && strncmp('installer', $this->getUrlManager()->parseUrl($this->getRequest()), 9) != 0) {
+            $this->catchAllRequest = [
+                'installer'
+            ];
+        }
+        /**
          * Add support for maintenance mode.
          */
         if ($this->maintenanceMode && strncmp('upgrade', $this->getUrlManager()->parseUrl($this->getRequest()), 7) != 0) {
@@ -74,6 +85,12 @@ class WebApplication extends CWebApplication
     public function getSupportedLanguages() {
         return $this->_supportedLanguages;
     }
+
+    public function getIsInstalled() {
+        $components = $this->getComponents(false);
+        return is_object($components['db'])
+            || isset($components['db']['connectionString']);
+    }
     /**
      *
     * Initiates the application
@@ -84,7 +101,6 @@ class WebApplication extends CWebApplication
     */
     public function __construct($config = null)
     {
-        $this->installed = isset($config['components']['db']['connectionString']);
         parent::__construct($config);
 
 
