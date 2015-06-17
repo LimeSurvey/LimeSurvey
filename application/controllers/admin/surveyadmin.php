@@ -1272,7 +1272,7 @@ class SurveyAdmin extends Survey_Common_Action
         $sQuery = "select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
         left join {{questions}} q on q.qid=up.targetqid
         left join {{questions}} sq on sq.qid=up.targetsqid
-        where up.sid={$iSurveyID} and q.language='{$sBaseLanguage}' and (sq.language='{$sBaseLanguage}' or sq.language is null)";
+        where up.sid={$iSurveyID} and (q.language='{$sBaseLanguage}' or q.language is null) and (sq.language='{$sBaseLanguage}' or sq.language is null)";
         $oResult = Yii::app()->db->createCommand($sQuery)->queryAll();
         $i = 0;
         $aData = new stdClass();
