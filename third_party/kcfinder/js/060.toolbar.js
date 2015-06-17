@@ -107,7 +107,7 @@ _.initUploadButton = function() {
         height = btn.outerHeight(),
         jInput = $('#upload input');
 
-    $('#toolbar').prepend('<div id="upload" style="top:' + top + 'px;width:' + width + 'px;height:' + height + 'px"><form enctype="multipart/form-data" method="post" target="uploadResponse" action="' + _.getURL('upload') + '"><input type="file" name="upload[]" onchange="_.uploadFile(this.form)" style="height:' + height + 'px" multiple="multiple" /><input type="hidden" name="dir" value="" /></form></div>');
+    $('#toolbar').prepend('<div id="upload" style="top:' + top + 'px;width:' + width + 'px;height:' + height + 'px"><form enctype="multipart/form-data" method="post" target="uploadResponse" action="' + _.getURL('upload') + '"><input type="file" name="upload[]" onchange="_.uploadFile(this.form)" style="height:' + height + 'px" multiple="multiple" /><input type="hidden" name="dir" value="" /><input type="hidden" name="kcfinder_csrftoken" value="' + _.csrftoken + '" /></form></div>');
     jInput.css('margin-left', "-" + (jInput.outerWidth() - width));
     $('#upload').mouseover(function() {
         $('#toolbar a[href="kcact:upload"]').addClass('hover');

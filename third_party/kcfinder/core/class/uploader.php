@@ -96,6 +96,8 @@ class uploader {
 
     public function __construct() {
 
+        // crsf_session
+
         // SET CMS INTEGRATION PROPERTY
         if (isset($_GET['cms']) &&
             $this->checkFilename($_GET['cms']) &&
@@ -277,9 +279,7 @@ class uploader {
             }
         $this->localize($this->lang);
 
-        // IF BROWSER IS ENABLED
-        if (!$this->config['disabled']) {
-
+        if (!$this->config['disabled']) { // IF BROWSER IS ENABLED
             // TRY TO CREATE UPLOAD DIRECTORY IF NOT EXISTS
             if (!$this->config['disabled'] && !is_dir($this->config['uploadDir']))
                 @mkdir($this->config['uploadDir'], $this->config['dirPerms']);
@@ -314,8 +314,9 @@ class uploader {
         $config = &$this->config;
         $file = &$this->file;
         $url = $message = "";
-
-        if ($config['disabled'] || !$config['access']['files']['upload']) {
+        if($crsfControl=$this->controlCSRFToken()){
+            $message= $crsfControl;
+        } elseif ($config['disabled'] || !$config['access']['files']['upload']) {
             if (isset($file['tmp_name'])) @unlink($file['tmp_name']);
             $message = $this->label("You don't have permissions to upload files.");
 
@@ -811,6 +812,43 @@ if (window.opener) window.close();
 
     protected function get_htaccess() {
         return file_get_contents("conf/upload.htaccess");
+    }
+    protected function controlCSRFToken()
+    {
+        if (isset($_SERVER['REQUEST_METHOD']) && !strcasecmp($_SERVER['REQUEST_METHOD'],'POST'))
+        {
+            if (!isset($_POST['kcfinder_csrftoken']) || (isset($_POST['kcfinder_csrftoken']) && $_POST['kcfinder_csrftoken']!=$this->session['kcfinder_csrf_token']))
+            {
+                return "CSRF upload error";
+            }
+        }
+        return;
+    }   
+    // Set the session kcfinder_csrf_token to a token and return this token
+    protected function getCSRFToken() {
+        if (function_exists("hash_algos") and in_array("sha512",hash_algos()))
+        {
+            $token=hash("sha512",mt_rand(0,mt_getrandmax()));
+        }
+        else
+        {
+            $token=' ';
+            for ($i=0;$i<128;++$i)
+            {
+                $r=mt_rand(0,35);
+                if ($r<26)
+                {
+                    $c=chr(ord('a')+$r);
+                }
+                else
+                { 
+                    $c=chr(ord('0')+$r-26);
+                } 
+                $token.=$c;
+            }
+        }
+        $this->session['kcfinder_csrf_token']=$token;
+        return $token;
     }
 }
 
