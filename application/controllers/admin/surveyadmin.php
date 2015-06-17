@@ -1216,6 +1216,23 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+    * survey::_tabQuexml()
+    * Load "QueXML" tab.
+    * @param mixed $esrow
+    * @return
+    */
+    private function _tabQuexml($esrow)
+    {
+        $clang = $this->getController()->lang;
+
+        Yii::app()->loadHelper('globalsettings');
+
+        $aData['clang'] = $clang;
+        $aData['esrow'] = $esrow;
+        return $aData;
+    }
+
+    /**
     * survey::_tabPublicationAccess()
     * Load "Publication * access control" tab.
     * @param mixed $esrow
