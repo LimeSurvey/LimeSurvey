@@ -1,10 +1,10 @@
-<div class='header ui-widget-header'><?php $clang->eT("Data entry"); ?></div>
+<div class='header ui-widget-header'><?php eT("Data entry"); ?></div>
 
         <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data'));?>
             <table class='data-entry-tbl'>
             <tr>
             <td colspan='3'>
-            <strong><?php echo $thissurvey['name']; ?></strong>
+            <strong><?php echo stripJavaScript($thissurvey['name']); ?></strong>
             <br /><?php echo flattenText($thissurvey['description'],true); ?>
             </td>
             </tr>
@@ -40,11 +40,11 @@
                 {
                     if (me.value != '')
                     {
-                        document.getElementById('submitdata').disabled = false;
+                        $('#submitdata').button("option", "disabled", false);
                     }
                     else
                     {
-                        document.getElementById('submitdata').disabled = true;
+                        $('#submitdata').button("option", "disabled", true);
                     }
                 }
                 //--></script>

@@ -6,12 +6,13 @@ $(document).ready(function(){
          show: loadHTMLEditor
     });
 
+    // Binds the Default value buttons for each email template subject and body text
     $('.fillin').bind('click', function(e) { 
         e.preventDefault; 
         var newval = $(this).attr('data-value');
         var target = $('#' + $(this).attr('data-target'));
-
         $(target).val(newval);
+        updateCKeditor($(this).attr('data-target'),newval);
     });
 });
 
@@ -35,20 +36,6 @@ function loadHTMLEditor(event, ui)
         eval("if (typeof "+sCKEditorInstanceName+" != 'undefined')"+sCKEditorInstanceName+".ReplaceTextarea();");
    }
 }
-
-function fillin(tofield, fromfield)
-{
-    if (confirm(sReplaceTextConfirmation)) 
-    {
-        if (document.getElementById(tofield).readOnly == false)
-        {   
-            $('#'+tofield).val($('#'+fromfield).val());    
-        }
-        updateCKeditor(tofield,$('#'+fromfield).val());
-
-    }
-}
-
 
 function KCFinder_callback(url)
 {
@@ -159,7 +146,7 @@ function openKCFinder_singleFile(target) {
     window.KCFinder = {};
     window.KCFinder.target = target;
     window.KCFinder.callBack = KCFinder_callback;
-    window.open(LS.data.baseUrl + '/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode=en', 'kcfinder_single', 'height=600px, width=800px, modal=yes');
+    window.open(LS.data.baseUrl + '/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor=email_invite_en&langCode='+sKCFinderLanguage, 'kcfinder_single', 'height=600px, width=800px, modal=yes');
 }
 
     $('#attachment-relevance-editor button').click(function()

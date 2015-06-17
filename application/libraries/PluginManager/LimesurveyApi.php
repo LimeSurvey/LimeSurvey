@@ -1,4 +1,9 @@
 <?php 
+namespace ls\pluginmanager;
+use Yii;
+use User;
+use PluginDynamic;
+use SurveyDynamic;
     /**
     * Class exposing a Limesurvey API to plugins.
     * This class is instantiated by the plugin manager,
@@ -51,6 +56,20 @@
             if (null !== $sTableName = $this->getTableName($plugin, $sTableName))
             {
                 return App()->getDb()->createCommand()->createTable($sTableName,$aColumns,$sOptions);
+            }
+            return false;
+        }
+
+        /**
+         * Builds and executes a SQL statement for dropping a DB table.
+         * @param mixed $plugin The plugin object, id or name.
+         * @param string $sTableName the name of the table to be created. The name will be properly quoted and prefixed by the method.
+         */
+        public function dropTable($plugin, $sTableName)
+        {
+            if (null !== $sTableName = $this->getTableName($plugin, $sTableName))
+            {
+                return App()->getDb()->createCommand()->dropTable($sTableName);
             }
             return false;
         }
@@ -164,47 +183,49 @@
         */
         public function getResponse($surveyId, $responseId)
         {
-            $response = SurveyDynamic::model($surveyId)->findByPk($responseId)->attributes;
-
-            // Now map the response to the question codes if possible, duplicate question codes will result in the
-            // old sidXgidXqid code for the second time the code is found
-            $fieldmap = createFieldMap($surveyId, 'full',null, false, $response['startlanguage']);
-            $output = array();
-            foreach($response as $key => $value)
+            $response = SurveyDynamic::model($surveyId)->findByPk($responseId);
+            if (isset($response))
             {
-                $newKey = $key;
-                if (array_key_exists($key, $fieldmap)) {
-                    if (array_key_exists('title', $fieldmap[$key]))
-                    {
-                        $code = $fieldmap[$key]['title'];
-                        // Add subquestion code if needed
-                        if (array_key_exists('aid', $fieldmap[$key]) && isset($fieldmap[$key]['aid']) && $fieldmap[$key]['aid']!='') {
-                            $code .= '_' . $fieldmap[$key]['aid'];
-                        }
-                        // Only add if the code does not exist yet and is not empty
-                        if (!empty($code) && !array_key_exists($code, $output)) {
-                            $newKey = $code;
+                // Now map the response to the question codes if possible, duplicate question codes will result in the
+                // old sidXgidXqid code for the second time the code is found
+                $fieldmap = createFieldMap($surveyId, 'full',null, false, $response->attributes['startlanguage']);
+                $output = array();
+                foreach($response->attributes as $key => $value)
+                {
+                    $newKey = $key;
+                    if (array_key_exists($key, $fieldmap)) {
+                        if (array_key_exists('title', $fieldmap[$key]))
+                        {
+                            $code = $fieldmap[$key]['title'];
+                            // Add subquestion code if needed
+                            if (array_key_exists('aid', $fieldmap[$key]) && isset($fieldmap[$key]['aid']) && $fieldmap[$key]['aid']!='') {
+                                $code .= '_' . $fieldmap[$key]['aid'];
+                            }
+                            // Only add if the code does not exist yet and is not empty
+                            if (!empty($code) && !array_key_exists($code, $output)) {
+                                $newKey = $code;
+                            }
                         }
                     }
+                    $output[$newKey] = $value;
                 }
-                $output[$newKey] = $value;                    
-            }
 
-            // And return the mapped response, to further enhance we could add a method to the api that provides a 
-            // simple sort of fieldmap that returns qcode index array with group, question, subquestion, 
-            // possible answers, maybe even combined with relevance info so a plugin can handle display of the response
-            return $output;
+                // And return the mapped response, to further enhance we could add a method to the api that provides a
+                // simple sort of fieldmap that returns qcode index array with group, question, subquestion,
+                // possible answers, maybe even combined with relevance info so a plugin can handle display of the response
+                return $output;
+            }
         }
 
         public function getResponses($surveyId, $attributes = array(), $condition = '', $params = array())
         {
-            return Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
+            return \Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
         }
 
 
         public function getToken($surveyId, $token)
         {
-            return Token::model($surveyId)->findByAttributes(array('token' => $token));
+            return \Token::model($surveyId)->findByAttributes(array('token' => $token));
         }
         /**
         * Gets a key value list using the group name as value and the group id
@@ -214,7 +235,7 @@
         */
         public function getGroupList($surveyId)
         {
-            $result = QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
+            $result = \QuestionGroup::model()->findListByAttributes(array('sid' => $surveyId), 'group_name');
             return $result;
         }
         
@@ -250,9 +271,10 @@
         {
             $tables = array();
             $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
+            $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
             foreach (App()->getDb()->getSchema()->getTableNames() as $table)
             {
-                if (strpos($table, $base) === 0)
+                if (strpos($table, $base) === 0 && strpos($table, $timingbase)===false)
                 $tables[] = $table;
             }
             return $tables;
@@ -307,7 +329,7 @@
         {
             $conditions['sid'] = $surveyId;
             $conditions['language'] = $language;
-            return Question::model()->with('subquestions')->findAllByAttributes($conditions);
+            return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
         }
         /**
          * Gets the metadata for a table.

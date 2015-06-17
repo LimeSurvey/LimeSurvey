@@ -7,8 +7,8 @@
   *   @version 2.2
   *    @author Hamid Kamalpour <djhamidfatal@gmail.com><http://www.ssfmusic.com>
   * @copyright 2010 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
   *      @link http://kcfinder.sunhater.com
   */
 
@@ -259,6 +259,9 @@ $lang = array(
     // SINCE 2.41
 
     "You cannot rename the extension of files!" => "!شما نمی توانید پسوند فایلها را تغییر دهید",
+    "Uploading file {number} of {count}... {progress}" => "{progress} ...ارسال شد {count} فایل از {number}",
+    "Failed to upload {filename}!"  => "! {filename} خطا در ارسال"
+
 );
 
 ?>

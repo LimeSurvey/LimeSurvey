@@ -9,6 +9,16 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+
+/**
+* delete button
+*/
+$(document).on('click','[data-action="deletelabelset"]',function(event){
+    event.preventDefault();
+    if(confirm($(this).data('confirm'))){
+        sendPost($(this).data('url'),'',['action','lid'],[$(this).data('action'),$('[name="lid"]').val()]);
+    }
+});
 $(document).ready(function(){
     $('#btnDumpLabelSets').click(function(){
         if ($('#labelsets > option:selected').size()==0)
@@ -35,10 +45,12 @@ $(document).ready(function(){
         distance:2
     });
 
-    $('#quickadd').dialog({autoOpen: false,
+    $('#quickadd').dialog({
+        autoOpen: false,
         modal: true,
         width:600,
-        title: $("#quickadd").attr('name')});
+        title: quickaddtitle
+    });
 
     $('.btnquickadd').click(function(){
         $('#quickadd').dialog('open');

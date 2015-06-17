@@ -8,16 +8,17 @@ CKEDITOR.editorConfig = function( config )
     config.filebrowserUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=files';
     config.filebrowserImageUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=images';
     config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=flash';
+    config.removeDialogTabs = 'link:upload;image:Upload';    
 
     config.skin = 'ls-office2003';
     config.toolbarCanCollapse = false;
     config.resize_enabled = false;
     config.autoParagraph = false;
-    config.entities = false;    
-	
-	if($('html').attr('dir') == 'rtl') {
-		config.contentsLangDirection = 'rtl';
-	}
+    config.basicEntities = false; // For <, >, & ( and nbsp)
+    config.entities = false; // For ' ( and a lot of other but not <>&)
+    if($('html').attr('dir') == 'rtl') {
+        config.contentsLangDirection = 'rtl';
+    }
 
     config.toolbar_popup =
     [
@@ -36,7 +37,6 @@ CKEDITOR.editorConfig = function( config )
         ['TextColor','BGColor'],
         [ 'ShowBlocks','Templates']
     ];
-    
     config.toolbar_inline =
     [
         ['Maximize','Createlimereplacementfields'],
@@ -54,10 +54,6 @@ CKEDITOR.editorConfig = function( config )
         ['TextColor','BGColor'],
         [ 'ShowBlocks','Templates'],
     ];
-
-
-   
-
    config.toolbar_inline2 =
     [
         ['Maximize','Createlimereplacementfields'],
@@ -67,12 +63,7 @@ CKEDITOR.editorConfig = function( config )
         ['Link','Unlink','Image'],
         ['Source']
     ];
-
-
     config.extraPlugins = "ajax,limereplacementfields";
-
-    
-
 };
 
 (function () {

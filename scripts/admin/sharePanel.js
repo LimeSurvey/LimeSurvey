@@ -46,6 +46,7 @@ $(document).ready(function() {
 
     var lastSel;
     jQuery("#sharePanel").jqGrid({
+        direction: $('html').attr('dir'),
         loadtext : sLoadText,
         align:"center",
         url: shareinfoUrl,

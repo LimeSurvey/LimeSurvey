@@ -1,13 +1,12 @@
 <?php
-class ExportR extends PluginBase {
+class ExportR extends \ls\pluginmanager\PluginBase {
     
     protected $storage = 'DbStorage';
        
     static protected $description = 'Core: R-export';
     static protected $name = 'Export results to R';
     
-    public function __construct(PluginManager $manager, $id) {
-        parent::__construct($manager, $id);
+    public function init() {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle

@@ -166,6 +166,7 @@ CREATE TABLE prefix_participant_attribute_names_lang (
 CREATE TABLE prefix_participant_attribute_names (
   "attribute_id" serial NOT NULL,
   "attribute_type" character varying( 4 ) NOT NULL,
+  "defaultname" character varying(50) NOT NULL,
   "visible" character varying( 5 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
 );
@@ -198,9 +199,9 @@ CREATE TABLE prefix_participant_shares (
 --
 CREATE TABLE prefix_participants (
   "participant_id" character varying(50) PRIMARY KEY NOT NULL,
-  "firstname" character varying(40),
-  "lastname" character varying(40),
-  "email" character varying(80),
+  "firstname" character varying(150),
+  "lastname" character varying(150),
+  "email" character varying(254),
   "language" character varying(40),
   "blacklisted" character varying(1) NOT NULL,
   "owner_uid" integer NOT NULL,
@@ -235,7 +236,8 @@ CREATE TABLE prefix_permissions (
 CREATE TABLE prefix_plugins (
   id serial NOT NULL,
   name character varying(50) NOT NULL,
-  active integer NOT NULL default '0'
+  active integer NOT NULL default '0',
+  CONSTRAINT prefix_plugins_pkey PRIMARY KEY (id)
 );
 
 
@@ -243,12 +245,13 @@ CREATE TABLE prefix_plugins (
 -- Table structure for table plugin_settings
 --
 CREATE TABLE prefix_plugin_settings (
-  id integer PRIMARY KEY NOT NULL,
+  id serial NOT NULL,
   plugin_id integer NOT NULL,
   model character varying(50) NULL,
   model_id integer NULL,
   key character varying(50) NOT NULL,
-  value text NULL
+  value text NULL,
+  CONSTRAINT prefix_plugin_settings_pkey PRIMARY KEY (id)
 );
 
 
@@ -343,7 +346,7 @@ CREATE TABLE prefix_saved_control (
     srid integer DEFAULT 0 NOT NULL,
     identifier text NOT NULL,
     access_code text NOT NULL,
-    email character varying(320),
+    email character varying(254),
     ip text NOT NULL,
     saved_thisstep text NOT NULL,
     status character varying(1) DEFAULT '' NOT NULL,
@@ -410,7 +413,7 @@ CREATE TABLE prefix_surveys (
     active character varying(1) DEFAULT 'N' NOT NULL,
     expires timestamp,
     startdate timestamp,
-    adminemail character varying(320),
+    adminemail character varying(254),
     anonymized character varying(1) DEFAULT 'N' NOT NULL,
     faxto character varying(20),
     format character varying(1),
@@ -438,7 +441,7 @@ CREATE TABLE prefix_surveys (
     assessments character varying(1) DEFAULT 'N' NOT NULL,
     usecaptcha character varying(1) DEFAULT 'N' NOT NULL,
     usetokens character varying(1) DEFAULT 'N' NOT NULL,
-    "bounce_email" character varying(320),
+    "bounce_email" character varying(254),
     attributedescriptions text,
 	emailresponseto text,
     emailnotificationto text,
@@ -529,7 +532,7 @@ CREATE TABLE prefix_users (
     full_name character varying(50) NOT NULL,
     parent_id integer NOT NULL,
     lang character varying(20),
-    email character varying(320),
+    email character varying(254),
     htmleditormode character varying(7) DEFAULT 'default',
     templateeditormode character varying(7) DEFAULT 'default' NOT NULL,
     questionselectormode character varying(7) DEFAULT 'default' NOT NULL,
@@ -538,18 +541,6 @@ CREATE TABLE prefix_users (
     "created" timestamp,
     "modified" timestamp
 );
-
-
---
--- Table structure for table templates_rights
---
-CREATE TABLE prefix_templates_rights (
-  "uid" integer NOT NULL,
-  "folder" character varying(255) NOT NULL,
-  "use" integer NOT NULL,
-  CONSTRAINT prefix_templates_rights_pkey PRIMARY KEY ("uid","folder")
-);
-
 
 --
 -- Table structure for table templates
@@ -579,10 +570,10 @@ create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
 create index parent_qid_idx on prefix_questions (parent_qid);
 create index labels_code_idx on prefix_labels (code);
-create unique index permissions_idx2 ON lime_permissions (entity_id, entity, uid, permission);
+create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, uid, permission);
 
 
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '172');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '181');

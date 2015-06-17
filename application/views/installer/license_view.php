@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span3">
-        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="span9">
         <?php
@@ -13,11 +13,11 @@
 
             <div class="row navigator">
             <div class="span3">
-                <input class="btn" type="button" value="<?php $clang->eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
+                <input class="btn" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
             </div>
             <div class="span3"></div>
             <div class="span3">
-                <input class="btn"  type="submit" value="<?php $clang->eT('I accept'); ?>" />
+                <input class="btn"  type="submit" value="<?php eT('I accept'); ?>" />
             </div>
             </div>
         </form>

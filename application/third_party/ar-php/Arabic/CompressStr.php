@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -107,7 +107,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -130,7 +130,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -154,7 +154,8 @@ class I18N_Arabic_CompressStr
         self::$_binary = '0000|0001|0010|0011|0100|0101|0110|0111|';
     
         self::$_hex = '0123456789abcdef';
-        self::$_bin = '0000|0001|0010|0011|0100|0101|0110|0111|1000|1001|1010|1011|1100|1101|1110|1111|';
+        self::$_bin = '0000|0001|0010|0011|0100|0101|0110|0111|1000|';
+        self::$_bin = self::$_bin . '1001|1010|1011|1100|1101|1110|1111|';
     }
 
     /**

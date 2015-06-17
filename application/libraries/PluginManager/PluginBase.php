@@ -1,5 +1,5 @@
 <?php
-
+namespace ls\pluginmanager;
     /**
      * Base class for plugins.
      */
@@ -33,11 +33,11 @@
 
         /**
          * Constructor for the plugin
-         * 
+         * @todo Add proper type hint in 3.0
          * @param PluginManager $manager    The plugin manager instantiating the object
          * @param int           $id         The id for storage
          */
-        public function __construct(PluginManager $manager, $id)
+        public function __construct(\PluginManager $manager, $id)
         {
             $this->pluginManager = $manager;
             $this->id = $id;
@@ -52,6 +52,7 @@
          * @param string $key
          * @param string $model
          * @param int $id
+         * @param mixed $default The default value to use when not was set
          * @return boolean
          */
         protected function get($key = null, $model = null, $id = null, $default = null)
@@ -142,12 +143,12 @@
                 // This is a limesurvey relative path.
                 if (strpos('/', $fileName) === 0)
                 {
-                    $url = Yii::getPathOfAlias('webroot') . $fileName;
+                    $url = \Yii::getPathOfAlias('webroot') . $fileName;
                     
                 }
                 else // This is a plugin relative path.
                 {
-                    $path = Yii::getPathOfAlias('webroot.plugins.' . get_class($this)) . DIRECTORY_SEPARATOR . $fileName;
+                    $path = \Yii::getPathOfAlias('webroot.plugins.' . get_class($this)) . DIRECTORY_SEPARATOR . $fileName;
                     /*
                      * By using the asset manager the assets are moved to a publicly accessible path.
                      * This approach allows a locked down plugin directory that is not publicly accessible.

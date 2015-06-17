@@ -1,5 +1,5 @@
 <?php
-class Authwebserver extends AuthPluginBase
+class Authwebserver extends ls\pluginmanager\AuthPluginBase
 {
     protected $storage = 'DbStorage';    
     
@@ -9,17 +9,21 @@ class Authwebserver extends AuthPluginBase
     protected $settings = array(
         'strip_domain' => array(
             'type' => 'checkbox',
-            'label' => 'Strip domain part (DOMAIN\\USER or USER@DOMAIN)'
+            'label' => 'Strip domain part (DOMAIN\\USER or USER@DOMAIN)',
         ),
         'serverkey' => array(
             'type' => 'string',
             'label' => 'Key to use for username e.g. PHP_AUTH_USER, LOGON_USER, REMOTE_USER. See phpinfo in global settings.',
-            'default' => 'REMOTE_USER'
+            'default' => 'REMOTE_USER',
         ),
+        'is_default' => array(
+                'type' => 'checkbox',
+                'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
+                'default' => true,
+                )
     );
     
-    public function __construct(PluginManager $manager, $id) {
-        parent::__construct($manager, $id);
+    public function init() {
         
         /**
          * Here you should handle subscribing to the events your plugin will handle
@@ -52,16 +56,31 @@ class Authwebserver extends AuthPluginBase
             {
                $sUser = $aUserMappings[$sUser];
             }
-            $this->setUsername($sUser);
-            $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
+            $oUser = $this->api->getUserByName($sUser);
+            if($oUser || $this->api->getConfigKey('auth_webserver_autocreate_user'))
+            {
+                $this->setUsername($sUser);
+                $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
+            }
+            elseif($this->get('is_default',null,null,$this->settings['is_default']['default']))
+            {
+                throw new CHttpException(401,'Wrong credentials for LimeSurvey administration.');
+            }
         }
     }
     
     public function newUserSession()
     {
+        // Do nothing if this user is not Authwebserver type
+        $identity = $this->getEvent()->get('identity');
+        if ($identity->plugin != 'Authwebserver')
+        {
+            return;
+        }
+
         /* @var $identity LSUserIdentity */
         $sUser = $this->getUserName();
-        
+
         $oUser = $this->api->getUserByName($sUser);
         if (is_null($oUser))
         {
@@ -76,8 +95,16 @@ class Authwebserver extends AuthPluginBase
                 $aUserProfile=$this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            $this->setAuthSuccess($oUser);
-            return;
+            if (Permission::model()->hasGlobalPermission('auth_webserver','read',$oUser->uid))
+            {
+                $this->setAuthSuccess($oUser);
+                return;
+            }
+            else
+            {
+                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed for this user'));
+                return;
+            }
         }
 
         if ($this->api->getConfigKey('auth_webserver_autocreate_user') && isset($aUserProfile) && is_null($oUser))
@@ -94,6 +121,7 @@ class Authwebserver extends AuthPluginBase
             {
                 $permission=new Permission;
                 $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
+                $this->setAuthPermission($oUser->uid,'auth_webserver');
 
                 // read again user from newly created entry
                 $this->setAuthSuccess($oUser);
@@ -103,7 +131,6 @@ class Authwebserver extends AuthPluginBase
             {
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             }
-
         }
         
     }  

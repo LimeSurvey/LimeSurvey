@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php $clang->eT('Edit default answer values') ?></div>
+<div class='header ui-widget-header'><?php eT('Edit default answer values') ?></div>
 <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmdefaultvalues','name'=>'frmdefaultvalues')); ?>
     <div id="tabs">
         <ul>
@@ -27,13 +27,13 @@
                             <li>
                                 <label for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                     <?php
-                                        $qtproperties[$questionrow['type']]['answerscales'] > 1 ? printf($clang->gT('Default answer for scale %s:'), $scale_id) : printf($clang->gT('Default answer value:'), $scale_id) ?>
+                                        $qtproperties[$questionrow['type']]['answerscales'] > 1 ? printf(gT('Default answer for scale %s:'), $scale_id) : printf(gT('Default answer value:'), $scale_id) ?>
                                 </label>
 
                                 <select name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>' id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
 
                                     <option value=''<?php is_null($opts['defaultvalue']) ? ' selected="selected"' : '' ?>>
-                                        <?php $clang->eT('<No default value>') ?>
+                                        <?php eT('<No default value>') ?>
                                     </option>
                                     <?php
                                         foreach ($opts['answers'] as $answer)
@@ -51,7 +51,7 @@
                                 ?>
                                 <li>
                                     <label for='other_<?php echo "{$scale_id}_{$language}" ?>'>
-                                        <?php $clang->eT("Default value for option 'Other':")?>
+                                        <?php eT("Default value for option 'Other':")?>
                                     </label>
                                     <input type='text' name='other_<?php echo "{$scale_id}_{$language}" ?>' value='<?php echo $langopts[$language][$questionrow['type']]['Ydefaultvalue'] ?>' id='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                 </li>
@@ -71,7 +71,7 @@
                                 {
                                 ?>
                                 <div class='header ui-widget-header'>
-                                    <?php echo sprintf($clang->gT('Default answer for scale %s:'), $scale_id) ?>
+                                    <?php echo sprintf(gT('Default answer for scale %s:'), $scale_id) ?>
                                 </div>
                                 <?php
                                 }
@@ -146,15 +146,30 @@
                             case 'U':*
                             */
                         ?>
+                            <?php
+                            /**
+                             * Call default value widget for yes/no question type
+                             * This is fast insert rewrite of this view follows
+                             */
+                            $widgetOptions = array(
+                                'language' =>$language ,
+                                'questionrow' => $questionrow,
+                                'qtproperties' => $qtproperties,
+                                'langopts' => $langopts,
+                             );
+                            $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', array('widgetOptions'=>$widgetOptions));
+                            ?>
+                            <?php if ($questionrow['type'] != 'Y'): //temporary solution - until everything is move to widgets?>
                         <li>
                             <label for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
-                                <?php $clang->eT("Default value:")?>
+                                <?php eT("Default value:")?>
                             </label>
 
                             <textarea cols='50' name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
                                 id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'><?php
                                 echo htmlspecialchars($langopts[$language][$questionrow['type']][0]); ?></textarea>
                         </li>
+                        <?php endif;  //temporary solution?>
                         <?php
                         }
 
@@ -163,7 +178,7 @@
                         ?>
                         <li>
                             <label for='samedefault'>
-                                <?php $clang->eT('Use same default value across languages:') ?>
+                                <?php eT('Use same default value across languages:') ?>
                             </label>
                             <input type='checkbox' name='samedefault' id='samedefault'<?php $questionrow['same_default'] ? ' checked="checked"' : '' ?> />
                         </li>
@@ -180,5 +195,5 @@
     <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid ?>' />
     <input type='hidden' id='gid' name='gid' value='<?php echo $gid ?>' />
     <input type='hidden' id='qid' name='qid' value='<?php echo $qid ?>' />
-    <p><input type='submit' value='<?php $clang->eT('Save') ?>'/></p>
+    <p><input type='submit' value='<?php eT('Save') ?>'/></p>
     </form>

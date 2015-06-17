@@ -45,13 +45,12 @@ class labels extends Survey_Common_Action
      */
     public function importlabelresources()
     {
-        $clang = $this->getController()->lang;
         $lid = returnGlobal('lid');
 
         if (!empty($lid))
         {
             if (Yii::app()->getConfig('demoMode'))
-                $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
 
             // Create temporary directory
             // If dangerous content is unzipped
@@ -61,11 +60,11 @@ class labels extends Survey_Common_Action
             $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
             $destdir = $basedestdir . "/$lid/";
 
-            Yii::app()->loadLibrary('admin.pclzip.pclzip');
+            Yii::app()->loadLibrary('admin.pclzip');
             $zip = new PclZip($zipfilename);
 
             if (!is_writeable($basedestdir))
-                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
 
             if (!is_dir($destdir))
                 mkdir($destdir);
@@ -76,7 +75,7 @@ class labels extends Survey_Common_Action
             if (is_file($zipfilename))
             {
                 if ($zip->extract($extractdir) <= 0)
-                    $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
 
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
@@ -94,10 +93,10 @@ class labels extends Survey_Common_Action
                 unlink($zipfilename);
 
                 if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
-                    $this->getController()->error($clang->gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                    $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
             else
-                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
 
             $aData = array(
                 'aErrorFilesInfo' => $aErrorFilesInfo,
@@ -117,7 +116,6 @@ class labels extends Survey_Common_Action
      */
     public function import()
     {
-        $clang = $this->getController()->lang;
         $action = returnGlobal('action');
         $aViewUrls = array();
 
@@ -130,18 +128,16 @@ class labels extends Survey_Common_Action
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : '';
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')));
+                $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')));
 
             $options['checkforduplicates'] = 'off';
             if (isset($_POST['checkforduplicates']))
                 $options['checkforduplicates'] = $_POST['checkforduplicates'];
 
-            if (strtolower($sExtension) == 'csv')
-                $aImportResults = CSVImportLabelset($sFullFilepath, $options);
-            elseif (strtolower($sExtension) == 'lsl')
+            if (strtolower($sExtension) == 'lsl')
                 $aImportResults = XMLImportLabelsets($sFullFilepath, $options);
             else
-                $this->getController()->error($clang->gT("Uploaded label set file needs to have an .lsl extension."));
+                $this->getController()->error(gT("Uploaded label set file needs to have an .lsl extension."));
 
             unlink($sFullFilepath);
 
@@ -163,7 +159,6 @@ class labels extends Survey_Common_Action
     {
         Yii::app()->loadHelper('surveytranslator');
 
-        $clang = $this->getController()->lang;
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
@@ -189,10 +184,10 @@ class labels extends Survey_Common_Action
             if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','create'))
             {
                 $langids = Yii::app()->session['adminlang'];
-                $tabitem = $clang->gT("Create new label set");
+                $tabitem = gT("Create new label set");
             }
             else
-                $tabitem = $clang->gT("Edit label set");
+                $tabitem = gT("Edit label set");
 
             $langidsarray = explode(" ", trim($langids)); // Make an array of it
 
@@ -229,7 +224,6 @@ class labels extends Survey_Common_Action
         Yii::app()->session['FileManagerContext'] = "edit:label:{$lid}";
 
         // Gets the current language
-        $clang = $this->getController()->lang;
         $action = 'labels';
         $aViewUrls = array();
         $aData = array();
@@ -250,7 +244,6 @@ class labels extends Survey_Common_Action
             {
                 // Now recieve all labelset information and display it
                 $aData['lid'] = $lid;
-                $aData['clang'] = $clang;
                 $aData['row'] = $result->attributes;
 
                 // Display a specific labelbar menu
@@ -299,7 +292,6 @@ class labels extends Survey_Common_Action
                 $aViewUrls['labelview_view'][] = array(
                     'results' => $results,
                     'lslanguages' => $lslanguages,
-                    'clang' => $clang,
                     'lid' => $lid,
                     'maxsortorder' => $maxsortorder,
                 //    'msorow' => $maxresult->sortorder,
@@ -319,37 +311,31 @@ class labels extends Survey_Common_Action
      */
     public function process()
     {
-        if ( Permission::model()->hasGlobalPermission('labelsets','update'))
-        {
-            if (isset($_POST['method']) && get_magic_quotes_gpc())
-                $_POST['method'] = stripslashes($_POST['method']);
-
             $action = returnGlobal('action');
             Yii::app()->loadHelper('admin/label');
             $lid = returnGlobal('lid');
 
-            if ($action == "updateset")
+            if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets','update'))
             {
                 updateset($lid);
-                Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Label set properties sucessfully updated.");
+                Yii::app()->setFlashMessage(gT("Label set properties sucessfully updated."),'success');
             }
-            if ($action == "insertlabelset")
+            if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets','create'))
                 $lid = insertlabelset();
-            if (($action == "modlabelsetanswers") || ($action == "ajaxmodlabelsetanswers"))
+            if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets','update'))
                 modlabelsetanswers($lid);
-            if ($action == "deletelabelset")
+            if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets','delete'))
+            {
                 if (deletelabelset($lid))
                 {
-                    Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Label set sucessfully deleted.");
+                    Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."),'success');
                     $lid = 0;
                 }
-
-
+            }
             if ($lid)
                 $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
             else
                 $this->getController()->redirect(array("admin/labels/sa/view"));
-        }
     }
 
     /**
@@ -360,8 +346,11 @@ class labels extends Survey_Common_Action
      */
     public function exportmulti()
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
-        $this->_renderWrappedTemplate('labels', 'exportmulti_view');
+        if (Permission::model()->hasGlobalPermission('labelsets','export'))
+        {
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
+            $this->_renderWrappedTemplate('labels', 'exportmulti_view');
+        }
     }
 
     public function getAllSets()
@@ -372,9 +361,9 @@ class labels extends Survey_Common_Action
 
         foreach($results as $row)
         {
-            $output[$row->lid] = $row->getAttribute('label_name');
+            $output[$row->lid] = flattenText($row->getAttribute('label_name'));
         }
-
+        header('Content-type: application/json');
         echo ls_json_encode($output);
     }
 
@@ -383,6 +372,7 @@ class labels extends Survey_Common_Action
         $lid = Yii::app()->getRequest()->getPost('lid');
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
+        $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues',array());
         //Create new label set
         $language = "";
         foreach ($answers as $lang => $answer) {
@@ -412,6 +402,7 @@ class labels extends Survey_Common_Action
                 $label->title = $ans;
                 $label->sortorder = $key;
                 $label->language = $lang;
+                $label->assessment_value = isset($aAssessmentValues[$key])?$aAssessmentValues[$key]:0;
                 if(!$label->save())
                     $res = 'fail';
             }

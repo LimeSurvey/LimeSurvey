@@ -157,7 +157,6 @@ class User extends LSActiveRecord
         if ($oUser->save())
         {
             return $oUser->uid;
-
         }
         else{
             return false;

@@ -250,7 +250,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 .extra-action{
     float: right;
-    margin-top:-2em;
+    margin: -34px 0.5% 0 0;
 }
 .extra-action p{
     margin: 0
@@ -487,6 +487,7 @@ th.admincell {
 
 .btnaddanswer,
 .btndelanswer,
+.btntogglerelevance,
 .header_statistics img {
     cursor:pointer;
 }
@@ -580,7 +581,7 @@ a.optoutemail {
 .edituser,
 .users,
 .assessmentlist,
-.listsurveys,
+.listtokenattributes,
 .surveysecurity,
 .answertable {
     text-align:center;
@@ -673,7 +674,7 @@ ul.assessmentscope li label:first-child {
     width:80%;
 }
 
-.listsurveys
+.listtokenattributes
 {
     width:70%;
 }
@@ -692,7 +693,7 @@ ul.assessmentscope li label:first-child {
 .edituser th,
 .surveysecurity th,
 .users th,
-.listsurveys th {
+.listtokenattributes th {
     background-color: #D2E0F2;
     font-size:0.8em;
     padding:2px 14px 2px 10px;
@@ -719,7 +720,7 @@ ul.assessmentscope li label:first-child {
 
 .users td,
 .surveysecurity td,
-.listsurveys td {
+.listtokenattributes td {
     font-size:0.8em;
     padding:2px 6px;
 }
@@ -741,8 +742,8 @@ ul.assessmentscope li label:first-child {
 
 .answertable th {
     font-weight:bold;
-    font-size: 0.8em;font-size: 0.8rem;
-    padding:3px;
+    font-size: 0.8em;font-size: 0.8em;
+    padding:3px 3px 3px 1px;
 }
 
 .answertable tr {
@@ -917,6 +918,7 @@ table.statisticstable, table.statisticssummary {
     border-style: none;
     margin: 0 auto;
     margin-bottom:20px;
+    min-width:270px;
 }
 
 .statisticssummary thead th
@@ -1249,6 +1251,10 @@ textarea.updater-changelog {
     padding-bottom:7px;
 }
 
+#frmeditquestion li label {
+    display: inline-block;
+}
+
 #forgotpassword input#user, #forgotpassword input#email
 {
     width:18em;
@@ -1429,48 +1435,6 @@ div.right {
     width:210px;
 }
 
-.limebutton
-{
-  display: inline-block;
-  *display: inline;
-  padding: 0.3em 1em;;padding: 0.3rem 1rem;
-  text-align: center;
-  vertical-align: middle;
-/*  font-weight:bold;*/
-  cursor: pointer;
-  border: 1px solid #bbbbbb;
-  *border: 0;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  *zoom: 1;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-.limebutton
-{
-  border-color: #79B7E7;
-  border-color: rgba(121, 183, 231, 0.3) rgba(121, 183, 231, 0.3) rgba(121, 183, 231, 0.5);
-  color: #1D5987;
-  background-color: #dfeffc;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dfeffc), to(#c8e4fa));
-  background-image: -webkit-linear-gradient(top, #dfeffc, #c8e4fa);
-  background-image: -o-linear-gradient(top, #dfeffc, #c8e4fa);
-  background-image: linear-gradient(to bottom, #dfeffc, #c8e4fa);
-  background-image: -moz-linear-gradient(top, #dfeffc, #c8e4fa);
-  background-repeat: repeat-x;
-  border-color: #79B7E7 #79B7E7 #5f8eb3;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffdfeffc', endColorstr='#ffc8e4fa', GradientType=0);
-  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
-}
-.limebutton:focus,.limebutton:hover,.limebutton:active
-{
-  background-position:0 -15px;
-  color: #444;
-  background-color: #c8e4fa;
-}
 #emailtemplates .ui-tabs-panel .limebutton {
     margin: 3px 20% 10px 30.5%;
 }
@@ -1517,6 +1481,15 @@ thead th
 .userpermissions th,
 .usersurveypermissions th{
     padding:0 2em;
+}
+.userpermissions td,
+.usersurveypermissions td {
+    padding: 0.2em 0.5em;
+    text-align:center;
+}
+.userpermissions input[type="checkbox"],
+.usersurveypermissions [type="checkbox"] {
+	margin: 0;
 }
 
 #responsedetail td{
@@ -1639,9 +1612,25 @@ ol.organizer {
 .labelsets-update label{
     display:block
 }
+
 .button-list{
     text-align:left
 }
+
+.button-list button{
+	margin-bottom: 0.5em;
+	padding: 0;
+}
+
+#saveaslabel p {
+	padding: 0;
+    text-align:left
+}
+
+#saveaslabel p.label-name-wrapper {
+	margin-top: -10px;
+}
+
 #gbox_displaysurveys{
     margin:0 auto;
 }
@@ -1779,4 +1768,80 @@ td.LEMerror  {
 .highlighterror {
 	border: 2px solid #FF00FF;
 	color: red;
+}
+
+#cquestions {
+    width: auto !important;
+    max-width: 95%;
+    font-family: Verdana; 
+    background-color: #FFFFFF; 
+    font-size:10; 
+    border: 0px;
+}
+
+#cquestions optgroup{
+    font-weight:bold;
+}
+
+/* Edit answer and sub-question action buttons */
+
+.ui-tabs .action-buttons {
+	margin: 1em 0 0 0;
+	text-align: center;
+}
+
+.ui-tabs .action-buttons button {
+	margin: 0 0.5em;
+	padding: 0;
+}
+
+/* Data consistency & redundancy  check */
+
+.messagebox.data-integrity .hint {
+	line-height: 1em;
+}
+
+.messagebox.data-integrity .hint.warning {
+    color: #EE0000;
+}
+
+.messagebox.data-integrity.consistency {
+	padding-bottom: 1.1em;
+}
+
+.messagebox.data-integrity.consistency input[type="submit"] {
+	margin: 0.8em 0 0 0;
+}
+
+.data-consistency-list {
+	margin: 0.4em 0.8em 0 2.8em;
+}
+
+.data-redundancy-list {
+	margin-right: 0.8em;
+}
+
+.data-redundancy-list > li {
+	padding-top: 0.4em;
+}
+
+.data-redundancy-list ul {
+	margin: 0 0 0.8em 1.1em;
+}
+
+.data-redundancy-list ul li {
+	display: table-row;
+}
+
+.data-redundancy-list ul input,
+.data-redundancy-list ul label {
+	display: table-cell;
+}
+
+.data-redundancy-list input[type="checkbox"] {
+	margin-top: 0.15em;
+}
+
+.data-redundancy-list ul label {
+	padding-left: 0.4em;
 }

@@ -1,8 +1,16 @@
 // $Id: surveysettings.js 9757 2011-02-09 20:52:33Z c_schmitz $
-
+$(document).on('click',"[data-copy] :submit",function(){
+    $("form :input[value='"+$(this).val()+"']").click();
+});
+$(document).on('submit',"#addnewsurvey",function(){
+    $('#addnewsurvey').attr('action',$('#addnewsurvey').attr('action')+location.hash);// Maybe validate before ?
+});
 $(document).ready(function(){
-    $("#template").change(templatechange);
-    $("#template").keyup(templatechange);
+
+    $("[data-copy]").each(function(){
+        $(this).html($("#"+$(this).data('copy')).html());
+    });
+
     $("#copysurveyform").submit(copysurvey);
     $("#urlparams").jqGrid({ url:jsonUrl,
         datatype: "json",
@@ -15,6 +23,7 @@ $(document).ready(function(){
                    {name:'targetsqid',index:'targetsqid', hidden:true},
                    {name:'title',index:'title', width:400}
                    ],
+        direction: $('html').attr('dir'),
         sortname: 'parameter',
         pager: '#pagerurlparams',
         loadonce: true,
@@ -22,6 +31,7 @@ $(document).ready(function(){
         pginput: false,
         pgbuttons: false,
         viewrecords: true,
+        rowNum: 100,
         sortorder: "asc",
         editurl: jsonUrl, // this is dummy existing url
         emptyrecords : sNoParametersDefined,
@@ -52,8 +62,8 @@ $(document).ready(function(){
 
     $('#btnSaveParams').click(saveParameter);
     $('#addnewsurvey').submit(PostParameterGrid);
-    $( "#tabs" ).bind( "tabsselect", function(event, ui) {
-        if (ui.index>4)    // Hide on import and copy tab, otherwise show
+    $( "#tabs" ).bind( "tabsactivate", function(event, ui) {
+        if (ui.newTab.index()>4)    // Hide on import and copy tab, otherwise show
         {$('#btnSave').hide();}
         else
         {$('#btnSave').show();}
@@ -68,7 +78,7 @@ function PostParameterGrid()
     if (($('#allowregister').val()=='Y' || $.trim($('#emailresponseto').val())!='' || $.trim($('#emailnotificationto').val())!='')&& $.trim($('#adminemail').val())=='')
     {
         alert (sAdminEmailAddressNeeded);
-        $("#tabs").tabs("select", 0); 
+        $("#tabs").tabs("select", 0);
          $('#adminemail').focus();
         return false;
     }
@@ -129,16 +139,16 @@ function editParameter(rowid)
     $("#dlgEditParameter").dialog("open");
 }
 
-function templatechange()
+function templatechange(template)
 {
     standardtemplates=['basic','bluengrey','business_grey','citronade','clear_logo','default','eirenicon','limespired','mint_idea','sherpa','vallendar'];
-    if (in_array(this.value,standardtemplates))
+    if (in_array(template,standardtemplates))
     {
-        $("#preview").attr('src',standardtemplaterooturl+'/'+this.value+'/preview.png');
+        $("#preview").attr('src',standardtemplaterooturl+'/'+template+'/preview.png');
     }
     else
     {
-    $("#preview").attr('src',templaterooturl+'/'+this.value+'/preview.png');
+    $("#preview").attr('src',templaterooturl+'/'+template+'/preview.png');
     }
 }
 

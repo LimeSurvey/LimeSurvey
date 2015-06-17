@@ -47,6 +47,7 @@ class InstallerController extends CController {
     {
         self::_checkInstallation();
         self::_sessioncontrol();
+        Yii::import('application.helpers.common_helper', true);
 
         switch ($action) {
 
@@ -99,7 +100,7 @@ class InstallerController extends CController {
     */
     function _checkInstallation()
     {
-        if (file_exists(APPPATH . 'config/config.php') && empty($_POST['InstallerConfigForm']))
+        if (file_exists(APPPATH . 'config/config.php') && is_null(Yii::app()->request->getPost('InstallerConfigForm')))
         {
             throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
             exit();
@@ -116,10 +117,7 @@ class InstallerController extends CController {
     {
         if (empty(Yii::app()->session['installerLang']))
             Yii::app()->session['installerLang'] = 'en';
-
-        Yii::import('application.libraries.Limesurvey_lang');
-        $this->lang = new Limesurvey_lang(Yii::app()->session['installerLang']);
-        Yii::app()->setLang($this->lang);
+        Yii::app()->setLanguage(Yii::app()->session['installerLang']);
     }
 
     /**
@@ -128,17 +126,17 @@ class InstallerController extends CController {
     private function stepWelcome()
     {
 
-        if (!empty($_POST['installerLang']))
+        if (!is_null(Yii::app()->request->getPost('installerLang')))
         {
-            Yii::app()->session['installerLang'] = $_POST['installerLang'];
+            Yii::app()->session['installerLang'] = Yii::app()->request->getPost('installerLang');
             $this->redirect(array('installer/license'));
         }
         $this->loadHelper('surveytranslator');
         Yii::app()->session->remove('configFileWritten');
 
-        $aData['clang'] = $clang = $this->lang;
-        $aData['title'] = $clang->gT('Welcome');
-        $aData['descp'] = $clang->gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
+
+        $aData['title'] = gT('Welcome');
+        $aData['descp'] = gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep'] = array('on','off','off','off','off','off');
         $aData['progressValue'] = 10;
 
@@ -162,10 +160,10 @@ class InstallerController extends CController {
     */
     private function stepLicense()
     {
-        $aData['clang'] = $clang = $this->lang;
+
         // $aData array contain all the information required by view.
-        $aData['title'] = $clang->gT('License');
-        $aData['descp'] = $clang->gT('GNU General Public License:');
+        $aData['title'] = gT('License');
+        $aData['descp'] = gT('GNU General Public License:');
         $aData['classesForStep'] = array('off','on','off','off','off','off');
         $aData['progressValue']= 15;
 
@@ -194,11 +192,11 @@ class InstallerController extends CController {
     */
     private function stepPreInstallationCheck()
     {
-        $aData['clang'] = $clang = $this->lang;
+
         $oModel = new InstallerConfigForm();
         //usual data required by view
-        $aData['title'] = $clang->gT('Pre-installation check');
-        $aData['descp'] = $clang->gT('Pre-installation check for LimeSurvey ').Yii::app()->getConfig('versionnumber');
+        $aData['title'] = gT('Pre-installation check');
+        $aData['descp'] = gT('Pre-installation check for LimeSurvey ').Yii::app()->getConfig('versionnumber');
         $aData['classesForStep'] = array('off','off','on','off','off','off');
         $aData['progressValue'] = 20;
         $aData['phpVersion'] = phpversion();
@@ -230,17 +228,24 @@ class InstallerController extends CController {
     {
         $this->loadHelper('surveytranslator');
 
-        $aData['clang'] = $clang = $this->lang;
+
         // usual data required by view
-        $aData['title'] = $clang->gT('Database configuration');
-        $aData['descp'] = $clang->gT('Please enter the database settings you want to use for LimeSurvey:');
+        $aData['title'] = gT('Database configuration');
+        $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
         $aData['classesForStep'] = array('off','off','off','on','off','off');
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm;
-
-        if(isset($_POST['InstallerConfigForm']))
+        if (isset(Yii::app()->session['populateerror']))
         {
-            $oModel->attributes = $_POST['InstallerConfigForm'];
+            $oModel->addError('dblocation',Yii::app()->session['populateerror']);
+            $oModel->addError('dbpwd','');
+            $oModel->addError('dbuser','');
+            unset(Yii::app()->session['populateerror']);
+        }
+
+        if(!is_null(Yii::app()->request->getPost('InstallerConfigForm')))
+        {
+            $oModel->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
             //run validation, if it fails, load the view again else proceed to next step.
             if($oModel->validate()) {
@@ -272,7 +277,7 @@ class InstallerController extends CController {
                     if (self::_dbConnect($aDbConfig, array())) {
                         $bDBConnectionWorks = true;
                     } else {
-                        $oModel->addError('dblocation', $clang->gT('Connection with database failed. Please check database location, user name and password and try again.'));
+                        $oModel->addError('dblocation', gT('Connection with database failed. Please check database location, user name and password and try again.'));
                         $oModel->addError('dbpwd','');
                         $oModel->addError('dbuser','');
                     }
@@ -310,7 +315,7 @@ class InstallerController extends CController {
                     // If database is up to date, redirect to administration screen.
                     if ($bDBExists && !$bTablesDoNotExist)
                     {
-                        Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT('The database you specified does already exist.'));
+                        Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT('The database you specified does already exist.'));
                         Yii::app()->session['step3'] = true;
 
                         //wrte config file! as we no longer redirect to optional view
@@ -318,7 +323,7 @@ class InstallerController extends CController {
 
                         //$this->redirect(array("installer/loadOptView"));
                         header("refresh:5;url=".$this->createUrl("/admin"));
-                        echo sprintf( $clang->gT('The database does exists and contains LimeSurvey tables. You\'ll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
+                        echo sprintf( gT('The database does exists and contains LimeSurvey tables. You\'ll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click <a href="%s">here</a>.', 'unescaped'), $this->createUrl("/admin"));
                         exit();
                     }
 
@@ -343,8 +348,8 @@ class InstallerController extends CController {
                     }
 
                     //$aData array won't work here. changing the name
-                    $aValues['title'] = $clang->gT('Database settings');
-                    $aValues['descp'] = $clang->gT('Database settings');
+                    $aValues['title'] = gT('Database settings');
+                    $aValues['descp'] = gT('Database settings');
                     $aValues['classesForStep'] = array('off','off','off','off','on','off');
                     $aValues['progressValue'] = 60;
 
@@ -359,28 +364,28 @@ class InstallerController extends CController {
                         Yii::app()->session['databaseDontExist'] = true;
 
                         $aValues['adminoutputText'].= "\t<tr bgcolor='#efefef'><td align='center'>\n"
-                        ."<strong>".$clang->gT("Database doesn't exist!")."</strong><br /><br />\n"
-                        .$clang->gT("The database you specified does not exist:")."<br /><br />\n<strong>".$oModel->dbname."</strong><br /><br />\n"
-                        .$clang->gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n";
+                        ."<strong>".gT("Database doesn't exist!")."</strong><br /><br />\n"
+                        .gT("The database you specified does not exist:")."<br /><br />\n<strong>".$oModel->dbname."</strong><br /><br />\n"
+                        .gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n";
 
                         $aValues['next'] =  array(
                             'action' => 'installer/createdb',
-                            'label' => 'Create database',
+                            'label' => gT('Create database'),
                             'name' => '',
                         );
                     }
-                    elseif ($bDBExistsButEmpty) //&& !(returnGlobal('createdbstep2')==$clang->gT("Populate database")))
+                    elseif ($bDBExistsButEmpty) //&& !(returnGlobal('createdbstep2')==gT("Populate database")))
                     {
                         Yii::app()->session['populatedatabase'] = true;
 
                         //$this->connection->database = $model->dbname;
                         //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
-                        $aValues['adminoutputText'].= sprintf($clang->gT('A database named "%s" already exists.'),$oModel->dbname)."<br /><br />\n"
-                        .$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
+                        $aValues['adminoutputText'].= sprintf(gT('A database named "%s" already exists.'),$oModel->dbname)."<br /><br />\n"
+                        .gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
                         $aValues['next'] =  array(
                             'action' => 'installer/populatedb',
-                            'label' => 'Populate database',
+                            'label' => gT("Populate database"),
                             'name' => 'createdbstep2',
                         );
                     }
@@ -391,11 +396,10 @@ class InstallerController extends CController {
                         //$this->connection->createCommand("USE DATABASE `$databasename`")->execute();
                         /* @todo Implement Upgrade */
                         //$output=CheckForDBUpgrades();
-                        if ($output== '') {$aValues['adminoutput'].='<br />'.$clang->gT('LimeSurvey database is up to date. No action needed');}
+                        if ($output== '') {$aValues['adminoutput'].='<br />'.gT('LimeSurvey database is up to date. No action needed');}
                         else {$aValues['adminoutput'].=$output;}
-                        $aValues['adminoutput'].= "<br />" . sprintf($clang->gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
+                        $aValues['adminoutput'].= "<br />" . sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
                     }
-                    $aValues['clang'] = $clang;
                     $this->render('/installer/dbsettings_view', $aValues);
                 } else {
                     $this->render('/installer/dbconfig_view', $aData);
@@ -415,15 +419,15 @@ class InstallerController extends CController {
     */
     function stepCreateDb()
     {
-        // check status. to be called only when database don't exist else rdirect to proper link.
+        // check status. to be called only when database don't exist else redirect to proper link.
         if(!Yii::app()->session['databaseDontExist']) {
             $this->redirect(array('installer/welcome'));
         }
 
-        $aData['clang'] = $clang = $this->lang;
+
         $aData['model'] = $model = new InstallerConfigForm;
-        $aData['title'] = $clang->gT("Database configuration");
-        $aData['descp'] = $clang->gT("Please enter the database settings you want to use for LimeSurvey:");
+        $aData['title'] = gT("Database configuration");
+        $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
         $aData['classesForStep'] = array('off','off','off','on','off','off');
         $aData['progressValue'] = 40;
 
@@ -461,7 +465,7 @@ class InstallerController extends CController {
                 $bCreateDB=false;
             }
             break;
-            case 'postgres':
+            case 'pgsql':
             try
             {
                 $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
@@ -495,22 +499,36 @@ class InstallerController extends CController {
 
             $aData['adminoutputText'] = "<tr bgcolor='#efefef'><td colspan='2' align='center'> <br />"
             ."<strong><font class='successtitle'>\n"
-            .$clang->gT("Database has been created.")."</font></strong><br /><br />\n"
-            .$clang->gT("Please continue with populating the database.")."<br /><br />\n";
+            .gT("Database has been created.")."</font></strong><br /><br />\n"
+            .gT("Please continue with populating the database.")."<br /><br />\n";
             $aData['next'] =  array(
                 'action' => 'installer/populatedb',
-                'label' => 'Populate database',
+                'label' => gT("Populate database"),
                 'name' => 'createdbstep2',
             );
         }
         else
         {
-            $model->addError('dblocation', $clang->gT('Try again! Connection with database failed.'));
+            $this->loadHelper('surveytranslator');
+            $oModel = new InstallerConfigForm;
+            $oModel->dbtype=$aDbConfig['sDatabaseType'];
+            $oModel->dblocation=$aDbConfig['sDatabaseLocation'];
+            $oModel->dbuser=$aDbConfig['sDatabaseUser'];
+            //$oModel->dbpwd$aDbConfig['sDatabasePwd']; Don't set password for security issue
+            $oModel->dbprefix=$aDbConfig['sDatabasePrefix'];
+            $oModel->addError('dbname', gT('Try again! Creation of database failed.'));
+
+            $aData['title'] = gT('Database configuration');
+            $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
+            $aData['classesForStep'] = array('off','off','off','on','off','off');
+            $aData['progressValue'] = 40;
+            $aData['model'] = $oModel;
+
             $this->render('/installer/dbconfig_view',$aData);
         }
 
-        $aData['title'] = $clang->gT("Database settings");
-        $aData['descp'] = $clang->gT("Database settings");
+        $aData['title'] = gT("Database settings");
+        $aData['descp'] = gT("Database settings");
         $aData['classesForStep'] = array('off','off','off','off','on','off');
         $aData['progressValue'] = 60;
         $this->render('/installer/dbsettings_view',$aData);
@@ -528,10 +546,10 @@ class InstallerController extends CController {
             $this->redirect(array('installer/welcome'));
         }
 
-        $aData['clang'] = $clang = $this->lang;
+
         $aData['model'] = $model = new InstallerConfigForm;
-        $aData['title'] = $clang->gT("Database configuration");
-        $aData['descp'] = $clang->gT("Please enter the database settings you want to use for LimeSurvey:");
+        $aData['title'] = gT("Database configuration");
+        $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
         $aData['classesForStep'] = array('off','off','off','on','off','off');
         $aData['progressValue'] = 40;
 
@@ -547,7 +565,7 @@ class InstallerController extends CController {
             case 'mysql':
                 $sql_file = 'mysql';
                 break;
-            case 'dblib': 
+            case 'dblib':
             case 'sqlsrv':
             case 'mssql':
                 $sql_file = 'mssql';
@@ -556,14 +574,14 @@ class InstallerController extends CController {
                 $sql_file = 'pgsql';
                 break;
             default:
-                throw new Exception(sprintf('Unkown database type "%s".', $sDatabaseType));
+                throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
 
         //checking DB Connection
         $aErrors = self::_setup_tables(dirname(APPPATH).'/installer/sql/create-'.$sql_file.'.sql');
         if ($aErrors === false)
         {
-            $model->addError('dblocation', $clang->gT('Try again! Connection with database failed. Reason: ').implode(', ', $aErrors));
+            $model->addError('dblocation', gT('Try again! Connection with database failed. Reason: ').implode(', ', $aErrors));
             $this->render('/installer/dbconfig_view', $aData);
         }
         elseif (count($aErrors)==0)
@@ -571,16 +589,19 @@ class InstallerController extends CController {
             //$data1['adminoutput'] = '';
             //$data1['adminoutput'] .= sprintf("Database `%s` has been successfully populated.",$dbname)."</font></strong></font><br /><br />\n";
             //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
-            $sConfirmation = sprintf($clang->gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
+            $sConfirmation = sprintf(gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
         }
         else
         {
-            $sConfirmation = $clang->gT('Database was populated but there were errors:').'<p><ul>';
+            $sConfirmation = gT('There were errors when trying to populate the database:').'<p><ul>';
             foreach ($aErrors as $sError)
             {
                 $sConfirmation.='<li>'.htmlspecialchars($sError).'</li>';
             }
             $sConfirmation.='</ul>';
+            Yii::app()->session['populateerror']=$sConfirmation;
+
+            $this->redirect(array('installer/database'));
         }
 
         Yii::app()->session['tablesexist'] = true;
@@ -596,31 +617,36 @@ class InstallerController extends CController {
     */
     private function stepOptionalConfiguration()
     {
-        $aData['clang'] = $clang = $this->lang;
+
         $aData['confirmation'] = Yii::app()->session['optconfig_message'];
-        $aData['title'] = $clang->gT("Optional settings");
-        $aData['descp'] = $clang->gT("Optional settings to give you a head start");
+        $aData['title'] = gT("Optional settings");
+        $aData['descp'] = gT("Optional settings to give you a head start");
         $aData['classesForStep'] = array('off','off','off','off','off','on');
         $aData['progressValue'] = 80;
-
         $this->loadHelper('surveytranslator');
         $aData['model'] = $model = new InstallerConfigForm('optional');
-
-        if(isset($_POST['InstallerConfigForm']))
+        // Backup the default, needed only for $sDefaultAdminPassword
+        $sDefaultAdminUserName = $model->adminLoginName;
+        $sDefaultAdminPassword = $model->adminLoginPwd;
+        $sDefaultAdminRealName = $model->adminName;
+        $sDefaultSiteName = $model->siteName;
+        $sDefaultSiteLanguage = $model->surveylang;
+        $sDefaultAdminEmail = $model->adminEmail;
+        if(!is_null(Yii::app()->request->getPost('InstallerConfigForm')))
         {
-            $model->attributes = $_POST['InstallerConfigForm'];
+            $model->attributes = Yii::app()->request->getPost('InstallerConfigForm');
 
             //run validation, if it fails, load the view again else proceed to next step.
             if($model->validate()) {
-                $sDefaultAdminUserName = $model->adminLoginName;
-                $sDefaultAdminPassword = $model->adminLoginPwd;
-                $sDefaultAdminRealName = $model->adminName;
-                $sDefaultSiteName = $model->siteName;
-                $sDefaultSiteLanguage = $model->surveylang;
-                $sDefaultAdminEmail = $model->adminEmail;                
+                $sAdminUserName = $model->adminLoginName;
+                $sAdminPassword = $model->adminLoginPwd;
+                $sAdminRealName = $model->adminName;
+                $sSiteName = $model->siteName;
+                $sSiteLanguage = $model->surveylang;
+                $sAdminEmail = $model->adminEmail;
 
-                $aData['title'] = $clang->gT("Database configuration");
-                $aData['descp'] = $clang->gT("Please enter the database settings you want to use for LimeSurvey:");
+                $aData['title'] = gT("Database configuration");
+                $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
                 $aData['classesForStep'] = array('off','off','off','on','off','off');
                 $aData['progressValue'] = 40;
 
@@ -629,16 +655,24 @@ class InstallerController extends CController {
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
-                    $sPasswordHash=hash('sha256', $sDefaultAdminPassword);
+                    $sPasswordHash=hash('sha256', $sAdminPassword);
                     try {
+
+                        if (User::model()->count()>0){
+                            die();
+                        }
                         // Save user
                         $user=new User;
-                        $user->users_name=$sDefaultAdminUserName;
+                        // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
+                        if (in_array($this->connection->getDriverName(), array('mysql', 'mysqli'))) {
+                            $user->uid=1;
+                        }
+                        $user->users_name=$sAdminUserName;
                         $user->password=$sPasswordHash;
-                        $user->full_name=$sDefaultAdminRealName;
+                        $user->full_name=$sAdminRealName;
                         $user->parent_id=0;
-                        $user->lang=$sDefaultSiteLanguage;
-                        $user->email=$sDefaultAdminEmail;
+                        $user->lang=$sSiteLanguage;
+                        $user->email=$sAdminEmail;
                         $user->save();
                         // Save permissions
                         $permission=new Permission;
@@ -650,11 +684,11 @@ class InstallerController extends CController {
                         $permission->save();
                         // Save  global settings
                         $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => self::_getRandomString()));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sDefaultSiteName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sDefaultAdminRealName));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sDefaultAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sDefaultAdminEmail));
-                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sDefaultSiteLanguage));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
+                        $this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
                         // only continue if we're error free otherwise setup is broken.
                     } catch (Exception $e) {
                         throw new Exception(sprintf('Could not add optional settings: %s.', $e));
@@ -662,19 +696,23 @@ class InstallerController extends CController {
 
                     Yii::app()->session['deletedirectories'] = true;
 
-                    $aData['title'] = $clang->gT("Success!");
-                    $aData['descp'] = $clang->gT("LimeSurvey has been installed successfully.");
+                    $aData['title'] = gT("Success!");
+                    $aData['descp'] = gT("LimeSurvey has been installed successfully.");
                     $aData['classesForStep'] = array('off','off','off','off','off','off');
                     $aData['progressValue'] = 100;
-                    $aData['user'] = $sDefaultAdminUserName;
-                    $aData['pwd'] = $sDefaultAdminPassword;
+                    $aData['user'] = $sAdminUserName;
+                    if($sDefaultAdminPassword==$sAdminPassword){
+                        $aData['pwd'] = $sAdminPassword;
+                    }else{
+                        $aData['pwd'] = gT("The password you have chosen at the optional settings step.");
+                    }
 
                     $this->render('/installer/success_view', $aData);
                     return;
                 }
             } else {
                 // if passwords don't match, redirect to proper link.
-                Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT("Passwords don't match."));
+                Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', gT("Passwords don't match."));
                 $this->redirect(array('installer/optional'));
             }
         } elseif(empty(Yii::app()->session['configFileWritten'])) {
@@ -832,13 +870,13 @@ class InstallerController extends CController {
         }
 
         //  version check
-        if (version_compare(PHP_VERSION, '5.1.6', '<'))
+        if (version_compare(PHP_VERSION, '5.3.0', '<'))
             $bProceed = !$aData['verror'] = true;
 
-        if ($this->return_bytes(ini_get('memory_limit'))/1024/1024<64)
+        if (convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024<64 && ini_get('memory_limit')!=-1)
             $bProceed = !$aData['bMemoryError'] = true;
-        
-            
+
+
         // mbstring library check
         if (!check_PHPFunction('mb_convert_encoding', $aData['mbstringPresent']))
             $bProceed = false;
@@ -904,16 +942,15 @@ class InstallerController extends CController {
     function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
     {
         extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
-        switch ($sDatabaseType) {
-            case 'mysql':
-            case 'mysqli':
-                $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
-                break;
-            case 'pgsql':
-                if (version_compare($this->connection->getServerVersion(),'9','>=')) {
-                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." SET bytea_output='escape';")->execute();
-                }
-                break;
+        try{
+            switch ($sDatabaseType) {
+                case 'mysql':
+                case 'mysqli':
+                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
+                    break;
+            }
+        } catch(Exception $e) {
+            return array($e->getMessage());
         }
 
         return $this->_executeSQLFile($sFileName, $sDatabasePrefix);
@@ -965,7 +1002,7 @@ class InstallerController extends CController {
     */
     function _writeConfigFile()
     {
-        $aData['clang'] = $clang = $this->lang;
+
         //write config.php if database exists and has been populated.
         if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist'])
         {
@@ -1041,8 +1078,8 @@ class InstallerController extends CController {
                 $sConfig .="\t\t\t" . "'emulatePrepare' => true,"    . "\n";
 
             }
-            $sConfig .="\t\t\t" . "'username' => '".addslashes($sDatabaseUser)."',"  . "\n"
-            ."\t\t\t" . "'password' => '".addslashes($sDatabasePwd)."',"            . "\n"
+            $sConfig .="\t\t\t" . "'username' => '".addcslashes ($sDatabaseUser,"'")."',"  . "\n"
+            ."\t\t\t" . "'password' => '".addcslashes ($sDatabasePwd,"'")."',"            . "\n"
             ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
             ."\t\t\t" . "'tablePrefix' => '$sDatabasePrefix',"      . "\n";
 
@@ -1052,7 +1089,7 @@ class InstallerController extends CController {
 
             $sConfig .="\t\t" . "),"                                          . "\n"
             ."\t\t"   . ""                                          . "\n"
-                    
+
             ."\t\t"   . "// Uncomment the following line if you need table-based sessions". "\n"
             ."\t\t"   . "// 'session' => array ("                      . "\n"
             ."\t\t\t" . "// 'class' => 'system.web.CDbHttpSession',"   . "\n"
@@ -1098,8 +1135,8 @@ class InstallerController extends CController {
                 $oUrlManager->setUrlFormat($sURLFormat);
             } else {
                 header('refresh:5;url='.$this->createUrl("installer/welcome"));
-                echo "<b>".$clang->gT("Configuration directory is not writable")."</b><br/>";
-                printf($clang->gT('You will be redirected in about 5 secs. If not, click <a href="%s">here</a>.' ,'unescaped'), $this->createUrl('installer/welcome'));
+                echo "<b>".gT("Configuration directory is not writable")."</b><br/>";
+                printf(gT('You will be redirected in about 5 secs. If not, click <a href="%s">here</a>.' ,'unescaped'), $this->createUrl('installer/welcome'));
                 exit;
             }
         }
@@ -1133,7 +1170,7 @@ class InstallerController extends CController {
             case 'mysql':
             case 'mysqli':
                 // MySQL allow unix_socket for database location, then test if $sDatabaseLocation start with "/"
-                if(substr($sDatabaseLocation,0,1)=="/") 
+                if(substr($sDatabaseLocation,0,1)=="/")
                     $sDSN = "mysql:unix_socket={$sDatabaseLocation};dbname={$sDatabaseName};";
                 else
                     $sDSN = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
@@ -1153,7 +1190,7 @@ class InstallerController extends CController {
                 }
                 break;
 
-            case 'dblib' : 
+            case 'dblib' :
                 $sDSN = $sDatabaseType.":host={$sDatabaseLocation};dbname={$sDatabaseName}";
                 break;
             case 'mssql' :
@@ -1238,33 +1275,12 @@ class InstallerController extends CController {
             return true;
         } catch(Exception $e) {
             if (!empty($aData['model']) && !empty($aData['clang'])) {
-                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->message);
+                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->getMessage());
                 $this->render('/installer/dbconfig_view', $aData);
             } else {
                 return false;
             }
         }
     }
-    
-    /**
-    * This function returns the full number from a PHP ini value
-    * 
-    * @param string $sValue
-    */
-    function return_bytes($sValue) {
-        $sValue = trim($sValue);
-        $sLast = strtolower($sValue[strlen($sValue)-1]);
-        switch($sLast) {
-            // The 'G' modifier is available since PHP 5.1.0
-            case 'g':
-                $sValue *= 1024;
-            case 'm':
-                $sValue *= 1024;
-            case 'k':
-                $sValue *= 1024;
-        }
-
-        return $sValue;
-    }    
 
 }

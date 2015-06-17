@@ -59,94 +59,96 @@ else
 ?>
 <script type="text/javascript">
     /* Search form titles */
-    var sLoadText = '<?php $clang->eT("Loading...",'js');?>';
-    var sAddCaption = "<?php $clang->eT("Add participant", 'js') ?>";
-    var sAddButtonCaption = "<?php $clang->eT("Add", 'js') ?>";
-    var sDeleteButtonCaption = "<?php $clang->eT("Delete", 'js') ?>";
-    var sCancel = "<?php $clang->eT("Cancel", 'js') ?>";
-    var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
-    var selectTxt="<?php $clang->eT("Select...") ?>";
-    var emailTxt="<?php $clang->eT("Email") ?>";
-    var firstnameTxt="<?php $clang->eT("First name") ?>";
-    var lastnameTxt="<?php $clang->eT("Last name") ?>";
-    var blacklistedTxt="<?php $clang->eT("Blacklisted") ?>";
-    var surveysTxt="<?php $clang->eT("Survey links") ?>";
-    var surveyTxt="<?php $clang->eT("Survey name") ?>";
-    var languageTxt="<?php $clang->eT("Language") ?>";
-    var owneridTxt="<?php $clang->eT("Owner ID") ?>";
-    var ownernameTxt="<?php $clang->eT("Owner name") ?>";
-    var equalsTxt="<?php $clang->eT("Equals") ?>";
-    var containsTxt="<?php $clang->eT("Contains") ?>";
-    var notequalTxt="<?php $clang->eT("Not equal") ?>";
-    var notcontainsTxt="<?php $clang->eT("Does not contain") ?>";
-    var greaterthanTxt="<?php $clang->eT("Greater than") ?>";
-    var lessthanTxt="<?php $clang->eT("Less than") ?>";
-    var beginswithTxt="<?php $clang->eT("Begins with") ?>";
-    var andTxt="<?php $clang->eT("AND") ?>";
-    var orTxt="<?php $clang->eT("OR") ?>";
+    var sLoadText = '<?php eT("Loading...",'js');?>';
+    var sAddCaption = "<?php eT("Add participant", 'js') ?>";
+    var sAddButtonCaption = "<?php eT("Add", 'js') ?>";
+    var sDeleteButtonCaption = "<?php eT("Delete", 'js') ?>";
+    var sDeleteDialogCaption = "<?php eT("Delete one or more participants...", 'js') ?>";
+    var sCancel = "<?php eT("Cancel", 'js') ?>";
+    var sSubmit = "<?php eT("Save", 'js') ?>";
+    var fullSearchTitle = "<?php eT("Full search"); ?>";
+    var selectTxt="<?php eT("Select...") ?>";
+    var emailTxt="<?php eT("Email") ?>";
+    var firstnameTxt="<?php eT("First name") ?>";
+    var lastnameTxt="<?php eT("Last name") ?>";
+    var blacklistedTxt="<?php eT("Blacklisted") ?>";
+    var surveysTxt="<?php eT("Survey links") ?>";
+    var surveyTxt="<?php eT("Survey name") ?>";
+    var languageTxt="<?php eT("Language") ?>";
+    var owneridTxt="<?php eT("Owner ID") ?>";
+    var ownernameTxt="<?php eT("Owner name") ?>";
+    var equalsTxt="<?php eT("Equals") ?>";
+    var containsTxt="<?php eT("Contains") ?>";
+    var notequalTxt="<?php eT("Not equal") ?>";
+    var notcontainsTxt="<?php eT("Does not contain") ?>";
+    var greaterthanTxt="<?php eT("Greater than") ?>";
+    var lessthanTxt="<?php eT("Less than") ?>";
+    var beginswithTxt="<?php eT("Begins with") ?>";
+    var andTxt="<?php eT("AND") ?>";
+    var orTxt="<?php eT("OR") ?>";
     /* End search form titles */
 
     /* Colnames and heading for survey links subgrid */
-    var linksHeadingTxt="<?php $clang->eT("Participant's survey information", 'js')?>";
-    var surveyNameColTxt="<?php $clang->eT("Survey name", 'js')?>";
-    var surveyIdColTxt="<?php $clang->eT("Survey ID", 'js') ?>";
-    var tokenIdColTxt="<?php $clang->eT("Token ID", 'js') ?>";
-    var dateAddedColTxt="<?php $clang->eT("Date added", 'js') ?>";
-    var dateInvitedColTxt="<?php $clang->eT("Last invited", 'js') ?>";
-    var dateCompletedColTxt="<?php $clang->eT("Submitted", 'js') ?>";
+    var linksHeadingTxt="<?php eT("Participant's survey information", 'js')?>";
+    var surveyNameColTxt="<?php eT("Survey name", 'js')?>";
+    var surveyIdColTxt="<?php eT("Survey ID", 'js') ?>";
+    var tokenIdColTxt="<?php eT("Token ID", 'js') ?>";
+    var dateAddedColTxt="<?php eT("Date added", 'js') ?>";
+    var dateInvitedColTxt="<?php eT("Last invited", 'js') ?>";
+    var dateCompletedColTxt="<?php eT("Submitted", 'js') ?>";
     var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSurveyInfo_json/pid/"); ?>";
 
     /* Colnames and heading for attributes subgrid */
-    var attributesHeadingTxt="<?php $clang->eT("Participant's attribute information", 'js') ?>";
-    var actionsColTxt="<?php $clang->eT("Actions", 'js') ?>";
-    var participantIdColTxt="<?php $clang->eT("Participant ID", 'js') ?>";
-    var attributeTypeColTxt="<?php $clang->eT("Attribute type", 'js') ?>";
-    var attributeIdColTxt="<?php $clang->eT("Attribute ID", 'js') ?>";
-    var attributeNameColTxt="<?php $clang->eT("Attribute name", 'js') ?>";
-    var attributeValueColTxt="<?php $clang->eT("Attribute value", 'js') ?>";
-    var attributePosValColTxt="<?php $clang->eT("Possible attribute values", 'js') ?>";
-    var addToSurveyTxt="<?php $clang->eT("Add participants to a survey", 'js') ?>";
-    var createParticipantTxt="<?php $clang->eT("Create new participant", 'js') ?>";
-    var deleteParticipantTxt="<?php $clang->eT("Delete selected participants", 'js') ?>";
-    var refreshListTxt="<?php $clang->eT("Refresh list", 'js') ?>";
-    var pageViewTxt= "<?php $clang->eT("Page {0} of {1}", 'js') ?>";
-    var viewRecordTxt= '<?php $clang->eT("View {0} - {1} of {2}",'js');?>';
-    var participantsTxt= '<?php $clang->eT("Participants",'js');?>';
-    var emptyRecordsTxt= "<?php $clang->eT("No participants to view", 'js') ?>";
+    var attributesHeadingTxt="<?php eT("Participant's attribute information", 'js') ?>";
+    var actionsColTxt="<?php eT("Actions", 'js') ?>";
+    var participantIdColTxt="<?php eT("Participant ID", 'js') ?>";
+    var attributeTypeColTxt="<?php eT("Attribute type", 'js') ?>";
+    var attributeIdColTxt="<?php eT("Attribute ID", 'js') ?>";
+    var attributeNameColTxt="<?php eT("Attribute name", 'js') ?>";
+    var attributeValueColTxt="<?php eT("Attribute value", 'js') ?>";
+    var attributePosValColTxt="<?php eT("Possible attribute values", 'js') ?>";
+    var addToSurveyTxt="<?php eT("Add participants to a survey", 'js') ?>";
+    var createParticipantTxt="<?php eT("Create new participant", 'js') ?>";
+    var deleteParticipantTxt="<?php eT("Delete selected participants", 'js') ?>";
+    var refreshListTxt="<?php eT("Refresh list", 'js') ?>";
+    var pageViewTxt= "<?php eT("Page {0} of {1}", 'js') ?>";
+    var viewRecordTxt= '<?php eT("View {0} - {1} of {2}",'js');?>';
+    var participantsTxt= '<?php eT("Participants",'js');?>';
+    var emptyRecordsTxt= "<?php eT("No participants to view", 'js') ?>";
+    var sEditAttributeValueMsg = '<?php eT("Edit attribute value",'js');?>';
 
-    var resetBtn = "<?php $clang->eT("Reset", 'js'); ?>";
-    var exportToCSVTitle = "<?php $clang->eT("Export to CSV", 'js'); ?>";
-    var noSearchResultsTxt = "<?php $clang->eT("Your search returned no results", 'js'); ?>";
-    var accessDeniedTxt = "<?php $clang->eT("Access denied", 'js'); ?>";
-    var closeTxt = "<?php $clang->eT("Close", 'js'); ?>";
-    var spTitle = "<?php $clang->eT("Sharing participants...", 'js'); ?>";
-    var spAddBtn = "<?php $clang->eT("Share the selected participants", 'js'); ?>";
-    var shareParticipantTxt = "<?php $clang->eT("Share participants with other users", 'js') ?>";
-    var sfNoUser = "<?php $clang->eT("No other user in the system", 'js'); ?>";
-    var addpartTitle = "<?php $clang->eT("Add participant to survey", 'js'); ?>";
-    var addAllInViewTxt="<?php $clang->eT("Add all %s participants in your current list to a survey.", 'js'); ?>";
-    var addSelectedItemsTxt="<?php $clang->eT("Add the %s selected participants to a survey.", 'js') ?>";
-    var addpartErrorMsg = "<?php $clang->eT("No surveys are available. Either you don't have permissions to any surveys or none of your surveys have a token table", 'js'); ?>";
-    var mapButton = "<?php $clang->eT("Next", 'js') ?>";
-    var error = "<?php $clang->eT("Error", 'js') ?>";
-    var sWarningMsg = "<?php $clang->eT("Warning", 'js') ?>";
-    var sSelectRowMsg = "<?php $clang->eT("Please select at least one participant.", 'js') ?>";
-    var addsurvey = "<?php $clang->eT("Add participants to survey", 'js') ?>";
-    var exportcsv = "<?php $clang->eT("Export CSV", 'js') ?>";
-    var nooptionselected = "<?php $clang->eT("Please choose either of the options", 'js') ?>";
-    var removecondition = "<?php $clang->eT("Remove condition", 'js') ?>";
-    var selectSurvey = "<?php $clang->eT("You must select a survey from the list", 'js'); ?>";
-    var cancelBtn = "<?php $clang->eT("Cancel", 'js') ?>";
-    var exportBtn = "<?php $clang->eT("Export", 'js') ?>";
-    var okBtn = "<?php $clang->eT("OK", 'js') ?>";
-    var deletefrompanelmsg = "<?php $clang->eT("Select one of the three options", 'js') ?>";
-    var noRowSelected = "<?php $clang->eT("You have no row selected", 'js') ?>";
-    var deletefrompanel = "<?php $clang->eT("Delete participant(s) from central participants panel only", 'js') ?>";
-    var deletefrompanelandtoken = "<?php $clang->eT("Delete participant(s) from central panel and tokens tables", 'js') ?>";
-    var deletefrompaneltokenandresponse = "<?php $clang->eT("Delete participant(s) from central panel, tokens tables and all associated responses", 'js') ?>";
+    var resetBtn = "<?php eT("Reset", 'js'); ?>";
+    var exportToCSVTitle = "<?php eT("Export (filtered) participants to CSV", 'js'); ?>";
+    var noSearchResultsTxt = "<?php eT("Your search returned no results", 'js'); ?>";
+    var accessDeniedTxt = "<?php eT("Access denied", 'js'); ?>";
+    var closeTxt = "<?php eT("Close", 'js'); ?>";
+    var spTitle = "<?php eT("Sharing participants...", 'js'); ?>";
+    var spAddBtn = "<?php eT("Share the selected participants", 'js'); ?>";
+    var shareParticipantTxt = "<?php eT("Share participants with other users", 'js') ?>";
+    var sfNoUser = "<?php eT("No other user in the system", 'js'); ?>";
+    var addpartTitle = "<?php eT("Add participant to survey", 'js'); ?>";
+    var addAllInViewTxt="<?php eT("Add all %s participants in your current list to a survey.", 'js'); ?>";
+    var addSelectedItemsTxt="<?php eT("Add the %s selected participants to a survey.", 'js') ?>";
+    var addpartErrorMsg = "<?php eT("No surveys are available. Either you don't have permissions to any surveys or none of your surveys have a token table", 'js'); ?>";
+    var mapButton = "<?php eT("Next", 'js') ?>";
+    var error = "<?php eT("Error", 'js') ?>";
+    var sWarningMsg = "<?php eT("Warning", 'js') ?>";
+    var sSelectRowMsg = "<?php eT("Please select at least one participant.", 'js') ?>";
+    var addsurvey = "<?php eT("Add participants to survey", 'js') ?>";
+    var exportcsv = "<?php eT("Export CSV", 'js') ?>";
+    var nooptionselected = "<?php eT("Please choose one option.", 'js') ?>";
+    var removecondition = "<?php eT("Remove condition", 'js') ?>";
+    var selectSurvey = "<?php eT("You must select a survey from the list", 'js'); ?>";
+    var cancelBtn = "<?php eT("Cancel", 'js') ?>";
+    var okBtn = "<?php eT("OK", 'js') ?>";
+    var deletefrompanelmsg = "<?php eT("Please choose one option.", 'js') ?>";
+    var noRowSelected = "<?php eT("You have no row selected", 'js') ?>";
+    var deletefrompanel = "<?php eT("Delete participant(s) from central participants panel only", 'js') ?>";
+    var deletefrompanelandtoken = "<?php eT("Delete participant(s) from central panel and tokens tables", 'js') ?>";
+    var deletefrompaneltokenandresponse = "<?php eT("Delete participant(s) from central panel, tokens tables and all associated responses", 'js') ?>";
     var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol>";
-    var searchBtn = "<?php $clang->eT("Search", 'js') ?>";
-    var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participants in share panel.", 'js') ?>"; //PLEASE REVIEW
+    var searchBtn = "<?php eT("Search", 'js') ?>";
+    var shareMsg = "<?php eT("You can see and edit settings for shared participants in share panel.", 'js') ?>"; //PLEASE REVIEW
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/".$urlsearch); ?>";
     var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipantsResults_json"); ?>";
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editParticipant"); ?>";
@@ -156,22 +158,22 @@ else
     var minusbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "deleteanswer.png" ?>";
     var imageurl = "<?php echo Yii::app()->getConfig('adminimageurl') ?>";
     var addbutton = "<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>";
-    var minusbuttonTxt = "<?php $clang->eT("Remove search condition", 'js') ?>";
-    var addbuttonTxt = "<?php $clang->eT("Add search condition", 'js') ?>";
+    var minusbuttonTxt = "<?php eT("Remove search condition", 'js') ?>";
+    var addbuttonTxt = "<?php eT("Add search condition", 'js') ?>";
     var delparticipantUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/delParticipant"); ?>";
     var getAttribute_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttribute_json/pid/"); ?>";
-    var exporttocsv = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv/id"); ?>";
     var exporttocsvcount = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
     var getcpdbAttributes_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
     var attMapUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/attributeMap"); ?>";
     var editAttributevalue = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editAttributevalue"); ?>";
     var shareUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/shareParticipants"); ?>";
-    var surveyUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/addToToken"); ?>";
     var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
     var ajaxUrl = "<?php echo Yii::app()->getConfig('adminimageurl') . "/ajax-loader.gif" ?>";
     var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";
     var searchconditions = "<?php echo $sSearchCondition; ?>";
-    var colNames = '["participant_id","can_edit","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email") ?>","<?php $clang->eT("Blacklisted") ?>","<?php $clang->eT("Surveys") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Owner name") ?>"<?php echo $columnNames; ?>]';
+    var bEditPermission = <?php echo (Permission::model()->hasGlobalPermission('participantpanel','update'))? 'true' : 'false'; ?>;
+    var bDeletePermission = <?php echo (Permission::model()->hasGlobalPermission('participantpanel','delete'))? 'true' : 'false'; ?>;
+    var colNames = '["participant_id","can_edit","<?php eT("First name") ?>","<?php eT("Last name") ?>","<?php eT("Email") ?>","<?php eT("Blacklisted") ?>","<?php eT("Surveys") ?>","<?php eT("Language") ?>","<?php eT("Owner name") ?>"<?php echo $columnNames; ?>]';
     var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":120, "align":"center", "editable":true},';
@@ -186,34 +188,34 @@ $colModels .= implode(",';\n colModels += '", $uidNames) . "]';";
 echo $colModels;
 ?>
 </script>
-<script src="<?php echo Yii::app()->getConfig('generalscripts') . "admin/displayParticipant.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('generalscripts') . "admin/participantdisplay.js" ?>" type="text/javascript"></script>
 <div id ="search" style="display:none">
     <?php
-    $optionsearch = array('' => $clang->gT("Select..."),
-        'firstname' => $clang->gT("First name"),
-        'lastname' => $clang->gT("Last name"),
-        'email' => $clang->gT("Email"),
-        'blacklisted' => $clang->gT("Blacklisted"),
-        'surveys' => $clang->gT("Survey links"),
-        'survey' => $clang->gT("Survey name"),
-        'language' => $clang->gT("Language"),
-        'owner_uid' => $clang->gT("Owner ID"),
-        'owner_name' => $clang->gT("Owner name"));
-    $optioncontition = array('' =>  $clang->gT("Select..."),
-        'equal' =>$clang->gT("Equals"),
-        'contains' =>$clang->gT("Contains"),
-        'beginswith' =>$clang->gT("Begins with"),
-        'notequal' => $clang->gT("Not equal"),
-        'notcontains' => $clang->gT("Does not contain"),
-        'greaterthan' => $clang->gT("Greater than"),
-        'lessthan' => $clang->gT("Less than"));
+    $optionsearch = array('' => gT("Select..."),
+        'firstname' => gT("First name"),
+        'lastname' => gT("Last name"),
+        'email' => gT("Email"),
+        'blacklisted' => gT("Blacklisted"),
+        'surveys' => gT("Survey links"),
+        'survey' => gT("Survey name"),
+        'language' => gT("Language"),
+        'owner_uid' => gT("Owner ID"),
+        'owner_name' => gT("Owner name"));
+    $optioncontition = array('' =>  gT("Select..."),
+        'equal' =>gT("Equals"),
+        'contains' =>gT("Contains"),
+        'beginswith' =>gT("Begins with"),
+        'notequal' => gT("Not equal"),
+        'notcontains' => gT("Does not contain"),
+        'greaterthan' => gT("Greater than"),
+        'lessthan' => gT("Less than"));
     if (isset($allattributes) && count($allattributes) > 0) // Add attribute names to select box
     {
         echo "<script type='text/javascript'> optionstring = '";
         foreach ($allattributes as $key => $value)
         {
-            $optionsearch[$value['attribute_id']] = $value['attribute_name'];
-            echo "<option value=" . $value['attribute_id'] . ">" . $value['attribute_name'] . "</option>";
+            $optionsearch[$value['attribute_id']] = $value['defaultname'];
+            echo "<option value=" . $value['attribute_id'] . ">" . $value['defaultname'] . "</option>";
         }
         echo "';</script>";
     }
@@ -223,7 +225,7 @@ echo $colModels;
             <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
             <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
             <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>  id="addbutton" style="margin-bottom:4px" alt='<?php $clang->eT("Add search condition"); ?>'></td>
+            <td><img src=<?php echo Yii::app()->getConfig('adminimageurl') . "plus.png" ?>  id="addbutton" style="margin-bottom:4px" alt='<?php eT("Add search condition"); ?>'></td>
         </tr>
     </table>
     <br/>
@@ -233,28 +235,28 @@ echo $colModels;
 <br/>
 <table id="displayparticipants"></table> 
 <div id="pager"></div>
-<div id="fieldnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
+<div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
-<?php $clang->eT("Please select a field"); ?>
+<?php eT("Please select a field"); ?>
     </p>
 </div>
-<div id="conditionnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
+<div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
-<?php $clang->eT("Please select a condition"); ?>
+<?php eT("Please select a condition"); ?>
     </p>
 </div>
-<div id="norowselected" title="<?php $clang->eT("Error") ?>" style="display:none">
+<div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
-<?php $clang->eT("Please select at least one participant"); ?>
+<?php eT("Please select at least one participant"); ?>
     </p>
 </div>
-<div id="shareform" title="<?php $clang->eT("Share") ?>" style="display:none">
+<div id="shareform" title="<?php eT("Share") ?>" style="display:none">
   <div class='popupgroup'>
     <p>
-<?php $clang->eT("User with whom the participants are to be shared"); ?></p>
+<?php eT("User with whom the participants are to be shared"); ?></p>
     <p>
         <?php
-        $options[''] = $clang->gT("Select...");
+        $options[''] = gT("Select...");
         foreach ($names as $row)
         {
             if (!(Yii::app()->session['loginID'] == $row['uid']))
@@ -268,7 +270,7 @@ echo $colModels;
   </div>
   <div class='popupgroup'>
     <p>
-<?php $clang->eT("Allow this user to edit these participants"); ?>
+<?php eT("Allow this user to edit these participants"); ?>
     </p>
     <p><?php
 $data = array(
@@ -289,20 +291,20 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
         <fieldset class='popupgroup'>
-            <legend><?php $clang->eT("Participants") ?></legend>
-            <div id='allinview' style='display: none'><?php $clang->eT("Add all participants in your current list to a survey.") ?></div>
-            <div id='selecteditems' style='display: none'><?php $clang->eT("Add the selected participants to a survey.") ?></div>
+            <legend><?php eT("Participants") ?></legend>
+            <div id='allinview' style='display: none'><?php eT("Add all participants in your current list to a survey.") ?></div>
+            <div id='selecteditems' style='display: none'><?php eT("Add the selected participants to a survey.") ?></div>
             <br />
         </fieldset>
         <fieldset class='popupgroup'>
 		  <legend>
-            <?php $clang->eT("Survey"); ?>
+            <?php eT("Survey"); ?>
           </legend>
           <p>
             <?php
             if (!empty($tokensurveynames))
             {
-                //$option[''] = $clang->gT("Select...");
+                //$option[''] = gT("Select...");
                 foreach ($tokensurveynames as $row)
                 {
                     $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
@@ -314,7 +316,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
         </fieldset>
         <fieldset class='popupgroup'>
           <legend>
-            <?php $clang->eT("Options") ?>
+            <?php eT("Options") ?>
           </legend>
             <?php
             $data = array(
@@ -325,27 +327,15 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 
             echo CHtml::checkBox('redirect', TRUE, $data);
             ?>
-            <label for='redirect'><?php $clang->eT("Display survey tokens after adding?"); ?></label>
+            <label for='redirect'><?php eT("Display survey tokens after adding?"); ?></label>
         </fieldset>
     </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
     <p>
-<?php $clang->eT("This is a shared participant and you are not authorised to edit it"); ?></p>
+<?php eT("You do not have the permission to edit this participant."); ?></p>
 
 </div>
-<fieldset id="exportcsv" title="exportcsv" style="display:none">
-        <legend><?php $clang->eT("Attributes to export:"); ?></legend>
-        <p>
-            <select id="attributes" name="attributes" multiple="multiple" style='width: 350px' size=7>
-                <?php
-                foreach ($allattributes as $value)
-                {
-                    echo "<option value=" . $value['attribute_id'] . ">" . $value['attribute_name'] . "</option>\n";
-                }
-                ?>
-            </select>
-        </p>
-</fieldset>
+
 
 

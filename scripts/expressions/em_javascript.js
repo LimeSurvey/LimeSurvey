@@ -13,9 +13,27 @@
  * @author Thomas M. White (TMSWhite)
  * @author Denis Chenu (Shnoulle)
  *
- * Portion from php.js is copyright 2012 Kevin van Zonneveld.
- * php.js is dual licensed under the MIT licenses.
+ * Portion from php.js licensed under the MIT licenses.
+ * Copyright (c) 2013 Kevin van Zonneveld (http://kvz.io) 
+ * and Contributors (http://phpjs.org/authors)
  */
+
+/* Default event to trigger on answer part 
+ * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations 
+ * Actually only for list with comment
+ **/
+$(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not([onkeyup])",function(event){
+    // 'keyup' can be replaced by event.type (but not really needed)
+    // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
+    if($(this).data("number"))// data-type ?
+    {
+        fixnum_checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup', $(this).data("integer"))
+    }
+    else
+    {
+        checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
+    }
+});
 
 function LEMcount()
 {
@@ -159,7 +177,7 @@ function LEMis_null(a)
 
 function LEMis_float(a)
 {
-    if (isNaN(a))
+    if (!LEMis_numeric(a))
     {
         return false;
     }
@@ -168,28 +186,74 @@ function LEMis_float(a)
     return (Math.floor(num) != num);
 }
 
-function LEMis_int(a)
+/**
+ * Test if mixed_var is_int same way than PHP
+ * From: http://phpjs.org/functions/is_int/
+ */
+function LEMis_int(mixed_var)
 {
-    if (isNaN(a))
-    {
-        return false;
-    }
-    var num = new Number(a);
-    // should this only return true if there is a non-zero decimal part to the number?
-    return (Math.floor(num) == num);
+  return mixed_var === +mixed_var && isFinite(mixed_var) && !(mixed_var % 1);
 }
-
-function LEMis_numeric(a)
+/**
+ * Test if mixed_var is a PHP numeric value
+ * From: http://phpjs.org/functions/is_numeric/
+ */
+function LEMis_numeric(mixed_var)
 {
-    if (a === '') {
-        return false;   // to make consistent with PHP
-    }
-    return !(isNaN(a));
+    var whitespace = " \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000";
+    return (typeof mixed_var === 'number' || (typeof mixed_var === 'string' && whitespace.indexOf(mixed_var.slice(-1)) === -1)) && mixed_var !== '' && !isNaN(mixed_var);
 }
 
 function LEMis_string(a)
 {
     return isNaN(a);
+}
+
+/**
+ * Find the closest matching numerical input values in a list an replace it by the
+ * corresponding value within another list 
+ *
+ * @author Johannes Weberhofer, 2013
+ *
+ * @param numeric fValueToReplace
+ * @param numeric iStrict - 1 for exact matches only otherwise interpolation the 
+ * 		  closest value should be returned
+ * @param string sTranslateFromList - comma seperated list of values to translate from
+ * @param string sTranslateToList - comma seperated list of values to translate to
+ * @return numeric
+ */
+function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTranslateToList) 
+{
+	if ( isNaN(fValueToReplace) || (iStrict==null) || (sTranslateFromList==null) || (sTranslateToList==null) ) 
+	{
+		return null;
+	}
+	aFromValues = sTranslateFromList.split(",");
+	aToValues = sTranslateToList.split(",");
+	if ( (aFromValues.length > 0)  && (aFromValues.length == aToValues.length) ) 
+	{
+		fMinimumDiff = null;
+		iNearestIndex = 0;
+		for ( i = 0; i < aFromValues.length; i++) {
+			if ( isNaN(aFromValues[i]) ) {
+				// break processing when non-numeric variables are about to be processed
+				return null;
+			}
+			fCurrentDiff = Math.abs(aFromValues[i] - fValueToReplace);
+			if (fCurrentDiff === 0) {
+				return aToValues[i];
+			} else if (i === 0) {
+				fMinimumDiff = fCurrentDiff;
+			} else if ( fMinimumDiff > fCurrentDiff ) {
+				fMinimumDiff = fCurrentDiff;
+				iNearestIndex = i;
+			}
+		}					
+		if ( iStrict !== 1 ) {
+			return aToValues[iNearestIndex];
+		}
+	}
+	return null;
 }
 
 function LEMif(a,b,c)
@@ -303,11 +367,34 @@ function LEMstrlen(a)
     return str.length;
 }
 
-function LEMstr_replace(needle, replace, haystack)
-{
-    var str = new String(haystack);
-    return str.replace(needle, replace);
+function LEMstr_replace (search, replace, subject) {
+  // Copied From: http://phpjs.org/functions
+  var i = 0,
+    j = 0,
+    temp = '',
+    repl = '',
+    sl = 0,
+    fl = 0,
+    f = [].concat(search),
+    r = [].concat(replace),
+    s = subject,
+    ra = Object.prototype.toString.call(r) === '[object Array]',
+    sa = Object.prototype.toString.call(s) === '[object Array]';
+    s = [].concat(s);
+  for (i = 0, sl = s.length; i < sl; i++) {
+    if (s[i] === '') {
+      continue;
+    }
+    for (j = 0, fl = f.length; j < fl; j++) {
+      temp = s[i] + '';
+      repl = ra ? (r[j] !== undefined ? r[j] : '') : r[0];
+      s[i] = (temp).split(f[j]).join(repl);
+    }
+  }
+  return sa ? s : s[0];
 }
+
+
 
 function LEMstrpos(haystack,needle)
 {
@@ -602,6 +689,25 @@ function LEMval(alias)
 //                }
                 return +newval;
             }
+            // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
+            else if (attr.type=='D')  {
+                // get date format pattern of referenced question
+                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).attr('value');
+                
+                // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
+                sdatetimePattern=typeof sdatetimePattern=='undefined'? 'yy-mm-dd HH:MM': sdatetimePattern;
+                
+                if (sdatetimePattern==null) {
+                    sdatetimePattern="";
+                } 
+                if (value=='INVALID') {
+                    value="";
+                }
+                else {
+                    value=date('Y-m-d H:i', Date.parseString(trim(value), sdatetimePattern));
+                }
+                return value;
+            }
             else if (isNaN(value)) {
                 if (value==='false') {
                     return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
@@ -609,8 +715,8 @@ function LEMval(alias)
                 return value;
             }
             else {
-                if (value.length > 0 && value[0]==0) {
-                    return value;   // so keep 0 prefixes on numbers
+                if (!LEMis_numeric(value) || (value.length > 0 && value[0]==0)) {// so keep 0 prefixes on numbers
+                    return value;
                 }
                 return +value;  // convert it to numeric
             }
@@ -629,15 +735,13 @@ function LEMval(alias)
  */
 function LEMfixnum(value)
 {
-    var newval = String(value);
-    if (parseFloat(newval) != value) {
-        return value;   // unchanged
-    }
     if (LEMradix===',') {
-        newval = newval.split('.').join(',');
+        var newval = String(value);
         if (parseFloat(newval) != value) {
             return value;   // unchanged
         }
+        newval= newval.split('.').join(',');
+        return newval;
     }
     return value;
 }
@@ -717,22 +821,30 @@ function LEManyNA()
     return false;
 }
 
-/** Set the tabIndex for all potentially visible form elements, and capture the TAB and SHIFT-TAB keys so can
+/* Set the tabIndex for all potentially visible form elements, and capture the TAB and SHIFT-TAB keys so can
  * control navigation when elements appear and disappear.
  */
 function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
-        $('#limesurvey :input[type!=hidden][id!=runonce]').each(function(index){
-            $(this).bind('keydown',function(e) {
-                if (e.keyCode == 9) {
-                    checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'), 'TAB');
-                    $(this).focus();
-                    return true;
+        $(document).on('keydown',"#limesurvey :input[type!=hidden][id!=runonce]",function(event){
+            var keyCode = event.keyCode || event.which;
+            if (keyCode == 9) {
+                // see bug #08590 : lauch checkcondition only for text input. Not needed for radio or checkbox
+                // Not sure it's really needed actually, it's a blur event for text and change for select
+                // Can use $(this)[0].type
+                if($(this).attr('type')=="text")
+                {
+                    $(this).triggerHandler("keyup");
                 }
+                if($(this).is('select'))
+                {
+                    $(this).triggerHandler("change");
+                }
+                $(this).focus();
                 return true;
-            })
-        })	// MUST DO THIS FIRST
+            }
+        });
         tabIndexesSet = true;
     }
 }
@@ -1320,29 +1432,28 @@ function ltrim (str, charlist) {
     return (str + '').replace(re, '');
 }
 
-function nl2br (str, is_xhtml) {
-    // Converts newlines to HTML line breaks
-    //
-    // version: 1107.2516
-    // discuss at: http://phpjs.org/functions/nl2br
-    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   improved by: Philip Peterson
-    // +   improved by: Onno Marsman
-    // +   improved by: Atli Þór
-    // +   bugfixed by: Onno Marsman
-    // +      input by: Brett Zamir (http://brett-zamir.me)
-    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   improved by: Brett Zamir (http://brett-zamir.me)
-    // +   improved by: Maximusya
-    // *     example 1: nl2br('Kevin\nvan\nZonneveld');
-    // *     returns 1: 'Kevin\nvan\nZonneveld'
-    // *     example 2: nl2br("\nOne\nTwo\n\nThree\n", false);
-    // *     returns 2: '<br>\nOne<br>\nTwo<br>\n<br>\nThree<br>\n'
-    // *     example 3: nl2br("\nOne\nTwo\n\nThree\n", true);
-    // *     returns 3: '\nOne\nTwo\n\nThree\n'
-    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '' : '<br>';
+function nl2br(str, is_xhtml) {
+  //  discuss at: http://phpjs.org/functions/nl2br/
+  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // improved by: Philip Peterson
+  // improved by: Onno Marsman
+  // improved by: Atli Þór
+  // improved by: Brett Zamir (http://brett-zamir.me)
+  // improved by: Maximusya
+  // bugfixed by: Onno Marsman
+  // bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  //    input by: Brett Zamir (http://brett-zamir.me)
+  //   example 1: nl2br('Kevin\nvan\nZonneveld');
+  //   returns 1: 'Kevin<br />\nvan<br />\nZonneveld'
+  //   example 2: nl2br("\nOne\nTwo\n\nThree\n", false);
+  //   returns 2: '<br>\nOne<br>\nTwo<br>\n<br>\nThree<br>\n'
+  //   example 3: nl2br("\nOne\nTwo\n\nThree\n", true);
+  //   returns 3: '<br />\nOne<br />\nTwo<br />\n<br />\nThree<br />\n'
 
-    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+  var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br ' + '/>' : '<br>'; // Adjust comment to avoid issue on phpjs.org display
+
+  return (str + '')
+    .replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
 function number_format (number, decimals, dec_point, thousands_sep) {
@@ -2033,21 +2144,20 @@ function strstr (haystack, needle, bool) {
 }
 
 function strtotime (text, now) {
-    /* 2013-06-12: taken from phpjs.org
-       and adapted for limesurvey */
-
     // Convert string representation of date and time to a timestamp
     //
-    // version: 1109.2015
+    // version: 1109.2016
     // discuss at: http://phpjs.org/functions/strtotime
     // +   original by: Caio Ariede (http://caioariede.com)
     // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
     // +      input by: David
     // +   improved by: Caio Ariede (http://caioariede.com)
-    // +   improved by: Brett Zamir (http://brett-zamir.me)
     // +   bugfixed by: Wagner B. Soares
     // +   bugfixed by: Artur Tchernychev
     // +   improved by: A. Matías Quezada (http://amatiasq.com)
+    // +   improved by: preuter
+    // +   improved by: Brett Zamir (http://brett-zamir.me)
+    // +   improved by: Mirko Faber
     // %        note 1: Examples all have a fixed timestamp to prevent tests to fail because of variable time(zones)
     // *     example 1: strtotime('+1 day', 1129633200);
     // *     returns 1: 1129719600
@@ -2055,13 +2165,16 @@ function strtotime (text, now) {
     // *     returns 2: 1130425202
     // *     example 3: strtotime('last month', 1129633200);
     // *     returns 3: 1127041200
-    // *     example 4: strtotime('2009-05-04 08:30:00');
-    // *     returns 4: 1241418600
-    if (!text)
-        return null;
+    // *     example 4: strtotime('2009-05-04 08:30:00 GMT');
+    // *     returns 4: 1241425800
+    var parsed, match, today, year, date, days, ranges, len, times, regex, i, fail = false;
+
+    if (!text) {
+        return fail;
+    }
 
     // Unecessary spaces
-    text = text.trim()
+    text = text.replace(/^\s+|\s+$/g, '')
         .replace(/\s{2,}/g, ' ')
         .replace(/[\t\r\n]/g, '')
         .toLowerCase();
@@ -2069,90 +2182,111 @@ function strtotime (text, now) {
     // in contrast to php, js Date.parse function interprets: 
     // dates given as yyyy-mm-dd as in timezone: UTC, 
     // dates with "." or "-" as MDY instead of DMY
-	// dates with two-digit years differently
+    // dates with two-digit years differently
     // etc...etc...
     // ...therefore we manually parse lots of common date formats
-    var match = text.match(/^(\d{1,4})([\-\.\/\:])(\d{1,2})([\-\.\/\:])(\d{1,4})(?:\s(\d{1,2}):(\d{2})?:?(\d{2})?)?(?:\s([A-Z]+)?)?$/);
-    if (match && match[2]==match[4]) {
-        if (match[1]>1901) {
+    match = text.match(/^(\d{1,4})([\-\.\/\:])(\d{1,2})([\-\.\/\:])(\d{1,4})(?:\s(\d{1,2}):(\d{2})?:?(\d{2})?)?(?:\s([A-Z]+)?)?$/);
+    
+    if (match && match[2] === match[4]) {
+        if (match[1] > 1901) {
             switch (match[2]) {
                 case '-': {  // YYYY-M-D
-                    if (match[3]>12 | match[5]>31) return(0);
+                    if (match[3] > 12 || match[5] > 31) {
+                        return fail;
+                    }
+                    
                     return new Date(match[1], parseInt(match[3], 10) - 1, match[5],
-                    match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
-                    break;
+                        match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
                 }
                 case '.': {  // YYYY.M.D is not parsed by strtotime()
-                    return(0);
-                    break;
+                    return fail;
                 }
                 case '/': {  // YYYY/M/D
-                    if (match[3]>12 | match[5]>31) return(0);
+                    if (match[3] > 12 || match[5] > 31) {
+                        return fail;
+                    }
+                    
                     return new Date(match[1], parseInt(match[3], 10) - 1, match[5],
-                    match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
-                    break;
+                        match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
                 }
             }
-        }
-        else if (match[5]>1901) {
+        } else if (match[5] > 1901) {
             switch (match[2]) {
                 case '-': {  // D-M-YYYY
-                    if (match[3]>12 | match[1]>31) return(0);
+                    if (match[3] > 12 || match[1] > 31) {
+                        return fail;
+                    }
+                    
                     return new Date(match[5], parseInt(match[3], 10) - 1, match[1],
-                    match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
-                    break;
+                        match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
                 }
                 case '.': {  // D.M.YYYY
-                    if (match[3]>12 | match[1]>31) return(0);
+                    if (match[3] > 12 || match[1] > 31) {
+                        return fail;
+                    }
+                    
                     return new Date(match[5], parseInt(match[3], 10) - 1, match[1],
-                    match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
-                    break;
+                        match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
                 }
                 case '/': {  // M/D/YYYY
-                    if (match[1]>12 | match[3]>31) return(0);
+                    if (match[1] > 12 || match[3] > 31) {
+                        return fail;
+                    }
+                    
                     return new Date(match[5], parseInt(match[1], 10) - 1, match[3],
-                    match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
-                    break;
+                        match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
                 }
             }
         }
         else {
             switch (match[2]) {
                 case '-': {  // YY-M-D
-                    if (match[3]>12 | match[5]>31 | (match[1] < 70 & match[1]>38)) return(0);
-                    var year = match[1] >= 0 && match[1] <= 38 ? +match[1] + 2000 : match[1];
+                    if (match[3] > 12 || match[5] > 31 || (match[1] < 70 && match[1] > 38)) {
+                        return fail;
+                    }
+                    
+                    year = match[1] >= 0 && match[1] <= 38 ? +match[1] + 2000 : match[1];
                     return new Date(year, parseInt(match[3], 10) - 1, match[5],
-                    match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
-                    break;
+                        match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
                 }
                 case '.': {  // D.M.YY or H.MM.SS
-                    if (match[5]>=70) {    // D.M.YY
-                        if (match[3]>12 | match[1]>31) return(0);
+                    if (match[5] >= 70) {    // D.M.YY
+                        if (match[3]>12 || match[1]>31) {
+                            return fail;
+                        }
+                        
                         return new Date(match[5], parseInt(match[3], 10) - 1, match[1],
-                        match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
+                            match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
                     }
-                    else if (match[5]<60 & !(match[6])) {  // H.MM.SS
-                        if (match[1]>23 | match[3]>59) return(0);
-                        var today = new Date();
+                    if (match[5] < 60 && !match[6]) {  // H.MM.SS
+                        if (match[1] > 23 || match[3] > 59) {
+                            return fail;
+                        }
+                        
+                        today = new Date();
                         return new Date(today.getFullYear(), today.getMonth(), today.getDate(),
-                        match[1] || 0, match[3] || 0, match[5] || 0, match[9] || 0) / 1000;
+                            match[1] || 0, match[3] || 0, match[5] || 0, match[9] || 0) / 1000;
                     }
-                    else  return(0);  // invalid format, cannot be parsed
-                    break;
+                    
+                    return fail;  // invalid format, cannot be parsed
                 }
                 case '/': {  // M/D/YY
-                    if (match[1]>12 | match[3]>31 | (match[5] < 70 & match[5]>38)) return(0);
-                    var year = match[5] >= 0 && match[5] <= 38 ? +match[5] + 2000 : match[5];
+                    if (match[1] > 12 || match[3] > 31 || (match[5] < 70 && match[5] > 38)) {
+                        return fail;
+                    }
+                    
+                    year = match[5] >= 0 && match[5] <= 38 ? +match[5] + 2000 : match[5];
                     return new Date(year, parseInt(match[1], 10) - 1, match[3],
-                    match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
-                    break;
+                        match[6] || 0, match[7] || 0, match[8] || 0, match[9] || 0) / 1000;
                 }
                 case ':': {  // HH:MM:SS
-                    if (match[1]>23 | match[3]>59 | match[5]>59) return(0);
-                    var today = new Date();
+                    if (match[1] > 23 || match[3] > 59 || match[5] > 59) {
+                        return fail;
+                    }
+                    
+                    today = new Date();
                     return new Date(today.getFullYear(), today.getMonth(), today.getDate(),
-                    match[1] || 0, match[3] || 0, match[5] || 0) / 1000;
-                    break;
+                        match[1] || 0, match[3] || 0, match[5] || 0) / 1000;
                 }
             }
         }
@@ -2160,13 +2294,15 @@ function strtotime (text, now) {
     
     
     // other formats and "now" should be parsed by Date.parse()
-    if (text === 'now')
+    if (text === 'now') {
         return now === null || isNaN(now) ? new Date().getTime() / 1000 | 0 : now | 0;
-    else if (!isNaN(parse = Date.parse(text)))
-        return parse / 1000 | 0;
-    
-    var date = now ? new Date(now * 1000) : new Date();
-    var days = {
+    }
+    if (!isNaN(parsed = Date.parse(text))) {
+        return parsed / 1000 | 0;
+    }
+
+    date = now ? new Date(now * 1000) : new Date();
+    days = {
         'sun': 0,
         'mon': 1,
         'tue': 2,
@@ -2175,7 +2311,7 @@ function strtotime (text, now) {
         'fri': 5,
         'sat': 6
     };
-    var ranges = {
+    ranges = {
         'yea': 'FullYear',
         'mon': 'Month',
         'day': 'Date',
@@ -2185,64 +2321,72 @@ function strtotime (text, now) {
     };
 
     function lastNext(type, range, modifier) {
-        var day = days[range];
+        var diff, day = days[range];
 
-        if (typeof(day) !== 'undefined') {
-            var diff = day - date.getDay();
+        if (typeof day !== 'undefined') {
+            diff = day - date.getDay();
 
-            if (diff === 0)
+            if (diff === 0) {
                 diff = 7 * modifier;
-            else if (diff > 0 && type === 'last')
+            }
+            else if (diff > 0 && type === 'last') {
                 diff -= 7;
-            else if (diff < 0 && type === 'next')
+            }
+            else if (diff < 0 && type === 'next') {
                 diff += 7;
+            }
 
             date.setDate(date.getDate() + diff);
         }
     }
     function process(val) {
-        var split = val.split(' ');
-        var type = split[0];
-        var range = split[1].substring(0, 3);
-        var typeIsNumber = /\d+/.test(type);
+        var splt = val.split(' '), // Todo: Reconcile this with regex using \s, taking into account browser issues with split and regexes
+            type = splt[0],
+            range = splt[1].substring(0, 3),
+            typeIsNumber = /\d+/.test(type),
+            ago = splt[2] === 'ago',
+            num = (type === 'last' ? -1 : 1) * (ago ? -1 : 1);
 
-        var ago = split[2] === 'ago';
-        var num = (type === 'last' ? -1 : 1) * (ago ? -1 : 1);
-
-        if (typeIsNumber)
+        if (typeIsNumber) {
             num *= parseInt(type, 10);
+        }
 
-        if (ranges.hasOwnProperty(range))
+        if (ranges.hasOwnProperty(range) && !splt[1].match(/^mon(day|\.)?$/i)) {
             return date['set' + ranges[range]](date['get' + ranges[range]]() + num);
-        else if (range === 'wee')
+        }
+        
+        if (range === 'wee') {
             return date.setDate(date.getDate() + (num * 7));
+        }
 
-        if (type === 'next' || type === 'last')
+        if (type === 'next' || type === 'last') {
             lastNext(type, range, num);
-        else if (!typeIsNumber)
+        }
+        else if (!typeIsNumber) {
             return false;
-
+        }
+        
         return true;
     }
 
-    var regex = '([+-]?\\d+\\s' +
-        '(years?|months?|weeks?|days?|hours?|min|minutes?|sec|seconds?' +
-        '|sun\\.?|sunday|mon\\.?|monday|tue\\.?|tuesday|wed\\.?|wednesday' +
-        '|thu\\.?|thursday|fri\\.?|friday|sat\\.?|saturday)|(last|next)\\s' +
-        '(years?|months?|weeks?|days?|hours?|min|minutes?|sec|seconds?' +
-        '|sun\\.?|sunday|mon\\.?|monday|tue\\.?|tuesday|wed\\.?|wednesday' +
-        '|thu\\.?|thursday|fri\\.?|friday|sat\\.?|saturday))(\\sago)?';
+    times = '(years?|months?|weeks?|days?|hours?|minutes?|min|seconds?|sec' +
+        '|sunday|sun\\.?|monday|mon\\.?|tuesday|tue\\.?|wednesday|wed\\.?' +
+        '|thursday|thu\\.?|friday|fri\\.?|saturday|sat\\.?)';
+    regex = '([+-]?\\d+\\s' + times + '|' + '(last|next)\\s' + times + ')(\\sago)?';
 
     match = text.match(new RegExp(regex, 'gi'));
-    if (!match)
-        return false;
+    if (!match) {
+        return fail;
+    }
 
-    for (var i = 0, len = match.length; i < len; i++)
-        if (!process(match[i]))
-            return false;
+    for (i = 0, len = match.length; i < len; i++) {
+        if (!process(match[i])) {
+            return fail;
+        }
+    }
 
     // ECMAScript 5 only
-    //if (!match.every(process))
+    // if (!match.every(process))
     //    return false;
 
     return (date.getTime() / 1000);

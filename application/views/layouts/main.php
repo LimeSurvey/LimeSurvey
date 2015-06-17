@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <?php 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('qTip2');
@@ -24,7 +25,7 @@
         <title>Limesurvey Administration</title>
     </head>
     <body>
-        <div class="wrapper">
+        <div class="wrapper clearfix">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
             <?php $this->widget('ext.Menu.MenuWidget', $this->navData); ?>
@@ -35,6 +36,7 @@
                 <img src="<?php echo Yii::app()->getConfig('adminstyleurl');?>/images/ajax-loader.gif"/>
             </div>
         </div>
+        <?php $this->widget('ext.AdminFooter.AdminFooter'); ?>
     </body>
 
 </html>

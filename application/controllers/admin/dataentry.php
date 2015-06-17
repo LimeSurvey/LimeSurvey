@@ -75,8 +75,6 @@ class dataentry extends Survey_Common_Action
 
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
-        $aData['clang'] = $this->getController()->lang;
-
         if( Permission::model()->hasSurveyPermission($iSurveyId,'responses','create') )
         {
             if(tableExists("{{survey_$iSurveyId}}"))
@@ -96,13 +94,13 @@ class dataentry extends Survey_Common_Action
             }
             else
             {
-                Yii::app()->session['flashmessage'] = $clang->gT("This survey is not active. You must activate the survey before attempting to import a VVexport file.");
+                Yii::app()->session['flashmessage'] = gT("This survey is not active. You must activate the survey before attempting to import a VVexport file.");
                 $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
             }
         }
         else
         {
-            Yii::app()->session['flashmessage'] = $clang->gT("You do not have sufficient rights to access this page.");
+            Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
     }
@@ -113,7 +111,6 @@ class dataentry extends Survey_Common_Action
 
         $surveyid = sanitize_int($surveyid);
         $aData['surveyid'] = $surveyid;
-        $aData['clang'] = $this->getController()->lang;
         $aData['success'] = false;
         if (Permission::model()->hasSurveyPermission($surveyid,'surveyactivation','update'))
         {
@@ -135,12 +132,11 @@ class dataentry extends Survey_Common_Action
     {
         $vvoutput = '';
         $donotimport = array();
-        $clang = $this->getController()->lang;
         $filePath = $this->_moveUploadedFile($aData);
         //$aFileContents = $this->_readFile($filePath);
-        
+
         Yii::app()->loadHelper('admin/import');
-        // Fill option 
+        // Fill option
         $aOptions=array();
         $aOptions['bDeleteFistLine']=(Yii::app()->request->getPost('dontdeletefirstline') == "dontdeletefirstline")?false:true;// Force, maybe function change ;)
         if(Yii::app()->request->getPost('noid')==="noid"){
@@ -155,9 +151,9 @@ class dataentry extends Survey_Common_Action
         $aResult=CSVImportResponses($filePath,$iSurveyId,$aOptions);
         unlink($filePath); //delete the uploaded file
         $aData['class']="";
-        $aData['title']=$clang->gT("Import a VV response data file");
-        $aData['aResult']['success'][]=$clang->gT("File upload succeeded.");
-        if(isset($aResult['success'])){ 
+        $aData['title']=gT("Import a VV response data file");
+        $aData['aResult']['success'][]=gT("File upload succeeded.");
+        if(isset($aResult['success'])){
             $aData['aResult']['success']=array_merge($aData['aResult']['success'],$aResult['success']);
         }
         $aData['aResult']['errors']=(isset($aResult['errors'])) ? $aResult['errors'] : false;
@@ -195,22 +191,21 @@ class dataentry extends Survey_Common_Action
 
     private function _moveUploadedFile($aData)
     {
-        $clang = $this->getController()->lang;
         $sFullFilePath = Yii::app()->getConfig('tempdir') . "/" . randomChars(20);
         $fileVV = CUploadedFile::getInstanceByName('csv_vv_file');
         if($fileVV){
             if(!$fileVV->SaveAs($sFullFilePath))
             {
                 $aData['class']='error warningheader';
-                $aData['title']=$clang->gT("Error");
+                $aData['title']=gT("Error");
                 $aData['aResult']['errors'][] = sprintf(
-                    $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
+                    gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
                     Yii::app()->getConfig('tempdir')
                 );
                 $aData['aResult']['errors'][] = "<pre>".
                 $aData['aUrls'][] = array(
                     'link'=>$this->getController()->createUrl('admin/dataentry/sa/vvimport/surveyid/'.$aData['surveyid']),
-                    'text'=>$aData['aUrlText'][] = $clang->gT("Back to Response Import"),
+                    'text'=>$aData['aUrlText'][] = gT("Back to Response Import"),
                     );
                 $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
                 die;
@@ -232,7 +227,7 @@ class dataentry extends Survey_Common_Action
         $aData['aEncodings']=$aEncodings;
         $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
 
-        $aData['display']['menu_bars']['browse'] = $this->getController()->lang->gT("Import VV file");
+        $aData['display']['menu_bars']['browse'] = gT("Import VV file");
 
         $this->_renderWrappedTemplate('dataentry', 'vvimport', $aData);
     }
@@ -251,7 +246,7 @@ class dataentry extends Survey_Common_Action
         {
             if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
             {
-                
+
                 // Schema that serves as the base for compatibility checks.
                 $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $tables = App()->getApi()->getOldResponseTables($iSurveyId);
@@ -272,7 +267,7 @@ class dataentry extends Survey_Common_Action
 						}
                     }
                 }
-                
+
                 $aData = array();
                 $aData['surveyid'] = $iSurveyId;
                 $aData['settings']['table'] = array(
@@ -297,10 +292,11 @@ class dataentry extends Survey_Common_Action
             }
             else
             {
+                $aSRIDConversions=array();
                 $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
                 $sourceTable = PluginDynamic::model($_POST['table']);
                 $sourceSchema = $sourceTable->getTableSchema();
-             
+
                 $fieldMap = array();
                 $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
                 foreach ($sourceSchema->getColumnNames() as $name)
@@ -332,7 +328,7 @@ class dataentry extends Survey_Common_Action
 				$sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
                 foreach ($sourceResponses as $sourceResponse)
                 {
-                    
+                   $iOldID=$sourceResponse->id;
                     // Using plugindynamic model because I dont trust surveydynamic.
                    $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
 
@@ -342,37 +338,36 @@ class dataentry extends Survey_Common_Action
                    }
                    $imported++;
                    $targetResponse->save();
+                   $aSRIDConversions[$iOldID]=$targetResponse->id;
                    unset($targetResponse);
                 }
 
 
-                
+
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-                $sOldTimingsTable=substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_'));
-                $sNewTimingsTable = "{{{$surveyid}_timings}}";
+                $sOldTimingsTable=substr(substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_')),strlen(Yii::app()->db->tablePrefix));
+                $sNewTimingsTable = "survey_{$surveyid}_timings";
 
                 if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
                 {
                     // Import timings
-                    $aFieldsOldTimingTable=array_values($schema->getTable($sOldTimingsTable)->columnNames);
-                    $aFieldsNewTimingTable=array_values($schema->getTable($sNewTimingsTable)->columnNames);
+                    $arDestination=SurveyTimingDynamic::model($surveyid);
+                    $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
+                    $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
 
                     $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
 
-                    $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
-                    $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
+                    $sQueryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
+                    $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll();   //Checked
                     $iRecordCountT=0;
-                    $aSRIDConversions=array();
-                    foreach ($resultOldValues->readAll() as $sTable)
+                    foreach ($aQueryOldValues as $sRecord)
                     {
-                        if (isset($aSRIDConversions[$sTable['id']]))
+                        if (isset($aSRIDConversions[$sRecord['id']]))
                         {
-                            $sTable['id']=$aSRIDConversions[$sTable['id']];
+                            $sRecord['id']=$aSRIDConversions[$sRecord['id']];
                         }
                         else continue;
-                        //$sInsertSQL=Yii::app()->db->GetInsertSQL($sNewTimingsTable,$row);
-                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($sTable))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($sTable))).")";
-                        $aTables = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                        Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}",$sRecord);
                         $iRecordCountT++;
                     }
                     Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);
@@ -482,8 +477,7 @@ class dataentry extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
-            $aData['clang'] = $clang = $this->getController()->lang;
-            $aData['display']['menu_bars']['browse'] = $clang->gT("Data entry");
+            $aData['display']['menu_bars']['browse'] = gT("Data entry");
 
             Yii::app()->loadHelper('database');
 
@@ -510,7 +504,7 @@ class dataentry extends Survey_Common_Action
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
             // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answer if exist)
 
-            $fnames['completed'] = array('fieldname'=>"completed", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
+            $fnames['completed'] = array('fieldname'=>"completed", 'question'=>gT("Completed"), 'type'=>'completed');
 
             $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage));
             $nfncount = count($fnames)-1;
@@ -580,8 +574,7 @@ class dataentry extends Survey_Common_Action
             'id' => $id,
             'surveyid' => $surveyid,
             'subaction' => $subaction,
-            'part' => 'header',
-            'clang' => $clang,
+            'part' => 'header'
             );
 
             $aViewUrls[] = 'dataentry_header_view';
@@ -649,8 +642,8 @@ class dataentry extends Survey_Common_Action
                             $selected = (empty($idrow['submitdate'])) ? 'N' : $completedate;
 
                             $select_options = array(
-                            'N' => $clang->gT('No'),
-                            $completedate => $clang->gT('Yes')
+                            'N' => gT('No'),
+                            $completedate => gT('Yes')
                             );
 
                             $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options);
@@ -714,9 +707,9 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "G": //GENDER drop-down list
                             $select_options = array(
-                            '' => $clang->gT("Please choose").'...',
-                            'F' => $clang->gT("Female"),
-                            'M' => $clang->gT("Male")
+                            '' => gT("Please choose").'...',
+                            'F' => gT("Female"),
+                            'M' => gT("Male")
                             );
                             $aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
                             break;
@@ -744,7 +737,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                                 ."<option value=''";
                                 if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
-                                $aDataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
+                                $aDataentryoutput .= ">".gT("Please choose")."..</option>\n";
 
                                 if (!isset($optCategorySeparator))
                                 {
@@ -802,7 +795,7 @@ class dataentry extends Survey_Common_Action
                                 {
                                     $aDataentryoutput .= "<option value='-oth-'";
                                     if ($idrow[$fname['fieldname']] == "-oth-"){$aDataentryoutput .= " selected='selected'";}
-                                    $aDataentryoutput .= ">".$clang->gT("Other")."</option>\n";
+                                    $aDataentryoutput .= ">".gT("Other")."</option>\n";
                                 }
                                 $aDataentryoutput .= "\t</select>\n";
                             }
@@ -813,7 +806,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                             ."<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
-                            $aDataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
+                            $aDataentryoutput .= ">".gT("Please choose")."..</option>\n";
 
                             foreach ($lresult->readAll() as $llrow)
                             {
@@ -854,15 +847,15 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\n<li class=\"select-item\">";
                                 $aDataentryoutput .="<label for=\"answer{$myfname}{$i}\">";
                                 if($i==1){
-                                    $aDataentryoutput .=$clang->gT('First choice');
+                                    $aDataentryoutput .=gT('First choice');
                                 }else{
-                                    $aDataentryoutput .=$clang->gT('Next choice');
+                                    $aDataentryoutput .=gT('Next choice');
                                 }
 
                                 $aDataentryoutput .="</label>";
                                 $aDataentryoutput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\">\n";
                                 (!isset($currentvalues[$i-1])) ? $selected=" selected=\"selected\"" : $selected="";
-                                $aDataentryoutput .= "\t<option value=\"\" $selected>".$clang->gT('None')."</option>\n";
+                                $aDataentryoutput .= "\t<option value=\"\" $selected>".gT('None')."</option>\n";
                                 foreach ($answers as $ansrow)
                                 {
                                     (isset($currentvalues[$i-1]) && $currentvalues[$i-1]==$ansrow['code']) ? $selected=" selected=\"selected\"" : $selected="";
@@ -888,8 +881,8 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
                                 . "var aRankingTranslations = {
-                                         choicetitle: '".$clang->gT("Your Choices",'js')."',
-                                         ranktitle: '".$clang->gT("Your Ranking",'js')."'
+                                         choicetitle: '".gT("Your Choices",'js')."',
+                                         ranktitle: '".gT("Your Ranking",'js')."'
                                         };\n"
                                 . "function checkconditions(){};"
                                 . "$(function() {"
@@ -949,7 +942,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput.= "<select name='{$fname['fieldname']}'>\n";
                             $aDataentryoutput .= "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
-                            $aDataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
+                            $aDataentryoutput .= ">".gT("Please choose")."..</option>\n";
 
                             foreach ($slangs as $lang)
                             {
@@ -1003,7 +996,7 @@ class dataentry extends Survey_Common_Action
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
                                 $qAttributes = getQuestionAttributeValues($fname['qid']);
-                                for ($i = 0; $i < $qAttributes['max_num_of_files'], isset($metadata[$i]); $i++)
+                                for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
                                         $aDataentryoutput .= '<tr><td>Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
@@ -1066,13 +1059,13 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                             ."<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
-                            $aDataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
+                            $aDataentryoutput .= ">".gT("Please choose")."..</option>\n"
                             ."<option value='Y'";
                             if ($idrow[$fname['fieldname']] == "Y") {$aDataentryoutput .= " selected='selected'";}
-                            $aDataentryoutput .= ">".$clang->gT("Yes")."</option>\n"
+                            $aDataentryoutput .= ">".gT("Yes")."</option>\n"
                             ."<option value='N'";
                             if ($idrow[$fname['fieldname']] == "N") {$aDataentryoutput .= " selected='selected'";}
-                            $aDataentryoutput .= ">".$clang->gT("No")."</option>\n"
+                            $aDataentryoutput .= ">".gT("No")."</option>\n"
                             ."\t</select>\n";
                             break;
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1129,13 +1122,13 @@ class dataentry extends Survey_Common_Action
                                 ."<td>\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='Y'";
                                 if ($idrow[$fname['fieldname']] == "Y") {$aDataentryoutput .= " checked";}
-                                $aDataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
+                                $aDataentryoutput .= " />".gT("Yes")."&nbsp;\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='U'";
                                 if ($idrow[$fname['fieldname']] == "U") {$aDataentryoutput .= " checked";}
-                                $aDataentryoutput .= " />".$clang->gT("Uncertain")."&nbsp;\n"
+                                $aDataentryoutput .= " />".gT("Uncertain")."&nbsp;\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='N'";
                                 if ($idrow[$fname['fieldname']] == "N") {$aDataentryoutput .= " checked";}
-                                $aDataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
+                                $aDataentryoutput .= " />".gT("No")."&nbsp;\n"
                                 ."</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
@@ -1197,7 +1190,7 @@ class dataentry extends Survey_Common_Action
                                 //Add 'No Answer'
                                 $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value=''";
                                 if ($idrow[$fname['fieldname']] == '') {$aDataentryoutput .= " checked";}
-                                $aDataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
+                                $aDataentryoutput .= " />".gT("No answer")."&nbsp;\n";
 
                                 $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
@@ -1303,7 +1296,7 @@ class dataentry extends Survey_Common_Action
 
             if (!Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
             { // if you are not survey owner or super admin you cannot modify responses
-                $aDataentryoutput .= "<p><input type='button' value='".$clang->gT("Save")."' disabled='disabled'/></p>\n";
+                $aDataentryoutput .= "<p><input type='button' value='".gT("Save")."' disabled='disabled'/></p>\n";
             }
             elseif ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
             {
@@ -1377,10 +1370,9 @@ class dataentry extends Survey_Common_Action
 
             $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::app()->loadHelper("database");
-            $clang = $this->getController()->lang;
             $surveytable = "{{survey_".$surveyid.'}}';
 
-            $aDataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
+            $aDataentryoutput = "<div class='header ui-widget-header'>".gT("Data entry")."</div>\n";
 
             $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
 
@@ -1466,10 +1458,10 @@ class dataentry extends Survey_Common_Action
 
             $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
             $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
-            $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
-            .$clang->gT("Record has been updated.")."<br /><br />\n"
-            ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
-            ."<input type='submit' value='".$clang->gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n"
+            $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".gT("Success")."</div>\n"
+            .gT("Record has been updated.")."<br /><br />\n"
+            ."<input type='submit' value='".gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
+            ."<input type='submit' value='".gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n"
             ."</div>\n";
 
             $aViewUrls['output'] = $aDataentryoutput;
@@ -1484,15 +1476,14 @@ class dataentry extends Survey_Common_Action
     */
     public function insert()
     {
-        $clang = Yii::app()->lang;
+
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
 
         $aData = array(
         'surveyid' => $surveyid,
-        'lang' => $lang,
-        'clang' => $clang
+        'lang' => $lang
         );
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','create'))
@@ -1504,7 +1495,7 @@ class dataentry extends Survey_Common_Action
                 $errormsg = "";
 
                 Yii::app()->loadHelper("database");
-                $aViewUrls['display']['menu_bars']['browse'] = $clang->gT("Data entry");
+                $aViewUrls['display']['menu_bars']['browse'] = gT("Data entry");
 
                 $aDataentryoutput = '';
                 $aDataentrymsgs = array();
@@ -1551,30 +1542,30 @@ class dataentry extends Survey_Common_Action
                 // First Check if the survey uses tokens and if a token has been provided
                 if (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && (!$_POST['token']))
                 {
-                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), $clang->gT("Error"));
-                    $errormsg .= CHtml::tag('p', array(), $clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."));
+                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+                    $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."));
                 }
                 elseif (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && $lastanswfortoken == 'UnknownToken')
                 {
-                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), $clang->gT("Error"));
-                    $errormsg .= CHtml::tag('p', array(), $clang->gT("The token you have provided is not valid or has already been used."));
+                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+                    $errormsg .= CHtml::tag('p', array(), gT("The token you have provided is not valid or has already been used."));
                 }
                 elseif (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && $lastanswfortoken != '')
                 {
-                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), $clang->gT("Error"));
-                    $errormsg .= CHtml::tag('p', array(), $clang->gT("There is already a recorded answer for this token"));
+                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+                    $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this token"));
 
                     if ($lastanswfortoken != 'PrivacyProtected')
                     {
-                        $errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n";
+                        $errormsg .= "<br /><br />".gT("Follow the following link to update it").":\n";
                         $errormsg .= CHtml::link("[id:$lastanswfortoken]",
                         $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
-                        array('title' => $clang->gT("Edit this entry")));
+                        array('title' => gT("Edit this entry")));
                         $errormsg .= "<br/><br/>";
                     }
                     else
                     {
-                        $errormsg .= "<br /><br />".$clang->gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
+                        $errormsg .= "<br /><br />".gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
                     }
                 }
                 else
@@ -1599,9 +1590,9 @@ class dataentry extends Survey_Common_Action
                             $password=$saver['password'];
                         }
                         $errormsg="";
-                        if (!$saver['identifier']) { $errormsg .= $clang->gT("Error").": ".$clang->gT("You must supply a name for this saved session.");}
-                        if (!$saver['password']) { $errormsg .= $clang->gT("Error").": ".$clang->gT("You must supply a password for this saved session.");}
-                        if ($saver['password'] != $saver['passwordconfirm']) { $errormsg .= $clang->gT("Error").": ".$clang->gT("Your passwords do not match.");}
+                        if (!$saver['identifier']) { $errormsg .= gT("Error").": ".gT("You must supply a name for this saved session.");}
+                        if (!$saver['password']) { $errormsg .= gT("Error").": ".gT("You must supply a password for this saved session.");}
+                        if ($saver['password'] != $saver['passwordconfirm']) { $errormsg .= gT("Error").": ".gT("Your passwords do not match.");}
 
                         $aData['errormsg'] = $errormsg;
 
@@ -1785,7 +1776,7 @@ class dataentry extends Survey_Common_Action
                         {
                             $scid =  getLastInsertID('{{saved_control}}');
 
-                            $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
+                            $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
                             //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
 
                             $tokens_table = "{{tokens_$surveyid}}";
@@ -1812,7 +1803,7 @@ class dataentry extends Survey_Common_Action
                                 VALUES
                                 (".implode(',',$values).")";
                                 dbExecuteAssoc($SQL);
-                                $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("A token entry for the saved survey has been created too."));
+                                $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A token entry for the saved survey has been created too."));
                                 //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
                             }
                             if ($saver['email'])
@@ -1820,20 +1811,21 @@ class dataentry extends Survey_Common_Action
                                 //Send email
                                 if (validateEmailAddress($saver['email']) && !returnGlobal('redo'))
                                 {
-                                    $subject = $clang->gT("Saved Survey Details");
-                                    $message = $clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+                                    $subject = gT("Saved Survey Details");
+                                    $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                                     $message .= "\n\n".$thissurvey['name']."\n\n";
-                                    $message .= $clang->gT("Name").": ".$saver['identifier']."\n";
-                                    $message .= $clang->gT("Password").": ".$saver['password']."\n\n";
-                                    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):").":\n";
-                                    $message .= Yii::app()->getConfig('publicurl')."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&lang=".urlencode($saver['language'])."&loadname=".urlencode($saver['identifier'])."&loadpass=".urlencode($saver['password']);
-                                    if (isset($tokendata['token'])) { $message .= "&token=".$tokendata['token']; }
+                                    $message .= gT("Name").": ".$saver['identifier']."\n";
+                                    $message .= gT("Password").": ".$saver['password']."\n\n";
+                                    $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
+                                    $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($saver['identifier'])."/loadpass/".rawurlencode ($saver['password'])."/lang/".rawurlencode($saver['language']));
+                                    if (isset($tokendata['token'])) { $message .= "/token/".rawurlencode($tokendata['token']); }
+
                                     $from = $thissurvey['adminemail'];
 
                                     if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
                                     {
                                         $emailsent="Y";
-                                        $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("An email has been sent with details about your saved survey"));
+                                        $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("An email has been sent with details about your saved survey"));
                                     }
                                 }
                             }
@@ -1874,7 +1866,7 @@ class dataentry extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
         {
-            $clang = Yii::app()->lang;
+
 
             $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
             $surveyinfo=getSurveyInfo($surveyid);
@@ -1886,10 +1878,8 @@ class dataentry extends Survey_Common_Action
             if(is_null($lang) || !in_array($lang,$slangs))
             {
                 $sDataEntryLanguage = $baselang;
-                $blang = $clang;
+                $blang = App()->language;
             } else {
-                Yii::app()->loadLibrary('Limesurvey_lang',array($lang));
-                $blang = new Limesurvey_lang($lang);
                 $sDataEntryLanguage = $lang;
             }
 
@@ -1987,9 +1977,6 @@ class dataentry extends Survey_Common_Action
                     $cdata['bgc'] = $bgc;
                     $cdata['fieldname'] = $fieldname;
                     $cdata['deqrow'] = $deqrow;
-                    $cdata['clang'] = $clang;
-
-                    //DIFFERENT TYPES OF DATA FIELD HERE
                     $cdata['blang'] = $blang;
 
                     $cdata['thissurvey'] = $thissurvey;
@@ -2119,7 +2106,7 @@ class dataentry extends Survey_Common_Action
                         case "R": //RANKING TYPE QUESTION
                             $thisqid=$deqrow['qid'];
                             $ansquery = "SELECT * FROM {{answers}} WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $ansresult = dbExecuteAssoc($ansquery);    
+                            $ansresult = dbExecuteAssoc($ansquery);
                             $ansresult = $ansresult->readAll();
                             $anscount = count($ansresult);
 
@@ -2149,7 +2136,7 @@ class dataentry extends Survey_Common_Action
                             }
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = dbExecuteAssoc($meaquery);
-                            
+
                             $cdata['mearesult'] = $mearesult->readAll();
                             $meacount = count($cdata['mearesult']);
                             $cdata['meacount'] = $meacount;
@@ -2358,13 +2345,12 @@ class dataentry extends Survey_Common_Action
     * This is a duplicate of the array_filter_help function in printablesurvey.php
     */
     private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
-        $clang = $this->getController()->lang;
         $output = "";
         if(!empty($qidattributes['array_filter']))
         {
             $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
             $output .= "\n<p class='extrahelp'>
-            ".sprintf($clang->gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
+            ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
             </p>\n";
         }
         if(!empty($qidattributes['array_filter_exclude']))
@@ -2372,7 +2358,7 @@ class dataentry extends Survey_Common_Action
             $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
 
             $output .= "\n    <p class='extrahelp'>
-            ".sprintf($clang->gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
+            ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
             </p>\n";
         }
         return $output;

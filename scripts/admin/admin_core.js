@@ -14,6 +14,11 @@
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
+/* Set a variable to test if browser have HTML5 form ability
+ * Need to be replaced by some polyfills see #8009
+ */
+hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
+linksInDialog();
 $(document).ready(function(){
     initializeAjaxProgress();
     tableCellAdapters();
@@ -27,14 +32,14 @@ $(document).ready(function(){
                 changeYear: true,
                 changeMonth: true,
                 duration: 'fast'
-            }, $.datepicker.regional[userlanguage]);
+            }, $.datepicker.regional[LS.data.language]);
         });
         $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',
             showOn: 'button',
             changeYear: true,
             changeMonth: true,
             duration: 'fast'
-        }, $.datepicker.regional[userlanguage]);
+        }, $.datepicker.regional[LS.data.language]);
     }
     $(".sf-menu").superfish({speed: 'fast'});
     doToolTip();
@@ -82,7 +87,16 @@ $(document).ready(function(){
     $('#MaximizeGroupWindow').click(function(){
         $('#groupdetails').show();
     });
-    $('#tabs').tabs();
+    $('#tabs').tabs({
+        activate: function(event, ui) {
+            if(history.pushState) {
+                history.pushState(null, null, '#'+ui.newPanel.attr('id'));
+            }
+            else {
+                location.hash = ui.newPanel.attr('id');
+            }
+        }
+    });
     $('.tab-nav').tabs();
     $(".flashmessage").each(function() {
         $(this).notify().notify('create','themeroller',{},{custom:true,
@@ -101,17 +115,17 @@ $(document).ready(function(){
         */
        qTypeDropdownInit();
         $("#question_type").change(function(event){
-            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
-            OtherSelection(selected_value);
+            OtherSelection(this.value);
         });
+        $("#question_type").change();
     }
-    $("#question_type.none").change(function(event){
-        var selected_value = $("#question_type").val();
-        OtherSelection(selected_value);
-    });
-
-
-
+    else
+    {
+        $("#question_type.none").change(function(event){
+            OtherSelection(this.value);
+        });
+        $("#question_type.none").change();
+    }
 });
 
 function qTypeDropdownInit()
@@ -139,9 +153,9 @@ function qTypeDropdownInit()
     });
     $(document).ready(function() {
         $('body').on('mouseenter mouseleave', 'li.questionType', function(e) {
-            if (e.type = 'mouseenter')
+            if (e.type == 'mouseenter')
             {
-                // Hide all others if we show a new one.
+				// Hide all others if we show a new one.
                 $('#question_type option').qtip('hide');
                 $($(e.currentTarget).data().select2Data.element).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
             }
@@ -151,6 +165,9 @@ function qTypeDropdownInit()
             }
             
             
+        });
+        $('#question_type').on('close', function(e) {
+            $('#question_type option').qtip('hide');
         });
     });
 }
@@ -192,8 +209,7 @@ function updatequestionattributes()
     if (selected_value==undefined) selected_value = $("#question_type").val();
     $('#advancedquestionsettings').load(attr_url,{qid:$('#qid').val(),
         question_type:selected_value,
-        sid:$('#sid').val(),
-        'YII_CSRF_TOKEN':yii_csrf
+        sid:$('#sid').val()
     }, function(){
         // Loads the tooltips for the toolbars
 
@@ -246,28 +262,33 @@ function doToolTip()
                     at: "top right"
                 }
             });
+            $(this).children("a").children("img").removeAttr('title');
         }
     });
-    $(".sf-menu a > img[alt]").removeAttr("alt");
+    $(".sf-menu a > img[alt]").data("hasqtip", true ).parent("a").data("hasqtip", true );
     $("a").each(function() {
-        tipcontent=$(this).children("img").attr('alt');
-        if(!tipcontent){tipcontent=$(this).attr('title');}
-        if(tipcontent && tipcontent!=""){
-            $(this).qtip({
-                content: {
-                    text: tipcontent
-                },
-                style: {
-                    classes: "qtip-light qtip-rounded"
-                },
-                position: {
-                    viewport: $(window),
-                    at: 'bottom right'
-                }
-            });
+        if(!$(this).data("hasqtip"))// data-hasqtip not in DOM, then need to be tested directly (:not([data-hasqtip]) don't work)
+        {
+            tipcontent=$(this).children("img").attr('alt');
+            if(!tipcontent){tipcontent=htmlEncode($(this).attr('title'));}
+            if(tipcontent && tipcontent!=""){
+                $(this).qtip({
+                    content: {
+                        text: tipcontent
+                    },
+                    style: {
+                        classes: "qtip-light qtip-rounded"
+                    },
+                    position: {
+                        viewport: $(window),
+                        at: 'bottom right'
+                    }
+                });
+            }
+            $(this).removeAttr('title');
         }
     });
-    $("a > img[alt]").removeAttr("alt");
+    $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
     
     // Call the popuptip hover rel attribute
     $('.popuptip').each(function(){
@@ -292,13 +313,13 @@ function doToolTip()
                     event: "mouseout"
                 }
             });
-            $("#"+$(this).attr('rel')).find("img").removeAttr("alt"); // Remove children img attr alt, the  default tooltip can apply.
+            $("#"+$(this).attr('rel')).find("img").data("hasqtip", true ).removeAttr('title');
         }
     });
     // On label
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
-            {
+        {
             $(this).qtip({
                 style: {
                     classes: "qtip-cream qtip-rounded"
@@ -311,8 +332,22 @@ function doToolTip()
         }
     });
     // Loads the tooltips on image
-    $('img[alt],input[src]').each(function() {
-        if($(this).attr('alt') != ''){
+    $('img[title]').each(function() {
+        if($(this).attr('title') != '')
+        {
+            $(this).qtip({
+                style: {
+                    classes: "qtip-light qtip-rounded"
+                },
+                position: {
+                    viewport: $(window),
+                    at: "bottom right"
+                }
+            });
+        }
+    });
+    $('img[alt]:not([title]),input[src]').each(function() {
+        if($(this).attr('alt') != '' && !$(this).data("hasqtip")){
             $(this).qtip({
                 content: {
                     attr: "alt"
@@ -351,9 +386,11 @@ function doToolTip()
             });
         }
     });
-
 }
-
+// A function to encode any HTML for qtip
+function htmlEncode(html){
+  return $('<div/>').text(html).html();
+}
 // If the length of the element's string is 0 then display helper message
 function isEmpty(elem, helperMsg)
 {
@@ -434,36 +471,6 @@ function trim(stringToTrim) {
     return stringToTrim.replace(/^\s+|\s+$/g,"");
 }
 
-function DoAdd()
-{
-    if (document.getElementById("available_languages").selectedIndex>-1)
-        {
-        var strText = document.getElementById("available_languages").options[document.getElementById("available_languages").selectedIndex].text;
-        var strId = document.getElementById("available_languages").options[document.getElementById("available_languages").selectedIndex].value;
-        AddItem(document.getElementById("additional_languages"), strText, strId);
-        RemoveItem(document.getElementById("available_languages"), document.getElementById("available_languages").selectedIndex);
-        sortSelect(document.getElementById("additional_languages"));
-        UpdateLanguageIDs();
-    }
-}
-
-function DoRemove(minItems,strmsg)
-{
-    var strText = document.getElementById("additional_languages").options[document.getElementById("additional_languages").selectedIndex].text;
-    var strId = document.getElementById("additional_languages").options[document.getElementById("additional_languages").selectedIndex].value;
-    if (document.getElementById("additional_languages").options.length>minItems)
-        {
-        AddItem(document.getElementById("available_languages"), strText, strId);
-        RemoveItem(document.getElementById("additional_languages"), document.getElementById("additional_languages").selectedIndex);
-        sortSelect(document.getElementById("available_languages"));
-        UpdateLanguageIDs();
-    }
-    else
-        if (strmsg!=''){alert(strmsg);}
-}
-
-
-
 function AddItem(objListBox, strText, strId)
 {
     var newOpt;
@@ -490,28 +497,6 @@ function GetItemIndex(objListBox, strId)
         }
     }
     return -1;
-}
-
-
-function UpdateLanguageIDs(mylangs,confirmtxt)
-{
-    document.getElementById("languageids").value = '';
-
-    var lbBox = document.getElementById("additional_languages");
-    for (var i = 0; i < lbBox.options.length; i++)
-        {
-        document.getElementById("languageids").value = document.getElementById("languageids").value + lbBox.options[i].value+ ' ';
-    }
-    if (mylangs)
-        {
-        if (checklangs(mylangs))
-            {
-            return true;
-        } else
-            {
-            return confirm(confirmtxt);
-        }
-    }
 }
 
 function compareText (option1, option2) {
@@ -624,6 +609,11 @@ function htmlspecialchars (string, quote_style, charset, double_encode) {
     if (typeof quote_style === 'undefined' || quote_style === null) {
         quote_style = 2;
     }
+    // Not form phpjs: added because in some condition : subquestion can send null for string
+    // subquestion js use inline javascript function
+    if (typeof string === 'undefined' || string === null) {
+        string="";
+    }
     string = string.toString();    if (double_encode !== false) { // Put this first to avoid double-encoding
         string = string.replace(/&/g, '&amp;');
     }
@@ -665,6 +655,7 @@ jQuery.fn.center = function () {
 }
 
 // Fix broken substr function with negative start value (in older IE)
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
 if ('ab'.substr(-1) != 'b') {
 	String.prototype.substr = function(substr) {
 		return function(start, length) {
@@ -677,18 +668,45 @@ if ('ab'.substr(-1) != 'b') {
 /**
 * Yii CSRF protection divs breaks this script so this function moves the 
 * hidden CSRF field out of the div and remove it if needed
-* 
+* 140207 : Why this function is needed ? Where is the script broken ?
 */
 function removeCSRFDivs()
 {
     $('input[name=YII_CSRF_TOKEN]').each(function(){
-       parent = $(this).parent();
-       grandfather = $(parent).parent();
-       grandfather.append(this);
-       parent.remove();
+       var parent = $(this).parent();
+       var grandfather = $(parent).parent();
+       $(grandfather).append(this);
+       $(parent).remove();
     });
 }
 
+function linksInDialog()
+{
+    $(function () {
+        var iframe = $('<iframe id="dialog" allowfullscreen></iframe>');
+        var dialog = $("<div></div>").append(iframe).appendTo("body").dialog({
+            autoOpen: false,
+            modal: false,
+            resizable: true,
+            width: "60%",
+            height: $(window).height()*0.6,
+            close: function () {
+                iframe.attr("src", "");
+            }
+        });
+        $(document).on('click','a[target=dialog]',function(event){
+            event.preventDefault();
+            var src = $(this).attr("href");
+            var title = $(this).attr("title");
+            if(!title && $(this).children("img[alt]"))
+                title = $(this).children("img[alt]").attr("alt");
+            iframe.attr({
+                src: src,
+            });
+            dialog.dialog("option", "title", title).dialog("open");
+        });
+    });
+}
 function initializeAjaxProgress()
 {
     $('#ajaxprogress').dialog({
@@ -744,8 +762,7 @@ function sendPost(myaction,checkcode,arrayparam,arrayval)
     var $form = $("<form method='POST'>").attr("action", myaction);
     for (var i = 0; i < arrayparam.length; i++)
         $("<input type='hidden'>").attr("name", arrayparam[i]).attr("value", arrayval[i]).appendTo($form);
-    if(typeof csrfToken =="string")
-        $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", csrfToken).appendTo($form);
+    $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", LS.data.csrfToken).appendTo($form);
     $form.appendTo("body");
     $form.submit();
 }
@@ -758,4 +775,8 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
 // @license-end

@@ -227,6 +227,7 @@ class ExpressionManager {
 'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
 'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
 'tan' => array('tan', 'Math.tan', gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
+'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
 'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
 'trim' => array('trim', 'trim', gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
 'ucwords' => array('ucwords', 'ucwords', gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
@@ -268,28 +269,30 @@ class ExpressionManager {
             $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-        // Set bothnumeric only if set to numeric
-        // Not sure if needed to test if [2] is set. : TODO review
-        $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
-        $bNumericArg1 = ((is_numeric($arg1[0]) || $arg1[0] == '') && (!isset($arg1[2]) || !in_array($arg1[2],$aForceStringArray)) );
-        $bNumericArg2 = ((is_numeric($arg2[0]) || $arg2[0] == '') && (!isset($arg2[2]) || !in_array($arg2[2],$aForceStringArray)) );
 
-        $bStringArg1 = !$bNumericArg1 || $arg1[0] == '';
-        $bStringArg2 = !$bNumericArg2 || $arg2[0] == '';
+        $bNumericArg1 = (is_numeric($arg1[0]) || $arg1[0] == '');
+        $bNumericArg2 = (is_numeric($arg2[0]) || $arg2[0] == '');
+
+        $bStringArg1 = (!$bNumericArg1 || $arg1[0] == '');
+        $bStringArg2 = (!$bNumericArg2 || $arg2[0] == '');
+
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
-
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType=(!$bBothNumeric && !$bBothString);
-        // In javascript : qCode are forced to numeric if possible: then compare code A3 with 3 allways return false. Mimic this in PHP
-#        if($bMismatchType){// If mismatch type : test if arg1 and arg2 is forced to be a number (entred by user, numeric question return)
-#            if(!((isset($arg2[2]) && $arg2[2]=='NUMBER') || (isset($arg1[2]) && $arg1[2]=='NUMBER')))
-#            {
-#                $bBothString=true;
-#                $bMismatchType=false;
-#                $arg1[0]=strval($arg1[0]);
-#                $arg2[0]=strval($arg2[0]);
-#            }
-#        }
+
+        // Set bBothString if one is forced to be string, only if bith can be numeric. Mimic JS and PHO
+        // Not sure if needed to test if [2] is set. : TODO review
+        if($bBothNumeric){
+            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
+            if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
+            {
+                $bBothNumeric=false;
+                $bBothString=true;
+                $bMismatchType=false;
+                $arg1[0]=strval($arg1[0]);
+                $arg2[0]=strval($arg2[0]);
+            }
+        }
         switch(strtolower($token[0]))
         {
             case 'or':
@@ -587,14 +590,6 @@ class ExpressionManager {
                             $result = array(NULL,$token[1],'NUMBER');   // was 0 instead of NULL
                         }
                         $this->RDP_StackPush($result);
-
-                        // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
-                        $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
-                        if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
-                        {
-                            $this->RDP_AddError(gT("Variable not declared until a later page"),$token);
-                            return false;
-                        }
                         return true;
                     }
                     else
@@ -1159,7 +1154,7 @@ class ExpressionManager {
         }
         return array_unique($jsNames);
     }
-    
+
     /**
      * Return the list of all of the JavaScript variables used by the most recent expression
      * @return <type>
@@ -1241,7 +1236,6 @@ class ExpressionManager {
             return '';
         }
         $tokens = $this->RDP_tokens;
-        // TODOSHNOULLE
         $stringParts=array();
         $numTokens = count($tokens);
         for ($i=0;$i<$numTokens;++$i)
@@ -1292,7 +1286,7 @@ class ExpressionManager {
                         }
                         else
                         {
-                            $stringParts[] = is_numeric($code) ? $code : ("'" . addcslashes($code,"'") . "'"); // htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . "'");
+                            $stringParts[] = "'" . addcslashes($code,"'") . "'";
                         }
                     }
                     break;
@@ -1415,20 +1409,22 @@ class ExpressionManager {
         $tokens = $this->RDP_tokens;
         $errCount = count($errs);
         $errIndex = 0;
+        $aClass=array();
         if ($errCount > 0)
         {
             usort($errs,"cmpErrorTokens");
         }
-        $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
         $stringParts=array();
         $numTokens = count($tokens);
         $globalErrs=array();
+        $bHaveError=false;
         while ($errIndex < $errCount)
         {
             if ($errs[$errIndex++][1][1]==0)
             {
                 // General message, associated with position 0
                 $globalErrs[] = $errs[$errIndex-1][0];
+                $bHaveError=true;
             }
             else
             {
@@ -1453,17 +1449,18 @@ class ExpressionManager {
             }
             if ($thisTokenHasError)
             {
-                $stringParts[] = "<span title='" . implode('; ',$messages) . "' " . $errSpecificStyle . ">";
+                $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-error'>";
+                $bHaveError=true;
             }
             switch ($token[2])
             {
                 case 'DQ_STRING':
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>\"";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-var-string'>\"";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "\"</span>";
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>'";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-var-string'>'";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "'</span>";
                     break;
@@ -1477,7 +1474,7 @@ class ExpressionManager {
                             $messages[] = $funcInfo[2];
                             $messages[] = $funcInfo[3];
                         }
-                        $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: blue; font-weight: bold'>";
+                        $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-function' >";
                         $stringParts[] = $token[0];
                         $stringParts[] = "</span>";
                     }
@@ -1485,7 +1482,7 @@ class ExpressionManager {
                     {
                         if (!$this->RDP_isValidVariable($token[0]))
                         {
-                            $color = 'red';
+                            $class = 'em-var-error';
                             $displayName = $token[0];
                         }
                         else
@@ -1535,70 +1532,51 @@ class ExpressionManager {
                                 $descriptor .= ': ';
                             }
 
-                            if (version_compare(phpversion(), "5.2.3")>=0)
+                            $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
+                            if ($ansList != '')
                             {
-                                // 4th parameter to htmlspecialchars only became available in PHP version 5.2.3
-                                $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
-                                if ($ansList != '')
-                                {
-                                    $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
+                                $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
+                            }
+                            if ($code != '') {
+                                if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
+                                    $shown = $this->GetVarAttribute($token[0], 'shown', '');
+                                    $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
+                                            . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
                                 }
-                                if ($code != '') {
-                                    if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                        $shown = $this->GetVarAttribute($token[0], 'shown', '');
-                                        $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
-                                                . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
-                                    }
-                                    else {
-                                        $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
-                                    }
+                                else {
+                                    $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
                                 }
                             }
-                            else
-                            {
-                                $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8');
-                                if ($ansList != '')
-                                {
-                                    $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8');
-                                }
-                                if ($code != '') {
-                                    if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                        $shown = $this->GetVarAttribute($token[0], 'shown', '');
-                                        $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8') . '] '
-                                                . htmlspecialchars($shown,ENT_QUOTES,'UTF-8');
-                                    }
-                                    else {
-                                        $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8');
-                                    }
-                                }
-                            }
+
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
-                                $color = '#996600'; // tan
+                                $class = 'em-var-static'; 
                             }
-                            else if ($groupSeq > $this->groupSeq) {
-                                $color = '#FF00FF ';     // pink a likely error
+                            elseif ($groupSeq > $this->groupSeq) {
+                                $class = 'em-var-before em-var-diffgroup';
                             }
-                            else if ($groupSeq < $this->groupSeq) {
-                                $color = 'green';
+                            elseif ($groupSeq < $this->groupSeq) {
+                                $class = 'em-var-after ';
                             }
-                            else if ($questionSeq > $this->questionSeq) {
-                                $color = 'maroon';  // #228b22 - warning
+                            elseif ($questionSeq > $this->questionSeq) {
+                                $class = 'em-var-before em-var-inpage';
                             }
                             else {
-                                $color = '#4C88BE';    // cyan that goes well with the background color
+                                $class = 'em-var-after em-var-inpage';
                             }
                         }
                         // prevent EM prcessing of messages within span
                         $message = implode('; ',$messages);
                         $message = str_replace(array('{','}'), array('{ ', ' }'), $message);
 
-                        $stringParts[] = "<span title='"  . $message . "' style='color: ". $color . "; font-weight: bold'";
-                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
-                            // Modify this link to utilize a different framework
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0)
+                        {
                             $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
-                            $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
+                            $stringParts[] = "<a title='{$message}' class='em-var {$class}' href='{$editlink}' >";
                         }
-                        $stringParts[] = ">";
+                        else
+                        {
+                            $stringParts[] = "<span title='"  . $message . "' class='em-var {$class}' >";
+                        }
                         if ($this->sgqaNaming)
                         {
                             $sgqa = substr($jsName,4);
@@ -1613,12 +1591,19 @@ class ExpressionManager {
                         {
                             $stringParts[] = $displayName;
                         }
-                        $stringParts[] = "</span>";
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0)
+                        {
+                            $stringParts[] = "</a>";
+                        }
+                        else
+                        {
+                            $stringParts[] = "</span>";
+                        }
                     }
                     break;
                 case 'ASSIGN':
                     $messages[] = 'Assigning a new value to a variable';
-                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: red; font-weight: bold'>";
+                    $stringParts[] = "<span title='" . implode('; ',$messages) . "' class='em-assign'>";
                     $stringParts[] = $token[0];
                     $stringParts[] =  "</span>";
                     break;
@@ -1640,7 +1625,14 @@ class ExpressionManager {
                 ++$errIndex;
             }
         }
-        return "<span style='background-color: #eee8aa;'>" . implode('', $stringParts) . "</span>";
+        if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+        {
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+        }
+        $sClass='em-expression';
+        $sClass.=($bHaveError)?" em-haveerror":"";
+        return "<span class='$sClass'>" . implode('', $stringParts) . "</span>";
     }
 
     /**
@@ -1891,8 +1883,15 @@ class ExpressionManager {
                 }
                 else
                 {
-                    // show original and errors in-line
-                    $resolvedPart = $this->GetPrettyPrintString();
+                    // show original and errors in-line only if user have the rigth to update survey content
+                    if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
+                    {
+                        $resolvedPart = $this->GetPrettyPrintString();
+                    }
+                    else
+                    {
+                        $resolvedPart = '';
+                    }
                     $allErrors[] = $this->GetErrors();
                 }
                 $onpageJsVarsUsed = $this->GetOnPageJsVarsUsed();
@@ -2009,7 +2008,7 @@ class ExpressionManager {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs)
                     {
-                        $this->RDP_AddError(sprintf(ngT("Function must have at least %s argument","Function must have at least %s arguments",$minArgs), $minArgs), $funcNameToken);
+                        $this->RDP_AddError(sprintf(Yii::t("Function must have at least %s argument|Function must have at least %s arguments",$minArgs), $minArgs), $funcNameToken);
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
@@ -2154,10 +2153,10 @@ class ExpressionManager {
      */
     public function asSplitStringOnExpressions($src)
     {
-         
+
         $parts = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
-        
-        
+
+
         $count = count($parts);
         $tokens = array();
         $inSQString=false;
@@ -2375,43 +2374,57 @@ class ExpressionManager {
     }
 
     /**
-     * Split the source string into tokens, removing whitespace, and categorizing them by type.
-     *
-     * @param $src
-     * @return array
-     */
-
-    private function RDP_Tokenize($src)
+    * Public call of RDP_Tokenize
+    *
+    * @param string $sSource : the string to tokenize
+    * @param bool $bOnEdit : on edition, actually don't remove space
+    * @return array
+    */
+    public function Tokenize($sSource,$bOnEdit)
     {
-        // $tokens0 = array of tokens from equation, showing value and offset position.  Will include SPACE, which should be removed
-        $tokens0 = preg_split($this->RDP_TokenizerRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        return $this->RDP_Tokenize($sSource,$bOnEdit);
+    }
 
-        // $tokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE, but will contain OTHER
-        $tokens = array();
+    /**
+    * Split the source string into tokens, removing whitespace, and categorizing them by type.
+    *
+    * @param string $sSource : the string to tokenize
+    * @param bool $bOnEdit : on edition, actually don't remove space
+    * @return array
+    */
+    private function RDP_Tokenize($sSource,$bOnEdit=false)
+    {
+        // $aInitTokens = array of tokens from equation, showing value and offset position.  Will include SPACE.
+        if($bOnEdit)
+            $aInitTokens = preg_split($this->RDP_TokenizerRegex,$sSource,-1,(PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        else
+            $aInitTokens = preg_split($this->RDP_TokenizerRegex,$sSource,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+
+        // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
+        $aTokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
-        for ($j=0;$j<count($tokens0);++$j)
+        for ($j=0;$j<count($aInitTokens);++$j)
         {
             for ($i=0;$i<count($this->RDP_CategorizeTokensRegex);++$i)
             {
-                $token = $tokens0[$j][0];
-                if (preg_match($this->RDP_CategorizeTokensRegex[$i],$token))
+                $sToken = $aInitTokens[$j][0];
+                if (preg_match($this->RDP_CategorizeTokensRegex[$i],$sToken))
                 {
-                    if ($this->RDP_TokenType[$i] !== 'SPACE') {
-                        $tokens0[$j][2] = $this->RDP_TokenType[$i];
+                    if ($this->RDP_TokenType[$i] !== 'SPACE' || $bOnEdit) {
+                        $aInitTokens[$j][2] = $this->RDP_TokenType[$i];
                         if ($this->RDP_TokenType[$i] == 'DQ_STRING' || $this->RDP_TokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
-//                            $unquotedToken = str_replace(array('\"',"\'","\\\\",'\n','\r','\t'),array('"',"'",'\\',"\n","\n","\t"),substr($token,1,-1));
-                            $unquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($token,1,-1));
-                            $tokens0[$j][0] = $unquotedToken;
+                            $sUnquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($sToken,1,-1));
+                            $aInitTokens[$j][0] = $sUnquotedToken;
                         }
-                        $tokens[] = $tokens0[$j];   // get first matching non-SPACE token type and push onto $tokens array
+                        $aTokens[] = $aInitTokens[$j];   // get first matching non-SPACE token type and push onto $tokens array
                     }
                     break;  // only get first matching token type
                 }
             }
         }
-        return $tokens;
+        return $aTokens;
     }
 
 
@@ -2561,6 +2574,52 @@ function exprmgr_sumifop($args)
 }
 
 /**
+ * Find the closest matching numerical input values in a list an replace it by the
+ * corresponding value within another list 
+ * 
+ * @author Johannes Weberhofer, 2013
+ *
+ * @param numeric $fValueToReplace
+ * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the 
+ * 		  closest value should be returned
+ * @param string $sTranslateFromList - comma seperated list of numeric values to translate from
+ * @param string $sTranslateToList - comma seperated list of numeric values to translate to
+ * @return numeric
+ */
+function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList) 
+{
+	if ( (is_numeric($fValueToReplace)) && ($iStrict!=null) && ($sTranslateFromList!=null) && ($sTranslateToList!=null) ) 
+	{
+		$aFromValues = explode( ',', $sTranslateFromList);
+		$aToValues = explode( ',', $sTranslateToList);
+		if ( (count($aFromValues) > 0)  && (count($aFromValues) == count($aToValues)) )
+		{
+			$fMinimumDiff = null;
+			$iNearestIndex = 0;
+			for ( $i = 0; $i < count($aFromValues); $i++) {
+				if ( !is_numeric($aFromValues[$i])) {
+					// break processing when non-numeric variables are about to be processed
+					return null;
+				}
+				$fCurrentDiff = abs($aFromValues[$i] - $fValueToReplace);
+				if ($fCurrentDiff === 0) {
+					return $aToValues[$i];
+				} else if ($i === 0) {
+					$fMinimumDiff = $fCurrentDiff;
+				} else if ( $fMinimumDiff > $fCurrentDiff ) {
+					$fMinimumDiff = $fCurrentDiff;
+					$iNearestIndex = $i;
+				}
+			}					
+			if ( $iStrict !== 1 ) {
+				return $aToValues[$iNearestIndex];
+			}
+		}
+	}
+	return null;
+}
+
+/**
  * If $test is true, return $ok, else return $error
  * @param <type> $test
  * @param <type> $ok
@@ -2580,14 +2639,17 @@ function exprmgr_if($test,$ok,$error)
 }
 
 /**
- * Return true if the variable is an integer
+ * Return true if the variable is an integer for LimeSurvey
+ * Can not really use is_int due to SQL DECIMAL system
  * @param string $arg
  * @return boolean
- * @link http://www.php.net/manual/en/function.is-int.php#87670
+ * @link http://php.net/is_int#82857
  */
 function exprmgr_int($arg)
 {
-    return ($arg !== true) && ((string)(int) $arg) === ((string) $arg);
+    if(strpos($arg,"."))
+        $arg=preg_replace("/\.$/","",rtrim(strval($arg),"0"));// DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
+    return (ctype_digit($arg));// Accept empty value too before PHP 5.1 see http://php.net/ctype-digit#refsect1-function.ctype-digit-changelog
 }
 /**
  * Join together $args[0-N] with ', '

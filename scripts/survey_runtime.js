@@ -22,6 +22,9 @@ $(document).ready(function()
     navbuttonsJqueryUi();
     showStartPopups();
     addClassEmpty();
+    noScrollOnSelect();
+    doToolTipTable();
+
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
@@ -29,9 +32,6 @@ $(document).ready(function()
     {
         $(focus_element).focus();
     }
-    $(".question").find("select").each(function () {
-        hookEvent($(this).attr('id'),'mousewheel',noScroll);
-    });
 
     // Keypad functions
     var kp = $("input.num-keypad");
@@ -75,27 +75,27 @@ $(document).ready(function()
  * setJsVar : Get all global used var
  */
 function setJsVar(){
-    if (typeof LSvar!="undefined" && LSvar instanceof Object == false) {
-      bFixNumAuto=1;
-      bNumRealValue=0;
-      LEMradix=".";
-    }
-    else {
-      bFixNumAuto=LSvar.bFixNumAuto;
-      bNumRealValue=LSvar.bNumRealValue;
-      LEMradix=LSvar.sLEMradix;
-    }
+    bFixNumAuto=LSvar.bFixNumAuto;
+    bNumRealValue=LSvar.bNumRealValue;
+    LEMradix=LSvar.sLEMradix;
     numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
 }
 // Deactivate all other button on submit
 function limesurveySubmitHandler(){
-    $(document).on("click",".disabled",function(){return false;});
-    $(document).on('click',"button[type='submit'],a.button", function(event){
-        $("button[type='submit']").not($(this)).prop('disabled',true);
-        $("a.button").not($(this)).addClass('disabled');
+    // Return false disallow all other system
+    $(document).on("click",".disabled",function(){return false});
+    $(document).on("click",'.active',function(){return false;});// "[active]" don't seem to work with jquery-1.10.2
+
+    $(document).on('click',"#limesurvey .button", function(event){
+        if(!$("#limesurvey :invalid").length)
+        {
+            $(this).prop('active',true).addClass('active');
+            $("#limesurvey .button.ui-button" ).not($(this)).button( "option", "disabled", true );
+            $("#limesurvey .button").not($(this)).prop('disabled',true).addClass('disabled');
+        }
     });
-    if('v'=='\v'){ // Quick hack for IE6/7/ Alternative ? http://tanalin.com/en/articles/ie-version-js/ ?
+    if (document.all && !document.querySelector) { // IE7 or lower
         $(function() { 
             $("#defaultbtn").css('display','inline').css('width','0').css('height','0').css('padding','0').css('margin','0').css('overflow','hidden');
             $("#limesurvey [type='submit']").not("#defaultbtn").first().before($("#defaultbtn"));
@@ -106,22 +106,16 @@ function limesurveySubmitHandler(){
 
 // Ask confirmation on click on .needconfirm
 function needConfirmHandler(){
-    $(document).on('click',".confirm-needed", function(event){
-        text=$(this).attr('title');
+    $(document).on('click',"[data-confirmedby]", function(event){
+        text=$("label[for='"+$(this).data('confirmedby')+"']").text();
         if (confirm(text)) {
+            $("#"+$(this).data('confirmedby')).prop('checked',true);
             return true;
         }
+        $(".button.ui-button" ).button( "option", "disabled", false );
+        $(".button").prop('disabled',false).removeClass('disabled');
+        $(this).prop('active',false).removeClass('active');
         return false;
-    });
-    /* 130712 IE7 need this */
-    $(function() {
-    $("a.confirm-needed").click(function(e){
-        text=$(this).attr('title');
-        if (confirm(text)) {
-            return true;
-        }
-        return false;
-        });
     });
 }
 /**
@@ -155,6 +149,7 @@ function checkconditions(value, name, type, evt_type)
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
+
 /**
  * fixnum_checkconditions : javascript function attach to some element 
  * Update the answer of the user to be numeric and launch checkconditions
@@ -162,6 +157,10 @@ function checkconditions(value, name, type, evt_type)
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
     newval = new String(value);
+
+    /**
+     * If have to use parsed value.
+     */
     if(!bNumRealValue)
     {
         if (typeof intonly !=='undefined' && intonly==1) {
@@ -181,8 +180,43 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             newval = '';
         }
     }
+
+    /**
+     * If have to fix numbers automatically.
+     */    
     if(bFixNumAuto)
     {
+
+        /**
+         * Work on length of the number
+         * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator. 
+         */
+        var midval = newval;
+        var aNewval = midval.split('.');
+        var newval = '';
+        
+        // Treat integer part            
+        if (aNewval.length > 0) {                           
+            var intpart = aNewval[0];
+            newval = (intpart.length > 20) ? '99999999999999999999' : intpart;
+        }
+
+        // Treat decimal part, if there is one.             
+        // Trim after 10th decimal if larger than 10 decimals.
+        if (aNewval.length > 1) {                
+            var decpart = aNewval[1];
+            if (decpart.length > 10){       
+                decpart = decpart.substr(0,10);
+            }
+            else {
+                decpart = aNewval[1];                
+            }
+            newval = newval + "." + decpart;
+        }
+
+        /**
+         * Set display value
+         */ 
         displayVal = newval;
         if (LEMradix === ',') {
             displayVal = displayVal.split('.').join(',');
@@ -192,6 +226,10 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         }
         $('#answer'+name).val(displayVal);
     }
+
+    /**
+     * Check conditions
+     */
     if (typeof evt_type === 'undefined')
     {
         evt_type = 'onchange';
@@ -241,12 +279,35 @@ function showStartPopups(){
  */
 function activateLanguageChanger(){
     $(document).on('change','select.languagechanger', function() {
-        if(!$(this).closest('form').length){// If there are no form : we can't use it, we need to create and submit. This break no-js compatibility in some page (token for example).
+        if($(this).hasClass('previewmode'))
+        {
+            var target=$(this).data('targeturl');
             $('<form>', {
                 "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
-                "action": document.location.href
+                "action": target
             }).appendTo(document.body).submit();
+            return false;
+        }
+        if(!$(this).closest('form').length){// If there are no form : we can't use it, we need to create and submit. This break no-js compatibility in some page (token for example).
+            if($('form#limesurvey').length==1){ // The limesurvey form exist in document, move select and button inside and click
+                $("form#limesurvey [name='lang']").remove();// Remove existing lang selector
+                $("<input type='hidden']>").attr('name','lang').val($(this).find('option:selected').val()).appendTo($('form#limesurvey'));
+                $("#changelangbtn").appendTo($('form#limesurvey'));
+                $('#changelangbtn').click();
+            }else{
+                if($(this).data('targeturl')){
+                    var target=$(this).data('targeturl');
+                }else{
+                    var target=document.location.href;
+                }
+                $('<form>', {
+                    "html": '<input type="hidden" name="lang" value="' + $(this).find('option:selected').val() + '" />',
+                    "action": target,
+                    "method": 'post'
+                }).appendTo(document.body).append($("input[name='YII_CSRF_TOKEN']")).submit();
+            }
         }else{
+            $(this).closest('form').find("[name='lang']").not($(this)).remove();// Remove other lang
             $('#changelangbtn').click();
         }
     });
@@ -273,7 +334,7 @@ function manageIndex(){
     });
 }
 /**
- * Put a empty class on empty answer text item (limit to answers part)
+ * Put a empty class on empty answer text item (limit to answers part) 
  * @author Denis Chenu / Shnoulle
  */
 function addClassEmpty()
@@ -294,6 +355,16 @@ function addClassEmpty()
 	});
 }
 
+/**
+ * Disable scroll on select, put it in function to allow update in template
+ * 
+ */
+function noScrollOnSelect()
+{
+    $(".question").find("select").each(function () {
+        hookEvent($(this).attr('id'),'mousewheel',noScroll);
+    });
+}
 /**
  * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
  * Using delegate the can be outside document.ready (using .on is possible but on $(document) then : less readbale
@@ -514,5 +585,12 @@ function maxlengthtextarea(){
             // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
             return false;
         }
+    });
+}
+/* add a title on cell with answer */
+function doToolTipTable()
+{
+   $(document).on("mouseover"," td.answer-item",function(){
+        $( this).attr('title',$(this).find("label").text());
     });
 }

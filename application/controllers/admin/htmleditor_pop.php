@@ -29,7 +29,6 @@ class htmleditor_pop extends Survey_Common_Action
         $iGroupId = isset($_GET['gid']) ? $_GET['gid'] : 0;
         $iQuestionId = isset($_GET['qid']) ? $_GET['qid'] : 0;
         $sLanguage = isset($_GET['lang']) ? $_GET['lang'] : 0;
-        $aData['clang'] = $this->getController()->lang;
         $aData['sFieldName'] = $sFieldName;
         if (get_magic_quotes_gpc())
             $aData['sFieldText'] = $sFieldText = stripslashes($sFieldText);

@@ -56,7 +56,7 @@ div.htmleditor {
 
 .menubar select {
     margin-bottom: 0px;
-   
+
 }
 .qtip-questiontype {
     z-index: 100000;
@@ -123,12 +123,8 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     min-width: 6em;
     width:auto;
     margin-bottom: 0px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     font-size: 1em;
     line-height: 1.5;
-    height: 2em;
 }
 textarea,select[size]{
     height: auto;
@@ -150,12 +146,6 @@ label, legend {
     font-size: 1em;
 }
 
-/* fixing login form password/login height in IE */
-#loginform input { 
-    height: 26px;
-    
-}
-
 /* Make line spacing more compact for advanced question settings */
 li label {
     line-height: 1em;
@@ -171,16 +161,44 @@ div.ui-jqgrid-hbox input, div.ui-jqgrid-hbox input{
     height: auto;
     padding: 0 2px;
 }
+/* fix jqgrid pager width see bug #9555#c32072 */
+#pager_left{width:auto !important}
+
 /* Fix height of browsettable */
-.browsetable th .questiontext {
+#gview_displayresponses th .qcode {
     display: block;
-    height: 4em;
+    padding-right:16px; /* leave place for ordering arrow */
+    height: auto;
+}
+#gbox_displayresponses.ui-jqgrid .s-ico{
+ position:absolute;right:18px;top:0; /* The ordering arrow */
+}
+#gview_displayresponses th .questiontext {
+    display: block;
+    height: 2.5em;
     overflow: hidden;
 }
-
+#gbox_displayresponses.ui-jqgrid .ui-jqgrid-htable th div {
+     height: auto;
+}
+/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
+/* Myabe use a pseudo fixd-y solution is a good idea */
+.ui-jqgrid,.ui-jqgrid-view,.ui-jqgrid-titlebar,.ui-jqgrid-toppager,.ui-jqgrid-pager{
+    min-width:100%;
+    max-width:100%;
+    margin-right:0;margin-left:0;
+    box-sizing: border-box
+}
+.grid-wrapper{
+    max-width:100%;
+}
+#surveylist-wrapper{
+    overflow:hidden
+}
+.ui-tooltip.tooltip-text{min-width:15em}
 .templateeditor {
     float:left;
-    width:70%; 
+    width:70%;
     padding:1em;
 }
 
@@ -220,3 +238,25 @@ legend { line-height: normal; }
 .exporttip li { overflow: visible;}
 li input+label { display: inline;}
 #resultexport ol, #resultexport ul { margin: 0 0 10px 10px;}
+
+.hide {
+    display: none !important;
+}
+.hidden { /* Bootstarp 3 */
+  display: none !important;
+  visibility: hidden !important;
+}
+#deleteMode input{
+    margin-left:2em;
+}
+
+.conditionlist td.operator{
+    text-align:center; font-weight:bold;
+}
+
+#quotalist form{display:inline;}
+
+/* For Permissions settings */
+.mixed{opacity:0.4;}
+/* For the iframe in dialog */
+iframe#dialog{display:block; width:100%!important; height:100%!important;margin:0;padding:0;border:0}

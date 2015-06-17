@@ -19,14 +19,15 @@ class DocWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
+        App()->setLanguage($sLanguageCode);
 
         if ($oOptions->output=='display')
         {
             header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
             header("Content-type: application/vnd.ms-word");
         }
-        
-        
+
+
         $sOutput = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <style>
         table {
@@ -57,7 +58,7 @@ class DocWriter extends Writer
         if ($oOptions->answerFormat == 'short')
         {
             //No headers at all, only output values.
-            $this->output .= implode($this->separator, $values).PHP_EOL;          
+            $this->output .= implode($this->separator, $values).PHP_EOL;
         }
         elseif ($oOptions->answerFormat == 'long')
         {
@@ -70,15 +71,21 @@ class DocWriter extends Writer
             {
                 $this->output .= "<br clear='all' style='page-break-before:always'>";
             }
-            $this->output .= "<table><tr><th colspan='2'>".$this->translate('New Record', $this->languageCode)."</td></tr>".PHP_EOL;
+            $this->output .= "<table><tr><th colspan='2'>".gT("Survey response")."</td></tr>".PHP_EOL;
 
             $counter = 0;
             foreach ($headers as $header)
             {
-                $this->output .= "<tr><td>".$header."</td><td>".$values[$counter]."</td></tr>".PHP_EOL;
+                //if cell empty, output a space instead, otherwise the cell will be in 2pt font
+                $value = "&nbsp;";
+                if($values[$counter] != "")
+                {
+                    $value = $values[$counter];
+                }
+                $this->output .= "<tr><td>".$header."</td><td>".$value."</td></tr>".PHP_EOL;
                 $counter++;
             }
-            $this->output .= "</table>".PHP_EOL;           
+            $this->output .= "</table>".PHP_EOL;
         }
         else
         {

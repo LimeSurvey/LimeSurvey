@@ -1,4 +1,5 @@
 <?php
+namespace ls\pluginmanager;
 abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlugin {
            
     public function registerEvents() 

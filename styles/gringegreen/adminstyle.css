@@ -215,7 +215,7 @@ div.menubar .ui-widget-header
 }
 .menubar select {
     color: #333;
-    width: 200px;
+    width: 250px;
 }
 .menubar option.emphasis{
     font-weight:700
@@ -254,7 +254,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 
 .extra-action{
     float: right;
-    margin-top: -60px
+    margin: -73px 0.5% 0 0;
 }
 .outlinetable {
     border: 1px solid #111;
@@ -380,7 +380,7 @@ textarea {
 .annotation {
     font-size: 10px;
     color: #FF9D00;
-    vertical-align: top;    
+    vertical-align: top;
 }
 
 .errortitle {
@@ -502,6 +502,7 @@ th.admincell {
 
 .btnaddanswer,
 .btndelanswer,
+.btntogglerelevance,
 .header_statistics img {
     cursor:pointer;
 }
@@ -571,7 +572,6 @@ a.optoutemail {
     clear:left;
 }
 
-.ui-jqgrid-btable tr:hover td,
 .browsetable tr:hover {
     background-color: #C5D0F2;
 }
@@ -594,12 +594,16 @@ a.optoutemail {
 .edituser,
 .users,
 .assessmentlist,
-.listsurveys,
+.listtokenattributes,
 .surveysecurity {
     text-align:center;
     margin:0 auto;
 }
 
+.listtokenattributes td{
+    text-align:center;
+
+}
 
 .conditionlist table,
 #filterchoices
@@ -690,7 +694,7 @@ ul.assessmentscope li label:first-child {
     width:80%;
 }
 
-.listsurveys
+.listtokenattributes
 {
     width:70%;
 }
@@ -709,7 +713,7 @@ ul.assessmentscope li label:first-child {
 .edituser th,
 .surveysecurity th,
 .users th,
-.listsurveys th {
+.listtokenattributes th {
     background-color: #fff;
     text-align: center;
     font-size:0.8em;
@@ -743,7 +747,7 @@ ul.assessmentscope li label:first-child {
 
 .users td,
 .surveysecurity td,
-.listsurveys td {
+.listtokenattributes td {
     font-size:0.8em;
     padding:2px 6px;
 }
@@ -775,7 +779,7 @@ ul.assessmentscope li label:first-child {
 .answertable th {
     font-weight:bold;
     font-size: 8pt;
-    padding:3px;
+    padding:3px 3px 3px 1px;
 }
 
 .answertable tr {
@@ -951,6 +955,7 @@ table.statisticstable, table.statisticssummary {
     border-style: none;
     margin: 0 auto;
     margin-bottom:20px;
+    min-width:270px;
 }
 
 .statisticssummary thead th
@@ -1268,6 +1273,10 @@ textarea.updater-changelog {
     padding-bottom:7px;
 }
 
+#frmeditquestion li label {
+    display: inline-block;
+}
+
 #forgotpassword input#user, #forgotpassword input#email
 {
     width:18em;
@@ -1450,67 +1459,6 @@ div.right {
     width:210px;
 }
 
-/*.limebutton, input.limebutton*/
-/*{*/
-/*    outline: 0;*/
-/*    margin:1px 4px 1px 0;*/
-/*    padding: 1px 1em;*/
-/*    text-decoration:none !important;*/
-/*    cursor:pointer;*/
-/*    text-align: center;*/
-/*    zoom: 1;*/
-/*    border: 1px solid #CDF078;*/
-/*    background: #EFFBDB url(images/ui-bg_glass_100_effbdb_1x400.png) 50% 50%*/
-/*    repeat-x;*/
-/*}*/
-
-/*.limebutton.ui-state-hover*/
-/*{*/
-/*    border: 1px solid #94D200;*/
-/*}*/
-.limebutton
-{
-  display: inline-block;
-  *display: inline;
-  padding: 0.3em 1em;;padding: 0.3rem 1rem;
-  text-align: center;
-  vertical-align: middle;
-/*  font-weight:bold;*/
-  cursor: pointer;
-  border: 1px solid #bbbbbb;
-  *border: 0;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  *zoom: 1;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-.limebutton
-{
-  border-color: #CDF078;
-  border-color: rgba(205, 240, 120, 0.3) rgba(205, 240, 120, 0.3) rgba(205, 240, 120, 0.5);
-  color:#344c00;
-  background-color: #dfeffc;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#E0F4BD), to(#CEF078));
-  background-image: -webkit-linear-gradient(top, #E0F4BD, #CEF078);
-  background-image: -o-linear-gradient(top, #E0F4BD, #CEF078);
-  background-image: linear-gradient(to bottom, #E0F4BD, #CEF078);
-  background-image: -moz-linear-gradient(top, #E0F4BD, #CEF078);
-  background-repeat: repeat-x;
-  border-color: #CDF078 #CDF078 #7eb900;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffe0f4bd', endColorstr='#ffcef078', GradientType=0);
-  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
-}
-.limebutton:focus,.limebutton:hover,.limebutton:active
-{
-  background-position:0 -15px;
-  color: #444;
-  background-color: #CEF078;
-}
-
 #emailtemplates .ui-tabs-panel .limebutton {
     margin: 3px 20% 10px 30.5%;
 }
@@ -1555,6 +1503,15 @@ thead th
 .userpermissions th,
 .usersurveypermissions th{
     padding:0 2em;
+}
+.userpermissions td,
+.usersurveypermissions td {
+    padding: 0.2em 0.5em;
+    text-align:center;
+}
+.userpermissions input[type="checkbox"],
+.usersurveypermissions [type="checkbox"] {
+	margin: 0;
 }
 
 #responsedetail td{
@@ -1638,7 +1595,7 @@ ol.organizer {
 
 
 .organizer li div  {
-    background-color:#85BD00;
+    background: none repeat scroll 0 0 #85BD00;
     color:#fff;
     padding: 3px;
     margin: 0;
@@ -1677,15 +1634,42 @@ ol.organizer {
     font-size: 0.8em;
 }
 .labelsets-update label{display:block}
-.button-list{text-align:left}
+
+.button-list{
+	margin-top: 1em;
+	text-align:left
+}
+
+#saveaslabel p {
+	padding: 0;
+    text-align:left
+}
+
+#saveaslabel p.label-name-wrapper {
+	margin-top: -10px;
+}
+
 #gbox_displaysurveys{ margin:0 auto;}
 
-.ui-jqgrid tr.jqgrow {
-    background-color:#fff;
+
+
+.ui-jqgrid .ui-jqgrid-htable th div {
+    height: 22px;
+}
+
+.ui-jqgrid .ui-icon-asc {
+    margin-left: 1px;
 }
 
 .ui-jqgrid tr.ui-row-ltr td {
-    border:none !important;
+}
+
+ui-jqgrid-btable table, .ui-pg-table table{
+    border-collapse: separate;
+}
+
+.ui-jqgrid .ui-pg-selbox {
+    height: auto;
 }
 
 .separator{
@@ -1733,7 +1717,7 @@ ol.organizer {
 
 #templateleft select
 {
-    width:140px;
+   width:160px;
 }
 
 legend{
@@ -1851,9 +1835,93 @@ td.LEMerror  {
     color:#000 !important;
 }
 
+#cquestions {
+    width: auto !important;
+    max-width: 95%;
+    font-family: Verdana;
+    background-color: #FFFFFF;
+    font-size:10;
+    border: 0px;
+}
+
 #cquestions optgroup{
     font-weight:bold;
 }
 
+.sf-menu ul a > .sf-sub-indicator {
+    top: 0.7em;
+}
+.ui-pager-control,.ui-search-toolbar > th.ui-th-column{
+    background: #F4FFDB !important;
+}
 
-.browsetable thead td span
+/* Edit answer and sub-question action buttons */
+
+.ui-tabs .action-buttons {
+	margin: 1em 0 0 0;
+	text-align: center;
+}
+
+.ui-tabs .action-buttons button {
+	margin: 0 0.5em;
+}
+
+.ui-jqdialog{
+    border-color: #E5F2CC;
+    border-width: 2px;
+}
+.ui-jqdialog-titlebar{
+    background:none;
+    background-color: #EDF7D7;
+}
+
+/* Data consistency & redundancy  check */
+
+.messagebox.data-integrity .hint {
+	line-height: 1em;
+}
+
+.messagebox.data-integrity .hint.warning {
+    color: #EE0000;
+}
+
+.messagebox.data-integrity.consistency {
+	padding-bottom: 1.1em;
+}
+
+.messagebox.data-integrity.consistency input[type="submit"] {
+	margin: 0.8em 0 0 0;
+}
+
+.data-consistency-list {
+	margin: 0.4em 0.8em 0 2.8em;
+}
+
+.data-redundancy-list {
+	margin-right: 0.8em;
+}
+
+.data-redundancy-list > li {
+	padding-top: 0.4em;
+}
+
+.data-redundancy-list ul {
+	margin: 0 0 0.8em 1.1em;
+}
+
+.data-redundancy-list ul li {
+	display: table-row;
+}
+
+.data-redundancy-list ul input,
+.data-redundancy-list ul label {
+	display: table-cell;
+}
+
+.data-redundancy-list input[type="checkbox"] {
+	margin-top: 0.15em;
+}
+
+.data-redundancy-list ul label {
+	padding-left: 0.4em;
+}

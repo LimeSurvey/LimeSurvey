@@ -14,29 +14,29 @@
 
 class Answer extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
      * @param string $class
-	 * @return Answer
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     * @return Answer
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{answers}}';
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{answers}}';
+    }
 
     /**
     * Returns the primary key of this table
@@ -57,7 +57,7 @@ class Answer extends LSActiveRecord
      */
     public function relations()
     {
-		$alias = $this->getTableAlias();
+        $alias = $this->getTableAlias();
         return array(
             'questions' => array(self::HAS_ONE, 'Question', '',
                 'on' => "$alias.qid = questions.qid",
@@ -97,36 +97,36 @@ class Answer extends LSActiveRecord
 
     /**
      * Return the key=>value answer for a given $qid
-     * 
+     *
      * @staticvar array $answerCache
      * @param type $qid
      * @param type $code
-     * @param type $lang
+     * @param type $sLanguage
      * @param type $iScaleID
      * @return array
      */
-    function getAnswerFromCode($qid, $code, $lang, $iScaleID=0)
+    function getAnswerFromCode($qid, $code, $sLanguage, $iScaleID=0)
     {
         static $answerCache = array();
 
         if (array_key_exists($qid, $answerCache)
                 && array_key_exists($code, $answerCache[$qid])
-                && array_key_exists($lang, $answerCache[$qid][$code])
-                && array_key_exists($iScaleID, $answerCache[$qid][$code][$lang])) {
+                && array_key_exists($sLanguage, $answerCache[$qid][$code])
+                && array_key_exists($iScaleID, $answerCache[$qid][$code][$sLanguage])) {
             // We have a hit :)
-            return $answerCache[$qid][$code][$lang][$iScaleID];
+            return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         } else {
-            $answerCache[$qid][$code][$lang][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
-			->select('answer')
-			->from(self::tableName())
-			->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
-			->bindParam(":qid", $qid, PDO::PARAM_INT)
-			->bindParam(":code", $code, PDO::PARAM_STR)
-			->bindParam(":lang", $lang, PDO::PARAM_STR)
+            $answerCache[$qid][$code][$sLanguage][$iScaleID] = Yii::app()->db->cache(6)->createCommand()
+            ->select('answer')
+            ->from(self::tableName())
+            ->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=:scale_id', 'language=:lang'))
+            ->bindParam(":qid", $qid, PDO::PARAM_INT)
+            ->bindParam(":code", $code, PDO::PARAM_STR)
+            ->bindParam(":lang", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":scale_id", $iScaleID, PDO::PARAM_INT)
-			->query()->readAll();
-            
-            return $answerCache[$qid][$code][$lang][$iScaleID];
+            ->query()->readAll();
+
+            return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }
     }
 
@@ -143,19 +143,19 @@ class Answer extends LSActiveRecord
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }
 
-	function insertRecords($data)
+    function insertRecords($data)
     {
         $ans = new self;
-		foreach ($data as $k => $v)
-			$ans->$k = $v;
-		try
-		{
-			return $ans->save();
-		}
-		catch(Exception $e)
-		{
-			return false;
-		}
+        foreach ($data as $k => $v)
+            $ans->$k = $v;
+        try
+        {
+            return $ans->save();
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }
     }
 
     /**
@@ -181,14 +181,14 @@ class Answer extends LSActiveRecord
 
     public function getAnswerQuery($surveyid, $lang, $return_query = TRUE)
     {
-		$query = Yii::app()->db->createCommand();
-		$query->select("{{answers}}.*, {{questions}}.gid");
-		$query->from("{{answers}}, {{questions}}");
-		$query->where("{{questions}}.sid = :surveyid AND {{questions}}.qid = {{answers}}.qid AND {{questions}}.language = {{answers}}.language AND {{questions}}.language = :lang");
-		$query->order('qid, code, sortorder');
-		$query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
-		$query->bindParams(":lang", $lang, PDO::PARAM_STR);
-		return ( $return_query ) ? $query->queryAll() : $query;
+        $query = Yii::app()->db->createCommand();
+        $query->select("{{answers}}.*, {{questions}}.gid");
+        $query->from("{{answers}}, {{questions}}");
+        $query->where("{{questions}}.sid = :surveyid AND {{questions}}.qid = {{answers}}.qid AND {{questions}}.language = {{answers}}.language AND {{questions}}.language = :lang");
+        $query->order('qid, code, sortorder');
+        $query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
+        $query->bindParams(":lang", $lang, PDO::PARAM_STR);
+        return ( $return_query ) ? $query->queryAll() : $query;
     }
 
     function getAllRecords($condition, $order=FALSE)

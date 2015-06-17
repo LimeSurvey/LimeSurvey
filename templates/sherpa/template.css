@@ -2,7 +2,7 @@
 
 /*** Start jQuery UI Theme Styles ***/
 
-button.ui-button::-moz-focus-inner {
+.ui-button::-moz-focus-inner {
 	border: 0; 
 	padding: 0;   /* Get rid of extra padding in focused button in FF */
 }
@@ -26,18 +26,15 @@ button.ui-button::-moz-focus-inner {
 	line-height: normal;
 }
 
-button.ui-state-default,
-input.ui-state-default {  
+.ui-state-default{  
 	color: #2E648B; 
 }
 
-button.ui-state-hover,
-input.ui-state-hover {  
+.ui-state-hover {  
 	color: #0070A3; 
 }
 
-button.ui-state-active,
-input.ui-state-active {  
+.ui-state-active {  
 	color: #FFFFFF; 
 }
 
@@ -750,7 +747,16 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   margin-top: 2px;
   margin-top: -2px\9; /* IE9 and below */
 }
-
+.multiple-opt .survey-question-answer ul.colstyle-css li label,.multiple-opt .survey-question-answer ul.colstyle-ul li label,.multiple-opt .survey-question-answer table.colstyle-table li label,
+.multiple-opt-comments .survey-question-answer ul.colstyle-css li label,.multiple-opt-comments .survey-question-answer ul.colstyle-ul li label,.multiple-opt-comments .survey-question-answer table.colstyle-table li label
+{
+    display: inline;
+}
+.list-radio .survey-question-answer ul.colstyle-css li label,.list-radio .survey-question-answer ul.colstyle-ul li label,.list-radio .survey-question-answer table.colstyle-table li label,
+.list-with-comment .survey-question-answer ul.colstyle-css li label,.list-with-comment .survey-question-answer ul.colstyle-ul li label,.list-with-comment .survey-question-answer table.colstyle-table li label
+{
+    display: inline;
+}
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;

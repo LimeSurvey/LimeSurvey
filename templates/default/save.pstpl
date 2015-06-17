@@ -9,7 +9,7 @@
             <br />
             <p class="save-error">{SAVEERROR}</p>
             <p class="save-message">{SAVEMESSAGE}</p>
-            <span class="warning">{SAVEALERT}</span></p>
+            <span class="warning">{SAVEALERT}</span>
             <br />
             <div class="save-form">{SAVEFORM}</div>
             <br />

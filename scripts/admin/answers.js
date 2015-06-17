@@ -6,7 +6,7 @@ $(document).ready(function(){
         distance:3});
     $('.btnaddanswer').click(addinput);
     $('.btndelanswer').click(deleteinput);
-    $('#editanswersform').submit(code_duplicates_check)
+    $('#editanswersform').submit(checkForDuplicateCodes)
     $('#labelsetbrowser').dialog({ autoOpen: false,
         modal: true,
         width:800,
@@ -118,11 +118,7 @@ function addinput()
     languages=langs.split(';');
 
     sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-    while ($(this).parent().parent().parent().find('input[value="'+sNextCode+'"]').length>0 && sNextCode!=$(this).parent().parent().find('.code').val())
-    {
-        sNextCode=getNextCode(sNextCode);
-    }
-
+    
     for (x in languages)
         {
         tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
@@ -252,32 +248,42 @@ function updatecodes()
 
 }
 
-function getNextCode(sourcecode)
+function getNextCode(sSourceCode)
 {
     i=1;
     found=true;
-    foundnumber=-1;
-    while (i<=sourcecode.length && found)
+    mNumberFound=-1;
+    while (i<=sSourceCode.length && found)
     {
-        found=is_numeric(sourcecode.substr(-i));
+        found=is_numeric(sSourceCode.substr(-i));
         if (found)
             {
-            foundnumber=sourcecode.substr(-i);
+            mNumberFound=sSourceCode.substr(-i);
             i++;
         }
     }
-    if (foundnumber==-1)
-        {
-        return(sourcecode);
+    if (mNumberFound==-1)
+    {
+        sBaseCode=sSourceCode;
+        mNumberFound=0
     }
     else
-        {
-        foundnumber++;
-        foundnumber=foundnumber+'';
-        result=sourcecode.substr(0,sourcecode.length-foundnumber.length)+foundnumber;
-        return(result);
+    {
+        sBaseCode=sSourceCode.substr(0,sSourceCode.length-mNumberFound.length);
     }
-
+    var iNumberFound=+mNumberFound;
+    do 
+    {
+        iNumberFound=iNumberFound+1;
+        sNewNumber=iNumberFound+'';
+        sResult=sBaseCode+sNewNumber;
+        if (sResult.length>5)
+        {
+          sResult=sResult.substr(sResult.length - 5);  
+        }
+    } 
+    while (areCodesUnique(sResult)==false);
+    return(sResult);
 }
 
 function is_numeric (mixed_var) {
@@ -290,7 +296,33 @@ function popupeditor()
     start_popup_editor(input_id);
 }
 
-function code_duplicates_check()
+/**
+* Checks for duplicate codes and shows an error message & returns false if there are any duplicates
+* 
+* @returns {Boolean}
+*/
+function checkForDuplicateCodes()
+{
+    if  (areCodesUnique('')==false)
+    {
+        alert(duplicateanswercode);
+        return false
+    }
+    else
+    {
+        return true;
+    }
+}
+               
+/**
+* Check if all existing codes are unique
+* If sNewValue is not empty then only sNewValue is checked for uniqueness against the existing codes
+* 
+* @param sNewValue 
+* 
+* @returns {Boolean} False if codes are not unique
+*/
+function areCodesUnique(sNewValue)
 {
     languages=langs.split(';');
     var dupefound=false;
@@ -299,9 +331,13 @@ function code_duplicates_check()
         $(this).find('tr .code').each(function(){
             codearray.push($(this).val());
         })
+        if (sNewValue!='')
+        {
+            codearray=codearray.filter( onlyUnique );
+            codearray.push(sNewValue);
+        }
         if (arrHasDupes(codearray))
             {
-            alert(duplicateanswercode);
             dupefound=true;
             return;
         }
@@ -391,18 +427,20 @@ function lspreview()
                             if (lsrows[z].title==null) {
                                 lsrows[z].title='';
                             }
-                            tabbody=tabbody+'><td>'+lsrows[z].code+'</td>';
-                            if (assessmentvisible)
+                            tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td';
+                            if (!assessmentvisible)
                             {
-                                tabbody=tabbody+'<td>'+lsrows[z].assessment_value+'</td>';
-                            }
-                            tabbody=tabbody+'<td>'+lsrows[z].title+'</td></tr><tbody>';
+                                tabbody=tabbody+' style="display:none;"';
+                            }                                
+                            tabbody=tabbody+'>'+lsrows[z].assessment_value+'</td>';
+                            tabbody=tabbody+'<td>'+htmlspecialchars(lsrows[z].title)+'</td></tr><tbody>';
                         }
-                        tabbody=tabbody+'<thead><tr><th>'+strcode+'</th>';
-                        if (assessmentvisible)
+                        tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th';
+                        if (!assessmentvisible)
                         {
-                            tabbody=tabbody+'<th>'+sAssessmentValue+'</th>';
-                        }
+                            tabbody=tabbody+' style="display:none;"';
+                        }                       
+                        tabbody=tabbody+'>'+sAssessmentValue+'</th>';
                         tabbody=tabbody+'<th>'+strlabel+'</th></tr></thead></table></div>';
                     }
                 }
@@ -661,9 +699,9 @@ function setlabel()
     {
         case 'newlabel':
         if(!flag[0]){
-            $('#lasets').remove();
-            $($(this).next().next()).after('<label for="laname">'+sLabelSetName+':</label> ' +
-            '<input type="text" name="laname" id="laname">');
+            $('#lasets').parent().remove();
+            $(this).parent().after('<p class="label-name-wrapper"><label for="laname">'+sLabelSetName+':</label> ' +
+            '<input type="text" name="laname" id="laname"></p>');
             flag[0] = true;
             flag[1] = false;
         }
@@ -671,9 +709,8 @@ function setlabel()
 
         case 'replacelabel':
         if(!flag[1]){
-            $('#laname').remove();
-            $('[for=laname]').remove();
-            $($(this).next().next()).after('<select name="laname" id="lasets"><option value=""></option></select>');
+            $('#laname').parent().remove();
+            $(this).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
             jQuery.getJSON(lanameurl, function(data) {
                 $.each(data, function(key, val) {
                     $('#lasets').append('<option value="' + key + '">' + val + '</option>');
@@ -702,22 +739,27 @@ function savelabel()
     }
     else
         {
-        $('#dialog-confirm-replace').dialog({
-            resizable: false,
-            height: 160,
-            modal: true,
-            buttons: [{
-                text: ok,
-                click: function() {
-                    $(this).dialog("close");
-                    ajaxreqsave();
-            }},{
-                text: cancel,
-                click: function() {
-                    check = false;
-                    $(this).dialog("close");
-            }}
-            ]
+        aLanguages = langs.split(';');
+        $.post(sCheckLabelURL, { languages: aLanguages, lid: lid}, function(data) {
+           $('#strReplaceMessage').html(data); 
+            $('#dialog-confirm-replace').dialog({
+                resizable: false,
+                height: 200,
+                width:350,
+                modal: true,
+                buttons: [{
+                    text: ok,
+                    click: function() {
+                        $(this).dialog("close");
+                        ajaxreqsave();
+                }},{
+                    text: cancel,
+                    click: function() {
+                        check = false;
+                        $(this).dialog("close");
+                }}
+                ]
+            });
         });
     }
 }
@@ -749,7 +791,6 @@ function ajaxcheckdup()
 
 function ajaxreqsave() {
     var lid = $('#lasets').val() ? $('#lasets').val() : 0;
-    var csrfToken=$("input[name='YII_CSRF_TOKEN']:first").val();
     // get code for the current scale
     var code = new Array();
     $('.code').each(function(index) {
@@ -757,6 +798,13 @@ function ajaxreqsave() {
             code.push($(this).val());
     });
 
+    // get assessment values for the current scale
+    var assessmentvalues = new Array();
+    $('.assessment').each(function(index) {
+        if($(this).attr('id').substr(-1) === scale_id)
+            assessmentvalues.push($(this).val());
+    });
+        
     answers = new Object();
     languages = langs.split(';');
 
@@ -770,7 +818,7 @@ function ajaxreqsave() {
     }
 
 
-    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers, YII_CSRF_TOKEN: csrfToken }, function(data) {
+    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers, assessmentvalues:assessmentvalues }, function(data) {
         $("#saveaslabel").dialog('close');
         if(jQuery.parseJSON(data) == "ok")
             {

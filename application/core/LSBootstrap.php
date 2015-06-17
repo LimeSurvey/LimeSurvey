@@ -20,4 +20,29 @@ class LSBootstrap extends Bootstrap
 			return $this->_assetsUrl = $assetsUrl;
 		}
     }
+
+    /**
+	 * Registers the Bootstrap JavaScript.
+	 * @param int $position the position of the JavaScript code.
+	 * @see CClientScript::registerScriptFile
+	 */
+	public function registerJS($position = CClientScript::POS_HEAD)
+	{
+		/** @var CClientScript $cs */
+		$cs = Yii::app()->getClientScript();
+        $cs->packages['bootstrap'] = array(
+            'baseUrl' => $this->getAssetsUrl(),
+            'js' => array(
+                'js/bootstrap.min.js'
+            ),
+            'depends' => array('jquery')
+        );
+		$cs->registerPackage('bootstrap');
+		/** enable bootboxJS? */
+		if($this->enableBootboxJS)
+		{
+			$cs->registerScriptFile($this->getAssetsUrl() . '/js/bootstrap.bootbox.min.js', $position);
+		}
+	}
+  
 }

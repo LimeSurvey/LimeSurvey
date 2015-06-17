@@ -1,6 +1,13 @@
-// $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz
-var idexternal=parseInt(3);
+/*
+* Scroll the pager when scrolling horizontally
+*/
+$(window).scroll(function(){
+    $('.ui-jqgrid-pager').css({
+        'left': $(this).scrollLeft()
+    });
+});
 
+var conditionid=1;
 function checkbounces() {
     $("#dialog-modal").dialog('open');
     $('#dialog-modal').html('<p><img style="margin-top:42px" src="'+imageurl+'ajax-loader.gif" /></p>');
@@ -9,25 +16,26 @@ function checkbounces() {
 
 function addcondition()
 {
-    id=2;
-    html = "<tr name='joincondition_"+idexternal+"' id='joincondition_"+idexternal+"'><td><select name='join_"+idexternal+"' id='join_"+idexternal+"'>\n\
-    <option value='and'>AND</option><option value='or'>OR</option></td></tr>";
-    html2 = "<tr><td><select name='field_"+idexternal+"' \n\ id='field_"+idexternal+"'>";
+    // Seems unused
+    conditionid++;
+    html = "<tr name='joincondition_"+conditionid+"' id='joincondition_"+conditionid+"'><td><select name='join_"+conditionid+"' id='join_"+conditionid+"'>\n\
+    <option value='and'>"+andTxt+"</option><option value='or'>"+orTxt+"</option></td></tr>";
+    html2 = "<tr><td><select name='field_"+conditionid+"' \n\ id='field_"+conditionid+"'>";
     for(col in colInformation){
         if(colInformation[col]['search'])
             html2 += "<option value='"+col+"'>"+colInformation[col]['description']+"</option>";
     }
     html2 += "</select></td><td>\n\
-    <select name='condition_"+idexternal+"' id='condition_"+idexternal+"'><option value='equal'>"+searchtypes[0]+"</option><option value='contains'>"+searchtypes[1]+"</option>\n\
+    <select name='condition_"+conditionid+"' id='condition_"+conditionid+"'><option value='equal'>"+searchtypes[0]+"</option><option value='contains'>"+searchtypes[1]+"</option>\n\
     <option value='notequal'>"+searchtypes[2]+"</option><option value='notcontains'>"+searchtypes[3]+"</option><option value='greaterthan'>"+searchtypes[4]+"</option>\n\
-    <option value='lessthan'>"+searchtypes[5]+"</option></select></td>\n\<td><input type='text' id='conditiontext_"+idexternal+"' style='margin-left:10px;' /></td>\n\
-    <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+idexternal+"').remove() id='removebutton'"+idexternal+">\n\
+    <option value='lessthan'>"+searchtypes[5]+"</option></select></td>\n\<td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
+    <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+">\n\
     <img src="+addbutton+" class='addcondition-button' style='margin-bottom:4px'></td></tr>";
     //$('#searchtable > tbody > tr').eq(id).after(html);
-    $('#searchtable > tbody > tr').eq(idexternal).after(html);
-    idexternal++;
-    $('#searchtable > tbody > tr').eq(idexternal).after(html2);
-    idexternal++;
+    $('#searchtable > tbody > tr').eq(conditionid).after(html);
+    conditionid++;
+    $('#searchtable > tbody > tr').eq(conditionid).after(html2);
+    //idexternal++;
 }
 
 
@@ -56,8 +64,8 @@ function addSelectedParticipantsToCPDB()
         $("#addcpdb").load(postUrl, {
             participantid:token},function(){
                 $(location).attr('href',attMapUrl+'/'+survey_id);
-        });        
-    }    
+        });
+    }
 
     /*$(":checked").each(function() {
     token.push($(this).attr('name'));
@@ -67,13 +75,6 @@ function addSelectedParticipantsToCPDB()
 
 $(document).ready(function() {
 
-    $("#filterduplicatetoken").change(function(){
-        if ($("#filterduplicatetoken").attr('checked')==true) {
-            $("#lifilterduplicatefields").slideDown();
-        } else {
-            $("#lifilterduplicatefields").slideUp();
-        }
-    })
     // Code for AJAX download
     jQuery.download = function(url, data, method){
         //url and data options required
@@ -92,33 +93,34 @@ $(document).ready(function() {
         };
     };
     // Code for AJAX download
-    var id=1;
     $(document).on("click",".addcondition-button",function(){
-        id=2;
-        html = "<tr name='joincondition_"+id+"' id='joincondition_"+id+"'><td><select name='join_"+id+"' id='join_"+id+"'><option value='and'>AND</option><option value='or'>OR</option></td><td></td></tr><tr><td><select name='field_"+id+"' id='field_"+id+"'>\n";
+        conditionid++;
+        html = "<tr name='joincondition_"+conditionid+"' id='joincondition_"+conditionid+"'><td><select name='join_"+conditionid+"' id='join_"+conditionid+"'><option value='and'>"+andTxt+"</option><option value='or'>"+orTxt+"</option></td><td></td></tr><tr><td><select name='field_"+conditionid+"' id='field_"+conditionid+"'>\n";
         for(col in colInformation){
             if(colInformation[col]['search'])
                 html += "<option value='"+col+"'>"+colInformation[col]['description']+"</option>";
         }
         html += "</select>\n\</td>\n\<td>\n\
-        <select name='condition_"+id+"' id='condition_"+id+"'>\n\
+        <select name='condition_"+conditionid+"' id='condition_"+conditionid+"'>\n\
         <option value='equal'>"+searchtypes[0]+"</option>\n\
         <option value='contains'>"+searchtypes[1]+"</option>\n\
         <option value='notequal'>"+searchtypes[2]+"</option>\n\
         <option value='notcontains'>"+searchtypes[3]+"</option>\n\
         <option value='greaterthan'>"+searchtypes[4]+"</option>\n\
         <option value='lessthan'>"+searchtypes[5]+"</option>\n\
-        </select></td>\n\<td><input type='text' id='conditiontext_"+id+"' style='margin-left:10px;' /></td>\n\
-        <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+id+"').remove() id='removebutton'"+id+">\n\
+        </select></td>\n\<td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
+        <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+">\n\
         <img src="+addbutton+" class='addcondition-button' style='margin-bottom:4px'></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
     });
-    var searchconditions = {};
+    if(typeof searchconditions === "undefined") {
+        searchconditions = {};
+    }
     var field;
     $('#searchbutton').click(function(){
 
     });
-    var lastSel,lastSel2;
+
     oGrid=jQuery("#displaytokens").jqGrid({
         loadtext : sLoadText,
         recordtext: sRecordText,
@@ -128,6 +130,7 @@ $(document).ready(function() {
         headertitles: true,
         url: jsonUrl,
         editurl: editUrl,
+        direction: $('html').attr('dir'),
         datatype: "json",
         mtype: "post",
         colNames : colNames,
@@ -156,6 +159,7 @@ $(document).ready(function() {
             window.editing = false;
             jQuery(".token_edit").unbind('click').bind('click', function(e)
             {
+                e.preventDefault();
                 if (window.editing)
                     return true;
                 var row = jQuery(this).closest('.jqgrow');
@@ -189,8 +193,7 @@ $(document).ready(function() {
                 .appendTo(jQuery(this).parent().parent())
                 .click(function()
                 {
-                    jQuery('#displaytokens').saveRow(row.attr('id'),{extraparam : {YII_CSRF_TOKEN:csrfToken}});
-                    func();
+                    jQuery('#displaytokens').saveRow(row.attr('id'), null, null, {}, function(){func();});
                 });
             });
             updatePageAfterGrid();
@@ -279,12 +282,9 @@ $(document).ready(function() {
                         buttons: dialog_buttons
                     });
                 } else {
-                    if(id == 1) {
-                        searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
-                        //jQuery("#displaytokens").jqGrid('setGridParam',{url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
-                    } else {
-                        searchconditions = $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
-                        for( i=2 ; i<=idexternal; i++) {
+                    searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
+                    if(conditionid > 1) {
+                        for( i=2 ; i<=conditionid; i++) {
                             if($('#field_'+i).val()) {
                                 searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();
                             }
@@ -334,7 +334,22 @@ $(document).ready(function() {
             title:invitemsg,
             buttonicon:'ui-icon-mail-closed',
             onClickButton:function(){
-                window.open(inviteurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                if ($('#displaytokens').jqGrid('getGridParam', 'selarrrow').length==0)
+                {
+                    alert(sSelectRowMsg );
+                }
+                else
+                {
+                    var newForm = jQuery('<form>', {
+                        'action': remindurl,
+                        'target': 'inviteurl'
+                    }).append(jQuery('<input>', {
+                        'name': 'tokenids',
+                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();                        
+                }
             }
         });
     }
@@ -344,7 +359,22 @@ $(document).ready(function() {
             title:remindmsg,
             buttonicon:'ui-icon-mail-open',
             onClickButton:function(){
-                window.open(remindurl+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")
+                if ($('#displaytokens').jqGrid('getGridParam', 'selarrrow').length==0)
+                {
+                    alert(sSelectRowMsg );
+                }
+                else
+                {
+                    var newForm = jQuery('<form>', {
+                        'action': remindurl,
+                        'target': '_blank'
+                    }).append(jQuery('<input>', {
+                        'name': 'tokenids',
+                        'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
+                        'type': 'hidden'
+                    })).appendTo('body');
+                    newForm.submit();                    
+                }
             }
         });
     }
@@ -355,7 +385,7 @@ $(document).ready(function() {
             buttonicon:'ui-bounceprocessing',
             onClickButton:function(){
                 $("#dialog-modal").dialog({
-                    title: "Summary",
+                    title: sSummary,
                     modal: true,
                     autoOpen: false,
                     height: 200,
@@ -369,7 +399,7 @@ $(document).ready(function() {
     }
     if (bParticipantPanelPermission==true)
     {
-        $("#displaytokens").navSeparatorAdd("#pager",{});        
+        $("#displaytokens").navSeparatorAdd("#pager",{});
         $("#displaytokens").navButtonAdd('#pager', {
             caption:"",
             title:viewParticipantsLink,
@@ -388,13 +418,14 @@ $(document).ready(function() {
         if(sSearchString != ""){
             var aSearchConditions=new Array;
             for(col in colInformation){
-                if(colInformation[col]['quickfilter'])
-                    aSearchConditions.push(col+"||contains||"+sSearchString);
+                if(colInformation[col]['quickfilter']){
+                    aSearchConditions.push(col);aSearchConditions.push('contains');aSearchConditions.push(sSearchString);aSearchConditions.push("or");
+                }
             }
-            var sSearchConditions=aSearchConditions.join("||or||");
-            oGrid.jqGrid('setGridParam', {url: jsonSearchUrl+"/"+sSearchConditions}).trigger('reloadGrid', [{current: true, page: 1}]);
+            aSearchConditions.pop();// remove last 'or'
+            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { searcharray: aSearchConditions} }).trigger('reloadGrid', [{current: true, page: 1}]);
         }else{
-            oGrid.jqGrid('setGridParam', {url: jsonUrl}).trigger('reloadGrid', [{current: true, page: 1}]);
+            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { }}).trigger('reloadGrid', [{current: true, page: 1}]);
         }
     }, 500);
 
@@ -403,7 +434,17 @@ $(document).ready(function() {
         reloadAfterSubmit: true,
         closeOnEspace:true
     });
+	// Center modal dialogs
+    $.jgrid.jqModal = $.extend($.jgrid.jqModal || {}, {
+        beforeOpen: centerInfoDialog
+    });
 });
+
+function centerInfoDialog() {
+    var infoDialog = $("#info_dialog");
+    var dialogparent = infoDialog.parent();
+    infoDialog.css({ 'left': Math.round((dialogparent.width() - infoDialog.width()) / 2)+'px' });
+}
 
 function updatePageAfterGrid(){
     var oGrid=$("#displaytokens");

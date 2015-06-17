@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="<?php echo $adminlang; ?>"<?php echo $languageRTL;?>>
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <?php 
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-cookie');
@@ -13,10 +15,12 @@
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+        if (getLanguageRTL($_SESSION['adminlang']))
+        {        
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
+        }
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "printablestyle.css", 'print');
     ?>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
     <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />

@@ -1,5 +1,7 @@
 <?php
-
+namespace ls\pluginmanager;
+use Yii;
+use Hash;
 Yii::import('application.helpers.Hash');
 
 class PluginEvent

@@ -1,5 +1,5 @@
 <?php
-
+namespace ls\pluginmanager;
 
     abstract class QuestionBase implements iQuestion {
         /**

@@ -88,8 +88,8 @@ abstract class LSYii_Controller extends CController
 		// Do not localize/translate this!
 
 		$dieoutput='';
-		if (version_compare(PHP_VERSION, '5.1.6', '<'))
-			$dieoutput .= 'This script can only be run on PHP version 5.1.6 or later! Your version: '.PHP_VERSION.'<br />';
+		if (version_compare(PHP_VERSION, '5.3.0', '<'))
+			$dieoutput .= 'This script can only be run on PHP version 5.3.0 or later! Your version: '.PHP_VERSION.'<br />';
 
 		if (!function_exists('mb_convert_encoding'))
 			$dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://manual.limesurvey.org/wiki/Installation_FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
@@ -102,10 +102,6 @@ abstract class LSYii_Controller extends CController
 
 		// The following function (when called) includes FireBug Lite if true
 		defined('FIREBUG') or define('FIREBUG' , Yii::app()->getConfig('use_firebug_lite'));
-
-		// Deal with server systems having not set a default time zone
-		if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get"))
-			@date_default_timezone_set(@date_default_timezone_get());
 
 		//Every 50th time clean up the temp directory of old files (older than 1 day)
 		//depending on the load the  probability might be set higher or lower

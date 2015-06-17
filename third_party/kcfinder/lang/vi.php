@@ -122,6 +122,10 @@ $lang = array(
     "You cannot rename the extension of files!" => "Bạn không thể đổi tên phần mở rộng của các tập tin!",
     "Uploading file {number} of {count}... {progress}" => "Đang tải tập tin thứ {number} của {count}... {progress}",
     "Failed to upload {filename}!" => "Tải lên thất bại {filename}!",
-);
+    "Close" => "Đóng",
+    "Previous" => "Trước",
+    "Next" => "Sau",
+    "Confirmation" => "Xác nhận",
+    "Warning" => "Cảnh báo",);
 
 ?>

@@ -2,7 +2,7 @@
 /**
  * ----------------------------------------------------------------------
  *  
- * Copyright (c) 2006-2012 Khaled Al-Sham'aa.
+ * Copyright (c) 2006-2013 Khaled Al-Sham'aa.
  *  
  * http://www.ar-php.org
  *  
@@ -98,7 +98,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -121,7 +121,7 @@
  * @category  I18N 
  * @package   I18N_Arabic
  * @author    Khaled Al-Sham'aa <khaled@ar-php.org>
- * @copyright 2006-2012 Khaled Al-Sham'aa
+ * @copyright 2006-2013 Khaled Al-Sham'aa
  *    
  * @license   LGPL <http://www.gnu.org/licenses/lgpl.txt>
  * @link      http://www.ar-php.org 
@@ -174,9 +174,9 @@ class I18N_Arabic_WordTag
         }
         
         // إذا كان منون
-        if (mb_substr($word, -1, 1) == 'ً' ||
-            mb_substr($word, -1, 1) == 'ٌ' || 
-            mb_substr($word, -1, 1) == 'ٍ') {
+        if (mb_substr($word, -1, 1) == 'ً' || mb_substr($word, -1, 1) == 'ٌ' 
+            || mb_substr($word, -1, 1) == 'ٍ'
+        ) {
             return true;
         }
         
@@ -184,7 +184,9 @@ class I18N_Arabic_WordTag
         $wordLen = mb_strlen($word);
         
         // إن كان معرف بأل التعريف
-        if (mb_substr($word, 0, 1) == 'ا' && mb_substr($word, 1, 1) == 'ل' && $wordLen >= 5) {
+        if (mb_substr($word, 0, 1) == 'ا' && mb_substr($word, 1, 1) == 'ل' 
+            && $wordLen >= 5
+        ) {
             return true;
         }
         
@@ -194,38 +196,44 @@ class I18N_Arabic_WordTag
             return true;
         }
 
-        // إن كان مؤنث تأنيث لفظي، منتهي بتاء مربوطة
+        //إن كان مؤنث تأنيث لفظي، منتهي بتاء مربوطة
         // أو همزة أو ألف مقصورة
-        if ((mb_substr($word, -1, 1) == 'ة' || mb_substr($word, -1, 1) == 'ء' || 
-             mb_substr($word, -1, 1) == 'ى') && $wordLen >= 4) {
+        if ((mb_substr($word, -1, 1) == 'ة' || mb_substr($word, -1, 1) == 'ء' 
+            || mb_substr($word, -1, 1) == 'ى') && $wordLen >= 4
+        ) {
             return true;
         }
 
         // مؤنث تأنيث لفظي،
         // منتهي بألف وتاء مفتوحة - جمع مؤنث سالم
-        if (mb_substr($word, -1, 1) == 'ت' && mb_substr($word, -2, 1) == 'ا' && 
-            $wordLen >= 5) {
+        if (mb_substr($word, -1, 1) == 'ت' && mb_substr($word, -2, 1) == 'ا' 
+            && $wordLen >= 5
+        ) {
             return true;
         }
 
         // started by Noon, before REH or LAM, or Noon, is a verb and not a noun
-        if (mb_substr($word, 0, 1) == 'ن' && (mb_substr($word, 1, 1) == 'ر' || 
-            mb_substr($word, 1, 1) == 'ل' || mb_substr($word, 1, 1) == 'ن')
-            && $wordLen > 3) {
+        if (mb_substr($word, 0, 1) == 'ن' && (mb_substr($word, 1, 1) == 'ر' 
+            || mb_substr($word, 1, 1) == 'ل' || mb_substr($word, 1, 1) == 'ن') 
+            && $wordLen > 3
+        ) {
             return false;
         }
         
         // started by YEH, before some letters is a verb and not a noun
         // YEH,THAL,JEEM,HAH,KHAH,ZAIN,SHEEN,SAD,DAD,TAH,ZAH,GHAIN,KAF
-        if (mb_substr($word, 0, 1) == 'ي' && (mb_strpos('يذجهخزشصضطظغك', mb_substr($word, 1, 1)) !== false) && 
-            $wordLen > 3) {
+        if (mb_substr($word, 0, 1) == 'ي' 
+            && (mb_strpos('يذجهخزشصضطظغك', mb_substr($word, 1, 1)) !== false) 
+            && $wordLen > 3
+        ) {
             return false;
         }
         
         // started by beh or meem, before BEH,FEH,MEEM is a noun and not a verb
-        if ((mb_substr($word, 0, 1) == 'ب' || mb_substr($word, 0, 1) == 'م') && 
-            (mb_substr($word, 1, 1) == 'ب' || mb_substr($word, 1, 1) == 'ف' || mb_substr($word, 1, 1) == 'م') && 
-             $wordLen > 3) {
+        if ((mb_substr($word, 0, 1) == 'ب' || mb_substr($word, 0, 1) == 'م') 
+            && (mb_substr($word, 1, 1) == 'ب' || mb_substr($word, 1, 1) == 'ف' 
+            || mb_substr($word, 1, 1) == 'م') && $wordLen > 3
+        ) {
             return true;
         }
         
@@ -238,32 +246,33 @@ class I18N_Arabic_WordTag
 
         // إن كان على وزن اسم الآلة
         // أو اسم المكان أو اسم الزمان
-        if (preg_match('/^م\S{3}$/u', $word) || 
-        preg_match('/^م\S{2}ا\S$/u', $word) || 
-            preg_match('/^م\S{3}ة$/u', $word) || 
-            preg_match('/^\S{2}ا\S$/u', $word) || 
-            preg_match('/^\Sا\Sو\S$/u', $word) || 
-            preg_match('/^\S{2}و\S$/u', $word) || 
-            preg_match('/^\S{2}ي\S$/u', $word) || 
-            preg_match('/^م\S{2}و\S$/u', $word) || 
-            preg_match('/^م\S{2}ي\S$/u', $word) || 
-            preg_match('/^\S{3}ة$/u', $word) || 
-            preg_match('/^\S{2}ا\Sة$/u', $word) || 
-            preg_match('/^\Sا\S{2}ة$/u', $word) || 
-            preg_match('/^\Sا\Sو\Sة$/u', $word) || 
-            preg_match('/^ا\S{2}و\Sة$/u', $word) || 
-            preg_match('/^ا\S{2}ي\S$/u', $word) || 
-            preg_match('/^ا\S{3}$/u', $word) || 
-            preg_match('/^\S{3}ى$/u', $word) || 
-            preg_match('/^\S{3}اء$/u', $word) || 
-            preg_match('/^\S{3}ان$/u', $word) || 
-            preg_match('/^م\Sا\S{2}$/u', $word) || 
-            preg_match('/^من\S{3}$/u', $word) || 
-            preg_match('/^مت\S{3}$/u', $word) || 
-            preg_match('/^مست\S{3}$/u', $word) || 
-            preg_match('/^م\Sت\S{2}$/u', $word) || 
-            preg_match('/^مت\Sا\S{2}$/u', $word) || 
-            preg_match('/^\Sا\S{2}$/u', $word)) {
+        if (preg_match('/^م\S{3}$/u', $word) 
+            || preg_match('/^م\S{2}ا\S$/u', $word)  
+            || preg_match('/^م\S{3}ة$/u', $word)  
+            || preg_match('/^\S{2}ا\S$/u', $word)  
+            || preg_match('/^\Sا\Sو\S$/u', $word)  
+            || preg_match('/^\S{2}و\S$/u', $word)  
+            || preg_match('/^\S{2}ي\S$/u', $word)  
+            || preg_match('/^م\S{2}و\S$/u', $word)  
+            || preg_match('/^م\S{2}ي\S$/u', $word)  
+            || preg_match('/^\S{3}ة$/u', $word) 
+            || preg_match('/^\S{2}ا\Sة$/u', $word)  
+            || preg_match('/^\Sا\S{2}ة$/u', $word)  
+            || preg_match('/^\Sا\Sو\Sة$/u', $word)  
+            || preg_match('/^ا\S{2}و\Sة$/u', $word)  
+            || preg_match('/^ا\S{2}ي\S$/u', $word) 
+            || preg_match('/^ا\S{3}$/u', $word)  
+            || preg_match('/^\S{3}ى$/u', $word)  
+            || preg_match('/^\S{3}اء$/u', $word)  
+            || preg_match('/^\S{3}ان$/u', $word)  
+            || preg_match('/^م\Sا\S{2}$/u', $word)  
+            || preg_match('/^من\S{3}$/u', $word)  
+            || preg_match('/^مت\S{3}$/u', $word)  
+            || preg_match('/^مست\S{3}$/u', $word)  
+            || preg_match('/^م\Sت\S{2}$/u', $word)  
+            || preg_match('/^مت\Sا\S{2}$/u', $word) 
+            || preg_match('/^\Sا\S{2}$/u', $word)
+        ) {
             return true;
         }
 

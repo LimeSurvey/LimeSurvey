@@ -1,10 +1,10 @@
 <?php
     $tabs = array(
         'invitation' => array(
-            'title' => $clang->gT("Invitation"),
-            'subject' => $clang->gT("Invitation email subject:"),
-            'body' => $clang->gT("Invitation email body:"),
-            'attachments' => $clang->gT("Invitation attachments:"),
+            'title' => gT("Invitation"),
+            'subject' => gT("Invitation email subject:"),
+            'body' => gT("Invitation email body:"),
+            'attachments' => gT("Invitation attachments:"),
             'field' => array(
                 'subject' => 'surveyls_email_invite_subj',
                 'body' => 'surveyls_email_invite'
@@ -15,10 +15,10 @@
             )
         ),
         'reminder' => array(
-            'title' => $clang->gT("Reminder"),
-            'subject' => $clang->gT("Reminder email subject:"),
-            'body' => $clang->gT("Reminder email body:"),
-            'attachments' => $clang->gT("Reminder attachments:"),
+            'title' => gT("Reminder"),
+            'subject' => gT("Reminder email subject:"),
+            'body' => gT("Reminder email body:"),
+            'attachments' => gT("Reminder attachments:"),
             'field' => array(
                 'subject' => 'surveyls_email_remind_subj',
                 'body' => 'surveyls_email_remind'
@@ -29,10 +29,10 @@
             )
         ),
         'confirmation' => array(
-            'title' => $clang->gT("Confirmation"),
-            'subject' => $clang->gT("Confirmation email subject:"),
-            'body' => $clang->gT("Confirmation email body:"),
-            'attachments' => $clang->gT("Confirmation attachments:"),
+            'title' => gT("Confirmation"),
+            'subject' => gT("Confirmation email subject:"),
+            'body' => gT("Confirmation email body:"),
+            'attachments' => gT("Confirmation attachments:"),
             'field' => array(
                 'subject' => 'surveyls_email_confirm_subj',
                 'body' => 'surveyls_email_confirm'
@@ -43,10 +43,10 @@
             )
         ),
         'registration' => array(
-            'title' => $clang->gT("Registration"),
-            'subject' => $clang->gT("Registration email subject:"),
-            'body' => $clang->gT("Registration email body:"),
-            'attachments' => $clang->gT("Registration attachments:"),
+            'title' => gT("Registration"),
+            'subject' => gT("Registration email subject:"),
+            'body' => gT("Registration email body:"),
+            'attachments' => gT("Registration attachments:"),
             'field' => array(
                 'subject' => 'surveyls_email_register_subj',
                 'body' => 'surveyls_email_register'
@@ -57,10 +57,10 @@
             )
         ),
         'admin_notification' => array(
-            'title' => $clang->gT("Basic admin notification"),
-            'subject' => $clang->gT("Basic admin notification subject:"),
-            'body' => $clang->gT("Basic admin notification email body:"),
-            'attachments' => $clang->gT("Basic notification attachments:"),
+            'title' => gT("Basic admin notification"),
+            'subject' => gT("Basic admin notification subject:"),
+            'body' => gT("Basic admin notification email body:"),
+            'attachments' => gT("Basic notification attachments:"),
             'field' => array(
                 'subject' => 'email_admin_notification_subj',
                 'body' => 'email_admin_notification'
@@ -71,10 +71,10 @@
             )
         ),
         'admin_detailed_notification' => array(
-            'title' => $clang->gT("Detailed admin notification"),
-            'subject' => $clang->gT("Detailed admin notification subject:"),
-            'body' => $clang->gT("Detailed admin notification email body:"),
-            'attachments' => $clang->gT("Detailed notification attachments:"),
+            'title' => gT("Detailed admin notification"),
+            'subject' => gT("Detailed admin notification subject:"),
+            'body' => gT("Detailed admin notification email body:"),
+            'attachments' => gT("Detailed notification attachments:"),
             'field' => array(
                 'subject' => 'email_admin_responses_subj',
                 'body' => 'email_admin_responses'
@@ -85,14 +85,14 @@
             )
         )
     );
-    
-    
+
+
     echo "<div id='tab-$grouplang'>";
     echo "<div class='tabsinner' id='tabsinner-$grouplang'>";
 ?>
 
-            
-                
+
+
                     <ul>
                         <?php
                         foreach ($tabs as $tab => $details)
@@ -105,7 +105,7 @@
                     <?php
                     foreach ($tabs as $tab => $details)
                     {
-                        $this->renderPartial('/admin/emailtemplates/email_language_template_tab', compact('ishtml', 'surveyid' , 'esrow', 'grouplang', 'tab', 'details', 'clang'));
+                        $this->renderPartial('/admin/emailtemplates/email_language_template_tab', compact('ishtml', 'surveyid' , 'esrow', 'grouplang', 'tab', 'details'));
                     }
                     ?>
                 </div>

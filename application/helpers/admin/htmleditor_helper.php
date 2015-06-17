@@ -79,43 +79,49 @@
                 }
             }
         }
-
-    } 
+    }
 
     function sTranslateLangCode2CK($sLanguageCode){
-
-        $aTranslationTable=array('de-informal'=>'de',
-        'nl-formal'=>'nl');
+        $aTranslationTable=array(
+        'ca-valencia'=>'ca',
+        'de-informal'=>'de',
+        'es-AR-informal'=>'es',
+        'es-AR'=>'es',
+        'es-CL'=>'es',
+        'es-MX'=>'es',
+        'it-informal'=>'it',
+        'nl-informal'=>'nl',
+        'nn'=>'no',
+        'zh-Hans'=>'zh-cn',
+        'zh-Hant-HK'=>'zh',
+        'zh-Hant-TW'=>'zh'
+        );
         if (isset($aTranslationTable[$sLanguageCode])) {
             $sResultCode=$aTranslationTable[$sLanguageCode];
         }
         else
         {
-            $sResultCode=$sLanguageCode;
+            $sResultCode=strtolower($sLanguageCode);
         }
         return $sResultCode;
-
     }
 
 
     function PrepareEditorScript($load=false, $controller = null)
     {
-        $clang = Yii::app()->lang;
-        $data['clang'] = $clang;
         App()->getClientScript()->registerCoreScript('ckeditor');
         if ($controller == null)
         {
             $controller = Yii::app()->getController();
         }
-
         if ($load == false)
         {
 
-            return $controller->renderPartial('/admin/survey/prepareEditorScript_view',$data,true);
+            return $controller->renderPartial('/admin/survey/prepareEditorScript_view',array(),true);
         }
         else
         {
-            $controller->renderPartial('/admin/survey/prepareEditorScript_view',$data);
+            $controller->renderPartial('/admin/survey/prepareEditorScript_view',array());
         }
     }
 
@@ -174,7 +180,7 @@
 
     function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
-        $clang = Yii::app()->lang;
+
         $htmlcode = '';
         $imgopts = '';
         $toolbarname = 'Basic';
@@ -188,9 +194,9 @@
         }
 
         $htmlcode .= ""
-        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='editorLink'>\n"
-        . "\t<img alt=\"".$clang->gT("Start HTML editor in a popup window")."\" id='".$fieldname."_popupctrlena' src='".Yii::app()->getConfig('adminimageurl')."edithtmlpopup.png' $imgopts class='btneditanswerena' />\n"
-        . "\t<img alt=\"".$clang->gT("Give focus to the HTML editor popup window")."\" id='".$fieldname."_popupctrldis' src='".Yii::app()->getConfig('adminimageurl')."edithtmlpopup_disabled.png' style='display:none' $imgopts class='btneditanswerdis' />\n"
+        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext,ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='editorLink'>\n"
+        . "\t<img alt=\"".gT("Start HTML editor in a popup window")."\" id='".$fieldname."_popupctrlena' src='".Yii::app()->getConfig('adminimageurl')."edithtmlpopup.png' $imgopts class='btneditanswerena' />\n"
+        . "\t<img alt=\"".gT("Give focus to the HTML editor popup window")."\" id='".$fieldname."_popupctrldis' src='".Yii::app()->getConfig('adminimageurl')."edithtmlpopup_disabled.png' style='display:none' $imgopts class='btneditanswerdis' />\n"
         . "</a>\n";
 
         return $htmlcode;
@@ -245,10 +251,11 @@
             ,filebrowserImageUploadUrl:'{$sFakeBrowserURL}'
             ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
         }
-        
+
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
-        . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
+        . "$(document).ready(
+        function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
         customConfig : \"".Yii::app()->getConfig('adminscripts')."ckeditor-config.js\"
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsSID : \"".$surveyID."\"
@@ -266,7 +273,7 @@
         ."});
         \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
         });";
-        
+
 
         $htmlcode.= '</script>';
 

@@ -22,18 +22,7 @@
 |
 */
 return array(
-    'basePath' => dirname(dirname(__FILE__)),
-    'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
     'name' => 'LimeSurvey',
-    'defaultController' => 'survey',
-    
-    'import' => array(
-        'application.core.*',
-        'application.models.*',
-        'application.controllers.*',
-        'application.modules.*',
-    ),
-    
     'components' => array(
         'db' => array(
             'connectionString' => 'sqlsrv:Server=localhost;Database=limesurvey',
@@ -53,7 +42,9 @@ return array(
         
         'urlManager' => array(
             'urlFormat' => 'get',
-            'rules' => require('routes.php'),
+            'rules' => array(
+            // You can put your own rules here
+            ),
             'showScriptName' => true,
         ),
     
@@ -65,7 +56,7 @@ return array(
     // on your webspace.
     // LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates
         'debug'=>0,
-        'debugsql'=>0 // Set this to 1 to enanble sql logging, only active when debug = 2
+        'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2
     )
 );
 /* End of file config.php */

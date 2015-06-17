@@ -1,15 +1,14 @@
 <?php
-
+namespace ls\pluginmanager;
 interface iPlugin {
 
     /**
      * Should return the description for this plugin
      * Constructor for the plugin
-     * 
      * @param PluginManager $manager    The plugin manager instantiating the object
      * @param int           $id         The id for storage
      */
-    public function __construct(PluginManager $manager, $id);
+    public function __construct(\PluginManager $manager, $id);
 
     /**
      * Return the description for this plugin
@@ -48,6 +47,15 @@ interface iPlugin {
      * @return iPluginStorage 
      */
     public function getStore();
+    
+    /**
+     * Saves the settings for this plugin
+     * 
+     * Assumes an array with valid key/value pairs is passed.
+     * 
+     * @param array $aSettings An array with key/value pairs for all plugin settings
+     */
+    public function saveSettings($aSettings);
     
     /**
      * Set the event to the plugin, this method is executed by the PluginManager

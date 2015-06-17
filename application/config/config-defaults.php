@@ -68,27 +68,25 @@ $config['minrepeatheadings']  =   3;                // The minimum number of rem
 $config['defaultlang']        =   'en';             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 
 $config['timeadjust']         =   0;                // Number of hours to adjust between your webserver local time and your own local time (for datestamping responses)
-$config['allowexportalldb']   =   1;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
+$config['allowexportalldb']   =   0;                // 0 will only export prefixed tables when doing a database dump. If set to 1 ALL tables in the database will be exported
 $config['maxdumpdbrecords']   =   500;              // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
-$config['allowmandbackwards'] =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
-// has not been answered. 1=Allow, 0=Deny
 $config['deletenonvalues']    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators']   =   0;                // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $config['blacklistallsurveys']     =  'N';          // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']     =  'N';          // Blacklist participant for any new added survey once the global field is set
-$config['blockaddingtosurveys']     =  'N';         // Don't allow blacklisted participants to be added to new survey
+$config['blockaddingtosurveys']     =  'Y';         // Don't allow blacklisted participants to be added to new survey
 $config['hideblacklisted']     =  'N';              // Don't show blacklisted participants
 $config['deleteblacklisted']     =  'N';            // Delete globally blacklisted participant from the database
 $config['allowunblacklist']     =  'N';             // Allow participant to unblacklist himself/herself
 $config['userideditable']     =  'N';               // Allow editing of user IDs
 $config['defaulttemplate']    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
 
-$config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js';  // File types allowed to be uploaded in the templates section.
+$config['allowedtemplateuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md';  // File types allowed to be uploaded in the templates section.
 
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
-$config['memory_limit']        =  '32';   // This sets how much memory LimeSurvey can access in megabytes. 32 mb is the minimum recommended - if you are using PDF functions up to 64 mb may be needed
+$config['memory_limit']        =  '128';   // This sets how much memory LimeSurvey can access in megabytes. 128 MB is the minimum recommended - if you are using PDF functions up to 256 MB may be needed
 
 $config['showpopups']         =   1;                // Show popup messages if mandatory or conditional questions have not been answered correctly.
 // 1=Show popup message, 0=Show message on page instead.
@@ -236,7 +234,16 @@ $config['usercontrolSameGroupPolicy'] = true;
 
 $config['demoMode'] = false;
 
-/** 
+/**
+* Prefill the login mask using the parameters 'defaultuser' and  'default pass'. This works only if demo mode (demoMode) is activated.
+* Also a notice will be shown that the user knows that he can just login by using the Login button.
+*
+* @var $config['demoModePrefill']  boolan  If set to true prefill the login mask
+*/
+$config['demoModePrefill'] = false;
+
+
+/**
 * column_style
 * Because columns are tricky things, in terms of balancing visual
 * layout against semantic markup. The choice has been left to the
@@ -303,15 +310,22 @@ $config['standard_templates_readonly'] =  true;
 $config['showsgqacode'] =  false;
 
 /**
-* When this settings is true/1 (default = false/0) then the printable survey option will show 
+* When this settings is true/1 (default = false/0) then the printable survey option will show
 * the raw relevance equation below the general fill-out instructions in case the question has conditions.
 */
 $config['showrelevance'] =  false;
 
 /**
+* To prevent brute force against forgotten password functionality, there is a random delay
+* that prevent attacker from knowing whether username and email address are valid or not.
+*/
+$config['minforgottenpasswordemaildelay'] =  500000;
+$config['maxforgottenpasswordemaildelay'] =  1500000;
+
+/**
 *  PDF Export Settings
 *  This feature configures PDF export for Export Answers
-*  PDF core fonts are not included in PDF: make ligther pdf 
+*  PDF core fonts are not included in PDF: make ligther pdf
 *  See http://www.tcpdf.org/fonts.php to have the list of PDF core fonts
 */
 
@@ -325,14 +339,15 @@ $config['alternatepdffontfile']=array(
     'ar'=>'dejavusans',// 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
     'be'=>'dejavusans',
     'bg'=>'dejavusans',
-    'zh-Hans'=>'chinese',
-    'zh-Hant-HK'=>'chinese',
-    'zh-Hant-TW'=>'chinese',
+    'zh-Hans'=>'cid0cs',
+    'zh-Hant-HK'=>'cid0ct',
+    'zh-Hant-TW'=>'cid0ct',
     'cs'=>'dejavusans',
     'cs-informal'=>'dejavusans',// This one not really tested: no translation for Yes/No or Gender
     'el'=>'dejavusans',
     'he'=>'freesans',
     'hi'=>'dejavusans',
+    'hr'=>'dejavusans',
     'hu'=>'dejavusans',
     'ja'=>'cid0jp',
     'ko'=>'cid0kr',
@@ -358,27 +373,19 @@ $config['notsupportlanguages'] = array(
     );
 $config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
+$config['pdfshowheader'] = 'N';           // Show header in pdf answer export
+$config['pdflogofile'] = 'logo_pdf.png';  // File name of logo for single answer export. Path is template path, i.e. template/default/logo_pdf.png.
+                                          // If not found, resulting pdf doesn't have header. A large image implies slower pdf generation.
+$config['pdflogowidth'] = '50';           // Logo width
+$config['pdfheadertitle'] = '';           // Header title (bold font). If this config param is empty and header is enabled, site name is used
+$config['pdfheaderstring'] = '';          // Header string (under title). If this config param is empty and header is enabled, survey name is used
 
 // QueXML-PDF: If set to true, the printable_help attribute will be visible on the exported PDF questionnaires
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
 $config['quexmlshowprintablehelp'] = false;
 
-// CAS Settings
-/**
-* Please note that CAS functionality is very basic and you have to modify the client to your needs.
-* At least the hard work is done.
-* The Client is deployed in Limesurvey and a file login_check_cas.php does what login_check.php does in normal mode.
-*
-* $casEnabled determines if CAS should be used or not for Authentication.
-* $casAuthServer the servername of the cas Auth Server. Without http://
-* $casAuthPort CAS Server listening Port
-* $casAuthUri relative uri from $casAuthServer to cas workingdirectory
-*/
-$config['casEnabled'] = false;
-$config['casAuthServer'] = 'localhost';
-$config['casAuthPort'] = 8443;
-$config['casAuthUri'] = '/cas-server/';
-
+$config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
+$config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of returned string
 
 /**
 *  Statistics chart settings
@@ -400,9 +407,9 @@ $config['alternatechartfontfile']=array(
     'ko'=>'UnBatang.ttf',
     'si'=>'FreeSans.ttf',
     'th'=>'TlwgTypist.ttf',
+    'zh-Hans'=>'fireflysung.ttf',
     'zh-Hant-HK'=>'fireflysung.ttf',
-    'zh-Hant-HK'=>'fireflysung.ttf',
-    'zh-Hant-HK'=>'fireflysung.ttf',
+    'zh-Hant-TW'=>'fireflysung.ttf',
 );
 
 /**
@@ -500,6 +507,13 @@ $config['ipInfoDbAPIKey'] = '';
 
 $config['googleMapsAPIKey'] = '';
 
+/**
+* GeoNames username for API. http://www.geonames.org/export/web-services.html
+* default limesurvey username is limited to 2000 credits/hour and 30 000 crdits/day see : http://www.geonames.org/export/ Terms and conditions
+*/
+$config['GeoNamesUsername'] = 'limesurvey';
+
+
 // Google Translate API key:  https://code.google.com/apis/language/translate/v2/getting_started.html
 $googletranslateapikey = '';
 
@@ -551,6 +565,16 @@ $config['InsertansUnsupportedtypes'] = array();
 * @var string
 */
 $config['updatenotification'] = 'both';
+
+// Proxy settings for ComfortUpdate
+/**
+* Set these if you are behind a proxy and want to update LS using ComfortUpdate
+*
+* $proxy_host_name Your proxy server name (string)
+* $proxy_host_port Your proxy server port (int)
+*/
+$config['proxy_host_name'] = '';
+$config['proxy_host_port'] = 80;
 
 
 // === Advanced Setup

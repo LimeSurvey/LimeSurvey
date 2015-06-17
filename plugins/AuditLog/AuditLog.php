@@ -1,14 +1,12 @@
 <?php
-    class AuditLog extends PluginBase {
+    class AuditLog extends \ls\pluginmanager\PluginBase {
 
         protected $storage = 'DbStorage';    
         static protected $description = 'Core: Create an audit log of changes';
         static protected $name = 'auditlog';
        
         
-        public function __construct(PluginManager $manager, $id) {
-            parent::__construct($manager, $id);
-
+        public function init() {
             $this->subscribe('beforeSurveySettings');
             $this->subscribe('newSurveySettings');
             $this->subscribe('beforeActivate');
@@ -17,6 +15,59 @@
             $this->subscribe('beforePermissionSetSave'); 
             $this->subscribe('beforeParticipantSave'); 
             $this->subscribe('beforeParticipantDelete'); 
+            $this->subscribe('beforeLogout');
+            $this->subscribe('afterSuccessfulLogin');
+            $this->subscribe('afterFailedLoginAttempt');
+        }
+
+        /**
+        * User logout to the audit log
+        * @return unknown_type
+        */
+        public function beforeLogout()
+        {
+            $oUser = $this->api->getCurrentUser();
+            if ($oUser != false)
+            {
+                $iUserID = $oUser->uid;
+                $oAutoLog = $this->api->newModel($this, 'log');
+                $oAutoLog->uid=$iUserID;
+                $oAutoLog->entity='user';
+                $oAutoLog->entityid=$iUserID;
+                $oAutoLog->action='beforeLogout';
+                $oAutoLog->save();
+            }
+        }
+
+        /**
+        * Successfull login to the audit log
+        * @return unknown_type
+        */
+        public function afterSuccessfulLogin()
+        {
+            $iUserID=$this->api->getCurrentUser()->uid;
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->uid=$iUserID;
+            $oAutoLog->entity='user';
+            $oAutoLog->entityid=$iUserID;
+            $oAutoLog->action='afterSuccessfulLogin';
+            $oAutoLog->save();
+        }
+
+        /**
+        * Failed login attempt to the audit log
+        * @return unknown_type
+        */
+        public function afterFailedLoginAttempt()
+        {
+            $event = $this->getEvent();
+            $identity = $event->get('identity');
+            $oAutoLog = $this->api->newModel($this, 'log');
+            $oAutoLog->entity='user';
+            $oAutoLog->action='afterFailedLoginAttempt';
+            $aUsername['username'] = $identity->username;
+            $oAutoLog->newvalues = json_encode($aUsername);
+            $oAutoLog->save();
         }
 
         /**
@@ -52,7 +103,7 @@
         */
         public function beforeParticipantSave()
         {
-            $oNewParticipant=$this->getEvent()->getSender();
+            $oNewParticipant=$this->getEvent()->get('model');
             if ($oNewParticipant->isNewRecord)
             {
                 return;
@@ -82,7 +133,7 @@
         */
         public function beforeParticipantDelete()
         {
-            $oNewParticipant=$this->getEvent()->getSender();
+            $oNewParticipant=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
 
             $aValues=$oNewParticipant->getAttributes();
@@ -104,27 +155,35 @@
         */
         public function beforeUserSave()
         {
-            $oUserData=$this->getEvent()->getSender();
+            $oUserData=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
-            $oOldUser=$this->api->getUser($oUserData->uid);
-            if (!$oOldUser)
+            
+            $aNewValues=$oUserData->getAttributes();
+            if (!isset($oUserData->uid))
             {
                 $sAction='create';
                 $aOldValues=array();
+                // Indicate the password has changed but assign fake hash
+                $aNewValues['password']='*MASKED*PASSWORD*';
             }
             else
             {                
+                $oOldUser=$this->api->getUser($oUserData->uid);
                 $sAction='update';
                 $aOldValues=$oOldUser->getAttributes();
+                
+                // Postgres delivers bytea fields as streams
+                if (gettype($aOldValues['password'])=='resource')
+                {
+                    $aOldValues['password'] = stream_get_contents($aOldValues['password']);
+                }
+                // If the password has changed then indicate that it has changed but assign fake hashes
+                if ($aNewValues['password']!=$aOldValues['password'])
+                {
+                    $aOldValues['password']='*MASKED*OLD*PASSWORD*';
+                    $aNewValues['password']='*MASKED*NEW*PASSWORD*';
+                };
             }
-            $aNewValues=$oUserData->getAttributes();
-                        
-            // If the password has changed then indicate that it has changed but assign fake hashes
-            if ($aNewValues['password']!=$aOldValues['password'])
-            {
-                $aOldValues['password']=hash('md5','12345');
-                $aNewValues['password']=hash('md5','67890');
-            };
             
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
@@ -142,7 +201,7 @@
                                                             
         public function beforeUserDelete()
         {
-            $oUserData=$this->getEvent()->getSender();
+            $oUserData=$this->getEvent()->get('model');
             $oCurrentUser=$this->api->getCurrentUser();
             $oOldUser=$this->api->getUser($oUserData->uid);
             if ($oOldUser)
@@ -196,7 +255,7 @@
                         'default'=>0,             
                         'tab'=>'notification', // @todo: Setting no used yet
                         'category'=>'Auditing for person-related data', // @todo: Setting no used yet
-                        'label' => 'Audit log for this survey:',
+                        'label' => 'Audit log for this survey',
                         'current' => $this->get('auditing', 'Survey', $event->get('survey'))
                     )
                 )

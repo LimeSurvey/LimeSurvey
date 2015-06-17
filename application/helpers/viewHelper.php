@@ -58,102 +58,135 @@ class viewHelper
     /**
      * getFieldText returns complete field information text.
      *
-     * Usage: getFieldText($field, $option)
+     * Usage: getFieldText($aField, $aOption)
      *
      * @return string
-     * @param array $field the field information from createFieldMap
-     * @param array $option option for filtering
+     * @param array $aField the field information from createFieldMap
+     * @param array $aOption option (see default)
      */
-    public static function getFieldText($field, $option=array())
+    public static function getFieldText($aField, $aOption=array())
     {
         // Default options
-        if(!isset($option['flat'])){$option['flat']=true;}
-        //if(!isset($option['separator'])){$option['separator']=array('[',']');}
+        $aDefaultOption=array(
+            'flat'=>true,
+            'separator'=>array('(',')'),
+            'abbreviated'=>false,
+            'afterquestion'=>" ",
+            'ellipsis'=>'...',// more for export or option, less for HTML display
+            );
+        $aOption=array_merge($aDefaultOption,$aOption);
 
-        if(isset($field['fieldname']))
+        $sQuestionText="";// Allways return a string
+        if(isset($aField['fieldname']))
         {
-            $questiontext=$field['question'];
-            if(isset($field['scale']) && $field['scale'])
+            $sQuestionText=self::flatEllipsizeText($aField['question'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']).$aOption['afterquestion'];
+            // Did this question have sub question, maybe not needed, think only isset is OK
+            $bHaveSubQuestion=isset($aField['aid']) && $aField['aid']!="";
+            if(isset($aField['subquestion']) && $bHaveSubQuestion)
             {
-                $questiontext.="({$field['scale']})";
+                $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
             }
-            if(isset($field['subquestion']) && $field['subquestion'])
+            if(isset($aField['subquestion1']) && $bHaveSubQuestion)
             {
-                $questiontext.="({$field['subquestion']})";
+                $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion1'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
             }
-            if(isset($field['subquestion1']) && $field['subquestion1'])
+            if(isset($aField['subquestion2']) && $bHaveSubQuestion)
             {
-                $questiontext.="({$field['subquestion1']})";
+                $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['subquestion2'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);
             }
-            if(isset($field['subquestion2']) && $field['subquestion2'])
+            if(isset($aField['scale']) && $aField['scale'])
             {
-                $questiontext.="({$field['subquestion2']})";
+                $sQuestionText.=self::putSeparator(self::flatEllipsizeText($aField['scale'],$aOption['flat'],$aOption['abbreviated'],$aOption['ellipsis']),$aOption['separator']);;
             }
         }
-        else
-        {
-            $questiontext="";
-        }
-        if ($option['flat'])
-        {
-            $questiontext=flattenText($questiontext,false,true);
-        }
-        return $questiontext;
+
+        return $sQuestionText;
     }
 
     /**
      * getFieldCode returns complete field information code.
      *
-     * Usage: getFieldCode($field, $option)
+     * Usage: getFieldCode($aField, $aOption)
      *
      * @return string
-     * @param array $field the field information from createFieldMap
-     * @param array $option option for filtering
+     * @param array $aField the field information from createFieldMap
+     * @param array $aOption option for filtering
      */
-    public static function getFieldCode($field, $option=array())
+    public static function getFieldCode($aField, $aOption=array())
     {
         // Default options
-        if(!isset($option['LEMcompat'])){$option['LEMcompat']=false;}
-        if($option['LEMcompat']){$option['separator']="_";}
-        if(!isset($option['separator'])){$option['separator']=array('[',']');}
+        $aDefaultOption=array(
+            'LEMcompat'=>false,
+            'separator'=>array('[',']'),
+            );
+        $aOption=array_merge($aDefaultOption,$aOption);
+        if($aOption['LEMcompat']){$aOption['separator']="_";}
 
-        if(isset($field['fieldname']))
+        $sQuestionCode="";
+        if(isset($aField['fieldname']))
         {
-            if(isset($field['title']) && $field['title'])
+            if(isset($aField['title']) && $aField['title'])
             {
-                $questioncode=$field['title'];
-                if(isset($field['aid']) && $field['aid']!="")
+                $sQuestionCode=$aField['title'];
+                if(isset($aField['aid']) && $aField['aid']!="")
                 {
-                    if(is_array($option['separator'])){ // Count ?
-                        $questioncode.=$option['separator'][0].$field['aid'].$option['separator'][1];
-                    }else{ // Test if is string ?
-                        $questioncode.=$option['separator'].$field['aid'];
-                    }
+                    $sQuestionCode.=self::putSeparator($aField['aid'],$aOption['separator']);
                 }
-                if(isset($field['scale']) && $field['scale'])
+                if(isset($aField['scale']) && $aField['scale'])
                 {
-                    if($option['LEMcompat']){
-                        $scalenum=intval($field['scale_id']);
+                    if($aOption['LEMcompat']){
+                        $scalenum=intval($aField['scale_id']);
                     }else{
-                        $scalenum=intval($field['scale_id'])+1;
+                        $scalenum=intval($aField['scale_id'])+1;
                     }
-                    if(is_array($option['separator'])){ // Count ?
-                        $questioncode.=$option['separator'][0].$scalenum.$option['separator'][1];
-                    }else{ // Test if is string ?
-                        $questioncode.=$option['separator'].$scalenum;
-                    }
+                    $sQuestionCode.=self::putSeparator($scalenum,$aOption['separator']);
                 }
             }
             else
             {
-                $questioncode=$field['fieldname'];
+                $sQuestionCode=$aField['fieldname'];
             }
+        }
+
+        return $sQuestionCode;
+    }
+
+    /**
+    * Return a string with the good separator before and after
+    * 
+    * @param $sString :the string
+    * @param : string/array : the string to put before of the array (before,after)
+    */
+    public static function putSeparator($sString,$separator){
+        if(is_array($separator))
+        {
+            return $separator[0].$sString.$separator[1];
         }
         else
         {
-            $questioncode="";
+            return $separator.$sString;
         }
-        return $questioncode;
+    }
+    /**
+    * Return a string fixed according to option
+    * 
+    * @param $sString :the string
+    * @param $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
+    * @param $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
+    * @param $sEllipsis if abbreviated : the char to put at end (or middle)
+    * @param $fPosition if abbreviated position to split (in % : 0 to 1)
+    * 
+    */
+    public static function flatEllipsizeText($sString,$bFlat,$iAbbreviated,$sEllipsis='...',$fPosition = 1){
+        if($bFlat || $iAbbreviated)
+        {
+            $sString = flattenText($sString);
+        }
+        if($iAbbreviated)
+        {
+            $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
+        }
+        return $sString;
     }
 
     /**
@@ -169,5 +202,57 @@ class viewHelper
         {
             $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
         }
+     }
+
+    /**
+     * Deactivate script but show it for debuging
+     * This only filter script tag
+     * @todo : filter inline javascript (onclick etc ..., but don't filter EM javascript)
+     * Maybe doing it directly in LEM->GetLastPrettyPrintExpression();
+     * @param string : Html to filter
+     * @return string
+     * @author Denis Chenu
+     */
+     public static function filterScript($sHtml){
+        return preg_replace('#<script(.*?)>(.*?)</script>#is', '<pre>&lt;script&gt;${2}&lt;/script&gt;</pre>', $sHtml);
+     }
+    /**
+     * Show purified html
+     * @param string : Html to purify
+     * @return string
+     */
+     public static function purified($sHtml){
+        $oPurifier = new CHtmlPurifier();
+        return $oPurifier->purify($sHtml);
+     }
+    /**
+     * Show clean string, leaving ONLY tag for Expression
+     * @param string : Html to clean
+     * @return string
+     */
+     public static function stripTagsEM($sHtml)
+     {
+        $oPurifier = new CHtmlPurifier();
+        $oPurifier->options = array(
+            'HTML.Allowed'=>'span[title|class],a[class|title|href]',
+            'Attr.AllowedClasses'=>array(
+                'em-expression',
+                'em-haveerror',
+                'em-var-string',
+                'em-function',
+                'em-var-static',
+                'em-var-before',
+                'em-var-after',
+                'em-var-inpage',
+                'em-var-error',
+                'em-assign',
+                'em-error',
+            ),
+            'URI.AllowedSchemes'=>array( // Maybe only local ?
+                'http' => true,
+                'https' => true,
+                )
+        );
+        return $oPurifier->purify($sHtml);
      }
 }

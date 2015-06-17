@@ -11,8 +11,8 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   // Hide the default answers list
   // Display for media oral, maybe use !window.matchMedia("(oral)").matches but still hidden if user use default browser with screen reader ?
   $('#question'+qID+' .answers-list').addClass("hide");
-  // We are in javascript, then default tip can be removed
-  $('#question'+qID+' .em_default').remove();
+  // We are in javascript, then default tip can be replaced
+  $('#question'+qID+' .em_default').html(aRankingTranslations.rankhelp);
 
 
   // Add connected sortables elements to the question
@@ -119,10 +119,12 @@ function updateDragDropRank(qID){
   });
   // Update #relevance and lauch checkconditions function
   $("[id^=" + relevancename + "]").val('0');
-  $('#question'+qID+' .select-item select').each(function(index){
-    number=index+1;
-    if($(this).val()!=""){$("#"+relevancename+number).val("1");}
-    checkconditions($(this).val(),$(this).attr("name"),'select-one','onchange');
+  $('#question'+qID+' .select-item select:lt('+maxanswers+')').each(function(index){
+      number=index+1;
+      if($(this).val()!=""){
+          $("#"+relevancename+number).val("1");
+      }
+      checkconditions($(this).val(),$(this).attr("name"),'select-one','onchange');
   });
     $('#sortable-rank-'+qID+' li').removeClass("error");
     $('#sortable-choice-'+qID+' li').removeClass("error");
@@ -166,7 +168,7 @@ function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
         maxHeight=$(this).actual('height');
       }
     });
-    $('.connectedSortable'+qID+' li').height(maxHeight);
+    $('.connectedSortable'+qID+' li').css('min-height',maxHeight+'px');
   }
   if(samelistheight)
   {
@@ -174,7 +176,7 @@ function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
     $('.connectedSortable'+qID+' li').each(function(){
       totalHeight=totalHeight+$(this).actual('outerHeight',{includeMargin:true});;
     });
-    $('.connectedSortable'+qID).height(totalHeight);
+    $('.connectedSortable'+qID).css('min-height',totalHeight+'px');
   }
 }
 

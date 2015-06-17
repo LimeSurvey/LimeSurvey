@@ -25,7 +25,7 @@ table {
 
 /*** Start jQuery UI Theme Styles ***/
 
-button.ui-button::-moz-focus-inner {
+.ui-button::-moz-focus-inner {
 	border: 0; 
 	padding: 0;   /* Get rid of extra padding in focused button in FF */
 }
@@ -40,24 +40,21 @@ button.ui-button::-moz-focus-inner {
 	line-height: normal;
 }
 
-button.ui-state-default,
-input.ui-state-default {  
+.ui-state-default {  
 	color: #333333; 
 	border: 1px solid #A0A0A0;
 }
-
-button.ui-state-hover,
-input.ui-state-hover {  
+.ui-state-active .ui-button-text{color:#333333; }
+.ui-state-hover {  
 	color: #212121; 
 	border: 1px solid #999999;
 }
-
-button.ui-state-active,
-input.ui-state-active {  
+.ui-state-hover .ui-button-text{color:#212121; }
+.ui-state-active {  
 	color: #212121; 
 	border: 1px solid #AAAAAA; 
 }
-
+.ui-state-active .ui-button-text{color:#212121; }
 .ui-button-icon-only { 
 	width: 2.2em; /* To make room for the icon, a width needs to be set here */
 } 
@@ -155,16 +152,7 @@ a {
   color: #fff;
 }
 
-a:link {
-  color: #fff;
-}
-
 a:hover {
-  color: #fff;
-  text-decoration: none;
-}
-
-a:visited {
   color: #fff;
   text-decoration: none;
 }
@@ -905,7 +893,16 @@ select {
   margin-top: 5px;
   *margin-top: 2px; /* IE7and below */
 }
-
+.multiple-opt .survey-question-answer ul.colstyle-css li label,.multiple-opt .survey-question-answer ul.colstyle-ul li label,.multiple-opt .survey-question-answer table.colstyle-table li label,
+.multiple-opt-comments .survey-question-answer ul.colstyle-css li label,.multiple-opt-comments .survey-question-answer ul.colstyle-ul li label,.multiple-opt-comments .survey-question-answer table.colstyle-table li label
+{
+    display: inline;
+}
+.list-radio .survey-question-answer ul.colstyle-css li label,.list-radio .survey-question-answer ul.colstyle-ul li label,.list-radio .survey-question-answer table.colstyle-table li label,
+.list-with-comment .survey-question-answer ul.colstyle-css li label,.list-with-comment .survey-question-answer ul.colstyle-ul li label,.list-with-comment .survey-question-answer table.colstyle-table li label
+{
+    display: inline;
+}
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;

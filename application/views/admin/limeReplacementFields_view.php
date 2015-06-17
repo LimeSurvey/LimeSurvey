@@ -37,20 +37,20 @@
             {
             $InsertansUnsupportedtypes= Yii::app()->getConfig('InsertansUnsupportedtypes');
             ?>
-            <select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;width:20em;' size='14' ondblclick="$('.cke_dialog_ui_button_ok').children().click();">
+            <select name='cquestions' id='cquestions' size='14' ondblclick="$('.cke_dialog_ui_button_ok').children().click();">
                 <?php
                     $noselection = false;
                 }
                 else
                 {
-                    $clang->eT("No replacement variable available for this field");
+                    eT("No replacement variable available for this field");
                     $noselection = true;
                 }
 
                 if (count($replFields) > 0)
                 {
                 ?>
-                <optgroup label='<?php $clang->eT("Standard Fields");?>'>
+                <optgroup label='<?php eT("Standard Fields");?>'>
                     <?php
 
                         foreach ($replFields as $stdfield)
@@ -67,7 +67,7 @@
                 if (isset($cquestions))
                 {
                 ?>
-                <optgroup label='<?php $clang->eT("Previous answer fields");?>'>
+                <optgroup label='<?php eT("Previous answer fields");?>'>
                     <?php
                         foreach ($cquestions as $cqn)
                         {
@@ -108,11 +108,11 @@
                 <tr>
                     <td>
                         <br />
-                        <font color='orange'><?php $clang->eT("Some Question have been disabled");?></font>
+                        <font color='orange'><?php eT("Some Question have been disabled");?></font>
                         <br />
-                        <?php echo sprintf($clang->gT("Survey Format is %s:"), $clang->gT("All in one"));?>
+                        <?php echo sprintf(gT("Survey Format is %s:"), gT("All in one"));?>
                         <br />
-                        <i><?php $clang->eT("Only Previous pages answers are available");?></i>
+                        <i><?php eT("Only Previous pages answers are available");?></i>
                         <br />
                     </td>
                 </tr>
@@ -123,9 +123,9 @@
                 <tr>
                     <td>
                         <br />
-                        <font color='orange'><?php $clang->eT("Some Question have been disabled");?></font>
-                        <br /><?php echo sprintf($clang->gT("Survey mode is set to %s:"), $clang->gT("Group by Group"));?>
-                        <br/><i><?php $clang->eT("Only Previous pages answers are available");?>
+                        <font color='orange'><?php eT("Some Question have been disabled");?></font>
+                        <br /><?php echo sprintf(gT("Survey mode is set to %s:"), gT("Group by Group"));?>
+                        <br/><i><?php eT("Only Previous pages answers are available");?>
                         </i><br />
                     </td></tr>
                 <?php

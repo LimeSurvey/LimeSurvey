@@ -1,13 +1,13 @@
-<?php 
+<?php
 
     /**
      * Class containing helper functions for dealing with "big data".
      * @author Sam Mousa <sam@befound.nl>
      */
     class BigData {
-        
-        
-        
+
+
+
         /**
          * This function combines json_encode and echo.
          * If a stream is passed (or is part of the array) it's content will be
@@ -21,7 +21,7 @@
         {
             // Scan array for any streams.
             $hasStream = array_reduce($json, array('BigData', 'hasStream'), false);
-            
+
             // If there is no stream we are done.
             if (!$hasStream)
             {
@@ -31,9 +31,9 @@
             {
                 self::json_echo_data($json, ($options & JSON_FORCE_OBJECT) == JSON_FORCE_OBJECT);
             }
-            
+
         }
-        
+
         protected static function hasStream(&$result, $item)
         {
             if ($result === true)
@@ -54,13 +54,13 @@
                 return false;
             }
         }
-        
-        
+
+
         protected static function isStream($item)
         {
             return is_object($item) && get_class($item) == 'BigFile';
         }
-        
+
         protected static function isAssociative($array)
         {
             foreach ($array as $key => $value)
@@ -72,8 +72,8 @@
             }
             return false;
         }
-        
-        
+
+
         protected static function json_echo_data($json)
         {
             if (self::isStream($json))
@@ -101,7 +101,7 @@
                 echo json_encode(null);
             }
         }
-        
+
         protected static function json_echo_array($json)
         {
             echo '[';
@@ -113,7 +113,7 @@
                 }
                 echo ']';
         }
-        
+
         protected static function json_echo_number($json)
         {
             echo $json;
@@ -136,12 +136,12 @@
                 }
                 echo '}';
         }
-        
+
         protected static function json_echo_string($json)
         {
             echo json_encode($json);
         }
-        
+
         protected static function json_echo_stream(BigFile $data)
         {
             // Encode stream to base64.
@@ -149,8 +149,8 @@
             $data->render();
             echo '"';
         }
-        
-        
+
+
         protected static function tag($name, $data)
         {
             echo "<$name>$data</$name>\n";
@@ -180,9 +180,9 @@
             {
                 self::xmlrpc_echo_string($data);
             }
-    
+
         }
-        
+
         protected static function xmlrpc_echo_array($data)
         {
             echo '<array>';
@@ -196,52 +196,48 @@
             echo '</data>';
             echo '</array>';
         }
+
         /**
          * Prints XMLRPC numeric types.
          * @param type $data
          */
         protected static function xmlrpc_echo_number($data)
         {
-            if (is_float($data))
-            {
-                self::tag('double', $data);
-            }
-            elseif (is_int($data))
-            {
+            if (floor($data) == $data){
                 self::tag('int', $data);
             }
+            else {
+                self::tag('double', $data);
+            }
         }
-        
+
         protected static function xmlrpc_echo_object($data)
         {
             echo '<struct>';
             foreach ($data as $key => $value)
             {
                 echo '<member>';
-                echo '<name>';
-                self::xmlrpc_echo_string($key);
-                echo '</name>';
+                echo self::tag('name', "<![CDATA[$key]]>");
                 echo '<value>';
                 self::xmlrpc_echo($value);
                 echo '</value>';
-                
+
                 echo '</member>';
             }
             echo '</struct>';
         }
-        
+
         protected static function xmlrpc_echo_stream($data)
         {
-            echo '<base64>';
-            stream_filter_append($data, 'convert.base64-encode', STREAM_FILTER_READ);
-
-            echo '</base64>';
+            echo '<string>'; // a Base64 tag would be more sensible here but it would break all current implementations
+            $data->render();
+            echo '</string>';
         }
+
         protected static function xmlrpc_echo_string($data)
         {
             self::tag('string', "<![CDATA[$data]]>");
         }
-        
     }
 
     class BigFile {
@@ -273,7 +269,7 @@
                 unlink($this->fileName);
             }
         }
-        
+
         protected function echo_base64()
         {
             $fileHandle = fopen($this->fileName, 'r');

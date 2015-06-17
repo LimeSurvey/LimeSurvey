@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/styles/admin/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo $this->createUrl('/');?>styles/admin/favicon.ico" type="image/x-icon" />
-	
+
         <?php
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
@@ -27,13 +27,13 @@
         App()->getClientScript()->registerScript('installer', $script);
     ?>
     <link rel="icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico" />
-	<title><?php $this->lang->eT("LimeSurvey installer"); ?></title>
+	<title><?php eT("LimeSurvey installer"); ?></title>
 </head>
 
 <body>
     <div class="container">
         <div class="row"><div class="span12">
-            <h1><?php $this->lang->eT("LimeSurvey installer"); ?></h1>
+            <h1><?php eT("LimeSurvey installer"); ?></h1>
         </div></div>
         <?php echo $content; ?>
 

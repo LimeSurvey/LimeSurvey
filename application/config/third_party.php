@@ -8,7 +8,7 @@ return array(
     'jquery' => array(
         'baseUrl' => 'third_party/jquery/',
         'js' => array(
-            'jquery-1.10.2.min.js'
+            'jquery-1.11.1.min.js'
         )
     ),
     'jqgrid' => array(
@@ -59,6 +59,7 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'bootstrap'
         )
     ),
     'jquery-bindWithDelay' => array(
@@ -153,6 +154,18 @@ return array(
             'jquery'
         )
     ),
+    'bootstrap-multiselect' => array(
+        'baseUrl' => 'third_party/bootstrap-multiselect',
+        'js' => array(
+            'js/bootstrap-multiselect.js',
+        ),
+        'css' => array(
+            'css/bootstrap-multiselect.css',
+        ),
+        'depends' => array(
+            'jquery'
+        )
+    ),
     'ace' => array(
         'baseUrl' => 'third_party/ace',
         'js' => array(
@@ -180,7 +193,7 @@ return array(
             'jquery'
         )
     ),
-	'jquery-actual' => array(
+    'jquery-actual' => array(
         'baseUrl' => 'third_party/jquery-actual/',
         'js' => array(
             'jquery.actual.min.js'
@@ -189,22 +202,34 @@ return array(
             'jquery'
         )
     ),
-	'jquery-touch-punch' => array(
-		'baseUrl' => 'third_party/jquery-touch-punch/',
-		'js' => array(
-			'jquery.ui.touch-punch.min.js'
-		),
-		'depends' => array(
-			'jqueryui'
-		)
-	),
-	'jqueryui-timepicker' => array(
-        'baseUrl' => 'third_party/jquery-ui-timepicker-addon/',
+    'jquery-touch-punch' => array(
+        'baseUrl' => 'third_party/jquery-touch-punch/',
         'js' => array(
-            'jquery-ui-timepicker-addon.js'
+            'jquery.ui.touch-punch.min.js'
         ),
         'depends' => array(
             'jqueryui'
         )
-    )
+    ),
+    'jqueryui-timepicker' => array(
+        'baseUrl' => 'third_party/jquery-ui-timepicker-addon/',
+        'js' => array(
+            'jquery-ui-timepicker-addon.js'
+        ),
+        'css' => array(
+            'jquery-ui-timepicker-addon.css'
+        ),
+        'depends' => array(
+            'jqueryui'
+        )
+    ),
+    'leaflet' => array(
+        'baseUrl' => 'third_party/leaflet/',
+        'js' => array(
+            'leaflet.js'
+        ),
+        'css' => array(
+            'leaflet.css'
+        ),
+    ),
 );

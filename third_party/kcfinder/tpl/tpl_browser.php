@@ -2,33 +2,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>KCFinder: /<?php echo $this->session['dir'] ?></title>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 <?php INCLUDE "tpl/tpl_css.php" ?>
 <?php INCLUDE "tpl/tpl_javascript.php" ?>
 </head>
 <body>
-<script type="text/javascript">
-$('body').noContext();
-</script>
 <div id="resizer"></div>
-<div id="shadow"></div>
-<div id="dialog"></div>
-<div id="alert"></div>
+<div id="menu"></div>
 <div id="clipboard"></div>
 <div id="all">
+
 <div id="left">
     <div id="folders"></div>
 </div>
+
 <div id="right">
+
     <div id="toolbar">
         <div>
-        <a href="kcact:upload"><?php echo $this->label("Upload") ?></a>
-        <a href="kcact:refresh"><?php echo $this->label("Refresh") ?></a>
-        <a href="kcact:settings"><?php echo $this->label("Settings") ?></a>
-        <a href="kcact:maximize"><?php echo $this->label("Maximize") ?></a>
-        <a href="kcact:about"><?php echo $this->label("About") ?></a>
+        <a href="kcact:upload"><span><?php echo $this->label("Upload") ?></span></a>
+        <a href="kcact:refresh"><span><?php echo $this->label("Refresh") ?></span></a>
+        <a href="kcact:settings"><span><?php echo $this->label("Settings") ?></span></a>
+        <a href="kcact:maximize"><span><?php echo $this->label("Maximize") ?></span></a>
+        <a href="kcact:about"><span><?php echo $this->label("About") ?></span></a>
         <div id="loading"></div>
         </div>
     </div>
+
     <div id="settings">
 
     <div>
@@ -76,6 +76,7 @@ $('body').noContext();
     </div>
 
     </div>
+
     <div id="files">
         <div id="content"></div>
     </div>

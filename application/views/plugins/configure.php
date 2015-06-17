@@ -1,32 +1,28 @@
 <?php
-    App()->getClientScript()->registerCssFile(Yii::app()->getBaseUrl() . '/styles/configure.css');
-?>
-<div class="header ui-widget-header"><?php eT('Plugins'); ?></div>
-<div id="plugin-<?php echo isset($plugin['name']) ? $plugin['name'] : ''; ?>">
-    
-    
-    <div class="pluginsettings messagebox">
-    <?php
-        if (isset($plugin['name']))
-        {
-            echo CHtml::tag('div', array('class'=>'header'), sprintf(gT("Settings for plugin %s"), $plugin['name']));
-        }
-        $this->widget('ext.SettingsWidget.SettingsWidget', array(
 
-            'settings' => $settings,
-            'formHtmlOptions' => array(
-                'id' => "pluginsettings-{$plugin['name']}",
+    $title = isset($properties['pluginName']) ? sprintf(gT("Settings for plugin: %s"), $properties['pluginName']) : null;
+    if (is_null($title)) $title = isset($plugin['name']) ? sprintf(gT("Settings for plugin %s"), $plugin['name']) : null;
+
+    $this->widget('ext.SettingsWidget.SettingsWidget', array(
+        'settings' => $settings,
+        'title' => $title,
+        'formHtmlOptions' => array(
+            'id' => "pluginsettings-{$plugin['name']}",
+        ),
+        'method' => 'post',
+        'buttons' => array(
+            gT('Save plugin settings'),
+            gT('Save and return to plugins list')=>array(
+                'type'=>'submit',
+                'htmlOptions'=>array(
+                    'name'=>'redirect',
+                    'value'=>App()->createUrl('plugins/index'), // This allow to use App()->request->getPost('redirect')) for forward (not used actually)
+                ),
             ),
-            'method' => 'post',
-            'buttons' => array(
-                gT('Save plugin settings'),
-                gT('Cancel') => array(
-					'type' => 'link',
-					'href' => App()->createUrl('plugins/index')
-				)
+            gT('Cancel') => array(
+                'type' => 'link',
+                'href' => App()->createUrl('plugins/index')
             )
-        ));
-    ?>
-
-    </div>
-</div>
+        )
+    ));
+?>

@@ -91,11 +91,11 @@ function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
       $('.ajax-loader').css('display','inline');
       iRunningThreads++;
       $.ajax({
-            url:'admin.php',
+            url: translateJsonUrl,
             datatype: 'json',
             async: true,
+            type: 'POST',
             data:{
-                action: 'ajaxtranslategoogleapi',
                 baselang:sBaseLang,
                 tolang:sToLang,
                 text:sToConvert
@@ -114,7 +114,7 @@ function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
                 }
                 else if (!aData.error)
                 {
-                    $("[name="+sId+"]").html(aData.converted);
+                    $("textarea[name="+sId+"]").val(aData.converted);
 
                     var oMyEditor = CKEDITOR.instances[sId];
 

@@ -1,6 +1,7 @@
 $(document).ready(function(){
     var sourceItem;
     $('ol.organizer').nestedSortable({
+		doNotClear: true,
         disableNesting: 'no-nest',
         forcePlaceholderSize: true,
         handle: 'div',
@@ -13,16 +14,22 @@ $(document).ready(function(){
         tabSize: 25,
         rootID: 'root',
         stop: function(event, ui) {
-            if (ui.item[0].sourceLevel!=ui.placeholder.destinationLevel)
-               $('ol.organizer').nestedSortable('cancel');
+			var itemLevel = $(ui.item).attr('data-level');
+			var listLevel = $(ui.item).closest('ol').attr('data-level');
+            if (itemLevel != listLevel) {
+                $('ol.organizer').nestedSortable('cancel');
+			}
         },
         change: function(event, ui) {
-            if (typeof ui.item[0] != 'undefined' && typeof ui.placeholder != 'undefined')
-            {
-                 if (ui.item[0].sourceLevel!=ui.placeholder.destinationLevel)
-                 {
-                 $('.placeholder').addClass('ui-nestedSortable-error');
-                 }
+            if (typeof ui.item != 'undefined' && typeof ui.placeholder != 'undefined') {
+				var itemLevel = $(ui.item).attr('data-level');
+				var listLevel = $(ui.placeholder).closest('ol').attr('data-level');
+                if (itemLevel != listLevel) {
+                    $('.placeholder').addClass('ui-nestedSortable-error');
+                }
+                else {
+                    $('.placeholder').removeClass('ui-nestedSortable-error');
+                }
             }
         },
         tolerance: 'pointer',

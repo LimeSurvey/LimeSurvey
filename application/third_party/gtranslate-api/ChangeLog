@@ -1,0 +1,31 @@
+0.7.9.1
+ - Removed ' from languages.v2.ini in order to manage compatibility with php < 5.3
+ / Added more examples into example.php
+0.7.9
+- Applied improvements sent by (Azhari Harahap)
+ - Removing notice Notice: Undefined index:  HTTP_REFERER when runing script from console
+ - Created a setLanguageFile($file) method to define language file to use
+0.7.8
+- Fixed issues on languages file [35]
+0.7.7
+ - Updated languages file, issue [28]
+ - Updated version on GTranslate.php, issue [29]
+ - Fixed the issue that was preventing Nowergian translation to be done, issue [26]
+ - Added Referrer parameter setter, issue [22]
+0.7.6
+- Bug fixing
+ Afrikaans support fix, issue [24]
+- Added functionalities
+  Irish support, issue [16]
+  userip parameter supported, issue [17]
+0.7.4:
+- Fixed warning when no $_SERVER['HTTP_REFERER'] is defined, issue [5]
+0.7.3:
+- Changed CURL request call to POST in order to allow big text translation,
+issue [2]
+0.7.2:
+- Added support for API Key insertion on the class
+0.7.1:
+- Added TM to protected brand word
+0.7.0:
+- Initial release for the Google Translate API PHP Wrapper

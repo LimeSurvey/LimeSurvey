@@ -16,18 +16,17 @@ class Expressions extends Survey_Common_Action {
 	{
 	    $aData=array();
         $needpermission=false;
-	    if (isset($_GET['sa']) && $_GET['sa']=='survey_logic_file' && !empty($_REQUEST['sid']))
+        $aData['surveyid']=$surveyid=sanitize_int(Yii::app()->request->getQuery('sid'));
+        $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
+	    if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $surveyid)
 	    {
-	        $surveyid=(int)$_REQUEST['sid'];
 	        $needpermission=true;
 	    }
         if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
-            $clang = $this->getController()->lang;
-            $aData['surveyid'] = (int)$_REQUEST['sid'];
             App()->getClientScript()->registerPackage('jquery-superfish');
-            $message['title']= $clang->gT('Access denied!');
-            $message['message']= $clang->gT('You do not have sufficient rights to access this page.');
+            $message['title']= gT('Access denied!');
+            $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
@@ -38,11 +37,11 @@ class Expressions extends Survey_Common_Action {
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
-            $aData['pagetitle']="ExpressionManager:  ".$this->_printTitle(Yii::app()->request->getQuery('sa', 'index'));
+            $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
 	        if(isset($_GET['sa']))
-		        $this->test($_GET['sa'],$aData);
-	        else 
+		        $this->test($aData['sa'],$aData);
+	        else
 	            $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
         }
     }

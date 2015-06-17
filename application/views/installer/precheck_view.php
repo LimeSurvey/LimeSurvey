@@ -1,26 +1,26 @@
 
 <?php
 
-function dirReport($dir, $write, $clang)
+function dirReport($dir, $write)
 {
     $error = 0;
 
     if ($dir == "Found")
     {
-       $a = $clang->gT("Found");
+       $a = gT("Found");
     } else
     {
        $error = 1;
-       $a = $clang->gT("Not found");
+       $a = gT("Not found");
     }
 
     if ($write == "Writable")
     {
-       $b = $clang->gT("Writable");
+       $b = gT("Writable");
     } else
     {
        $error = 1;
-       $b = $clang->gT("Unwritable");
+       $b = gT("Unwritable");
     }
 
     if ($error)
@@ -36,69 +36,69 @@ function dirReport($dir, $write, $clang)
 ?>
 <div class="row">
     <div class="span3">
-        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
+        <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="span9">
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
         <fieldset>
-        <legend><?php $clang->eT("Minimum requirements"); ?></legend>
+        <legend><?php eT("Minimum requirements"); ?></legend>
 
         <table class='table-striped'>
         <thead>
         <tr>
                <th>&nbsp;</th>
-               <th class='text-center'><?php $clang->eT("Required"); ?></th>
-               <th class='text-center'><?php $clang->eT("Current"); ?></th>
+               <th class='text-center'><?php eT("Required"); ?></th>
+               <th class='text-center'><?php eT("Current"); ?></th>
         </tr>
         </thead>
-        <tbody>        
+        <tbody>
         <tr>
-               <td><?php $clang->eT("PHP version"); ?></td>
-               <td>5.1.6+</td>
-               <td><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Outdated"); ?>: <?php echo $phpVersion; ?></span>
+               <td><?php eT("PHP version"); ?></td>
+               <td>5.3.0+</td>
+               <td><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'><?php eT("Outdated"); ?>: <?php echo $phpVersion; ?></span>
                <?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
         </tr>
         <tr>
-               <td><?php $clang->eT("Minimum memory available"); ?></td>
+               <td><?php eT("Minimum memory available"); ?></td>
                <td>64MB</td>
-               <td><?php 
-               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("Too low"); ?>: <?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
-               <?php } else { ?><?php echo $this->return_bytes(ini_get('memory_limit'))/1024/1024; ?>MB <?php } ?></td>
+               <td><?php
+               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php eT("Too low"); ?>: <?php echo $convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
+               <?php } elseif (ini_get('memory_limit')=='-1') eT("Unlimited"); else { echo convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; echo ' MB';} ?></td>
         </tr>
         <tr>
-               <td><?php $clang->eT("PHP PDO driver library"); ?></td>
-               <td><?php $clang->eT("At least one installed"); ?></td>
-               <td><?php if (count($dbtypes)==0) { ?><span style='font-weight:bold; color: red'><?php $clang->eT("None found"); ?></span>
+               <td><?php eT("PHP PDO driver library"); ?></td>
+               <td><?php eT("At least one installed"); ?></td>
+               <td><?php if (count($dbtypes)==0) { ?><span style='font-weight:bold; color: red'><?php eT("None found"); ?></span>
                <?php } else { ?><?php echo implode(', ',$dbtypes); ?> <?php } ?></td>
         </tr>
         <tr>
-               <td><?php $clang->eT("PHP mbstring library"); ?></td>
+               <td><?php eT("PHP mbstring library"); ?></td>
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
                <td><?php echo $mbstringPresent; ?></td>
         </tr>
         <tr>
-               <td><?php $clang->eT("PHP/PECL JSON library"); ?></td>
+               <td><?php eT("PHP/PECL JSON library"); ?></td>
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
                <td><?php echo $bJSONPresent; ?></td>
         </tr>
         <tr>
-               <td>/application/config <?php $clang->eT("directory"); ?></td>
-               <td><?php $clang->eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
+               <td>/application/config <?php eT("directory"); ?></td>
+               <td><?php eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($configPresent,$configWritable); ?></td>
         </tr>
         <tr>
-               <td>/upload <?php $clang->eT("directory"); ?></td>
-               <td><?php $clang->eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
+               <td>/upload <?php eT("directory"); ?></td>
+               <td><?php eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($uploaddirPresent,$uploaddirWritable); ?></td>
         </tr>
         <tr>
-               <td>/tmp <?php $clang->eT("directory"); ?></td>
-               <td><?php $clang->eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
+               <td>/tmp <?php eT("directory"); ?></td>
+               <td><?php eT("Found & writable"); ?></td>
+               <td><?php  echo dirReport($tmpdirPresent,$tmpdirWritable); ?></td>
         </tr>
         <tr>
-               <td><?php $clang->eT("Session writable"); ?></td>
+               <td><?php eT("Session writable"); ?></td>
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
                <td><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: ' . session_save_path(); ?></td>
         </tr>
@@ -106,13 +106,13 @@ function dirReport($dir, $write, $clang)
         </table>
         </fieldset>
         <fieldset>
-        <legend><?php $clang->eT('Optional modules'); ?></legend>
+        <legend><?php eT('Optional modules'); ?></legend>
         <table class='table-striped'>
         <thead>
             <tr>
                    <th>&nbsp;</th>
-                   <th><?php $clang->eT('Recommended'); ?></th>
-                   <th><?php $clang->eT('Current'); ?></th>
+                   <th><?php eT('Recommended'); ?></th>
+                   <th><?php eT('Current'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -141,21 +141,21 @@ function dirReport($dir, $write, $clang)
                <td><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
                <td><?php echo $bIMAPPresent ; ?></td>
         </tr>
-        </tbody>        
+        </tbody>
 
         </table>
         </fieldset>
         <div class="row navigator">
             <div class="span3" >
-                <input class="btn" type="button" value="<?php $clang->eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
+                <input class="btn" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
             </div>
             <div class="span3">
-                <input class="btn" type="button" value="<?php $clang->eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
+                <input class="btn" type="button" value="<?php eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
             </div>
             <div class="span3">
 
                 <?php if (isset($next) && $next== TRUE) { ?>
-                <input class="btn" type="button" value="<?php $clang->eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
+                <input class="btn" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 <?php } ?>
             </div>
         </div>

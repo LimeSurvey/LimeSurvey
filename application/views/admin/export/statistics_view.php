@@ -14,8 +14,8 @@
 </script>
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start'));?>
     <div class='header ui-widget-header header_statistics'>
-        <div style='float:right;'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
-        <?php $clang->eT("General filters"); ?>
+        <div style='float:right;'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php eT("Minimize"); ?>'/></div>
+        <?php eT("General filters"); ?>
     </div>
     <!-- AUTOSCROLLING DIV CONTAINING GENERAL FILTERS -->
     <div id='statisticsgeneralfilters' class='statisticsfilters' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
@@ -24,31 +24,31 @@
             <?php
                 $error = '';
                 if (!function_exists("gd_info")) {
-                    $error .= '<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
-                    $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+                    $error .= '<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+                    $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
                 }
                 else if (!function_exists("imageftbbox")) {
-                    $error .= '<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
-                    $error .= '<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+                    $error .= '<br />'.gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+                    $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
                 }
             ?>
             <fieldset style='clear:both;'>
-                <legend><?php $clang->eT("Data selection"); ?></legend>
+                <legend><?php eT("Data selection"); ?></legend>
                 <ul>
                     <li>
-                        <label for='completionstate'><?php $clang->eT("Include:"); ?> </label>
+                        <label for='completionstate'><?php eT("Include:"); ?> </label>
                         <select name='completionstate' id='completionstate'>
-                            <option value='all' <?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
-                            <option value='complete' <?php echo $selecthide; ?> > <?php $clang->eT("Completed responses only"); ?></option>
-                            <option value='incomplete' <?php echo $selectinc; ?> > <?php $clang->eT("Incomplete responses only"); ?></option>
+                            <option value='all' <?php echo $selectshow; ?>><?php eT("All responses"); ?></option>
+                            <option value='complete' <?php echo $selecthide; ?> > <?php eT("Completed responses only"); ?></option>
+                            <option value='incomplete' <?php echo $selectinc; ?> > <?php eT("Incomplete responses only"); ?></option>
                         </select>
                     </li>
                     <li>
-                        <label for='viewsummaryall'><?php $clang->eT("View summary of all available fields"); ?></label>
+                        <label for='viewsummaryall'><?php eT("View summary of all available fields"); ?></label>
                         <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
                     </li>
                     <li id='vertical_slide'>
-                        <label id='noncompletedlbl' for='noncompleted' title='<?php $clang->eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php $clang->eT("Subtotals based on displayed questions"); ?></label>
+                        <label id='noncompletedlbl' for='noncompleted' title='<?php eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php eT("Subtotals based on displayed questions"); ?></label>
                         <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
                     </li>
                     <?php
@@ -68,21 +68,21 @@
 
                     ?>
                     <li>
-                        <label for='statlang'><?php $clang->eT("Statistics report language"); ?></label>
+                        <label for='statlang'><?php eT("Statistics report language"); ?></label>
                         <select name="statlang" id="statlang"><?php echo $language_options; ?></select>
                     </li>
                 </ul>
             </fieldset>
 
             <fieldset id='left'>
-                <legend><?php $clang->eT("Response ID"); ?></legend>
+                <legend><?php eT("Response ID"); ?></legend>
                 <ul>
                     <li>
-                        <label for='idG'><?php $clang->eT("Greater than:"); ?></label>
+                        <label for='idG'><?php eT("Greater than:"); ?></label>
                         <input type='text' id='idG' name='idG' size='10' value='<?php if (isset($_POST['idG'])){ echo  sanitize_int($_POST['idG']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
                     </li>
                     <li>
-                        <label for='idL'><?php $clang->eT("Less than:"); ?></label>
+                        <label for='idL'><?php eT("Less than:"); ?></label>
                         <input type='text' id='idL' name='idL' size='10' value='<?php if (isset($_POST['idL'])) { echo sanitize_int($_POST['idL']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
                     </li>
                 </ul>
@@ -94,12 +94,12 @@
             <?php
 
                 if (isset($datestamp) && $datestamp == "Y") {?>
-                    <fieldset id='right'><legend><?php $clang->eT("Submission date"); ?></legend><ul><li>
-                    <label for='datestampE'><?php $clang->eT("Equals:"); ?></label>
+                    <fieldset id='right'><legend><?php eT("Submission date"); ?></legend><ul><li>
+                    <label for='datestampE'><?php eT("Equals:"); ?></label>
                     <?php echo CHtml::textField('datestampE',isset($_POST['datestampE'])?$_POST['datestampE']:'',array('id'=>'datestampE', 'class'=>'popupdate', 'size'=>'12'));?>
-                    </li><li><label for='datestampG'><?php $clang->eT("Later than:");?></label>
+                    </li><li><label for='datestampG'><?php eT("Later than:");?></label>
                     <?php echo CHtml::textField('datestampG',isset($_POST['datestampG'])?$_POST['datestampG']:'',array('id'=>'datestampG', 'class'=>'popupdate', 'size'=>'12'));?>
-                    </li><li><label for='datestampL'><?php $clang->eT("Earlier than:");?></label>
+                    </li><li><label for='datestampL'><?php eT("Earlier than:");?></label>
                     <?php echo CHtml::textField('datestampL',isset($_POST['datestampL'])?$_POST['datestampL']:'',array('id'=>'datestampL', 'class'=>'popupdate', 'size'=>'12'));?>
                     </li></ul></fieldset>
                     <input type='hidden' name='summary[]' value='datestampE' />
@@ -111,20 +111,20 @@
             ?>
 
             <fieldset>
-                <legend><?php $clang->eT("Output options"); ?></legend>
+                <legend><?php eT("Output options"); ?></legend>
                 <ul>
                     <li>
-                        <label for='showtextinline'><?php $clang->eT("Show text responses inline:") ?></label>
+                        <label for='showtextinline'><?php eT("Show text responses inline:") ?></label>
                         <input type='checkbox' id='showtextinline' name='showtextinline'<?php if(isset($showtextinline) && $showtextinline == 1) {echo "checked='checked'"; } ?> /><br />
                     </li>
                     <li>
-                        <label for='usegraph'><?php $clang->eT("Show graphs"); ?></label>
+                        <label for='usegraph'><?php eT("Show graphs"); ?></label>
                         <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> /><br />
                         <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
                     </li>
 
                     <li>
-                        <label><?php $clang->eT("Select output format"); ?>:</label>
+                        <label><?php eT("Select output format"); ?>:</label>
                         <input type='radio' id="outputtypehtml" name='outputtype' value='html' checked='checked' />
                         <label for='outputtypehtml'>HTML</label>
                         <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
@@ -136,14 +136,14 @@
             </fieldset>
         </div>
         <p>
-            <input type='submit' value='<?php $clang->eT("View statistics"); ?>' />
-            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+            <input type='submit' value='<?php eT("View statistics"); ?>' />
+            <input type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
         </p>
     </div>
     <div style='clear: both'></div>
     <div class='header header_statistics'>
-        <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidefilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
-        <?php $clang->eT("Response filters"); ?>
+        <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidefilter' alt='<?php eT("Minimize"); ?>'/></div>
+        <?php eT("Response filters"); ?>
     </div>
     <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
     <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
@@ -173,7 +173,7 @@
                             <strong>
                                 <?php echo $flt[4]; ?>
                             </strong>
-                            (<?php echo $clang->gT("Question group").$flt[1]; ?>)
+                            (<?php echo gT("Question group").$flt[1]; ?>)
                         </span>
                     </div>
                 </td>
@@ -286,10 +286,10 @@
                             //show speaker
                             echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))."<br>\n";?>
 
-                            <span class='smalltext'><?php $clang->eT("Number greater than");?>:</span><br />
+                            <span class='smalltext'><?php eT("Number greater than");?>:</span><br />
                             <?php echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
                             <br>
-                            <span class='smalltext'><?php $clang->eT("Number less than");?>:</span><br>
+                            <span class='smalltext'><?php eT("Number less than");?>:</span><br>
                             <?php echo CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
                             <br>
                             <?php 
@@ -329,7 +329,7 @@
                         echo " />&nbsp;";
                         echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))
                         ."<br />\n"
-                        ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n";
+                        ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n";
                         echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array())
                         ."\t</td>\n";
                         $counter2++;
@@ -355,7 +355,7 @@
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n" 
+                    ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n" 
                     .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'80'))
                     ."\t</td>\n";
                     break;
@@ -374,7 +374,7 @@
                     echo " />&nbsp;"
                     ."&nbsp;"._showSpeaker($niceqtext)
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
+                    ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                     .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array())
                     ."\t</td>\n";
                     break;
@@ -386,10 +386,10 @@
                     //textfields for greater and less than X
                     $myfield2="{$myfield}G";
                     $myfield3="{$myfield}L";
-                    echo "\t<span class='smalltext'>".$clang->gT("Number greater than").":</span><br />\n"
+                    echo "\t<span class='smalltext'>".gT("Number greater than").":</span><br />\n"
                     .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                     ."\t<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Number less than").":</span><br />\n"
+                    ."\t<span class='smalltext'>".gT("Number less than").":</span><br />\n"
                     .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                     ."\t<br />\n";
 
@@ -403,10 +403,10 @@
                     // Number of files uploaded for greater and less than X
                     $myfield2 = "{$myfield}G";
                     $myfield3 = "{$myfield}L";
-                    echo "\t<span class='smalltext'>".$clang->gT("Number of files greater than").":</span><br />\n"
+                    echo "\t<span class='smalltext'>".gT("Number of files greater than").":</span><br />\n"
                     .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                     ."<br />\n"
-                    ."\t<span class='smalltext'>".$clang->gT("Number of files less than").":</span><br />\n"
+                    ."\t<span class='smalltext'>".gT("Number of files less than").":</span><br />\n"
                     .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
                     ."<br />\n";
                     break;
@@ -444,13 +444,13 @@
                     echo _showSpeaker($niceqtext)
                     ."<br />\n"
 
-                    ."\t<span class='smalltext'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
+                    ."\t<span class='smalltext'>".gT("Date (YYYY-MM-DD) equals").":<br />\n"
                     .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array() )
                     ."<br />\n"
-                    ."\t&nbsp;&nbsp;".$clang->gT("Date is")." >=<br />\n"
+                    ."\t&nbsp;&nbsp;".gT("Date is")." >=<br />\n"
                     .CHtml::textField($myfield4,isset($_POST[$myfield4])?$_POST[$myfield4]:'',array() )
                     ."<br />"
-                    .$clang->gT("AND/OR Date is")." <= <br />"
+                    .gT("AND/OR Date is")." <= <br />"
                     .CHtml::textField($myfield5,isset($_POST[$myfield5])?$_POST[$myfield5]:'',array() )
                     ."</span>\n";
                     break;
@@ -483,13 +483,13 @@
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {echo " selected";}
 
-                    echo ">".$clang->gT("Female")."</option>\n";
+                    echo ">".gT("Female")."</option>\n";
                     echo "\t<option value='M'";
 
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {echo " selected";}
 
-                    echo ">".$clang->gT("Male")."</option>\n\t</select>\n";
+                    echo ">".gT("Male")."</option>\n\t</select>\n";
                     echo "\t</td>\n";
                     break;
 
@@ -501,13 +501,13 @@
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {echo " selected";}
 
-                    echo ">".$clang->gT("Yes")."</option>\n"
+                    echo ">".gT("Yes")."</option>\n"
                     ."\t<option value='N'";
 
                     //pre-select values which were marked before
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {echo " selected";}
 
-                    echo ">".$clang->gT("No")."</option></select>\n";
+                    echo ">".gT("No")."</option></select>\n";
                     break;
 
 
@@ -633,7 +633,7 @@
 
 
 
-                case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+                case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
                     echo "\t</tr>\n\t<tr>\n";
 
                     $counter2=0;
@@ -666,19 +666,19 @@
                         //pre-select "yes"
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Yes")."</option>\n"
+                        echo ">".gT("Yes")."</option>\n"
                         ."\t<option value='U'";
 
                         //pre-select "uncertain"
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("U", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Uncertain")."</option>\n"
+                        echo ">".gT("Uncertain")."</option>\n"
                         ."\t<option value='N'";
 
                         //pre-select "no"
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("No")."</option>\n"
+                        echo ">".gT("No")."</option>\n"
                         ."\t</select>\n\t</td>\n";
                         $counter2++;
 
@@ -722,17 +722,17 @@
 
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Increase")."</option>\n"
+                        echo ">".gT("Increase")."</option>\n"
                         ."\t<option value='S'";
 
                         if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("S", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Same")."</option>\n"
+                        echo ">".gT("Same")."</option>\n"
                         ."\t<option value='D'";
 
                         if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {echo " selected";}
 
-                        echo ">".$clang->gT("Decrease")."</option>\n"
+                        echo ">".gT("Decrease")."</option>\n"
                         ."\t</select>\n\t</td>\n";
                         $counter2++;
                     }
@@ -763,7 +763,7 @@
                             ._showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
                             ."</strong><br />\n";
                             //echo $fquery;
-                            echo "\t<span class='smalltext'>".$clang->gT("Responses containing").":</span><br />\n"
+                            echo "\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                             .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array() )
                             ."</td>\n";
                             $counter2++;
@@ -1055,7 +1055,7 @@
                         }
 
                         echo " />&nbsp;<strong>"
-                        ._showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle)
+                        ._showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".gT("Label").": ".$labeltitle)
                         ."</strong><br />\n";
 
                         /* get labels
@@ -1140,7 +1140,7 @@
                         }
 
                         echo " />&nbsp;<strong>"
-                        ._showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle2)
+                        ._showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".gT("Label").": ".$labeltitle2)
                         ."</strong><br />\n";
                         $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 
@@ -1236,8 +1236,8 @@
     </table>
 
     <p id='vertical_slide2'>
-    <input type='submit' value='<?php $clang->eT("View statistics"); ?>' />
-    <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+    <input type='submit' value='<?php eT("View statistics"); ?>' />
+    <input type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='display' value='stats' />
     </p>
@@ -1248,8 +1248,8 @@
 flush(); //Let's give the user something to look at while they wait for the pretty pictures
 ?>
 <div class='header ui-widget-header header_statistics'>
-    <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showsfilter' alt='<?php $clang->eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidesfilter' alt='<?php $clang->eT("Minimize"); ?>'/></div>
-    <?php $clang->eT("Statistics"); ?>
+    <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showsfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidesfilter' alt='<?php eT("Minimize"); ?>'/></div>
+    <?php eT("Statistics"); ?>
 </div>
 
 <div id='statisticsoutput' class='statisticsfilters'>
@@ -1266,7 +1266,7 @@ flush(); //Let's give the user something to look at while they wait for the pret
     function _showSpeaker($hinttext)
     {
         global $maxchars; //Where does this come from? can it be replaced? passed with function call?
-        $clang = Yii::app()->lang;
+        
         $sImageURL = Yii::app()->getConfig('adminimageurl');
         if(!isset($maxchars))
         {
@@ -1283,10 +1283,10 @@ flush(); //Let's give the user something to look at while they wait for the pret
 
             //output with hoover effect
             $reshtml= "<span style='cursor: pointer' title='".$htmlhinttext."' "
-            ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\">"
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\">"
             ." \"$shortstring...\" </span>"
             ."<img style='cursor: pointer' src='$sImageURL/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
-            ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
+            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
         }
         else
         {
