@@ -11,7 +11,6 @@
         if(!array_key_exists($sSurveyLang,$aLang))
         {
             $aLangInfo=getLanguageNameFromCode($sSurveyLang);
-            tracevar($aLangInfo);
             $aLang[$sSurveyLang]=html_entity_decode($aLangInfo[0], ENT_QUOTES, 'UTF-8')." (".html_entity_decode($aLangInfo[1], ENT_QUOTES, 'UTF-8').")";
         }
     }
