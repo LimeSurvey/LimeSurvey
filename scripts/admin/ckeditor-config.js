@@ -10,6 +10,7 @@ CKEDITOR.editorConfig = function( config )
     config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=flash';
     config.removeDialogTabs = 'link:upload;image:Upload';    
 
+    config.skin = 'v2';
     config.toolbarCanCollapse = false;
     config.resize_enabled = false;
     config.autoParagraph = false;
