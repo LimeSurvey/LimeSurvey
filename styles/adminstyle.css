@@ -260,3 +260,5 @@ li input+label { display: inline;}
 .mixed{opacity:0.4;}
 /* For the iframe in dialog */
 iframe#dialog{display:block; width:100%!important; height:100%!important;margin:0;padding:0;border:0}
+/* Fix float on cke-editor table */
+.form30 table.cke_editor{float:none}
