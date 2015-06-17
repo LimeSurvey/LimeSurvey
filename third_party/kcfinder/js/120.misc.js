@@ -117,6 +117,9 @@ _.post = function(url, data) {
         else
             html += '<input type="hidden" name="' + $.$.htmlValue(key) + '" value="' + $.$.htmlValue(val) + '" />';
     });
+    if(typeof _.csrftoken!="undefined")
+            html += '<input type="hidden" name="kcfinder_csrftoken" value="' + _.csrftoken + '" />';
+
     html += '</form>';
     $('#menu').html(html).show();
     $('#postForm').get(0).submit();
