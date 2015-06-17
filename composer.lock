@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6212616a00cd605b0ca44a053a4e937e",
+    "hash": "a43fbcc0d662686055be355136e0f2e6",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -251,6 +251,36 @@
                 ],
                 "bower-asset-ignore": []
             }
+        },
+        {
+            "name": "bower-asset/jquery.actual",
+            "version": "v1.0.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dreamerslab/jquery.actual.git",
+                "reference": "d939ce627a3263c9897a965f608e0e1efcca7da8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dreamerslab/jquery.actual/zipball/d939ce627a3263c9897a965f608e0e1efcca7da8",
+                "reference": "d939ce627a3263c9897a965f608e0e1efcca7da8",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.2.3"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "jquery.actual.js"
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Get the actual width/height of invisible DOM elements with jQuery.",
+            "keywords": [
+                "actual",
+                "jquery"
+            ]
         },
         {
             "name": "bower-asset/papaparse",

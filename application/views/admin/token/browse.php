@@ -152,7 +152,6 @@
 </div>
 <?php
     // Add some script for gridsearch
-    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
     App()->getClientScript()->registerPackage('jqgrid.addons');
 ?>
 <table id="displaytokens"></table>

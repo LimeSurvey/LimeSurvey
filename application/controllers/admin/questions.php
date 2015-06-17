@@ -252,7 +252,6 @@ class questions extends Survey_Common_Action
         $gid = sanitize_int($gid);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'answers.js');
         //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
-        App()->getClientScript()->registerPackage('jquery-selectboxes');
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -417,8 +416,6 @@ class questions extends Survey_Common_Action
         $aData['qid'] = $qid = sanitize_int($qid);
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'subquestions.js');
-        App()->getClientScript()->registerPackage('jquery-blockUI');
-        App()->getClientScript()->registerPackage('jquery-selectboxes');
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';

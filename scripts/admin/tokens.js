@@ -413,21 +413,7 @@ $(document).ready(function() {
             onClickButton:addSelectedParticipantsToCPDB
         });
     }
-    $(".gridsearch").bindWithDelay("keyup", function(e) {
-        var sSearchString=$.trim($(this).val());
-        if(sSearchString != ""){
-            var aSearchConditions=new Array;
-            for(col in colInformation){
-                if(colInformation[col]['quickfilter']){
-                    aSearchConditions.push(col);aSearchConditions.push('contains');aSearchConditions.push(sSearchString);aSearchConditions.push("or");
-                }
-            }
-            aSearchConditions.pop();// remove last 'or'
-            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { searcharray: aSearchConditions} }).trigger('reloadGrid', [{current: true, page: 1}]);
-        }else{
-            oGrid.jqGrid('setGridParam', {url: jsonUrl, postData: { }}).trigger('reloadGrid', [{current: true, page: 1}]);
-        }
-    }, 500);
+
 
     $.extend(jQuery.jgrid.edit,{
         closeAfterAdd: true,

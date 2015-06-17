@@ -1,5 +1,4 @@
 <?php
-    App()->getClientScript()->registerPackage('jquery-nestedSortable');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'organize.js');
 ?>
 <div class='header ui-widget-header'><?php eT('Organize question groups/questions');?></div>

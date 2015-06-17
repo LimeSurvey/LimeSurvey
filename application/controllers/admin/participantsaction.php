@@ -76,7 +76,6 @@ class participantsaction extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'participants', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerPackage('bootstrap-multiselect');
         $aData['display']['menu_bars'] = false;
         foreach((array) $aViewUrls as $sViewUrl)
         {
@@ -1127,9 +1126,7 @@ class participantsaction extends Survey_Common_Action
                 'filterbea' => $filterblankemails,
                 'participant_id_exists' => in_array('participant_id', $fieldlist)
             );
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "attributeMapCSV.css");
-        App()->getClientScript()->registerPackage('qTip2');
-        App()->getClientScript()->registerPackage('jquery-nestedSortable');
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstysleurl') . "attributeMapCSV.css");
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "attributeMapCSV.js");
 
         $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
