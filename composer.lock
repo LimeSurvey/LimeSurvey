@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a43fbcc0d662686055be355136e0f2e6",
+    "hash": "751e16429d0e5e91d8d6285e3159dba7",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -1346,6 +1346,58 @@
             "time": "2015-05-04 15:26:24"
         },
         {
+            "name": "studio-42/elfinder",
+            "version": "2.1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Studio-42/elFinder.git",
+                "reference": "8b0bad4bc12ff4a87ef82f8c05461fe454be7183"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/8b0bad4bc12ff4a87ef82f8c05461fe454be7183",
+                "reference": "8b0bad4bc12ff4a87ef82f8c05461fe454be7183",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Levashov",
+                    "email": "dio@std42.ru",
+                    "homepage": "http://std42.ru"
+                },
+                {
+                    "name": "Troex Nevelin",
+                    "email": "troex@fury.scancode.ru",
+                    "homepage": "http://std42.ru"
+                },
+                {
+                    "name": "Naoki Sawada",
+                    "email": "hypweb@gmail.com",
+                    "homepage": "http://xoops.hypweb.net"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Studio-42/elFinder/contributors"
+                }
+            ],
+            "description": "File manager for web",
+            "homepage": "http://elfinder.org",
+            "time": "2015-06-16 06:08:49"
+        },
+        {
             "name": "tecnick.com/tcpdf",
             "version": "dev-master",
             "source": {
@@ -1612,11 +1664,12 @@
         "sam-it/php-auto-update": 20,
         "icecave/semver": 20,
         "hafriedlander/php-peg": 20,
-        "bower-asset/tinymce": 20,
         "sam-it/yii1-translate": 20,
         "sam-it/forms": 20,
         "zendframework/zend-diactoros": 20,
-        "bower-asset/ajaxq": 20
+        "bower-asset/ajaxq": 20,
+        "bower-asset/tinymce": 20,
+        "studio-42/elfinder": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

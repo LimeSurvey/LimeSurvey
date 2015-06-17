@@ -31,8 +31,7 @@
         "bower-asset/remarkable-bootstrap-notify": "3.*",
         "bower-asset/select2-bootstrap-css": "1.*",
         "bower-asset/jquery-ui": "1.*",
-        "bower-asset/queryui-timepicker-addon": "1.*"
-
+        "studio-42/elfinder": "2.1.x-dev"
     },
 	"require-dev" : {
 		
