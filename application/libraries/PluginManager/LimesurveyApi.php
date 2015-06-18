@@ -40,7 +40,7 @@ use SurveyDynamic;
         public function setFlash($message, $key ='api')
         {
             // @todo Remove direct session usage.
-            Yii::app()->user->setFlash($key, $message);
+            \Yii::app()->user->setFlash($key, $message);
         }
 
         /**
@@ -98,7 +98,7 @@ use SurveyDynamic;
             }
             if (isset($table))
             {
-                return PluginDynamic::model($table);
+                return \PluginDynamic::model($table);
             }
         }
 
@@ -133,13 +133,13 @@ use SurveyDynamic;
             }
             if (isset($table))
             {
-                return new PluginDynamic($table, $scenario);
+                return new \PluginDynamic($table, $scenario);
             }
         }
 
         public function removeResponse($surveyId, $responseId)
         {
-            return Response::model($surveyId)->deleteByPk($responseId);
+            return \Response::model($surveyId)->deleteByPk($responseId);
         }
         /**
         * Check if a table does exist in the database
@@ -161,7 +161,7 @@ use SurveyDynamic;
         */
         public function EMevaluateExpression($expression)
         {
-            $result = LimeExpressionManager::ProcessString($expression);
+            $result = \LimeExpressionManager::ProcessString($expression);
             return $result;
         }
         
@@ -183,7 +183,7 @@ use SurveyDynamic;
         */
         public function getResponse($surveyId, $responseId)
         {
-            $response = SurveyDynamic::model($surveyId)->findByPk($responseId);
+            $response = \SurveyDynamic::model($surveyId)->findByPk($responseId);
             if (isset($response))
             {
                 // Now map the response to the question codes if possible, duplicate question codes will result in the
@@ -245,9 +245,9 @@ use SurveyDynamic;
         * @return User
         */
         public function getCurrentUser(){
-            if (Yii::app()->user->id)
+            if (\Yii::app()->user->id)
             {
-                return User::model()->findByPk(Yii::app()->user->id);
+                return \User::model()->findByPk(\Yii::app()->user->id);
             }
             return false;
         }
@@ -287,7 +287,7 @@ use SurveyDynamic;
          * @return User
          */
         public function getUser($iUserID){
-            return User::model()->findByPk($iUserID);
+            return \User::model()->findByPk($iUserID);
         }
         
         /**
@@ -298,7 +298,7 @@ use SurveyDynamic;
          */
         public function getUserByName($username)
         { 
-            $user = User::model()->findByAttributes(array('users_name' => $username));
+            $user = \User::model()->findByAttributes(array('users_name' => $username));
 
             return $user;
         }
@@ -312,7 +312,7 @@ use SurveyDynamic;
         * @return User
         */
         public function getPermissionSet($iUserID, $iEntityID=null, $sEntityName=null){
-            return Permission::model()->getPermissions($iUserID, $iEntityID, $sEntityName);
+            return \Permission::model()->getPermissions($iUserID, $iEntityID, $sEntityName);
         }        
         
         /**
@@ -322,7 +322,7 @@ use SurveyDynamic;
         * @return User
         */
         public function getParticipant($iParticipantID){
-            return Participant::model()->findByPk($iParticipantID);
+            return \Participant::model()->findByPk($iParticipantID);
         }
 
         public function getQuestions($surveyId, $language = 'en', $conditions = array())
