@@ -59,6 +59,35 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06+ (build 150612) to 2.06+ (build 150618) Jun 18, 2015
+-Fixed issue #9679: Incorrect width of select2 with IE10 (Denis Chenu)
+-Fixed issue #9680: Database update error when updating and having very old token tables (Carsten Schmitz)
+-Fixed issue #9682: Unable to update with pgsql (Sam)
+-Fixed issue #9683: XSS vulnerabilities (Carsten Schmitz)
+-Fixed issue #9685: Simple quote are double encoded in dropdown (Denis Chenu)
+-Fixed issue #9687: Crash when trying to edit global parameter for a survey (Denis Chenu)
+-Fixed issue #9688: Update KCFinder to last stable (3.12) (Denis Chenu)
+-Fixed issue #9689: Update CKEditor to 3.6.6.2 (Denis Chenu)
+-Fixed issue: Blank survey parameters when no questions exist yet (Carsten Schmitz)
+-Fixed issue: Can force Show both for group and question code in Global settings (Denis Chenu)
+-Fixed issue: CSRF vulnerability in KCFinder (Denis Chenu)
+-Fixed issue: SQL injection vulnerability in administration - discovered by 0keeTeam / QIHU 360 company, China (Carsten Schmitz)
+#Updated translation: Basque by ikt
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by wksosam
+#Updated translation: Chinese (Simplified) by jun9, yanglaw
+#Updated translation: Chinese (Taiwan) (Traditional) by m27387, hsyin
+#Updated translation: Danish by Tobm
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Japanese by yamatt, nomoto
+#Updated translation: Norwegian (BokmÃ¥l) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Spanish (Argentina) by topiim
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.06+ (build 150611) to 2.06+ (build 150612) Jun 12, 2015
 -Fixed issue #9674: Error when trying to reload saved answers (Carsten Schmitz)
 -Fixed issue #9679: Incorrect text in security tab (Carsten Schmitz)
