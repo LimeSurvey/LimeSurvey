@@ -16,6 +16,7 @@ $internalConfig = array(
     'basePath' => dirname(dirname(__FILE__)),
     'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
     'name' => 'LimeSurvey',
+    'localeClass' =>  'LSYii_Locale',
     'defaultController' => 'surveys',
     'import' => array(
         'application.core.*',
