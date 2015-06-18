@@ -612,8 +612,10 @@ class Permission extends LSActiveRecord
     */
     private static function getUserId($iUserID=null)
     {
+    $sOldLanguage=App()->language;// Call of Yii::app()->user reset App()->language to default. Quick fix for #09695
     if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
         $iUserID = Yii::app()->session['loginID'];
+    App()->setLanguage($sOldLanguage);
     return $iUserID;
     }
 
