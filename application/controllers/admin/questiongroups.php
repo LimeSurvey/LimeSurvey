@@ -36,7 +36,7 @@ class questiongroups extends Survey_Common_Action
     function import()
     {
         $action = $_POST['action'];
-        $surveyid = $_POST['sid'];
+        $iSurveyID = (int)$_POST['sid'];
 
         if ($action == 'importgroup')
         {
@@ -66,11 +66,11 @@ class questiongroups extends Survey_Common_Action
 
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
             if (strtolower($sExtension) == 'lsg')
-                $aImportResults = XMLImportGroup($sFullFilepath, $surveyid);
+                $aImportResults = XMLImportGroup($sFullFilepath, $iSurveyID);
             else
                 $this->getController()->error('Unknown file extension');
             LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-            fixLanguageConsistency($surveyid);
+            fixLanguageConsistency($iSurveyID);
 
             if (isset($aImportResults['fatalerror']))
             {
@@ -81,7 +81,7 @@ class questiongroups extends Survey_Common_Action
             unlink($sFullFilepath);
 
             $aData['display'] = $importgroup;
-            $aData['surveyid'] = $surveyid;
+            $aData['surveyid'] = $iSurveyID;
             $aData['aImportResults'] = $aImportResults;
             $aData['sExtension'] = $sExtension;
             //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
