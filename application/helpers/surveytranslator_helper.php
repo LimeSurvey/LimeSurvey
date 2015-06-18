@@ -134,6 +134,7 @@
         $supportedLanguages['ca-valencia']['rtl'] = false;
         $supportedLanguages['ca-valencia']['dateformat'] = 1;
         $supportedLanguages['ca-valencia']['radixpoint'] = 1;
+        $supportedLanguages['ca-valencia']['cldr'] = 'ca';
 
         // Catalan
         $supportedLanguages['ca']['description'] = gT('Catalan');
@@ -190,6 +191,7 @@
         $supportedLanguages['cs-informal']['rtl'] = false;
         $supportedLanguages['cs-informal']['dateformat'] = 4;
         $supportedLanguages['cs-informal']['radixpoint'] = 1;
+        $supportedLanguages['cs-informal']['cldr'] = 'cs';
         
         
         // Danish
@@ -205,6 +207,7 @@
         $supportedLanguages['prs']['rtl'] = true;
         $supportedLanguages['prs']['dateformat'] = 6;
         $supportedLanguages['prs']['radixpoint'] = 0;
+        $supportedLanguages['prs']['cldr'] = 'fa_af';
 
         // Dutch
         $supportedLanguages['nl']['description'] = gT('Dutch');
@@ -219,6 +222,7 @@
         $supportedLanguages['nl-informal']['rtl'] = false;
         $supportedLanguages['nl-informal']['dateformat'] = 2;
         $supportedLanguages['nl-informal']['radixpoint'] = 1;
+        $supportedLanguages['nl-informal']['cldr'] = 'nl';
 
         // English
         $supportedLanguages['en']['description'] = gT('English');
@@ -283,6 +287,7 @@
         $supportedLanguages['de-informal']['rtl'] = false;
         $supportedLanguages['de-informal']['dateformat'] = 1;
         $supportedLanguages['de-informal']['radixpoint'] = 1;
+        $supportedLanguages['de-informal']['cldr'] = 'de';
         
         // Gujarati
         $supportedLanguages['gu']['description'] = gT('Gujarati');
@@ -354,6 +359,7 @@
         $supportedLanguages['it-informal']['rtl'] = false;
         $supportedLanguages['it-informal']['dateformat'] = 5;
         $supportedLanguages['it-informal']['radixpoint'] = 1;
+        $supportedLanguages['it-informal']['cldr'] = 'it';
 
         // Japanese
         $supportedLanguages['ja']['description'] = gT('Japanese');
@@ -389,6 +395,7 @@
         $supportedLanguages['ckb']['rtl'] = true;
         $supportedLanguages['ckb']['dateformat'] = 1;                        
         $supportedLanguages['ckb']['radixpoint'] = 1;
+        $supportedLanguages['ckb']['cldr'] = 'ku';
         
         // Kyrgyz
         $supportedLanguages['ky']['description'] = gT('Kyrgyz');
@@ -487,13 +494,15 @@
         $supportedLanguages['pap-AW']['rtl'] = false;
         $supportedLanguages['pap-AW']['dateformat'] = 2;
         $supportedLanguages['pap-AW']['radixpoint'] = 1;
+        $supportedLanguages['pap-AW']['cldr'] = 'en'; // Fix me - Yii does not provice Papiamento support, yet
 
-        // Papiamento (Curaçao and Bonaire)
+        // Papiamento (CuraÃ§ao and Bonaire)
         $supportedLanguages['pap-CW']['description'] = gT('Papiamento (Curaçao and Bonaire)');
         $supportedLanguages['pap-CW']['nativedescription'] = 'Papiamentu';
         $supportedLanguages['pap-CW']['rtl'] = false;
         $supportedLanguages['pap-CW']['dateformat'] = 2;
         $supportedLanguages['pap-CW']['radixpoint'] = 1;
+        $supportedLanguages['pap-CW']['cldr'] = 'en'; // Fix me - Yii does not provice Papiamento support, yet
 
         // Polish
         $supportedLanguages['pl']['description'] = gT('Polish');
@@ -508,6 +517,7 @@
         $supportedLanguages['pl-informal']['rtl'] = false;
         $supportedLanguages['pl-informal']['dateformat'] = 1;
         $supportedLanguages['pl-informal']['radixpoint'] = 1;
+        $supportedLanguages['pl-informal']['cldr'] = 'pl';
         
         // Portuguese
         $supportedLanguages['pt']['description'] = gT('Portuguese');
@@ -599,6 +609,7 @@
         $supportedLanguages['es-AR-informal']['rtl'] = false;
         $supportedLanguages['es-AR-informal']['dateformat'] = 5;
         $supportedLanguages['es-AR-informal']['radixpoint'] = 0;
+        $supportedLanguages['es-AR-informal']['cldr'] = 'es-AR';
 
         // Spanish (Chile)
         $supportedLanguages['es-CL']['description'] = gT('Spanish (Chile)');
@@ -940,6 +951,18 @@
         }
     }
 
+    /**
+    * This functions translates LimeSurvey specific locale code to match a Yii locale
+    * 
+    * @param mixed $sLocale LimeSurvey locale code
+    */
+    function translateLStoYiiLocale($sLocale)
+    {
+        // Strip informal string
+        $sLocale=str_replace('-informal','',$sLocale);
+        return $sLocale;
+    }
+    
     function getLanguageDataRestricted($bOrderByNative=false,$sLanguageCode='en') {
         $aLanguageData = getLanguageData($bOrderByNative, $sLanguageCode);
         $result = [];
