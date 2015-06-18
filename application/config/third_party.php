@@ -134,7 +134,7 @@ return array(
         'js' => array(
             'jquery.ui.touch-punch.min.js'
         ),
-        'depends' => array(ggit st
+        'depends' => array(
             'jqueryui'
         )
     ),
