@@ -844,6 +844,9 @@
                     case 'X': // Text display
                         $class = get_class($this);
                         break;
+                    case 'M': // Multiple choice
+                        $class = \ls\models\questions\MultipleChoiceQuestion::class;
+                        break;
                     default:
                         die("noo class for type {$attributes['type']}");
 

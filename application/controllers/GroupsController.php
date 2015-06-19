@@ -67,6 +67,15 @@ class GroupsController extends Controller {
     public function actionUpdate($id) {
         $this->menus['group'] = $group = $this->loadModel($id);
         $this->menus['survey'] = $group->survey;
+        /**
+         * @todo Add access check.
+         */
+        if (App()->request->isPutRequest) {
+            $group->setAttributes(App()->request->getPost(\TbHtml::modelName($group)));
+            if ($group->save()) {
+                App()->user->setFlash('success', gT("Group updated"));
+            }
+        }
         $this->render('update', ['group' => $group]);
     }
     protected function loadModel($id)

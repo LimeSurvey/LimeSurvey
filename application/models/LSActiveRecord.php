@@ -168,4 +168,37 @@ class LSActiveRecord extends CActiveRecord
         return parent::model($class);
         
     }
+
+    /*
+     * Creates a (nested) array of this objects' attributes and relations.
+     */
+    public function toArray($related = true, $exclude = []) {
+        $result = $this->attributes;
+        if ($related) {
+            $result['related'] = [];
+            $dependentRelations = array_diff(
+                method_exists($this, 'dependentRelations') ? $this->dependentRelations() : [],
+                $exclude
+            );
+            foreach($dependentRelations as $name) {
+                if (!in_array($name, $exclude)) {
+                    if (is_array($this->$name)) {
+                        $relatedArray = [];
+                        foreach ($this->$name as $child) {
+                            if (method_exists($child, 'toArray')) {
+                                $relatedArray[] = $child->toArray();
+                            } else {
+                                $relatedArray[] = $child->attributes;
+                            }
+                        }
+                        $result['related'][$name] = $relatedArray;
+                    } else {
+                        $result['related'][$name] = [$this->$name];
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
 }

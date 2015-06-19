@@ -1,5 +1,6 @@
 <?php
 namespace ls\controllers;
+use ls\import\ImportFactory;
 use Survey;
 use Zend\Diactoros\ServerRequest;
 
@@ -46,12 +47,9 @@ class SurveysController extends Controller
     }
 
     public function actionUpdate($id) {
-
         $survey = $this->loadModel($id);
         if (App()->request->isPostRequest && isset($survey)) {
-
             $survey->setAttributes($_POST['Survey']);
-
             if ($survey->save(true)) {
                 App()->user->setFlash('success', gT("Survey settings updated."));
                 $this->refresh();
@@ -204,10 +202,14 @@ class SurveysController extends Controller
         $file = \CUploadedFile::getInstanceByName('importFile');
         App()->loadHelper('admin.import');
         if (isset($file)) {
-            $result = \XMLImportSurvey($file->getTempName(), null, null, null, $request->getParam('importConvert', 0));
+            $importer = ImportFactory::getForLss($file->getTempName());
+            var_dump($importer->run());
+            die('ok');
+            var_dump($importer->run());
+//            $result = \XMLImportSurvey($file->getTempName(), null, null, null, $request->getParam('importConvert', 0));
             return $this->renderText(is_array($result) ? print_r($result, true) : $result);
         } else {
-            $this->redirect(['action/create']);
+            $this->redirect(['surveys/create']);
         }
 
     }
@@ -215,6 +217,14 @@ class SurveysController extends Controller
     public function actionExport($id, $type = 'structure') {
 
         $survey = $this->loadModel($id);
+
+//        $export = Survey::model()->with(
+//            'groups',
+//            'languagesettings'
+//        )->findByPk($id);
+//        $this->renderText('<pre>' . json_encode(($export->toArray(true, ['savedControls', 'surveyLinks', 'quota'])), JSON_PRETTY_PRINT) . '</pre>');
+//        return;
+//        $export->getRelated();
         App()->loadHelper('export');
         if ($type == 'structure') {
             App()->request->sendFile("survey_$id.lss", \surveyGetXMLData($id));

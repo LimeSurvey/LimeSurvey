@@ -37,7 +37,7 @@
                 'translatable' => [
                     'class' => SamIT\Yii1\Behaviors\TranslatableBehavior::class,
                     'translationModel' => Translation::class,
-                    'model' => 'Group', // See TranslatableBehavior comments.
+//                    'model' => 'Group', // See TranslatableBehavior comments.
                     'attributes' => ['group_name', 'description'],
                     'baseLanguage' => function(QuestionGroup $group) { return $group->survey->language; }
                 ]
@@ -164,10 +164,15 @@
          * @return string[]
          */
         public function dependentRelations() {
-            return [
+            $result = [
                 'questions',
                 'assessments'
             ];
+            if (isset($this->metaData->relations['translations'])) {
+                $result[] = 'translations';
+            }
+            return $result;
+
         }
 
         /**

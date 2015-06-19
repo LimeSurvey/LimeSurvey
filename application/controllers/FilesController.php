@@ -108,11 +108,18 @@ class FilesController extends Controller
             $result[] = [
                 'alias' => "Survey ({$survey->primaryKey})",
                 'driver' => 'LocalFileSystem',
-                'tmbPath' => App()->assetManager->basePath . "$url/thumbs",
-                'tmbURL' => $url . '/thumbs',
+//                'tmbPath' => App()->assetManager->basePath . "$url/thumbs",
+//                'tmbURL' => $url . '/thumbs',
                 'path'   => Yii::getPathOfAlias('webroot') . "/upload/surveys/{$survey->primaryKey}",
                 'URL' => App()->baseUrl . "/upload/surveys/{$survey->primaryKey}",
-                'icon' => "$url/img/volume_icon_local.png"
+                'icon' => "$url/img/volume_icon_local.png",
+                'accessControl' => 'access',
+                'attributes' => array(
+                    array(// hide anything else
+                        'pattern' => '!^/\..*$!',
+                        'hidden' => true
+                    )
+                )
             ];
         }
 

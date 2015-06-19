@@ -65,6 +65,9 @@
             ],
             "ls\\models\\" : [
               "application/models"
+            ],
+            "ls\\import\\" : [
+              "application/helpers/import"
             ]
         }
     },

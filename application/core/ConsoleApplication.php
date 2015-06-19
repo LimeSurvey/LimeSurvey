@@ -22,6 +22,11 @@
          */
         protected $api;
 
+        public function getIsInstalled() {
+            $components = $this->getComponents(false);
+            return is_object($components['db'])
+            || isset($components['db']['connectionString']);
+        }
         public function __construct($config = null) {
             $this->installed = isset($config['components']['db']['connectionString']);
             // Silent fail on unknown configuration keys.

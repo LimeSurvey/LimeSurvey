@@ -803,6 +803,23 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 */
 function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true, $bConvertInvalidQuestionCodes=true)
 {
+    $dom = new DOMDocument();
+    var_dump($dom->loadXML(file_get_contents($sFullFilePath)));
+    /**
+     * @svar DOMNode $node
+     */
+    var_dump($dom->getElementsByTagName('LimeSurveyDocType')->item(0)->textContent);
+    foreach($dom->childNodes->item(0)->childNodes as $node) {
+        /* @var DOMText $node */
+        if ($node instanceof DOMText) {
+            continue;
+        }
+        var_dump($node->nodeName);
+
+    }
+    var_dump($dom->childNodes);
+    die();
+
     Yii::app()->loadHelper('database');
 
 

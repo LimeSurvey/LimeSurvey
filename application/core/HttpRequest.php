@@ -20,7 +20,14 @@ class HttpRequest extends \CHttpRequest
     }
 
     protected function initRequest() {
-        $this->_request = Zend\Diactoros\ServerRequestFactory::fromGlobals();
+        try {
+            $this->_request = Zend\Diactoros\ServerRequestFactory::fromGlobals();
+        } catch (\Exception $e) {
+            var_dump($_FILES);
+            var_dump($e);
+            die('nooo');
+        }
+
         // Support _method.
         if (isset($this->_request->getParsedBody()['_method'])) {
             $this->_request = $this->_request->withMethod($this->_request->getParsedBody()['_method']);

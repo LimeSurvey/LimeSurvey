@@ -19,7 +19,7 @@ class LSHttpRequest extends HttpRequest {
     public $noCsrfValidationRoutes = array();
 
     protected function normalizeRequest(){
-        if (strcasecmp('post', $this->psr7->getMethod()) === 0) return;
+//        if (strcasecmp('post', $this->psr7->getMethod()) === 0) return;
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
         if($this->enableCsrfValidation){
