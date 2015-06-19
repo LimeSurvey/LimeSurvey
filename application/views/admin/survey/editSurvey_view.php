@@ -14,7 +14,6 @@
     $controller->renderPartial('/admin/survey/subview/tabNotification_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabTokens_view',$data);
     $controller->renderPartial('/admin/survey/subview/tabPanelIntegration_view',$data);
-    $controller->renderPartial('/admin/survey/subview/tabQuexml_view',$data);
 ?>
 <input type='hidden' id='sid' name='sid' value="<?php echo $esrow['sid'];?>" />
 <input type='hidden' name='languageids' id='languageids' value="<?php echo $esrow['additional_languages'];?>" />
