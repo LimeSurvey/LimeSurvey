@@ -59,8 +59,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     // Import group table ===================================================================================
 
 
-    $query = "SELECT MAX(group_order) AS maxgo FROM {{groups}} WHERE sid=$iNewSID";
-    $iGroupOrder = Yii::app()->db->createCommand($query)->queryScalar();
+    $iGroupOrder = Yii::app()->db->createCommand()->select('MAX(group_order)')->from('{{groups}}')->where('sid=:sid',array(':sid'=>$iNewSID))->queryScalar();
     if ($iGroupOrder === false)
     {
         $iNewGroupOrder=0;

@@ -20,6 +20,7 @@ $internalConfig = array(
     'theme' => 'default',
 	'runtimePath' => __DIR__ . '/../runtime',
 	'name' => 'LimeSurvey',
+    'localeClass' =>  'LSYii_Locale',
 	'defaultController' => 'surveys',
 	'aliases' => array(
 		'vendor' => __DIR__ . '/../vendor',
