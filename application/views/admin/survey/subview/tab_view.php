@@ -22,7 +22,6 @@
         elseif ($action == "editsurveysettings") { ?>
         <li><a href='#panelintegration'><?php eT("Panel integration"); ?></a></li>
         <li><a href='#resources'><?php eT("Resources"); ?></a></li>
-        <li><a href='#quexml'><?php eT("queXML"); ?></a></li>
 
         <?php
             if (isset($pluginSettings))
