@@ -1,17 +1,16 @@
 #!/usr/bin/php
-<?php   
-/**
- * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- */
+<?php
+if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+    echo "Composer autoloader not detected. Attempting to run composer install...\n";
+    chdir(__DIR__ . '/..');
+    passthru("composer install", $return);
+    if ($return !== 0) {
+        die("Failed to run composer install, please do it manually.");
+    } else {
+        echo "Composer install OK\n";
+    }
+
+}
 $loader = require_once(__DIR__ . '/vendor/autoload.php'); 
 class_exists(Yii::class);
 if (!isset($argv[0])) die("This must be run from the console.\n");

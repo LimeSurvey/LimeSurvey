@@ -27,7 +27,7 @@
         error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
     }
 
-    if (version_compare(PHP_VERSION, '5.4.0', '<'))
+    if (version_compare(PHP_VERSION, '5.5.0', '<'))
         die('This version of LimeSurvey  requires PHP version 5.4.0 or later! Your version: '.PHP_VERSION);
 
 
