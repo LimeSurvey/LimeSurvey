@@ -71,7 +71,7 @@
         }
 
         public function beforeSave() {
-            if ($this->isNewRecord && empty($this->parent_qid)) {
+            if ($this->isNewRecord && empty($this->parent_qid) && empty($this->question_order)) {
                 // Set order.
                 if (empty($this->before)) {
                     $criteria = (new CDbCriteria())
@@ -820,6 +820,7 @@
                     case 'N':
                         $class = \ls\models\questions\NumericalQuestion::class;
                         break;
+                    case 'D': // Date time
                     case 'U': // Huge free text
                     case 'S': // Short free text
                     case 'T':
@@ -840,6 +841,7 @@
                         $class = \ls\models\questions\ArrayQuestion::class;
                         break;
                     case '5': // 5 point choice
+                    case 'Y': // Yes no
                     case '|':
                     case 'X': // Text display
                         $class = get_class($this);

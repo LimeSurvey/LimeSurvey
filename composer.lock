@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "751e16429d0e5e91d8d6285e3159dba7",
+    "hash": "3935439488786b8040a1f1dd62774b3d",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -1310,12 +1310,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SAM-IT/yii1-translate.git",
-                "reference": "9a21d3e22bd641b2b3c8ab392958e84aada33b32"
+                "reference": "d5952295d5afb1cb25d8f34d13b77820ef26fdec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SAM-IT/yii1-translate/zipball/9a21d3e22bd641b2b3c8ab392958e84aada33b32",
-                "reference": "9a21d3e22bd641b2b3c8ab392958e84aada33b32",
+                "url": "https://api.github.com/repos/SAM-IT/yii1-translate/zipball/d5952295d5afb1cb25d8f34d13b77820ef26fdec",
+                "reference": "d5952295d5afb1cb25d8f34d13b77820ef26fdec",
                 "shasum": ""
             },
             "require": {
@@ -1343,7 +1343,7 @@
                 }
             ],
             "description": "Translatable model and behavior for Yii1",
-            "time": "2015-05-04 15:26:24"
+            "time": "2015-06-22 14:30:12"
         },
         {
             "name": "studio-42/elfinder",
@@ -1403,12 +1403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "3dee9e7f3a414875fd1d9f4f1dfc2433493a86d2"
+                "reference": "fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/3dee9e7f3a414875fd1d9f4f1dfc2433493a86d2",
-                "reference": "3dee9e7f3a414875fd1d9f4f1dfc2433493a86d2",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4",
+                "reference": "fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4",
                 "shasum": ""
             },
             "require": {
@@ -1458,7 +1458,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2015-04-29 16:13:58"
+            "time": "2015-06-18 09:12:38"
         },
         {
             "name": "twbs/bootstrap",
@@ -1466,12 +1466,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "5a8d0143b3fa9de883a5672d4a1f44d472657a8a"
+                "reference": "1b745460784b83937ebca491bc8cb072a8bbbc9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/5a8d0143b3fa9de883a5672d4a1f44d472657a8a",
-                "reference": "5a8d0143b3fa9de883a5672d4a1f44d472657a8a",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/1b745460784b83937ebca491bc8cb072a8bbbc9b",
+                "reference": "1b745460784b83937ebca491bc8cb072a8bbbc9b",
                 "shasum": ""
             },
             "replace": {
@@ -1509,7 +1509,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-06-11 11:53:46"
+            "time": "2015-06-21 08:42:23"
         },
         {
             "name": "yiisoft/yii",
