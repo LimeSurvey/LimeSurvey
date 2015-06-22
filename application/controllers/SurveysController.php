@@ -30,7 +30,12 @@ class SurveysController extends Controller
 
     public function actionIndex() {
         $this->layout = 'main';
-        $this->render('index', ['surveys' => new \CActiveDataProvider(Survey::model()->accessible())]);
+        $filter = new \ls\models\filter\Survey();
+        $filter->setAttributes(App()->request->getParam(\CHtml::modelName($filter)));
+        $surveys = Survey::model()->accessible();
+        $surveys->getDbCriteria()->mergeWith($filter->search());
+        $dataProvider = new \CActiveDataProvider($surveys);
+        $this->render('index', ['surveys' => $dataProvider, 'filter' => $filter]);
     }
 
     public function actionPublicList($sLanguage = null)

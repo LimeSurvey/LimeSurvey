@@ -16,7 +16,10 @@ class LocalizedFormatter extends CLocalizedFormatter {
         }
         return TbHtml::icon($icon);
     }
-    
+
+    public function formatBooleanIcon($value) {
+        return TbHtml::icon($value ? TbHtml::ICON_CHECK : TbHtml::ICON_UNCHECKED);
+    }
     public function formatPercentage($factor) {
         return number_format($factor * 100, 1) . '%';
     }

@@ -3,7 +3,7 @@
 echo TbHtml::buttonGroup([
     [
         'icon' => 'plus',
-        'url' => ['tokens/create', 'surveyId' => $this->survey->sid]
+        'url' => ['tokens/create', 'surveyId' => $survey->sid]
     ]
 ]);
 $columns = isset($dataProvider->data[0]) ? $dataProvider->data[0]->attributeNames() : [];
@@ -37,20 +37,16 @@ $columns = [
     ], [
         'class' => WhRelationalColumn::class,
         'name' => 'Responses',
-        'url' => App()->createUrl('tokens/responses', ['surveyId' => $this->survey->sid]),
+        'url' => App()->createUrl('tokens/responses', ['surveyId' => $survey->sid]),
         'value' => function(\Token $model) {
-            /**
-             * @todo Optimize this, this will fire a query for each token. Count (cstatrelation) does not work on custom keys.
-             *
-            */
-            return count($model->responses);
+            return $model->responseCount;
         },
 //        'afterAjaxUpdate' => 'js:function(tr,rowid,data){
 //        bootbox.alert("I have afterAjax events too!<br/>This will only happen once for row with id: "+rowid);
 //    }'
     ], [
         'header' => gT("Series"),
-        'visible' => $this->survey->use_series,
+        'visible' => $survey->use_series,
         'class' => TbButtonColumn::class,
         'template' => "{appendNew}{appendCopy}",
         'buttons' => [

@@ -23,6 +23,10 @@ if (!defined('BASEPATH'))
  */
 class Survey extends LSActiveRecord
 {
+    const STATUS_INACTIVE = 'inactive';
+    const STATUS_EXPIRED = 'expired';
+    const STATUS_ACTIVE = 'active';
+
     const FORMAT_GROUP = 'G';
     const FORMAT_ALL_IN_ONE = 'A';
     const FORMAT_QUESTION = 'S';
@@ -37,6 +41,7 @@ class Survey extends LSActiveRecord
             'bool_usecookie' => gT('Set cookie to prevent repeated participation?'),
             'bool_listpublic' => gT('List survey publicly:'),
             'bool_alloweditaftercompletion' => gT("Allow responses to be edited after completion"),
+            'bool_usetokens' => gT('Use tokens'),
             'startdate' => gT("Start date/time:"),
             'expires' => gT("Expiry date/time:"),
             'usecaptcha' => gT("Use CAPTCHA for"),
@@ -180,70 +185,66 @@ class Survey extends LSActiveRecord
     */
     public function rules()
     {
-        return array(
-            array('datecreated', 'default','value'=>date("Y-m-d")),
-            array('startdate', 'default','value'=>NULL),
-            array('expires', 'default','value'=>NULL),
-            array('admin,faxto','LSYii_Validators'),
-            array('adminemail','filter', 'filter'=>'trim'),
-            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
-            array('adminemail','filter', 'filter'=>'trim'),
-            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
-            array('active', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowregister', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowsave', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('autoredirect', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowprev', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('printanswers', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('ipaddr', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('refurl', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('publicstatistics', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('publicgraphs', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('listpublic', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('htmlemail', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('sendconfirmation', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('tokenanswerspersistence', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('assessments', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('usetokens', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showxquestions', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false),
-            array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),
-            array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),
-            array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
-            array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
+        return [
+            ['datecreated', 'default','value'=>date("Y-m-d")],
+            ['startdate', 'default','value'=>NULL],
+            ['expires', 'default','value'=>NULL],
+            ['admin,faxto','LSYii_Validators'],
+            ['adminemail','filter', 'filter'=>'trim'],
+            ['bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true],
+            ['adminemail','filter', 'filter'=>'trim'],
+            ['bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true],
+            ['active', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['anonymized', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['savetimings', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['datestamp', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['usecookie', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['allowregister', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['allowsave', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['autoredirect', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['allowprev', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['printanswers', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['ipaddr', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['refurl', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['publicstatistics', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['publicgraphs', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['listpublic', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['htmlemail', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['sendconfirmation', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['tokenanswerspersistence', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['assessments', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['showxquestions', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['shownoanswer', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['showwelcome', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['showprogress', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false],
+            ['nokeyboard', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['alloweditaftercompletion', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
+            ['bounceprocessing', 'in','range'=>['L','N','G'], 'allowEmpty'=>true],
+            ['usecaptcha', 'in','range'=>['A','B','C','D','X','R','S','N'], 'allowEmpty'=>true],
+            ['showgroupinfo', 'in','range'=>['B','N','D','X'], 'allowEmpty'=>true],
+            ['showqnumcode', 'in','range'=>['B','N','C','X'], 'allowEmpty'=>true],
             ['format', 'in','range' => array_keys($this->formatOptions), 'allowEmpty'=>true],
-            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
-            array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
-            array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('template', 'filter', 'filter'=>array($this,'filterTemplateSave')),
-            array('language','LSYii_Validators','isLanguage'=>true),
-            array('language', 'required', 'on' => 'insert'),
-//            array('language', 'filter', 'filter'=>'trim'),
+            ['googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true],
+            ['autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+            ['tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'],
+            ['bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+            ['navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+            ['template', 'filter', 'filter'=>[$this,'filterTemplateSave']],
+            ['language','LSYii_Validators','isLanguage'=>true],
+            ['language', 'required', 'on' => 'insert'],
+
             ['additionalLanguages', 'safe'],
-//            array('additional_languages', 'filter', 'filter'=>'array_filter'),
-//            array('additional_languages','LSYii_Validators','isLanguageMulti'=>true),
-            // Date rules currently don't work properly with MSSQL, deactivating for now
-            //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-            //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-            //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             ['translatedFields', 'safe'],
             ['use_series', 'boolean'],
             ['features', 'safe'],
             ['sid', 'default' , 'value' => randomChars(6, '123456789')],
 
             ['bool_listpublic', 'boolean']
-        );
+
+
+
+        ];
     }
 
 
@@ -347,17 +348,19 @@ class Survey extends LSActiveRecord
      * - expired
      */
     public function getStatus() {
+
         if (!$this->isActive) {
-            $result = 'inactive';
+            $result = self::STATUS_INACTIVE;
         } elseif ($this->isExpired) {
-            $result = 'expired';
+            $result = self::STATUS_EXPIRED;
         } else {
-            $result = 'active';
+            $result = self::STATUS_ACTIVE;
         }
         return $result;
     }
+
     public function getIsActive() {
-        return $this->active != 'N';
+        return $this->bool_active;
     }
     /**
      * @return array
@@ -534,7 +537,7 @@ class Survey extends LSActiveRecord
 	{
         return !empty($this->expires)
             && (new DateTime($this->expires)) < new DateTime()
-            && (new DateTime($this->validfrom)) > new DateTime();
+            && (new DateTime($this->startdate)) > new DateTime();
 	}
     /**
     * Creates a new survey - does some basic checks of the suppplied data
@@ -724,7 +727,7 @@ class Survey extends LSActiveRecord
             if (Response::createTable($this, $messages)) {
 
             }
-            if ($this->bool_usetokens) {
+            if ($this->bool_usetokens && !Token::valid($this->sid)) {
                 Token::createTable($this->sid);
             }
             if (Timing::createTable($this, $messages)) {
@@ -874,6 +877,15 @@ class Survey extends LSActiveRecord
         }
     }
 
+    public function __isset($name) {
+        if (substr($name, 0, 5) == 'bool_') {
+            $result = parent::__isset(substr($name, 5));
+        } else {
+            $result = parent::__isset($name);
+        }
+        return $result;
+    }
+
     public function getTotalSteps() {
         switch ($this->format) {
             case "A":
@@ -983,6 +995,8 @@ class Survey extends LSActiveRecord
             $transaction->commit();
         }
     }
+
+
 
 
 }

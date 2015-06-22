@@ -1,5 +1,6 @@
 <?php
 namespace ls\controllers;
+use hafriedlander\Peg\Compiler\Token;
 use Yii;
 use ls\pluginmanager\PluginEvent;
 class TokensController extends Controller
@@ -27,7 +28,7 @@ class TokensController extends Controller
             ],
             'sort' => false
         ]);
-        $this->survey = $survey;
+        $this->menus['survey'] = $survey;
 
         if ($dataProvider->totalItemCount > 0) {
             $this->render('/responses/index', [
@@ -47,7 +48,7 @@ class TokensController extends Controller
     public function actionCreate($surveyId)
     {
         $survey = \Survey::model()->findByPk($surveyId);
-        $this->survey = $survey;
+        $this->menus['survey'] = $survey;
         if (!$survey->bool_usetokens) {
             throw new \CHttpException(412, "The survey you selected does not have tokens enabled.");
         }
@@ -73,7 +74,7 @@ class TokensController extends Controller
          * @todo Add permission check.
          */
         $survey = \Survey::model()->findByPk($surveyId);
-        $this->survey = $survey;
+        $this->menus['survey'] = $survey;
 
         if (!$survey->bool_usetokens) {
             throw new \CHttpException(412, "The survey you selected does not have tokens enabled.");
@@ -99,14 +100,21 @@ class TokensController extends Controller
          * @todo Add permission check.
          */
         $survey = \Survey::model()->findByPk($surveyId);
-        $this->survey = $survey;
+        $this->menus['survey'] = $survey;
+        if (!$survey->bool_usetokens) {
+            throw new \CHttpException(412, "The survey you selected does not have tokens enabled.");
+        }
+
+        if (!\Token::valid($survey->sid)) {
+            \Token::createTable($survey->sid);
+        }
 
         $dataProvider = new \CActiveDataProvider(\Token::model($survey->sid), [
             'pagination' => [
                 'pageSize' => 50
             ]
         ]);
-        return $this->render('index', ['dataProvider' => $dataProvider]);
+        return $this->render('index', ['dataProvider' => $dataProvider, 'survey' => $survey]);
     }
     public function actionRegister($surveyId)
     {

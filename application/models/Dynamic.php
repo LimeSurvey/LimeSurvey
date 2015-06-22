@@ -62,17 +62,19 @@
          * @param int $id
          * @return boolean Returns true if the table is found.
          */
-        public static function valid($id) 
+        public static function valid($id, $refresh = false)
         {
             $result = false;
-            if (is_numeric($id)) {
+            if (is_numeric($id) && (!isset(self::$valid) || $refresh)) {
                 try {
                     App()->db->createCommand("SELECT 1 FROM " . static::constructTableName($id))->execute();
                     $result = true;
                 } catch (\CDbException $e) {
                     $result = false;
                 }
+                self::$valid[$id] = $result;
             }
+
             return $result;
         }
 

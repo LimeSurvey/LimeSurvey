@@ -245,14 +245,33 @@
 
         public function relations()
         {
-            $result = array(
-                'responses' => [self::HAS_MANY, 'Response_' . $this->dynamicId, ['token' => 'token']],
-                'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
-                'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
-            );
+            $result = [
+                'survey' =>  [self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"],
+                'surveylink' => [self::BELONGS_TO, 'SurveyLink', ['participant_id' => 'participant_id'], 'on' => "survey_id = {$this->dynamicId}"]
+            ];
+
+            if (\Response::valid($this->dynamicId)) {
+                $result['responses'] = [self::HAS_MANY, 'Response_' . $this->dynamicId, ['token' => 'token']];
+                $result['responseCount'] = [self::STAT, 'Response_' . $this->dynamicId, 'condition' => ["token = '{$this->token}'"]];
+            }
             return $result;
         }
 
+        /**
+         * This function is used when the survey is not active and thus the relation above is not added.
+         * It is protected since you should use ->responses to make sure you get the relation if it is available.
+         * @return array
+         */
+        protected function getResponses() {
+            return [];
+        }
+
+        /**
+         * @return array
+         */
+        protected function getResponseCount() {
+            return 0;
+        }
         public function rules()
         {
             return [
