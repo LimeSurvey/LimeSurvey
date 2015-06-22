@@ -630,6 +630,13 @@
                 $aLanguages[$sLanguage]=html_entity_decode($aLanguage['description'], ENT_QUOTES, 'UTF-8')." (".html_entity_decode($aLanguage['nativedescription'], ENT_QUOTES, 'UTF-8').")";
             }
             $aAvailableLang=getLanguageDataRestricted ();
+            // Help for restrictToLanguages is a checkbox select all
+            $sScriptAllLanguage="$(document).on('click','#restrictToLanguages_select_all',function(e){\n"
+                . " if($(this).is(':checked')) { $('#restrictToLanguages > option').attr('selected','selected'); }\n"
+                . " else { $('#restrictToLanguages > option').removeAttr('selected'); }\n"
+                . " $('#restrictToLanguages').trigger('change');\n"
+                . "});\n";
+            App()->clientScript->registerScript('sScriptAllLanguage', $sScriptAllLanguage,CClientScript::POS_END);
             $this->widget('ext.SettingsWidget.SettingsWidget', array(
                 'id'=>'language',
                 'form' => false,
@@ -652,6 +659,7 @@
                     'restrictToLanguages'=>array(
                         'type'=>'select',
                         'label'=>gT("Available languages").$sStringDemoMode,
+                        'help'=>CHtml::label(gt("Check/Uncheck All"),"restrictToLanguages_select_all").CHtml::checkBox('restrictToLanguages_select_all',count($aLanguages)==count($aAvailableLang)),
                         'options'=>$aLanguages,
                         'current'=>array_keys(getLanguageDataRestricted ()),
                         'htmlOptions'=>array(
