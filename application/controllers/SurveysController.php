@@ -10,7 +10,12 @@ use Zend\Diactoros\ServerRequest;
 class SurveysController extends Controller
 {
     public $layout = 'minimal';
-    public $defaultAction = 'publicList';
+
+    public function __construct($id, $module = null)
+    {
+        parent::__construct($id, $module);
+        $this->defaultAction = App()->user->isGuest ? 'publicList' : 'index';
+    }
 
     public function accessRules() {
         return array_merge([
@@ -207,11 +212,11 @@ class SurveysController extends Controller
         $file = \CUploadedFile::getInstanceByName('importFile');
         App()->loadHelper('admin.import');
         if (isset($file)) {
-            $importer = ImportFactory::getForLss($file->getTempName());
-            var_dump($importer->run());
-            die('ok');
-            var_dump($importer->run());
-//            $result = \XMLImportSurvey($file->getTempName(), null, null, null, $request->getParam('importConvert', 0));
+//            $importer = ImportFactory::getForLss($file->getTempName());
+//            var_dump($importer->run());
+//            die('ok');
+//            var_dump($importer->run());
+            $result = \XMLImportSurvey($file->getTempName(), null, null, null, $request->getParam('importConvert', 0));
             return $this->renderText(is_array($result) ? print_r($result, true) : $result);
         } else {
             $this->redirect(['surveys/create']);

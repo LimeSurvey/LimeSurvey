@@ -912,7 +912,6 @@ class remotecontrol_handle
 
                 if ($iGroupsDeleted === 1)
                 {
-                    fixSortOrderGroups($iSurveyID);
                     return (int)$iGroupID;
                 }
                 else
@@ -1118,7 +1117,6 @@ class remotecontrol_handle
                     {
                         // save the change to database - one by one to allow for validation to work
                         $bSaveResult=$oGroup->save();
-                        fixSortOrderGroups($oGroup->sid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset failed values
                         if (!$bSaveResult)

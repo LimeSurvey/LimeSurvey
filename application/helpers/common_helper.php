@@ -1147,23 +1147,6 @@ function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sort
 }
 */
 
-function shiftOrderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
-{
-    $sid=sanitize_int($sid);
-    $gid=sanitize_int($gid);
-    $shiftvalue=sanitize_int($shiftvalue);
-
-    $baselang = Survey::model()->findByPk($sid)->language;
-
-    Question::model()->updateQuestionOrder($gid,$baselang,$shiftvalue);
-}
-
-function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
-{
-    $baselang = Survey::model()->findByPk($surveyid)->language;
-    QuestionGroup::model()->updateGroupOrder($surveyid,$baselang);
-}
-
 function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
 {
     $surveyid = Yii::app()->getConfig('sid');

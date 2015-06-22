@@ -37,7 +37,6 @@
                 'translatable' => [
                     'class' => SamIT\Yii1\Behaviors\TranslatableBehavior::class,
                     'translationModel' => Translation::class,
-//                    'model' => 'Group', // See TranslatableBehavior comments.
                     'attributes' => ['group_name', 'description'],
                     'baseLanguage' => function(QuestionGroup $group) { return $group->survey->language; }
                 ]
@@ -94,17 +93,6 @@
             }
         }
 
-        function getGroups($surveyid) {
-            $language = Survey::model()->findByPk($surveyid)->language;
-            return Yii::app()->db->createCommand()
-            ->select(array('gid', 'group_name'))
-            ->from($this->tableName())
-            ->where(array('and', 'sid=:surveyid', 'language=:language'))
-            ->order('group_order asc')
-            ->bindParam(":language", $language, PDO::PARAM_STR)
-            ->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
-            ->query()->readAll();
-        }
 
         public static function deleteWithDependency($groupId, $surveyId)
         {
@@ -112,18 +100,6 @@
             Question::deleteAllById($questionIds);
             Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
             return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
-        }
-
-        /**
-        * Get group description
-        *
-        * @param int iGroupId
-        * @param string sLanguage
-        */
-        public function getGroupDescription($iGroupId, $sLanguage)
-        {
-            $solover = $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
-            return $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
         }
 
         private static function getQuestionIdsInGroup($groupId) {

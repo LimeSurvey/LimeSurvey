@@ -802,23 +802,6 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 */
 function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true, $bConvertInvalidQuestionCodes=true)
 {
-    $dom = new DOMDocument();
-    var_dump($dom->loadXML(file_get_contents($sFullFilePath)));
-    /**
-     * @svar DOMNode $node
-     */
-    var_dump($dom->getElementsByTagName('LimeSurveyDocType')->item(0)->textContent);
-    foreach($dom->childNodes->item(0)->childNodes as $node) {
-        /* @var DOMText $node */
-        if ($node instanceof DOMText) {
-            continue;
-        }
-        var_dump($node->nodeName);
-
-    }
-    var_dump($dom->childNodes);
-    die();
-
     Yii::app()->loadHelper('database');
 
 
@@ -992,14 +975,20 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         foreach ($xml->groups->rows->row as $row)
         {
-            $insertdata=array();
-            foreach ($row as $key=>$value)
-            {
-                $insertdata[(string)$key]=(string)$value;
+            $group = new QuestionGroup();
+            $attributes = [];
+            /**
+             * @var SimpleXMLElement $key
+             * @var SimpleXMLElement $value
+             */
+            foreach ($row as $key => $value) {
+                $attributes[$key] = (string) $value;
             }
+            $group->setAttributes($attributes);
             if (isset($insertdata['language']) && !in_array($insertdata['language'],$aLanguagesSupported)) continue;
             $iOldSID=$insertdata['sid'];
-            $insertdata['sid']=$iNewSID;
+            $group->survey_id = $iNewSID;
+
             $oldgid = isset($insertdata['gid']) ? $insertdata['gid'] : null; unset($insertdata['gid']); // save the old qid
 
             // now translate any links
@@ -1014,8 +1003,8 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 switchMSSQLIdentityInsert('groups',true);
                 $insertdata['gid']=$aGIDReplacements[$oldgid];
             }
-            echo '<pre>'; var_dump($insertdata); die();
-            if (false == $newgid = QuestionGroup::model()->insertRecords($insertdata)){
+
+            if (count($insertdata) == App()->db->commandBuilder->createMultipleInsertCommand(QuestionGroup::model()->tableName(), $insertdata)->execute()) {
                 throw new \CHttpException(500, gT("Error").": Failed to insert data [3]<br />");
             }
             $results['groups']++;
