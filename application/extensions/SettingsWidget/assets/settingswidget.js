@@ -44,3 +44,24 @@ $(document).ready(function() {
     $('.settingswidget .setting-list a.add').bind('click', addRow);
 
 })
+
+/* select2 ctrl+a/ctrl+d select all, deselect all */
+$(document).on("keypress",".select2-container-multi .select2-input",function(event){
+    if (event.ctrlKey || event.metaKey) {
+        var id =$(this).parents("div[class*='select2-container']").attr("id").replace("s2id_","");
+        var element =$("#"+id);
+
+        if (event.which == 97){
+            var selected = [];
+            $('.select2-drop-active').find("ul.select2-results li").each(function(i,e){
+                selected.push($(e).data("select2-data"));
+            });
+            element.select2("data", selected);
+            element.select2("focus");
+            event.preventDefault();
+        } else if (event.which == 100){
+            element.select2("data", []);
+            event.preventDefault();
+        }
+    }
+});
