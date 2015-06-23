@@ -92,6 +92,8 @@
             elseif(isset($metaData['type']))
             {
                 $htmlOptions['type']=$metaData['type'];
+                if(!empty($metaData['name']) && is_string($metaData['name']))
+                    $htmlOptions['name']=$metaData['name'];
                 return CHtml::htmlButton($label, $htmlOptions);
             }
             elseif(isset($htmlOptions['type'])) // Allow type button or cancel in pluginSettings>settings>button
