@@ -73,7 +73,7 @@
             return $result;
         }
 
-        public static function createTable($surveyId, array $extraFields = [])
+        public static function createTable($surveyId, array $extraFields = array())
         {
             $surveyId=intval($surveyId);
             // Specify case sensitive collations for the token
@@ -84,7 +84,7 @@
             if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
                 $sCollation="COLLATE SQL_Latin1_General_CP1_CS_AS";
             }             
-            $fields = [
+            $fields = array(
                 'tid' => 'pk',
                 'participant_id' => 'string(50)',
                 'firstname' => 'string(40)',
@@ -102,7 +102,7 @@
                 'validfrom' => 'datetime',
                 'validuntil' => 'datetime',
                 'mpid' => 'integer'
-            ];
+            );
             foreach ($extraFields as $extraField) {
                 $fields[$extraField] = 'text';
             }

@@ -19,10 +19,10 @@ use Plugin;
         
         protected $plugins = array();
         
-        protected $pluginDirs = [
+        protected $pluginDirs = array(
             'webroot.plugins', // User plugins
             'application.core.plugins' // Core plugins
-        ];
+        );
         
         protected $stores = array();
 

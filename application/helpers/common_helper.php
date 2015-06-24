@@ -5205,20 +5205,20 @@ function getUpdateInfo()
         'crosscheck' => 'true' // Passed as string, should be changed.
     ), '=', '&');
 
-    $opts = [
-        'http' => [
+    $opts = array(
+        'http' => array(
             'method' => 'GET',
             'user_agent' => "LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber"),
             'timeout' => 10,
             'ignore_errors' => true
-        ]
-    ];
+        )
+    );
     $body = file_get_contents($url, false, stream_context_create($opts));
     if ($body != false && (null === $updateInfo = json_decode($body, true))) {
-        $updateInfo = [
+        $updateInfo = array(
             'errorhtml' => $body,
             'errorcode' => $http_response_header
-        ];
+        );
     }
     return $updateInfo;
 }

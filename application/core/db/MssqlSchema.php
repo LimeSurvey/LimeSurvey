@@ -2,9 +2,6 @@
 
 class MssqlSchema extends CMssqlSchema
 {
-    use SmartColumnTypeTrait {
-        getColumnType as parentGetColumnType;
-    }
     public function __construct($conn) {
         parent::__construct($conn);
         /**
@@ -27,18 +24,24 @@ class MssqlSchema extends CMssqlSchema
         $this->columnTypes['longbinary'] = 'varbinary(max)';
     }
 
+    
     public function getColumnType($type)
-	{
+    {
+        if (preg_match('/^([[:alpha:]]+)\s*(\(.+?\))(.*)$/', $type, $matches)) {
+            $baseType = parent::getColumnType($matches[1] . ' ' . $matches[3]);
+            $param = $matches[2];
+            $result = preg_replace('/\(.+?\)/', $param, $baseType, 1);
+        } else {
+            $result = parent::getColumnType($type);
+        }
         /**
          * @date 2015-5-11
-         * Bug occurs with DBLIB when specifying neither of NULL and NOT NULL.
+         * A bug occurs with DBLIB when specifying neither of NULL and NOT NULL.
          * So if resulting type doesn't contain NULL then add it.
-         */
-        $result = $this->parentGetColumnType($type);
-        
+         */        
         if (stripos($result, 'NULL') === false) {
             $result .= ' NULL';
         }
         return $result;
-    }   
+    }
 }
