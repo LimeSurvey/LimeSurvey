@@ -4,7 +4,7 @@
         'selector' :'textarea.html',
         'file_picker_callback' : function(callback, value, meta) {
             tinymce.activeEditor.windowManager.open({
-                file: '/index.php?r=files/manage&dialog=1',
+                file: LS.data.baseUrl+'/index.php?r=files/manage&dialog=1',
                 title: 'elFinder',
                 width: 900,
                 height: 480,
@@ -38,7 +38,7 @@
 
 function elFinderBrowser (field_name, url, type, win) {
     tinymce.activeEditor.windowManager.open({
-        file: '/elfinder/elfinder.html',// use an absolute path!
+        file: LS.data.baseUrl+'/elfinder/elfinder.html',// use an absolute path!
         title: 'elFinder 2.0',
         width: 900,
         height: 450,

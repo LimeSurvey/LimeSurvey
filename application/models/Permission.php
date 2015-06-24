@@ -604,9 +604,11 @@ class Permission extends LSActiveRecord
     */
     private static function getUserId($iUserID=null)
     {
-    if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
-        $iUserID = Yii::app()->session['loginID'];
-    return $iUserID;
+        $sOldLanguage=App()->language;// See bug #09695 : called by EM
+        if (is_null($iUserID) && !Yii::app()->user->getIsGuest())
+            $iUserID = Yii::app()->session['loginID'];
+        App()->setLanguage($sOldLanguage);
+        return $iUserID;
     }
 
 }

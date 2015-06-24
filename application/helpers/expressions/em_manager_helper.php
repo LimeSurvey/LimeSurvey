@@ -5940,7 +5940,6 @@
             $qrel=true;   // assume relevant unless discover otherwise
             $prettyPrintRelEqn='';    //  assume no relevance eqn by default
             $qid=$qInfo['qid'];
-
             $gid=$qInfo['gid'];
             $qhidden = $qInfo['hidden'];
             $debug_qmessage='';
@@ -6010,7 +6009,8 @@
                 if ($qInfo['type'] == 'X') {
                     $sgqas = array();   // Boilerplate questions can be ignored
                 }
-                else {
+                else
+                {
                     $sgqas = explode('|',$LEM->qid2code[$qid]);
                 }
                 foreach ($sgqas as $sgqa)
@@ -6022,6 +6022,23 @@
                         continue;
                     }
                     $foundSQrelevance=false;
+                    if($qInfo['type']=='R')
+                    {
+                        // Relevance of subquestion for ranking question depend of the count of relevance of answers.
+                        $iCountRank=(isset($iCountRank) ? $iCountRank+1 : 1);
+                        $iCountRelevant=isset($iCountRelevant) ? $iCountRelevant : count(array_filter($LEM->subQrelInfo[$qid],function($sqRankAnwsers){ return $sqRankAnwsers['result']; }));
+                        if($iCountRank >  $iCountRelevant)
+                        {
+                            $foundSQrelevance=true;
+                            $irrelevantSQs[] = $sgqa;
+                        }
+                        else
+                        {
+                            $relevantSQs[] = $sgqa;
+                        }
+                        continue;
+                    }
+
                     foreach ($LEM->subQrelInfo[$qid] as $sq)
                     {
                         switch ($sq['qtype'])
@@ -6223,7 +6240,6 @@
                     }
                 }
             } // end of processing relevant question for sub-questions
-
             if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
             {
                 // TODO - why is array_unique needed here?
