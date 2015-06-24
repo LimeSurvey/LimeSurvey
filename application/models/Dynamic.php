@@ -65,7 +65,7 @@
         public static function valid($id, $refresh = false)
         {
             $result = false;
-            if (is_numeric($id) && (!isset(self::$valid) || $refresh)) {
+            if (is_numeric($id) && (!isset(self::$valid[$id]) || $refresh)) {
                 try {
                     App()->db->createCommand("SELECT 1 FROM " . static::constructTableName($id))->execute();
                     $result = true;
