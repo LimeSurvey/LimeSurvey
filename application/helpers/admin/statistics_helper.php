@@ -22,10 +22,11 @@
 *  @param mixed $gdata          An array containing the percentages for the chart items
 *  @param mixed $grawdata       An array containing the raw count for the chart items
 *  @param mixed $cache          An object containing [Hashkey] and [CacheFolder]
+*  @param mixed $sLanguageCode  Language Code
 *  @param string $sQuestionType The question type
 *  @return                Name
 */
-function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache, $oLanguage, $sQuestionType)
+function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
 {
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
     the "T" gets passed to this function from the statistics.js file in the first place! */
@@ -43,7 +44,6 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
-    $language = $oLanguage->langcode;
     $cachefilename = "";
 
     /* Set the fonts for the chart */
@@ -52,9 +52,9 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         // Tested with ar,be,el,fa,hu,he,is,lt,mt,sr, and en (english)
         // Not working for hi, si, zh, th, ko, ja : see $config['alternatechartfontfile'] to add some specific language font
         $chartfontfile='DejaVuSans.ttf';
-        if(array_key_exists($language,$alternatechartfontfile))
+        if(array_key_exists($sLanguageCode,$alternatechartfontfile))
         {
-            $neededfontfile = $alternatechartfontfile[$language];
+            $neededfontfile = $alternatechartfontfile[$sLanguageCode];
             if(is_file($rootdir."/fonts/".$neededfontfile))
             {
                 $chartfontfile=$neededfontfile;
@@ -70,8 +70,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     if (count($lbl)>72)
     {
         $DataSet = array(1=>array(1=>1));
-        if ($cache->IsInCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet) && Yii::app()->getConfig('debug')<2) {
-            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
+        if ($cache->IsInCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet) && Yii::app()->getConfig('debug')<2) {
+            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
         }
         else
         {
@@ -80,8 +80,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->drawTitle(0,0,gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
-            $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet,$graph);
-            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
+            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
+            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -89,8 +89,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     if (array_sum($gdata ) == 0)
     {
         $DataSet = array(1=>array(1=>1));
-        if ($cache->IsInCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet) && Yii::app()->getConfig('debug')<2) {
-            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
+        if ($cache->IsInCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet) && Yii::app()->getConfig('debug')<2) {
+            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
         }
         else
         {
@@ -99,8 +99,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->drawTitle(0,0,gT('Sorry, but this question has no responses yet so a graph cannot be shown.','unescaped'),30,30,30,690,200);
-            $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet,$graph);
-            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet));
+            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
+            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -154,7 +154,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             if ($maxyvalue<10) {++$maxyvalue;}
 
 
-            if ($language=='ar')
+            if ($sLanguageCode=='ar')
             {
                 if(!class_exists('I18N_Arabic_Glyphs',false)) $Arabic = new I18N_Arabic('Glyphs');
                 else $Arabic=new I18N_Arabic_Glyphs();
@@ -168,7 +168,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                     }
                 }
             }
-            elseif (getLanguageRTL($language))
+            elseif (getLanguageRTL($sLanguageCode))
             {
                 foreach($lbl as $kkey => $kval){
                     $lblout[]= UTF8Strrev($kkey.' )'.$kval.'(');
@@ -188,8 +188,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $counter++;
             }
 
-            if ($cache->IsInCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
-                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
+            if ($cache->IsInCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
+                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData()));
             }
             else
             {
@@ -219,8 +219,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->drawLegend(510,30,$DataSet->GetDataDescription(),250,250,250);
 
-                $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData(),$graph);
-                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
+                $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData()));
                 unset($graph);
             }
         }    //end if (bar chart)
@@ -236,7 +236,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             while (isset ($gdata[$i]))
             {
                 $aHelperArray=array_keys($lbl);
-                if ($gdata[$i] == 0 || ($sQuestionType == "O" && substr($aHelperArray[$i],0,strlen($oLanguage->gT("Comments")))==$oLanguage->gT("Comments")))
+                if ($gdata[$i] == 0 || ($sQuestionType == "O" && substr($aHelperArray[$i],0,strlen($sLanguageCode->gT("Comments")))==$sLanguageCode->gT("Comments")))
                 {
                     array_splice ($gdata, $i, 1);
                 }
@@ -249,7 +249,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             }
             $lbl = $labelTmp;
 
-            if ($language=='ar')
+            if ($sLanguageCode=='ar')
             {
                 if(!class_exists('I18N_Arabic_Glyphs',false)) $Arabic = new I18N_Arabic('Glyphs');
                 else $Arabic=new I18N_Arabic_Glyphs();
@@ -263,7 +263,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                     }
                 }
             }
-            elseif (getLanguageRTL($language))
+            elseif (getLanguageRTL($sLanguageCode))
             {
                 foreach($lbl as $kkey => $kval){
                     $lblout[]= UTF8Strrev(html_entity_decode($kkey,null,'UTF-8').' )'.$kval.'(');
@@ -284,8 +284,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             $DataSet->AddAllSeries();
             $DataSet->SetAbsciseLabelSerie("Serie2");
 
-            if ($cache->IsInCache("graph".$iSurveyID.$language.$iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
-                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
+            if ($cache->IsInCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug')<2) {
+                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData()));
             }
             else
             {
@@ -302,8 +302,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
                 $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
                 $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
-                $cache->WriteToCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData(),$graph);
-                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$language.$iQuestionID,$DataSet->GetData()));
+                $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData()));
                 unset($graph);
             }
         }    //end else -> pie charts
