@@ -15,11 +15,11 @@ $(document).ready(function(){
                 old_owner = (old_owner.split("("))[0];
                 $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>\n'
                 + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" initial_text="'+initial_text+'" value="'+delBtnCaption+'">');
-                $(oData).each(function(key,value){
+                $.each(oData, function(key,value){
                     $('#ownername_select_'+survey_id).
-                    append($("<option id='opt_"+value[1]+"'></option>").
-                    attr("value",value[0]).
-                    text(value[1]));
+                    append($("<option id='opt_"+key+"'></option>").
+                    attr("value",key).
+                    text(value));
                 });
                 $("#ownername_select_"+survey_id+ " option[id=opt_"+old_owner+"]").attr("selected","selected");
             }
