@@ -517,7 +517,7 @@
                             'class'=>$sClassDemoMode,
                         ),
                         'options'=>array('1'=>gT("Yes",'unescaped'),'0'=>gT("No",'unescaped')),
-                        'current'=>getGlobalSetting('surveyPreview_require_Auth'),
+                        'current'=>getGlobalSetting('filterxsshtml'),
                         'htmlOptions'=>array(
                             'readonly'=>$bDemoMode,
                         ),
