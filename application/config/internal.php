@@ -25,7 +25,7 @@ $internalConfig = array(
         'application.controllers.*',
         'application.modules.*',
     ),
-    'preload' => ['log'],
+    'preload' => array ('log'),
     'components' => array(
         'bootstrap' => array(
             'class' => 'application.core.LSBootstrap',
@@ -65,13 +65,13 @@ $internalConfig = array(
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
-                'vardump' => [
+                'vardump' => array(
                     'class' => 'CWebLogRoute',
                     'categories' => 'vardump', // tracevar function
-                ],
-                'profile' => [
+                ),
+                'profile' => array(
                     'class' => 'CProfileLogRoute'
-                ]
+                )
             )
         ),
         'cache'=>array(
@@ -83,11 +83,11 @@ $internalConfig = array(
             'enableProfiling' => isset($userConfig['config']['debugsql']) && $userConfig['config']['debugsql'] >= 1,
             'enableParamLogging' => isset($userConfig['config']['debugsql']) && $userConfig['config']['debugsql'] >= 1
         ),
-        'session' => [
+        'session' => array(
             'cookieParams' => array(
                 'httponly' => true,
             ),
-        ],
+        ),
         'messages' => array(
             'class' => 'CGettextMessageSource',
             'cachingDuration'=>3600,
@@ -95,10 +95,10 @@ $internalConfig = array(
             'useMoFile' => true,
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         ),
-        'pluginManager' => [
+        'pluginManager' => array(
             'class' => "\\ls\\pluginmanager\\PluginManager",
             'api' => "\\ls\\pluginmanager\\LimesurveyApi"
-        ]
+        )
     )
 );
 
