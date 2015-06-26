@@ -252,7 +252,6 @@
 
             if (\Response::valid($this->dynamicId)) {
                 $result['responses'] = [self::HAS_MANY, 'Response_' . $this->dynamicId, ['token' => 'token']];
-                $result['responseCount'] = [self::STAT, 'Response_' . $this->dynamicId, 'condition' => ["token = '{$this->token}'"]];
             }
             return $result;
         }
@@ -270,7 +269,7 @@
          * @return array
          */
         protected function getResponseCount() {
-            return 0;
+            return Response::valid($this->dynamicId) ? Response::model($this->dynamicId)->countByAttributes(['token' => $this->token]) : 0;
         }
         public function rules()
         {

@@ -149,7 +149,7 @@ class WebApplication extends CWebApplication
     */
     public function loadHelper($helper)
     {
-        Yii::import('application.helpers.' . $helper . '_helper', true);
+        return Yii::import('application.helpers.' . $helper . '_helper', true);
     }
 
     /**

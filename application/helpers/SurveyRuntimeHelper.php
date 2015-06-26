@@ -174,7 +174,8 @@ class SurveyRuntimeHelper {
         global $errormsg;
         extract($args);
         $ssm = App()->surveySessionManager;
-
+        /** @var SurveySession $session */
+        $session = $ssm->current;
         $thissurvey = getSurveyInfo($surveyid);
 
         $LEMsessid = 'survey_' . $surveyid;
@@ -219,7 +220,6 @@ class SurveyRuntimeHelper {
             'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
             'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
-
         //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
         $previewgrp = false;
         if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup'))
@@ -229,6 +229,7 @@ class SurveyRuntimeHelper {
         $previewquestion = false;
         if ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion'))
         {
+
             $previewquestion = true;
         }
         //        if (isset($param['newtest']) && $param['newtest'] == "Y")
@@ -404,11 +405,11 @@ class SurveyRuntimeHelper {
             }
 
             // TODO FIXME
-            if ($thissurvey['active'] == "Y") {
+            if ($ssm->current->survey->bool_active) {
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
             }
-            if ($thissurvey['active'] == "Y" && Yii::app()->request->getPost('saveall')) // Don't test if save is allowed
+            if ($ssm->current->survey->bool_active && Yii::app()->request->getPost('saveall')) // Don't test if save is allowed
             {
                 $bTokenAnswerPersitance = $thissurvey['tokenanswerspersistence'] == 'Y' && isset($surveyid) && tableExists('tokens_'.$surveyid);
                 // must do this here to process the POSTed values
@@ -429,7 +430,7 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if ($thissurvey['active'] == "Y" && Yii::app()->request->getParam('savesubmit') )
+            if ($ssm->current->survey->bool_active && Yii::app()->request->getParam('savesubmit') )
             {
                 // The response from the save form
                 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
@@ -445,7 +446,6 @@ class SurveyRuntimeHelper {
 
                 // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
             }
-
             //Now, we check mandatory questions if necessary
             //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
             global $notanswered;
@@ -453,25 +453,12 @@ class SurveyRuntimeHelper {
             if (isset($moveResult) && !$moveResult['finished'])
             {
                 $unansweredSQList = $moveResult['unansweredSQs'];
-                if (strlen($unansweredSQList) > 0)
-                {
-                    $notanswered = explode('|', $unansweredSQList);
-                }
-                else
-                {
-                    $notanswered = array();
-                }
+                $notanswered = array_filter(explode('|', ''));
 
                 //CHECK INPUT
                 $invalidSQList = $moveResult['invalidSQs'];
-                if (strlen($invalidSQList) > 0)
-                {
-                    $notvalidated = explode('|', $invalidSQList);
-                }
-                else
-                {
-                    $notvalidated = array();
-                }
+
+                $notvalidated = array_filter(explode('|', $invalidSQList));
             }
 
             // CHECK UPLOADED FILES
@@ -678,7 +665,6 @@ class SurveyRuntimeHelper {
 
         $redata = compact(array_keys(get_defined_vars()));
 
-
         createFieldMap($ssm->current->surveyId,'full',false,false, $ssm->current->language);
         //GET GROUP DETAILS
 
@@ -736,6 +722,8 @@ class SurveyRuntimeHelper {
             }
         }
 
+
+
         // If the survey uses answer persistence and a srid is registered in SESSION
         // then loadanswers from this srid
         /* Only survey mode used this - should all?
@@ -753,14 +741,14 @@ class SurveyRuntimeHelper {
         //******************************************************************************************************
 
         $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || $_SESSION[$LEMsessid]['prevstep'] == $ssm->current->getStep()));
-
-        Yii::app()->getController()->loadHelper('qanda');
+        App()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
+
 
         //Iterate through the questions about to be displayed:
         $inputnames = array();
 
-        foreach (UpdateGroupList($ssm->current->surveyId, App()->language) as $gl)
+        foreach (UpdateGroupList($ssm->current->surveyId, $ssm->current->language) as $gl)
         {
             $gid = $gl['gid'];
             $qnumber = 0;
@@ -836,7 +824,7 @@ class SurveyRuntimeHelper {
             } //end iteration
         }
 
-        $session = $ssm->current;
+
         if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
         {
             if ($show_empty_group)
@@ -883,12 +871,12 @@ class SurveyRuntimeHelper {
         //if(count($aPopup))
         Yii::app()->clientScript->registerScript('startPopup',"startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
-        if ($surveyMode != 'survey' && $ssm->current->getStep() != $_SESSION[$LEMsessid]['prevstep'] ||
+        if ($surveyMode != 'survey' && $session->getStep() != $_SESSION[$LEMsessid]['prevstep'] ||
         (isset($_SESSION[$LEMsessid]['stepno']) && $_SESSION[$LEMsessid]['stepno'] % 2))
         {
             if (!isset($_SESSION[$LEMsessid]['stepno']))
                 $_SESSION[$LEMsessid]['stepno'] = 0;
-            if ($ssm->current->getStep() != $_SESSION[$LEMsessid]['prevstep'])
+            if ($session->getStep() != $_SESSION[$LEMsessid]['prevstep'])
                 ++$_SESSION[$LEMsessid]['stepno'];
             if ($_SESSION[$LEMsessid]['stepno'] % 2)
             {
@@ -1067,7 +1055,7 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"), array(), $redata);
             echo "\n";
 
-            if ($thissurvey['active'] != "Y")
+            if ($session->survey->bool_active)
             {
                 echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
             }
@@ -1082,7 +1070,7 @@ class SurveyRuntimeHelper {
                 $this->createFullQuestionIndex($LEMsessid, $surveyMode);
             }
 
-            $step = $ssm->current->getStep();
+            $step = $session->getStep();
             echo "<input type='hidden' name='thisstep' value='{$step}' id='thisstep' />\n";
             echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
             echo "<input type='hidden' name='SSM' value='{$session->getId()}' id='sid' />\n";

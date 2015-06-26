@@ -786,6 +786,7 @@ function sendSubmitNotifications($surveyid)
 */
 function submitfailed($errormsg='')
 {
+    throw new \Exception("Submit failed: " . $errormsg);
     global $debug;
     global $thissurvey;
     global $subquery, $surveyid;
@@ -1192,27 +1193,16 @@ function buildsurveysession($surveyid,$preview=false)
 
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $sQuery = "SELECT count(*)\n"
-    ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
-    ." WHERE {{questions}}.sid=".$surveyid."\n"
-    ." AND {{groups}}.language='".App()->getLanguage()."'\n"
-    ." AND {{questions}}.language='".App()->getLanguage()."'\n"
-    ." AND {{questions}}.parent_qid=0\n";
-    $totalquestions = Yii::app()->db->createCommand($sQuery)->queryScalar();
-
-    // Fix totalquestions by substracting Text Display questions
-    $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
-    ." FROM {{questions}}"
-    ." WHERE type in ('X','*')\n"
-    ." AND sid={$surveyid}"
-    ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
-    ." AND parent_qid=0")->read();
-
-
-
+    $criteria = (new CDbCriteria())
+        ->addColumnCondition([
+            'parent_qid' => 0,
+            'sid' => $surveyid
+        ])
+        ->addNotInCondition('type', ['X', '*']);
 
     if (App()->surveySessionManager->current->survey->questionCount == 0)    //break out and crash if there are no questions!
     {
+        throw new \Exception("There are no questions in this survey");
         sendCacheHeaders();
         doHeader();
 
@@ -1223,12 +1213,7 @@ function buildsurveysession($surveyid,$preview=false)
         ."\t<p id='tokenmessage'>\n"
         ."\t".gT("This survey cannot be tested or completed for the following reason(s):")."<br />\n";
         echo "<ul>";
-        if ($totalquestions == 0){
-            echo '<li>'.gT("There are no questions in this survey.").'</li>';
-        }
-        if ($iTotalGroupsWithoutQuestions == 0){
-            echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
-        }
+        echo '<li>'.gT("There are no questions in this survey.").'</li>';
         echo "</ul>"
         ."\t".sprintf(gT("For further information please contact %s"), $thissurvey['adminname'])
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
@@ -1240,7 +1225,6 @@ function buildsurveysession($surveyid,$preview=false)
         doFooter();
         exit;
     }
-
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
     //    usort($arows, 'groupOrderThenQuestionOrder');
 
@@ -1267,13 +1251,11 @@ function buildsurveysession($surveyid,$preview=false)
     $aRandomGroups=array();
     $aGIDCompleteMap=array();
     // first find all groups and their groups IDS
-    $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['survey_'.$surveyid]['s_lang']));
-    $criteria->addCondition("randomization_group != ''");
-    $oData = QuestionGroup::model()->findAll($criteria);
-    foreach($oData as $aGroup)
-    {
-        $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
+    $criteria = (new CDbCriteria)
+        ->addColumnCondition(['sid' => $surveyid])
+        ->addSearchCondition('randomization_group', '', true, 'AND', '!=');
+    foreach (QuestionGroup::model()->findAll($criteria) as $group) {
+        $aRandomGroups[$group->randomization_group][] = $group->primaryKey;
     }
     // Shuffle each group and create a map for old GID => new GID
     foreach ($aRandomGroups as $sGroupName=>$aGIDs)
@@ -1449,7 +1431,6 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
     // TMSW Condition->Relevance:  don't need hasconditions, or usedinconditions
-
     $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {

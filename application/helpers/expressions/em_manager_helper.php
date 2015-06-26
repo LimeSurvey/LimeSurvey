@@ -4862,7 +4862,7 @@
                         if (is_null($LEM->currentGroupSeq)) {$LEM->currentGroupSeq=0;} // If moving backwards in preview mode and a question was removed then $LEM->currentGroupSeq is NULL and an endless loop occurs.
                         if (--$LEM->currentGroupSeq < 0) // Stop at start
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'at_start'=>true,
@@ -4887,7 +4887,7 @@
                         else
                         {
                             // display new group
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'at_start'=>false,
@@ -4913,7 +4913,7 @@
                         $LEM->currentQset = array();    // reset active list of questions
                         if (--$LEM->currentQuestionSeq < 0) // Stop at start : can be a question
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'at_start'=>true,
@@ -4948,7 +4948,7 @@
                         else
                         {
                             // display new question : Ging backward : maxQuestionSeq>currentQuestionSeq is always true.
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             return array(
                                 'at_start'=>false,
@@ -4998,7 +4998,7 @@
                     {
                         $finished = true;
                     }
-                    $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished);
+                    $message .= $LEM->_UpdateValuesInDatabase($finished);
                     $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                     $LEM->lastMoveResult = array(
                         'finished'=>$finished,
@@ -5025,7 +5025,7 @@
                         if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                         {
                             // redisplay the current group
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>false,
@@ -5045,7 +5045,7 @@
                         $LEM->currentQset = array();    // reset active list of questions
                         if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
+                            $message .= $LEM->_UpdateValuesInDatabase(true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>true,
@@ -5074,7 +5074,7 @@
                         else
                         {
                             // display new group
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>false,
@@ -5104,7 +5104,7 @@
                         if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']))
                         {
                             // redisplay the current question with all error
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>false,
@@ -5125,7 +5125,7 @@
                         $LEM->currentQset = array();    // reset active list of questions
                         if (++$LEM->currentQuestionSeq >= $LEM->numQuestions) // Move next with finished, but without submit. 
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
+                            $message .= $LEM->_UpdateValuesInDatabase(true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>true,
@@ -5167,7 +5167,7 @@
                         {
                             // Display new question
                             // Show error only if this question are not viewed before (question hidden by condition before <= maxQuestionSeq>currentQuestionSeq)
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>false,
@@ -5192,10 +5192,13 @@
         * @param <type> $updatedValues
         * @param <boolean> $finished - true if the survey needs to be finalized
         */
-        private function _UpdateValuesInDatabase($updatedValues, $finished=false)
+        private function _UpdateValuesInDatabase($finished=false)
         {
             //  TODO - now that using $this->updatedValues, may be able to remove local copies of it (unless needed by other sub-systems)
             $updatedValues = $this->updatedValues;
+            if (array_key_exists('', $updatedValues)) {
+                throw new \Exception("Empty string is not a valid key for updated values.");
+            }
             $message = '';
             if (!$this->surveyOptions['active'] || $this->sPreviewMode)
             {
@@ -5342,7 +5345,7 @@
                     $query .= "'{$_SESSION[$this->sessid]['srid']}'";
                     if (!dbExecuteAssoc($query))
                     {
-                        echo submitfailed('');  // TODO - report SQL error?
+                        echo submitfailed("Error in query: $query");  // TODO - report SQL error?
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= $this->gT('Error in SQL update');  // TODO - add  SQL error?
@@ -5441,7 +5444,6 @@
             $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
             $LEM->updatedValues = array();
             --$seq; // convert to 0-based numbering
-
             switch ($LEM->surveyMode)
             {
                 case 'survey':
@@ -5461,7 +5463,7 @@
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     $finished=false;
-                    $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished);// This happen too for $processPOST=false : need to fix it ?
+                    $message .= $LEM->_UpdateValuesInDatabase($finished);// This happen too for $processPOST=false : need to fix it ?
                     $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                     $LEM->lastMoveResult = array(
                         'finished'=>$finished,
@@ -5478,10 +5480,7 @@
                 case 'group':
                     // First validate the current group
                     $LEM->StartProcessingPage();
-                    if ($processPOST)
-                        $updatedValues=$LEM->ProcessCurrentResponses();
-                    else
-                        $updatedValues = array();
+                    $updatedValues = $processPOST ? $LEM->ProcessCurrentResponses() : [];
                     $message = '';
                     if (!$force && $LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) // only re-validate if jumping forward
                     {
@@ -5491,7 +5490,7 @@
                         if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                         {
                             // redisplay the current group, showing error
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>false,
@@ -5514,7 +5513,7 @@
                         $LEM->currentQset = array();    // reset active list of questions
                         if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
+                            $message .= $LEM->_UpdateValuesInDatabase(true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>true,
@@ -5550,7 +5549,7 @@
                         {
                             // display new group
                             if(!$preview){ // Save only if not in preview mode
-                                $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                                $message .= $LEM->_UpdateValuesInDatabase(false);
                                 $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             }
                             $LEM->lastMoveResult = array(
@@ -5584,7 +5583,7 @@
                         if ($grel && ($result['mandViolation'] || !$result['valid']))
                         {
                             // Redisplay the current question, qhowning error
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>false,
@@ -5608,7 +5607,7 @@
                         $LEM->currentQset = array();    // reset active list of questions
                         if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
+                            $message .= $LEM->_UpdateValuesInDatabase(true);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>true,
@@ -5659,7 +5658,7 @@
                         {
                             // Display new question
                             // Showing error if question are before the maxstep
-                            $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
+                            $message .= $LEM->_UpdateValuesInDatabase(false);
                             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                             $LEM->lastMoveResult = array(
                                 'finished'=>false,
@@ -5930,7 +5929,7 @@
         * @return <array> of information about this question and its sub-questions
         */
 
-        function _ValidateQuestion($questionSeq,$force=false)
+        private function _ValidateQuestion($questionSeq,$force=false)
         {
             $LEM =& $this;
             $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
@@ -6570,11 +6569,18 @@
             if ((!$qrel || !$grel) && $LEM->surveyOptions['deletenonvalues'])
             {
                 // If not relevant, then always NULL it in the database
-                $sgqas = explode('|',$LEM->qid2code[$qid]);
+                $sgqas = explode('|', $LEM->qid2code[$qid]);
+                var_dump($LEM->qid2code);
+                var_dump($qid);
+                var_dump($LEM->qid2code[$qid]);
+                var_dump($sgqas); die('n');
                 foreach ($sgqas as $sgqa)
                 {
                     $_SESSION[$LEM->sessid][$sgqa] = NULL;
                     $updatedValues[$sgqa] = NULL;
+                    if ($sgqa == '') {
+                        throw new \Exception("Invalid sgqa: ''");
+                    }
                     $LEM->updatedValues[$sgqa] = NULL;
                 }
             }
@@ -8496,8 +8502,7 @@ EOD;
                         'type'=>$type,
                         'value'=>$value,
                         );
-                        $updatedValues[$sq] = $_update;
-                        $LEM->updatedValues[$sq] = $_update;
+                        $updatedValues[$sq] = $LEM->updatedValues[$sq] = $_update;
                     }
                     else {  // irrelevant, so database will be NULLed separately
                         // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
@@ -8506,8 +8511,7 @@ EOD;
                         'type'=>$type,
                         'value'=>NULL,
                         );
-                        $updatedValues[$sq] = $_update;
-                        $LEM->updatedValues[$sq] = $_update;
+                        $updatedValues[$sq] = $LEM->updatedValues[$sq] = $_update;
                     }
                 }
             }
@@ -8515,6 +8519,7 @@ EOD;
             {
                 $_SESSION[$LEM->sessid][$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
             }
+
             return $updatedValues;
         }
 

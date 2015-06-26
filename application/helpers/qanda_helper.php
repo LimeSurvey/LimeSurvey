@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
-
 // Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
@@ -1421,7 +1420,9 @@ function do_list_dropdown($ia)
         $ansquery = "SELECT * FROM {{answers}} WHERE question_id=$ia[0] and scale_id=0 ORDER BY sortorder, answer";
     }
 
-    $ansresult = Yii::app()->db->createCommand($ansquery)->query() or throw new \CHttpException(500, 'Couldn\'t get answers<br />'.$ansquery.'<br />');    //Checked
+    if (false == $ansresult = Yii::app()->db->createCommand($ansquery)->query()) {
+        throw new \CHttpException(500, 'Couldn\'t get answers<br />'.$ansquery.'<br />');
+    }
     $ansresult= $ansresult->readAll();
     $dropdownSize = '';
     if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)

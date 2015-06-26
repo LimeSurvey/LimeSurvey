@@ -67,7 +67,25 @@ class TokensController extends Controller
         $this->render('create', ['token' => $token, 'survey' => $survey]);
     }
 
+    /**
+     * @param $surveyId
+     * @param $id
+     */
+    public function actionView($surveyId, $id) {
+        $survey = \Survey::model()->findByPk($surveyId);
+        $this->menus['survey'] = $survey;
+        $token = $this->loadModel($id, $surveyId);
 
+        return $this->renderText($this->widget(\WhDetailView::class, [
+            'data' => $token
+        ], true));
+    }
+
+    /**
+     * @param $surveyId
+     * @param $id
+     * @throws \CHttpException
+     */
     public function actionUpdate($surveyId, $id)
     {
         /**
@@ -76,11 +94,8 @@ class TokensController extends Controller
         $survey = \Survey::model()->findByPk($surveyId);
         $this->menus['survey'] = $survey;
 
-        if (!$survey->bool_usetokens) {
-            throw new \CHttpException(412, "The survey you selected does not have tokens enabled.");
-        }
+        $token = $this->loadModel($id, $surveyId);
 
-        $token = \Token::model($survey->sid)->findByPk($id);
         if (App()->request->isPostRequest) {
             $token->setAttributes(App()->request->getPost(get_class($token)));
 
@@ -221,4 +236,18 @@ class TokensController extends Controller
         }
         return $message;
     }
+
+    protected function loadModel($id, $surveyId = null)
+    {
+        if (!isset($surveyId)) {
+            throw new \InvalidArgumentException("SurveyID is required when loading token.");
+        } elseif (!\Token::valid($surveyId)) {
+            throw new \CHttpException(404, gT("Token table not found"));
+        } elseif (null === $result = \Token::model($surveyId)->findByPk($id)) {
+            throw new \CHttpException(404, gT("Token not found"));
+        }
+        return $result;
+    }
+
+
 }

@@ -2208,13 +2208,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         if (isset($fieldmap[$fieldname]))
         {
             //set question relevance (uses last SQ's relevance field for question relevance)
-            $fieldmap[$fieldname]['relevance']=$question['relevance'];
-            $fieldmap[$fieldname]['grelevance']=$question['grelevance'];
-            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-            $fieldmap[$fieldname]['preg']=$arow['preg'];
-            $fieldmap[$fieldname]['other']=$arow['other'];
-            $fieldmap[$fieldname]['help']=$arow['help'];
+            $fieldmap[$fieldname]['relevance'] = $question->relevance;
+            $fieldmap[$fieldname]['grelevance'] = $group->grelevance;
+            $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
+            $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+            $fieldmap[$fieldname]['preg'] = $question->preg;
+            $fieldmap[$fieldname]['other'] = $question->other;
+            $fieldmap[$fieldname]['help']=$question->help;
         }
         else
         {
