@@ -68,14 +68,13 @@
             if (is_numeric($id) && (!isset(self::$valid[$id]) || $refresh)) {
                 try {
                     App()->db->createCommand("SELECT 1 FROM " . static::constructTableName($id))->execute();
-                    $result = true;
+                    self::$valid[$id] = true;
                 } catch (\CDbException $e) {
-                    $result = false;
+                    self::$valid[$id] = false;
                 }
-                self::$valid[$id] = $result;
             }
 
-            return $result;
+            return self::$valid[$id];
         }
 
 

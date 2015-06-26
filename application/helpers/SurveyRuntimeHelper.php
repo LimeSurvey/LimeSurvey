@@ -1055,7 +1055,7 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplatePath."navigator.pstpl"), array(), $redata);
             echo "\n";
 
-            if ($session->survey->bool_active)
+            if (!$session->survey->bool_active)
             {
                 echo "<p style='text-align:center' class='error'>" . gT("This survey is currently not active. You will not be able to save your responses.") . "</p>\n";
             }
