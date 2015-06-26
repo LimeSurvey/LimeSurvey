@@ -1716,7 +1716,7 @@ class dataentry extends Survey_Common_Action
                         {
                             if (isset($usesleft) && $usesleft<=1)
                             {
-                                $utquery .= "SET usesleft=usesleft-1, completed='$submitdate'\n";
+                                $utquery .= "SET usesleft=usesleft-1, completed=".dbQuoteAll($submitdate);
                             }
                             else
                             {
