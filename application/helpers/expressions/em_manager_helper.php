@@ -9961,7 +9961,7 @@ EOD;
                 'token' => $sToken
             ));
             
-            if (is_null($oToken))
+            if ($oToken)
             {
                 foreach ($oToken->attributes as $attribute => $value)
                 {

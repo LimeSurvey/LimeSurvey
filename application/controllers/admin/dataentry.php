@@ -1716,7 +1716,7 @@ class dataentry extends Survey_Common_Action
                         {
                             if (isset($usesleft) && $usesleft<=1)
                             {
-                                $utquery .= "SET usesleft=usesleft-1, completed='$submitdate'\n";
+                                $utquery .= "SET usesleft=usesleft-1, completed=".dbQuoteAll($submitdate);
                             }
                             else
                             {
@@ -1878,7 +1878,6 @@ class dataentry extends Survey_Common_Action
             if(is_null($lang) || !in_array($lang,$slangs))
             {
                 $sDataEntryLanguage = $baselang;
-                $blang = App()->language;
             } else {
                 $sDataEntryLanguage = $lang;
             }
@@ -1893,7 +1892,7 @@ class dataentry extends Survey_Common_Action
             $aData['thissurvey'] = $thissurvey;
             $aData['langlistbox'] = $langlistbox;
             $aData['surveyid'] = $surveyid;
-            $aData['blang'] = $blang;
+            $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
             $aData['site_url'] = Yii::app()->homeUrl;
 
             LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);  // means that all variables are on the same page
@@ -1947,19 +1946,19 @@ class dataentry extends Survey_Common_Action
                         $showme = '';
                         if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
                         if ($relevance != '' && $relevance != '1') {
-                            $showme = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
+                            $showme = "[".gT("Only answer this if the following conditions are met:",'html',$sDataEntryLanguage)."]<br />$explanation\n";
                         }
                         if ($showme != '' && $validation != '') {
                             $showme .= '<br/>';
                         }
                         if ($validation != '') {
-                            $showme .= "[".$blang->gT("The answer(s) must meet these validation criteria:")."]<br />$validation\n";
+                            $showme .= "[".$gT("The answer(s) must meet these validation criteria:",'html',$sDataEntryLanguage)."]<br />$validation\n";
                         }
                         if ($showme != '' && $array_filter_help != '') {
                             $showme .= '<br/>';
                         }
                         if ($array_filter_help != '') {
-                            $showme .= "[".$blang->gT("The answer(s) must meet these array_filter criteria:")."]<br />$array_filter_help\n";
+                            $showme .= "[".gT("The answer(s) must meet these array_filter criteria:",'html',$sDataEntryLanguage)."]<br />$array_filter_help\n";
                         }
                         $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
                     }
@@ -1977,7 +1976,6 @@ class dataentry extends Survey_Common_Action
                     $cdata['bgc'] = $bgc;
                     $cdata['fieldname'] = $fieldname;
                     $cdata['deqrow'] = $deqrow;
-                    $cdata['blang'] = $blang;
 
                     $cdata['thissurvey'] = $thissurvey;
                     if ($deqrow['help'])
@@ -1985,7 +1983,6 @@ class dataentry extends Survey_Common_Action
                         $hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                         $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
                         $cdata['hh'] = $hh;
-                        //$aDataentryoutput .= "\t<img src='$imageurl/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
                     }
                     switch($deqrow['type'])
                     {
