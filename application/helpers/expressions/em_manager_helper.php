@@ -718,6 +718,12 @@
         {
             $_SESSION['LEMdirtyFlag'] = true;// For fieldmap and other. question help {HELP} is taken from fieldmap
             $_SESSION['LEMforceRefresh'] = true;// For Expression manager string
+            /* Bug #09589 : update a survey don't reset actual test => Force reloading of survey */
+            $iSessionSurveyId=self::getLEMsurveyId();
+            if($aSessionSurvey=Yii::app()->session["survey_{$iSessionSurveyId}"])
+            {
+                Yii::app()->session["survey_{$iSessionSurveyId}"]['LEMtokenResume']=true;
+            }
         }
 
         /**
