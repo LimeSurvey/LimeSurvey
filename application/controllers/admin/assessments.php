@@ -33,7 +33,7 @@ class Assessments extends Survey_Common_Action
     public function index($iSurveyID)
     {
         $iSurveyID = sanitize_int($iSurveyID);
-        $sAction = Yii::app()->request->getPost('action');
+        $sAction = Yii::app()->request->getParam('action');
 
         $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
@@ -99,7 +99,7 @@ class Assessments extends Survey_Common_Action
         $aData['headings'] = $aHeadings;
         $aData['assessments'] = $oAssessments;
         $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
-        $aData['baselang'] = $surveyLanguage;
+        $aData['baselang'] = $surveyinfo['language'];
         $aData['action'] = $action;
         $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
@@ -124,14 +124,11 @@ class Assessments extends Survey_Common_Action
 
     private function _collectEditData(array $aData)
     {
-        $assessments = Assessment::model()->findAllByAttributes(array(
-            'id' => sanitize_int($_POST['id']),
-            'language' => App()->language
-        ));
+        $oAssessment = Assessment::model()->find("id=:id",array(':id' => App()->request->getParam('id')));
+        if(!$oAssessment)
+            throw new CHttpException(500);// 404 ?
 
-        foreach ($assessments as $assessment) {
-            $editData = $assessment->attributes;
-        }
+        $editData = $oAssessment->attributes;
         $aData['actiontitle'] = gT("Edit");
         $aData['actionvalue'] = "assessmentupdate";
         $aData['editId'] = $editData['id'];

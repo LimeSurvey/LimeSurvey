@@ -13,18 +13,20 @@
 <th><?php eT("Title");?></th><th><?php eT("Message");?></th>
 </tr></thead><tbody>
 <?php $flipflop=true;
-foreach($assessments as $assess) {
+foreach($assessments as $assess)
+{
 	$flipflop=!$flipflop;
 	if ($flipflop==true){echo "<tr class='oddrow'>\n";}
 else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['id'];?></td>
 <td>
 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','update')) { ?>
-    <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post');?>
-        <input type='image' src='<?php echo $imageurl;?>edit_16.png' alt='<?php eT("Edit");?>' />
-        <input type='hidden' name='action' value='assessmentedit' />
-        <input type='hidden' name='id' value="<?php echo $assess['id'];?>" />
-    </form>
+    <?php 
+        echo CHtml::link(
+            CHtml::image("{$imageurl}edit_16.png",gT("Edit")),
+            array("admin/assessments","sa"=>"index","surveyid"=>$surveyid,"action"=>'assessmentedit','id'=>$assess['id'])
+        );
+    ?>
 <?php } ?>
 
 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','delete')) { ?>
@@ -47,13 +49,12 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['minimum'];?></td>
 <td><?php echo $assess['maximum'];?></td>
 <td><?php 
-    $aReplacementData=array();
-    templatereplace($assess['name'],array(),$aReplacementData,'Unspecified', false ,$assess['sid']);
+    $aReplacement=array('PERC'=>gt('Score of the current group'),'TOTAL'=>gt('Total score'));
+    templatereplace($assess['name'],$aReplacement);
     echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
     ?></td>
 <td><?php 
-    $aReplacementData=array();
-    templatereplace($assess['message'],array(),$aReplacementData,'Unspecified', false ,$assess['sid']);
+    templatereplace($assess['message'],$aReplacement);
     echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
     ?></td>
 
@@ -109,8 +110,9 @@ else {echo "<tr class='evenrow'>\n";} ?>
 	    $heading=''; $message='';
 	    if ($action == "assessmentedit")
 	    {
-	    	$results = Assessment::model()->findAllByAttributes(array('id' => $_POST['id'], 'language' => $assessmentlang));
-		    foreach ($results as $row) {
+	    	$results = Assessment::model()->findAllByAttributes(array('id' => $editId, 'language' => $assessmentlang));
+		    foreach ($results as $row) 
+            {
 		        $editdata=$row->attributes;
 		    }
 		    $heading=htmlspecialchars($editdata['name'],ENT_QUOTES);
