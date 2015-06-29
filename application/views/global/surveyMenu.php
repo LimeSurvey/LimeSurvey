@@ -23,7 +23,7 @@ $menu = [[ // Left side
     ], [
         'title' => gT('Execute survey.'),
         'icon' => 'certificate',
-        'disabled' => !$model->isActive || $model->isExpired,
+        'disabled' => !$model->isActive || $model->isExpired || $model->bool_usetokens,
         'linkOptions' => ['target' => '_blank'],
         'url' => !$model->isActive || $model->isExpired ? '#' : ["surveys/start", 'id' => $model->sid]
     ], [

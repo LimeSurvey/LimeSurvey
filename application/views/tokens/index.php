@@ -31,7 +31,10 @@ $columns = [
                 },
                 'url' => function(Token $model, $row) {
                     return App()->createUrl('surveys/start', ['token' => $model->token, 'id' => $model->surveyId]);
-                }
+                },
+                'options' => [
+                    'target' => '_blank'
+                ]
             ]
         ]
     ], [
@@ -54,7 +57,7 @@ $columns = [
                 'icon' => TbHtml::ICON_PLUS,
                 'label' => gT("Add empty response to series"),
                 'visible' => function($row, Token $model) {
-                    return $model->completed != 'N';
+                    return $model->completed != 'N' && $model->usesleft > 1;
                 },
                 'url' => function(Token $model, $row) {
                     return App()->createUrl('responses/append', ['id' => $model->primaryKey, 'surveyId' => $model->surveyId, 'copy' => false]);
@@ -64,7 +67,7 @@ $columns = [
                 'icon' => TbHtml::ICON_PLUS_SIGN,
                 'label' => gT("Add response to series, based on last response"),
                 'visible' => function($row, Token $model) {
-                    return $model->completed != 'N';
+                    return $model->completed != 'N' && $model->usesleft > 1;
                 },
                 'url' => function(Token $model, $row) {
                     return App()->createUrl('responses/append', ['id' => $model->primaryKey, 'surveyId' => $model->surveyId, 'copy' => true]);

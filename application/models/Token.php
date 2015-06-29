@@ -340,6 +340,13 @@
             && (new DateTime($this->expires)) < new DateTime()
             && (new DateTime($this->validfrom)) > new DateTime();
         }
+
+
+        public function customAttributeNames() {
+            return array_filter($this->attributeNames(), function($attribute) {
+                return strncmp("attribute_", $attribute, 10) === 0;
+            });
+        }
     }
 
 ?>

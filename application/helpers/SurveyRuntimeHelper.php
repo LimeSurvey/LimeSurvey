@@ -30,6 +30,7 @@ class SurveyRuntimeHelper {
 
     protected function createFullQuestionIndexByGroup($LEMsessid)
     {
+        $ssm = App()->surveySessionManager;
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
         echo CHtml::openTag('div', array('id' => 'index'));
         echo CHtml::openTag('div', array('class' => 'container'));
@@ -81,6 +82,7 @@ class SurveyRuntimeHelper {
 
     protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
     {
+        $ssm = App()->surveySessionManager;
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
 
         echo '<div id="index"><div class="container"><h2>' . gT("Question index") . '</h2>';
@@ -171,17 +173,16 @@ class SurveyRuntimeHelper {
     * @param mixed $args
     */
     function run($surveyid,$args) {
-        global $errormsg;
         extract($args);
         $ssm = App()->surveySessionManager;
         /** @var SurveySession $session */
         $session = $ssm->current;
-        $thissurvey = getSurveyInfo($surveyid);
+        $thissurvey = getSurveyInfo($session->surveyId);
 
         $LEMsessid = 'survey_' . $surveyid;
         $this->setJavascriptVar($surveyid);
 
-        $sTemplatePath=getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR;
+        $sTemplatePath=Template::getTemplatePath(SettingGlobal::get("defaulttemplate")).DIRECTORY_SEPARATOR;
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel = 0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
         $LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
@@ -544,8 +545,10 @@ class SurveyRuntimeHelper {
                     }
 
                     //Update the token if needed and send a confirmation email
-                    if (isset($_SESSION['survey_'.$surveyid]['token']))
-                    {
+                    set_error_handler(function($errno, $errstr, $errfile, $errline) {
+                        throw new \ErrorException($errstr, $errno, 1, $errfile, $errline);
+                    });
+                    if (isset($session->response->token)){
                         submittokens();
                     }
 
@@ -556,7 +559,7 @@ class SurveyRuntimeHelper {
 
                     $content = '';
 
-                    $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), array(), $redata, 'SubmitStartpage', false, NULL, array(), true );
+                    $content .= templatereplace(file_get_contents($sTemplatePath."startpage.pstpl"), [], $redata, 'SubmitStartpage', false, NULL, array(), true );
 
                     //echo $thissurvey['url'];
                     //Check for assessments
@@ -624,11 +627,8 @@ class SurveyRuntimeHelper {
 
                 // @todo Remove direct session access.
                 $event = new PluginEvent('afterSurveyComplete');
-                if (isset($_SESSION[$LEMsessid]['srid']))
-                {
-                    $event->set('responseId', $_SESSION[$LEMsessid]['srid']);
-                }
-                $event->set('surveyId', $surveyid);
+                $event->set('responseId', $session->getResponseId());
+                $event->set('surveyId', $session->getSurveyId());
                 App()->getPluginManager()->dispatchEvent($event);
                 $blocks = array();
 
@@ -659,6 +659,7 @@ class SurveyRuntimeHelper {
                 {
                     killSurveySession($surveyid);
                 }
+                echo 'ok';
                 exit;
             }
         }
@@ -1210,8 +1211,8 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];
         $aReplacement['QUESTIONHELP']=$lemQuestionInfo['info']['help'];// User help
         // To be moved in a extra plugin : QUESTIONHELP img adding
-        $sTemplateDir=Template::model()->getTemplatePath($oSurveyId->template);
-        $sTemplateUrl=Template::model()->getTemplateURL($oSurveyId->template);
+        $sTemplateDir = \Template::getTemplatePath($oSurveyId->template);
+        $sTemplateUrl = \Template::getTemplateURL($oSurveyId->template);
         if(flattenText($aReplacement['QUESTIONHELP'], true,true) != '')
         {
             if (file_exists($sTemplateDir . '/help.gif'))
@@ -1229,7 +1230,7 @@ class SurveyRuntimeHelper {
             $aReplacement['QUESTIONHELP']="<img src='{$helpicon}' alt='Help' align='left' />".$aReplacement['QUESTIONHELP'];
         }
         // Core value :the classes
-        $aReplacement['QUESTION_CLASS'] = Question::getQuestionClass($sType);
+        $aReplacement['QUESTION_CLASS'] = \Question::getQuestionClass($sType);
         $aMandatoryClass = array();
         if ($lemQuestionInfo['info']['mandatory'] == 'Y')// $aQuestionQanda[0]['mandatory']=="*"
         {

@@ -485,10 +485,10 @@ class remotecontrol_handle
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
-        if (!App->user->checkAccess('responses', ['entity' => 'survey', 'entity_id' => $iSurveyID]) return array('status' => 'No permission');
+        if (!App()->user->checkAccess('responses', ['entity' => 'survey', 'entity_id' => $iSurveyID])) return array('status' => 'No permission');
         $oSurvey=Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
-        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');
+        if (!Response::valid($iSurveyID)) return array('status' => 'No available data');
 
         $oResponses = SurveyDynamic::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
         if (empty($oResponses))  return array('status' => 'No valid Data');

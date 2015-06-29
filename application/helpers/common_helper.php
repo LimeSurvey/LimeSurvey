@@ -631,16 +631,6 @@ function getMaxQuestionOrder($gid,$surveyid)
     else return $current_max ;
 }
 
-/**
-* getQuestionClass() returns a class name for a given question type to allow custom styling for each question type.
-*
-* @param string $input containing unique character representing each question type.
-* @return string containing the class name for a given question type.
-*/
-function getQuestionClass($input)
-{
-    Question::getQuestionClass($input);
-};
 
 /**
 * setupColumns() defines all the html tags to be wrapped around
@@ -875,32 +865,6 @@ function longestString( $new_string , $longest_length )
 
 
 /**
-* getNotificationList() returns different options for notifications
-*
-* @param string $notificationcode - the currently selected one
-*
-* @return This string is returned containing <option></option> formatted list of notification methods for current survey
-*/
-function getNotificationList($notificationcode)
-{
-
-    $ntypes = array(
-    "0"=>gT("No email notification"),
-    "1"=>gT("Basic email notification"),
-    "2"=>gT("Detailed email notification with result codes")
-    );
-    if (!isset($ntypeselector)) {$ntypeselector="";}
-    foreach($ntypes as $ntcode=>$ntdescription)
-    {
-        $ntypeselector .= "<option value='$ntcode'";
-        if ($notificationcode == $ntcode) {$ntypeselector .= " selected='selected'";}
-        $ntypeselector .= ">$ntdescription</option>\n";
-    }
-    return $ntypeselector;
-}
-
-
-/**
 * getGroupList() queries the database for a list of all groups matching the current survey sid
 *
 *
@@ -934,33 +898,6 @@ function getGroupList($gid,$surveyid)
 }
 
 
-
-function getGroupList3($gid,$surveyid)
-{
-    //
-    $gid=sanitize_int($gid);
-    $surveyid=sanitize_int($surveyid);
-
-    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
-    $groupselecter = "";
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-
-
-    //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
-
-    $gidresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
-
-    foreach ($gidresult as $gv)
-    {
-        $gv = $gv->attributes;
-        $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; }
-        $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
-    }
-
-
-    return $groupselecter;
-}
 
 /**
 * put your comment there...
@@ -1113,39 +1050,6 @@ function groupOrderThenQuestionOrder($a, $b)
     }
     return $GroupResult;
 }
-
-
-function fixSortOrderAnswers($qid,$surveyid=null) //Function rewrites the sortorder for a group of answers
-{
-    $qid=sanitize_int($qid);
-    $baselang = Survey::model()->findByPk($surveyid)->language;
-
-    Answer::model()->updateSortOrder($qid,$baselang);
-}
-
-/**
-* This function rewrites the sortorder for questions inside the named group
-* REMOVED the 2012-08-08 : replaced by Question::model()->updateQuestionOrder
-* @param integer $groupid the group id
-* @param integer $surveyid the survey id
-*/
-/**
-function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sortorder for questions
-{
-    $gid = sanitize_int($groupid);
-    $surveyid = sanitize_int($surveyid);
-    $baselang = Survey::model()->findByPk($surveyid)->language;
-
-    $questions = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $baselang));
-    $p = 0;
-    foreach ($questions as $question)
-    {
-        $question->question_order = $p;
-        $question->save();
-        $p++;
-    }
-}
-*/
 
 function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
 {
@@ -2207,8 +2111,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         {
             --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
         }
-    }
-
 
         if (isset($fieldmap)) {
             if ($questionid == false) {
@@ -2246,7 +2148,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
         }
         $requestCache[$key] = $fieldmap;
-
+    }
     return $requestCache[$key];
 }
 
@@ -4675,16 +4577,6 @@ function fixCKeditorText($str)
 }
 
 
-/**
-* This is a helper function for getAttributeFieldNames
-*
-* @param mixed $fieldname
-*/
-function filterForAttributes ($fieldname)
-{
-    if (strpos($fieldname,'attribute_')===false) return false; else return true;
-}
-
 
 /**
 * Returns the full list of attribute token fields including the properties for each field
@@ -4694,8 +4586,8 @@ function filterForAttributes ($fieldname)
 */
 function GetParticipantAttributes($iSurveyID)
 {
-    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
-        return Array();
+    if (!Token::valid($iSurveyID))
+        return [];
     return getTokenFieldsAndNames($iSurveyID,true);
 }
 
@@ -4880,25 +4772,6 @@ function removeBOM($str=""){
     return $str;
 }
 
-/**
-* This function returns the complete directory path to a given template name
-*
-* @param mixed $sTemplateName
-*/
-function getTemplatePath($sTemplateName = false)
-{
-    return Template::getTemplatePath($sTemplateName);
-}
-
-/**
-* This function returns the complete URL path to a given template name
-*
-* @param mixed $sTemplateName
-*/
-function getTemplateURL($sTemplateName)
-{
-    return Template::getTemplateURL($sTemplateName);
-}
 
 /**
 * Return an array of subquestions for a given sid/qid
@@ -5471,150 +5344,6 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
 
 
 /**
-* This function is a replacement of accessDenied.php which return appropriate error message which is then displayed.
-*
-* @params string $action - action for which acces denied error message is to be returned
-* @params string sid - survey id
-* @return $accesssummary - proper access denied error message
-*/
-function accessDenied($action,$sid='')
-{
-
-    if (App()->user->id)
-    {
-        $ugid = Yii::app()->getConfig('ugid');
-        $accesssummary = "<p><strong>".gT("Access denied!")."</strong><br />\n";
-        $scriptname = Yii::app()->getConfig('scriptname');
-        //$action=returnGlobal('action');
-        if  (  $action == "dumpdb"  )
-        {
-            $accesssummary .= "<p>".gT("You are not allowed dump the database!")."<br />";
-            $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "dumplabel")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed export a label set!")."<br />";
-            $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "edituser")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to change user data!");
-            $accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "newsurvey")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to create new surveys!")."<br />";
-            $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "deletesurvey")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to delete this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "addquestion")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to add new questions for this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "activate")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to activate this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "deactivate")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to stop this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "addgroup")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to add a group to this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "ordergroups")
-        {
-            $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/$sid");
-            $accesssummary .= "<p>".gT("You are not allowed to order groups in this survey!")."<br />";
-            $accesssummary .= "<a href='$link'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "editsurvey")
-        {
-            $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/$sid");
-            $accesssummary .= "<p>".gT("You are not allowed to edit this survey!")."</p>";
-            $accesssummary .= "<a href='$link'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "editgroup")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to edit groups in this survey!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "browse_response" || $action == "listcolumn" || $action == "vvexport" || $action == "vvimport")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to browse responses!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "assessment")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to set assessment rules!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "delusergroup")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to delete this group!")."</p>";
-            $accesssummary .= "<a href='$scriptname?action=editusergroups'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "importsurvey")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to import a survey!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-
-        elseif($action == "importgroup")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to import a group!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "importquestion")
-        {
-            $accesssummary .= "<p>".gT("You are not allowed to to import a question!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "CSRFwarn") //won't be used.
-        {
-            $sURLID='';
-            if (isset($sid)) {
-                $sURLID="?sid={$sid}";
-            }
-            $accesssummary .= "<p><span color='errortitle'>".gT("Security alert")."</span>: ".gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
-            $accesssummary .= "<a href='{$scriptname}{$sURLID}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        elseif($action == "FakeGET")
-        {
-            $accesssummary .= "<p><span class='errortitle'>".gT("Security alert")."</span>: ".gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".gT("Continue")."</a><br />&nbsp;\n";
-        }
-        else
-        {
-            $accesssummary .= "<br />".gT("You are not allowed to perform this operation!")."<br />\n";
-            if(!empty($sid))
-            {
-                $accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid>".gT("Continue")."</a><br />&nbsp;\n";
-            }
-            elseif(!empty($ugid))
-            {
-                $accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$ugid}'>".gT("Continue")."</a><br />&nbsp;\n";
-            }
-            else
-            {
-                $accesssummary .= "<br /><br /><a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
-            }
-        }
-        return $accesssummary;
-    }
-
-}
-
-/**
 * cleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey
@@ -5885,70 +5614,7 @@ function getLastInsertID($sTableName)
     }
 }
 
-// TMSW Condition->Relevance:  This function is not needed?  Optionally replace this with call to EM to get similar info
-/**
-* getGroupDepsForConditions() get Dependencies between groups caused by conditions
-* @param string $sid - the currently selected survey
-* @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
-* @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
-* @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
-*                   "by-targgid" for result indexed with $res[$targgid][$depgid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
-*
-* Example outupt assumin $index-by="by-depgid":
-*Array
-*(
-*    [125] => Array             // Group Id 125 is dependent on
-*        (
-*            [123] => Array         // Group Id 123
-*                (
-*                    [depgpname] => G3      // GID-125 has name G3
-*                    [targetgpname] => G1   // GID-123 has name G1
-*                    [conditions] => Array
-*                        (
-*                            [189] => Array // Because Question Id 189
-*                                (
-*                                    [0] => 9   // Have condition 9 set
-*                                    [1] => 10  // and condition 10 set
-*                                    [2] => 14  // and condition 14 set
-*                                )
-*
-*                        )
-*
-*                )
-*
-*            [124] => Array         // GID 125 is also dependent on GID 124
-*                (
-*                    [depgpname] => G3
-*                    [targetgpname] => G2
-*                    [conditions] => Array
-*                        (
-*                            [189] => Array // Because Question Id 189 have conditions set
-*                                (
-*                                    [0] => 11
-*                                )
-*
-*                            [215] => Array // And because Question Id 215 have conditions set
-*                                (
-*                                    [0] => 12
-*                                )
-*
-*                        )
-*
-*                )
-*
-*        )
-*
-*)
-*
-* Usage example:
-*   * Get all group dependencies for SID $sid indexed by depgid:
-*       $result=getGroupDepsForConditions($sid);
-*   * Get all group dependencies for GID $gid in survey $sid indexed by depgid:
-*       $result=getGroupDepsForConditions($sid,$gid);
-*   * Get all group dependents on group $gid in survey $sid indexed by targgid:
-*       $result=getGroupDepsForConditions($sid,"all",$gid,"by-targgid");
-*/
+
 function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
 {
     $sid=sanitize_int($sid);
@@ -6761,26 +6427,7 @@ function aEncodingsArray()
         "utf8" => gT("UTF-8 Unicode"),
         );
     }
-/**
-* Swaps two positions in an array
-*
-* @param mixed $key1
-* @param mixed $key2
-* @param mixed $array
-*/
-function arraySwapAssoc($key1, $key2, $array) {
-    $newArray = array ();
-    foreach ($array as $key => $value) {
-        if ($key == $key1) {
-            $newArray[$key2] = $array[$key2];
-        } elseif ($key == $key2) {
-            $newArray[$key1] = $array[$key1];
-        } else {
-            $newArray[$key] = $value;
-        }
-    }
-    return $newArray;
-}
+
 
 
 /**
@@ -6953,14 +6600,6 @@ function array_diff_assoc_recursive($array1, $array2) {
         return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : (isset($aParts[2]) ? trim($aParts[2], '"') : null);
     }
 
-    /**
-    * Checks if a string looks like it is a MD5 hash
-    *
-    * @param mixed $md5
-    */
-    function isMd5($sMD5 ='') {
-        return strlen($sMD5) == 32 && ctype_xdigit($sMD5);
-    }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
 

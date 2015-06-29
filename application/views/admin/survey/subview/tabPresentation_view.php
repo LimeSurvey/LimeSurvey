@@ -159,7 +159,7 @@
             'preview'=>array(
                 'type'=>'info',
                 'label'=>gT("Template preview"),
-                'content'=>CHtml::image(getTemplateURL($esrow['template']).'/preview.png',gT("Template preview image"),array('id'=>'preview','class'=>'img-thumbnail')),
+                'content'=>CHtml::image(\Template::getTemplateURL($esrow['template']).'/preview.png',gT("Template preview image"),array('id'=>'preview','class'=>'img-thumbnail')),
             ),
             'showwelcome'=>array(
                 'type'=>'select',

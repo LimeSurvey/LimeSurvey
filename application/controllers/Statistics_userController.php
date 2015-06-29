@@ -83,7 +83,7 @@ class Statistics_userController extends Controller {
                 // CHANGE JSW_NZ - let's get the survey title for display
                 $thisSurveyTitle = $surveyinfo["name"];
                 // CHANGE JSW_NZ - let's get css from individual template.css - so define path
-                $thisSurveyCssPath = getTemplateURL($surveyinfo["template"]);
+                $thisSurveyCssPath = \Template::getTemplateURL($surveyinfo["template"]);
                 if ($surveyinfo['publicstatistics']!='Y')
                 {
                     throw new \CHttpException(500, 'The public statistics for this survey are deactivated.');
@@ -353,7 +353,7 @@ class Statistics_userController extends Controller {
         //---------- CREATE STATISTICS ----------
         $redata = compact(array_keys(get_defined_vars()));
         doHeader();
-        echo templatereplace(file_get_contents(getTemplatePath($data['sTemplatePath']).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
+        echo templatereplace(file_get_contents(Template::getTemplatePath($data['sTemplatePath']).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
 
 
         //some progress bar stuff

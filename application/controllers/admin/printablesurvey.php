@@ -80,11 +80,11 @@ class printablesurvey extends Survey_Common_Action
                 $surveyexpirydate='';
             }
             //Fix $templatename : control if print_survey.pstpl exist
-            if(is_file(getTemplatePath($templatename).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
+            if(is_file(Template::getTemplatePath($templatename).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
             {
                 $templatename = $templatename;// Change nothing
             }
-            elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
+            elseif(is_file(Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
             {
                 $templatename=Yii::app()->getConfig("defaulttemplate");
             }
@@ -92,8 +92,8 @@ class printablesurvey extends Survey_Common_Action
             {
                 $templatename="default";
             }
-            $sFullTemplatePath = getTemplatePath($templatename).DIRECTORY_SEPARATOR;
-            $sFullTemplateUrl = getTemplateURL($templatename)."/";
+            $sFullTemplatePath = \Template::getTemplatePath($templatename).DIRECTORY_SEPARATOR;
+            $sFullTemplateUrl = \Template::getTemplateURL($templatename)."/";
             define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
             define('PRINT_TEMPLATE_URL' , $sFullTemplateUrl , true);
 
@@ -583,7 +583,7 @@ class printablesurvey extends Survey_Common_Action
                         ,'QUESTION_SCENARIO' => $sExplanation    // if there are conditions on a question, list the conditions.
                         ,'QUESTION_MANDATORY' => ''        // translated 'mandatory' identifier
                         ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
-                        ,'QUESTION_CLASS' => getQuestionClass( $deqrow['type'])    // classes to be added to wrapping question div
+                        ,'QUESTION_CLASS' => \Question::getQuestionClass( $deqrow['type'])    // classes to be added to wrapping question div
                         ,'QUESTION_TYPE_HELP' => $qinfo['validTip']   // ''        // instructions on how to complete the question // prettyValidTip is too verbose; assuming printable surveys will use static values
                         ,'QUESTION_MAN_MESSAGE' => ''        // (not sure if this is used) mandatory error
                         ,'QUESTION_VALID_MESSAGE' => ''        // (not sure if this is used) validation error

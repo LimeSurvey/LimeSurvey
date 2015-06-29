@@ -92,11 +92,11 @@ class OptinController extends Controller {
         //PRINT COMPLETED PAGE
         if (!$aSurveyInfo['templatedir'])
         {
-            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+            $sTemplate=Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
         }
         else
         {
-            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
+            $sTemplate=Template::getTemplatePath($aSurveyInfo['templatedir']);
         }
         $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo);
     }

@@ -446,24 +446,10 @@ function addtoarray_single($array1, $array2)
 */
 function submittokens($quotaexit=false)
 {
-    $surveyid=Yii::app()->getConfig('surveyID');
-    if(isset($_SESSION['survey_'.$surveyid]['s_lang']))
-    {
-        $thissurvey=getSurveyInfo($surveyid,$_SESSION['survey_'.$surveyid]['s_lang']);
-    }
-    else
-    {
-        $thissurvey=getSurveyInfo($surveyid);
-    }
-    $clienttoken = $_SESSION['survey_'.$surveyid]['token'];
+    $session = App()->surveySessionManager->current;
+    $survey = $session->survey;
+    $token = $session->response->tokenObject;
 
-    $sitename = Yii::app()->getConfig("sitename");
-    $emailcharset = Yii::app()->getConfig("emailcharset");
-    // Shift the date due to global timeadjust setting
-    $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-
-    // check how many uses the token has left
-    $token = Token::model($surveyid)->findByAttributes(array('token' => $clienttoken));
 
     if ($quotaexit==true)
     {
@@ -475,25 +461,29 @@ function submittokens($quotaexit=false)
         if ($token->usesleft <= 1)
         {
             // Finish the token
-            if (isTokenCompletedDatestamped($thissurvey))
+            if (!$token->survey->bool_anonymized)
             {
-                $token->completed = $today;
+                $token->completed = date('Y-m-d');
             } else {
                 $token->completed = 'Y';
             }
             if(isset($token->participant_id))
             {
-                $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid'=> $token->participant_id, ':sid'=>$surveyid, ':tid'=>$token->tid));
-                if ($slquery)
+                $surveyLink = SurveyLink::model()->findByAttributes([
+                    'participant_id' => $token->participant_id,
+                    'survey_id' => $survey->primaryKey,
+                    'token_id' => $token->primaryKey
+                ]);
+                if (isset($surveyLink))
                 {
-                    if (isTokenCompletedDatestamped($thissurvey))
+                    if ($token->survey->bool_anonymized)
                     {
-                        $slquery->date_completed = $today;
+                        $surveyLink->date_completed = date('Y-m-d');
                     } else {
                         // Update the survey_links table if necessary, to protect anonymity, use the date_created field date
-                        $slquery->date_completed = $slquery->date_created;
+                        $surveyLink->date_completed = $surveyLink->date_created;
                     }
-                    $slquery->save();
+                    $surveyLink->save();
                 }
             }
         }
@@ -503,63 +493,55 @@ function submittokens($quotaexit=false)
 
     if ($quotaexit==false)
     {
-        if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
+        if (trim(strip_tags($survey->localizedConfirmationEmail)) != "" && $survey->bool_sendconfirmation)
         {
          //   if($token->completed == "Y" || $token->completed == $today)
 //            {
-                $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                $subject=$thissurvey['email_confirm_subj'];
+                $from = "{$survey->admin} <{$survey->adminemail}>";
+                $subject= $survey->localizedConfirmationEmailSubject;
 
-                $aReplacementVars=array();
-                $aReplacementVars["ADMINNAME"]=$thissurvey['admin'];
-                $aReplacementVars["ADMINEMAIL"]=$thissurvey['adminemail'];
-                $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
+                $aReplacementVars= [];
+                $aReplacementVars["ADMINNAME"] =  $survey->admin;
+                $aReplacementVars["ADMINEMAIL"] = $survey->adminEmail;
                 //Fill with token info, because user can have his information with anonimity control
-                $aReplacementVars["FIRSTNAME"]=$token->firstname;
-                $aReplacementVars["LASTNAME"]=$token->lastname;
-                $aReplacementVars["TOKEN"]=$token->token;
+                $aReplacementVars["FIRSTNAME"] = $token->firstname;
+                $aReplacementVars["LASTNAME"] = $token->lastname;
+                $aReplacementVars["TOKEN"] = $token->token;
                 // added survey url in replacement vars
-                $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
-                $aReplacementVars['SURVEYURL'] = $surveylink;
+                $aReplacementVars['SURVEYURL'] = App()->createAbsoluteUrl("survey/index", [
+                    'lang' => $session->language,
+                    'token' => $token->token,
+                    'sid' => $survey->primaryKey
+                ]);
 
-                $attrfieldnames=getAttributeFieldNames($surveyid);
+                $attrfieldnames = $token->customAttributeNames();
                 foreach ($attrfieldnames as $attr_name)
                 {
                     $aReplacementVars[strtoupper($attr_name)] = $token->$attr_name;
                 }
 
-                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
-                $redata=array('thissurvey'=>$thissurvey);
+                $dateformatdatat = getDateFormatData($survey->getLocalizedDateFormat());
+                $numberformatdatat = getRadixPointData($survey->getLocalizedNumberFormat());
+                $redata = [];
                 $subject=templatereplace($subject,$aReplacementVars,$redata,'email_confirm_subj', false, NULL, array(), true );
 
-                $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
+                $subject = html_entity_decode($subject,ENT_QUOTES);
 
-                if (getEmailFormat($surveyid) == 'html')
-                {
-                    $ishtml=true;
-                }
-                else
-                {
-                    $ishtml=false;
-                }
+                $ishtml = $survey->bool_htmlemail;
 
-                $message=$thissurvey['email_confirm'];
-                //$message=ReplaceFields($message, $fieldsarray, true);
-                $message=templatereplace($message,$aReplacementVars,$redata,'email_confirm', false, NULL, array(), true );
+                $message = html_entity_decode(
+                    templatereplace($survey->getLocalizedConfirmationEmail(), $aReplacementVars, $redata,'email_confirm', false, NULL, array(), true ),
+                    ENT_QUOTES
+                );
                 if (!$ishtml)
                 {
-                    $message=strip_tags(breakToNewline(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
-                }
-                else
-                {
-                    $message=html_entity_decode($message,ENT_QUOTES, $emailcharset );
+                    $message=strip_tags(breakToNewline($message));
                 }
 
                 //Only send confirmation email if there is a valid email address
             $sToAddress=validateEmailAddresses($token->email);
             if ($sToAddress) {
-                $aAttachments = unserialize($thissurvey['attachments']);
+                $aAttachments = unserialize($survey->getLocalizedAttachments());
 
                 $aRelevantAttachments = array();
                 /*
@@ -577,7 +559,7 @@ function submittokens($quotaexit=false)
                         }
                     }
                 }
-                SendEmailMessage($message, $subject, $sToAddress, $from, $sitename, $ishtml, null, $aRelevantAttachments);
+                SendEmailMessage($message, $subject, $sToAddress, $from, SettingGlobal::get('sitename'), $ishtml, null, $aRelevantAttachments);
             }
      //   } else {
                 // Leave it to send optional confirmation at closed token
@@ -848,7 +830,7 @@ function buildsurveysession($surveyid,$preview=false)
     $thissurvey = getSurveyInfo($surveyid,$sLangCode);
 
     $_SESSION['survey_'.$surveyid]['templatename']=$thissurvey['template'];// $thissurvey['template'] already fixed by model : but why put this in session ?
-    $_SESSION['survey_'.$surveyid]['templatepath']=getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
+    $_SESSION['survey_'.$surveyid]['templatepath']=Template::getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
     $loadsecurity = returnGlobal('loadsecurity',true);
@@ -1931,7 +1913,7 @@ function checkCompletedQuota($surveyid,$return=false)
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
     $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-    $sTemplatePath=getTemplatePath($aSurveyInfo['template']);
+    $sTemplatePath=Template::getTemplatePath($aSurveyInfo['template']);
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
     // $redata for templatereplace
     $aDataReplacement = array(

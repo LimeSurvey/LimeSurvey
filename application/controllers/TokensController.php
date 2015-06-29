@@ -42,7 +42,7 @@ class TokensController extends Controller
                 'wrapper' => 'col-md-10 col-md-offset-2'
             ]);
             } else {
-            echo "No responses for this token.";
+                echo "No responses for this token";
         }
     }
     public function actionCreate($surveyId)
@@ -50,7 +50,7 @@ class TokensController extends Controller
         $survey = \Survey::model()->findByPk($surveyId);
         $this->menus['survey'] = $survey;
         if (!$survey->bool_usetokens) {
-            throw new \CHttpException(412, "The survey you selected does not have tokens enabled.");
+            throw new \CHttpException(412, "The survey you selected does not have tokens enabled");
         }
 
         $token = \Token::create($survey->sid);
@@ -60,7 +60,7 @@ class TokensController extends Controller
             // Validate & safe.
             if ($token->save()) {
                 // On success.
-                App()->user->setFlash('success', 'Token created.');
+                App()->user->setFlash('success', 'Token created');
                 $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
             }
         }
@@ -102,7 +102,7 @@ class TokensController extends Controller
             // Validate & safe.
             if ($token->save()) {
                 // On success.
-                App()->user->setFlash('success', 'Token created.');
+                App()->user->setFlash('success', 'Token updated');
                 $this->redirect(['tokens/index', 'surveyId' => $survey->sid]);
             }
         }

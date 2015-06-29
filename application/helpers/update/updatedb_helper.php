@@ -2206,15 +2206,6 @@ function dropPrimaryKey($sTablename)
     // find out the constraint name of the old primary key
 }
 
-function fixLanguageConsistencyAllSurveys()
-{
-    $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
-    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
-    foreach ( $surveyidresult as $sv )
-    {
-        fixLanguageConsistency($sv['sid'],$sv['additional_languages']);
-    }
-}
 
 function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL')
 {

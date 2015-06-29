@@ -9,6 +9,6 @@
             <?php if (isset($statisticsoutput) && $statisticsoutput) { echo $statisticsoutput; } ?><br />
         </div>
 <?php 
-    echo templatereplace(file_get_contents(getTemplatePath($sTemplatePath)."/endpage.pstpl"),array(), $redata);
+    echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplatePath)."/endpage.pstpl"),array(), $redata);
 ?>
 

@@ -67,13 +67,13 @@ use \Yii;
             {
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array());
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/startpage.pstpl'),array());
                 echo "<center><br />\n"
                 ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
                 ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
                 ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array());
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/endpage.pstpl'),array());
                 doFooter();
                 exit;
             }
@@ -143,9 +143,9 @@ use \Yii;
 
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/startpage.pstpl'),array(),$sData);
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
-                echo templatereplace(file_get_contents(getTemplatePath($sTemplate).'/endpage.pstpl'),array(),$sData);
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/startpage.pstpl'),array(),$sData);
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/endpage.pstpl'),array(),$sData);
                 echo "</body></html>";
 
                 ob_flush();
@@ -153,7 +153,7 @@ use \Yii;
             if($sExportType == 'pdf')
             {
                 // Get images for TCPDF from template directory
-                define('K_PATH_IMAGES', getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
+                define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
 
                 Yii::import('application.libraries.admin.pdf', true);
                 Yii::import('application.helpers.pdfHelper');

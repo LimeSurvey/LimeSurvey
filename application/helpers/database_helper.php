@@ -46,15 +46,6 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 }
 
 
-function dbQueryOrFalse($sql)
-{
-    try {
-        $dataset=Yii::app()->db->createCommand($sql)->query();
-    } catch(CDbException $e) {
-        $dataset=false;
-    }
-    return $dataset;
-}
 
 
 function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
@@ -89,70 +80,35 @@ function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerro
 
 
 /**
-* This functions quotes fieldnames accordingly
-*
-* @param mixed $id Fieldname to be quoted
-*/
-
-function dbQuoteID($id)
-{
-    switch (Yii::app()->db->getDriverName())
-    {
-        case "mysqli" :
-        case "mysql" :
-            return "`".$id."`";
-            break;
-        case "dblib":
-        case "mssql" :
-        case "sqlsrv" :
-            return "[".$id."]";
-            break;
-        case "pgsql":
-            return "\"".$id."\"";
-            break;
-        default:
-            return $id;
-    }
-}
-
-/**
  * Return the random function to use in ORDER BY sql statements
  *
  * @return string
  */
 function dbRandom()
 {
-    $driver = Yii::app()->db->getDriverName();
-
-    // Looked up supported db-types in InstallerConfigForm.php
-    // Use below statement to find them
-    //$configForm = new InstallerConfigForm();
-    //$dbTypes    = $configForm->db_names; //Supported types are in this array
-
-    switch ($driver)
+    switch (App()->db->getDriverName())
     {
         case 'dblib':
         case 'mssql':
         case 'sqlsrv':
-            $srandom='NEWID()';
+            $result = 'NEWID()';
             break;
-
         case 'pgsql':
-            $srandom='RANDOM()';
+            $result = 'RANDOM()';
             break;
 
         case 'mysql':
         case 'mysqli':
-            $srandom='RAND()';
+            $result = 'RAND()';
             break;
 
         default:
             //Some db type that is not mentioned above, could fail and if so should get an entry above.
-            $srandom= 0 + lcg_value()*(abs(1));
+            throw new \Exception("This driver does not support random");
             break;
     }
 
-    return $srandom;
+    return $result;
 
 }
 

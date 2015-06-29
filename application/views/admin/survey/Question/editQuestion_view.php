@@ -185,7 +185,9 @@ if ($adding || $copying) {
                         <label for='gid'><?php eT("Question group:"); ?></label>
                         <select name='gid' id='gid'>
 
-                            <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
+                            <?php
+//                            echo getGroupList3($eqrow['gid'],$surveyid);
+                            ?>
                         </select></li>
                     <?php }
                     else

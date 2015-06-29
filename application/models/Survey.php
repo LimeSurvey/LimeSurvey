@@ -20,6 +20,8 @@ if (!defined('BASEPATH'))
  * @property-read boolean $isExpired
  * @property-read SurveyLanguageSetting[] $languagesettings
  * @property-read QuestionGroup[] $groups
+ * @property string $admin
+ * @property string $adminEmail
  */
 class Survey extends LSActiveRecord
 {
@@ -97,6 +99,22 @@ class Survey extends LSActiveRecord
     {
         return $this->localizedProperty('endtext');
     }
+
+    public function getLocalizedConfirmationEmail() {
+        return $this->localizedProperty('email_confirm');
+    }
+
+    public function getLocalizedConfirmationEmailSubject() {
+        return $this->localizedProperty('email_confirm_subj');
+    }
+
+    public function getLocalizedAttachments() {
+        return $this->localizedProperty('attachments', '');
+    }
+
+    public function getEmailFormat() {
+        return $this->bool_htmlemail ? 'html' : 'text';
+    }
     
     /**
      * @return string
@@ -104,6 +122,7 @@ class Survey extends LSActiveRecord
     public function getLocalizedEndUrl() {
         return $this->localizedProperty('url');
     }
+
     /**
      * Getter to support proper casing of the property:
      * $this->adminEmail instead of $this->adminemail
@@ -112,8 +131,8 @@ class Survey extends LSActiveRecord
     public function getAdminEmail() {
         return $this->attributes['adminemail'];
     }
-    protected function localizedProperty($name) {
-        $property = 'surveyls_' . $name;
+    protected function localizedProperty($name, $prefix = 'surveyls_') {
+        $property = $prefix . $name;
         if (isset($this->languagesettings[App()->language])) {
             return $this->languagesettings[App()->language]->$property;
         } elseif (isset($this->languagesettings[$this->language])) {

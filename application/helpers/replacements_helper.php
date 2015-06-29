@@ -116,8 +116,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $templatename=Yii::app()->getConfig('defaulttemplate');
     }
-    if(!isset($templatedir)) $templatedir = getTemplatePath($templatename);
-    if(!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
+    if(!isset($templatedir)) $templatedir = \Template::getTemplatePath($templatename);
+    if(!isset($templateurl)) $templateurl = \Template::getTemplateURL($templatename)."/";
     if (!$anonymized && isset($thissurvey['anonymized'])) {
         $anonymized=($thissurvey['anonymized']=="Y");
     }

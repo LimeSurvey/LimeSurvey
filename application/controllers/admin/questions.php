@@ -1126,7 +1126,7 @@ class questions extends Survey_Common_Action
 
         $answers = retrieveAnswers($ia,$surveyid);
 
-        $thistpl = getTemplatePath($thissurvey['template']);
+        $thistpl = Template::getTemplatePath($thissurvey['template']);
 
         doHeader();
 
@@ -1223,7 +1223,7 @@ EOD;
 
         $question = $answers[0][0];
         $question['code'] = $answers[0][5];
-        $question['class'] = getQuestionClass($qrows['type']);
+        $question['class'] = \Question::getQuestionClass($qrows['type']);
         $question['essentials'] = 'id="question' . $qrows['qid'] . '"';
         $question['sgq'] = $ia[1];
         $question['aid']='unknown';

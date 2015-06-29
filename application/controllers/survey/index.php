@@ -229,7 +229,7 @@ class index extends CAction {
 
         //SET THE TEMPLATE DIRECTORY
 
-        $thistpl = getTemplatePath($thissurvey['templatedir']);
+        $thistpl = Template::getTemplatePath($thissurvey['templatedir']);
 
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
@@ -565,11 +565,11 @@ class index extends CAction {
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
         {
             $thissurvey=getSurveyInfo($redata['surveyid']);
-            $sTemplateDir= getTemplatePath($thissurvey['template']);
+            $sTemplateDir= Template::getTemplatePath($thissurvey['template']);
         }
         else
         {
-            $sTemplateDir= getTemplatePath($sTemplateDir);
+            $sTemplateDir= Template::getTemplatePath($sTemplateDir);
         }
         sendCacheHeaders();
 

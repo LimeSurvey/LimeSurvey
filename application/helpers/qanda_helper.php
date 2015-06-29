@@ -330,7 +330,7 @@ function retrieveAnswers($ia)
         };
         if(!defined('QUESTION_START'))
         {
-            define('QUESTION_START' , file_get_contents(getTemplatePath($thissurvey['template']).'/question_start.pstpl' , true));
+            define('QUESTION_START' , file_get_contents(Template::getTemplatePath($thissurvey['template']).'/question_start.pstpl' , true));
         };
         $qtitle_custom = str_replace( $find , $replace , QUESTION_START);
 

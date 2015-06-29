@@ -1408,7 +1408,7 @@ class dataentry extends Survey_Common_Action
                 {
                     if ($thisvalue == "")
                     {
-                        $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                     }
                     else
                     {
@@ -1420,35 +1420,35 @@ class dataentry extends Survey_Common_Action
                         //need to check if library get initialized with new value of constructor or not.
 
                         //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
-                        $updateqr .= dbQuoteID($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
                     }
                 }
                 elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
                 {
-                    $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                 }
                 elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
                 {
-                    $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                 }
                 elseif ($irow['type'] == 'submitdate')
                 {
                     if (isset($_POST['completed']) && ($_POST['completed']== "N"))
                     {
-                        $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
                     }
                     elseif (isset($_POST['completed']) && $thisvalue=="")
                     {
-                        $updateqr .= dbQuoteID($fieldname)." = " . App()->db->quoteValue($_POST['completed']) . ", \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = " . App()->db->quoteValue($_POST['completed']) . ", \n";
                     }
                     else
                     {
-                        $updateqr .= dbQuoteID($fieldname)." = " . App()->db->quoteValue($thisvalue) . ", \n";
+                        $updateqr .= App()->db->quoteColumnName($fieldname)." = " . App()->db->quoteValue($thisvalue) . ", \n";
                     }
                 }
                 else
                 {
-                    $updateqr .= dbQuoteID($fieldname)." = " . App()->db->quoteValue($thisvalue) . ", \n";
+                    $updateqr .= App()->db->quoteColumnName($fieldname)." = " . App()->db->quoteValue($thisvalue) . ", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);

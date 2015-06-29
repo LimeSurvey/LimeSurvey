@@ -2,7 +2,7 @@
 
 	/**
 	 * Relations
-	 * @property Token $token
+	 * @property Token $tokenObject
      * @property int $surveyId
      * @property Question[] $questions
 	 * @property Survey $survey
@@ -64,11 +64,11 @@
 		 * @param mixed $className Either the classname or the survey id.
 		 * @return Response
 		 */
-		public static function model($className = null) {
-            if (!is_numeric($className)) {
-                var_dump($className); die();
+		public static function model($surveyId = null) {
+            if (!is_numeric($surveyId)) {
+                throw new \InvalidArgumentException("Survey ID must be numeric");
             }
-			return parent::model($className);
+			return parent::model($surveyId);
 		}
 
 		/**
@@ -122,7 +122,8 @@
 		{
             $t = $this->getTableAlias();
 			$result = array(
-				'token' => array(self::BELONGS_TO, 'Token_' . $this->dynamicId, array('token' => 'token')),
+                // Since we have a field named token as well.
+				'tokenObject' => array(self::BELONGS_TO, 'Token_' . $this->dynamicId, array('token' => 'token')),
 				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}" ),
 			);
 			return $result;

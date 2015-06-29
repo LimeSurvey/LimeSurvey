@@ -87,12 +87,15 @@ $internalConfig = array(
                 'vardump' => [
                     'class' => 'CWebLogRoute',
                     'levels'=>'error, warning, trace, info',
+                    'except' => [
+                        'system.CModule'
+                    ],
                     'enabled' => true
                 ],
                 'trace' => array(
                     'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
                     'levels'                     => 'trace',        // you can include more separated by commas
-                    'enabled' => YII_DEBUG && false
+                    'enabled' => false && true || YII_DEBUG && false
                 ),
                 'profile' => [
                     'class' => 'CProfileLogRoute'
