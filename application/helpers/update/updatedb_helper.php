@@ -1410,7 +1410,8 @@ function upgradeTokenTables179()
                     alterColumn($sTableName, $sColumnName, "text");
                 }
             }
-            $oDB->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,0,254)")->execute();
+            $oDB->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,1,254)")->execute();
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_{$sTableName}_efl",$sTableName); } catch(Exception $e) { rollBackToTransactionBookmark();}
             alterColumn($sTableName, 'email', "string(254)");
             alterColumn($sTableName, 'firstname', "string(150)");
             alterColumn($sTableName, 'lastname', "string(150)");
