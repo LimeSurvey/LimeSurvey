@@ -1740,7 +1740,6 @@ class dataentry extends Survey_Common_Action
                         // save submitdate into survey table
                         $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$last_db_id}\n";
                         $sdresult = dbExecuteAssoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
-                        $last_db_id = getLastInsertID("{{survey_$surveyid}}");
                     }
                     if (isset($_POST['save']) && $_POST['save'] == "on")
                     {
@@ -1952,7 +1951,7 @@ class dataentry extends Survey_Common_Action
                             $showme .= '<br/>';
                         }
                         if ($validation != '') {
-                            $showme .= "[".$gT("The answer(s) must meet these validation criteria:",'html',$sDataEntryLanguage)."]<br />$validation\n";
+                            $showme .= "[".gT("The answer(s) must meet these validation criteria:",'html',$sDataEntryLanguage)."]<br />$validation\n";
                         }
                         if ($showme != '' && $array_filter_help != '') {
                             $showme .= '<br/>';
