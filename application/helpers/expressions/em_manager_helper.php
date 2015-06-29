@@ -6592,20 +6592,31 @@
             {
                 // Process relevant equations, even if hidden, and write the result to the database
                 $textToParse=(isset($LEM->qattr[$qid]['equation']) && trim($LEM->qattr[$qid]['equation'])!="") ? $LEM->qattr[$qid]['equation'] : $qInfo['qtext'];
-                $result = flattenText($LEM->ProcessString($textToParse, $qInfo['qid'],NULL,false,1,1,false,false,true));// More numRecursionLevels ?
-                $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
-                    if($LEM->knownVars[$sgqa]['onlynum'])
-                    {
-                        $result=(is_numeric($result)?$result:"");
-                    }
-                    // Store the result of the Equation in the SESSION
-                    $_SESSION[$LEM->sessid][$sgqa] = $result;
-                    $_update = array(
+                //$result = flattenText($LEM->ProcessString($textToParse, $qInfo['qid'],NULL,false,1,1,false,false,true));// More numRecursionLevels ?
+                $sgqa = $LEM->qid2code[$qid];
+                $redata=array();
+                $result = flattenText(templatereplace( // Why flattenText ? htmlspecialchars($string,ENT_NOQUOTES) seem better ?
+                    $textToParse,
+                    array('QID'=>$qInfo['qid'],'GID'=>$qInfo['gid'],'SGQ'=>$sgqa), // Some date for replacement, other are only for "view"
+                    $redata,
+                    '',
+                    false,
+                    $qInfo['qid'],
+                    array(),
+                    true // Static replace
+                ));
+                if($LEM->knownVars[$sgqa]['onlynum'])
+                {
+                    $result=(is_numeric($result)?$result:"");
+                }
+                // Store the result of the Equation in the SESSION
+                $_SESSION[$LEM->sessid][$sgqa] = $result;
+                $_update = array(
                     'type'=>'*',
                     'value'=>$result,
-                    );
-                    $updatedValues[$sgqa] = $_update;
-                    $LEM->updatedValues[$sgqa] = $_update;
+                );
+                $updatedValues[$sgqa] = $_update;
+                $LEM->updatedValues[$sgqa] = $_update;
 
                 if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                 {
