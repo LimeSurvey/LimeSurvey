@@ -58,6 +58,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+ 
+Changes from 2.06+ (build 150625) to 2.06+ (build 150629) Jun 29, 2015
+-Fixed issue 09706: Wrong minimum PHP version in installer (Gabriele Mambrini)
+-Fixed issue #9589: Testing a survey for admin user can be broken (Denis Chenu)
+-Fixed issue #9700: Owner list not sorted alphabetically when assigning a new survey owner (Carsten Schmitz)
+-Fixed issue #9708: Unable to create a new response with dataentry (Carsten Schmitz)
+-Fixed issue #9720: SQL injection vulnerability in data entry (Carsten Schmitz)
+-Fixed issue #9722: Some core replacement in equation are not updated for hidden group (Denis Chenu)
+-Fixed issue #9723: Unable to edit assessment (Denis Chenu)
+-Fixed issue #9724: Lost token emails on upgrade (Carsten Schmitz)
+-Fixed issue: EM shows PERC and TOTAL error in assessment view (Denis Chenu)
+#Updated translation: Korean by spn
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Spain) by larjona, aesteban, artasom, valdomir, pnueda, c_schmitz
+#Updated translation: Turkish by kayazeren
 
 Changes from 2.06+ (build 150619) to 2.06+ (build 150625) Jun 25, 2015
 -Fixed issue #9464: Mandatory ranking question cannot go to next question if it's filtered by another question (Denis Chenu)
