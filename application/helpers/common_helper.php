@@ -2190,19 +2190,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         }
                     }
                 }
-                if (isset($fieldmap[$fieldname])) {
-                    //set question relevance (uses last SQ's relevance field for question relevance)
-                    $fieldmap[$fieldname]['relevance'] = $question->relevance;
-                    $fieldmap[$fieldname]['grelevance'] = $group->grelevance;
-                    $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
-                    $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
-                    $fieldmap[$fieldname]['preg'] = $question->preg;
-                    $fieldmap[$fieldname]['other'] = $question->other;
-                    $fieldmap[$fieldname]['help'] = $question->help;
-                    $questionSeq++;
-                }
-
-
             }
         }
         if (isset($fieldmap[$fieldname]))

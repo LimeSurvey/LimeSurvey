@@ -3559,6 +3559,8 @@
             $q2subqInfo = array();
 
             $this->multiflexiAnswers=array();
+//            var_dump($fieldmap);
+//            die();
             foreach($fieldmap as $fielddata)
             {
                 if (!isset($fielddata['fieldname']) || !preg_match('#^\d+X\d+X\d+#',$fielddata['fieldname']))
@@ -5758,22 +5760,21 @@
         * @param boolean $force : force validation to true, even if there are error
         * @return <array> - detailed information about this group
         */
-        function _ValidateGroup($groupSeq,$force=false)
+        private function _ValidateGroup($groupSeq,$force=false)
         {
-            $LEM =& $this;
-
-            if ($groupSeq < 0 || $groupSeq >= $LEM->numGroups) {
+            if ($groupSeq < 0 || $groupSeq >= $this->numGroups) {
                 return NULL;    // TODO - what is desired behavior?
             }
-            $groupSeqInfo = (isset($LEM->groupSeqInfo[$groupSeq]) ? $LEM->groupSeqInfo[$groupSeq] : NULL);
+
+            $groupSeqInfo = (isset($this->groupSeqInfo[$groupSeq]) ? $this->groupSeqInfo[$groupSeq] : NULL);
             if (is_null($groupSeqInfo)) {
                 // then there are no questions in this group
                 return NULL;
             }
-            $qInfo = $LEM->questionSeq2relevance[$groupSeqInfo['qstart']];
+            $qInfo = $this->questionSeq2relevance[$groupSeqInfo['qstart']];
             $gseq = $qInfo['gseq'];
             $gid = $qInfo['gid'];
-            $LEM->StartProcessingGroup($gseq, $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
+            $this->StartProcessingGroup($gseq, $this->surveyOptions['anonymized'], $this->sid); // analyze the data we have about this group
 
             $grel=false;  // assume irrelevant until find a relevant question
             $ghidden=true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
@@ -5787,14 +5788,14 @@
             $updatedValues = array();
             $ganyUnanswered = false;
 
-            $gRelInfo = $LEM->gRelInfo[$groupSeq];
+            $gRelInfo = $this->gRelInfo[$groupSeq];
 
             /////////////////////////////////////////////////////////
             // CHECK EACH QUESTION, AND SET GROUP-LEVEL PROPERTIES //
             /////////////////////////////////////////////////////////
             for ($i=$groupSeqInfo['qstart'];$i<=$groupSeqInfo['qend']; ++$i)
             {
-                $qStatus = $LEM->_ValidateQuestion($i,$force);
+                $qStatus = $this->_ValidateQuestion($i,$force);
 
                 $updatedValues = array_merge($updatedValues,$qStatus['updatedValues']);
 
@@ -5828,10 +5829,10 @@
             /////////////////////////////////////////////////////////
             // OPTIONALLY DISPLAY (DETAILED) DEBUGGING INFORMATION //
             /////////////////////////////////////////////////////////
-            if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
+            if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
             {
-                $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
-                $debug_message .= '<br />[G#' . $LEM->currentGroupSeq . ']'
+                $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid);
+                $debug_message .= '<br />[G#' . $this->currentGroupSeq . ']'
                 . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
                 . "[<a href='$editlink'>"
                 .  'GID:' . $gid . "</a>]:  "
@@ -5847,7 +5848,7 @@
                 {
                     if (!$gvalid)
                     {
-                        if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
+                        if (($this->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                         {
                             $debug_message .= "**At least one relevant question was invalid, so re-show this group<br />\n";
                             $debug_message .= "**Validity Violators: " . implode(', ', explode('|',$invalidSQList)) . "<br />\n";
@@ -5855,7 +5856,7 @@
                     }
                     if ($gmandViolation)
                     {
-                        if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
+                        if (($this->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                         {
                             $debug_message .= "**At least one relevant question was mandatory but unanswered, so re-show this group<br />\n";
                             $debug_message .= '**Mandatory Violators: ' . implode(', ', explode('|',$unansweredSQList)). "<br />\n";
@@ -5864,7 +5865,7 @@
 
                     if ($ghidden == true)
                     {
-                        if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
+                        if (($this->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                         {
                             $debug_message .= '** Page is relevant but hidden, so NULL irrelevant values and save relevant Equation results:</br>';
                         }
@@ -5872,7 +5873,7 @@
                 }
                 else
                 {
-                    if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
+                    if (($this->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
                     {
                         $debug_message .= '** Page is irrelevant, so NULL all questions in this group<br />';
                     }
@@ -5899,10 +5900,10 @@
             ////////////////////////////////////////////////////////
             // STORE METADATA NEEDED TO GENERATE NAVIGATION INDEX //
             ////////////////////////////////////////////////////////
-            $LEM->indexGseq[$groupSeq] = array(
-            'gtext' => $LEM->gseq2info[$groupSeq]['description'],
-            'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
-            'gid' => $LEM->gseq2info[$groupSeq]['gid'], // TODO how used if random?
+            $this->indexGseq[$groupSeq] = array(
+            'gtext' => $this->gseq2info[$groupSeq]['description'],
+            'gname' => $this->gseq2info[$groupSeq]['group_name'],
+            'gid' => $this->gseq2info[$groupSeq]['gid'], // TODO how used if random?
             'anyUnanswered' => $ganyUnanswered,
             'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
             'valid' => $gvalid,
@@ -5910,7 +5911,7 @@
             'show' => (($grel && !$ghidden) ? true : false),
             );
 
-            $LEM->gseq2relevanceStatus[$gseq] = $grel;
+            $this->gseq2relevanceStatus[$gseq] = $grel;
 
             return $currentGroupInfo;
         }
@@ -5933,6 +5934,9 @@
         {
             $LEM =& $this;
             $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
+            if (!isset($qInfo)) {
+                throw new \Exception("question info empty.");
+            }
             // We try to validate this question, then update the maxQuestionSeq, TODO : validate if we can update the maxGroupSeq too.
             if($questionSeq > $LEM->maxQuestionSeq) // max() take a little time more (2/3)
                 $LEM->maxQuestionSeq=$questionSeq;
