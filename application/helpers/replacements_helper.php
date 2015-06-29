@@ -27,6 +27,8 @@
 */
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false)
 {
+    $session = App()->surveySessionManager->current;
+    $clientScript = App()->clientScript;
 
     /*
     global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode;
@@ -114,7 +116,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     else
     {
-        $templatename=Yii::app()->getConfig('defaulttemplate');
+        $templatename= SettingGlobal::get('defaulttemplate');
     }
     if(!isset($templatedir)) $templatedir = \Template::getTemplatePath($templatename);
     if(!isset($templateurl)) $templateurl = \Template::getTemplateURL($templatename)."/";
@@ -127,21 +129,21 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
-			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui-custom.css");
+            $clientScript->registerCssFile("{$templateurl}jquery-ui-custom.css");
         }
         elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
-			Yii::app()->getClientScript()->registerCssFile("{$templateurl}jquery-ui.css");
+            $clientScript->registerCssFile("{$templateurl}jquery-ui.css");
         }
         else
         {
-			Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
+            $clientScript->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
         }
 
-		Yii::app()->getClientScript()->registerCssFile("{$templateurl}template.css");
+        $clientScript->registerCssFile("{$templateurl}template.css");
 		if (getLanguageRTL(App()->language))
         {
-            Yii::app()->getClientScript()->registerCssFile("{$templateurl}template-rtl.css");
+            $clientScript->registerCssFile("{$templateurl}template-rtl.css");
         }
     }
     // surveyformat
@@ -244,19 +246,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     };
 
 
-    if (isset($token))
-    {
-        $_token = $token;
-    }
-    elseif (isset($clienttoken))
-    {
-        $_token = htmlentities($clienttoken, ENT_QUOTES, 'UTF-8');  // or should it be URL-encoded?
-    }
-    else
-    {
-        $_token = '';
-    }
-
     // Expiry
     if (isset($thissurvey['expiry']))
     {
@@ -336,9 +325,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if(isset($surveyid))
     {
-        $restartparam=array();
-        if($_token)
-            $restartparam['token']=sanitize_token($_token);// urlencode with needed with sanitize_token
+        $restartparam = [];
+        if(isset(App()->surveySessionManager->current->response->token)) {
+            $restartparam['token'] = App()->surveySessionManager->current->response->token;
+        }
         if (Yii::app()->request->getQuery('lang'))
             $restartparam['lang']=sanitize_languagecode(Yii::app()->request->getQuery('lang'));
         elseif($s_lang)
@@ -362,20 +352,22 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_savealert = "";
     }
 
-    if (isset($surveyid))
-    {
-        if($_token)
+    if (isset($session->surveyId)) {
+        if(isset($session->response->token))
         {
-            $returnlink=Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}",array('token'=>sanitize_token($_token)));
+            $url = App()->createUrl("survey/index", [
+                'sid' => $session->surveyId,
+                'token' => $session->response->token
+            ]);
         }
         else
         {
-            $returnlink=Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}");
+            $url = App()->createUrl("survey/index", [
+                'sid' => $session->surveyId,
+            ]);
         }
-        $_return_to_survey = "<a href='{$returnlink}'>".gT("Return to survey")."</a>";
-    }
-    else
-    {
+        $_return_to_survey = "<a href='{$url}'>".gT("Return to survey")."</a>";
+    } else {
         $_return_to_survey = "";
     }
 
@@ -452,7 +444,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     else
     {
-        $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
+        $_googleAnalyticsAPIKey = trim(\SettingGlobal::get('googleanalyticsapikey'));
     }
     $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '0');
     $_googleAnalyticsJavaScript = '';
@@ -579,7 +571,7 @@ EOD;
     $coreReplacements['TEMPLATEJS'] = CHtml::tag('script', array('type' => 'text/javascript', 'src' => $templateurl . 'template.js'), '');
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-    $coreReplacements['TOKEN'] = (!$anonymized ? $_token : '');// Silently replace TOKEN by empty string
+    $coreReplacements['TOKEN'] = (!$anonymized ? $session->response->token : '');// Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     if(!isset($replacements['QID']))

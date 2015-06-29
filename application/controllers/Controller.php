@@ -40,8 +40,7 @@ abstract class Controller extends \CController
 
         Yii::app()->session->init();
 		$this->loadLibrary('LS.LS');
-        $this->loadHelper('globalsettings');
-		$this->loadHelper('common');
+        $this->loadHelper('common');
 		$this->loadHelper('expressions.em_manager');
 		$this->loadHelper('replacements');
 		$this->_init();
@@ -110,7 +109,7 @@ abstract class Controller extends \CController
 		//GlobalSettings Helper
 		Yii::import("application.helpers.globalsettings");
 
-		enforceSSLMode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
+		enforceSSLMode();// This really should be at the top but for it to utilise \SettingGlobal::get() it has to be here
 
         if (Yii::app()->getConfig('debug')==1) {//For debug purposes - switch on in config.php
             @ini_set("display_errors", 1);

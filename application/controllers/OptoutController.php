@@ -30,53 +30,37 @@ class OptoutController extends Controller {
      *
      *
      * */
-    function actiontokens()
+    function actiontokens($token, $surveyid, $langcode = null)
     {
-        $iSurveyID=Yii::app()->request->getQuery('surveyid');
-        $sLanguageCode=Yii::app()->request->getQuery('langcode');
-        $sToken=sanitize_token(Yii::app()->request->getQuery('token'));
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
-        {
-            $this->redirect(array('/'));
-        }
-        $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
         // Get passed language from form, so that we dont lose this!
-        if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
+        if (!isset($langcode) || $langcode == "" || !$langcode)
         {
-            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
-        {
-            $sBaseLanguage = sanitize_languagecode($sLanguageCode);
+            $sBaseLanguage = Survey::model()->findByPk($surveyid)->language;
+        } else {
+            $sBaseLanguage = sanitize_languagecode($langcode);
         }
 
-        Yii::app()->setLanguage($sBaseLanguage);
+        App()->setLanguage($sBaseLanguage);
 
-        $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
+        $aSurveyInfo = getSurveyInfo($surveyid, $sBaseLanguage);
 
-        if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}")){
+        if ($aSurveyInfo == false || !\Token::valid($surveyid)){
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }
-        else
-        {
-            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$sToken,false);
-            $oToken = Token::model($iSurveyID)->findByAttributes(array('token'=>$sToken));
+        } else {
 
-            if (!isset($oToken))
-            {
+
+            if (null === $token = Token::model($surveyid)->findByAttributes(['token' => $token])) {
                 $sMessage = gT('You are not a participant in this survey.');
-                //throw new CHttpException(404, "You are not a participant in this survey.");
-            }
-            else
-            {
-                if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut')
+            } else {
+                LimeExpressionManager::singleton()->loadTokenInformation($surveyid, $token->token, false);
+                if (strncmp('OptOut', $token->emailstatus, 6) !== 0)
                 {
-                    $oToken->emailstatus = 'OptOut';
-                    $oToken->save();
+                    $token->emailstatus = 'OptOut';
+                    $token->save();
                     $sMessage = gT('You have been successfully removed from this survey.');
                 }
                 else
@@ -89,11 +73,11 @@ class OptoutController extends Controller {
         //PRINT COMPLETED PAGE
         if (!$aSurveyInfo['templatedir'])
         {
-            $sTemplate=Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+            $sTemplate = Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
         }
         else
         {
-            $sTemplate=Template::getTemplatePath($aSurveyInfo['templatedir']);
+            $sTemplate = Template::getTemplatePath($aSurveyInfo['templatedir']);
         }
 
         $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo);

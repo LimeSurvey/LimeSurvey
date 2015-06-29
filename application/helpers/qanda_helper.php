@@ -49,11 +49,11 @@
 */
 function setNoAnswerMode($thissurvey)
 {
-    if (getGlobalSetting('shownoanswer') == 1)
+    if (\SettingGlobal::get('shownoanswer') == 1)
     {
         define('SHOW_NO_ANSWER', 1);
     }
-    elseif (getGlobalSetting('shownoanswer') == 0)
+    elseif (\SettingGlobal::get('shownoanswer') == 0)
     {
         define('SHOW_NO_ANSWER', 0);
     }
@@ -3628,7 +3628,7 @@ function do_shortfreetext($ia)
             $strBuild .= "5";*/
 
         $aGlobalMapScriptVar= array(
-            'geonameUser'=>getGlobalSetting('GeoNamesUsername'),// Did we need to urlencode ?
+            'geonameUser'=>\SettingGlobal::get('GeoNamesUsername'),// Did we need to urlencode ?
             'geonameLang'=>Yii::app()->language,
             );
         $aThisMapScriptVar=array(

@@ -33,8 +33,6 @@ class OptinController extends Controller {
         Yii::app()->loadHelper('sanitize');
         $sLanguageCode = $langcode;
         $iSurveyID = $surveyid;
-        $sToken = $token;
-        $sToken = sanitize_token($sToken);
 
         if (!$iSurveyID)
         {

@@ -446,10 +446,10 @@ class templates extends Survey_Common_Action
                 $this->getController()->error(sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
             else
             {
-                Survey::model()->updateAll(array( 'template' => $sNewName ), "template = :oldname", array(':oldname'=>$sOldName));
-                if ( getGlobalSetting('defaulttemplate')==$sOldName)
+                Survey::model()->updateAll(['template' => $sNewName], "template = :oldname", [':oldname' => $sOldName]);
+                if ( \SettingGlobal::get('defaulttemplate') == $sOldName)
                 {
-                    setGlobalSetting('defaulttemplate',$sNewName);
+                    \SettingGlobal::set('defaulttemplate', $sNewName);
                 }
                 $this->index("startpage.pstpl", "welcome", $sNewName);
             }
@@ -646,7 +646,7 @@ class templates extends Survey_Common_Action
         $time = date("ymdHis");
 
         // Prepare textarea class for optional javascript
-        $templateclasseditormode = getGlobalSetting('defaulttemplateeditormode'); // default
+        $templateclasseditormode = \SettingGlobal::get('defaulttemplateeditormode'); // default
         if (Yii::app()->session['templateeditormode'] == 'none')
             $templateclasseditormode = 'none';
 
@@ -679,7 +679,7 @@ class templates extends Survey_Common_Action
         if (Yii::app()->session['templateeditormode'] !== 'default') {
             $sTemplateEditorMode = Yii::app()->session['templateeditormode'];
         } else {
-            $sTemplateEditorMode = getGlobalSetting('templateeditormode', 'full');
+            $sTemplateEditorMode = \SettingGlobal::get('templateeditormode', 'full');
         }
         $sExtension=substr(strrchr($editfile, '.'), 1);
         switch ($sExtension)

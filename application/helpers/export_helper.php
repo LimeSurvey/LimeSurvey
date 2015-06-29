@@ -758,7 +758,7 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType','Survey');
-    $xml->writeElement('DBVersion',getGlobalSetting("DBVersion"));
+    $xml->writeElement('DBVersion',\SettingGlobal::get("DBVersion"));
     $xml->startElement('languages');
     $surveylanguages=Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $surveylanguages[]=Survey::model()->findByPk($iSurveyID)->language;
@@ -797,7 +797,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType',$sDocType);
-    $xml->writeElement('DBVersion',getGlobalSetting("DBVersion"));
+    $xml->writeElement('DBVersion',\SettingGlobal::get("DBVersion"));
     $xml->startElement('languages');
     $aSurveyLanguages=Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $aSurveyLanguages[]=Survey::model()->findByPk($iSurveyID)->language;
@@ -1521,7 +1521,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType','Group');
-    $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+    $xml->writeElement('DBVersion', \SettingGlobal::get("DBVersion"));
     $xml->startElement('languages');
 
     $lresult = QuestionGroup::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language','group' => 'language'));
@@ -1624,7 +1624,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType','Question');
-    $xml->writeElement('DBVersion', getGlobalSetting('DBVersion'));
+    $xml->writeElement('DBVersion', \SettingGlobal::get('DBVersion'));
     $xml->startElement('languages');
     $aLanguages=Survey::model()->findByPk($iSurveyID)->additionalLanguages;
     $aLanguages[]=Survey::model()->findByPk($iSurveyID)->language;

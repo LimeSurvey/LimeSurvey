@@ -79,7 +79,7 @@
 
             $surveys = getSurveyList(true);
             $tmpList = array();
-            $timeadjust = getGlobalSetting('timeadjust');
+            $timeadjust = \SettingGlobal::get('timeadjust');
             foreach ($surveys as $survey)
             {
                 if($survey['active']!='Y')

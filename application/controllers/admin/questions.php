@@ -791,7 +791,7 @@ class questions extends Survey_Common_Action
                 if (Yii::app()->session['questionselectormode'] !== 'default') {
                     $selectormodeclass = Yii::app()->session['questionselectormode'];
                 } else {
-                    $selectormodeclass = getGlobalSetting('defaultquestionselectormode', 'default');
+                    $selectormodeclass = \SettingGlobal::get('defaultquestionselectormode', 'default');
                 }
 
                 $aData['selectormodeclass'] = $selectormodeclass;

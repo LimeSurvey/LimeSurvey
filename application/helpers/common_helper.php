@@ -187,7 +187,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
 {
     static $cached = null;
 
-    $timeadjust = getGlobalSetting('timeadjust');
+    $timeadjust = \SettingGlobal::get('timeadjust');
     if(is_null($cached)) {
         $args = array('order'=>'surveyls_title');
         if (!App()->user->checkAccess('superadmin'))
@@ -4840,7 +4840,7 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO']=="https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
-        $force_ssl = strtolower(getGlobalSetting('force_ssl'));
+        $force_ssl = strtolower(\SettingGlobal::get('force_ssl'));
     }
     else
     {

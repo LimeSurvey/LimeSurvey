@@ -108,7 +108,7 @@ class Save {
 
         global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
 
-        $timeadjust = getGlobalSetting('timeadjust');
+        $timeadjust = \SettingGlobal::get('timeadjust');
 
         //Check that the required fields have been completed.
         $errormsg = '';

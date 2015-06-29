@@ -83,21 +83,6 @@ define("FLOAT", 32);
 define("LDAP", 64);
 define("UTF8", 128);
 
-// get magic_quotes_gpc ini setting - jp
-$magic_quotes = (bool) @ini_get('magic_quotes_gpc');
-if ($magic_quotes == TRUE) { define("MAGIC_QUOTES", 1); } else { define("MAGIC_QUOTES", 0); }
-
-// addslashes wrapper to check for gpc_magic_quotes - gz
-function nice_addslashes($string)
-{
-    // if magic quotes is on the string is already quoted, just return it
-    if(MAGIC_QUOTES)
-    return $string;
-    else
-    return addslashes($string);
-}
-
-
 /**
  * Function: sanitize_filename
  * Returns a sanitized string, typically for URLs.
@@ -197,13 +182,6 @@ function sanitize_xss_string($string)
 }
 
 
-
-// sanitize a string for SQL input (simple slash out quotes and slashes)
-function sanitize_sql_db_tablename($string)
-{
-    $bad = array ('*','^','&','\'','-',';','\"','(',')','%','$','?');
-    return str_replace($bad, "",$string);
-}
 
 // sanitize a string for SQL input (simple slash out quotes and slashes)
 function sanitize_ldap_string($string, $min='', $max='')
@@ -326,12 +304,6 @@ function sanitize($input, $flags, $min='', $max='')
     return $input;
 }
 
-function check_paranoid_string($input, $min='', $max='')
-{
-    if($input != sanitize_paranoid_string($input, $min, $max))
-    return FALSE;
-    return TRUE;
-}
 
 function check_int($input, $min='', $max='')
 {
@@ -362,12 +334,6 @@ function check_ldap_string($input, $min='', $max='')
     return TRUE;
 }
 
-function check_system_string($input, $min='', $max='')
-{
-    if($input != sanitize_system_string($input, $min, $max, TRUE))
-    return FALSE;
-    return TRUE;
-}
 
 // glue together all the other functions
 function check($input, $flags, $min='', $max='')
@@ -394,19 +360,3 @@ function sanitize_languagecodeS($codestringtosanitize) {
     $codearray=array_map("sanitize_languagecode",$codearray);
     return implode(" ",$codearray);
 }
-
-function sanitize_token($codetosanitize) {
-    return preg_replace('/[^_a-z0-9]/i', '', $codetosanitize);
-}
-
-function sanitize_signedint($integer, $min='', $max='')
-{
-    $int  = (int) $integer;
-
-    if((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
-    {
-        return FALSE;                              // Oops! Outside limits.
-    }
-
-    return $int;
-};

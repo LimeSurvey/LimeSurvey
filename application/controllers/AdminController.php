@@ -33,7 +33,7 @@ class AdminController extends Controller
         parent::_init();
         App()->getComponent('bootstrap');
         App()->clientScript->registerPackage('jquery');
-        $sUpdateLastCheck = getGlobalSetting('updatelastcheck');
+        $sUpdateLastCheck = \SettingGlobal::get('updatelastcheck');
 
         $this->_sessioncontrol();
 
@@ -141,7 +141,7 @@ class AdminController extends Controller
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
-            $sDBVersion = getGlobalSetting('DBVersion');
+            $sDBVersion = \SettingGlobal::get('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
                 $this->redirect(array('/admin/update/sa/db'));
         }
@@ -158,7 +158,7 @@ class AdminController extends Controller
 //            }
 //            elseif (!empty($this->user_id)  && $action != "remotecontrol")
 //            {
-//                if (Yii::app()->session['session_hash'] != hash('sha256',getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
+//                if (Yii::app()->session['session_hash'] != hash('sha256',\SettingGlobal::get('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
 //                {
 //                    Yii::app()->session->clear();
 //                    Yii::app()->session->close();
@@ -385,10 +385,10 @@ class AdminController extends Controller
             App()->user->setFlash(\TbHtml::ALERT_COLOR_DEFAULT, gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."));
         }
 
-        $aData['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatenotification")!='never' && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
+        $aData['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && \SettingGlobal::get("updatenotification")!='never' && \SettingGlobal::get("updateavailable")==1 && Yii::app()->getConfig("updatable") );
         if($aData['showupdate'])
         {
-        $aData['aUpdateVersions'] = json_decode(getGlobalSetting("updateversions"),true);
+        $aData['aUpdateVersions'] = json_decode(\SettingGlobal::get("updateversions"),true);
             $aUpdateTexts=array();
             foreach ($aData['aUpdateVersions'] as $aVersion)
             {

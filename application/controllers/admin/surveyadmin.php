@@ -1044,15 +1044,15 @@ class SurveyAdmin extends Survey_Common_Action
         $owner = App()->user->model->attributes;
         //Degrade gracefully to $siteadmin details if anything is missing.
         if (empty($owner['full_name']))
-            $owner['full_name'] =  getGlobalSetting('siteadminname');
+            $owner['full_name'] =  \SettingGlobal::get('siteadminname');
         if (empty($owner['email'])) {
-            $owner['email'] = getGlobalSetting('siteadminemail');
+            $owner['email'] = \SettingGlobal::get('siteadminemail');
         }
 
         //Bounce setting by default to global if it set globally
-        if (getGlobalSetting('bounceaccounttype') != 'off')
+        if (\SettingGlobal::get('bounceaccounttype') != 'off')
         {
-            $owner['bounce_email'] = getGlobalSetting('siteadminbounce');
+            $owner['bounce_email'] = \SettingGlobal::get('siteadminbounce');
         }
         else
         {

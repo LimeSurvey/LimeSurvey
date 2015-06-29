@@ -908,7 +908,7 @@ class export extends Survey_Common_Action {
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('document');
         $xml->writeElement('LimeSurveyDocType', 'Label set');
-        $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+        $xml->writeElement('DBVersion', \SettingGlobal::get("DBVersion"));
 
         // Label sets table
         $lsquery = "SELECT * FROM {{labelsets}} WHERE lid=" . implode(' or lid=', $lids);
