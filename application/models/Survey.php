@@ -50,7 +50,8 @@ class Survey extends LSActiveRecord
             'completedResponseCount' => gT("Completed"),
             'partialResponseCount' => gT("Partial"),
             'responseCount' => gT("Total"),
-            'responseRate' => gT('Rate')
+            'responseRate' => gT('Rate'),
+            'sid' => gT('Survey ID')
 
 
         ];

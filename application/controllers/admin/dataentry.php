@@ -786,7 +786,9 @@ class dataentry extends Survey_Common_Action
                                 }
 
                                 $oquery="SELECT other FROM {{questions}} WHERE qid={$fname['qid']} AND {{questions}}.language = '{$sDataEntryLanguage}'";
-                                $oresult=dbExecuteAssoc($oquery) or throw new \CHttpException(500, "Couldn't get other for list question<br />".$oquery."<br />");
+                                if (false === $oresult = dbExecuteAssoc($oquery)) {
+                                    throw new \CHttpException(500, "Couldn't get other for list question<br />".$oquery."<br />");
+                                }
                                 foreach($oresult->readAll() as $orow)
                                 {
                                     $fother=$orow['other'];
@@ -1454,7 +1456,9 @@ class dataentry extends Survey_Common_Action
             $updateqr = substr($updateqr, 0, -3);
             $updateqr .= " WHERE id=$id";
 
-            $updateres = dbExecuteAssoc($updateqr) or throw new \CHttpException(500, "Update failed:<br />\n<br />$updateqr");
+            if (false === $updateres = dbExecuteAssoc($updateqr)) {
+                throw new \CHttpException(500, "Update failed:<br />\n<br />$updateqr");
+            }
 
             $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
             $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
@@ -2000,7 +2004,9 @@ class dataentry extends Survey_Common_Action
                             $cdata['dearesult'] = $dearesult->readAll();
 
                             $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
-                            $oresult=dbExecuteAssoc($oquery) or throw new \CHttpException(500, "Couldn't get other for list question<br />".$oquery);
+                            if (false === $oresult = dbExecuteAssoc($oquery)) {
+                                throw new \CHttpException(500, "Couldn't get other for list question<br />" . $oquery);
+                            }
                             foreach($oresult->readAll() as $orow)
                             {
                                 $cdata['fother']=$orow['other'];
@@ -2070,7 +2076,9 @@ class dataentry extends Survey_Common_Action
                             }
 
                             $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
-                            $oresult=dbExecuteAssoc($oquery) or throw new \CHttpException(500, "Couldn't get other for list question<br />");
+                            if (false === $oresult=dbExecuteAssoc($oquery)) {
+                                throw new \CHttpException(500, "Couldn't get other for list question<br />");
+                            }
                             foreach($oresult->readAll() as $orow)
                             {
                                 $fother=$orow['other'];

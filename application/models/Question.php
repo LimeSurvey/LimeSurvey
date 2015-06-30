@@ -893,7 +893,7 @@
          * @throws CDbException
          */
         public function deleteDependent() {
-            if (App()->db->getCurrentTransaction() != null) {
+            if (App()->db->getCurrentTransaction() == null) {
                 $transaction = App()->db->beginTransaction();
             }
             foreach($this->dependentRelations() as $relation) {
