@@ -206,7 +206,7 @@
                 }
                 if($bIsValidToken)
                 {
-                    $itresult = $this->updateByPk($tkrow['tid'], ['token' => $newtoken]);
+                    $itresult = $this->updateByPk($tkrow['tid'], array('token' => $newtoken));
                     $newtokencount++;
                 }
                 else
