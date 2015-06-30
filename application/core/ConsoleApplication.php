@@ -12,12 +12,6 @@
         public $installed;
 
         /**
-         *
-         * @var \ls\pluginmanager\PluginManager
-         */
-        protected $pluginManager;
-
-        /**
          * @var LimesurveyApi
          */
         protected $api;
@@ -89,18 +83,6 @@
                 return false;
             }
         }
-
-        /**
-         * Get the pluginManager
-         *
-         * @return PluginManager
-         */
-        public function getPluginManager()
-        {
-            return $this->getComponent('PluginManager');
-        }
-
-       
 
         /**
          * Loads a helper

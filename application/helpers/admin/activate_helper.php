@@ -131,22 +131,28 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     {
         if ($qtypes[$chkrow['type']]['subquestions']>0)
         {
-            $chaquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$chkrow['qid']} ORDER BY question_order";
-            $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
-            $chacount=count($charesult);
-            if ($chacount == 0)
+            for ($i=0; $i<$qtypes[$chkrow['type']]['subquestions']; $i++)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question has no subquestions."), $chkrow['gid']);
+                $chaquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$chkrow['qid']} and scale_id={$i} ORDER BY question_order";
+                $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
+                $chacount=count($charesult);
+                if ($chacount == 0)
+                {
+                    $failedcheck[]=array($chkrow['qid'], flattenText($chkrow['question'],true,true,'utf-8',true),": ".gT("This question has missing subquestions."), $chkrow['gid']);
+                }
             }
         }
         if ($qtypes[$chkrow['type']]['answerscales']>0)
         {
-            $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
-            $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
-            $chacount=count($charesult);
-            if ($chacount == 0)
+            for ($i=0; $i<$qtypes[$chkrow['type']]['answerscales']; $i++)
             {
-                $failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".gT("This question has no answers."), $chkrow['gid']);
+                $chaquery = "SELECT * FROM {{answers}} WHERE qid = {$chkrow['qid']} and scale_id={$i} ORDER BY sortorder, answer";
+                $charesult=Yii::app()->db->createCommand($chaquery)->query()->readAll();
+                $chacount=count($charesult);
+                if ($chacount == 0)
+                {
+                    $failedcheck[]=array($chkrow['qid'], flattenText($chkrow['question'],true,true,'utf-8',true),": ".gT("This question has missing answer options."), $chkrow['gid']);
+                }
             }
         }
     }
