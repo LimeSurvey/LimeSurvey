@@ -12,12 +12,6 @@
         protected $config = array();
 
         /**
-         *
-         * @var PluginManager
-         */
-        protected $pluginManager;
-
-        /**
          * @var LimesurveyApi
          */
         protected $api;
@@ -32,8 +26,6 @@
             $this->config = array_merge($this->config, $email);
 
             // Now initialize the plugin manager
-            $this->initPluginManager();
-
         }
 
         /**
@@ -83,31 +75,12 @@
         }
 
         /**
-         * Get the pluginManager
-         *
-         * @return PluginManager
-         */
-        public function getPluginManager()
-        {
-            return $this->pluginManager;
-        }
-
-        /**
          * This method handles initialization of the plugin manager
          *
          * When you want to insert your own plugin manager, or experiment with different settings
          * then this is where you should do that.
          */
-        public function initPluginManager()
-        {
-            Yii::import('application.libraries.PluginManager.*');
-            Yii::import('application.libraries.PluginManager.Storage.*');
-            Yii::import('application.libraries.PluginManager.Question.*');
-            $this->pluginManager = new PluginManager($this->getApi());
 
-            // And load the active plugins
-            $this->pluginManager->loadPlugins();
-        }
 
         /**
          * Loads a helper
