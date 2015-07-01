@@ -17,9 +17,9 @@ $(document).ready(function(){
                 + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" initial_text="'+initial_text+'" value="'+delBtnCaption+'">');
                 $.each(oData, function(key,value){
                     $('#ownername_select_'+survey_id).
-                    append($("<option id='opt_"+key+"'></option>").
-                    attr("value",key).
-                    text(value));
+                    append($("<option id='opt_"+value+"'></option>").
+                    attr("value",value).
+                    text(key));
                 });
                 $("#ownername_select_"+survey_id+ " option[id=opt_"+old_owner+"]").attr("selected","selected");
             }
