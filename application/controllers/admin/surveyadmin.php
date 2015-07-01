@@ -481,9 +481,9 @@ class SurveyAdmin extends Survey_Common_Action
         if (count($result) > 0)
         {
             foreach ($result as $rows)
-                $aUsers[$rows['uid']] = $rows['user'];
+                $aUsers[$rows['user']]=$rows['uid'];
         }
-        asort($aUsers);
+        ksort($aUsers);
         $ajaxoutput = ls_json_encode($aUsers) . "\n";
         echo $ajaxoutput;
     }
