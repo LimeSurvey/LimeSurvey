@@ -398,21 +398,9 @@ function validation_message($ia,$show)
     if (!$show) {
         $class .= ' hide-tip';
     }
-    $tip = '<span class="' . $class . '" id="vmsg_' . $ia[0] . '">' . $qinfo['validTip'] . "</span>";
+    $tip = CHtml::tag('div',array('class'=>$class,'id'=>"vmsg_{$ia[0]}"),$qinfo['validTip']); // div inside div (w3c)
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
-    //    if (!$qinfo['valid']) {
-    //        if (strlen($tip) == 0) {
-    //            $help = gT('This question must be answered correctly');
-    //        }
-    //        else {
-    //            $tip =' <span class="questionhelp">'.$tip.'</span>';
-    //        }
-    //        return '<br /><span class="errormandatory">'.$tip.'</span><br />';
-    //    }
-    //    else {
-    //        return $tip;
-    //    }
 }
 
 // TMSW Validation -> EM
