@@ -143,10 +143,7 @@ else
     var okBtn = "<?php eT("OK", 'js') ?>";
     var deletefrompanelmsg = "<?php eT("Please choose one option.", 'js') ?>";
     var noRowSelected = "<?php eT("You have no row selected", 'js') ?>";
-    var deletefrompanel = "<?php eT("Delete participant(s) from central participants panel only", 'js') ?>";
-    var deletefrompanelandtoken = "<?php eT("Delete participant(s) from central panel and tokens tables", 'js') ?>";
-    var deletefrompaneltokenandresponse = "<?php eT("Delete participant(s) from central panel, tokens tables and all associated responses", 'js') ?>";
-    var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol>";
+    var deleteMsg = '<br/>'+deletefrompanelmsg+'<br/><br/><?php echo str_replace("\n",'',CHtml::radioButtonList('deleteMode','', array('po'=>gT("Delete participant(s) from central participants panel only"),'ptt'=>gT("Delete participant(s) from central panel and tokens tables"),'ptta'=>gT("Delete participant(s) from central panel, tokens tables and all associated responses"))));?>';
     var searchBtn = "<?php eT("Search", 'js') ?>";
     var shareMsg = "<?php eT("You can see and edit settings for shared participants in share panel.", 'js') ?>"; //PLEASE REVIEW
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/".$urlsearch); ?>";
