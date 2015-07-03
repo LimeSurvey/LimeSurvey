@@ -75,7 +75,8 @@ abstract class BaseElementXmlImport extends BaseXmlImport
     {
 
         // Add translations.
-        foreach ($data['questions']['rows'] as $translatedQuestion) {
+        $questions = isset($data['subquestions']) ? array_merge($data['subquestions']['rows'], $data['questions']['rows']) : $data['questions']['rows'];
+        foreach ($questions as $translatedQuestion) {
             if ($translatedQuestion['qid'] == $question['qid']
                 && $translatedQuestion['language'] != $language
             ) {
@@ -85,7 +86,7 @@ abstract class BaseElementXmlImport extends BaseXmlImport
 
         // Add subquestions
         foreach (isset($data['subquestions']) ? $data['subquestions']['rows'] : [] as $subQuestion) {
-            if ($subQuestion['parent_qid'] == $question['qid']) {
+            if ($subQuestion['parent_qid'] == $question['qid'] && $subQuestion['language'] == $language) {
                 $question['subquestions'][] = $this->constructQuestion($subQuestion, $language, $data);
             }
         }
