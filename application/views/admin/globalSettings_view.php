@@ -490,7 +490,7 @@
             // Security settings in one part
             if(getGlobalSetting('force_ssl')!='on')
             {
-                $sForceSslHelp = CHtml::tag("div",array('class'=>'alert'),sprintf(gT('Warning: Before turning on HTTPS,%s .'),CHtml::link(gt("check if this link works"),array("admin/globalsettings"),array('title'=>gT('Test if your server has SSL enabled by clicking on this link.')))))
+                $sForceSslHelp = CHtml::tag("div",array('class'=>'alert'),sprintf(gT('Warning: Before turning on HTTPS,%s .'),CHtml::link(gt("check if this link works"),App()->createAbsoluteUrl("admin/globalsettings",array(),'https'),array('title'=>gT('Test if your server has SSL enabled by clicking on this link.','unescaped')))))
                                . CHtml::tag("div",array('class'=>'alert alert-error'),gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."));
             }
             else
