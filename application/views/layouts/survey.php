@@ -6,22 +6,24 @@
         <link rel="shortcut icon" href="<?php echo App()->theme->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="<?php echo App()->theme->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <?php
-			$this->widget('ext.LimeScript.LimeScript');
+            App()->bootstrap->register();
+
+        $this->widget('ext.LimeScript.LimeScript');
 			$this->widget('ext.LimeDebug.LimeDebug');
-			App()->bootstrap->register();
-            $cs = App()->clientScript;
+			$cs = App()->clientScript;
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 
             $cs->registerCssFile(App()->params['bower-asset'] . '/select2-bootstrap-css/select2-bootstrap.min.css');
             $cs->registerScriptFile(App()->getBaseUrl().'/scripts/ajax.js');
-        $cs->registerScriptFile(App()->getBaseUrl().'/scripts/unobtrusive.js');
+            $cs->registerScriptFile(App()->getBaseUrl().'/scripts/unobtrusive.js');
 
-        $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
-        $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
-        App()->getComponent('yiiwheels')->registerAssetJs('bootstrap-bootbox.min.js');
-        $cs->registerScriptFile(App()->params['bower-asset'] . '/tinymce/tinymce.min.js');
-        $cs->registerScriptFile(App()->getBaseUrl().'/scripts/htmleditor.js');
-        $cs->registerScript('links', "$('body').on('click', '.disabled a', function (e) { e.preventDefault(); });");
+            $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
+            $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
+            App()->getComponent('yiiwheels')->registerAssetJs('bootstrap-bootbox.min.js');
+            $cs->registerScriptFile(App()->params['bower-asset'] . '/tinymce/tinymce.min.js');
+            $cs->registerScriptFile(App()->getBaseUrl().'/scripts/htmleditor.js');
+            $cs->registerScript('links', "$('body').on('click', '.disabled a', function (e) { e.preventDefault(); });");
+
         ?>
         <title>Limesurvey Administration</title>
     </head>

@@ -39,7 +39,9 @@ class SurveysController extends Controller
         $filter->setAttributes(App()->request->getParam(\CHtml::modelName($filter)));
         $surveys = Survey::model()->accessible();
         $surveys->getDbCriteria()->mergeWith($filter->search());
+        $surveys->with('languagesettings');
         $dataProvider = new \CActiveDataProvider($surveys);
+        $dataProvider->pagination->pageSize = 100;
         $this->render('index', ['surveys' => $dataProvider, 'filter' => $filter]);
     }
 
@@ -76,7 +78,7 @@ class SurveysController extends Controller
         if (App()->request->isPostRequest) {
             $survey->activate();
             App()->user->setFlash('succcess', "Survey activated.");
-            $this->redirect(['surveys/update', 'id' => $survey->sid]);
+            $this->redirect(['surveys/update', 'id' => $survey->primaryKey]);
         }
 
         $this->render('activate', ['survey' => $survey]);
@@ -168,7 +170,7 @@ class SurveysController extends Controller
             }
             $response->save();
 
-            $session = App()->surveySessionManager->newSession($survey->sid, $response->id);
+            $session = App()->surveySessionManager->newSession($survey->primaryKey, $response->id);
             $this->redirect(['survey/index', 'sid' => $id, 'SSM' => $session->getId()]);
 
             $this->redirect(['surveys/run', 'sessionId' => $session->id]);
@@ -212,12 +214,13 @@ class SurveysController extends Controller
         $file = \CUploadedFile::getInstanceByName('importFile');
         App()->loadHelper('admin.import');
         if (isset($file)) {
-//            $importer = ImportFactory::getForLss($file->getTempName());
-//            var_dump($importer->run());
-//            die('ok');
-//            var_dump($importer->run());
-            $result = \XMLImportSurvey($file->getTempName(), null, null, null, $request->getParam('importConvert', 0));
-            return $this->renderText(is_array($result) ? print_r($result, true) : $result);
+            $importer = ImportFactory::getForLss($file->getTempName());
+            if (null !== $survey = $importer->run()) {
+                App()->user->setFlash('success', "Survey imported.");
+                $this->redirect(['surveys/update', 'id' => $survey->primaryKey]);
+            } else {
+                App()->user->setFlash('error', "Survey not imported.");
+            }
         } else {
             $this->redirect(['surveys/create']);
         }
@@ -294,8 +297,7 @@ class SurveysController extends Controller
 
     public function actionDelete($id) {
         $survey = $this->loadModel($id);
-        if (App()->request->getIsDeleteRequest()
-            && !$survey->isActive
+        if (!$survey->isActive
             && App()->user->checkAccess('survey', [
                 'entity' => 'survey',
                 'entity_id' => $survey->primaryKey,
@@ -310,5 +312,25 @@ class SurveysController extends Controller
             }
             $this->redirect(['surveys/update', 'id' => $survey->primaryKey]);
         }
+    }
+
+    public function actionDeleteMultiple(array $ids) {
+        $count = 0;
+        foreach($ids as $id) {
+            $survey = $this->loadModel($id);
+            if (!$survey->isActive
+            && App()->user->checkAccess('survey', [
+                'entity' => 'survey',
+                'entity_id' => $survey->primaryKey,
+                'crud' => 'delete'
+            ])) {
+                $survey->deleteDependent();
+                $count++;
+
+            }
+
+        }
+        App()->user->setFlash('success', gT("Surveys deleted") . " " . $count);
+        $this->redirect(['surveys/index']);
     }
 }

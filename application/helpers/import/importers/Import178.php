@@ -15,58 +15,35 @@ use SamIT\Yii1\Behaviors\TranslatableBehavior;
 
 class Import178 extends BaseElementXmlImport{
 
+    /**
+     * @return Survey|false
+     * @throws \CDbException
+     * @throws \Exception
+     */
     public function run()
     {
-//        var_dump($this->parsedDocument);
         $transaction = App()->db->beginTransaction();
 
         try {
             $groupMap = [];
             /** @var \Survey $survey */
-            list($oldKey, $survey) = $this->importSurvey($this->parsedDocument['surveys']['rows']['row']);
-            $groups = [];
-            foreach($this->parsedDocument['groups']['rows']['row'] as $group) {
-                if ($group['language'] != $survey->language) {
-                    $groups[$group['gid']]['translations'][] = $group;
-                } else {
-                    $groups[$group['gid']] = array_merge(isset($groups[$group['gid']]) ? $groups[$group['gid']] : [], $group);
-                }
-            }
-
-            foreach($groups as $group) {
-                list($oldId, $group) = $this->importGroup($group, $survey);
-                $groupMap[$oldId] = $group->primaryKey;
-            }
-
-
-            $questions = [];
-            foreach($this->parsedDocument['questions']['rows']['row'] as $question) {
-                if ($question['language'] != $survey->language) {
-                    $questions[$question['qid']]['translations'][] = $question;
-                } else {
-                    $questions[$question['gid']] = array_merge(isset($questions[$question['gid']]) ? $questions[$question['gid']] : [], $question);
-                }
-            }
-
-            foreach($questions as $question) {
-                list($oldId, $question) = $this->importQuestion($question, $groupMap, $survey);
-                $questionMap[$oldId] = $question->primaryKey;
-            }
-
-
+            $result = $this->importSurvey($this->parsedDocument);
         } catch(\Exception $e) {
             $transaction->rollback();
             throw $e;
         }
-        // during testing always rollback
-        $transaction->rollback();
-
+        if ($result !== null) {
+            $transaction->commit();
+        } else {
+            $transaction->rollback();
+        }
+        return $result;
 
 
 
     }
 
-    protected function importTranslation(TranslatableBehavior $translatable, array $data, $groupId) {
+    protected function importTranslation(TranslatableBehavior $translatable, array $data) {
         $translatedFields = [];
         foreach ($translatable->attributes as $attribute) {
             if (isset($data[$attribute])) {
@@ -76,47 +53,63 @@ class Import178 extends BaseElementXmlImport{
         if (!empty($translatedFields)) {
             $translation = new \Translation();
             $translation->model = $translatable->getModel();
-            $translation->model_id = $groupId;
+            $translation->model_id = $translatable->owner->primaryKey;
             $translation->dataStore = $translatedFields;
             if (!$translation->save()) {
                 throw new \Exception("Failed to save group translation.");
             }
 
         }
+        return true;
     }
     protected function prepareGroup(array $data, \Survey $survey) {
         // Translate gid.
         $data['id'] = $data['gid'];
+        $data['sid'] = $survey->primaryKey;
         unset($data['gid']);
         unset($data['language']);
         return $data;
     }
-    protected function importGroup(array $data, \Survey $survey) {
+    protected function importGroup(array $data, \Survey $survey, array &$questionMap) {
         $group = new \QuestionGroup();
         $data = $this->prepareGroup($data, $survey);
         $translations = \TbArray::popValue('translations', $data, []);
-        if (is_array($data)) {
-            foreach($data as $key => $value) {
-                if (!($group->canSetProperty($key) || $group->hasAttribute($key))) {
-                    throw new \Exception("Could not set property $key");
-                }
+        $questions = \TbArray::popValue('questions', $data, []);
+        foreach($data as $key => $value) {
+            if (!($group->canSetProperty($key) || $group->hasAttribute($key))) {
+                throw new \Exception("Could not set property $key");
             }
-            $group->setAttributes($data, false);
-            $group->sid = $survey->primaryKey;
-            $result[0] = $group->primaryKey;
-            $group->primaryKey = null;
-            if (!$group->save()) {
-                throw new \Exception('Group could not be validated or saved.');
-            }
-            $result[1] = $group;
-            foreach($translations as $translation) {
-                $this->importTranslation($group->translatable, $translation, $group->primaryKey);
-            }
-            return $result;
         }
+        $group->setAttributes($data, false);
+        $oldKey = $group->primaryKey;
+        $group->primaryKey = null;
+        if ($result = $group->save()) {
+            $group->survey = $survey;
+            foreach($translations as $translation) {
+                $result = $result && $this->importTranslation($group->translatable, $translation, $group->primaryKey);
+            }
+            foreach($questions as $question) {
+                $result = $result && $this->importQuestion($question, $group, $questionMap);
+            }
+
+        } else {
+            var_dump($group->errors);
+            die();
+        }
+        return $result;
+
     }
+
+    /**
+     * @param $data
+     * @return mixed
+     * @throws \Exceptions
+     */
     protected function importSurvey($data) {
         $survey = new \Survey();
+
+        $surveyTranslations = \TbArray::popValue('languagesettings', $data, []);
+        $groups = \TbArray::popValue('groups', $data, []);
 
         foreach($data as $key => $value) {
             if (!($survey->canSetProperty($key) || $survey->hasAttribute($key))) {
@@ -124,30 +117,59 @@ class Import178 extends BaseElementXmlImport{
             }
         }
         $survey->setAttributes($data, false);
-        $result[0] = $survey->primaryKey;
+        $oldKey = $survey->primaryKey;
         $survey->primaryKey = null;
-        if (!$survey->save()) {
-            throw new \Exception('Survey could not be validated or saved.');
+        $questionMap = [];
+        if ($result = $survey->save()) {
+
+            foreach ($surveyTranslations as $surveyTranslation) {
+                $result = $result && $this->importSurveyTranslation($surveyTranslation, $survey);
+            }
+            foreach ($groups as $group) {
+                $result = $result && $this->importGroup($group, $survey, $questionMap);
+            }
         }
-        $result[1] = $survey;
 
-        return $result;
-
-
-//        var_dump($survey);
-//        var_dump($surveyNode->chC
+        return $result ? $survey : null;
     }
 
-    protected function prepareQuestion($data, $groupMap, \Survey $survey) {
+    protected function importSurveyTranslation($data, \Survey $survey) {
+        $languageSetting = new \SurveyLanguageSetting();
+        $languageSetting->setAttributes($data, false);
+        $languageSetting->surveyls_survey_id = $survey->primaryKey;
+        if (false === $result = $languageSetting->save()) {
+            throw new \Exception("Failed to save survey translation.");
+        }
+        return $result;
+    }
+
+    protected function prepareQuestion($data, \QuestionGroup $group, \Question $parent = null) {
         // Translate gid.
 //        $data['id'] = $data['gid'];
 //        unset($data['gid']);
         unset($data['language']);
-        $data['gid'] = $groupMap[$data['gid']];
-        $data['sid'] = $survey->sid;
+        $data['gid'] = $group->primaryKey;
+        $data['sid'] = $group->sid;
+        $model = \Question::model();
+        $model->title = $data['title'];
+        if (!$model->validate(['title'])) {
+            $data['title'] = "q" . $data['title'];
+        }
+        if (isset($parent)) {
+            $data['parent_qid'] = $parent->primaryKey;
+        }
         return $data;
     }
-    protected function importQuestion($data, $groupMap, \Survey $survey) {
+
+    protected function importCondition($data, \Question $question, array &$questionMap)
+    {
+        throw new \Exception('Condition import not finished');
+        return true;
+        $data['qid'] = $question->primaryKey;
+        $data['cqid'] = $questionMap[$data['cqid']];
+        return $data;
+    }
+    protected function importQuestion(array $data, \QuestionGroup $group, array &$questionMap, \Question $parent = null) {
         /**
          * If we only have 1 language, use it even if it is not the "base" language.
          */
@@ -155,7 +177,10 @@ class Import178 extends BaseElementXmlImport{
             $data = $data['translations'][0];
         }
         $translations = \TbArray::popValue('translations', $data, []);
-        $data = $this->prepareQuestion($data, $groupMap, $survey);
+        $subQuestions = \TbArray::popValue('subquestions', $data, []);
+        $conditions = \TbArray::popValue('conditions', $data, []);
+        $answers = \TbArray::popValue('answers', $data, []);
+        $data = $this->prepareQuestion($data, $group, $parent);
         $question = new \Question();
         foreach($data as $key => $value) {
             if (!($question->canSetProperty($key) || $question->hasAttribute($key))) {
@@ -163,15 +188,68 @@ class Import178 extends BaseElementXmlImport{
             }
         }
         $question->setAttributes($data, false);
-        $result[0] = $question->primaryKey;
+        $oldKey = $question->primaryKey;
         $question->primaryKey = null;
-        $question->parent_qid = 0;
-        if (!$question->save()) {
-            throw new \Exception('Question could not be validated or saved.');
+        $question->parent_qid = !isset($parent) ? 0 : $parent->qid;
+
+        if ($result = $question->save()) {
+            $question->group = $group;
+            $questionMap[$oldKey] = $question->primaryKey;
+            foreach($translations as $translation) {
+                $this->importTranslation($question->translatable, $translation, $question->primaryKey);
+            }
+
+            foreach($subQuestions as $subQuestion) {
+                $result = $result && $this->importQuestion($subQuestion, $group, $questionMap, $question);
+            }
+
+            foreach($conditions as $condition) {
+                $result = $result && $this->importCondition($condition, $question, $questionMap);
+            }
+            foreach($answers as $answer) {
+                $result = $result && $this->importAnswer($answer, $question);
+            }
+        } else {
+            var_dump($data);
+            var_dump($question->attributes);
+            var_dump($question->errors);
+            die('failed importing question');
         }
-        $result[1] = $question;
-        foreach($translations as $translation) {
-            $this->importTranslation($question->translatable, $translation, $question->primaryKey);
+        return $result;
+    }
+
+    protected function prepareAnswer($data, \Question $question) {
+        unset($data['qid']);
+        $data['question_id'] = $question->primaryKey;
+        unset($data['language']);
+        return $data;
+    }
+    protected function importAnswer($data, \Question $question)
+    {
+        $answer = new \Answer();
+        $translations = \TbArray::popValue('translations', $data, []);
+
+        $data = $this->prepareAnswer($data, $question);
+
+        foreach($data as $key => $value) {
+            if (!($answer->canSetProperty($key) || $answer->hasAttribute($key))) {
+                throw new \Exception("Could not set property $key");
+            }
+        }
+        $answer->setAttributes($data, false);
+        $answer->primaryKey = null;
+        if ($result = $answer->save()) {
+            $answer->question = $question;
+
+            foreach ($translations as $translation) {
+                $result = $result && $this->importTranslation($answer->translatable, $translation, $answer->primaryKey);
+            }
+        } else {
+            var_dump($answer->errors);
+            die();
+        }
+        if (!$result) {
+            echo "Failed to import answer";
         }
         return $result;
     }

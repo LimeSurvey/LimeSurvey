@@ -2,16 +2,59 @@
     if (empty($surveys)) {
         return $this->renderPartial('firstSteps');
     }
-    $this->widget(TbGridView::class, [
+
+//
+    $actions = TbHtml::tag('div', [
+        'style' => 'padding-left: 10px; margin-top: -21px;'
+    ], implode(" ", [
+        '└─── ',
+        gT("With selected") . ':',
+        TbHtml::openTag('div', ['class' => 'btn-group']),
+        TbHtml::submitButton('', [
+            'color' => 'primary',
+            'icon' => 'trash',
+            'title' => gT('Delete surveys'),
+            'formaction' => App()->createUrl('surveys/deleteMultiple'),
+            'data-method' => 'delete',
+            'data-confirm' => gT("This will delete all selected surveys, are you sure?")
+        ]),
+        TbHtml::submitButton('', [
+            'icon' => 'play',
+            'title' => gT("Activate selected surveys"),
+            'formaction' => App()->createUrl('surveys/activateMultiple'),
+            'data-confirm' => gT("This will activate all selected surveys, are you sure?")
+        ]),
+        TbHtml::submitButton('', [
+            'icon' => 'stop',
+            'color' => 'danger',
+            'title' => gT("Stop selected surveys"),
+            'formaction' => App()->createUrl('surveys/deactivateMultiple'),
+            'data-confirm' => gT("This will activate all selected surveys, are you sure?")
+        ]),
+        TbHtml::endForm()
+    ]));
+
+    echo TbHtml::beginForm('', 'post', ['id' => 'surveyForm']);
+    $this->widget(WhGridView::class, [
+        'template' => "{summary}\n{items}\n$actions\n{pager}\n{extendedSummary}",
         'dataProvider' => $surveys,
+        'selectableRows' => 0,
         'filter' => $filter,
         'columns' => [
-            'actions' => [
+            [
+                'class' => \CCheckBoxColumn::class,
+                'checkBoxHtmlOptions' => [
+                    'name' => 'ids[]',
+                    'form' => 'surveyForm'
+                ],
+                'selectableRows' => 2
+            ],
+            [
                 'htmlOptions' => [
                     'style' => 'width: 100px;',
                 ],
                 'class' => TbButtonColumn::class,
-                'template' => '{remove}{update}',
+                'template' => '{remove} {update}',
                 'header' => gT("Actions"),
                 'buttons' => [
                     'remove' => [
@@ -48,8 +91,8 @@
 
             ],
             [
-                'header' => 'Survey ID',
                 'name' => 'sid',
+                'class' => TbDataColumn::class,
                 'type' => 'raw',
                 'value' => function(Survey $survey, $row) { return \TbHtml::link($survey->sid, ['surveys/update', 'id' => $survey->sid]); },
                 'htmlOptions' => [
@@ -58,18 +101,28 @@
             ],
             [
                 'name' => 'localizedTitle',
+                'sortable' => true,
+                'class' => TbDataColumn::class,
             ], [
-                'class' => \CDataColumn::class,
+                'class' => TbDataColumn::class,
                 'name' => 'bool_usetokens',
                 'type' => 'booleanIcon',
                 'htmlOptions' => [
-                    'style' => 'width: 100px;',
+                    'style' => 'width: 120px;',
                 ],
                 'filter' => TbHtml::dropdownList(\CHtml::modelName($filter) . '[bool_usetokens]', $filter->bool_usetokens, [
                     '' => 'All',
                     1 => gT('Yes'),
                     0 => gT('No')
                 ])
+            ],
+            [
+                'filter' => false,
+                'name' => 'questionCount',
+                'htmlOptions' => [
+                    'style' => 'width: 100px;',
+                ],
+
             ],
 
             [
@@ -103,4 +156,3 @@
 
         ]
     ]);
-?>

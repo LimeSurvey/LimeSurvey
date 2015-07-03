@@ -1,10 +1,11 @@
 <?php
 namespace ls\controllers;
-use hafriedlander\Peg\Compiler\Token;
+use Token;
 use Yii;
 use ls\pluginmanager\PluginEvent;
 class TokensController extends Controller
 {
+
     public function actions() {
         return [
             'captcha' => [
@@ -31,18 +32,13 @@ class TokensController extends Controller
         $this->menus['survey'] = $survey;
 
         if ($dataProvider->totalItemCount > 0) {
-            $this->render('/responses/index', [
+            $this->render('responses', [
                 'dataProvider' => $dataProvider,
-                'columns' => [
-                    'token',
-                    'submitdate',
-                    'series_id',
-                ],
-
-                'wrapper' => 'col-md-10 col-md-offset-2'
+                'survey' => $survey,
+//                'wrapper' => 'col-md-10 col-md-offset-2'
             ]);
-            } else {
-                echo "No responses for this token";
+        } else {
+            echo "No responses for this token";
         }
     }
     public function actionCreate($surveyId)
@@ -237,6 +233,12 @@ class TokensController extends Controller
         return $message;
     }
 
+    /**
+     * @param type $id
+     * @param null $surveyId
+     * @return Token
+     * @throws \CHttpException
+     */
     protected function loadModel($id, $surveyId = null)
     {
         if (!isset($surveyId)) {
@@ -249,5 +251,19 @@ class TokensController extends Controller
         return $result;
     }
 
+
+    /**
+     * @param int $id
+     * @param int  $surveyId
+     * @todo Add permission check.
+     */
+    public function actionDelete($id, $surveyId) {
+        if ($this->loadModel($id, $surveyId)->delete()) {
+            App()->user->setFlash('success', gT("Token deleted"));
+        } else {
+            App()->user->setFlash('success', gT("Could not delete token"));
+        }
+        $this->redirect(['tokens/index', 'surveyId' => $surveyId]);
+    }
 
 }

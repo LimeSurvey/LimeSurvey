@@ -2,9 +2,10 @@
 <?php 
 echo TbHtml::link(TbHtml::tag('h3', [], "{$survey->localizedTitle} ({$survey->sid})"), ['surveys/update', 'id' => $survey->sid]);
 $items = [];
+/** @var QuestionGroup $group */
 foreach ($survey->groups as $group) {
     $items[] = [
-        'label' => "{$group->title} - {$group->group_name}",
+        'label' => "{$group->title} - {$group->description}",
         'url' => ['groups/view', 'id' => $group->id],
         'class' => 'group',
         'active' => isset($this->group) && $this->group->id === $group->id && !isset($this->question)

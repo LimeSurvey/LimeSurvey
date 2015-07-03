@@ -11,6 +11,8 @@
             'enableClientValidation' => true,
             'layout' => TbHtml::FORM_LAYOUT_HORIZONTAL,
             'action' => ['settings/update'],
+            'labelWidthClass' => 'col-sm-4',
+            'controlWidthClass' => 'col-sm-8',
             'method' => 'put',
             'htmlOptions' => [
                 "autocomplete" => "off",

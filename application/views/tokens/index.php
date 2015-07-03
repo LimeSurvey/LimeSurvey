@@ -21,8 +21,19 @@ $columns = [
         'updateButtonUrl' => function(Token $model, $row) {
             return App()->createUrl('tokens/update', ['id' => $model->primaryKey, 'surveyId' => $model->surveyId]);
         },
-        'template' => '{createResponse}{view}{update}{delete}',
+        'template' => '{createResponse} {view} {update} {remove}',
         'buttons' => [
+            'remove' => [
+                'icon' => 'trash',
+                'label' => gT("Remove token"),
+                'options' => [
+                    'data-confirm' => gT("Are you sure you want to delete this token?"),
+                    'data-method' => 'delete'
+                ],
+                'url' => function(Token $token) {
+                    return App()->createUrl('tokens/delete', ['id' => $token->primaryKey, 'surveyId' => $token->surveyId]);
+                },
+            ],
             'createResponse' => [
                 'icon' => TbHtml::ICON_CERTIFICATE,
                 'title' => gT("Execute survey with this token."),
