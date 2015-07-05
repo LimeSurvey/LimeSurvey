@@ -106,6 +106,13 @@ abstract class BaseElementXmlImport extends BaseXmlImport
             }
         }
 
+        // Add attributes
+        foreach (isset($data['question_attributes']) ? $data['question_attributes']['rows'] : [] as $attribute) {
+            if ($attribute['qid'] == $question['qid']) {
+                $question[$attribute['attribute']] = $attribute['value'];
+            }
+        }
+
         return $question;
     }
 
@@ -132,6 +139,7 @@ abstract class BaseElementXmlImport extends BaseXmlImport
         foreach($data['questions']['rows'] as $question) {
             // Only handle the base language.
             if ($question['gid'] == $group['gid'] && $question['language'] == $language) {
+
                 $group['questions'][] = $this->constructQuestion($question, $language, $data);
             }
 

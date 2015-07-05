@@ -170,6 +170,11 @@
             if ($this->scenario != '') {
                 throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens");
             }
+            /**
+             * @todo Generate tokens in SQL.
+             */
+            //$sql = "SUBSTRING(CONCAT(MD5(RAND()), MD5(RAND())), 1, 15)";
+
             $surveyId = $this->dynamicId;
             $tokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
             
@@ -198,7 +203,7 @@
                 $bIsValidToken = false;
                 while ($bIsValidToken == false && $invalidtokencount<50)
                 {
-                    $newtoken = Yii::app()->securityManager->generateRandomString($tokenLength);
+                    $newtoken = App()->securityManager->generateRandomString($tokenLength);
                     if (!isset($existingtokens[$newtoken]))
                     {
                         $existingtokens[$newtoken] = true;

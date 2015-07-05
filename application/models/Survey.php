@@ -22,6 +22,8 @@ if (!defined('BASEPATH'))
  * @property-read QuestionGroup[] $groups
  * @property string $admin
  * @property string $adminEmail
+ * @property-read int $questionCount
+ * @property-read int $groupCount
  */
 class Survey extends LSActiveRecord
 {
@@ -170,6 +172,7 @@ class Survey extends LSActiveRecord
             'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid', 'order' => 'group_order ASC'],
             'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0", 'order' => 'question_order ASC'],
             'questionCount' => [self::STAT, 'Question', 'sid', 'condition' => "parent_qid = 0"],
+            'groupCount' => [self::STAT, QuestionGroup::class, 'sid'],
             'savedControls' => [self::HAS_MANY, SavedControl::class, 'sid'],
             'surveyLinks' => [self::HAS_MANY, SurveyLink::class, 'survey_id'],
             'quota' => [self::HAS_MANY, Quota::class, 'sid']

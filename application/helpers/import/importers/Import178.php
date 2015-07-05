@@ -25,7 +25,6 @@ class Import178 extends BaseElementXmlImport{
         $transaction = App()->db->beginTransaction();
 
         try {
-            $groupMap = [];
             /** @var \Survey $survey */
             $result = $this->importSurvey($this->parsedDocument);
         } catch(\Exception $e) {
@@ -47,11 +46,12 @@ class Import178 extends BaseElementXmlImport{
         $translatedFields = [];
         foreach ($translatable->attributes as $attribute) {
             if (isset($data[$attribute])) {
-                $translatedFields = $data[$attribute];
+                $translatedFields[$attribute] = $data[$attribute];
             }
         }
         if (!empty($translatedFields)) {
             $translation = new \Translation();
+            $translation->language = $data['language'];
             $translation->model = $translatable->getModel();
             $translation->model_id = $translatable->owner->primaryKey;
             $translation->dataStore = $translatedFields;
@@ -173,24 +173,26 @@ class Import178 extends BaseElementXmlImport{
         /**
          * If we only have 1 language, use it even if it is not the "base" language.
          */
-        if (count($data) == 1 && isset($data['translations']) && count($data['translations']) == 1) {
-            $data = $data['translations'][0];
-        }
         $translations = \TbArray::popValue('translations', $data, []);
         $subQuestions = \TbArray::popValue('subquestions', $data, []);
         $conditions = \TbArray::popValue('conditions', $data, []);
         $answers = \TbArray::popValue('answers', $data, []);
         $data = $this->prepareQuestion($data, $group, $parent);
-        $question = new \Question();
+        // We want the "correct class".
+        $class = \Question::resolveClass($data['type']);
+        /** @var \Question $question */
+        $question = new $class();
+        $question->type = $data['type'];
         foreach($data as $key => $value) {
             if (!($question->canSetProperty($key) || $question->hasAttribute($key))) {
-                throw new \Exception("Could not set property $key");
+                throw new \Exception("Could not set property $key for " . get_class($question));
+            } else {
+                $question->$key = $value;
             }
         }
-        $question->setAttributes($data, false);
         $oldKey = $question->primaryKey;
         $question->primaryKey = null;
-        $question->parent_qid = !isset($parent) ? 0 : $parent->qid;
+        $question->parent_qid = !isset($parent) ? 0 : $parent->primaryKey;
 
         if ($result = $question->save()) {
             $question->group = $group;

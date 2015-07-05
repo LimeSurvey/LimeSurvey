@@ -29,6 +29,7 @@ require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
  * @property CHttpSession $session
  * @property CClientScript $clientScript
  * @property MigrationManager $migrationManager
+ * @property CSecurityManager $securityManager
  */
 class WebApplication extends CWebApplication
 {

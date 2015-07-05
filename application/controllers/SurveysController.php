@@ -216,7 +216,8 @@ class SurveysController extends Controller
         if (isset($file)) {
             $importer = ImportFactory::getForLss($file->getTempName());
             if (null !== $survey = $importer->run()) {
-                App()->user->setFlash('success', "Survey imported.");
+
+                App()->user->setFlash('success', "Survey imported ({$survey->groupCount}/{$survey->questionCount}).");
                 $this->redirect(['surveys/update', 'id' => $survey->primaryKey]);
             } else {
                 App()->user->setFlash('error', "Survey not imported.");

@@ -4,7 +4,7 @@
 echo TbHtml::openTag('fieldset', []);
 echo $form->textFieldControlGroup($question, 'title');
 echo $form->textFieldControlGroup($question, 'relevance');
-echo $form->textFieldControlGroup($question, 'a_random_group');
+echo $form->textFieldControlGroup($question, 'random_group');
 echo $form->checkBoxControlGroup($question, 'bool_mandatory');
 echo TbHtml::closeTag('fieldset');
 ?>

@@ -13,6 +13,12 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class QuestionAttribute
+ * @property string $language
+ * @property string $attribute
+ * @property string $value
+ */
 class QuestionAttribute extends LSActiveRecord
 {
 	/**
@@ -39,16 +45,6 @@ class QuestionAttribute extends LSActiveRecord
 		return '{{question_attributes}}';
 	}
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'qaid';
-	}
 
     /**
     * Defines the relations for this model
@@ -58,12 +54,9 @@ class QuestionAttribute extends LSActiveRecord
     */
     public function relations()
     {
-		$alias = $this->getTableAlias();
-        return array(
-        'qid' => array(self::HAS_ONE, 'Questions', '',
-            'on' => "$alias.qid = questions.qid",
-            ),
-        );
+		return [
+            'qid' => [self::BELONGS_TO, Question::class, 'qid']
+        ];
     }
 
     /**

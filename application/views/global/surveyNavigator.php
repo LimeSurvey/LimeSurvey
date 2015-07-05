@@ -5,7 +5,7 @@ $items = [];
 /** @var QuestionGroup $group */
 foreach ($survey->groups as $group) {
     $items[] = [
-        'label' => "{$group->title} - {$group->description}",
+        'label' => $group->title,
         'url' => ['groups/view', 'id' => $group->id],
         'class' => 'group',
         'active' => isset($this->group) && $this->group->id === $group->id && !isset($this->question)

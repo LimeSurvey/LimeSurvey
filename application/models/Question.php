@@ -22,14 +22,72 @@
  * @property-read Translation[] $translations Relation added by translatable behavior
  * @property-read bool $hasSubQuestions
  * @property-read bool $hasAnswers
+ * @property-read string $type
  * @property QuestionGroup $group;
  * @property string $title
  * @property-read Survey $survey
+ * @property-read QuestionAttribute[] $questionAttributes
  */
     class Question extends LSActiveRecord
     {
-
+        protected $customAttributes = [];
         public $before;
+
+        protected function afterFind()
+        {
+            parent::afterFind();
+            // Fill the question attributes.
+            foreach($this->questionAttributes as $questionAttribute) {
+                if (!isset($questionAttribute->language)) {
+                    $this->customAttributes[$questionAttribute->attribute] = $questionAttribute;
+                }
+
+            }
+        }
+
+        protected function afterSave()
+        {
+            parent::afterSave();
+            $this->updateAttributes();
+
+        }
+
+        protected function updateAttributes() {
+            // Save the question attributes that do not use i18n.
+            $db = self::getDbConnection();
+            if (!isset($db->currentTransaction)) {
+                $transaction = $db->beginTransaction();
+            }
+            try {
+                QuestionAttribute::model()->deleteAllByAttributes([
+                    'qid' => $this->primaryKey,
+                    'language' => null
+
+                ]);
+                $rows = [];
+                foreach ($this->customAttributes as $key => $value) {
+                    $rows[] = [
+                        'attribute' => $key,
+                        'value' => $value,
+                        'language' => null
+                    ];
+                }
+                if (!empty($rows)) {
+                    $db->commandBuilder->createMultipleInsertCommand(QuestionAttribute::model()->tableName(),
+                        $rows)->execute();
+                }
+            } catch (\Exception $e) {
+                if (isset($transaction)) {
+                    $transaction->rollback();
+                }
+                throw $e;
+            }
+            if (isset($transaction)) {
+                $transaction->commit();
+            }
+
+        }
+
 
         public function getHasSubQuestions()
         {
@@ -56,19 +114,6 @@
                     'baseLanguage' => function(Question $question) { return $question->isNewRecord ? 'en' : $question->survey->language; }
                 ]
             ];
-        }
-
-        /**
-        * Returns the static model of Settings table
-        *
-        * @static
-        * @access public
-        * @param string $class
-        * @return CActiveRecord
-        */
-        public static function model($class = __CLASS__)
-        {
-            return parent::model($class);
         }
 
         public function beforeSave() {
@@ -108,8 +153,8 @@
         {
             if (substr($name, 0, 5) == 'bool_') {
                 $result = parent::__get(substr($name, 5)) === 'Y';
-            } elseif (substr($name, 0, 2) == 'a_') {
-                $result = isset($this->questionAttributes[substr($name, 2)]) ? $this->questionAttributes[substr($name, 2)]->value : null;
+            } elseif ($name != 'type' && in_array($name, $this->customAttributeNames())) {
+                $result = isset($this->customAttributes[$name]) ? $this->customAttributes[$name] : null;
             } else {
                 $result = parent::__get($name);
             }
@@ -120,14 +165,8 @@
         {
             if (substr($name, 0, 5) == 'bool_') {
                 parent::__set(substr($name, 5), $value ? 'Y' : 'N');
-            } elseif (substr($name, 0, 2) == 'a_') {
-                throw new \Exception("Saving not yet supported");
-                /**
-                 * Several implementation options:
-                 * 1. Save to database on set. (Bad because the record might not get saved.)
-                 * 2. Save to memory, watch before/after Save and commit to db then. (Better but loses atomicity).
-                 * 3. Save to memory, override save and use a transaction.
-                 */
+            } elseif (in_array($name, $this->customAttributeNames())) {
+                $this->customAttributes[$name] = $value;
 
             } else {
                 parent::__set($name, $value);
@@ -288,7 +327,9 @@
 
             if ($iQuestionID)
             {
-                $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
+                $oAttributeValues = QuestionAttribute::model()->findAllByAttributes([
+                    'qid' => $iQuestionID
+                ]);
                 $aAttributeValues=array();
                 foreach($oAttributeValues as $oAttributeValue)
                 {
@@ -817,45 +858,50 @@
             if (!empty($attributes['parent_qid'])) {
                 $class = \ls\models\questions\SubQuestion::class;
             } else {
-                switch ($attributes['type']) {
-                    case 'N':
-                        $class = \ls\models\questions\NumericalQuestion::class;
-                        break;
-                    case 'D': // Date time
-                    case 'U': // Huge free text
-                    case 'S': // Short free text
-                    case 'T':
-                        $class = \ls\models\questions\TextQuestion::class;
-                        break;
-                    case 'O': // Single choice with comments.
-                    case '!': // Single choice dropdown.
-                    case 'L': // Single choice (Radio);
-                        $class = \ls\models\questions\SingleChoiceQuestion::class;
-                        break;
-                    case 'Q': // Multiple (short) text.
-                        $class = \ls\models\questions\MultipleTextQuestion::class;
-                        break;
-                    case 'R': // Ranking
-                        $class = \ls\models\questions\RankingQuestion::class;
-                        break;
-                    case 'F': // Array
-                        $class = \ls\models\questions\ArrayQuestion::class;
-                        break;
-                    case '5': // 5 point choice
-                    case 'Y': // Yes no
-                    case '|':
-                    case 'X': // Text display
-                        $class = get_class($this);
-                        break;
-                    case 'M': // Multiple choice
-                        $class = \ls\models\questions\MultipleChoiceQuestion::class;
-                        break;
-                    default:
-                        die("noo class for type {$attributes['type']}");
-
-                }
+               $class = self::resolveClass($attributes['type']);
             }
             return new $class(null);
+        }
+
+        public static function resolveClass($type) {
+            switch ($type) {
+                case 'N':
+                    $class = \ls\models\questions\NumericalQuestion::class;
+                    break;
+                case 'D': // Date time
+                case 'U': // Huge free text
+                case 'S': // Short free text
+                case 'T':
+                    $class = \ls\models\questions\TextQuestion::class;
+                    break;
+                case 'O': // Single choice with comments.
+                case '!': // Single choice dropdown.
+                case 'L': // Single choice (Radio);
+                    $class = \ls\models\questions\SingleChoiceQuestion::class;
+                    break;
+                case 'Q': // Multiple (short) text.
+                    $class = \ls\models\questions\MultipleTextQuestion::class;
+                    break;
+                case 'R': // Ranking
+                    $class = \ls\models\questions\RankingQuestion::class;
+                    break;
+                case 'F': // Array
+                    $class = \ls\models\questions\ArrayQuestion::class;
+                    break;
+                case '5': // 5 point choice
+                case 'Y': // Yes no
+                case '|':
+                case 'X': // Text display
+                    $class = __CLASS__;
+                    break;
+                case 'M': // Multiple choice
+                    $class = \ls\models\questions\MultipleChoiceQuestion::class;
+                    break;
+                default:
+                    die("noo class for type {$type}");
+
+            }
+            return $class;
         }
 
         public function getTypeName() {
@@ -914,9 +960,26 @@
             }
         }
 
+        /**
+         * Returns the question attributes that do use i18n.
+         * @return string[]
+         */
+        public function customAttributeNames() {
+            if (isset($this->type)) {
+                $attributes = array_filter(questionAttributes()[$this->type], function ($attribute) {
+                    return $attribute['i18n'] === false;
+                });
+                $result = array_keys($attributes);
+            } else {
+                $result = [];
+            }
+            return $result;
+        }
+
+        public function hasAttribute($name)
+        {
+            return in_array($name, $this->customAttributeNames()) || parent::hasAttribute($name);
+        }
+
 
     }
-
-
-
-?>
