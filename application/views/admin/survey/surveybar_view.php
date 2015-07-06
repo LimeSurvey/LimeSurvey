@@ -201,11 +201,11 @@
                         <?php } ?>
                     <?php if($surveyexport) {
                             if($onelanguage) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/export/sa/showquexmlsurvey/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("QueXML export");?></a></li>
+                            <li><a href='<?php echo $this->createUrl("admin/survey/quexml/surveyid/$surveyid");?>' >
+                                <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("queXML PDF export");?></a></li>
                             <?php } else { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/export/sa/showquexmlsurvey/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("QueXML export");?></a><ul>
+                            <li><a href='<?php echo $this->createUrl("admin/survey/quexml/surveyid/$surveyid");?>' >
+                                <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("queXML PDF export");?></a><ul>
                                     <?php foreach ($languagelist as $tmp_lang) { ?>
                                         <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/export/sa/showquexmlsurvey/surveyid/$surveyid/lang/$tmp_lang");?>'>
                                             <img src='<?php echo $sImageURL;?>export_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
