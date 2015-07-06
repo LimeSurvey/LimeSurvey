@@ -16,7 +16,6 @@
 
 var labelcache=[];
 $(document).ready(function(){
-    console.log(otherisreserved);
     removeCSRFDivs();
     $(document).on("click","#editsubquestionsform :submit", function() {//Validate duplicate before try to submit: surely some other javascript elsewhere
         return code_duplicates_check();
