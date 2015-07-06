@@ -154,9 +154,7 @@ class LSActiveRecord extends CActiveRecord
 		$builder=$this->getCommandBuilder();
 		$table=$this->getTableSchema();
 		$criteria=$builder->createColumnCriteria($table,$attributes,$condition,$params);
-        var_dump($this->behaviors());
-        die();
-		$this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
+        $this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
 		$this->dispatchPluginModelEvent('beforeModelDeleteMany',				$criteria);
 		return parent::deleteAllByAttributes(array(), $criteria, array());
 	}

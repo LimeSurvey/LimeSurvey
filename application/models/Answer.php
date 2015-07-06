@@ -15,6 +15,7 @@
 /**
  * Class Answer
  * @property string $answer
+ * @property Question $question
  * @property string $code
  */
 class Answer extends LSActiveRecord
@@ -64,12 +65,12 @@ class Answer extends LSActiveRecord
     public function rules()
     {
         return array(
-            ['question_id','exist', 'className' => Question::class, 'attributeName' => 'qid'],
+            ['question_id', CExistValidator::class, 'className' => Question::class, 'attributeName' => 'qid', 'on' => ['update', 'insert']],
             ['code','length', 'min' => 1, 'max'=>5, 'allowEmpty' => false],
             ['code', 'required'],
             ['code', 'match', 'pattern' => '/^[a-z0-9]*$/i', 'message' => gT('Answer codes may only contain alphanumeric characters.')],
             ['sortorder','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
-            array('answer','LSYii_Validators'),
+            ['answer', LSYii_Validators::class],
 
             array('assessment_value','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
@@ -120,26 +121,6 @@ class Answer extends LSActiveRecord
             $criteria->compare('questions.sid',$newsid);
             $criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
             return $this->with('questions')->findAll($criteria);
-    }
-
-    public function updateRecord($data, $condition=FALSE)
-    {
-        return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
-    }
-
-    function insertRecords($data)
-    {
-        $ans = new self;
-        foreach ($data as $k => $v)
-            $ans->$k = $v;
-        try
-        {
-            return $ans->save();
-        }
-        catch(Exception $e)
-        {
-            return false;
-        }
     }
 
     /**

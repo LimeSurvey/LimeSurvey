@@ -86,7 +86,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'survey' => array(self::BELONGS_TO, 'Survey', '', 'on' => "$alias.surveyls_survey_id = survey.sid"),
+            'survey' => array(self::BELONGS_TO, Survey::class, 'surveyls_survey_id'),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 'survey.owner_id = owner.uid'),
         );
     }
@@ -147,7 +147,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     public function lsdefault($attribute,$params)
     {
         if (isset($this->surveyls_survey_id)) {
-            $oSurvey = Survey::model()->findByPk($this->surveyls_survey_id);
+            $oSurvey = $this->survey;
             $sEmailFormat = $oSurvey->htmlemail == 'Y' ? 'html' : '';
             $aDefaultTexts = templateDefaultTexts($this->surveyls_language, 'unescaped', $sEmailFormat);
 

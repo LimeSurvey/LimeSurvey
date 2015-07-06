@@ -103,7 +103,7 @@ class MigrationManager extends \CApplicationComponent
 		}
 
         // If capturing output and migration succeeded, return the captured output.
-        return $captureOutput && $result ? ob_get_clean() : ob_end_clean() && $result;
+        return $captureOutput && $result ? ob_get_clean() : $result;
 	}
     
     protected function instantiateMigration($class)

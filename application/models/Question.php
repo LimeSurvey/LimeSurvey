@@ -36,12 +36,20 @@
         protected function afterFind()
         {
             parent::afterFind();
+
+        }
+
+        protected function getCustomAttribute($name) {
+            if (array_key_exists($name, $this->customAttributes)) {
+                return $this->customAttributes[$name];
+            }
+
             // Fill the question attributes.
             foreach($this->questionAttributes as $questionAttribute) {
-                if (!isset($questionAttribute->language)) {
-                    $this->customAttributes[$questionAttribute->attribute] = $questionAttribute;
+                if (!isset($questionAttribute->language) && $questionAttribute->attribute === $name) {
+                    $this->customAttributes[$name] = $questionAttribute->value;
+                    return $questionAttribute->value;
                 }
-
             }
         }
 
@@ -67,6 +75,7 @@
                 $rows = [];
                 foreach ($this->customAttributes as $key => $value) {
                     $rows[] = [
+                        'qid' => $this->primaryKey,
                         'attribute' => $key,
                         'value' => $value,
                         'language' => null
@@ -154,7 +163,7 @@
             if (substr($name, 0, 5) == 'bool_') {
                 $result = parent::__get(substr($name, 5)) === 'Y';
             } elseif ($name != 'type' && in_array($name, $this->customAttributeNames())) {
-                $result = isset($this->customAttributes[$name]) ? $this->customAttributes[$name] : null;
+                $result = $this->getCustomAttribute($name);
             } else {
                 $result = parent::__get($name);
             }
@@ -220,7 +229,7 @@
                 ['preg', 'safe'],
                 ['before', 'numerical', 'on' => 'insert', 'integerOnly' => true],
                 ['type', 'in', 'range' => array_keys($this->typeList())],
-                ['gid', 'exist', 'className' => QuestionGroup::class, 'attributeName' => 'id', 'allowEmpty' => false],
+                ['gid', 'exist', 'className' => QuestionGroup::class, 'attributeName' => 'id', 'allowEmpty' => false, 'on' => ['insert', 'update']],
                 ['title', 'required', 'on' => ['update', 'insert']],
                 ['title','length', 'min' => 1, 'max'=>20,'on' => ['update', 'insert']],
                 ['title,question,help', 'LSYii_Validators'],
@@ -886,6 +895,7 @@
                     $class = \ls\models\questions\RankingQuestion::class;
                     break;
                 case 'F': // Array
+                case ':': // Array numbers
                     $class = \ls\models\questions\ArrayQuestion::class;
                     break;
                 case '5': // 5 point choice
@@ -896,6 +906,9 @@
                     break;
                 case 'M': // Multiple choice
                     $class = \ls\models\questions\MultipleChoiceQuestion::class;
+                    break;
+                case '*':
+                    $class = \ls\models\questions\EquationQuestion::class;
                     break;
                 default:
                     die("noo class for type {$type}");

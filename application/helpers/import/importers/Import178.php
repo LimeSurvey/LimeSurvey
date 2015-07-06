@@ -23,7 +23,6 @@ class Import178 extends BaseElementXmlImport{
     public function run()
     {
         $transaction = App()->db->beginTransaction();
-
         try {
             /** @var \Survey $survey */
             $result = $this->importSurvey($this->parsedDocument);
@@ -43,6 +42,7 @@ class Import178 extends BaseElementXmlImport{
     }
 
     protected function importTranslation(TranslatableBehavior $translatable, array $data) {
+        \Yii::beginProfile('importTranslation');
         $translatedFields = [];
         foreach ($translatable->attributes as $attribute) {
             if (isset($data[$attribute])) {
@@ -60,6 +60,7 @@ class Import178 extends BaseElementXmlImport{
             }
 
         }
+        \Yii::endProfile('importTranslation');
         return true;
     }
     protected function prepareGroup(array $data, \Survey $survey) {
@@ -72,6 +73,8 @@ class Import178 extends BaseElementXmlImport{
     }
     protected function importGroup(array $data, \Survey $survey, array &$questionMap) {
         $group = new \QuestionGroup();
+        // Set related model.
+        $group->survey = $survey;
         $data = $this->prepareGroup($data, $survey);
         $translations = \TbArray::popValue('translations', $data, []);
         $questions = \TbArray::popValue('questions', $data, []);
@@ -135,6 +138,7 @@ class Import178 extends BaseElementXmlImport{
 
     protected function importSurveyTranslation($data, \Survey $survey) {
         $languageSetting = new \SurveyLanguageSetting();
+        $languageSetting->survey = $survey;
         $languageSetting->setAttributes($data, false);
         $languageSetting->surveyls_survey_id = $survey->primaryKey;
         if (false === $result = $languageSetting->save()) {
@@ -144,9 +148,7 @@ class Import178 extends BaseElementXmlImport{
     }
 
     protected function prepareQuestion($data, \QuestionGroup $group, \Question $parent = null) {
-        // Translate gid.
-//        $data['id'] = $data['gid'];
-//        unset($data['gid']);
+        \Yii::beginProfile('prepareQuestion');
         unset($data['language']);
         $data['gid'] = $group->primaryKey;
         $data['sid'] = $group->sid;
@@ -158,21 +160,39 @@ class Import178 extends BaseElementXmlImport{
         if (isset($parent)) {
             $data['parent_qid'] = $parent->primaryKey;
         }
+        \Yii::endProfile('prepareQuestion');
         return $data;
     }
 
-    protected function importCondition($data, \Question $question, array &$questionMap)
+    protected function importCondition($data, \Question $question, array $questionMap)
     {
-        throw new \Exception('Condition import not finished');
-        return true;
-        $data['qid'] = $question->primaryKey;
-        $data['cqid'] = $questionMap[$data['cqid']];
-        return $data;
+        \Yii::beginProfile('importCondition');
+        $oldTargetQid = intval($data['cqid']);
+        if (!isset($questionMap[$oldTargetQid])) {
+            throw new \Exception("Could not convert condition.");
+        }
+        $newTargetQid = $questionMap[$oldTargetQid];
+        $pattern = '/\d+X\d+X' . $oldTargetQid . '(?<field>.*)/';
+        if (preg_match($pattern, $data['cfieldname'], $matches)) {
+            $condition = new \Condition();
+            $condition->setAttributes($data, false);
+            $condition->qid = $question->primaryKey;
+            $condition->cqid = $newTargetQid;
+            $condition->primaryKey = null;
+            $condition->cfieldname = "{$question->sid}X{$question->gid}X{$newTargetQid}{$matches['field']}";
+
+            $result = $condition->save();
+        } else {
+            throw new \Exception("Pattern '$pattern' does not match {$data['cfieldname']}");
+        }
+        \Yii::endProfile('importCondition');
+        return $result;
     }
     protected function importQuestion(array $data, \QuestionGroup $group, array &$questionMap, \Question $parent = null) {
         /**
          * If we only have 1 language, use it even if it is not the "base" language.
          */
+        \Yii::beginProfile('importQuestion');
         $translations = \TbArray::popValue('translations', $data, []);
         $subQuestions = \TbArray::popValue('subquestions', $data, []);
         $conditions = \TbArray::popValue('conditions', $data, []);
@@ -181,8 +201,11 @@ class Import178 extends BaseElementXmlImport{
         // We want the "correct class".
         $class = \Question::resolveClass($data['type']);
         /** @var \Question $question */
-        $question = new $class();
+        $question = new $class('import');
         $question->type = $data['type'];
+        // Set related models.
+        $question->group = $group;
+        $question->survey = $group->survey;
         foreach($data as $key => $value) {
             if (!($question->canSetProperty($key) || $question->hasAttribute($key))) {
                 throw new \Exception("Could not set property $key for " . get_class($question));
@@ -193,8 +216,10 @@ class Import178 extends BaseElementXmlImport{
         $oldKey = $question->primaryKey;
         $question->primaryKey = null;
         $question->parent_qid = !isset($parent) ? 0 : $parent->primaryKey;
-
-        if ($result = $question->save()) {
+        \Yii::beginProfile('saveQuestion');
+        $result = $question->save();
+        \Yii::endProfile('saveQuestion');
+        if ($result) {
             $question->group = $group;
             $questionMap[$oldKey] = $question->primaryKey;
             foreach($translations as $translation) {
@@ -217,6 +242,7 @@ class Import178 extends BaseElementXmlImport{
             var_dump($question->errors);
             die('failed importing question');
         }
+        \Yii::endProfile('importQuestion');
         return $result;
     }
 
@@ -228,7 +254,10 @@ class Import178 extends BaseElementXmlImport{
     }
     protected function importAnswer($data, \Question $question)
     {
-        $answer = new \Answer();
+        \Yii::beginProfile('importAnswer');
+        $answer = new \Answer('import');
+        // Set related model.
+        $answer->question = $question;
         $translations = \TbArray::popValue('translations', $data, []);
 
         $data = $this->prepareAnswer($data, $question);
@@ -237,22 +266,19 @@ class Import178 extends BaseElementXmlImport{
             if (!($answer->canSetProperty($key) || $answer->hasAttribute($key))) {
                 throw new \Exception("Could not set property $key");
             }
+            $answer->$key = $value;
         }
-        $answer->setAttributes($data, false);
+//        $answer->setAttributes($data, false);
         $answer->primaryKey = null;
+        \Yii::beginProfile('answerQuery');
         if ($result = $answer->save()) {
-            $answer->question = $question;
-
             foreach ($translations as $translation) {
                 $result = $result && $this->importTranslation($answer->translatable, $translation, $answer->primaryKey);
             }
-        } else {
-            var_dump($answer->errors);
-            die();
         }
-        if (!$result) {
-            echo "Failed to import answer";
-        }
+
+        \Yii::endProfile('answerQuery');
+        \Yii::endProfile('importAnswer');
         return $result;
     }
 }

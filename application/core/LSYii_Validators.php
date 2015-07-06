@@ -23,7 +23,7 @@ class LSYii_Validators extends CValidator {
     * Filter attribute for XSS
     * @var boolean
     */
-    public $xssfilter=true;
+    public $xssfilter;
     /**
     * Filter attribute for url
     * @var boolean
@@ -42,9 +42,7 @@ class LSYii_Validators extends CValidator {
 
     public function __construct()
     {
-        if(Yii::app()->getConfig('DBVersion')< 172) // Permission::model exist only after 172 DB version
-            return $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
-        $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !App()->user->checkAccess('superadmin'));
+        $this->xssfilter = !App()->user->checkAccess('superadmin') && \SettingGlobal::get('filterxsshtml', true);
     }
 
     protected function validateAttribute($object,$attribute)
@@ -125,16 +123,17 @@ class LSYii_Validators extends CValidator {
                 'news' => true,
                 )
         );
+
         // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered=preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#','{$1}',$filter->purify($value));
-        Yii::import('application.helpers.expressions.em_core_helper');// Already imported in em_manager_helper.php ?
         $oExpressionManager= new ExpressionManager;
         /**  We get 2 array : one filtered, other unfiltered **/
         $aValues=$oExpressionManager->asSplitStringOnExpressions($value);// Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
         $aFilteredValues=$oExpressionManager->asSplitStringOnExpressions($sFiltered);// Same but for the filtered string
         $bCountIsOk=count($aValues)==count($aFilteredValues);
+
         /** Construction of new string with unfiltered EM and filtered HTML **/
         $sNewValue="";
         foreach($aValues as $key=>$aValue){
@@ -157,7 +156,6 @@ class LSYii_Validators extends CValidator {
                 $sNewValue.="}";
             }
         }
-        gc_collect_cycles(); // To counter a high memory usage of HTML-Purifier
         return $sNewValue;
     }
     /**

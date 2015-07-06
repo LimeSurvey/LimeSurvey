@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <?php
+        /** @var Question $question */
             echo TbHtml::tag('h1', [], "Question {$question->title} ({$question->typeName}) -- class: " . get_class($question));
         // This is an update view so we use PUT.
         /** @var TbActiveForm $form */
@@ -35,7 +36,8 @@
                     'content' => "@todo",
                 ], [
                     'label' => gT('Statistics'),
-                    'content' => $this->renderPartial('update/statistics', ['question' => $question, 'form' => $form], true),
+                    'content' => $question->hasProperty('statistics_graphtype') ? $this->renderPartial('update/statistics', ['question' => $question, 'form' => $form], true) : '',
+                    'visible' => $question->hasProperty('statistics_graphtype')
                 ], [
                     'label' => gT('Subquestions'),
                     'visible' => $question->hasSubQuestions,
