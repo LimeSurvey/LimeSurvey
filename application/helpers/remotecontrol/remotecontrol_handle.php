@@ -836,7 +836,7 @@ class remotecontrol_handle
     * @param string $sGroupDescription     Optional description of the group
     * @return array|int The id of the new group - Or status
     */
-    public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
+    public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='', $iGroupID= null, $sGroupLanguage=null)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -850,11 +850,18 @@ class remotecontrol_handle
                     return array('status' => 'Error:Survey is active and not editable');
 
                 $oGroup = new QuestionGroup;
+                if ($iGroupID) {
+                    $oGroup->gid = $iGroupID;
+                }
                 $oGroup->sid = $iSurveyID;
                 $oGroup->group_name =  $sGroupTitle;
                 $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
-                $oGroup->language =  Survey::model()->findByPk($iSurveyID)->language;
+                if ($sGroupLanguage) {
+                    $oGroup->language = $sGroupLanguage;
+                } else {
+                    $oGroup->language = Survey::model()->findByPk($iSurveyID)->language;
+                }
                 if($oGroup->save())
                     return (int)$oGroup->gid;
                 else
