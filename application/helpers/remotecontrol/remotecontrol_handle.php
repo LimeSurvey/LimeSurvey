@@ -1030,11 +1030,11 @@ class remotecontrol_handle
     * @param array  $aGroupSettings The properties to get
     * @return array The requested values
     */
-    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings)
+    public function get_group_properties($sSessionKey, $iGroupID, $sGroupLanguage, $aGroupSettings)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
             if (!isset($oGroup))
                 return array('status' => 'Error: Invalid group ID');
 
@@ -1069,11 +1069,11 @@ class remotecontrol_handle
     * @param array|struct $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @return array Of succeeded and failed modifications according to internal validation.
     */
-    public function set_group_properties($sSessionKey, $iGroupID, $aGroupData)
+    public function set_group_properties($sSessionKey, $iGroupID, $sGroupLanguage, $aGroupData)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oGroup=QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup=QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
             if (is_null($oGroup))
             {
                 return array('status' => 'Error: Invalid group ID');
