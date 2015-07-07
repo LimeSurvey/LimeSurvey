@@ -834,9 +834,11 @@ class remotecontrol_handle
     * @param int $iSurveyID Dd of the Survey to add the group
     * @param string $sGroupTitle Name of the group
     * @param string $sGroupDescription     Optional description of the group
+    * @param int|null $iGroupID The wished id of the new group (needed for multi-languages groups)
+    * @param string|null $sGroupLanguage The group language (default : the survey default language)
     * @return array|int The id of the new group - Or status
     */
-    public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
+    public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='', $iGroupID= null, $sGroupLanguage=null)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -850,11 +852,18 @@ class remotecontrol_handle
                     return array('status' => 'Error:Survey is active and not editable');
 
                 $oGroup = new QuestionGroup;
+                if ($iGroupID) {
+                    $oGroup->gid = $iGroupID;
+                }
                 $oGroup->sid = $iSurveyID;
                 $oGroup->group_name =  $sGroupTitle;
                 $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
-                $oGroup->language =  Survey::model()->findByPk($iSurveyID)->language;
+                if ($sGroupLanguage) {
+                    $oGroup->language = $sGroupLanguage;
+                } else {
+                    $oGroup->language = Survey::model()->findByPk($iSurveyID)->language;
+                }
                 if($oGroup->save())
                     return (int)$oGroup->gid;
                 else
@@ -875,9 +884,10 @@ class remotecontrol_handle
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the survey that the group belongs
     * @param int $iGroupID Id of the group to delete
+    * @param string $sGroupLanguage The group language
     * @return array|int The id of the deleted group or status
     */
-    public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
+    public function delete_group($sSessionKey, $iSurveyID, $iGroupID, $sGroupLanguage)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -889,7 +899,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
             {
-                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
                 if (!isset($oGroup))
                     return array('status' => 'Error: Invalid group ID');
 
@@ -1027,14 +1037,15 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iGroupID Id of the group to get properties
+    * @param string $sGroupLanguage The group language
     * @param array  $aGroupSettings The properties to get
     * @return array The requested values
     */
-    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings)
+    public function get_group_properties($sSessionKey, $iGroupID, $sGroupLanguage, $aGroupSettings)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
             if (!isset($oGroup))
                 return array('status' => 'Error: Invalid group ID');
 
@@ -1066,14 +1077,15 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iGroupID  - ID of the survey
+    * @param string $sGroupLanguage The group language
     * @param array|struct $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @return array Of succeeded and failed modifications according to internal validation.
     */
-    public function set_group_properties($sSessionKey, $iGroupID, $aGroupData)
+    public function set_group_properties($sSessionKey, $iGroupID, $sGroupLanguage, $aGroupData)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oGroup=QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup=QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
             if (is_null($oGroup))
             {
                 return array('status' => 'Error: Invalid group ID');
