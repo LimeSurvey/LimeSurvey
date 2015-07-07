@@ -362,17 +362,11 @@ class Survey_Common_Action extends CAction
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
 
         //Show Question Details
-        //Count answer-options for this question
-        $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid, 'language' => $baselang));
-
-        $aData['qct'] = $qct = count($qrr);
-
-        //Count sub-questions for this question
-        $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
-        $aData['sqct'] = $sqct = count($sqrq);
-
         $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
-        if (is_null($qrrow)) return;
+        if (is_null($qrrow)) 
+            return; // Throw 404 ....
+
+
         $questionsummary = "<div class='menubar'>\n";
 
         // Check if other questions in the Survey are dependent upon this question
@@ -392,6 +386,47 @@ class Survey_Common_Action extends CAction
         $qrrow = $qrrow->attributes;
         $aData['languagelist'] = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
         $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
+
+        // Warning of lack of sub-questions or answers
+        $aWarnings=array();
+        if($qtypes[$qrrow['type']]['answerscales'] > 0 && !Answer::model()->count("qid=:qid AND language=:language and scale_id=0",array(':qid' => $qid, ':language' => $baselang)))
+        {
+            $aWarnings[]=array(
+                'url'=>App()->createUrl("admin/questions",array("sa"=>"answeroptions","surveyid"=>$iSurveyID,"gid"=>$gid,"qid"=>$qid)),
+                'img'=>'answers_20.png',
+                'text'=>gt("You need to add answer options to this question.",'unescaped'),
+                'help'=>gt("Edit answer options for this question.",'unescaped'),
+            );
+        }
+        elseif($qtypes[$qrrow['type']]['answerscales'] > 1 && !Answer::model()->count("qid=:qid AND language=:language and scale_id=1",array(':qid' => $qid, ':language' => $baselang)))
+        {
+            $aWarnings[]=array(
+                'url'=>App()->createUrl("admin/questions",array("sa"=>"answeroptions","surveyid"=>$iSurveyID,"gid"=>$gid,"qid"=>$qid)),
+                'img'=>'answers_20.png',
+                'text'=>gt("You need to add answer options to this question.",'unescaped'),
+                'help'=>gt("Edit answer options for this question.",'unescaped'),
+            );
+        }
+        if($qtypes[$qrrow['type']]['subquestions'] > 0 && !Question::model()->count("parent_qid=:qid AND language=:language and scale_id=0",array(':qid' => $qid, ':language' => $baselang)))
+        {
+            $aWarnings[]=array(
+                'url'=>App()->createUrl("admin/questions",array("sa"=>"subquestions","surveyid"=>$iSurveyID,"gid"=>$gid,"qid"=>$qid)),
+                'img'=>$qtypes[$qrrow['type']]['subquestions']>1 ? "subquestions2d_20.png" : "subquestions_20.png",
+                'text'=>gt("You need to add subquestions options to this question.",'unescaped'),
+                'help'=>gt("Edit subquestions options for this question.",'unescaped'),
+            );
+        }
+        elseif($qtypes[$qrrow['type']]['subquestions'] > 1 && !Question::model()->count("parent_qid=:qid AND language=:language and scale_id=1",array(':qid' => $qid, ':language' => $baselang)))
+        {
+            $aWarnings[]=array(
+                'url'=>App()->createUrl("admin/questions",array("sa"=>"subquestions","surveyid"=>$iSurveyID,"gid"=>$gid,"qid"=>$qid)),
+                'img'=>'subquestions2d_20.png',
+                'text'=>gt("You need to add subquestions to this question.",'unescaped'),
+                'help'=>gt("Edit subquestions for this question.",'unescaped'),
+            );
+        }
+        $aData['aWarnings'] = $aWarnings;
+
         if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action =="editdefaultvalues" || $action == "copyquestion")
         {
             $qshowstyle = "style='display: none'";

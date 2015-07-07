@@ -184,24 +184,18 @@ $aReplacementData=array();
     <tr><td><strong>
             <?php eT("Type:"); ?></strong></td><td><?php echo $qtypes[$qrrow['type']]['description']; ?>
         </td></tr>
-    <?php if ($qct == 0 && $qtypes[$qrrow['type']]['answerscales'] >0)
+
+        <?php foreach($aWarnings as $aWarning)
         { ?>
-        <tr ><td></td><td>
-                <span class='statusentryhighlight'>
-                    <?php eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/questions/sa/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php eT("You need to add answer options to this question"); ?>
-                        <img src='<?php echo $sImageURL; ?>answers_20.png' title='<?php eT("Edit answer options for this question"); ?>' /></a></span></td></tr>
-        <?php }
+        <tr>
+            <td class='text-error'><?php eT("Warning:"); ?></td>
+            <td>
+            <?php echo CHtml::link($aWarning['text'].CHtml::image($sImageURL.$aWarning['img']),$aWarning['url'],array("title"=>$aWarning['help'])) ?>
+            </td>
+        </tr>
+        <?php } ?>
 
-
-        if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
-        { ?>
-        <tr ><td></td><td>
-                <span class='statusentryhighlight'>
-                    <?php eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/questions/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php eT("You need to add subquestions to this question"); ?>
-                        <img src='<?php echo $sImageURL; ?><?php if ($qtypes[$qrrow['type']]['subquestions']==1){?>subquestions_20<?php } else {?>subquestions2d_20<?php } ?>.png' title='<?php eT("Edit subquestions for this question"); ?>' /></a></span></td></tr>
-        <?php }
-
-        if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
+        <?php if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
         { ?>
         <tr>
             <td><strong>
