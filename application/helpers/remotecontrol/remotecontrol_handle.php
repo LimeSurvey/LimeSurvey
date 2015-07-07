@@ -287,7 +287,6 @@ class remotecontrol_handle
                 unset($aSurveyData['owner_id']);
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
-                unset($aSurveyData['additional_languages']);
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Survey::model()->tableSchema->columnNames);
                 $aSurveyData=array_intersect_key($aSurveyData,$aDestinationFields);
