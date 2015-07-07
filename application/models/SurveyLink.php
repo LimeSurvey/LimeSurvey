@@ -1,4 +1,8 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,24 +19,23 @@
 
 class SurveyLink extends LSActiveRecord
 {
-
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table.
+     *
+     * @static
+     *
      * @param string $class
-	 * @return SurveyLink
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     *
+     * @return SurveyLink
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
     /**
-     * Returns the setting's table name to be used by the model
+     * Returns the setting's table name to be used by the model.
      *
-     * @access public
      * @return string
      */
     public function tableName()
@@ -41,9 +44,8 @@ class SurveyLink extends LSActiveRecord
     }
 
     /**
-     * Returns the primary key of this table
+     * Returns the primary key of this table.
      *
-     * @access public
      * @return string
      */
     public function primaryKey()
@@ -51,7 +53,7 @@ class SurveyLink extends LSActiveRecord
         return array('participant_id', 'token_id', 'survey_id');
     }
 
-    function getLinkInfo($participantid)
+    public function getLinkInfo($participantid)
     {
         return self::model()->findAllByAttributes(array('participant_id' => $participantid));
     }
@@ -62,11 +64,13 @@ class SurveyLink extends LSActiveRecord
      *
      *
      * */
-    function rebuildLinksFromTokenTable($iSurveyId) {
+    public function rebuildLinksFromTokenTable($iSurveyId)
+    {
         $this->deleteLinksBySurvey($iSurveyId);
-        $tableName="{{tokens_".$iSurveyId."}}";
-        $dateCreated=date('Y-m-d H:i:s', time());
-        $query = "INSERT INTO ".SurveyLink::tableName()." (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '".$iSurveyId."', '".$dateCreated."' FROM ".$tableName." WHERE participant_id IS NOT NULL";
+        $tableName = '{{tokens_'.$iSurveyId.'}}';
+        $dateCreated = date('Y-m-d H:i:s', time());
+        $query = 'INSERT INTO '.self::tableName()." (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '".$iSurveyId."', '".$dateCreated."' FROM ".$tableName.' WHERE participant_id IS NOT NULL';
+
         return Yii::app()->db->createCommand($query)
                              ->query();
     }
@@ -83,10 +87,12 @@ class SurveyLink extends LSActiveRecord
      *
      * @return true|false
      * */
-    function deleteTokenLink($iTokenIds, $surveyId) {
-        $query = "DELETE FROM ".SurveyLink::tableName()." WHERE token_id IN (".implode(", ", $iTokenIds).") AND survey_id=:survey_id";
+    public function deleteTokenLink($iTokenIds, $surveyId)
+    {
+        $query = 'DELETE FROM '.self::tableName().' WHERE token_id IN ('.implode(', ', $iTokenIds).') AND survey_id=:survey_id';
+
         return Yii::app()->db->createCommand($query)
-                             ->bindParam(":survey_id", $surveyId)
+                             ->bindParam(':survey_id', $surveyId)
                              ->query();
     }
 
@@ -99,13 +105,12 @@ class SurveyLink extends LSActiveRecord
      *
      * @return true|false
      * */
-    function deleteLinksBySurvey($surveyId) {
-        $query = "DELETE FROM ".SurveyLink::tableName(). " WHERE survey_id = :survey_id";
+    public function deleteLinksBySurvey($surveyId)
+    {
+        $query = 'DELETE FROM '.self::tableName().' WHERE survey_id = :survey_id';
+
         return Yii::app()->db->createCommand($query)
-                             ->bindParam(":survey_id", $surveyId)
+                             ->bindParam(':survey_id', $surveyId)
                              ->query();
     }
-
 }
-
-?>

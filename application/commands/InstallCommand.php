@@ -1,4 +1,7 @@
 <?php
+
+
+
     /*
     * LimeSurvey (tm)
     * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -14,22 +17,21 @@
     class InstallCommand extends CConsoleCommand
     {
         /**
-         *
          * @var CDbConnection
          */
         public $connection;
 
         public function run($sArgument)
         {
-            if (!isset($sArgument) || !isset($sArgument[0]) || !isset($sArgument[1]) || !isset($sArgument[2]) || !isset($sArgument[3])) die('You have to set admin/password/full name and email address on the command line like this: php starter.php adminname mypassword fullname emailaddress');
-            Yii::import('application.helpers.common_helper', true);
-            
-            try
-            {
-                $this->connection = App()->getDb();
-                $this->connection->active=true;
+            if (!isset($sArgument) || !isset($sArgument[0]) || !isset($sArgument[1]) || !isset($sArgument[2]) || !isset($sArgument[3])) {
+                die('You have to set admin/password/full name and email address on the command line like this: php starter.php adminname mypassword fullname emailaddress');
             }
-            catch(CDbException $e){
+            Yii::import('application.helpers.common_helper', true);
+
+            try {
+                $this->connection = App()->getDb();
+                $this->connection->active = true;
+            } catch (CDbException $e) {
                 $this->createDatabase();
             };
 
@@ -37,13 +39,13 @@
             switch ($this->connection->driverName) {
                 case 'mysql':
                 case 'mysqli':
-                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname')) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
+                    $this->connection->createCommand('ALTER DATABASE '.$this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname')).' DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;')->execute();
                     $sql_file = 'mysql';
                     break;
                 case 'pgsql':
                     $sql_file = 'pgsql';
                     break;
-                case 'dblib': 
+                case 'dblib':
                 case 'mssql':
                 case 'sqlsrv':
                     $sql_file = 'mssql';
@@ -53,28 +55,28 @@
             }
             $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql');
             $this->connection->createCommand()->insert($this->connection->tablePrefix.'users', array(
-            'users_name'=>$sArgument[0],
-            'password'=>hash('sha256',$sArgument[1]),
-            'full_name'=>$sArgument[2],
-            'parent_id'=>0,
-            'lang'=>'auto',
-            'email'=>$sArgument[3]
+            'users_name' => $sArgument[0],
+            'password' => hash('sha256', $sArgument[1]),
+            'full_name' => $sArgument[2],
+            'parent_id' => 0,
+            'lang' => 'auto',
+            'email' => $sArgument[3],
             ));
             $this->connection->createCommand()->insert($this->connection->tablePrefix.'permissions', array(
-            'entity'=>'global',
-            'entity_id'=>0,
-            'uid'=>1,
-            'permission'=>'superadmin',
-            'create_p'=>0,
-            'read_p'=>1,
-            'update_p'=>0,
-            'delete_p'=>0,
-            'import_p'=>0,
-            'export_p'=>0
+            'entity' => 'global',
+            'entity_id' => 0,
+            'uid' => 1,
+            'permission' => 'superadmin',
+            'create_p' => 0,
+            'read_p' => 1,
+            'update_p' => 0,
+            'delete_p' => 0,
+            'import_p' => 0,
+            'export_p' => 0,
             ));
         }
 
-        function _executeSQLFile($sFileName)
+        public function _executeSQLFile($sFileName)
         {
             echo   $sFileName;
             $aMessages = array();
@@ -89,16 +91,16 @@
                 $sLine = rtrim($sLine);
                 $iLineLength = strlen($sLine);
 
-                if ($iLineLength && $sLine[0] != '#' && substr($sLine,0,2) != '--') {
-                    if (substr($sLine, $iLineLength-1, 1) == ';') {
-                        $line = substr($sLine, 0, $iLineLength-1);
+                if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
+                    if (substr($sLine, $iLineLength - 1, 1) == ';') {
+                        $line = substr($sLine, 0, $iLineLength - 1);
                         $sCommand .= $sLine;
                         $sCommand = str_replace('prefix_', $this->connection->tablePrefix, $sCommand); // Table prefixes
 
                         try {
                             $this->connection->createCommand($sCommand)->execute();
-                        } catch(Exception $e) {
-                            $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
+                        } catch (Exception $e) {
+                            $aMessages[] = 'Executing: '.$sCommand.' failed! Reason: '.$e;
                         }
 
                         $sCommand = '';
@@ -107,42 +109,37 @@
                     }
                 }
             }
+
             return $aMessages;
-
-
         }
 
-        function getDBConnectionStringProperty($sProperty, $connectionString = null)
+        public function getDBConnectionStringProperty($sProperty, $connectionString = null)
         {
-            if (!isset($connectionString))
-            {
+            if (!isset($connectionString)) {
                 $connectionString = $this->connection->connectionString;
             }
             // Yii doesn't give us a good way to get the database name
-            if ( preg_match('/'.$sProperty.'=([^;]*)/', $connectionString, $aMatches) == 1 ) {
+            if (preg_match('/'.$sProperty.'=([^;]*)/', $connectionString, $aMatches) == 1) {
                 return $aMatches[1];
             }
         }
 
-
         protected function createDatabase()
         {
-            App()->configure(array('components'=>array('db'=>array('autoConnect'=>false)))) ;
-            $this->connection=App()->db;
-            App()->configure(array('components'=>array('db'=>array('autoConnect'=>true)))) ;
+            App()->configure(array('components' => array('db' => array('autoConnect' => false))));
+            $this->connection = App()->db;
+            App()->configure(array('components' => array('db' => array('autoConnect' => true))));
             $connectionString = $this->connection->connectionString;
             $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
             try {
-                $this->connection->active=true;
-            }
-            catch(Exception $e){
-                throw new CException("Invalid access data. Check your config.php db access data");
+                $this->connection->active = true;
+            } catch (Exception $e) {
+                throw new CException('Invalid access data. Check your config.php db access data');
             }
 
-            $sDatabaseName= $this->getDBConnectionStringProperty('dbname', $connectionString);
+            $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
             try {
-                switch ($this->connection->driverName)
-                {
+                switch ($this->connection->driverName) {
                     case 'mysqli':
                     case 'mysql':
                         $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
@@ -159,16 +156,12 @@
                         $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
                         break;
                 }
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 throw new CException('Database could not be created because it either existed or you have no permissions');
             }
-            
+
             $this->connection->active = false;
             $this->connection->connectionString = $connectionString;
             $this->connection->active = true;
         }
-
     }
-?>

@@ -1,0 +1,19 @@
+{
+    "name": "yitznewton/lime-survey",
+    "description": "A survey platform",
+    "license": "GPL-2.0",
+    "authors": [
+    ],
+    "require-dev": {
+      "phpunit/phpunit": "~4",
+      "fabpot/php-cs-fixer": "^1.9"
+    },
+    "autoload": {
+      "psr-4": {
+        "ls\\pluginmanager\\": [
+          "application/libraries/PluginManager",
+          "application/libraries/PluginManager/Storage"
+        ]
+      }
+    }
+}

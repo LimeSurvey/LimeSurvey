@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,63 +19,63 @@
 
 class DefaultValue extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table.
+     *
+     * @static
+     *
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
-
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{defaultvalues}}';
-	}
-
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function primaryKey()
-	{
-		return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
-	}
-
-	/**
-	 * Relations with questions
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
-	{
-		$alias = $this->getTableAlias();
-		return array(
-			'question' => array(self::HAS_ONE, 'Question', '',
-						'on' => "$alias.qid = question.qid",
-			),
-		);
-	}
-
-	function insertRecords($data)
+     *
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
     {
-        $values = new self;
-		foreach ($data as $k => $v)
-			$values->$k = $v;
-		return $values->save();
+        return parent::model($class);
+    }
+
+    /**
+     * Returns the setting's table name to be used by the model.
+     *
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{defaultvalues}}';
+    }
+
+    /**
+     * Returns the primary key of this table.
+     *
+     * @return array
+     */
+    public function primaryKey()
+    {
+        return array('qid', 'specialtype', 'scale_id', 'sqid', 'language');
+    }
+
+    /**
+     * Relations with questions.
+     *
+     * @return array
+     */
+    public function relations()
+    {
+        $alias = $this->getTableAlias();
+
+        return array(
+            'question' => array(self::HAS_ONE, 'Question', '',
+                        'on' => "$alias.qid = question.qid",
+            ),
+        );
+    }
+
+    public function insertRecords($data)
+    {
+        $values = new self();
+        foreach ($data as $k => $v) {
+            $values->$k = $v;
+        }
+
+        return $values->save();
     }
 }
-?>

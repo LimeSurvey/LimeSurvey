@@ -1,5 +1,7 @@
 <?php
+
 use ls\pluginmanager\PluginEvent;
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -19,22 +21,22 @@ use ls\pluginmanager\PluginEvent;
  *
  * @@TODO Move to LSWebUser and change documentation / workflow for authentication plugins
  */
-class LSUserIdentity extends CUserIdentity {
-
+class LSUserIdentity extends CUserIdentity
+{
     const ERROR_IP_LOCKED_OUT = 98;
     const ERROR_UNKNOWN_HANDLER = 99;
 
     protected $config = array();
 
     /**
-     * The userid
+     * The userid.
      *
      * @var int
      */
     public $id = null;
 
     /**
-     * A User::model() object
+     * A User::model() object.
      *
      * @var User
      */
@@ -42,13 +44,14 @@ class LSUserIdentity extends CUserIdentity {
 
     /**
      * This is the name of the plugin to handle authentication
-     * default handler is used for remote control
+     * default handler is used for remote control.
      *
      * @var string
      */
     public $plugin = 'Authdb';
 
-    public function authenticate() {
+    public function authenticate()
+    {
         // First initialize the result, we can later retieve it to get the exact error code/message
         $result = new LSAuthResult(self::ERROR_NONE);
 
@@ -59,8 +62,7 @@ class LSUserIdentity extends CUserIdentity {
         }
 
         // If still ok, continue
-        if ($result->isValid())
-        {
+        if ($result->isValid()) {
             if (is_null($this->plugin)) {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
@@ -99,22 +101,20 @@ class LSUserIdentity extends CUserIdentity {
     }
 
     /**
-    * Returns the current user's ID
-    *
-    * @access public
-    * @return int
-    */
+     * Returns the current user's ID.
+     *
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-    * Returns the active user's record
-    *
-    * @access public
-    * @return User
-    */
+     * Returns the active user's record.
+     *
+     * @return User
+     */
     public function getUser()
     {
         return $this->user;
@@ -138,33 +138,30 @@ class LSUserIdentity extends CUserIdentity {
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
+        Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName').$user->users_name.$user->uid);
 
         // Perform language settings
-        if (App()->request->getPost('loginlang','default') != 'default')
-        {
+        if (App()->request->getPost('loginlang', 'default') != 'default') {
             $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
             $user->save();
-            $sLanguage=$user->lang;
-        }
-        else if ($user->lang=='auto' || $user->lang=='')
-        {
-            $sLanguage=getBrowserLanguage();
-        }
-        else
-        {
-            $sLanguage=$user->lang;
+            $sLanguage = $user->lang;
+        } elseif ($user->lang == 'auto' || $user->lang == '') {
+            $sLanguage = getBrowserLanguage();
+        } else {
+            $sLanguage = $user->lang;
         }
 
         Yii::app()->session['adminlang'] = $sLanguage;
         App()->setLanguage($sLanguage);
     }
 
-    public function setPlugin($name) {
+    public function setPlugin($name)
+    {
         $this->plugin = $name;
     }
 
-    public function setConfig($config) {
+    public function setConfig($config)
+    {
         $this->config = $config;
     }
 }

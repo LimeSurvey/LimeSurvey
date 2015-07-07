@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,48 +16,41 @@
 */
 
 /**
-* Update Controller
-*
-* This controller performs updates
-*
-* @package		LimeSurvey
-* @subpackage	Backend
-*/
+ * Update Controller.
+ *
+ * This controller performs updates
+ */
 class update extends Survey_Common_Action
 {
-
     /**
-    * Returns the supported protocol extension (https/http)
-    *
-    */
+     * Returns the supported protocol extension (https/http).
+     */
     private function getProtocol()
     {
-        if(!function_exists("extension_loaded") || !extension_loaded("openssl"))
-        {
+        if (!function_exists('extension_loaded') || !extension_loaded('openssl')) {
             return 'http://';
         }
+
         return 'https://';
     }
 
     /**
-    * Default Controller Action
-    */
-    function index($sSubAction = null)
+     * Default Controller Action.
+     */
+    public function index($sSubAction = null)
     {
         updateCheck();
         $this->_RunUpdaterUpdate();
-        require_once(APPPATH.'/third_party/http/http.php');
-        $iCurrentBuildnumber = Yii::app()->getConfig("buildnumber");
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $iDestinationBuild = Yii::app()->request->getParam('build',getGlobalSetting("updatebuild"));
+        require_once APPPATH.'/third_party/http/http.php';
+        $iCurrentBuildnumber = Yii::app()->getConfig('buildnumber');
+        $tempdir = Yii::app()->getConfig('tempdir');
+        $iDestinationBuild = Yii::app()->request->getParam('build', getGlobalSetting('updatebuild'));
 
-        $aUpdateVersions = json_decode(getGlobalSetting("updateversions"),true);
-        foreach($aUpdateVersions as $sBranch=>$aUpdateVersion)
-        {
-            if ($aUpdateVersion['build']==$iDestinationBuild)
-            {
-                setGlobalSetting('updatebuild',$aUpdateVersion['build']);
-                setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
+        $aUpdateVersions = json_decode(getGlobalSetting('updateversions'), true);
+        foreach ($aUpdateVersions as $sBranch => $aUpdateVersion) {
+            if ($aUpdateVersion['build'] == $iDestinationBuild) {
+                setGlobalSetting('updatebuild', $aUpdateVersion['build']);
+                setGlobalSetting('updateversion', $aUpdateVersion['versionnumber']);
             }
         }
 
@@ -62,7 +59,7 @@ class update extends Survey_Common_Action
         if (!is_writable($tempdir)) {
             $error = true;
         }
-        if (!is_writable(APPPATH . 'config/version.php')) {
+        if (!is_writable(APPPATH.'config/version.php')) {
             $error = true;
         }
 
@@ -78,25 +75,27 @@ class update extends Survey_Common_Action
 
     private function _getChangedFiles($buildnumber, $updaterversion)
     {
-        require_once(APPPATH.'/third_party/http/http.php');
-        $http = new http_class;
+        require_once APPPATH.'/third_party/http/http.php';
+        $http = new http_class();
         $httperror = $this->_requestChangedFiles($http, $buildnumber, $updaterversion);
 
         if ($httperror != '') {
             return array($httperror, null);
         }
+
         return $this->_readChangelog($http);
     }
 
     private function _getChangelog($buildnumber, $updaterversion)
     {
-        require_once(APPPATH.'/third_party/http/http.php');
-        $http = new http_class;
+        require_once APPPATH.'/third_party/http/http.php';
+        $http = new http_class();
         $httperror = $this->_requestChangelog($http, $buildnumber, $updaterversion);
 
         if ($httperror != '') {
             return array($httperror, null);
         }
+
         return $this->_readChangelog($http);
     }
 
@@ -104,11 +103,12 @@ class update extends Survey_Common_Action
     {
         $szLines = '';
         $szResponse = '';
-        for (; ;) {
+        for (;;) {
             $httperror = $http->ReadReplyBody($szLines, 10000);
-            if ($httperror != "" || strlen($szLines) == 0) {
+            if ($httperror != '' || strlen($szLines) == 0) {
                 $changelog = json_decode($szResponse, true);
                 $http->SaveCookies($cookies);
+
                 return array($httperror, $changelog, $cookies);
             }
             $szResponse .= $szLines;
@@ -117,12 +117,12 @@ class update extends Survey_Common_Action
 
     private function _requestChangelog(http_class $http, $buildnumber, $updaterversion)
     {
-        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
-        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+        $http->proxy_host_name = Yii::app()->getConfig('proxy_host_name', '');
+        $http->proxy_host_port = Yii::app()->getConfig('proxy_host_port', 80);
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
-        $http->GetRequestArguments($this->getProtocol().'update.limesurvey.org/updates/changelog/' . $buildnumber . '/' . $updaterversion , $arguments);
+        $http->GetRequestArguments($this->getProtocol().'update.limesurvey.org/updates/changelog/'.$buildnumber.'/'.$updaterversion, $arguments);
 
         $http->Open($arguments);
 
@@ -131,33 +131,31 @@ class update extends Survey_Common_Action
 
     private function _requestChangedFiles(http_class $http, $buildnumber, $updaterversion)
     {
-        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
-        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+        $http->proxy_host_name = Yii::app()->getConfig('proxy_host_name', '');
+        $http->proxy_host_port = Yii::app()->getConfig('proxy_host_port', 80);
         $http->timeout = 0;
         $http->data_timeout = 0;
         $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
-        $http->GetRequestArguments($this->getProtocol().'update.limesurvey.org/updates/update/' . $buildnumber . '/' . $updaterversion , $arguments);
+        $http->GetRequestArguments($this->getProtocol().'update.limesurvey.org/updates/update/'.$buildnumber.'/'.$updaterversion, $arguments);
 
         $http->Open($arguments);
 
         return $http->SendRequest($arguments);
     }
 
-    function step2()
+    public function step2()
     {
-        $aReadOnlyFiles=array();
-        $buildnumber = Yii::app()->getConfig("buildnumber");
-        $updatebuild = getGlobalSetting("updatebuild");
+        $aReadOnlyFiles = array();
+        $buildnumber = Yii::app()->getConfig('buildnumber');
+        $updatebuild = getGlobalSetting('updatebuild');
         list($error, $updateinfo, $cookies) = $this->_getChangedFiles($buildnumber, $updatebuild);
         $aData = $this->_getFileStatus($updateinfo);
-        if(count($aData['readonlyfiles']))
-        {
-            foreach (array_unique($aData['readonlyfiles']) as $aFile)
-            {
-                $aReadOnlyFiles[]=substr($aFile,strlen(Yii::app()->getConfig("rootdir")));
+        if (count($aData['readonlyfiles'])) {
+            foreach (array_unique($aData['readonlyfiles']) as $aFile) {
+                $aReadOnlyFiles[] = substr($aFile, strlen(Yii::app()->getConfig('rootdir')));
             }
             sort($aReadOnlyFiles);
-            $aData['readonlyfiles']=$aReadOnlyFiles;
+            $aData['readonlyfiles'] = $aReadOnlyFiles;
         }
         Yii::app()->session['updateinfo'] = $updateinfo;
         Yii::app()->session['updatesession'] = $cookies;
@@ -176,18 +174,18 @@ class update extends Survey_Common_Action
             return array();
         }
 
-        $rootdir = Yii::app()->getConfig("rootdir");
+        $rootdir = Yii::app()->getConfig('rootdir');
         $existingfiles = array();
         $modifiedfiles = array();
         $readonlyfiles = array();
 
-        foreach ($updateinfo['files'] as $afile)
-        {
+        foreach ($updateinfo['files'] as $afile) {
             $this->_checkFile($afile, $rootdir, $readonlyfiles, $existingfiles, $modifiedfiles);
         }
-        return array('readonlyfiles'=>$readonlyfiles,
-        'modifiedfiles'=>$modifiedfiles,
-        'existingfiles'=>$existingfiles)
+
+        return array('readonlyfiles' => $readonlyfiles,
+        'modifiedfiles' => $modifiedfiles,
+        'existingfiles' => $existingfiles, )
         ;
     }
 
@@ -195,12 +193,10 @@ class update extends Survey_Common_Action
     {
         $this->_checkReadOnlyFile($file, $rootdir, $readonlyfiles);
 
-
-        if ($file['type'] == 'A' && file_exists($rootdir . $file['file'])) {
+        if ($file['type'] == 'A' && file_exists($rootdir.$file['file'])) {
             //A new file, check if this already exists
             $existingfiles[] = $file;
-        }
-        elseif (($file['type'] == 'D' || $file['type'] == 'M') && is_file($rootdir . $file['file']) && sha1_file($rootdir . $file['file']) != $file['checksum']) {
+        } elseif (($file['type'] == 'D' || $file['type'] == 'M') && is_file($rootdir.$file['file']) && sha1_file($rootdir.$file['file']) != $file['checksum']) {
             // A deleted or modified file - check if it is unmodified
             $modifiedfiles[] = $file;
         }
@@ -208,50 +204,43 @@ class update extends Survey_Common_Action
 
     private function _checkReadOnlyFile($file, $rootdir, &$readonlyfiles)
     {
-        if ($file['type'] == 'A' && !file_exists($rootdir . $file['file']) || ($file['type'] == 'D' && file_exists($rootdir . $file['file']))) {
-            $searchpath = $rootdir . $file['file'];
+        if ($file['type'] == 'A' && !file_exists($rootdir.$file['file']) || ($file['type'] == 'D' && file_exists($rootdir.$file['file']))) {
+            $searchpath = $rootdir.$file['file'];
             $is_writable = is_writable(dirname($searchpath));
-            while (!$is_writable && strlen($searchpath) > strlen($rootdir))
-            {
+            while (!$is_writable && strlen($searchpath) > strlen($rootdir)) {
                 $searchpath = dirname($searchpath);
                 if (file_exists($searchpath)) {
                     $is_writable = is_writable($searchpath);
                     break;
-
                 }
             }
 
             if (!$is_writable) {
                 $readonlyfiles[] = $searchpath;
             }
-        }
-        elseif (file_exists($rootdir . $file['file']) && !is_writable($rootdir . $file['file'])) {
-            $readonlyfiles[] = $rootdir . $file['file'];
+        } elseif (file_exists($rootdir.$file['file']) && !is_writable($rootdir.$file['file'])) {
+            $readonlyfiles[] = $rootdir.$file['file'];
         }
     }
 
-    function step3()
+    public function step3()
     {
-        $buildnumber = Yii::app()->getConfig("buildnumber");
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $updatebuild = getGlobalSetting("updatebuild");
+        $buildnumber = Yii::app()->getConfig('buildnumber');
+        $tempdir = Yii::app()->getConfig('tempdir');
+        $updatebuild = getGlobalSetting('updatebuild');
         //$_POST=$this->input->post();
-        $rootdir = Yii::app()->getConfig("rootdir");
-        $publicdir = Yii::app()->getConfig("publicdir");
-        $tempdir = Yii::app()->getConfig("tempdir");
+        $rootdir = Yii::app()->getConfig('rootdir');
+        $publicdir = Yii::app()->getConfig('publicdir');
+        $tempdir = Yii::app()->getConfig('tempdir');
         $aDatabasetype = Yii::app()->db->getDriverName();
         $aData = array();
         // Request the list with changed files from the server
 
-        if (!isset( Yii::app()->session['updateinfo']))
-        {
-            if ($updateinfo['error']==1)
-            {
+        if (!isset(Yii::app()->session['updateinfo'])) {
+            if ($updateinfo['error'] == 1) {
             }
-        }
-        else
-        {
-            $updateinfo=Yii::app()->session['updateinfo'];
+        } else {
+            $updateinfo = Yii::app()->session['updateinfo'];
         }
 
         $aData['updateinfo'] = $updateinfo;
@@ -259,179 +248,155 @@ class update extends Survey_Common_Action
         // okay, updateinfo now contains all necessary updateinformation
         // Create DB and file backups now
 
-        $basefilename = dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).'_'.md5(uniqid(rand(), true));
+        $basefilename = dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')).'_'.md5(uniqid(rand(), true));
         //Now create a backup of the files to be delete or modified
 
-        $filestozip=array();
+        $filestozip = array();
 
-        foreach ($updateinfo['files'] as $file)
-        {
-            if (is_file($publicdir.$file['file'])===true) // Sort out directories
-            {
-                $filestozip[]=$publicdir.$file['file'];
+        foreach ($updateinfo['files'] as $file) {
+            if (is_file($publicdir.$file['file']) === true) {
+                // Sort out directories
+
+                $filestozip[] = $publicdir.$file['file'];
             }
         }
 
-        Yii::app()->loadLibrary("admin/pclzip");
+        Yii::app()->loadLibrary('admin/pclzip');
         $archive = new PclZip($tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip');
 
         $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
         if ($v_list == 0) {
-            $aFileBackup= array('class'=>'error','text'=>sprintf(gT("Error on file backup: %s"),$archive->errorInfo(true)));
+            $aFileBackup = array('class' => 'error','text' => sprintf(gT('Error on file backup: %s'), $archive->errorInfo(true)));
+        } else {
+            $aFileBackup = array('class' => 'success','text' => sprintf(gT('File backup created: %s'), $tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
         }
-        else{
-            $aFileBackup= array('class'=>'success','text'=>sprintf(gT("File backup created: %s"),$tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'));
-        }
-        $aData['aFileBackup']=$aFileBackup;
+        $aData['aFileBackup'] = $aFileBackup;
 
         $aData['databasetype'] = $aDatabasetype;
 
         //TODO: Yii provides no function to backup the database. To be done after dumpdb is ported
-        if (in_array($aDatabasetype, array('mysql', 'mysqli')))
-        {
+        if (in_array($aDatabasetype, array('mysql', 'mysqli'))) {
             if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
-                Yii::app()->loadHelper("admin/backupdb");
-                $sfilename = $tempdir.DIRECTORY_SEPARATOR."backup_db_".randomChars(20)."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
-                $dfilename = $tempdir.DIRECTORY_SEPARATOR."LimeSurvey_database_backup_".$basefilename.".zip";
+                Yii::app()->loadHelper('admin/backupdb');
+                $sfilename = $tempdir.DIRECTORY_SEPARATOR.'backup_db_'.randomChars(20).'_'.dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')).'.sql';
+                $dfilename = $tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_database_backup_'.$basefilename.'.zip';
 
-                outputDatabase('',false,$sfilename);
+                outputDatabase('', false, $sfilename);
                 // Before try to zip: test size of file
-                if( is_file($sfilename) && filesize($sfilename))
-                {
+                if (is_file($sfilename) && filesize($sfilename)) {
                     $archive = new PclZip($dfilename);
-                    $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir,PCLZIP_OPT_ADD_TEMP_FILE_ON);
+                    $v_list = $archive->add(array($sfilename), PCLZIP_OPT_REMOVE_PATH, $tempdir, PCLZIP_OPT_ADD_TEMP_FILE_ON);
                     unlink($sfilename);
-                    if ($v_list == 0) {// Unknow reason because backup of DB work ?
-                        $aSQLBackup=array('class'=>'warning','text'=>gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                    if ($v_list == 0) {
+                        // Unknow reason because backup of DB work ?
+                        $aSQLBackup = array('class' => 'warning','text' => gT('Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!'));
+                    } else {
+                        $aSQLBackup = array('class' => 'success','text' => sprintf(gT('DB backup created: %s'), htmlspecialchars($dfilename)));
                     }
-                    else
-                    {
-                        $aSQLBackup=array('class'=>'success','text'=>sprintf(gT('DB backup created: %s'),htmlspecialchars($dfilename)));
-                    }
-                }
-                else
-                {
-                    $aSQLBackup=array('class'=>'warning','text'=>gT("Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!"));
+                } else {
+                    $aSQLBackup = array('class' => 'warning','text' => gT('Unable to backup your database for unknow reason. Before proceeding please backup your database using a backup tool!'));
                 }
             }
+        } else {
+            $aSQLBackup = array('class' => 'warning','text' => gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
         }
-        else
-        {
-            $aSQLBackup=array('class'=>'warning','text'=>gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!'));
-        }
-        $aData['aSQLBackup']=$aSQLBackup;
-        if($aFileBackup['class']=="success" && $aSQLBackup['class']=="success") {
-            $aData['result']="success";
-        }elseif($aFileBackup['class']=="error" || $aSQLBackup['class']=="error") {
-            $aData['result']="error";
-        }else{
-            $aData['result']="warning";
+        $aData['aSQLBackup'] = $aSQLBackup;
+        if ($aFileBackup['class'] == 'success' && $aSQLBackup['class'] == 'success') {
+            $aData['result'] = 'success';
+        } elseif ($aFileBackup['class'] == 'error' || $aSQLBackup['class'] == 'error') {
+            $aData['result'] = 'error';
+        } else {
+            $aData['result'] = 'warning';
         }
         $this->_renderWrappedTemplate('update', 'step3', $aData);
     }
 
-
-    function step4()
+    public function step4()
     {
-        $buildnumber = Yii::app()->getConfig("buildnumber");
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $updatebuild = getGlobalSetting("updatebuild");
+        $buildnumber = Yii::app()->getConfig('buildnumber');
+        $tempdir = Yii::app()->getConfig('tempdir');
+        $updatebuild = getGlobalSetting('updatebuild');
 
-        $rootdir = Yii::app()->getConfig("rootdir");
-        $publicdir = Yii::app()->getConfig("publicdir");
-        $tempdir = Yii::app()->getConfig("tempdir");
+        $rootdir = Yii::app()->getConfig('rootdir');
+        $publicdir = Yii::app()->getConfig('publicdir');
+        $tempdir = Yii::app()->getConfig('tempdir');
         $aDatabasetype = Yii::app()->db->getDriverName();
         // Request the list with changed files from the server
         $aData = array();
 
-        if (!isset( Yii::app()->session['updateinfo']))
-        {
-            if ($updateinfo['error']==1)
-            {
+        if (!isset(Yii::app()->session['updateinfo'])) {
+            if ($updateinfo['error'] == 1) {
             }
-        }
-        else
-        {
-            $updateinfo=Yii::app()->session['updateinfo'];
+        } else {
+            $updateinfo = Yii::app()->session['updateinfo'];
         }
         // this is the last step - Download the zip file, unpack it and replace files accordingly
         // Create DB and file backups now
 
-        $downloaderror=false;
+        $downloaderror = false;
         Yii::import('application.libraries.admin.http.httpRequestIt');
-        $http=new httpRequestIt;
+        $http = new httpRequestIt();
 
-        $http->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
-        $http->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+        $http->proxy_host_name = Yii::app()->getConfig('proxy_host_name', '');
+        $http->proxy_host_port = Yii::app()->getConfig('proxy_host_port', 80);
 
         // Allow redirects
-        $http->follow_redirect=1;
+        $http->follow_redirect = 1;
         /* Connection timeout */
-        $http->timeout=0;
+        $http->timeout = 0;
         /* Data transfer timeout */
-        $http->data_timeout=0;
-        $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $http->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
+        $http->data_timeout = 0;
+        $http->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
+        $http->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/download/{$updateinfo['downloadid']}", $arguments);
         $http->RestoreCookies(Yii::app()->session['updatesession']);
 
-        $error=$http->Open($arguments);
-        $error=$http->SendRequest($arguments);
+        $error = $http->Open($arguments);
+        $error = $http->SendRequest($arguments);
         $http->ReadReplyHeaders($headers);
-        if ($headers['content-type']=='text/html')
-        {
+        if ($headers['content-type'] == 'text/html') {
             @unlink($tempdir.'/update.zip');
-        }
-        else if($error=='') {
-                $body='';
-                $pFile = fopen($tempdir.'/update.zip', 'w');
-                for(;;){
-                    $error = $http->ReadReplyBody($body,100000);
-                    if($error != "" || strlen($body)==0) break;
-                    fwrite($pFile, $body);
+        } elseif ($error == '') {
+            $body = '';
+            $pFile = fopen($tempdir.'/update.zip', 'w');
+            for (;;) {
+                $error = $http->ReadReplyBody($body, 100000);
+                if ($error != '' || strlen($body) == 0) {
+                    break;
+                }
+                fwrite($pFile, $body);
             }
             fclose($pFile);
-        }
-        else
-        {
-            print( $error );
+        } else {
+            print($error);
         }
 
         //Now unzip the new files over the existing ones.
         $new_files = false;
-        if (file_exists($tempdir.'/update.zip')){
-            Yii::app()->loadLibrary("admin/pclzip");
+        if (file_exists($tempdir.'/update.zip')) {
+            Yii::app()->loadLibrary('admin/pclzip');
             $archive = new PclZip($tempdir.'/update.zip');
-            if ($archive->extract(PCLZIP_OPT_PATH, $rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
-                die("Error : ".$archive->errorInfo(true));
-            }
-            else
-            {
+            if ($archive->extract(PCLZIP_OPT_PATH, $rootdir.'/', PCLZIP_OPT_REPLACE_NEWER) == 0) {
+                die('Error : '.$archive->errorInfo(true));
+            } else {
                 $new_files = true;
                 unlink($tempdir.'/update.zip');
             }
-        }
-        else
-        {
-            $downloaderror=true;
+        } else {
+            $downloaderror = true;
         }
 
         // Now remove all files that are to be deleted according to update process
         // This happens after unzipping
-        foreach ($updateinfo['files'] as $afile)
-        {
-            if ($afile['type']=='D' && file_exists($rootdir.$afile['file']))
-            {
-                if (is_file($rootdir.$afile['file']))
-                {
+        foreach ($updateinfo['files'] as $afile) {
+            if ($afile['type'] == 'D' && file_exists($rootdir.$afile['file'])) {
+                if (is_file($rootdir.$afile['file'])) {
                     @unlink($rootdir.$afile['file']);
-                }
-                else{
+                } else {
                     rmdirr($rootdir.$afile['file']);
                 }
             }
         }
-
 
         $aData['new_files'] = $new_files;
         $aData['downloaderror'] = $downloaderror;
@@ -439,171 +404,160 @@ class update extends Survey_Common_Action
         //  PclTraceDisplay();
 
         // Now we have to update version.php
-        if (!$downloaderror)
-        {
+        if (!$downloaderror) {
             @ini_set('auto_detect_line_endings', true);
-            $versionlines=file($rootdir.'/application/config/version.php');
-            $handle = fopen($rootdir.'/application/config/version.php', "w");
-            foreach ($versionlines as $line)
-            {
-                if(strpos($line,'buildnumber')!==false)
-                {
-                    $line='$config[\'buildnumber\'] = '.Yii::app()->session['updateinfo']['toversion'].';'."\r\n";
+            $versionlines = file($rootdir.'/application/config/version.php');
+            $handle = fopen($rootdir.'/application/config/version.php', 'w');
+            foreach ($versionlines as $line) {
+                if (strpos($line, 'buildnumber') !== false) {
+                    $line = '$config[\'buildnumber\'] = '.Yii::app()->session['updateinfo']['toversion'].';'."\r\n";
                 }
-                fwrite($handle,$line);
+                fwrite($handle, $line);
             }
             fclose($handle);
         }
-        setGlobalSetting('updateavailable','0');
-        setGlobalSetting('updatebuild','');
-        setGlobalSetting('updateversions','');
+        setGlobalSetting('updateavailable', '0');
+        setGlobalSetting('updatebuild', '');
+        setGlobalSetting('updateversions', '');
         // We redirect here because the  files might have been overwritten earlier
         // and classes may have been changed that would be needed in the view
-        Yii::app()->session['installlstep4b']=$aData;
+        Yii::app()->session['installlstep4b'] = $aData;
         Yii::app()->getController()->redirect(array('/admin/update/sa/step4b'));
     }
 
-
-    function step4b()
+    public function step4b()
     {
-        if (!isset(Yii::app()->session['installlstep4b'])) die();
-        $aData=Yii::app()->session['installlstep4b'];
-        unset (Yii::app()->session['installlstep4b']);
+        if (!isset(Yii::app()->session['installlstep4b'])) {
+            die();
+        }
+        $aData = Yii::app()->session['installlstep4b'];
+        unset(Yii::app()->session['installlstep4b']);
         $this->_renderWrappedTemplate('update', 'step4', $aData);
     }
 
     private function _RunUpdaterUpdate()
     {
-        $versionnumber = Yii::app()->getConfig("versionnumber");
-        $buildnumber = Yii::app()->getConfig("buildnumber");
-        $tempdir = Yii::app()->getConfig("tempdir");
+        $versionnumber = Yii::app()->getConfig('versionnumber');
+        $buildnumber = Yii::app()->getConfig('buildnumber');
+        $tempdir = Yii::app()->getConfig('tempdir');
 
-        require_once(APPPATH.'/third_party/http/http.php');
-        $oHTTPRequest=new http_class;
+        require_once APPPATH.'/third_party/http/http.php';
+        $oHTTPRequest = new http_class();
 
-        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
-        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig('proxy_host_name', '');
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig('proxy_host_port', 80);
 
         /* Connection timeout */
-        $oHTTPRequest->timeout=0;
+        $oHTTPRequest->timeout = 0;
         /* Data transfer timeout */
-        $oHTTPRequest->data_timeout=0;
-        $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org?updaterbuild={$buildnumber}",$arguments);
+        $oHTTPRequest->data_timeout = 0;
+        $oHTTPRequest->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org?updaterbuild={$buildnumber}", $arguments);
 
-        $updateinfo=false;
-        $error=$oHTTPRequest->Open($arguments);
-        $error=$oHTTPRequest->SendRequest($arguments);
+        $updateinfo = false;
+        $error = $oHTTPRequest->Open($arguments);
+        $error = $oHTTPRequest->SendRequest($arguments);
 
         $oHTTPRequest->ReadReplyHeaders($headers);
 
-
-        if($error=="") {
-            $body=''; $full_body='';
-            for(;;){
-                $error = $oHTTPRequest->ReadReplyBody($body,10000);
-                if($error != "" || strlen($body)==0) break;
+        if ($error == '') {
+            $body = '';
+            $full_body = '';
+            for (;;) {
+                $error = $oHTTPRequest->ReadReplyBody($body, 10000);
+                if ($error != '' || strlen($body) == 0) {
+                    break;
+                }
                 $full_body .= $body;
             }
-            $updateinfo=json_decode($full_body,true);
-            if ($oHTTPRequest->response_status!='200')
-            {
-                $updateinfo['errorcode']=$oHTTPRequest->response_status;
-                $updateinfo['errorhtml']=$full_body;
+            $updateinfo = json_decode($full_body, true);
+            if ($oHTTPRequest->response_status != '200') {
+                $updateinfo['errorcode'] = $oHTTPRequest->response_status;
+                $updateinfo['errorhtml'] = $full_body;
             }
+        } else {
+            $updateinfo['errorcode'] = $error;
+            $updateinfo['errorhtml'] = $error;
         }
-        else
-        {
-            $updateinfo['errorcode']=$error;
-            $updateinfo['errorhtml']=$error;
-        }
-        unset( $oHTTPRequest );
-        if ((int)$updateinfo['UpdaterRevision']<=$buildnumber)
-        {
+        unset($oHTTPRequest);
+        if ((int) $updateinfo['UpdaterRevision'] <= $buildnumber) {
             // There is no newer updater version on the server
             return true;
         }
 
-        if (!is_writable($tempdir) || !is_writable(APPPATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'update.php'))
-        {
-            $error=true;
+        if (!is_writable($tempdir) || !is_writable(APPPATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'update.php')) {
+            $error = true;
         }
 
         //  Download the zip file, unpack it and replace the updater file accordingly
         // Create DB and file backups now
 
-        $downloaderror=false;
-        require_once(APPPATH.'/third_party/http/http.php');
-        $oHTTPRequest=new http_class;
+        $downloaderror = false;
+        require_once APPPATH.'/third_party/http/http.php';
+        $oHTTPRequest = new http_class();
 
-        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
-        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig('proxy_host_name', '');
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig('proxy_host_port', 80);
 
-        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig("proxy_host_name","");
-        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig("proxy_host_port",80);
+        $oHTTPRequest->proxy_host_name = Yii::app()->getConfig('proxy_host_name', '');
+        $oHTTPRequest->proxy_host_port = Yii::app()->getConfig('proxy_host_port', 80);
 
         // Allow redirects
-        $oHTTPRequest->follow_redirect=1;
+        $oHTTPRequest->follow_redirect = 1;
         /* Connection timeout */
-        $oHTTPRequest->timeout=0;
+        $oHTTPRequest->timeout = 0;
         /* Data transfer timeout */
-        $oHTTPRequest->data_timeout=0;
-        $oHTTPRequest->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$updateinfo['UpdaterRevision']}",$arguments);
+        $oHTTPRequest->data_timeout = 0;
+        $oHTTPRequest->user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
+        $oHTTPRequest->GetRequestArguments($this->getProtocol()."update.limesurvey.org/updates/downloadupdater/{$updateinfo['UpdaterRevision']}", $arguments);
 
-        $oHTTPRequesterror=$oHTTPRequest->Open($arguments);
-        $oHTTPRequesterror=$oHTTPRequest->SendRequest($arguments);
+        $oHTTPRequesterror = $oHTTPRequest->Open($arguments);
+        $oHTTPRequesterror = $oHTTPRequest->SendRequest($arguments);
         $oHTTPRequest->ReadReplyHeaders($headers);
-        if ($headers['content-type']=='text/html')
-        {
+        if ($headers['content-type'] == 'text/html') {
             @unlink($tempdir.'/updater.zip');
-        }
-        elseif($oHTTPRequesterror=='') {
-            $body=''; $full_body='';
-            for(;;){
-                $oHTTPRequesterror = $oHTTPRequest->ReadReplyBody($body,100000);
-                if($oHTTPRequesterror != "" || strlen($body)==0) break;
+        } elseif ($oHTTPRequesterror == '') {
+            $body = '';
+            $full_body = '';
+            for (;;) {
+                $oHTTPRequesterror = $oHTTPRequest->ReadReplyBody($body, 100000);
+                if ($oHTTPRequesterror != '' || strlen($body) == 0) {
+                    break;
+                }
                 $full_body .= $body;
             }
-            file_put_contents($tempdir.'/updater.zip',$full_body);
+            file_put_contents($tempdir.'/updater.zip', $full_body);
         }
         $aData['httperror'] = $oHTTPRequesterror;
 
         //Now unzip the new updater over the existing ones.
-        if (file_exists($tempdir.'/updater.zip')){
-            Yii::app()->loadLibrary("admin/pclzip",array('p_zipname' => $tempdir.'/updater.zip'));
+        if (file_exists($tempdir.'/updater.zip')) {
+            Yii::app()->loadLibrary('admin/pclzip', array('p_zipname' => $tempdir.'/updater.zip'));
             $archive = new PclZip(array('p_zipname' => $tempdir.'/updater.zip'));
-            if ($archive->extract(PCLZIP_OPT_PATH, APPPATH.'/controllers/admin/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
-                die("Error : ".$archive->errorInfo(true));
-            }
-            else
-            {
+            if ($archive->extract(PCLZIP_OPT_PATH, APPPATH.'/controllers/admin/', PCLZIP_OPT_REPLACE_NEWER) == 0) {
+                die('Error : '.$archive->errorInfo(true));
+            } else {
                 unlink($tempdir.'/updater.zip');
             }
             $updater_exists = true;
-        }
-        else
-        {
+        } else {
             $updater_exists = false;
-            $error=true;
+            $error = true;
         }
         $aData['updater_exists'] = $updater_exists;
     }
 
     /**
-    * Update database
-    */
-    function db($continue = null)
+     * Update database.
+     */
+    public function db($continue = null)
     {
-        Yii::app()->loadHelper("update/update");
-        if(isset($continue) && $continue=="yes")
-        {
+        Yii::app()->loadHelper('update/update');
+        if (isset($continue) && $continue == 'yes') {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             updateCheck();
             $aData['display']['header'] = false;
-        }
-        else
-        {
+        } else {
             $aData['display']['header'] = true;
             $aViewUrls['output'] = CheckForDBUpgrades();
         }
@@ -612,16 +566,15 @@ class update extends Survey_Common_Action
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer.
+     *
+     * @param string       $sAction   Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array        $aData     Data to be passed on. Optional.
+     */
     protected function _renderWrappedTemplate($sAction = 'update', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
-
 }

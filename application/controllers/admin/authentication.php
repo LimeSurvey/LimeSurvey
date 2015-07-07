@@ -1,8 +1,10 @@
 <?php
+
 use ls\pluginmanager\PluginEvent;
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -17,27 +19,22 @@ if (!defined('BASEPATH'))
 */
 
 /**
-* Authentication Controller
-*
-* This controller performs authentication
-*
-* @package        LimeSurvey
-* @subpackage    Backend
-*/
-class Authentication extends Survey_Common_Action
+ * Authentication Controller.
+ *
+ * This controller performs authentication
+ */
+class authentication extends Survey_Common_Action
 {
-
     /**
-    * Reused email message
-    *
-    * @var string
-    * @access private
-    */
+     * Reused email message.
+     *
+     * @var string
+     */
     private $sent_email_message = 'If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you';
 
     /**
-    * Show login screen and parse login data
-    */
+     * Show login screen and parse login data.
+     */
     public function index()
     {
         $this->_redirectIfLoggedIn();
@@ -45,7 +42,7 @@ class Authentication extends Survey_Common_Action
         // Make sure after first run / update the authdb plugin is registered and active
         // it can not be deactivated
         if (!class_exists('Authdb', false)) {
-            $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+            $plugin = Plugin::model()->findByAttributes(array('name' => 'Authdb'));
             if (!$plugin) {
                 $plugin = new Plugin();
                 $plugin->name = 'Authdb';
@@ -65,8 +62,7 @@ class Authentication extends Survey_Common_Action
         /* @var $identity LSUserIdentity */
         $identity = $beforeLogin->get('identity');
 
-        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')))
-        {
+        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit'))) {
             if (!is_null($beforeLogin->get('default'))) {
                 $aData['defaultAuth'] = $beforeLogin->get('default');
             }
@@ -76,7 +72,7 @@ class Authentication extends Survey_Common_Action
             $aData['pluginContent'] = $newLoginForm->getAllContent();
             $this->_renderWrappedTemplate('authentication', 'login', $aData);
         } else {
-             // Handle getting the post and populating the identity there
+            // Handle getting the post and populating the identity there
             $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin);
             $identity->plugin = $authMethod;
 
@@ -86,8 +82,7 @@ class Authentication extends Survey_Common_Action
             $identity = $event->get('identity');
 
             // Now authenticate
-            if ($identity->authenticate())
-            {
+            if ($identity->authenticate()) {
                 FailedLoginAttempt::model()->deleteAttempts();
                 App()->user->setState('plugin', $authMethod);
                 $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
@@ -98,7 +93,6 @@ class Authentication extends Survey_Common_Action
                 App()->getPluginManager()->dispatchEvent($event);
 
                 $this->_doRedirect();
-
             } else {
                 // Failed
                 $event = new PluginEvent('afterFailedLoginAttempt');
@@ -117,8 +111,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Logout user
-    */
+     * Logout user.
+     */
     public function logout()
     {
         /* Adding beforeLogout event */
@@ -136,33 +130,27 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Forgot Password screen
-    */
+     * Forgot Password screen.
+     */
     public function forgotpassword()
     {
         $this->_redirectIfLoggedIn();
 
-        if (!Yii::app()->request->getPost('action'))
-        {
+        if (!Yii::app()->request->getPost('action')) {
             $this->_renderWrappedTemplate('authentication', 'forgotpassword');
-        }
-        else
-        {
+        } else {
             $sUserName = Yii::app()->request->getPost('user');
             $sEmailAddr = Yii::app()->request->getPost('email');
 
             $aFields = User::model()->findAllByAttributes(array('users_name' => $sUserName, 'email' => $sEmailAddr));
 
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
-            usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"),Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
+            usleep(rand(Yii::app()->getConfig('minforgottenpasswordemaildelay'), Yii::app()->getConfig('maxforgottenpasswordemaildelay')));
 
-            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid'])))
-            {
+            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
                 $aData['message'] = '<br>'.gT($this->sent_email_message).'<br>';
-            }
-            else
-            {
+            } else {
                 $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields).'</br>';
             }
             $this->_renderWrappedTemplate('authentication', 'message', $aData);
@@ -170,14 +158,14 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Send the forgot password email
-    *
-    * @param string $sEmailAddr
-    * @param array $aFields
-    */
+     * Send the forgot password email.
+     *
+     * @param string $sEmailAddr
+     * @param array  $aFields
+     */
     private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
-        $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
+        $sFrom = Yii::app()->getConfig('siteadminname').' <'.Yii::app()->getConfig('siteadminemail').'>';
         $sTo = $sEmailAddr;
         $sSubject = gT('User data');
         $sNewPass = createPassword();
@@ -185,23 +173,20 @@ class Authentication extends Survey_Common_Action
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
         $username = sprintf(gT('Username: %s'), $aFields[0]['users_name']);
-        $email    = sprintf(gT('Email: %s'), $sEmailAddr);
+        $email = sprintf(gT('Email: %s'), $sEmailAddr);
         $password = sprintf(gT('New password: %s'), $sNewPass);
 
-        $body   = array();
+        $body = array();
         $body[] = sprintf(gT('Your user data for accessing %s'), Yii::app()->getConfig('sitename'));
         $body[] = $username;
         $body[] = $password;
-        $body   = implode("\n", $body);
+        $body = implode("\n", $body);
 
-        if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce))
-        {
+        if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
             User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
             $sMessage = gT($this->sent_email_message);
-        }
-        else
-        {
+        } else {
             $sMessage = gT('Email failed');
         }
 
@@ -209,15 +194,16 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Get's the summary
-    * @param string $sMethod login|logout
-    * @param string $sSummary Default summary
-    * @return string Summary
-    */
+     * Get's the summary.
+     *
+     * @param string $sMethod  login|logout
+     * @param string $sSummary Default summary
+     *
+     * @return string Summary
+     */
     private function _getSummary($sMethod = 'login', $sSummary = '')
     {
-        if (!empty($sSummary))
-        {
+        if (!empty($sSummary)) {
             return $sSummary;
         }
 
@@ -228,12 +214,11 @@ class Authentication extends Survey_Common_Action
 
             case 'login' :
             default :
-                $sSummary = '<br />' . sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']) . '<br />&nbsp;';
-                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === FALSE)
-                {
+                $sSummary = '<br />'.sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']).'<br />&nbsp;';
+                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === false) {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
-                    . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
-                    $sSummary = '<p><font size="1"><i>' . gT('Reloading screen. Please wait.') . '</i></font>';
+                    .' content="1;URL='.Yii::app()->session['redirect_after_login'].'" />';
+                    $sSummary = '<p><font size="1"><i>'.gT('Reloading screen. Please wait.').'</i></font>';
                     unset(Yii::app()->session['redirect_after_login']);
                 }
                 break;
@@ -243,38 +228,35 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Redirects a logged in user to the administration page
-    */
+     * Redirects a logged in user to the administration page.
+     */
     private function _redirectIfLoggedIn()
     {
-        if (!Yii::app()->user->getIsGuest())
-        {
+        if (!Yii::app()->user->getIsGuest()) {
             $this->getController()->redirect(array('/admin'));
         }
     }
 
     /**
-    * Check if a user can log in
-    * @return bool|array
-    */
+     * Check if a user can log in.
+     *
+     * @return bool|array
+     */
     private function _userCanLogin()
     {
         $failed_login_attempts = FailedLoginAttempt::model();
         $failed_login_attempts->cleanOutOldAttempts();
 
-        if ($failed_login_attempts->isLockedOut())
-        {
+        if ($failed_login_attempts->isLockedOut()) {
             return $this->_getAuthenticationFailedErrorMessage();
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
 
     /**
-    * Redirect after login
-    */
+     * Redirect after login.
+     */
     private function _doRedirect()
     {
         $returnUrl = App()->user->getReturnUrl(array('/admin'));
@@ -282,16 +264,15 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer.
+     *
+     * @param string       $sAction   Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array        $aData     Data to be passed on. Optional.
+     */
     protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
-
 }

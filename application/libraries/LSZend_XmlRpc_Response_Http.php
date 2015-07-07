@@ -1,10 +1,8 @@
-<?php 
+<?php
     Yii::import('application.libraries.BigData', true);
-    
+
     class LSZend_XmlRpc_Response_Http extends Zend_XmlRpc_Response_Http
     {
-        
-        
         // Output content in $this->_return.
         public function printXml()
         {
@@ -19,4 +17,3 @@
             echo '</methodResponse>';
         }
     }
-?>

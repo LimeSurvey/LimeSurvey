@@ -1,5 +1,6 @@
 <?php
 
+
     /**
      * This class will handle survey creation and manipulation.
      */
@@ -10,8 +11,7 @@
 
         public function actionPublicList($sLanguage = null)
         {
-            if (isset($sLanguage))
-            {
+            if (isset($sLanguage)) {
                 App()->setLanguage($sLanguage);
             }
 
@@ -22,4 +22,3 @@
             ));
         }
     }
-?>

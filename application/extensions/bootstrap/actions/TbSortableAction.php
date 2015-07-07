@@ -1,6 +1,7 @@
 <?php
+
 /**
- * TbSortableAction CAction Component
+ * TbSortableAction CAction Component.
  *
  * It is a component that works in conjunction of TbExtendedGridView widget with sortableRows true. Just attach to the controller you wish to
  * make the calls to.
@@ -11,22 +12,23 @@
  */
 class TbSortableAction extends CAction
 {
-	/**
-	 * @var string the name of the model we are going to toggle values to
-	 */
-	public $modelName;
+    /**
+     * @var string the name of the model we are going to toggle values to
+     */
+    public $modelName;
 
-	/**
-	 * Widgets run function
-	 * @throws CHttpException
-	 */
+    /**
+     * Widgets run function.
+     *
+     * @throws CHttpException
+     */
     public function run()
     {
         if (Yii::app()->request->isPostRequest && Yii::app()->request->isAjaxRequest && isset($_POST['sortOrder'])) {
             $sortableAttribute = Yii::app()->request->getQuery('sortableAttribute');
 
             /** @var $model CActiveRecord */
-            $model = new $this->modelName;
+            $model = new $this->modelName();
             if (!$model->hasAttribute($sortableAttribute)) {
                 throw new CHttpException(500, Yii::t('yii', '{attribute} "{value}" is invalid.', array('{attribute}' => 'sortableAttribute', '{value}' => $sortableAttribute)));
             }
@@ -39,7 +41,7 @@ class TbSortableAction extends CAction
                 $query .= "WHEN {$model->tableSchema->primaryKey}={$id} THEN {$sort_order} ";
                 $ids[] = $id;
             }
-            $query .= "END WHERE {$model->tableSchema->primaryKey} IN (" . implode(',', $ids) . ');';
+            $query .= "END WHERE {$model->tableSchema->primaryKey} IN (".implode(',', $ids).');';
             Yii::app()->db->createCommand($query)->execute();
         } else {
             throw new CHttpException(500, Yii::t('yii', 'Your request is invalid.'));

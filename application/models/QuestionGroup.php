@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
     /*
     * LimeSurvey
     * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -16,91 +18,85 @@
     class QuestionGroup extends LSActiveRecord
     {
         /**
-        * Returns the static model of Settings table
-        *
-        * @static
-        * @access public
-        * @param string $class
-        * @return CActiveRecord
-        */
+         * Returns the static model of Settings table.
+         *
+         * @static
+         *
+         * @param string $class
+         *
+         * @return CActiveRecord
+         */
         public static function model($class = __CLASS__)
         {
             return parent::model($class);
         }
 
         /**
-        * Returns the setting's table name to be used by the model
-        *
-        * @access public
-        * @return string
-        */
+         * Returns the setting's table name to be used by the model.
+         *
+         * @return string
+         */
         public function tableName()
         {
             return '{{groups}}';
         }
 
         /**
-        * Returns the primary key of this table
-        *
-        * @access public
-        * @return string
-        */
+         * Returns the primary key of this table.
+         *
+         * @return string
+         */
         public function primaryKey()
         {
             return array('gid', 'language');
         }
 
-
     /**
-    * Returns this model's validation rules
-    *
-    */
+     * Returns this model's validation rules.
+     */
     public function rules()
     {
         return array(
-            array('gid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                            'condition'=>'language=:language',
-                            'params'=>array(':language'=>$this->language)
+            array('gid', 'unique', 'caseSensitive' => true, 'criteria' => array(
+                            'condition' => 'language=:language',
+                            'params' => array(':language' => $this->language),
                     ),
-                    'message'=>'{attribute} "{value}" is already in use.'),
-            array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+                    'message' => '{attribute} "{value}" is already in use.', ),
+            array('language','length', 'min' => 2, 'max' => 20),// in array languages ?
             array('group_name,description','LSYii_Validators'),
-            array('group_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+            array('group_order','numerical', 'integerOnly' => true,'allowEmpty' => true),
         );
     }
 
         /**
-        * Defines the relations for this model
-        *
-        * @access public
-        * @return array
-        */
+         * Defines the relations for this model.
+         *
+         * @return array
+         */
         public function relations()
         {
             return array('questions' => array(self::HAS_MANY, 'Question', 'gid'));
         }
 
-        function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
+        public function getAllRecords($condition = false, $order = false, $return_query = true)
         {
             $query = Yii::app()->db->createCommand()->select('*')->from('{{groups}}');
 
-            if ($condition != FALSE)
-            {
+            if ($condition != false) {
                 $query->where($condition);
             }
 
-            if($order != FALSE)
-            {
+            if ($order != false) {
                 $query->order($order);
             }
 
-            return ( $return_query ) ? $query->queryAll() : $query;
+            return ($return_query) ? $query->queryAll() : $query;
         }
 
-        function updateGroupOrder($sid,$lang,$position=0)
+        public function updateGroupOrder($sid, $lang, $position = 0)
         {
-            $data=Yii::app()->db->createCommand()->select('gid')
-            ->where(array('and','sid=:sid','language=:language'))
+            $data = Yii::app()->db->createCommand()->select('gid')
+            ->where(array('and', 'sid=:sid', 'language=:language'))
             ->order('group_order, group_name ASC')
             ->from('{{groups}}')
             ->bindParam(':sid', $sid, PDO::PARAM_INT)
@@ -108,67 +104,75 @@
             ->query();
 
             $position = intval($position);
-            foreach($data->readAll() as $row)
-            {
-                Yii::app()->db->createCommand()->update($this->tableName(),array('group_order' => $position),'gid='.$row['gid']);
-                $position++;
+            foreach ($data->readAll() as $row) {
+                Yii::app()->db->createCommand()->update($this->tableName(), array('group_order' => $position), 'gid='.$row['gid']);
+                ++$position;
             }
         }
 
         /**
-        * Insert an array into the groups table
-        * Returns false if insertion fails, otherwise the new GID
-        *
-        * @param array $data                           array_merge
-        */
+         * Insert an array into the groups table
+         * Returns false if insertion fails, otherwise the new GID.
+         *
+         * @param array $data                           array_merge
+         */
         public function insertRecords($data)
         {
-            $group = new self;
-            foreach ($data as $k => $v)
+            $group = new self();
+            foreach ($data as $k => $v) {
                 $group->$k = $v;
-            if  (!$group->save()) return false;
-            else return $group->gid;
+            }
+            if (!$group->save()) {
+                return false;
+            } else {
+                return $group->gid;
+            }
         }
 
-        function getGroups($surveyid) {
+        public function getGroups($surveyid)
+        {
             $language = Survey::model()->findByPk($surveyid)->language;
+
             return Yii::app()->db->createCommand()
             ->select(array('gid', 'group_name'))
             ->from($this->tableName())
             ->where(array('and', 'sid=:surveyid', 'language=:language'))
             ->order('group_order asc')
-            ->bindParam(":language", $language, PDO::PARAM_STR)
-            ->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
+            ->bindParam(':language', $language, PDO::PARAM_STR)
+            ->bindParam(':surveyid', $surveyid, PDO::PARAM_INT)
             ->query()->readAll();
         }
 
         public static function deleteWithDependency($groupId, $surveyId)
         {
-            $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
+            $questionIds = self::getQuestionIdsInGroup($groupId);
             Question::deleteAllById($questionIds);
             Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
-            return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+
+            return self::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         }
 
         /**
-        * Get group description
-        *
-        * @param int iGroupId
-        * @param string sLanguage
-        */
+         * Get group description.
+         *
+         * @param int iGroupId
+         * @param string sLanguage
+         */
         public function getGroupDescription($iGroupId, $sLanguage)
         {
             $solover = $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
+
             return $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
         }
 
-        private static function getQuestionIdsInGroup($groupId) {
+        private static function getQuestionIdsInGroup($groupId)
+        {
             $questions = Yii::app()->db->createCommand()
             ->select('qid')
             ->from('{{questions}} q')
             ->join('{{groups}} g', 'g.gid=q.gid AND g.gid=:groupid AND q.parent_qid=0')
             ->group('qid')
-            ->bindParam(":groupid", $groupId, PDO::PARAM_INT)
+            ->bindParam(':groupid', $groupId, PDO::PARAM_INT)
             ->queryAll();
 
             $questionIds = array();
@@ -179,14 +183,13 @@
             return $questionIds;
         }
 
-        function getAllGroups($condition, $order=false)
+        public function getAllGroups($condition, $order = false)
         {
             $command = Yii::app()->db->createCommand()->where($condition)->select('*')->from($this->tableName());
-            if ($order != FALSE)
-            {
+            if ($order != false) {
                 $command->order($order);
             }
+
             return $command->query();
         }
     }
-?>

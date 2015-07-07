@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -17,7 +18,7 @@
  */
 
 /**
- * LS Library autoloader
+ * LS Library autoloader.
  *
  * @param string $class
  */
@@ -26,8 +27,7 @@ function LS($class)
     $namespace = 'LS';
     $separator = '_';
 
-    if (0 !== strpos($class, $namespace.$separator))
-    {
+    if (0 !== strpos($class, $namespace.$separator)) {
         return;
     }
 
@@ -37,5 +37,5 @@ function LS($class)
 
     require $file; # provoke fatal error if file does not exists.
 }
- 
+
 spl_autoload_register('LS');

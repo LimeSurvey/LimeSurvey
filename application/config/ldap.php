@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -22,20 +23,20 @@
 /* LDAP servers                              */
 /*********************************************/
 
-$serverId=0;
+$serverId = 0;
 // Define the server DNS name or IP Address
 // If encryption is enabled, make sure the name given here
 // corresponds to the certificate's identity
-$ldap_server[$serverId]['server'] = "ldap.mycompany.org";
+$ldap_server[$serverId]['server'] = 'ldap.mycompany.org';
 
 // Define the TCP port on which the LDAP server is listenning
 // This should be 389 for standard LDAP servers
 // or 636 for standard LDAPS connections
-$ldap_server[$serverId]['port'] = "636";
+$ldap_server[$serverId]['port'] = '636';
 
 // Define the ldap protocol to use
 // 'ldapv2' and 'ldapv3' are supported
-$ldap_server[$serverId]['protoversion'] = "ldapv2";
+$ldap_server[$serverId]['protoversion'] = 'ldapv2';
 
 // Define the encryption method to use
 // 'ldaps' is supported for 'ldapv2' servers
@@ -43,7 +44,7 @@ $ldap_server[$serverId]['protoversion'] = "ldapv2";
 // 'none' is supproted for no encryption at all
 // Don't forget to setup your CA's certificate in
 // the openldap ldap.conf file
-$ldap_server[$serverId]['encrypt'] = "ldaps";
+$ldap_server[$serverId]['encrypt'] = 'ldaps';
 
 // Define the referral option
 // 'false' is recommended for ActiveDirectory servers
@@ -62,8 +63,8 @@ $ldap_server[$serverId]['referrals'] = false;
 // you are authorized to read its content. Remeber as well that user's DN
 // in AD are in the form of CN=username,CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
 //
-$ldap_server[$serverId]['binddn']	=	"uid=mybinduser,dc=mycompany,dc=org";
-$ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
+$ldap_server[$serverId]['binddn'] = 'uid=mybinduser,dc=mycompany,dc=org';
+$ldap_server[$serverId]['bindpw'] = 'AsecretPassword';
 
 /********* Copy for more definitions *****
  $serverId++;
@@ -88,7 +89,7 @@ $ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
 /*   How_do_I_configure_LDAP_settings_to_work_with_Active_Directory_  */
 /**********************************************************************/
 
-$query_id=0;
+$query_id = 0;
 
 // First define the serverId on which you want to run the query
 $ldap_queries[$query_id]['ldapServerId'] = 0;
@@ -125,7 +126,6 @@ $ldap_queries[$query_id]['lastname_attr'] = 'sn';
 // If multivalued, only the first entry is read
 $ldap_queries[$query_id]['email_attr'] = 'mail';
 
-
 // Optionnally give the user's attributes that provides the
 // token, language, attr1 and attr2 piece of information
 // do not use capital letters in the attribute name
@@ -141,7 +141,7 @@ $ldap_queries[$query_id]['attr2'] = '';
 // The query runs in two steps:
 //   1- Look for user candidates matching the group filter part
 //   2- Then, Apply a user filter to user candidates found in step 1
-$query_id++;
+++$query_id;
 $ldap_queries[$query_id]['ldapServerId'] = 0;
 $ldap_queries[$query_id]['name'] = 'Administrator group';
 // Define a group filter (base, filter, scope)
@@ -171,10 +171,9 @@ $ldap_queries[$query_id]['language'] = '';
 $ldap_queries[$query_id]['attr1'] = '';
 $ldap_queries[$query_id]['attr2'] = '';
 
-
 // This query is an example of a group search in which group members are UIDs
 // an additionnal user filter is applied to a already found users
-$query_id++;
+++$query_id;
 $ldap_queries[$query_id]['ldapServerId'] = 0;
 $ldap_queries[$query_id]['name'] = 'Admins via POSIXGroups';
 $ldap_queries[$query_id]['groupbase'] = 'ou=group,dc=mycompany,dc=org';
@@ -183,7 +182,7 @@ $ldap_queries[$query_id]['groupscope'] = 'sub';
 // Define which attribute within the group entry contains users' IDs
 $ldap_queries[$query_id]['groupmemberattr'] = 'memberuid';
 // Declare that groupmemberattr contains users' IDs and not DNs
-$ldap_queries[$query_id]['groupmemberisdn'] = FALSE;
+$ldap_queries[$query_id]['groupmemberisdn'] = false;
 // Give the name of the attribute in the user entry that matches the
 // 'groupmemberattr' value
 $ldap_queries[$query_id]['useridattr'] = 'uid';
@@ -206,8 +205,6 @@ $ldap_queries[$query_id]['attr2'] = '';
  //Copy previous definition lines
  ********/
 
-
 //DO NOT CHANGE BELOW HERE --------------------
 
 return array('ldap_server' => $ldap_server, 'ldap_queries' => $ldap_queries);
-?>

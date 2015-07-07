@@ -7,8 +7,8 @@
     {
         private static $_models = array();
 
-        private $_md;								// meta data
-	
+        private $_md;                                // meta data
+
         protected $tableName;
 
         /**
@@ -17,8 +17,7 @@
          */
         public function __construct($sTableName = null, $scenario = 'insert')
         {
-            if (!isset($sTableName))
-            {
+            if (!isset($sTableName)) {
                 //Yii::trace('sTableName missing.');
                 throw new Exception('sTableName missing.');
             }
@@ -26,29 +25,30 @@
             parent::__construct($scenario);
         }
 
-
         protected function instantiate($attributes = null)
         {
-            $class=get_class($this);
-            $model=new $class($this->tableName(), null);
+            $class = get_class($this);
+            $model = new $class($this->tableName(), null);
+
             return $model;
         }
         /**
          * We have a custom implementation here since the parents' implementation
          * does not create a new model for each table name.
+         *
          * @param type $className
+         *
          * @return Plugin
          */
         public static function model($sTableName = null)
         {
-            if (isset($sTableName))
-            {
-                if (!isset(self::$_models[$sTableName]))
-                {
-                    $model = self::$_models[$sTableName] = new PluginDynamic($sTableName, null);
+            if (isset($sTableName)) {
+                if (!isset(self::$_models[$sTableName])) {
+                    $model = self::$_models[$sTableName] = new self($sTableName, null);
                     $model->_md = new CActiveRecordMetaData($model);
                     $model->attachBehaviors($model->behaviors());
                 }
+
                 return self::$_models[$sTableName];
             }
         }
@@ -56,23 +56,22 @@
         /**
          * Gets the tablename for the current model.
          */
-        public function tableName() {
+        public function tableName()
+        {
             return $this->tableName;
         }
 
         /**
-         * Override
+         * Override.
+         *
          * @return CActiveRecordMetaData the meta for this AR class.
          */
         public function getMetaData()
         {
-            if($this->_md!==null)
+            if ($this->_md !== null) {
                 return $this->_md;
-            else
-                return $this->_md=self::model($this->tableName())->_md;
-
+            } else {
+                return $this->_md = self::model($this->tableName())->_md;
+            }
         }
-
     }
-
-?>

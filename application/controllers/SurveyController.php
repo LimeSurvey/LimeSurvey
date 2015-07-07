@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -16,10 +20,7 @@ class SurveyController extends LSYii_Controller
     public $lang = null;
 
     /**
-     * Initialises this controller, does some basic checks and setups
-     *
-     * @access protected
-     * @return void
+     * Initialises this controller, does some basic checks and setups.
      */
     protected function _init()
     {
@@ -27,34 +28,49 @@ class SurveyController extends LSYii_Controller
 
         unset(Yii::app()->session['FileManagerContext']);
 
-        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
-        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid'));}                //Usergroup-ID
-        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid'));}                   //GroupID
-        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid'));}                   //QuestionID
-        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid'));}                   //LabelID
-        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code'));}                // ??
-        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action'));}          //Desired action
-        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction'));} //Desired subaction
-        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));} // for html editor integration
+        if (!Yii::app()->getConfig('surveyid')) {
+            Yii::app()->setConfig('surveyid', returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig('ugid')) {
+            Yii::app()->setConfig('ugid', returnGlobal('ugid'));
+        }                //Usergroup-ID
+        if (!Yii::app()->getConfig('gid')) {
+            Yii::app()->setConfig('gid', returnGlobal('gid'));
+        }                   //GroupID
+        if (!Yii::app()->getConfig('qid')) {
+            Yii::app()->setConfig('qid', returnGlobal('qid'));
+        }                   //QuestionID
+        if (!Yii::app()->getConfig('lid')) {
+            Yii::app()->setConfig('lid', returnGlobal('lid'));
+        }                   //LabelID
+        if (!Yii::app()->getConfig('code')) {
+            Yii::app()->setConfig('code', returnGlobal('code'));
+        }                // ??
+        if (!Yii::app()->getConfig('action')) {
+            Yii::app()->setConfig('action', returnGlobal('action'));
+        }          //Desired action
+        if (!Yii::app()->getConfig('subaction')) {
+            Yii::app()->setConfig('subaction', returnGlobal('subaction'));
+        } //Desired subaction
+        if (!Yii::app()->getConfig('editedaction')) {
+            Yii::app()->setConfig('editedaction', returnGlobal('editedaction'));
+        } // for html editor integration
     }
 
     /**
-     * Load and set session vars
-     *
-     * @access protected
-     * @return void
+     * Load and set session vars.
      */
     protected function _sessioncontrol()
     {
-        if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
-            Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+        if (!Yii::app()->session['adminlang'] || Yii::app()->session['adminlang'] == '') {
+            Yii::app()->session['adminlang'] = Yii::app()->getConfig('defaultlang');
+        }
         Yii::app()->setLanguage(Yii::app()->session['adminlang']);
     }
 
     /**
-     * Routes all the actions to their respective places
+     * Routes all the actions to their respective places.
      *
-     * @access public
      * @return array
      */
     public function actions()
@@ -68,8 +84,7 @@ class SurveyController extends LSYii_Controller
             'statistics_user' => 'application.controllers.statistics_user',
             'tcpdf_check' => 'application.controllers.tcpdf_check',
             'uploader' => 'application.controllers.uploader',
-            'verification' => 'application.controllers.verification'
+            'verification' => 'application.controllers.verification',
         );
     }
-
 }

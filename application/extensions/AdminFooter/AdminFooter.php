@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,33 +14,32 @@
 */
 
 /**
- * Render the admin footer including version and build info when logged in
+ * Render the admin footer including version and build info when logged in.
  */
 class AdminFooter extends CWidget
 {
     public function run()
-        {
-            //If user is not logged in, don't print the version number information in the footer.
-            if (empty(Yii::app()->session['loginID']))
-            {
-                $versionnumber="";
-                $versiontitle="";
-                $buildtext="";
+    {
+        //If user is not logged in, don't print the version number information in the footer.
+            if (empty(Yii::app()->session['loginID'])) {
+                $versionnumber = '';
+                $versiontitle = '';
+                $buildtext = '';
             } else {
-                $versionnumber = Yii::app()->getConfig("versionnumber");
+                $versionnumber = Yii::app()->getConfig('versionnumber');
                 $versiontitle = gT('Version');
-                $buildtext = "";
-                if(Yii::app()->getConfig("buildnumber")!="") {
-                   $buildtext = "Build ".Yii::app()->getConfig("buildnumber");
-                }                
+                $buildtext = '';
+                if (Yii::app()->getConfig('buildnumber') != '') {
+                    $buildtext = 'Build '.Yii::app()->getConfig('buildnumber');
+                }
             }
-            
-            $aData = array(
+
+        $aData = array(
                 'versionnumber' => $versionnumber,
-                'versiontitle'  => $versiontitle,
-                'buildtext'     => $buildtext
+                'versiontitle' => $versiontitle,
+                'buildtext' => $buildtext,
             );
-        
-            $this->render('footer', $aData);
-        }
+
+        $this->render('footer', $aData);
+    }
 }

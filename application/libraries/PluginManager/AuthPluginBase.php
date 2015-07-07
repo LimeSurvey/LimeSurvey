@@ -1,13 +1,15 @@
 <?php
-namespace ls\pluginmanager;
-use \User;
+
+namespace ls\PluginManager;
+
+use User;
 use LSAuthResult;
 use Permission;
 
-abstract class AuthPluginBase extends PluginBase {
-    
+abstract class AuthPluginBase extends PluginBase
+{
     /**
-     * These constants reflect the error codes to be used by the identity, they 
+     * These constants reflect the error codes to be used by the identity, they
      * are copied from LSUserIdentity and CBaseUserIdentity for easier access.
      */
     const ERROR_NONE = 0;
@@ -27,24 +29,24 @@ abstract class AuthPluginBase extends PluginBase {
     const ERROR_LDAP_NO_BIND = 160;
     const ERROR_LDAP_NO_SEARCH_RESULT = 170;
 
-    const LDAP_INVALID_PASSWORD_TEXT = "INVALID_PASSWORD-LDAP_USER";
+    const LDAP_INVALID_PASSWORD_TEXT = 'INVALID_PASSWORD-LDAP_USER';
 
     protected $_username = null;
     protected $_password = null;
-    
+
     /**
-     * Get the password (if set)
-     * 
+     * Get the password (if set).
+     *
      * @return string|null
      */
     protected function getPassword()
     {
         return $this->_password;
     }
-        
+
     /**
-     * Get the username (if set)
-     * 
+     * Get the username (if set).
+     *
      * @return string|null
      */
     protected function getUserName()
@@ -53,24 +55,23 @@ abstract class AuthPluginBase extends PluginBase {
     }
 
     /**
-     * Set username and password
-     *
-     * @return null
+     * Set username and password.
      */
     public function afterLoginFormSubmit()
     {
         // Here we handle post data
         $request = $this->api->getRequest();
         if ($request->getIsPostRequest()) {
-            $this->setUsername( $request->getPost('user'));
+            $this->setUsername($request->getPost('user'));
             $this->setPassword($request->getPost('password'));
         }
     }
 
     /**
      * Set authentication result to success for the given user object.
-     * 
+     *
      * @param User $user
+     *
      * @return AuthPluginBase
      */
     public function setAuthSuccess(User $user)
@@ -81,15 +82,16 @@ abstract class AuthPluginBase extends PluginBase {
         $identity->user = $user;
         $identity = $this->getEvent()->set('identity', $identity);
         $event->set('result', new LSAuthResult(self::ERROR_NONE));
-        
+
         return $this;
     }
-    
+
     /**
      * Set authentication result to failure.
-     * 
-     * @param int $code Any of the constants defined in this class
+     *
+     * @param int    $code    Any of the constants defined in this class
      * @param string $message An optional message to return about the failure
+     *
      * @return AuthPluginBase
      */
     public function setAuthFailure($code = self::ERROR_UNKNOWN_IDENTITY, $message = '')
@@ -98,13 +100,13 @@ abstract class AuthPluginBase extends PluginBase {
         $identity = $this->getEvent()->get('identity');
         $identity->id = null;
         $event->set('result', new LSAuthResult($code, $message));
-        
+
         return $this;
     }
-    
+
     /**
-     * Set this plugin to handle the authentication
-     * 
+     * Set this plugin to handle the authentication.
+     *
      * @return AuthPluginBase
      */
     public function setAuthPlugin()
@@ -113,14 +115,15 @@ abstract class AuthPluginBase extends PluginBase {
         $identity = $this->getEvent()->get('identity');
         $identity->plugin = get_class($this);
         $this->getEvent()->stop();
-        
+
         return $this;
     }
-    
+
     /**
-     * Set the password to use for authentication
-     * 
+     * Set the password to use for authentication.
+     *
      * @param string $password
+     *
      * @return AuthPluginBase
      */
     protected function setPassword($password)
@@ -129,16 +132,17 @@ abstract class AuthPluginBase extends PluginBase {
         $event = $this->getEvent();
         $identity = $this->getEvent()->get('identity');
         $identity->password = $password;
-        
+
         $event->set('identity', $identity);
-        
+
         return $this;
     }
-    
+
     /**
-     * Set the username to use for authentication
-     * 
+     * Set the username to use for authentication.
+     *
      * @param string $username The username
+     *
      * @return AuthPluginBase
      */
     protected function setUsername($username)
@@ -147,18 +151,18 @@ abstract class AuthPluginBase extends PluginBase {
         $event = $this->getEvent();
         $identity = $this->getEvent()->get('identity');
         $identity->username = $username;
-        
+
         $event->set('identity', $identity);
-        
+
         return $this;
     }
 
     /**
-     * Set the username to use for authentication
+     * Set the username to use for authentication.
      *
      * @param string $sAuthType
      */
-    protected function setAuthPermission($iNewUID,$sAuthType)
+    protected function setAuthPermission($iNewUID, $sAuthType)
     {
         $aPerm = array(
             'entity_id' => 0,
@@ -170,12 +174,13 @@ abstract class AuthPluginBase extends PluginBase {
             'update_p' => 0,
             'delete_p' => 0,
             'import_p' => 0,
-            'export_p' => 0
+            'export_p' => 0,
         );
 
-        $oPermission = new Permission;
-        foreach ($aPerm as $k => $v)
+        $oPermission = new Permission();
+        foreach ($aPerm as $k => $v) {
             $oPermission->$k = $v;
+        }
         $oPermission->save();
     }
 }

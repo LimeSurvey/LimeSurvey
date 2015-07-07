@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -16,29 +20,29 @@
 class QuotaMember extends LSActiveRecord
 {
     /**
-     * Returns the static model of Settings table
+     * Returns the static model of Settings table.
      *
      * @static
-     * @access public
+     *
      * @param string $class
+     *
      * @return QuotaMember
      */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
-    
+
     public function rules()
     {
         return array(
-            array('code', 'required', 'on'=>array('create'))
+            array('code', 'required', 'on' => array('create')),
             );
     }
 
     /**
-     * Returns the setting's table name to be used by the model
+     * Returns the setting's table name to be used by the model.
      *
-     * @access public
      * @return string
      */
     public function tableName()
@@ -47,9 +51,8 @@ class QuotaMember extends LSActiveRecord
     }
 
     /**
-     * Returns the primary key of this table
+     * Returns the primary key of this table.
      *
-     * @access public
      * @return string
      */
     public function primaryKey()
@@ -57,11 +60,13 @@ class QuotaMember extends LSActiveRecord
         return 'id';
     }
 
-    function insertRecords($data)
+    public function insertRecords($data)
     {
-        $members = new self;
-        foreach ($data as $k => $v)
+        $members = new self();
+        foreach ($data as $k => $v) {
             $members->$k = $v;
+        }
+
         return $members->save();
     }
 }

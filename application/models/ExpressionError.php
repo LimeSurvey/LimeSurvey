@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,57 +19,53 @@
 
 class ExpressionError extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table.
+     *
+     * @static
+     *
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
-
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{expression_errors}}';
-	}
-
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function primaryKey()
-	{
-		return 'scid';
-	}
-
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
-
-		$data = $this->db->get('expression_errors');
-
-		return $data;
-	}
-
-    function insertRecords($data)
+     *
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
     {
-
-        return $this->db->insert('expression_errors',$data);
+        return parent::model($class);
     }
 
+    /**
+     * Returns the setting's table name to be used by the model.
+     *
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{expression_errors}}';
+    }
+
+    /**
+     * Returns the primary key of this table.
+     *
+     * @return array
+     */
+    public function primaryKey()
+    {
+        return 'scid';
+    }
+
+    public function getAllRecords($condition = false)
+    {
+        if ($condition != false) {
+            $this->db->where($condition);
+        }
+
+        $data = $this->db->get('expression_errors');
+
+        return $data;
+    }
+
+    public function insertRecords($data)
+    {
+        return $this->db->insert('expression_errors', $data);
+    }
 }

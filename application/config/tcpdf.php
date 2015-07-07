@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
     /*
     * LimeSurvey
     * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,18 +16,15 @@
     *
     */
 
-
-    /**
+    /*
     * TCPDF configuration file
     *
     * @package configuration
     */
 
-
     /***************************************************************************
     * PATH CONFIGURATION PARAMETERS
     **************************************************************************/
-
 
     /************************************************************
     * TCPDF installation directory
@@ -35,7 +36,6 @@
     ***********************************************************/
 
     $tcpdf['base_directory'] = APPPATH.'third_party'.DIRECTORY_SEPARATOR.'tcpdf'.DIRECTORY_SEPARATOR;
-
 
     /************************************************************
     * TCPDF installation directory URL
@@ -62,7 +62,6 @@
 
     $tcpdf['fonts_directory'] = $tcpdf['base_directory'].'fonts'.DIRECTORY_SEPARATOR;
 
-
     /************************************************************
     * TCPDF disk cache settings
     * ----------------------------------------------------------
@@ -72,9 +71,8 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['enable_disk_cache'] = FALSE;
+    $tcpdf['enable_disk_cache'] = false;
     $tcpdf['cache_directory'] = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR;
-
 
     /************************************************************
     * TCPDF image directory
@@ -96,12 +94,9 @@
 
     $tcpdf['blank_image'] = $tcpdf['image_directory'].'_blank.png';
 
-
-
     /***************************************************************************
     * DOCUMENT CONFIGURATION PARAMETERS
     **************************************************************************/
-
 
     /************************************************************
     * TCPDF default page format
@@ -120,7 +115,6 @@
 
     $tcpdf['page_format'] = 'A4';
 
-
     /************************************************************
     * TCPDF default page orientation
     * ----------------------------------------------------------
@@ -129,7 +123,6 @@
     ***********************************************************/
 
     $tcpdf['page_orientation'] = 'P';
-
 
     /************************************************************
     * TCPDF default unit of measure
@@ -144,7 +137,6 @@
 
     $tcpdf['page_unit'] = 'mm';
 
-
     /************************************************************
     * TCPDF auto page break
     * ----------------------------------------------------------
@@ -152,8 +144,7 @@
     * you run out of room on the current page.
     ***********************************************************/
 
-    $tcpdf['page_break_auto'] = TRUE;
-
+    $tcpdf['page_break_auto'] = true;
 
     /************************************************************
     * TCPDF text encoding
@@ -162,9 +153,8 @@
     * unicode, and specify the default encoding.
     ***********************************************************/
 
-    $tcpdf['unicode'] = TRUE;
+    $tcpdf['unicode'] = true;
     $tcpdf['encoding'] = 'UTF-8';
-
 
     /************************************************************
     * TCPDF default document creator and author strings
@@ -173,7 +163,6 @@
     $tcpdf['creator'] = 'TCPDF';
     $tcpdf['author'] = 'TCPDF';
 
-
     /************************************************************
     * TCPDF default page margin
     * ----------------------------------------------------------
@@ -181,11 +170,10 @@
     * settings in the default unit of measure.
     ***********************************************************/
 
-    $tcpdf['margin_top']    = 27;
+    $tcpdf['margin_top'] = 27;
     $tcpdf['margin_bottom'] = 27;
-    $tcpdf['margin_left']   = 15;
-    $tcpdf['margin_right']  = 15;
-
+    $tcpdf['margin_left'] = 15;
+    $tcpdf['margin_right'] = 15;
 
     /************************************************************
     * TCPDF default font settings
@@ -200,8 +188,7 @@
     $tcpdf['data_font_size'] = 8;
     $tcpdf['mono_font'] = 'freemono';
 
-    $tcpdf['small_font_ratio'] = 2/3;
-
+    $tcpdf['small_font_ratio'] = 2 / 3;
 
     /************************************************************
     * TCPDF header settings
@@ -210,18 +197,17 @@
     * description string, and logo
     ***********************************************************/
 
-    $tcpdf['header_on'] = TRUE;
+    $tcpdf['header_on'] = true;
     $tcpdf['header_font'] = $tcpdf['page_font'];
     $tcpdf['header_font_size'] = 10;
     $tcpdf['header_margin'] = 5;
     //$tcpdf['header_title'] = 'TCPDF Example';
     //$tcpdf['header_string'] = "by Nicola Asuni - Tecnick.com\nwww.tcpdf.org";
     $tcpdf['header_title'] = '';
-    $tcpdf['header_string'] = "";
+    $tcpdf['header_string'] = '';
     //$tcpdf['header_logo'] = 'tcpdf_logo.jpg';
     $tcpdf['header_logo'] = '';
     $tcpdf['header_logo_width'] = 30;
-
 
     /************************************************************
     * TCPDF footer settings
@@ -229,11 +215,10 @@
     * Enable the header, set the font, default text, and margin
     ***********************************************************/
 
-    $tcpdf['footer_on'] = TRUE;
+    $tcpdf['footer_on'] = true;
     $tcpdf['footer_font'] = $tcpdf['page_font'];
     $tcpdf['footer_font_size'] = 8;
     $tcpdf['footer_margin'] = 10;
-
 
     /************************************************************
     * TCPDF image scale ratio
@@ -242,7 +227,6 @@
     ***********************************************************/
 
     $tcpdf['image_scale'] = 4;
-
 
     /************************************************************
     * TCPDF cell settings
@@ -254,4 +238,3 @@
     $tcpdf['cell_padding'] = 0;
 
     return $tcpdf;
-

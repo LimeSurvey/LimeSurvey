@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,22 +17,16 @@
  */
 
 /**
-* Assessments Controller
+ * Assessments Controller.
  *
  * This controller performs assessments actions
- *
- * @package        LimeSurvey
- * @subpackage    Backend
  */
-class Assessments extends Survey_Common_Action
+class assessments extends Survey_Common_Action
 {
-
     /**
-     * Routes to the correct sub-action
+     * Routes to the correct sub-action.
      *
-     * @access public
      * @param int $iSurveyID
-     * @return void
      */
     public function index($iSurveyID)
     {
@@ -42,37 +40,39 @@ class Assessments extends Survey_Common_Action
 
         array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
-        Yii::app()->setConfig("baselang", $surveyLanguage);
-        Yii::app()->setConfig("assessmentlangs", $languages);
+        Yii::app()->setConfig('baselang', $surveyLanguage);
+        Yii::app()->setConfig('assessmentlangs', $languages);
 
-        if ($sAction == "assessmentadd")
+        if ($sAction == 'assessmentadd') {
             $this->_add($iSurveyID);
-        if ($sAction == "assessmentupdate")
+        }
+        if ($sAction == 'assessmentupdate') {
             $this->_update($iSurveyID);
-        if ($sAction == "assessmentdelete")
-             $this->_delete($iSurveyID, $_POST['id']);
+        }
+        if ($sAction == 'assessmentdelete') {
+            $this->_delete($iSurveyID, $_POST['id']);
+        }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
             if ($iSurveyID == '') {
-                show_error(gT("No SID Provided"));
+                show_error(gT('No SID Provided'));
                 die();
             }
 
             $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
         }
-
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
+     * Renders template(s) wrapped in header and footer.
      *
-     * @param string $sAction Current action, the folder to fetch views from
+     * @param string       $sAction   Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
+     * @param array        $aData     Data to be passed on. Optional.
      */
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'assessments.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'assessments.js');
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerPackage('jquery-superfish');
 
@@ -83,12 +83,12 @@ class Assessments extends Survey_Common_Action
     {
         $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
         $aData = $this->_collectGroupData($iSurveyID);
-        $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
-        $aData['actiontitle'] = gT("Add");
-        $aData['actionvalue'] = "assessmentadd";
+        $aHeadings = array(gT('Scope'), gT('Question group'), gT('Minimum'), gT('Maximum'));
+        $aData['actiontitle'] = gT('Add');
+        $aData['actionvalue'] = 'assessmentadd';
         $aData['editId'] = '';
 
-        if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
+        if ($action == 'assessmentedit' && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
             $aData = $this->_collectEditData($aData);
         }
 
@@ -98,15 +98,16 @@ class Assessments extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID;
         $aData['headings'] = $aHeadings;
         $aData['assessments'] = $oAssessments;
-        $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
+        $aData['assessmentlangs'] = Yii::app()->getConfig('assessmentlangs');
         $aData['baselang'] = $surveyinfo['language'];
         $aData['action'] = $action;
         $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
         Yii::app()->loadHelper('admin/htmleditor');
-        if ($surveyinfo['assessments']!='Y')
-            $urls['message'] = array('title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
-        $urls['assessments_view'][]= $aData;
+        if ($surveyinfo['assessments'] != 'Y') {
+            $urls['message'] = array('title' => gT('Assessments mode not activated'), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."), '<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">', '</a>'), 'class' => 'warningheader');
+        }
+        $urls['assessments_view'][] = $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
     }
 
@@ -119,34 +120,36 @@ class Assessments extends Survey_Common_Action
             $groupName = $group->attributes['group_name'];
             $aData['groups'][$groupId] = $groupName;
         }
+
         return $aData;
     }
 
     private function _collectEditData(array $aData)
     {
-        $oAssessment = Assessment::model()->find("id=:id",array(':id' => App()->request->getParam('id')));
-        if(!$oAssessment)
-            throw new CHttpException(500);// 404 ?
+        $oAssessment = Assessment::model()->find('id=:id', array(':id' => App()->request->getParam('id')));
+        if (!$oAssessment) {
+            throw new CHttpException(500);
+        }// 404 ?
 
         $editData = $oAssessment->attributes;
-        $aData['actiontitle'] = gT("Edit");
-        $aData['actionvalue'] = "assessmentupdate";
+        $aData['actiontitle'] = gT('Edit');
+        $aData['actionvalue'] = 'assessmentupdate';
         $aData['editId'] = $editData['id'];
         $aData['editdata'] = $editData;
+
         return $aData;
     }
 
     /**
-     * Inserts an assessment to the database. Receives input from POST
+     * Inserts an assessment to the database. Receives input from POST.
      */
     private function _add($iSurveyID)
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
             $bFirst = true;
             $iAssessmentID = -1;
-            $aLanguages = Yii::app()->getConfig("assessmentlangs");
-            foreach ($aLanguages as $sLanguage)
-            {
+            $aLanguages = Yii::app()->getConfig('assessmentlangs');
+            foreach ($aLanguages as $sLanguage) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $sLanguage);
 
                 if ($bFirst == false) {
@@ -162,16 +165,14 @@ class Assessments extends Survey_Common_Action
     }
 
     /**
-     * Updates an assessment. Receives input from POST
+     * Updates an assessment. Receives input from POST.
      */
     private function _update($iSurveyID)
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && isset($_POST['id'])) {
-
             $aid = sanitize_int($_POST['id']);
-            $languages = Yii::app()->getConfig("assessmentlangs");
-            foreach ($languages as $language)
-            {
+            $languages = Yii::app()->getConfig('assessmentlangs');
+            foreach ($languages as $language) {
                 $aData = $this->_getAssessmentPostData($iSurveyID, $language);
                 Assessment::model()->updateAssessment($aid, $iSurveyID, $language, $aData);
             }
@@ -190,8 +191,9 @@ class Assessments extends Survey_Common_Action
 
     private function _getAssessmentPostData($iSurveyID, $language)
     {
-        if (!isset($_POST['gid']))
+        if (!isset($_POST['gid'])) {
             $_POST['gid'] = 0;
+        }
 
         return array(
             'sid' => $iSurveyID,
@@ -199,9 +201,9 @@ class Assessments extends Survey_Common_Action
             'gid' => sanitize_int($_POST['gid']),
             'minimum' => intval($_POST['minimum']),
             'maximum' => intval($_POST['maximum']),
-            'name' => $_POST['name_' . $language],
+            'name' => $_POST['name_'.$language],
             'language' => $language,
-            'message' => $_POST['assessmentmessage_' . $language]
+            'message' => $_POST['assessmentmessage_'.$language],
         );
     }
 }
