@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,31 +12,30 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-final class SettingsStorage extends ArrayObject
+final class settingsstorage extends ArrayObject
 {
     protected static $_instance = null;
 
     public function __construct($params = array())
     {
-    	$defaults = array('array' => array(), 'flags' => parent::ARRAY_AS_PROPS);
+        $defaults = array('array' => array(), 'flags' => parent::ARRAY_AS_PROPS);
 
-        foreach ($defaults as $key => $val)
-        {
-            if (isset($params[$key]) && $params[$key] !== "")
-            {
-				$defaults[$key] = $params[$key];
+        foreach ($defaults as $key => $val) {
+            if (isset($params[$key]) && $params[$key] !== '') {
+                $defaults[$key] = $params[$key];
             }
         }
         extract($defaults);
-		
+
         parent::__construct($array, $flags);
     }
 
     public static function getInstance()
     {
-        if( self::$_instance === NULL ) {
+        if (self::$_instance === null) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     }
 
@@ -61,6 +61,7 @@ final class SettingsStorage extends ArrayObject
         if (self::$_instance === null) {
             return false;
         }
+
         return self::$_instance->offsetExists($index);
     }
 
@@ -71,7 +72,4 @@ final class SettingsStorage extends ArrayObject
     {
         return array_key_exists($index, $this);
     }
-
-
 }
-?>

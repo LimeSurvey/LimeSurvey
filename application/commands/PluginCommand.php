@@ -1,4 +1,7 @@
 <?php
+
+
+
     /*
     * LimeSurvey (tm)
     * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -17,14 +20,9 @@
 
         public function actionCron($interval)
         {
-
             $pm = Yii::app()->getPluginManager();
             $event = new PluginEvent('cron');
             $event->set('interval', $interval);
             $pm->dispatchEvent($event);
-            
-            
         }
     }
-
-?>

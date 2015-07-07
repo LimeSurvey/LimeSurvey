@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,39 +15,32 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
- 
-class LSYii_EmailIDNAValidator extends CValidator {
 
-    public $allowEmpty=false;
-    public $allowMultiple=false;
+class LSYii_EmailIDNAValidator extends CValidator
+{
+    public $allowEmpty = false;
+    public $allowMultiple = false;
 
-
-    public function validateAttribute($object,$attribute){
-
-        if ($object->$attribute=='' && $this->allowEmpty) 
-        {
-             return;
+    public function validateAttribute($object, $attribute)
+    {
+        if ($object->$attribute == '' && $this->allowEmpty) {
+            return;
         }
-        
-        if ($this->allowMultiple)
-        {
-            $aEmailAdresses=explode(';',$object->$attribute);
+
+        if ($this->allowMultiple) {
+            $aEmailAdresses = explode(';', $object->$attribute);
+        } else {
+            $aEmailAdresses = array($object->$attribute);
         }
-        else
-        {
-            $aEmailAdresses=array($object->$attribute);
-        }
-        
-        foreach ($aEmailAdresses as $sEmailAddress)
-        {
-            if (!validateEmailAddress($sEmailAddress))
-            {
+
+        foreach ($aEmailAdresses as $sEmailAddress) {
+            if (!validateEmailAddress($sEmailAddress)) {
                 $this->addError($object, $attribute, gT('Invalid email address.'));
+
                 return;
             }
-            
         }
-        return; 
+
+        return;
     }
-    
 }

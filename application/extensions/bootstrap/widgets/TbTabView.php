@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbTabView class file.
  *
@@ -7,26 +8,25 @@
  * @author Joe Blocher <yii@myticket.at>
  * @copyright Copyright &copy; Joe Blocher 2012
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package bootstrap.widgets
  */
 Yii::import('bootstrap.widgets.TbTabs');
 
 class TbTabView extends TbTabs
 {
-
     /**
-     * Additional data submitted to the views
+     * Additional data submitted to the views.
      *
      * @var array
      */
     public $viewData;
 
     /**
-     * Override from TbTabs
+     * Override from TbTabs.
      *
-     * @param array $tabs the tab configuration
+     * @param array $tabs  the tab configuration
      * @param array $panes a reference to the panes array
-     * @param integer $i the current index
+     * @param int   $i     the current index
+     *
      * @return array the items
      */
     protected function normalizeTabs($tabs, &$panes, &$i = 0)
@@ -37,46 +37,48 @@ class TbTabView extends TbTabs
        //---------------- new -------------------
         //Check if has an active item
         $hasActiveItem = false;
-        foreach ($tabs as $tab)
-        {
+        foreach ($tabs as $tab) {
             $hasActiveItem = isset($tab['active']) ? $tab['active'] : false;
-            if($hasActiveItem)
+            if ($hasActiveItem) {
                 break;
+            }
         }
         //---------------- end new -------------------
 
-        foreach ($tabs as $tab)
-        {
+        foreach ($tabs as $tab) {
             $item = $tab;
 
-            if (isset($item['visible']) && $item['visible'] === false)
+            if (isset($item['visible']) && $item['visible'] === false) {
                 continue;
+            }
 
             //---------------- new -------------------
             //check first active
-            if(!$hasActiveItem && $i == 0)
+            if (!$hasActiveItem && $i == 0) {
                 $item['active'] = true;
+            }
 
             //title -> label
-            if (isset($item['title']))
-            {
-                if(!isset($item['label']))
-                  $item['label'] = $item['title'];
+            if (isset($item['title'])) {
+                if (!isset($item['label'])) {
+                    $item['label'] = $item['title'];
+                }
                 unset($item['title']);
             }
             //------   end new ----------------
 
-            if (!isset($item['itemOptions']))
+            if (!isset($item['itemOptions'])) {
                 $item['itemOptions'] = array();
+            }
 
             $item['linkOptions']['data-toggle'] = 'tab';
 
-            if (isset($tab['items']))
+            if (isset($tab['items'])) {
                 $item['items'] = $this->normalizeTabs($item['items'], $panes, $i);
-            else
-            {
-                if (!isset($item['id']))
+            } else {
+                if (!isset($item['id'])) {
                     $item['id'] = $id.'_tab_'.($i + 1);
+                }
 
                 $item['url'] = '#'.$item['id'];
 
@@ -84,35 +86,35 @@ class TbTabView extends TbTabs
                 //	$item['content'] = '';
 
                 //--------------- new ---------------
-                if (!isset($item['content']))
-                {
-                    if (isset($item['view']))
-                    {
-                        if (isset($item['data']))
-                        {
-                            if (is_array($this->viewData))
+                if (!isset($item['content'])) {
+                    if (isset($item['view'])) {
+                        if (isset($item['data'])) {
+                            if (is_array($this->viewData)) {
                                 $data = array_merge($this->viewData, $item['data']);
-                            else
+                            } else {
                                 $data = $item['data'];
+                            }
 
                             unset($item['data']);
-                        } else
+                        } else {
                             $data = $this->viewData;
+                        }
 
                         $item['content'] = $this->getController()->renderPartial($item['view'], $data, true);
 
                         unset($item['view']);
-                    }
-                    else
+                    } else {
                         $item['content'] = '';
+                    }
                 }
                 //--------------- end new ---------------
 
                 $content = $item['content'];
                 unset($item['content']);
 
-                if (!isset($item['paneOptions']))
+                if (!isset($item['paneOptions'])) {
                     $item['paneOptions'] = array();
+                }
 
                 $paneOptions = $item['paneOptions'];
                 unset($item['paneOptions']);
@@ -121,18 +123,20 @@ class TbTabView extends TbTabs
 
                 $classes = array('tab-pane fade');
 
-                if (isset($item['active']) && $item['active'])
+                if (isset($item['active']) && $item['active']) {
                     $classes[] = 'active in';
+                }
 
                 $classes = implode(' ', $classes);
-                if (isset($paneOptions['class']))
+                if (isset($paneOptions['class'])) {
                     $paneOptions['class'] .= ' '.$classes;
-                else
+                } else {
                     $paneOptions['class'] = $classes;
+                }
 
                 $panes[] = CHtml::tag('div', $paneOptions, $content);
 
-                $i++; // increment the tab-index
+                ++$i; // increment the tab-index
             }
 
             $items[] = $item;
@@ -140,5 +144,4 @@ class TbTabView extends TbTabs
 
         return $items;
     }
-
 }

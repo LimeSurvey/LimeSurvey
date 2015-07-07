@@ -1,7 +1,8 @@
 <?php
 
-    if (!defined('BASEPATH'))
+    if (!defined('BASEPATH')) {
         exit('No direct script access allowed');
+    }
     /*
     * LimeSurvey
     * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -19,49 +20,48 @@
     class Condition extends LSActiveRecord
     {
         /**
-        * Returns the static model of Settings table
-        *
-        * @static
-        * @access public
-        * @param string $class
-        * @return CActiveRecord
-        */
+         * Returns the static model of Settings table.
+         *
+         * @static
+         *
+         * @param string $class
+         *
+         * @return CActiveRecord
+         */
         public static function model($class = __CLASS__)
         {
             return parent::model($class);
         }
 
         /**
-        * Returns the setting's table name to be used by the model
-        *
-        * @access public
-        * @return string
-        */
+         * Returns the setting's table name to be used by the model.
+         *
+         * @return string
+         */
         public function tableName()
         {
             return '{{conditions}}';
         }
 
         /**
-        * Returns the primary key of this table
-        *
-        * @access public
-        * @return string
-        */
+         * Returns the primary key of this table.
+         *
+         * @return string
+         */
         public function primaryKey()
         {
             return 'cid';
         }
 
         /**
-        * Defines the relations for this model
-        *
-        * @access public
-        * @return array
-        */
+         * Defines the relations for this model.
+         *
+         * @return array
+         */
         public function relations()
         {
-			$alias = $this->getTableAlias();
+            $alias = $this->getTableAlias();
+
             return array(
             'questions' => array(self::HAS_ONE, 'Question', '',
             'on' => "$alias.cqid = questions.qid",
@@ -69,22 +69,16 @@
             );
         }
 
-
-        public function deleteRecords($condition=FALSE)
+        public function deleteRecords($condition = false)
         {
-            $criteria = new CDbCriteria;
+            $criteria = new CDbCriteria();
 
-            if( $condition != FALSE )
-            {
-                if( is_array($condition) )
-                {
-                    foreach($condition as $column=>$value)
-                    {
+            if ($condition != false) {
+                if (is_array($condition)) {
+                    foreach ($condition as $column => $value) {
                         $criteria->addCondition("$column='$value'");
                     }
-                }
-                else
-                {
+                } else {
                     $criteria->addCondition($condition);
                 }
             }
@@ -92,26 +86,22 @@
             return $this->deleteAll($criteria);
         }
 
-
         /**
-        * Updates the group ID for all conditions
-        * 
-        * @param integer $iSurveyID
-        * @param integer $iQuestionID
-        * @param integer $iOldGroupID
-        * @param integer $iNewGroupID
-        */
+         * Updates the group ID for all conditions.
+         *
+         * @param int $iSurveyID
+         * @param int $iQuestionID
+         * @param int $iOldGroupID
+         * @param int $iNewGroupID
+         */
         public function updateCFieldName($iSurveyID, $iQuestionID, $iOldGroupID, $iNewGroupID)
         {
-            $oResults=$this->findAllByAttributes(array('cqid'=>$iQuestionID));
-            foreach ($oResults as $oRow)
-            {
-
-                $cfnregs='';
-                if (preg_match('/'.$surveyid."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0)
-                {
-                    $newcfn=$surveyid."X".$iNewGroupID."X".$iQuestionID.$cfnregs[1];
-                    $c2query="UPDATE ".db_table_name('conditions')
+            $oResults = $this->findAllByAttributes(array('cqid' => $iQuestionID));
+            foreach ($oResults as $oRow) {
+                $cfnregs = '';
+                if (preg_match('/'.$surveyid.'X'.$iOldGroupID.'X'.$iQuestionID.'(.*)/', $oRow->cfieldname, $cfnregs) > 0) {
+                    $newcfn = $surveyid.'X'.$iNewGroupID.'X'.$iQuestionID.$cfnregs[1];
+                    $c2query = 'UPDATE '.db_table_name('conditions')
                     ." SET cfieldname='{$newcfn}' WHERE cid={$oRow->cid}";
 
                     Yii::app()->db->createCommand($c2query)->query();
@@ -119,80 +109,69 @@
             }
         }
 
-        
-        
-        public function insertRecords($data, $update=FALSE, $condition=FALSE)
+        public function insertRecords($data, $update = false, $condition = false)
         {
-            $record = new self;
-            foreach ($data as $k => $v)
-            {
+            $record = new self();
+            foreach ($data as $k => $v) {
                 $v = str_replace(array("'", '"'), '', $v);
                 $record->$k = $v;
             }
 
-            if( $update )
-            {
-                $criteria = new CdbCriteria;
-                if( is_array($condition) )
-                {
-                    foreach($condition as $column=>$value)
-                    {
+            if ($update) {
+                $criteria = new CdbCriteria();
+                if (is_array($condition)) {
+                    foreach ($condition as $column => $value) {
                         $criteria->addCondition("$column='$value'");
                     }
-                }
-                else
-                {
+                } else {
                     $criteria->where = $condition;
                 }
 
-                return $record->updateAll($data,$criteria);
-            }
-            else
+                return $record->updateAll($data, $criteria);
+            } else {
                 return $record->save();
+            }
         }
-        
-        function getScenarios($qid)
-        {
 
-            $scenarioquery = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=".$qid." ORDER BY scenario";
+        public function getScenarios($qid)
+        {
+            $scenarioquery = 'SELECT DISTINCT scenario FROM '.$this->tableName().' WHERE qid='.$qid.' ORDER BY scenario';
 
             return Yii::app()->db->createCommand($scenarioquery)->query();
         }
-        
-        function getSomeConditions($fields, $condition, $order, $group){
+
+        public function getSomeConditions($fields, $condition, $order, $group)
+        {
             $record = Yii::app()->db->createCommand()
             ->select($fields)
             ->from($this->tableName())
             ->where($condition);
 
-            if( $order != NULL )
-            {
+            if ($order != null) {
                 $record->order($order);
             }
-            if( $group != NULL )
-            {
+            if ($group != null) {
                 $record->group($group);
             }
 
             return $record->query();
         }
-        
-        function getConditionsQuestions($distinctrow,$deqrow,$scenariorow,$surveyprintlang)
+
+        public function getConditionsQuestions($distinctrow, $deqrow, $scenariorow, $surveyprintlang)
         {
-            $conquery="SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname "
-            ."FROM {{conditions}} c, {{questions}} q "
-            ."WHERE c.cqid=q.qid "
-            ."AND c.cqid=:distinctrow "
-            ."AND c.qid=:deqrow "
-            ."AND c.scenario=:scenariorow "
-            ."AND language=:surveyprintlang ";
+            $conquery = 'SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname '
+            .'FROM {{conditions}} c, {{questions}} q '
+            .'WHERE c.cqid=q.qid '
+            .'AND c.cqid=:distinctrow '
+            .'AND c.qid=:deqrow '
+            .'AND c.scenario=:scenariorow '
+            .'AND language=:surveyprintlang ';
+
             return Yii::app()->db->createCommand($conquery)
-            ->bindParam(":distinctrow", $distinctrow, PDO::PARAM_INT)
-            ->bindParam(":deqrow", $deqrow, PDO::PARAM_INT)
-            ->bindParam(":scenariorow", $scenariorow, PDO::PARAM_INT)
-            ->bindParam(":surveyprintlang", $surveyprintlang, PDO::PARAM_STR)
+            ->bindParam(':distinctrow', $distinctrow, PDO::PARAM_INT)
+            ->bindParam(':deqrow', $deqrow, PDO::PARAM_INT)
+            ->bindParam(':scenariorow', $scenariorow, PDO::PARAM_INT)
+            ->bindParam(':surveyprintlang', $surveyprintlang, PDO::PARAM_STR)
             ->query();
         }
     }
-
-?>

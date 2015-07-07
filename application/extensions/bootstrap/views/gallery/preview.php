@@ -1,6 +1,6 @@
 <?php
 /**
- * preview.php
+ * preview.php.
  *
  * @author: antonio ramirez <antonio@clevertech.biz>
  * Date: 11/5/12

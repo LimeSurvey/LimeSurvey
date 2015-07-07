@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,18 +19,19 @@
 
 class Assessment extends LSActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
+    /**
+     * Returns the static model of Settings table.
+     *
+     * @static
+     *
      * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+     *
+     * @return CActiveRecord
+     */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
     public function rules()
     {
@@ -35,47 +40,46 @@ class Assessment extends LSActiveRecord
         );
     }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{assessments}}';
-	}
-
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return array('id', 'language');
-	}
-
-	public static function insertRecords($data)
+    /**
+     * Returns the setting's table name to be used by the model.
+     *
+     * @return string
+     */
+    public function tableName()
     {
-        $assessment = new self;
+        return '{{assessments}}';
+    }
 
-		foreach ($data as $k => $v)
-			$assessment->$k = $v;
-		$assessment->save();
+    /**
+     * Returns the primary key of this table.
+     *
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return array('id', 'language');
+    }
+
+    public static function insertRecords($data)
+    {
+        $assessment = new self();
+
+        foreach ($data as $k => $v) {
+            $assessment->$k = $v;
+        }
+        $assessment->save();
 
         return $assessment;
     }
 
     public static function updateAssessment($id, $iSurveyID, $language, array $data)
     {
-        $assessment = self::model()->findByAttributes(array('id' => $id, 'sid'=> $iSurveyID, 'language' => $language));
+        $assessment = self::model()->findByAttributes(array('id' => $id, 'sid' => $iSurveyID, 'language' => $language));
         if (!is_null($assessment)) {
-            foreach ($data as $k => $v)
+            foreach ($data as $k => $v) {
                 $assessment->$k = $v;
+            }
             $assessment->save();
         }
     }
 }
-?>

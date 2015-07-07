@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,32 +15,22 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class Index extends Survey_Common_Action
+class index extends Survey_Common_Action
 {
-
     public function run()
     {
-        
-
-        if (Yii::app()->session['just_logged_in'])
-        {
+        if (Yii::app()->session['just_logged_in']) {
             $aViewUrls = array('message' => array(
-                'title' => gT("Logged in"),
-                'message' => Yii::app()->session['loginsummary']
+                'title' => gT('Logged in'),
+                'message' => Yii::app()->session['loginsummary'],
             ));
             unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
 
             $this->_renderWrappedTemplate('super', $aViewUrls);
-        }
-        elseif (count(getSurveyList(true)) == 0)
-		{
+        } elseif (count(getSurveyList(true)) == 0) {
             $this->_renderWrappedTemplate('super', 'firststeps');
-		}
-        else
-        {
+        } else {
             $this->getController()->redirect(array('admin/survey/sa/index'));
         }
-
     }
-
 }

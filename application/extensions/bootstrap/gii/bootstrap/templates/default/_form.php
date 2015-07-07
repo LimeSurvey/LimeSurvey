@@ -1,7 +1,7 @@
 <?php
 /**
  * The following variables are available in this template:
- * - $this: the BootCrudCode object
+ * - $this: the BootCrudCode object.
  */
 ?>
 <?php echo "<?php \$form=\$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
@@ -14,14 +14,16 @@
 	<?php echo "<?php echo \$form->errorSummary(\$model); ?>\n"; ?>
 
 <?php
-foreach($this->tableSchema->columns as $column)
-{
-	if($column->autoIncrement)
-		continue;
-?>
-	<?php echo "<?php echo ".$this->generateActiveRow($this->modelClass,$column)."; ?>\n"; ?>
+foreach ($this->tableSchema->columns as $column) {
+    if ($column->autoIncrement) {
+        continue;
+    }
+    ?>
+	<?php echo '<?php echo '.$this->generateActiveRow($this->modelClass, $column)."; ?>\n";
+    ?>
 
 <?php
+
 }
 ?>
 	<div class="form-actions">

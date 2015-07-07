@@ -1,7 +1,8 @@
 <?php
 
-    if (!defined('BASEPATH'))
+    if (!defined('BASEPATH')) {
         exit('No direct script access allowed');
+    }
     /*
     * LimeSurvey
     * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -18,170 +19,159 @@
 
     class Question extends LSActiveRecord
     {
-
         /**
-        * Returns the static model of Settings table
-        *
-        * @static
-        * @access public
-        * @param string $class
-        * @return CActiveRecord
-        */
+         * Returns the static model of Settings table.
+         *
+         * @static
+         *
+         * @param string $class
+         *
+         * @return CActiveRecord
+         */
         public static function model($class = __CLASS__)
         {
             return parent::model($class);
         }
 
         /**
-        * Returns the setting's table name to be used by the model
-        *
-        * @access public
-        * @return string
-        */
+         * Returns the setting's table name to be used by the model.
+         *
+         * @return string
+         */
         public function tableName()
         {
             return '{{questions}}';
         }
 
         /**
-        * Returns the primary key of this table
-        *
-        * @access public
-        * @return string
-        */
+         * Returns the primary key of this table.
+         *
+         * @return string
+         */
         public function primaryKey()
         {
             return array('qid', 'language');
         }
 
         /**
-        * Defines the relations for this model
-        *
-        * @access public
-        * @return array
-        */
+         * Defines the relations for this model.
+         *
+         * @return array
+         */
         public function relations()
         {
             $alias = $this->getTableAlias();
+
             return array(
                 'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
                 'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
-                'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
+                'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language"),
 
             );
         }
 
         /**
-        * Returns this model's validation rules
-        *
-        */
+         * Returns this model's validation rules.
+         */
         public function rules()
         {
-            
-            $aRules= array(
+            $aRules = array(
                         array('title','required','on' => 'update, insert'),// 140207 : Before was commented, put only on update/insert ?
-                        array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
-                        array('qid', 'numerical','integerOnly'=>true),
-                        array('qid', 'unique', 'criteria'=>array(
-                                        'condition'=>'language=:language',
-                                        'params'=>array(':language'=>$this->language)
+                        array('title','length', 'min' => 1, 'max' => 20,'on' => 'update, insert'),
+                        array('qid', 'numerical','integerOnly' => true),
+                        array('qid', 'unique', 'criteria' => array(
+                                        'condition' => 'language=:language',
+                                        'params' => array(':language' => $this->language),
                                 ),
-                                'message'=>'{attribute} "{value}" is already in use.'),
-                        array('language','length', 'min' => 2, 'max'=>20),// in array languages ?
+                                'message' => '{attribute} "{value}" is already in use.', ),
+                        array('language','length', 'min' => 2, 'max' => 20),// in array languages ?
                         array('title,question,help','LSYii_Validators'),
-                        array('other', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-                        array('mandatory', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-                        array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-                        array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-                        array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                        array('other', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+                        array('mandatory', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+                        array('question_order','numerical', 'integerOnly' => true,'allowEmpty' => true),
+                        array('scale_id','numerical', 'integerOnly' => true,'allowEmpty' => true),
+                        array('same_default','numerical', 'integerOnly' => true,'allowEmpty' => true),
                     );
-            if($this->parent_qid)// Allways enforce unicity on Sub question code (DB issue).
-            {
-                $aRules[]=array('title', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
+            if ($this->parent_qid) {
+                // Allways enforce unicity on Sub question code (DB issue).
+
+                $aRules[] = array('title', 'unique', 'caseSensitive' => false, 'criteria' => array(
                                     'condition' => 'language=:language AND sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
                                     'params' => array(
                                         ':language' => $this->language,
                                         ':sid' => $this->sid,
                                         ':parent_qid' => $this->parent_qid,
-                                        ':scale_id' => $this->scale_id
-                                        )
+                                        ':scale_id' => $this->scale_id,
+                                        ),
                                     ),
-                                'message' => gT('Subquestion codes must be unique.'));
+                                'message' => gT('Subquestion codes must be unique.'), );
                 // Disallow other title if question allow other
-                $oParentQuestion=Question::model()->findByPk(array("qid"=>$this->parent_qid,'language'=>$this->language));
-                if($oParentQuestion->other=="Y")
-                    $aRules[]= array('title', 'compare','compareValue'=>'other','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),"other"), 'except' => 'archiveimport');
-            }
-            else
-            {
+                $oParentQuestion = self::model()->findByPk(array('qid' => $this->parent_qid, 'language' => $this->language));
+                if ($oParentQuestion->other == 'Y') {
+                    $aRules[] = array('title', 'compare','compareValue' => 'other','operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'), 'except' => 'archiveimport');
+                }
+            } else {
                 // Disallow other if sub question have 'other' for title
-                $oSubquestionOther=Question::model()->find("parent_qid=:parent_qid and title='other'",array("parent_qid"=>$this->qid));
-                if($oSubquestionOther)
-                    $aRules[]= array('other', 'compare','compareValue'=>'Y','operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."),'other'), 'except' => 'archiveimport' );
-
+                $oSubquestionOther = self::model()->find("parent_qid=:parent_qid and title='other'", array('parent_qid' => $this->qid));
+                if ($oSubquestionOther) {
+                    $aRules[] = array('other', 'compare','compareValue' => 'Y','operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'), 'except' => 'archiveimport');
+                }
             }
-            if(!$this->isNewRecord)
-            {
-                $oActualValue=Question::model()->findByPk(array("qid"=>$this->qid,'language'=>$this->language));
-                if($oActualValue && $oActualValue->title==$this->title)
-                {
+            if (!$this->isNewRecord) {
+                $oActualValue = self::model()->findByPk(array('qid' => $this->qid, 'language' => $this->language));
+                if ($oActualValue && $oActualValue->title == $this->title) {
                     return $aRules; // We don't change title, then don't put rules on title
                 }
             }
-            if(!$this->parent_qid)// 0 or empty
-            {
-                $aRules[]=array('title', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
+            if (!$this->parent_qid) {
+                // 0 or empty
+
+                $aRules[] = array('title', 'unique', 'caseSensitive' => true, 'criteria' => array(
                                     'condition' => 'language=:language AND sid=:sid AND parent_qid=0',
                                     'params' => array(
                                         ':language' => $this->language,
-                                        ':sid' => $this->sid
-                                        )
+                                        ':sid' => $this->sid,
+                                        ),
                                     ),
-                                'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport');
-                $aRules[]= array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
-            }
-            else
-            {
-                $aRules[]= array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
-
+                                'message' => gT('Question codes must be unique.'), 'except' => 'archiveimport', );
+                $aRules[] = array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/', 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'), 'except' => 'archiveimport');
+            } else {
+                $aRules[] = array('title', 'match', 'pattern' => '/^[[:alnum:]]*$/', 'message' => gT('Subquestion codes may only contain alphanumeric characters.'), 'except' => 'archiveimport');
             }
 
             return $aRules;
         }
 
         /**
-        * Rewrites sort order for questions in a group
-        *
-        * @static
-        * @access public
-        * @param int $gid
-        * @param int $surveyid
-        * @return void
-        */
+         * Rewrites sort order for questions in a group.
+         *
+         * @static
+         *
+         * @param int $gid
+         * @param int $surveyid
+         */
         public static function updateSortOrder($gid, $surveyid)
         {
-            $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language), array('order'=>'question_order') );
+            $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language), array('order' => 'question_order'));
             $p = 0;
-            foreach ($questions as $question)
-            {
+            foreach ($questions as $question) {
                 $question->question_order = $p;
                 $question->save();
-                $p++;
+                ++$p;
             }
         }
         /**
-        * Fixe sort order for questions in a group
-        *
-        * @static
-        * @access public
-        * @param int $gid
-        * @param int $surveyid
-        * @return void
-        */
-        function updateQuestionOrder($gid,$language,$position=0)
+         * Fixe sort order for questions in a group.
+         *
+         * @static
+         *
+         * @param int $gid
+         * @param int $surveyid
+         */
+        public function updateQuestionOrder($gid, $language, $position = 0)
         {
-            $data=Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and','gid=:gid','language=:language', 'parent_qid=0'))
+            $data = Yii::app()->db->createCommand()->select('qid')
+            ->where(array('and', 'gid=:gid', 'language=:language', 'parent_qid=0'))
             ->order('question_order, title ASC')
             ->from('{{questions}}')
             ->bindParam(':gid', $gid, PDO::PARAM_INT)
@@ -189,45 +179,39 @@
             ->query();
 
             $position = intval($position);
-            foreach($data->readAll() as $row)
-            {
-                Yii::app()->db->createCommand()->update($this->tableName(),array('question_order' => $position),'qid='.$row['qid']);
-                $position++;
+            foreach ($data->readAll() as $row) {
+                Yii::app()->db->createCommand()->update($this->tableName(), array('question_order' => $position), 'qid='.$row['qid']);
+                ++$position;
             }
         }
 
         /**
-        * This function returns an array of the advanced attributes for the particular question
-        * including their values set in the database
-        *
-        * @access public
-        * @param int $iQuestionID  The question ID - if 0 then all settings will use the default value
-        * @param string $sQuestionType  The question type
-        * @param int $iSurveyID
-        * @param string $sLanguage  If you give a language then only the attributes for that language are returned
-        * @return array
-        */
-        public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage=null)
+         * This function returns an array of the advanced attributes for the particular question
+         * including their values set in the database.
+         *
+         * @param int $iQuestionID  The question ID - if 0 then all settings will use the default value
+         * @param string $sQuestionType  The question type
+         * @param int $iSurveyID
+         * @param string $sLanguage  If you give a language then only the attributes for that language are returned
+         *
+         * @return array
+         */
+        public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage = null)
         {
-            if (is_null($sLanguage))
-            {
+            if (is_null($sLanguage)) {
                 $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-            }
-            else
-            {
+            } else {
                 $aLanguages = array($sLanguage);
             }
 
-            if ($iQuestionID)
-            {
-                $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
-                $aAttributeValues=array();
-                foreach($oAttributeValues as $oAttributeValue)
-                {
-                    if($oAttributeValue->language){
-                        $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
-                    }else{
-                        $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
+            if ($iQuestionID) {
+                $oAttributeValues = QuestionAttribute::model()->findAll('qid=:qid', array('qid' => $iQuestionID));
+                $aAttributeValues = array();
+                foreach ($oAttributeValues as $oAttributeValue) {
+                    if ($oAttributeValue->language) {
+                        $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language] = $oAttributeValue->value;
+                    } else {
+                        $aAttributeValues[$oAttributeValue->attribute] = $oAttributeValue->value;
                     }
                 }
             }
@@ -235,170 +219,158 @@
 
             $aAttributeNames = $aAttributeNames[$sQuestionType];
             uasort($aAttributeNames, 'categorySort');
-            foreach ($aAttributeNames as $iKey => $aAttribute)
-            {
-                if ($aAttribute['i18n'] == false)
-                {
-                    if (isset($aAttributeValues[$aAttribute['name']]))
-                    {
+            foreach ($aAttributeNames as $iKey => $aAttribute) {
+                if ($aAttribute['i18n'] == false) {
+                    if (isset($aAttributeValues[$aAttribute['name']])) {
                         $aAttributeNames[$iKey]['value'] = $aAttributeValues[$aAttribute['name']];
-                    }
-                    else
-                    {
+                    } else {
                         $aAttributeNames[$iKey]['value'] = $aAttribute['default'];
                     }
-                }
-                else
-                {
-                    foreach ($aLanguages as $sLanguage)
-                    {
-                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage]))
-                        {
+                } else {
+                    foreach ($aLanguages as $sLanguage) {
+                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
                             $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                        }
-                        else
-                        {
+                        } else {
                             $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttribute['default'];
                         }
                     }
                 }
             }
+
             return $aAttributeNames;
         }
 
-        function getQuestions($sid, $gid, $language)
+        public function getQuestions($sid, $gid, $language)
         {
             return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
             ->where(array('and', 'sid=:sid', 'gid=:gid', 'language=:language', 'parent_qid=0'))
             ->order('question_order asc')
-            ->bindParam(":sid", $sid, PDO::PARAM_INT)
-            ->bindParam(":gid", $gid, PDO::PARAM_INT)
-            ->bindParam(":language", $language, PDO::PARAM_STR)
+            ->bindParam(':sid', $sid, PDO::PARAM_INT)
+            ->bindParam(':gid', $gid, PDO::PARAM_INT)
+            ->bindParam(':language', $language, PDO::PARAM_STR)
             ->query();
         }
 
-        function getSubQuestions($parent_qid)
+        public function getSubQuestions($parent_qid)
         {
             return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
             ->where('parent_qid=:parent_qid')
-            ->bindParam(":parent_qid", $parent_qid, PDO::PARAM_INT)
+            ->bindParam(':parent_qid', $parent_qid, PDO::PARAM_INT)
             ->order('question_order asc')
             ->query();
         }
 
-        function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
+        public function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = false)
         {
             $command = Yii::app()->db->createCommand()
-            ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, ' . '{{groups}}.*')
+            ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, '.'{{groups}}.*')
             ->from($this->tableName())
-            ->leftJoin('{{questions}} q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
-            ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
+            ->leftJoin('{{questions}} q', 'q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language')
+            ->join('{{groups}}', '{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language');
             $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
-            if ($sCondition != FALSE)
-            {
+            if ($sCondition != false) {
                 $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND {$sCondition}")
-                ->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
-                ->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR);
+                ->bindParam(':iSurveyID', $iSurveyID, PDO::PARAM_STR)
+                ->bindParam(':sLanguage', $sLanguage, PDO::PARAM_STR);
             }
-            $command->order("{{groups}}.group_order asc, {{questions}}.question_order asc");
+            $command->order('{{groups}}.group_order asc, {{questions}}.question_order asc');
 
             return $command->query()->readAll();
         }
 
         /**
-        * Insert an array into the questions table
-        * Returns false if insertion fails, otherwise the new QID
-        *
-        * @param array $data
-        */
-        function insertRecords($data)
+         * Insert an array into the questions table
+         * Returns false if insertion fails, otherwise the new QID.
+         *
+         * @param array $data
+         */
+        public function insertRecords($data)
         {
             // This function must be deprecated : don't find a way to have getErrors after (Shnoulle on 131206)
-            $questions = new self;
-            foreach ($data as $k => $v){
+            $questions = new self();
+            foreach ($data as $k => $v) {
                 $questions->$k = $v;
-                }
-            try
-            {
-                $questions->save();
-                return $questions->qid;
             }
-            catch(Exception $e)
-            {
+            try {
+                $questions->save();
+
+                return $questions->qid;
+            } catch (Exception $e) {
                 return false;
             }
         }
 
         public static function deleteAllById($questionsIds)
         {
-            if ( !is_array($questionsIds) )
-            {
+            if (!is_array($questionsIds)) {
                 $questionsIds = array($questionsIds);
             }
 
             Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
             Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));
             Yii::app()->db->createCommand()->delete(Answer::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'parent_qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(self::model()->tableName(), array('in', 'parent_qid', $questionsIds));
+            Yii::app()->db->createCommand()->delete(self::model()->tableName(), array('in', 'qid', $questionsIds));
             Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
             Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
         }
 
-        function getAllRecords($condition, $order=FALSE)
+        public function getAllRecords($condition, $order = false)
         {
-            $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-            if ($order != FALSE)
-            {
+            $command = Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
+            if ($order != false) {
                 $command->order($order);
             }
+
             return $command->query();
         }
 
-        public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
+        public function getQuestionsForStatistics($fields, $condition, $orderby = false)
         {
             $command = Yii::app()->db->createCommand()
             ->select($fields)
             ->from(self::tableName())
             ->where($condition);
-            if ($orderby != FALSE)
-            {
+            if ($orderby != false) {
                 $command->order($orderby);
             }
+
             return $command->queryAll();
         }
 
         public function getQuestionList($surveyid, $language)
         {
-            $query = "SELECT questions.*, groups.group_name, groups.group_order"
-            ." FROM {{questions}} as questions, {{groups}} as groups"
-            ." WHERE groups.gid=questions.gid"
-            ." AND groups.language=:language1"
-            ." AND questions.language=:language2"
-            ." AND questions.parent_qid=0"
-            ." AND questions.sid=:sid";
-            return Yii::app()->db->createCommand($query)->bindParam(":language1", $language, PDO::PARAM_STR)
-                                                        ->bindParam(":language2", $language, PDO::PARAM_STR)
-                                                        ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
+            $query = 'SELECT questions.*, groups.group_name, groups.group_order'
+            .' FROM {{questions}} as questions, {{groups}} as groups'
+            .' WHERE groups.gid=questions.gid'
+            .' AND groups.language=:language1'
+            .' AND questions.language=:language2'
+            .' AND questions.parent_qid=0'
+            .' AND questions.sid=:sid';
+
+            return Yii::app()->db->createCommand($query)->bindParam(':language1', $language, PDO::PARAM_STR)
+                                                        ->bindParam(':language2', $language, PDO::PARAM_STR)
+                                                        ->bindParam(':sid', $surveyid, PDO::PARAM_INT)->queryAll();
         }
 
         /**
          * Returns the type of subquestions for this question:
          * 0: No subquestions,
          * 1: Subquestions on 1 scale.
-         * 2: Subquestions on 2 scales. (Used only by array(texts) and array(numbers) question types)
-         * @return integer
+         * 2: Subquestions on 2 scales. (Used only by array(texts) and array(numbers) question types).
+         *
+         * @return int
+         *
          * @throws CException
          */
         public function getHasSubQuestions()
         {
             $types = self::typeList();
-            if (isset($types[$this->type]))
-            {
+            if (isset($types[$this->type])) {
                 return $types[$this->type]['subquestions'];
             }
             throw new CException("Unknown question type: '{$this->type}'");
@@ -408,16 +380,16 @@
          * Returns the type of answers for this question:
          * 0: No answers (ie open text question),
          * 1: Answers on 1 scale.
-         * 2: Answers on 2 scales. (Used only by array(dual scale) question type)
-         * @return integer
+         * 2: Answers on 2 scales. (Used only by array(dual scale) question type).
+         *
+         * @return int
+         *
          * @throws CException
          */
-
         public function getHasAnswerScales()
         {
             $types = self::typeList();
-            if (isset($types[$this->type]))
-            {
+            if (isset($types[$this->type])) {
                 return $types[$this->type]['answerscales'] == 1;
             }
             throw new CException("Unknown question type: '{$this->type}'");
@@ -425,6 +397,7 @@
 
         /**
          * This function contains the question type definitions.
+         *
          * @return array The question type definitions
          *
          * Explanation of questiontype array:
@@ -438,229 +411,230 @@
         public static function typeList()
         {
             $questionTypes = array(
-                "1" => array(
-                    'description' => gT("Array dual scale"),
+                '1' => array(
+                    'description' => gT('Array dual scale'),
                     'group' => gT('Arrays'),
                     'subquestions' => 1,
                     'assessable' => 1,
                     'hasdefaultvalues' => 0,
-                    'answerscales' => 2),
-                "5" => array(
-                    'description' => gT("5 Point Choice"),
-                    'group' => gT("Single choice questions"),
+                    'answerscales' => 2, ),
+                '5' => array(
+                    'description' => gT('5 Point Choice'),
+                    'group' => gT('Single choice questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 0,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "A" => array(
-                    'description' => gT("Array (5 Point Choice)"),
+                    'answerscales' => 0, ),
+                'A' => array(
+                    'description' => gT('Array (5 Point Choice)'),
                     'group' => gT('Arrays'),
                     'subquestions' => 1,
                     'hasdefaultvalues' => 0,
                     'assessable' => 1,
-                    'answerscales' => 0),
-                "B" => array(
-                    'description' => gT("Array (10 Point Choice)"),
+                    'answerscales' => 0, ),
+                'B' => array(
+                    'description' => gT('Array (10 Point Choice)'),
                     'group' => gT('Arrays'),
                     'subquestions' => 1,
                     'hasdefaultvalues' => 0,
                     'assessable' => 1,
-                    'answerscales' => 0),
-                "C" => array(
-                    'description' => gT("Array (Yes/No/Uncertain)"),
+                    'answerscales' => 0, ),
+                'C' => array(
+                    'description' => gT('Array (Yes/No/Uncertain)'),
                     'group' => gT('Arrays'),
                     'subquestions' => 1,
                     'hasdefaultvalues' => 0,
                     'assessable' => 1,
-                    'answerscales' => 0),
-                "D" => array(
-                    'description' => gT("Date/Time"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 0, ),
+                'D' => array(
+                    'description' => gT('Date/Time'),
+                    'group' => gT('Mask questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "E" => array(
-                    'description' => gT("Array (Increase/Same/Decrease)"),
+                    'answerscales' => 0, ),
+                'E' => array(
+                    'description' => gT('Array (Increase/Same/Decrease)'),
                     'group' => gT('Arrays'),
                     'subquestions' => 1,
                     'hasdefaultvalues' => 0,
                     'assessable' => 1,
-                    'answerscales' => 0),
-                "F" => array(
-                    'description' => gT("Array"),
+                    'answerscales' => 0, ),
+                'F' => array(
+                    'description' => gT('Array'),
                     'group' => gT('Arrays'),
                     'subquestions' => 1,
                     'hasdefaultvalues' => 0,
                     'assessable' => 1,
-                    'answerscales' => 1),
-                "G" => array(
-                    'description' => gT("Gender"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 1, ),
+                'G' => array(
+                    'description' => gT('Gender'),
+                    'group' => gT('Mask questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 0,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "H" => array(
-                    'description' => gT("Array by column"),
+                    'answerscales' => 0, ),
+                'H' => array(
+                    'description' => gT('Array by column'),
                     'group' => gT('Arrays'),
                     'hasdefaultvalues' => 0,
                     'subquestions' => 1,
                     'assessable' => 1,
-                    'answerscales' => 1),
-                "I" => array(
-                    'description' => gT("Language Switch"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 1, ),
+                'I' => array(
+                    'description' => gT('Language Switch'),
+                    'group' => gT('Mask questions'),
                     'hasdefaultvalues' => 0,
                     'subquestions' => 0,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "K" => array(
-                    'description' => gT("Multiple Numerical Input"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 0, ),
+                'K' => array(
+                    'description' => gT('Multiple Numerical Input'),
+                    'group' => gT('Mask questions'),
                     'hasdefaultvalues' => 1,
                     'subquestions' => 1,
                     'assessable' => 1,
-                    'answerscales' => 0),
-                "L" => array(
-                    'description' => gT("List (Radio)"),
-                    'group' => gT("Single choice questions"),
+                    'answerscales' => 0, ),
+                'L' => array(
+                    'description' => gT('List (Radio)'),
+                    'group' => gT('Single choice questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 1,
-                    'answerscales' => 1),
-                "M" => array(
-                    'description' => gT("Multiple choice"),
-                    'group' => gT("Multiple choice questions"),
+                    'answerscales' => 1, ),
+                'M' => array(
+                    'description' => gT('Multiple choice'),
+                    'group' => gT('Multiple choice questions'),
                     'subquestions' => 1,
                     'hasdefaultvalues' => 1,
                     'assessable' => 1,
-                    'answerscales' => 0),
-                "N" => array(
-                    'description' => gT("Numerical Input"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 0, ),
+                'N' => array(
+                    'description' => gT('Numerical Input'),
+                    'group' => gT('Mask questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "O" => array(
-                    'description' => gT("List with comment"),
-                    'group' => gT("Single choice questions"),
+                    'answerscales' => 0, ),
+                'O' => array(
+                    'description' => gT('List with comment'),
+                    'group' => gT('Single choice questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 1,
-                    'answerscales' => 1),
-                "P" => array(
-                    'description' => gT("Multiple choice with comments"),
-                    'group' => gT("Multiple choice questions"),
+                    'answerscales' => 1, ),
+                'P' => array(
+                    'description' => gT('Multiple choice with comments'),
+                    'group' => gT('Multiple choice questions'),
                     'subquestions' => 1,
                     'hasdefaultvalues' => 1,
                     'assessable' => 1,
-                    'answerscales' => 0),
-                "Q" => array(
-                    'description' => gT("Multiple Short Text"),
-                    'group' => gT("Text questions"),
+                    'answerscales' => 0, ),
+                'Q' => array(
+                    'description' => gT('Multiple Short Text'),
+                    'group' => gT('Text questions'),
                     'subquestions' => 1,
                     'hasdefaultvalues' => 1,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "R" => array(
-                    'description' => gT("Ranking"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 0, ),
+                'R' => array(
+                    'description' => gT('Ranking'),
+                    'group' => gT('Mask questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 0,
                     'assessable' => 1,
-                    'answerscales' => 1),
-                "S" => array(
-                    'description' => gT("Short Free Text"),
-                    'group' => gT("Text questions"),
+                    'answerscales' => 1, ),
+                'S' => array(
+                    'description' => gT('Short Free Text'),
+                    'group' => gT('Text questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "T" => array(
-                    'description' => gT("Long Free Text"),
-                    'group' => gT("Text questions"),
+                    'answerscales' => 0, ),
+                'T' => array(
+                    'description' => gT('Long Free Text'),
+                    'group' => gT('Text questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "U" => array(
-                    'description' => gT("Huge Free Text"),
-                    'group' => gT("Text questions"),
+                    'answerscales' => 0, ),
+                'U' => array(
+                    'description' => gT('Huge Free Text'),
+                    'group' => gT('Text questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "X" => array(
-                    'description' => gT("Text display"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 0, ),
+                'X' => array(
+                    'description' => gT('Text display'),
+                    'group' => gT('Mask questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 0,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "Y" => array(
-                    'description' => gT("Yes/No"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 0, ),
+                'Y' => array(
+                    'description' => gT('Yes/No'),
+                    'group' => gT('Mask questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "!" => array(
-                    'description' => gT("List (Dropdown)"),
-                    'group' => gT("Single choice questions"),
+                    'answerscales' => 0, ),
+                '!' => array(
+                    'description' => gT('List (Dropdown)'),
+                    'group' => gT('Single choice questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 1,
                     'assessable' => 1,
-                    'answerscales' => 1),
-                ":" => array(
-                    'description' => gT("Array (Numbers)"),
-                    'group' => gT('Arrays'),
-                    'subquestions' => 2,
-                    'hasdefaultvalues' => 0,
-                    'assessable' => 1,
-                    'answerscales' => 0),
-                ";" => array(
-                    'description' => gT("Array (Texts)"),
+                    'answerscales' => 1, ),
+                ':' => array(
+                    'description' => gT('Array (Numbers)'),
                     'group' => gT('Arrays'),
                     'subquestions' => 2,
                     'hasdefaultvalues' => 0,
+                    'assessable' => 1,
+                    'answerscales' => 0, ),
+                ';' => array(
+                    'description' => gT('Array (Texts)'),
+                    'group' => gT('Arrays'),
+                    'subquestions' => 2,
+                    'hasdefaultvalues' => 0,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "|" => array(
-                    'description' => gT("File upload"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 0, ),
+                '|' => array(
+                    'description' => gT('File upload'),
+                    'group' => gT('Mask questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 0,
                     'assessable' => 0,
-                    'answerscales' => 0),
-                "*" => array(
-                    'description' => gT("Equation"),
-                    'group' => gT("Mask questions"),
+                    'answerscales' => 0, ),
+                '*' => array(
+                    'description' => gT('Equation'),
+                    'group' => gT('Mask questions'),
                     'subquestions' => 0,
                     'hasdefaultvalues' => 0,
                     'assessable' => 0,
-                    'answerscales' => 0),
+                    'answerscales' => 0, ),
             );
-            /**
+            /*
              * @todo Check if this actually does anything, since the values are arrays.
              */
             asort($questionTypes);
-            
+
             return $questionTypes;
         }
         /**
-         * This function return the class by question type
+         * This function return the class by question type.
+         *
          * @param string question type
+         *
          * @return string Question class to be added to the container
          *
          * Maybe move class in typeList ?
          */
         public static function getQuestionClass($sType)
         {
-            switch($sType)
-            {
-                case "1": return 'array-flexible-duel-scale';
+            switch ($sType) {
+                case '1': return 'array-flexible-duel-scale';
                 case '5': return 'choice-5-pt-radio';
                 case 'A': return 'array-5-pt';
                 case 'B': return 'array-10-pt';
@@ -689,12 +663,10 @@
                 case '!': return 'list-dropdown';
                 //case '^': return 'slider';          //  SLIDER CONTROL
                 case ':': return 'array-multi-flexi';
-                case ";": return 'array-multi-flexi-text';
-                case "|": return 'upload-files';
-                case "*": return 'equation';
+                case ';': return 'array-multi-flexi-text';
+                case '|': return 'upload-files';
+                case '*': return 'equation';
                 default:  return 'generic_question'; // fallback
             };
         }
     }
-
-?>

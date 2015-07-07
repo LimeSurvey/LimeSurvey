@@ -1,4 +1,8 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,27 +17,23 @@
  */
 
 /**
- * Saved controller
+ * Saved controller.
  *
- * @package LimeSurvey
  * @copyright 2011
-  * @access public
  */
 class saved extends Survey_Common_Action
 {
-
     public function view($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $aViewUrls = array();
 
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
-        {
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
             die();
         }
 
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'saved.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts').'saved.js');
 
         $aThisSurvey = getSurveyInfo($iSurveyId);
         $aData['sSurveyName'] = $aThisSurvey['name'];
@@ -50,17 +50,17 @@ class saved extends Survey_Common_Action
     public function delete($iSurveyId, $iSurveyResponseId, $iSavedControlId)
     {
         SavedControl::model()->deleteAllByAttributes(array('scid' => $iSavedControlId, 'sid' => $iSurveyId)) or die(gT("Couldn't delete"));
-        Yii::app()->db->createCommand()->delete("{{survey_".intval($iSurveyId)."}}", 'id=:id', array('id' => $iSurveyResponseId)) or die(gT("Couldn't delete"));
+        Yii::app()->db->createCommand()->delete('{{survey_'.intval($iSurveyId).'}}', 'id=:id', array('id' => $iSurveyResponseId)) or die(gT("Couldn't delete"));
 
         $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$iSurveyId}"));
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
+     * Renders template(s) wrapped in header and footer.
      *
-     * @param string $sAction Current action, the folder to fetch views from
+     * @param string       $sAction   Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
+     * @param array        $aData     Data to be passed on. Optional.
      */
     protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array())
     {
@@ -70,6 +70,7 @@ class saved extends Survey_Common_Action
 
     /**
      * Load saved list.
+     *
      * @param mixed $iSurveyId Survey id
      */
     private function _showSavedList($iSurveyId)
@@ -81,12 +82,10 @@ class saved extends Survey_Common_Action
             'params' => array(':sid' => $iSurveyId),
         ));
 
-        if (!empty($aResults))
-        {
+        if (!empty($aResults)) {
             return compact('aResults');
+        } else {
+            return array('aResults' => array());
         }
-        else
-        {return array('aResults'=>array());}
     }
-
 }

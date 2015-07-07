@@ -2,11 +2,11 @@
 
 class PluginsController extends LSYii_Controller
 {
-
     public $layout = 'main';
 
     /**
      * Stored dynamic properties set and unset via __get and __set.
+     *
      * @var array of mixed.
      */
     protected $properties = array();
@@ -32,9 +32,8 @@ class PluginsController extends LSYii_Controller
         $aRules = array(
             array('allow', 'roles' => array('administrator')),
             array('allow', 'actions' => array('direct')),
-            array('deny')
+            array('deny'),
         );
-
 
         // Note the order; rules are numerically indexed and we want to
         // parents rules to be executed only if ours dont apply.
@@ -44,19 +43,15 @@ class PluginsController extends LSYii_Controller
     public function actionActivate($id)
     {
         $oPlugin = Plugin::model()->findByPk($id);
-        if (!is_null($oPlugin))
-        {
+        if (!is_null($oPlugin)) {
             $iStatus = $oPlugin->active;
-            if ($iStatus == 0)
-            {
+            if ($iStatus == 0) {
                 // Load the plugin:
                 App()->getPluginManager()->loadPlugin($oPlugin->name, $id);
                 $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeActivate', $this), $oPlugin->name);
-                if ($result->get('success', true))
-                {
+                if ($result->get('success', true)) {
                     $iStatus = 1;
-                } else
-                {
+                } else {
                     $sMessage = $result->get('message', gT('Failed to activate the plugin.'));
                     App()->user->setFlash('pluginActivation', $sMessage);
                     $this->redirect(array('plugins/'));
@@ -70,37 +65,31 @@ class PluginsController extends LSYii_Controller
 
     public function actionConfigure($id)
     {
-        $arPlugin      = Plugin::model()->findByPk($id)->attributes;
+        $arPlugin = Plugin::model()->findByPk($id)->attributes;
         $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
 
-        if ($arPlugin === null)
-        {
+        if ($arPlugin === null) {
             Yii::app()->user->setFlash('pluginmanager', 'Plugin not found');
             $this->redirect(array('plugins/'));
         }
-        
-        // If post handle data, yt0 seems to be the submit button
-        if (App()->request->isPostRequest)
-        {
 
+        // If post handle data, yt0 seems to be the submit button
+        if (App()->request->isPostRequest) {
             $aSettings = $oPluginObject->getPluginSettings(false);
-            $aSave     = array();
-            foreach ($aSettings as $name => $setting)
-            {
+            $aSave = array();
+            foreach ($aSettings as $name => $setting) {
                 $aSave[$name] = App()->request->getPost($name, null);
             }
             $oPluginObject->saveSettings($aSave);
             Yii::app()->user->setFlash('pluginmanager', 'Settings saved');
-            if(App()->request->getPost('redirect'))
-            {
+            if (App()->request->getPost('redirect')) {
                 $this->redirect(App()->request->getPost('redirect'), true);
             }
         }
 
         // Prepare settings to be send to the view.
         $aSettings = $oPluginObject->getPluginSettings();
-        if (empty($aSettings))
-        {
+        if (empty($aSettings)) {
             // And show a message
             Yii::app()->user->setFlash('pluginmanager', 'This plugin has no settings');
             $this->redirect('plugins/index', true);
@@ -115,17 +104,13 @@ class PluginsController extends LSYii_Controller
     public function actionDeactivate($id)
     {
         $oPlugin = Plugin::model()->findByPk($id);
-        if (!is_null($oPlugin))
-        {
+        if (!is_null($oPlugin)) {
             $iStatus = $oPlugin->active;
-            if ($iStatus == 1)
-            {
+            if ($iStatus == 1) {
                 $result = App()->getPluginManager()->dispatchEvent(new PluginEvent('beforeDeactivate', $this), $oPlugin->name);
-                if ($result->get('success', true))
-                {
+                if ($result->get('success', true)) {
                     $iStatus = 0;
-                } else
-                {
+                } else {
                     $message = $result->get('message', gT('Failed to deactivate the plugin.'));
                     App()->user->setFlash('pluginActivation', $message);
                     $this->redirect(array('plugins/'));
@@ -149,13 +134,11 @@ class PluginsController extends LSYii_Controller
         App()->getPluginManager()->dispatchEvent($oEvent);
 
         $sOutput = '';
-        foreach ($oEvent->getAllContent() as $content)
-        {
+        foreach ($oEvent->getAllContent() as $content) {
             $sOutput .= $content->getContent();
         }
 
-        if (!empty($sOutput))
-        {
+        if (!empty($sOutput)) {
             $this->renderText($sOutput);
         }
     }
@@ -166,44 +149,39 @@ class PluginsController extends LSYii_Controller
 
         // Scan the plugins folder.
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
-        $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(function ($installedPlugin) {
+        $aInstalledPlugins = $oPluginManager->getInstalledPlugins();
+        $aInstalledNames = array_map(function ($installedPlugin) {
                 return $installedPlugin->name;
             }, $aInstalledPlugins);
 
         // Install newly discovered plugins.
-        foreach ($aDiscoveredPlugins as $discoveredPlugin)
-        {
-            if (!in_array($discoveredPlugin['pluginClass'], $aInstalledNames))
-            {
-                $oPlugin         = new Plugin();
-                $oPlugin->name   = $discoveredPlugin['pluginClass'];
+        foreach ($aDiscoveredPlugins as $discoveredPlugin) {
+            if (!in_array($discoveredPlugin['pluginClass'], $aInstalledNames)) {
+                $oPlugin = new Plugin();
+                $oPlugin->name = $discoveredPlugin['pluginClass'];
                 $oPlugin->active = 0;
                 $oPlugin->save();
             }
         }
 
         $aoPlugins = Plugin::model()->findAll();
-        $data      = array();
-        foreach ($aoPlugins as $oPlugin)
-        {
+        $data = array();
+        foreach ($aoPlugins as $oPlugin) {
             /* @var $plugin Plugin */
-            if (array_key_exists($oPlugin->name, $aDiscoveredPlugins))
-            {
+            if (array_key_exists($oPlugin->name, $aDiscoveredPlugins)) {
                 $aPluginSettings = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id)->getPluginSettings(false);
-                $data[]          = array(
-                    'id'          => $oPlugin->id,
-                    'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
+                $data[] = array(
+                    'id' => $oPlugin->id,
+                    'name' => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
                     'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
-                    'active'      => $oPlugin->active,
-                    'settings'    => $aPluginSettings,
-                    'new'         => !in_array($oPlugin->name, $aInstalledNames)
+                    'active' => $oPlugin->active,
+                    'settings' => $aPluginSettings,
+                    'new' => !in_array($oPlugin->name, $aInstalledNames),
                 );
-            } else
-            {
+            } else {
                 // This plugin is missing, maybe the files were deleted but the record was not removed from the database
                 // Now delete this record. Depending on the plugin the settings will be preserved
-                App()->user->setFlash('pluginDelete' . $oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
+                App()->user->setFlash('pluginDelete'.$oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
                 $oPlugin->delete();
             }
         }
@@ -213,11 +191,9 @@ class PluginsController extends LSYii_Controller
     public function filters()
     {
         $aFilters = array(
-            'accessControl'
+            'accessControl',
         );
+
         return array_merge(parent::filters(), $aFilters);
     }
-
 }
-
-?>

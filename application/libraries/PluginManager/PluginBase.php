@@ -1,39 +1,41 @@
 <?php
-namespace ls\pluginmanager;
-    /**
+namespace ls\PluginManager;
+
+/**
      * Base class for plugins.
      */
-    abstract class PluginBase implements iPlugin {
+    abstract class PluginBase implements iPlugin
+    {
         /**
-         *
          * @var LimesurveyApi
          */
         protected $api = null;
-        
+
         /**
-         *
          * @var PluginEvent
          */
         protected $event = null;
-        
+
         protected $id = null;
         protected $storage = 'DummyStorage';
-        
-        static protected $description = 'Base plugin object';
-        static protected $name = 'PluginBase';
+
+        protected static $description = 'Base plugin object';
+        protected static $name = 'PluginBase';
         private $store = null;
         protected $settings = array();
-        
+
         /**
-         * This holds the pluginmanager that instantiated the plugin
-         * 
+         * This holds the pluginmanager that instantiated the plugin.
+         *
          * @var PluginManager
          */
         protected $pluginManager;
 
         /**
-         * Constructor for the plugin
+         * Constructor for the plugin.
+         *
          * @todo Add proper type hint in 3.0
+         *
          * @param PluginManager $manager    The plugin manager instantiating the object
          * @param int           $id         The id for storage
          */
@@ -43,73 +45,70 @@ namespace ls\pluginmanager;
             $this->id = $id;
             $this->api = $manager->getAPI();
         }
-        
+
         /**
          * This function retrieves plugin data. Do not cache this data; the plugin storage
-         * engine will handling caching. After the first call to this function, subsequent 
-         * calls will only consist of a few function calls and array lookups. 
-         * 
+         * engine will handling caching. After the first call to this function, subsequent
+         * calls will only consist of a few function calls and array lookups.
+         *
          * @param string $key
          * @param string $model
          * @param int $id
          * @param mixed $default The default value to use when not was set
-         * @return boolean
+         *
+         * @return bool
          */
         protected function get($key = null, $model = null, $id = null, $default = null)
         {
             return $this->getStore()->get($this, $key, $model, $id, $default);
         }
-        
+
         /**
-         * Return the description for this plugin
+         * Return the description for this plugin.
          */
         public static function getDescription()
         {
             return static::$description;
         }
-        
+
         /**
-         * Get the current event this plugin is responding to
-         * 
+         * Get the current event this plugin is responding to.
+         *
          * @return PluginEvent
          */
         public function getEvent()
         {
             return $this->event;
         }
-        
+
         /**
-         * Returns the id of the plugin
-         * 
+         * Returns the id of the plugin.
+         *
          * Used by storage model to find settings specific to this plugin
-         * 
+         *
          * @return int
          */
         public function getId()
         {
             return $this->id;
         }
-        
+
         /**
          * Provides meta data on the plugin settings that are available for this plugin.
          * This does not include enable / disable; a disabled plugin is never loaded.
-         * 
          */
         public function getPluginSettings($getValues = true)
         {
-            
             $settings = $this->settings;
-            foreach ($settings as $name => &$setting)
-            {
-                if ($getValues)
-                {
-                    $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null );
+            foreach ($settings as $name => &$setting) {
+                if ($getValues) {
+                    $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null);
                 }
-                if ($setting['type'] == 'logo')
-                {
+                if ($setting['type'] == 'logo') {
                     $setting['path'] = $this->publish($setting['path']);
                 }
             }
+
             return $settings;
         }
 
@@ -119,8 +118,8 @@ namespace ls\pluginmanager;
         }
         /**
          * Returns the plugin storage and takes care of
-         * instantiating it
-         * 
+         * instantiating it.
+         *
          * @return iPluginStorage
          */
         public function getStore()
@@ -128,44 +127,39 @@ namespace ls\pluginmanager;
             if (is_null($this->store)) {
                 $this->store = $this->pluginManager->getStore($this->storage);
             }
-            
+
             return $this->store;
         }
-        
-        /** 
+
+        /**
          * Publishes plugin assets.
          */
         public function publish($fileName)
         {
             // Check if filename is relative.
-            if (strpos('//', $fileName) === false)
-            {
+            if (strpos('//', $fileName) === false) {
                 // This is a limesurvey relative path.
-                if (strpos('/', $fileName) === 0)
-                {
-                    $url = \Yii::getPathOfAlias('webroot') . $fileName;
-                    
-                }
-                else // This is a plugin relative path.
-                {
-                    $path = \Yii::getPathOfAlias('webroot.plugins.' . get_class($this)) . DIRECTORY_SEPARATOR . $fileName;
+                if (strpos('/', $fileName) === 0) {
+                    $url = \Yii::getPathOfAlias('webroot').$fileName;
+                } else {
+                    // This is a plugin relative path.
+
+                    $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
                     /*
                      * By using the asset manager the assets are moved to a publicly accessible path.
                      * This approach allows a locked down plugin directory that is not publicly accessible.
                      */
                     $url = App()->assetManager->publish($path);
                 }
-            }
-            else
-            {
+            } else {
                 $url = $fileName;
             }
+
             return $url;
         }
-        
+
         /**
-         * 
-         * @param string $name Name of the setting.         
+         * @param string $name Name of the setting.
          * The type of the setting is either a basic type or choice.
          * The choice type is either a single or a multiple choice setting.
          * @param array $options
@@ -182,69 +176,69 @@ namespace ls\pluginmanager;
         {
             $this->settings[$name] = $options;
         }
-        
+
         /**
-         * 
          * @param type $settings
          */
         public function saveSettings($settings)
         {
-            foreach ($settings as $name => $setting)
-            {
+            foreach ($settings as $name => $setting) {
                 $this->set($name, $setting);
             }
         }
-        
-        
+
         /**
          * This function stores plugin data.
-         * 
+         *
          * @param string $key
          * @param mixed $data
          * @param string $model
          * @param int $id
-         * @return boolean
+         *
+         * @return bool
          */
         protected function set($key, $data, $model = null, $id = null)
         {
             return $this->getStore()->set($this, $key, $data, $model, $id);
         }
-        
+
         /**
          * Set the event to the plugin, this method is executed by the PluginManager
          * just before dispatching the event.
-         * 
+         *
          * @param PluginEvent $event
+         *
          * @return PluginBase
          */
         public function setEvent(PluginEvent $event)
         {
             $this->event = $event;
+
             return $this;
         }
-    
+
         /**
-         * Here you should handle subscribing to the events your plugin will handle
+         * Here you should handle subscribing to the events your plugin will handle.
          */
         //abstract public function registerEvents();
-        
+
         /**
          * This function subscribes the plugin to receive an event.
-         * 
+         *
          * @param string $event
          */
         protected function subscribe($event, $function = null)
         {
             return $this->pluginManager->subscribe($this, $event, $function);
         }
-        
+
         /**
          * This function unsubscribes the plugin from an event.
+         *
          * @param string $event
-         */        
+         */
         protected function unsubscribe($event)
         {
             return $this->pluginManager->unsubscribe($this, $event);
         }
-
     }

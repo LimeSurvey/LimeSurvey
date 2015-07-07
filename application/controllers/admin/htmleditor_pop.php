@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,11 +16,9 @@
  *
  */
 
-
 class htmleditor_pop extends Survey_Common_Action
 {
-
-    function index()
+    public function index()
     {
         Yii::app()->loadHelper('admin/htmleditor');
         $ckLanguage = sTranslateLangCode2CK(Yii::app()->session['adminlang']);
@@ -30,37 +32,32 @@ class htmleditor_pop extends Survey_Common_Action
         $iQuestionId = isset($_GET['qid']) ? $_GET['qid'] : 0;
         $sLanguage = isset($_GET['lang']) ? $_GET['lang'] : 0;
         $aData['sFieldName'] = $sFieldName;
-        if (get_magic_quotes_gpc())
+        if (get_magic_quotes_gpc()) {
             $aData['sFieldText'] = $sFieldText = stripslashes($sFieldText);
-        else
+        } else {
             $aData['sFieldText'] = $sFieldText;
-
-        if (!$sFieldName || !$sFieldText)
-        {
-            $this->getController()->render('/admin/htmleditor/pop_nofields_view', $aData);
         }
-        else
-        {
-            $aData['sFieldType'] = $sFieldType = preg_replace("/[^_.a-zA-Z0-9-]/", "", $sFieldType);
-            $aData['sAction'] = preg_replace("/[^_.a-zA-Z0-9-]/", "", $sAction);
+
+        if (!$sFieldName || !$sFieldText) {
+            $this->getController()->render('/admin/htmleditor/pop_nofields_view', $aData);
+        } else {
+            $aData['sFieldType'] = $sFieldType = preg_replace('/[^_.a-zA-Z0-9-]/', '', $sFieldType);
+            $aData['sAction'] = preg_replace('/[^_.a-zA-Z0-9-]/', '', $sAction);
             $aData['iSurveyId'] = sanitize_int($iSurveyId);
             $aData['iGroupId'] = sanitize_int($iGroupId);
             $aData['iQuestionId'] = sanitize_int($iQuestionId);
-            $aData['sControlIdEna'] = $sFieldName . '_popupctrlena';
-            $aData['sControlIdDis'] = $sFieldName . '_popupctrldis';
+            $aData['sControlIdEna'] = $sFieldName.'_popupctrlena';
+            $aData['sControlIdDis'] = $sFieldName.'_popupctrldis';
             $aData['ckLanguage'] = $ckLanguage;
 
             $aData['toolbarname'] = 'popup';
             $aData['htmlformatoption'] = '';
 
-            if (in_array($sFieldType, array('email-inv', 'email-reg', 'email-conf', 'email-rem')))
-            {
+            if (in_array($sFieldType, array('email-inv', 'email-reg', 'email-conf', 'email-rem'))) {
                 $aData['htmlformatoption'] = ',fullPage:true';
             }
 
             $this->getController()->render('/admin/htmleditor/pop_editor_view', $aData);
         }
-
     }
-
 }

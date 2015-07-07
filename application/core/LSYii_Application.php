@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,14 +14,15 @@
 
 /**
  * Load the globals helper as early as possible. Only earlier solution is to use
- * index.php
+ * index.php.
  */
-require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
+require_once dirname(dirname(__FILE__)).'/helpers/globals.php';
 
 /**
-* Implements global  config
-* @property CLogRouter $log Log router component.
-*/
+ * Implements global  config.
+ *
+ * @property CLogRouter $log Log router component.
+ */
 class LSYii_Application extends CWebApplication
 {
     protected $config = array();
@@ -30,89 +32,77 @@ class LSYii_Application extends CWebApplication
      */
     protected $api;
     /**
+     * Initiates the application.
      *
-    * Initiates the application
-    *
-    * @access public
-    * @param array $config
-    * @return void
-    */
+     * @param array $config
+     */
     public function __construct($config = null)
     {
         parent::__construct($config);
-        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
+        Yii::setPathOfAlias('bootstrap', Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.
-        $ls_config = require(__DIR__ . '/../config/config-defaults.php');
-        $email_config = require(__DIR__ . '/../config/email.php');
-        $version_config = require(__DIR__ . '/../config/version.php');
+        $ls_config = require __DIR__.'/../config/config-defaults.php';
+        $email_config = require __DIR__.'/../config/email.php';
+        $version_config = require __DIR__.'/../config/version.php';
         $settings = array_merge($ls_config, $version_config, $email_config);
 
-        if(file_exists(__DIR__ . '/../config/config.php'))
-        {
-            $ls_config = require(__DIR__ . '/../config/config.php');
-            if(is_array($ls_config['config']))
-            {
+        if (file_exists(__DIR__.'/../config/config.php')) {
+            $ls_config = require __DIR__.'/../config/config.php';
+            if (is_array($ls_config['config'])) {
                 $settings = array_merge($settings, $ls_config['config']);
             }
         }
 
-        foreach ($settings as $key => $value)
+        foreach ($settings as $key => $value) {
             $this->setConfig($key, $value);
+        }
 
-        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
+        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false).'/tmp/assets');
     }
 
-
-	public function init() {
-		parent::init();
+    public function init()
+    {
+        parent::init();
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
-		Yii::import('application.helpers.ClassFactory');
-		ClassFactory::registerClass('Token_', 'Token');
-		ClassFactory::registerClass('Response_', 'Response');
-	}
+        Yii::import('application.helpers.ClassFactory');
+        ClassFactory::registerClass('Token_', 'Token');
+        ClassFactory::registerClass('Response_', 'Response');
+    }
 
     public function initLanguage()
     {
         // Set language to use.
-        if ($this->request->getParam('lang') !== null)
-        {
+        if ($this->request->getParam('lang') !== null) {
             $this->setLanguage($this->request->getParam('lang'));
         }
-
     }
     /**
-    * Loads a helper
-    *
-    * @access public
-    * @param string $helper
-    * @return void
-    */
+     * Loads a helper.
+     *
+     * @param string $helper
+     */
     public function loadHelper($helper)
     {
-        Yii::import('application.helpers.' . $helper . '_helper', true);
+        Yii::import('application.helpers.'.$helper.'_helper', true);
     }
 
     /**
-    * Loads a library
-    *
-    * @access public
-    * @param string $helper
-    * @return void
-    */
+     * Loads a library.
+     *
+     * @param string $helper
+     */
     public function loadLibrary($library)
     {
         Yii::import('application.libraries.'.$library, true);
     }
 
     /**
-    * Sets a configuration variable into the config
-    *
-    * @access public
-    * @param string $name
-    * @param mixed $value
-    * @return void
-    */
+     * Sets a configuration variable into the config.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
     public function setConfig($name, $value)
     {
         $this->config[$name] = $value;
@@ -130,54 +120,50 @@ class LSYii_Application extends CWebApplication
      *
      * @param string $message
      * @param string $type
+     *
      * @return LSYii_Application Provides a fluent interface
      */
-    public function setFlashMessage($message,$type='default')
+    public function setFlashMessage($message, $type = 'default')
     {
-        $aFlashMessage=$this->session['aFlashMessage'];
-        $aFlashMessage[]=array('message'=>$message,'type'=>$type);
+        $aFlashMessage = $this->session['aFlashMessage'];
+        $aFlashMessage[] = array('message' => $message,'type' => $type);
         $this->session['aFlashMessage'] = $aFlashMessage;
+
         return $this;
     }
 
     /**
-    * Loads a config from a file
-    *
-    * @access public
-    * @param string $file
-    * @return void
-    */
+     * Loads a config from a file.
+     *
+     * @param string $file
+     */
     public function loadConfig($file)
     {
-        $config = require_once(APPPATH . '/config/' . $file . '.php');
-        if(is_array($config))
-        {
-            foreach ($config as $k => $v)
+        $config = require_once APPPATH.'/config/'.$file.'.php';
+        if (is_array($config)) {
+            foreach ($config as $k => $v) {
                 $this->setConfig($k, $v);
+            }
         }
     }
 
     /**
-    * Returns a config variable from the config
-    *
-    * @access public
-    * @param string $name
-    * @param type $default Value to return when not found, default is false
-    * @return mixed
-    */
+     * Returns a config variable from the config.
+     *
+     * @param string $name
+     * @param type   $default Value to return when not found, default is false
+     *
+     * @return mixed
+     */
     public function getConfig($name, $default = false)
     {
         return isset($this->config[$name]) ? $this->config[$name] : $default;
     }
 
-
     /**
-    * For future use, cache the language app wise as well.
-    *
-    * @access public
-    * @return void
-    */
-    public function setLanguage( $sLanguage )
+     * For future use, cache the language app wise as well.
+     */
+    public function setLanguage($sLanguage)
     {
         $this->messages->catalog = $sLanguage;
         parent::setLanguage($sLanguage);
@@ -188,14 +174,14 @@ class LSYii_Application extends CWebApplication
      */
     public function getApi()
     {
-        if (!isset($this->api))
-        {
+        if (!isset($this->api)) {
             $this->api = new LimesurveyApi();
         }
+
         return $this->api;
     }
     /**
-     * Get the pluginManager
+     * Get the pluginManager.
      *
      * @return PluginManager
      */
@@ -203,7 +189,4 @@ class LSYii_Application extends CWebApplication
     {
         return $this->getComponent('pluginManager');
     }
-
-
 }
-

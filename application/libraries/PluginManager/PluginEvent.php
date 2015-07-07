@@ -1,144 +1,146 @@
 <?php
-namespace ls\pluginmanager;
+
+namespace ls\PluginManager;
+
 use Yii;
 use Hash;
+
 Yii::import('application.helpers.Hash');
 
 class PluginEvent
 {
     /**
-     * The name of this event
-     * 
-     * @var string 
+     * The name of this event.
+     *
+     * @var string
      */
     protected $_event = '';
-    
+
     /**
-     * This array holds the content blocks that plugins generate, idexed by plugin name
-     * 
+     * This array holds the content blocks that plugins generate, idexed by plugin name.
+     *
      * @var array of PluginEventContent
      */
     protected $_content = array();
-    
+
     /**
-     * The class who fired the event, or null when not set
-     * 
-     * @var object 
+     * The class who fired the event, or null when not set.
+     *
+     * @var object
      */
     protected $_sender = null;
-    
+
     /**
      * When true it prevents delegating the event to other plugins.
-     * 
-     * @var boolean 
+     *
+     * @var bool
      */
     protected $_stop = false;
-    
+
     /**
      * Internal storage for event data. Can be used to communicate between sender
      * and plugin or between different plugins handling the event.
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $_parameters = array();
-    
+
     /**
-     * Constructor for the PluginEvent
-     * 
-     * @param string $event    Name of the event fired 
-     * @param object $sender   The object sending the event
+     * Constructor for the PluginEvent.
+     *
+     * @param string $event  Name of the event fired
+     * @param object $sender The object sending the event
+     *
      * @return \PluginEvent
      */
     public function __construct($event, $sender = null)
     {
-        if (!is_null($sender) && is_object($sender))
-        {
+        if (!is_null($sender) && is_object($sender)) {
             $this->_sender = $sender;
         }
-        
+
         $this->_event = $event;
-        
+
         return $this;
     }
 
     /**
-     * Get a value for the given key. 
-     * 
+     * Get a value for the given key.
+     *
      * When the value is not set, it will return the given default or null when
      * no default was given.
-     * 
+     *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function get($key = null, $default = null)
     {
-        if (!Hash::check($this->_parameters, $key))
-        {
+        if (!Hash::check($this->_parameters, $key)) {
             return $default;
-        }
-        else
-        {
+        } else {
             return Hash::get($this->_parameters, $key);
         }
     }
-    
+
     /**
-     * Return an array of pluginname / PluginEventContent but only when it has content
-     * 
+     * Return an array of pluginname / PluginEventContent but only when it has content.
+     *
      * @return PluginEventContent[]
      */
     public function getAllContent()
     {
         $output = array();
-        foreach($this->_content as $plugin => $content)
-        {
+        foreach ($this->_content as $plugin => $content) {
             /* @var $content PluginEventContent */
             if ($content->hasContent()) {
-                $output[$plugin] = $content; 
+                $output[$plugin] = $content;
             }
         }
-        
+
         return $output;
     }
-    
+
     /**
-     * Returns content for the given plugin(name)
-     * 
+     * Returns content for the given plugin(name).
+     *
      * When there is no content yet, it will return an empty content object.
-     * 
+     *
      * @param PluginBase|string $plugin The plugin we want content for or a string name
+     *
      * @return PluginEventContent
      */
-    public function getContent($plugin) {
+    public function getContent($plugin)
+    {
         if (is_string($plugin)) {
             $pluginName = $plugin;
         } elseif ($plugin instanceof PluginBase) {
             $pluginName = get_class($plugin);
         }
-        
+
         if (array_key_exists($pluginName, $this->_content)) {
             return $this->_content[$pluginName];
         } else {
             return $this->setContent($pluginName);
         }
     }
-    
+
     /**
-     * Return the name of the event
-     * 
+     * Return the name of the event.
+     *
      * @return string
      */
     public function getEventName()
     {
         return $this->_event;
     }
-    
+
     /**
-     * Return the sender of the event
-     * 
+     * Return the sender of the event.
+     *
      * Normally the class that fired the event, but can return false when not set.
-     * 
+     *
      * @return object The object sending the event, or false when unknown
      */
     public function getSender()
@@ -149,37 +151,40 @@ class PluginEvent
             return false;
         }
     }
-    
+
     /**
-     * Returns true when execution of this event was stopped using $this->stop()
-     * 
-     * @return boolean
+     * Returns true when execution of this event was stopped using $this->stop().
+     *
+     * @return bool
      */
     public function isStopped()
     {
         return $this->_stop;
     }
-    
+
     /**
      * Set a key/value pair to be used by plugins hanlding this event.
-     * 
+     *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return \PluginEvent Fluent interface
      */
     public function set($key, $value)
     {
         $this->_parameters = Hash::insert($this->_parameters, $key, $value);
+
         return $this;
     }
-    
+
     /**
-     * Set content for $plugin, replacing any preexisting content
-     * 
-     * @param PluginBase|string $plugin The plugin setting the context or a string name
-     * @param string $content
-     * @param string $cssClass
-     * @param string $id
+     * Set content for $plugin, replacing any preexisting content.
+     *
+     * @param PluginBase|string $plugin   The plugin setting the context or a string name
+     * @param string            $content
+     * @param string            $cssClass
+     * @param string            $id
+     *
      * @return PluginEventContent
      */
     public function setContent($plugin, $content = null, $cssClass = null, $id = null)
@@ -189,19 +194,19 @@ class PluginEvent
         } elseif ($plugin instanceof PluginBase) {
             $pluginName = get_class($plugin);
         }
-        
+
         $contentObject = new PluginEventContent($content, $cssClass, $id);
         if (isset($pluginName)) {
             $this->_content[$pluginName] = $contentObject;
         } else {
             $this->_content[] = $contentObject;
         }
-        
-        return $contentObject;        
+
+        return $contentObject;
     }
-    
+
     /**
-     * Halt execution of this event by other plugins
+     * Halt execution of this event by other plugins.
      */
     public function stop()
     {

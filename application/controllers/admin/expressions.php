@@ -1,4 +1,8 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -11,64 +15,60 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class Expressions extends Survey_Common_Action {
-	function index()
-	{
-	    $aData=array();
-        $needpermission=false;
-        $aData['surveyid']=$surveyid=sanitize_int(Yii::app()->request->getQuery('sid'));
-        $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
-	    if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $surveyid)
-	    {
-	        $needpermission=true;
-	    }
-        if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
-        {
-            App()->getClientScript()->registerPackage('jquery-superfish');
-            $message['title']= gT('Access denied!');
-            $message['message']= gT('You do not have sufficient rights to access this page.');
-            $message['class']= "error";
-            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
+class expressions extends Survey_Common_Action
+{
+    public function index()
+    {
+        $aData = array();
+        $needpermission = false;
+        $aData['surveyid'] = $surveyid = sanitize_int(Yii::app()->request->getQuery('sid'));
+        $aData['sa'] = $sa = sanitize_paranoid_string(Yii::app()->request->getQuery('sa', 'index'));
+        if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $surveyid) {
+            $needpermission = true;
         }
-        else
-        {
+        if ($needpermission && !Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            App()->getClientScript()->registerPackage('jquery-superfish');
+            $message['title'] = gT('Access denied!');
+            $message['message'] = gT('You do not have sufficient rights to access this page.');
+            $message['class'] = 'error';
+            $this->_renderWrappedTemplate('survey', array('message' => $message), $aData);
+        } else {
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'survey_runtime.js');
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'expressions/em_javascript.js');
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl').'adminstyle.css');
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
-            $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
+            $aData['pagetitle'] = "ExpressionManager:  {$aData['sa']}";
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
-	        if(isset($_GET['sa']))
-		        $this->test($aData['sa'],$aData);
-	        else
-	            $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
+            if (isset($_GET['sa'])) {
+                $this->test($aData['sa'], $aData);
+            } else {
+                $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
+            }
         }
     }
 
-    protected function test($which,$aData)
+    protected function test($which, $aData)
     {
-            $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
+        $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
         //$this->getController()->render('/admin/expressions/test/'.$which);
     }
 
     private function _printOnLoad($which)
     {
-        switch ($which)
-        {
+        switch ($which) {
             case 'relevance':
-                App()->getClientScript()->registerScript("emscript", "ExprMgr_process_relevance_and_tailoring();", CClientScript::POS_LOAD);
+                App()->getClientScript()->registerScript('emscript', 'ExprMgr_process_relevance_and_tailoring();', CClientScript::POS_LOAD);
                 break;
             case 'unit':
-                App()->getClientScript()->registerScript("emscript", "recompute();", CClientScript::POS_LOAD);
+                App()->getClientScript()->registerScript('emscript', 'recompute();', CClientScript::POS_LOAD);
                 break;
         }
     }
 
     private function _printTitle($which)
     {
-        switch ($which)
-        {
+        switch ($which) {
             case 'index':
                 return 'Test Suite';
                 break;
@@ -126,19 +126,19 @@ class Expressions extends Survey_Common_Action {
         }
     }
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer.
+     *
+     * @param string       $sAction   Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array        $aData     Data to be passed on. Optional.
+     */
     protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array())
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         //$aData['display']['header']=false;
         $aData['display']['menu_bars'] = false;
         //$aData['display']['footer']= false;
-        header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
+        header('Content-type: text/html; charset=UTF-8'); // needed for correct UTF-8 encoding
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

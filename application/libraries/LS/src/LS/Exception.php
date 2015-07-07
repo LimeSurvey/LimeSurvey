@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,8 +14,8 @@
   */
 
 /**
- * LS Base Exception Class
- * 
+ * LS Base Exception Class.
+ *
  * @author mot
  */
 class LS_Exception extends Exception

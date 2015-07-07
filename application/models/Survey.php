@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -29,16 +30,15 @@ class Survey extends LSActiveRecord
     public $format = 'G';
 
     /**
-     * init to set default
-     *
+     * init to set default.
      */
     public function init()
     {
         $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
-        $validator= new LSYii_Validators;
+        $validator = new LSYii_Validators();
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
 
-        $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
+        $this->attachEventHandler('onAfterFind', array($this, 'fixSurveyAttribute'));
     }
 
     /**
@@ -47,83 +47,75 @@ class Survey extends LSActiveRecord
      */
     public function getLocalizedTitle()
     {
-        if (isset($this->languagesettings[App()->language]))
-        {
+        if (isset($this->languagesettings[App()->language])) {
             return $this->languagesettings[App()->language]->surveyls_title;
-        }
-        else
-        {
+        } else {
             return $this->languagesettings[$this->language]->surveyls_title;
         }
     }
     /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
+     *
      * @param int $surveyId
      */
     public function expire($surveyId = null)
     {
-        $dateTime = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-        $dateTime = dateShift($dateTime, "Y-m-d H:i:s", '-1 day');
+        $dateTime = dateShift(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust'));
+        $dateTime = dateShift($dateTime, 'Y-m-d H:i:s', '-1 day');
 
-        if (!isset($surveyId))
-        {
+        if (!isset($surveyId)) {
             $this->expires = $dateTime;
-            if ($this->scenario == 'update')
-            {
+            if ($this->scenario == 'update') {
                 return $this->save();
             }
+        } else {
+            self::model()->updateByPk($surveyId, array('expires' => $dateTime));
         }
-        else
-        {
-            self::model()->updateByPk($surveyId,array('expires' => $dateTime));
-        }
-
     }
 
     /**
-    * Returns the table's name
-    *
-    * @access public
-    * @return string
-    */
+     * Returns the table's name.
+     *
+     * @return string
+     */
     public function tableName()
     {
         return '{{surveys}}';
     }
 
     /**
-    * Returns the table's primary key
-    *
-    * @access public
-    * @return string
-    */
+     * Returns the table's primary key.
+     *
+     * @return string
+     */
     public function primaryKey()
     {
         return 'sid';
     }
 
     /**
-    * Returns the static model of Settings table
-    *
-    * @static
-    * @access public
-    * @param string $class
-    * @return Survey
-    */
+     * Returns the static model of Settings table.
+     *
+     * @static
+     *
+     * @param string $class
+     *
+     * @return Survey
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
     }
 
     /**
-    * Returns this model's relations
-    *
-    * @access public
-    * @return array
-    */
+     * Returns this model's relations.
+     *
+     * @return array
+     */
     public function relations()
     {
         $alias = $this->getTableAlias();
+
         return array(
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
@@ -132,86 +124,84 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * Returns this model's scopes
-    *
-    * @access public
-    * @return array
-    */
+     * Returns this model's scopes.
+     *
+     * @return array
+     */
     public function scopes()
     {
         return array(
             'active' => array('condition' => "active = 'Y'"),
             'open' => array('condition' => '(startdate <= :now1 OR startdate IS NULL) AND (expires >= :now2 OR expires IS NULL)', 'params' => array(
-                ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
-                )
+                ':now1' => dateShift(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust')),
+                ':now2' => dateShift(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust')),
+                ),
             ),
             'public' => array('condition' => "listpublic = 'Y'"),
             'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now3 AND (expires < :now4 OR expires IS NULL)", 'params' => array(
-                ':now3' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
-                ':now4' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
-            ))
+                ':now3' => dateShift(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust')),
+                ':now4' => dateShift(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust')),
+            )),
         );
     }
 
     /**
-    * Returns this model's validation rules
-    *
-    */
+     * Returns this model's validation rules.
+     */
     public function rules()
     {
         return array(
-            array('datecreated', 'default','value'=>date("Y-m-d")),
-            array('startdate', 'default','value'=>NULL),
-            array('expires', 'default','value'=>NULL),
+            array('datecreated', 'default','value' => date('Y-m-d')),
+            array('startdate', 'default','value' => null),
+            array('expires', 'default','value' => null),
             array('admin,faxto','LSYii_Validators'),
-            array('adminemail','filter', 'filter'=>'trim'),
-            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
-            array('adminemail','filter', 'filter'=>'trim'),
-            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
-            array('active', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('anonymized', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('savetimings', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('datestamp', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('usecookie', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowregister', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowsave', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('autoredirect', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('allowprev', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('printanswers', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('ipaddr', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('refurl', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('publicstatistics', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('publicgraphs', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('listpublic', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('htmlemail', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('sendconfirmation', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('tokenanswerspersistence', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('assessments', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('usetokens', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showxquestions', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('shownoanswer', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showwelcome', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('showprogress', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false),
-            array('nokeyboard', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('alloweditaftercompletion', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
-            array('bounceprocessing', 'in','range'=>array('L','N','G'), 'allowEmpty'=>true),
-            array('usecaptcha', 'in','range'=>array('A','B','C','D','X','R','S','N'), 'allowEmpty'=>true),
-            array('showgroupinfo', 'in','range'=>array('B','N','D','X'), 'allowEmpty'=>true),
-            array('showqnumcode', 'in','range'=>array('B','N','C','X'), 'allowEmpty'=>true),
-            array('format', 'in','range'=>array('G','S','A'), 'allowEmpty'=>true),
-            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
-            array('autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'),
-            array('bouncetime','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('navigationdelay','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('template', 'filter', 'filter'=>array($this,'filterTemplateSave')),
-            array('language','LSYii_Validators','isLanguage'=>true),
+            array('adminemail','filter', 'filter' => 'trim'),
+            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty' => true),
+            array('adminemail','filter', 'filter' => 'trim'),
+            array('bounce_email','LSYii_EmailIDNAValidator', 'allowEmpty' => true),
+            array('active', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('anonymized', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('savetimings', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('datestamp', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('usecookie', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('allowregister', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('allowsave', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('autoredirect', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('allowprev', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('printanswers', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('ipaddr', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('refurl', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('publicstatistics', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('publicgraphs', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('listpublic', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('htmlemail', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('sendconfirmation', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('tokenanswerspersistence', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('assessments', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('usetokens', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('showxquestions', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('shownoanswer', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('showwelcome', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('showprogress', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty' => false),
+            array('nokeyboard', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('alloweditaftercompletion', 'in','range' => array('Y','N'), 'allowEmpty' => true),
+            array('bounceprocessing', 'in','range' => array('L','N','G'), 'allowEmpty' => true),
+            array('usecaptcha', 'in','range' => array('A','B','C','D','X','R','S','N'), 'allowEmpty' => true),
+            array('showgroupinfo', 'in','range' => array('B','N','D','X'), 'allowEmpty' => true),
+            array('showqnumcode', 'in','range' => array('B','N','C','X'), 'allowEmpty' => true),
+            array('format', 'in','range' => array('G','S','A'), 'allowEmpty' => true),
+            array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '2', 'allowEmpty' => true),
+            array('autonumber_start','numerical', 'integerOnly' => true,'allowEmpty' => true),
+            array('tokenlength','numerical', 'integerOnly' => true,'allowEmpty' => true, 'min' => '5', 'max' => '36'),
+            array('bouncetime','numerical', 'integerOnly' => true,'allowEmpty' => true),
+            array('navigationdelay','numerical', 'integerOnly' => true,'allowEmpty' => true),
+            array('template', 'filter', 'filter' => array($this,'filterTemplateSave')),
+            array('language','LSYii_Validators','isLanguage' => true),
             array('language', 'required', 'on' => 'insert'),
-            array('language', 'filter', 'filter'=>'trim'),
-            array('additional_languages', 'filter', 'filter'=>'trim'),
-            array('additional_languages','LSYii_Validators','isLanguageMulti'=>true),
+            array('language', 'filter', 'filter' => 'trim'),
+            array('additional_languages', 'filter', 'filter' => 'trim'),
+            array('additional_languages','LSYii_Validators','isLanguageMulti' => true),
             // Date rules currently don't work properly with MSSQL, deactivating for now
             //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
@@ -219,49 +209,52 @@ class Survey extends LSActiveRecord
         );
     }
 
-
     /**
-    * fixSurveyAttribute to fix and/or add some survey attribute
-    * - Fix template name to be sure template exist
-    */
+     * fixSurveyAttribute to fix and/or add some survey attribute
+     * - Fix template name to be sure template exist.
+     */
     public function fixSurveyAttribute($event)
     {
-        $this->template=Template::templateNameFilter($this->template);
+        $this->template = Template::templateNameFilter($this->template);
     }
 
     /**
-    * filterTemplateSave to fix some template name 
-    */
+     * filterTemplateSave to fix some template name.
+     */
     public function filterTemplateSave($sTemplateName)
     {
-        if(!Permission::model()->hasTemplatePermission($sTemplateName))
-        {
-            if(!$this->isNewRecord)// Reset to default only if different from actual value
-            {
-                $oSurvey=self::model()->findByPk($this->sid);
-                if($oSurvey->template != $sTemplateName)// No need to test !is_null($oSurvey)
+        if (!Permission::model()->hasTemplatePermission($sTemplateName)) {
+            if (!$this->isNewRecord) {
+                // Reset to default only if different from actual value
+
+                $oSurvey = self::model()->findByPk($this->sid);
+                if ($oSurvey->template != $sTemplateName) {
+                    // No need to test !is_null($oSurvey)
                     $sTemplateName = Yii::app()->getConfig('defaulttemplate');
-            }
-            else
-            {
+                }
+            } else {
                 $sTemplateName = Yii::app()->getConfig('defaulttemplate');
             }
         }
+
         return Template::templateNameFilter($sTemplateName);
     }
 
     /**
-    * permission scope for this model
-    * Actually only test if user have minimal access to survey (read)
-    * @access public
-    * @param int $loginID
-    * @return CActiveRecord
-    */
+     * permission scope for this model
+     * Actually only test if user have minimal access to survey (read).
+     *
+     * @param int $loginID
+     *
+     * @return CActiveRecord
+     */
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
-        if(Permission::model()->hasGlobalPermission('surveys','read'))// Test global before adding criteria
+        if (Permission::model()->hasGlobalPermission('surveys', 'read')) {
+            // Test global before adding criteria
             return $this;
+        }
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
             'condition' => 'sid IN (SELECT entity_id FROM {{permissions}} WHERE entity = :entity AND  uid = :uid AND permission = :permission AND read_p = 1)
@@ -276,75 +269,67 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * Returns additional languages formatted into a string
-    *
-    * @access public
-    * @return array
-    */
+     * Returns additional languages formatted into a string.
+     *
+     * @return array
+     */
     public function getAdditionalLanguages()
     {
         $sLanguages = trim($this->additional_languages);
-        if ($sLanguages != '')
+        if ($sLanguages != '') {
             return explode(' ', $sLanguages);
-        else
+        } else {
             return array();
+        }
     }
 
     /**
-    * Returns all languages array
-    *
-    * @access public
-    * @return array
-    */
+     * Returns all languages array.
+     *
+     * @return array
+     */
     public function getAllLanguages()
     {
         $sLanguages = self::getAdditionalLanguages();
-        $baselang=$this->language;
-        array_unshift($sLanguages,$baselang);
+        $baselang = $this->language;
+        array_unshift($sLanguages, $baselang);
+
         return $sLanguages;
     }
 
     /**
-    * Returns the additional token attributes
-    *
-    * @access public
-    * @return array
-    */
+     * Returns the additional token attributes.
+     *
+     * @return array
+     */
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
         // checked for invalid data
-        if($attdescriptiondata == null)
-        {
+        if ($attdescriptiondata == null) {
             return array();
         }
         // Catches malformed data
-        if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)),'attribute_')===false)
-        {
+        if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)), 'attribute_') === false) {
             // don't know why yet but this breaks normal tokenAttributes functionning
             //$attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
-        }
-        elseif (is_null($attdescriptiondata))
-        {
-            $attdescriptiondata=array();
+        } elseif (is_null($attdescriptiondata)) {
+            $attdescriptiondata = array();
         }
         // Legacy records support
-        if ($attdescriptiondata === false)
-        {
+        if ($attdescriptiondata === false) {
             $attdescriptiondata = explode("\n", $this->attributedescriptions);
             $fields = array();
             $languagesettings = array();
-            foreach ($attdescriptiondata as $attdescription)
-            {
-                if (trim($attdescription) != '')
-                {
+            foreach ($attdescriptiondata as $attdescription) {
+                if (trim($attdescription) != '') {
                     $fieldname = substr($attdescription, 0, strpos($attdescription, '='));
                     $desc = substr($attdescription, strpos($attdescription, '=') + 1);
                     $fields[$fieldname] = array(
                     'description' => $desc,
                     'mandatory' => 'N',
                     'show_register' => 'N',
-                    'cpdbmap' =>''
+                    'cpdbmap' => '',
                     );
                     $languagesettings[$fieldname] = $desc;
                 }
@@ -355,28 +340,33 @@ class Survey extends LSActiveRecord
             $ls->save();
             $attdescriptiondata = $fields;
         }
-        $aCompleteData=array();
-        foreach ($attdescriptiondata as $sKey=>$aValues)
-        {
-            if (!is_array($aValues)) $aValues=array();
-            $aCompleteData[$sKey]= array_merge(array(
+        $aCompleteData = array();
+        foreach ($attdescriptiondata as $sKey => $aValues) {
+            if (!is_array($aValues)) {
+                $aValues = array();
+            }
+            $aCompleteData[$sKey] = array_merge(array(
                     'description' => '',
                     'mandatory' => 'N',
                     'show_register' => 'N',
-                    'cpdbmap' =>''
-                    ),$aValues);
+                    'cpdbmap' => '',
+                    ), $aValues);
         }
+
         return $aCompleteData;
     }
 
     /**
-     * Returns true in a token table exists for the given $surveyId
+     * Returns true in a token table exists for the given $surveyId.
      *
      * @staticvar array $tokens
+     *
      * @param int $iSurveyID
-     * @return boolean
+     *
+     * @return bool
      */
-    public function hasTokens($iSurveyID) {
+    public function hasTokens($iSurveyID)
+    {
         static $tokens = array();
         $iSurveyID = (int) $iSurveyID;
 
@@ -395,75 +385,75 @@ class Survey extends LSActiveRecord
         return $tokens[$iSurveyID];
     }
 
-
     /**
-    * Creates a new survey - does some basic checks of the suppplied data
-    *
-    * @param array $aData Array with fieldname=>fieldcontents data
-    * @return integer The new survey id
-    */
+     * Creates a new survey - does some basic checks of the suppplied data.
+     *
+     * @param array $aData Array with fieldname=>fieldcontents data
+     *
+     * @return int The new survey id
+     */
     public function insertNewSurvey($aData)
     {
-        do
-        {
-            if (isset($aData['wishSID'])) // if wishSID is set check if it is not taken already
-            {
+        do {
+            if (isset($aData['wishSID'])) {
+                // if wishSID is set check if it is not taken already
+
                 $aData['sid'] = $aData['wishSID'];
                 unset($aData['wishSID']);
-            }
-            else
+            } else {
                 $aData['sid'] = randomChars(6, '123456789');
+            }
 
             $isresult = self::model()->findByPk($aData['sid']);
-        }
-        while (!is_null($isresult));
+        } while (!is_null($isresult));
 
-        $survey = new self;
-        foreach ($aData as $k => $v)
+        $survey = new self();
+        foreach ($aData as $k => $v) {
             $survey->$k = $v;
-        $sResult= $survey->save();
-        if (!$sResult)
-        {
-            tracevar($survey->getErrors());
-            return false;
         }
-        else return $aData['sid'];
+        $sResult = $survey->save();
+        if (!$sResult) {
+            tracevar($survey->getErrors());
+
+            return false;
+        } else {
+            return $aData['sid'];
+        }
     }
 
     /**
-    * Deletes a survey and all its data
-    *
-    * @access public
-    * @param int $iSurveyID
-    * @param bool @recursive
-    * @return void
-    */
-    public function deleteSurvey($iSurveyID, $recursive=true)
+     * Deletes a survey and all its data.
+     *
+     * @param int $iSurveyID
+     * @param bool @recursive
+     */
+    public function deleteSurvey($iSurveyID, $recursive = true)
     {
-        Survey::model()->deleteByPk($iSurveyID);
+        self::model()->deleteByPk($iSurveyID);
 
-        if ($recursive == true)
-        {
-            if (tableExists("{{survey_".intval($iSurveyID)."}}"))  //delete the survey_$iSurveyID table
-            {
-                Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."}}");
+        if ($recursive == true) {
+            if (tableExists('{{survey_'.intval($iSurveyID).'}}')) {
+                //delete the survey_$iSurveyID table
+
+                Yii::app()->db->createCommand()->dropTable('{{survey_'.intval($iSurveyID).'}}');
             }
 
-            if (tableExists("{{survey_".intval($iSurveyID)."_timings}}"))  //delete the survey_$iSurveyID_timings table
-            {
-                Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."_timings}}");
+            if (tableExists('{{survey_'.intval($iSurveyID).'_timings}}')) {
+                //delete the survey_$iSurveyID_timings table
+
+                Yii::app()->db->createCommand()->dropTable('{{survey_'.intval($iSurveyID).'_timings}}');
             }
 
-            if (tableExists("{{tokens_".intval($iSurveyID)."}}")) //delete the tokens_$iSurveyID table
-            {
-                Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
+            if (tableExists('{{tokens_'.intval($iSurveyID).'}}')) {
+                //delete the tokens_$iSurveyID table
+
+                Yii::app()->db->createCommand()->dropTable('{{tokens_'.intval($iSurveyID).'}}');
             }
 
             $oResult = Question::model()->findAllByAttributes(array('sid' => $iSurveyID));
-            foreach ($oResult as $aRow)
-            {
+            foreach ($oResult as $aRow) {
                 Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
+                Condition::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                 QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                 DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
             }
@@ -472,7 +462,7 @@ class Survey extends LSActiveRecord
             Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             QuestionGroup::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
-            Permission::model()->deleteAllByAttributes(array('entity_id' => $iSurveyID, 'entity'=>'survey'));
+            Permission::model()->deleteAllByAttributes(array('entity_id' => $iSurveyID, 'entity' => 'survey'));
             SavedControl::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             //Remove any survey_links to the CPDB
@@ -481,7 +471,8 @@ class Survey extends LSActiveRecord
         }
     }
 
-    public function findByPk($pk, $condition = '', $params = array()) {
+    public function findByPk($pk, $condition = '', $params = array())
+    {
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
@@ -501,13 +492,15 @@ class Survey extends LSActiveRecord
     /**
      * findByPk uses a cache to store a result. Use this method to force clearing that cache.
      */
-    public function resetCache() {
+    public function resetCache()
+    {
         $this->findByPkCache = array();
     }
 
     /**
      * Attribute renamed to questionindex in dbversion 169
-     * Y maps to 1 otherwise 0;
+     * Y maps to 1 otherwise 0;.
+     *
      * @param type $value
      */
     public function setAllowjumps($value)
