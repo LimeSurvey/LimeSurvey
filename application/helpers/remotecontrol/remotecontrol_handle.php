@@ -884,7 +884,7 @@ class remotecontrol_handle
     * @param int $iGroupID Id of the group to delete
     * @return array|int The id of the deleted group or status
     */
-    public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
+    public function delete_group($sSessionKey, $iSurveyID, $iGroupID, $sGroupLanguage)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -896,7 +896,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
             {
-                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
                 if (!isset($oGroup))
                     return array('status' => 'Error: Invalid group ID');
 
