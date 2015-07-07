@@ -410,7 +410,6 @@ class responses extends Survey_Common_Action
                     "N"=>gt("No"),
                 ),
             ),
-
             'sortable'=>true,
             'hidden'=>$bHidden,
             'width'=>'100',
@@ -626,14 +625,6 @@ class responses extends Survey_Common_Action
             $aSpecificColumns=array_merge($aSpecificColumns,TokenDynamic::model($iSurveyID)->getTableSchema()->getColumnNames());
         }
 
-        if (incompleteAnsFilterState() == "incomplete")
-        {
-            $oCriteria->addCondition("submitdate IS NULL");
-        }
-        elseif (incompleteAnsFilterState() == "complete")
-        {
-            $oCriteria->addCondition("submitdate IS NOT NULL");
-        }
         //Get the filter data
         //if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
         //    $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
@@ -660,7 +651,7 @@ class responses extends Survey_Common_Action
         $oCriteria->order = "{$sOrderBy} {$sOrder}";
         if(Yii::app()->request->getParam('_search'))
         {
-            if(($value=Yii::app()->request->getParam('completed')) && !incompleteAnsFilterState()) //
+            if(($value=Yii::app()->request->getParam('completed'))) 
             {
                 if($value=='Y')
                     $oCriteria->addCondition("submitdate IS NOT NULL");
