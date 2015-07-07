@@ -1133,6 +1133,52 @@ class remotecontrol_handle
 
     /* Question specific functions */
 
+    /**
+     * RPC Routine to add an empty question with minimum details.
+     *
+     * This method is unofficial (not written by the LimeSurvey team, but by the Theodo one)
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Dd of the Survey to add the group
+     * @param int $iGroupID Id of the group
+     * @param array $aQuestionData The question data
+     * @return array|int The id of the new group - Or status
+     */
+    public function add_question($sSessionKey, $iSurveyID, $iGroupID, $sQuestionTitle, $aQuestionData=array())
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
+                $oSurvey = Survey::model()->findByPk($iSurveyID);
+                if (!isset($oSurvey)) {
+                    return array('status' => 'Error: Invalid survey ID');
+                }
+
+                if($oSurvey['active']=='Y') {
+                    return array('status' => 'Error:Survey is active and not editable');
+                }
+
+                $oQuestion        = new Question;
+                $oQuestion->sid   = $iSurveyID;
+                $oQuestion->gid   = $iGroupID;
+                $oQuestion->title = $sQuestionTitle;
+                foreach ($aQuestionData as $fieldName => $value) {
+                    $oQuestion->setAttribute($fieldName,$value);
+                }
+                if($oQuestion->save()) {
+                    return (int)$oQuestion->qid;
+                } else {
+                    return array('status' => 'Creation Failed');
+                }
+            } else {
+                return array('status' => 'No permission');
+            }
+        } else {
+            return array('status' => 'Invalid Session Key');
+        }
+    }
+
 
     /**
     * RPC Routine to delete a question of a survey .
