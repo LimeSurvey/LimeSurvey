@@ -834,6 +834,8 @@ class remotecontrol_handle
     * @param int $iSurveyID Dd of the Survey to add the group
     * @param string $sGroupTitle Name of the group
     * @param string $sGroupDescription     Optional description of the group
+    * @param int|null $iGroupID The wished id of the new group (needed for multi-languages groups)
+    * @param string|null $sGroupLanguage The group language (default : the survey default language)
     * @return array|int The id of the new group - Or status
     */
     public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='', $iGroupID= null, $sGroupLanguage=null)
@@ -882,6 +884,7 @@ class remotecontrol_handle
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the survey that the group belongs
     * @param int $iGroupID Id of the group to delete
+    * @param string $sGroupLanguage The group language
     * @return array|int The id of the deleted group or status
     */
     public function delete_group($sSessionKey, $iSurveyID, $iGroupID, $sGroupLanguage)
@@ -1034,6 +1037,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iGroupID Id of the group to get properties
+    * @param string $sGroupLanguage The group language
     * @param array  $aGroupSettings The properties to get
     * @return array The requested values
     */
@@ -1073,6 +1077,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iGroupID  - ID of the survey
+    * @param string $sGroupLanguage The group language
     * @param array|struct $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @return array Of succeeded and failed modifications according to internal validation.
     */
