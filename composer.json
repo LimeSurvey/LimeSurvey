@@ -1,0 +1,15 @@
+{
+    "name": "yitznewton/lime-survey",
+    "description": "A survey platform",
+    "license": "GPL-2.0",
+    "authors": [
+    ],
+    "autoload": {
+      "psr-4": {
+        "ls\\pluginmanager\\": [
+          "application/libraries/PluginManager",
+          "application/libraries/PluginManager/Storage"
+        ]
+      }
+    }
+}
