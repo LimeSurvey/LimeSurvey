@@ -176,15 +176,6 @@
     if (version_compare(PHP_VERSION, '5.3.0', '<'))
         die ('This script can only be run on PHP version 5.3.0 or later! Your version: '.PHP_VERSION.'<br />');
 
-
-/**
- * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
- */
-    require_once 'application/Psr4AutoloaderClass.php';
-    $loader = new Psr4AutoloaderClass();
-    $loader->register();
-    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager');
-    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/application/libraries/PluginManager/Storage');
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
@@ -193,6 +184,7 @@
  * And away we go...
  *
  */
+require_once ROOT . '/vendor/autoload' . EXT;
 require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 
