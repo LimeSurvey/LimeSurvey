@@ -14,7 +14,7 @@ class MigrationManager extends \CApplicationComponent
      *
      * @var string[] The paths to folders containing migrations.
      */
-    public $migrationPaths = [__DIR__ . '/../migrations'];
+    public $migrationPaths;
     
     protected function getNewMigrations()
 	{
@@ -116,4 +116,11 @@ class MigrationManager extends \CApplicationComponent
 		$migration->setDbConnection(App()->db);
 		return $migration;
 	}
+
+    function __construct()
+    {
+        $this->migrationPaths = [
+            __DIR__ . '/../migrations'
+        ];
+    }
 }
