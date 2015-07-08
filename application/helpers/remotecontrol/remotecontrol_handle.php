@@ -1158,7 +1158,7 @@ class remotecontrol_handle
      * @param array $aQuestionData The question data
      * @return array|int The id of the new group - Or status
      */
-    public function add_question($sSessionKey, $iSurveyID, $iGroupID, $sQuestionTitle, $aQuestionData=array())
+    public function add_question($sSessionKey, $iSurveyID, $iGroupID, $sQuestionTitle, $iQuestionID=null, $sQuestionLanguage=null, $aQuestionData=array())
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
@@ -1174,6 +1174,15 @@ class remotecontrol_handle
                 $oQuestion        = new Question;
                 $oQuestion->sid   = $iSurveyID;
                 $oQuestion->gid   = $iGroupID;
+                if ($iQuestionID) {
+                    $oQuestion->qid = $iQuestionID;
+                }
+
+                if ($sQuestionLanguage) {
+                    $oQuestion->language = $sQuestionLanguage;
+                } else {
+                    $oQuestion->language = $oSurvey->language;
+                }
                 $oQuestion->title = $sQuestionTitle;
                 foreach ($aQuestionData as $fieldName => $value) {
                     $oQuestion->setAttribute($fieldName,$value);
