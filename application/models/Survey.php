@@ -34,6 +34,10 @@ class Survey extends LSActiveRecord
     const FORMAT_GROUP = 'G';
     const FORMAT_ALL_IN_ONE = 'A';
     const FORMAT_QUESTION = 'S';
+
+    const INDEX_NONE = 0;
+    const INDEX_INCREMENTAL = 1;
+    const INDEX_FULL = 2;
     private $_fieldMap;
     /* Set some setting not by default database */
     public $format = self::FORMAT_GROUP;
@@ -169,7 +173,7 @@ class Survey extends LSActiveRecord
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
-            'groups' => [self::HAS_MANY, 'QuestionGroup', 'sid', 'order' => 'group_order ASC'],
+            'groups' => [self::HAS_MANY, QuestionGroup::class, 'sid', 'order' => 'group_order ASC', 'index' => 'id'],
             'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0", 'order' => 'question_order ASC'],
             'questionCount' => [self::STAT, 'Question', 'sid', 'condition' => "parent_qid = 0"],
             'groupCount' => [self::STAT, QuestionGroup::class, 'sid'],
@@ -240,7 +244,7 @@ class Survey extends LSActiveRecord
             ['shownoanswer', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['showwelcome', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['showprogress', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
-            ['questionindex', 'numerical','min' => 0, 'max' => 2, 'allowEmpty'=>false],
+            ['questionindex', 'in', 'range' => array_keys($this->indexOptions), 'allowEmpty'=>false],
             ['nokeyboard', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['alloweditaftercompletion', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['bounceprocessing', 'in','range'=>['L','N','G'], 'allowEmpty'=>true],
@@ -416,42 +420,37 @@ class Survey extends LSActiveRecord
             $result[] = gT("It is presented on one single page.");
         }
         
-        if ($this->questionindex > 0)
+        if ($this->questionindex != self::INDEX_NONE)
         {
-            if ($this->format == 'A')
-            {
+            if ($this->format == self::FORMAT_ALL_IN_ONE) {
                 $result[] = gT("No question index will be shown with this format.");
-            }
-            elseif ($this->questionindex == 1)
-            {
+            } elseif ($this->questionindex == self::INDEX_INCREMENTAL) {
                 $result[] = gT("A question index will be shown; participants will be able to jump between viewed questions.");
-            }
-            elseif ($this->questionindex == 2)
-            {
+            } elseif ($this->questionindex == self::INDEX_FULL) {
                 $result[] = gT("A full question index will be shown; participants will be able to jump between relevant questions.");
             }
         }
-        if ($this->datestamp == "Y")
+        if ($this->bool_datestamp)
         {
             $result[] = gT("Responses will be date stamped.");
         }
-        if ($this->ipaddr == "Y")
+        if ($this->bool_ipaddr)
         {
             $result[] = gT("IP Addresses will be logged");
         }
-        if ($this->refurl == "Y")
+        if ($this->bool_refurl)
         {
             $result[] = gT("Referrer URL will be saved.");
         }
-        if ($this->usecookie == "Y")
+        if ($this->bool_usecookie)
         {
             $result[] = gT("It uses cookies for access control.");
         }
-        if ($this->allowregister == "Y")
+        if ($this->bool_allowregister)
         {
             $result[] = gT("If tokens are used, the public may register for this survey");
         }
-        if ($this->allowsave == "Y" && $this->tokenanswerspersistence == 'N')
+        if ($this->bool_allowsave && !$this->bool_tokenanswerspersistence)
         {
             $result[] = gT("Participants can save partially finished surveys") . "<br />\n";
         }
@@ -596,20 +595,6 @@ class Survey extends LSActiveRecord
         else return $aData['sid'];
     }
 
-    /**
-     * Attribute renamed to questionindex in dbversion 169
-     * Y maps to 1 otherwise 0;
-     * @param type $value
-     */
-    public function setAllowjumps($value)
-    {
-        if ($value === 'Y') {
-            $this->questionindex = 1;
-        } else {
-            $this->questionindex = 0;
-        }
-    }
-
     public function getFieldMap($style = 'short')
     {
         if (!isset($this->_fieldMap[$style])) {
@@ -622,9 +607,17 @@ class Survey extends LSActiveRecord
 
     public function getFormatOptions() {
         return [
-            "S" => gT("Question by Question"),
-            "G" => gT("Group by Group"),
-            "A" => gT("All in one"),
+            self::FORMAT_QUESTION => gT("Question by Question"),
+            self::FORMAT_GROUP => gT("Group by Group"),
+            self::FORMAT_ALL_IN_ONE => gT("All in one"),
+        ];
+    }
+
+    public function getIndexOptions() {
+        return [
+            self::INDEX_NONE => gT('Disabled'),
+            self::INDEX_INCREMENTAL => gT('Incremental'),
+            self::INDEX_FULL => gT('Full')
         ];
     }
 
@@ -728,6 +721,7 @@ class Survey extends LSActiveRecord
         if (false) {
             $result['startdate'] = 'datetime NOT NULL';
         }
+        /** @var Question $question */
         foreach($this->questions as $question) {
             $result += $question->columns;
         }
@@ -787,7 +781,7 @@ class Survey extends LSActiveRecord
                 }
             }
 
-            if (Token::valid($this->sid)) {
+            if (Token::valid($this->sid, true)) {
                 $tokenTable = Token::model($this->sid);
                 // We drop the token table if it is empty.
                 if ($tokenTable->count() == 0) {
@@ -915,13 +909,10 @@ class Survey extends LSActiveRecord
                 $result = 1;
                 break;
             case "G":
-                $result = QuestionGroup::model()->countByAttributes(['sid' => $this->sid]);
+                $result = $this->groupCount;
                 break;
             case "S":
-                $result = Question::model()->countByAttributes([
-                    'sid' => $this->sid,
-                    'language' => App()->language
-                ]);
+                $result = $this->questionCount;
                 break;
             default:
                 throw new \Exception("Unknown survey display format ({$this->format})");
@@ -1004,11 +995,21 @@ class Survey extends LSActiveRecord
         }
         foreach($this->dependentRelations() as $relation) {
             /** @var CActiveRecord $record */
-            foreach($this->$relation as $record) {
-                if (method_exists($record, 'deleteDependent')) {
+
+            $config = $this->relations()[$relation];
+            if (method_exists($config[1], 'deleteDependent')) {
+                foreach ($this->$relation as $record) {
                     $record->deleteDependent();
+                }
+            } else {
+                // Delete all records in the relation.
+                if ($config[0] == \CHasManyRelation::class && !isset($config['on']) && is_string($config[2])) {
+                    $class = $config[1];
+                    $class::model()->deleteAllByAttributes([
+                        $config[2] => $this->primaryKey
+                    ]);
                 } else {
-                    $record->delete();
+                    throw new \Exceptiion("dont know what to do!");
                 }
             }
         }

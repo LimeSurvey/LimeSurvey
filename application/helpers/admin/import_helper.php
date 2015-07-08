@@ -987,7 +987,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $group->setAttributes($attributes);
             if (isset($insertdata['language']) && !in_array($insertdata['language'],$aLanguagesSupported)) continue;
             $iOldSID=$insertdata['sid'];
-            $group->survey_id = $iNewSID;
+            $group->sid = $iNewSID;
 
             $oldgid = isset($insertdata['gid']) ? $insertdata['gid'] : null; unset($insertdata['gid']); // save the old qid
 

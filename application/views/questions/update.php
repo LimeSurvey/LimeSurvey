@@ -16,7 +16,7 @@
             ]
         ]);
 
-        $this->widget('TbTabs', [
+        $this->widget(TbTabs::class, [
             'tabs' => [
                 [
                     'label' => 'Texts',

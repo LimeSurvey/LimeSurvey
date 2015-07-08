@@ -12,10 +12,12 @@ foreach ($survey->groups as $group) {
     ];
     foreach ($group->questions as $question) {
         $items[] = [
-        'label' => $question->displayLabel,
+        'label' => \Cake\Utility\Text::truncate($question->displayLabel, 30),
+        'title' => $question->displayLabel,
         'url' => ['questions/update', 'id' => $question->qid],
         'class' => 'question',
-        'active' => isset($this->question) && $this->question->qid === $question->qid
+        'active' => isset($this->question) && $this->question->qid === $question->qid,
+        'style' => 'word-break: break-all;'
     ];
     }
     $items[] = TbHtml::menuDivider();

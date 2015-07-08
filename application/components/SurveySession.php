@@ -13,12 +13,11 @@
  * @property int $surveyId
  * @property string $language
  * @property Survey $survey;
+ * @property int $step;
+ * @property int $maxStep;
  * @property Response $response;
  */
 class SurveySession extends CComponent {
-    const FORMAT_GROUP = 'G';
-    const FORMAT_QUESTION = 'S';
-    const FORMAT_SURVEY = 'A';
     /**
      * These variables are not serialized.
      */
@@ -39,7 +38,7 @@ class SurveySession extends CComponent {
     protected $responseId;
     protected $finished = false;
     protected $language = 'en';
-    protected $_step = 1;
+    protected $_step = 0;
     protected $_maxStep = 0;
     protected $postKey;
     /**
@@ -84,13 +83,35 @@ class SurveySession extends CComponent {
         return $this->_response;
     }
 
+    /**
+     * This function gets the survey active record model for this survey session.
+     * @return Survey The survey for this session.
+     */
     public function getSurvey() {
         if (!isset($this->_survey)) {
-            $this->_survey = Survey::model()->with('groups.questions')->findByPk($this->surveyId);
+            $this->_survey = $survey = Survey::model()->with('groups.questions')->findByPk($this->surveyId);
+            $questions = [];
+            foreach($survey->groups as $group) {
+                foreach($group->questions as $question) {
+                    $questions[$question->qid] = $question;
+                }
+            }
+            $survey->questions = $questions;
         }
         return $this->_survey;
     }
 
+    /**
+     * Wrapper function that returns the question given by qid to make sure we always get the same object.
+     * @param int $id
+     * @return Question
+     */
+    public function getQuestion($id) {
+        return $this->_survey->questions[$id];
+    }
+    /**
+     * @return int
+     */
     public function getStep() {
         return $this->_step;
     }
@@ -137,9 +158,9 @@ class SurveySession extends CComponent {
         $order = [];
         $randomizationGroups = [];
         foreach ($groups as $group) {
-            if (empty($group->randomization_group)) {
+            if (!empty($group->randomization_group)) {
                 $order[] = $group->randomization_group;
-                $randomizationGroups[$group->randomization_group][] =$group;
+                $randomizationGroups[$group->randomization_group][] = $group;
             } else {
                 $order[] = $group;
             }
@@ -150,14 +171,17 @@ class SurveySession extends CComponent {
                 /**
                  * @todo This is not truly random. It would be better to use mt_rand with the response ID as seed
                  * (so it's reproducible. But Suhosin doesn't allow seeding mt_rand.
+                 *
+                 * Current approach:
+                 * Create hash of response id, take last 8 chars (== 4 bytes).
                  */
                 $seed = array_values(unpack('L',
-                    substr(md5($this->responseId . count($randomizationGroups[$group]), true), -4, 4)))[0];
+                    hex2bin(substr(md5($this->responseId . count($randomizationGroups[$group]), true), -8, 4))))[0];
 
                 $randomIndex = $seed % count($randomizationGroups[$group]);
 
                 $order[$i] = $randomizationGroups[$group][$randomIndex];
-                $ids[] = $order[$i]->gid;
+                $ids[] = $order[$i]->id;
                 unset($randomizationGroups[$group][$randomIndex]);
                 $randomizationGroups[$group] = array_values($randomizationGroups[$group]);
             }
@@ -268,15 +292,17 @@ class SurveySession extends CComponent {
                     $usedinconditions = $field['usedinconditions'];
                 else
                     $usedinconditions = 'N';
-                $result[$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
-                $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
-                $title,
-                $question,
-                $field['type'],
-                $field['gid'],
-                $mandatory,
-                $hasconditions,
-                $usedinconditions);
+                $result[$field['sid'].'X'.$field['gid'].'X'.$field['qid']]= [
+                    intval($field['qid']),
+                    $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
+                    $title,
+                    $question,
+                    $field['type'],
+                    intval($field['gid']),
+                    $mandatory,
+                    $hasconditions,
+                    $usedinconditions
+                ];
                 if (isset($field['random_gid']))
                 {
                     $result[$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid'];
@@ -284,7 +310,6 @@ class SurveySession extends CComponent {
             }
 
         }
-
         return $result;
     }
 

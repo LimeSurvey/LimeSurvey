@@ -31,6 +31,7 @@
     class Question extends LSActiveRecord
     {
         protected $customAttributes = [];
+        protected $customLocalizedAttributes = [];
         public $before;
 
         protected function afterFind()
@@ -48,6 +49,24 @@
             foreach($this->questionAttributes as $questionAttribute) {
                 if (!isset($questionAttribute->language) && $questionAttribute->attribute === $name) {
                     $this->customAttributes[$name] = $questionAttribute->value;
+                    return $questionAttribute->value;
+                }
+            }
+
+            // Get default value.
+            $config = questionAttributes(true)[$name];
+            return isset($config['default']) ? $config['default'] : null;
+        }
+
+        protected function getCustomLocalizedAttribute($name) {
+            if (array_key_exists($name, $this->customLocalizedAttributes)) {
+                return $this->customLocalizedAttributes[$name];
+            }
+
+            // Fill the localized question attributes.
+            foreach($this->questionAttributes as $questionAttribute) {
+                if ($questionAttribute->language == $this->language && $questionAttribute->attribute === $name) {
+                    $this->customLocalizedAttributes[$name] = $questionAttribute->value;
                     return $questionAttribute->value;
                 }
             }
@@ -97,16 +116,37 @@
 
         }
 
-
-        public function getHasSubQuestions()
-        {
-            return false;
+        /**
+         * Returns the number of scales for subquestions.
+         * @return int Range: {0, 1, 2}
+         */
+        public function getSubQuestionScales() {
+            return 0;
         }
 
-        public function getHasAnswers()
-        {
-            return false;
+        /**
+         * Returns the number of scales for answers.
+         * @return int Range: {0, 1, 2}
+         */
+        public function getAnswerScales() {
+            return 0;
         }
+        /**
+         * @return bool True if this question supports subquestions.
+         */
+        final public function getHasSubQuestions()
+        {
+            return $this->subQuestionScales > 0;
+        }
+
+        /**
+         * @return bool True if this question supports subquestions.
+         */
+        final public function getHasAnswers()
+        {
+            return $this->answerScales > 0;
+        }
+
         public function behaviors() {
             return [
                 'json' => [
@@ -164,6 +204,8 @@
                 $result = parent::__get(substr($name, 5)) === 'Y';
             } elseif ($name != 'type' && in_array($name, $this->customAttributeNames())) {
                 $result = $this->getCustomAttribute($name);
+            } elseif ($name != 'type' && in_array($name, $this->customLocalizedAttributeNames())) {
+                $result = $this->getCustomLocalizedAttribute($name);
             } else {
                 $result = parent::__get($name);
             }
@@ -770,7 +812,12 @@
         public function getSgqa() {
             return "{$this->sid}X{$this->gid}X{$this->qid}";
         }
-        
+
+        /**
+         * @todo Move individual cases to subclasses.
+         * @return array|mixed
+         * @throws Exception
+         */
         public function getColumns() {
             if (!empty($this->parent_qid)) {
                 return [
@@ -794,7 +841,6 @@
                     $result = [$this->sgqa => "string(5)", "{$this->sgqa}comment" => "text"];
                     break;
                 case "F": // Array
-                case "R": // Ranking
                 case "M": //Multiple choice
                 case "Q": //Multiple short text
                     if (count($this->subQuestions) > 0) {
@@ -822,8 +868,6 @@
                     break;
                 case "U":  //Huge text
                 case "T":  //LONG TEXT
-                case ";":  //Multi Flexi
-                case ":":  //Multi Flexi
                     $result = [$this->sgqa => "text"];
                     break;
                 case "D":  //DATE
@@ -849,8 +893,8 @@
                     throw new \Exception("Don't know columns for question type: {$this->type}");
                     
             }
-            
-            return $result;
+
+           return $result;
         }
 
 
@@ -862,7 +906,7 @@
          */
         protected function instantiate($attributes) {
             if (!isset($attributes['type'])) {
-                throw new \Exception('noo');
+                throw new \Exception("The type attribute must be selected for single table inheritance to work.");
             }
             if (!empty($attributes['parent_qid'])) {
                 $class = \ls\models\questions\SubQuestion::class;
@@ -895,8 +939,11 @@
                     $class = \ls\models\questions\RankingQuestion::class;
                     break;
                 case 'F': // Array
-                case ':': // Array numbers
                     $class = \ls\models\questions\ArrayQuestion::class;
+                    break;
+                case ';': // Array texts
+                case ':': // Array numbers
+                    $class = \ls\models\questions\OpenArrayQuestion::class;
                     break;
                 case '5': // 5 point choice
                 case 'Y': // Yes no
@@ -981,6 +1028,18 @@
             if (isset($this->type)) {
                 $attributes = array_filter(questionAttributes()[$this->type], function ($attribute) {
                     return $attribute['i18n'] === false;
+                });
+                $result = array_keys($attributes);
+            } else {
+                $result = [];
+            }
+            return $result;
+        }
+
+        public function customLocalizedAttributeNames() {
+            if (isset($this->type)) {
+                $attributes = array_filter(questionAttributes()[$this->type], function ($attribute) {
+                    return $attribute['i18n'] === true;
                 });
                 $result = array_keys($attributes);
             } else {

@@ -7,10 +7,12 @@ namespace ls\models\questions;
  */
 class MultipleChoiceQuestion extends ChoiceQuestion
 {
-
-    public function getHasSubQuestions() {
-        return true;
+    public function getSubQuestionScales()
+    {
+        return 1;
     }
+
+
 //    public function relations()
 //    {
 //        return array_merge(parent::relations(), [

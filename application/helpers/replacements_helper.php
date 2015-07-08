@@ -571,7 +571,7 @@ EOD;
     $coreReplacements['TEMPLATEJS'] = CHtml::tag('script', array('type' => 'text/javascript', 'src' => $templateurl . 'template.js'), '');
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-    $coreReplacements['TOKEN'] = (!$anonymized ? $session->response->token : '');// Silently replace TOKEN by empty string
+    $coreReplacements['TOKEN'] = (!$anonymized && isset($session->response->token) ? $session->response->token : '');// Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     if(!isset($replacements['QID']))

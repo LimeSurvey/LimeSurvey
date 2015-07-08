@@ -65,7 +65,7 @@
         public function relations()
         {
             return [
-                'questions' => [self::HAS_MANY, Question::class, 'gid', 'on' => 'parent_qid = 0', 'order' => 'question_order'],
+                'questions' => [self::HAS_MANY, Question::class, 'gid', 'on' => 'parent_qid = 0', 'order' => 'question_order', 'index' => 'qid'],
                 'assessments' => [self::HAS_MANY, Assessment::class, 'gid'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid']
             ];

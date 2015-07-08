@@ -39,6 +39,9 @@ class Answer extends LSActiveRecord
                 'translationModel' => Translation::class,
                 'model' => __CLASS__, // See TranslatableBehavior comments.
                 'attributes' => ['answer'],
+                /**
+                 * @todo Refactor this so we don't get a lot of queries. Alternatively cache the query.
+                 */
                 'baseLanguage' => function(Answer $answer) { return $answer->question->survey->language; }
             ]
         ]);

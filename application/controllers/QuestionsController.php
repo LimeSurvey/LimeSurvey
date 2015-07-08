@@ -174,9 +174,7 @@ class QuestionsController extends Controller
      * @return \Question
      */
     protected function loadModel($id) {
-        $result = \Question::model()->findByAttributes([
-            'qid' => $id
-        ]);
+        $result = \Question::model()->findByPk($id);
         if (!isset($result)) {
             throw new \CHttpException(404, gT("Question not found."));
         }

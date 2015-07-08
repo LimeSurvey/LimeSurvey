@@ -7,10 +7,12 @@ namespace ls\models\questions;
  */
 class SingleChoiceQuestion extends ChoiceQuestion
 {
-
-    public function getHasAnswers() {
-        return true;
+    public function getAnswerScales()
+    {
+        return 1;
     }
+
+
     public function relations()
     {
         return array_merge(parent::relations(), [

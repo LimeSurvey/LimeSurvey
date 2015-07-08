@@ -3559,8 +3559,6 @@
             $q2subqInfo = array();
 
             $this->multiflexiAnswers=array();
-//            var_dump($fieldmap);
-//            die();
             foreach($fieldmap as $fielddata)
             {
                 if (!isset($fielddata['fieldname']) || !preg_match('#^\d+X\d+X\d+#',$fielddata['fieldname']))
@@ -4509,28 +4507,28 @@
                 'prettyprint'=> '',
                 );
                 $_SESSION[$this->sessid]['relevanceStatus']['G' . $groupSeq] = 1;
-                return;
-            }
-            $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
-            $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq);
-            $hasErrors = $this->em->HasErrors();
+            } else {
+                $stringToParse = htmlspecialchars_decode($eqn, ENT_QUOTES);
+                $result = $this->em->ProcessBooleanExpression($stringToParse, $groupSeq);
+                $hasErrors = $this->em->HasErrors();
 
-            $jsVars = $this->em->GetJSVarsUsed();
-            $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
-            $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
-            $prettyPrint = $this->em->GetPrettyPrintString();
+                $jsVars = $this->em->GetJSVarsUsed();
+                $relevanceVars = implode('|', $this->em->GetJSVarsUsed());
+                $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
+                $prettyPrint = $this->em->GetPrettyPrintString();
 
-            $this->gRelInfo[$groupSeq] = array(
-                'gseq' => $groupSeq,
-                'eqn' => $stringToParse,
-                'result' => $result,
-                'numJsVars' => count($jsVars),
-                'relevancejs' => $relevanceJS,
-                'relevanceVars' => $relevanceVars,
-                'prettyprint'=> $prettyPrint,
-                'hasErrors' => $hasErrors,
+                $this->gRelInfo[$groupSeq] = array(
+                    'gseq' => $groupSeq,
+                    'eqn' => $stringToParse,
+                    'result' => $result,
+                    'numJsVars' => count($jsVars),
+                    'relevancejs' => $relevanceJS,
+                    'relevanceVars' => $relevanceVars,
+                    'prettyprint' => $prettyPrint,
+                    'hasErrors' => $hasErrors,
                 );
-            $_SESSION[$this->sessid]['relevanceStatus']['G' . $groupSeq] = $result;
+                $_SESSION[$this->sessid]['relevanceStatus']['G' . $groupSeq] = $result;
+            }
         }
 
         /**
@@ -4751,16 +4749,16 @@
             $LEM->debugLevel=$debugLevel;
             $_SESSION[$LEM->sessid]['LEMdebugLevel']=$debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
             switch ($surveyMode) {
-                case 'survey':
+                case Survey::FORMAT_ALL_IN_ONE:
                     $LEM->allOnOnePage=true;
                     $LEM->surveyMode = 'survey';
                     break;
-                case 'question':
+                case Survey::FORMAT_QUESTION:
                     $LEM->allOnOnePage=false;
                     $LEM->surveyMode = 'question';
                     break;
                 default:
-                case 'group':
+                case Survey::FORMAT_GROUP:
                     $LEM->allOnOnePage=false;
                     $LEM->surveyMode = 'group';
                     break;
@@ -5510,6 +5508,7 @@
                     if ($seq <= $LEM->currentGroupSeq || $preview) {
                         $LEM->currentGroupSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
                     }
+
                     while (true)
                     {
                         $LEM->currentQset = array();    // reset active list of questions
@@ -5628,6 +5627,7 @@
                         // Set certain variables normally set by StartProcessingGroup()
                         $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                         if (!isset($LEM->questionSeq2relevance[$LEM->currentQuestionSeq])) {
+                            throw new \Exception("Invalid question, probably no subquestions.");
                             return NULL;    // means an invalid question - probably no sub-quetions
                         }
                         $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
@@ -5939,14 +5939,22 @@
             }
             // We try to validate this question, then update the maxQuestionSeq, TODO : validate if we can update the maxGroupSeq too.
             if($questionSeq > $LEM->maxQuestionSeq) // max() take a little time more (2/3)
-                $LEM->maxQuestionSeq=$questionSeq;
-            $qrel=true;   // assume relevant unless discover otherwise
-            $prettyPrintRelEqn='';    //  assume no relevance eqn by default
-            $qid=$qInfo['qid'];
-            $gid=$qInfo['gid'];
+                $LEM->maxQuestionSeq = $questionSeq;
+            $qrel = true;   // assume relevant unless discover otherwise
+            $prettyPrintRelEqn = '';    //  assume no relevance eqn by default
+            $qid = $qInfo['qid'];
+            $gid = $qInfo['gid'];
             $qhidden = $qInfo['hidden'];
             $debug_qmessage='';
 
+            if (!isset($LEM->gRelInfo[$qInfo['gseq']])) {
+//                throw new \Exception('no');
+                echo "Undefined index {$qInfo['gseq']} for gRelInfo in " . __FILE__ . " :  " . __LINE__ . "<br>";
+                var_dump($LEM->questionSeq2relevance);
+                var_dump($questionSeq);
+                var_dump($qInfo);
+                var_dump($LEM->gRelInfo); die();
+            }
             $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
             $grel = $gRelInfo['result'];
 
@@ -8200,7 +8208,7 @@ EOD;
             if($qid)
             {
                 $oQids= Question::model()->findAll(array(
-                    'select'=>'qid',
+                    'select' => ['qid', 'type'],
                     'group'=>'qid',
                     'distinct'=>true,
                     'condition'=>"qid=:qid and parent_qid=0",
@@ -8219,8 +8227,7 @@ EOD;
             }
             else
             {
-                $oQids= Question::model()->findAll(array(
-                    'select'=>'qid',
+                $oQids= Question::model()->with('questionAttributes')->findAll(array(
                     'group'=>'qid',
                     'distinct'=>true,
                     'condition'=>"parent_qid=0",
@@ -8229,22 +8236,16 @@ EOD;
             $aQuestionAttributesForEM=array();
             foreach($oQids as $oQid)
             {
-                $aAttributesValues=QuestionAttribute::model()->getQuestionAttributes($oQid->qid);
+                $aAttributesValues = [];
                 // Change array lang to value
-                foreach($aAttributesValues as &$aAttributeValue)
+                foreach($oQid->questionAttributes as $questionAttribute)
                 {
-                    if(is_array($aAttributeValue))
+                    if($questionAttribute->language == $lang || !isset($aAttributesValues[$questionAttribute->attribute]))
                     {
-                        if(isset($aAttributeValue[$lang]))
-                            $aAttributeValue=$aAttributeValue[$lang];
-                        else
-                        {
-                            reset($aAttributeValue);
-                            $aAttributeValue=current($aAttributeValue);
-                        }
+                        $aAttributesValues[$questionAttribute->attribute] = $questionAttribute->value;
                     }
                 }
-                $aQuestionAttributesForEM[$oQid->qid]=$aAttributesValues;
+                $aQuestionAttributesForEM[$oQid->qid] = $aAttributesValues;
             }
 #            $aStaticQuestionAttributesForEM[$surveyid][$qid][$lang]=$aQuestionAttributesForEM;
             return $aQuestionAttributesForEM;
@@ -8311,45 +8312,13 @@ EOD;
         {
 
             $qans = [];
+            $useAssessments = ((isset($this->surveyOptions['assessments'])) ? $this->surveyOptions['assessments'] : false);
             foreach (Answer::model()->findAllByAttributes([
                 'question_id' => $questionId
             ]) as $answer) {
                 $qans[$answer->question_id][$answer->scale_id . '~' . $answer->code] = ($useAssessments ? $answer->assessment_value : '0') . '|' . $answer->answer;
 
             }
-            return $qans;
-            if (!is_null($qid)) {
-                $where = "a.qid = ".$qid;
-            }
-            else if (!is_null($surveyid)) {
-                    $where = "a.qid = q.qid and q.sid = ".$surveyid;
-                }
-                else {
-                    $where = "1";
-            }
-            if (!is_null($lang)) {
-                $lang = " and a.language='".$lang."'";
-            }
-
-            $query = "SELECT a.qid, a.code, a.answer, a.scale_id, a.assessment_value"
-            ." FROM {{answers}} AS a, {{questions}} as q"
-            ." WHERE ".$where
-            .$lang
-            ." ORDER BY a.qid, a.scale_id, a.sortorder";
-
-            $data = dbExecuteAssoc($query);
-
-            $qans = array();
-
-            $useAssessments = ((isset($this->surveyOptions['assessments'])) ? $this->surveyOptions['assessments'] : false);
-
-            foreach($data->readAll() as $row) {
-                if (!isset($qans[$row['qid']])) {
-                    $qans[$row['qid']] = array();
-                }
-                $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = ($useAssessments ? $row['assessment_value'] : '0') . '|' . $row['answer'];
-            }
-
             return $qans;
         }
 
@@ -8463,7 +8432,7 @@ EOD;
                                     if (!isset($aAttributes[$qid])) {
                                         $aAttributes[$qid]=array();
                                     }
-                                    $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
+                                    $aDateFormatData = getDateFormatDataForQID($qid,$LEM->surveyOptions);
                                     $oDateTimeConverter = new Date_Time_Converter(trim($value), $aDateFormatData['phpdate']);
                                     $value=$oDateTimeConverter->convert("Y-m-d H:i"); // TODO : control if inverse function original value
                                 }
@@ -8786,7 +8755,7 @@ EOD;
                             case 'D': //DATE
                                 $LEM =& LimeExpressionManager::singleton();
                                 $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $var['qid'], $LEM->lang);
-                                $aDateFormatData=getDateFormatDataForQID($aAttributes[$var['qid']],$LEM->surveyOptions);
+                                $aDateFormatData = getDateFormatDataForQID($aAttributes[$var['qid']],$LEM->surveyOptions);
                                 $shown='';
                                 if (strtotime($code))
                                 {

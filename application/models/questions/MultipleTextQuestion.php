@@ -11,9 +11,9 @@ namespace ls\models\questions;
 
 class MultipleTextQuestion extends TextQuestion
 {
-    public function getHasSubQuestions()
+    public function getSubQuestionScales()
     {
-        return true;
+        return 1;
     }
 
 }

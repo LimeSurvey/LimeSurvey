@@ -1798,7 +1798,7 @@ class ExpressionManager {
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=true)
+    public function StartProcessingGroup($sid=NULL, $hyperlinkSyntaxHighlighting=true)
     {
         $this->substitutionNum=0;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution

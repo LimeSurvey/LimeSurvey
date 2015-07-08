@@ -3,8 +3,10 @@
 /** @var Question $question */
 echo TbHtml::openTag('fieldset', []);
 echo $form->textFieldControlGroup($question, 'preg');
-echo $form->textFieldControlGroup($question, 'em_validation_q');
-echo $form->textFieldControlGroup($question, 'em_validation_q_tip');
+if ($question->hasAttribute('em_validation_q')) {
+    echo $form->textFieldControlGroup($question, 'em_validation_q');
+    echo $form->textFieldControlGroup($question, 'em_validation_q_tip');
+}
 
 if ($question->hasAttribute('validation_sq')) {
     echo $form->textFieldControlGroup($question, 'validation_sq');

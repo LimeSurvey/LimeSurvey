@@ -5,16 +5,13 @@ namespace ls\models\questions;
  * Class ArrayQuestion
  * @package ls\models\questions
  */
-class ArrayQuestion extends \Question
+abstract class ArrayQuestion extends \Question
 {
-    public function getHasAnswers()
-    {
-        return true;
-    }
 
-    public function getHasSubQuestions()
+
+    public function getSubQuestionScales()
     {
-        return true;
+        return 1;
     }
 
 

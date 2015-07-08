@@ -800,17 +800,21 @@
     /**
     * Get the date format details for a specific question.
     *
-    * @param $aQidAttributes array Question attributes
+    * @param Question $question
     * @param $mThisSurvey mixed Array of Survey attributes or surveyid
     * @returns array
     *
     */
-    function getDateFormatDataForQID($aQidAttributes, $mThisSurvey)
+    function getDateFormatDataForQID($qid, $mThisSurvey)
     {
-        if (isset($aQidAttributes['date_format']) && trim($aQidAttributes['date_format'])!='')
+        $question = Question::model()->with('questionAttributes')->findByPk($qid);
+        if (!isset($question)) {
+            throw new \CHttpException(404, "Question not found.");
+        }
+        if (isset($question->date_format) && trim($question->date_format)!='')
         {
-            $aDateFormatDetails = array();
-            $aDateFormatDetails['dateformat'] = trim($aQidAttributes['date_format']);
+            $aDateFormatDetails = [];
+            $aDateFormatDetails['dateformat'] = $question->date_format;
             $aDateFormatDetails['phpdate'] = getPHPDateFromDateFormat($aDateFormatDetails['dateformat']);
             $aDateFormatDetails['jsdate'] = getJSDateFromDateFormat($aDateFormatDetails['dateformat']);
         }
@@ -818,7 +822,7 @@
         {
             if(!is_array($mThisSurvey))
             {
-                $mThisSurvey = array('surveyls_dateformat' => getDateFormatForSID($mThisSurvey));
+                $mThisSurvey = array('surveyls_dateformat' => getDateFormatForSID($question->sid));
             }
             $aDateFormatDetails = getDateFormatData($mThisSurvey['surveyls_dateformat']);
         }

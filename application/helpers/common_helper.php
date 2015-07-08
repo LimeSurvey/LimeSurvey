@@ -1490,10 +1490,10 @@ return $allfields;
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage = null) {
     global $aDuplicateQIDs;
     static $requestCache = [];
-    $key = 'fieldmap' . md5(json_encode(func_get_args()));
-    if (!isset($requestCache[$key])) {
+    $cacheKey = 'fieldmap' . md5(json_encode(func_get_args()));
+    if (!isset($requestCache[$cacheKey])) {
 
-        \Yii::beginProfile('fieldmap');
+        \Yii::beginProfile($cacheKey);
         $sLanguage = sanitize_languagecode($sLanguage);
         $surveyid = sanitize_int($surveyid);
 
@@ -1648,11 +1648,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         ], ['order' => 'group_order']);
 
         /** @var QuestionGroup $group */
-        $questionSeq = 0;
+        $questionSeq = -1;
         foreach($groups as $groupSeq => $group) {
+            /** @var Question $question */
             foreach ($group->questions as $question) {
+                ++$questionSeq;
                 $fieldname = $question->getSgqa();
-
                 // Condition indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
                 $conditions = 'N';
                 $usedinconditions = 'N';
@@ -1666,7 +1667,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
                 // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
 
-                if ($qtypes[$question->type]['subquestions'] == 0 && $question->type != "R" && $question->type != "|") {
+                if (!$question->hasSubQuestions && $question->type != "R" && $question->type != "|") {
                     if (isset($fieldmap[$fieldname])) {
                         $aDuplicateQIDs[$question->primaryKey] = array(
                             'fieldname' => $fieldname,
@@ -1766,7 +1767,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             break;
                     }
                 } // For Multi flexi question types
-                elseif ($qtypes[$question->type]['subquestions'] == 2 && $qtypes[$question->type]['answerscales'] == 0) {
+                elseif ($question->subQuestionScales == 2 && !$question->hasAnswers) {
                     //MULTI FLEXI
                     $abrows = getSubQuestions($surveyid,$question->qid, $sLanguage);
                     //Now first process scale=1
@@ -1890,10 +1891,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     }
                 } elseif ($question->type == "R") {
                     //MULTI ENTRY
-                    $data = Answer::model()->findAllByAttributes(['question_id' =>$question->qid]);
-                    $data = count($data);
-                    $slots = $data;
-                    for ($i = 1; $i <= $slots; $i++) {
+                    $i = 1;
+                    foreach($question->answers as $answer) {
                         $fieldname = "{$question->sgqa}$i";
                         if (isset($fieldmap[$fieldname])) {
                             $aDuplicateQIDs[$question->qid] = array(
@@ -1921,9 +1920,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                             $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                         }
+
+                        $i++;
                     }
                 } elseif ($question->type == "|") {
-                    $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($question->qid);
+                    $qidattributes = $question->questionAttributes;
                     $fieldname = "{$question['sid']}X{$question['gid']}X{$question['qid']}";
                     $fieldmap[$fieldname] = array(
                         "fieldname" => $fieldname,
@@ -2113,6 +2114,21 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
 
         if (isset($fieldmap)) {
+            $expected = [
+                'id', 'submitdate', 'lastpage', 'startlanguage', 'startdate', 'datestamp',
+                '737492X691X5050'
+            ];
+            $i = 0;
+            foreach ($fieldmap as $field => $details) {
+                if (isset($expected[$i]) && $field != $expected[$i]) {
+                    echo("unexpected line 2122: $field<br>");
+                    $ok = true;
+                }
+                $i++;
+            }
+            if (isset($ok)) {
+                echo "field map ok at 2130";
+            }
             if ($questionid == false) {
                 // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
                 if (isset(Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
@@ -2143,13 +2159,24 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 }
                 Yii::app()->session['fieldmap-' . $surveyid . $sLanguage] = $fieldmap;
             }
-            \Yii::endProfile('fieldmap');
 
 
         }
-        $requestCache[$key] = $fieldmap;
+        \Yii::endProfile($cacheKey);
+        $requestCache[$cacheKey] = $fieldmap;
     }
-    return $requestCache[$key];
+    $expected = [
+        'id', 'submitdate', 'lastpage', 'startlanguage', 'startdate', 'datestamp',
+        '737492X691X5050'
+    ];
+    $i = 0;
+    foreach ($requestCache[$cacheKey] as $field => $details) {
+        if (isset($expected[$i]) && $field != $expected[$i]) {
+            die("unexpected line 2170: " . $field);
+        }
+        $i++;
+    }
+    return $requestCache[$cacheKey];
 }
 
 /**

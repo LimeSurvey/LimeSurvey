@@ -1,20 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sam
- * Date: 5/11/15
- * Time: 5:14 PM
- */
-
 namespace ls\models\questions;
 
 
 class RankingQuestion extends \Question
 {
-    public function getHasSubQuestions()
+    public function getAnswerScales()
     {
-        return true;
+        return 1;
     }
 
 
+    public function getColumns()
+    {
+        $result = [];
+
+        for ($i = 1; $i <= count($this->answers); $i++) {
+            $result[$this->sgqa . $i] = "string(5)";
+        }
+
+        return $result;
+    }
 }
+
+

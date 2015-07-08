@@ -104,6 +104,7 @@ class QuestionAttribute extends LSActiveRecord
     */
     public function getQuestionAttributes($iQuestionID)
     {
+        throw new \Exception("deprecated");
         $iQuestionID=(int)$iQuestionID;
         static $aQuestionAttributesStatic=array();// TODO : replace by Yii::app()->cache
         // Limit the size of the attribute cache due to memory usage

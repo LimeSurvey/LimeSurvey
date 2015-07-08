@@ -288,7 +288,7 @@ class SurveysController extends Controller
             }
         }
 
-        $templatePath = Template::getTemplatePath('default');
+        $templatePath = \Template::getTemplatePath('default');
         return $this->render('abort', [
             'templatePath' => $templatePath,
             'surveyId' => isset($surveyId) ? $surveyId : null

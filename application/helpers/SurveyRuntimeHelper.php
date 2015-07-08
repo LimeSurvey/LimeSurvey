@@ -15,9 +15,9 @@
 class SurveyRuntimeHelper {
 
 
-    protected function createFullQuestionIndex($LEMsessid, $surveyMode)
+    protected function createFullQuestionIndex($LEMsessid, SurveySession $session)
     {
-        if ($surveyMode == 'group')
+        if ($session->format == Survey::FORMAT_GROUP)
         {
             $this->createFullQuestionIndexByGroup($LEMsessid);
         }
@@ -80,9 +80,8 @@ class SurveyRuntimeHelper {
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
     }
 
-    protected function createIncrementalQuestionIndex($LEMsessid, $surveyMode)
+    protected function createIncrementalQuestionIndex(SurveySession $session)
     {
-        $ssm = App()->surveySessionManager;
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
 
         echo '<div id="index"><div class="container"><h2>' . gT("Question index") . '</h2>';
@@ -91,14 +90,14 @@ class SurveyRuntimeHelper {
         $lastGseq=-1;
         $gseq = -1;
         $grel = true;
-        for($v = 0, $n = 0; $n != $_SESSION[$LEMsessid]['maxstep']; ++$n)
+        for($v = 0, $n = 0; $n != $session->getMaxStep(); ++$n)
         {
             if (!isset($stepIndex[$n])) {
                 continue;   // this is an invalid group - skip it
             }
             $stepInfo = $stepIndex[$n];
 
-            if ($surveyMode == 'question')
+            if ($session->getFormat() == Survey::FORMAT_QUESTION)
             {
                 if ($lastGseq != $stepInfo['gseq']) {
                     // show the group label
@@ -125,10 +124,10 @@ class SurveyRuntimeHelper {
                 {
                     continue;
                 }
-                $g = $_SESSION[$LEMsessid]['grouplist'][$gseq];
+                $g = $session->getGroups()[$gseq];
             }
 
-            if ($surveyMode == 'group')
+            if ($session->getFormat() == Survey::FORMAT_GROUP)
             {
                 $indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
                 $sButtonText=gT('Go to this group');
@@ -139,12 +138,12 @@ class SurveyRuntimeHelper {
                 $sButtonText=gT('Go to this question');
             }
 
-            $sText = (($surveyMode == 'group') ? flattenText($indexlabel) : flattenText($indexlabel));
+            $sText = (($session->getFormat() == Survey::FORMAT_GROUP) ? flattenText($indexlabel) : flattenText($indexlabel));
             $bGAnsw = !$stepInfo['anyUnanswered'];
 
             ++$v;
 
-            $class = ($n == $ssm->current->getStep() - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
+            $class = ($n == $session->getStep() - 1 ? 'current' : ($bGAnsw ? 'answer' : 'missing'));
             if ($v % 2)
                 $class .= " odd";
 
@@ -156,7 +155,6 @@ class SurveyRuntimeHelper {
             echo "</div>";
         }
 
-        $session = $ssm->current;
         if ($session->maxStep == $session->step)
         {
             echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
@@ -186,19 +184,7 @@ class SurveyRuntimeHelper {
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel = 0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
         $LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
-        switch ($thissurvey['format'])
-        {
-            case "A": //All in one
-                $surveyMode = 'survey';
-                break;
-            default:
-            case "S": //One at a time
-                $surveyMode = 'question';
-                break;
-            case "G": //Group at a time
-                $surveyMode = 'group';
-                break;
-        }
+
         $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['separator'];
 
@@ -223,12 +209,12 @@ class SurveyRuntimeHelper {
         );
         //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
         $previewgrp = false;
-        if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup'))
+        if ($session->format == Survey::FORMAT_GROUP && isset($param['action']) && ($param['action'] == 'previewgroup'))
         {
             $previewgrp = true;
         }
         $previewquestion = false;
-        if ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion'))
+        if ($session->format == Survey::FORMAT_QUESTION && isset($param['action']) && ($param['action'] == 'previewquestion'))
         {
 
             $previewquestion = true;
@@ -250,9 +236,9 @@ class SurveyRuntimeHelper {
                 buildsurveysession($surveyid);
                 $sTemplatePath = $_SESSION[$LEMsessid]['templatepath'];
 
-                LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+                LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false, $LEMdebugLevel);
 
-                if ($surveyMode == 'survey')
+                if ($session->format == Survey::FORMAT_ALL_IN_ONE)
                 {
                     LimeExpressionManager::JumpTo(1, false, false, true);
                 }
@@ -264,7 +250,7 @@ class SurveyRuntimeHelper {
             }
             else
             {
-                LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+                LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false, $LEMdebugLevel);
                 LimeExpressionManager::JumpTo($ssm->current->getStep(), false, false);
             }
 
@@ -307,7 +293,7 @@ class SurveyRuntimeHelper {
 
             if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
             {
-                LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
+                LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false,$LEMdebugLevel);
                 if($ssm->current->getMaxStep() > $ssm->current->getStep())
                 {
                     LimeExpressionManager::JumpTo($ssm->current->getMaxStep(), false, false);
@@ -333,7 +319,7 @@ class SurveyRuntimeHelper {
                 }
                 if (isset($move) && ($move == 'movesubmit'))
                 {
-                    if ($surveyMode == 'survey')
+                    if ($session->format == Survey::FORMAT_ALL_IN_ONE)
                     {
                         $moveResult = LimeExpressionManager::NavigateForwards();
                     }
@@ -362,7 +348,7 @@ class SurveyRuntimeHelper {
                     $move = (int) $move;
                     $moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
                 }
-                if (!isset($moveResult) && !($surveyMode != 'survey' && $ssm->current->getStep() == 0))
+                if (!isset($moveResult) && !($session->format != Survey::FORMAT_ALL_IN_ONE && $ssm->current->getStep() == 0))
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
                     $moveResult = LimeExpressionManager::GetLastMoveResult(true);
@@ -375,7 +361,7 @@ class SurveyRuntimeHelper {
                 if($moveResult['finished'] == true && $thissurvey['questionindex']==2)// $thissurvey['questionindex']>=2
                 {
                     //LimeExpressionManager::JumpTo(-1, false, false, true);
-                    LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
+                    LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions);
                     $moveResult = LimeExpressionManager::JumpTo($ssm->current->survey->totalSteps + 1, false, false, false);// no preview, no save data and NO force
                     if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
                         $moveResult['finished'] = true;
@@ -398,7 +384,7 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if ($surveyMode != 'survey' && $ssm->current->getStep() == 0)
+            if ($session->format != Survey::FORMAT_ALL_IN_ONE && $ssm->current->getStep() == 0)
             {
 
                 $moveResult = LimeExpressionManager::JumpTo(1, false, false, true);
@@ -669,7 +655,7 @@ class SurveyRuntimeHelper {
         createFieldMap($ssm->current->surveyId,'full',false,false, $ssm->current->language);
         //GET GROUP DETAILS
 
-        if ($surveyMode == 'group' && $previewgrp)
+        if ($session->format == Survey::FORMAT_GROUP && $previewgrp)
         {
             //            setcookie("limesurvey_timers", "0"); //@todo fix - sometimes results in headers already sent error
             $_gid = sanitize_int($param['gid']);
@@ -705,7 +691,7 @@ class SurveyRuntimeHelper {
                 $groupname = gT("Submit your answers");
                 $groupdescription = gT("There are no more questions. Please press the <Submit> button to finish this survey.");
             }
-            else if ($surveyMode != 'survey')
+            else if ($session->format != Survey::FORMAT_ALL_IN_ONE)
             {
                 if ($previewquestion) {
                     $_qid = sanitize_int($param['qid']);
@@ -754,7 +740,7 @@ class SurveyRuntimeHelper {
             $gid = $gl['gid'];
             $qnumber = 0;
 
-            if ($surveyMode != 'survey')
+            if ($session->format != Survey::FORMAT_ALL_IN_ONE)
             {
                 $onlyThisGID = $stepInfo['gid'];
                 if ($onlyThisGID != $gid)
@@ -771,13 +757,12 @@ class SurveyRuntimeHelper {
 
                 if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))// Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                 {
-                    if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid'])
+                    if ($session->format == Survey::FORMAT_QUESTION && $ia[0] != $stepInfo['qid'])
                     {
                         continue;
                     }
-                    $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($ia[0], $ia[4]);
-                    if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
-                    {
+                    $question = $ssm->current->survey->groups[$ia[5]]->questions[$ia[0]];
+                    if ($ia[4] != '*' && $question->hidden == true) {
                         continue;
                     }
 
@@ -826,7 +811,7 @@ class SurveyRuntimeHelper {
         }
 
 
-        if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
+        if ($session->format != Survey::FORMAT_ALL_IN_ONE && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
         {
             if ($show_empty_group)
             {
@@ -872,7 +857,7 @@ class SurveyRuntimeHelper {
         //if(count($aPopup))
         Yii::app()->clientScript->registerScript('startPopup',"startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
-        if ($surveyMode != 'survey' && $session->getStep() != $_SESSION[$LEMsessid]['prevstep'] ||
+        if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->getStep() != $_SESSION[$LEMsessid]['prevstep'] ||
         (isset($_SESSION[$LEMsessid]['stepno']) && $_SESSION[$LEMsessid]['stepno'] % 2))
         {
             if (!isset($_SESSION[$LEMsessid]['stepno']))
@@ -901,7 +886,7 @@ class SurveyRuntimeHelper {
 
         // The default submit button
         echo CHtml::htmlButton("default",array('type'=>'submit','id'=>"defaultbtn",'value'=>"default",'name'=>'move','class'=>"submit noview",'style'=>'display:none'));
-        if ($surveyMode == 'survey')
+        if ($session->format == Survey::FORMAT_ALL_IN_ONE)
         {
             if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
             {
@@ -919,7 +904,7 @@ class SurveyRuntimeHelper {
         }
 
         // <-- START THE SURVEY -->
-        if ($surveyMode != 'survey')
+        if ($session->format != Survey::FORMAT_ALL_IN_ONE)
         {
             echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"), array(), $redata);
         }
@@ -955,7 +940,7 @@ class SurveyRuntimeHelper {
             $groupname = $gl['group_name'];
             $groupdescription = $gl['description'];
 
-            if ($surveyMode != 'survey' && $gid != $onlyThisGID)
+            if ($session->format != Survey::FORMAT_ALL_IN_ONE && $gid != $onlyThisGID)
             {
                 continue;
             }
@@ -1030,10 +1015,10 @@ class SurveyRuntimeHelper {
                 echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
 
             }
-            if ($surveyMode == 'group') {
+            if ($session->format == Survey::FORMAT_GROUP) {
                 echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
             }
-            if ($surveyMode == 'question') {
+            if ($session->format == Survey::FORMAT_QUESTION) {
                 echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
             }
 
@@ -1062,13 +1047,13 @@ class SurveyRuntimeHelper {
             }
 
 
-            if ($surveyMode != 'survey' && $thissurvey['questionindex'] == 1)
+            if ($session->getFormat() != Survey::FORMAT_ALL_IN_ONE && $session->survey->questionindex == Survey::INDEX_INCREMENTAL)
             {
-                $this->createIncrementalQuestionIndex($LEMsessid, $surveyMode);
+                $this->createIncrementalQuestionIndex($session);
             }
-            elseif ($surveyMode != 'survey' && $thissurvey['questionindex'] == 2)
+            elseif ($session->getFormat() != Survey::FORMAT_ALL_IN_ONE && $session->survey->questionindex == Survey::INDEX_FULL)
             {
-                $this->createFullQuestionIndex($LEMsessid, $surveyMode);
+                $this->createFullQuestionIndex($session);
             }
 
             $step = $session->getStep();
@@ -1236,7 +1221,8 @@ class SurveyRuntimeHelper {
         {
             $aMandatoryClass[]= 'mandatory';
         }
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_' . $iSurveyId]['maxstep'] != $_SESSION['survey_' . $iSurveyId]['step'])// This is working ?
+        $session = App()->surveySessionManager->current;
+        if ($lemQuestionInfo['anyUnanswered'] && $session->maxStep != $session->step);
         {
             $aMandatoryClass[]= 'missing';
         }
