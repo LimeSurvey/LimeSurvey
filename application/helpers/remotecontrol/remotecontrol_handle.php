@@ -1201,6 +1201,7 @@ class remotecontrol_handle
     }
 
 
+
     /**
     * RPC Routine to delete a question of a survey .
     * Returns the id of the deleted question.
