@@ -2113,68 +2113,40 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
         }
 
-        if (isset($fieldmap)) {
-            $expected = [
-                'id', 'submitdate', 'lastpage', 'startlanguage', 'startdate', 'datestamp',
-                '737492X691X5050'
-            ];
-            $i = 0;
-            foreach ($fieldmap as $field => $details) {
-                if (isset($expected[$i]) && $field != $expected[$i]) {
-                    echo("unexpected line 2122: $field<br>");
-                    $ok = true;
-                }
-                $i++;
-            }
-            if (isset($ok)) {
-                echo "field map ok at 2130";
-            }
-            if ($questionid == false) {
-                // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-                if (isset(Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-                    $masterFieldmap = Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-                    $mfieldmap = Yii::app()->session['survey_' . $surveyid][$masterFieldmap];
+        if (isset($fieldmap) && $questionid == false) {
+            // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
+            if (isset(Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
+                $masterFieldmap = Yii::app()->session['survey_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
+                $mfieldmap = Yii::app()->session['survey_' . $surveyid][$masterFieldmap];
 
-                    foreach ($mfieldmap as $fieldname => $mf) {
-                        if (isset($fieldmap[$fieldname])) {
-                            // This array holds the keys of translatable attributes
-                            $translatable = array_flip(array(
-                                'question',
-                                'subquestion',
-                                'subquestion1',
-                                'subquestion2',
-                                'group_name',
-                                'answerList',
-                                'defaultValue',
-                                'help'
-                            ));
-                            // We take all translatable attributes from the new fieldmap
-                            $newText = array_intersect_key($fieldmap[$fieldname], $translatable);
-                            // And merge them with the other values from the random fieldmap like questionSeq, groupSeq etc.
-                            $mf = $newText + $mf;
-                        }
-                        $mfieldmap[$fieldname] = $mf;
+                foreach ($mfieldmap as $fieldname => $mf) {
+                    if (isset($fieldmap[$fieldname])) {
+                        // This array holds the keys of translatable attributes
+                        $translatable = array_flip(array(
+                            'question',
+                            'subquestion',
+                            'subquestion1',
+                            'subquestion2',
+                            'group_name',
+                            'answerList',
+                            'defaultValue',
+                            'help'
+                        ));
+                        // We take all translatable attributes from the new fieldmap
+                        $newText = array_intersect_key($fieldmap[$fieldname], $translatable);
+                        // And merge them with the other values from the random fieldmap like questionSeq, groupSeq etc.
+                        $mf = $newText + $mf;
                     }
-                    $fieldmap = $mfieldmap;
+                    $mfieldmap[$fieldname] = $mf;
                 }
-                Yii::app()->session['fieldmap-' . $surveyid . $sLanguage] = $fieldmap;
+                $fieldmap = $mfieldmap;
             }
+            Yii::app()->session['fieldmap-' . $surveyid . $sLanguage] = $fieldmap;
 
 
         }
         \Yii::endProfile($cacheKey);
         $requestCache[$cacheKey] = $fieldmap;
-    }
-    $expected = [
-        'id', 'submitdate', 'lastpage', 'startlanguage', 'startdate', 'datestamp',
-        '737492X691X5050'
-    ];
-    $i = 0;
-    foreach ($requestCache[$cacheKey] as $field => $details) {
-        if (isset($expected[$i]) && $field != $expected[$i]) {
-            die("unexpected line 2170: " . $field);
-        }
-        $i++;
     }
     return $requestCache[$cacheKey];
 }
