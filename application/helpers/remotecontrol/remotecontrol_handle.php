@@ -1117,7 +1117,7 @@ class remotecontrol_handle
                         continue;
                     }
                     $oGroup->setAttribute($sFieldName,$sValue);
-                    
+
                     try
                     {
                         // save the change to database - one by one to allow for validation to work
@@ -1211,11 +1211,11 @@ class remotecontrol_handle
     * @param int iQuestionID Id of the question to delete
     * @return array|int Id of the deleted Question or status
     */
-    public function delete_question($sSessionKey, $iQuestionID)
+    public function delete_question($sSessionKey, $iQuestionID, $sLanguage)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage));
             if (!isset($oQuestion))
                 return array('status' => 'Error: Invalid question ID');
 
@@ -2379,12 +2379,12 @@ class remotecontrol_handle
         }
         $oFormattingOptions=new FormattingOptions();
 
-        if($iFromResponseID !=null)   
+        if($iFromResponseID !=null)
             $oFormattingOptions->responseMinRecord=$iFromResponseID;
         else
             $oFormattingOptions->responseMinRecord=1;
 
-        if($iToResponseID !=null)   
+        if($iToResponseID !=null)
             $oFormattingOptions->responseMaxRecord=$iToResponseID;
         else
             $oFormattingOptions->responseMaxRecord = $maxId;
