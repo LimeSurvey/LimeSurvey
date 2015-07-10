@@ -369,6 +369,86 @@ class remotecontrol_handle
     }
 
     /**
+     * RPC Routine that deactivates an activated survey.
+     *
+     * This method is unofficial (not written by the LimeSurvey team, but by the Theodo one)
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID The id of the survey to be activated
+     * @return array The result of the activation
+     */
+    public function deactivate_survey($sSessionKey, $iSurveyID)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey)) {
+                return array('status' => 'Error: Invalid survey ID');
+            }
+
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+                // Let the magic happen :-)
+
+                $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+                $tokenDeactivationResult = 0;
+                $timingDeactivationResult = 0;
+
+                if (!tableExists('survey_'.$iSurveyID)){
+                    return array('status' => 'Error: Response table does not exist. Survey cannot be deactivated.');
+                }
+
+                //See if there is a tokens table for this survey
+                if (tableExists("{{tokens_{$iSurveyID}}}")) {
+                    $toldtable = Yii::app()->db->tablePrefix."tokens_{$iSurveyID}";
+                    $tnewtable = Yii::app()->db->tablePrefix."old_tokens_{$iSurveyID}_{$date}";
+                    $tokenDeactivationResult = Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
+                }
+
+                //Remove any survey_links to the CPDB
+                SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
+
+                // IF there are any records in the saved_control table related to this survey, they have to be deleted
+                $result = SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
+                $sOldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$iSurveyID}";
+                $sNewSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$iSurveyID}_{$date}";
+                //Update the autonumber_start in the survey properties
+                $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($sOldSurveyTableName)." ORDER BY id desc";
+                $sLastID = Yii::app()->db->createCommand($query)->limit(1)->queryScalar();
+                $new_autonumber_start = $sLastID + 1;
+                $oSurvey->autonumber_start = $new_autonumber_start;
+                $oSurvey->save();
+
+                $deactivationResult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
+
+                $oSurvey->active = 'N';
+                $oSurvey->save();
+
+                $prow = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
+                if ($prow->savetimings == "Y") {
+                    $sOldTimingsTableName = Yii::app()->db->tablePrefix."survey_{$iSurveyID}_timings";
+                    $sNewTimingsTableName = Yii::app()->db->tablePrefix."old_survey_{$iSurveyID}_timings_{$date}";
+
+                    $timingDeactivationResult = Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
+                }
+
+                Yii::app()->db->schema->refresh();
+
+                if (!($deactivationResult || $timingDeactivationResult || $tokenDeactivationResult)) {
+                    return array('status' => 'OK');
+                } else {
+                    return array('status' => $deactivationResult || $timingDeactivationResult || $tokenDeactivationResult);
+                }
+            } else {
+                return array('status' => 'No permission');
+            }
+        }
+        else {
+            return array('status' => 'Invalid session key');
+        }
+    }
+
+
+    /**
     * RPC routine to export statistics of a survey to a user.
     * Returns string - base64 encoding of the statistics.
     *
