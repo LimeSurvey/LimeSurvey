@@ -1536,7 +1536,7 @@ class remotecontrol_handle
                 unset($aQuestionData['sid']);
                 unset($aQuestionData['parent_qid']);
                 unset($aQuestionData['language']);
-                unset($aQuestionData['type']);
+                //unset($aQuestionData['type']);
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Question::model()->tableSchema->columnNames);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
