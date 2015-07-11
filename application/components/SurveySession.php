@@ -120,7 +120,7 @@ class SurveySession extends CComponent {
         if (!is_int($value)) {
             throw new \BadMethodCallException('Parameter $value must be an integer.');
         }
-        $this->_step = $value;
+        $this->_step = $value > 0 ? $value : 0;
         $this->_maxStep = max($this->_step, $this->_maxStep);
     }
 
@@ -130,7 +130,7 @@ class SurveySession extends CComponent {
     }
 
     public function getPrevStep() {
-        return $this->_step > 1 ? $this->_step - 1 : 1;
+        return $this->_step > 1 ? $this->_step - 1 : 1; // 0 ?
     }
 
     public function __sleep() {
