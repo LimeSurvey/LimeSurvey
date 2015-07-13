@@ -2017,6 +2017,92 @@ class remotecontrol_handle
     }
 
     /**
+     * RPC Routine to send register mails to participants in a survey
+     * Returns array of results of sending
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID ID of the survey that participants belong
+     * @param array $overrideAllConditions replace the default consitions, like this:
+     *   $overrideAllConditions = Array();
+     *   $overrideAllConditions[] = 'tid = 2';
+     *   $response = $myJSONRPCClient->mail_registered_participants( $sessionKey, $survey_id, $overrideAllConditions );
+     * @return array Result of the action
+     */
+    public function mail_registered_participants($sSessionKey, $iSurveyID, $overrideAllConditions=Array() )
+    {
+        Yii::app()->loadHelper('admin/token');
+        if (!$this->_checkSessionKey($sSessionKey))
+            return array('status' => 'Invalid session key');
+
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (!isset($oSurvey))
+            return array('status' => 'Error: Invalid survey ID');
+
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update'))
+        {
+
+            if(!tableExists("{{tokens_$iSurveyID}}"))
+                return array('status' => 'Error: No token table');
+
+			$command = new CDbCriteria();
+			$command->condition = '';
+			if (count($overrideAllConditions)) {
+				foreach($overrideAllConditions as $condition)
+				{
+					$command->addCondition($condition);
+				}
+			}
+			else
+			{
+				$command->addCondition('usesleft > 0');
+				$command->addCondition("sent = 'N'");
+				$command->addCondition("remindersent = 'N'");
+				$command->addCondition("(completed ='N') or (completed='')");
+				$command->addCondition('ISNULL(validfrom) OR validfrom < NOW()');
+				$command->addCondition('ISNULL(validuntil) OR validuntil > NOW()');
+				$command->addCondition('emailstatus = "OK"');
+			}
+			$command->order = 'tid';
+
+            $aAllTokens = Token::model($iSurveyID)->findAll( $command );
+            $iAllTokensCount=count($aAllTokens);
+            unset($aAllTokens);
+
+            $iMaxEmails = (int)Yii::app()->getConfig("maxemails");
+			$command->limit = $iMaxEmails;
+			$aResultTokens = Token::model($iSurveyID)->findAll( $command );
+
+            if (empty($aResultTokens))
+                return array('status' => 'Error: No candidate tokens');
+
+            foreach($aResultTokens as $key=>$oToken)
+            {
+                //pattern taken from php_filter_validate_email PHP_5_4/ext/filter/logical_filters.c
+                $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
+
+                //if(!filter_var($emailaddress, FILTER_VALIDATE_EMAIL))
+                if (preg_match($pattern, $oToken['email']) !== 1)
+				{
+					unset($aResultTokens[$key]);
+					//subtract from 'left to send'
+					$iAllTokensCount--;
+				}
+            }
+
+            if (empty($aResultTokens))
+                return array('status' => 'Error: No candidate tokens');
+            $aResult = emailTokens($iSurveyID,$aResultTokens,'register');
+            $iLeft = $iAllTokensCount - count($aResultTokens);
+            $aResult['status'] = $iLeft . " left to send";
+
+            return $aResult;
+        }
+        else
+            return array('status' => 'No permission');
+    }
+
+    /**
     * RPC Routine to invite participants in a survey
     * Returns array of results of sending
     *

@@ -17,7 +17,7 @@
 *
 * @param mixed $iSurveyID
 * @param array  $aResultTokens
-* @param string $sType type of notification invite|remind
+* @param string $sType type of notification invite|register|remind
 * @return array of results
 */
 function emailTokens($iSurveyID,$aResultTokens,$sType)
@@ -117,6 +117,11 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite_subj'];
 			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_invite'];
 		}
+		else if($sType == 'register')
+		{
+			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register_subj'];
+			$sMessage = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_register'];
+		}
 		else
 		{
 			$sSubject = $aSurveyLocaleData[$sTokenLanguage]['surveyls_email_remind_subj'];
@@ -159,7 +164,7 @@ function emailTokens($iSurveyID,$aResultTokens,$sType)
 													'email'=>$fieldsarray["{EMAIL}"],
 													'status'=>'OK');
 
-				if($sType == 'invite')
+				if($sType == 'invite' || $sType == 'register')
 					$oTokens->updateByPk($aTokenRow['tid'], array('sent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
 
 				if($sType == 'remind')
