@@ -395,6 +395,7 @@ class SurveyAdmin extends Survey_Common_Action
     * @param int $iSurveyID
     * @return void
     */
+    /*
     public function quexml($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
@@ -441,7 +442,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             Yii::app()->loadHelper('export');
             $quexml = quexml_export($iSurveyID, $lang);
-die($quexml);
+
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
 
             //NEED TO GET QID from $quexmlpdf
@@ -479,7 +480,7 @@ die($quexml);
             unlink($zipfile);
          }
     }
-
+*/
    /**
     * Function responsible to activate survey.
     *
