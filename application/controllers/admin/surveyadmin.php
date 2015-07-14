@@ -388,7 +388,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
     }
 
-   /**
+    /**
     * Function responsible to activate survey.
     *
     * @access public
