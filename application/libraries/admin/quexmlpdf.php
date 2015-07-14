@@ -1235,7 +1235,7 @@ class quexmlpdf extends pdf {
    */
   public function setResponseLabelFontSize($normalsize)
   {
-    $this->responseLabelFontSize = intval($normalsize);
+    $this->responseLabelFontSize = floatval($normalsize);
   }
   
   /**
@@ -1247,7 +1247,7 @@ class quexmlpdf extends pdf {
      * @since  2013-04-10
      */
     public function setResponseLabelFontSizeSmall($smallsize) {
-        $this->responseLabelFontSizeSmall = intval($smallsize);
+        $this->responseLabelFontSizeSmall = floatval($smallsize);
     }
 
     /**
@@ -1283,7 +1283,7 @@ class quexmlpdf extends pdf {
    */
   public function setResponseTextFontSize($size)
   {
-    $this->responseTextFontSize = intval($size);
+    $this->responseTextFontSize = floatval($size);
   }
 
   /**
