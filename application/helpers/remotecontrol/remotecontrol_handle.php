@@ -2023,7 +2023,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the survey that participants belong
-     * @param array $overrideAllConditions replace the default consitions, like this:
+     * @param array $overrideAllConditions replace the default conditions, like this:
      *   $overrideAllConditions = Array();
      *   $overrideAllConditions[] = 'tid = 2';
      *   $response = $myJSONRPCClient->mail_registered_participants( $sessionKey, $survey_id, $overrideAllConditions );
