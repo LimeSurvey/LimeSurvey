@@ -1058,6 +1058,134 @@ class export extends Survey_Common_Action {
             $this->_exportarchive($iSurveyID);
         }
     }
+    
+    /**
+     * Generate a queXML PDF document with provided styles/settings
+     *
+     * @access public
+     * @param int $iSurveyID
+     * @return void
+     */
+    public function quexml($iSurveyID)
+    {
+        $iSurveyID = (int) $iSurveyID;
+
+        $queXMLSettings = array('queXMLBackgroundColourQuestion',            
+            'queXMLPageFormat',
+            'queXMLPageOrientation',
+            'queXMLEdgeDetectionFormat',
+            'queXMLBackgroundColourSection',
+            'queXMLSectionHeight',
+            'queXMLResponseLabelFontSize',
+            'queXMLResponseLabelFontSizeSmall',
+            'queXMLResponseTextFontSize',
+            'queXMLQuestionnaireInfoMargin',
+            'queXMLSingleResponseHorizontalHeight',
+            'queXMLSingleResponseAreaHeight',
+            'queXMLStyle',
+            'queXMLAllowSplittingVas',
+            'queXMLAllowSplittingMatrixText',
+            'queXMLAllowSplittingSingleChoiceVertical',
+            'queXMLAllowSplittingSingleChoiceHorizontal');
+
+        $aData = array();
+        $aData['surveyid'] = $iSurveyID;
+        $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
+        array_unshift($aData['slangs'],$aData['baselang']);
+
+        Yii::import("application.libraries.admin.quexmlpdf",TRUE);
+        $defaultquexmlpdf = new quexmlpdf($this->getController());
+
+        foreach ($queXMLSettings as $s)
+        {
+            $aData[$s] = getGlobalSetting($s);
+
+            if ($aData[$s] === NULL || trim($aData[$s]) === '')
+            {
+                $method = str_replace("queXML","get",$s);
+                $aData[$s] = $defaultquexmlpdf->$method();
+            }
+        }
+
+        if (empty($_POST['ok']))
+        {
+            $this->_renderWrappedTemplate('survey','queXMLSurvey_view',$aData);
+        } else
+        {
+            $quexmlpdf = new quexmlpdf($this->getController());
+
+            //Save settings globally and generate queXML document
+            foreach ($queXMLSettings as $s)
+            {
+                if($s!== 'queXMLStyle'){
+                    setGlobalSetting($s,Yii::app()->request->getPost($s));
+                }                
+                
+                $method = str_replace("queXML","set",$s);
+                
+
+
+                $quexmlpdf->$method(Yii::app()->request->getPost($s));
+            }
+
+
+            $lang = Yii::app()->request->getPost('save_language');
+            $tempdir = Yii::app()->getConfig("tempdir");
+
+            // Setting the selected language for printout
+            App()->setLanguage($lang);
+
+            $quexmlpdf->setLanguage($lang);
+
+            set_time_limit(120);
+
+            Yii::app()->loadHelper('export');
+
+
+            $quexml = quexml_export($iSurveyID,$lang);
+
+            $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
+
+            //NEED TO GET QID from $quexmlpdf
+            $qid = intval($quexmlpdf->getQuestionnaireId());
+
+            $zipdir = $this->_tempdir($tempdir);
+
+            $f1 = "$zipdir/quexf_banding_{$qid}_{$lang}.xml";
+            $f2 = "$zipdir/quexmlpdf_{$qid}_{$lang}.pdf";
+            $f3 = "$zipdir/quexml_{$qid}_{$lang}.xml";
+            $f4 = "$zipdir/readme.txt";
+            $f5 = "$zipdir/quexmlpdf_style_{$qid}_{$lang}.xml";
+
+            file_put_contents($f5,$quexmlpdf->exportStyleXML());
+            file_put_contents($f1,$quexmlpdf->getLayout());
+            file_put_contents($f2,$quexmlpdf->Output("quexml_$qid.pdf",'S'));
+            file_put_contents($f3,$quexml);
+            file_put_contents($f4,gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
+
+
+            Yii::app()->loadLibrary('admin.pclzip');
+            $zipfile = "$tempdir/quexmlpdf_{$qid}_{$lang}.zip";
+            $z = new PclZip($zipfile);
+            $z->create($zipdir,PCLZIP_OPT_REMOVE_PATH,$zipdir);
+
+            unlink($f1);
+            unlink($f2);
+            unlink($f3);
+            unlink($f4);
+            unlink($f5);
+            rmdir($zipdir);
+
+            $fn = "quexmlpdf_{$qid}_{$lang}.zip";
+            $this->_addHeaders($fn,"application/zip",0);
+            header('Content-Transfer-Encoding: binary');
+
+            // load the file to send:
+            readfile($zipfile);
+            unlink($zipfile);
+        }
+    }
 
     /**
      * Generate an TSV (tab-separated value) file for the survey structure
