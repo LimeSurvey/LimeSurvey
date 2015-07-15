@@ -10,12 +10,14 @@
         <?php echo CHtml::button(gT("Reset"),array('class'=>'fillin','data-target'=>"email_{$tab}_subj_{$grouplang}",'data-value'=>$details['default']['subject'])); ?>
     </li>
     <li><label for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
+        <div class='htmleditor'>
         <?php echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->$details['field']['body'],array('cols'=>80,'rows'=>20)); ?>
         <?php echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
         <?php 
             $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
             echo CHtml::button(gT("Reset"),array('class'=>'fillin','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
         ?>
+        </div>
     </li>
     <li>
         <label for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
