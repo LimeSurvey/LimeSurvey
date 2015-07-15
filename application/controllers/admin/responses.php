@@ -695,9 +695,9 @@ class responses extends Survey_Common_Action
         $dtresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
         $all_rows = array();
         foreach ($dtresult as $row) {
-            $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses/view/surveyid/$surveyid/id/{$row['id']}") . "'><img src='" . $sImageURL . "token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
+            $action_html  = "<a href='" . Yii::app()->createUrl("admin/responses",array('sa'=>"view",'surveyid'=>$surveyid,'id'=>$row['id'])) . "'><img src='" . $sImageURL . "token_viewanswer.png' alt='" . gT('View response details') . "'/></a>";
             if (Permission::model()->hasSurveyPermission($iSurveyID,'responses','update')) {
-                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$row['id']}") . "'><img src='" . $sImageURL . "edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
+                $action_html .= "<a href='" . Yii::app()->createUrl("admin/dataentry",array('sa'=>"editdata",'subaction'=>"edit",'surveyid'=>$surveyid,'id'=>$row['id'])) . "'><img src='" . $sImageURL . "edit_16.png' alt='" . gT('Edit this response') . "'/></a>";
             }
             if (hasFileUploadQuestion($surveyid)) {
                 if(Response::model($surveyid)->findByPk($row['id'])->getFiles())
