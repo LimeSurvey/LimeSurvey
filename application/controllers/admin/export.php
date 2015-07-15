@@ -1070,9 +1070,9 @@ class export extends Survey_Common_Action {
     {
         $iSurveyID = (int) $iSurveyID;
 
-        $queXMLSettings = array('queXMLBackgroundColourQuestion',
-            'queXMLPageOrientation',
+        $queXMLSettings = array('queXMLBackgroundColourQuestion',            
             'queXMLPageFormat',
+            'queXMLPageOrientation',
             'queXMLEdgeDetectionFormat',
             'queXMLBackgroundColourSection',
             'queXMLSectionHeight',
@@ -1113,8 +1113,6 @@ class export extends Survey_Common_Action {
             $this->_renderWrappedTemplate('survey','queXMLSurvey_view',$aData);
         } else
         {
-
-            Yii::import("application.libraries.admin.quexmlpdf",TRUE);
             $quexmlpdf = new quexmlpdf($this->getController());
 
             //Save settings globally and generate queXML document
@@ -1122,12 +1120,15 @@ class export extends Survey_Common_Action {
             {
                 if($s!== 'queXMLStyle'){
                     setGlobalSetting($s,Yii::app()->request->getPost($s));
-                }
+                }                
                 
                 $method = str_replace("queXML","set",$s);
+                
+
 
                 $quexmlpdf->$method(Yii::app()->request->getPost($s));
             }
+
 
             $lang = Yii::app()->request->getPost('save_language');
             $tempdir = Yii::app()->getConfig("tempdir");
