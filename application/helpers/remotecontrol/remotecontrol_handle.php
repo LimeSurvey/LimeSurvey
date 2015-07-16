@@ -1232,9 +1232,11 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param string $sSessionKey Auth credentials
-     * @param int $iSurveyID Dd of the Survey to add the group
+     * @param int $iSurveyID Id of the Survey to add the group
      * @param int $iGroupID Id of the group
+     * @param string $sQuestionTitle the question title
+     * @param int|null $iQuestionID Wished id for the question
+     * @param string|null $sQuestionLanguage The question language
      * @param array $aQuestionData The question data
      * @return array|int The id of the new group - Or status
      */
@@ -1264,9 +1266,22 @@ class remotecontrol_handle
                     $oQuestion->language = $oSurvey->language;
                 }
                 $oQuestion->title = $sQuestionTitle;
-                foreach ($aQuestionData as $fieldName => $value) {
-                    $oQuestion->setAttribute($fieldName,$value);
+                foreach ($aQuestionData as $sFieldName => $sValue) {
+                    if ('answeroptions' === $sFieldName) {
+                        foreach ($sValue as $sCode => $aAnswerData) {
+                            $oAnswer = new Answer();
+                            $oAnswer['answer'] = $aAnswerData['answer'];
+                            $oAnswer['code'] = $sCode;
+                            $oAnswer['sortorder'] = $aAnswerData['sortorder'];
+                            $oAnswer['language'] = $oQuestion->language;
+                            $oAnswer['qid'] = $oQuestion->qid;
+                            $oAnswer->save();
+                        }
+                    } else {
+                        $oQuestion->setAttribute($sFieldName,$sValue);
+                    }
                 }
+
                 if($oQuestion->save()) {
                     return (int)$oQuestion->qid;
                 } else {
@@ -1619,6 +1634,7 @@ class remotecontrol_handle
                 //unset($aQuestionData['type']);
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Question::model()->tableSchema->columnNames);
+                $aDestinationFields['answeroptions'] = count($aDestinationFields);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
@@ -1638,7 +1654,34 @@ class remotecontrol_handle
                         $aResult[$sFieldName]='Questions with dependencies - Order cannot be changed';
                         continue;
                     }
-                    $oQuestion->setAttribute($sFieldName,$sValue);
+                    if ('answeroptions' === $sFieldName) {
+                        $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $oQuestion->qid, 'language'=> $sLanguage ),array('order'=>'sortorder') );
+                        foreach($oAnswers as $oAnswer) {
+                            if (isset($sValue[$oAnswer['code']])) {
+                                // Already existing answer option
+                                $sValue[$oAnswer['code']]['existing'] = true;
+                            } else {
+                                // Answer option not existing anymore, to remove
+                                $oAnswer->delete();
+                            }
+                        }
+
+                        foreach ($sValue as $sCode => $aAnswerData) {
+                            $oAnswer = new Answer();
+                            if ($aAnswerData['existing']) {
+                                $oAnswer->isNewRecord=false;
+                            }
+                            $oAnswer['answer'] = $aAnswerData['answer'];
+                            $oAnswer['code'] = $sCode;
+                            $oAnswer['sortorder'] = $aAnswerData['sortorder'];
+                            $oAnswer['language'] = $sLanguage;
+                            $oAnswer['scale_id'] = 0;
+                            $oAnswer['qid'] = $oQuestion->qid;
+                            $bSaveResult = $oAnswer->save();
+                        }
+                    } else {
+                        $oQuestion->setAttribute($sFieldName,$sValue);
+                    }
 
                     try
                     {
