@@ -6,3 +6,5 @@
 application/config/plugins.php
 application/config/plugins/
 application/controllers/DevController.php
+/application/runtime
+/components
