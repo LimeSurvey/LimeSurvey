@@ -69,7 +69,6 @@ class SettingGlobal extends LSActiveRecord
         }
     }
     public static function get($name, $default = null) {
-        Yii::trace($name, "SettingGlobal");
         if (!App()->isInstalled) {
             return $default;
         }

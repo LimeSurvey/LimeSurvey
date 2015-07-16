@@ -807,7 +807,9 @@
     */
     function getDateFormatDataForQID($qid, $mThisSurvey)
     {
-        $question = Question::model()->with('questionAttributes')->findByPk($qid);
+
+//        $question = Question::model()->with('questionAttributes')->findByPk();
+        $question = App()->surveySessionManager->current->getQuestion($qid);
         if (!isset($question)) {
             throw new \CHttpException(404, "Question not found.");
         }

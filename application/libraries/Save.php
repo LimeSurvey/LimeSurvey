@@ -150,7 +150,7 @@ class Save {
                 $sdata = array(
                     "datestamp" => $today,
                     "ipaddr" => getIPAddress(),
-                    "startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
+                    "startlanguage" => $session->language,
                     "refurl" => ((isset($_SESSION['survey_'.$surveyid]['refurl'])) ? $_SESSION['survey_'.$surveyid]['refurl'] : getenv('HTTP_REFERER'))
                 );
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata))    // Checked

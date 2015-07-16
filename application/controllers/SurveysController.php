@@ -59,7 +59,7 @@ class SurveysController extends Controller
     }
 
     public function actionUpdate($id) {
-        $survey = $this->loadModel($id);
+        $survey = $this->loadModel($id, 'groups.questions');
         if (App()->request->isPostRequest && isset($survey)) {
             $survey->setAttributes($_POST['Survey']);
             if ($survey->save(true)) {
@@ -107,8 +107,8 @@ class SurveysController extends Controller
      * @throws CHttpException
      * @throws \CHttpException
      */
-    protected function loadModel($id) {
-        $survey = Survey::model()->findByPk($id);
+    protected function loadModel($id, $with = null) {
+        $survey = Survey::model()->with($with)->findByPk($id);
         if (!isset($survey)) {
             throw new \CHttpException(404, "Survey not found.");
         } elseif (!App()->user->checkAccess('survey', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $id])) {
@@ -171,9 +171,13 @@ class SurveysController extends Controller
             $response->save();
 
             $session = App()->surveySessionManager->newSession($survey->primaryKey, $response->id);
-            $this->redirect(['survey/index', 'sid' => $id, 'SSM' => $session->getId()]);
+            if (isset($token)) {
+                $session->setToken($token);
+            }
 
-            $this->redirect(['surveys/run', 'sessionId' => $session->id]);
+            $this->redirect(['survey/index', 'SSM' => $session->getId()]);
+
+//            $this->redirect(['surveys/run', 'sessionId' => $session->id]);
         } else {
             $this->render('execute/welcome', ['survey' => $survey]);
         }

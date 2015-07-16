@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3935439488786b8040a1f1dd62774b3d",
+    "hash": "d5fed6c890dda620cb2393357d9a0c03",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -283,6 +283,28 @@
             ]
         },
         {
+            "name": "bower-asset/jqueryui-timepicker-addon",
+            "version": "v1.5.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/trentrichardson/jQuery-Timepicker-Addon.git",
+                "reference": "d31f8a2393493ea47303437b842872bc38e7ae77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/trentrichardson/jQuery-Timepicker-Addon/zipball/d31f8a2393493ea47303437b842872bc38e7ae77",
+                "reference": "d31f8a2393493ea47303437b842872bc38e7ae77",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/jquery-ui-timepicker-addon.js",
+                    "dist/jquery-ui-timepicker-addon.css"
+                ]
+            }
+        },
+        {
             "name": "bower-asset/papaparse",
             "version": "4.1.0",
             "source": {
@@ -473,16 +495,16 @@
         },
         {
             "name": "bower-asset/tinymce",
-            "version": "4.1.10",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "503d6fe1e69bd9830d39689b6e32a6c7ebffb861"
+                "reference": "905eb7e791caa652dce3c44abcf49d9c3f725c4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/503d6fe1e69bd9830d39689b6e32a6c7ebffb861",
-                "reference": "503d6fe1e69bd9830d39689b6e32a6c7ebffb861",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/905eb7e791caa652dce3c44abcf49d9c3f725c4d",
+                "reference": "905eb7e791caa652dce3c44abcf49d9c3f725c4d",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -509,7 +531,7 @@
         },
         {
             "name": "cakephp/utility",
-            "version": "3.0.7",
+            "version": "3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
@@ -1054,12 +1076,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "9cbd8bf1cb6ca47a1c6ece7c00f4f6a5b25ef7a8"
+                "reference": "db33c00096cdc142936613245e3ab25afdd8a620"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/9cbd8bf1cb6ca47a1c6ece7c00f4f6a5b25ef7a8",
-                "reference": "9cbd8bf1cb6ca47a1c6ece7c00f4f6a5b25ef7a8",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/db33c00096cdc142936613245e3ab25afdd8a620",
+                "reference": "db33c00096cdc142936613245e3ab25afdd8a620",
                 "shasum": ""
             },
             "require": {
@@ -1101,7 +1123,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-06-13 20:00:01"
+            "time": "2015-07-01 09:52:56"
         },
         {
             "name": "psr/http-message",
@@ -1154,16 +1176,16 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.2.0",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "365fcee430dfa4ace1fbc75737ca60ceea7eeeef"
+                "reference": "3b6fca09c7d56321057fa8867c8dbe1abf648627"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/365fcee430dfa4ace1fbc75737ca60ceea7eeeef",
-                "reference": "365fcee430dfa4ace1fbc75737ca60ceea7eeeef",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/3b6fca09c7d56321057fa8867c8dbe1abf648627",
+                "reference": "3b6fca09c7d56321057fa8867c8dbe1abf648627",
                 "shasum": ""
             },
             "require": {
@@ -1190,11 +1212,11 @@
             "authors": [
                 {
                     "name": "Jan Sorgalla",
-                    "email": "jsorgalla@googlemail.com"
+                    "email": "jsorgalla@gmail.com"
                 }
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
-            "time": "2014-12-30 13:32:42"
+            "time": "2015-07-03 13:48:55"
         },
         {
             "name": "sam-it/forms",
@@ -1351,12 +1373,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "8b0bad4bc12ff4a87ef82f8c05461fe454be7183"
+                "reference": "4cc92248e46e3393fdc74d56177aee57abe9d1c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/8b0bad4bc12ff4a87ef82f8c05461fe454be7183",
-                "reference": "8b0bad4bc12ff4a87ef82f8c05461fe454be7183",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/4cc92248e46e3393fdc74d56177aee57abe9d1c2",
+                "reference": "4cc92248e46e3393fdc74d56177aee57abe9d1c2",
                 "shasum": ""
             },
             "require": {
@@ -1395,7 +1417,7 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2015-06-16 06:08:49"
+            "time": "2015-07-01 13:00:43"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -1466,12 +1488,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "1b745460784b83937ebca491bc8cb072a8bbbc9b"
+                "reference": "cb7f569262acaf5d0d6c001146855eb595ffdd20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/1b745460784b83937ebca491bc8cb072a8bbbc9b",
-                "reference": "1b745460784b83937ebca491bc8cb072a8bbbc9b",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/cb7f569262acaf5d0d6c001146855eb595ffdd20",
+                "reference": "cb7f569262acaf5d0d6c001146855eb595ffdd20",
                 "shasum": ""
             },
             "replace": {
@@ -1509,7 +1531,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-06-21 08:42:23"
+            "time": "2015-07-07 04:43:37"
         },
         {
             "name": "yiisoft/yii",
@@ -1607,12 +1629,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "a6b66c7d70a0fd50b932528c33041ab64520a37a"
+                "reference": "1aface914fb3a45747a1db001ffaf2830a19ae4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/a6b66c7d70a0fd50b932528c33041ab64520a37a",
-                "reference": "a6b66c7d70a0fd50b932528c33041ab64520a37a",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/1aface914fb3a45747a1db001ffaf2830a19ae4c",
+                "reference": "1aface914fb3a45747a1db001ffaf2830a19ae4c",
                 "shasum": ""
             },
             "require": {
@@ -1649,7 +1671,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2015-06-12 17:11:33"
+            "time": "2015-06-25 18:49:21"
         }
     ],
     "packages-dev": [],

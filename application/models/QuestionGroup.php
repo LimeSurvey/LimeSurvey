@@ -17,6 +17,7 @@
  * Class QuestionGroup
  * @property string $randomization_group
  * @property Question[] $questions
+ * @property string $grelevance
  * @property Survey $survey
  */
     class QuestionGroup extends LSActiveRecord

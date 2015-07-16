@@ -57,7 +57,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'navigator',
     'percentcomplete',
     'privacy',
-    's_lang',
     'saved_id',
     'showgroupinfo',
     'showqnumcode',
@@ -93,7 +92,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
-    if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if($_surveyid && !isset($thissurvey))
     {
         $thissurvey=getSurveyInfo($_surveyid,$s_lang);
@@ -329,12 +327,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         if(isset(App()->surveySessionManager->current->response->token)) {
             $restartparam['token'] = App()->surveySessionManager->current->response->token;
         }
-        if (Yii::app()->request->getQuery('lang'))
-            $restartparam['lang']=sanitize_languagecode(Yii::app()->request->getQuery('lang'));
-        elseif($s_lang)
-            $restartparam['lang']=$s_lang;
+        if (null !== $lang = App()->request->getQuery('lang'))
+            $restartparam['lang'] = sanitize_languagecode($lang);
+        else
+            $restartparam['lang'] = $session->language;
+
         $restartparam['newtest']="Y";
-        $restartparam['id'] = $surveyid;
+        $restartparam['id'] = $session->surveyId;
         $restarturl= App()->createUrl("surveys/start", $restartparam);
         $_restart = "<a href='{$restarturl}'>".gT("Restart this Survey")."</a>";
     }

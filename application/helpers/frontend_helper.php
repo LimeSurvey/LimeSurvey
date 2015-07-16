@@ -323,11 +323,11 @@ function makeLanguageChanger($sSelectedLanguage)
 function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
-
+    $session = App()->surveySessionManager->current;
 
     if (!isset($backok) || $backok != "Y")
     {
-        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+        $fieldmap = createFieldMap($surveyid,'full',false,false,$session->language);
 
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
@@ -654,7 +654,7 @@ function sendSubmitNotifications($surveyid)
             }
         }
 
-        $aFullResponseTable=getFullResponseTable($surveyid,$_SESSION['survey_'.$surveyid]['srid'],$_SESSION['survey_'.$surveyid]['s_lang']);
+        $aFullResponseTable=getFullResponseTable($surveyid,$_SESSION['survey_'.$surveyid]['srid'],$session->language);
         $ResultTableHTML = "<table class='printouttable' >\n";
         $ResultTableText ="\n\n";
         $oldgid = 0;
@@ -821,7 +821,7 @@ function buildsurveysession($surveyid,$preview=false)
     global $tokensexist;
     //global $surveyid;
     global $move, $rooturl;
-
+    $session = App()->surveySessionManager->current;
 
     $sLangCode=App()->language;
     $languagechanger=makeLanguageChangerSurvey($sLangCode);
@@ -829,9 +829,6 @@ function buildsurveysession($surveyid,$preview=false)
         $preview=Yii::app()->getConfig('previewmode');
     $thissurvey = getSurveyInfo($surveyid,$sLangCode);
 
-    $_SESSION['survey_'.$surveyid]['templatename']=$thissurvey['template'];// $thissurvey['template'] already fixed by model : but why put this in session ?
-    $_SESSION['survey_'.$surveyid]['templatepath']=Template::getTemplatePath($thissurvey['template']).DIRECTORY_SEPARATOR;
-    $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 
     $loadsecurity = returnGlobal('loadsecurity',true);
 
@@ -1144,11 +1141,8 @@ function buildsurveysession($surveyid,$preview=false)
 
     //RESET ALL THE SESSION VARIABLES AND START AGAIN
     unset($_SESSION['survey_'.$surveyid]['grouplist']);
-    unset($_SESSION['survey_'.$surveyid]['fieldarray']);
     unset($_SESSION['survey_'.$surveyid]['insertarray']);
     unset($_SESSION['survey_'.$surveyid]['fieldnamesInfo']);
-    unset($_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster']);
-    unset($_SESSION['survey_'.$surveyid]['groupReMap']);
     $_SESSION['survey_'.$surveyid]['fieldnamesInfo'] = Array();
 
     // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
@@ -1167,13 +1161,12 @@ function buildsurveysession($surveyid,$preview=false)
         $language_to_set = $thissurvey['language'];
     }
 
-    if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
+    if (!isset($session->language))
     {
         SetSurveyLanguage($surveyid, $language_to_set);
     }
 
 
-    UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
     $criteria = (new CDbCriteria())
         ->addColumnCondition([
@@ -1226,194 +1219,11 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
     $qtypes=getQuestionTypeList('','array');
-    $fieldmap=createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+    $fieldmap=createFieldMap($surveyid,'full',true,false,$session->language);
 
 
-    // Randomization groups for groups
-    $aRandomGroups=array();
-    $aGIDCompleteMap=array();
-    // first find all groups and their groups IDS
-    $criteria = (new CDbCriteria)
-        ->addColumnCondition(['sid' => $surveyid])
-        ->addSearchCondition('randomization_group', '', true, 'AND', '!=');
-    foreach (QuestionGroup::model()->findAll($criteria) as $group) {
-        $aRandomGroups[$group->randomization_group][] = $group->primaryKey;
-    }
-    // Shuffle each group and create a map for old GID => new GID
-    foreach ($aRandomGroups as $sGroupName=>$aGIDs)
-    {
-        $aShuffledIDs=$aGIDs;
-        shuffle($aShuffledIDs);
-        $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
-    }
-    $_SESSION['survey_' . $surveyid]['groupReMap'] = $aGIDCompleteMap;
-
-    $randomized = false;    // So we can trigger reorder once for group and question randomization
-    // Now adjust the grouplist
-    if (count($aRandomGroups)>0 && !$preview)
-    {
-        $randomized = true;    // So we can trigger reorder once for group and question randomization
-        // Now adjust the grouplist
-        Yii::import('application.helpers.frontend_helper', true);   // make sure frontend helper is loaded
-        UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-        // ... and the fieldmap
-
-        // First create a fieldmap with GID as key
-        foreach ($fieldmap as $aField)
-        {
-            if (isset($aField['gid']))
-            {
-                $GroupFieldMap[$aField['gid']][]=$aField;
-            }
-            else{
-                $GroupFieldMap['other'][]=$aField;
-            }
-        }
-        // swap it
-        foreach ($GroupFieldMap as $iOldGid => $fields)
-        {
-            $iNewGid = $iOldGid;
-            if (isset($aGIDCompleteMap[$iOldGid]))
-            {
-                $iNewGid = $aGIDCompleteMap[$iOldGid];
-            }
-            $newGroupFieldMap[$iNewGid] = $GroupFieldMap[$iNewGid];
-        }
-        $GroupFieldMap = $newGroupFieldMap;
-        // and convert it back to a fieldmap
-        unset($fieldmap);
-        foreach($GroupFieldMap as $aGroupFields)
-        {
-            foreach ($aGroupFields as $aField)
-            {
-                if (isset($aField['fieldname'])) {
-                    $fieldmap[$aField['fieldname']] = $aField;  // isset() because of the shuffled flag above
-                }
-            }
-        }
-        unset($GroupFieldMap);
-    }
-
-    // Randomization groups for questions
-
-    // Find all defined randomization groups through question attribute values
-    $randomGroups=array();
-    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib')))
-    {
-        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
-    }
-    else
-    {
-        $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
-    }
-    $rgresult = dbExecuteAssoc($rgquery);
-    foreach($rgresult->readAll() as $rgrow)
-    {
-        // Get the question IDs for each randomization group
-        $randomGroups[$rgrow['value']][] = $rgrow['qid'];
-    }
-
-    // If we have randomization groups set, then lets cycle through each group and
-    // replace questions in the group with a randomly chosen one from the same group
-    if (count($randomGroups) > 0 && !$preview)
-    {
-        $randomized   = true;    // So we can trigger reorder once for group and question randomization
-        $copyFieldMap = array();
-        $oldQuestOrder = array();
-        $newQuestOrder = array();
-        $randGroupNames = array();
-        foreach ($randomGroups as $key=>$value)
-        {
-            $oldQuestOrder[$key] = $randomGroups[$key];
-            $newQuestOrder[$key] = $oldQuestOrder[$key];
-            // We shuffle the question list to get a random key->qid which will be used to swap from the old key
-            shuffle($newQuestOrder[$key]);
-            $randGroupNames[] = $key;
-        }
-
-        // Loop through the fieldmap and swap each question as they come up
-        foreach ($fieldmap as $fieldkey => $fieldval)
-        {
-            $found = 0;
-            foreach ($randomGroups as $gkey => $gval)
-            {
-                // We found a qid that is in the randomization group
-                if (isset($fieldval['qid']) && in_array($fieldval['qid'],$oldQuestOrder[$gkey]))
-                {
-                    // Get the swapped question
-                    $idx = array_search($fieldval['qid'],$oldQuestOrder[$gkey]);
-                    foreach ($fieldmap as $key => $field)
-                    {
-                        if (isset($field['qid']) && $field['qid'] == $newQuestOrder[$gkey][$idx])
-                        {
-                            $field['random_gid'] = $fieldval['gid'];   // It is possible to swap to another group
-                            $copyFieldMap[$key]  = $field;
-                        }
-                    }
-                    $found = 1;
-                    break;
-                } else
-                {
-                    $found = 2;
-                }
-            }
-            if ($found == 2)
-            {
-                $copyFieldMap[$fieldkey]=$fieldval;
-            }
-            reset($randomGroups);
-        }
-        $fieldmap = $copyFieldMap;
-    }
-
-    if ($randomized === true)
-    {
-        // reset the sequencing counts
-        $gseq = -1;
-        $_gid = -1;
-        $qseq = -1;
-        $_qid = -1;
-        $copyFieldMap = array();
-        foreach ($fieldmap as $key => $val)
-        {
-            if ($val['gid'] != '')
-            {
-                if (isset($val['random_gid']))
-                {
-                    $gid = $val['random_gid'];
-                } else {
-                    $gid = $val['gid'];
-                }
-                if ($gid != $_gid)
-                {
-                    $_gid = $gid;
-                    ++$gseq;
-                }
-            }
-
-            if ($val['qid'] != '' && $val['qid'] != $_qid)
-            {
-                $_qid = $val['qid'];
-                ++$qseq;
-            }
-
-            if ($val['gid'] != '' && $val['qid'] != '')
-            {
-                $val['groupSeq']    = $gseq;
-                $val['questionSeq'] = $qseq;
-            }
-
-            $copyFieldMap[$key] = $val;
-        }
-        $fieldmap = $copyFieldMap;
-        unset($copyFieldMap);
-
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang']] = $fieldmap;
-        $_SESSION['survey_'.$surveyid]['fieldmap-' . $surveyid . '-randMaster'] = 'fieldmap-' . $surveyid . $_SESSION['survey_'.$surveyid]['s_lang'];
-    }
 
     // TMSW Condition->Relevance:  don't need hasconditions, or usedinconditions
-    $_SESSION['survey_'.$surveyid]['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
         if (isset($field['qid']) && $field['qid']!='')
@@ -1434,7 +1244,7 @@ function buildsurveysession($surveyid,$preview=false)
             //            [9]=used in group.php for question count
             //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
 
-            if (!isset($_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
+            if (!isset($session->getFieldArray()[$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
             {
                 //JUST IN CASE : PRECAUTION!
                 //following variables are set only if $style=="full" in createFieldMap() in common_helper.
@@ -1463,19 +1273,6 @@ function buildsurveysession($surveyid,$preview=false)
                     $usedinconditions = $field['usedinconditions'];
                 else
                     $usedinconditions = 'N';
-                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
-                $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
-                $title,
-                $question,
-                $field['type'],
-                $field['gid'],
-                $mandatory,
-                $hasconditions,
-                $usedinconditions);
-            }
-            if (isset($field['random_gid']))
-            {
-                $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid'];
             }
         }
 
@@ -1494,7 +1291,7 @@ function buildsurveysession($surveyid,$preview=false)
             }
             else
             {   // Search question codes to use those for prefilling.
-                foreach($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details)
+                foreach(createFieldMap($surveyid, 'full') as $sgqa => $details)
                 {
                     if ($details['title'] == $k)
                     {
@@ -1506,7 +1303,6 @@ function buildsurveysession($surveyid,$preview=false)
     }
     $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
 
-    if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
     $oResult=SurveyURLParameter::model()->getParametersForSurvey($surveyid);
@@ -1625,19 +1421,15 @@ function surveymover()
 */
 function doAssessment($surveyid, $returndataonly=false)
 {
-    $survey = Survey::model()->cache(1)->findByPk($surveyid);
+    $session = App()->surveySessionManager->current;
+    $survey = $session->survey;
     
-    if(!isset($survey) || $survey->assessments!="Y") {
+    if(!isset($survey) || !$survey->bool_assessments) {
         return false;
     }
-    $baselang = $survey->language;
     $total = 0;
-    if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
-    {
-        $_SESSION['survey_'.$surveyid]['s_lang']=$baselang;
-    }
     $query = "SELECT * FROM {{assessments}}
-    WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
+    WHERE sid={$session->surveyId} and language='{$session->language}'
     ORDER BY scope, id";
 
     if ($result = dbExecuteAssoc($query))   //Checked
@@ -1662,7 +1454,7 @@ function doAssessment($surveyid, $returndataonly=false)
                     "message"=>$row['message']);
                 }
             }
-            $fieldmap=createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+            $fieldmap=createFieldMap($surveyid, "full",false,false,$session->language);
             $i=0;
             $total=0;
             $groups=array();
@@ -1777,74 +1569,7 @@ function doAssessment($surveyid, $returndataonly=false)
     }
 }
 
-/**
-* Update SESSION VARIABLE: grouplist
-* A list of groups in this survey, ordered by group name.
-* @param int surveyid
-* @param string language
-*/
-function UpdateGroupList($surveyid, $language)
-{
 
-    unset ($_SESSION['survey_'.$surveyid]['grouplist']);
-    $groups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid], ['order' => 'group_order']);
-    $groupList = [];
-    foreach ($groups as $group)
-    {
-        $data = [
-            'gid'         => $group->primaryKey,
-            'group_name'  => $group->group_name,
-            'description' =>  $group->description
-        ];
-        $groupList[] = $data;
-        $gidList[$group->primaryKey] = $data ;
-    }
-
-    if (!Yii::app()->getConfig('previewmode') && isset($_SESSION['survey_'.$surveyid]['groupReMap']) && count($_SESSION['survey_'.$surveyid]['groupReMap'])>0)
-    {
-        // Now adjust the grouplist
-        $groupRemap = $_SESSION['survey_'.$surveyid]['groupReMap'];
-        $groupListCopy = $groupList;
-        foreach ($groupList as $gseq => $info) {
-            $gid = $info['gid'];
-            if (isset($groupRemap[$gid])) {
-                $gid = $groupRemap[$gid];
-            }
-            $groupListCopy[$gseq] = $gidList[$gid];
-        }
-        $groupList = $groupListCopy;
-     }
-     $_SESSION['survey_'.$surveyid]['grouplist'] = $groupList;
-    // Return it as well so we can remove session in the future.
-    return $groupList;
-}
-
-/**
-* FieldArray contains all necessary information regarding the questions
-* This function is needed to update it in case the survey is switched to another language
-* @todo: Make 'fieldarray' obsolete by replacing with EM session info
-*/
-function UpdateFieldArray()
-{
-    global $surveyid;
-
-
-    if (isset($_SESSION['survey_'.$surveyid]['fieldarray']))
-    {
-        foreach ($_SESSION['survey_'.$surveyid]['fieldarray'] as $key => $value)
-        {
-            $questionarray = &$_SESSION['survey_'.$surveyid]['fieldarray'][$key];
-            $query = "SELECT title, question FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $usrow = Yii::app()->db->createCommand($query)->queryRow();
-            if ($usrow)
-            {
-                $questionarray[2]=$usrow['title'];
-                $questionarray[3]=$usrow['question'];
-            }
-            unset($questionarray);
-        }
-    }
-}
 
 /**
 * checkCompletedQuota() returns matched quotas information for the current response
@@ -1862,7 +1587,7 @@ function checkCompletedQuota($surveyid,$return=false)
     if(!$aMatchedQuotas)
     {
         $aMatchedQuotas=array();
-        $quota_info=$aQuotasInfo = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        $quota_info=$aQuotasInfo = getQuotaInformation($surveyid, $session->language);
         // $aQuotasInfo have an 'active' key, we don't use it ?
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
@@ -1912,7 +1637,7 @@ function checkCompletedQuota($surveyid,$return=false)
 
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
-    $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+    $aSurveyInfo=getSurveyInfo($surveyid, $session->language);
     $sTemplatePath=Template::getTemplatePath($aSurveyInfo['template']);
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
     // $redata for templatereplace
@@ -2093,8 +1818,8 @@ function display_first_page() {
     if (isset($loadsecurity)) {
         echo "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
     }
-    $_SESSION['survey_'.$surveyid]['LEMpostKey'] = mt_rand();
-    echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['survey_'.$surveyid]['LEMpostKey']}' id='LEMpostKey' />\n";
+    $session = App()->surveySessionManager->current;
+    echo "<input type='hidden' name='LEMpostKey' value='{$session->postKey}' id='LEMpostKey' />\n";
     echo "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
 
     echo "\n</form>\n";
@@ -2137,8 +1862,9 @@ function resetTimers()
 */
 function SetSurveyLanguage($surveyid, $sLanguage)
 {
+    $session = App()->surveySessionManager->current;
     $surveyid=sanitize_int($surveyid);
-    $default_language = Yii::app()->getConfig('defaultlang');
+    $default_language = SettingGlobal::get('defaultlang');
 
     if (isset($surveyid) && $surveyid>0)
     {
@@ -2149,12 +1875,11 @@ function SetSurveyLanguage($surveyid, $sLanguage)
         )
         {
             // Language not supported, fall back to survey's default language
-            $_SESSION['survey_'.$surveyid]['s_lang'] = $default_survey_language;
+            $session->language = $default_survey_language;
         } else {
-            $_SESSION['survey_'.$surveyid]['s_lang'] =  $sLanguage;
+            $session->language =  $sLanguage;
         }
-        App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
-        $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
+        App()->setLanguage($session->language);
         Yii::app()->loadHelper('surveytranslator');
     }
     else
@@ -2163,8 +1888,8 @@ function SetSurveyLanguage($surveyid, $sLanguage)
         {
             $sLanguage=$default_language;
         }
-        $_SESSION['survey_'.$surveyid]['s_lang'] = $sLanguage;
-        App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
+        $session->language = $sLanguage;
+        App()->setLanguage($session->language);
     }
 
 }

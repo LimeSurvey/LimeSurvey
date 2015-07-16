@@ -14,8 +14,10 @@
  * @property string $language
  * @property Survey $survey;
  * @property int $step;
+ * @property mixed $format;
  * @property int $maxStep;
  * @property Response $response;
+ * @property string $templateDir;
  */
 class SurveySession extends CComponent {
     /**
@@ -37,10 +39,14 @@ class SurveySession extends CComponent {
     protected $id;
     protected $responseId;
     protected $finished = false;
-    protected $language = 'en';
+
+    protected $_language = 'en';
+    protected $_prevStep = 0;
     protected $_step = 0;
     protected $_maxStep = 0;
-    protected $postKey;
+    protected $_templateDir;
+    protected $_postKey;
+    protected $_token;
     /**
      * @param int $surveyId
      * @param int $responseId
@@ -50,6 +56,7 @@ class SurveySession extends CComponent {
         $this->surveyId = $surveyId;
         $this->responseId = $responseId;
         $this->id = $id;
+        $this->token = isset($this->response->token) ? $this->response->token : null;
     }
 
     public function getSurveyId() {
@@ -64,8 +71,19 @@ class SurveySession extends CComponent {
         return $this->finished;
     }
 
+    public function getToken() {
+        return $this->_token;
+    }
+
+    public function setToken($value) {
+        $this->_token = $value;
+    }
     public function getLanguage() {
-        return $this->language;
+        return $this->_language;
+    }
+
+    public function setLanguage($value) {
+        $this->_language = $value;
     }
     /**
      * Returns the session id for this session.
@@ -89,25 +107,84 @@ class SurveySession extends CComponent {
      */
     public function getSurvey() {
         if (!isset($this->_survey)) {
-            $this->_survey = $survey = Survey::model()->with('groups.questions')->findByPk($this->surveyId);
+            /** @var Survey $survey */
+            \Yii::trace('ok123');
+            /**
+             * We greedily load questions via groups.
+             */
+            $this->_survey = $survey = Survey::model()->with([
+                'groups' => [
+                    'with' => [
+                        'questions' => [
+                            'with' => [
+                                'answers',
+                                'questionAttributes'
+                            ]
+                        ]
+                    ]
+                ]
+            ])->findByPk($this->surveyId);
+            /**
+             * We manually set the questions in survey to the same objects as those in groups.
+             * Note that the $survey->questions relation is redundant.
+             */
             $questions = [];
             foreach($survey->groups as $group) {
-                foreach($group->questions as $question) {
-                    $questions[$question->qid] = $question;
+                foreach($group->questions as $key => $question) {
+                    $questions[$key] = $question;
                 }
             }
+
             $survey->questions = $questions;
+
+            /**
+             * Manually set the group count.
+             */
+            $survey->groupCount = count($survey->groups);
         }
         return $this->_survey;
     }
 
     /**
      * Wrapper function that returns the question given by qid to make sure we always get the same object.
-     * @param int $id
+     * @param int $id The primary key of the question.
      * @return Question
      */
     public function getQuestion($id) {
-        return $this->_survey->questions[$id];
+
+        return isset($this->survey->questions[$id]) ? $this->survey->questions[$id] : null;
+    }
+
+    public function getQuestionIndex($id) {
+        \Yii::beginProfile(__CLASS__ . "::" . __FUNCTION__);
+        $questions = $this->survey->questions;
+        $question = $questions[$id];
+        $result = array_search($question, array_values($questions), true);
+        \Yii::endProfile(__CLASS__ . "::" . __FUNCTION__);
+        return $result;
+    }
+
+    public function getQuestionByIndex($index) {
+        return array_values($this->survey->questions)[$index];
+    }
+
+    public function getStepCount() {
+        switch ($this->format) {
+            case Survey::FORMAT_ALL_IN_ONE:
+                $result = 1;
+                break;
+            case Survey::FORMAT_GROUP:
+                $result = count($this->getGroups());
+                break;
+            case Survey::FORMAT_QUESTION:
+                $result = array_sum(array_map(function(QuestionGroup $group) {
+                    return count($this->getQuestions($group));
+                }));
+                break;
+            default:
+                throw new \Exception("Unknown survey format.");
+        }
+        return $result;
     }
     /**
      * @return int
@@ -121,6 +198,7 @@ class SurveySession extends CComponent {
             throw new \BadMethodCallException('Parameter $value must be an integer.');
         }
         $this->_step = $value > 0 ? $value : 0;
+        $this->_prevStep = $this->_step;
         $this->_maxStep = max($this->_step, $this->_maxStep);
     }
 
@@ -130,7 +208,11 @@ class SurveySession extends CComponent {
     }
 
     public function getPrevStep() {
-        return $this->_step > 1 ? $this->_step - 1 : 1; // 0 ?
+        return $this->_prevStep;
+    }
+
+    public function setPrevStep($value) {
+        $this->_prevStep = $value;
     }
 
     public function __sleep() {
@@ -139,16 +221,45 @@ class SurveySession extends CComponent {
             'id',
             '_step',
             '_maxStep',
+            '_prevStep',
             'responseId',
             'finished',
-            'language',
-            'postKey'
+            '_language',
+            '_postKey',
+            '_token'
         ];
     }
 
     /**
+     * Sets the template dir to use for this session.
+     * @param string $value
+     */
+    public function setTemplateDir($value) {
+        $this->_templateDir = $value;
+    }
+
+    public function getTemplateDir() {
+        if (!isset($this->_templateDir)) {
+            $this->_templateDir = \Template::getTemplatePath($this->survey->template) . '/';
+        };
+        return $this->_templateDir;
+    }
+
+    public function getGroup($id) {
+        return $this->survey->groups[$id];
+    }
+    public function getGroupIndex($id) {
+        \Yii::beginProfile(__CLASS__ . "::" . __FUNCTION__);
+        $groups = $this->groups;
+        $group = $this->getGroup($id);
+        $result = array_search($group, array_values($groups), true);
+        \Yii::endProfile(__CLASS__ . "::" . __FUNCTION__);
+        return $result;
+    }
+    /**
      * Returns the list of question groups.
      * Ordered according to the randomization groups.
+     * @return QuestionGroup[]
      */
     public function getGroups()
     {
@@ -197,6 +308,13 @@ class SurveySession extends CComponent {
         return $this->survey->format;
     }
 
+
+
+    /**
+     * Returns the questions in group $group, indexed by primary key.
+     * @param QuestionGroup $group
+     * @return Question[]
+     */
     public function getQuestions(QuestionGroup $group) {
         return $group->questions;
 
@@ -314,10 +432,13 @@ class SurveySession extends CComponent {
     }
 
     public function getPostKey() {
-        return $this->postKey;
+        if (!isset($this->_postKey)) {
+            $this->_postKey = \Cake\Utility\Text::uuid();
+        }
+        return $this->_postKey;
     }
     public function setPostKey($value) {
-        $this->postKey = $value;
+        $this->_postKey = $value;
     }
 
 

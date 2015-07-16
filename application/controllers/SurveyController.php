@@ -59,6 +59,13 @@ class SurveyController extends Controller
      * @access public
      * @return array
      */
+    public function accessRules()
+    {
+        return array_merge([
+            ['allow', 'actions' => ['index']],
+        ], parent::accessRules());
+    }
+
     public function actions()
     {
         return array(

@@ -36,6 +36,22 @@ class ResponsesController extends Controller
         if (App()->request->isPostRequest || App()->request->isDeleteRequest) {
             return \Response::model($surveyId)->deleteByPk($id);
         }
+
+        $this->redirect(['responses/index', 'id' => $surveyId]);
+    }
+
+    /**
+     * @todo Add permission check.
+     */
+
+    public function actionDeleteMultiple(array $ids, $surveyId) {
+        if (App()->request->isDeleteRequest
+            && 0 < $count = \Response::model($surveyId)->deleteAllByAttributes(['id' => $ids]) ) {
+            App()->user->setFlash('success', gT("Responses deleted"));
+        } else {
+            App()->user->setFlash('danger', gT("Responses not deleted"));
+        }
+        $this->redirect(['responses/index', 'id' => $surveyId]);
     }
 
     public function actionExport($id)

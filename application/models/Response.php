@@ -26,20 +26,25 @@
          * This adds support for translating SGQA to a label that uses the question code.
          * This is not really efficient since it gets all question codes individually.
          * @param string $attribute
-         * @return string
+         * @return stringz
          */
         public function getAttributeLabel($attribute)
         {
-            if (preg_match('/\d+X\d+X(\d+)(.+)?/', $attribute, $matches)) {
-                /**
-                 * Cache for 1 second so the query doesn't run again within this request,
-                 * but the caching is unlikely to cause trouble later.
-                 */
-                $code = Question::model()->cache(1)->findByPk($matches[1])->title;
-                return $code . (isset($matches[2]) ? " {$matches[2]}" : "");
-            } else {
+//            static $requestCache = [];
+//            if (preg_match('/\d+X\d+X(\d+)(.+)?/', $attribute, $matches)) {
+//                if (!isset($requestCache[$attribute])) {
+//                    /**
+//                     * Cache for 1 second so the query doesn't run again within this request,
+//                     * but the caching is unlikely to cause trouble later.
+//                     */
+//                    $question = Question::model()->findByPk($matches[1]);
+//
+//                    $requestCache[$attribute] = (isset($question) ? $question->title : $matches[1]). (isset($matches[2]) ? " {$matches[2]}" : "");
+//                }
+//                return $requestCache[$attribute];
+//            } else {
                 return parent::getAttributeLabel($attribute);
-            }
+//            }
         }
 
 

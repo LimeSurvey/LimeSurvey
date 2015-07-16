@@ -139,7 +139,7 @@ return array(
         )
     ),
     'jqueryui-timepicker' => array(
-        'baseUrl' => $bowerAssetPath . '/jqueryui-timepicker-addon/',
+        'baseUrl' => $bowerAssetPath . '/jqueryui-timepicker-addon/dist/',
         'js' => array(
             'jquery-ui-timepicker-addon.js'
         ),

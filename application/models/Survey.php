@@ -15,15 +15,15 @@ if (!defined('BASEPATH'))
 *
 */
 /**
- * @property-read Question[] $questions
+ * @property Question[] $questions
  * @property boolean $bool_usetokens
  * @property-read boolean $isExpired
  * @property-read SurveyLanguageSetting[] $languagesettings
  * @property-read QuestionGroup[] $groups
  * @property string $admin
  * @property string $adminEmail
- * @property-read int $questionCount
- * @property-read int $groupCount
+ * @property int $questionCount
+ * @property int $groupCount
  */
 class Survey extends LSActiveRecord
 {
@@ -50,6 +50,7 @@ class Survey extends LSActiveRecord
             'bool_listpublic' => gT('List survey publicly:'),
             'bool_alloweditaftercompletion' => gT("Allow responses to be edited after completion"),
             'bool_usetokens' => gT('Use tokens'),
+            'bool_showwelcome' => gT("Show welcome screen"),
             'startdate' => gT("Start date/time:"),
             'expires' => gT("Expiry date/time:"),
             'usecaptcha' => gT("Use CAPTCHA for"),
@@ -174,8 +175,8 @@ class Survey extends LSActiveRecord
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
             'groups' => [self::HAS_MANY, QuestionGroup::class, 'sid', 'order' => 'group_order ASC', 'index' => 'id'],
-            'questions' => [self::HAS_MANY, 'Question', 'sid', 'on' => "questions.parent_qid = 0", 'order' => 'question_order ASC'],
-            'questionCount' => [self::STAT, 'Question', 'sid', 'condition' => "parent_qid = 0"],
+            'questions' => [self::HAS_MANY, Question::class, 'sid', 'on' => "questions.parent_qid = 0", 'order' => 'question_order ASC'],
+            'questionCount' => [self::STAT, Question::class, 'sid', 'condition' => "parent_qid = 0"],
             'groupCount' => [self::STAT, QuestionGroup::class, 'sid'],
             'savedControls' => [self::HAS_MANY, SavedControl::class, 'sid'],
             'surveyLinks' => [self::HAS_MANY, SurveyLink::class, 'survey_id'],
@@ -235,14 +236,12 @@ class Survey extends LSActiveRecord
             ['refurl', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['publicstatistics', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['publicgraphs', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
-            ['listpublic', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['htmlemail', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['sendconfirmation', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['tokenanswerspersistence', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['assessments', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['showxquestions', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['shownoanswer', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
-            ['showwelcome', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['showprogress', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
             ['questionindex', 'in', 'range' => array_keys($this->indexOptions), 'allowEmpty'=>false],
             ['nokeyboard', 'in','range'=>['Y','N'], 'allowEmpty'=>true],
@@ -267,7 +266,8 @@ class Survey extends LSActiveRecord
             ['features', 'safe'],
             ['sid', 'default' , 'value' => randomChars(6, '123456789')],
 
-            ['bool_listpublic', 'boolean']
+            ['bool_listpublic', 'boolean'],
+            ['bool_showwelcome', 'boolean']
 
 
 
