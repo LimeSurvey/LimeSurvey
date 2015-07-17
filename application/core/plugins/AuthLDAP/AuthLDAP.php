@@ -246,7 +246,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         // Try to connect
         $ldapconn = ldap_connect($ldapserver, (int) $ldapport);
         if (false == $ldapconn) {
-            return [ "errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection') ];
+            return array( "errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection') );
         }
 
         // using LDAP version
@@ -265,7 +265,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             if(!ldap_start_tls($ldapconn))
             {
                 ldap_close($ldapconn); // all done? close connection
-                return [ "errorCode" => 100, 'errorMessage' => ldap_error($ldapconn) ];
+                return array( "errorCode" => 100, 'errorMessage' => ldap_error($ldapconn) );
             }
         }
 
