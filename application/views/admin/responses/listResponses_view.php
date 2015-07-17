@@ -44,6 +44,10 @@
 
     var colNames = <?php echo $column_names_txt; ?>;
     var colModels = <?php echo $column_model_txt; ?>;
+    var sortorder = '<?php echo $sortorder; ?>';
+    var rows = '<?php echo $limit; ?>';
+    var page = '<?php echo $page; ?>';
+
     <?php if($hasUpload) { ?>
         var sDownLoad='<?php eT("Download files"); ?>' ;
         var sDownLoadMarked='<?php eT("Download marked files"); ?>' ;

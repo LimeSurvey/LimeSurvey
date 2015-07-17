@@ -568,6 +568,9 @@ class responses extends Survey_Common_Action
             else
                 $column_names[] = $column['name'];
         }
+        $aData['sortorder']= Yii::app()->request->getQuery('order', 'asc');
+        $aData['limit']= Yii::app()->request->getQuery('limit', 25);
+        $aData['page']= intval(Yii::app()->request->getQuery('start', 0))+1;
 
         $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin');
         $aData['surveyid']= $iSurveyId;
@@ -829,13 +832,16 @@ class responses extends Survey_Common_Action
     */
     public function actionDelete($iSurveyId,$sResponseId)
     {
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete') && App()->request->isPostRequest)
         {
-            $oSurvey=Survey::model()->findByPk($iSurveyId);
-            //SurveyDynamic::model($iSurveyId)->deleteByPk($sResponseId);
-            Response::model($iSurveyId)->findByPk($sResponseId)->delete(true);
-            if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
-                SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
+            $aResponseId=explode(",",$sResponseId); // deleteByPk lust work with array, but seems don't work ? Maybe before delete broke this ?column_model_txt
+            foreach($aResponseId as $iResponseId)
+            {
+                Response::model($iSurveyId)->findByPk($iResponseId)->delete(true);
+                $oSurvey=Survey::model()->findByPk($iSurveyId);
+                if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
+                    SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseId);
+                }
             }
         }
     }
