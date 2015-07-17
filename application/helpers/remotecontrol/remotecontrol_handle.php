@@ -1283,6 +1283,24 @@ class remotecontrol_handle
                 }
 
                 if($oQuestion->save()) {
+                    // For this type of question we need to add a sub question that does absolutely nothing -_-
+                    if ('F' === $oQuestion->type) {
+                        $oSubQuestion             = new Question;
+                        $oSubQuestion->parent_qid = $oQuestion->qid;
+                        $oSubQuestion->sid        = $oQuestion->sid;
+                        $oSubQuestion->gid        = $oQuestion->gid;
+                        $oSubQuestion->title      = 'SQ001';
+                        $oSubQuestion->language   = $oQuestion->language;
+                        $oSubQuestion->mandatory  = 'N';
+                        $oSubQuestion->save();
+
+                        $oQuestionAttribute            = new QuestionAttribute;
+                        $oQuestionAttribute->qid       = $oQuestion->qid;
+                        $oQuestionAttribute->attribute = 'answer_width';
+                        $oQuestionAttribute->value     = 0;
+                        $oQuestionAttribute->save();
+                    }
+                    
                     return (int)$oQuestion->qid;
                 } else {
                     return array('status' => 'Creation Failed');
@@ -1682,7 +1700,23 @@ class remotecontrol_handle
                     } else {
                         $oQuestion->setAttribute($sFieldName,$sValue);
                     }
+                    // For this type of question we need to add a subquestion that does absolutely nothing -_-
+                    if (('type' ===$sFieldName) && ('F' === $oQuestion->type)) {
+                        $oSubQuestion             = new Question;
+                        $oSubQuestion->parent_qid = $oQuestion->qid;
+                        $oSubQuestion->sid        = $oQuestion->sid;
+                        $oSubQuestion->gid        = $oQuestion->gid;
+                        $oSubQuestion->title      = 'SQ001';
+                        $oSubQuestion->language   = $oQuestion->language;
+                        $oSubQuestion->mandatory  = 'N';
+                        $oSubQuestion->save();
 
+                        $oQuestionAttribute            = new QuestionAttribute;
+                        $oQuestionAttribute->qid       = $oQuestion->qid;
+                        $oQuestionAttribute->attribute = 'answer_width';
+                        $oQuestionAttribute->value     = 0;
+                        $oQuestionAttribute->save();                        
+                    }
                     try
                     {
                         $bSaveResult=$oQuestion->save(); // save the change to database
