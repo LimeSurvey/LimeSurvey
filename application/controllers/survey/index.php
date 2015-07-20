@@ -182,7 +182,7 @@ class index extends CAction {
         {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
         }
-        elseif($surveyExist)//Survey::model()->findByPk($surveyid)
+        elseif(Survey::model()->findByPk($surveyid))
         {
             $sDisplayLanguage=Survey::model()->findByPk($surveyid)->language;
         }
