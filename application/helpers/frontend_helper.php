@@ -1185,11 +1185,8 @@ function buildsurveysession($surveyid,$preview=false)
     {
         $language_to_set = $thissurvey['language'];
     }
-
-    if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
-    {
-        SetSurveyLanguage($surveyid, $language_to_set);
-    }
+    // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
+    SetSurveyLanguage($surveyid, $language_to_set);
 
 
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
