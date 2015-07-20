@@ -1,4 +1,4 @@
-var assetsPath = 'assets/';
+var assetsPath = '/assets/';
 
 // Retrieve GET parameters
 var pageUrl = window.location.search.substring(1);
