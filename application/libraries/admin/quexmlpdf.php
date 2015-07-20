@@ -1405,8 +1405,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2015-06-19
      */
-    public function setPageFormat($format) {
-        parent::setPageFormat($format);
+    public function setPageFormat($format, $orientation='') {
+        parent::setPageFormat($format, $orientation);
     }
 
     /**
@@ -1427,8 +1427,8 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since 2015-06-19
      */
-    public function setPageOrientation($orientation) {
-        parent::setPageOrientation($orientation);
+    public function setPageOrientation($orientation, $autopagebreak='', $bottommargin='') {
+        parent::setPageOrientation($orientation, $autopagebreak, $bottommargin);
     }
 
   
