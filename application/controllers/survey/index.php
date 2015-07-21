@@ -117,19 +117,19 @@ class index extends CAction {
         $previewmode=false;
         if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))))
         {
-            if(!$this->_canUserPreviewSurvey($surveyid))
-            {
-                $asMessage = array(
-                    gT('Error'),
-                    gT("We are sorry but you don't have permissions to do this.")
-                );
-                $this->_niceExit($redata, __LINE__, null, $asMessage);
-            }
-            else
-            {
+//            if(!$this->_canUserPreviewSurvey($surveyid))
+//            {
+//                $asMessage = array(
+//                    gT('Error'),
+//                    gT("We are sorry but you don't have permissions to do this.")
+//                );
+//                $this->_niceExit($redata, __LINE__, null, $asMessage);
+//            }
+//            else
+//            {
                 if((intval($param['qid']) && $param['action']=='previewquestion')) $previewmode='question';
                 if((intval($param['gid']) && $param['action']=='previewgroup')) $previewmode='group';
-            }
+//            }
         }
         Yii::app()->setConfig('previewmode',$previewmode);
         if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
