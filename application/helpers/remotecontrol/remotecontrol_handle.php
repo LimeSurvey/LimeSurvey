@@ -1282,7 +1282,7 @@ class remotecontrol_handle
                     }
                 }
 
-                if($oQuestion->save()) {
+                if($oQuestion->save(false)) {
                     // For this type of question we need to add a sub question that does absolutely nothing -_-
                     if ('F' === $oQuestion->type) {
                         $oSubQuestion             = new Question;
