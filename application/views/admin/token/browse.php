@@ -85,11 +85,11 @@
     var sRefreshTitle ='<?php eT("Reload participant list",'js');?>';
     var noSearchResultsTxt = '<?php eT("No survey participants matching the search criteria",'js');?>';
     var sFind= '<?php eT("Filter",'js');?>';
-    var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"); ?>";
+    var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens",array("sa"=>"email","surveyid"=>$surveyid)); ?>";
+    var remindurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens",array("sa"=>"email","action"=>'remind',"surveyid"=>$surveyid)); ?>";
     var attMapUrl = "<?php echo $this->createUrl("admin/participants/sa/attributeMapToken/sid/");?>";
-    var invitemsg = "<?php echo eT("Send an invitation email to the selected entries (if they have not yet been sent an invitation email)"); ?>"
-    var remindmsg = "<?php echo eT("Send a reminder email to the selected entries (if they have already received the invitation email)"); ?>"
-    var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/invite/surveyid/{$surveyid}"); ?>";
+    var invitemsg = "<?php echo eT("Send an invitation email to the selected entries (if they have not yet been sent an invitation email)",'unescaped'); ?>"
+    var remindmsg = "<?php echo eT("Send a reminder email to the selected entries (if they have already received the invitation email)",'unescaped'); ?>"
     var sSummary =  '<?php eT("Summary",'js');?>';
     var showDelButton = <?php echo $showDelButton; ?>;
     var showBounceButton = <?php echo $showBounceButton; ?>;

@@ -341,14 +341,19 @@ $(document).ready(function() {
                 else
                 {
                     var newForm = jQuery('<form>', {
-                        'action': remindurl,
-                        'target': 'inviteurl'
+                        'action': inviteurl,
+                        'method': 'POST',
+                        'target': '_blank',
                     }).append(jQuery('<input>', {
+                        'name': 'YII_CSRF_TOKEN',
+                        'value': LS.data.csrfToken,
+                        'type': 'hidden'
+                    })).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
                     })).appendTo('body');
-                    newForm.submit();                        
+                    newForm.submit();
                 }
             }
         });
@@ -367,13 +372,18 @@ $(document).ready(function() {
                 {
                     var newForm = jQuery('<form>', {
                         'action': remindurl,
+                        'method': 'POST',
                         'target': '_blank'
                     }).append(jQuery('<input>', {
+                        'name': 'YII_CSRF_TOKEN',
+                        'value': LS.data.csrfToken,
+                        'type': 'hidden'
+                    })).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
                     })).appendTo('body');
-                    newForm.submit();                    
+                    newForm.submit();
                 }
             }
         });
