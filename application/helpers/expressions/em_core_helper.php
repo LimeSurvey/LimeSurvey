@@ -2547,6 +2547,8 @@ function exprmgr_countifop($args)
  */
 function exprmgr_stripos($haystack , $needle ,$offset=0)
 {
+    if($offset > mb_strlen($haystack))
+        return false;
     return mb_stripos($haystack , $needle ,$offset,'UTF-8');
 }
 /**
@@ -2578,6 +2580,8 @@ function exprmgr_strlen($string)
  */
 function exprmgr_strpos($haystack , $needle ,$offset=0)
 {
+    if($offset > mb_strlen($haystack))
+        return false;
     return mb_strpos($haystack , $needle ,$offset,'UTF-8');
 }
 /**
@@ -2899,10 +2903,10 @@ function exprmgr_fixnum($value)
     }
     return $value;
 }
-
 /**
  * Returns true if all non-empty values are unique
  * @param type $args
+ * @return boolean
  */
 function exprmgr_unique($args)
 {
