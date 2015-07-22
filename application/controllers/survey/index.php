@@ -134,17 +134,17 @@ class index extends CAction {
         Yii::app()->setConfig('previewmode',$previewmode);
         if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
         {
-            $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
-
-            if ($bPreviewRight === false)
-            {
-                $asMessage = array(
-                gT("Error"),
-                gT("We are sorry but you don't have permissions to do this."),
-                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
-                );
-                $this->_niceExit($redata, __LINE__, null, $asMessage);
-            }
+//            $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
+//
+//            if ($bPreviewRight === false)
+//            {
+//                $asMessage = array(
+//                gT("Error"),
+//                gT("We are sorry but you don't have permissions to do this."),
+//                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+//                );
+//                $this->_niceExit($redata, __LINE__, null, $asMessage);
+//            }
         }
 
 
