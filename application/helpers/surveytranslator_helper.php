@@ -660,7 +660,13 @@
         $supportedLanguages['th']['rtl'] = false;
         $supportedLanguages['th']['dateformat'] = 5;
         $supportedLanguages['th']['radixpoint'] = 0;
-
+        
+        //Ukrainian
+        $supportedLanguages['uk']['description'] = gT('Ukrainian');
+        $supportedLanguages['uk']['nativedescription'] = 'ukrayins&#x2B9;kyy';
+      	$supportedLanguages['uk']['rtl'] = false;
+        $supportedLanguages['uk']['dateformat'] = 1;
+        $supportedLanguages['uk']['radixpoint'] = 1;
 
         //Urdu
         $supportedLanguages['ur']['description'] = gT('Urdu');
