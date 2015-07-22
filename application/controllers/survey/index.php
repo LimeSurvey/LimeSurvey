@@ -117,36 +117,10 @@ class index extends CAction {
         $previewmode=false;
         if (isset($param['action']) && (in_array($param['action'],array('previewgroup','previewquestion'))))
         {
-//            if(!$this->_canUserPreviewSurvey($surveyid))
-//            {
-//                $asMessage = array(
-//                    gT('Error'),
-//                    gT("We are sorry but you don't have permissions to do this.")
-//                );
-//                $this->_niceExit($redata, __LINE__, null, $asMessage);
-//            }
-//            else
-//            {
-                if((intval($param['qid']) && $param['action']=='previewquestion')) $previewmode='question';
-                if((intval($param['gid']) && $param['action']=='previewgroup')) $previewmode='group';
-//            }
+	        if((intval($param['qid']) && $param['action']=='previewquestion')) $previewmode='question';
+	        if((intval($param['gid']) && $param['action']=='previewgroup')) $previewmode='group';
         }
         Yii::app()->setConfig('previewmode',$previewmode);
-        if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
-        {
-//            $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
-//
-//            if ($bPreviewRight === false)
-//            {
-//                $asMessage = array(
-//                gT("Error"),
-//                gT("We are sorry but you don't have permissions to do this."),
-//                sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
-//                );
-//                $this->_niceExit($redata, __LINE__, null, $asMessage);
-//            }
-        }
-
 
         // TODO can this be moved to the top?
         // (Used to be global, used in ExpressionManager, merged into amVars. If not filled in === '')
