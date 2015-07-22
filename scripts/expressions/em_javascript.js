@@ -396,10 +396,15 @@ function LEMstr_replace (search, replace, subject) {
 
 
 
-function LEMstrpos(haystack,needle)
+function LEMstrpos(haystack,needle,offset)
 {
-    var str = new String(haystack);
-    return str.search(needle);
+    var haystack = haystack + '';
+    var needle = needle + '';
+    var index = 0;
+    if ((index = haystack.indexOf(needle, offset)) !== -1) {
+        return index;
+    }
+    return false;
 }
 
 function LEMempty(v)
