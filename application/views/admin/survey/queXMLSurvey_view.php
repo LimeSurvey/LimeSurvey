@@ -183,4 +183,7 @@
             <input type='hidden' name='ok' value='Y' />
             <input type='submit' value="<?php eT("queXML PDF export"); ?>" />
         </form>
+             <?php echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post', array('class'=>'form44'));
+            echo CHtml::htmlButton(gT('Reset to default settings'),array('type'=>'submit'));?>
+        </form>
     </div><br />&nbsp;
