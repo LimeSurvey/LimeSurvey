@@ -1267,7 +1267,7 @@ class remotecontrol_handle
                 }
                 $oQuestion->title = $sQuestionTitle;
                 foreach ($aQuestionData as $sFieldName => $sValue) {
-                    if ('answeroptions' === $sFieldName) {
+                    if ('answeroptions' === $sFieldName && 'F' === $oQuestion->type) {
                         foreach ($sValue as $sCode => $aAnswerData) {
                             $oAnswer = new Answer();
                             $oAnswer['answer'] = $aAnswerData['answer'];
@@ -1283,24 +1283,39 @@ class remotecontrol_handle
                 }
 
                 if($oQuestion->save(false)) {
-                    // For this type of question we need to add a sub question that does absolutely nothing -_-
-                    if ('F' === $oQuestion->type) {
-                        $oSubQuestion             = new Question;
-                        $oSubQuestion->parent_qid = $oQuestion->qid;
-                        $oSubQuestion->sid        = $oQuestion->sid;
-                        $oSubQuestion->gid        = $oQuestion->gid;
-                        $oSubQuestion->title      = 'SQ001';
-                        $oSubQuestion->language   = $oQuestion->language;
-                        $oSubQuestion->mandatory  = 'N';
-                        $oSubQuestion->save();
+                    switch($oQuestion->type) {
+                        // We handle this case only there and not upper because we need the question qid
+                        case 'M':
+                            foreach ($aQuestionData['answeroptions'] as $sCode => $aAnswerData) {
+                                $oSubQuestion             = new Question;
+                                $oSubQuestion->parent_qid = $oQuestion->qid;
+                                $oSubQuestion->sid        = $oQuestion->sid;
+                                $oSubQuestion->gid        = $oQuestion->gid;
+                                $oSubQuestion->title      = 'SQ00' . $aAnswerData['sortorder'];
+                                $oSubQuestion->question   = $aAnswerData['answer'];
+                                $oSubQuestion->question_order = $aAnswerData['sortorder'];
+                                $oSubQuestion->language   = $oQuestion->language;
+                                $oSubQuestion->save();
+                            }
+                            break;
+                        // For this type of question we need to add a sub question that does absolutely nothing -_-
+                        case 'F':
+                            $oSubQuestion             = new Question;
+                            $oSubQuestion->parent_qid = $oQuestion->qid;
+                            $oSubQuestion->sid        = $oQuestion->sid;
+                            $oSubQuestion->gid        = $oQuestion->gid;
+                            $oSubQuestion->title      = 'SQ001';
+                            $oSubQuestion->language   = $oQuestion->language;
+                            $oSubQuestion->mandatory  = 'N';
+                            $oSubQuestion->save();
 
-                        $oQuestionAttribute            = new QuestionAttribute;
-                        $oQuestionAttribute->qid       = $oQuestion->qid;
-                        $oQuestionAttribute->attribute = 'answer_width';
-                        $oQuestionAttribute->value     = 0;
-                        $oQuestionAttribute->save();
+                            $oQuestionAttribute            = new QuestionAttribute;
+                            $oQuestionAttribute->qid       = $oQuestion->qid;
+                            $oQuestionAttribute->attribute = 'answer_width';
+                            $oQuestionAttribute->value     = 0;
+                            $oQuestionAttribute->save();
+                            break;
                     }
-                    
                     return (int)$oQuestion->qid;
                 } else {
                     return array('status' => 'Creation Failed');
@@ -1673,29 +1688,61 @@ class remotecontrol_handle
                         continue;
                     }
                     if ('answeroptions' === $sFieldName) {
-                        $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $oQuestion->qid, 'language'=> $sLanguage ),array('order'=>'sortorder') );
-                        foreach($oAnswers as $oAnswer) {
-                            if (isset($sValue[$oAnswer['code']])) {
-                                // Already existing answer option
-                                $sValue[$oAnswer['code']]['existing'] = true;
-                            } else {
-                                // Answer option not existing anymore, to remove
-                                $oAnswer->delete();
-                            }
-                        }
+                        switch ($aQuestionData['type']) {
+                            case 'F':
+                                $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $oQuestion->qid, 'language'=> $sLanguage ),array('order'=>'sortorder') );
+                                foreach($oAnswers as $oAnswer) {
+                                    if (isset($sValue[$oAnswer['code']])) {
+                                        // Already existing answer option
+                                        $sValue[$oAnswer['code']]['existing'] = true;
+                                    } else {
+                                        // Answer option not existing anymore, to remove
+                                        $oAnswer->delete();
+                                    }
+                                }
 
-                        foreach ($sValue as $sCode => $aAnswerData) {
-                            $oAnswer = new Answer();
-                            if ($aAnswerData['existing']) {
-                                $oAnswer->isNewRecord=false;
-                            }
-                            $oAnswer['answer'] = $aAnswerData['answer'];
-                            $oAnswer['code'] = $sCode;
-                            $oAnswer['sortorder'] = $aAnswerData['sortorder'];
-                            $oAnswer['language'] = $sLanguage;
-                            $oAnswer['scale_id'] = 0;
-                            $oAnswer['qid'] = $oQuestion->qid;
-                            $bSaveResult = $oAnswer->save();
+                                foreach ($sValue as $sCode => $aAnswerData) {
+                                    $oAnswer = new Answer();
+                                    if ($aAnswerData['existing']) {
+                                        $oAnswer->isNewRecord=false;
+                                    }
+                                    $oAnswer['answer'] = $aAnswerData['answer'];
+                                    $oAnswer['code'] = $sCode;
+                                    $oAnswer['sortorder'] = $aAnswerData['sortorder'];
+                                    $oAnswer['language'] = $sLanguage;
+                                    $oAnswer['scale_id'] = 0;
+                                    $oAnswer['qid'] = $oQuestion->qid;
+                                    $bSaveResult = $oAnswer->save();
+                                }
+                                break;
+                            case 'M':
+                                $oAnswers = Question::model()->findAllByAttributes(array('parent_qid' => $oQuestion->qid, 'language'=> $sLanguage ),array('order'=>'question_order') );
+                                foreach($oAnswers as $oAnswer) {
+                                    if (isset($sValue[$oAnswer['title']])) {
+                                        // Already existing answer option
+                                        $sValue[$oAnswer['title']]['existing'] = true;
+                                        $sValue[$oAnswer['title']]['qid'] = $oAnswer['qid'];
+                                    } else {
+                                        // Answer option not existing anymore, to remove
+                                        $oAnswer->delete();
+                                    }
+                                }
+                                foreach ($sValue as $sCode => $aAnswerData) {
+                                    $oSubQuestion             = new Question;
+                                    if ($aAnswerData['existing']) {
+                                        $oSubQuestion->isNewRecord=false;
+                                        $oSubQuestion->qid    = $aAnswerData['qid'];
+                                    }
+                                    $oSubQuestion->parent_qid = $oQuestion->qid;
+                                    $oSubQuestion->sid        = $oQuestion->sid;
+                                    $oSubQuestion->gid        = $oQuestion->gid;
+                                    $oSubQuestion->title      = 'SQ00' . $aAnswerData['sortorder'];
+                                    $oSubQuestion->question   = $aAnswerData['answer'];
+                                    $oSubQuestion->question_order = $aAnswerData['sortorder'];
+                                    $oSubQuestion->language   = $oQuestion->language;
+                                    $oSubQuestion->save(false);
+                                }
+                                break;
                         }
                     } else {
                         $oQuestion->setAttribute($sFieldName,$sValue);
