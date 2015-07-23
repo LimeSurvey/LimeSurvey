@@ -1702,7 +1702,7 @@ function do_list_radio($ia)
             $check_ans = CHECKED;
         }
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $question, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","answer-item radio-item");
+        list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $question, null, $ansrow, $myfname, $trbc, $myfname, "li","answer-item radio-item");
         if(substr($wrapper['item-start'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
@@ -1735,7 +1735,7 @@ function do_list_radio($ia)
     if (isset($other) && $other=='Y')
     {
 
-        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator = getRadixPointData($session->survey->getLocalizedNumberFormat());
         $sSeparator = $sSeparator['separator'];
 
         if ($question->other_numbers_only==1)
@@ -1765,7 +1765,7 @@ function do_list_radio($ia)
             $answer_other = ' value=""';
         }
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $question, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "answer-item radio-item other-item other");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $question, ['sid' => $session->surveyId], array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "answer-item radio-item other-item other");
 
         if(substr($wrapper['item-start-other'],0,4) == "\t<li")
         {
@@ -3807,13 +3807,13 @@ function do_hugefreetext($ia)
 function do_yesno($ia)
 {
 
-
+    $session = App()->surveySessionManager->current;
     $checkconditionFunction = "checkconditions";
 
     $answer = "<ul class=\"answers-list radio-list\">\n"
     . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y')
+    if ($session->response->{$ia[1]} == 'Y')
     {
         $answer .= CHECKED;
     }
@@ -3822,7 +3822,7 @@ function do_yesno($ia)
     . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
     // --> END NEW FEATURE - SAVE
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'N')
+    if ($session->response->{$ia[1]} == 'N')
     {
         $answer .= CHECKED;
     }
@@ -3832,7 +3832,7 @@ function do_yesno($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
-        if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+        if (empty($session->response->{$ia[1]}))
         {
             $answer .= CHECKED;
         }
@@ -3841,7 +3841,7 @@ function do_yesno($ia)
         // --> END NEW FEATURE - SAVE
     }
 
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"".  $session->response->{$ia[1]} ."\" />\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }

@@ -333,9 +333,9 @@ class index extends CAction {
         //Send local variables to the appropriate survey type
         $redata = compact(array_keys(get_defined_vars()));
         Yii::import('application.helpers.SurveyRuntimeHelper');
-        $tmp = new SurveyRuntimeHelper();
-        $tmp->run($session->surveyId,$redata);
-
+        bP();
+        (new SurveyRuntimeHelper())->run($session->surveyId,$redata);
+        eP();
         if (isset($_POST['saveall']) || isset($flashmessage))
         {
             echo "<script type='text/javascript'> $(document).ready( function() { alert('".gT("Your responses were successfully saved.","js")."');}) </script>";

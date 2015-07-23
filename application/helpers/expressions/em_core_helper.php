@@ -48,7 +48,7 @@ class ExpressionManager {
     private $RDP_stack; // stack of intermediate results
     private $RDP_result;    // final result of evaluating the expression;
     private $RDP_evalStatus;    // true if $RDP_result is a valid result, and  there are no serious errors
-    private $varsUsed;  // list of variables referenced in the equation
+    private $varsUsed = [];  // list of variables referenced in the equation
 
     // These  variables are only used by sProcessStringContainingExpressions
     private $allVarsUsed;   // full list of variables used within the string, even if contains multiple expressions

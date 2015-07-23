@@ -1577,17 +1577,15 @@ function doAssessment($surveyid, $returndataonly=false)
 * @param bool $return - set to true to return information, false do the quota
 * @return array - nested array, Quotas->Members->Fields, includes quota information matched in session.
 */
-function checkCompletedQuota($surveyid,$return=false)
+function checkCompletedQuota($return=false)
 {
-    if (!isset($_SESSION['survey_'.$surveyid]['srid']))
-    {
-        return;
-    }
+    bP();
     static $aMatchedQuotas; // EM call 2 times quotas with 3 lines of php code, then use static.
+    $session = App()->surveySessionManager->current;
     if(!$aMatchedQuotas)
     {
         $aMatchedQuotas=array();
-        $quota_info=$aQuotasInfo = getQuotaInformation($surveyid, $session->language);
+        $quota_info=$aQuotasInfo = getQuotaInformation($session->surveyId, $session->language);
         // $aQuotasInfo have an 'active' key, we don't use it ?
         if(!$aQuotasInfo || empty($aQuotasInfo))
             return $aMatchedQuotas;
@@ -1604,12 +1602,12 @@ function checkCompletedQuota($surveyid,$return=false)
             foreach ($aQuotaInfo['members'] as $aQuotaMember)
             {
                 $aQuotaFields[$aQuotaMember['fieldname']][] = $aQuotaMember['value'];
-                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]=isset($_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$surveyid]['relevanceStatus'][$aQuotaMember['qid']];
+                $aQuotaRelevantFieldnames[$aQuotaMember['fieldname']]=isset($_SESSION['survey_'.$session->surveyId]['relevanceStatus'][$aQuotaMember['qid']]) && $_SESSION['survey_'.$session->surveyId]['relevanceStatus'][$aQuotaMember['qid']];
             }
             // For each field : test if actual responses is in quota (and is relevant)
             foreach ($aQuotaFields as $sFieldName=>$aValues)
             {
-                $bInQuota=isset($_SESSION['survey_'.$surveyid][$sFieldName]) && in_array($_SESSION['survey_'.$surveyid][$sFieldName],$aValues);
+                $bInQuota=isset($_SESSION['survey_'.$session->surveyId][$sFieldName]) && in_array($_SESSION['survey_'.$session->surveyId][$sFieldName],$aValues);
                 if($bInQuota && $aQuotaRelevantFieldnames[$sFieldName])
                 {
                     $iMatchedAnswers++;
@@ -1623,7 +1621,7 @@ function checkCompletedQuota($surveyid,$return=false)
                 if($aQuotaInfo['qlimit'] == 0){ // Always add the quota if qlimit==0
                     $aMatchedQuotas[]=$aQuotaInfo;
                 }else{
-                    $iCompleted=getQuotaCompletedCount($surveyid, $aQuotaInfo['id']);
+                    $iCompleted=getQuotaCompletedCount($session->surveyId, $aQuotaInfo['id']);
                     if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$aQuotaInfo['qlimit'])) // This remove invalid quota and not completed
                         $aMatchedQuotas[]=$aQuotaInfo;
                 }
@@ -1637,9 +1635,9 @@ function checkCompletedQuota($surveyid,$return=false)
 
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
-    $aSurveyInfo=getSurveyInfo($surveyid, $session->language);
+    $aSurveyInfo=getSurveyInfo($session->surveyId, $session->language);
     $sTemplatePath=Template::getTemplatePath($aSurveyInfo['template']);
-    $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
+    $sClientToken=isset($_SESSION['survey_'.$session->surveyId]['token'])?$_SESSION['survey_'.$session->surveyId]['token']:"";
     // $redata for templatereplace
     $aDataReplacement = array(
         'thissurvey'=>$aSurveyInfo,
@@ -1651,8 +1649,8 @@ function checkCompletedQuota($surveyid,$return=false)
     $aMatchedQuota=$aMatchedQuotas[0];
     // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
     $event = new PluginEvent('afterSurveyQuota');
-    $event->set('surveyId', $surveyid);
-    $event->set('responseId', $_SESSION['survey_'.$surveyid]['srid']);// We allways have a responseId
+    $event->set('surveyId', $session->surveyId);
+    $event->set('responseId', $_SESSION['survey_'.$session->surveyId]['srid']);// We allways have a responseId
     $event->set('aMatchedQuotas', $aMatchedQuotas);// Give all the matched quota : the first is the active
     App()->getPluginManager()->dispatchEvent($event);
     $blocks = array();
@@ -1688,9 +1686,9 @@ function checkCompletedQuota($surveyid,$return=false)
         $sQuotaStep= App()->surveySessionManager->current->getStep(); // Surely not needed
         $sNavigator = CHtml::htmlButton(gT("Previous"),array('type'=>'submit','id'=>"moveprevbtn",'value'=>$sQuotaStep,'name'=>'move','accesskey'=>'p','class'=>"submit button"));
         //$sNavigator .= " ".CHtml::htmlButton(gT("Submit"),array('type'=>'submit','id'=>"movesubmit",'value'=>"movesubmit",'name'=>"movesubmit",'accesskey'=>'l','class'=>"submit button"));
-        $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$surveyid), 'post', array('id'=>'limesurvey','name'=>'limesurvey'));
+        $sHtmlQuotaMessage.= CHtml::form(array("/survey/index","sid"=>$session->surveyId), 'post', array('id'=>'limesurvey','name'=>'limesurvey'));
         $sHtmlQuotaMessage.= templatereplace(file_get_contents($sTemplatePath."/navigator.pstpl"),array('NAVIGATOR'=>$sNavigator,'SAVE'=>''),$aDataReplacement);
-        $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$surveyid);
+        $sHtmlQuotaMessage.= CHtml::hiddenField('sid',$session->surveyId);
         $sHtmlQuotaMessage.= CHtml::hiddenField('token',$sClientToken);// Did we really need it ?
         $sHtmlQuotaMessage.= CHtml::endForm();
     }
@@ -1703,7 +1701,7 @@ function checkCompletedQuota($surveyid,$return=false)
     if($sAutoloadUrl == 1 && $sUrl != "")
     {
         if ($sAction == "1")
-            killSurveySession($surveyid);
+            killSurveySession($session->surveyId);
         header("Location: ".$sUrl);
     }
     doHeader();
@@ -1713,6 +1711,8 @@ function checkCompletedQuota($surveyid,$return=false)
     doFooter();
     if ($sAction == "1")
         killSurveySession($surveyid);
+
+    eP();
     Yii::app()->end();
 }
 
@@ -1790,7 +1790,7 @@ function display_first_page() {
     doHeader();
 
     LimeExpressionManager::StartProcessingPage();
-    LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
+    LimeExpressionManager::StartProcessingGroup(-1, false);  // start on welcome page
 
     $redata = compact(array_keys(get_defined_vars()));
     $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];

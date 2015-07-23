@@ -25,20 +25,54 @@
  * @property-read string $type
  * @property QuestionGroup $group;
  * @property string $title
+ * @property boolean $other
  * @property-read Survey $survey
+ * @property-read string $sgqa
  * @property-read QuestionAttribute[] $questionAttributes
  */
     class Question extends LSActiveRecord
     {
+        /**
+         * Question type constants.
+         */
+        const TYPE_ARRAY_DUAL_SCALE = "1";
+        const TYPE_FIVE_POINT_CHOICE = "5";
+        const TYPE_ARRAY_FIVE_POINT = "A";
+        const TYPE_ARRAY_TEN_POINT = "B";
+        const TYPE_ARRAY_YES_NO_UNCERTAIN = "C";
+        const TYPE_DATE_TIME = "D";
+        const TYPE_ARRAY_INCREASE_SAME_DECREASE = "E";
+        const TYPE_ARRAY = "F";
+        const TYPE_GENDER = "G";
+        const TYPE_ARRAY_BY_COLUMN = "H";
+        const TYPE_LANGUAGE_SWITCH = "I";
+        const TYPE_MULTIPLE_NUMERICAL_INPUT = "K";
+        const TYPE_RADIO_LIST = "L";
+        const TYPE_MULTIPLE_CHOICE = "M";
+        const TYPE_NUMERICAL_INPUT = "N";
+        const TYPE_LIST_WITH_COMMENT = "O";
+        const TYPE_MULTIPLE_CHOICE_WITH_COMMENT = "P";
+        const TYPE_MULTIPLE_SHORT_TEXT = "Q";
+        const TYPE_RANKING = "R";
+        const TYPE_SHORT_TEXT = "S";
+        const TYPE_LONG_TEXT = "T";
+        const TYPE_HUGE_TEXT = "U";
+        const TYPE_DISPLAY = "X";
+        const TYPE_YES_NO = "Y";
+        const TYPE_DROPDOWN_LIST = "!";
+        const TYPE_ARRAY_NUMBERS = ":";
+        const TYPE_ARRAY_TEXTS = ";";
+        const TYPE_UPLOAD = "|";
+        const TYPE_EQUATION = "*";
+
         protected $customAttributes = [];
         protected $customLocalizedAttributes = [];
+
+        /**
+         * Used only on insert for deriving the question_order.
+         * @var int The question id of the previous question.
+         */
         public $before;
-
-        protected function afterFind()
-        {
-            parent::afterFind();
-
-        }
 
         protected function getCustomAttribute($name) {
             if (array_key_exists($name, $this->customAttributes)) {
@@ -72,6 +106,11 @@
             }
         }
 
+        /**
+         * After saving the main attributes we save the attributes that are stored in the EAV table.
+         * @todo Check if we should save question + attributes in a transaction.
+         * @throws Exception
+         */
         protected function afterSave()
         {
             parent::afterSave();
@@ -165,7 +204,13 @@
             ];
         }
 
+        /**
+         * @return bool
+         */
         public function beforeSave() {
+            /**
+             * We set the question order for new records.
+             */
             if ($this->isNewRecord && empty($this->parent_qid) && empty($this->question_order)) {
                 // Set order.
                 if (empty($this->before)) {
@@ -198,8 +243,18 @@
             return true;
         }
 
+        /**
+         * @param string $name
+         * @return bool|mixed|null|string
+         */
         public function __get($name)
         {
+            /**
+             * Since LS uses Y / N instead of the more common 1 / 0 approach for storing booleans,
+             * this enables us to use bool_XXXX to get a php boolean for attribute XXXX.
+             * @todo Refactor the database to actually store tinyint(1) or similar data and then global replace all bool_ accesses.
+             *
+             */
             if (substr($name, 0, 5) == 'bool_') {
                 $result = parent::__get(substr($name, 5)) === 'Y';
             } elseif ($name != 'type' && in_array($name, $this->customAttributeNames())) {
@@ -234,12 +289,12 @@
             return '{{questions}}';
         }
 
-              /**
-        * Defines the relations for this model
-        *
-        * @access public
-        * @return array
-        */
+        /**
+         * Defines the relations for this model
+         *
+         * @access public
+         * @return array
+         */
         public function relations()
         {
             $alias = $this->getTableAlias();
@@ -250,7 +305,10 @@
                 'questionAttributes' => [self::HAS_MANY, QuestionAttribute::class, 'qid', 'index' => 'attribute'],
                 'group' => [self::BELONGS_TO, 'QuestionGroup', 'gid'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid'],
+                // Conditions this question has.
                 'conditions' => [self::HAS_MANY, Condition::class, 'qid'],
+                // Conditions other questions have where this question is the target.
+                'conditionsAsTarget' => [self::HAS_MANY, Condition::class, 'cqid'],
                 'answers' => [self::HAS_MANY, Answer::class, 'question_id'],
                 'defaultValues' => [self::HAS_MANY, DefaultValue::class, 'qid']
             );
@@ -276,10 +334,12 @@
                 ['title','length', 'min' => 1, 'max'=>20,'on' => ['update', 'insert']],
                 ['title,question,help', 'LSYii_Validators'],
                 ['other', 'in', 'range' => ['Y','N'], 'allowEmpty' => true],
-                ['mandatory', 'in', 'range' => ['Y','N'], 'allowEmpty'=>true],
                 ['question_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
                 ['scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
                 ['same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
+                /** @todo Create EM validator that validates syntax only. */
+                ['relevance', 'safe'],
+                [['bool_mandatory', 'bool_other'], 'boolean'],
             ];
 
             $aRules[] = ['title', 'match', 'pattern' => '/^[a-z0-9]*$/i',
@@ -457,7 +517,6 @@
             {
                 $questionsIds = array($questionsIds);
             }
-
             Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
             Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));
             Yii::app()->db->createCommand()->delete(Answer::model()->tableName(), array('in', 'qid', $questionsIds));
@@ -467,6 +526,10 @@
             Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
         }
 
+
+        /**
+         * @deprecated
+         */
         function getAllRecords($condition, $order=FALSE)
         {
             $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
@@ -918,47 +981,51 @@
 
         public static function resolveClass($type) {
             switch ($type) {
-                case 'N':
+                case self::TYPE_NUMERICAL_INPUT:
                     $class = \ls\models\questions\NumericalQuestion::class;
                     break;
-                case 'D': // Date time
-                case 'U': // Huge free text
-                case 'S': // Short free text
-                case 'T':
+                case self::TYPE_DATE_TIME:
+                case self::TYPE_HUGE_TEXT:
+                case self::TYPE_SHORT_TEXT:
+                case self::TYPE_LONG_TEXT:
                     $class = \ls\models\questions\TextQuestion::class;
                     break;
-                case 'O': // Single choice with comments.
-                case '!': // Single choice dropdown.
-                case 'L': // Single choice (Radio);
+                case self::TYPE_LIST_WITH_COMMENT:
+                    $class = \ls\models\questions\SingleChoiceWithCommentQuestion::class;
+                case self::TYPE_DROPDOWN_LIST:
+                case self::TYPE_RADIO_LIST:
                     $class = \ls\models\questions\SingleChoiceQuestion::class;
                     break;
-                case 'Q': // Multiple (short) text.
+                case self::TYPE_MULTIPLE_SHORT_TEXT:
                     $class = \ls\models\questions\MultipleTextQuestion::class;
                     break;
-                case 'R': // Ranking
+                case self::TYPE_RANKING:
                     $class = \ls\models\questions\RankingQuestion::class;
                     break;
-                case 'F': // Array
+                case self::TYPE_ARRAY:
                     $class = \ls\models\questions\ArrayQuestion::class;
                     break;
-                case ';': // Array texts
-                case ':': // Array numbers
+                case self::TYPE_ARRAY_TEXTS:
+                case self::TYPE_ARRAY_NUMBERS:
                     $class = \ls\models\questions\OpenArrayQuestion::class;
                     break;
-                case '5': // 5 point choice
-                case 'Y': // Yes no
-                case '|':
-                case 'X': // Text display
+                case self::TYPE_ARRAY_FIVE_POINT:
+                case self::TYPE_YES_NO:
+                case self::TYPE_ARRAY_INCREASE_SAME_DECREASE:
+                case self::TYPE_ARRAY_YES_NO_UNCERTAIN:
+                    $class = \ls\models\questions\FixedChoiceQuestion::class;
+                case self::TYPE_UPLOAD:
+                case self::TYPE_DISPLAY:
                     $class = __CLASS__;
                     break;
-                case 'M': // Multiple choice
+                case self::TYPE_MULTIPLE_CHOICE:
                     $class = \ls\models\questions\MultipleChoiceQuestion::class;
                     break;
                 case '*':
                     $class = \ls\models\questions\EquationQuestion::class;
                     break;
                 default:
-                    die("noo class for type {$type}");
+                    throw new \Exception("No class for question type {$type}");
 
             }
             return $class;
@@ -1053,5 +1120,81 @@
             return in_array($name, $this->customAttributeNames()) || parent::hasAttribute($name);
         }
 
+        /**
+         * Returns the fields for this question.
+         * @todo Return an array of some Field object instead of array of arrays.
+         */
+        public function getFields() {
+            $result = [];
+            $result[$this->getSgqa()] = [
+                'fieldname' => $this->getSgqa(),
+                'type' => $this->type,
+                'qid' => $this->primaryKey,
+                'sid' => $this->sid,
+                'gid' => $this->gid,
+                'aid' => '',
+                'title' => $this->title,
+                'question' => $this->question,
+                'group_name' => $this->group->group_name,
+                'mandatory' => $this->bool_mandatory,
+                'hasconditions' => count($this->conditions) > 0,
+                'usedinconditions' => count($this->conditionsAsTarget) > 0
+
+            ];
+            if ($this->bool_other) {
+                $result[$this->getSgqa() . 'other'] = [
+                    'fieldname' => $this->getSgqa() . 'other',
+                    'type' => $this->type,
+                    'qid' => $this->primaryKey,
+                    'sid' => $this->sid,
+                    'gid' => $this->gid,
+                    'aid' => '',
+                    'title' => $this->title,
+                    'question' => $this->question,
+                    'group_name' => $this->group->group_name,
+                    'mandatory' => $this->bool_mandatory,
+                    'hasconditions' => count($this->conditions) > 0,
+                    'usedinconditions' => count($this->conditionsAsTarget) > 0,
+                    'subquestion' => gT('Other'),
+                    'defaultvalue' => '@todo'
+
+                ];
+            }
+            return $result;
+
+
+        }
+
+        /**
+         * The variable name for this question.
+         */
+        public function getVarName() {
+            if (!empty($this->parent_qid)) {
+                throw new \Exception("Don't knwo this for subquestions!");
+            }
+
+            return $this->title;
+
+        }
+
+        /**
+         * Check if the response passes mandatory requirements for this question.
+         * A question passes this if any of it's fields have been filled.
+         */
+        public function validateMandatory(Response $response) {
+            $result = false;
+            foreach($this->getColumns() as $name => $type) {
+                $result = $result || isset($response->$name);
+            }
+            return $result;
+        }
+
+        /**
+         * Returns an array of EM expression that validate this question.
+         * @return string[]
+         */
+        public function getValidationExpressions() {
+            return [];
+        }
 
     }

@@ -19,4 +19,19 @@ class SingleChoiceQuestion extends ChoiceQuestion
             'answers' => [self::HAS_MANY, \Answer::class, 'question_id', 'order' => 'sortorder', 'index' => 'code']
         ]);
     }
+
+    /**
+     * @return array Column definitions for SingleChoiceQuestion type(s)
+     */
+    public function getColumns()
+    {
+        $result = [$this->sgqa => "string(5)"];
+
+        if ($this->other == 'Y') {
+            $result[$this->sgqa . 'other'] = 'text';
+        }
+        return $result;
+    }
+
+
 }

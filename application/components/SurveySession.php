@@ -37,15 +37,15 @@ class SurveySession extends CComponent {
      */
     protected $surveyId;
     protected $id;
-    protected $responseId;
-    protected $finished = false;
 
+    protected $_responseId;
     protected $_language = 'en';
     protected $_prevStep = 0;
     protected $_step = 0;
     protected $_maxStep = 0;
     protected $_templateDir;
     protected $_postKey;
+    protected $_finished = false;
     protected $_token;
     /**
      * @param int $surveyId
@@ -54,21 +54,29 @@ class SurveySession extends CComponent {
     public function __construct($surveyId, $responseId, $id)
     {
         $this->surveyId = $surveyId;
-        $this->responseId = $responseId;
+        $this->_responseId = $responseId;
         $this->id = $id;
-        $this->token = isset($this->response->token) ? $this->response->token : null;
+        // Need isset since the token property does not exist for surveys without token.
+        $this->_token = isset($this->response->token) ? $this->response->token : null;
     }
 
     public function getSurveyId() {
         return $this->surveyId;
     }
 
+    /**
+     * @return string
+     */
     public function getResponseId() {
-        return $this->responseId;
+        return $this->_responseId;
     }
 
     public function getIsFinished() {
-        return $this->finished;
+        return $this->_finished;
+    }
+
+    public function setIsFinished($value) {
+        $this->_finished = $value;
     }
 
     public function getToken() {
@@ -96,7 +104,7 @@ class SurveySession extends CComponent {
 
     public function getResponse() {
         if (!isset($this->_response)) {
-            $this->_response = Response::model($this->surveyId)->findByPk($this->responseId);
+            $this->_response = Response::model($this->surveyId)->findByPk($this->_responseId);
         }
         return $this->_response;
     }
@@ -164,6 +172,10 @@ class SurveySession extends CComponent {
         return $result;
     }
 
+    /**
+     * @param $index
+     * @return Question
+     */
     public function getQuestionByIndex($index) {
         return array_values($this->survey->questions)[$index];
     }
@@ -179,7 +191,7 @@ class SurveySession extends CComponent {
             case Survey::FORMAT_QUESTION:
                 $result = array_sum(array_map(function(QuestionGroup $group) {
                     return count($this->getQuestions($group));
-                }));
+                }, $this->getGroups()));
                 break;
             default:
                 throw new \Exception("Unknown survey format.");
@@ -222,8 +234,8 @@ class SurveySession extends CComponent {
             '_step',
             '_maxStep',
             '_prevStep',
-            'responseId',
-            'finished',
+            '_responseId',
+            '_finished',
             '_language',
             '_postKey',
             '_token'
@@ -245,15 +257,36 @@ class SurveySession extends CComponent {
         return $this->_templateDir;
     }
 
+    /**
+     * @param int $id The group id.
+     * @return QuestionGroup
+     */
     public function getGroup($id) {
+        if (!is_numeric($id) || $id < 0) {
+            throw new \InvalidArgumentException("\$id must of type integer and > 0");
+        }
+
         return $this->survey->groups[$id];
     }
+
+    /**
+     * Get the group by index.
+     * @return QuestionGroup
+     */
+    public function getGroupByIndex($index) {
+        if (!is_numeric($index)) {
+            throw new \InvalidArgumentException("\$index must of type integer");
+        }
+        return $this->getGroups()[$index - 1];
+
+    }
+
     public function getGroupIndex($id) {
-        \Yii::beginProfile(__CLASS__ . "::" . __FUNCTION__);
+        bP();
         $groups = $this->groups;
         $group = $this->getGroup($id);
         $result = array_search($group, array_values($groups), true);
-        \Yii::endProfile(__CLASS__ . "::" . __FUNCTION__);
+        eP();
         return $result;
     }
     /**
@@ -263,6 +296,7 @@ class SurveySession extends CComponent {
      */
     public function getGroups()
     {
+        bP();
         $groups = $this->survey->groups;
 
         // Get all randomization groups in order.
@@ -284,7 +318,7 @@ class SurveySession extends CComponent {
                  * (so it's reproducible. But Suhosin doesn't allow seeding mt_rand.
                  *
                  * Current approach:
-                 * Create hash of response id, take last 8 chars (== 4 bytes).
+                 * Create hash of response id and the number of groups left, take last 8 chars (== 4 bytes).
                  */
                 $seed = array_values(unpack('L',
                     hex2bin(substr(md5($this->responseId . count($randomizationGroups[$group]), true), -8, 4))))[0];
@@ -297,6 +331,7 @@ class SurveySession extends CComponent {
                 $randomizationGroups[$group] = array_values($randomizationGroups[$group]);
             }
         }
+        eP();
         return $order;
     }
 
@@ -440,6 +475,7 @@ class SurveySession extends CComponent {
     public function setPostKey($value) {
         $this->_postKey = $value;
     }
+
 
 
 }

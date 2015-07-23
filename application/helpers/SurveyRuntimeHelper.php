@@ -86,16 +86,12 @@ class SurveyRuntimeHelper {
 
         echo '<div id="index"><div class="container"><h2>' . gT("Question index") . '</h2>';
 
-        $stepIndex = LimeExpressionManager::GetStepIndexInfo();
         $lastGseq=-1;
         $gseq = -1;
         $grel = true;
         for($v = 0, $n = 0; $n != $session->getMaxStep(); ++$n)
         {
-            if (!isset($stepIndex[$n])) {
-                continue;   // this is an invalid group - skip it
-            }
-            $stepInfo = $stepIndex[$n];
+            $stepInfo = LimeExpressionManager::GetStepIndexInfo($n);
 
             if ($session->getFormat() == Survey::FORMAT_QUESTION)
             {
@@ -360,7 +356,6 @@ class SurveyRuntimeHelper {
                 {
                     $session->setStep($moveResult['seq'] + 1);  // step is index base 1
                     $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-
                 }
                 if ($move == "movesubmit" && $moveResult['finished'] == false)
                 {
@@ -605,10 +600,6 @@ class SurveyRuntimeHelper {
 
                 echo templatereplace(file_get_contents($sTemplatePath."completed.pstpl"), array('completed' => $completed), $redata, 'SubmitCompleted', false, NULL, array(), true );
                 echo "\n";
-                if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
-                {
-                    echo LimeExpressionManager::GetDebugTimingMessage();
-                }
                 if ((($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY))
                 {
                     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
@@ -634,7 +625,7 @@ class SurveyRuntimeHelper {
         {
             $_gid = sanitize_int($param['gid']);
 
-            LimeExpressionManager::StartSurvey($session->surveyId, 'group', $surveyOptions, false, $LEMdebugLevel);
+            LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false, $LEMdebugLevel);
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
             if ($gseq == -1) {
                 throw new \CHttpException(500, gT('Invalid group number for this survey: ') . $_gid);
@@ -661,16 +652,13 @@ class SurveyRuntimeHelper {
             {
                 if ($previewquestion) {
                     $_qid = sanitize_int($param['qid']);
-                    LimeExpressionManager::StartSurvey($session->surveyId, 'question', $surveyOptions, false, $LEMdebugLevel);
+                    LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false, $LEMdebugLevel);
                     $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                     $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                    $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                    $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['qseq']);
                 } else {
-                    $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                    $stepInfo = LimeExpressionManager::GetStepIndexInfo($session->step + 1);
                 }
-                $gid = $stepInfo['gid'];
-                $groupname = $stepInfo['gname'];
-                $groupdescription = $stepInfo['gtext'];
             }
         }
 
@@ -704,6 +692,9 @@ class SurveyRuntimeHelper {
             $gid = $group->primaryKey;
             $qnumber = 0;
 
+            if (isset($stepInfo) && !isset($stepInfo['gid'])) {
+                var_dump($stepInfo); die();
+            }
             if ($session->format != Survey::FORMAT_ALL_IN_ONE
                 && isset($stepInfo)
                 && $stepInfo['gid'] != $gid) {
@@ -1032,10 +1023,6 @@ class SurveyRuntimeHelper {
             }
         }
 
-        if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)
-        {
-            echo LimeExpressionManager::GetDebugTimingMessage();
-        }
         if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
         {
             echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";

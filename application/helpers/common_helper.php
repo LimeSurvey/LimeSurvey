@@ -13,6 +13,37 @@
 Yii::import('application.helpers.sanitize_helper', true);
 
 /**
+ * Helper function for profiling.
+ * @param string $key The key to be appended.
+ */
+function bP($key = null, $end = false) {
+    if (defined('YII_DEBUG') && YII_DEBUG) {
+        $details = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
+        $class = \TbArray::getValue('class', $details, 'Global function');
+        $token = "{$class}::{$details['function']}";
+        \Yii::beginProfile($token);
+        if (isset($key)) {
+            \Yii::beginProfile($token . ' - ' . $key);
+        }
+    }
+}
+
+/**
+ * Helper function for profiling.
+ * @param string $key The key to be appended.
+ */
+function eP($key = null) {
+    if (defined('YII_DEBUG') && YII_DEBUG) {
+        $details = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
+        $class = \TbArray::getValue('class', $details, 'Global function');
+        $token = "{$class}::{$details['function']}";
+        if (isset($key)) {
+            \Yii::endProfile($token . ' - ' . $key);
+        }
+        \Yii::endProfile($token);
+    }
+}
+/**
  * Translation helper function
  * @param string $sToTranslate
  * @param string $sEscapeMode
@@ -1494,7 +1525,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $cacheKey = 'fieldmap' . md5(json_encode(func_get_args()));
     if (!isset($requestCache[$cacheKey])) {
 
-        \Yii::beginProfile($cacheKey);
+        bP($cacheKey);
         $sLanguage = sanitize_languagecode($sLanguage);
         $surveyid = sanitize_int($surveyid);
 
@@ -1675,91 +1706,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             'gid' => $question->gid
                         );
                     }
-                    $fieldmap[$fieldname] = array(
-                        "fieldname" => $fieldname,
-                        'type' => $question->type,
-                        'sid' => $question->sid,
-                        "gid" => $question->gid,
-                        "qid" => $question->primaryKey,
-                        "aid" => ""
-                    );
-                    if ($style == "full") {
-                        $fieldmap[$fieldname]['title'] = $question->title;
-                        $fieldmap[$fieldname]['question'] = $question->question;
-                        $fieldmap[$fieldname]['group_name'] = $group->group_name;
-                        $fieldmap[$fieldname]['mandatory'] = $question->mandatory;
-                        $fieldmap[$fieldname]['hasconditions'] = $conditions;
-                        $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
-                        if (isset($defaultValues[$question->primaryKey . '~0'])) {
-                            $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$question->primaryKey . '~0'];
-                        }
-                    }
-                    switch ($question->type) {
-                        case "L":  //RADIO LIST
-                        case "!":  //DROPDOWN LIST
-                            if ($question->bool_other == "Y") {
-                                $fieldname = "{$question['sid']}X{$question['gid']}X{$question['qid']}other";
-                                if (isset($fieldmap[$fieldname])) {
-                                    $aDuplicateQIDs[$question['qid']] = array(
-                                        'fieldname' => $fieldname,
-                                        'question' => $question['question'],
-                                        'gid' => $question['gid']
-                                    );
-                                }
 
-                                $fieldmap[$fieldname] = array(
-                                    "fieldname" => $fieldname,
-                                    'type' => $question->type,
-                                    'sid' => $surveyid,
-                                    "gid" => $question['gid'],
-                                    "qid" =>$question->qid,
-                                    "aid" => "other"
-                                );
-                                // dgk bug fix line above. aid should be set to "other" for export to append to the field name in the header line.
-                                if ($style == "full") {
-                                    $fieldmap[$fieldname]['title'] = $question['title'];
-                                    $fieldmap[$fieldname]['question'] = $question['question'];
-                                    $fieldmap[$fieldname]['subquestion'] = gT("Other");
-                                    $fieldmap[$fieldname]['group_name'] = $question->group->group_name;
-                                    $fieldmap[$fieldname]['mandatory'] = $question['mandatory'];
-                                    $fieldmap[$fieldname]['hasconditions'] = $conditions;
-                                    $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
-                                    if (isset($defaultValues[$question['qid'] . '~other'])) {
-                                        $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$question['qid'] . '~other'];
-                                    }
-                                }
-                            }
-                            break;
-                        case "O": //DROPDOWN LIST WITH COMMENT
-                            $fieldname = $question->sgqa . "comment";
-                            if (isset($fieldmap[$fieldname])) {
-                                $aDuplicateQIDs[$question['qid']] = array(
-                                    'fieldname' => $fieldname,
-                                    'question' => $question->question,
-                                    'gid' => $question->gid
-                                );
-                            }
+                    $fieldmap = array_merge($fieldmap, $question->getFields());
 
-                            $fieldmap[$fieldname] = array(
-                                "fieldname" => $fieldname,
-                                'type' => $question->type,
-                                'sid' => $question->sid,
-                                "gid" => $question->gid,
-                                "qid" => $question->primaryKey,
-                                "aid" => "comment"
-                            );
-                            // dgk bug fix line below. aid should be set to "comment" for export to append to the field name in the header line. Also needed set the type element correctly.
-                            if ($style == "full") {
-                                $fieldmap[$fieldname]['title'] = $question->title;
-                                $fieldmap[$fieldname]['question'] = $question->question;
-                                $fieldmap[$fieldname]['subquestion'] = gT("Comment");
-                                $fieldmap[$fieldname]['group_name'] = $group->group_name;
-                                $fieldmap[$fieldname]['mandatory'] = $question->mandatory;
-                                $fieldmap[$fieldname]['hasconditions'] = $conditions;
-                                $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
-                            }
-                            break;
-                    }
+
+
                 } // For Multi flexi question types
                 elseif ($question->subQuestionScales == 2 && !$question->hasAnswers) {
                     //MULTI FLEXI
@@ -2119,7 +2070,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
 
 //        }
-        \Yii::endProfile($cacheKey);
+        eP($cacheKey);
         $requestCache[$cacheKey] = $fieldmap;
     }
     return $requestCache[$cacheKey];
@@ -4628,12 +4579,9 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'showregister'=>'Y'
         ),
     );
-    
-    try {
-        $aExtraTokenFields = Token::model($surveyid)->attributeNames();
-    } catch (\Exception $ex) {
-        $aExtraTokenFields = [];
-    }
+
+    $aExtraTokenFields = Token::valid($surveyid) ? Token::model($surveyid)->attributeNames() : [];
+
     $aSavedExtraTokenFields = Survey::model()->findByPk($surveyid)->tokenAttributes;
 
     // Drop all fields that are in the saved field description but not in the table definition

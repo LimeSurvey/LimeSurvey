@@ -30,7 +30,7 @@
                     'content' => $this->renderPartial('update/validation', ['question' => $question, 'form' => $form], true),
                 ], [
                     'label' => gT('Presentation & Navigation'),
-                    'content' => "@todo",
+                    'content' => $this->renderPartial('update/presentation', ['question' => $question, 'form' => $form], true),
                 ], [
                     'label' => gT('Timers'),
                     'content' => "@todo",

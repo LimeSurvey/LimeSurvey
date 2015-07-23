@@ -458,7 +458,12 @@
 
         }
 
+        public function markAsFinished() {
+            $this->submitdate = date("Y-m-d H:i:s");
+        }
 
-	}
+
+
+    }
 
 ?>
