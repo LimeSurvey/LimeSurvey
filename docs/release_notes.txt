@@ -58,6 +58,48 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 2.06+ (build 150629) to 2.06+ (build 150723) Jun 23, 2015
+-Fixed issue #8917: Error in R export plugin when exporting Yes/No question results (Carsten Schmitz)
+-Fixed issue #9776: Mail registered participants with RemoteControl API (Jan-E)
+-Fixed issue #9783: Use "adminname <adminemail>" as from-header in emailTokens (Jan-E)
+-Fixed issue #9706: Wrong minimum PHP version in installer (Gabriele Mambrini)
+-Fixed issue #9200: Delete selected participants from CPDB does not allow to select a deletion mode (Carsten Schmitz)
+-Fixed issue #9666: Data entry screen with token problem (Carsten Schmitz)
+-Fixed issue #9700: Owner list not sorted alphabetically when assigning a new survey owner (Carsten Schmitz)
+-Fixed issue #9717: Activation does not check if all subquestion and answer options scales exist (Carsten Schmitz)
+-Fixed issue #9737: No header on print version (Alfredo Esteban)
+-Fixed issue #9748: Incorrect link for testing https (Denis Chenu)
+-Fixed issue #9749: Button for batch sending invitations actually goes to page for sending reminders (Denis Chenu)
+-Fixed issue #9753: Lack of sub question for array text and arry number aren't show in Question view (Denis Chenu)
+-Fixed issue #9757: Inclusion filter for full responses/Incomplete responses can not be reset in browse (Denis Chenu)
+-Fixed issue #9758: Selecting to show last 50 responses does not show the last 50 responses anymore (Denis Chenu)
+-Fixed issue #9766: Blank page when trying to use the plugin manager (ptramonti)
+-Fixed issue #9769: Preview url can breaks logic on questions (Denis Chenu)
+-Fixed issue #9770: Unable to import old responses table (Denis Chenu)
+-Fixed issue #9772: Using "Previous" Button to Navigate back to Welcome Screen before Exit Makes ReVisiting Fail (Denis Chenu)
+-Fixed issue #9773: Ranking question with filter are not resetted when come back to question (Denis Chenu)
+-Fixed issue #9777: Bad link for view/edit responses with 'urlFormat' => 'get' (Denis Chenu)
+-Fixed issue #9778: Unable to use cron event (Sam)
+-Fixed issue #9780 queXML export fails (Adam Zammit)
+-Fixed issue #9782: Redundant SQ relevance button on scale>0 (mfaber)
+-Fixed issue #9787: IE9 - the exit and clear survey button do not work (Denis Chenu)
+-Fixed issue: Button for sending email with url format get (Denis Chenu)
+-Fixed issue: Unable to delete multiple response in some condition (Denis Chenu)
+-Fixed issue: XAMPP installer not completing successfully (Carsten Schmitz)
+-New feature #8331: Set appearance options for queXML export (Adam Zammit)
+-New Feature #8343: quexf: next page message with new question splitting option (Adam Zammit)
+-New Feature #8344: quexf: conditional splitting with new question splitting option (Adam Zammit)
+-New feature #9785: unicode function for substr and other text management function (Denis Chenu)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu, arnaud21
+#Updated translation: Greek by kiolalis
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Korean by spn
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
  
 Changes from 2.06+ (build 150625) to 2.06+ (build 150629) Jun 29, 2015
 -Fixed issue 09706: Wrong minimum PHP version in installer (Gabriele Mambrini)
