@@ -1406,9 +1406,11 @@
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_names=array();
+                            $sq_eqPart=array();
                             foreach($subqs as $subq)
                             {
                                 $sq_names[] = $subq['varName'].".NAOK";
+                                $sq_eqPart[] = "!is_empty({$subq['varName']})*{$subq['csuffix']}";
                             }
                             if (!isset($validationEqn[$questionNum]))
                             {
@@ -1418,7 +1420,7 @@
                             'qtype' => $type,
                             'type' => 'default',
                             'class' => 'default',
-                            'eqn' =>  'unique(' . implode(',',$sq_names) . ')',
+                            'eqn' =>  'unique(' . implode(',',$sq_names) . ') and count(' . implode(',',$sq_names) . ')==max('. implode(',',$sq_eqPart) .')',
                             'qid' => $questionNum,
                             );
                         }
@@ -3048,7 +3050,7 @@
                         $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
                         break;
                     case 'R':
-                        $qtips['default']=$this->gT("All your answers must be different.");
+                        $qtips['default']=$this->gT("All your answers must be different and you must rank in order.");
                         break;
 // Helptext is added in qanda_help.php
 /*                  case 'D':
@@ -7173,6 +7175,14 @@
                                 $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
                                 $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
                                 $relParts[] = "    }\n";
+                                break;
+                            case 'R':
+                                $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));
+                                $relParts[] = " $('#question{$arg['qid']} .select-list select').each(function(){ \n";
+                                $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
+                                $relParts[] = "     $(this).val('').trigger('change'); \n";
+                                $relParts[] = "   }; \n";
+                                $relParts[] = " }); \n";
                                 break;
                             default:
                                 break;
