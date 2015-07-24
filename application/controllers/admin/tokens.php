@@ -1403,12 +1403,11 @@ class tokens extends Survey_Common_Action
                 'filteremail'=>array(
                     'type'=>'string',
                     'label'=>gT('Filter by email address'),
-                    'help'=>gT('Email address contains the input.'),
                 ),
                 'tokendeleteexported'=>array(
                     'type'=>'checkbox',
                     'label'=>gT('Delete exported tokens'),
-                    'help'=>'Attention : the tokens are deleted from token table, you can not find it again.',
+                    'help'=>'Attention: If selected the exported tokens are deleted permanently from the token table.',
                 ),
             );
             $this->_renderWrappedTemplate('token', array('tokenbar', 'exportdialog'), $aData);
