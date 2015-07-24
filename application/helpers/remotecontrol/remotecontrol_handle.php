@@ -1315,6 +1315,20 @@ class remotecontrol_handle
                             $oQuestionAttribute->value     = 0;
                             $oQuestionAttribute->save();
                             break;
+
+                        case 'Q':
+                            foreach ($aQuestionData['subquestions'] as $sCode => $aQuestionData) {
+                                $oSubQuestion             = new Question;
+                                $oSubQuestion->parent_qid = $oQuestion->qid;
+                                $oSubQuestion->sid        = $oQuestion->sid;
+                                $oSubQuestion->gid        = $oQuestion->gid;
+                                $oSubQuestion->title      = 'SQ00' . $aQuestionData['sortorder'];
+                                $oSubQuestion->question   = $aQuestionData['label'];
+                                $oSubQuestion->question_order = $aQuestionData['sortorder'];
+                                $oSubQuestion->language   = $oQuestion->language;
+                                $oSubQuestion->save();
+                            }
+                            break;
                     }
                     return (int)$oQuestion->qid;
                 } else {
