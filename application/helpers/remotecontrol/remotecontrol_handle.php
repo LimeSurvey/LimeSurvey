@@ -1322,7 +1322,7 @@ class remotecontrol_handle
                                 $oSubQuestion->parent_qid = $oQuestion->qid;
                                 $oSubQuestion->sid        = $oQuestion->sid;
                                 $oSubQuestion->gid        = $oQuestion->gid;
-                                $oSubQuestion->title      = 'SQ00' . $aQuestionData['sortorder'];
+                                $oSubQuestion->title      = 'SQ00' . $aQuestionData['sortorder'] . '-' . $sCode;
                                 $oSubQuestion->question   = $aQuestionData['label'];
                                 $oSubQuestion->question_order = $aQuestionData['sortorder'];
                                 $oSubQuestion->language   = $oQuestion->language;
@@ -1780,7 +1780,7 @@ class remotecontrol_handle
                                 $oSubQuestion->parent_qid = $oQuestion->qid;
                                 $oSubQuestion->sid = $oQuestion->sid;
                                 $oSubQuestion->gid = $oQuestion->gid;
-                                $oSubQuestion->title = 'SQ00' . $aSubQuestion['sortorder'];
+                                $oSubQuestion->title = 'SQ00' . $aSubQuestion['sortorder'] . '-' . $sCode;
                                 $oSubQuestion->question = $aSubQuestion['label'];
                                 $oSubQuestion->question_order = $aSubQuestion['sortorder'];
                                 $oSubQuestion->language = $oQuestion->language;
