@@ -1315,6 +1315,20 @@ class remotecontrol_handle
                             $oQuestionAttribute->value     = 0;
                             $oQuestionAttribute->save();
                             break;
+
+                        case 'Q':
+                            foreach ($aQuestionData['subquestions'] as $sCode => $aQuestionData) {
+                                $oSubQuestion             = new Question;
+                                $oSubQuestion->parent_qid = $oQuestion->qid;
+                                $oSubQuestion->sid        = $oQuestion->sid;
+                                $oSubQuestion->gid        = $oQuestion->gid;
+                                $oSubQuestion->title      = 'SQ00' . $aQuestionData['sortorder'];
+                                $oSubQuestion->question   = $aQuestionData['label'];
+                                $oSubQuestion->question_order = $aQuestionData['sortorder'];
+                                $oSubQuestion->language   = $oQuestion->language;
+                                $oSubQuestion->save(false);
+                            }
+                            break;
                     }
                     return (int)$oQuestion->qid;
                 } else {
@@ -1668,30 +1682,30 @@ class remotecontrol_handle
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Question::model()->tableSchema->columnNames);
                 $aDestinationFields['answeroptions'] = count($aDestinationFields);
+                $aDestinationFields['subquestions'] = count($aDestinationFields);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
                 if (empty($aQuestionData))
                     return array('status' => 'No valid Data');
 
-                foreach($aQuestionData as $sFieldName=>$sValue)
-                {
+                foreach($aQuestionData as $sFieldName=>$sValue) {
                     //all the dependencies that this question has to other questions
-                    $dependencies=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,$iQuestionID);
+                    $dependencies = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, $iQuestionID);
                     //all dependencies by other questions to this question
-                    $is_criteria_question=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,"all",$iQuestionID,"by-targqid");
+                    $is_criteria_question = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, "all", $iQuestionID, "by-targqid");
                     //We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies
 
-                    if((isset($dependencies) || isset($is_criteria_question))  && $sFieldName == 'question_order')
-                    {
-                        $aResult[$sFieldName]='Questions with dependencies - Order cannot be changed';
+                    if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order') {
+                        $aResult[$sFieldName] = 'Questions with dependencies - Order cannot be changed';
                         continue;
                     }
+
                     if ('answeroptions' === $sFieldName) {
                         switch ($aQuestionData['type']) {
                             case 'F':
-                                $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $oQuestion->qid, 'language'=> $sLanguage ),array('order'=>'sortorder') );
-                                foreach($oAnswers as $oAnswer) {
+                                $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $oQuestion->qid, 'language' => $sLanguage), array('order' => 'sortorder'));
+                                foreach ($oAnswers as $oAnswer) {
                                     if (isset($sValue[$oAnswer['code']])) {
                                         // Already existing answer option
                                         $sValue[$oAnswer['code']]['existing'] = true;
@@ -1704,7 +1718,7 @@ class remotecontrol_handle
                                 foreach ($sValue as $sCode => $aAnswerData) {
                                     $oAnswer = new Answer();
                                     if ($aAnswerData['existing']) {
-                                        $oAnswer->isNewRecord=false;
+                                        $oAnswer->isNewRecord = false;
                                     }
                                     $oAnswer['answer'] = $aAnswerData['answer'];
                                     $oAnswer['code'] = $sCode;
@@ -1716,8 +1730,8 @@ class remotecontrol_handle
                                 }
                                 break;
                             case 'M':
-                                $oAnswers = Question::model()->findAllByAttributes(array('parent_qid' => $oQuestion->qid, 'language'=> $sLanguage ),array('order'=>'question_order') );
-                                foreach($oAnswers as $oAnswer) {
+                                $oAnswers = Question::model()->findAllByAttributes(array('parent_qid' => $oQuestion->qid, 'language' => $sLanguage), array('order' => 'question_order'));
+                                foreach ($oAnswers as $oAnswer) {
                                     if (isset($sValue[$oAnswer['title']])) {
                                         // Already existing answer option
                                         $sValue[$oAnswer['title']]['existing'] = true;
@@ -1728,22 +1742,52 @@ class remotecontrol_handle
                                     }
                                 }
                                 foreach ($sValue as $sCode => $aAnswerData) {
-                                    $oSubQuestion             = new Question;
+                                    $oSubQuestion = new Question;
                                     if ($aAnswerData['existing']) {
-                                        $oSubQuestion->isNewRecord=false;
-                                        $oSubQuestion->qid    = $aAnswerData['qid'];
+                                        $oSubQuestion->isNewRecord = false;
+                                        $oSubQuestion->qid = $aAnswerData['qid'];
                                     }
                                     $oSubQuestion->parent_qid = $oQuestion->qid;
-                                    $oSubQuestion->sid        = $oQuestion->sid;
-                                    $oSubQuestion->gid        = $oQuestion->gid;
-                                    $oSubQuestion->title      = 'SQ00' . $aAnswerData['sortorder'];
-                                    $oSubQuestion->question   = $aAnswerData['answer'];
+                                    $oSubQuestion->sid = $oQuestion->sid;
+                                    $oSubQuestion->gid = $oQuestion->gid;
+                                    $oSubQuestion->title = 'SQ00' . $aAnswerData['sortorder'];
+                                    $oSubQuestion->question = $aAnswerData['answer'];
                                     $oSubQuestion->question_order = $aAnswerData['sortorder'];
-                                    $oSubQuestion->language   = $oQuestion->language;
+                                    $oSubQuestion->language = $oQuestion->language;
                                     $oSubQuestion->save(false);
                                 }
                                 break;
                         }
+                    } else if ('subquestions' === $sFieldName) {
+                        if ($aQuestionData['type'] == 'Q') {
+                            $oAnswers = Question::model()->findAllByAttributes(array('parent_qid' => $oQuestion->qid, 'language' => $sLanguage), array('order' => 'question_order'));
+                            foreach ($oAnswers as $oAnswer) {
+                                if (isset($sValue[$oAnswer['title']])) {
+                                    // Already existing answer option
+                                    $sValue[$oAnswer['title']]['existing'] = true;
+                                    $sValue[$oAnswer['title']]['qid'] = $oAnswer['qid'];
+                                } else {
+                                    // Answer option not existing anymore, to remove
+                                    $oAnswer->delete();
+                                }
+                            }
+                            foreach ($sValue as $sCode => $aSubQuestion) {
+                                $oSubQuestion = new Question;
+                                if ($aSubQuestion['existing']) {
+                                    $oSubQuestion->isNewRecord = false;
+                                    $oSubQuestion->qid = $aSubQuestion['qid'];
+                                }
+                                $oSubQuestion->parent_qid = $oQuestion->qid;
+                                $oSubQuestion->sid = $oQuestion->sid;
+                                $oSubQuestion->gid = $oQuestion->gid;
+                                $oSubQuestion->title = 'SQ00' . $aSubQuestion['sortorder'];
+                                $oSubQuestion->question = $aSubQuestion['label'];
+                                $oSubQuestion->question_order = $aSubQuestion['sortorder'];
+                                $oSubQuestion->language = $oQuestion->language;
+                                $oSubQuestion->save(false);
+                            }
+                        }
+
                     } else {
                         $oQuestion->setAttribute($sFieldName,$sValue);
                     }
