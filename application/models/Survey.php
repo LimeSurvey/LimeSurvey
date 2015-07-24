@@ -697,10 +697,13 @@ class Survey extends LSActiveRecord
         $result = [
             'id' =>  'string(36) NOT NULL',
             'startlanguage' => 'string(20) NOT NULL',
-            'datestamp' => 'datetime NOT NULL',
             'submitdate' => 'datetime',
             'lastpage' => 'int',
         ];
+        if ($this->bool_datestamp) {
+            $result['datestamp'] = 'datetime NOT NULL';
+            $result['startdate'] = 'datetime NOT NULL';
+        }
         if ($this->bool_ipaddr) {
             $result['ipaddress'] = 'string(15)'; 
         }
@@ -715,12 +718,7 @@ class Survey extends LSActiveRecord
         if ($this->use_series) {
             $result['series_id'] = 'string(36) NOT NULL';
         }
-        /**
-         * @todo Add proper condition here.
-         */
-        if (false) {
-            $result['startdate'] = 'datetime NOT NULL';
-        }
+
         /** @var Question $question */
         foreach($this->questions as $question) {
             $result += $question->columns;

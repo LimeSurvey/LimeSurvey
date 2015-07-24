@@ -275,8 +275,7 @@ function retrieveAnswers($ia)
     }
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    $session = App()->surveySessionManager->current;
-    if ($session->step != $session->maxStep || ($session->step == $session->prevStep)) {
+    if ($session->step != $session->maxStep || $session->viewCount > 1) {
         $mandatory_msg = mandatory_message($ia);
     }
     else {

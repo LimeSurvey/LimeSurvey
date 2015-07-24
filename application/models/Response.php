@@ -26,7 +26,7 @@
          * This adds support for translating SGQA to a label that uses the question code.
          * This is not really efficient since it gets all question codes individually.
          * @param string $attribute
-         * @return stringz
+         * @return string
          */
         public function getAttributeLabel($attribute)
         {
@@ -141,10 +141,28 @@
             if ($this->hasAttribute('series_id')) {
                 $rules[] = ['series_id', 'default', 'value' => \Cake\Utility\Text::uuid()];
             }
+            if ($this->hasAttribute('datestamp')) {
+
+            }
+
+
+            $rules = array_merge($rules, $this->surveyRules);
 
 
             return $rules;
         }
+
+        /**
+         * An array containing validation rules for the response data.
+         */
+        protected function getSurveyRules() {
+            // For now mark all as safe.
+            $attributes = array_filter($this->attributeNames(), function($attribute) {
+                return preg_match('/\d+X\d+X\d+.*/', $attribute);
+            });
+            return [[$attributes, 'safe']];
+        }
+
         public function scopes() {
             return [
                 'complete' => [
@@ -463,7 +481,27 @@
         }
 
 
-
+        /**
+         * Lists the behaviors of this model
+         *
+         * Below is a list of all behaviors we register:
+         * @see CTimestampBehavior
+         * @see PluginEventBehavior
+         * @return array
+         */
+        public function behaviors()
+        {
+            $behaviors = parent::behaviors();
+            if ($this->hasAttribute('datestamp') && $this->hasAttribute('startdate')) {
+                $behaviors['ResponseTimeStamp'] = [
+                    'class' => 'zii.behaviors.CTimestampBehavior',
+                    'createAttribute' => 'startdate',
+                    'updateAttribute' => 'datestamp',
+                    'setUpdateOnCreate' => true
+                ];
+            }
+            return $behaviors;
+        }
     }
 
 ?>

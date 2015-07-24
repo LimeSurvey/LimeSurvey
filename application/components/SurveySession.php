@@ -46,6 +46,12 @@ class SurveySession extends CComponent {
     protected $_templateDir;
     protected $_postKey;
     protected $_finished = false;
+    /**
+     * This is used to decide if we should display errors.
+     * It gets reset when changing the step.
+     * @var int The number of times this step has been viewed without viewing other steps.
+     */
+    protected $_viewCount = 1;
     protected $_token;
     /**
      * @param int $surveyId
@@ -177,7 +183,21 @@ class SurveySession extends CComponent {
      * @return Question
      */
     public function getQuestionByIndex($index) {
-        return array_values($this->survey->questions)[$index];
+        $i = 0;
+        // Get groups in order.
+        foreach($this->getGroups() as $group) {
+            foreach($this->getQuestions($group) as $question) {
+                if ($index == $i) {
+                    $result = $question;
+                    break 2;
+                }
+                $i++;
+            }
+        }
+        if (!isset($result)) {
+            throw new \Exception("Invalid step index: $index");
+        }
+        return $result;
     }
 
     public function getStepCount() {
@@ -207,16 +227,30 @@ class SurveySession extends CComponent {
 
     public function setStep($value) {
         if (!is_int($value)) {
-            throw new \BadMethodCallException('Parameter $value must be an integer.');
+            throw new \InvalidArgumentException('Parameter $value must be an integer.');
         }
-        $this->_step = $value > 0 ? $value : 0;
-        $this->_prevStep = $this->_step;
-        $this->_maxStep = max($this->_step, $this->_maxStep);
+        if ($value > $this->stepCount) {
+            throw new \InvalidArgumentException("Cannot set step to a value greater than stepCount");
+        }
+
+        if ($value != $this->_step) {
+            $this->_viewCount = 1;
+            $this->_prevStep = $this->_step;
+            $this->_step = $value;
+            $this->_maxStep = max($this->_step, $this->_maxStep);
+        }
     }
 
 
     public function getMaxStep() {
         return $this->_maxStep;
+    }
+
+    /**
+     * @return int The number of times the current page has been viewed.
+     */
+    public function getViewCount() {
+        return $this->_viewCount;
     }
 
     public function getPrevStep() {
@@ -225,6 +259,10 @@ class SurveySession extends CComponent {
 
     public function setPrevStep($value) {
         $this->_prevStep = $value;
+    }
+
+    public function __wakeup() {
+        $this->_viewCount++;
     }
 
     public function __sleep() {
@@ -238,7 +276,8 @@ class SurveySession extends CComponent {
             '_finished',
             '_language',
             '_postKey',
-            '_token'
+            '_token',
+            '_viewCount'
         ];
     }
 
@@ -346,7 +385,7 @@ class SurveySession extends CComponent {
 
 
     /**
-     * Returns the questions in group $group, indexed by primary key.
+     * Returns the questions in group $group, indexed by primary key, ordered as they are shown in the survey.
      * @param QuestionGroup $group
      * @return Question[]
      */
@@ -389,6 +428,7 @@ class SurveySession extends CComponent {
 
     /**
      * This function will be deprecated, for now it is provided as a replacement of direct session access.
+     * @deprecated
      */
     public function getFieldArray() {
         $result = [];
@@ -472,8 +512,22 @@ class SurveySession extends CComponent {
         }
         return $this->_postKey;
     }
+
     public function setPostKey($value) {
         $this->_postKey = $value;
+    }
+
+    public function getCurrentGroup() {
+        if ($this->format == Survey::FORMAT_ALL_IN_ONE) {
+            throw new \UnexpectedValueException("An all in one survey does not have a current group.");
+        }
+
+        if ($this->format == Survey::FORMAT_GROUP) {
+            $result = $this->getGroupByIndex($this->step);
+        } else {
+            $result = $this->getGroup($this->getQuestionByIndex($this->step)->gid);
+        }
+        return $result;
     }
 
 

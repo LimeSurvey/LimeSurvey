@@ -138,13 +138,13 @@ function loadanswers()
     }
 }
 
-function makegraph($currentstep, $total)
+function makegraph($step, $total)
 {
     global $thissurvey;
 
 
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'lime-progress.css');
-    $size = intval(($currentstep-1)/$total*100);
+    $size = intval(($step)/$total*100);
 
     $graph = '<script type="text/javascript">
     $(document).ready(function() {

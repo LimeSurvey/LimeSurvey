@@ -229,13 +229,7 @@ class SurveyRuntimeHelper {
                 buildsurveysession($session->surveyId);
                 $sTemplatePath = $session->templateDir;
                 LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false, $LEMdebugLevel);
-                if ($session->format == Survey::FORMAT_ALL_IN_ONE) {
-                    $moveResult = LimeExpressionManager::JumpTo(1, false, false, true);
-                } elseif (!$session->survey->bool_showwelcome) {
-
-                    $moveResult = LimeExpressionManager::JumpTo(1, false, false, true);
-                    $session->step = 1;
-                }
+                $moveResult = LimeExpressionManager::JumpTo(0, false, false, true);
             }
 
 
@@ -262,25 +256,17 @@ class SurveyRuntimeHelper {
 
             if(isset($move) && $move=="clearcancel")
             {
-                $moveResult = LimeExpressionManager::JumpTo($session->getStep(), false, true, false, true);
-                //$backpopup=gT("Clear all need confirmation.");
-            }
-            if (isset($move))
-            {
-                if(!in_array($move,array("changelang","saveall","reload")))
-                    $session->prevStep = $session->getStep();
-                else // Accepted $move without error
-                    $session->prevStep = $move;
+                $moveResult = LimeExpressionManager::JumpTo($session->step, false, true, false, true);
             }
 
             if (isset($_SESSION[$LEMsessid]['LEMtokenResume']))
             {
                 LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false,$LEMdebugLevel);
-                if($ssm->current->getMaxStep() > $ssm->current->getStep())
+                if($session->maxStep > $session->step)
                 {
-                    LimeExpressionManager::JumpTo($ssm->current->getMaxStep(), false, false);
+                    LimeExpressionManager::JumpTo($session->maxStep, false, false);
                 }
-                $moveResult = LimeExpressionManager::JumpTo($ssm->current->getStep(),false,false);   // if late in the survey, will re-validate contents, which may be overkill
+                $moveResult = LimeExpressionManager::JumpTo($session->step,false,false);   // if late in the survey, will re-validate contents, which may be overkill
                 unset($_SESSION[$LEMsessid]['LEMtokenResume']);
             }
             else if (!$LEMskipReprocessing)
@@ -340,21 +326,18 @@ class SurveyRuntimeHelper {
             if (isset($moveResult) && isset($moveResult['seq']) )// Reload at first page (welcome after click previous fill an empty $moveResult array
             {
                 // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
-                if($moveResult['finished'] == true && $session->survey->questionindex == Survey::INDEX_FULL)
+                if($moveResult['finished'])
                 {
-                    //LimeExpressionManager::JumpTo(-1, false, false, true);
-                    LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions);
-                    $moveResult = LimeExpressionManager::JumpTo($session->getStepCount() + 1, false, false, false);// no preview, no save data and NO force
-                    if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
-                        $moveResult['finished'] = true;
-                }
-                if ($moveResult['finished'] == true)
-                {
+                    if ($session->survey->questionindex == Survey::INDEX_FULL) {
+                        //LimeExpressionManager::JumpTo(-1, false, false, true);
+                        LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions);
+                        $moveResult = LimeExpressionManager::JumpTo($session->getStepCount() + 1, false, false, false);// no preview, no save data and NO force
+                        if(!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs']))
+                            $moveResult['finished'] = true;
+                    }
                     $move = 'movesubmit';
-                }
-                else
-                {
-                    $session->setStep($moveResult['seq'] + 1);  // step is index base 1
+                } else {
+                    $session->setStep($moveResult['seq']);
                     $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                 }
                 if ($move == "movesubmit" && $moveResult['finished'] == false)
@@ -363,10 +346,6 @@ class SurveyRuntimeHelper {
                     $move = "movenext"; // so will re-display the survey
                     $invalidLastPage = true;
                 }
-            }
-            if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->getStep() == 0)
-            {
-                $moveResult = LimeExpressionManager::JumpTo(1, false, false, true);
             }
 
             // TODO FIXME
@@ -411,9 +390,6 @@ class SurveyRuntimeHelper {
 
                 // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
             }
-            //Now, we check mandatory questions if necessary
-            //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
-            global $notanswered;
 
             if (isset($moveResult) && !$moveResult['finished'])
             {
@@ -645,21 +621,15 @@ class SurveyRuntimeHelper {
             $gid = $stepInfo['gid'];
             $groupname = $stepInfo['gname'];
             $groupdescription = $stepInfo['gtext'];
-        }
-        else
-        {
-            if ($session->format != Survey::FORMAT_ALL_IN_ONE)
-            {
-                if ($previewquestion) {
-                    $_qid = sanitize_int($param['qid']);
-                    LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false, $LEMdebugLevel);
-                    $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
-                    $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
-                    $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['qseq']);
-                } else {
-                    $stepInfo = LimeExpressionManager::GetStepIndexInfo($session->step + 1);
-                }
+        } elseif ($session->format == Survey::FORMAT_QUESTION) {
+            if ($previewquestion) {
+                $_qid = sanitize_int($param['qid']);
+                LimeExpressionManager::StartSurvey($session->surveyId, $session->format, $surveyOptions, false, $LEMdebugLevel);
+                $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
+                $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
             }
+
+            $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
         }
 
 
@@ -680,7 +650,7 @@ class SurveyRuntimeHelper {
         //PRESENT SURVEY
         //******************************************************************************************************
 
-        $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || $session->prevStep == $session->step));
+        $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || !$moveResult['valid'] || $moveResult['mandViolation']));
         App()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
 
@@ -765,16 +735,9 @@ class SurveyRuntimeHelper {
         }
 
 
-        if ($session->format != Survey::FORMAT_ALL_IN_ONE && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
+        if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->survey->bool_showprogress)
         {
-            if ($show_empty_group)
-            {
-                $percentcomplete = makegraph($session->getStepCount() + 1, $session->getStepCount());
-            }
-            else
-            {
-                $percentcomplete = makegraph($session->step, $session->getStepCount());
-            }
+            $percentcomplete = makegraph($session->step, $session->stepCount);
         }
         if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey'))
         {

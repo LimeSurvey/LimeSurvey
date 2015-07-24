@@ -256,7 +256,8 @@
              *
              */
             if (substr($name, 0, 5) == 'bool_') {
-                $result = parent::__get(substr($name, 5)) === 'Y';
+                // Use $this instead of parent so we can use bool_ for custom attributes.
+                $result = $this->__get(substr($name, 5)) === 'Y';
             } elseif ($name != 'type' && in_array($name, $this->customAttributeNames())) {
                 $result = $this->getCustomAttribute($name);
             } elseif ($name != 'type' && in_array($name, $this->customLocalizedAttributeNames())) {
@@ -270,7 +271,7 @@
         public function __set($name, $value)
         {
             if (substr($name, 0, 5) == 'bool_') {
-                parent::__set(substr($name, 5), $value ? 'Y' : 'N');
+                $this->__set(substr($name, 5), $value ? 'Y' : 'N');
             } elseif (in_array($name, $this->customAttributeNames())) {
                 $this->customAttributes[$name] = $value;
 
@@ -1042,7 +1043,9 @@
         public function attributeLabels()
         {
             return [
-                'after' => gT('Position')
+                'after' => gT('Position'),
+                'bool_mandatory' => gT('Mandatory'),
+                'bool_other' => gT("Option 'Other'"),
             ];
         }
 
@@ -1117,6 +1120,9 @@
 
         public function hasAttribute($name)
         {
+            if (strncmp('bool_', $name, 5) === 0) {
+                $name = substr($name, 5);
+            }
             return in_array($name, $this->customAttributeNames()) || parent::hasAttribute($name);
         }
 
@@ -1156,7 +1162,7 @@
                     'hasconditions' => count($this->conditions) > 0,
                     'usedinconditions' => count($this->conditionsAsTarget) > 0,
                     'subquestion' => gT('Other'),
-                    'defaultvalue' => '@todo'
+                    'defaultvalue' => null
 
                 ];
             }
@@ -1184,8 +1190,12 @@
         public function validateMandatory(Response $response) {
             $result = false;
             foreach($this->getColumns() as $name => $type) {
-                $result = $result || isset($response->$name);
+                $result = $result || (isset($response->$name) && !empty($response->$name));
+//                var_dump($response->$name);
+
             }
+//            var_dump($this->title . ($result ? '' :' not') . ' passing mandatory validation.');
+
             return $result;
         }
 
