@@ -1395,8 +1395,15 @@ function upgradeTokenTables179()
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
-    if(Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='mysql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
-
+    switch (Yii::app()->db->driverName){
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+            $sSubstringCommand='substring';
+            break;
+        default:
+            $sSubstringCommand='substr';
+    }    
     $surveyidresult = dbGetTablesLike("tokens%");
     if ($surveyidresult)
     {
