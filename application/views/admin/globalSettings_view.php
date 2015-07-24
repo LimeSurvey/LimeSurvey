@@ -102,7 +102,7 @@
                             'class'=>'button',
                             'target'=>'_top',
                         ),
-                        'help'=>sprintf(gT('You can %s and % manually or use the %s'),
+                        'help'=>sprintf(gT('You can %s and %s manually or use the %s'),
                             CHtml::link(gT("download"),$sDownloadLink,array('target'=>'_blank')),
                             CHtml::link(gT("update"),"http://manual.limesurvey.org/Upgrading_from_a_previous_version",array('target'=>'_blank')),
                             CHtml::link(gT("3-Click ComfortUpdate"),"http://manual.limesurvey.org/ComfortUpdate",array('target'=>'_blank'))
