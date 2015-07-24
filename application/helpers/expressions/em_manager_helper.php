@@ -1174,19 +1174,22 @@
                     case Question::TYPE_RANKING:
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
-                            $sq_names = array();
-                            foreach ($subqs as $subq) {
-                                $sq_names[] = $subq['varName'] . ".NAOK";
+                            $sq_names=array();
+                            $sq_eqPart=array();
+                            foreach($subqs as $subq)
+                            {
+                                $sq_names[] = $subq['varName'].".NAOK";
+                                $sq_eqPart[] = "!is_empty({$subq['varName']})*{$subq['csuffix']}";
                             }
                             if (!isset($validationEqn[$questionNum])) {
                                 $validationEqn[$questionNum] = array();
                             }
                             $validationEqn[$questionNum][] = array(
-                                'qtype' => $type,
-                                'type' => 'default',
-                                'class' => 'default',
-                                'eqn' => 'unique(' . implode(',', $sq_names) . ')',
-                                'qid' => $questionNum,
+                            'qtype' => $type,
+                            'type' => 'default',
+                            'class' => 'default',
+                            'eqn' =>  'unique(' . implode(',',$sq_names) . ') and count(' . implode(',',$sq_names) . ')==max('. implode(',',$sq_eqPart) .')',
+                            'qid' => $questionNum,
                             );
                         }
                         break;
@@ -2578,7 +2581,7 @@
                         $qtips['default'] = $this->gT("Only numbers may be entered in these fields.");
                         break;
                     case 'R':
-                        $qtips['default'] = $this->gT("All your answers must be different.");
+                        $qtips['default'] = $this->gT("All your answers must be different and you must rank in order.");
                         break;
 // Helptext is added in qanda_help.php
                     /*                  case 'D':
@@ -6340,15 +6343,31 @@
                             if ($listItem == 'other') {
                                 $relParts[] = " || ($('#java" . $sq['sgqa'] . "').val() == '-oth-')";
                             }
-                            $relParts[] = "){\n";
-                            $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
-                            $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
-                            $relParts[] = "    }\n";
-                            break;
-                        default:
-                            break;
-                    }
-                    $relParts[] = "  }\n";
+                            else
+                            {
+                                $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "$inputSelector').attr('disabled','disabled');\n";
+                            }
+                        }
+                        $relParts[] = "    relChange" . $arg['qid'] . "=true;\n";
+                        if($arg['type']!='R') // Ranking: rowdivid are subquestion, but array filter apply to answers and not SQ.
+                            $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
+                        switch ($sq['qtype'])
+                        {
+                            case 'L': //LIST drop-down/radio-button list
+                                $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
+                                $relParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
+                                if ($listItem == 'other') {
+                                    $relParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
+                                }
+                                $relParts[] = "){\n";
+                                $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
+                                $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
+                                $relParts[] = "    }\n";
+                                break;
+                            default:
+                                break;
+                        }
+                        $relParts[] = "  }\n";
 
                     $sqvars = explode('|', $sq['relevanceVars']);
                     if (is_array($sqvars)) {
