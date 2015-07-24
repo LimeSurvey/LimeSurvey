@@ -1027,7 +1027,8 @@ class SurveyAdmin extends Survey_Common_Action
                 $gid = (int)substr($parent, 1);
                 if (!isset($questionorder[$gid]))
                     $questionorder[$gid] = 0;
-                $oldgid=Question::model()->getQuestionById($qid)['gid'];
+                $question = Question::model()->getQuestionById($qid);
+                $oldgid = $question['gid'];
                 if($oldgid != $gid) {
                         fixMovedQuestionConditions($qid,$oldgid,$gid,$iSurveyID);
                 }
