@@ -368,7 +368,7 @@ function db_upgrade_all($iOldDBVersion) {
             $oDB->createCommand()->createIndex('sess2_expiry','{{sessions}}','expiry');
             $oDB->createCommand()->createIndex('sess2_expireref','{{sessions}}','expireref');
             // Move all user templates to the new user template directory
-            echo sprintf(gT("Moving user templates to new location at %s..."),$sUserTemplateRootDir)."<br />";
+            echo "<br>".sprintf(gT("Moving user templates to new location at %s..."),$sUserTemplateRootDir)."<br />";
             $hTemplateDirectory = opendir($sStandardTemplateRootDir);
             $aFailedTemplates=array();
             // get each entry
@@ -480,7 +480,7 @@ function db_upgrade_all($iOldDBVersion) {
             // change the primary index to include language
             if (Yii::app()->db->driverName=='mysql') // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
             {
-                modifyPrimaryKey('{{assessments}}', array('id', 'language'));
+                modifyPrimaryKey('assessments', array('id', 'language'));
             }
             else
             {
@@ -1641,17 +1641,11 @@ function upgradePermissions166()
 
 function upgradeSurveys156()
 {
-    global $modifyoutput;
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
-    $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
+    $oSurveyResult = Yii::app()->getDb()->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
-
-        Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
-        $sLanguage = App()->language;
-        $aDefaultTexts=templateDefaultTexts($sLanguage,'unescaped');
-        unset($sLanguage);
-
+        $aDefaultTexts=templateDefaultTexts($aSurveyRow['surveyls_language'],'unescaped');
         if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')
         {
             $sSurveyUpdateQuery= "update {{surveys}} set sendconfirmation='N' where sid=".$aSurveyRow['surveyls_survey_id'];
@@ -1755,7 +1749,7 @@ function upgradeSurveys145()
         }
     }
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
-    $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
+    $oSurveyResult = Yii::app()->getDb()->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
         $sLanguage = App()->language;
@@ -2174,7 +2168,7 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 
 function addPrimaryKey($sTablename, $aColumns)
 {
-    return Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY', $sTablename, $aColumns);
+    return Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY', '{{'.$sTablename.'}}', $aColumns);
 }
 
 /**
