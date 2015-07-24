@@ -27,21 +27,20 @@ class MssqlSchema extends CMssqlSchema
     
     public function getColumnType($type)
     {
-        if (preg_match('/^([[:alpha:]]+)\s*(\(.+?\))(.*)$/', $type, $matches)) {
-            $baseType = parent::getColumnType($matches[1] . ' ' . $matches[3]);
-            $param = $matches[2];
-            $result = preg_replace('/\(.+?\)/', $param, $baseType, 1);
-        } else {
-            $result = parent::getColumnType($type);
+        $sResult=$type;
+        if (isset($this->columnTypes[$type])) {
+            $sResult=$this->columnTypes[$type];
+        } elseif (preg_match('/^(\w+)\((.+?)\)(.*)$/', $type, $matches)) {
+            if (isset($this->columnTypes[$matches[1]])) {
+                $sResult=preg_replace('/\(.+\)/', '(' . $matches[2] . ')', $this->columnTypes[$matches[1]]) . $matches[3];
+            }
+        } elseif (preg_match('/^(\w+)\s+/', $type, $matches)) {
+            if (isset($this->columnTypes[$matches[1]])) {
+                $sResult=preg_replace('/^\w+/', $this->columnTypes[$matches[1]], $type);
+            }
         }
-        /**
-         * @date 2015-5-11
-         * A bug occurs with DBLIB when specifying neither of NULL and NOT NULL.
-         * So if resulting type doesn't contain NULL then add it.
-         */        
-        if (stripos($result, 'NULL') === false) {
-            $result .= ' NULL';
-        }
-        return $result;
+       if (stripos($sResult, 'NULL') === false) {
+            $sResult .= ' NULL';}
+        return $sResult;
     }
 }
