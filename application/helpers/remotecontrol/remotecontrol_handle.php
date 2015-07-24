@@ -137,13 +137,6 @@ class remotecontrol_handle
 
                     $sTitle = html_entity_decode($sSurveyTitle, ENT_QUOTES, "UTF-8");
 
-                    // Load default email templates for the chosen language
-                    $oLanguage = new Limesurvey_lang($sSurveyLanguage);
-                    $aDefaultTexts = templateDefaultTexts($oLanguage, 'unescaped');
-                    unset($oLanguage);
-
-                    $bIsHTMLEmail = false;
-
                     $aInsertData = array(
                         'surveyls_survey_id' => $iNewSurveyid,
                         'surveyls_title' => $sTitle,
@@ -294,7 +287,6 @@ class remotecontrol_handle
                 unset($aSurveyData['owner_id']);
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
-                unset($aSurveyData['additional_languages']);
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Survey::model()->tableSchema->columnNames);
                 $aSurveyData=array_intersect_key($aSurveyData,$aDestinationFields);
@@ -375,6 +367,86 @@ class remotecontrol_handle
         else
             return array('status' => 'Invalid session key');
     }
+
+    /**
+     * RPC Routine that deactivates an activated survey.
+     *
+     * This method is unofficial (not written by the LimeSurvey team, but by the Theodo one)
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID The id of the survey to be activated
+     * @return array The result of the activation
+     */
+    public function deactivate_survey($sSessionKey, $iSurveyID)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            if (is_null($oSurvey)) {
+                return array('status' => 'Error: Invalid survey ID');
+            }
+
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+                // Let the magic happen :-)
+
+                $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+                $tokenDeactivationResult = 0;
+                $timingDeactivationResult = 0;
+
+                if (!tableExists('survey_'.$iSurveyID)){
+                    return array('status' => 'Error: Response table does not exist. Survey cannot be deactivated.');
+                }
+
+                //See if there is a tokens table for this survey
+                if (tableExists("{{tokens_{$iSurveyID}}}")) {
+                    $toldtable = Yii::app()->db->tablePrefix."tokens_{$iSurveyID}";
+                    $tnewtable = Yii::app()->db->tablePrefix."old_tokens_{$iSurveyID}_{$date}";
+                    $tokenDeactivationResult = Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
+                }
+
+                //Remove any survey_links to the CPDB
+                SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
+
+                // IF there are any records in the saved_control table related to this survey, they have to be deleted
+                $result = SavedControl::model()->deleteSomeRecords(array('sid' => $iSurveyID)); //Yii::app()->db->createCommand($query)->query();
+                $sOldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$iSurveyID}";
+                $sNewSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$iSurveyID}_{$date}";
+                //Update the autonumber_start in the survey properties
+                $query = "SELECT id FROM ".Yii::app()->db->quoteTableName($sOldSurveyTableName)." ORDER BY id desc";
+                $sLastID = Yii::app()->db->createCommand($query)->limit(1)->queryScalar();
+                $new_autonumber_start = $sLastID + 1;
+                $oSurvey->autonumber_start = $new_autonumber_start;
+                $oSurvey->save();
+
+                $deactivationResult = Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
+
+                $oSurvey->active = 'N';
+                $oSurvey->save();
+
+                $prow = Survey::model()->find('sid = :sid', array(':sid' => $iSurveyID));
+                if ($prow->savetimings == "Y") {
+                    $sOldTimingsTableName = Yii::app()->db->tablePrefix."survey_{$iSurveyID}_timings";
+                    $sNewTimingsTableName = Yii::app()->db->tablePrefix."old_survey_{$iSurveyID}_timings_{$date}";
+
+                    $timingDeactivationResult = Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
+                }
+
+                Yii::app()->db->schema->refresh();
+
+                if (!($deactivationResult || $timingDeactivationResult || $tokenDeactivationResult)) {
+                    return array('status' => 'OK');
+                } else {
+                    return array('status' => $deactivationResult || $timingDeactivationResult || $tokenDeactivationResult);
+                }
+            } else {
+                return array('status' => 'No permission');
+            }
+        }
+        else {
+            return array('status' => 'Invalid session key');
+        }
+    }
+
 
     /**
     * RPC routine to export statistics of a survey to a user.
@@ -842,9 +914,11 @@ class remotecontrol_handle
     * @param int $iSurveyID Dd of the Survey to add the group
     * @param string $sGroupTitle Name of the group
     * @param string $sGroupDescription     Optional description of the group
+    * @param int|null $iGroupID The wished id of the new group (needed for multi-languages groups)
+    * @param string|null $sGroupLanguage The group language (default : the survey default language)
     * @return array|int The id of the new group - Or status
     */
-    public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
+    public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='', $iGroupID= null, $sGroupLanguage=null)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -858,11 +932,18 @@ class remotecontrol_handle
                     return array('status' => 'Error:Survey is active and not editable');
 
                 $oGroup = new QuestionGroup;
+                if ($iGroupID) {
+                    $oGroup->gid = $iGroupID;
+                }
                 $oGroup->sid = $iSurveyID;
                 $oGroup->group_name =  $sGroupTitle;
                 $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
-                $oGroup->language =  Survey::model()->findByPk($iSurveyID)->language;
+                if ($sGroupLanguage) {
+                    $oGroup->language = $sGroupLanguage;
+                } else {
+                    $oGroup->language = Survey::model()->findByPk($iSurveyID)->language;
+                }
                 if($oGroup->save())
                     return (int)$oGroup->gid;
                 else
@@ -883,9 +964,10 @@ class remotecontrol_handle
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the survey that the group belongs
     * @param int $iGroupID Id of the group to delete
+    * @param string $sGroupLanguage The group language
     * @return array|int The id of the deleted group or status
     */
-    public function delete_group($sSessionKey, $iSurveyID, $iGroupID)
+    public function delete_group($sSessionKey, $iSurveyID, $iGroupID, $sGroupLanguage)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -897,7 +979,7 @@ class remotecontrol_handle
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete'))
             {
-                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+                $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
                 if (!isset($oGroup))
                     return array('status' => 'Error: Invalid group ID');
 
@@ -1035,14 +1117,15 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iGroupID Id of the group to get properties
+    * @param string $sGroupLanguage The group language
     * @param array  $aGroupSettings The properties to get
     * @return array The requested values
     */
-    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings)
+    public function get_group_properties($sSessionKey, $iGroupID, $sGroupLanguage, $aGroupSettings)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
             if (!isset($oGroup))
                 return array('status' => 'Error: Invalid group ID');
 
@@ -1074,14 +1157,15 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iGroupID  - ID of the survey
+    * @param string $sGroupLanguage The group language
     * @param array|struct $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @return array Of succeeded and failed modifications according to internal validation.
     */
-    public function set_group_properties($sSessionKey, $iGroupID, $aGroupData)
+    public function set_group_properties($sSessionKey, $iGroupID, $sGroupLanguage, $aGroupData)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oGroup=QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup=QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID, 'language' => $sGroupLanguage));
             if (is_null($oGroup))
             {
                 return array('status' => 'Error: Invalid group ID');
@@ -1113,7 +1197,7 @@ class remotecontrol_handle
                         continue;
                     }
                     $oGroup->setAttribute($sFieldName,$sValue);
-                    
+
                     try
                     {
                         // save the change to database - one by one to allow for validation to work
@@ -1141,6 +1225,124 @@ class remotecontrol_handle
 
     /* Question specific functions */
 
+    /**
+     * RPC Routine to add an empty question with minimum details.
+     *
+     * This method is unofficial (not written by the LimeSurvey team, but by the Theodo one)
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the Survey to add the group
+     * @param int $iGroupID Id of the group
+     * @param string $sQuestionTitle the question title
+     * @param int|null $iQuestionID Wished id for the question
+     * @param string|null $sQuestionLanguage The question language
+     * @param array $aQuestionData The question data
+     * @return array|int The id of the new group - Or status
+     */
+    public function add_question($sSessionKey, $iSurveyID, $iGroupID, $sQuestionTitle, $iQuestionID=null, $sQuestionLanguage=null, $aQuestionData=array())
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
+                $oSurvey = Survey::model()->findByPk($iSurveyID);
+                if (!isset($oSurvey)) {
+                    return array('status' => 'Error: Invalid survey ID');
+                }
+
+                if($oSurvey['active']=='Y') {
+                    return array('status' => 'Error:Survey is active and not editable');
+                }
+
+                $oQuestion        = new Question;
+                $oQuestion->sid   = $iSurveyID;
+                $oQuestion->gid   = $iGroupID;
+                if ($iQuestionID) {
+                    $oQuestion->qid = $iQuestionID;
+                }
+
+                if ($sQuestionLanguage) {
+                    $oQuestion->language = $sQuestionLanguage;
+                } else {
+                    $oQuestion->language = $oSurvey->language;
+                }
+                $oQuestion->title = $sQuestionTitle;
+                foreach ($aQuestionData as $sFieldName => $sValue) {
+                    if ('answeroptions' === $sFieldName && 'F' === $oQuestion->type) {
+                        foreach ($sValue as $sCode => $aAnswerData) {
+                            $oAnswer = new Answer();
+                            $oAnswer['answer'] = $aAnswerData['answer'];
+                            $oAnswer['code'] = $sCode;
+                            $oAnswer['sortorder'] = $aAnswerData['sortorder'];
+                            $oAnswer['language'] = $oQuestion->language;
+                            $oAnswer['qid'] = $oQuestion->qid;
+                            $oAnswer->save();
+                        }
+                    } else {
+                        $oQuestion->setAttribute($sFieldName,$sValue);
+                    }
+                }
+
+                if($oQuestion->save(false)) {
+                    switch($oQuestion->type) {
+                        // We handle this case only there and not upper because we need the question qid
+                        case 'M':
+                            foreach ($aQuestionData['answeroptions'] as $sCode => $aAnswerData) {
+                                $oSubQuestion             = new Question;
+                                $oSubQuestion->parent_qid = $oQuestion->qid;
+                                $oSubQuestion->sid        = $oQuestion->sid;
+                                $oSubQuestion->gid        = $oQuestion->gid;
+                                $oSubQuestion->title      = 'SQ00' . $aAnswerData['sortorder'];
+                                $oSubQuestion->question   = $aAnswerData['answer'];
+                                $oSubQuestion->question_order = $aAnswerData['sortorder'];
+                                $oSubQuestion->language   = $oQuestion->language;
+                                $oSubQuestion->save();
+                            }
+                            break;
+                        // For this type of question we need to add a sub question that does absolutely nothing -_-
+                        case 'F':
+                            $oSubQuestion             = new Question;
+                            $oSubQuestion->parent_qid = $oQuestion->qid;
+                            $oSubQuestion->sid        = $oQuestion->sid;
+                            $oSubQuestion->gid        = $oQuestion->gid;
+                            $oSubQuestion->title      = 'SQ001';
+                            $oSubQuestion->language   = $oQuestion->language;
+                            $oSubQuestion->mandatory  = 'N';
+                            $oSubQuestion->save();
+
+                            $oQuestionAttribute            = new QuestionAttribute;
+                            $oQuestionAttribute->qid       = $oQuestion->qid;
+                            $oQuestionAttribute->attribute = 'answer_width';
+                            $oQuestionAttribute->value     = 0;
+                            $oQuestionAttribute->save();
+                            break;
+
+                        case 'Q':
+                            foreach ($aQuestionData['subquestions'] as $sCode => $aQuestionData) {
+                                $oSubQuestion             = new Question;
+                                $oSubQuestion->parent_qid = $oQuestion->qid;
+                                $oSubQuestion->sid        = $oQuestion->sid;
+                                $oSubQuestion->gid        = $oQuestion->gid;
+                                $oSubQuestion->title      = 'SQ00' . $aQuestionData['sortorder'] . '-' . $sCode;
+                                $oSubQuestion->question   = $aQuestionData['label'];
+                                $oSubQuestion->question_order = $aQuestionData['sortorder'];
+                                $oSubQuestion->language   = $oQuestion->language;
+                                $oSubQuestion->save(false);
+                            }
+                            break;
+                    }
+                    return (int)$oQuestion->qid;
+                } else {
+                    return array('status' => 'Creation Failed');
+                }
+            } else {
+                return array('status' => 'No permission');
+            }
+        } else {
+            return array('status' => 'Invalid Session Key');
+        }
+    }
+
+
 
     /**
     * RPC Routine to delete a question of a survey .
@@ -1151,11 +1353,11 @@ class remotecontrol_handle
     * @param int iQuestionID Id of the question to delete
     * @return array|int Id of the deleted Question or status
     */
-    public function delete_question($sSessionKey, $iQuestionID)
+    public function delete_question($sSessionKey, $iQuestionID, $sLanguage)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage));
             if (!isset($oQuestion))
                 return array('status' => 'Error: Invalid question ID');
 
@@ -1476,30 +1678,136 @@ class remotecontrol_handle
                 unset($aQuestionData['sid']);
                 unset($aQuestionData['parent_qid']);
                 unset($aQuestionData['language']);
-                unset($aQuestionData['type']);
+                //unset($aQuestionData['type']);
                 // Remove invalid fields
                 $aDestinationFields=array_flip(Question::model()->tableSchema->columnNames);
+                $aDestinationFields['answeroptions'] = count($aDestinationFields);
+                $aDestinationFields['subquestions'] = count($aDestinationFields);
                 $aQuestionData=array_intersect_key($aQuestionData,$aDestinationFields);
                 $aQuestionAttributes = $oQuestion->getAttributes();
 
                 if (empty($aQuestionData))
                     return array('status' => 'No valid Data');
 
-                foreach($aQuestionData as $sFieldName=>$sValue)
-                {
+                foreach($aQuestionData as $sFieldName=>$sValue) {
                     //all the dependencies that this question has to other questions
-                    $dependencies=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,$iQuestionID);
+                    $dependencies = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, $iQuestionID);
                     //all dependencies by other questions to this question
-                    $is_criteria_question=getQuestDepsForConditions($oQuestion->sid,$oQuestion->gid,"all",$iQuestionID,"by-targqid");
+                    $is_criteria_question = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, "all", $iQuestionID, "by-targqid");
                     //We do not allow questions with dependencies in the same group to change order - that would lead to broken dependencies
 
-                    if((isset($dependencies) || isset($is_criteria_question))  && $sFieldName == 'question_order')
-                    {
-                        $aResult[$sFieldName]='Questions with dependencies - Order cannot be changed';
+                    if ((isset($dependencies) || isset($is_criteria_question)) && $sFieldName == 'question_order') {
+                        $aResult[$sFieldName] = 'Questions with dependencies - Order cannot be changed';
                         continue;
                     }
-                    $oQuestion->setAttribute($sFieldName,$sValue);
 
+                    if ('answeroptions' === $sFieldName) {
+                        switch ($aQuestionData['type']) {
+                            case 'F':
+                                $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $oQuestion->qid, 'language' => $sLanguage), array('order' => 'sortorder'));
+                                foreach ($oAnswers as $oAnswer) {
+                                    if (isset($sValue[$oAnswer['code']])) {
+                                        // Already existing answer option
+                                        $sValue[$oAnswer['code']]['existing'] = true;
+                                    } else {
+                                        // Answer option not existing anymore, to remove
+                                        $oAnswer->delete();
+                                    }
+                                }
+
+                                foreach ($sValue as $sCode => $aAnswerData) {
+                                    $oAnswer = new Answer();
+                                    if ($aAnswerData['existing']) {
+                                        $oAnswer->isNewRecord = false;
+                                    }
+                                    $oAnswer['answer'] = $aAnswerData['answer'];
+                                    $oAnswer['code'] = $sCode;
+                                    $oAnswer['sortorder'] = $aAnswerData['sortorder'];
+                                    $oAnswer['language'] = $sLanguage;
+                                    $oAnswer['scale_id'] = 0;
+                                    $oAnswer['qid'] = $oQuestion->qid;
+                                    $bSaveResult = $oAnswer->save();
+                                }
+                                break;
+                            case 'M':
+                                $oAnswers = Question::model()->findAllByAttributes(array('parent_qid' => $oQuestion->qid, 'language' => $sLanguage), array('order' => 'question_order'));
+                                foreach ($oAnswers as $oAnswer) {
+                                    if (isset($sValue[$oAnswer['title']])) {
+                                        // Already existing answer option
+                                        $sValue[$oAnswer['title']]['existing'] = true;
+                                        $sValue[$oAnswer['title']]['qid'] = $oAnswer['qid'];
+                                    } else {
+                                        // Answer option not existing anymore, to remove
+                                        $oAnswer->delete();
+                                    }
+                                }
+                                foreach ($sValue as $sCode => $aAnswerData) {
+                                    $oSubQuestion = new Question;
+                                    if ($aAnswerData['existing']) {
+                                        $oSubQuestion->isNewRecord = false;
+                                        $oSubQuestion->qid = $aAnswerData['qid'];
+                                    }
+                                    $oSubQuestion->parent_qid = $oQuestion->qid;
+                                    $oSubQuestion->sid = $oQuestion->sid;
+                                    $oSubQuestion->gid = $oQuestion->gid;
+                                    $oSubQuestion->title = 'SQ00' . $aAnswerData['sortorder'];
+                                    $oSubQuestion->question = $aAnswerData['answer'];
+                                    $oSubQuestion->question_order = $aAnswerData['sortorder'];
+                                    $oSubQuestion->language = $oQuestion->language;
+                                    $oSubQuestion->save(false);
+                                }
+                                break;
+                        }
+                    } else if ('subquestions' === $sFieldName) {
+                        if ($aQuestionData['type'] == 'Q') {
+                            $oAnswers = Question::model()->findAllByAttributes(array('parent_qid' => $oQuestion->qid, 'language' => $sLanguage), array('order' => 'question_order'));
+                            foreach ($oAnswers as $oAnswer) {
+                                if (isset($sValue[$oAnswer['title']])) {
+                                    // Already existing answer option
+                                    $sValue[$oAnswer['title']]['existing'] = true;
+                                    $sValue[$oAnswer['title']]['qid'] = $oAnswer['qid'];
+                                } else {
+                                    // Answer option not existing anymore, to remove
+                                    $oAnswer->delete();
+                                }
+                            }
+                            foreach ($sValue as $sCode => $aSubQuestion) {
+                                $oSubQuestion = new Question;
+                                if ($aSubQuestion['existing']) {
+                                    $oSubQuestion->isNewRecord = false;
+                                    $oSubQuestion->qid = $aSubQuestion['qid'];
+                                }
+                                $oSubQuestion->parent_qid = $oQuestion->qid;
+                                $oSubQuestion->sid = $oQuestion->sid;
+                                $oSubQuestion->gid = $oQuestion->gid;
+                                $oSubQuestion->title = 'SQ00' . $aSubQuestion['sortorder'] . '-' . $sCode;
+                                $oSubQuestion->question = $aSubQuestion['label'];
+                                $oSubQuestion->question_order = $aSubQuestion['sortorder'];
+                                $oSubQuestion->language = $oQuestion->language;
+                                $oSubQuestion->save(false);
+                            }
+                        }
+
+                    } else {
+                        $oQuestion->setAttribute($sFieldName,$sValue);
+                    }
+                    // For this type of question we need to add a subquestion that does absolutely nothing -_-
+                    if (('type' ===$sFieldName) && ('F' === $oQuestion->type)) {
+                        $oSubQuestion             = new Question;
+                        $oSubQuestion->parent_qid = $oQuestion->qid;
+                        $oSubQuestion->sid        = $oQuestion->sid;
+                        $oSubQuestion->gid        = $oQuestion->gid;
+                        $oSubQuestion->title      = 'SQ001';
+                        $oSubQuestion->language   = $oQuestion->language;
+                        $oSubQuestion->mandatory  = 'N';
+                        $oSubQuestion->save();
+
+                        $oQuestionAttribute            = new QuestionAttribute;
+                        $oQuestionAttribute->qid       = $oQuestion->qid;
+                        $oQuestionAttribute->attribute = 'answer_width';
+                        $oQuestionAttribute->value     = 0;
+                        $oQuestionAttribute->save();                        
+                    }
                     try
                     {
                         $bSaveResult=$oQuestion->save(); // save the change to database
@@ -2405,12 +2713,12 @@ class remotecontrol_handle
         }
         $oFormattingOptions=new FormattingOptions();
 
-        if($iFromResponseID !=null)   
+        if($iFromResponseID !=null)
             $oFormattingOptions->responseMinRecord=$iFromResponseID;
         else
             $oFormattingOptions->responseMinRecord=1;
 
-        if($iToResponseID !=null)   
+        if($iToResponseID !=null)
             $oFormattingOptions->responseMaxRecord=$iToResponseID;
         else
             $oFormattingOptions->responseMaxRecord = $maxId;
