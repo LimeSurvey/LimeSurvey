@@ -3086,6 +3086,7 @@ class statistics_helper {
                     //add a buttons to browse results
                     $sOutputHTML .= "<tr><td clospan='2' style='text-align:center'>";
                     $sOutputHTML .= CHtml::link(gT("Browse"),array("admin/responses","sa"=>'browse','surveyid'=>$surveyid,'statfilter'=>1),array('class'=>'button btn-link'));
+                    $sOutputHTML .= CHtml::link(gT("Export"),array("admin/export","sa"=>'exportresults','surveyid'=>$surveyid,'statfilter'=>1),array('class'=>'button btn-link'));
                     $sOutputHTML .= "</td></tr>";
 
                 }
