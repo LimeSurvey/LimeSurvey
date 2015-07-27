@@ -131,9 +131,9 @@ class SurveyDao
         $selection = '{{survey_' . $survey->id . '}}.id >= :min AND {{survey_' . $survey->id . '}}.id <= :max';
         $oRecordSet->where($selection, $aParams);
 
-        if(is_string($sFilter))
+        if(is_string($sFilter) && $sFilter)
             $oRecordSet->andWhere($sFilter);
-        elseif(is_array($sFilter))
+        elseif(is_array($sFilter) && count($sFilter))
         {
             foreach($sFilter as $filter)
                 $oRecordSet->andWhere($filter);
