@@ -3,8 +3,6 @@
     var strDeleteAllConfirm='<?php eT('Do you really want to delete all marked responses?', 'js'); ?>';
     var noFilesSelectedForDeletion = '<?php eT('Please select at least one file for deletion', 'js'); ?>';
 </script>
-
-<br />
 <script type='text/javascript'>
     var sCaption ='<?php eT("Survey responses",'js');?>';
     var sSelectColumns ='<?php eT("Select columns",'js');?>';
@@ -38,9 +36,12 @@
     var sRefreshTitle ='<?php eT("Reload responses list",'js');?>';
     var delBtnCaption ='<?php eT("Delete",'js');?>';
     var sEmptyRecords ='<?php eT("There are currently no responses.",'js');?>';
-    var jsonBaseUrl = "<?php echo App()->createUrl('/admin/responses', array('surveyid'=>$surveyid, 'browselang'=>$language)); ?>";
-    var jsonUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'getResponses_json', 'surveyid' => $surveyid,'browselang'=>$language)); ?>";
-    var jsonActionUrl = "<?php echo App()->createUrl('/admin/responses', array('sa'=> 'actionResponses', 'surveyid' => $surveyid,'browselang'=>$language)); ?>";
+
+    var jsonBaseUrl = "<?php echo  $jsonBaseUrl; ?>";
+    var jsonUrl = "<?php echo $jsonUrl; ?>";
+    var jsonActionUrl = "<?php echo $jsonActionUrl; ?>";
+
+    var defaultSearch = <?php echo $defaultSearch; ?>;
 
     var colNames = <?php echo $column_names_txt; ?>;
     var colModels = <?php echo $column_model_txt; ?>;
@@ -55,10 +56,4 @@
         var sConfirmationArchiveMessage='<?php eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to continue?",'js');?>';
     <?php } ?>
 </script>
-<br/>
-
 <table id="displayresponses"></table> <div id="pager"></div>
-
-
-<br />
-

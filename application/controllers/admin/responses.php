@@ -310,10 +310,7 @@ class responses extends Survey_Common_Action
         * it containts
         *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
         */
-        if (Yii::app()->request->getPost('sql'))
-        {
-            $aViewUrls[] = 'browseallfiltered_view';
-        }
+
 
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
@@ -416,6 +413,19 @@ class responses extends Survey_Common_Action
             'align'=>'center',
             'label' => gt("Completed"),
         );
+        $defaultSearch=array();
+        if (incompleteAnsFilterState() == "incomplete")
+        {
+            $defaultSearch['completed']="N";
+        }
+        elseif (incompleteAnsFilterState() == "complete")
+        {
+            $defaultSearch['completed']="Y";
+        }
+        else
+        {
+            $defaultSearch['completed']="";
+        }
 
         //add token to top of list if survey is not private
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId)) //add token to top of list if survey is not private
@@ -578,8 +588,23 @@ class responses extends Survey_Common_Action
         $aData['column_names_txt']= ls_json_encode($column_names);;
         $aData['hasUpload']=hasFileUploadQuestion($iSurveyId);
 
+        $aData['jsonBaseUrl']=App()->createUrl('/admin/responses', array('surveyid'=>$iSurveyId, 'browselang'=>$sBrowseLanguage));
+        $aData['jsonUrl']=App()->createUrl('/admin/responses', array(
+            'sa'=> 'getResponses_json',
+            'surveyid' => $iSurveyId,
+            'browselang'=>$sBrowseLanguage,
+            'statfilter'=>App()->request->getQuery('statfilter',0)
+        ));
+        $aData['jsonActionUrl']=App()->createUrl('/admin/responses', array('sa'=> 'actionResponses', 'surveyid' => $iSurveyId,'browselang'=>$sBrowseLanguage));
 
-        $this->_renderWrappedTemplate('responses', 'listResponses_view', $aData);
+        $aData['defaultSearch']=json_encode($defaultSearch);
+        $aViewUrls=array();
+        if (App()->request->getQuery('statfilter'))
+        {
+            $aViewUrls[] = 'filterListResponses_view';
+        }
+        $aViewUrls[] = 'listResponses_view';
+        $this->_renderWrappedTemplate('responses', $aViewUrls, $aData);
 
     }
 
@@ -628,10 +653,6 @@ class responses extends Survey_Common_Action
             $aSpecificColumns=array_merge($aSpecificColumns,TokenDynamic::model($iSurveyID)->getTableSchema()->getColumnNames());
         }
 
-        //Get the filter data
-        //if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
-        //    $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
-
         $aKnowColumns=array_keys(SurveyDynamic::model($iSurveyID)->attributes);
         if($bHaveToken){
             $aKnowColumns[]='firstname';
@@ -657,9 +678,26 @@ class responses extends Survey_Common_Action
             if(($value=Yii::app()->request->getParam('completed'))) 
             {
                 if($value=='Y')
+                {
                     $oCriteria->addCondition("submitdate IS NOT NULL");
+                    Yii::app()->session['incompleteanswers']='complete';
+                }
                 elseif($value=='N')
+                {
                     $oCriteria->addCondition("submitdate IS NULL");
+                    Yii::app()->session['incompleteanswers']='incomplete';
+                }
+                else
+                    Yii::app()->session['incompleteanswers']='all';
+            }
+            //Get the filter data
+            if (App()->request->getQuery('statfilter'))
+            {
+                $aSessionStatFilters= Yii::app()->session['statistics_selects_'.$iSurveyID];
+                foreach($aSessionStatFilters as $sCondition)
+                {
+                    $oCriteria->addCondition($sCondition);
+                }
             }
             foreach($aKnowColumns as $sFiltering)
             {
