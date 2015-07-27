@@ -691,10 +691,9 @@ class responses extends Survey_Common_Action
                     Yii::app()->session['incompleteanswers']='all';
             }
             //Get the filter data
-            if (App()->request->getQuery('statfilter'))
+            if (App()->request->getQuery('statfilter') && is_array(Yii::app()->session['statistics_selects_'.$iSurveyID]))
             {
-                $aSessionStatFilters= Yii::app()->session['statistics_selects_'.$iSurveyID];
-                foreach($aSessionStatFilters as $sCondition)
+                foreach(Yii::app()->session['statistics_selects_'.$iSurveyID] as $sCondition)
                 {
                     $oCriteria->addCondition($sCondition);
                 }
