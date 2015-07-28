@@ -1410,7 +1410,7 @@
                             foreach($subqs as $subq)
                             {
                                 $sq_names[] = $subq['varName'].".NAOK";
-                                $sq_eqPart[] = "!is_empty({$subq['varName']})*{$subq['csuffix']}";
+                                $sq_eqPart[] = "intval(!is_empty({$subq['varName']}.NAOK))*{$subq['csuffix']}";
                             }
                             if (!isset($validationEqn[$questionNum]))
                             {
