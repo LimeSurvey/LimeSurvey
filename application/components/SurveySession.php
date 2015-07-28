@@ -316,7 +316,7 @@ class SurveySession extends CComponent {
         if (!is_numeric($index)) {
             throw new \InvalidArgumentException("\$index must of type integer");
         }
-        return $this->getGroups()[$index - 1];
+        return $this->getGroups()[$index];
 
     }
 

@@ -663,7 +663,7 @@ class SurveyRuntimeHelper {
             $qnumber = 0;
 
             if (isset($stepInfo) && !isset($stepInfo['gid'])) {
-                var_dump($stepInfo); die();
+                throw new \Exception(print_r($stepInfo, true));
             }
             if ($session->format != Survey::FORMAT_ALL_IN_ONE
                 && isset($stepInfo)
@@ -671,9 +671,6 @@ class SurveyRuntimeHelper {
                 continue;
             }
 
-            // TMSW - could iterate through LEM::currentQset instead
-//            var_dump($ssm->current->getFieldArray());
-//            die();
             foreach ($session->fieldArray as $key => $ia)
             {
                 ++$qnumber;

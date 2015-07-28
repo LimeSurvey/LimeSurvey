@@ -329,9 +329,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }
         if (null !== $lang = App()->request->getQuery('lang'))
             $restartparam['lang'] = sanitize_languagecode($lang);
-        else
+        elseif (isset($session)) {
             $restartparam['lang'] = $session->language;
-
+        }
         $restartparam['newtest']="Y";
         $restartparam['id'] = $session->surveyId;
         $restarturl= App()->createUrl("surveys/start", $restartparam);

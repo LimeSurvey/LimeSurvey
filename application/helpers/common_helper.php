@@ -13,6 +13,30 @@
 Yii::import('application.helpers.sanitize_helper', true);
 
 /**
+ * Helperfunction for debugging.
+ */
+function vd($arg) {
+    if (defined('YII_DEBUG') && YII_DEBUG) {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        if ($trace[1]['function'] == 'vdd') {
+            $details = $trace[2];
+        } else {
+            $details = $trace[1];
+
+        }
+        $class = \TbArray::getValue('class', $details, 'Global function');
+        $token = "{$class}::{$details['function']}";
+
+        echo TbHtml::well("Dumped from: " . $token . '<br>'. CVarDumper::dumpAsString($arg, 10, true), [
+            'style' => 'text-align: left;'
+        ]);
+    }
+}
+
+function vdd($arg) {
+    vd($arg); die();
+}
+/**
  * Helper function for profiling.
  * @param string $key The key to be appended.
  */

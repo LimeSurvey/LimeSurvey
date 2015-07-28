@@ -805,6 +805,10 @@
          */
         public function _CreateSubQLevelRelevanceAndValidationEqns($onlyThisQseq = null)
         {
+            /**
+             * @todo Implement this.
+             */
+            return;
             $session = App()->surveySessionManager->current;
             $subQrels = array();    // array of sub-question-level relevance equations
             $validationEqn = array();
@@ -2898,7 +2902,7 @@
             $this->qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
             $this->jsVar2qid = array();
             $this->qcode2sgq = array();
-            $this->alias2varName = array();
+            $alias2varName = [];
             $this->varNameAttr = array();
             $this->questionId2groupSeq = array();
             $this->groupId2groupSeq = array();
@@ -3338,16 +3342,6 @@
                 $this->qcode2sgqa[$varName] = $sgqa;
                 $this->jsVar2qid[$jsVarName] = $questionNum;
                 $this->qcode2sgq[$fielddata['title']] = $surveyid . 'X' . $groupNum . 'X' . $questionNum;
-
-                // Create JavaScript arrays
-                $this->alias2varName[$varName] = array(
-                    'jsName' => $jsVarName,
-                    'jsPart' => "'" . $varName . "':'" . $jsVarName . "'"
-                );
-                $this->alias2varName[$sgqa] = array(
-                    'jsName' => $jsVarName,
-                    'jsPart' => "'" . $sgqa . "':'" . $jsVarName . "'"
-                );
 
                 $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                     . "'jsName':'" . $jsVarName
@@ -4348,8 +4342,8 @@
                                 'message' => $message,
                                 'gseq' => $LEM->currentGroupSeq,
                                 'seq' => $LEM->currentGroupSeq,
-                                'mandViolation' => (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                                'valid' => (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                                'mandViolation' => $result['mandViolation'],
+                                'valid' => $result['valid'],
                                 'unansweredSQs' => $result['unansweredSQs'],
                                 'invalidSQs' => $result['invalidSQs'],
                             );
@@ -4968,10 +4962,10 @@
                             $LEM->lastMoveResult = array(
                                 'finished' => false,
                                 'message' => $message,
-                                'gseq' => $LEM->currentGroupSeq,
-                                'seq' => $LEM->currentGroupSeq,
-                                'mandViolation' => (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                                'valid' => (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                                'gseq' => $session->step,
+                                'seq' => $session->step,
+                                'mandViolation' => (($session->maxStep > $session->step) ? $result['mandViolation'] : false),
+                                'valid' => (($session->maxStep > $session->step) ? $result['valid'] : false),
                                 'unansweredSQs' => $result['unansweredSQs'],
                                 'invalidSQs' => $result['invalidSQs'],
                             );
@@ -5264,7 +5258,6 @@
             $relevanceEqn = htmlspecialchars_decode($relevanceEqn, ENT_QUOTES);  // TODO is this needed?
             // assumes safer to re-process relevance and not trust POST values
             $qrel = $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $question->primaryKey);
-//            var_dump("$relevanceEqn --> $qrel");
 
             $hasErrors = $LEM->em->HasErrors();
             if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
@@ -5989,12 +5982,7 @@
                 isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false
             );
             $LEM->groupRelevanceInfo = array();
-            $LEM->currentGroupSeq = $gseq;
             $LEM->setVariableAndTokenMappingsForExpressionManager($session->surveyId, $forceRefresh, $anonymized);
-            if ($gseq > $LEM->maxGroupSeq) {
-                $LEM->maxGroupSeq = $gseq;
-            }
-
             if ($session->format != Survey::FORMAT_ALL_IN_ONE|| !$LEM->processedRelevance) {
                 $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
                 $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
@@ -6046,13 +6034,13 @@
             $LEM =& LimeExpressionManager::singleton();
 
             $jsParts = array();
-            $allJsVarsUsed = array();
+            $allJsVarsUsed = [];
             $rowdividList = array();   // list of subquestions needing relevance entries
             App()->getClientScript()->registerScriptFile(SettingGlobal::get('generalscripts', '/scripts') . "/expressions/em_javascript.js");;
             $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
             $jsParts[] = "var LEMmode='" . $session->format . "';\n";
             if ($session->format == Survey::FORMAT_GROUP) {
-                $jsParts[] = "var LEMgseq=" . $session->step . ";\n";
+                $jsParts[] = "var LEMgseq=" . $session->step . "; console.log('LEMgseq:' + LEMgseq + ', step: {$session->step}');\n";
             }
             if ($session->format == Survey::FORMAT_QUESTION) {
                 $jsParts[] = "var LEMqid=" . $session->getQuestionByIndex($session->step)->primaryKey. "; console.log('LEMQID:' + LEMqid + ', step: {$session->step}');\n";  // current group num so can compute isOnCurrentPage
@@ -6070,10 +6058,9 @@
 
             // flatten relevance array, keeping proper order
 
-            $qidList = array(); // list of questions used in relevance and tailoring
-            $gseqList = array(); // list of gseqs on this page
+            $qidList = []; // list of questions used in relevance and tailoring
+            $gidList = []; // list of gseqs on this page
             $gid_qidList = []; // list of qids using relevance/tailoring within each group
-
             $pageRelevanceInfo = $LEM->getPageRelevanceInfo();
 
 
@@ -6084,7 +6071,8 @@
             $dynamicQinG = array(); // array of questions, per group, that might affect group-level visibility in all-in-one mode
             $GalwaysRelevant = array(); // checks whether a group is always relevant (e.g. has at least one question that is always shown)
             foreach ($pageRelevanceInfo as $arg) {
-                var_dump($arg);
+                vd($arg);
+                $gidList[$arg['gid']] = $arg['gid'];
                 // First check if there is any tailoring  and construct the tailoring JavaScript if needed
                 $tailorParts = array();
                 $relParts = array();    // relevance equation
@@ -6094,17 +6082,15 @@
                 foreach ($LEM->getPageTailorInfo() as $sub) {
                     if ($sub['questionNum'] == $arg['qid']) {
                         $tailorParts[] = $sub['js'];
-                        $vars = explode('|', $sub['vars']);
-                        if (is_array($vars)) {
-                            $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
-                            $relJsVarsUsed = array_merge($relJsVarsUsed, $vars);
+                        foreach(explode('|', $sub['vars']) as $val) {
+                            $allJsVarsUsed[$val] = $val;
+                            $relJsVarsUsed[$val] = $val;
                         }
                     }
                 }
 
                 // Now check whether there is sub-question relevance to perform for this question
                 $subqParts = array();
-                var_dump($arg); die();
                 if (isset($LEM->subQrelInfo[$arg['qid']])) {
                     foreach ($LEM->subQrelInfo[$arg['qid']] as $subq) {
                         $subqParts[$subq['rowdivid']] = $subq;
@@ -6261,10 +6247,9 @@
                         }
                         $relParts[] = "  }\n";
 
-                    $sqvars = explode('|', $sq['relevanceVars']);
-                    if (is_array($sqvars)) {
-                        $allJsVarsUsed = array_merge($allJsVarsUsed, $sqvars);
-                        $relJsVarsUsed = array_merge($relJsVarsUsed, $sqvars);
+                    foreach(explode('|', $sq['relevanceVars']) as $val) {
+                        $allJsVarsUsed[$val] = $val;
+                        $relJsVarsUsed[$val] = $val;
                     }
                 }
 
@@ -6278,9 +6263,10 @@
                     }
                     $isValid = $LEM->em->ProcessBooleanExpression($_veq['subqValidEqn'], $arg['gseq'],
                         $session->getQuestionIndex($arg['qid']));
-                    $_sqValidVars = $LEM->em->GetJSVarsUsed();
-                    $allJsVarsUsed = array_merge($allJsVarsUsed, $_sqValidVars);
-                    $valJsVarsUsed = array_merge($valJsVarsUsed, $_sqValidVars);
+                    foreach($LEM->em->GetJSVarsUsed() as $var) {
+                        $allJsVarsUsed[$var] = $var;
+                        $valJsVarsUsed[$var] = $var;
+                    }
                     $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
                     if ($validationJS != '') {
                         $valParts[] = "\n  if(" . $validationJS . "){\n";
@@ -6315,9 +6301,10 @@
 
                         $_isValid = $LEM->em->ProcessBooleanExpression($validationEqn, $arg['gseq'],
                             $session->getQuestionIndex($arg['qid']));
-                        $_vars = $LEM->em->GetJSVarsUsed();
-                        $allJsVarsUsed = array_merge($allJsVarsUsed, $_vars);
-                        $valJsVarsUsed = array_merge($valJsVarsUsed, $_vars);
+                        foreach($LEM->em->GetJSVarsUsed() as $var) {
+                            $allJsVarsUsed[$var] = $var;
+                            $valJsVarsUsed[$var] = $var;
+                        }
                         $_validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
                         if ($_validationJS != '') {
                             $valParts[] = "\n  if(" . $_validationJS . "){\n";
@@ -6457,10 +6444,9 @@
                     }
                 }
 
-                $vars = explode('|', $arg['relevanceVars']);
-                if (is_array($vars)) {
-                    $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
-                    $relJsVarsUsed = array_merge($relJsVarsUsed, $vars);
+                foreach (explode('|', $arg['relevanceVars']) as $var) {
+                    $allJsVarsUsed[$var] = $var;
+                    $relJsVarsUsed[$var] = $var;
                 }
 
                 $relJsVarsUsed = array_merge($relJsVarsUsed, $valJsVarsUsed);
@@ -6506,17 +6492,14 @@
                 $gid_qidList[$arg['gid']][$arg['qid']] = '1';   // means has an explicit LEMrel() function
             }
 
-            foreach (array_keys($gid_qidList) as $gid) {
-                if (!is_numeric($gid)) die();
-                $gseq = $session->getGroupIndex($gid);
-                $relChangeVars[] = "  relChangeG" . $gseq . "=false;\n";
-            }
-            $jsParts[] = implode("", $relChangeVars);
+            $jsParts[] = implode("", array_map(function($gid) use ($session) {
+                return "  relChangeG" . $session->getGroupIndex($gid) . "=false;\n";
+            }, array_keys($gid_qidList)));
 
             // Process relevance for each group; and if group is relevant, process each contained question in order
-            foreach ($session->groups as $gseq => $group) {
+            foreach ($session->groups as $group) {
                 $gr = $LEM->getGroupRelevanceInfo($group->primaryKey);
-                if (!array_key_exists($gseq, $gseqList)) {
+                if (!array_key_exists($group->primaryKey, $gidList)) {
                     continue;
                 }
                 if ($gr['relevancejs'] != '') {
@@ -6527,7 +6510,8 @@
                     $jsParts[] = "  relChangeG" . $gr['gseq'] . "=true;\n";
                     $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
 
-                    $qids = $gseq_qidList[$gr['gseq']];
+                    $qids = $gid_qidList[$group->primaryKey];
+                    vdd($qids);
                     foreach ($qids as $_qid => $_val) {
                         $qid2exclusiveAuto = (isset($LEM->qid2exclusiveAuto[$_qid]) ? $LEM->qid2exclusiveAuto[$_qid] : array());
                         if ($_val == 1) {
@@ -6536,9 +6520,8 @@
                                 && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0
                             ) {
                                 $jsParts[] = $qid2exclusiveAuto['js'];
-                                $vars = explode('|', $qid2exclusiveAuto['relevanceVars']);
-                                if (is_array($vars)) {
-                                    $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
+                                foreach(explode('|', $qid2exclusiveAuto['relevanceVars']) as $var) {
+                                    $allJsVarsUsed[$var] = $var;
                                 }
                                 if (!isset($rowdividList[$qid2exclusiveAuto['rowdivid']])) {
                                     $rowdividList[$qid2exclusiveAuto['rowdivid']] = true;
@@ -6559,7 +6542,7 @@
                     $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
                     $jsParts[] = "}\n";
                 } else {
-                    $qids = $gseq_qidList[$gr['gseq']];
+                    $qids = $gid_qidList[$group->primaryKey];
                     foreach ($qids as $_qid => $_val) {
                         $qid2exclusiveAuto = (isset($LEM->qid2exclusiveAuto[$_qid]) ? $LEM->qid2exclusiveAuto[$_qid] : array());
                         if ($_val == 1) {
@@ -6568,9 +6551,8 @@
                                 && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0
                             ) {
                                 $jsParts[] = $qid2exclusiveAuto['js'];
-                                $vars = explode('|', $qid2exclusiveAuto['relevanceVars']);
-                                if (is_array($vars)) {
-                                    $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
+                                foreach(explode('|', $qid2exclusiveAuto['relevanceVars']) as $var) {
+                                    $allJsVarsUsed[$var] = $var;
                                 }
                                 if (!isset($rowdividList[$qid2exclusiveAuto['rowdivid']])) {
                                     $rowdividList[$qid2exclusiveAuto['rowdivid']] = true;
@@ -6588,8 +6570,9 @@
 
                 // Add logic for all-in-one mode to show/hide groups as long as at there is at least one relevant question within the group
                 // Only do this if there is no explicit group-level relevance equation, else may override group-level relevance
-                $dynamicQidsInG = (isset($dynamicQinG[$gr['gseq']]) ? $dynamicQinG[$gr['gseq']] : array());
-                $GalwaysVisible = (isset($GalwaysRelevant[$gr['gseq']]) ? $GalwaysRelevant[$gr['gseq']] : false);
+                $gseq = $session->getGroupIndex($group->primaryKey);
+                $dynamicQidsInG = (isset($dynamicQinG[$gseq]) ? $dynamicQinG[$gseq] : array());
+                $GalwaysVisible = (isset($GalwaysRelevant[$gseq]) ? $GalwaysRelevant[$gseq] : false);
                 if ($session->format == Survey::FORMAT_ALL_IN_ONE && !$GalwaysVisible && count($dynamicQidsInG) > 0 && strlen(trim($gr['relevancejs'])) == 0) {
                     // check whether any dependent questions  have changed
                     $relStatusTest = "($('#relevance" . implode("').val()=='1' || $('#relevance",
@@ -6607,9 +6590,8 @@
                 }
 
                 // now make sure any needed variables are accessible
-                $vars = explode('|', $gr['relevanceVars']);
-                if (is_array($vars)) {
-                    $allJsVarsUsed = array_merge($allJsVarsUsed, $vars);
+                foreach(explode('|', $gr['relevanceVars']) as $var) {
+                    $allJsVarsUsed[$var] = $var;
                 }
             }
 
@@ -6618,22 +6600,22 @@
             $jsParts[] = implode("\n", $relEqns);
             $jsParts[] = implode("\n", $valEqns);
 
-            $allJsVarsUsed = array_unique($allJsVarsUsed);
+
+            $allJsVarsUsed = array_filter($allJsVarsUsed);
+            vdd($allJsVarsUsed);
 
             // Add JavaScript Mapping Arrays
-            if (isset($LEM->alias2varName) && count($LEM->alias2varName) > 0) {
-                $neededAliases = array();
-                $neededCanonical = array();
-                $neededCanonicalAttr = array();
+            $alias2varName = $LEM->getAliases();
+            if (isset($alias2varName) && count($alias2varName) > 0) {
+//                $neededAliases = []);
+                $neededCanonical = [];
+                $neededCanonicalAttr = [];
                 foreach ($allJsVarsUsed as $jsVar) {
-                    if ($jsVar == '') {
-                        continue;
-                    }
                     if (preg_match("/^.*\.NAOK$/", $jsVar)) {
                         $jsVar = preg_replace("/\.NAOK$/", "", $jsVar);
                     }
                     $neededCanonical[] = $jsVar;
-                    foreach ($LEM->alias2varName as $key => $value) {
+                    foreach ($alias2varName as $key => $value) {
                         if ($jsVar == $value['jsName']) {
                             $neededAliases[] = $value['jsPart'];
                         }
@@ -6729,20 +6711,20 @@
                 }
             }
             foreach ($qidList as $qid) {
-                if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
-                    $relStatus = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
-                } else {
+//                if (isset($_SESSION[$LEM->sessid]['relevanceStatus'])) {
+//                    $relStatus = (isset($_SESSION[$LEM->sessid]['relevanceStatus'][$qid]) ? $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] : 1);
+//                } else {
                     $relStatus = 1;
-                }
+//                }
                 $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid . "' value='" . $relStatus . "'/>\n";
             }
 
-            foreach ($gseqList as $gseq) {
-                if (isset($_SESSION['relevanceStatus'])) {
-                    $relStatus = (isset($_SESSION['relevanceStatus']['G' . $gseq]) ? $_SESSION['relevanceStatus']['G' . $gseq] : 1);
-                } else {
+            foreach ($gidList as $gid) {
+//                if (isset($_SESSION['relevanceStatus'])) {
+//                    $relStatus = (isset($_SESSION['relevanceStatus']['G' . $gseq]) ? $_SESSION['relevanceStatus']['G' . $gseq] : 1);
+//                } else {
                     $relStatus = 1;
-                }
+//                }
                 $jsParts[] = "<input type='hidden' id='relevanceG" . $gseq . "' name='relevanceG" . $gseq . "' value='" . $relStatus . "'/>\n";
             }
             foreach ($rowdividList as $key => $val) {
@@ -8903,6 +8885,7 @@
                     $pageRelevanceInfo = [];
                     foreach($session->getQuestions($session->getGroupByIndex($session->step)) as $question) {
                         $pageRelevanceInfo[] = $this->processQuestionRelevance($question);
+
                     }
                     break;
                 case Survey::FORMAT_ALL_IN_ONE:
@@ -8938,7 +8921,17 @@
             $groupSeq = $session->getGroupIndex($question->gid);
 
             $expression = htmlspecialchars_decode($question->relevance, ENT_QUOTES);
-            $result = $this->em->ProcessBooleanExpression($expression, $groupSeq, $questionSeq);
+            $result = [
+                'result' => $this->em->ProcessBooleanExpression($expression, $groupSeq, $questionSeq),
+                'relevancejs' => $this->em->GetJavaScriptEquivalentOfExpression(),
+                'qid' => $question->primaryKey,
+                'gid' => $question->gid,
+                'gseq' => $session->getGroupIndex($question->gid),
+                'type' => $question->type,
+                'hidden' => $question->bool_hidden,
+                'relevanceVars' => implode('|',$this->em->GetJSVarsUsed())
+            ];
+
             $hasErrors = $this->em->HasErrors();
             eP();
             return $result;
@@ -9004,6 +8997,18 @@
             }
             $result['subqs'] = $subQuestions;
             eP();
+            return $result;
+        }
+
+        public function getAliases() {
+            $session = App()->surveySessionManager->current;
+            $result = [];
+            foreach($session->survey->questions as $question) {
+                foreach ($question->getFields() as $field) {
+//                    $result[$field['title']] = $field['fieldname'];
+                    $result[$field['fieldname']] = $field['fieldname'];
+                }
+            }
             return $result;
         }
 
