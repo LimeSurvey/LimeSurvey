@@ -1267,7 +1267,7 @@ class remotecontrol_handle
                 }
                 $oQuestion->title = $sQuestionTitle;
                 foreach ($aQuestionData as $sFieldName => $sValue) {
-                    if ('answeroptions' === $sFieldName && 'F' === $oQuestion->type) {
+                    if ('answeroptions' === $sFieldName && in_array($aQuestionData['type'], array('F', 'L'))) {
                         foreach ($sValue as $sCode => $aAnswerData) {
                             $oAnswer = new Answer();
                             $oAnswer['answer'] = $aAnswerData['answer'];
@@ -1703,6 +1703,7 @@ class remotecontrol_handle
 
                     if ('answeroptions' === $sFieldName) {
                         switch ($aQuestionData['type']) {
+                            case 'L':
                             case 'F':
                                 $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $oQuestion->qid, 'language' => $sLanguage), array('order' => 'sortorder'));
                                 foreach ($oAnswers as $oAnswer) {
