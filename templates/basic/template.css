@@ -924,7 +924,7 @@ table.rank td.helptext {
   background-position: center center;
 }
 
-.slider_callout {no-repeat;
+.slider_callout {
   height: 20px;
   width: 100px;
   overflow: hidden;
