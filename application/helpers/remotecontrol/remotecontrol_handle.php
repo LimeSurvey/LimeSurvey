@@ -1770,9 +1770,10 @@ class remotecontrol_handle
     * @param int  $iLimit Number of participants to return
     * @param bool $bUnused If you want unused tokens, set true
     * @param bool|array $aAttributes The extented attributes that we want
+    * @return array The list of tokens    * @param array $aConditions Conditions to limit the list, e.g. with array(1 => 'email = "info@example.com"')
     * @return array The list of tokens
     */
-    public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false,$aAttributes=false)
+    public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false, $aAttributes=false, $aConditions=array() )
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -1785,10 +1786,21 @@ class remotecontrol_handle
                 if(!tableExists("{{tokens_$iSurveyID}}"))
                     return array('status' => 'Error: No token table');
 
+				$command = new CDbCriteria();
+				$command->condition = '';
+				if (count($aConditions)) {
+					foreach($aConditions as $condition)
+					{
+						$command->addCondition($condition);
+					}
+				}
+				$command->limit = $iLimit;
+				$command->offset = $iStart;
+
                 if($bUnused)
-                    $oTokens = Token::model($iSurveyID)->incomplete()->findAll(array('limit' => $iLimit, 'offset' => $iStart));
+                    $oTokens = Token::model($iSurveyID)->incomplete()->findAll($command);
                 else
-                    $oTokens = Token::model($iSurveyID)->findAll(array('limit' => $iLimit, 'offset' => $iStart));
+                    $oTokens = Token::model($iSurveyID)->findAll($command);
 
                 if(count($oTokens)==0)
                     return array('status' => 'No Tokens found');
