@@ -37,10 +37,17 @@
 			$sMessage = 'Your version is not updatable via ComfortUpdate. Please, update manually.';
 			break;
 					
+		case 'no_build':
+			$sTile = 'Error';
+			$sHeader = 'No build version found !';
+			$sMessage = "It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate.";
+			break;
+					
 		default :
 			$sTile = 'Error';
 			$sHeader = 'Unknown Error !';
-			$sMessage = "An unknown error occured. Please, contact LimeSurvey team <br/> error code : ".$serverAnswer->error;
+			$sMessage = 'An unknown error occured. Please, contact LimeSurvey team.';
+			$sErrorCode = 'error code : '.$serverAnswer->error;
 			break;
 	}
 ?>
@@ -50,6 +57,9 @@
     <div class='header ui-widget-header'><?php eT($sTile); ?></div>
     <div class='warningheader'><?php eT($sHeader); ?></div>
     <?php echo eT($sMessage); ?><br />
+    <?php if(isset($sErrorCode)):?>
+    	<?php echo eT($sErrorCode); ?><br />
+    <?php endif;?>
     <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
 		<span class="ui-button-text"><?php eT("Ok"); ?></span>
 	</a>

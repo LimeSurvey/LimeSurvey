@@ -60,10 +60,19 @@ class UpdateForm extends CFormModel
 	 */	
 	public function getUpdateInfo($crosscheck="1")
 	{
-		$crosscheck = (int) $crosscheck;
-		$getters = '/index.php?r=updates/updateinfo&currentbuild='.$this->build.'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck='.$crosscheck;
-		$content = $this->_performRequest($getters);
-		return $content;		
+		if( $this->build != '' )
+		{
+			$crosscheck = (int) $crosscheck;
+			$getters = '/index.php?r=updates/updateinfo&currentbuild='.$this->build.'&id='.md5(getGlobalSetting('SessionName')).'&crosscheck='.$crosscheck;
+			$content = $this->_performRequest($getters);
+		}	
+		else
+		{
+			$content = new stdClass();
+			$content->result = FALSE;
+			$content->error = "no_build";
+		}
+		return $content;	
 	}
 	
 	/**
