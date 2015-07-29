@@ -391,6 +391,29 @@ class update extends Survey_Common_Action
 	}
 
 
+
+    /**
+    * Update database
+    */
+    function db($continue = null)
+    {
+        Yii::app()->loadHelper("update/update");
+        if(isset($continue) && $continue=="yes")
+        {
+            $aViewUrls['output'] = CheckForDBUpgrades($continue);
+            updateCheck();
+            $aData['display']['header'] = false;
+        }
+        else
+        {
+            $aData['display']['header'] = true;
+            $aViewUrls['output'] = CheckForDBUpgrades();
+        }
+
+        $this->_renderWrappedTemplate('update', $aViewUrls, $aData);
+    }
+
+
 	/**
 	 * this function render the update buttons 
 	 * @param object $serverAnswer the update server answer (getInfo)  
