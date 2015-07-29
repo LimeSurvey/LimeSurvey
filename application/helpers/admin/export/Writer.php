@@ -290,6 +290,9 @@ abstract class Writer implements IWriter
                     case 'codetext':
                         $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn).$oOptions->headCodeTextSeparator.$this->getHeadingText($oSurvey, $oOptions, $sColumn);
                         break;
+                    case 'columnName':
+                        $value = $sColumn;
+                        break;
                     case 'code':
                     default:
                         $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn);
