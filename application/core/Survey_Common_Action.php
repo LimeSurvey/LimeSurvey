@@ -246,6 +246,7 @@ class Survey_Common_Action extends CAction
         // Menu bars
         if (!isset($aData['display']['menu_bars']) || ($aData['display']['menu_bars'] !== false && (!is_array($aData['display']['menu_bars']) || !in_array('browse', array_keys($aData['display']['menu_bars'])))))
         {
+        	$this->_updatenotification();
             Yii::app()->getController()->_showadminmenu(!empty($aData['surveyid']) ? $aData['surveyid'] : null);
 
             if (!empty($aData['surveyid']))
@@ -349,6 +350,21 @@ class Survey_Common_Action extends CAction
         App()->getClientScript()->render($out);
         echo $out;
     }
+
+
+	function _updatenotification()
+	{
+    	if( !Yii::app()->user->isGuest )
+		{
+			$updateModel = new UpdateForm();
+			$updateNotification = $updateModel->updateNotification;
+			
+			if($updateNotification->result)
+			{
+				return $this->getController()->renderPartial("/admin/update/_update_notification", array('security_update_available'=>$updateNotification->security_update));
+			}
+		}
+	}
 
     /**
     * Shows admin menu for question

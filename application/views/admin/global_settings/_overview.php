@@ -53,6 +53,7 @@
     }
     ?>
 <p>
-	<?php eT('Click on tab "Update" to use ComfortUpdate ');?>
+		<?php $urlUpdate = Yii::app()->createUrl("admin/globalsettings", array("update"=>'updatebuttons')); ?>
+		<a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
 </p>
 

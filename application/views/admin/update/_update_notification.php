@@ -7,7 +7,7 @@
  */
 
 ?>
-<?php $urlUpdate = Yii::app()->createUrl("admin/globalsettings", array("update"=>'welcome')); ?>
+<?php $urlUpdate = Yii::app()->createUrl("admin/globalsettings", array("update"=>'updatebuttons')); ?>
 
 <?php if($security_update_available):?>
 <div class="alert alert-warning alert-dismissible" role="alert" style="background-color: #fff; border: 1px solid #800051; color: #800051; margin-top:  1em;">

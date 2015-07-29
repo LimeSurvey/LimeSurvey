@@ -510,6 +510,41 @@ class UpdateForm extends CFormModel
 	}
 
 
+    /**
+    * Prints the update notification
+    *
+    * @access protected
+    * @return mixed
+    */
+	public function getUpdateNotification()
+	{
+		$crosscheck = (getGlobalSetting('updatenotification')=="both")?1:0;
+		$updates = $this->getUpdateInfo($crosscheck="1");
+		
+		$update_available = FALSE;	
+		if($updates->result)
+		{
+			unset($updates->result);
+		
+			if( count($updates) > 0)
+			{
+				$update_available = TRUE;
+				$security_update_available = FALSE;
+				foreach( $updates as $update )
+				{
+					if($update->security_update)
+						$security_update_available = TRUE;
+				}
+			}
+			$updates = array('result'=>$update_available , 'security_update'=>$security_update_available);
+		}
+		
+		
+		return (object) $updates;		
+		
+	}
+
+
 	//// END OF INTERFACE ////
 	
 

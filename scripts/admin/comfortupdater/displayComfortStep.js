@@ -7,6 +7,12 @@ $.fn.displayComfortStep = function(options)
 	// we display the ComfortUpdater tab inside the global setting view
 	$('#settingTabs a:last').tab('show');
 
+	if(params.step=="updatebuttons")
+	{
+		$( "#update_tab" ).trigger( "click" );
+	}
+	else
+	{
 	$ajaxLoader = $("#ajaxContainerLoading");
 	$ajaxLoader.show();
 
@@ -28,6 +34,7 @@ $.fn.displayComfortStep = function(options)
 	$("#step0Updt").removeClass("on").addClass("off");
 
 	switch(params.step) {
+		
 	    case "newKey":
 	        $url = $("#newkeyurl").attr('aria-data-url');
 	        $("#welcome").hide();
@@ -100,6 +107,6 @@ $.fn.displayComfortStep = function(options)
 		}
 	});	
 	
-	
+	}
 	
 };
