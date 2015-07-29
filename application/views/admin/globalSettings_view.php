@@ -20,7 +20,7 @@
         <li role="presentation" ><a data-toggle="tab" href='#presentation'><?php eT("Presentation"); ?></a></li>
         <li role="presentation" ><a data-toggle="tab" href='#language'><?php eT("Language"); ?></a></li>
         <li role="presentation" ><a data-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
-        <li role="presentation" ><a data-toggle="tab" href='#updates'><?php eT("Update"); ?></a></li>
+        <li role="presentation" ><a data-toggle="tab" href='#updates' id="update_tab"><?php eT("Update"); ?></a></li>
 </ul>
 																					         
 <?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'form30','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>

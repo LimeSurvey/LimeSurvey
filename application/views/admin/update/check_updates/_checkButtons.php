@@ -12,13 +12,15 @@
  */
 ?>
 <div id="ajaxupdaterLayoutLoading" style="text-align : center; margin-top: 200px; margin-bottom: 200px; display: none">
-	<p><?php eT('Please wait, data loading');?>...</p>
+	<p><?php eT('Please wait, looking for updates....');?>...</p>
 	<img src="<?php echo Yii::app()->baseUrl;?>/images/ajax-loader.gif" alt="loading..."/>    <br/>
 </div>
 
 <div id="preUpdaterContainer">
+	
 	<div class='header ui-widget-header'><?php echo eT("Updates"); ?></div><br/>
 	<ul>
+	<!--
 	<li>
 		<label for='updatecheckperiod'><?php echo eT("Automatically check for updates:"); ?></label>
 	    <select name='updatecheckperiod' id='updatecheckperiod'>
@@ -38,10 +40,6 @@
 	            <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
 	            ><?php echo eT("Every month"); ?></option>
 	    </select>
-	    <!-- 
-	    	Button to ckeck the available updates. 
-	    	This launch the Comfort Updater process
-	    -->
 	    <input type='button' id="ajaxcheckupdate" value='<?php eT("Check now"); ?>' />&nbsp;<span id='ajaxlastupdatecheck'><?php echo sprintf(gT("Last check: %s"),$updatelastcheck); ?></span>
 	</li>
 	
@@ -59,8 +57,9 @@
 	            ><?php echo eT("For stable and unstable versions"); ?></option>
 	    </select>
 	</li>
-	    
+		    
 	<!-- FOR AJAX REQUEST -->
+<!--	
 	<input type="hidden" id="updateBranch" value="<?php echo $UpdateNotificationForBranch;?>"/>
 	
 	<!-- The js will inject inside this li the HTML of the update buttons --> 

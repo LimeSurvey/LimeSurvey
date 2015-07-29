@@ -52,5 +52,7 @@
     <?php
     }
     ?>
+<p>
+	<?php eT('Click on tab "Update" to use ComfortUpdate ');?>
 </p>
 
