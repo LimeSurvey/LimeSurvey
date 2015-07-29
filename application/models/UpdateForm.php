@@ -280,9 +280,8 @@ class UpdateForm extends CFormModel
 		    $archive = new PclZip($this->tempdir.DIRECTORY_SEPARATOR.$file_to_unzip);
 			
 			// TODO : RESTORE REPLACE NEWER !!
-			// TODO : TEST IF '/' should be replaced with DIRECTORY_SEPARATOR 
 			//if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0)
-		    if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.DIRECTORY_SEPARATOR)== 0) 
+		    if ($archive->extract(PCLZIP_OPT_PATH, $this->rootdir.DIRECTORY_SEPARATOR, PCLZIP_OPT_REPLACE_NEWER)== 0) 
 		    {
 		    	//PclTraceDisplay(); die();
 		    	$return = array('result'=>FALSE, 'error'=>'unzip_error', 'message'=>$archive->errorInfo(true));

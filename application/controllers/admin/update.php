@@ -272,7 +272,7 @@ class update extends Survey_Common_Action
 							$updateModel->updateVersion($destinationBuild);
 							$updateModel->destroyGlobalSettings();
 							// TODO : aData should contains information about each step
-							return $this->controller->renderPartial('update/updater/steps/_final', $aData, false, true);	
+							return $this->controller->renderPartial('update/updater/steps/_final', array(), false, true);	
 						}
 						else 
 						{
