@@ -575,4 +575,4 @@ CREATE INDEX `parent_qid_idx` ON `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '181');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '182');
