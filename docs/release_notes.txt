@@ -59,6 +59,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06+ (build 150729) to 2.06+ (build 150730) Jun 30, 2015
+-Fixed issue #9726: File browser not properly behaving due to old cached files (Carsten Schmitz)
+-Fixed issue #9744: Multiple choice  question type label 'Not displayed' missing in statistics graph (Carsten Schmitz)
+-Fixed issue #9798: Logout notice error (Carsten Schmitz)
+-Fixed issue: Setting for loading the end URL is behaving properly when editing survey settings (Carsten Schmitz)
+-New feature: Allow export to use statistics filter (Denis Chenu)
+-New feature: ComfortUpdate notification (louis)
+-New feature: ComfortUpdater with key system (louis)
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+
 Changes from 2.06+ (build 150723) to 2.06+ (build 150729) Jun 29, 2015
 -Fixed issue #9761: CSRF token entropy (Carsten Schmitz)
 -Fixed issue #9771: Unable to directly upgrade from 1.87 to 2.06 (Carsten Schmitz)
