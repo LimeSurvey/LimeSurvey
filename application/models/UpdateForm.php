@@ -613,7 +613,7 @@ class UpdateForm extends CFormModel
 			$backupDb->result = FALSE;
 			$backupDb->message = htmlspecialchars(db_backup_failed);
 		}
-		return $return;                                                                                                                                                                                         
+		return $backupDb;                                                                                                                                                                                         
 
 	}
 		
