@@ -19,6 +19,8 @@ $(window).scroll(function(){
     });
 });
 
+// Trace firstload of grid
+firstload=true;
 $(document).on("click","[data-delete]",function(event){
     event.preventDefault();
     var responseid=$(this).data("delete")
@@ -73,6 +75,7 @@ $(function() {
         loadonce : false, // use ajax request
         pager : "#pager",
         caption : sCaption,
+        postData: defaultSearch ,
         beforeRequest: function(){
             /* activate tooltip on header */
             for (i = 0; i < colModels.length; i++) {
@@ -140,6 +143,11 @@ $(function() {
         searchOnEnter : false,
         defaultSearch : 'cn'
     });
+    if(firstload)
+    {
+        $("#gs_completed").val(defaultSearch.completed);
+        firstload=false;
+    }
     /* Column button */
     jQuery("#displayresponses").jqGrid(
         'navButtonAdd',

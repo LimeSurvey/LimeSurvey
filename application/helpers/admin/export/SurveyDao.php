@@ -92,7 +92,7 @@ class SurveyDao
     * @param Survey $survey
     * @param int $iMinimum
     * @param int $iMaximum
-    * @param string $sFilter An optional filter for the results
+    * @param string|array $sFilter An optional filter for the results, i  string or arry of string
     * @param string $completionState all, complete or incomplete
     */
     public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='', $completionState = 'all' )
@@ -131,8 +131,12 @@ class SurveyDao
         $selection = '{{survey_' . $survey->id . '}}.id >= :min AND {{survey_' . $survey->id . '}}.id <= :max';
         $oRecordSet->where($selection, $aParams);
 
-        if ($sFilter!='') {
+        if(is_string($sFilter) && $sFilter)
             $oRecordSet->andWhere($sFilter);
+        elseif(is_array($sFilter) && count($sFilter))
+        {
+            foreach($sFilter as $filter)
+                $oRecordSet->andWhere($filter);
         }
 
         switch ($completionState)

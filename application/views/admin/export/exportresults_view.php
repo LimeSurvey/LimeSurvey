@@ -4,13 +4,18 @@
     var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
 </script>
 <div class='header ui-widget-header'><?php eT("Export results");?>
-    <?php     if (isset($_POST['sql'])) {echo" - ".gT("Filtered from statistics script");}
-        if ($SingleResponse) {
+    <?php     
+        if (App()->request->getQuery('statfilter'))
+            echo" - ".gT("Filtered from statistics script");
+        elseif ($SingleResponse) {
             echo " - ".sprintf(gT("Single response: ID %s"),$SingleResponse);} 
     ?>
 </div>
 <div class='wrap2columns'>
-    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport'));?>
+    <?php echo CHtml::form(array("admin/export","sa"=>'exportresults','surveyid'=>$surveyid,'statfilter'=>App()->request->getQuery('statfilter')), 'post', array('id'=>'resultexport'));
+    
+    
+    ?>
         <div class='left'>
 <fieldset><legend><?php eT("Format");?></legend>
                 <ul>  
