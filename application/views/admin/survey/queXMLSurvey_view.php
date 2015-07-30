@@ -92,7 +92,7 @@
 
         </li>
 
-        <li><label for='queXMLSingleResponseAreaHeight'><?php eT("Minimum height of single choice response boxes"); ?></label>
+        <li><label for='queXMLSingleResponseAreaHeight'><?php eT("Minimum height of single choice answer boxes"); ?></label>
             <input type='text' size='10' id='queXMLSingleResponseAreaHeight' name='queXMLSingleResponseAreaHeight' value="<?php echo $queXMLSingleResponseAreaHeight; ?>" />
         </li>
 
