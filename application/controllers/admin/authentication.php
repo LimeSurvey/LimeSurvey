@@ -125,7 +125,7 @@ class Authentication extends Survey_Common_Action
         $beforeLogout = new PluginEvent('beforeLogout');
         App()->getPluginManager()->dispatchEvent($beforeLogout);
         // Expire the CSRF cookie
-        $cookie = new CHttpCookie('cookie_name', $value);
+        $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
         $cookie->expire = time()-3600; 
         Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
         App()->user->logout();
