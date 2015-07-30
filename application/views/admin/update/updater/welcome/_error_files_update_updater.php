@@ -10,20 +10,20 @@
 
 <h2 class="maintitle" style="color: red;"><?php eT("write error !"); ?></h2>
 <?php 
-	if( isset($serverAnswer->html) )
-		echo $serverAnswer->html;
+    if( isset($serverAnswer->html) )
+        echo $serverAnswer->html;
 ?>
 <p>
-	<strong><?php eT("Those files/directories are not writable :")?></strong>
-	<br/>
-	<?php foreach( $localChecks->readOnly as $readonly ):?>
-		<?php echo $readonly."<br/>";?>
-	<?php endforeach; ?>
-	<br/>
-	<?php eT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); ?>
-	
-	<a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
-		<span class="ui-button-text"><?php eT("Cancel"); ?></span>
-	</a>		
+    <strong><?php eT("Those files/directories are not writable :")?></strong>
+    <br/>
+    <?php foreach( $localChecks->readOnly as $readonly ):?>
+        <?php echo $readonly."<br/>";?>
+    <?php endforeach; ?>
+    <br/>
+    <?php eT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); ?>
+    
+    <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
+        <span class="ui-button-text"><?php eT("Cancel"); ?></span>
+    </a>        
 </p>
 

@@ -1041,6 +1041,7 @@ class Survey_Common_Action extends CAction
         return array($aImportedFilesInfo, $aErrorFilesInfo);
     }
 
+
     /**
     * Creates a temporary directory
     *

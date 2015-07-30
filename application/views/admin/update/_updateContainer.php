@@ -14,10 +14,10 @@
 <?php $this->renderPartial("./update/_ajaxVariables"); ?>
 
 <div id="updaterWrap">
-	<!-- The check buttons : render by ajax only if no step is required by url or post -->
-	<?php $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
-	<!-- The updater  -->
-	<?php $this->renderPartial("./update/updater/_updater"); ?> 
+    <!-- The check buttons : render by ajax only if no step is required by url or post -->
+    <?php $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
+    <!-- The updater  -->
+    <?php $this->renderPartial("./update/updater/_updater"); ?> 
 </div>
 
 <?php
@@ -35,9 +35,9 @@
 }
 
 .off {
-	font-size: 0.9em;
-	padding-left : 0.5em;
-	padding-top : 0.5em;
+    font-size: 0.9em;
+    padding-left : 0.5em;
+    padding-top : 0.5em;
 }
 
 #localChecksContainer {
@@ -46,10 +46,10 @@
 
 /*Quick hack for LS 2.06 surveys menu*/
 label, legend {
-	display : inline-block;
-	font-family: verdana, arial, sans-serif;
-	text-align: left;
-	background-color: #fefefe;
-	color: #666;
+    display : inline-block;
+    font-family: verdana, arial, sans-serif;
+    text-align: left;
+    background-color: #fefefe;
+    color: #666;
 }
 </style>

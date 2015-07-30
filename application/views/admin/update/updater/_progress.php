@@ -6,29 +6,29 @@
 ?>
 <div style="width: 220px; float: left">
     <h2 class="maintitle"><?php eT("Progress"); ?></h2>
-	<ol>
-	    <li id ="step0Updt" class="on">
-	        <span id="welcome"><?php eT("Welcome"); ?></span>
-	        <span id="newKey" style="display : none;"><?php eT("New key"); ?></span>
-	    </li>
-	    
-	    <li id="step1Updt" class="off">
-	        <?php eT("Pre-installation check"); ?>
-	    </li>
-	    <li id="step2Updt" class="off">
-	        <?php eT("Change Log"); ?>
-	    </li>
-	    <li id="step3Updt" class="off">
-	        <?php eT("File System"); ?>
-	    </li>
-	    <li id="step4Updt" class="off">
-	        <?php eT("Backup"); ?>
-	    </li>
-	    <li id="step5Updt" class="off">
-	        <?php eT("Download"); ?>
-	    </li>
-	    <li id="step6Updt" class="off">
-	        <?php eT("End"); ?>
-	    </li>			    
-	</ol>	        
-</div>		
+    <ol>
+        <li id ="step0Updt" class="on">
+            <span id="welcome"><?php eT("Welcome"); ?></span>
+            <span id="newKey" style="display : none;"><?php eT("New key"); ?></span>
+        </li>
+        
+        <li id="step1Updt" class="off">
+            <?php eT("Pre-installation check"); ?>
+        </li>
+        <li id="step2Updt" class="off">
+            <?php eT("Change Log"); ?>
+        </li>
+        <li id="step3Updt" class="off">
+            <?php eT("File System"); ?>
+        </li>
+        <li id="step4Updt" class="off">
+            <?php eT("Backup"); ?>
+        </li>
+        <li id="step5Updt" class="off">
+            <?php eT("Download"); ?>
+        </li>
+        <li id="step6Updt" class="off">
+            <?php eT("End"); ?>
+        </li>               
+    </ol>           
+</div>      

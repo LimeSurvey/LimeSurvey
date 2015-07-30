@@ -40,7 +40,7 @@ class GlobalSettings extends Survey_Common_Action
     public function index()
     {
         if (!empty($_POST['action'])) {
-            	$this->_saveSettings();
+            $this->_saveSettings();
         }
         $this->_displaySettings();
     }

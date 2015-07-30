@@ -8,10 +8,10 @@
  */
 ?>
 <?php if (count($modifiedfiles)>0): ?>
-	<?php eT('The following files will be modified or deleted but were already modified by someone else.');?>
-	<br/>
-	<?php eT('We recommend that these files should be replaced by the update procedure.');?>
-	<br/>
+    <?php eT('The following files will be modified or deleted but were already modified by someone else.');?>
+    <br/>
+    <?php eT('We recommend that these files should be replaced by the update procedure.');?>
+    <br/>
 <textarea readonly="readonly" style="background-color: #FFF; width: 800px; height: 150px; font-family: Monospace; font-size: 11px;">
 <?php
 sort($modifiedfiles);
@@ -21,8 +21,8 @@ foreach ($modifiedfiles as $modifiedfile)
 }?>
 </textarea>
 <?php  else:?>
-	<p class="success" style="text-align: left;">
-		<?php eT("No files modified or deleted by the updater but already modified in the local installation."); ?>
-	</p>	
+    <p class="success" style="text-align: left;">
+        <?php eT("No files modified or deleted by the updater but already modified in the local installation."); ?>
+    </p>    
 <?php endif;?>
 
