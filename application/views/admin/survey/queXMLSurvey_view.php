@@ -96,7 +96,7 @@
             <input type='text' size='10' id='queXMLSingleResponseAreaHeight' name='queXMLSingleResponseAreaHeight' value="<?php echo $queXMLSingleResponseAreaHeight; ?>" />
         </li>
 
-        <li><label for='queXMLSingleResponseHorizontalHeight'><?php eT("Minimum height of sub question items"); ?></label>
+        <li><label for='queXMLSingleResponseHorizontalHeight'><?php eT("Minimum height of subquestion items"); ?></label>
             <input type='text' size='10' id='queXMLSingleResponseHorizontalHeight' name='queXMLSingleResponseHorizontalHeight' value="<?php echo $queXMLSingleResponseHorizontalHeight; ?>" />
         </li>
 
@@ -104,7 +104,7 @@
             <input type='text' size='10' id='queXMLQuestionnaireInfoMargin' name='queXMLQuestionnaireInfoMargin' value="<?php echo $queXMLQuestionnaireInfoMargin; ?>" />
         </li>
 
-        <li><label for='queXMLResponseTextFontSize'><?php eT("Response text / sub question font size"); ?></label>
+        <li><label for='queXMLResponseTextFontSize'><?php eT("Response text / subquestion font size"); ?></label>
             <input type='text' size='10' id='queXMLResponseTextFontSize' name='queXMLResponseTextFontSize' value="<?php echo $queXMLResponseTextFontSize; ?>" />
         </li>
 
