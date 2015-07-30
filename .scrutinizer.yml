@@ -9,3 +9,7 @@ tools:
         command: pdepend
     php_cs_fixer:
         config: { level: psr1 }
+checks:
+    php:
+        code_rating: true
+        duplication: true        
