@@ -248,7 +248,7 @@
                     "Y"=>gT("Yes",'unescaped'),
                     "N"=>gT("No",'unescaped'),
                 ),
-                'current'=>$esrow['publicgraphs'],
+                'current'=>$esrow['autoredirect'],
             ),
             'showxquestions'=>array(
                 'type'=>'select',
