@@ -246,7 +246,7 @@ class Survey_Common_Action extends CAction
         // Menu bars
         if (!isset($aData['display']['menu_bars']) || ($aData['display']['menu_bars'] !== false && (!is_array($aData['display']['menu_bars']) || !in_array('browse', array_keys($aData['display']['menu_bars'])))))
         {
-        	if(!$aData['display']['header']==FALSE)
+        	if(!isset($aData['updatedbaction']))
 			{
         		$this->_updatenotification();
             	Yii::app()->getController()->_showadminmenu(!empty($aData['surveyid']) ? $aData['surveyid'] : null);
