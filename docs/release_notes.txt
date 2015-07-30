@@ -59,6 +59,41 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06+ (build 150729) to 2.06+ (build 150730) Jun 30, 2015
+-Fixed issue #9726: File browser not properly behaving due to old cached files (Carsten Schmitz)
+-Fixed issue #9744: Multiple choice  question type label 'Not displayed' missing in statistics graph (Carsten Schmitz)
+-Fixed issue #9798: Logout notice error (Carsten Schmitz)
+-Fixed issue: Setting for loading the end URL is behaving properly when editing survey settings (Carsten Schmitz)
+-New feature: Allow export to use statistics filter (Denis Chenu)
+-New feature: ComfortUpdate notification (louis)
+-New feature: ComfortUpdater with key system (louis)
+#Updated translation: German by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+
+Changes from 2.06+ (build 150723) to 2.06+ (build 150729) Jun 29, 2015
+-Fixed issue #9761: CSRF token entropy (Carsten Schmitz)
+-Fixed issue #9771: Unable to directly upgrade from 1.87 to 2.06 (Carsten Schmitz)
+-Fixed issue #9778 (Sam)
+-Fixed issue #9791: Upgrade from 2.05+ breaks on Linux/MSSQL systems (Carsten Schmitz)
+-Fixed issue #9793: Token table upgrade goes wrong on MSSQL (Carsten Schmitz)
+-Fixed issue: Unable to validate ranking question (Denis Chenu)
+#Updated translation: Albanian by eunacal
+#Updated translation: Arabic by malbariqi, AmalHanna
+#Updated translation: Armenian by bagrig
+#Updated translation: Chinese (Taiwan) (Traditional) by asakous
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz, hermann
+#Updated translation: Hebrew by gadeynebram
+#Updated translation: Korean by c_schmitz, spn
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow
+#Updated translation: Slovak by gmambro
+#Updated translation: Spanish (Mexican) by javoguadas
+#Updated translation: Ukrainian by exlibris69, myksyd, NPO, zvorchik
+
 Changes from 2.06+ (build 150629) to 2.06+ (build 150723) Jun 23, 2015
 -Fixed issue #8917: Error in R export plugin when exporting Yes/No question results (Carsten Schmitz)
 -Fixed issue #9776: Mail registered participants with RemoteControl API (Jan-E)

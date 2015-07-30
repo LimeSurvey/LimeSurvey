@@ -2148,7 +2148,7 @@ class statistics_helper {
             }    //end else -> noncompleted NOT checked
         }
 
-        // For multi question type, we have to check non completed with ALL sub question set to NULL
+        // For multiple choice question type, we have to check non completed with ALL sub question set to NULL
         if(($outputs['qtype'] == "M") or ($outputs['qtype'] == "P"))
         {
             $criteria = new CDbCriteria;
@@ -2194,6 +2194,7 @@ class statistics_helper {
                         $fname=gT("Not displayed");
                     }
                     $label[]= $fname;
+                    $lbl[$fname] = $multiNotDisplayed;
                     //we need some data
                     if ($results > 0)
                     {
@@ -3081,6 +3082,15 @@ class statistics_helper {
                     $sOutputHTML .= "\t<tr><th align='right'>".gT("Percentage of total:").'</th>'
                     ."<td>$percent%</td></tr>\n";
                 }
+                if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))
+                {
+                    //add a buttons to browse results
+                    $sOutputHTML .= "<tr><td clospan='2' style='text-align:center'>";
+                    $sOutputHTML .= CHtml::link(gT("Browse"),array("admin/responses","sa"=>'browse','surveyid'=>$surveyid,'statfilter'=>1),array('class'=>'button btn-link'));
+                    $sOutputHTML .= CHtml::link(gT("Export"),array("admin/export","sa"=>'exportresults','surveyid'=>$surveyid,'statfilter'=>1),array('class'=>'button btn-link'));
+                    $sOutputHTML .= "</td></tr>";
+
+                }
                 $sOutputHTML .="</table>\n";
 
                 break;
@@ -3101,23 +3111,6 @@ class statistics_helper {
         {
             $sql= null;
         }
-
-        //only continue if we have something to output
-        if ($results > 0)
-        {
-            if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))
-            {
-                //add a buttons to browse results
-                $sOutputHTML .= CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post',array('target'=>'_blank'))."\n"
-                ."\t\t<p>"
-                ."\t\t\t<input type='submit' value='".gT("Browse")."'  />\n"
-                ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-                ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
-                ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
-                ."\t\t</p>"
-                ."\t\t</form>\n";
-            }
-        }    //end if (results > 0)
 
         /* Show Summary results
         * The $summary array contains each fieldname that we want to display statistics for
