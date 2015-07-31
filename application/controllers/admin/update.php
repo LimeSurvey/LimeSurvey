@@ -395,7 +395,7 @@ class update extends Survey_Common_Action
     /**
     * Update database
     */
-    function db($continue = null)
+    public function db($continue = null)
     {
         Yii::app()->loadHelper("update/update");
         if(isset($continue) && $continue=="yes")
@@ -415,6 +415,16 @@ class update extends Survey_Common_Action
         $this->_renderWrappedTemplate('update', $aViewUrls, $aData);
     }
 
+    /**
+    * For updates from the old updater. 
+    */
+    public function step4b()
+    {
+        if (!isset(Yii::app()->session['installlstep4b'])) die();
+        $aData=Yii::app()->session['installlstep4b'];
+        unset (Yii::app()->session['installlstep4b']);
+        $this->_renderWrappedTemplate('update/updater/steps', '_old_step4b', $aData);
+    }
 
     /**
      * this function render the update buttons 

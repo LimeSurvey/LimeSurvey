@@ -108,7 +108,7 @@ class UpdateForm extends CFormModel
     /**
      * create or update the updatekey to the submited value
      * @param string $submittedUpdateKey the new key id
-     * @return SettingGlobal the new update key if success, CActiveRecord result if error
+     * @return array<string,false|string> the new update key if success, CActiveRecord result if error
      * 
      * TODO : should return same status than server to use the same view render
      */
