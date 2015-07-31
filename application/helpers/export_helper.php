@@ -364,6 +364,73 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
         '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
     );
 
+    // NOTE: this is a partial map using _defaults + special token types only
+    $tokenMap = array(
+      '_defaults' => array(
+        'qid' => 0,
+        'code' => '',
+        'SPSStype' => 'A',
+        'LStype' => 'Undef',
+        'size' => '100',
+        'hide' => 0,
+        'scale' => '',
+      ),
+      'sent' => array(
+        'SPSStype' => 'DATETIME23.2',
+        'size' => '',
+      ),
+      'remindersent' => array(
+        'SPSStype' => 'DATETIME23.2',
+        'size' => '',
+      ),
+      'remindercount' => array(
+        'SPSStype' => 'F',
+        'size' => '4',
+      ),
+      'usesleft' => array(
+        'SPSStype' => 'F',
+        'size' => '4',
+      ),
+      'submitdate' => array(
+        'SPSStype' => 'DATETIME23.2',
+        'size' => '',
+      ),
+      'startdate' => array(
+        'SPSStype' => 'DATETIME23.2',
+        'size' => '',
+      ),
+      'datestamp' => array(
+        'SPSStype' => 'DATETIME23.2',
+        'size' => '',
+      ),
+      'startlanguage' => array(
+        'SPSStype' => 'A',
+        'size' => '19',
+      ),
+      'token' => array(
+        'SPSStype' => 'A',
+        'size' => '16',
+      ),
+      'id' => array(
+        'SPSStype' => 'F',
+        'size' => '7',
+      ),
+      'ipaddr' => array(
+        'SPSStype' => 'A',
+        // TODO what with IPv6 values?
+        'size' => '15',
+      ),
+      'refurl' =>array(
+        'SPSStype'=>'A',
+        'size'=>'255',
+      ),
+      'lastpage' =>array(
+        'SPSStype' => 'F',
+        // Arbitrarily restrict size to 9,999,999 (7 digits) pages
+        'size' => '7',
+      ),
+    );
+
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
     #See if tokens are being used
@@ -378,6 +445,8 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
     $fieldno=0;
 
     $fields=array();
+
+    $token_fields = array();
     if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
@@ -385,10 +454,23 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
                 $fieldno++;
-                $fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
-                'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
-                'VariableLabel'=>$attributedescription['description'],'sql_name'=>$attributefield,'size'=>'100',
-                'title'=>$attributefield,'hide'=>0, 'scale'=>'');
+
+                $token_fields[$attributefield] = $tokenMap['_defaults'];
+                if (isset($tokenMap[$attributefield])) {
+                  // Override with special values
+                  $token_fields[$attributefield] = $tokenMap[$attributefield] + $token_fields[$attributefield];
+                }
+
+                // Add special values
+                $token_fields[$attributefield] += array(
+                  'id' => "$prefix$fieldno",
+                  'name' => mb_substr($attributefield, 0, 8),
+                  'VariableLabel' => $attributedescription['description'],
+                  'sql_name' => $attributefield,
+                  'title' => $attributefield,
+                );
+                // Add to return fields
+                $fields[] = $token_fields[$attributefield];
             }
         }
     }
@@ -398,97 +480,130 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
     $num_results = count($fieldnames);
     $num_fields = $num_results;
     $diff = 0;
-    $noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage');
+
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
+        $values = array(
+          'qid' => 0,
+          'VariableLabel' => '',
+          'size' => 1,
+          'scale_id' => null,
+          'scale' => '',
+          'LStype' => '',
+          'title' => '',
+          'code' => '',
+          'hide' => 0,
+        );
+
         #Condition for SPSS fields:
         # - Length may not be longer than 8 characters
         # - Name may not begin with a digit
         $fieldname = $fieldnames[$i];
         $fieldtype = '';
-        $ftype='';
-        $val_size = 1;
-        $hide = 0;
-        $export_scale = '';
-        $code='';
-        $scale_id = null;
         $aQuestionAttribs=array();
 
         #Determine field type
-        if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
-            $fieldtype = 'DATETIME23.2';
-        } elseif ($fieldname=='startlanguage') {
-            $fieldtype = 'A';
-            $val_size = 19;
-        } elseif ($fieldname=='token') {
-            $fieldtype = 'A';
-            $val_size = 16;
-        } elseif ($fieldname=='id') {
-            $fieldtype = 'F';
-            $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
-        } elseif ($fieldname == 'ipaddr') {
-            $fieldtype = 'A';
-            $val_size = 15;
-        } elseif ($fieldname == 'refurl') {
-            $fieldtype = 'A';
-            $val_size = 255;
-        } elseif ($fieldname == 'lastpage') {
-            $fieldtype = 'F';
-            $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) pages
+        if (isset($tokenMap[$fieldname])) {
+          $fieldtype = $tokenMap[$fieldname]['SPSStype'];
+          $values['size'] = $tokenMap[$fieldname]['size'];
         }
 
         #Get qid (question id)
-        if (in_array($fieldname, $noQID) || substr($fieldname,0,10)=='attribute_'){
-            $qid = 0;
-            $varlabel = $fieldname;
-            $ftitle = $fieldname;
+        if ($fieldname !== '_defaults' && isset($tokenMap[$fieldname])) {
+            // It's a standard token field
+            $values['qid'] = 0;
+            $values['VariableLabel'] = $fieldname;
+            $values['title'] = $fieldname;
+        } elseif ( substr($fieldname,0,10)=='attribute_') {
+            // It's a additional token field
+            $values['qid'] = 0;
+            $values['VariableLabel'] = $fieldname;
+            // $values['VariableLabel'] = $token_fields[$fieldname]['description'];
+            $values['title'] = $fieldname;
+
+            // set other variables from token_fields
+            $values['code'] = $token_fields[$fieldname]['code'];
+            $fieldtype = $token_fields[$fieldname]['SPSStype'];
+            $values['LStype'] = $token_fields[$fieldname]['LStype'];
+            $values['size'] = $token_fields[$fieldname]['size'];
+            $values['scale'] = $token_fields[$fieldname]['scale'];
+            $values['hide'] = $token_fields[$fieldname]['hide'];
+
+            /*
+             * TODO: what to do with name and title
+            $token_fields[$attributefield] = array(
+                'name'=>mb_substr($attributefield, 0, 8),
+                'title'=>$attributefield,
+            );
+            */
+
         } else{
             //GET FIELD DATA
             if (!isset($fieldmap[$fieldname])) {
                 //Field in database but no longer in survey... how is this possible?
                 //@TODO: think of a fix.
                 $fielddata = array();
-                $qid=0;
-                $varlabel = $fieldname;
-                $ftitle = $fieldname;
+                $values['qid']=0;
+                $values['VariableLabel'] = $fieldname;
+                $values['title'] = $fieldname;
                 $fieldtype = "F";
-                $val_size = 1;
+                $values['size'] = 1;
             } else {
                 $fielddata=$fieldmap[$fieldname];
-                $qid=$fielddata['qid'];
-                $ftype=$fielddata['type'];
+                $values['qid']=$fielddata['qid'];
+                $values['LStype']=$fielddata['type'];
+
                 $fsid=$fielddata['sid'];
                 $fgid=$fielddata['gid'];
-                $code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
-                $varlabel=$fielddata['question'];
-                if (isset($fielddata['scale'])) $varlabel = "[{$fielddata['scale']}] ". $varlabel;
-                if (isset($fielddata['subquestion'])) $varlabel = "[{$fielddata['subquestion']}] ". $varlabel;
-                if (isset($fielddata['subquestion2'])) $varlabel = "[{$fielddata['subquestion2']}] ". $varlabel;
-                if (isset($fielddata['subquestion1'])) $varlabel = "[{$fielddata['subquestion1']}] ". $varlabel;
-                $ftitle=$fielddata['title'];
-                if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
-                if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
-                if (isset($fielddata['scale_id'])) $scale_id = $fielddata['scale_id'];
-                if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
-                if (isset($typeMap[$ftype]['hide'])) {
-                    $hide = $typeMap[$ftype]['hide'];
+                $values['code']=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$values['qid']));
+
+                // TODO: is statement order important: is VariableLabel prefixed multiple times?
+                $values['VariableLabel']=$fielddata['question'];
+                if (isset($fielddata['scale'])) $values['VariableLabel'] = "[{$fielddata['scale']}] ". $values['VariableLabel'];
+                if (isset($fielddata['subquestion'])) $values['VariableLabel'] = "[{$fielddata['subquestion']}] ". $values['VariableLabel'];
+                if (isset($fielddata['subquestion2'])) $values['VariableLabel'] = "[{$fielddata['subquestion2']}] ". $values['VariableLabel'];
+                if (isset($fielddata['subquestion1'])) $values['VariableLabel'] = "[{$fielddata['subquestion1']}] ". $values['VariableLabel'];
+                // END TODO: is statement order important: is VariableLabel prefixed multiple times?
+
+                $values['title']=$fielddata['title'];
+                if (!is_null($values['code']) && $values['code']<>"" ) $values['title'] .= "_" . $values['code'];
+                if (isset($typeMap[$values['LStype']]['size'])) $values['size'] = $typeMap[$values['LStype']]['size'];
+                if (isset($fielddata['scale_id'])) $values['scale_id'] = $fielddata['scale_id'];
+                if($fieldtype == '') $fieldtype = $typeMap[$values['LStype']]['SPSStype'];
+                if (isset($typeMap[$values['LStype']]['hide'])) {
+                    $values['hide'] = $typeMap[$values['LStype']]['hide'];
                     $diff++;
                 }
                 //Get default scale for this type
-                if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
+                if (isset($typeMap[$values['LStype']]['Scale'])) $values['scale'] = $typeMap[$values['LStype']]['Scale'];
                 //But allow override
-                $aQuestionAttribs = getQuestionAttributeValues($qid,$ftype);
-                if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
+                $aQuestionAttribs = getQuestionAttributeValues($values['qid'],$values['LStype']);
+                if (isset($aQuestionAttribs['scale_export'])) $values['scale'] = $aQuestionAttribs['scale_export'];
             }
 
         }
         $fieldno++;
         $fid = $fieldno - $diff;
-        $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
-        $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
-        'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
-        'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
-        'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
+        // Get name from $typeMap if exists
+        // TODO: why is $typeMap not complete?
+        $lsLong = isset($typeMap[$values['LStype']]["name"]) ? $typeMap[$values['LStype']]["name"] : $values['LStype'];
+
+        $tempArray = $values + array(
+          'id' => "$prefix$fid",
+          'name' => mb_substr($fieldname, 0, 8),
+          'code' => $values['code'],
+          'SPSStype' => $fieldtype,
+          'LStype' => $values['LStype'],
+          'LSlong' => $lsLong,
+          // TODO: this is never set.
+          'ValueLabels' =>'',
+          'sql_name' => $fieldname,
+          "size" => $values['size'],
+          'title'=>$values['title'],
+          'hide'=>$values['hide'],
+          'scale'=>$values['scale'],
+          'scale_id'=>$values['scale_id']
+        );
         //Now check if we have to retrieve value labels
         $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
         if (is_array($answers)) {
