@@ -24,8 +24,17 @@
 	{TEMPLATEJS}
 <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
 {GOOGLE_ANALYTICS_JAVASCRIPT}
+
+<!-- SCOREWAY CUSTOM FILES -->
+<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}/app/css/main.css" />
+
+<link id="scoreway-stylesheet" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{TEMPLATEURL}/app/js/main.js"></script>
+<!-- SCOREWAY CUSTOM FILES -->
+
 </head>
 <body class="default lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
+    <img id="scoreway-survey-logo" alt="Logo" />
     <div class="outerframe">
         <table class="innerframe">
             <tr>
