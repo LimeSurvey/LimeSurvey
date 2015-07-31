@@ -2031,11 +2031,14 @@ class tokens extends Survey_Common_Action
                         // Parse first line (header) from CSV
                         $buffer = removeBOM($buffer);
                         // We alow all field except tid because this one is really not needed.
-                        $aAllowedFieldNames = array('participant_id','firstname','lastname','email','emailstatus','token','language','blacklisted','sent','remindersent','remindercount','validfrom','validuntil','completed','usesleft');
-                        $aAllowedFieldNames = array_merge($aAttrFieldNames, $aAllowedFieldNames);
+                        $aAllowedFieldNames=Token::model($iSurveyId)->tableSchema->getColumnNames();
+                        if(($kTid = array_search('tid', $aAllowedFieldNames)) !== false) {
+                            unset($aAllowedFieldNames[$kTid]);
+                        }
                         // Some header don't have same column name
                         $aReplacedFields=array(
-                            'invited'=>'sent'
+                            'invited'=>'sent',
+                            'reminded'=>'remindersent',
                         );
                         switch ($sSeparator)
                         {
@@ -2178,7 +2181,6 @@ class tokens extends Survey_Common_Action
                             {
                                     $oToken->$key=$value;
                             }
-
                             if (!$oToken->save())
                             {
                                 tracevar($oToken->getErrors());
