@@ -74,6 +74,9 @@
             ));
         }
 
+        /**
+         * @param string $sFileName
+         */
         function _executeSQLFile($sFileName)
         {
             echo   $sFileName;
@@ -112,6 +115,9 @@
 
         }
 
+        /**
+         * @param string $sProperty
+         */
         function getDBConnectionStringProperty($sProperty, $connectionString = null)
         {
             if (!isset($connectionString))

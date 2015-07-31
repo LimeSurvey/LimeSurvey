@@ -924,6 +924,11 @@ class export extends Survey_Common_Action {
         }
     }
 
+    /**
+     * @param PclZip $zip
+     * @param string $name
+     * @param string $full_name
+     */
     private function _addToZip($zip, $name, $full_name)
     {
         $zip->add(
@@ -993,7 +998,7 @@ class export extends Survey_Common_Action {
      * Return a list of queXML settings
      *
      * @access private
-     * @return array queXML settings
+     * @return string[] queXML settings
      */  
     private function _quexmlsettings()
     {
@@ -1171,6 +1176,9 @@ class export extends Survey_Common_Action {
         return;
     }
 
+    /**
+     * @param string $content_type
+     */
     private function _addHeaders($filename, $content_type, $expires, $pragma = "public")
     {
         header("Content-Type: {$content_type}; charset=UTF-8");
@@ -1193,7 +1201,7 @@ class export extends Survey_Common_Action {
     * Renders template(s) wrapped in header and footer
     *
     * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
+    * @param string $aViewUrls View url(s)
     * @param array $aData Data to be passed on. Optional.
     */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())

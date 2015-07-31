@@ -54,7 +54,7 @@ class Dumpdb extends Survey_Common_Action {
 
     /**
      * Send the headers so that it is shown as a download
-     * @param string $sDbName Database Name
+     * @param string $sFileName
      */
     private function _outputHeaders($sFileName)
     {

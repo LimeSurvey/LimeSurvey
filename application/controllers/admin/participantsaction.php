@@ -12,6 +12,9 @@
  *
  */
 
+/**
+ * @param string $order
+ */
 function subval_sort($a, $subkey, $order)
 {
     $b = array();
