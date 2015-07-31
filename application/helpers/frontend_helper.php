@@ -1234,6 +1234,7 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
 
+    debugbreak();
     if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions>0)    //break out and crash if there are no questions!
     {
         sendCacheHeaders();
@@ -1249,7 +1250,7 @@ function buildsurveysession($surveyid,$preview=false)
         if ($totalquestions == 0){
             echo '<li>'.gT("There are no questions in this survey.").'</li>';
         }
-        if ($iTotalGroupsWithoutQuestions == 0){
+        if ($iTotalGroupsWithoutQuestions > 0){
             echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
         }
         echo "</ul>"
