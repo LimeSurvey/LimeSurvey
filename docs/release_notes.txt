@@ -59,6 +59,11 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06+ (build 150730) to 2.06+ (build 150731) Jun 31, 2015
+-Fixed issue #9801: Strange placeholder text under "General option" when editing a question (Carsten Schmitz)
+-Fixed issue: #9802 No success message for update (louis)
+#Updated translation: German by c_schmitz
+
 Changes from 2.06+ (build 150729) to 2.06+ (build 150730) Jun 30, 2015
 -Fixed issue #9726: File browser not properly behaving due to old cached files (Carsten Schmitz)
 -Fixed issue #9744: Multiple choice  question type label 'Not displayed' missing in statistics graph (Carsten Schmitz)
