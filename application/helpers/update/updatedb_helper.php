@@ -2200,12 +2200,14 @@ function modifyPrimaryKey($sTablename, $aColumns)
 
 function dropPrimaryKey($sTablename)
 {
+    debugbreak();
     switch (Yii::app()->db->driverName){
         case 'mysql':
             $sQuery="ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
             Yii::app()->db->createCommand($sQuery)->execute();
             break;
         case 'pgsql':
+        case 'sqlsrv':
         case 'mssql':
             $pkquery = "SELECT CONSTRAINT_NAME "
             ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
