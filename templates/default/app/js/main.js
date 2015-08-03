@@ -12,11 +12,11 @@ for (var i = 0; i < getVars.length; i++) {
 
 $(document).ready(function(){
     // Load logo+stylesheet
-    $('#scoreway-stylesheet').attr('href', assetsPath + getParams.sid + '/' + getParams.ens + '/' + getParams.pdv + '/style.css');
-    $('#scoreway-survey-logo').attr('src', assetsPath + getParams.sid + '/' + getParams.ens + '/' + getParams.pdv + '/logo');
+    $('#scoreway-stylesheet').attr('href', assetsPath + getParams.ens + '/style.css');
+    $('#scoreway-survey-logo').attr('src', assetsPath + getParams.ens + '/logo');
 
     // Keep the same parameters all survey long
     var targetUrl = $('#limesurvey').attr('action');
-    targetUrl += '&pdv=' + getParams.pdv + '&ens=' + getParams.ens;
+    targetUrl += '&ens=' + getParams.ens;
     $('#limesurvey').attr('action', targetUrl);
 });

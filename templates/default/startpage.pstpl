@@ -28,9 +28,8 @@
 <!-- SCOREWAY CUSTOM FILES -->
 <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}/app/css/main.css" />
 
-<!-- Uncomment to retrieve style from edelweiss -->
-<!-- <link id="scoreway-stylesheet" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{TEMPLATEURL}/app/js/main.js"></script> -->
+<link id="scoreway-stylesheet" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{TEMPLATEURL}/app/js/main.js"></script>
 <!-- SCOREWAY CUSTOM FILES -->
 
 </head>
