@@ -1232,9 +1232,6 @@ function buildsurveysession($surveyid,$preview=false)
         case "S":
             $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
     }
-
-
-    debugbreak();
     if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions>0)    //break out and crash if there are no questions!
     {
         sendCacheHeaders();

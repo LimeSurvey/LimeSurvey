@@ -2228,7 +2228,6 @@ function modifyPrimaryKey($sTablename, $aColumns)
 
 function dropPrimaryKey($sTablename)
 {
-    debugbreak();
     switch (Yii::app()->db->driverName){
         case 'mysql':
             $sQuery="ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
