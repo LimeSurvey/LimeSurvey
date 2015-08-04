@@ -16,6 +16,9 @@
 // where based on the current database version the database is upgraded
 // For this there will be a settings table which holds the last time the database was upgraded
 
+/**
+ * @param integer $iOldDBVersion
+ */
 function db_upgrade_all($iOldDBVersion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
@@ -2172,6 +2175,10 @@ function upgradeTokenTables126()
     }
 }
 
+/**
+ * @param string $sOldLanguageCode
+ * @param string $sNewLanguageCode
+ */
 function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 {
     $oDB = Yii::app()->db;
@@ -2206,6 +2213,9 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
     }
 }
 
+/**
+ * @param string $sTablename
+ */
 function addPrimaryKey($sTablename, $aColumns)
 {
     return Yii::app()->db->createCommand()->addPrimaryKey('PK_'.$sTablename.'_'.randomChars(12,'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{'.$sTablename.'}}', $aColumns);
@@ -2259,6 +2269,9 @@ function fixLanguageConsistencyAllSurveys()
     }
 }
 
+/**
+ * @param string $sFieldType
+ */
 function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL')
 {
     $oDB = Yii::app()->db;
@@ -2312,6 +2325,10 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 }
 
 
+/**
+ * @param string $sTableName
+ * @param string $sColumnName
+ */
 function dropColumn($sTableName, $sColumnName)
 {
     if (Yii::app()->db->getDriverName()=='mssql' || Yii::app()->db->getDriverName()=='sqlsrv' || Yii::app()->db->getDriverName()=='dblib')
@@ -2325,6 +2342,9 @@ function dropColumn($sTableName, $sColumnName)
 
 
 
+/**
+ * @param string $sType
+ */
 function addColumn($sTableName, $sColumn, $sType)
 {
     Yii::app()->db->createCommand()->addColumn($sTableName,$sColumn,$sType);
@@ -2368,8 +2388,8 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
 /**
 * This function drops a unique Key of an MSSQL database field by using the name of the field it lies upon and the table name
 *
-* @param mixed $sFieldName
-* @param mixed $sTableName
+* @param string $sFieldName
+* @param string $sTableName
 */
 function dropUniqueKeyMSSQL($sFieldName, $sTableName)
 {
@@ -2383,6 +2403,9 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
     }
 }
 
+/**
+ * @param string $sFieldName
+ */
 function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 {
     $oDB = Yii::app()->getDb();
