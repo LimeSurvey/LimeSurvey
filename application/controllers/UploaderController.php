@@ -133,7 +133,7 @@ class UploaderController extends SurveyController {
             {
                 throw new CHttpException(400);// See for debug > 1
             }
-            $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid'],$aFieldMap[$sFieldName]['type']);
+            $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
 
             $maxfilesize = (int) $aAttributes['max_filesize'];
             $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
