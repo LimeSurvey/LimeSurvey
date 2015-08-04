@@ -1342,21 +1342,17 @@ function db_upgrade_all($iOldDBVersion) {
 
 function upgradeSurveyTables183()
 {
-    $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
-    if(Yii::app()->db->driverName!='pgsql')
+    $aTables = dbGetTablesLike("survey\_%");        
+    if (!empty($aTables))
     {
-        $aTables = dbGetTablesLike("survey\_%");        
-        if ($aTables)
+        foreach ( $aTables as $sTableName )
         {
-            foreach ( $aTables as $sTableName )
+            $oTableSchema=$oSchema->getTable($sTableName);
+            if (empty($oTableSchema->primaryKey))
             {
-                $oTableSchema=$oSchema->getTable($sTableName);
-                if (empty($oTableSchema->primaryKey))
-                {
-                    addPrimaryKey(substr($sTableName,strlen(Yii::app()->getDb()->tablePrefix)), 'id');            
-                }   
-            }
+                addPrimaryKey(substr($sTableName,strlen(Yii::app()->getDb()->tablePrefix)), 'id');            
+            }   
         }
     }
 }
