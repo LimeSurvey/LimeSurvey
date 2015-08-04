@@ -1330,6 +1330,15 @@ class remotecontrol_handle
                             }
                             break;
                     }
+
+                    if (in_array('hidden', $aQuestionData) && $aQuestionData['hidden']) {
+                        $oQuestionAttribute            = new QuestionAttribute;
+                        $oQuestionAttribute->qid       = $oQuestion->qid;
+                        $oQuestionAttribute->attribute = 'hidden';
+                        $oQuestionAttribute->value     = 1;
+                        $oQuestionAttribute->save();
+                    }
+
                     return (int)$oQuestion->qid;
                 } else {
                     return array('status' => 'Creation Failed');
