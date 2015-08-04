@@ -409,10 +409,12 @@ function activateSurvey($iSurveyID, $simulate = false)
         if (Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib') {
             mssql_drop_primary_index('survey_'.$iSurveyID);
             mssql_drop_constraint('id','survey_'.$iSurveyID);
-            $sQuery = "alter table {{survey_{$iSurveyID}}} drop column id ";
+            $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} drop column id ";
             Yii::app()->db->createCommand($sQuery)->execute();
-            $sQuery = "alter table {{survey_{$iSurveyID}}} add [id] int identity({$iAutoNumberStart},1)";
+            $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} ADD [id] int identity({$iAutoNumberStart},1)";
             Yii::app()->db->createCommand($sQuery)->execute();
+            // Add back the primaryKey
+            Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY', '{{survey_'.$iSurveyID.'}}', 'id');            
         }
         elseif (Yii::app()->db->driverName=='pgsql')
         {

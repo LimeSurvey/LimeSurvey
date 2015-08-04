@@ -1309,6 +1309,11 @@ function db_upgrade_all($iOldDBVersion) {
             fixKCFinder182();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>182),"stg_name='DBVersion'");
         }        
+        if ($iOldDBVersion < 183)
+        {
+            upgradeSurveyTables183();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>183),"stg_name='DBVersion'");
+        }        
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1333,6 +1338,29 @@ function db_upgrade_all($iOldDBVersion) {
     echo '<br /><br />'.sprintf(gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
+
+
+function upgradeSurveyTables183()
+{
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if(Yii::app()->db->driverName!='pgsql')
+    {
+        $aTables = dbGetTablesLike("survey\_%");        
+        if ($aTables)
+        {
+            foreach ( $aTables as $sTableName )
+            {
+                $oTableSchema=$oSchema->getTable($sTableName);
+                if (empty($oTableSchema->primaryKey))
+                {
+                    addPrimaryKey(substr($sTableName,strlen(Yii::app()->getDb()->tablePrefix)), 'id');            
+                }   
+            }
+        }
+    }
+}
+
 
 function fixKCFinder182()
 {
@@ -2184,7 +2212,7 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
 
 function addPrimaryKey($sTablename, $aColumns)
 {
-    return Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY', '{{'.$sTablename.'}}', $aColumns);
+    return Yii::app()->db->createCommand()->addPrimaryKey('PK_'.$sTablename.'_'.randomChars(12,'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{'.$sTablename.'}}', $aColumns);
 }
 
 /**
