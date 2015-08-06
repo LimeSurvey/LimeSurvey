@@ -1304,6 +1304,11 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeSurveyTables181();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>181),"stg_name='DBVersion'");
         }        
+        if ($iOldDBVersion < 182)
+        {
+            fixKCFinder182();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>182),"stg_name='DBVersion'");
+        }        
         $oTransaction->commit();
         // Activate schema caching
         $oDB->schemaCachingDuration=3600;
@@ -1327,6 +1332,36 @@ function db_upgrade_all($iOldDBVersion) {
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf(gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
+}
+
+
+function upgradeSurveyTables183()
+{
+    $oSchema = Yii::app()->db->schema;
+    $aTables = dbGetTablesLike("survey\_%");        
+    if (!empty($aTables))
+    {
+        foreach ( $aTables as $sTableName )
+        {
+            $oTableSchema=$oSchema->getTable($sTableName);
+            if (empty($oTableSchema->primaryKey))
+            {
+                addPrimaryKey(substr($sTableName,strlen(Yii::app()->getDb()->tablePrefix)), 'id');            
+            }   
+        }
+    }
+}
+
+
+function fixKCFinder182()
+{
+    $sThirdPartyDir=Yii::app()->getConfig('standardtemplaterootdir').DIRECTORY_SEPARATOR.'third_party'.DIRECTORY_SEPARATOR;
+    rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar');
+    rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar/ls-office2003');
+    array_map('unlink', glob($sThirdPartyDir.'kcfinder/cache/*.js')); 
+    array_map('unlink', glob($sThirdPartyDir.'kcfinder/cache/*.css')); 
+    rmdirr($sThirdPartyDir.'kcfinder/upload/files'); 
+    rmdirr($sThirdPartyDir.'kcfinder/upload/.htumbs'); 
 }
 
 

@@ -249,7 +249,7 @@
                     "Y"=>gT("Yes"),
                     "N"=>gT("No"),
                 ),
-                'current'=>$esrow['publicgraphs'],
+                'current'=>$esrow['autoredirect'],
             ),
             'showxquestions'=>array(
                 'type'=>'select',
