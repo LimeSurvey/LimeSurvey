@@ -1,3 +1,1 @@
-<br />
-<span class="group-description">{GROUPDESCRIPTION}</span>
-<br /><br />
+{if(!is_empty(GROUPDESCRIPTION),"<div class='groupdescription text'>"+GROUPDESCRIPTION+"</div>","")}

@@ -1,4 +1,2 @@
-<table class="group">
-	<tr>
-		<td align="center">
-			<span class="group-name">{GROUPNAME}</span>
+<div class="group">
+{if(!is_empty(GROUPNAME),"<h3 class='grouptitle'>"+GROUPNAME+"</h3>","")}

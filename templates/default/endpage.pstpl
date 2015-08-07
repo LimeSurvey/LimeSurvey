@@ -1,4 +1,16 @@
-    		</td>
-    	</tr>
-    </table>
-</div>
+		</div><!--end #main-->
+		<div id="navigation" class="aside">
+			<!-- Place for some navigation -->
+		</div>
+		<div id="extra" class="aside">
+			<!-- Place for some extra -->
+		</div>
+	</div><!--end #content -->
+	<div id="footer">
+    	<ul id="credits">
+		<li class="first"><a href="http://www.scoreway.fr/" rel="external">Powered by Scoreway</a></li>
+		<li>Déclaration CNIL <a href="#">1588348</a> <a href="http://www2.scoreway.fr/index.php/vie-privee" rel="external">Vie privée</a></li>
+		<li class="last"><a href="http://www2.scoreway.fr/index.php/la-voix-du-client-2-0" title="La voix du client 2.0" rel="external">IDTIX®</a> est une marque de Scoreway</li>
+		</ul>
+	</div>
+</div><!-- end container-->

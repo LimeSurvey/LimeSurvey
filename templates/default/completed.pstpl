@@ -1,14 +1,4 @@
-<br />
-<table class="completed-table">
-    <tr>
-        <td class="completed-text">
-            <br />
-            {COMPLETED}
-            <br />
-            <br />
-            {URL}
-            <br /><br />
-        </td>
-    </tr>
-</table>
-<br />
+<div id="completed" class="note">
+	<div class="text">{COMPLETED}</div>
+	{if(!is_empty(URL),"<p class='url endurl'>"+URL+"</p>","")}
+</div>

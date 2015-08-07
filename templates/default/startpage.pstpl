@@ -1,41 +1,37 @@
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>{SURVEYNAME}</title>
-<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>{strip_tags(SURVEYNAME)} {strip_tags(GROUPNAME)}</title>
+    <meta name="generator" content="SCOREWAY http://www.scoreway.fr" />
+    <meta name="viewport" content="width=device-width, initial-scale=1," />
+<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
+    <!-- The following line includes jquery-ui.css or jquery-ui-custom.css from template dir, template.css and needed specific css file for survey -->
+    {TEMPLATECSS}
 
-<!-- The following line includes jquery-ui.css or jquery-ui-custom.css from template dir, template.css and needed specific css file for survey -->
-{TEMPLATECSS}
+    <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
+    <!-- The following line includes jquery.js, jquery-ui.js, survey_runtime.js , template.js and needed specific js file for survey -->
+    {TEMPLATEJS}
 
-<!--[if lte IE 6]>
-<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
-<![endif]-->
-<!--[if IE 7]>
-<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
-<![endif]-->
-<!--[if IE 8]>
-<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
-<![endif]-->
+    {GOOGLE_ANALYTICS_JAVASCRIPT}
 
-<!-- The following CSS hides visual elements of the progress bar from screen readers. -->
-<style type="text/css" media="aural tty">
-    progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
-		</style>
-	<!-- The following line includes jquery.js, jquery-ui.js, survey_runtime.js , template.js and needed specific js file for survey -->
-	{TEMPLATEJS}
-<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />
-{GOOGLE_ANALYTICS_JAVASCRIPT}
+    <!-- SCOREWAY CUSTOM FILES -->
+    <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}/app/css/main.css" />
 
-<!-- SCOREWAY CUSTOM FILES -->
-<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}/app/css/main.css" />
-
-<link id="scoreway-stylesheet" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{TEMPLATEURL}/app/js/main.js"></script>
-<!-- SCOREWAY CUSTOM FILES -->
-
+    <link id="scoreway-stylesheet" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{TEMPLATEURL}/app/js/main.js"></script>
+    <!-- SCOREWAY CUSTOM FILES -->
 </head>
-<body class="default lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
-    <img id="scoreway-survey-logo" alt="Logo" />
-    <div class="outerframe">
-        <table class="innerframe">
-            <tr>
-                <td>
+<body class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT} no-js default">
+<script type='text/javascript'>/*<![CDATA[*/(function(H){ H.className=H.className.replace(/\bno-js\b/,'js') })(document.getElementsByTagName('body')[0]);/*]]>*/</script>
+<!--[if lt IE 7 ]> <div id="container" class="ie ie6 ielt7 ielt8 ielt9"> <![endif]-->
+<!--[if IE 7 ]> <div id="container" class="ie ie7 ielt8 ielt9"> <![endif]-->
+<!--[if IE 8 ]> <div id="container" class="ie ie8 ielt9"> <![endif]-->
+<!--[if IE 9 ]> <div id="container" class="ie ie9 "> <![endif]-->
+<!--[if gt IE 9]><!--><div id="container"><!--<![endif]-->
+	<div id="head">
+		<div class="wrapper">
+			<h1 class="sitename"><img src="" alt="" class="logo"/> <span class="hidden">{SURVEYNAME}</span></h1>
+		</div>
+	</div>
+	{if(!is_empty(SURVEYDESCRIPTION),'<div class="pagetitle"><h2 class="surveytitle wrapper">'+SURVEYDESCRIPTION+'</h2></div>','')}
+	<div id="content">
+		<div id="main">

@@ -1,12 +1,7 @@
-<br />
-<table class="clearall-result">
-    <tr>
-        <td align="center">
-            <span class="warning-text">{ANSWERSCLEARED}</span>
-            <br /><br />
-            {RESTART}<br />
-            {CLOSEWINDOW}
-        </td>
-    </tr>
- </table>
-<br />
+<div id="clearall" class="note">
+	<ul class="info">
+		<li class="answercleared">{ANSWERSCLEARED}</li>
+		<li class="restart">{RESTART}</li>
+		<li class="closewindow">{CLOSEWINDOW}</li>
+	</ul>
+</div>

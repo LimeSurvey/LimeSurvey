@@ -1816,11 +1816,11 @@ class remotecontrol_handle
                         $oQuestionAttribute->qid       = $oQuestion->qid;
                         $oQuestionAttribute->attribute = 'answer_width';
                         $oQuestionAttribute->value     = 0;
-                        $oQuestionAttribute->save();                        
+                        $oQuestionAttribute->save();
                     }
                     try
                     {
-                        $bSaveResult=$oQuestion->save(); // save the change to database
+                        $bSaveResult=$oQuestion->save(false); // save the change to database
                         Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
                         $aResult[$sFieldName]=$bSaveResult;
                         //unset fields that failed

@@ -1,20 +1,8 @@
-<table class="welcome-table">
-    <tr>
-        <td class="survey-description">
-            {CHECKJAVASCRIPT}
-            <h1>{SURVEYNAME}</h1><br />
-            <p class='surveydescription'>{SURVEYDESCRIPTION}</p>
-        </td>
-    </tr>
-    <tr>
-        <td class="language-changer">
-            {LANGUAGECHANGER}
-        </td>
-    </tr>
-    <tr>
-        <td class="survey-welcome">
-            <span class='surveywelcome'>{WELCOME}</span><br />
-            <span class="x-questions">{THEREAREXQUESTIONS}</span>
-        </td>
-    </tr>
-</table>
+{CHECKJAVASCRIPT}
+{if(!is_empty(LANGUAGECHANGER),"<div class='tools languageselect' id='languageselect-wrapper'>"+LANGUAGECHANGER+"</div>","")}
+<div class="welcome text">
+	{if(!is_empty(SURVEYDESCRIPTION),"<div class='description surveydescription'>"+SURVEYDESCRIPTION+"</div>","")}
+	<div class="surveywelcome">{WELCOME}
+	{if(!is_empty(THEREAREXQUESTIONS),"<p class='information therearexquestions'>"+THEREAREXQUESTIONS+"</p>","")}
+	</div>
+</div>

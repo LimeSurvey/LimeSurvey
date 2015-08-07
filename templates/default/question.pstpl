@@ -1,22 +1,14 @@
-<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}">
-    <table class="question-wrapper">
-        <tr>
-            <td class="questiontext">
-                <span class="asterisk">{QUESTION_MANDATORY}</span><span class="qnumcode">{QUESTION_NUMBER} {QUESTION_CODE} </span>{QUESTION_TEXT}<br /><span class="questionhelp">{QUESTION_HELP}</span>
-                {QUESTION_MAN_MESSAGE}
-                {QUESTION_VALID_MESSAGE}
-                {QUESTION_FILE_VALID_MESSAGE}
-            </td>
-        </tr>
-        <tr>
-            <td class="answer">
-                {ANSWER}
-            </td>
-        </tr>
-        <tr>
-            <td class="survey-question-help">
-                {QUESTIONHELP}
-            </td>
-        </tr>
-    </table>
+<div {QUESTION_ESSENTIALS} class="question-wrapper {QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}{if(!is_empty(QUESTION_MANDATORY)," required","")}"{if(!is_empty(QUESTION_CODE)," data-code='"+QUESTION_CODE+"' ","")}>
+	<div class="question-text">
+		{if(!is_empty(QUESTION_MANDATORY),"<span class='asterisk'>"+QUESTION_MANDATORY+"</span>","")}
+		{if(!is_empty(QUESTION_NUMBER) or !is_empty(QUESTION_CODE),"<span class='qnumcode'>"+QUESTION_NUMBER+" "+QUESTION_CODE+"</span>","")}
+		{QUESTION_TEXT}
+	</div>
+	<div class="help-wrapper">
+		{if(!is_empty(QUESTION_MAN_MESSAGE),"<div class='mandatory error'>"+QUESTION_MAN_MESSAGE+"</div>","")}
+		{QUESTION_VALID_MESSAGE}
+		{if(!is_empty(QUESTION_HELP),"<div class='tip help'>"+QUESTION_HELP+"</div>","")}
+	</div>
+	<div class="answers-wrapper clearfix">{ANSWER}</div>
+	{if(!is_empty(QUESTIONHELP),"<div class='question-help clearfix'>"+QUESTIONHELP+"</div>","")}
 </div>

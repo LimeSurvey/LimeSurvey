@@ -1,19 +1,8 @@
-<table id="loadtable">
-    <tr>
-        <td class="load-heading">
-            <h3>{LOADHEADING}</h3>
-        </td>
-    </tr>
-    <tr>
-        <td align="center">
-            <br />
-            <p class="load-error">{LOADERROR}</p>
-            <p class="load-message">{LOADMESSAGE}</p>
-            <br />
-            <div class="load-form">{LOADFORM}</div>
-            <br />
-            <span class="return-to-survey">{RETURNTOSURVEY}</span>
-            <br /><br />
-        </td>
-    </tr>
-</table>
+<div id='load' class="content">
+<h3>{LOADHEADING}</h3>
+<div class="alert error">{LOADERROR}</div>
+<div class="note">{LOADMESSAGE}
+<div class="form">{LOADFORM}</div>
+</div>
+<ul class="tools"><li>{RETURNTOSURVEY}</li></ul>
+</div>

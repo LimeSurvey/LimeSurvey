@@ -12,11 +12,14 @@ for (var i = 0; i < getVars.length; i++) {
 
 $(document).ready(function(){
     // Load logo+stylesheet
-    $('#scoreway-stylesheet').attr('href', assetsPath + getParams.ens + '/style.css');
-    $('#scoreway-survey-logo').attr('src', assetsPath + getParams.ens + '/logo');
+    // Random justification : http://stackoverflow.com/questions/12992717/how-to-prevent-css-caching-on-a-web-page
+    var rand = Math.floor((Math.random() * 1000) + 1);
+    $('#scoreway-stylesheet').attr('href', assetsPath + getParams.ens + '/style.css?id='+rand);
+    $('.logo').attr('src', assetsPath + getParams.ens + '/logo');
 
     // Keep the same parameters all survey long
     var targetUrl = $('#limesurvey').attr('action');
     targetUrl += '&ens=' + getParams.ens;
     $('#limesurvey').attr('action', targetUrl);
 });
+
