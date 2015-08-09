@@ -20,13 +20,16 @@ function vd($arg) {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
         if ($trace[1]['function'] == 'vdd') {
             $details = $trace[2];
+            $file = $trace[1]['file'];
+            $line = $trace[1]['line'];
         } else {
             $details = $trace[1];
+            $file = $trace[0]['file'];
+            $line = $trace[0]['line'];
 
         }
         $class = \TbArray::getValue('class', $details, 'Global function');
-        $token = "{$class}::{$details['function']}";
-
+        $token = "{$class}::{$details['function']}, ({$file}:{$line})";
         echo TbHtml::well("Dumped from: " . $token . '<br>'. CVarDumper::dumpAsString($arg, 10, true), [
             'style' => 'text-align: left;'
         ]);

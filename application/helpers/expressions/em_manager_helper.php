@@ -2897,15 +2897,12 @@
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap = createFieldMap($surveyid, $style = 'full', $forceRefresh, false, $session->language);
 
-            $this->qcode2sgqa = array();
             $this->tempVars = array();
             $this->qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
             $this->jsVar2qid = array();
             $this->qcode2sgq = array();
             $alias2varName = [];
-            $this->varNameAttr = array();
-            $this->questionId2groupSeq = array();
-            $this->groupId2groupSeq = array();
+            $this->varNameAttr = [];
             $this->qid2validationEqn = array();
             $this->gseq2relevanceStatus = array();
 
@@ -3326,14 +3323,11 @@
                     }
                 }
 
-                $ansList = '';
-                if (isset($ansArray) && !is_null($ansArray)) {
-                    $answers = array();
+                $answers = [];
+                if (isset($ansArray)) {
                     foreach ($ansArray as $key => $value) {
-                        $answers[] = "'" . $key . "':'" . htmlspecialchars(preg_replace('/[[:space:]]/', ' ', $value),
-                                ENT_QUOTES) . "'";
+                        $answers[$key] = htmlspecialchars(preg_replace('/[[:space:]]/', ' ', $value), ENT_QUOTES);
                     }
-                    $ansList = ",'answers':{ " . implode(",", $answers) . "}";
                 }
 
 
@@ -3343,30 +3337,24 @@
                 $this->jsVar2qid[$jsVarName] = $questionNum;
                 $this->qcode2sgq[$fielddata['title']] = $surveyid . 'X' . $groupNum . 'X' . $questionNum;
 
-                $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
-                    . "'jsName':'" . $jsVarName
-                    . "','jsName_on':'" . $jsVarName_on
-                    . "','sgqa':'" . $sgqa
-                    . "','qid':" . $questionNum
-                    . ",'gid':" . $groupNum
-                    //                . ",'mandatory':'" . $mandatory
-                    //                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
-                    . ",'type':'" . $type
-                    //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
-                    //                . "','readWrite':'" . $readWrite
-                    //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                    . "','default':'" . (is_null($defaultValue) ? '' : str_replace("'", "\'", $defaultValue))
-                    . "','rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
-                    . "','onlynum':'" . ($onlynum ? '1' : '')
-                    . "','gseq':" . $this->groupId2groupSeq[$groupNum]
-                    //                . ",'qseq':" . $questionSeq
-                    . $ansList;
+                $this->varNameAttr[$jsVarName] = [
+                    'jsName' => $jsVarName,
+                    'jsName_on' => $jsVarName_on,
+                    'sgqa' => $sgqa,
+                    'qid' => $questionNum,
+                    'gid' => $groupNum,
+                    'type' => $type,
+                    'default' =>  $defaultValue,
+                    'rowdivid' => $rowdivid,
+                    'onlynum' => $onlynum,
+                    'gseq' => $this->groupId2groupSeq[$groupNum],
+                    'answers' => $answers
+                ];
+
 
                 if ($type == 'M' || $type == 'P') {
-                    $this->varNameAttr[$jsVarName] .= ",'question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',
-                            ' ', $question), ENT_QUOTES) . "'";
+                    $this->varNameAttr[$jsVarName]['questinon'] =  htmlspecialchars(preg_replace('/[[:space:]]/', ' ', $question), ENT_QUOTES);
                 }
-                $this->varNameAttr[$jsVarName] .= "}";
             }
 
 
@@ -6028,7 +6016,7 @@
         * Generate JavaScript needed to do dynamic relevance and tailoring
         * Also create list of variables that need to be declared
         */
-        static function GetRelevanceAndTailoringJavaScript()
+        public static function GetRelevanceAndTailoringJavaScript()
         {
             $session = App()->surveySessionManager->current;
             $LEM =& LimeExpressionManager::singleton();
@@ -6071,7 +6059,6 @@
             $dynamicQinG = array(); // array of questions, per group, that might affect group-level visibility in all-in-one mode
             $GalwaysRelevant = array(); // checks whether a group is always relevant (e.g. has at least one question that is always shown)
             foreach ($pageRelevanceInfo as $arg) {
-                vd($arg);
                 $gidList[$arg['gid']] = $arg['gid'];
                 // First check if there is any tailoring  and construct the tailoring JavaScript if needed
                 $tailorParts = array();
@@ -6602,12 +6589,10 @@
 
 
             $allJsVarsUsed = array_filter($allJsVarsUsed);
-            vdd($allJsVarsUsed);
 
             // Add JavaScript Mapping Arrays
             $alias2varName = $LEM->getAliases();
-            if (isset($alias2varName) && count($alias2varName) > 0) {
-//                $neededAliases = []);
+            if (!empty($alias2varName)) {
                 $neededCanonical = [];
                 $neededCanonicalAttr = [];
                 foreach ($allJsVarsUsed as $jsVar) {
@@ -6615,27 +6600,10 @@
                         $jsVar = preg_replace("/\.NAOK$/", "", $jsVar);
                     }
                     $neededCanonical[] = $jsVar;
-                    foreach ($alias2varName as $key => $value) {
-                        if ($jsVar == $value['jsName']) {
-                            $neededAliases[] = $value['jsPart'];
-                        }
-                    }
                 }
-                $neededCanonical = array_unique($neededCanonical);
-                foreach ($neededCanonical as $nc) {
-                    $neededCanonicalAttr[] = $LEM->varNameAttr[$nc];
-                }
-                $neededAliases = array_unique($neededAliases);
-                if (count($neededAliases) > 0) {
-                    $jsParts[] = "var LEMalias2varName = {\n";
-                    $jsParts[] = implode(",\n", $neededAliases);
-                    $jsParts[] = "};\n";
-                }
-                if (count($neededCanonicalAttr) > 0) {
-                    $jsParts[] = "var LEMvarNameAttr = {\n";
-                    $jsParts[] = implode(",\n", $neededCanonicalAttr);
-                    $jsParts[] = "};\n";
-                }
+                // Always define the variable.
+                $jsParts[] = "var LEMalias2varName = "  . json_encode($alias2varName, JSON_PRETTY_PRINT) . ';';
+                $jsParts[] = "var LEMvarNameAttr = " . json_encode($LEM->varNameAttr, JSON_PRETTY_PRINT) . ';';
             }
 
             $jsParts[] = "//-->\n</script>\n";
@@ -9005,8 +8973,11 @@
             $result = [];
             foreach($session->survey->questions as $question) {
                 foreach ($question->getFields() as $field) {
-//                    $result[$field['title']] = $field['fieldname'];
-                    $result[$field['fieldname']] = $field['fieldname'];
+                    if (substr_compare($field['fieldname'], 'other', -5, 5) != 0) {
+                        $result[$field['title']] = 'java' . $field['fieldname'];
+                    }
+
+                    $result[$field['fieldname']] = 'java' . $field['fieldname'];
                 }
             }
             return $result;
