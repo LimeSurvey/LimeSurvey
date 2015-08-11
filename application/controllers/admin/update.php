@@ -186,7 +186,6 @@ class update extends Survey_Common_Action
                 
                 return $this->controller->renderPartial('update/updater/steps/_fileSystem', $aData, false, true);      
             }
-            var_dump($changedFiles);
             return $this->_renderError($changedFiles); 
         }
         return $this->_renderErrorString("unkown_destination_build");
