@@ -3,7 +3,7 @@
     // TODO : move to the controler
     $urlContinue = Yii::app()->createUrl("admin/globalsettings", array("update"=>'welcome', 'destinationBuild'=>$_POST["destinationBuild"]));
 ?>
-<h2 class="maintitle"><?php eT("Key update);?></h2>
+<h2 class="maintitle"><?php eT("Key update");?></h2>
 <?php 
     if( isset($serverAnswer->html) )
         echo $serverAnswer->html;

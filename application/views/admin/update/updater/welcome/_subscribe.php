@@ -20,7 +20,7 @@
         echo CHtml::beginForm($url, 'post', array("id"=>"submitKeyForm"));
         echo CHtml::hiddenField('destinationBuild', $_REQUEST['destinationBuild']);
         echo CHtml::textField('keyid', '', array("id"=>"inputKey"));
-        echo CHtml::submitButton('submit', array("class"=>"ui-button ui-widget ui-state-default ui-corner-all", "id"=>"submitKeyButton"));
+        echo CHtml::submitButton(gT('Save'), array("class"=>"ui-button ui-widget ui-state-default ui-corner-all", "id"=>"submitKeyButton"));
     ?>  
     
     <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
