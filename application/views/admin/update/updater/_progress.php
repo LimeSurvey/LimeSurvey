@@ -16,10 +16,10 @@
             <?php eT("Pre-installation check"); ?>
         </li>
         <li id="step2Updt" class="off">
-            <?php eT("Change Log"); ?>
+            <?php eT("Change log"); ?>
         </li>
         <li id="step3Updt" class="off">
-            <?php eT("File System"); ?>
+            <?php eT("File system"); ?>
         </li>
         <li id="step4Updt" class="off">
             <?php eT("Backup"); ?>
