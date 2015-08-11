@@ -4,7 +4,7 @@ $.fn.displayComfortStep = function(options)
 	var defauts={};  
 	var params=$.extend(defauts, options); 
 
-	// we display the ComfortUpdater tab inside the global setting view
+	// we display the ComfortUpdate tab inside the global setting view
 	$('#settingTabs a:last').tab('show');
 
 	if(params.step=="updatebuttons")

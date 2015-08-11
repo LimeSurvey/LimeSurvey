@@ -180,7 +180,7 @@ class UpdateForm extends CFormModel
                             
         $toCheckRecurive = array(
                                     'views'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'',
-                                    '..'.DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'comfortupdater'.DIRECTORY_SEPARATOR  );                            
+                                    '..'.DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'comfortupdate'.DIRECTORY_SEPARATOR  );                            
                             
         $readOnly = array();
         
@@ -879,7 +879,7 @@ class UpdateForm extends CFormModel
 
 
     /**
-     * This function download a file from the ComfortUpdater and accept redirection
+     * This function download a file from the ComfortUpdate and accept redirection
      * @param string $getters request parameters
      * @return object containing success = TRUE or error message       
      */

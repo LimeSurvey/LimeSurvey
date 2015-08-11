@@ -8,7 +8,7 @@
 <div style="width: 900px; float: left;">
     <!-- the ajax loader -->
     <div id="ajaxContainerLoading" style="text-align : center; margin-top: 70px; margin-bottom: 100px; display: none">
-        <p><?php eT('PLease wait, data loading...');?></p>
+        <p><?php eT('Please wait, loading data...');?></p>
         <img src="<?php echo Yii::app()->baseUrl;?>/images/ajax-loader.gif" alt="loading..."/>    <br/>
     </div>
     

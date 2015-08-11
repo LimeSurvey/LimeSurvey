@@ -1,8 +1,8 @@
 <?php
     App()->getClientScript()->registerPackage('jquery-selectboxes');
-    App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/comfortupdater.js');
-	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/buildComfortButtons.js');
-	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdater/displayComfortStep.js');
+    App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdate/comfortupdate.js');
+	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdate/buildComfortButtons.js');
+	App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/scripts/admin/comfortupdate/displayComfortStep.js');
 ?>
 <script type="text/javascript">
     var msgAtLeastOneLanguageNeeded = '<?php eT("You must set at last one available language.",'js'); ?>';

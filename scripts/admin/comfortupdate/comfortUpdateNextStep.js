@@ -1,5 +1,5 @@
 /**
- * Plugin to show the next step of the ComfortUpdater
+ * Plugin to show the next step of the ComfortUpdate
  * @param {Object} options 
  */
 $.fn.comfortUpdateNextStep = function(options)

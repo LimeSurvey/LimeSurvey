@@ -2,7 +2,7 @@
 /**
  * This file generate the hidden inputs required by the ajax process.
  * If a step is defined in the url's getters, then we parse it in an hidden input
- * comfortupdater.js will check this hidden input, and load the correct step. 
+ * comfortupdate.js will check this hidden input, and load the correct step. 
  * Most steps also need to know the destination build  
  */
  

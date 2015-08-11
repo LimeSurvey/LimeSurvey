@@ -3,7 +3,7 @@
  * This file display the Updater Update Message
  */
 ?>
-<h2 class="maintitle"><?php eT("ComfortUpdater needs to be updated");?></h2>
+<h2 class="maintitle"><?php eT("ComfortUpdate needs to be updated");?></h2>
 
 <?php 
     if( isset($serverAnswer->html) )
@@ -30,8 +30,8 @@
     <?php echo CHtml::submitButton(gT("Continue"), array('class'=>"ajax_button ui-button ui-widget ui-state-default ui-corner-all",)); ?>
 <?php echo CHtml::endForm(); ?>
 
-<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<!-- this javascript code manage the step changing. It will catch the form submission, then load ComfortUpdate for the required build -->
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchUpdateUpdaterForm').comfortUpdateNextStep({'step': 0});   
 </script>

@@ -10,7 +10,7 @@
  */
 ?>
 
-<!-- this view contain the input provinding to the js the inforamtion about wich content to load : check buttons or comfortUpdater -->
+<!-- this view contain the input provinding to the js the inforamtion about wich content to load : check buttons or comfortUpdate -->
 <?php $this->renderPartial("./update/_ajaxVariables"); ?>
 
 <div id="updaterWrap">

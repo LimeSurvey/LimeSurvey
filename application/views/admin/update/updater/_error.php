@@ -85,7 +85,7 @@ switch ($errorObject->error)
     
     case 'server_error_creating_zip_update':
         $title = gT('Server error!');
-        $message = gT('An error occured while creating your update zip.').' '.gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occured while creating your update package file.').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;       
     
@@ -102,7 +102,7 @@ switch ($errorObject->error)
         break;          
         
     case 'wrong_token': 
-        $title = gT('Unkown sessions');
+        $title = gT('Unkown session');
         $message = gT('Your session with the ComfortUpdate server is not valid or expired. Please restart the process.');
         $buttons = 0;
         break;

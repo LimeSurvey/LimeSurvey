@@ -1,5 +1,5 @@
 /**
- * Plugin to build the ComfortUpdater Buttons
+ * Plugin to build the ComfortUpdate Buttons
  * @param {Object} options
  */
 $.fn.buildComfortButtons = function(options)
