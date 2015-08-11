@@ -24,6 +24,6 @@ echo htmlspecialchars($existingfile['file'])."\n";
 </textarea>
 <?php else:?>
     <p class="success" style="text-align: left;">
-        <?php  eT('No file added by the ComfortUpdater already exists.'); ?> 
+        <?php  eT('No file added by the ComfortUpdate already exists.'); ?> 
     </p>                
 <?php endif;?>

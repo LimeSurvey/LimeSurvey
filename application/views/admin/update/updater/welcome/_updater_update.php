@@ -3,7 +3,7 @@
  * This file display the Updater Update Message
  */
 ?>
-<h2 class="maintitle"><?php eT("The ComfortUpdater need to be updated");?></h2>
+<h2 class="maintitle"><?php eT("ComfortUpdater needs to be updated");?></h2>
 
 <?php 
     if( isset($serverAnswer->html) )
@@ -11,11 +11,11 @@
 ?>
 
 <div class="updater-background">
-    <?php eT("It seems you didn't updated regularly your LimeSurvey installation.");?>
+    <?php eT("It seems you didn't update regularly your LimeSurvey installation regularly.");?>
     <br/>
-    <?php eT("Before you proceed to the LimeSurvey update, we must first update the updater.");?>
+    <?php eT("Before you proceed to the LimeSurvey update, we must first update ComfortUpdate itself.");?>
     <br/>
-    <?php eT("At the end of the process, we'll proceed to the LimeSurvey update");?>
+    <?php eT("At the end of the process we'll proceed to the LimeSurvey update.");?>
 </div>
 
 

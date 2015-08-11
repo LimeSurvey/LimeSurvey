@@ -67,13 +67,13 @@ switch ($errorObject->error)
     
     case 'unknown_view': 
         $title = gt("The server tried to call an unkown view!");
-        $message = gt('Is your ComfortUpdater up to date?').' '.gT('Please contact the LimeSurvey team.');
+        $message = gt('Is your ComfortUpdate up to date?').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 3;
         break;
             
     case 'unkown_destination_build':
         $title = gt("Unkown destination build!");
-        $message = gt("It seems that the ComfortUpdater doesn't know the version you're trying to update to. Please restart the process.");
+        $message = gt("It seems that the ComfortUpdate doesn't know the version you're trying to update to. Please restart the process.");
         $buttons = 0;
         break;
     
@@ -85,7 +85,7 @@ switch ($errorObject->error)
     
     case 'server_error_creating_zip_update':
         $title = gT('Server error!');
-        $message = gT('An error occure while creating your update zip.').' '.gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occured while creating your update zip.').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;       
     
@@ -120,7 +120,7 @@ switch ($errorObject->error)
         
     case 'cant_remove_deleted_files':
         $title = gT("Could not remove deleted files");
-        $message =  gT("ComfortUpdate couldn't remove one or more file that were deleted with the update.");
+        $message =  gT("ComfortUpdate couldn't remove one or more files that were deleted with the update.");
         break;
     
     case 'cant_remove_deleted_directory':

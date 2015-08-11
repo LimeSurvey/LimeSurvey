@@ -53,7 +53,7 @@ class UpdateForm extends CFormModel
 
     /**
      * First call to the server : This function requests the latest update informations from the update server necessary to build the update buttons.   
-     * If any error occure (server not answering, no curl, servor returns error, etc.), the view check_updates/update_buttons/_updatesavailable_error will be rendered by the controller.
+     * If any error occured (server not answering, no curl, servor returns error, etc.), the view check_updates/update_buttons/_updatesavailable_error will be rendered by the controller.
      * 
      * @param boolean $crosscheck if it checks for info for both stable and unstable branches
      * @return array Contains update information or error object

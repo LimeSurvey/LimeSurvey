@@ -37,7 +37,7 @@ switch ($serverAnswer->error)
     
     case 'unkown_destination_build':
         $title = "Unkown destination build !";
-        $message = "It seems that the ComfortUpdater don't know to which version you're trying to update. Please, restart the process.";
+        $message = "It seems that the ComfortUpdate doesn't know to which version you're trying to update. Please, restart the process.";
         break;
     
     case 'file_locked':
