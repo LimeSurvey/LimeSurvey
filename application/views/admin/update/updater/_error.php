@@ -12,126 +12,126 @@ $buttons = 0;
 switch ($errorObject->error) 
 {
     case 'no_server_answer':
-        $title = gT('No server answer !');
-        $message = gt("We couldn't reach the server, or the server didn't provide any answer. Please, try again in few minutes.");
+        $title = gT('No server answer!');
+        $message = gt("We couldn't reach the server or the server didn't provide any answer. Please try again in few minutes.");
         break; 
     
     case 'db_error':            
-        $title = gT('Database error !');
-        $message = gt("Comfort Update encounter an error while trying to get datas from your database.");
+        $title = gT('Database error!');
+        $message = gt("ComfortUpdate encountered an error while trying to get data from your database.");
         break;  
     
     case 'unzip_error':
-        $title = gT('Unzip error');
-        $message = gt("ComfortUpdate could not unzip the update file (or the updater update file)");
+        $title = gT('Unzip error!');
+        $message = gt("ComfortUpdate couldn't unzip the update file (or the updater update file)");
         break;
     
     case 'zip_update_not_found':
-        $title = gT('Zip file not found !');
-        $message = gt("ComfortUpdate could not find the update file on your local system (or the updater update file)");
+        $title = gT('Zip file not found!');
+        $message = gt("ComfortUpdate couldn't find the update file on your local system (or the updater update file)");
         break;      
     
     case 'cant_zip_backup':
-        $title = gT('Zip error !');
+        $title = gT('Zip error!');
         $message = gt("ComfortUpdate could not zip the files for your backup");
         break;              
     
     case 'error_while_processing_download':
-        $title = gT('Download error !');
-        $message = gt("ComfortUpdate could not download the update !");
+        $title = gT('Download error!');
+        $message = gt("ComfortUpdate could not download the update!");
         break;                  
     
     case 'out_of_updates':
-        $title = gt("Your update key is out of update !");
-        $message = gt("you should first renew this key before using it, or try to enter a new one !");
+        $title = gt("Your update key has exceeded the maximum number updates!");
+        $message = gt("You should first renew this key before using it or try to enter a new one!");
         $buttons = 1;
         break;
     
     case 'expired':
-        $title = gt("Your update key is expired !");
-        $message = gt("you should first renew this key before using it, or try to enter a new one !");
+        $title = gt("Your update key is expired!");
+        $message = gt("You should first renew this key before using it or try to enter a new one!");
         $buttons = 1;       
         break;
 
     case 'not_found':
-        $title = gt("Unknown update key !");
+        $title = gt("Unknown update key!");
         $message = gt("Your key is unkown by the update server.");
         $buttons = 3;
         break;      
     
     case 'key_null':
-        $title = gt("key can't be null !");
+        $title = gt("Key can't be null!");
         $message = "";
         $buttons = 3;
         break;
     
     case 'unknown_view': 
-        $title = gt("The server try to call an unkown view !");
-        $message = gt("Is your ComfortUpdater up to date ? Please, contact LimeSurvey team.");
+        $title = gt("The server tried to call an unkown view!");
+        $message = gt('Is your ComfortUpdater up to date?').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 3;
         break;
             
     case 'unkown_destination_build':
-        $title = gt("Unkown destination build !");
-        $message = gt("It seems that the ComfortUpdater don't know to which version you're trying to update. Please, restart the process.");
+        $title = gt("Unkown destination build!");
+        $message = gt("It seems that the ComfortUpdater doesn't know the version you're trying to update to. Please restart the process.");
         $buttons = 0;
         break;
     
     case 'file_locked':
         $title = gT('Update server busy');
-        $message = gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.').'<br/>'.gT('Please be patient and try again in about 10 minutes.');
+        $message = gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.').'<br/>'.gT('Please be patient and try again in about 5 minutes.');
         $buttons = 0;
         break;
     
     case 'server_error_creating_zip_update':
-        $title = gT('Server error !');
-        $message = gT('An error occure while creating your update zip. Please, contact LimeSurvey team.');
+        $title = gT('Server error!');
+        $message = gT('An error occure while creating your update zip.').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;       
     
     case 'server_error_getting_checksums':
-        $title = gT('Server error !');
-        $message = gT('An error occure while getting checksums. Please, contact LimeSurvey team.');
+        $title = gT('Server error!');
+        $message = gT('An error occured while getting checksums.').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;       
     
     case 'cant_get_changeset':
-        $title = gT('Server error !');
-        $message = gT('An error occure while getting the changeset. Please, contact LimeSurvey team.');
+        $title = gT('Server error!');
+        $message = gT('An error occured while getting the changeset.').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;          
         
     case 'wrong_token': 
         $title = gT('Unkown sessions');
-        $message = gT('Your session with the ComfortUpdate server is not valid. Please, restart the process.');
+        $message = gT('Your session with the ComfortUpdate server is not valid or expired. Please restart the process.');
         $buttons = 0;
         break;
         
     case 'zip_error':
         $title = gT('Error while creating zip file');
-        $message = gt("An error occured while creating the backup of your files. Check your local system (permission, available space, etc.)");
+        $message = gt("An error occured while creating a backup of your files. Check your local system (permission, available space, etc.)");
         break; 
         
     
     case 'no_updates_infos':
-        $title = gT("Could not retrieve update infos datas");
-        $message = gt("ComfortUpdate could not find the update infos datas.");
+        $title = gT("Could not retrieve update info data");
+        $message = gt("ComfortUpdate could not find the update info data.");
         break;
         
     case 'cant_remove_deleted_files':
-        $title = gT("Could not remove the deleted files");
-        $message =  gT("ComfortUpdate could not delete from your system the removed file in the update.");
+        $title = gT("Could not remove deleted files");
+        $message =  gT("ComfortUpdate couldn't remove one or more file that were deleted with the update.");
         break;
     
     case 'cant_remove_deleted_directory':
         $title = gT("Could not remove the deleted directories");
-        $message =  gT("ComfortUpdate could not delete from your system the removed directories in the update.");
+        $message =  gT("ComfortUpdate couldn't remove one or more directories that were deleted with the update.");
         break;
             
             
     default:
         $title = $errorObject->error;
-        $message = gt("Unknown error. Please, contact LimeSurvey team.");
+        $message = gt('Unknown error.').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 }
