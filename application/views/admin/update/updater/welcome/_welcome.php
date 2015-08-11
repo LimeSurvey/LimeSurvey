@@ -45,10 +45,10 @@
 <div style="width: 420px; float: left; padding-left: 20px; background-color: #fff;">
     <p></p>
     <div style="">
-        <h4><?php eT('Update Key Informations'); ?></strong></h4>
-        <strong><?php eT('Your update key is'); ?>: </strong><?php echo $serverAnswer->key_infos->keyid; ?><br/>
-        <strong><?php eT('Your key is valid until'); ?> : </strong><?php echo $serverAnswer->key_infos->validuntil; ?><br/>
-        <?php eT('It still has'); ?> <strong><?php echo  $serverAnswer->key_infos->remaining_updates; ?></strong> update<?php if($serverAnswer->key_infos->remaining_updates > 1 ){echo 's';}?> <br/>
+        <h4><?php eT('Update key information'); ?></h4>
+        <strong><?php printf(gT('Your update key is %s.'),$serverAnswer->key_infos->keyid); ?></strong><br/>
+        <strong><?php printf(gT('Your key is valid until %s.'),$serverAnswer->key_infos->validuntil); ?></strong><br/>
+        <strong><?php printf(ngT('It still has %s remaining updates.',$serverAnswer->key_infos->remaining_updates),$serverAnswer->key_infos->remaining_updates); ?> </strong><br/>
     </div>
     <div style ="float: right; clear: both; padding-top: 100px;" >
         <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">

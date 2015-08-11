@@ -33,22 +33,22 @@
         <ul>
         <?php if($file->writable !== 'pass'): ?>
             <li>
-                <span style="float: left;"><?php eT('is writable'); ?> :</span>  
+                <span style="float: left;"><?php eT('Writable'); ?> :</span>  
                 <?php if($file->writable): ?>
-                        <span class="success" style="float: right;">OK</span>
+                        <span class="success" style="float: right;"><?php eT('OK');?></span>
                 <?php else: ?>
-                        <span class="errortitle"  style="float: right;"><?php eT('is not writable'); ?> !</span>
+                        <span class="errortitle"  style="float: right;"><?php eT('Not writable'); ?> !</span>
                         <?php $errors = TRUE; ?>
                 <?php endif;?>
             </li>
         <?php endif;?>
         <?php if($file->freespace !== 'pass'): ?>
             <li>
-                <span style="float: left;"><?php eT('has enough space');?> :</span>
+                <span style="float: left;"><?php eT('Available space');?> :</span>
                 <?php if($file->freespace): ?>
-                    <span class="success" style="float: right;">OK</span>
+                    <span class="success" style="float: right;"><?php eT('OK');?></span>
                 <?php else: ?>
-                    <span class="errortitle"  style="float: right;"> <?php eT('not enough space'); ?> !</span>
+                    <span class="errortitle"  style="float: right;"> <?php eT('Not enough space'); ?> !</span>
                     <?php $errors = TRUE; ?>
                 <?php endif;?>
             </li>           
@@ -58,11 +58,11 @@
 <?php endforeach; ?>
     
     <li>
-        <span style="float: left;">PHP <?php echo $localChecks->php->php_ver;?><?php eT(' required');?> :</span>
+        <span style="float: left;"><?php printf(gT('PHP version %s required'),$localChecks->php->php_ver);?> :</span>
         <?php if($localChecks->php->result):?>
-            <span class="success" style="float: right;">OK</span>
+            <span class="success" style="float: right;"><?php eT('OK');?></span>
         <?php else:?>
-            <span class="errortitle"  style="float: right;"><?php eT('your PHP version is only');?> <?php echo $localChecks->php->local_php_ver;?></span>
+            <span class="errortitle"  style="float: right;"><?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?></span>
             <?php $errors = TRUE; ?>
         <?php endif;?>
     </li>
@@ -74,15 +74,15 @@
     <li>
         <ul>
             <li>
-                <span style="float: left;"><?php eT('is installed'); ?> :</span>
+                <span style="float: left;"><?php eT('Installed'); ?> :</span>
                 <?php if($module->installed): ?>
-                        <span class="success" style="float: right;">OK</span>
+                        <span class="success" style="float: right;"><?php eT('OK');?></span>
                 <?php else: ?>
                     <?php if(isset($module->required)): ?>
-                        <span class="errortitle"  style="float: right;"><?php eT('is not installed'); ?> !</span>
+                        <span class="errortitle"  style="float: right;"><?php eT('No'); ?> !</span>
                         <?php $errors = TRUE; ?>
                     <?php elseif(isset($module->optional)): ?>
-                        <span class="errortitle"  style="float: right;"><?php eT('is not installed (but optional)'); ?></span>
+                        <span class="errortitle"  style="float: right;"><?php eT('No (but optional)'); ?></span>
                     <?php endif;?>                      
                 <?php endif;?>
             </li>
