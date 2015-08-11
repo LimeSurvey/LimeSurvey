@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-08-11 09:17:44+00:00\n"
+"POT-Creation-Date: 2015-08-11 10:09:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -247,7 +247,7 @@ msgid "Try again! Creation of database failed."
 msgstr ""
 
 #: application/controllers/InstallerController.php:584
-#: application/controllers/InstallerController.php:1278
+#: application/controllers/InstallerController.php:1277
 msgid "Try again! Connection with database failed. Reason: "
 msgstr ""
 
@@ -289,11 +289,11 @@ msgstr ""
 msgid "Passwords don't match."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1138
+#: application/controllers/InstallerController.php:1137
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1139
+#: application/controllers/InstallerController.php:1138
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
@@ -15430,7 +15430,7 @@ msgid "Server error!"
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:88
-msgid "An error occure while creating your update zip."
+msgid "An error occured while creating your update zip."
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:94
@@ -15463,7 +15463,7 @@ msgid "Could not remove deleted files"
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:123
-msgid "ComfortUpdate couldn't remove one or more file that were deleted with the update."
+msgid "ComfortUpdate couldn't remove one or more files that were deleted with the update."
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:127
@@ -15644,16 +15644,15 @@ msgid "There was a problem downloading the update file. Please try to restart th
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_updater_updated.php:9
-#: application/views/admin/update/updater/welcome/_updater_update.php:6
-msgid "The ComfortUpdater need to be updated"
+msgid "ComfortUpdate needs to be updated"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_updater_updated.php:12
-msgid "The ComfortUpdater has been updated !"
+msgid "ComfortUpdate has been updated!"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_updater_updated.php:15
-msgid "You can now continue updating your LimeSurvey Installation"
+msgid "You can now continue updating your LimeSurvey Installation."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_existingfiles.php:12
@@ -15666,7 +15665,7 @@ msgid "We recommend that these files should be replaced by the update procedure.
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_existingfiles.php:27
-msgid "No file added by the ComfortUpdater already exists."
+msgid "No file added by the ComfortUpdate already exists."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_modifiedfiles.php:11
@@ -15705,16 +15704,20 @@ msgstr ""
 msgid "Your key has been updated and validated ! You can now use the comfort updater."
 msgstr ""
 
+#: application/views/admin/update/updater/welcome/_updater_update.php:6
+msgid "ComfortUpdater needs to be updated"
+msgstr ""
+
 #: application/views/admin/update/updater/welcome/_updater_update.php:14
-msgid "It seems you didn't updated regularly your LimeSurvey installation."
+msgid "It seems you didn't update regularly your LimeSurvey installation regularly."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_updater_update.php:16
-msgid "Before you proceed to the LimeSurvey update, we must first update the updater."
+msgid "Before you proceed to the LimeSurvey update, we must first update ComfortUpdate itself."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_updater_update.php:18
-msgid "At the end of the process, we'll proceed to the LimeSurvey update"
+msgid "At the end of the process we'll proceed to the LimeSurvey update."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:23
