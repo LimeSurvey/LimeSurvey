@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-08-11 10:53:11+00:00\n"
+"POT-Creation-Date: 2015-08-11 11:06:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15672,7 +15672,7 @@ msgid "The following files will be modified or deleted but were already modified
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_modifiedfiles.php:25
-msgid "No files modified or deleted by the updater but already modified in the local installation."
+msgid "No files that will be modified/deleted by the updater are already modified in the local installation."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:12
@@ -15684,7 +15684,7 @@ msgid "You must set according write permissions on these filese before you can p
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:25
-msgid "All files writable in local directories"
+msgid "All files in local directories are writable."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_error_files_update_updater.php:11
@@ -15696,7 +15696,7 @@ msgid "Those files/directories are not writable:"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_updater_update.php:14
-msgid "It seems you didn't update regularly your LimeSurvey installation regularly."
+msgid "It seems you didn't update your LimeSurvey installation regularly."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_updater_update.php:16
@@ -15728,7 +15728,7 @@ msgid "If necessary the database will be updated."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:48
-msgid "Update key information"
+msgid "ComfortUpdate key information"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:49
