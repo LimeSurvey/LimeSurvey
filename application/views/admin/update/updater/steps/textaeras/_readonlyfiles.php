@@ -22,6 +22,6 @@
 </textarea>
 <?php  else:?>
     <p class="success" style="text-align: left;">
-        <?php eT("All files writable in local directories"); ?>
+        <?php eT("All files in local directories are writable."); ?>
     </p>            
 <?php  endif;?>
