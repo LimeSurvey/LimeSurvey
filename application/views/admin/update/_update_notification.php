@@ -16,6 +16,6 @@
 <?php else:?>
 <div class="alert alert-info alert-dismissible" role="alert"  style="background-color: #fff; border: 1px solid #84BD00; color: #84BD00; margin-top:  1em;">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: #84BD00;"><span aria-hidden="true">&times;</span></button>
-        <strong>a new update is available </strong> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
+        <strong><?php eT('New update available:');?></strong> <a href="<?php echo $urlUpdate; ?>"><?php eT('Click here to use ComfortUpdate.');?></a>
 </div>
 <?php endif;?>
