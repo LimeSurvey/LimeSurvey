@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-08-11 10:26:39+00:00\n"
+"POT-Creation-Date: 2015-08-11 10:46:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1353,6 +1353,7 @@ msgstr ""
 #: application/views/admin/token/managetokenattributes.php:55
 #: application/views/admin/token/managetokenattributes.php:56
 #: application/views/admin/token/remind.php:70
+#: application/views/admin/update/updater/steps/_check_local_errors.php:82
 msgid "No"
 msgstr ""
 
@@ -2423,6 +2424,10 @@ msgstr ""
 #: application/views/admin/participants/participantsPanel_view.php:5
 #: application/views/admin/token/browse.php:64
 #: application/views/admin/token/browse.php:76
+#: application/views/admin/update/updater/steps/_check_local_errors.php:38
+#: application/views/admin/update/updater/steps/_check_local_errors.php:49
+#: application/views/admin/update/updater/steps/_check_local_errors.php:63
+#: application/views/admin/update/updater/steps/_check_local_errors.php:79
 msgid "OK"
 msgstr ""
 
@@ -15547,39 +15552,36 @@ msgid "Checking basic requirements..."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:36
-msgid "is writable"
+#: application/views/installer/precheck_view.php:19
+msgid "Writable"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:40
-msgid "is not writable"
+msgid "Not writable"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:47
-msgid "has enough space"
+msgid "Available space"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:51
-msgid "not enough space"
+msgid "Not enough space"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:61
-msgid " required"
+msgid "PHP version %s required"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:65
-msgid "your PHP version is only"
+msgid "PHP version is only %s"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:77
-msgid "is installed"
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_check_local_errors.php:82
-msgid "is not installed"
+msgid "Installed"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:85
-msgid "is not installed (but optional)"
+msgid "No (but optional)"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:101
@@ -15738,19 +15740,15 @@ msgid "If necessary the database will be updated."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:48
-msgid "Update Key Informations"
+msgid "Update key information"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:49
-msgid "Your update key is"
+msgid "Your update key is %s."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:50
-msgid "Your key is valid until"
-msgstr ""
-
-#: application/views/admin/update/updater/welcome/_welcome.php:51
-msgid "It still has"
+msgid "Your key is valid until %s."
 msgstr ""
 
 #: application/views/admin/user/deluser.php:1
@@ -16031,10 +16029,6 @@ msgstr ""
 
 #: application/views/installer/precheck_view.php:10
 msgid "Found"
-msgstr ""
-
-#: application/views/installer/precheck_view.php:19
-msgid "Writable"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:23
