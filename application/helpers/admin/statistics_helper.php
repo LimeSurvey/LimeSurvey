@@ -1612,7 +1612,6 @@ class statistics_helper {
         $sDatabaseType = Yii::app()->db->getDriverName();
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
-        $firstletter = substr($rt, 0, 1);
         $astatdata=array();
 
         if ($usegraph==1)
