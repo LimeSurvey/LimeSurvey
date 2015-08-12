@@ -59,12 +59,31 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.06+ (build 150730) to 2.06+ (build 150731) Jun 31, 2015
+Changes from 2.06+ (build 150731) to 2.06+ (build 150812) Aug 12, 2015
+-Fixed issue #9615: KCFinder Image Browse Server not working when using db sessions (Gabriele Mambrini)
+-Fixed issue #9803: When importing token data from CSV file the reminder date is ignored (Denis Chenu)
+-Fixed issue #9806: Reason for being unable to preview a survey not given (Carsten Schmitz)
+-Fixed issue #9810: Error Accessing central participant database (Carsten Schmitz)
+-Fixed issue #9811: Unable to delete responses (Carsten Schmitz)
+-Fixed issue #9819: Not possible to add languages to the list of available languages in global settings (Carsten Schmitz)
+-Fixed issue: No proper message in ComfortUpdate when database is not MySQL (Carsten Schmitz)
+-Fixed issue: Untranslated strings in ComfortUpdate (Carsten Schmitz)
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Ukrainian by Alena from iVOX Ukraine
+
+Changes from 2.06+ (build 150730) to 2.06+ (build 150731) Jul 31, 2015
 -Fixed issue #9801: Strange placeholder text under "General option" when editing a question (Carsten Schmitz)
 -Fixed issue: #9802 No success message for update (louis)
 #Updated translation: German by c_schmitz
 
-Changes from 2.06+ (build 150729) to 2.06+ (build 150730) Jun 30, 2015
+Changes from 2.06+ (build 150729) to 2.06+ (build 150730) Jul 30, 2015
 -Fixed issue #9726: File browser not properly behaving due to old cached files (Carsten Schmitz)
 -Fixed issue #9744: Multiple choice  question type label 'Not displayed' missing in statistics graph (Carsten Schmitz)
 -Fixed issue #9798: Logout notice error (Carsten Schmitz)
@@ -77,7 +96,7 @@ Changes from 2.06+ (build 150729) to 2.06+ (build 150730) Jun 30, 2015
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Japanese by nomoto
 
-Changes from 2.06+ (build 150723) to 2.06+ (build 150729) Jun 29, 2015
+Changes from 2.06+ (build 150723) to 2.06+ (build 150729) Jul 29, 2015
 -Fixed issue #9761: CSRF token entropy (Carsten Schmitz)
 -Fixed issue #9771: Unable to directly upgrade from 1.87 to 2.06 (Carsten Schmitz)
 -Fixed issue #9778 (Sam)
@@ -99,7 +118,7 @@ Changes from 2.06+ (build 150723) to 2.06+ (build 150729) Jun 29, 2015
 #Updated translation: Spanish (Mexican) by javoguadas
 #Updated translation: Ukrainian by exlibris69, myksyd, NPO, zvorchik
 
-Changes from 2.06+ (build 150629) to 2.06+ (build 150723) Jun 23, 2015
+Changes from 2.06+ (build 150629) to 2.06+ (build 150723) Jul 23, 2015
 -Fixed issue #8917: Error in R export plugin when exporting Yes/No question results (Carsten Schmitz)
 -Fixed issue #9776: Mail registered participants with RemoteControl API (Jan-E)
 -Fixed issue #9783: Use "adminname <adminemail>" as from-header in emailTokens (Jan-E)
