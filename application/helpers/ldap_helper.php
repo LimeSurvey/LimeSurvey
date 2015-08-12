@@ -313,4 +313,4 @@ function prepareLdapQuery($queryId)
     $ldap_queries[$queryId]['name']=$QueryName;
 }
 
-?>
+

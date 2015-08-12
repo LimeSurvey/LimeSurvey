@@ -74,4 +74,4 @@ class DefaultValue extends LSActiveRecord
 		return $values->save();
     }
 }
-?>
+

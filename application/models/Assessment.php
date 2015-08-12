@@ -78,4 +78,4 @@ class Assessment extends LSActiveRecord
         }
     }
 }
-?>
+

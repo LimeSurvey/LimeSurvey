@@ -51,4 +51,4 @@ namespace ls\pluginmanager;
         
         
     }
-?>
+

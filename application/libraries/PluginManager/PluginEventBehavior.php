@@ -59,4 +59,3 @@
 			return App()->getPluginManager()->dispatchEvent($oPluginEvent);
 		}
 	}
-?>

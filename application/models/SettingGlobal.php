@@ -99,4 +99,4 @@ class SettingGlobal extends LSActiveRecord
 
 
 }
-?>
+

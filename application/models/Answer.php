@@ -179,4 +179,4 @@ class Answer extends LSActiveRecord
         ->queryAll();
     }
 }
-?>
+

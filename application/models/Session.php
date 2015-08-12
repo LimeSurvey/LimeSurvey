@@ -75,4 +75,4 @@ class Session extends CActiveRecord
     }
 
 }
-?>
+

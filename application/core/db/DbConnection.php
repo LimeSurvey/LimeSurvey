@@ -30,4 +30,3 @@ class DbConnection extends \CDbConnection
         return true;
     }
 }
-?>

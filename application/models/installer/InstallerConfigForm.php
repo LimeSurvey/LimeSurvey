@@ -193,4 +193,4 @@ class InstallerConfigForm extends CFormModel
         return $result;
     }
 }
-?>
+

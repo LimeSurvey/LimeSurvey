@@ -23,4 +23,4 @@ namespace ls\pluginmanager;
             
         }
     }
-?>
+

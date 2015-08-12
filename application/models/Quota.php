@@ -121,4 +121,4 @@ class Quota extends LSActiveRecord
         }
     }
 }
-?>
+

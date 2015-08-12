@@ -194,4 +194,4 @@ class QuestionAttribute extends LSActiveRecord
         return $command->queryAll();
     }
 }
-?>
+

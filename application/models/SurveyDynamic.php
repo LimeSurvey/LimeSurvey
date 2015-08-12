@@ -346,4 +346,4 @@ class SurveyDynamic extends LSActiveRecord
         }
     }
 }
-?>
+

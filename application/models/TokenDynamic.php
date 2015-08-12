@@ -508,4 +508,4 @@ class TokenDynamic extends LSActiveRecord
         return Yii::app()->db->createCommand()->update('{{tokens_'.intval(self::$sid).'}}',array('emailstatus' => $status),'token = :token',array(':token' => $token ));
     }
 }
-?>
+
