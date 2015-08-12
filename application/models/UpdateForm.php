@@ -501,7 +501,7 @@ class UpdateForm extends CFormModel
         }
         else
         {
-            $backupDb->result = TRUE;
+            $backupDb->result = FALSE;
             $backupDb->message = 'not_mysql';
         }
 

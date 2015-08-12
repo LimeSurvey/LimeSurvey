@@ -48,12 +48,16 @@
         <h4><?php eT('ComfortUpdate key information'); ?></h4>
         <strong><?php printf(gT('Your update key is %s.'),$serverAnswer->key_infos->keyid); ?></strong><br/>
         <strong><?php printf(gT('Your key is valid until %s.'),$serverAnswer->key_infos->validuntil); ?></strong><br/>
-        <strong><?php printf(ngT('It still has %s remaining updates.',$serverAnswer->key_infos->remaining_updates),$serverAnswer->key_infos->remaining_updates); ?> </strong><br/>
+        <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
+            <strong><?php printf(ngT('It still has %s remaining updates.',$serverAnswer->key_infos->remaining_updates),$serverAnswer->key_infos->remaining_updates); ?> </strong><br/>
+        <?php } ?>
     </div>
     <div style ="float: right; clear: both; padding-top: 100px;" >
+        <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
         <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
             <span class="ui-button-text"><?php eT("Renew this key"); ?></span>
         </a>
+        <?php } ?>
     
         <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
             <span class="ui-button-text"><?php eT("Enter a new key"); ?></span>

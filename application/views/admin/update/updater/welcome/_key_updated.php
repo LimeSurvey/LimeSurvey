@@ -9,7 +9,7 @@
         echo $serverAnswer->html;
 ?>
 <div>
-    <?php eT('Your key has been updated and validated! You can now use the comfort updater.'); ?> 
+    <?php eT('Your key has been updated and validated! You can now use ComfortUpdate.'); ?> 
 </div>
 
 <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlContinue;?>" role="button" aria-disabled="false">
