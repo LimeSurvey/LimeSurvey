@@ -1,7 +1,6 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <span style='font-weight:bold;'><?php eT('Saved Responses'); ?></span>
-        <?php echo $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>
+        <?php eT('Saved Responses'); echo ' '. $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>

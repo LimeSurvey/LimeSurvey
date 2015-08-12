@@ -51,7 +51,7 @@ class surveypermission extends Survey_Common_Action {
                     . "<th>".gT("Full name")."</th>\n";
                 foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
                 {
-                    $surveysecurity.="<th><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
+                    $surveysecurity.="<th><img src=\"{$imageurl}{$aSubPermissions['img']}_30.png\" alt=\"<span class='permissionTitle'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
                 }
                 $surveysecurity .= "</tr></thead>\n";
 
