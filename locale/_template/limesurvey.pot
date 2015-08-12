@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-08-12 07:11:31+00:00\n"
+"POT-Creation-Date: 2015-08-12 07:41:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1130,7 +1130,7 @@ msgstr ""
 #: application/views/admin/token/bounce.php:91
 #: application/views/admin/token/browse.php:62
 #: application/views/admin/update/updater/_error.php:162
-#: application/views/admin/update/updater/steps/_backup.php:78
+#: application/views/admin/update/updater/steps/_backup.php:71
 #: application/views/admin/update/updater/steps/_change_log.php:57
 #: application/views/admin/update/updater/steps/_check_local_errors.php:106
 #: application/views/admin/update/updater/steps/_check_local_errors.php:126
@@ -15485,7 +15485,7 @@ msgstr ""
 
 #: application/views/admin/update/updater/_error.php:149
 #: application/views/admin/update/updater/welcome/_error.php:74
-#: application/views/admin/update/updater/welcome/_welcome.php:55
+#: application/views/admin/update/updater/welcome/_welcome.php:58
 msgid "Renew this key"
 msgstr ""
 
@@ -15493,7 +15493,7 @@ msgstr ""
 #: application/views/admin/update/updater/_error.php:158
 #: application/views/admin/update/updater/welcome/_error.php:78
 #: application/views/admin/update/updater/welcome/_error.php:83
-#: application/views/admin/update/updater/welcome/_welcome.php:59
+#: application/views/admin/update/updater/welcome/_welcome.php:63
 msgid "Enter a new key"
 msgstr ""
 
@@ -15539,11 +15539,38 @@ msgstr ""
 msgid "DB backup created:"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:68
+#: application/views/admin/update/updater/steps/_backup.php:38
+msgid "Your database is too big to be saved!"
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_backup.php:38
+#: application/views/admin/update/updater/steps/_backup.php:44
+#: application/views/admin/update/updater/steps/_backup.php:47
+#: application/views/admin/update/updater/steps/_backup.php:50
+msgid "Before proceeding please backup your database using a backup tool!"
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_backup.php:41
+msgid "This update will not change the database. No database backup is required."
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_backup.php:44
+msgid "Your database type is not MySQL!"
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_backup.php:47
+msgid "We could not zip your database!"
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_backup.php:50
+msgid "Unable to backup your database for unknown reason."
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_backup.php:61
 msgid "Please check any problems above and then proceed to the final step."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_backup.php:81
+#: application/views/admin/update/updater/steps/_backup.php:74
 #: application/views/admin/update/updater/steps/_check_local_errors.php:130
 msgid "Proceed to step %s"
 msgstr ""
@@ -15705,7 +15732,7 @@ msgid "Key update"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_key_updated.php:12
-msgid "Your key has been updated and validated! You can now use the comfort updater."
+msgid "Your key has been updated and validated! You can now use ComfortUpdate."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_updater_update.php:14
