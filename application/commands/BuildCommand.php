@@ -51,6 +51,10 @@ class BuildCommand extends CConsoleCommand
         }
     }
     
+    /**
+     * @param string $default
+     * @param string $regex
+     */
     protected function ask($question, $default=null, $regex = null) {
         $hint = '';
         do {
@@ -59,6 +63,10 @@ class BuildCommand extends CConsoleCommand
         } while ($result != '' && isset($regex) && !preg_match($regex, $result));
         return $result == '' ? $default : $result;
     }
+
+    /**
+     * @param string $question
+     */
     protected function askBoolean($question, $default = true) {
         return $this->ask($question, $default ? 'y' : 'n', '/y|n/') === 'y';
     }
@@ -126,6 +134,10 @@ class BuildCommand extends CConsoleCommand
         $this->doRelease($version, $quiet, $branch, $test);
     }
     
+    /**
+     * @param string $version
+     * @param string $branch
+     */
     protected function doRelease($version, $quiet = false, $branch = null, $test = false) {
         $this->quiet = $quiet;
         $this->branch = $branch;
@@ -219,7 +231,6 @@ class BuildCommand extends CConsoleCommand
     
     /**
      * This function updates the change log, by prepending the changes.
-     * @param type $since
      */
     protected function updateChangeLog($version) {
         $dir = getcwd();
