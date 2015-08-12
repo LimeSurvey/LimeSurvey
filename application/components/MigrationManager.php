@@ -70,7 +70,7 @@ class MigrationManager extends \CApplicationComponent
 
     /**
      * @param string $class The name of the migration class
-     * @return bool Result
+     * @return string|boolean Result
      */
     public function migrateUp($class, $captureOutput = false)
 	{
@@ -106,6 +106,9 @@ class MigrationManager extends \CApplicationComponent
         return $captureOutput && $result ? ob_get_clean() : $result;
 	}
     
+    /**
+     * @param string $class
+     */
     protected function instantiateMigration($class)
 	{
         // If classname is unqualified we prefix it.

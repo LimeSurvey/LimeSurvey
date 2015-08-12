@@ -76,6 +76,9 @@ use CConsoleCommand;
             ));
         }
 
+        /**
+         * @param string $sFileName
+         */
         function _executeSQLFile($sFileName)
         {
             echo   $sFileName;
@@ -114,6 +117,9 @@ use CConsoleCommand;
 
         }
 
+        /**
+         * @param string $sProperty
+         */
         function getDBConnectionStringProperty($sProperty, $connectionString = null)
         {
             if (!isset($connectionString))

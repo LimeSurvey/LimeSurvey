@@ -56,6 +56,7 @@ class SurveySession extends CComponent {
     /**
      * @param int $surveyId
      * @param int $responseId
+     * @param integer $id
      */
     public function __construct($surveyId, $responseId, $id)
     {
@@ -71,7 +72,7 @@ class SurveySession extends CComponent {
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getResponseId() {
         return $this->_responseId;

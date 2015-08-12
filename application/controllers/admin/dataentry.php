@@ -66,7 +66,6 @@ class dataentry extends Survey_Common_Action
     /**
     * Function responsible for importing responses from file (.csv)
     *
-    * @param mixed $surveyid
     * @return void
     */
     function vvimport()
@@ -235,7 +234,7 @@ class dataentry extends Survey_Common_Action
     /**
     * dataentry::import()
     * Function responsible to import responses from old survey table(s).
-    * @param int $iSurveyId
+    * @param int $surveyid
     * @return void
     */
     public function import($surveyid)
@@ -380,7 +379,6 @@ class dataentry extends Survey_Common_Action
 
     /**
      * Takes a list of tablenames and creates a nice key value array.
-     * @param type $list
      */
     protected function tableList($tables)
     {
@@ -401,7 +399,7 @@ class dataentry extends Survey_Common_Action
     /**
      * Takes a table schema and finds the field for some question id.
      * @param CDbTableSchema $schema
-     * @param type $qid
+     * @param string $qid
      * @return CDbColumnSchema
      */
     protected function getQidColumn(CDbTableSchema $schema, $qid)
