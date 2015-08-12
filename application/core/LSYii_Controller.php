@@ -88,8 +88,8 @@ abstract class LSYii_Controller extends CController
 		// Do not localize/translate this!
 
 		$dieoutput='';
-		if (version_compare(PHP_VERSION, '5.3.0', '<'))
-			$dieoutput .= 'This script can only be run on PHP version 5.3.0 or later! Your version: '.PHP_VERSION.'<br />';
+		if (version_compare(PHP_VERSION, '5.3.3', '<'))
+			$dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />';
 
 		if (!function_exists('mb_convert_encoding'))
 			$dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://manual.limesurvey.org/wiki/Installation_FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
