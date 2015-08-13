@@ -14,15 +14,15 @@
     switch ($serverAnswer->error) 
     {
         case 'php_curl_not_loaded':
-            $sTile = gT('Error');
+            $sTile = gT('Error!');
             $sHeader = gT('PHP_CURL library not loaded');
             $sMessage = gT("It seems that your server doesn't support PHP CURL Library. Please install it before proceeding to ComfortUpdate.");
             break;          
         
         case 'no_server_answer':
-            $sTile = gT('Error');
+            $sTile = gT('Error!');
             $sHeader = gT('No server answer');
-            $sMessage = gT("it seems that the Comfort Updater is not responding for now. Please try again in few minutes or contact the LimeSurvey team.");
+            $sMessage = gT("it seems that the ComfortUpdate is not responding for now. Please try again in few minutes or contact the LimeSurvey team.");
             break;
         
         case 'no_update_available_for_your_version':
@@ -32,22 +32,22 @@
             break;
 
         case 'not_updatable':
-            $sTile = gT('Error');
+            $sTile = gT('Error!');
             $sHeader = gT('Not updatable!');
             $sMessage = gT('Your version is not updatable via ComfortUpdate. Please update manually.');
             break;
                     
         case 'no_build':
-            $sTile = gT('Error');
+            $sTile = gT('Error!');
             $sHeader = gT('No build version found!');
             $sMessage = gT("It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate.");
             break;
                     
         default :
-            $sTile = gT('Error');
-            $sHeader = gT('Unknown Error!');
-            $sMessage = gT('An unknown error occured. Please, contact the LimeSurvey team.');
-            $sErrorCode = gT('error code : ').$serverAnswer->error;
+            $sTile = gT('Error!');
+            $sHeader = gT('Unknown error!');
+            $sMessage = gT('An unknown error occured.').' '.gT('Please contact the LimeSurvey team.');
+            $sErrorCode = gT('Error Code:').' '.$serverAnswer->error;
             break;
     }
 ?>

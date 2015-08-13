@@ -1,7 +1,7 @@
 <?php
 /**
- * This view generate all the structure needed for the comfort updater.
- * If no step is requested (by url or by post), ajax will render the check buttons, else, it will show the comfort updater (menus, etc.)
+ * This view generate all the structure needed for the ComfortUpdate.
+ * If no step is requested (by url or by post), ajax will render the check buttons, else, it will show the ComfortUpdater (menus, etc.)
  * 
  * @var int $thisupdatecheckperiod  : the current check period in days (0 => never ; 1 => everyday ; 7 => every week, etc..  )
  * @var $updatelastcheck TODO : check type 
