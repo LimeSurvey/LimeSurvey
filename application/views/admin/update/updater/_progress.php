@@ -4,7 +4,7 @@
  * The ajax code change the active step.
  */
 ?>
-<div style="width: 220px; float: left">
+<div id="progressContainer">
     <h2 class="maintitle"><?php eT("Progress"); ?></h2>
     <ol>
         <li id ="step0Updt" class="on">

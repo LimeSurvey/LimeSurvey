@@ -21,7 +21,7 @@ foreach ($modifiedfiles as $modifiedfile)
 }?>
 </textarea>
 <?php  else:?>
-    <p class="success" style="text-align: left;">
+    <p class="success text-left">
         <?php eT("No files that will be modified/deleted by the updater are already modified in the local installation."); ?>
     </p>    
 <?php endif;?>

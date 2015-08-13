@@ -17,7 +17,7 @@
 ?>
 
 <div class="updater-background">
-    <p class="success" style="text-align: left;">
+    <p class="success text-left">
         <strong><?php echo sprintf(gT("File backup created: %s"),''); ?></strong>
         <br/>
         <?php echo $tempdir.DIRECTORY_SEPARATOR.'LimeSurvey_files_backup_'.$basefilename.'.zip'; ?>
@@ -25,7 +25,7 @@
 
     
     <?php if($dbBackupInfos->result):?>
-        <p class="success" style="text-align: left;">
+        <p class="success text-left">
             <strong><?php eT('DB backup created:'); ?></strong>
             <br/>
             <?php eT($dbBackupInfos->message); ?>
@@ -52,13 +52,13 @@
             }
         ?>
 
-    <p class="warning" style="text-align: left;">           
+    <p class="warning text-left">           
         <strong><?php eT($db_message); ?></strong>
     </p>
                     
     <?php endif;?>
         
-    <p class="information"  style="text-align: left"><?php eT('Please check any problems above and then proceed to the final step.'); ?>
+    <p class="information text-left"><?php eT('Please check any problems above and then proceed to the final step.'); ?>
     
     <?php $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/step4/");?>
     <?php echo CHtml::beginForm($formUrl, 'post', array('id'=>'launchUpdate')); ?>                                              

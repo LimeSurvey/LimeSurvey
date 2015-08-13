@@ -21,7 +21,7 @@
 <?php endforeach;?>
 </textarea>
 <?php  else:?>
-    <p class="success" style="text-align: left;">
+    <p class="success text-left">
         <?php eT("All files in local directories are writable."); ?>
     </p>            
 <?php  endif;?>

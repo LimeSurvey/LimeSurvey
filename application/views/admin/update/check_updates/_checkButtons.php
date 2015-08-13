@@ -11,7 +11,7 @@
  * 
  */
 ?>
-<div id="ajaxupdaterLayoutLoading" style="text-align : center; margin-top: 200px; margin-bottom: 200px; display: none">
+<div id="ajaxupdaterLayoutLoading">
     <p><?php eT('Please wait, connecting to server....');?>...</p>
     <img src="<?php echo Yii::app()->baseUrl;?>/images/ajax-loader.gif" alt="loading..."/>    <br/>
 </div>
@@ -63,8 +63,8 @@
     <input type="hidden" id="updateBranch" value="<?php echo $UpdateNotificationForBranch;?>"/>
     
     <!-- The js will inject inside this li the HTML of the update buttons --> 
-    <li style="text-align: center" id="udapteButtonsContainer">
-        <span  id="ajaxLoading" style="display: none;">
+    <li id="udapteButtonsContainer">
+        <span id="ajaxLoading" style="display: none;">
             <p><?php eT('Please wait, looking for updates....');?>...</p>
             <img src="<?php echo Yii::app()->baseUrl;?>/images/ajax-loader.gif" alt="loading..."/>
         </span>

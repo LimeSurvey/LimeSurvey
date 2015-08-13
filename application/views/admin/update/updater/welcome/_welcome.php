@@ -17,7 +17,7 @@
 ?>
 
 <!-- Welcome Message -->
-<div style="width: 450px; float: left; border-right:1px solid #EEE">
+<div id="welcomeMessageContainer">
     <?php
     
         echo gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br /><br />';
@@ -27,7 +27,7 @@
         echo '<li>'.gT('If necessary the database will be updated.').'</li></ul>';
     ?>
     
-    <div style="float: left;">
+    <div id="welcomeMessageContainerButtons">
         <!-- The form launching the first step : control local errors. -->
         <?php $url = Yii::app()->createUrl("admin/update/sa/checkLocalErrors"); ?>
         <?php echo CHtml::beginForm($url, 'post', array('id'=>'launchCheckLocalErrorsForm')); ?>
@@ -42,9 +42,9 @@
 </div>
 
 <!-- The key informations-->
-<div style="width: 420px; float: left; padding-left: 20px; background-color: #fff;">
+<div id="keyInfos">
     <p></p>
-    <div style="">
+    <div>
         <h4><?php eT('ComfortUpdate key information'); ?></h4>
         <strong><?php printf(gT('Your update key is %s.'),$serverAnswer->key_infos->keyid); ?></strong><br/>
         <strong><?php printf(gT('Your key is valid until %s.'),$serverAnswer->key_infos->validuntil); ?></strong><br/>
@@ -52,7 +52,7 @@
             <strong><?php printf(ngT('It still has %s remaining updates.',$serverAnswer->key_infos->remaining_updates),$serverAnswer->key_infos->remaining_updates); ?> </strong><br/>
         <?php } ?>
     </div>
-    <div style ="float: right; clear: both; padding-top: 100px;" >
+    <div id="keyInfosbuttons">
         <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
         <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
             <span class="ui-button-text"><?php eT("Renew this key"); ?></span>
