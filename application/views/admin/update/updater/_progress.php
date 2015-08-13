@@ -25,9 +25,6 @@
             <?php eT("Backup"); ?>
         </li>
         <li id="step5Updt" class="off">
-            <?php eT("Download"); ?>
-        </li>
-        <li id="step6Updt" class="off">
             <?php eT("End"); ?>
         </li>               
     </ol>           

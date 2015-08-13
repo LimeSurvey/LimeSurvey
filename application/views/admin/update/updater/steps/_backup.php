@@ -61,7 +61,7 @@
     <p class="information"  style="text-align: left"><?php eT('Please check any problems above and then proceed to the final step.'); ?>
     
     <?php $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/step4/");?>
-    <?php echo CHtml::beginForm($formUrl, 'post', array('id'=>'launchStep4Form')); ?>                                              
+    <?php echo CHtml::beginForm($formUrl, 'post', array('id'=>'launchUpdate')); ?>                                              
         <!-- The destination build  -->                                                                     
         <?php echo CHtml::hiddenField('destinationBuild' ,  $destinationBuild); ?>
         <?php echo CHtml::hiddenField('datasupdateinfo' , $datasupdateinfo);?>
@@ -76,5 +76,5 @@
 
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
-    $('#launchStep4Form').comfortUpdateNextStep({'step': 4});   
+    $('#launchUpdate').comfortUpdateNextStep({'step': 5});   
 </script>
