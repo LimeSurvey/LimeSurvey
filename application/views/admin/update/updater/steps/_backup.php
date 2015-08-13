@@ -76,5 +76,5 @@
 
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
-    $('#launchUpdate').comfortUpdateNextStep({'step': 5});   
+    $('#launchUpdate').comfortUpdateNextStep({'step': 4});   
 </script>
