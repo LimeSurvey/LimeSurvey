@@ -127,7 +127,7 @@
         </a>         
     
     <?php 
-        echo CHtml::submitButton(sprintf(gT('Proceed to step %s'),'1'), array('id'=>'step1launch', "class"=>"ui-button ui-widget ui-state-default ui-corner-all")); 
+        echo CHtml::submitButton(gT('Continue'), array('id'=>'step1launch', "class"=>"ui-button ui-widget ui-state-default ui-corner-all")); 
         echo CHtml::endForm(); 
     ?>      
 </p>

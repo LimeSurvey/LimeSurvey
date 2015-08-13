@@ -70,8 +70,7 @@
         <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
             <span class="ui-button-text"><?php eT("Cancel"); ?></span>
         </a>
-                            
-        <?php echo CHtml::submitButton(sprintf(gT('Proceed to step %s'),'4'), array("class"=>"ui-button ui-widget ui-state-default ui-corner-all")); ?>         
+        <?php echo CHtml::submitButton(gT('Continue'), array("class"=>"ui-button ui-widget ui-state-default ui-corner-all")); ?>         
     <?php echo CHtml::endForm(); ?> 
 </div>
 
