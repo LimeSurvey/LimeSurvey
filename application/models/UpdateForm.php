@@ -340,6 +340,28 @@ class UpdateForm extends CFormModel
     }
 
     /**
+     * Delete a tmp file
+     * @param string the name of the file to delete in tmp/ directory 
+     * @return obj 
+     */
+    public function removeTmpFile($sTmpFile = 'update.zip')
+    {
+        $sTmpFilePath = $this->tempdir.DIRECTORY_SEPARATOR.$sTmpFile;
+        if ( file_exists( $sTmpFilePath ) )
+        {
+            if( ! @unlink( $sTmpFilePath ) )
+            {
+               $return = array('result'=>FALSE, 'error'=>'cant_remove_update_file', 'message'=>'file : '.$sTmpFilePath);
+               return (object) $return;
+            }
+        }
+        
+        $return = array('result' => TRUE);
+        return (object) $return;
+    }
+
+
+    /**
      * Update the version file to the destination build version
      * @param INT $destinationBuild the id of the new version 
      * @return NULL : will never fail (file access tested before), or only if user changed it manually  

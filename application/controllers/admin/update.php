@@ -270,6 +270,9 @@ class update extends Survey_Common_Action
                             // Should never bug (version.php is checked before))
                             $updateModel->updateVersion($destinationBuild);
                             $updateModel->destroyGlobalSettings();
+                            $updateModel->removeTmpFile('update.zip');
+                            $updateModel->removeTmpFile('comfort_updater_cookie.txt');
+                            
                             // TODO : aData should contains information about each step
                             return $this->controller->renderPartial('update/updater/steps/_final', array(), false, true);    
                         }
