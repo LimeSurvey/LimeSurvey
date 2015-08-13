@@ -948,7 +948,7 @@ class UpdateForm extends CFormModel
             
             if($this->proxy_host_name != '')
             {
-                $proxy = $this->proxy_host_name.':'proxy_host_port;
+                $proxy = $this->proxy_host_name.':'.proxy_host_port;
                 curl_setopt($ch, CURLOPT_PROXY, $proxy);
             }
             
