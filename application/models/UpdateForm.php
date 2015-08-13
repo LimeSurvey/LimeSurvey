@@ -946,6 +946,12 @@ class UpdateForm extends CFormModel
              
             $ch = curl_init($this->_getProtocol().Yii::app()->getConfig("comfort_update_server_url").$getters);
             
+            if($this->proxy_host_name != '')
+            {
+                $proxy = $this->proxy_host_name.':'proxy_host_port;
+                curl_setopt($ch, CURLOPT_PROXY, $proxy);
+            }
+            
             if($CREATE_NEW_COOKIE_FILE)
                 curl_setopt($ch, CURLOPT_COOKIEJAR, $this->path_cookie );        
             else
