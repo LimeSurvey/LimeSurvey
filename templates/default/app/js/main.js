@@ -4,6 +4,12 @@ var assetsPath = '/assets/';
 var pageUrl = window.location.search.substring(1);
 var getVars = pageUrl.split('&');
 var getParams = {};
+var env = 'dev';
+var param = '&';
+
+if (env === 'prod') {
+    param = '?';
+}
 
 for (var i = 0; i < getVars.length; i++) {
     var parameter = getVars[i].split('=');
@@ -19,7 +25,7 @@ $(document).ready(function(){
 
     // Keep the same parameters all survey long
     var targetUrl = $('#limesurvey').attr('action');
-    targetUrl += '&ens=' + getParams.ens;
+    targetUrl += param + 'ens=' + getParams.ens;
     $('#limesurvey').attr('action', targetUrl);
 });
 
