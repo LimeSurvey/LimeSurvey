@@ -3097,3 +3097,20 @@ function updateColors(tab)
         $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
     });
 }
+
+function ExprMgr_process_relevance_and_tailoring(evt_type,sgqa,type) {
+    if (typeof LEM_initialized == 'undefined') {
+        LEM_initialized=true;
+        LEMsetTabIndexes();
+    }
+    if (evt_type == 'onchange'
+        && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa)
+        && (typeof last_evt_type !== 'undefined' && last_evt_type == 'TAB' && type != 'checkbox'))
+    {
+        last_evt_type='onchange';
+        last_sgqa=sgqa;
+        return;
+    };
+    last_evt_type = evt_type;
+    last_sgqa = sgqa;
+}

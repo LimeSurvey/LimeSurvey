@@ -177,5 +177,14 @@
                 $transaction->commit();
             }
         }
+
+        public function isRelevant(Response $response) {
+            if (empty($this->grelevance)) {
+                $result = true;
+            } else {
+                throw new \Exception("Group relevance not yet supported.");
+            }
+            return $result;
+        }
     }
 

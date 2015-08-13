@@ -66,8 +66,13 @@ class ExpressionManager {
     private $hyperlinkSyntaxHighlighting=true;  // TODO - change this back to false
     private $sgqaNaming=false;
 
-    function __construct()
+    /**
+     * @var callable
+     */
+    protected $variableGetter;
+    public function __construct(callable $variableGetter)
     {
+        $this->variableGetter = $variableGetter;
         // List of token-matching regular expressions
         // Note, this is effectively a Lexer using Regular Expressions.  Don't change this unless you understand compiler design.
         $RDP_regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
@@ -1642,7 +1647,9 @@ class ExpressionManager {
      */
     private function GetVarAttribute($name,$attr,$default)
     {
-        return LimeExpressionManager::GetVarAttribute($name,$attr,$default,$this->groupSeq,$this->questionSeq);
+        $getter = $this->variableGetter;
+        return $getter($name, $attr, $default, $this->groupSeq, $this->questionSeq);
+
     }
 
     /**
@@ -1798,12 +1805,12 @@ class ExpressionManager {
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup($sid=NULL, $hyperlinkSyntaxHighlighting=true)
+    public function StartProcessingGroup($sid, $hyperlinkSyntaxHighlighting=true)
     {
-        $this->substitutionNum=0;
-        $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
-        $this->sid=$sid;
-        $this->hyperlinkSyntaxHighlighting=$hyperlinkSyntaxHighlighting;
+        $this->substitutionNum = 0;
+        $this->substitutionInfo = []; // array of JavaScripts for managing each substitution
+        $this->sid = $sid;
+        $this->hyperlinkSyntaxHighlighting = $hyperlinkSyntaxHighlighting;
     }
 
     /**

@@ -26,7 +26,7 @@
  * @property QuestionGroup $group;
  * @property string $title
  * @property boolean $other
- * @property-read Survey $survey
+ * @property Survey $survey
  * @property-read string $sgqa
  * @property-read QuestionAttribute[] $questionAttributes
  */
@@ -65,6 +65,10 @@
         const TYPE_UPLOAD = "|";
         const TYPE_EQUATION = "*";
 
+        /**
+         * @var ResponseField[]
+         */
+        protected $_fields = [];
         protected $customAttributes = [];
         protected $customLocalizedAttributes = [];
 
@@ -986,6 +990,8 @@
                     $class = \ls\models\questions\NumericalQuestion::class;
                     break;
                 case self::TYPE_DATE_TIME:
+                    $class = \ls\models\questions\DateTimeQuestion::class;
+                    break;
                 case self::TYPE_HUGE_TEXT:
                 case self::TYPE_SHORT_TEXT:
                 case self::TYPE_LONG_TEXT:
@@ -1010,10 +1016,16 @@
                 case self::TYPE_ARRAY_NUMBERS:
                     $class = \ls\models\questions\OpenArrayQuestion::class;
                     break;
-                case self::TYPE_ARRAY_FIVE_POINT:
                 case self::TYPE_YES_NO:
+                    $class = \ls\models\questions\YesNoQuestion::class;
+                    break;
                 case self::TYPE_ARRAY_INCREASE_SAME_DECREASE:
+                    $class = \ls\models\questions\IncreaseSameDecreaseQuestion::class;
+                    break;
                 case self::TYPE_ARRAY_YES_NO_UNCERTAIN:
+                    $class = \ls\models\questions\YesNoUncertainQuestion::class;
+                    break;
+                case self::TYPE_ARRAY_FIVE_POINT:
                     $class = \ls\models\questions\FixedChoiceQuestion::class;
                 case self::TYPE_UPLOAD:
                 case self::TYPE_DISPLAY:
@@ -1021,6 +1033,9 @@
                     break;
                 case self::TYPE_MULTIPLE_CHOICE:
                     $class = \ls\models\questions\MultipleChoiceQuestion::class;
+                    break;
+                case self::TYPE_MULTIPLE_CHOICE_WITH_COMMENT:
+                    $class = \ls\models\questions\MultipleChoiceWithCommentQuestion::class;
                     break;
                 case '*':
                     $class = \ls\models\questions\EquationQuestion::class;
@@ -1128,45 +1143,18 @@
 
         /**
          * Returns the fields for this question.
+         * @return QuestionResponseField[]
          * @todo Return an array of some Field object instead of array of arrays.
          */
         public function getFields() {
-            $result = [];
-            $result[$this->getSgqa()] = [
-                'fieldname' => $this->getSgqa(),
-                'type' => $this->type,
-                'qid' => $this->primaryKey,
-                'sid' => $this->sid,
-                'gid' => $this->gid,
-                'aid' => '',
-                'title' => $this->title,
-                'question' => $this->question,
-                'group_name' => $this->group->group_name,
-                'mandatory' => $this->bool_mandatory,
-                'hasconditions' => count($this->conditions) > 0,
-                'usedinconditions' => count($this->conditionsAsTarget) > 0
+            if (empty($this->_fields)) {
+                $this->_fields[] = new QuestionResponseField($this->sgqa, $this);
+                if ($this->bool_other) {
+                    $this->_fields[] = new QuestionResponseField($this->sgqa . 'other', $this);
+                }
 
-            ];
-            if ($this->bool_other) {
-                $result[$this->getSgqa() . 'other'] = [
-                    'fieldname' => $this->getSgqa() . 'other',
-                    'type' => $this->type,
-                    'qid' => $this->primaryKey,
-                    'sid' => $this->sid,
-                    'gid' => $this->gid,
-                    'aid' => '',
-                    'title' => $this->title,
-                    'question' => $this->question,
-                    'group_name' => $this->group->group_name,
-                    'mandatory' => $this->bool_mandatory,
-                    'hasconditions' => count($this->conditions) > 0,
-                    'usedinconditions' => count($this->conditionsAsTarget) > 0,
-                    'subquestion' => gT('Other'),
-                    'defaultvalue' => null
-
-                ];
             }
-            return $result;
+            return $this->_fields;
 
 
         }
@@ -1185,17 +1173,30 @@
 
         /**
          * Check if the response passes mandatory requirements for this question.
-         * A question passes this if any of it's fields have been filled.
+         * By default a question passes this if any of it's fields have been filled.
+         * @return \QuestionValidationResult
          */
-        public function validateMandatory(Response $response) {
-            $result = false;
-            foreach($this->getColumns() as $name => $type) {
-                $result = $result || (isset($response->$name) && !empty($response->$name));
-//                var_dump($response->$name);
+        public function validateResponse(Response $response) {
+            bP($this->qid);
+            $result = new QuestionValidationResult($this);
+            if ($this->bool_mandatory) {
+                // Check if any field was filled.
+                $empty = true;
+                foreach ($this->columns as $name => $type) {
+                    $empty = $empty && empty($response->$name);
+                }
+                // Default implementation set field to the sgqa, this should be overwritten in subclasses.
+                if ($empty && count($this->columns) > 1) {
+                    $result->addMessage($this->sgqa, gT("At least one field must be filled."));
+                } elseif ($empty && count($this->columns == 1)) {
+                    $result->addMessage($this->sgqa, gT("This question is mandatory"));
+                }
 
+                $result->setPassedMandatory(!$empty);
+            } else {
+                $result->setPassedMandatory(true);
             }
-//            var_dump($this->title . ($result ? '' :' not') . ' passing mandatory validation.');
-
+            eP($this->qid);
             return $result;
         }
 
@@ -1205,6 +1206,57 @@
          */
         public function getValidationExpressions() {
             return [];
+        }
+
+        /**
+         * Checks if the question is relevant for the current response.
+         * @param Response $response
+         * @return boolean
+         */
+        public function isRelevant(Response $response) {
+            // Check if the group is relevant first.
+            if (!$this->group->isRelevant($response)) {
+                $result = false;
+            } elseif (empty($this->relevance)) {
+                $result = true;
+            } else {
+                $em = new ExpressionManager(function($name, $attribute, $default, $groupSequence, $questionSequence)  use ($response) {
+                    $session = App()->surveySessionManager->current;
+                    // Simple inefficient solution, not sure where this map should be implemented.
+                    // NOTE: the solution is not a precomputed array in some singleton class!!!
+                    // NOTE2: It is also not stuffing everything into $_SESSION.
+
+                    foreach ($session->survey->questions as $question) {
+                        /** @var ResponseField $field */
+                        foreach ($question->getFields() as $field) {
+                            if ($field->getCode() === $name) {
+                                break 2;
+                            }
+                        }
+                    }
+
+                    switch ($attribute) {
+                        case 'relevanceStatus':
+                            $result = $field->question->isRelevant($response);
+                            break;
+                        case 'onlynum':
+                            $result = $field->isNumerical();
+                            break;
+                        case null:
+                            $result = $response->{$field->getName()};
+                            break;
+                        default:
+                            throw new \Exception('Unknown attribute: ' . $attribute);
+                            vd($name);
+                            vdd($attribute);
+                    }
+                    return $result;
+                });
+                $result = $em->ProcessBooleanExpression($this->relevance);
+            }
+
+            return $result;
+
         }
 
     }

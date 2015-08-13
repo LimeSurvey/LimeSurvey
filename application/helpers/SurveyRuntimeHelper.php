@@ -391,25 +391,8 @@ class SurveyRuntimeHelper {
                 // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
             }
 
-            if (isset($moveResult) && !$moveResult['finished'])
-            {
-                $unansweredSQList = $moveResult['unansweredSQs'];
-                $notanswered = array_filter(explode('|', ''));
-
-                //CHECK INPUT
-                $invalidSQList = $moveResult['invalidSQs'];
-                $notvalidated = (strlen($invalidSQList) > 0) ? explode('|', $invalidSQList) : [];
-            }
-
-            // CHECK UPLOADED FILES
-            // TMSW - Move this into LEM::NavigateForwards?
-            $filenotvalidated = checkUploadedFileValidity($session->surveyId, $move);
-
             //SEE IF THIS GROUP SHOULD DISPLAY
-            $show_empty_group = false;
-
-            if ($session->getStep() == 0)
-                $show_empty_group = true;
+            $show_empty_group = ($session->getStep() == 0);
 
             $redata = compact(array_keys(get_defined_vars()));
 
@@ -628,7 +611,9 @@ class SurveyRuntimeHelper {
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                 $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
             }
-
+            if (!isset($moveResult['seq'])) {
+                vdd($moveResult);
+            }
             $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
         }
 
@@ -650,84 +635,73 @@ class SurveyRuntimeHelper {
         //PRESENT SURVEY
         //******************************************************************************************************
 
-        $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || !$moveResult['valid'] || $moveResult['mandViolation']));
         App()->loadHelper('qanda');
         setNoAnswerMode($thissurvey);
 
 
         //Iterate through the questions about to be displayed:
         $inputnames = array();
+
+        $popups = [];
+        $validationResults = [];
         foreach ($session->getGroups() as $seq => $group)
         {
             $gid = $group->primaryKey;
-            $qnumber = 0;
-
-            if (isset($stepInfo) && !isset($stepInfo['gid'])) {
-                throw new \Exception(print_r($stepInfo, true));
-            }
+            /**
+             * @todo Make the loop conditional instead of skipping elements conditionally.
+             */
             if ($session->format != Survey::FORMAT_ALL_IN_ONE
-                && isset($stepInfo)
-                && $stepInfo['gid'] != $gid) {
+                && ($session->step == $seq && $session->format == Survey::FORMAT_GROUP)
+            ) {
                 continue;
             }
 
-            foreach ($session->fieldArray as $key => $ia)
+            foreach ($session->getQuestions($group) as $i => $question)
             {
-                ++$qnumber;
-                $ia[9] = $qnumber; // incremental question count;
-
-                if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))// Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
-                {
-                    if ($session->format == Survey::FORMAT_QUESTION && $ia[0] != $stepInfo['qid'])
-                    {
-                        continue;
-                    }
-                    $question = $session->getQuestion($ia[0]);
-                    if ($question->type != '*' && $question->hidden == true) {
-                        continue;
-                    }
-
-                    //Get the answers/inputnames
-                    // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
-                    // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                    list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia, $session->surveyId);
-                    if ($plus_qanda)
-                    {
-                        $plus_qanda[] = $ia[4];
-                        $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
-                        // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
-                        if(isset($ia[10]))
-                            $plus_qanda['finalgroup']=$ia[10];
-                        else
-                            $plus_qanda['finalgroup']=$ia[5];
-                        $qanda[] = $plus_qanda;
-                    }
-                    if ($plus_inputnames)
-                    {
-                        $inputnames = addtoarray_single($inputnames, $plus_inputnames);
-                    }
-
-                    //Display the "mandatory" popup if necessary
-                    // TMSW - get question-level error messages - don't call **_popup() directly
-                    if ($okToShowErrors && $stepInfo['mandViolation'])
-                    {
-                        list($mandatorypopup, $popup) = mandatory_popup($ia, $notanswered);
-                    }
-
-                    //Display the "validation" popup if necessary
-                    if ($okToShowErrors && !$stepInfo['valid'])
-                    {
-                        list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
-                    }
-
-                    // Display the "file validation" popup if necessary
-                    if ($okToShowErrors && isset($filenotvalidated))
-                    {
-                        list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
-                    }
+                /**
+                 * @todo Make the loop conditional instead of skipping elements conditionally.
+                 */
+                if ($session->format == Survey::FORMAT_QUESTION
+                    && $session->step != $session->getQuestionIndex($question->primaryKey)) {
+                    continue;
                 }
-                if ($ia[4] == "|")
-                    $upload_file = TRUE;
+
+                if ($question->type != Question::TYPE_EQUATION && $question->bool_hidden) {
+                    continue;
+                }
+                //Get the answers/inputnames
+                // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
+                // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
+                list($plus_qanda, $plus_inputnames) = retrieveAnswers($question);
+                if ($plus_qanda)
+                {
+                    $plus_qanda[] = $question->type;
+                    $plus_qanda[] = $question->bool_mandatory; // adds madatory identifyer for adding mandatory class to question wrapping div
+                    // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
+                    $plus_qanda['finalgroup'] = $question->gid;
+                    $qanda[] = $plus_qanda;
+                }
+                if ($plus_inputnames)
+                {
+                    $inputnames = addtoarray_single($inputnames, $plus_inputnames);
+                }
+
+                //Display the "mandatory" popup if necessary
+                // TMSW - get question-level error messages - don't call **_popup() directly
+                $validationResult = $question->validateResponse($session->response);
+                if ($session->getViewCount() > 1 && !$validationResult->getPassedMandatory()) {
+                    $popups[] = mandatory_popup($validationResult);
+                }
+
+                // Display the "file validation" popup if necessary
+                if ($session->getViewCount() > 1 && isset($filenotvalidated))
+                {
+                    ;
+                    if (null !== $message = file_validation_popup($question, $filenotvalidated)) {
+                        $popups[] = $message;
+                    };
+                }
+                $validationResults[] = $validationResult;
             } //end iteration
         }
 
@@ -747,29 +721,13 @@ class SurveyRuntimeHelper {
 
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents($session->templateDir . "/startpage.pstpl"), array(), $redata);
-        $aPopup=array(); // We can move this part where we want now
-        if (isset($backpopup))
-        {
-            $aPopup[]=$backpopup;// If user click reload: no need other popup
+
+        if (isset($backpopup)) {
+            $popups = [$backpopup];// If user click reload: no need other popup
         }
-        else
-        {
-            if (isset($popup))
-            {
-                $aPopup[]=$popup;
-            }
-            if (isset($vpopup))
-            {
-                $aPopup[]=$vpopup;
-            }
-            if (isset($fpopup))
-            {
-                $aPopup[]=$fpopup;
-            }
-        }
-        Yii::app()->clientScript->registerScript("showpopup","showpopup=".(int) SettingGlobal::get('showpopups').";",CClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerScript("showpopup","showpopup=".(int) SettingGlobal::get('showpopups', true).";",CClientScript::POS_HEAD);
         //if(count($aPopup))
-        Yii::app()->clientScript->registerScript('startPopup',"startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerScript('startPopup',"startPopups=".json_encode($popups).";",CClientScript::POS_HEAD);
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
         if ($session->format != Survey::FORMAT_ALL_IN_ONE
             && $session->getStep() != $session->getPrevStep() ||
@@ -785,7 +743,7 @@ class SurveyRuntimeHelper {
 
         $hiddenfieldnames = implode("|", $inputnames);
 
-        if (isset($upload_file) && $upload_file)
+        if ($question->type == Question::TYPE_UPLOAD)
             echo CHtml::form('', 'post', [
                 'enctype' => 'multipart/form-data',
                 'id' => 'limesurvey',
@@ -825,25 +783,32 @@ class SurveyRuntimeHelper {
             echo templatereplace(file_get_contents($sTemplatePath."survey.pstpl"), array(), $redata);
         }
 
-        // runonce element has been changed from a hidden to a text/display:none one. In order to workaround an not-reproduced issue #4453 (lemeur)
-        // We don't need runonce actually (140228): the script was updated and replaced by EM see #08783 (grep show no other runonce)
-        // echo "<input type='text' id='runonce' value='0' style='display: none;'/>";
-
-        $showpopups=Yii::app()->getConfig('showpopups');
+        $showpopups= SettingGlobal::get('showpopups', false);
         //Display the "mandatory" message on page if necessary
-        if (!$showpopups && $stepInfo['mandViolation'] && $okToShowErrors)
-        {
+
+        if (!$showpopups
+            && $session->getViewCount() > 1
+            && count(array_filter($validationResults, function(QuestionValidationResult $result) {
+                // Count fields that do not pass mandatory criteria.
+                return !$result->getPassedMandatory();
+            })) > 0
+        ) {
             echo "<p class='errormandatory'>" . gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
         }
 
         //Display the "validation" message on page if necessary
-        if (!$showpopups && !$stepInfo['valid'] && $okToShowErrors)
-        {
+        if (!$showpopups
+            && $session->getViewCount() > 1
+            && count(array_filter($validationResults, function(QuestionValidationResult $result) {
+                // Count fields that do not pass validation but do pass mandatory validation.
+                return $result->getPassedMandatory() && !$result->getSuccess();
+            })) > 0
+        ) {
             echo "<p class='errormandatory'>" . gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
         }
 
         //Display the "file validation" message on page if necessary
-        if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
+        if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $session->getViewCount() > 1)
         {
             echo "<p class='errormandatory'>" . gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
         }
@@ -888,7 +853,6 @@ class SurveyRuntimeHelper {
                     continue;
                 }
                 $qid = $qa[4];
-                $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
                 $lastgrouparray = explode("X", $qa[7]);
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                 $lastanswer = $qa[7];
@@ -897,23 +861,13 @@ class SurveyRuntimeHelper {
 
 
                 $n_q_display = '';
-                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
+                if ($question->bool_hidden && $question->type != Question::TYPE_EQUATION)
                 {
                     continue; // skip this one
                 }
 
 
-                $aReplacement=array();
-                $question = $qa[0];
-                //===================================================================
-                // The following four variables offer the templating system the
-                // capacity to fully control the HTML output for questions making the
-                // above echo redundant if desired.
-                $question['sgq'] = $qa[7];
-                $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
-                $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
-                //===================================================================
-
+                $aReplacement = [];
                 $question_template = file_get_contents($sTemplatePath.'question.pstpl');
                 // Fix old template : can we remove it ? Old template are surely already broken by another issue
                 if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
@@ -1027,6 +981,9 @@ class SurveyRuntimeHelper {
     public static function getQuestionReplacement($aQuestionQanda)
     {
         $session = App()->surveySessionManager->current;
+        if (!isset($session)) {
+            return [];
+        }
         $survey = $session->survey;
 
         // Get the default replacement and set empty value by default
@@ -1058,8 +1015,8 @@ class SurveyRuntimeHelper {
         }
         $iQid=$aQuestionQanda[4];
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
+        $question = $session->getQuestion($iQid);
 
-        $sType=$lemQuestionInfo['info']['type'];
 
         // Core value : not replaced 
         $aReplacement['QID']=$iQid;
@@ -1104,7 +1061,7 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION']=$aQuestionQanda[0]['all'] ; // Deprecated : only used in old template (very old)
         // Core value : user text
         $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];
-        $aReplacement['QUESTIONHELP']=$lemQuestionInfo['info']['help'];// User help
+        $aReplacement['QUESTIONHELP']= $question->help;// User help
         // To be moved in a extra plugin : QUESTIONHELP img adding
         $sTemplateDir = $session->templateDir;
         $sTemplateUrl = \Template::getTemplateURL($survey->template);
@@ -1125,9 +1082,9 @@ class SurveyRuntimeHelper {
             $aReplacement['QUESTIONHELP']="<img src='{$helpicon}' alt='Help' align='left' />".$aReplacement['QUESTIONHELP'];
         }
         // Core value :the classes
-        $aReplacement['QUESTION_CLASS'] = \Question::getQuestionClass($sType);
+        $aReplacement['QUESTION_CLASS'] = \Question::getQuestionClass($question->type);
         $aMandatoryClass = array();
-        if ($lemQuestionInfo['info']['mandatory'] == 'Y')// $aQuestionQanda[0]['mandatory']=="*"
+        if ($question->bool_mandatory)
         {
             $aMandatoryClass[]= 'mandatory';
         }
@@ -1147,8 +1104,7 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION_MANDATORY']=$aQuestionQanda[0]['mandatory'];
         // For QUESTION_ESSENTIALS
         $aHtmlOptions=array();
-        if ((!$lemQuestionInfo['relevant']) || ($lemQuestionInfo['hidden']))// && $lemQuestionInfo['info']['type'] == '*'))
-        {
+        if (!$question->isRelevant($session->response) || $question->bool_hidden) {
             $aHtmlOptions['style'] = 'display: none;';
         }
 
@@ -1156,7 +1112,7 @@ class SurveyRuntimeHelper {
         $event = new PluginEvent('beforeQuestionRender');
         // Some helper
         $event->set('surveyId', $session->surveyId);
-        $event->set('type', $sType);
+        $event->set('type', $question->type);
         $event->set('code', $sCode);
         $event->set('qid', $iQid);
         $event->set('gid', $aReplacement['GID']);

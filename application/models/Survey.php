@@ -175,6 +175,7 @@ class Survey extends LSActiveRecord
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
             'groups' => [self::HAS_MANY, QuestionGroup::class, 'sid', 'order' => 'group_order ASC', 'index' => 'id'],
+            // @todo Disable this since we should only iterate over questions via groups.
             'questions' => [self::HAS_MANY, Question::class, 'sid', 'on' => "questions.parent_qid = 0", 'order' => 'question_order ASC'],
             'questionCount' => [self::STAT, Question::class, 'sid', 'condition' => "parent_qid = 0"],
             'groupCount' => [self::STAT, QuestionGroup::class, 'sid'],
@@ -1017,6 +1018,8 @@ class Survey extends LSActiveRecord
             $transaction->commit();
         }
     }
+
+
 
 
 

@@ -280,7 +280,7 @@ class SurveysController extends Controller
 
     public function actionAbort()
     {
-        $this->layout = 'bare';
+        $this->layout = 'survey';
         $ssm = App()->surveySessionManager;
         if ($ssm->active
             && !$ssm->current->isFinished

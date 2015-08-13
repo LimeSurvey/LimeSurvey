@@ -43,14 +43,14 @@ function vdd($arg) {
  * Helper function for profiling.
  * @param string $key The key to be appended.
  */
-function bP($key = null, $end = false) {
+function bP($key = false) {
     if (defined('YII_DEBUG') && YII_DEBUG) {
         $details = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
         $class = \TbArray::getValue('class', $details, 'Global function');
         $token = "{$class}::{$details['function']}";
         \Yii::beginProfile($token);
-        if (isset($key)) {
-            \Yii::beginProfile($token . ' - ' . $key);
+        if ($key !== false) {
+            \Yii::beginProfile($token . ' - ' . (is_null($key) ? "null" : $key));
         }
     }
 }
@@ -59,13 +59,13 @@ function bP($key = null, $end = false) {
  * Helper function for profiling.
  * @param string $key The key to be appended.
  */
-function eP($key = null) {
+function eP($key = false) {
     if (defined('YII_DEBUG') && YII_DEBUG) {
         $details = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
         $class = \TbArray::getValue('class', $details, 'Global function');
         $token = "{$class}::{$details['function']}";
-        if (isset($key)) {
-            \Yii::endProfile($token . ' - ' . $key);
+        if ($key !== false) {
+            \Yii::endProfile($token . ' - ' . (is_null($key) ? "null" : $key));
         }
         \Yii::endProfile($token);
     }
@@ -1784,7 +1784,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                                 $fieldmap[$fieldname]['subquestion1'] = $abrow['question'];
                                 $fieldmap[$fieldname]['subquestion2'] = $answer['question'];
                                 $fieldmap[$fieldname]['group_name'] = $question->group->group_name;
-                                $fieldmap[$fieldname]['mandatory'] = $question['mandatory'];
+                                $fieldmap[$fieldname]['mandatory'] = $question->bool_mandatory;
                                 $fieldmap[$fieldname]['hasconditions'] = $conditions;
                                 $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                                 $fieldmap[$fieldname]['preg'] = $question['preg'];

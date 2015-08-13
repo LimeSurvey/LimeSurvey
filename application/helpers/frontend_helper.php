@@ -322,7 +322,7 @@ function makeLanguageChanger($sSelectedLanguage)
 */
 function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
-    global $thisstep;
+    return false;
     $session = App()->surveySessionManager->current;
 
     if (!isset($backok) || $backok != "Y")
@@ -1219,90 +1219,7 @@ function buildsurveysession($surveyid,$preview=false)
     }
 
     $qtypes=getQuestionTypeList('','array');
-    $fieldmap=createFieldMap($surveyid,'full',true,false,$session->language);
-
-
-
-    // TMSW Condition->Relevance:  don't need hasconditions, or usedinconditions
-    foreach ($fieldmap as $field)
-    {
-        if (isset($field['qid']) && $field['qid']!='')
-        {
-            $_SESSION['survey_'.$surveyid]['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
-            $_SESSION['survey_'.$surveyid]['insertarray'][]=$field['fieldname'];
-            //fieldarray ARRAY CONTENTS -
-            //            [0]=questions.qid,
-            //            [1]=fieldname,
-            //            [2]=questions.title,
-            //            [3]=questions.question
-            //                     [4]=questions.type,
-            //            [5]=questions.gid,
-            //            [6]=questions.mandatory,
-            //            [7]=conditionsexist,
-            //            [8]=usedinconditions
-            //            [8]=usedinconditions
-            //            [9]=used in group.php for question count
-            //            [10]=new group id for question in randomization group (GroupbyGroup Mode)
-
-            if (!isset($session->getFieldArray()[$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
-            {
-                //JUST IN CASE : PRECAUTION!
-                //following variables are set only if $style=="full" in createFieldMap() in common_helper.
-                //so, if $style = "short", set some default values here!
-                if (isset($field['title']))
-                    $title = $field['title'];
-                else
-                    $title = "";
-
-                if (isset($field['question']))
-                    $question = $field['question'];
-                else
-                    $question = "";
-
-                if (isset($field['mandatory']))
-                    $mandatory = $field['mandatory'];
-                else
-                    $mandatory = 'N';
-
-                if (isset($field['hasconditions']))
-                    $hasconditions = $field['hasconditions'];
-                else
-                    $hasconditions = 'N';
-
-                if (isset($field['usedinconditions']))
-                    $usedinconditions = $field['usedinconditions'];
-                else
-                    $usedinconditions = 'N';
-            }
-        }
-
-    }
-
-    // Prefill questions/answers from command line params
-    $reservedGetValues= array('token','sid','gid','qid','lang','newtest','action');
-    $startingValues=array();
-    if (isset($_GET))
-    {
-        foreach ($_GET as $k=>$v)
-        {
-            if (!in_array($k,$reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k]))
-            {
-                $startingValues[$k] = $v;
-            }
-            else
-            {   // Search question codes to use those for prefilling.
-                foreach(createFieldMap($surveyid, 'full') as $sgqa => $details)
-                {
-                    if ($details['title'] == $k)
-                    {
-                        $startingValues[$sgqa] = $v;
-                    }
-                }
-            }
-        }
-    }
-    $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
-
+    $fieldmap = createFieldMap($surveyid,'full',true,false,$session->language);
 
     //Check if a passthru label and value have been included in the query url
     $oResult=SurveyURLParameter::model()->getParametersForSurvey($surveyid);
@@ -1422,9 +1339,9 @@ function surveymover()
 function doAssessment($surveyid, $returndataonly=false)
 {
     $session = App()->surveySessionManager->current;
-    $survey = $session->survey;
-    
-    if(!isset($survey) || !$survey->bool_assessments) {
+
+
+    if(!isset($session) || !$session->survey->bool_assessments) {
         return false;
     }
     $total = 0;

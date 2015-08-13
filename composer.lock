@@ -254,16 +254,16 @@
         },
         {
             "name": "bower-asset/jquery.actual",
-            "version": "v1.0.16",
+            "version": "v1.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dreamerslab/jquery.actual.git",
-                "reference": "d939ce627a3263c9897a965f608e0e1efcca7da8"
+                "reference": "e9a965229250ecd5d66da8a659626aa5ebade9a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dreamerslab/jquery.actual/zipball/d939ce627a3263c9897a965f608e0e1efcca7da8",
-                "reference": "d939ce627a3263c9897a965f608e0e1efcca7da8",
+                "url": "https://api.github.com/repos/dreamerslab/jquery.actual/zipball/e9a965229250ecd5d66da8a659626aa5ebade9a2",
+                "reference": "e9a965229250ecd5d66da8a659626aa5ebade9a2",
                 "shasum": ""
             },
             "require": {
@@ -359,16 +359,16 @@
         },
         {
             "name": "bower-asset/remarkable-bootstrap-notify",
-            "version": "3.1.3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mouse0270/bootstrap-notify.git",
-                "reference": "c6a3e3acafda0815cce3703103499b6262500cd7"
+                "reference": "ff15412f0d26a21452c10fcd0f3df8fef7335330"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mouse0270/bootstrap-notify/zipball/c6a3e3acafda0815cce3703103499b6262500cd7",
-                "reference": "c6a3e3acafda0815cce3703103499b6262500cd7",
+                "url": "https://api.github.com/repos/mouse0270/bootstrap-notify/zipball/ff15412f0d26a21452c10fcd0f3df8fef7335330",
+                "reference": "ff15412f0d26a21452c10fcd0f3df8fef7335330",
                 "shasum": ""
             },
             "require": {
@@ -378,7 +378,10 @@
             "type": "bower-asset-library",
             "extra": {
                 "bower-asset-main": "bootstrap-notify.js",
-                "bower-asset-ignore": []
+                "bower-asset-ignore": [],
+                "branch-alias": {
+                    "dev-master": "3.1.5-dev"
+                }
             },
             "license": [
                 "MIT"
@@ -394,7 +397,8 @@
                 "notifications",
                 "notify",
                 "remarkable"
-            ]
+            ],
+            "time": "2015-08-08 13:35:39"
         },
         {
             "name": "bower-asset/samit-forms",
@@ -495,16 +499,16 @@
         },
         {
             "name": "bower-asset/tinymce",
-            "version": "4.2.1",
+            "version": "4.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "905eb7e791caa652dce3c44abcf49d9c3f725c4d"
+                "reference": "1dac1eba2f84f52710b30c68ae2f571f739d01a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/905eb7e791caa652dce3c44abcf49d9c3f725c4d",
-                "reference": "905eb7e791caa652dce3c44abcf49d9c3f725c4d",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/1dac1eba2f84f52710b30c68ae2f571f739d01a2",
+                "reference": "1dac1eba2f84f52710b30c68ae2f571f739d01a2",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -531,16 +535,16 @@
         },
         {
             "name": "cakephp/utility",
-            "version": "3.0.8",
+            "version": "3.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
-                "reference": "447c2ddd76e583989a40d44ffe2ed2241650c8cf"
+                "reference": "4d16e1fb52d62bef3ee2cba618718769d70653cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/utility/zipball/447c2ddd76e583989a40d44ffe2ed2241650c8cf",
-                "reference": "447c2ddd76e583989a40d44ffe2ed2241650c8cf",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/4d16e1fb52d62bef3ee2cba618718769d70653cf",
+                "reference": "4d16e1fb52d62bef3ee2cba618718769d70653cf",
                 "shasum": ""
             },
             "type": "library",
@@ -563,7 +567,7 @@
                 }
             ],
             "description": "CakePHP Utility classes such as Inflector, String, Hash, and Security",
-            "time": "2015-06-04 21:45:21"
+            "time": "2015-07-23 16:38:36"
         },
         {
             "name": "crisu83/yiistrap",
@@ -1076,12 +1080,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "db33c00096cdc142936613245e3ab25afdd8a620"
+                "reference": "8a719102d2c3ad496530db6f524da222bccf01d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/db33c00096cdc142936613245e3ab25afdd8a620",
-                "reference": "db33c00096cdc142936613245e3ab25afdd8a620",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/8a719102d2c3ad496530db6f524da222bccf01d4",
+                "reference": "8a719102d2c3ad496530db6f524da222bccf01d4",
                 "shasum": ""
             },
             "require": {
@@ -1123,7 +1127,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-07-01 09:52:56"
+            "time": "2015-08-07 09:57:43"
         },
         {
             "name": "psr/http-message",
@@ -1373,12 +1377,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "4cc92248e46e3393fdc74d56177aee57abe9d1c2"
+                "reference": "4d5877eb597d6ac70b5e579605bf0f052a9a4172"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/4cc92248e46e3393fdc74d56177aee57abe9d1c2",
-                "reference": "4cc92248e46e3393fdc74d56177aee57abe9d1c2",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/4d5877eb597d6ac70b5e579605bf0f052a9a4172",
+                "reference": "4d5877eb597d6ac70b5e579605bf0f052a9a4172",
                 "shasum": ""
             },
             "require": {
@@ -1417,7 +1421,7 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2015-07-01 13:00:43"
+            "time": "2015-08-11 04:31:06"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -1425,12 +1429,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4"
+                "reference": "354433a33946ae7497c3eab291eaaf814bccbfab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4",
-                "reference": "fa6ab8a1e1fbabb9e6cfd2f807514fa1497240e4",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/354433a33946ae7497c3eab291eaaf814bccbfab",
+                "reference": "354433a33946ae7497c3eab291eaaf814bccbfab",
                 "shasum": ""
             },
             "require": {
@@ -1480,7 +1484,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2015-06-18 09:12:38"
+            "time": "2015-08-02 12:30:27"
         },
         {
             "name": "twbs/bootstrap",
@@ -1488,12 +1492,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "cb7f569262acaf5d0d6c001146855eb595ffdd20"
+                "reference": "ab412b2404d12a3c55d1c4b798bd42ef32e80fab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/cb7f569262acaf5d0d6c001146855eb595ffdd20",
-                "reference": "cb7f569262acaf5d0d6c001146855eb595ffdd20",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/ab412b2404d12a3c55d1c4b798bd42ef32e80fab",
+                "reference": "ab412b2404d12a3c55d1c4b798bd42ef32e80fab",
                 "shasum": ""
             },
             "replace": {
@@ -1531,7 +1535,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-07-07 04:43:37"
+            "time": "2015-08-05 04:36:11"
         },
         {
             "name": "yiisoft/yii",
@@ -1629,12 +1633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "1aface914fb3a45747a1db001ffaf2830a19ae4c"
+                "reference": "e268dd52201dc9fd26084d5cd777d1e52383b54f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/1aface914fb3a45747a1db001ffaf2830a19ae4c",
-                "reference": "1aface914fb3a45747a1db001ffaf2830a19ae4c",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/e268dd52201dc9fd26084d5cd777d1e52383b54f",
+                "reference": "e268dd52201dc9fd26084d5cd777d1e52383b54f",
                 "shasum": ""
             },
             "require": {
@@ -1671,7 +1675,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2015-06-25 18:49:21"
+            "time": "2015-08-10 20:08:33"
         }
     ],
     "packages-dev": [],

@@ -591,3 +591,4 @@ function doToolTipTable()
         $( this).attr('title',$(this).find("label").text());
     });
 }
+

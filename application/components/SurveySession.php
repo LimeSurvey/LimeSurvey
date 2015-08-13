@@ -51,7 +51,7 @@ class SurveySession extends CComponent {
      * It gets reset when changing the step.
      * @var int The number of times this step has been viewed without viewing other steps.
      */
-    protected $_viewCount = 1;
+    protected $_viewCount = 0;
     protected $_token;
     /**
      * @param int $surveyId
@@ -122,8 +122,8 @@ class SurveySession extends CComponent {
      */
     public function getSurvey() {
         if (!isset($this->_survey)) {
+            bP($this->surveyId);
             /** @var Survey $survey */
-            \Yii::trace('ok123');
             /**
              * We greedily load questions via groups.
              */
@@ -133,12 +133,17 @@ class SurveySession extends CComponent {
                         'questions' => [
                             'with' => [
                                 'answers',
-                                'questionAttributes'
+                                'questionAttributes',
+                                'conditions',
+                                'conditionsAsTarget'
                             ]
                         ]
                     ]
                 ]
             ])->findByPk($this->surveyId);
+            if (!isset($this->_survey)) {
+                throw new \Exception("Survey not found.");
+            }
             /**
              * We manually set the questions in survey to the same objects as those in groups.
              * Note that the $survey->questions relation is redundant.
@@ -147,6 +152,11 @@ class SurveySession extends CComponent {
             foreach($survey->groups as $group) {
                 foreach($group->questions as $key => $question) {
                     $questions[$key] = $question;
+
+                    // Also manually fill the group relation, so $qroup->questions[0]->group === $group
+                    $question->group = $group;
+                    // And the survey relation
+                    $question->survey = $survey;
                 }
             }
 
@@ -156,6 +166,8 @@ class SurveySession extends CComponent {
              * Manually set the group count.
              */
             $survey->groupCount = count($survey->groups);
+
+            eP($this->surveyId);
         }
         return $this->_survey;
     }
@@ -432,6 +444,7 @@ class SurveySession extends CComponent {
      * @deprecated
      */
     public function getFieldArray() {
+        throw new \Exception();
         $result = [];
         $fieldMap = createFieldMap($this->surveyId, 'full', true, false, $this->language);
         if (!is_array($fieldMap)) {
@@ -441,7 +454,7 @@ class SurveySession extends CComponent {
         }
         foreach ($fieldMap as $field)
         {
-            if (isset($field['qid']) && $field['qid']!='')
+            if ($field instanceof QuestionResponseField)
             {
 //                $result['fieldnamesInfo'][$field['fieldname']] = $field['sid'].'X'.$field['gid'].'X'.$field['qid'];
 //                $result['insertarray'][] = $field['fieldname'];
@@ -462,7 +475,7 @@ class SurveySession extends CComponent {
                 //JUST IN CASE : PRECAUTION!
                 //following variables are set only if $style=="full" in createFieldMap() in common_helper.
                 //so, if $style = "short", set some default values here!
-                if (isset($field['title']))
+                if (isset($field->name))
                     $title = $field['title'];
                 else
                     $title = "";
@@ -530,7 +543,5 @@ class SurveySession extends CComponent {
         }
         return $result;
     }
-
-
 
 }

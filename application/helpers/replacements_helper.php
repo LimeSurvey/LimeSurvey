@@ -34,41 +34,35 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode;
     global $s_lang,$errormsg,$saved_id, $languagechanger,$captchapath,$loadname;
     */
-    /*
-    $allowedvars = array('surveylist', 'sitename', 'clienttoken', 'rooturl', 'thissurvey', 'imageurl', 'defaulttemplate',
-    'percentcomplete', 'move', 'groupname', 'groupdescription', 'question', 'showxquestions',
-    'showgroupinfo', 'showqnumcode', 'questioncode', 'answer', 'navigator', 'help', 'totalquestions',
-    'surveyformat', 'completed', 'notanswered', 'privacy', 'surveyid', 'publicurl',
-    'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'saved_id', 'usertemplaterootdir',
-    'languagechanger', 'printoutput', 'captchapath', 'loadname');
-    */
-    $allowedvars = array(
-    'assessments',
-    'captchapath',
-    'clienttoken',
-    'completed',
-    'errormsg',
-    'groupdescription',
-    'groupname',
-    'imageurl',
-    'languagechanger',
-    'loadname',
-    'move',
-    'navigator',
-    'percentcomplete',
-    'privacy',
-    'saved_id',
-    'showgroupinfo',
-    'showqnumcode',
-    'showxquestions',
-    'sitename',
-    'surveylist',
-    'templatedir',
-    'thissurvey',
-    'token',
-    'totalBoilerplatequestions',
-    'totalquestions',
-    );
+
+    $allowedvars = [
+        'assessments',
+        'captchapath',
+        'clienttoken',
+        'completed',
+        'errormsg',
+        'groupdescription',
+        'groupname',
+        'imageurl',
+        'languagechanger',
+        'loadname',
+        'move',
+        'navigator',
+        'percentcomplete',
+        'privacy',
+        'saved_id',
+        'showgroupinfo',
+        'showqnumcode',
+        'showxquestions',
+        'sitename',
+        'surveylist',
+        'templatedir',
+        'thissurvey',
+        'token',
+        'totalBoilerplatequestions',
+        'totalquestions',
+        'surveyId'
+    ];
 
     $varsPassed = array();
 
@@ -103,10 +97,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     Yii::app()->loadHelper('surveytranslator');
 
-    if (isset($thissurvey['sid'])) {
-        $surveyid = $thissurvey['sid'];
+    if (!isset($surveyId) && isset($thissurvey['sid'])) {
+        $surveyId = $thissurvey['sid'];
     }
-
     // lets sanitize the survey template
     if(isset($thissurvey['templatedir']))
     {
@@ -278,7 +271,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $iscompleted = App()->surveySessionManager->active && App()->surveySessionManager->current->isFinished;
 
-    if (isset($surveyid) && !$iscompleted)
+    if (isset($surveyId) && !$iscompleted)
     {
         $_clearall = CHtml::htmlButton(gT("Exit and clear survey"), [
             'type'=> 'submit',
@@ -321,9 +314,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_strreview = gT("If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses.");
     }
 
-    if(isset($surveyid))
+    if(isset($surveyId))
     {
         $restartparam = [];
+        $restartparam['id'] = $surveyId;
+
         if(isset(App()->surveySessionManager->current->response->token)) {
             $restartparam['token'] = App()->surveySessionManager->current->response->token;
         }
@@ -331,9 +326,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $restartparam['lang'] = sanitize_languagecode($lang);
         elseif (isset($session)) {
             $restartparam['lang'] = $session->language;
+            $restartparam['id'] = $session->surveyId;
         }
         $restartparam['newtest']="Y";
-        $restartparam['id'] = $session->surveyId;
+
         $restarturl= App()->createUrl("surveys/start", $restartparam);
         $_restart = "<a href='{$restarturl}'>".gT("Restart this Survey")."</a>";
     }
@@ -397,7 +393,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_saveform .= "' /></td></tr>\n";
     if ( isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_saveform .="<tr class='save-survey-row save-survey-captcha'><td class='save-survey-label label-cell' align='right'><label for='loadsecurity'>" . gT("Security question") . "</label>:</td><td class='save-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img alt='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' /></td><td class='captcha-input' valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+        $_saveform .="<tr class='save-survey-row save-survey-captcha'><td class='save-survey-label label-cell' align='right'><label for='loadsecurity'>" . gT("Security question") . "</label>:</td><td class='save-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img alt='' src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyId)) ? $surveyId : ''))."' /></td><td class='captcha-input' valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
     $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
     . "<tr class='save-survey-row save-survey-submit'><td class='save-survey-label label-cell'><label class='hide jshide' for='savebutton'>" . gT("Save Now") . "</label></td><td class='save-survey-input input-cell'><input type='submit' id='savebutton' name='savesubmit' class='button' value='" . gT("Save Now") . "' /></td></tr>\n"
@@ -418,18 +414,18 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_loadform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="<tr class='load-survey-row load-survey-captcha'><td class='load-survey-label label-cell' align='right'><label for='loadsecurity'>" . gT("Security question") . "</label>:</td><td class='load-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' /></td><td class='captcha-input' valign='middle'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+        $_loadform .="<tr class='load-survey-row load-survey-captcha'><td class='load-survey-label label-cell' align='right'><label for='loadsecurity'>" . gT("Security question") . "</label>:</td><td class='load-survey-input input-cell'><table class='captcha-table'><tr><td class='captcha-image' valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyId)) ? $surveyId : ''))."' alt='' /></td><td class='captcha-input' valign='middle'><input type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
     $_loadform .="<tr class='load-survey-row load-survey-submit'><td class='load-survey-label label-cell'><label class='hide jshide' for='loadbutton'>" . gT("Load now") . "</label></td><td class='load-survey-input input-cell'><input type='submit' id='loadbutton' class='button' value='" . gT("Load now") . "' /></td></tr></table>\n";
 
     // Assessments
     $assessmenthtml="";
-    if (isset($surveyid) && !is_null($surveyid) && function_exists('doAssessment'))
+    if (isset($surveyId) && !is_null($surveyId) && function_exists('doAssessment'))
     {
-        $assessmentdata = doAssessment($surveyid, true);
+        $assessmentdata = doAssessment($surveyId, true);
         $_assessment_current_total = $assessmentdata['total'];
         if(stripos ($line,"{ASSESSMENTS}")){
-            $assessmenthtml=doAssessment($surveyid, false);
+            $assessmenthtml=doAssessment($surveyId, false);
         }
     }
     else
@@ -490,7 +486,7 @@ EOD;
                             {
                                 $gseq=$moveInfo['gseq']+1;
                 }
-                $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
+                $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyId . ']/[' . $gseq . ']-' . $_groupname);
                 $_googleAnalyticsJavaScript = <<<EOD
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

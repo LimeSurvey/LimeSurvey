@@ -23,7 +23,7 @@
 * string is an array of $ia arrays.
 *
 * $ia[0] => question id
-* $ia[1] => fieldname
+* $question->sgqa => fieldname
 * $ia[2] => title
 * $ia[3] => question text
 * $ia[4] => type --  text, radio, select, array, etc
@@ -75,191 +75,181 @@ function setNoAnswerMode($thissurvey)
 * @param mixed $ia
 * @return mixed
 */
-function retrieveAnswers($ia)
+function retrieveAnswers(Question $question)
 {
     //globalise required config variables
-    global $thissurvey; //These are set by index.php
-
-    //
-
-
-    //DISPLAY
-    $display = $ia[7];
 
     //QUESTION NAME
-    $name = $ia[0];
 
-    $qtitle=$ia[3];
-    $inputnames=array();
+    $qtitle = $question->title;
+    $inputnames = [];
     $session = App()->surveySessionManager->current;
-    $question = $session->getQuestion($ia[0]);
+
     //Create the question/answer html
     $answer = "";
-    // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
-    // this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.
-    $number = isset($ia[9]) ? $ia[9] : '';
+
+    $number = '';
 
     // TMSW - populate this directly from LEM? - this this is global
-    $question_text = array(
-    'all' => '' // All has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
-    ,'text' => $qtitle
-    ,'code' => $ia[2]
-    ,'number' => $number
-    ,'help' => ''
-    ,'mandatory' => ''
-    ,'man_message' => ''
-    ,'valid_message' => ''
-    ,'file_valid_message' => ''
-    ,'class' => ''
-    ,'man_class' => ''
-    ,'input_error_class' => ''// provides a class.
-    ,'essentials' => ''
-    );
+    $question_text = [
+        'text' => $qtitle,
+        'code' => $question->title,
+        'number' => $number,
+        'help' => '',
+        'mandatory' => '',
+        'man_message' => '',
+        'valid_message' => '',
+        'file_valid_message' => '',
+        'class' => '',
+        'man_class' => '',
+        'input_error_class' => '',
+        'essentials' => ''
+    ];
 
-    switch ($ia[4])
+    switch ($question->type)
     {
-        case 'X': //BOILERPLATE QUESTION
-            $values = do_boilerplate($ia);
-            break;
-        case '5': //5 POINT CHOICE radio-buttons
-            $values = do_5pointchoice($ia);
-            break;
-        case 'D': //DATE
-            $values = do_date($ia);
-            // if a drop box style date was answered incompletely (dropbox), print an error/help message
-            if (($session->getStep() != $session->getMaxStep())
-                || $session->step == $session->prevStep)
-            {
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]]))
-                $question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$ia[1]].'</span>';
-            }
-            break;
-        case 'L': //LIST drop-down/radio-button list
-            $values = do_list_radio($ia);
-            if ($question->hide_tip == 0)
+    case 'X': //BOILERPLATE QUESTION
+        $values = do_boilerplate($question);
+        break;
+    case '5': //5 POINT CHOICE radio-buttons
+        $values = do_5pointchoice($question);
+        break;
+    case 'D': //DATE
+        $values = do_date($question);
+        // if a drop box style date was answered incompletely (dropbox), print an error/help message
+        if (($session->getStep() != $session->getMaxStep())
+            || $session->step == $session->prevStep)
+        {
+            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$question->sgqa]))
+            $question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$question->sgqa].'</span>';
+        }
+        break;
+    case Question::TYPE_RADIO_LIST: //LIST drop-down/radio-button list
+        $values = do_list_radio($question);
+        if ($question->hide_tip == 0)
+        {
+            $qtitle .= "<br />\n<span class=\"questionhelp\">"
+            . gT('Choose one of the following answers').'</span>';
+            $question_text['help'] = gT('Choose one of the following answers');
+        }
+        break;
+    case '!': //List - dropdown
+        $values=do_list_dropdown($question);
+        if ($question->hide_tip == 0)
+        {
+            $qtitle .= "<br />\n<span class=\"questionhelp\">"
+            . gT('Choose one of the following answers').'</span>';
+            $question_text['help'] = gT('Choose one of the following answers');
+        }
+        break;
+    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+        $values=do_listwithcomment($question);
+        if (count($values[1]) > 1 && $question->hide_tip == 0)
+        {
+            $qtitle .= "<br />\n<span class=\"questionhelp\">"
+            . gT('Choose one of the following answers').'</span>';
+            $question_text['help'] = gT('Choose one of the following answers');
+        }
+        break;
+    case 'R': //RANKING STYLE
+        $values=do_ranking($question);
+        break;
+    case 'M': //Multiple choice checkbox
+        $values=do_multiplechoice($question);
+        if (count($values[1]) > 1 && $question->hide_tip == 0)
+        {
+            $maxansw=trim($question->max_answers);
+            $minansw=trim($question->min_answers);
+            if (!($maxansw || $minansw))
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = gT('Choose one of the following answers');
+                . gT('Check any that apply').'</span>';
+                $question_text['help'] = gT('Check any that apply');
             }
-            break;
-        case '!': //List - dropdown
-            $values=do_list_dropdown($ia);
-            if ($question->hide_tip == 0)
-            {
-                $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = gT('Choose one of the following answers');
-            }
-            break;
-        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-            $values=do_listwithcomment($ia);
-            if (count($values[1]) > 1 && $question->hide_tip == 0)
-            {
-                $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Choose one of the following answers').'</span>';
-                $question_text['help'] = gT('Choose one of the following answers');
-            }
-            break;
-        case 'R': //RANKING STYLE
-            $values=do_ranking($ia);
-            break;
-        case 'M': //Multiple choice checkbox
-            $values=do_multiplechoice($ia);
-            if (count($values[1]) > 1 && $question->hide_tip == 0)
-            {
-                $maxansw=trim($question->max_answers);
-                $minansw=trim($question->min_answers);
-                if (!($maxansw || $minansw))
-                {
-                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . gT('Check any that apply').'</span>';
-                    $question_text['help'] = gT('Check any that apply');
-                }
-            }
-            break;
+        }
+        break;
 
-        case 'I': //Language Question
-            $values=do_language($ia);
-            if (count($values[1]) > 1)
+    case 'I': //Language Question
+        $values=do_language($question);
+        if (count($values[1]) > 1)
+        {
+            $qtitle .= "<br />\n<span class=\"questionhelp\">"
+            . gT('Choose your language').'</span>';
+            $question_text['help'] = gT('Choose your language');
+        }
+        break;
+    case 'P': //Multiple choice with comments checkbox + text
+        $values=do_multiplechoice_withcomments($question);
+        if (count($values[1]) > 1 && $question->hide_tip == 0)
+        {
+            $maxansw = intval($question->min_answers);
+            $minansw = intval($question->max_answers);
+            if (!($maxansw || $minansw))
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Choose your language').'</span>';
-                $question_text['help'] = gT('Choose your language');
+                . gT('Check any that apply').'</span>';
+                $question_text['help'] = gT('Check any that apply');
             }
-            break;
-        case 'P': //Multiple choice with comments checkbox + text
-            $values=do_multiplechoice_withcomments($ia);
-            if (count($values[1]) > 1 && $question->hide_tip == 0)
-            {
-                $maxansw = intval($question->min_answers);
-                $minansw = intval($question->max_answers);
-                if (!($maxansw || $minansw))
-                {
-                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . gT('Check any that apply').'</span>';
-                    $question_text['help'] = gT('Check any that apply');
-                }
-            }
-            break;
-        case '|': //File Upload
-            $values=do_file_upload($ia);
-            break;
-        case 'Q': //MULTIPLE SHORT TEXT
-            $values=do_multipleshorttext($ia);
-            break;
-        case 'K': //MULTIPLE NUMERICAL QUESTION
-            $values=do_multiplenumeric($ia);
-            break;
-        case 'N': //NUMERICAL QUESTION TYPE
-            $values=do_numerical($ia);
-            break;
-        case 'S': //SHORT FREE TEXT
-            $values=do_shortfreetext($ia);
-            break;
-        case 'T': //LONG FREE TEXT
-            $values=do_longfreetext($ia);
-            break;
-        case 'U': //HUGE FREE TEXT
-            $values=do_hugefreetext($ia);
-            break;
-        case 'Y': //YES/NO radio-buttons
-            $values=do_yesno($ia);
-            break;
-        case 'G': //GENDER drop-down list
-            $values=do_gender($ia);
-            break;
-        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-            $values=do_array_5point($ia);
-            break;
-        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-            $values=do_array_10point($ia);
-            break;
-        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-            $values=do_array_yesnouncertain($ia);
-            break;
-        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-            $values=do_array_increasesamedecrease($ia);
-            break;
-        case 'F': //ARRAY (Flexible) - Row Format
-            $values=do_array($ia);
-            break;
-        case 'H': //ARRAY (Flexible) - Column Format
-            $values=do_arraycolumns($ia);
-            break;
-        case ':': //ARRAY (Multi Flexi) 1 to 10
-            $values=do_array_multiflexi($ia);
-            break;
-        case ';': //ARRAY (Multi Flexi) Text
-            $values=do_array_multitext($ia);  //It's like the "5th element" movie, come to life
-            break;
-        case '1': //Array (Flexible Labels) dual scale
-            $values=do_array_dual($ia);
-            break;
-        case '*': // Equation
-            $values=do_equation($ia);
-            break;
-    } //End Switch
+        }
+        break;
+    case '|': //File Upload
+        $values=do_file_upload($question);
+        break;
+    case 'Q': //MULTIPLE SHORT TEXT
+        $values=do_multipleshorttext($question);
+        break;
+    case 'K': //MULTIPLE NUMERICAL QUESTION
+        $values=do_multiplenumeric($question);
+        break;
+    case 'N': //NUMERICAL QUESTION TYPE
+        $values=do_numerical($question);
+        break;
+    case 'S': //SHORT FREE TEXT
+        $values=do_shortfreetext($question);
+        break;
+    case 'T': //LONG FREE TEXT
+        $values=do_longfreetext($question);
+        break;
+    case 'U': //HUGE FREE TEXT
+        $values=do_hugefreetext($question);
+        break;
+    case 'Y': //YES/NO radio-buttons
+        $values=do_yesno($question);
+        break;
+    case 'G': //GENDER drop-down list
+        $values=do_gender($question);
+        break;
+    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+        $values=do_array_5point($question);
+        break;
+    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+        $values=do_array_10point($question);
+        break;
+    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+        $values=do_array_yesnouncertain($question);
+        break;
+    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+        $values=do_array_increasesamedecrease($question);
+        break;
+    case 'F': //ARRAY (Flexible) - Row Format
+        $values=do_array($question);
+        break;
+    case 'H': //ARRAY (Flexible) - Column Format
+        $values=do_arraycolumns($question);
+        break;
+    case ':': //ARRAY (Multi Flexi) 1 to 10
+        $values=do_array_multiflexi($question);
+        break;
+    case ';': //ARRAY (Multi Flexi) Text
+        $values=do_array_multitext($question);  //It's like the "5th element" movie, come to life
+        break;
+    case '1': //Array (Flexible Labels) dual scale
+        $values=do_array_dual($question);
+        break;
+    case '*': // Equation
+        $values=do_equation($question);
+        break;
+} //End Switch
 
     if (isset($values)) //Break apart $values array returned from switch
     {
@@ -268,7 +258,7 @@ function retrieveAnswers($ia)
         list($answer, $inputnames)=$values;
     }
 
-    if ($ia[6] == 'Y')
+    if ($question->bool_mandatory)
     {
         $qtitle = '<span class="asterisk">'.gT('*').'</span>'.$qtitle;
         $question_text['mandatory'] = gT('*');
@@ -276,7 +266,7 @@ function retrieveAnswers($ia)
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
     if ($session->step != $session->maxStep || $session->viewCount > 1) {
-        $mandatory_msg = mandatory_message($ia);
+        $mandatory_msg = mandatory_message($question);
     }
     else {
         $mandatory_msg = '';
@@ -290,20 +280,19 @@ function retrieveAnswers($ia)
     else {
         $_vshow = false;
     }
-    list($validation_msg,$isValid) = validation_message($ia,$_vshow);
+    list($validation_msg,$isValid) = validation_message($question,$_vshow);
 
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
     if ($session->step != $session->maxStep || ($session->step == $session->prevStep)) {
-        $file_validation_msg = file_validation_message($ia);
+        $file_validation_msg = file_validation_message($question);
     }
     else {
         $file_validation_msg = '';
         $isValid = true;    // don't want to show any validation messages.
     }
-    $qtitle .= $ia[4] == "|" ? $file_validation_msg : "";
-    $question_text['file_valid_message'] = $ia[4] == "|" ? $file_validation_msg : "";
+    $qtitle .= $question_text['file_valid_message'] = $question->type == Question::TYPE_UPLOAD ? $file_validation_msg : "";
 
     if(!empty($question_text['man_message']) || !$isValid || !empty($question_text['file_valid_message']))
     {
@@ -316,8 +305,7 @@ function retrieveAnswers($ia)
     // templaters to control where the various parts of the question text
     // are put.
 
-    $sTemplate = isset($thissurvey['template']) ? $thissurvey['template'] : NULL;
-    if(is_file('templates/'.$sTemplate.'/question_start.pstpl'))
+    if(is_file($session->templateDir.'/question_start.pstpl'))
     {
         $qtitle_custom = '';
 
@@ -327,9 +315,12 @@ function retrieveAnswers($ia)
             $find[] = '{QUESTION_'.strtoupper($key).'}'; // Match key words from template
             $replace[] = $value; // substitue text
         };
+        /**
+         * @todo Remove this; why is this a constant!?!?!?
+         */
         if(!defined('QUESTION_START'))
         {
-            define('QUESTION_START' , file_get_contents(Template::getTemplatePath($thissurvey['template']).'/question_start.pstpl' , true));
+            define('QUESTION_START' , file_get_contents($session->templateDir . '/question_start.pstpl' , true));
         };
         $qtitle_custom = str_replace( $find , $replace , QUESTION_START);
 
@@ -367,14 +358,16 @@ function retrieveAnswers($ia)
     $qtitle = $question_text;
     // =====================================================
 
-    $qanda=array($qtitle, $answer, 'help', $display, $name, $ia[2], $ia[5], $ia[1] );
     //New Return
-    return array($qanda, $inputnames);
+    return [
+        [$qtitle, $answer, 'help', "what is this variable?", $question->primaryKey, $question->title, $question->gid, $question->sgqa],
+        $inputnames
+    ];
 }
 
-function mandatory_message($ia)
+function mandatory_message(Question $question)
 {
-    $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
+    $qinfo = LimeExpressionManager::GetQuestionStatus($question->primaryKey);
     if ($qinfo['mandViolation']) {
         return $qinfo['mandTip'];
     }
@@ -383,26 +376,30 @@ function mandatory_message($ia)
     }
 }
 
-/**
-*
-* @param <type> $ia
-* @param <type> $show - true if should initially be visible
-* @return <type>
-*/
-function validation_message($ia,$show)
+
+function validation_message(Question $question,$show)
 {
-    $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
+    $session = App()->surveySessionManager->current;
+    $validationResult = $question->validateResponse($session->response);
     $class = "questionhelp";
     if (!$show) {
         $class .= ' hide-tip';
     }
-    $tip = CHtml::tag('div',array('class'=>$class,'id'=>"vmsg_{$ia[0]}"),$qinfo['validTip']); // div inside div (w3c)
-    $isValid = $qinfo['valid'];
-    return array($tip,$isValid);
+    $messages = '';
+    foreach($validationResult->getMessages() as $fieldName => $fieldMessages) {
+        foreach($fieldMessages as $message) {
+            $messages .= "\n" . $message;
+        }
+    }
+    $tip = CHtml::tag('div', [
+        'class' => $class,
+        'id' => "vmsg_{$question->primaryKey}"
+    ], $messages);
+    return [$tip, $validationResult->getSuccess()];
 }
 
 // TMSW Validation -> EM
-function file_validation_message($ia)
+function file_validation_message(Question $question)
 {
     global $filenotvalidated;
 
@@ -414,7 +411,7 @@ function file_validation_message($ia)
 
         foreach ($filenotvalidated as $k => $v)
         {
-            if ($ia[1] == $k || strpos($k, "_") && $ia[1] == substr(0, strpos($k, "_") - 1));
+            if ($question->sgqa == $k || strpos($k, "_") && $question->sgqa == substr(0, strpos($k, "_") - 1));
             $qtitle .= '<br /><span class="errormandatory">'.gT($filenotvalidated[$k]).'</span><br />';
         }
     }
@@ -422,57 +419,20 @@ function file_validation_message($ia)
 }
 
 // TMSW Validation -> EM
-function mandatory_popup($ia, $notanswered=null)
+function mandatory_popup(QuestionValidationResult $validationResult)
 {
-
-    //This sets the mandatory popup message to show if required
-    //Called from question.php, group.php or survey.php
-    if ($notanswered === null) {unset($notanswered);}
-    if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+    //POPUP WARNING
+    if ($validationResult->getQuestion()->type == Question::TYPE_LONG_TEXT
+        || $validationResult->getQuestion()->type == Question::TYPE_SHORT_TEXT
+        || $validationResult->getQuestion()->type == Question::TYPE_HUGE_TEXT)
     {
-        global $mandatorypopup, $popup;
-        //POPUP WARNING
-        if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U'))
-        {
-            $popup=gT("You cannot proceed until you enter some text for one or more questions.");
-            $mandatorypopup="Y";
-        }else
-        {
-            $popup=gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
-            $mandatorypopup="Y";
-        }
-        return array($mandatorypopup, $popup);
+        $popup=gT("You cannot proceed until you enter some text for one or more questions.");
+    } else {
+        $popup=gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
     }
-    else
-    {
-        return false;
-    }
+    return $popup;
 }
 
-// TMSW Validation -> EM
-function validation_popup($ia, $notvalidated=null)
-{
-
-    //This sets the validation popup message to show if required
-    //Called from question.php, group.php or survey.php
-    if ($notvalidated === null) {unset($notvalidated);}
-    $qtitle="";
-    if (isset($notvalidated) && is_array($notvalidated) )  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
-    {
-        global $validationpopup, $vpopup;
-        //POPUP WARNING
-        if (!isset($validationpopup))
-        {
-            $vpopup=gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
-            $validationpopup="Y";
-        }
-        return array($validationpopup, $vpopup);
-    }
-    else
-    {
-        return false;
-    }
-}
 
 // TMSW Validation -> EM
 function file_validation_popup($ia, $filenotvalidated = null)
@@ -488,10 +448,8 @@ function file_validation_popup($ia, $filenotvalidated = null)
             $fpopup=gT("One or more file have either exceeded the filesize/are not in the right format or the minimum number of required files have not been uploaded. You cannot proceed until these have been completed");
             $filevalidationpopup = "Y";
         }
-        return array($filevalidationpopup, $fpopup);
+        return $fpopup;
     }
-    else
-        return false;
 }
 
 function return_timer_script(Question $question, $ia, $disable=null) {
@@ -776,7 +734,7 @@ function return_timer_script(Question $question, $ia, $disable=null) {
     return $output;
 }
 
-function return_array_filter_strings($ia, Question $question, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
+function return_array_filter_strings(Question $question, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'": "";
     $surveyid=$thissurvey['sid'];
@@ -788,7 +746,7 @@ function return_array_filter_strings($ia, Question $question, $thissurvey, $ansr
             $disableit=false;
             foreach(explode(';',trim($question->exclude_all_others)) as $eo)
             {
-                $eorow = $ia[1] . $eo;
+                $eorow = $question->sgqa . $eo;
                 if ((!isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow])
                     && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y"))
                 {
@@ -835,7 +793,7 @@ define('SELECTED' , ' selected="selected"' , true);
 // ==================================================================
 // QUESTION METHODS =================================================
 
-function do_boilerplate($ia)
+function do_boilerplate(Question $question)
 {
     $question = App()->surveySessionManager->current->getQuestion($ia[0]);
     $answer='';
@@ -845,27 +803,27 @@ function do_boilerplate($ia)
         $answer .= return_timer_script($question, $ia);
     }
 
-    $answer .= '<input type="hidden" name="'.$ia[1].'" id="answer'.$ia[1].'" value="" />';
-    $inputnames[]=$ia[1];
+    $answer .= '<input type="hidden" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'" value="" />';
+    $inputnames[]=$question->sgqa;
 
     return array($answer, $inputnames);
 }
 
-function do_equation($ia)
+function do_equation(Question $question)
 {
     $question = App()->surveySessionManager->current->getQuestion($ia[0]);
     $sEquation=(trim($question->equation)) ? $question->equation : $ia[3];
-    $answer='<input type="hidden" name="'.$ia[1].'" id="java'.$ia[1].'" value="';
-    $answer .= htmlspecialchars(App()->surveySessionManager->current->response->$ia[1],ENT_QUOTES);
+    $answer='<input type="hidden" name="'.$question->sgqa.'" id="java'.$question->sgqa.'" value="';
+    $answer .= htmlspecialchars(App()->surveySessionManager->current->response->{$question->sgqa},ENT_QUOTES);
     $answer .= '">';
     $answer .="<div class='em_equation hidden' style='display:none;visibility:hidden'>{$sEquation}</div>";
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
 
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
-function do_5pointchoice($ia)
+function do_5pointchoice(Question $question)
 {
     $imageurl = Yii::app()->getConfig("imageurl");
     $checkconditionFunction = "checkconditions";
@@ -874,25 +832,25 @@ function do_5pointchoice($ia)
     $answer = "\n<ul id=\"{$id}\" class=\"answers-list radio-list\">\n";
     for ($fp=1; $fp<=5; $fp++)
     {
-        $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer$ia[1]$fp\" value=\"$fp\"";
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp)
+        $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer$question->sgqa$fp\" value=\"$fp\"";
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $fp)
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$question->sgqa$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
     }
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
-        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1]."NANS\" value=\"\"";
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer".$question->sgqa."NANS\" value=\"\"";
+        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa])
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$ia[1]."NANS\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$question->sgqa."NANS\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
 
     }
-    $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
-    $inputnames[]=$ia[1];
+    $answer .= "</ul>\n<input type=\"hidden\" name=\"java$question->sgqa\" id=\"java$question->sgqa\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]."\" />\n";
+    $inputnames[]=$question->sgqa;
 
     if($question->slider_rating==1){
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'star-rating.css');
@@ -917,7 +875,7 @@ function do_5pointchoice($ia)
 }
 
 // ---------------------------------------------------------------
-function do_date($ia)
+function do_date(Question $question)
 {
     global $thissurvey;
     $question = App()->surveySessionManager->current->getQuestion($ia[0]);
@@ -992,10 +950,10 @@ function do_date($ia)
     }
 
     if (trim($question->dropdown_dates)==1) {
-        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &
-           ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]!='INVALID'))
+        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) &
+           ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]!='INVALID'))
         {
-            $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
+            $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa], "Y-m-d H:i:s");
             $currentyear = $datetimeobj->years;
             $currentmonth = $datetimeobj->months;
             $currentdate = $datetimeobj->days;
@@ -1017,7 +975,7 @@ function do_date($ia)
             {
                 // Show day select box
                 case 'j':
-                case 'd':   $answer .= '<label for="day'.$ia[1].'" class="hide">'.gT('Day').'</label><select id="day'.$ia[1].'" name="day'.$ia[1].'" class="day">
+                case 'd':   $answer .= '<label for="day'.$question->sgqa.'" class="hide">'.gT('Day').'</label><select id="day'.$question->sgqa.'" name="day'.$question->sgqa.'" class="day">
                     <option value="">'.gT('Day')."</option>\n";
                     for ($i=1; $i<=31; $i++) {
                         if ($i == $currentdate)
@@ -1034,7 +992,7 @@ function do_date($ia)
                     break;
                     // Show month select box
                 case 'n':
-                case 'm':   $answer .= '<label for="month'.$ia[1].'" class="hide">'.gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month">
+                case 'm':   $answer .= '<label for="month'.$question->sgqa.'" class="hide">'.gT('Month').'</label><select id="month'.$question->sgqa.'" name="month'.$question->sgqa.'" class="month">
                     <option value="">'.gT('Month')."</option>\n";
                     switch ((int)trim($question->dropdown_dates_month_style))
                     {
@@ -1088,7 +1046,7 @@ function do_date($ia)
                     break;
                     // Show year select box
                 case 'y':
-                case 'Y':   $answer .= '<label for="year'.$ia[1].'" class="hide">'.gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year">
+                case 'Y':   $answer .= '<label for="year'.$question->sgqa.'" class="hide">'.gT('Year').'</label><select id="year'.$question->sgqa.'" name="year'.$question->sgqa.'" class="year">
                     <option value="">'.gT('Year').'</option>';
 
                     /*
@@ -1147,7 +1105,7 @@ function do_date($ia)
                 case 'h':
                 case 'g':
                 case 'G':
-                    $answer .= '<label for="hour'.$ia[1].'" class="hide">'.gT('Hour').'</label><select id="hour'.$ia[1].'" name="hour'.$ia[1].'" class="hour"><option value="">'.gT('Hour').'</option>';
+                    $answer .= '<label for="hour'.$question->sgqa.'" class="hide">'.gT('Hour').'</label><select id="hour'.$question->sgqa.'" name="hour'.$question->sgqa.'" class="hour"><option value="">'.gT('Hour').'</option>';
                     for ($i=0; $i<24; $i++) {
                         if ($i === (int)$currenthour && is_numeric($currenthour))
                         {
@@ -1170,7 +1128,7 @@ function do_date($ia)
                     $answer .= '</select>';
 
                     break;
-                case 'i':   $answer .= '<label for="minute'.$ia[1].'" class="hide">'.gT('Minute').'</label><select id="minute'.$ia[1].'" name="minute'.$ia[1].'" class="minute">
+                case 'i':   $answer .= '<label for="minute'.$question->sgqa.'" class="hide">'.gT('Minute').'</label><select id="minute'.$question->sgqa.'" name="minute'.$question->sgqa.'" class="minute">
                     <option value="">'.gT('Minute').'</option>';
 
                     for ($i=0; $i<60; $i+=$question->dropdown_dates_minute_step) {
@@ -1200,18 +1158,18 @@ function do_date($ia)
         }
 
         // Format the date  for output
-        $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+        $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]);
         if ($dateoutput!='' & $dateoutput!='INVALID')
         {
             $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
             $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
         }
 
-        $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8').'" maxlength="10" alt="'.gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" title="'.sprintf(gT('Date in the format : %s'),$dateformatdetails['dateformat']).'" />
+        $answer .= '<input class="text" type="text" size="10" name="'.$question->sgqa.'" style="display: none" id="answer'.$question->sgqa.'" value="'.htmlspecialchars($dateoutput,ENT_QUOTES,'utf-8').'" maxlength="10" alt="'.gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" title="'.sprintf(gT('Date in the format : %s'),$dateformatdetails['dateformat']).'" />
         </p>';
         $answer .= '
-        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" value="'.$ia[1].'"/>
-        <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
+        <input type="hidden" id="qattribute_answer'.$question->sgqa.'" name="qattribute_answer'.$question->sgqa.'" value="'.$question->sgqa.'"/>
+        <input type="hidden" id="dateformat'.$question->sgqa.'" value="'.$dateformatdetails['jsdate'].'"/>';
         App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
         // MayDo:
         // add js code to
@@ -1232,7 +1190,7 @@ function do_date($ia)
             Yii::app()->getClientScript()->registerScriptFile(App()->getConfig('third_party')."/jquery-ui-timepicker-addon/i18n/jquery-ui-timepicker-{App()->language}.js");
         }
         // Format the date  for output
-        $dateoutput = App()->surveySessionManager->current->response->$ia[1];
+        $dateoutput = App()->surveySessionManager->current->response->{$question->sgqa};
         if ($dateoutput!='' & $dateoutput!='INVALID')
         {
             $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
@@ -1247,12 +1205,12 @@ function do_date($ia)
 
 
         // HTML for date question using datepicker
-        $answer="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>".sprintf(gT('Date in the format: %s'),$dateformatdetails['dateformat'])."</label>
-        <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-        <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
-        <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='".App()->language."'  />
-        <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$mindate}\"    />
-        <input  type='hidden' name='datemax{$ia[1]}' id='datemax{$ia[1]}' value=\"{$maxdate}\"   />
+        $answer="<p class='question answer-item text-item date-item'><label for='answer{$question->sgqa}' class='hide label'>".sprintf(gT('Date in the format: %s'),$dateformatdetails['dateformat'])."</label>
+        <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$question->sgqa}\" id=\"answer{$question->sgqa}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+        <input  type='hidden' name='dateformat{$question->sgqa}' id='dateformat{$question->sgqa}' value='{$dateformatdetails['jsdate']}'  />
+        <input  type='hidden' name='datelanguage{$question->sgqa}' id='datelanguage{$question->sgqa}' value='".App()->language."'  />
+        <input  type='hidden' name='datemin{$question->sgqa}' id='datemin{$question->sgqa}' value=\"{$mindate}\"    />
+        <input  type='hidden' name='datemax{$question->sgqa}' id='datemax{$question->sgqa}' value=\"{$maxdate}\"   />
         </p>";
 
         // adds min and max date as a hidden element to the page so EM creates the needed LEM_tailor_Q_XX sections
@@ -1285,12 +1243,12 @@ function do_date($ia)
                             ";
                 if (!empty($sMindatetailor))
                     $answer.="
-                        $('#datemin{$ia[1]}').attr('value',
+                        $('#datemin{$question->sgqa}').attr('value',
                         document.getElementById('{$sMindatetailor}').innerHTML);
                     ";
                 if (!empty($sMaxdatetailor))
                     $answer.="
-                        $('#datemax{$ia[1]}').attr('value',
+                        $('#datemax{$question->sgqa}').attr('value',
                         document.getElementById('{$sMaxdatetailor}').innerHTML);
                     ";
 
@@ -1310,12 +1268,12 @@ function do_date($ia)
         ." /*]]>*/\n"
         ."</script>\n";
     }
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
-function do_language($ia)
+function do_language(Question $question)
 {
 
     $session = App()->surveySessionManager->current;
@@ -1330,8 +1288,8 @@ function do_language($ia)
         $sLang = $session->survey->language;
     }
     $answer = "\n\t<p class=\"question answer-item dropdown-item langage-item\">\n"
-    ."<label for='answer{$ia[1]}' class='hide label'>".gT('Choose your language')."</label>"
-    ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\" class=\"languagesurvey\">\n";
+    ."<label for='answer{$question->sgqa}' class='hide label'>".gT('Choose your language')."</label>"
+    ."<select name=\"$question->sgqa\" id=\"answer$question->sgqa\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\" class=\"languagesurvey\">\n";
     foreach ($answerlangs as $ansrow)
     {
         $answer .= "\t<option value=\"{$ansrow}\"";
@@ -1343,12 +1301,12 @@ function do_language($ia)
         $answer .= '>'.$aLanguage[1]."</option>\n";
     }
     $answer .= "</select>\n";
-    $answer .= "<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{$sLang}\" />\n";
-    $inputnames[]=$ia[1];
+    $answer .= "<input type=\"hidden\" name=\"java{$question->sgqa}\" id=\"java{$question->sgqa}\" value=\"{$sLang}\" />\n";
+    $inputnames[]=$question->sgqa;
 
     $answer .= "<script type='text/javascript'>\n"
     . "/*<![CDATA[*/\n"
-    ."$('#answer{$ia[1]}').change(function(){ "
+    ."$('#answer{$question->sgqa}').change(function(){ "
     ."$('<input type=\"hidden\">').attr('name','lang').val($(this).val()).appendTo($('form#limesurvey'));"
     ." })\n"
     ." /*]]>*/\n"
@@ -1358,7 +1316,7 @@ function do_language($ia)
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_list_dropdown($ia)
+function do_list_dropdown(Question $question)
 {
     $session = App()->surveySessionManager->current;
     $checkconditionFunction = "checkconditions";
@@ -1416,13 +1374,13 @@ function do_list_dropdown($ia)
     {
         $_height = sanitize_int($question->dropdown_size) ;
         $_maxHeight = count($ansresult);
-        if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa])) && !$question->bool_mandatory && !$question->bool_mandatory && SHOW_NO_ANSWER == 1) {
             ++$_maxHeight;  // for No Answer
         }
         if (isset($other) && $other=='Y') {
             ++$_maxHeight;  // for Other
         }
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
+        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) {
             ++$_maxHeight;  // for 'Please choose:'
         }
 
@@ -1445,7 +1403,7 @@ function do_list_dropdown($ia)
         foreach ($ansresult as $ansrow)
         {
             $opt_select = '';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $ansrow['code'])
             {
                 $opt_select = SELECTED;
             }
@@ -1481,7 +1439,7 @@ function do_list_dropdown($ia)
 
             foreach ($optionlistarray as $optionarray)
             {
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code'])
+                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $optionarray['code'])
                 {
                     $opt_select = SELECTED;
                 }
@@ -1499,7 +1457,7 @@ function do_list_dropdown($ia)
         $opt_select='';
         foreach ($defaultopts as $optionarray)
         {
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $optionarray['code'])
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $optionarray['code'])
             {
                 $opt_select = SELECTED;
             }
@@ -1513,14 +1471,14 @@ function do_list_dropdown($ia)
         }
     }
 
-    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa])
     {
         $answer = '                    <option value=""'.SELECTED.'>'.gT('Please choose...').'</option>'."\n".$answer;
     }
 
     if (isset($other) && $other=='Y')
     {
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-')
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == '-oth-')
         {
             $opt_select = SELECTED;
         }
@@ -1534,7 +1492,7 @@ function do_list_dropdown($ia)
         $answer .= '                    <option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
     }
 
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '') && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] != '') && !$question->bool_mandatory && SHOW_NO_ANSWER == 1)
     {
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
@@ -1542,7 +1500,7 @@ function do_list_dropdown($ia)
         $answer .= '<option class="noanswer-item" value="">'.$_prefix.gT('No answer')."</option>\n";
     }
     $answer .= '                </select>
-    <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" />';
+    <input type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa].'" />';
 
     if (isset($other) && $other=='Y')
     {
@@ -1553,8 +1511,8 @@ function do_list_dropdown($ia)
         $sselect_show_hide = '';
     }
     $sselect = '
-    <p class="question answer-item dropdown-item"><label for="answer'.$ia[1].'" class="hide label">'.gT('Please choose').'</label>
-    <select name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
+    <p class="question answer-item dropdown-item"><label for="answer'.$question->sgqa.'" class="hide label">'.gT('Please choose').'</label>
+    <select name="'.$question->sgqa.'" id="answer'.$question->sgqa.'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
     ';
     $answer = $sselect.$answer;
 
@@ -1577,11 +1535,11 @@ function do_list_dropdown($ia)
         ."}\n"
         ."\t}\n"
         ."//--></script>\n".$answer;
-        $answer .= '                <input type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
+        $answer .= '                <input type="text" id="othertext'.$question->sgqa.'" name="'.$question->sgqa.'other" style="display:';
 
-        $inputnames[]=$ia[1].'other';
+        $inputnames[]=$question->sgqa.'other';
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '-oth-')
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] != '-oth-')
         {
             $answer .= 'none';
         }
@@ -1590,25 +1548,25 @@ function do_list_dropdown($ia)
 
         // --> START NEW FEATURE - SAVE
         $answer .= "  alt='".gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";
-        $thisfieldname="$ia[1]other";
+        $thisfieldname="$question->sgqaother";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES)."' ";}
         $answer .= ' />';
         $answer .= "</p>";
         // --> END NEW FEATURE - SAVE
-        $inputnames[]=$ia[1]."other";
+        $inputnames[]=$question->sgqa."other";
     }
     else
     {
         $answer .= "</p>";
     }
 
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_list_radio($ia)
+function do_list_radio(Question $question)
 {
     global $dropdownthreshold;
 
@@ -1627,30 +1585,21 @@ function do_list_radio($ia)
     $checkconditionFunction = "checkconditions";
 
 
-    $question = $session->getQuestion($ia[0]);
-
-    $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0];
-    $result = Yii::app()->db->createCommand($query)->query();
-    foreach ($result->readAll() as $row)
-    {
-        $other = $row['other'];
-    }
-
     //question attribute random order set?
     if ($question->random_order==1) {
-        $ansquery = "SELECT * FROM {{answers}} WHERE question_id=$ia[0] and scale_id=0 ORDER BY ".dbRandom();
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id={$question->qid} and scale_id=0 ORDER BY ".dbRandom();
     }
 
     //question attribute alphasort set?
     elseif ($question->alphasort==1)
     {
-        $ansquery = "SELECT * FROM {{answers}} WHERE question_id=$ia[0] and scale_id=0 ORDER BY answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id={$question->qid} and scale_id=0 ORDER BY answer";
     }
 
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {{answers}} WHERE question_id=$ia[0] and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id={$question->qid} and scale_id=0 ORDER BY sortorder, answer";
     }
 
     $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
@@ -1673,8 +1622,8 @@ function do_list_radio($ia)
         $othertext=gT('Other:');
     }
 
-    if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
+    if ($question->bool_other) {$anscount++;} //Count up for the Other answer
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
     $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
     $answer = $wrapper['whole-start'];
@@ -1694,14 +1643,14 @@ function do_list_radio($ia)
 
     foreach ($ansresult as $key=>$ansrow)
     {
-        $myfname = $ia[1].$ansrow['code'];
+        $myfname = $question->sgqa . $ansrow['code'];
         $check_ans = '';
-        if (App()->surveySessionManager->current->response->$ia[1] == $ansrow['code'])
+        if (App()->surveySessionManager->current->response->{$question->sgqa} == $ansrow['code'])
         {
             $check_ans = CHECKED;
         }
 
-        list($htmltbody2, $hiddenfield) = return_array_filter_strings($ia, $question, null, $ansrow, $myfname, $trbc, $myfname, "li","answer-item radio-item");
+        list($htmltbody2, $hiddenfield) = return_array_filter_strings($question, null, $ansrow, $myfname, $trbc, $myfname, "li","answer-item radio-item");
         if(substr($wrapper['item-start'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
@@ -1711,8 +1660,8 @@ function do_list_radio($ia)
 
         $answer .= $startitem;
         $answer .= "\t$hiddenfield\n";
-        $answer .='        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
+        $answer .='        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'. $question->sgqa .'" id="answer'.$question->sgqa.$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$question->sgqa.'othertext\') != null) document.getElementById(\'answer'.$question->sgqa.'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        <label for="answer'.$question->sgqa.$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
         '.$wrapper['item-end'];
 
         ++$rowcounter;
@@ -1731,8 +1680,7 @@ function do_list_radio($ia)
         }
     }
 
-    if (isset($other) && $other=='Y')
-    {
+    if ($question->bool_other) {
 
         $sSeparator = getRadixPointData($session->survey->getLocalizedNumberFormat());
         $sSeparator = $sSeparator['separator'];
@@ -1746,10 +1694,10 @@ function do_list_radio($ia)
             $oth_checkconditionFunction = 'checkconditions';
         }
 
-        $check_ans = App()->surveySessionManager->current->response->$ia[1] == '-oth-' ? CHECKED : '';
+        $check_ans = App()->surveySessionManager->current->response->{$question->sgqa} == '-oth-' ? CHECKED : '';
 
 
-        $thisfieldname=$ia[1].'other';
+        $thisfieldname=$question->sgqa.'other';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))
         {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname];
@@ -1764,7 +1712,7 @@ function do_list_radio($ia)
             $answer_other = ' value=""';
         }
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $question, ['sid' => $session->surveyId], array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "answer-item radio-item other-item other");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($question, ['sid' => $session->surveyId], array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "answer-item radio-item other-item other");
 
         if(substr($wrapper['item-start-other'],0,4) == "\t<li")
         {
@@ -1774,10 +1722,10 @@ function do_list_radio($ia)
         }
         $answer .= $startitem;
         $answer .= "\t$hiddenfield\n";
-        $answer .= '        <input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
-        <label for="answer'.$ia[1].'othertext">
-        <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').click(); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
+        $answer .= '        <input class="radio" type="radio" value="-oth-" name="'.$question->sgqa.'" id="SOTH'.$question->sgqa.'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        <label for="SOTH'.$question->sgqa.'" class="answertext">'.$othertext.'</label>
+        <label for="answer'.$question->sgqa.'othertext">
+        <input type="text" class="text '.$kpclass.'" id="answer'.$question->sgqa.'othertext" name="'.$question->sgqa.'other" title="'.gT('Other').'"'.$answer_other.' onkeyup="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$question->sgqa.'\').click(); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
         </label>
         '.$wrapper['item-end'];
 
@@ -1799,19 +1747,10 @@ function do_list_radio($ia)
         }
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    if ($question->bool_mandatory && SHOW_NO_ANSWER == 1)
     {
-        if ((!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
-        {
-            $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
-        }
-        else
-        {
-            $check_ans = '';
-        }
-
-        $answer .= $wrapper['item-start-noanswer'].'        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="answer'.$ia[1].'NANS" class="answertext">'.gT('No answer').'</label>
+        $answer .= $wrapper['item-start-noanswer'].'        <input class="radio" type="radio" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$question->sgqa.'othertext\') != null) document.getElementById(\'answer'.$question->sgqa.'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        <label for="answer'.$question->sgqa.'NANS" class="answertext">'.gT('No answer').'</label>
         '.$wrapper['item-end'];
         // --> END NEW FEATURE - SAVE
 
@@ -1833,15 +1772,15 @@ function do_list_radio($ia)
     }
     //END OF ITEMS
     $answer .= $wrapper['whole-end'].'
-    <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".App()->surveySessionManager->current->response->$ia[1]."\" />\n";
+    <input type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa."\" value=\"".App()->surveySessionManager->current->response->{$question->sgqa}."\" />\n";
 
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_listwithcomment($ia)
+function do_listwithcomment(Question $question)
 {
 
     $session = App()->surveySessionManager->current;
@@ -1893,20 +1832,20 @@ function do_listwithcomment($ia)
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
-            if ($session->response[$ia[1]] == $ansrow['code'])
+            if ($session->response[$question->sgqa] == $ansrow['code'])
             {
                 $check_ans = CHECKED;
             }
             $answer .= '        <li class="answer-item radio-item">
-            <input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-            <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
+            <input type="radio" name="'.$question->sgqa.'" id="answer'.$question->sgqa.$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+            <label for="answer'.$question->sgqa.$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
             </li>
             ';
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
         {
-            if (empty($session->response[$ia[1]]))
+            if (empty($session->response[$question->sgqa]))
             {
                 $check_ans = CHECKED;
             }
@@ -1915,26 +1854,26 @@ function do_listwithcomment($ia)
                 $check_ans = '';
             }
             $answer .= '        <li class="answer-item radio-item noanswer-item">
-            <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
-            <label for="answer'.$ia[1].'" class="answertext">'.gT('No answer').'</label>
+            <input class="radio" type="radio" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
+            <label for="answer'.$question->sgqa.'" class="answertext">'.gT('No answer').'</label>
             </li>
             ';
         }
 
-        $fname2 = $ia[1].'comment';
+        $fname2 = $question->sgqa.'comment';
         if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
         // --> START NEW FEATURE - SAVE
         //    --> START ORIGINAL
         //        $answer .= "\t<td valign='top'>\n"
-        //                 . "<textarea class='textarea' name='$ia[1]comment' id='answer$ia[1]comment' rows='$tarows' cols='30'>";
+        //                 . "<textarea class='textarea' name='$question->sgqacomment' id='answer$question->sgqacomment' rows='$tarows' cols='30'>";
         //    --> END ORIGINAL
         $answer .= '    </ul>
         </div>
 
         <p class="comment answer-item text-item">
-        <label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
+        <label for="answer'.$question->sgqa.'comment">'.$hint_comment.':</label>
 
-        <textarea class="textarea '.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
+        <textarea class="textarea '.$kpclass.'" name="'.$question->sgqa.'comment" id="answer'.$question->sgqa.'comment" rows="'.floor($tarows).'" cols="30" >';
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
         {
@@ -1943,24 +1882,24 @@ function do_listwithcomment($ia)
         $answer .= '</textarea>
         </p>
 
-        <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$session->response[$ia[1]].'" />
+        <input class="radio" type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa.'" value="'.$session->response[$question->sgqa].'" />
         ';
-        $inputnames[]=$ia[1];
-        $inputnames[]=$ia[1].'comment';
+        $inputnames[]=$question->sgqa;
+        $inputnames[]=$question->sgqa.'comment';
     }
     else //Dropdown list
     {
         $answer .= '<p class="select answer-item dropdown-item">
-        <select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
+        <select class="select" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
         ';
-        if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+        if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]))
         {
             $answer .= '<option class="noanswer-item" value=""'.SELECTED.'>'.gT('Please choose...').'</option>'."\n";
         }
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $ansrow['code'])
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $ansrow['code'])
             {
                 $check_ans = SELECTED;
             }
@@ -1971,10 +1910,10 @@ function do_listwithcomment($ia)
                 $maxoptionsize = strlen($ansrow['answer']);
             }
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]))
         {
             $check_ans="";
-            if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) == '')
+            if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) == '')
             {
                 $check_ans = SELECTED;
             }
@@ -1983,31 +1922,31 @@ function do_listwithcomment($ia)
         $answer .= '    </select>
         </p>
         ';
-        $fname2 = $ia[1].'comment';
+        $fname2 = $question->sgqa.'comment';
         if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
         if ($tarows > 15) {$tarows=15;}
         $maxoptionsize=$maxoptionsize*0.72;
         if ($maxoptionsize < 33) {$maxoptionsize=33;}
         if ($maxoptionsize > 70) {$maxoptionsize=70;}
         $answer .= '<p class="comment answer-item text-item">
-        <label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
-        <textarea class="textarea '.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.$tarows.'" cols="'.$maxoptionsize.'" >';
+        <label for="answer'.$question->sgqa.'comment">'.$hint_comment.':</label>
+        <textarea class="textarea '.$kpclass.'" name="'.$question->sgqa.'comment" id="answer'.$question->sgqa.'comment" rows="'.$tarows.'" cols="'.$maxoptionsize.'" >';
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
         {
             $answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
         }
         $answer .= '</textarea>
-        <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" /></p>';
-        $inputnames[]=$ia[1];
-        $inputnames[]=$ia[1].'comment';
+        <input class="radio" type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa].'" /></p>';
+        $inputnames[]=$question->sgqa;
+        $inputnames[]=$question->sgqa.'comment';
     }
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_ranking($ia)
+function do_ranking(Question $question)
 {
     $imageurl = Yii::app()->getConfig("imageurl");
 
@@ -2033,7 +1972,7 @@ function do_ranking($ia)
     <ul class="answers-list select-list">';
     for ($i=1; $i<=$iMaxLine; $i++)
     {
-        $myfname=$ia[1].$i;
+        $myfname=$question->sgqa.$i;
         $result .= "\n<li class=\"select-item\">";
         $result .="<label for=\"answer{$myfname}\">";
         if($i==1){
@@ -2043,7 +1982,7 @@ function do_ranking($ia)
         }
         $result .= "</label>";
         $result .= "<select name=\"{$myfname}\" id=\"answer{$myfname}\">\n";
-        if (empty(App()->surveySessionManager->current->response->$ia[1])) {
+        if (empty(App()->surveySessionManager->current->response->{$question->sgqa})) {
             $result .= "\t<option value=\"\"".SELECTED.">".gT('Please choose...')."</option>\n";
         }
         foreach ($answers as $answer)
@@ -2066,7 +2005,7 @@ function do_ranking($ia)
     $result .="</ul>"
         . "<div style='display:none' id='ranking-{$ia[0]}-maxans'>{".$max_answers."}</div>"
         . "<div style='display:none' id='ranking-{$ia[0]}-minans'>{".$min_answers."}</div>"
-        . "<div style='display:none' id='ranking-{$ia[0]}-name'>".$ia[1]."</div>"
+        . "<div style='display:none' id='ranking-{$ia[0]}-name'>".$question->sgqa."</div>"
         . "</div>";
     // The list with HTML answers
     $result .="<div style=\"display:none\">";
@@ -2115,7 +2054,7 @@ function do_ranking($ia)
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_multiplechoice($ia)
+function do_multiplechoice(Question $question)
 {
     global $thissurvey;
 
@@ -2220,7 +2159,7 @@ function do_multiplechoice($ia)
 
     $wrapper = setupColumns($dcols, $anscount,"subquestions-list questions-list checkbox-list","question-item answer-item checkbox-item");
 
-    $answer = '<input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount."\" />\n\n".$wrapper['whole-start'];
+    $answer = '<input type="hidden" name="MULTI'.$question->sgqa.'" value="'.$anscount."\" />\n\n".$wrapper['whole-start'];
 
     $fn = 1;
     if (!isset($multifields))
@@ -2235,7 +2174,7 @@ function do_multiplechoice($ia)
     $trbc='';
     foreach ($ansresult as $ansrow)
     {
-        $myfname = $ia[1].$ansrow['title'];
+        $myfname = $question->sgqa.$ansrow['title'];
         $extra_class="";
 
         $trbc='';
@@ -2252,7 +2191,7 @@ function do_multiplechoice($ia)
         /* Print out the checkbox */
         $answer .= $startitem;
         $answer .= "\t$hiddenfield\n";
-        $answer .= '        <input class="checkbox" type="checkbox" name="'.$ia[1].$ansrow['title'].'" id="answer'.$ia[1].$ansrow['title'].'" value="Y"';
+        $answer .= '        <input class="checkbox" type="checkbox" name="'.$question->sgqa.$ansrow['title'].'" id="answer'.$question->sgqa.$ansrow['title'].'" value="Y"';
 
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -2266,7 +2205,7 @@ function do_multiplechoice($ia)
 
         $answer .= ''
         .  "$checkconditionFunction(this.value, this.name, this.type)' />\n"
-        .  "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"answertext\">"
+        .  "<label for=\"answer$question->sgqa{$ansrow['title']}\" class=\"answertext\">"
         .  $ansrow['question']
         .  "</label>\n";
 
@@ -2303,7 +2242,7 @@ function do_multiplechoice($ia)
 
     if ($other == 'Y')
     {
-        $myfname = $ia[1].'other';
+        $myfname = $question->sgqa.'other';
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $question, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","question-item answer-item checkbox-item other-item");
 
         if(substr($wrapper['item-start-other'],0,4) == "\t<li")
@@ -2473,7 +2412,7 @@ function do_multiplechoice($ia)
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_multiplechoice_withcomments($ia)
+function do_multiplechoice_withcomments(Question $question)
 {
     global $thissurvey;
 
@@ -2539,7 +2478,7 @@ function do_multiplechoice_withcomments($ia)
     $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked
     $anscount = count($ansresult)*2;
 
-    $answer = "<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n";
+    $answer = "<input type='hidden' name='MULTI$question->sgqa' value='$anscount' />\n";
     $answer_main = '';
 
     $fn = 1;
@@ -2557,7 +2496,7 @@ function do_multiplechoice_withcomments($ia)
 
     foreach ($ansresult->readAll() as $ansrow)
     {
-        $myfname = $ia[1].$ansrow['title'];
+        $myfname = $question->sgqa.$ansrow['title'];
         $trbc='';
         /* Check for array_filter */
 
@@ -2607,7 +2546,7 @@ function do_multiplechoice_withcomments($ia)
     }
     if ($other == 'Y')
     {
-        $myfname = $ia[1].'other';
+        $myfname = $question->sgqa.'other';
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
@@ -2654,7 +2593,7 @@ function do_multiplechoice_withcomments($ia)
 }
 
 // ---------------------------------------------------------------
-function do_file_upload($ia)
+function do_file_upload(Question $question)
 {
     return;
     $session = App()->surveySessionManager->current;
@@ -2663,7 +2602,7 @@ function do_file_upload($ia)
 
     $session->getQuestion($ia[0]);
     // Fetch question attributes
-    $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $ia[1];
+    $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldname'] = $question->sgqa;
 
     $scriptloc = Yii::app()->getController()->createUrl('uploader/index');
     $bPreview=Yii::app()->request->getParam('action')=="previewgroup" || Yii::app()->request->getParam('action')=="previewquestion" || $thissurvey['active'] != "Y";
@@ -2685,18 +2624,18 @@ function do_file_upload($ia)
         $questgrppreview = 0;
     }
 
-    $uploadbutton = "<div class='upload-button'><a id='upload_".$ia[1]."' class='upload' ";
-    $uploadbutton .= " href='#' onclick='javascript:upload_$ia[1]();'";
+    $uploadbutton = "<div class='upload-button'><a id='upload_".$question->sgqa."' class='upload' ";
+    $uploadbutton .= " href='#' onclick='javascript:upload_$question->sgqa();'";
     $uploadbutton .=">" .gT('Upload files'). "</a></div>";
 
     $answer = "<script type='text/javascript'>
-        function upload_$ia[1]() {
-            var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$ia[1]}&qid={$ia[0]}';
+        function upload_$question->sgqa() {
+            var uploadurl = '{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&fieldname={$question->sgqa}&qid={$ia[0]}';
             uploadurl += '&preview={$questgrppreview}&show_title={$question->show_title}';
             uploadurl += '&show_comment={$question->show_comment}';
             uploadurl += '&minfiles=' + LEMval('{$question->min_num_of_files}');
             uploadurl += '&maxfiles=' + LEMval('{$question->max_num_of_files}');
-            $('#upload_$ia[1]').attr('href',uploadurl);
+            $('#upload_$question->sgqa').attr('href',uploadurl);
         }
         var uploadLang = {
              title: '" . gT('Upload your files','js') . "',
@@ -2715,12 +2654,12 @@ function do_file_upload($ia)
     // Modal dialog
     $answer .= $uploadbutton;
 
-    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".htmlspecialchars($session->response[$ia[1]],ENT_QUOTES,'utf-8')."' />";
-    $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
+    $answer .= "<input type='hidden' id='".$question->sgqa."' name='".$question->sgqa."' value='".htmlspecialchars($session->response[$question->sgqa],ENT_QUOTES,'utf-8')."' />";
+    $answer .= "<input type='hidden' id='".$question->sgqa."_filecount' name='".$question->sgqa."_filecount' value=";
 
-    if (array_key_exists($ia[1]."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
+    if (array_key_exists($question->sgqa."_filecount", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]))
     {
-        $tempval = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]."_filecount"];
+        $tempval = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa."_filecount"];
         if (is_numeric($tempval))
         {
             $answer .= $tempval . " />";
@@ -2734,12 +2673,12 @@ function do_file_upload($ia)
         $answer .= "0 />";
     }
 
-    $answer .= "<div id='".$ia[1]."_uploadedfiles'></div>";
+    $answer .= "<div id='".$question->sgqa."_uploadedfiles'></div>";
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
     $(document).ready(function(){
-    var fieldname = "'.$ia[1].'";
+    var fieldname = "'.$question->sgqa.'";
     var filecount = $("#"+fieldname+"_filecount").val();
     var json = $("#"+fieldname).val();
     var show_title = "'.$question->show_title.'";
@@ -2749,29 +2688,29 @@ function do_file_upload($ia)
     </script>';
 
     $answer .= '<script type="text/javascript">
-    $(".basic_'.$ia[1].'").change(function() {
+    $(".basic_'.$question->sgqa.'").change(function() {
     var i;
     var jsonstring = "[";
 
     for (i = 1, filecount = 0; i <= LEMval("'.$question->max_num_of_files.'"); i++)
     {
-    if ($("#'.$ia[1].'_"+i).val() == "")
+    if ($("#'.$question->sgqa.'_"+i).val() == "")
     continue;
 
     filecount++;
     if (i != 1)
     jsonstring += ", ";
 
-    if ($("#answer'.$ia[1].'_"+i).val() != "")
+    if ($("#answer'.$question->sgqa.'_"+i).val() != "")
     jsonstring += "{ ';
 
     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['show_title']))
-        $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
+        $answer .= '\"title\":\""+$("#'.$question->sgqa.'_title_"+i).val()+"\",';
     else
         $answer .= '\"title\":\"\",';
 
     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['show_comment']))
-        $answer .= '\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",';
+        $answer .= '\"comment\":\""+$("#'.$question->sgqa.'_comment_"+i).val()+"\",';
     else
         $answer .= '\"comment\":\"\",';
 
@@ -2779,19 +2718,19 @@ function do_file_upload($ia)
     }
     jsonstring += "]";
 
-    $("#'.$ia[1].'").val(jsonstring);
-    $("#'.$ia[1].'_filecount").val(filecount);
+    $("#'.$question->sgqa.'").val(jsonstring);
+    $("#'.$question->sgqa.'_filecount").val(filecount);
     });
     </script>';
 
-    $inputnames[] = $ia[1];
-    $inputnames[] = $ia[1]."_filecount";
+    $inputnames[] = $question->sgqa;
+    $inputnames[] = $question->sgqa."_filecount";
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_multipleshorttext($ia)
+function do_multipleshorttext(Question $question)
 {
     global $thissurvey;
 
@@ -2872,7 +2811,7 @@ function do_multipleshorttext($ia)
     $ansresult = dbExecuteAssoc($ansquery);    //Checked
     $aSubquestions = $ansresult->readAll();
     $anscount = count($aSubquestions)*2;
-    //$answer .= "\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
+    //$answer .= "\t<input type='hidden' name='MULTI$question->sgqa' value='$anscount'>\n";
     $fn = 1;
 
     $answer_main = '';
@@ -2893,7 +2832,7 @@ function do_multipleshorttext($ia)
 
             foreach ($aSubquestions as $ansrow)
             {
-                $myfname = $ia[1].$ansrow['title'];
+                $myfname = $question->sgqa.$ansrow['title'];
                 if ($ansrow['question'] == "")
                 {
                     $ansrow['question'] = "&nbsp;";
@@ -2935,7 +2874,7 @@ function do_multipleshorttext($ia)
         {
             foreach ($aSubquestions as $ansrow)
             {
-                $myfname = $ia[1].$ansrow['title'];
+                $myfname = $question->sgqa.$ansrow['title'];
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 
                 // color code missing mandatory questions red
@@ -2982,7 +2921,7 @@ function do_multipleshorttext($ia)
 
 // -----------------------------------------------------------------
 // @todo: Can remove DB query by passing in answer list from EM
-function do_multiplenumeric($ia)
+function do_multiplenumeric(Question $question)
 {
     global $thissurvey;
 
@@ -3111,7 +3050,7 @@ function do_multiplenumeric($ia)
     {
         foreach($aSubquestions as $ansrow)
         {
-            $myfname = $ia[1].$ansrow['title'];
+            $myfname = $question->sgqa.$ansrow['title'];
             if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
             if ($slider_layout === false || $slider_separator == '')
             {
@@ -3240,7 +3179,7 @@ function do_multiplenumeric($ia)
 
 
 // ---------------------------------------------------------------
-function do_numerical($ia)
+function do_numerical(Question $question)
 {
     global $thissurvey;
 
@@ -3307,7 +3246,7 @@ function do_numerical($ia)
         $integeronly=0;
     }
 
-    $fValue= App()->surveySessionManager->current->response->$ia[1];
+    $fValue= App()->surveySessionManager->current->response->{$question->sgqa};
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
     // Fix the display value : Value is stored as decimal in SQL then return dot and 0 after dot. Seems only for numerical question type
@@ -3329,13 +3268,13 @@ function do_numerical($ia)
     }
     // --> START NEW FEATURE - SAVE
     $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
-    . " <label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>\n$prefix\t"
-    . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".gT('Only numbers may be entered in this field.')."\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
+    . " <label for='answer{$question->sgqa}' class='hide label'>".gT('Your answer')."</label>\n$prefix\t"
+    . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$question->sgqa\"  title=\"".gT('Only numbers may be entered in this field.')."\" "
+    . "id=\"answer{$question->sgqa}\" value=\"{$fValue}\" onkeyup=\"{$checkconditionFunction}(this.value, this.name, this.type,'onchange',{$integeronly})\" "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
     // --> END NEW FEATURE - SAVE
 
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
     $mandatory=null;
     return array($answer, $inputnames, $mandatory);
 }
@@ -3344,7 +3283,7 @@ function do_numerical($ia)
 
 
 // ---------------------------------------------------------------
-function do_shortfreetext($ia)
+function do_shortfreetext(Question $question)
 {
     global $thissurvey;
 
@@ -3429,13 +3368,13 @@ function do_shortfreetext($ia)
         //NEW: textarea instead of input=text field
 
         // --> START NEW FEATURE - SAVE
-        $answer ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>"
-        . '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+        $answer ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$question->sgqa}' class='hide label'>".gT('Your answer')."</label>"
+        . '<textarea class="textarea '.$kpclass.'" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'" '
         .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
         // --> END NEW FEATURE - SAVE
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
-            $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) {
+            $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]);
             if ($question->numbers_only==1)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
@@ -3447,7 +3386,7 @@ function do_shortfreetext($ia)
     }
     elseif((int)($question->location_mapservice)==1){
         $mapservice = $question->location_mapservice;
-        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa];
         $currentLatLong = null;
 
         $floatLat = 0;
@@ -3488,22 +3427,22 @@ function do_shortfreetext($ia)
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
         $answer = "
         <script type=\"text/javascript\">
-        zoom['$ia[1]'] = {$question->location_mapzoom};
+        zoom['$question->sgqa'] = {$question->location_mapzoom};
         </script>
 
         <div class=\"question answer-item geoloc-item {$extraclass}\">
-        <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
+        <input type=\"hidden\" name=\"$question->sgqa\" id=\"answer$question->sgqa\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]}\">
 
-        <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$ia[1]_c\"
-        id=\"answer$ia[1]_c\" value=\"$currentLocation\"
+        <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$question->sgqa_c\"
+        id=\"answer$question->sgqa_c\" value=\"$currentLocation\"
         onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
 
-        <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
+        <input type=\"hidden\" name=\"boycott_$question->sgqa\" id=\"boycott_$question->sgqa\"
         value = \"{$strBuild}\" >
 
-        <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
+        <input type=\"hidden\" name=\"mapservice_$question->sgqa\" id=\"mapservice_$question->sgqa\"
         class=\"mapservice\" value = \"{$question->location_mapservice}\" >
-        <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$question->location_mapwidth}px; height: {$question->location_mapheight}px\"></div>
+        <div id=\"gmap_canvas_$question->sgqa_c\" style=\"width: {$question->location_mapwidth}px; height: {$question->location_mapheight}px\"></div>
         </div>";
 
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
@@ -3524,7 +3463,7 @@ function do_shortfreetext($ia)
     elseif((int)($question->location_mapservice)==100)
     {
 
-        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa];
         $currentCenter = $currentLatLong = null;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
@@ -3572,32 +3511,32 @@ function do_shortfreetext($ia)
         );
         App()->getClientScript()->registerPackage('leaflet');
         Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
-        Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar),CClientScript::POS_HEAD);
+        Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$question->sgqa,"LSmaps['{$question->sgqa}']=".ls_json_encode($aThisMapScriptVar),CClientScript::POS_HEAD);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
 
         $answer = "
         <div class=\"question answer-item geoloc-item {$extraclass}\">
-            <input type=\"hidden\"  name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\"><!-- No javascript need a way to answer -->
-            <input type=\"hidden\" class=\"location\" name=\"$ia[1]_c\" id=\"answer$ia[1]_c\" value=\"{$currentLatLong[0]} {$currentLatLong[1]}\" />
+            <input type=\"hidden\"  name=\"$question->sgqa\" id=\"answer$question->sgqa\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]}\"><!-- No javascript need a way to answer -->
+            <input type=\"hidden\" class=\"location\" name=\"$question->sgqa_c\" id=\"answer$question->sgqa_c\" value=\"{$currentLatLong[0]} {$currentLatLong[1]}\" />
 
             <ul class=\"coordinates-list\">
-                <li class=\"coordinate-item\">".gt("Latitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c1\" id=\"answer_lat$ia[1]_c\"  value=\"{$currentLatLong[0]}\" /></li>
-                <li class=\"coordinate-item\">".gt("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$ia[1]_c2\" id=\"answer_lng$ia[1]_c\" value=\"{$currentLatLong[1]}\" /></li>
+                <li class=\"coordinate-item\">".gt("Latitude:")."<input class=\"coords text\" type=\"text\" name=\"$question->sgqa_c1\" id=\"answer_lat$question->sgqa_c\"  value=\"{$currentLatLong[0]}\" /></li>
+                <li class=\"coordinate-item\">".gt("Longitude:")."<input class=\"coords text\" type=\"text\" name=\"$question->sgqa_c2\" id=\"answer_lng$question->sgqa_c\" value=\"{$currentLatLong[1]}\" /></li>
             </ul>
 
-            <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\" value = \"{$strBuild}\" > 
-            <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\" class=\"mapservice\" value = \"{$question->location_mapservice}\" >
+            <input type=\"hidden\" name=\"boycott_$question->sgqa\" id=\"boycott_$question->sgqa\" value = \"{$strBuild}\" > 
+            <input type=\"hidden\" name=\"mapservice_$question->sgqa\" id=\"mapservice_$question->sgqa\" class=\"mapservice\" value = \"{$question->location_mapservice}\" >
 
             <div>
                 <div class=\"geoname_restrict\">
-                    <input type=\"checkbox\" id=\"restrictToExtent_{$ia[1]}\"> <label for=\"restrictToExtent_{$ia[1]}\">".gt("Restrict search place to map extent")."</label>
+                    <input type=\"checkbox\" id=\"restrictToExtent_{$question->sgqa}\"> <label for=\"restrictToExtent_{$question->sgqa}\">".gt("Restrict search place to map extent")."</label>
                 </div>
                 <div class=\"geoname_search\" >
-                    <input id=\"searchbox_{$ia[1]}\" placeholder=\"".gt("Search")."\" width=\"15\">
+                    <input id=\"searchbox_{$question->sgqa}\" placeholder=\"".gt("Search")."\" width=\"15\">
                 </div>
             </div>
-            <div id=\"map_{$ia[1]}\" style=\"width: 100%; height: {$question->location_mapheight}px;\">
+            <div id=\"map_{$question->sgqa}\" style=\"width: 100%; height: {$question->location_mapheight}px;\">
         </div>
         ";
 
@@ -3613,10 +3552,10 @@ function do_shortfreetext($ia)
     {
         //no question attribute set, use common input text field
         $answer = "<p class=\"question answer-item text-item {$extraclass}\">\n"
-        ."<label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>"
-        ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
+        ."<label for='answer{$question->sgqa}' class='hide label'>".gT('Your answer')."</label>"
+        ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$question->sgqa\" id=\"answer$question->sgqa\"";
 
-        $dispVal = App()->surveySessionManager->current->response->$ia[1];
+        $dispVal = App()->surveySessionManager->current->response->{$question->sgqa};
         if ($question->numbers_only==1)
         {
             $dispVal = str_replace('.',$sSeparator,$dispVal);
@@ -3629,10 +3568,10 @@ function do_shortfreetext($ia)
 
     if (trim($question->time_limit)!='')
     {
-        $answer .= return_timer_script($question, $ia, "answer".$ia[1]);
+        $answer .= return_timer_script($question, $ia, "answer".$question->sgqa);
     }
 
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 
 }
@@ -3656,7 +3595,7 @@ function getLatLongFromIp($sIPAddress){
 
 
 // ---------------------------------------------------------------
-function do_longfreetext($ia)
+function do_longfreetext($question)
 {
     global $thissurvey;
     $extraclass ="";
@@ -3672,8 +3611,6 @@ function do_longfreetext($ia)
     }
 
     $checkconditionFunction = "checkconditions";
-
-    $question = App()->surveySessionManager->current->getQuestion($ia[0]);
 
     if (intval(trim($question->maximum_chars))>0)
     {
@@ -3711,26 +3648,26 @@ function do_longfreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>";
-    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+    $answer = "<p class='question answer-item text-item {$extraclass}'><label for='answer{$question->sgqa}' class='hide label'>".gT('Your answer')."</label>";
+    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
-    $answer .= str_replace("\\", "", App()->surveySessionManager->current->response->$ia[1]);
+    $answer .= str_replace("\\", "", App()->surveySessionManager->current->response->{$question->sgqa});
 
     $answer .= "</textarea></p>\n";
 
     if (trim($question->time_limit)!='')
     {
-        $answer .= return_timer_script($question, $ia, "answer".$ia[1]);
+        $answer .= return_timer_script($question, $ia, "answer".$question->sgqa);
     }
 
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
-function do_hugefreetext($ia)
+function do_hugefreetext(Question $question)
 {
     global $thissurvey;
     $extraclass ="";
@@ -3785,68 +3722,68 @@ function do_hugefreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question answer-item text-item {$extraclass}\"><label for='answer{$ia[1]}' class='hide label'>".gT('Your answer')."</label>";
-    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+    $answer = "<p class=\"question answer-item text-item {$extraclass}\"><label for='answer{$question->sgqa}' class='hide label'>".gT('Your answer')."</label>";
+    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
+    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]);}
     $answer .= "</textarea>\n";
     $answer .="</p>";
     if (trim($question->time_limit) != '')
     {
-        $answer .= return_timer_script($question, $ia, "answer".$ia[1]);
+        $answer .= return_timer_script($question, $ia, "answer".$question->sgqa);
     }
 
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
-function do_yesno($ia)
+function do_yesno(Question $question)
 {
 
     $session = App()->surveySessionManager->current;
     $checkconditionFunction = "checkconditions";
 
     $answer = "<ul class=\"answers-list radio-list\">\n"
-    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
+    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$question->sgqa}\" id=\"answer{$question->sgqa}Y\" value=\"Y\"";
 
-    if ($session->response->{$ia[1]} == 'Y')
+    if ($session->response->{$question->sgqa} == 'Y')
     {
         $answer .= CHECKED;
     }
     // --> START NEW FEATURE - SAVE
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t".gT('Yes')."\n</label>\n\t</li>\n"
-    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
+    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$question->sgqa}Y\" class=\"answertext\">\n\t".gT('Yes')."\n</label>\n\t</li>\n"
+    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$question->sgqa}\" id=\"answer{$question->sgqa}N\" value=\"N\"";
     // --> END NEW FEATURE - SAVE
 
-    if ($session->response->{$ia[1]} == 'N')
+    if ($session->response->{$question->sgqa} == 'N')
     {
         $answer .= CHECKED;
     }
     // --> START NEW FEATURE - SAVE
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".gT('No')."\n</label>\n\t</li>\n";
+    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$question->sgqa}N\" class=\"answertext\" >\n\t".gT('No')."\n</label>\n\t</li>\n";
     // --> END NEW FEATURE - SAVE
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
     {
-        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
-        if (empty($session->response->{$ia[1]}))
+        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$question->sgqa}\" id=\"answer{$question->sgqa}\" value=\"\"";
+        if (empty($session->response->{$question->sgqa}))
         {
             $answer .= CHECKED;
         }
         // --> START NEW FEATURE - SAVE
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}\" class=\"answertext\">\n\t".gT('No answer')."\n</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$question->sgqa}\" class=\"answertext\">\n\t".gT('No answer')."\n</label>\n\t</li>\n";
         // --> END NEW FEATURE - SAVE
     }
 
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"".  $session->response->{$ia[1]} ."\" />\n";
-    $inputnames[]=$ia[1];
+    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$question->sgqa}\" id=\"java{$question->sgqa}\" value=\"".  $session->response->{$question->sgqa} ."\" />\n";
+    $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 }
 
 // ---------------------------------------------------------------
-function do_gender($ia)
+function do_gender(Question $question)
 {
 
 
@@ -3856,37 +3793,37 @@ function do_gender($ia)
 
     $answer = "<ul class=\"answers-list radio-list\">\n"
     . "\t<li class=\"answer-item radio-item\">\n"
-    . '        <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'F" value="F"';
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')
+    . '        <input class="radio" type="radio" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'F" value="F"';
+    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == 'F')
     {
         $answer .= CHECKED;
     }
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
-    . '        <label for="answer'.$ia[1].'F" class="answertext">'.gT('Female')."</label>\n\t</li>\n";
+    . '        <label for="answer'.$question->sgqa.'F" class="answertext">'.gT('Female')."</label>\n\t</li>\n";
 
-    $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
+    $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer".$question->sgqa.'M" value="M"';
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')
+    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == 'M')
     {
         $answer .= CHECKED;
     }
-    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]M\" class=\"answertext\">".gT('Male')."</label>\n\t</li>\n";
+    $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$question->sgqaM\" class=\"answertext\">".gT('Male')."</label>\n\t</li>\n";
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
     {
-        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'" value=""';
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '')
+        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer".$question->sgqa.'" value=""';
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == '')
         {
             $answer .= CHECKED;
         }
         // --> START NEW FEATURE - SAVE
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$question->sgqa\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
         // --> END NEW FEATURE - SAVE
 
     }
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
+    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$question->sgqa\" id=\"java$question->sgqa\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]."\" />\n";
 
-    $inputnames[]=$ia[1];
+    $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 }
 
@@ -3900,7 +3837,7 @@ function do_gender($ia)
 * @return unknown_type
 */
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_5point($ia)
+function do_array_5point(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
@@ -3923,7 +3860,7 @@ function do_array_5point($ia)
     }
     $cellwidth  = 5; // number of columns
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
     }
@@ -3964,7 +3901,7 @@ function do_array_5point($ia)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -3977,7 +3914,7 @@ function do_array_5point($ia)
         $answer .= "\t<th>$xc</th>\n";
     }
     if ($right_exists) {$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";}
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
@@ -3989,7 +3926,7 @@ function do_array_5point($ia)
     //return array($answer, $inputnames);
     foreach ($aSubquestions as $ansrow)
     {
-        $myfname = $ia[1].$ansrow['title'];
+        $myfname = $question->sgqa.$ansrow['title'];
 
         $answertext = $ansrow['question'];
         if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
@@ -4039,7 +3976,7 @@ function do_array_5point($ia)
         }
 
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
         {
             $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
@@ -4071,7 +4008,7 @@ function do_array_5point($ia)
 * @return unknown_type
 */
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_10point($ia)
+function do_array_10point(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
@@ -4094,7 +4031,7 @@ function do_array_10point($ia)
         $answerwidth = 20;
     }
     $cellwidth  = 10; // number of columns
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
         $caption.=gT("The last cell are for no answer. ");
@@ -4123,7 +4060,7 @@ function do_array_10point($ia)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4135,7 +4072,7 @@ function do_array_10point($ia)
     {
         $answer .= "\t<th>$xc</th>\n";
     }
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
@@ -4144,7 +4081,7 @@ function do_array_10point($ia)
     $trbc = '';
     foreach ($aSubquestions as $ansrow)
     {
-        $myfname = $ia[1].$ansrow['title'];
+        $myfname = $question->sgqa.$ansrow['title'];
         $answertext = $ansrow['question'];
         /* Check if this item has not been answered */
         if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ) )
@@ -4203,7 +4140,7 @@ function do_array_10point($ia)
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_yesnouncertain($ia)
+function do_array_yesnouncertain(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
@@ -4227,7 +4164,7 @@ function do_array_yesnouncertain($ia)
         $answerwidth = 20;
     }
     $cellwidth  = 3; // number of columns
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
         $caption.=gT("The last cell are for no answer. ");
@@ -4254,7 +4191,7 @@ function do_array_yesnouncertain($ia)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4265,7 +4202,7 @@ function do_array_yesnouncertain($ia)
     . "\t<th class=\"dontread\">".gT('Yes')."</th>\n"
     . "\t<th class=\"dontread\">".gT('Uncertain')."</th>\n"
     . "\t<th class=\"dontread\">".gT('No')."</th>\n";
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th class=\"dontread\">".gT('No answer')."</th>\n";
     }
@@ -4281,7 +4218,7 @@ function do_array_yesnouncertain($ia)
         $trbc = '';
         foreach($aSubquestions as $ansrow)
         {
-            $myfname = $ia[1].$ansrow['title'];
+            $myfname = $question->sgqa.$ansrow['title'];
             $answertext = $ansrow['question'];
             /* Check the sub question mandatory violation */
             if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
@@ -4340,7 +4277,7 @@ function do_array_yesnouncertain($ia)
             }
             $answer_t_content .= "\" />\n\t</td>\n";
 
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+            if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
             {
                 $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
@@ -4364,7 +4301,7 @@ function do_array_yesnouncertain($ia)
 }
 
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_increasesamedecrease($ia)
+function do_array_increasesamedecrease(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
@@ -4386,7 +4323,7 @@ function do_array_increasesamedecrease($ia)
         $answerwidth = 20;
     }
     $cellwidth  = 3; // number of columns
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         ++$cellwidth; // add another column
         $caption.=gT("The last cell are for no answer. ");
@@ -4420,7 +4357,7 @@ function do_array_increasesamedecrease($ia)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4432,7 +4369,7 @@ function do_array_increasesamedecrease($ia)
     . "\t<th>".gT('Increase')."</th>\n"
     . "\t<th>".gT('Same')."</th>\n"
     . "\t<th>".gT('Decrease')."</th>\n";
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
     {
         $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
@@ -4442,7 +4379,7 @@ function do_array_increasesamedecrease($ia)
     $trbc = '';
     foreach($aSubquestions as $ansrow)
     {
-        $myfname = $ia[1].$ansrow['title'];
+        $myfname = $question->sgqa.$ansrow['title'];
         $answertext = $ansrow['question'];
         /* Check the sub Q mandatory violation */
         if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
@@ -4502,7 +4439,7 @@ function do_array_increasesamedecrease($ia)
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
         $answer_body .= "\" />\n\t</td>\n";
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
         {
             $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
@@ -4524,7 +4461,7 @@ function do_array_increasesamedecrease($ia)
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array($ia)
+function do_array(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
@@ -4609,7 +4546,7 @@ function do_array($ia)
             ++$numrows;
             $caption.=gT("After answers, a cell give some information. ");
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
         {
             ++$numrows;
             $caption.=gT("The last cell are for no answer. ");
@@ -4623,7 +4560,7 @@ function do_array($ia)
                 $answer_head_line .= "\t<th>".$ld."</th>\n";
             }
             if ($right_exists) {$answer_head_line .= "\t<td>&nbsp;</td>\n";}
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
+            if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
             {
                 $answer_head_line .= "\t<th>".gT('No answer')."</th>\n";
             }
@@ -4642,7 +4579,7 @@ function do_array($ia)
                     $answer .= "<tr class=\"dontread repeat headings\">{$answer_head_line}</tr>";
                 }
             }
-            $myfname = $ia[1].$ansrow['title'];
+            $myfname = $question->sgqa.$ansrow['title'];
             $answertext = $ansrow['question'];
             $answertextsave=$answertext;
             if (strpos($answertext,'|'))
@@ -4699,7 +4636,7 @@ function do_array($ia)
                 $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
             }
 
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+            if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
             {
                 $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
@@ -4733,7 +4670,7 @@ function do_array($ia)
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) //Question is not mandatory
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4769,7 +4706,7 @@ function do_array($ia)
         $fn=1;
 
         $numrows = count($labels);
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
         {
             ++$numrows;
         }
@@ -4787,7 +4724,7 @@ function do_array($ia)
 
         foreach ($aQuestions as $ansrow)
         {
-            $myfname = $ia[1].$ansrow['title'];
+            $myfname = $question->sgqa.$ansrow['title'];
             $trbc = alternation($trbc , 'row');
             $answertext=$ansrow['question'];
             $answertextsave=$answertext;
@@ -4818,7 +4755,7 @@ function do_array($ia)
             . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\">\n";
 
             // Dropdown representation is en exception - even if mandatory or  SHOW_NO_ANSWER is disable a neutral option needs to be shown where the mandatory case asks actively
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+            if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
             {
                 $sOptionText=gT('No answer');
             }
@@ -4874,7 +4811,7 @@ function do_array($ia)
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_multitext($ia)
+function do_array_multitext(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
@@ -5060,7 +4997,7 @@ function do_array_multitext($ia)
     }
     if ($numrows=count($labelans))
     {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) {$numrows++;}
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
         {
             ++$numrows;
@@ -5141,7 +5078,7 @@ function do_array_multitext($ia)
                     . "</tr>\n";
                 }
             }
-            $myfname = $ia[1].$ansrow['title'];
+            $myfname = $question->sgqa.$ansrow['title'];
             $answertext = $ansrow['question'];
             $answertextsave=$answertext;
             /* Check the sub Q mandatory volation */
@@ -5259,7 +5196,7 @@ EOD;
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_multiflexi($ia)
+function do_array_multiflexi(Question $question)
 {
     global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
@@ -5392,7 +5329,7 @@ function do_array_multiflexi($ia)
     }
     if ($numrows=count($labelans))
     {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) {$numrows++;}
         $cellwidth=$columnswidth/$numrows;
 
         $cellwidth=sprintf('%02d', $cellwidth);
@@ -5474,7 +5411,7 @@ function do_array_multiflexi($ia)
                     . "</tr>\n\n";
                 }
             }
-            $myfname = $ia[1].$ansrow['title'];
+            $myfname = $question->sgqa.$ansrow['title'];
             $answertext = $ansrow['question'];
             $answertextsave=$answertext;
             /* Check the sub Q mandatory violation */
@@ -5634,7 +5571,7 @@ function do_array_multiflexi($ia)
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_arraycolumns($ia)
+function do_arraycolumns(Question $question)
 {
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
@@ -5660,7 +5597,7 @@ function do_arraycolumns($ia)
     }
     if (count($labelans) > 0)
     {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
         {
             $labelcode[]='';
             $labelans[]=gT('No answer');
@@ -5705,7 +5642,7 @@ function do_arraycolumns($ia)
             for ($_i=0;$_i<count($answers);++$_i)
             {
                 $ld = $answers[$_i];
-                $myfname = $ia[1].$anscode[$_i];
+                $myfname = $question->sgqa.$anscode[$_i];
                 $trbc = alternation($trbc , 'row');
                 /* Check the Sub Q mandatory violation */
                 if ($ia[6]=='Y' && in_array($myfname, $aMandatoryViolationSubQ))
@@ -5732,7 +5669,7 @@ function do_arraycolumns($ia)
                 foreach ($anscode as $ld)
                 {
                     //if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
-                    $myfname=$ia[1].$ld;
+                    $myfname=$question->sgqa.$ld;
                     $answer .= "\t<td class=\"answer_cell_00$ld answer-item radio-item\">\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                     . 'id="answer'.$myfname.'-'.$ansrow['code'].'" ';
@@ -5759,7 +5696,7 @@ function do_arraycolumns($ia)
             $answer .= "\t</tbody>\n</table>\n";
             foreach($anscode as $ld)
             {
-                $myfname=$ia[1].$ld;
+                $myfname=$question->sgqa.$ld;
                 $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
@@ -5784,7 +5721,7 @@ function do_arraycolumns($ia)
 }
 
 // ---------------------------------------------------------------
-function do_array_dual($ia)
+function do_array_dual(Question $question)
 {
 
     global $thissurvey;
@@ -6027,11 +5964,11 @@ function do_array_dual($ia)
                     $answertextcenter="";
                 }
 
-                $myfname= $ia[1].$ansrow['title'];
-                $myfname0 = $ia[1].$ansrow['title'].'#0';
-                $myfid0 = $ia[1].$ansrow['title'].'_0';
-                $myfname1 = $ia[1].$ansrow['title'].'#1'; // new multi-scale-answer
-                $myfid1 = $ia[1].$ansrow['title'].'_1';
+                $myfname= $question->sgqa.$ansrow['title'];
+                $myfname0 = $question->sgqa.$ansrow['title'].'#0';
+                $myfid0 = $question->sgqa.$ansrow['title'].'_0';
+                $myfname1 = $question->sgqa.$ansrow['title'].'#1'; // new multi-scale-answer
+                $myfid1 = $question->sgqa.$ansrow['title'].'_1';
                 /* Check the Sub Q mandatory violation */
                 if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
                 {
@@ -6232,11 +6169,11 @@ function do_array_dual($ia)
             foreach ($aSubQuestions as $ansrow)
             {
 
-                $myfname = $ia[1].$ansrow['title'];
-                $myfname0 = $ia[1].$ansrow['title']."#0";
-                $myfid0 = $ia[1].$ansrow['title']."_0";
-                $myfname1 = $ia[1].$ansrow['title']."#1";
-                $myfid1 = $ia[1].$ansrow['title']."_1";
+                $myfname = $question->sgqa.$ansrow['title'];
+                $myfname0 = $question->sgqa.$ansrow['title']."#0";
+                $myfid0 = $question->sgqa.$ansrow['title']."_0";
+                $myfname1 = $question->sgqa.$ansrow['title']."#1";
+                $myfid1 = $question->sgqa.$ansrow['title']."_1";
                 $sActualAnswer0=isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0])?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]:"";
                 $sActualAnswer1=isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1])?$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]:"";
                 if ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)))
@@ -6277,7 +6214,7 @@ function do_array_dual($ia)
                     }
                     $answer .= '>'.flattenText($lrow['title'])."</option>\n";
                 }
-                if ($sActualAnswer0 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER)
+                if ($sActualAnswer0 != '' && !$question->bool_mandatory && SHOW_NO_ANSWER)
                 {
                     $answer .= "\t<option value=\"\">".gT('No answer')."</option>\n";
                 }
@@ -6313,7 +6250,7 @@ function do_array_dual($ia)
                     }
                     $answer .= '>'.flattenText($lrow1['title'])."</option>\n";
                 }
-                if ($sActualAnswer1 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER)
+                if ($sActualAnswer1 != '' && !$question->bool_mandatory && SHOW_NO_ANSWER)
                 {
                     $answer .= "\t<option value=\"\">".gT('No answer')."</option>\n";
                 }

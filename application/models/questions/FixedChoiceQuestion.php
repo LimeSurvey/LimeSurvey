@@ -15,7 +15,7 @@ namespace ls\models\questions;
  * Class FixedChoiceQuestion
  * @package ls\models\questions
  */
-abstract class FixedChoiceQuestion extends ChoiceQuestion
+abstract class FixedChoiceQuestion extends \Question
 {
     /**
      * Returns the number of scales for answers.
