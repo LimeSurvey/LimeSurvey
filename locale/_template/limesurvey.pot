@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-08-12 07:41:35+00:00\n"
+"POT-Creation-Date: 2015-08-13 12:22:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -77,6 +77,11 @@ msgstr ""
 #: application/views/admin/token/browse.php:217
 #: application/views/admin/token/browse.php:222
 #: application/views/admin/token/ldapform.php:2
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:17
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:23
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:35
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:41
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:47
 msgid "Error"
 msgstr ""
 
@@ -489,45 +494,45 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: application/controllers/UploaderController.php:110
+#: application/controllers/UploaderController.php:111
 msgid "File %s deleted"
 msgstr ""
 
-#: application/controllers/UploaderController.php:113
+#: application/controllers/UploaderController.php:114
 msgid "Oops, There was an error deleting the file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:153
+#: application/controllers/UploaderController.php:154
 msgid "Sorry, this file extension (%s) is not allowed!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:167
-#: application/controllers/UploaderController.php:251
+#: application/controllers/UploaderController.php:168
+#: application/controllers/UploaderController.php:252
 msgid "Sorry, this file is too large. Only files upto %s KB are allowed."
 msgstr ""
 
-#: application/controllers/UploaderController.php:184
-#: application/controllers/UploaderController.php:226
+#: application/controllers/UploaderController.php:185
+#: application/controllers/UploaderController.php:227
 msgid "The file has been successfuly uploaded."
 msgstr ""
 
-#: application/controllers/UploaderController.php:202
+#: application/controllers/UploaderController.php:203
 msgid "Sorry, this file is too large. Only files up to %s KB are allowed."
 msgstr ""
 
-#: application/controllers/UploaderController.php:212
+#: application/controllers/UploaderController.php:213
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
 msgstr ""
 
-#: application/controllers/UploaderController.php:240
+#: application/controllers/UploaderController.php:241
 msgid "Sorry, there was an error uploading your file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:261
+#: application/controllers/UploaderController.php:262
 msgid "Unknown error"
 msgstr ""
 
-#: application/controllers/UploaderController.php:286
+#: application/controllers/UploaderController.php:287
 #: application/controllers/admin/responses.php:159
 #: application/controllers/admin/responses.php:1036
 #: application/helpers/qanda_helper.php:2768
@@ -540,7 +545,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: application/controllers/UploaderController.php:287
+#: application/controllers/UploaderController.php:288
 #: application/controllers/admin/responses.php:162
 #: application/controllers/admin/responses.php:1038
 #: application/helpers/common_helper.php:2018
@@ -550,43 +555,43 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: application/controllers/UploaderController.php:288
+#: application/controllers/UploaderController.php:289
 msgid "Sorry, no more files can be uploaded!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:289
+#: application/controllers/UploaderController.php:290
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:290
+#: application/controllers/UploaderController.php:291
 msgid "Uploading"
 msgstr ""
 
-#: application/controllers/UploaderController.php:291
-#: application/controllers/UploaderController.php:357
+#: application/controllers/UploaderController.php:292
+#: application/controllers/UploaderController.php:358
 msgid "Select file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:292
+#: application/controllers/UploaderController.php:293
 msgid "Please upload %s more file(s)."
 msgstr ""
 
-#: application/controllers/UploaderController.php:293
+#: application/controllers/UploaderController.php:294
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
 msgstr ""
 
-#: application/controllers/UploaderController.php:294
 #: application/controllers/UploaderController.php:295
+#: application/controllers/UploaderController.php:296
 msgid "The maximum number of files has been uploaded. You may return back to survey."
 msgstr ""
 
-#: application/controllers/UploaderController.php:296
+#: application/controllers/UploaderController.php:297
 msgid ""
 "You need to upload %s more files for this question.\n"
 "Are you sure you want to exit?"
 msgstr ""
 
-#: application/controllers/UploaderController.php:360
+#: application/controllers/UploaderController.php:361
 msgid "You can upload %s under %s KB each."
 msgstr ""
 
@@ -1810,34 +1815,34 @@ msgstr ""
 msgid "Question could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:602
+#: application/controllers/admin/database.php:603
 msgid "Question was successfully added."
 msgstr ""
 
-#: application/controllers/admin/database.php:749
+#: application/controllers/admin/database.php:750
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."
 msgstr ""
 
-#: application/controllers/admin/database.php:822
+#: application/controllers/admin/database.php:823
 msgid "Question could not be updated with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:827
+#: application/controllers/admin/database.php:828
 msgid "Question could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:855
+#: application/controllers/admin/database.php:856
 msgid "Question was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:892
+#: application/controllers/admin/database.php:893
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
 msgid "Question could not be updated"
 msgstr ""
 
-#: application/controllers/admin/database.php:956
+#: application/controllers/admin/database.php:957
 msgid "Survey text elements successfully saved."
 msgstr ""
 
@@ -3315,7 +3320,9 @@ msgstr ""
 #: application/views/admin/quotas/newanswererror_view.php:4
 #: application/views/admin/quotas/newanswertwo_view.php:5
 #: application/views/admin/token/emailwarning.php:8
+#: application/views/admin/update/updater/steps/_backup.php:73
 #: application/views/admin/update/updater/steps/_change_log.php:61
+#: application/views/admin/update/updater/steps/_check_local_errors.php:130
 #: application/views/admin/update/updater/steps/_fileSystem.php:65
 #: application/views/admin/update/updater/steps/_updater_updated.php:21
 #: application/views/admin/update/updater/welcome/_key_updated.php:16
@@ -15384,8 +15391,63 @@ msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:48
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:50
-#: application/views/admin/update/updater/_progress.php:28
 msgid "Download"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:18
+msgid "PHP_CURL library not loaded"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:19
+msgid "it seems that your server doesn't support PHP CURL Library. Please install it before proceeding to ComfortUpdate"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:24
+msgid "No server answer"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:25
+msgid "it seems that the Comfort Updater is not responding for now. Please, try again in few minutes, or contact LimeSurvey team"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:29
+msgid "Up to date !"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:30
+msgid "No update available for your version"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:31
+msgid "Your version is up to date !"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:36
+msgid "Not updatable !"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:37
+msgid "Your version is not updatable via ComfortUpdate. Please, update manually."
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:42
+msgid "No build version found !"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:43
+msgid "It seems you're using a version coming from the LimeSurvey GitHub repository. You can't use ComfortUpdate."
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:48
+msgid "Unknown Error !"
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:49
+msgid "An unknown error occured. Please, contact LimeSurvey team."
+msgstr ""
+
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:50
+msgid "error code : "
 msgstr ""
 
 #: application/views/admin/update/updater/_error.php:15
@@ -15519,7 +15581,7 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
-#: application/views/admin/update/updater/_progress.php:31
+#: application/views/admin/update/updater/_progress.php:28
 msgid "End"
 msgstr ""
 
@@ -15568,11 +15630,6 @@ msgstr ""
 
 #: application/views/admin/update/updater/steps/_backup.php:61
 msgid "Please check any problems above and then proceed to the final step."
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_backup.php:74
-#: application/views/admin/update/updater/steps/_check_local_errors.php:130
-msgid "Proceed to step %s"
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_check_local_errors.php:17
