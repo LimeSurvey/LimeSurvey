@@ -5438,7 +5438,7 @@ function do_array_multiflexi($ia)
     {
         $answerwidth=20;
     }
-    $columnswidth=100-($answerwidth*2);
+    $columnswidth=100-($answerwidth);
 
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = dbExecuteAssoc($lquery);
