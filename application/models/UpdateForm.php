@@ -727,23 +727,26 @@ class UpdateForm extends CFormModel
      */
     private function _getCheckedFile($file)
     {
-        $checkedfile = new stdClass();
-        $checkedfile->type = ''; 
-        $checkedfile->file = '';
-
-        // We check if the file exist
-        if ( $file['type'] == 'A' && file_exists($this->rootdir . $file['file']) ) 
+        if($file['file']!='/application/config/version.php')
         {
-            //A new file, check if this already exists
-               $checkedfile->type = 'existingfile'; 
-            $checkedfile->file = $file;            
-        }
-        
-        // We check if the file has been modified
-        elseif(($file['type'] == 'D' || $file['type'] == 'M') && is_file($this->rootdir . $file['file']) && sha1_file($this->rootdir . $file['file']) != $file['checksum'])
-        {
-            $checkedfile->type = 'modifiedfile'; 
-            $checkedfile->file = $file;            
+            $checkedfile = new stdClass();
+            $checkedfile->type = ''; 
+            $checkedfile->file = '';
+    
+            // We check if the file exist
+            if ( $file['type'] == 'A' && file_exists($this->rootdir . $file['file']) ) 
+            {
+                //A new file, check if this already exists
+                   $checkedfile->type = 'existingfile'; 
+                $checkedfile->file = $file;            
+            }
+            
+            // We check if the file has been modified
+            elseif(($file['type'] == 'D' || $file['type'] == 'M') && is_file($this->rootdir . $file['file']) && sha1_file($this->rootdir . $file['file']) != $file['checksum'])
+            {
+                $checkedfile->type = 'modifiedfile'; 
+                $checkedfile->file = $file;            
+            }
         }
         
         return $checkedfile;
