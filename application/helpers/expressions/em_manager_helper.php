@@ -236,12 +236,6 @@
          */
         private $initialized = false;
         /**
-         * True (1) if have already processed the relevance equations (so don't need to do it again)
-         *
-         * @var Boolean
-         */
-        private $processedRelevance = false;
-        /**
          * temporary variable to reduce need to parse same equation multiple times.  Used for relevance and validation
          * Array, indexed on equation, providing the following information:
          *
@@ -397,21 +391,6 @@
             }
 
             return count($releqns);
-        }
-
-        /**
-         * Return array database name as key, LEM name as value
-         * @example (['gender'] => '38612X10X145')
-         * @param <integer> $surveyId
-         **/
-        public static function getLEMqcode2sgqa($iSurveyId)
-        {
-            $LEM =& LimeExpressionManager::singleton();
-
-            $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);
-            $LEM->StartProcessingPage(true);
-
-            return $LEM->qcode2sgqa;
         }
 
         /**
@@ -3137,17 +3116,6 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $session = App()->surveySessionManager->current;
-            $LEM->processedRelevance = false;
-            $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = true;    // this will be temporary - should be reset in running survey
-            $LEM->qid2exclusiveAuto = array();
-
-            $surveyinfo = (isset($LEM->sid) ? getSurveyInfo($LEM->sid) : null);
-            if (isset($surveyinfo['assessments']) && $surveyinfo['assessments'] == 'Y') {
-                $LEM->surveyOptions['assessments'] = true;
-            }
-
-            $LEM->initialized = true;
-
             if ($initializeVars) {
                 $LEM->em->StartProcessingGroup(
                     $session->surveyId,
@@ -3155,7 +3123,6 @@
                     true
                 );
             }
-
         }
 
         /**
@@ -3523,30 +3490,21 @@
 
             switch ($session->format) {
                 case Survey::FORMAT_ALL_IN_ONE:
-                    $LEM->StartProcessingPage(true);
-                    $updatedValues = $LEM->ProcessCurrentResponses();
+                    $LEM->StartProcessingPage();
+                    $session = App()->surveySessionManager->current;
+                    $LEM->processData($session->response, $_POST);
                     $message = '';
-                    $result = $LEM->_ValidateSurvey();
-                    $message .= $result['message'];
-                    $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                    if (!$force && !is_null($result) && ($result['mandViolation'] || !$result['valid'] || $startingGroup == -1)) {
-                        $finished = false;
-                    } else {
-                        $finished = true;
-                    }
+                    $validationResults = $LEM->validateSurvey();
+                    $message .= $validationResults->getMessagesAsString();
+                    $finished = $validationResults->getSuccess();
                     $message .= $LEM->updateValuesInDatabase($finished);
-                    $LEM->lastMoveResult = array(
+                    $result = [
                         'finished' => $finished,
                         'message' => $message,
                         'gseq' => 1,
                         'seq' => 1,
-                        'mandViolation' => $result['mandViolation'],
-                        'valid' => $result['valid'],
-                        'unansweredSQs' => $result['unansweredSQs'],
-                        'invalidSQs' => $result['invalidSQs'],
-                    );
-
-                    return $LEM->lastMoveResult;
+                        'validationResults' => $validationResults,
+                    ];
                     break;
                 case Survey::FORMAT_GROUP:
                     $result = $LEM->navigateNextGroup($force);
@@ -3816,7 +3774,7 @@
                     } else {
                         $updatedValues = array();
                     }
-                    $validationResults = $LEM->_ValidateSurvey($force);
+                    $validationResults = $LEM->validateSurvey($force);
                     $LEM->lastMoveResult = array(
                         'finished' => false,
                         'message' => 'TODO',
@@ -3851,23 +3809,8 @@
          * @param boolean $force : force validation to true, even if there are error, used at survey start to fill EM
          * @return QuestionValidationResultCollection with information on validated question
          */
-        private function _ValidateSurvey($force = false)
+        private function validateSurvey($force = false)
         {
-            $LEM =& $this;
-
-            $message = '';
-            $srel = false;
-            $shidden = true;
-            $smandViolation = false;
-            $svalid = true;
-            $unansweredSQs = array();
-            $invalidSQs = array();
-            $updatedValues = array();
-            $sanyUnanswered = false;
-
-            ///////////////////////////////////////////////////////
-            // CHECK EACH GROUP, AND SET SURVEY-LEVEL PROPERTIES //
-            ///////////////////////////////////////////////////////
             $session = App()->surveySessionManager->current;
             $validationResults = new QuestionValidationResultCollection();
             foreach($session->getGroups() as $group) {
@@ -3875,13 +3818,7 @@
                     continue;
                 }
 
-                $validationResults->mergeWith($LEM->validateGroup($group, $force));
-                // Skip group if it has no questions that are relevant AND visible.
-                if (count($validationResults) == 0) {
-                    continue;
-                }
-
-
+                $validationResults->mergeWith($this->validateGroup($group, $force));
             }
             return $validationResults;
         }
