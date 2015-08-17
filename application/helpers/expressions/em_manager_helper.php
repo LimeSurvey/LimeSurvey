@@ -3223,9 +3223,9 @@
 //                    }
 //                    switch ($knownVar['type']) {
 //                        case 'D': //DATE
-//                            if (trim($value) == "") {
+//                            if (trim($value) == "" | $value=='INVALID') {
 //                                $value = null;
-//                            } elseif ($value != 'INVALID') {
+//                            } else {
 //                                $dateformatdatat = getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
 //                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
 //                                $value = $datetimeobj->convert("Y-m-d H:i");
