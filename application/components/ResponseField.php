@@ -34,4 +34,9 @@ class ResponseField extends CComponent
     public function isNumerical() {
         return $this->_numerical;
     }
+
+    public function getJavascriptName() {
+        return "java{$this->_name}";
+    }
+
 }

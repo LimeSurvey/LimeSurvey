@@ -1144,11 +1144,10 @@
         /**
          * Returns the fields for this question.
          * @return QuestionResponseField[]
-         * @todo Return an array of some Field object instead of array of arrays.
          */
         public function getFields() {
             if (empty($this->_fields)) {
-                $this->_fields[] = new QuestionResponseField($this->sgqa, $this);
+                $this->_fields[] = $field = new QuestionResponseField($this->sgqa, $this);
                 if ($this->bool_other) {
                     $this->_fields[] = new QuestionResponseField($this->sgqa . 'other', $this);
                 }
@@ -1208,6 +1207,33 @@
             return [];
         }
 
+
+        public function getRelevanceScript() {
+            $clauses = [];
+            $clauses[] = $this->group->getRelevanceScript();
+            if (!empty($this->relevance)) {
+                $clauses[] = $this->relevance;
+            }
+
+            $clauses = array_filter($clauses, function($clause) {
+                // If a clause is boolean true, we can safely ignore it.
+                return $clause !== true;
+            });
+            if (!empty($clauses)) {
+//                vd($clauses);
+                $em = $this->getExpressionManager();
+                $emExpression = '(' . implode(') && (', $clauses) . ')';
+                $result = $em->getJavascript($emExpression);
+
+//                vd($emExpression . ' --->> ' . $result);
+                if (empty($result)) {
+                    vdd($em);
+                    throw new \Exception('NO jS created');
+                };
+                return $result;
+            }
+            return true;
+        }
         /**
          * Checks if the question is relevant for the current response.
          * @param Response $response
@@ -1220,19 +1246,42 @@
             } elseif (empty($this->relevance)) {
                 $result = true;
             } else {
-                $em = new ExpressionManager(function($name, $attribute, $default, $groupSequence, $questionSequence)  use ($response) {
+                $result = $this->getExpressionManager($response)->ProcessBooleanExpression($this->relevance);
+            }
+
+            return $result;
+
+        }
+
+
+        public function getExpressionManager(Response $response = null) {
+            if (!isset($response)) {
+                $callback = function($name, $attribute, $default, $groupSequence, $questionSequence) {
+
+                };
+            } else {
+                $callback = function($name, $attribute, $default, $groupSequence, $questionSequence)  use ($response) {
                     $session = App()->surveySessionManager->current;
+                    $parts = explode('.', $name);
+                    if (count($parts) > 1) {
+                        $attribute = $parts[1];
+                        $name = $parts[0];
+                    }
                     // Simple inefficient solution, not sure where this map should be implemented.
                     // NOTE: the solution is not a precomputed array in some singleton class!!!
                     // NOTE2: It is also not stuffing everything into $_SESSION.
-
+                    $found = false;
                     foreach ($session->survey->questions as $question) {
                         /** @var ResponseField $field */
                         foreach ($question->getFields() as $field) {
                             if ($field->getCode() === $name) {
+                                $found = true;
                                 break 2;
                             }
                         }
+                    }
+                    if (!$found) {
+                        throw new \InvalidArgumentException("Unknown variable: $name");
                     }
 
                     switch ($attribute) {
@@ -1242,21 +1291,29 @@
                         case 'onlynum':
                             $result = $field->isNumerical();
                             break;
+                        case 'jsName':
+                            $result = $field->getJavascriptName();
+                            break;
+                        case 'code':
+                        case 'varName':
+                            $result = $field->getCode();
+                            break;
+                        case 'shown':
+                            $result = $field->getLabel($field->getName());
+                            break;
                         case null:
                             $result = $response->{$field->getName()};
                             break;
+
                         default:
                             throw new \Exception('Unknown attribute: ' . $attribute);
                             vd($name);
                             vdd($attribute);
                     }
                     return $result;
-                });
-                $result = $em->ProcessBooleanExpression($this->relevance);
+                };
             }
-
-            return $result;
-
+            return new ExpressionManager($callback);
         }
 
     }

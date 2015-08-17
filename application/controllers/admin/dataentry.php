@@ -2265,7 +2265,6 @@ class dataentry extends Survey_Common_Action
                     $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], NULL, false, 1, 1);
                     $aDataentryoutput .= $viewdata_em;
                 }
-                LimeExpressionManager::FinishProcessingGroup();
             }
 
             LimeExpressionManager::FinishProcessingPage();

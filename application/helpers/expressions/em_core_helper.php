@@ -55,7 +55,6 @@ class ExpressionManager {
     private $prettyPrintSource; // HTML formatted output of running sProcessStringContainingExpressions
     private $substitutionNum; // Keeps track of number of substitions performed XXX
     private $substitutionInfo; // array of JavaScripts to managing dynamic substitution
-    private $jsExpression;  // caches computation of JavaScript equivalent for an Expression
 
     private $questionSeq;   // sequence order of question - so can detect if try to use variable before it is set
     private $groupSeq;  // sequence order of groups - so can detect if try to use variable before it is set
@@ -1226,22 +1225,16 @@ class ExpressionManager {
     }
 
     /**
-     * Converts the most recent expression into a valid JavaScript expression, mapping function and variable names and operators as needed.
-     * @return <type> the JavaScript expresssion
+     * Converts the given expression to javascript.
+     * @param string $expression
+     * @return string the JavaScript expresssion
      */
-    public function GetJavaScriptEquivalentOfExpression()
+    public function getJavascript($expression)
     {
-        if (!is_null($this->jsExpression))
-        {
-            return $this->jsExpression;
-        }
-        if ($this->HasErrors())
-        {
-            $this->jsExpression = '';
-            return '';
-        }
-        $tokens = $this->RDP_tokens;
-        $stringParts=array();
+        $tokens = $this->RDP_Tokenize($expression);
+
+        $varsUsed = [];
+        $stringParts = [];
         $numTokens = count($tokens);
         for ($i=0;$i<$numTokens;++$i)
         {
@@ -1251,10 +1244,10 @@ class ExpressionManager {
             switch ($token[2])
             {
                 case 'DQ_STRING':
-                    $stringParts[] = '"' . addcslashes($token[0],'\"') . '"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                    $stringParts[] = '"' . $token[0] . '"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "'" . addcslashes($token[0],"\'") . "'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                    $stringParts[] = "'{$token[0]}'";
                     break;
                 case 'SGQA':
                 case 'WORD':
@@ -1276,23 +1269,12 @@ class ExpressionManager {
                         {
                             // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
                             $varName = $this->GetVarAttribute($token[0],'varName',$token[0]);
-                            $stringParts[] = " = LEMval('" . $varName . "') + ";
+                            $stringParts[] = " = EM.val('" . $varName . "') + ";
                             ++$i;
                         }
-                    }
-                    else
-                    {
-                        $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $code = $this->GetVarAttribute($token[0],'code','');
-                        if ($jsName != '')
-                        {
-                            $varName = $this->GetVarAttribute($token[0],'varName',$token[0]);
-                            $stringParts[] = "LEMval('" . $varName . "') ";
-                        }
-                        else
-                        {
-                            $stringParts[] = "'" . addcslashes($code,"'") . "'";
-                        }
+                    } else {
+                        $varsUsed[] = $token[0];
+                        $stringParts[] = "EM.val('{$token[0]}')";
                     }
                     break;
                 case 'LP':
@@ -1323,50 +1305,16 @@ class ExpressionManager {
             }
         }
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
-        $nonNAvarsUsed = array();
-        foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
-        {
-            if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
-            {
-                if ($this->GetVarAttribute($var,'jsName','') != '')
-                {
-                    $nonNAvarsUsed[] = $var;
-                }
-            }
-        }
         $mainClause = implode('', $stringParts);
-        $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '')
         {
-            $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
+            $result = "LEMif(LEManyNA(" . json_encode($varsUsed) . "), null, " . $mainClause . ")";
         }
         else
         {
-            $this->jsExpression = '(' . $mainClause . ')';
+            $result = '(' . $mainClause . ')';
         }
-        return $this->jsExpression;
-    }
-
-    /**
-     * JavaScript Test function - simply writes the result of the current JavaScriptEquivalentFunction to the output buffer.
-     * @return <type>
-     */
-    public function GetJavascriptTestforExpression($expected,$num)
-    {
-        // assumes that the hidden variables have already been declared
-        $expr = $this->GetJavaScriptEquivalentOfExpression();
-        if (is_null($expr) || $expr == '') {
-            $expr = "'NULL'";
-        }
-        $jsmultiline_expr = str_replace("\n","\\\n",$expr);
-        $jsmultiline_expected = str_replace("\n","\\\n",addslashes($expected));
-        $jsParts = array();
-        $jsParts[] = "val = " . $jsmultiline_expr . ";\n";
-        $jsParts[] = "klass = (LEMeq(addslashes(val),'" . $jsmultiline_expected . "')) ? 'ok' : 'error';\n";
-        $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=(val);\n";
-        $jsParts[] = "document.getElementById('test_" . $num . "').className=klass;\n";
-        return implode('',$jsParts);
-
+        return $result;
     }
 
     /**
@@ -1374,13 +1322,13 @@ class ExpressionManager {
      * @param <type> $name - the ID name for the function
      * @return <type>
      */
-    public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
+    public function GetJavaScriptFunctionForReplacement($questionNum, $name, $eqn)
     {
         $jsParts = array();
 //        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
         $jsParts[] = "  try{\n";
         $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=LEMfixnum(\n    ";
-        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
+        $jsParts[] = $this->getJavascript($eqn);
         $jsParts[] = ");\n";
         $jsParts[] = "  } catch (e) { }\n";
         return implode('',$jsParts);
@@ -1645,7 +1593,7 @@ class ExpressionManager {
      * @param <type> $varname
      * @return <type>
      */
-    private function GetVarAttribute($name,$attr,$default)
+    private function GetVarAttribute($name, $attr = null,$default)
     {
         $getter = $this->variableGetter;
         return $getter($name, $attr, $default, $this->groupSeq, $this->questionSeq);
@@ -1747,8 +1695,15 @@ class ExpressionManager {
      */
     private function RDP_isValidVariable($name)
     {
-        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:" . ExpressionManager::$RDP_regex_var_attr . "))?$/", "$1", $name);
-        return LimeExpressionManager::isValidVariable($varName);
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:" . self::$RDP_regex_var_attr . "))?$/", "$1", $name);
+        $getter = $this->variableGetter;
+        $result = true;
+        try {
+            $getter($varName, null, null, null, null);
+        } catch (\Exception $e) {
+            $result = false;
+        }
+        return $result;
     }
 
     /**

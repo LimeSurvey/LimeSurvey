@@ -46,7 +46,7 @@ class SurveyRuntimeHelper {
             if (LimeExpressionManager::GroupIsRelevant($group->primaryKey))
             {
                 $step = $key + 1;
-                $stepInfo = LimeExpressionManager::singleton()->_ValidateGroup($key);
+                $stepInfo = LimeExpressionManager::singleton()->validateGroup($key);
                 $classes = implode(' ', array(
                     'row',
                     $stepInfo['anyUnanswered'] ? 'missing' : '',
@@ -651,7 +651,7 @@ class SurveyRuntimeHelper {
              * @todo Make the loop conditional instead of skipping elements conditionally.
              */
             if ($session->format != Survey::FORMAT_ALL_IN_ONE
-                && ($session->step == $seq && $session->format == Survey::FORMAT_GROUP)
+                && ($session->step != $seq && $session->format == Survey::FORMAT_GROUP)
             ) {
                 continue;
             }
@@ -821,8 +821,7 @@ class SurveyRuntimeHelper {
             $groupdescription = $group->description;
 
             if ($session->format != Survey::FORMAT_ALL_IN_ONE) {
-                $onlyThisGID = $stepInfo['gid'];
-                if ($group->primaryKey != $onlyThisGID) {
+                if ($session->getCurrentGroup() != $group) {
                     continue;
                 }
             }
@@ -853,6 +852,7 @@ class SurveyRuntimeHelper {
                     continue;
                 }
                 $qid = $qa[4];
+                $question = $session->getQuestion($qid);
                 $lastgrouparray = explode("X", $qa[7]);
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                 $lastanswer = $qa[7];
@@ -882,6 +882,10 @@ class SurveyRuntimeHelper {
                 $redata = compact(array_keys(get_defined_vars()));
                 $aQuestionReplacement=$this->getQuestionReplacement($qa);
                 echo templatereplace($question_template, $aQuestionReplacement, $redata, false, false, $qa[4]);
+                // Render the javascript for this question.
+
+                LimeExpressionManager::GetRelevanceAndTailoringJavaScript($question);
+
 
             }
             if ($session->format == Survey::FORMAT_GROUP) {
@@ -896,8 +900,7 @@ class SurveyRuntimeHelper {
             echo "\n\n</div>\n";
         }
 
-        LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
-        echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+
         LimeExpressionManager::FinishProcessingPage();
 
         if (!$previewgrp && !$previewquestion)
@@ -1058,7 +1061,6 @@ class SurveyRuntimeHelper {
                 }
                 break;
         }
-        $aReplacement['QUESTION']=$aQuestionQanda[0]['all'] ; // Deprecated : only used in old template (very old)
         // Core value : user text
         $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];
         $aReplacement['QUESTIONHELP']= $question->help;// User help

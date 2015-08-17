@@ -25,8 +25,7 @@ $(document).ready(function()
     noScrollOnSelect();
     doToolTipTable();
 
-    if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
-	if (typeof checkconditions!='undefined') checkconditions();
+    if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
     if (typeof(focus_element) != 'undefined')
     {

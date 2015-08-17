@@ -3248,7 +3248,7 @@
 //                        'value' => $value,
 //                    );
 //                }
-//                $LEM->_UpdateValuesInDatabase(null);
+//                $LEM->updateValuesInDatabase(null);
 //            }
 
             return array(
@@ -3280,7 +3280,7 @@
                         } // If moving backwards in preview mode and a question was removed then $LEM->currentGroupSeq is NULL and an endless loop occurs.
                         if (--$LEM->currentGroupSeq < 0) // Stop at start
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase(false);
+                            $message .= $LEM->updateValuesInDatabase(false);
                             $LEM->lastMoveResult = array(
                                 'at_start' => true,
                                 'finished' => false,
@@ -3292,7 +3292,7 @@
                             return $LEM->lastMoveResult;
                         }
 
-                        $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
+                        $result = $LEM->validateGroup($LEM->currentGroupSeq);
                         if (is_null($result)) {
                             continue;   // this is an invalid group - skip it
                         }
@@ -3302,7 +3302,7 @@
                             continue;
                         } else {
                             // display new group
-                            $message .= $LEM->_UpdateValuesInDatabase(false);
+                            $message .= $LEM->updateValuesInDatabase(false);
                             $LEM->lastMoveResult = array(
                                 'at_start' => false,
                                 'finished' => false,
@@ -3326,7 +3326,7 @@
                     while (true) {
                         if (--$LEM->currentQuestionSeq < 0) // Stop at start : can be a question
                         {
-                            $message .= $LEM->_UpdateValuesInDatabase(false);
+                            $message .= $LEM->updateValuesInDatabase(false);
                             $LEM->lastMoveResult = array(
                                 'at_start' => true,
                                 'finished' => false,
@@ -3339,7 +3339,7 @@
                         }
 
                         $LEM->_CreateSubQLevelRelevanceAndValidationEqns($session->getQuestion($session->step));
-                        $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
+                        $result = $LEM->validateQuestion($LEM->currentQuestionSeq);
                         $message .= $result['message'];
                         $gRelInfo = $LEM->getGroupRelevanceInfo();
                         $grel = $gRelInfo['result'];
@@ -3349,7 +3349,7 @@
                             continue;
                         } else {
                             // display new question : Ging backward : maxQuestionSeq>currentQuestionSeq is always true.
-                            $message .= $LEM->_UpdateValuesInDatabase(false);
+                            $message .= $LEM->updateValuesInDatabase(false);
 
                             return array(
                                 'at_start' => false,
@@ -3369,6 +3369,67 @@
             }
         }
 
+        private function navigateNextGroup($force) {
+            // First validate the current group
+            $this->StartProcessingPage();
+            $session = App()->surveySessionManager->current;
+            $this->processData($session->response, $_POST);
+            $group = $session->getCurrentGroup();
+            $message = '';
+            if (!$force) {
+                $validationResults = $this->validateGroup($group);
+                $message .= $validationResults->getMessagesAsString();
+                if ($group->isRelevant($session->response) && !$validationResults->getSuccess()) {
+                    // redisplay the current group
+                    $message .= $this->updateValuesInDatabase(false);
+                    $result = [
+                        'finished' => false,
+                        'message' => $message,
+                        'gseq' => $session->step,
+                        'seq' => $session->step,
+                        'validationResults' => $validationResults
+                    ];
+                }
+            }
+            if ($force || !isset($result)) {
+                $step = $session->step;
+                $stepCount = $session->stepCount;
+                for ($step = $session->step + 1; $step <= $stepCount; $step++) {
+                    if ($step >= $session->stepCount) {// Move next with finished, but without submit.
+                        $message .= $this->updateValuesInDatabase(true);
+                        $result = [
+                            'finished' => true,
+                            'message' => $message,
+                            'seq' => $step,
+                            'validationResults' => $validationResults,
+                        ];
+                        break;
+                    }
+                    $group = $session->getGroupByIndex($step);
+                    if ($group->isRelevant($session->response)) {
+                        // then skip this group
+                        continue;
+                    } else {
+
+                        $validationResults = $this->validateGroup($group);
+                        $message .= $validationResults->getMessagesAsString();
+                        // display new group
+                        $message .= $this->updateValuesInDatabase(false);
+                        $result = [
+                            'finished' => false,
+                            'message' => $message,
+                            'seq' => $step,
+                            'validationResults' => $validationResults
+                        ];
+                        break;
+                    }
+
+
+                }
+            }
+            return $result;
+        }
+
         private function navigateNextQuestion($force) {
             $this->StartProcessingPage();
             $session = App()->surveySessionManager->current;
@@ -3377,11 +3438,11 @@
             $message = '';
             if (!$force) {
                 // Validate current page.
-                $validateResult = $this->_ValidateQuestion($question);
+                $validateResult = $this->validateQuestion($question);
                 $message .= $validateResult->getMessagesAsString();
                 if ($question->isRelevant($session->response) && !$validateResult->getSuccess()) {
                     // redisplay the current question with all error
-                    $message .= $this->_UpdateValuesInDatabase(false);
+                    $message .= $this->updateValuesInDatabase(false);
                     $result = [
                         'finished' => false,
                         'message' => $message,
@@ -3399,7 +3460,7 @@
                 for ($step = $session->step + 1; $step <= $stepCount; $step++) {
                     if ($step >= $session->stepCount) // Move next with finished, but without submit.
                     {
-                        $message .= $this->_UpdateValuesInDatabase(true);
+                        $message .= $this->updateValuesInDatabase(true);
                         $result = [
                             'finished' => true,
                             'message' => $message,
@@ -3418,7 +3479,7 @@
                     // Set certain variables normally set by StartProcessingGroup()
                     $question = $session->getQuestionByIndex($step);
                     $this->_CreateSubQLevelRelevanceAndValidationEqns($question);
-                    $validateResult = $this->_ValidateQuestion($question);
+                    $validateResult = $this->validateQuestion($question);
                     $message .= $validateResult->getMessagesAsString();
                     $gRelInfo = $this->getGroupRelevanceInfo($question->group);
                     $grel = $gRelInfo['result'];
@@ -3429,7 +3490,7 @@
                     } else {
                         // Display new question
                         // Show error only if this question are not viewed before (question hidden by condition before <= maxQuestionSeq>currentQuestionSeq)
-                        $message .= $this->_UpdateValuesInDatabase(false);
+                        $message .= $this->updateValuesInDatabase(false);
                         $result = [
                             'finished' => false,
                             'message' => $message,
@@ -3442,7 +3503,6 @@
                         break;
 
                     }
-                    $step++;
                 }
             }
             if (!isset($result) || !array_key_exists('finished', $result)) {
@@ -3463,7 +3523,6 @@
 
             switch ($session->format) {
                 case Survey::FORMAT_ALL_IN_ONE:
-                    $startingGroup = $LEM->currentGroupSeq;
                     $LEM->StartProcessingPage(true);
                     $updatedValues = $LEM->ProcessCurrentResponses();
                     $message = '';
@@ -3475,7 +3534,7 @@
                     } else {
                         $finished = true;
                     }
-                    $message .= $LEM->_UpdateValuesInDatabase($finished);
+                    $message .= $LEM->updateValuesInDatabase($finished);
                     $LEM->lastMoveResult = array(
                         'finished' => $finished,
                         'message' => $message,
@@ -3490,75 +3549,7 @@
                     return $LEM->lastMoveResult;
                     break;
                 case Survey::FORMAT_GROUP:
-                    // First validate the current group
-                    $LEM->StartProcessingPage();
-                    $updatedValues = $LEM->ProcessCurrentResponses();
-                    $message = '';
-                    if (!$force && isset($LEM->currentGroupSeq) && $LEM->currentGroupSeq != -1) {
-                        $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
-                        $message .= $result['message'];
-                        $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                        if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
-                            // redisplay the current group
-                            $message .= $LEM->_UpdateValuesInDatabase(false);
-                            $LEM->lastMoveResult = array(
-                                'finished' => false,
-                                'message' => $message,
-                                'gseq' => $LEM->currentGroupSeq,
-                                'seq' => $LEM->currentGroupSeq,
-                                'mandViolation' => $result['mandViolation'],
-                                'valid' => $result['valid'],
-                                'unansweredSQs' => $result['unansweredSQs'],
-                                'invalidSQs' => $result['invalidSQs'],
-                            );
-
-                            return $LEM->lastMoveResult;
-                        }
-                    }
-                    while (true) {
-                        if (++$LEM->currentGroupSeq >= count(App()->surveySessionManager->current->getGroups())) {
-                            $message .= $LEM->_UpdateValuesInDatabase(true);
-                            $LEM->lastMoveResult = array(
-                                'finished' => true,
-                                'message' => $message,
-                                'gseq' => $LEM->currentGroupSeq,
-                                'seq' => $LEM->currentGroupSeq,
-                                'mandViolation' => (isset($result['mandViolation']) ? $result['mandViolation'] : false),
-                                'valid' => (isset($result['valid']) ? $result['valid'] : false),
-                                // Why return invalid if it's not set ?
-                                'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                                'invalidSQs' => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
-                            );
-
-                            return $LEM->lastMoveResult;
-                        }
-
-                        $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
-                        if (is_null($result)) {
-                            continue;   // this is an invalid group - skip it
-                        }
-                        $message .= $result['message'];
-                        $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                        if (!$result['relevant'] || $result['hidden']) {
-                            // then skip this group
-                            continue;
-                        } else {
-                            // display new group
-                            $message .= $LEM->_UpdateValuesInDatabase(false);
-                            $LEM->lastMoveResult = array(
-                                'finished' => false,
-                                'message' => $message,
-                                'gseq' => $LEM->currentGroupSeq,
-                                'seq' => $LEM->currentGroupSeq,
-                                'mandViolation' => (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
-                                'valid' => (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                                'unansweredSQs' => $result['unansweredSQs'],
-                                'invalidSQs' => $result['invalidSQs'],
-                            );
-
-                            return $LEM->lastMoveResult;
-                        }
-                    }
+                    $result = $LEM->navigateNextGroup($force);
                     break;
                 case Survey::FORMAT_QUESTION:
                     $result = $LEM->navigateNextQuestion($force);
@@ -3576,7 +3567,7 @@
          * @param <type> $updatedValues
          * @param <boolean> $finished - true if the survey needs to be finalized
          */
-        private function _UpdateValuesInDatabase($finished = false)
+        private function updateValuesInDatabase($finished = false)
         {
             $session = App()->surveySessionManager->current;
             $response = $session->response;
@@ -3628,6 +3619,87 @@
             $response->save();
         }
 
+        private function jumpToGroup($seq, $preview, $processPOST, $force) {
+            // First validate the current group
+            $this->StartProcessingPage();
+            $session = App()->surveySessionManager->current;
+            if ($processPOST) {
+                $this->processData($session->response, $_POST);
+            } else {
+                $updatedValues = array();
+            }
+
+            $message = '';
+            // Validate if moving forward.
+            if (!$force && $seq > $session->step) {
+                $validationResults = $this->validateGroup($session->getCurrentGroup());
+                $message .= $result['message'];
+                $updatedValues = array_merge($updatedValues, $result['updatedValues']);
+                if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
+                    // redisplay the current group, showing error
+                    $message .= $LEM->updateValuesInDatabase(false);
+                    $LEM->lastMoveResult = array(
+                        'finished' => false,
+                        'message' => $message,
+                        'gseq' => $LEM->currentGroupSeq,
+                        'seq' => $LEM->currentGroupSeq,
+                        'mandViolation' => $result['mandViolation'],
+                        'valid' => $result['valid'],
+                        'unansweredSQs' => $result['unansweredSQs'],
+                        'invalidSQs' => $result['invalidSQs'],
+                    );
+
+                    return $LEM->lastMoveResult;
+                }
+            }
+
+            $stepCount = $session->stepCount;
+            for ($step = $seq; $step < $stepCount; $step++) {
+                $group = $session->getGroupByIndex($step);
+                $validationResults = $this->validateGroup($group);
+                $message .= $validationResults->getMessagesAsString();
+                if (!$preview && !$group->isRelevant($session->response)) {
+                    // then skip this group
+                    continue;
+                } elseif (!$preview && !$validationResults->getSuccess() && $step < $seq) {
+                    // if there is a violation while moving forward, need to stop and ask that set of questions
+                    // if there are no violations, can skip this group as long as changed values are saved.
+                    die('skip2');
+                    continue;
+                } else {
+                    // Display new group
+                    // Showing error if question are before the maxstep
+                    $message .= $this->updateValuesInDatabase(false);
+                    $result = [
+                        'finished' => false,
+                        'message' => $message,
+                        'gseq' => $step,
+                        'seq' => $step,
+                        'mandViolation' => (($session->maxStep > $step) ? $validateResult['mandViolation'] : false),
+                        'valid' => (($session->maxStep > $step) ? $validateResult['vaslid'] : true),
+                    ];
+                    break;
+                }
+
+                if ($step >= $session->stepCount) {
+                    die('noo finished?');
+                    $message .= $this->updateValuesInDatabase(true);
+                    $result = [
+                        'finished' => true,
+                        'message' => $message,
+                        'gseq' => $step,
+                        'seq' => $step,
+                        'mandViolation' => (isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                        'valid' => (isset($result['valid']) ? $result['valid'] : false),
+                        'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                        'invalidSQs' => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                    ];
+                }
+
+            }
+            return $result;
+        }
+
         private function jumpToQuestion($seq, $preview, $processPOST, $force) {
             $this->StartProcessingPage();
             $session = App()->surveySessionManager->current;
@@ -3639,13 +3711,13 @@
             $message = '';
             // Validate if moving forward.
             if (!$force && $seq > $session->step) {
-                $validateResult = $this->_ValidateQuestion($session->step, $force);
+                $validateResult = $this->validateQuestion($session->step, $force);
                 $message .= $validateResult['message'];
                 $gRelInfo = $this->getGroupRelevanceInfo($session->getQuestion($session->step)->group);
                 $grel = $gRelInfo['result'];
                 if ($grel && ($validateResult['mandViolation'] || !$validateResult['valid'])) {
                     // Redisplay the current question, qhowning error
-                    $message .= $this->_UpdateValuesInDatabase(false);
+                    $message .= $this->updateValuesInDatabase(false);
                     $result = $this->lastMoveResult = [
                         'finished' => false,
                         'message' => $message,
@@ -3658,10 +3730,9 @@
             }
             $stepCount = $session->stepCount;
             for ($step = $seq; $step < $stepCount; $step++) {
-                // Set certain variables normally set by StartProcessingGroup()
                 $question = $session->getQuestionByIndex($step);
                 /** @var QuestionValidationResult $validationResult */
-                $validationResult = $this->_ValidateQuestion($question, $force);
+                $validationResult = $this->validateQuestion($question, $force);
                 $message .= $validationResult->getMessagesAsString();
                 $gRelInfo = $this->getGroupRelevanceInfo($session->getQuestionByIndex($step)->group);
                 $grel = $gRelInfo['result'];
@@ -3678,7 +3749,7 @@
 //                    die('break');
                     // Display new question
                     // Showing error if question are before the maxstep
-                    $message .= $this->_UpdateValuesInDatabase(false);
+                    $message .= $this->updateValuesInDatabase(false);
                     $result = [
                         'finished' => false,
                         'message' => $message,
@@ -3693,7 +3764,7 @@
             }
             if ($step >= $session->stepCount) {
                 die('noo finished?');
-                $message .= $this->_UpdateValuesInDatabase(true);
+                $message .= $this->updateValuesInDatabase(true);
                 $result = [
                     'finished' => true,
                     'message' => $message,
@@ -3745,109 +3816,20 @@
                     } else {
                         $updatedValues = array();
                     }
-                    $message = '';
-                    $result = $LEM->_ValidateSurvey($force);
-                    $message .= $result['message'];
-                    $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                    $message .= $LEM->_UpdateValuesInDatabase(false);// This happen too for $processPOST=false : need to fix it ?
+                    $validationResults = $LEM->_ValidateSurvey($force);
                     $LEM->lastMoveResult = array(
                         'finished' => false,
-                        'message' => $message,
+                        'message' => 'TODO',
                         'gseq' => 1,
                         'seq' => 1,
-                        'mandViolation' => $result['mandViolation'],
-                        'valid' => $result['valid'],
-                        'unansweredSQs' => $result['unansweredSQs'],
-                        'invalidSQs' => $result['invalidSQs'],
+                        'mandViolation' => $validationResults->getPassedMandatory(),
+                        'valid' => $validationResults->getSuccess(),
                     );
 
                     $result = $LEM->lastMoveResult;
                     break;
                 case Survey::FORMAT_GROUP:
-                    // First validate the current group
-                    $LEM->StartProcessingPage();
-                    $updatedValues = $processPOST ? $LEM->ProcessCurrentResponses() : [];
-                    $message = '';
-                    if (!$force && $seq > $session->step) // only re-validate if jumping forward
-                    {
-                        $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
-                        $message .= $result['message'];
-                        $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                        if (!is_null($result) && ($result['mandViolation'] || !$result['valid'])) {
-                            // redisplay the current group, showing error
-                            $message .= $LEM->_UpdateValuesInDatabase(false);
-                            $LEM->lastMoveResult = array(
-                                'finished' => false,
-                                'message' => $message,
-                                'gseq' => $LEM->currentGroupSeq,
-                                'seq' => $LEM->currentGroupSeq,
-                                'mandViolation' => $result['mandViolation'],
-                                'valid' => $result['valid'],
-                                'unansweredSQs' => $result['unansweredSQs'],
-                                'invalidSQs' => $result['invalidSQs'],
-                            );
-
-                            return $LEM->lastMoveResult;
-                        }
-                    }
-
-                    if ($seq <= $LEM->currentGroupSeq || $preview) {
-                        $LEM->currentGroupSeq = $seq - 1; // Try to jump to the requested group, but navigate to next if needed
-                    }
-
-                    while (true) {
-                        if (++$LEM->currentGroupSeq >= count(App()->surveySessionManager->current->getGroups())) {
-                            $message .= $LEM->_UpdateValuesInDatabase(true);
-                            $LEM->lastMoveResult = array(
-                                'finished' => true,
-                                'message' => $message,
-                                'gseq' => $LEM->currentGroupSeq,
-                                'seq' => $LEM->currentGroupSeq,
-                                'mandViolation' => (isset($result['mandViolation']) ? $result['mandViolation'] : false),
-                                'valid' => (isset($result['valid']) ? $result['valid'] : false),
-                                'unansweredSQs' => (isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
-                                'invalidSQs' => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
-                            );
-
-                            $result = $LEM->lastMoveResult;
-                        }
-
-                        $result = $LEM->_ValidateGroup($LEM->currentGroupSeq, $force);
-                        if (is_null($result)) {
-                            die("noo");
-
-                            $result = null;    // invalid group - either bad number, or no questions within it
-                            break;
-                        }
-                        $message .= $result['message'];
-                        $updatedValues = array_merge($updatedValues, $result['updatedValues']);
-                        if (!$preview && (!$result['relevant'] || $result['hidden'])) {
-                            // then skip this group - assume already saved?
-                            continue;
-                        } elseif (!($result['mandViolation'] || !$result['valid']) && $LEM->currentGroupSeq < $seq) {
-                            // if there is a violation while moving forward, need to stop and ask that set of questions
-                            // if there are no violations, can skip this group as long as changed values are saved.
-                            continue;
-                        } else {
-                            // display new group
-                            if (!$preview) { // Save only if not in preview mode
-                                $message .= $LEM->_UpdateValuesInDatabase(false);
-                            }
-                            $LEM->lastMoveResult = array(
-                                'finished' => false,
-                                'message' => $message,
-                                'gseq' => $session->step,
-                                'seq' => $session->step,
-                                'mandViolation' => (($session->maxStep > $session->step) ? $result['mandViolation'] : false),
-                                'valid' => (($session->maxStep > $session->step) ? $result['valid'] : false),
-                                'unansweredSQs' => $result['unansweredSQs'],
-                                'invalidSQs' => $result['invalidSQs'],
-                            );
-
-                            $result = $LEM->lastMoveResult;
-                            break;
-                        }
-                    }
+                    $result = $LEM->jumpToGroup($seq, $preview, $processPOST, $force);
                     break;
                 case Survey::FORMAT_QUESTION:
                     $result = $LEM->jumpToQuestion($seq, $preview, $processPOST, $force);
@@ -3867,7 +3849,7 @@
         /**
          * Check the entire survey
          * @param boolean $force : force validation to true, even if there are error, used at survey start to fill EM
-         * @return array with information on validated question
+         * @return QuestionValidationResultCollection with information on validated question
          */
         private function _ValidateSurvey($force = false)
         {
@@ -3887,129 +3869,41 @@
             // CHECK EACH GROUP, AND SET SURVEY-LEVEL PROPERTIES //
             ///////////////////////////////////////////////////////
             $session = App()->surveySessionManager->current;
+            $validationResults = new QuestionValidationResultCollection();
             foreach($session->getGroups() as $group) {
-                $gStatus = $LEM->_ValidateGroup($group, $force);
-                if (is_null($gStatus)) {
-                    continue;   // invalid group, so skip it
+                if (!$group->isRelevant($session->response)) {
+                    continue;
                 }
 
-                if ($gStatus['relevant']) {
-                    $srel = true;
-                }
-                if ($gStatus['relevant'] && !$gStatus['hidden']) {
-                    $shidden = false;
-                }
-                if ($gStatus['relevant'] && !$gStatus['hidden'] && $gStatus['mandViolation']) {
-                    $smandViolation = true;
-                }
-                if ($gStatus['relevant'] && !$gStatus['hidden'] && !$gStatus['valid']) {
-                    $svalid = false;
-                }
-                if ($gStatus['anyUnanswered']) {
-                    $sanyUnanswered = true;
+                $validationResults->mergeWith($LEM->validateGroup($group, $force));
+                // Skip group if it has no questions that are relevant AND visible.
+                if (count($validationResults) == 0) {
+                    continue;
                 }
 
-                if (strlen($gStatus['unansweredSQs']) > 0) {
-                    $unansweredSQs = array_merge($unansweredSQs, explode('|', $gStatus['unansweredSQs']));
-                }
-                if (strlen($gStatus['invalidSQs']) > 0) {
-                    $invalidSQs = array_merge($invalidSQs, explode('|', $gStatus['invalidSQs']));
-                }
-                $updatedValues = array_merge($updatedValues, $gStatus['updatedValues']);
-                // array_merge destroys the key, so do it manually
 
-                foreach ($gStatus['qset'] as $key => $value) {
-                    $LEM->currentQset[$key] = $value;
-                }
-                $LEM->FinishProcessingGroup();
             }
-
-            return array(
-                'relevant' => $srel,
-                'hidden' => $shidden,
-                'mandViolation' => $smandViolation,
-                'valid' => $svalid,
-                'anyUnanswered' => $sanyUnanswered,
-                'message' => $message,
-                'unansweredSQs' => implode('|', $unansweredSQs),
-                'invalidSQs' => implode('|', $invalidSQs),
-                'updatedValues' => $updatedValues,
-                'seq' => 1,
-            );
+            return $validationResults;
         }
 
         /**
          * Check a group and all of the questions it contains
-         * @param integer $groupSeq - the index-0 sequence number for this group
+         * @param QuestionGroup $group The group to be validated.
          * @param boolean $force : force validation to true, even if there are error
-         * @return <array> - detailed information about this group
+         * @return QuestionValidationResultCollection Validation result for all relevant and visible questions.
          */
-        public function _ValidateGroup(QuestionGroup $group, $force = false)
+        public function validateGroup(QuestionGroup $group, $force = false)
         {
             $session = App()->surveySessionManager->current;
-            $gid = $group->primaryKey;
-            $this->StartProcessingGroup($group, $session->survey->bool_anonymized);
+            $validationResults = new QuestionValidationResultCollection();
 
-            $grel = false;  // assume irrelevant until find a relevant question
-            $ghidden = true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
-            $gmandViolation = false;  // assume that the group contains no manditory questions that have not been fully answered
-            $gvalid = true;   // assume valid until discover otherwise
-            $messages = array();
-            $currentQset = array();
-            $unansweredSQs = array();
-            $invalidSQs = array();
-            $updatedValues = array();
-            $ganyUnanswered = false;
-
-            $gRelInfo = $this->getGroupRelevanceInfo($group);
-
-            /////////////////////////////////////////////////////////
-            // CHECK EACH QUESTION, AND SET GROUP-LEVEL PROPERTIES //
-            /////////////////////////////////////////////////////////
             foreach ($session->getQuestions($group) as $question) {
-                $qStatus = $this->_ValidateQuestion($question, $force);
-
-                $updatedValues = array_merge($updatedValues, $qStatus['updatedValues']);
-                if ($qStatus['hidden'] == false && $qStatus['relevant'] == true) {
-                    $ghidden = false; // at least one question is visible
-                }
-                if ($qStatus['relevant'] == true && $qStatus['hidden'] == false && $qStatus['mandViolation'] == true) {
-                    $gmandViolation = true;   // at least one relevant question fails mandatory test
-                }
-                if ($qStatus['anyUnanswered'] == true) {
-                    $ganyUnanswered = true;
-                }
-                if ($qStatus['relevant'] == true && $qStatus['hidden'] == false && $qStatus['valid'] == false) {
-                    $gvalid = false;  // at least one question fails validity constraints
-                }
-                $currentQset[$question->primaryKey] = $qStatus;
-                $messages[] = $qStatus['message'];
-                if (strlen($qStatus['unansweredSQs']) > 0) {
-                    $unansweredSQs[] = $qStatus['unansweredSQs'];
-                }
-                if (strlen($qStatus['invalidSQs']) > 0) {
-                    $invalidSQs[] = $qStatus['invalidSQs'];
+                if (!$question->bool_hidden && $question->isRelevant($session->response)) {
+                    $validationResults->add($this->validateQuestion($question, $force));
                 }
             }
-            $unansweredSQList = implode('|', $unansweredSQs);
-            $invalidSQList = implode('|', $invalidSQs);
 
-            //////////////////////////////////////////////////////////////////////////
-            // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
-            //////////////////////////////////////////////////////////////////////////
-            $currentGroupInfo = array(
-                'relevant' => $grel,
-                'hidden' => $ghidden,
-                'mandViolation' => $gmandViolation,
-                'valid' => $gvalid,
-                'qset' => $currentQset,
-                'unansweredSQs' => $unansweredSQList,
-                'anyUnanswered' => $ganyUnanswered,
-                'invalidSQs' => $invalidSQList,
-                'updatedValues' => $updatedValues,
-            );
-
-            return $currentGroupInfo;
+            return $validationResults;
         }
 
 
@@ -4025,7 +3919,7 @@
          * @return QuestionValidationResult
          */
 
-        private function _ValidateQuestion(\Question $question, $force = false)
+        private function validateQuestion(\Question $question, $force = false)
         {
             $session = App()->surveySessionManager->current;
             $result =  $question->validateResponse($session->response);
@@ -4548,11 +4442,7 @@
                     $result = $LEM->lastMoveResult;
                     break;
                 case Survey::FORMAT_GROUP:
-                    if (is_null($step)) {
-                        return $session->ste;
-                    }
-
-                    $result = $LEM->indexGseq[$step];
+                    $result = null;
                     break;
                 case Survey::FORMAT_QUESTION:
                     $result = $LEM->getQuestionNavIndex($step);
@@ -4579,17 +4469,6 @@
         }
 
         /**
-         * Should be called after each group finishes
-         */
-        static function FinishProcessingGroup($skipReprocessing = false)
-        {
-            $LEM =& LimeExpressionManager::singleton();
-            if ($skipReprocessing && $LEM->surveyMode != 'survey') {
-                $LEM->pageRelevanceInfo = [];
-            }
-        }
-
-        /**
          * Returns an array of string parts, splitting out expressions
          * @param type $src
          * @return type
@@ -4612,19 +4491,37 @@
             $LEM->ParseResultCache = array(); // don't need to persist it in session
         }
 
+
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
         * Also create list of variables that need to be declared
         */
-        public static function GetRelevanceAndTailoringJavaScript()
+        public static function GetRelevanceAndTailoringJavaScript(Question $question)
         {
             $session = App()->surveySessionManager->current;
-            $LEM =& LimeExpressionManager::singleton();
+            $LEM = LimeExpressionManager::singleton();
+            /** @var CClientScript $clientScript */
+            $clientScript = App()->getClientScript();
+            $clientScript->registerScriptFile(SettingGlobal::get('generalscripts', '/scripts') . "/expressions/em_javascript.js");
+            $fields = [];
+            foreach($session->getGroups() as $group) {
+                foreach($session->getQuestions($group) as $question) {
+                    foreach($question->getFields() as $field) {
+                        $field->value = $session->response->{$field->name};
+                        $fields[$field->code] = $field;
+                    }
+                }
+            }
+            $clientScript->registerScript('EM', 'var EM = new ExpressionManager(' . json_encode($fields) . ');', CClientScript::POS_END);
+            return $question->getRelevanceScript();
+
+
+
 
             $jsParts = array();
             $allJsVarsUsed = [];
             $rowdividList = array();   // list of subquestions needing relevance entries
-            App()->getClientScript()->registerScriptFile(SettingGlobal::get('generalscripts', '/scripts') . "/expressions/em_javascript.js");;
+
             $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
             $jsParts[] = "var LEMmode='" . $session->format . "';\n";
 
@@ -5644,25 +5541,6 @@
             echo "ProcessCurrentResponses<Br>";
 
             return $updatedValues;
-        }
-
-        static public function isValidVariable($varName)
-        {
-            $LEM =& LimeExpressionManager::singleton();
-
-            if (isset($LEM->getKnownVars()[$varName])) {
-                return true;
-            } else {
-                if (null !== $LEM->getSgqa($varName)) {
-                    return true;
-                } else {
-                    if (isset($LEM->tempVars[$varName])) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         static public function GetVarAttribute($name, $attr, $default, $gseq, $qseq)

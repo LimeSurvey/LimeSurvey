@@ -31,23 +31,21 @@ $(document).ready(function () {
 
 
     $(selector).bind('keyup', custom_checkconditions);
-    // Initialize LEM tabs first.
-    LEMsetTabIndexes();
 
     $(selector).removeAttr('onkeyup');
     $('form#limesurvey').bind('submit', {'selector': selector}, ls_represent_all    );
 
-    window.orgLEMval = window.LEMval;
-    window.LEMval = function (alias) {
-
-        var varName = LEMalias2varName[alias.split(".", 1)];
-        var attr = LEMvarNameAttr[varName];
-        if (attr.onlynum == 1)
-        {
-            return ls_represent($('#' + attr.jsName_on).val());
-        }
-        return orgLEMval(alias);
-    };
+    //window.orgLEMval = window.LEMval;
+    //window.LEMval = function (alias) {
+    //
+    //    var varName = LEMalias2varName[alias.split(".", 1)];
+    //    var attr = LEMvarNameAttr[varName];
+    //    if (attr.onlynum == 1)
+    //    {
+    //        return ls_represent($('#' + attr.jsName_on).val());
+    //    }
+    //    return orgLEMval(alias);
+    //};
 });
 
 /*

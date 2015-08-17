@@ -186,5 +186,9 @@
             }
             return $result;
         }
+
+        public function getRelevanceScript() {
+            return true;
+        }
     }
 

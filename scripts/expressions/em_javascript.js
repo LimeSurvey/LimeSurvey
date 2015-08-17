@@ -18,6 +18,13 @@
  * and Contributors (http://phpjs.org/authors)
  */
 
+
+/**
+ * LS3 will sync input values to the LEMvars array.
+ */
+
+
+
 /* Default event to trigger on answer part 
  * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations 
  * Actually only for list with comment and select in ranking
@@ -449,6 +456,21 @@ function LEMeq(a,b)
  */
 function LEMval(alias)
 {
+    if (typeof alias == 'string') {
+        parts = alias.split('.', 2);
+    }
+    if (parts.length == 2) {
+        var suffix = parts[1];
+        var code = parts[0];
+    } else {
+        var suffix = 'value';
+        var code = parts[0];
+
+    }
+
+    if (suffix == 'value') {
+        return LEMvars[code].value;
+    }
     // first find out whether it is using a suffix
     var str = new String(alias);
     var varName = alias;
@@ -624,6 +646,7 @@ function LEMval(alias)
         case 'value':
         case 'valueNAOK':
         {
+            return LEMvars[alias].value;
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
             if (value === '') {
                 return '';
@@ -806,58 +829,129 @@ function LEMstrtolower(s)
     return s.toLowerCase();
 }
 
+function ExpressionManager(vars) {
+    var that = this;
+    /**
+     * Initialization
+     */
+    $(document).on('change', 'input, select, textarea', function(e) {
+        for (var code in vars) {
+            if (vars[code].name == $(this).attr('name')) {
+                vars[code].value = $(this).val();
+                console.log("Updated " + code);
+                that.updateVisibility();
+                that.updateReplacements();
+                return;
+            }
+        }
+        console.log("Not updated, no code found for: " + $(this).attr('name'));
+    });
+
+
+
+    /**
+     * Public functions
+     */
+
+    this.splitVar = function (code) {
+        var parts = code.split('.', 2);
+        if (parts.count == 1) {
+            parts[1] = 'value';
+        }
+        return parts;
+    };
+
+    // Evaluate all question visibility.
+    this.updateVisibility = function() {
+        console.log('Updating question visibility');
+        for(var code in vars) {
+            $elem = this.getElement(code);
+            if ($elem.length == 1) {
+                if (EM.isRelevant(code)) {
+                    $elem.show();
+                } else {
+                    $elem.hide();
+                }
+            }
+        }
+    }
+
+    // Update replacements.
+    this.updateReplacements = function() {
+        $('[data-expression]').each(function(e) {
+            $this = $(this);
+            $this.html(eval($this.attr('data-expression')));
+        });
+    }
+
+    this.getElement = function(code) {
+        return $('[name=' + vars[code].name + ']').closest('.question-wrapper').parent();
+    }
+
+    this.isRelevant = function(code) {
+        return eval(vars[code].relevance);
+    }
+
+    this.val = function(code) {
+        var parts = this.splitVar(code);
+        if (parts.length == 1) {
+            code = parts[0];
+            var suffix = 'value';
+        } else {
+            code = parts[0];
+            var suffix = parts[1];
+        }
+
+        switch(suffix) {
+            case 'value':
+                if (this.isRelevant(code)) {
+                    return vars[code].value;
+                } else {
+                    return null;
+                }
+                break;
+            case 'shown':
+                if (this.isRelevant(code)) {
+                    return vars[code].labels[vars[code].value];
+                } else {
+                    return null;
+                }
+            default:
+                console.error('Unknown suffix: ' + suffix);
+        }
+    }
+}
+
+
 /*
- * return true if any of the arguments are not relevant
+ * Return true if any of the arguments are not relevant
+ * If the first argument is an array use that instead.
  */
 function LEManyNA()
 {
-    for (i=0;i<arguments.length;++i) {
-        var arg = arguments[i];
-        if (arg.match(/\.NAOK$/)) {
-            continue;
+    if ($.isArray(arguments[0])) {
+        var params = arguments[0];
+    } else {
+        var params = arguments;
+    }
+    for (var i = 0; i < params.length; i++) {
+        var parts = EM.splitVar(params[i]);
+        switch(parts[1]) {
+            case 'valueNAOK':
+            case 'NAOK':
+                continue;
+                break; // for consistency.
+            default:
+                if (!EM.isRelevant(parts[0])) {
+                    return true;
+                }
+
         }
-        if (typeof LEMalias2varName[arg] === 'undefined') {
-            continue;   // default is OK (e.g. for questions with dot notation suffix
-        }
-        jsName = LEMalias2varName[arg];
-        if (typeof LEMvarNameAttr[jsName] === 'undefined') {
-            continue;   // default is OK (e.g. for questions with dot notation suffix)
-        }
-        attr = LEMvarNameAttr[jsName];
-        if (!LEMval(attr.sgqa + '.relevanceStatus')) {
-            return true;
-        }
+
     }
     return false;
 }
 
-/* Set the tabIndex for all potentially visible form elements, and capture the TAB and SHIFT-TAB keys so can
- * control navigation when elements appear and disappear.
- */
-function  LEMsetTabIndexes()
-{
-    if (typeof tabIndexesSet == 'undefined') {
-        $(document).on('keydown',"#limesurvey :input[type!=hidden][id!=runonce]",function(event){
-            var keyCode = event.keyCode || event.which;
-            if (keyCode == 9) {
-                // see bug #08590 : lauch checkcondition only for text input. Not needed for radio or checkbox
-                // Not sure it's really needed actually, it's a blur event for text and change for select
-                // Can use $(this)[0].type
-                if($(this).attr('type')=="text")
-                {
-                    $(this).triggerHandler("keyup");
-                }
-                if($(this).is('select'))
-                {
-                    $(this).triggerHandler("change");
-                }
-                $(this).focus();
-                return true;
-            }
-        });
-        tabIndexesSet = true;
-    }
-}
 
 /** Function to set color coding for Other option in multiple choice questions so that it gets filled in if selected
  */
@@ -3099,10 +3193,6 @@ function updateColors(tab)
 }
 
 function ExprMgr_process_relevance_and_tailoring(evt_type,sgqa,type) {
-    if (typeof LEM_initialized == 'undefined') {
-        LEM_initialized=true;
-        LEMsetTabIndexes();
-    }
     if (evt_type == 'onchange'
         && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa)
         && (typeof last_evt_type !== 'undefined' && last_evt_type == 'TAB' && type != 'checkbox'))

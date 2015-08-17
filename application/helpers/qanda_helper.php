@@ -90,9 +90,29 @@ function retrieveAnswers(Question $question)
 
     $number = '';
 
-    // TMSW - populate this directly from LEM? - this this is global
+    $em = $question->getExpressionManager($session->response);
+    $parts = $em->asSplitStringOnExpressions($question->question);
+    $text = '';
+    foreach($parts as $part) {
+        switch ($part[2]) {
+            case 'STRING':
+                $text .= $part[0];
+                break;
+            case 'EXPRESSION':
+                if ($em->RDP_Evaluate(substr($part[0], 1, -1))) {
+                    $value = $em->GetResult();
+                } else {
+
+                    $value = '';
+                }
+                $text .= TbHtml::tag('span', [
+                    'data-expression' => $em->getJavascript(substr($part[0], 1, -1))
+                ], $value);
+        }
+    }
     $question_text = [
-        'text' => $qtitle,
+        // Pass through EM.
+        'text' => $text,
         'code' => $question->title,
         'number' => $number,
         'help' => '',
@@ -260,9 +280,10 @@ function retrieveAnswers(Question $question)
 
     if ($question->bool_mandatory)
     {
-        $qtitle = '<span class="asterisk">'.gT('*').'</span>'.$qtitle;
+        $qtitle = '<span class="asterisk">'.gT('*').'</span>' . $qtitle;
         $question_text['mandatory'] = gT('*');
     }
+
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
     if ($session->step != $session->maxStep || $session->viewCount > 1) {
@@ -1660,7 +1681,7 @@ function do_list_radio(Question $question)
 
         $answer .= $startitem;
         $answer .= "\t$hiddenfield\n";
-        $answer .='        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'. $question->sgqa .'" id="answer'.$question->sgqa.$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$question->sgqa.'othertext\') != null) document.getElementById(\'answer'.$question->sgqa.'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        $answer .='        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'. $question->sgqa .'" id="answer'.$question->sgqa.$ansrow['code'].'"'.$check_ans.' onclick="$(this).closest(\'ul\').find(\'input[type=text]\').val(\'\').trigger(\'change\');'.$checkconditionFunction.'(this.value, this.name, this.type)" />
         <label for="answer'.$question->sgqa.$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
         '.$wrapper['item-end'];
 
@@ -1749,7 +1770,7 @@ function do_list_radio(Question $question)
 
     if ($question->bool_mandatory && SHOW_NO_ANSWER == 1)
     {
-        $answer .= $wrapper['item-start-noanswer'].'        <input class="radio" type="radio" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$question->sgqa.'othertext\') != null) document.getElementById(\'answer'.$question->sgqa.'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        $answer .= $wrapper['item-start-noanswer'].'        <input class="radio" type="radio" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'NANS" value=""'.$check_ans.' onclick="\'$(this).closest(\'ul\').find(\'input[type=text]\').val(\'\').trigger(\'change\');'.$checkconditionFunction.'(this.value, this.name, this.type)" />
         <label for="answer'.$question->sgqa.'NANS" class="answertext">'.gT('No answer').'</label>
         '.$wrapper['item-end'];
         // --> END NEW FEATURE - SAVE
