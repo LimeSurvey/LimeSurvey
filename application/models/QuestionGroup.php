@@ -96,32 +96,6 @@
         }
 
 
-        public static function deleteWithDependency($groupId, $surveyId)
-        {
-            $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
-            Question::deleteAllById($questionIds);
-            Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
-            return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
-        }
-
-        private static function getQuestionIdsInGroup($groupId) {
-            $questions = Yii::app()->db->createCommand()
-            ->select('qid')
-            ->from('{{questions}} q')
-            ->join('{{groups}} g', 'g.gid=q.gid AND g.gid=:groupid AND q.parent_qid=0')
-            ->group('qid')
-            ->bindParam(":groupid", $groupId, PDO::PARAM_INT)
-            ->queryAll();
-
-            $questionIds = array();
-            foreach ($questions as $question) {
-                $questionIds[] = $question['qid'];
-            }
-
-            return $questionIds;
-        }
-
-
         /**
          * This function is here to support proper naming of entity attributes.
          * Since surveys have a title, I have decided all non-person entities have a title not a name.

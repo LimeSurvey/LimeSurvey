@@ -520,7 +520,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 ,.slider 
 ,.array-multi-flexi 
 ,.array-multi-flexi-text
-,.array-flexible-duel-scale 
+,.array-flexible-dual-scale
 */ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .answer ul,.list-radio-flexible .answer ul,.list-radio .answer ul,.list-with-comment .answer ul,.multiple-opt .answer ul,.multiple-opt-comments .answer ul,.multiple-short-txt .answer ul,.numeric-multi .answer ul,.yes-no .answer ul,.gender .answer ul
@@ -843,9 +843,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   font-weight: normal;
 }
 
-#limesurvey .array-flexible-duel-scale table.question .header_separator,
-#limesurvey .array-flexible-duel-scale table.question .dual_scale_separator,
-#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+#limesurvey .array-flexible-dual-scale table.question .header_separator,
+#limesurvey .array-flexible-dual-scale table.question .dual_scale_separator,
+#limesurvey .array-flexible-dual-scale table.question .header_answer_text_right {
 	background-color: #FFFFFF;
 }
 
@@ -853,7 +853,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   background-color: #EEEEEE;
 }
 
-#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+#limesurvey .array-flexible-dual-scale table.question tr.repeat {
 	background-color: #F6F6F6;
 }
 

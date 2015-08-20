@@ -369,6 +369,7 @@ class SurveysController extends Controller
         if (!isset($session)) {
             throw new \CHttpException(404, "Session not found.");
         }
+        $result = \LimeExpressionManager::getScript($session);
         header('Content-type: application/javascript');
         header('Cache-control: public, max-age=7200');
         header_remove('Pragma');
@@ -378,7 +379,7 @@ class SurveysController extends Controller
                 $route->enabled = false;
             }
         }
-        echo \LimeExpressionManager::getScript($session);
+        echo $result;
     }
 
 

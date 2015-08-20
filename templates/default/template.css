@@ -783,7 +783,7 @@ table.clearall-result td {
 ,.slider
 ,.array-multi-flexi
 ,.array-multi-flexi-text
-,.array-flexible-duel-scale
+,.array-flexible-dual-scale
 */ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .answer ul,.list-radio-flexible .answer ul,.list-radio .answer ul,.list-with-comment .answer ul,.multiple-opt .answer ul,.multiple-opt-comments .answer ul,.multiple-short-txt .answer ul,.numeric-multi .answer ul,.yes-no .answer ul,.gender .answer ul
@@ -1102,15 +1102,15 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   background-color: #FFFFFF;
 }
 
-#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+#limesurvey .array-flexible-dual-scale table.question tr.repeat {
 	background-color: #F9F9F9;
 }
 
-#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
-#limesurvey .array-flexible-duel-scale table.question tr.repeat th.header_answer_text,
-#limesurvey .array-flexible-duel-scale table.question .header_separator,
-#limesurvey .array-flexible-duel-scale table.question .repeat .header_separator,
-#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+#limesurvey .array-flexible-dual-scale table.question .header_answer_text,
+#limesurvey .array-flexible-dual-scale table.question tr.repeat th.header_answer_text,
+#limesurvey .array-flexible-dual-scale table.question .header_separator,
+#limesurvey .array-flexible-dual-scale table.question .repeat .header_separator,
+#limesurvey .array-flexible-dual-scale table.question .header_answer_text_right {
 	background-color: #FFFFFF;
 }
 
@@ -1133,7 +1133,7 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   background-color: #eee;
 }
 
-.boilerplate td td,.numeric td td,.choice-5-pt-radio td td,.yes-no td td,.gender td td,.date td td,.numeric-multi td td,.numeric td td,.list-with-comment td td,.list-dropdown-flexible td td,.ranking td td,.numeric-multi td td,.language td td,.multiple-opt-comments td td,.multiple-short-txt td td,.text-short td td,.text-long td td,.text-huge td td,.numeric-multi td td,.array-5-pt td,.array-10-pt td,.array-yes-uncertain-no td,.array-increase-same-decrease td,.array-flexible-row td,.array-flexible-column td,.array-multi-flexi td,.array-multi-flexi-text td,.array-flexible-duel-scale td
+.boilerplate td td,.numeric td td,.choice-5-pt-radio td td,.yes-no td td,.gender td td,.date td td,.numeric-multi td td,.numeric td td,.list-with-comment td td,.list-dropdown-flexible td td,.ranking td td,.numeric-multi td td,.language td td,.multiple-opt-comments td td,.multiple-short-txt td td,.text-short td td,.text-long td td,.text-huge td td,.numeric-multi td td,.array-5-pt td,.array-10-pt td,.array-yes-uncertain-no td,.array-increase-same-decrease td,.array-flexible-row td,.array-flexible-column td,.array-multi-flexi td,.array-multi-flexi-text td,.array-flexible-dual-scale td
   {
   text-align: left;
 }
@@ -1603,4 +1603,22 @@ span.hide-tip div.error {
 .input-error span.hide-tip div.error {
     color: red;
     display: block;
+}
+
+.irrelevant {
+  border: 3px solid red !important;
+  position: relative;
+}
+
+.irrelevant:before {
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  content: "irrelevant";
+  font-size: 2em;
+  font-weight: bold;
+  line-height: 3em;
 }

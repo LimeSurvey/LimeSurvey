@@ -419,132 +419,6 @@
             }
         }
 
-        /**
-        * This function returns an array of the advanced attributes for the particular question
-        * including their values set in the database
-        *
-        * @access public
-        * @param int $iQuestionID  The question ID - if 0 then all settings will use the default value
-        * @param string $sQuestionType  The question type
-        * @param int $iSurveyID
-        * @param string $sLanguage  If you give a language then only the attributes for that language are returned
-        * @return array
-        */
-        public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage=null)
-        {
-            if (is_null($sLanguage))
-            {
-                $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-            }
-            else
-            {
-                $aLanguages = array($sLanguage);
-            }
-
-            if ($iQuestionID)
-            {
-                $oAttributeValues = QuestionAttribute::model()->findAllByAttributes([
-                    'qid' => $iQuestionID
-                ]);
-                $aAttributeValues=array();
-                foreach($oAttributeValues as $oAttributeValue)
-                {
-                    if($oAttributeValue->language){
-                        $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
-                    }else{
-                        $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
-                    }
-                }
-            }
-            $aAttributeNames = questionAttributes();
-
-            $aAttributeNames = $aAttributeNames[$sQuestionType];
-            uasort($aAttributeNames, 'categorySort');
-            foreach ($aAttributeNames as $iKey => $aAttribute)
-            {
-                if ($aAttribute['i18n'] == false)
-                {
-                    if (isset($aAttributeValues[$aAttribute['name']]))
-                    {
-                        $aAttributeNames[$iKey]['value'] = $aAttributeValues[$aAttribute['name']];
-                    }
-                    else
-                    {
-                        $aAttributeNames[$iKey]['value'] = $aAttribute['default'];
-                    }
-                }
-                else
-                {
-                    foreach ($aLanguages as $sLanguage)
-                    {
-                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage]))
-                        {
-                            $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                        }
-                        else
-                        {
-                            $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttribute['default'];
-                        }
-                    }
-                }
-            }
-            return $aAttributeNames;
-        }
-
-
-        /**
-        * Insert an array into the questions table
-        * Returns false if insertion fails, otherwise the new QID
-        *
-        * @param array $data
-        */
-        function insertRecords($data)
-        {
-            // This function must be deprecated : don't find a way to have getErrors after (Shnoulle on 131206)
-            $questions = new self;
-            foreach ($data as $k => $v){
-                $questions->$k = $v;
-                }
-            try
-            {
-                $questions->save();
-                return $questions->qid;
-            }
-            catch(Exception $e)
-            {
-                return false;
-            }
-        }
-
-        public static function deleteAllById($questionsIds)
-        {
-            if ( !is_array($questionsIds) )
-            {
-                $questionsIds = array($questionsIds);
-            }
-            Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Answer::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'parent_qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
-            Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
-        }
-
-
-        /**
-         * @deprecated
-         */
-        function getAllRecords($condition, $order=FALSE)
-        {
-            $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
-            if ($order != FALSE)
-            {
-                $command->order($order);
-            }
-            return $command->query();
-        }
-
         public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
         {
             $command = Yii::app()->db->createCommand()
@@ -557,21 +431,6 @@
             }
             return $command->queryAll();
         }
-
-        public function getQuestionList($surveyid, $language)
-        {
-            $query = "SELECT questions.*, groups.group_name, groups.group_order"
-            ." FROM {{questions}} as questions, {{groups}} as groups"
-            ." WHERE groups.gid=questions.gid"
-            ." AND groups.language=:language1"
-            ." AND questions.language=:language2"
-            ." AND questions.parent_qid=0"
-            ." AND questions.sid=:sid";
-            return Yii::app()->db->createCommand($query)->bindParam(":language1", $language, PDO::PARAM_STR)
-                                                        ->bindParam(":language2", $language, PDO::PARAM_STR)
-                                                        ->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
-        }
-
 
         /**
          * Returns the type of answers for this question:
@@ -823,50 +682,22 @@
             return $questionTypes;
         }
         /**
-         * This function return the class by question type
-         * @param string question type
-         * @return string Question class to be added to the container
-         *
-         * Maybe move class in typeList ?
+         * Return the classes to be added to the question wrapper.
+         * @return []
          */
-        public static function getQuestionClass($sType)
+        public function getClasses()
         {
-            switch($sType)
+            $result = [];
+            switch($this->type)
             {
-                case "1": return 'array-flexible-duel-scale';
-                case '5': return 'choice-5-pt-radio';
-                case 'A': return 'array-5-pt';
-                case 'B': return 'array-10-pt';
-                case 'C': return 'array-yes-uncertain-no';
-                case 'D': return 'date';
-                case 'E': return 'array-increase-same-decrease';
-                case 'F': return 'array-flexible-row';
-                case 'G': return 'gender';
-                case 'H': return 'array-flexible-column';
-                case 'I': return 'language';
-                case 'K': return 'numeric-multi';
-                case 'L': return 'list-radio';
-                case 'M': return 'multiple-opt';
-                case 'N': return 'numeric';
-                case 'O': return 'list-with-comment';
-                case 'P': return 'multiple-opt-comments';
-                case 'Q': return 'multiple-short-txt';
-                case 'R': return 'ranking';
-                case 'S': return 'text-short';
-                case 'T': return 'text-long';
-                case 'U': return 'text-huge';
                 //case 'W': return 'list-dropdown-flexible'; //   LIST drop-down (flexible label)
-                case 'X': return 'boilerplate';
-                case 'Y': return 'yes-no';
-                case 'Z': return 'list-radio-flexible';
-                case '!': return 'list-dropdown';
-                //case '^': return 'slider';          //  SLIDER CONTROL
-                case ':': return 'array-multi-flexi';
-                case ";": return 'array-multi-flexi-text';
-                case "|": return 'upload-files';
-                case "*": return 'equation';
-                default:  return 'generic_question'; // fallback
+                case 'X':
+                    $result[] = 'boilerplate';
+                    break;
+                default:
+                    throw new \Exception('no');
             };
+            return $result;
         }
         
         public function scopes() {
@@ -958,7 +789,8 @@
                     
                     break;
                 default:
-                    throw new \Exception("Don't know columns for question type: {$this->type}");
+                    $class = get_class($this);
+                    throw new \Exception("Don't know columns for question type: {$this->type} ({$class})");
                     
             }
 
@@ -986,6 +818,9 @@
 
         public static function resolveClass($type) {
             switch ($type) {
+                case self::TYPE_ARRAY_TEN_POINT:
+                    $class = \ls\models\questions\TenPointArrayQuestion::class;
+                    break;
                 case self::TYPE_NUMERICAL_INPUT:
                     $class = \ls\models\questions\NumericalQuestion::class;
                     break;
@@ -999,6 +834,7 @@
                     break;
                 case self::TYPE_LIST_WITH_COMMENT:
                     $class = \ls\models\questions\SingleChoiceWithCommentQuestion::class;
+                    break;
                 case self::TYPE_DROPDOWN_LIST:
                 case self::TYPE_RADIO_LIST:
                     $class = \ls\models\questions\SingleChoiceQuestion::class;
@@ -1013,21 +849,26 @@
                     $class = \ls\models\questions\ArrayQuestion::class;
                     break;
                 case self::TYPE_ARRAY_TEXTS:
-                case self::TYPE_ARRAY_NUMBERS:
                     $class = \ls\models\questions\OpenArrayQuestion::class;
+                    break;
+                case self::TYPE_ARRAY_NUMBERS:
+                    $class = \ls\models\questions\NumericalArrayQuestion::class;
                     break;
                 case self::TYPE_YES_NO:
                     $class = \ls\models\questions\YesNoQuestion::class;
                     break;
                 case self::TYPE_ARRAY_INCREASE_SAME_DECREASE:
-                    $class = \ls\models\questions\IncreaseSameDecreaseQuestion::class;
+                    $class = \ls\models\questions\IncreaseSameDecreaseArrayQuestion::class;
                     break;
                 case self::TYPE_ARRAY_YES_NO_UNCERTAIN:
-                    $class = \ls\models\questions\YesNoUncertainQuestion::class;
+                    $class = \ls\models\questions\YesNoUncertainArrayQuestion::class;
                     break;
                 case self::TYPE_ARRAY_FIVE_POINT:
-                    $class = \ls\models\questions\FixedChoiceQuestion::class;
+                    $class = \ls\models\questions\FivePointArrayQuestion::class;
+                    break;
                 case self::TYPE_UPLOAD:
+                    $class = \ls\models\questions\UploadQuestion::class;
+                    break;
                 case self::TYPE_DISPLAY:
                     $class = __CLASS__;
                     break;
@@ -1036,6 +877,25 @@
                     break;
                 case self::TYPE_MULTIPLE_CHOICE_WITH_COMMENT:
                     $class = \ls\models\questions\MultipleChoiceWithCommentQuestion::class;
+                    break;
+                case self::TYPE_GENDER:
+                    $class = \ls\models\questions\GenderQuestion::class;
+                    break;
+                case self::TYPE_LANGUAGE_SWITCH:
+                    $class = \ls\models\questions\LanguageQuestion::class;
+                    break;
+
+                case self::TYPE_MULTIPLE_NUMERICAL_INPUT:
+                    $class = \ls\models\questions\MultipleNumberQuestion::class;
+                    break;
+                case self::TYPE_FIVE_POINT_CHOICE:
+                    $class = \ls\models\questions\FivePointChoiceQuestion::class;
+                    break;
+                case self::TYPE_ARRAY_BY_COLUMN:
+                    $class = \ls\models\questions\ArrayByColumnQuestion::class;
+                    break;
+                case self::TYPE_ARRAY_DUAL_SCALE:
+                    $class = \ls\models\questions\DualScaleArrayQuestion::class;
                     break;
                 case '*':
                     $class = \ls\models\questions\EquationQuestion::class;
@@ -1147,15 +1007,12 @@
          */
         public function getFields() {
             bP();
-            if (empty($this->_fields)) {
-                $this->_fields[] = $field = new QuestionResponseField($this->sgqa, $this);
-                if ($this->bool_other) {
-                    $this->_fields[] = new QuestionResponseField($this->sgqa . 'other', $this);
-                }
-
+            $fields[] = $field = new QuestionResponseField($this->sgqa, $this->title, $this);
+            if ($this->bool_other) {
+                $this->_fields[] = new QuestionResponseField($this->sgqa . 'other', $this->title . 'other', $this);
             }
-            eP();
-            return $this->_fields;
+
+            return $fields;
 
 
         }
@@ -1222,12 +1079,10 @@
                 return $clause !== true;
             });
             if (!empty($clauses)) {
-//                vd($clauses);
                 $em = $this->getExpressionManager();
                 $emExpression = '(' . implode(') && (', $clauses) . ')';
                 $result = $em->getJavascript($emExpression);
 
-//                vd($emExpression . ' --->> ' . $result);
                 if (empty($result)) {
                     vdd($em);
                     throw new \Exception('NO jS created');
@@ -1323,6 +1178,27 @@
             return "<span class='errormandatory'>" . gT('This question is mandatory') . '</span>';
         }
 
+        public function getSubQuestions($scale = null) {
+            if (isset($scale)) {
+                $result = array_filter($this->getRelated('subQuestions'), function(Question $subQuestion) use ($scale) {
+                    return $scale == $subQuestion->scale_id;
+                });
+            } else {
+                $result = $this->getRelated('subQuestions');
+            }
+            return $result;
+        }
+
+        public function getAnswers($scale = null) {
+            if (isset($scale)) {
+                $result = array_filter($this->getRelated('answers'), function(Answer $answer) use ($scale) {
+                    return $scale == $answer->scale_id;
+                });
+            } else {
+                $result = $this->getRelated('answers');
+            }
+            return $result;
+        }
 
 
     }

@@ -7,7 +7,7 @@ use Question;
  * Array (Texts) and Array (Numbers)
  * @package ls\models\questions
  */
-class OpenArrayQuestion extends ArrayQuestion
+class OpenArrayQuestion extends BaseArrayQuestion
 {
     public function getSubQuestionScales()
     {
@@ -54,13 +54,23 @@ class OpenArrayQuestion extends ArrayQuestion
 
             foreach($yScale as $yQuestion) {
                 foreach($xScale as $xQuestion) {
-                    $this->_fields[] = $field = new \QuestionResponseField("{$this->sgqa}{$yQuestion->title}_{$xQuestion->title}", $this);
+                    $this->_fields[] = $field = new \QuestionResponseField("{$this->sgqa}{$yQuestion->title}_{$xQuestion->title}", "{$this->title}_{$yQuestion->title}_{$xQuestion->title}", $this);
                 }
             }
         }
         eP();
         return $this->_fields;
 
+    }
+
+    /**
+     * This function return the class by question type
+     * @param string question type
+     * @return string Question class to be added to the container
+     */
+    public function getClasses()
+    {
+        return ['array-multi-flexi-text'];
     }
 
 

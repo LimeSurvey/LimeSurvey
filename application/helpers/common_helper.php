@@ -2857,7 +2857,7 @@ function questionAttributes($returnByName=false)
         "caption"=>gT("Text inputs"));
 
         $qattributes["other_comment_mandatory"]=array(
-        "types"=>"PLW!Z",
+        "types"=>"PLW!ZO" . Question::TYPE_MULTIPLE_CHOICE,
         'category'=>gT('Logic'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',

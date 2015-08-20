@@ -11,7 +11,7 @@ echo TbHtml::activeTextFieldControlGroup($group, 'group_name', array_merge($opti
 ]));
 if (!empty($group->survey->groups)) {
     echo TbHtml::customActiveControlGroup($this->widget(WhSelect2::class, [
-        'data' => CHtml::listData($group->survey->groups, 'gid', function (QuestionGroup $group) {
+        'data' => CHtml::listData($group->survey->groups, 'id', function (QuestionGroup $group) {
             return gT("Before") . ' ' . $group->displayLabel;
         }),
         'model' => $group,

@@ -6,7 +6,7 @@
     {
         $list .= CHtml::openTag('li');
 
-        $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
+        $list .= CHtml::link($survey->localizedTitle, ['surveys/start', 'id' => $survey->sid, 'lang' => App()->language], array('class' => 'surveytitle'));
         if ($survey->publicstatistics == "Y")
         {
             $list .= CHtml::link('(' . gT('View statistics') . ')', array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language));

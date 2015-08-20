@@ -17,7 +17,7 @@ for ($scale = 0; $scale < $question->subQuestionScales; $scale++) {
         echo TbHtml::tag('h1', [], $scale == 0 ? gT("Y-Scale") : gT("X-Scale"));
     }
     echo TbHtml::tag('div', [
-        'class' => 'form-group'
+        'class' => 'form-group',
     ], TbHtml::activeLabel(new Question(), "title", [
             'class' => 'col-sm-1'
         ]) . TbHtml::activeLabel(new Question(), "question", [
@@ -30,17 +30,16 @@ for ($scale = 0; $scale < $question->subQuestionScales; $scale++) {
     });
     if (empty($subQuestions)) {
         $subQuestion = new \ls\models\questions\SubQuestion();
-        $subQuestion->title = "SQ001";
-        $sbQuestion->scale_id = $scale;
+        $subQuestion->title = $question->subQuestionScales == 1 ? "SQ001" : ($scale == 0 ? "YQ001" : "XQ001");
+        $subQuestion->scale_id = $scale;
         $subQuestion->parent_qid = $question->primaryKey;
         $subQuestions = [$subQuestion];
     }
-
     // Take scales into account.
     foreach ($subQuestions as $subQuestion) {
         $subQuestion->language = $language;
         $attribute = "[{$i}]title";
-        echo TbHtml::openTag('div', array_merge(['class' => 'form-group', 'data-index' => $i],
+        echo TbHtml::openTag('div', array_merge(['class' => 'form-group', 'data-index' => $i, 'data-scale' => $scale],
 
             SamIT\Form\FormHelper::createAttributesForHighlight(TbHtml::resolveName($subQuestion, $attribute))));
         if ($first) {

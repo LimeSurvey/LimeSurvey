@@ -48,7 +48,7 @@ div.survey-group {
   page-break-after: always;
 }
 
-div.boilerplate,div.choice-5-pt-radio,div.date,div.list-radio-flexible,div.list-radio,div.list-dropdown-flexible,div.list-dropdown,div.list-with-comment,div.ranking,div.multiple-opt,div.language,div.multiple-opt-comments,div.multiple-short-txt,div.numeric-multi,div.numeric,div.text-short,div.text-long,div.text-huge,div.yes-no,div.gender,div.array-5-pt,div.array-10-pt,div.array-yes-uncertain-no,div.array-increase-same-decrease,div.array-flexible-row,div.array-flexible-column,div.array-multi-flexi,div.array-multi-flexi-text,div.array-flexible-duel-scale
+div.boilerplate,div.choice-5-pt-radio,div.date,div.list-radio-flexible,div.list-radio,div.list-dropdown-flexible,div.list-dropdown,div.list-with-comment,div.ranking,div.multiple-opt,div.language,div.multiple-opt-comments,div.multiple-short-txt,div.numeric-multi,div.numeric,div.text-short,div.text-long,div.text-huge,div.yes-no,div.gender,div.array-5-pt,div.array-10-pt,div.array-yes-uncertain-no,div.array-increase-same-decrease,div.array-flexible-row,div.array-flexible-column,div.array-multi-flexi,div.array-multi-flexi-text,div.array-flexible-dual-scale
   {
   border: 0.1em solid #aaa;
   padding: 1em;
@@ -189,7 +189,7 @@ div.array-5-pt .q-answer table thead th
 ,div.array-flexible-column .q-answer table thead th
 ,div.array-multi-flexi .q-answer table thead th
 ,div.array-multi-flexi-text .q-answer table thead th
-,div.array-flexible-duel-scale .q-answer table thead th
+,div.array-flexible-dual-scale .q-answer table thead th
 */
 div.array-multi-flexi .q-answer table tbody td div.input-text {
   margin-left: auto;
@@ -211,7 +211,7 @@ div.array-multi-flexi .q-answer table tbody td div.input-text {
 .array-flexible-column {}
 .slider {}
 .array-multi-flexi {}
-.array-flexible-duel-scale {}
+.array-flexible-dual-scale {}
 */
 .array-flexible-column col.odd,.array-flexible-column th.odd {
   background-color: #0c1c2b;

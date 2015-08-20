@@ -83,7 +83,7 @@ div.survey-group
 ,div.array-flexible-column
 ,div.array-multi-flexi
 ,div.array-multi-flexi-text
-,div.array-flexible-duel-scale
+,div.array-flexible-dual-scale
 {
 	border: 0.1em solid #aaa;
 	padding: 1em;
@@ -246,7 +246,7 @@ div.array-5-pt .q-answer table thead th
 ,div.array-flexible-column .q-answer table thead th
 ,div.array-multi-flexi .q-answer table thead th
 ,div.array-multi-flexi-text .q-answer table thead th
-,div.array-flexible-duel-scale .q-answer table thead th
+,div.array-flexible-dual-scale .q-answer table thead th
 */
 div.array-multi-flexi .q-answer table tbody td div.input-text
 {
@@ -270,7 +270,7 @@ div.array-multi-flexi .q-answer table tbody td div.input-text
 .array-flexible-column {}
 .slider {}
 .array-multi-flexi {}
-.array-flexible-duel-scale {}
+.array-flexible-dual-scale {}
 */
 .array-flexible-column col.odd
 ,.array-flexible-column th.odd

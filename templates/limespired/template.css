@@ -742,7 +742,7 @@ a.imglink {
 ,.slider 
 ,.array-multi-flexi 
 ,.array-multi-flexi-text
-,.array-flexible-duel-scale 
+,.array-flexible-dual-scale
 */ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .survey-question-answer ul,.list-radio-flexible .survey-question-answer ul,.list-radio .survey-question-answer ul,.list-with-comment .survey-question-answer ul,.multiple-opt .survey-question-answer ul,.multiple-opt-comments .survey-question-answer ul,.multiple-short-txt .survey-question-answer ul,.numeric-multi .survey-question-answer ul,.yes-no .survey-question-answer ul,.gender .survey-question-answer ul
@@ -1084,9 +1084,9 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   font-size: 90%;
 }
 
-#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
-#limesurvey .array-flexible-duel-scale table.question .header_separator,
-#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+#limesurvey .array-flexible-dual-scale table.question .header_answer_text,
+#limesurvey .array-flexible-dual-scale table.question .header_separator,
+#limesurvey .array-flexible-dual-scale table.question .header_answer_text_right {
 	background-color: #FFFFFF;
 }
 

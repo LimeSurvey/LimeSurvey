@@ -2578,18 +2578,6 @@
         }
 
         /**
-         * Return whether question $qid is relevanct
-         * @param <type> $qid
-         * @return boolean
-         */
-        static function QuestionIsRelevant($qid)
-        {
-            $session = App()->surveySessionManager->current;
-            $question = $session->getQuestion($qid);
-            return $question->isRelevant($session->response);
-        }
-
-        /**
          * Translate all Expressions, Macros, registered variables, etc. in $string
          * @param string $string - the string to be replaced
          * @param integer $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
@@ -4313,6 +4301,10 @@
                 foreach($session->getGroups() as $group) {
                     foreach($session->getQuestions($group) as $question) {
                         foreach($question->getFields() as $field) {
+                            if (!$field instanceof QuestionResponseField) {
+                                vdd($question);
+                                throw new \Exception('no');
+                            }
                             $fields[$field->code] = $field;
                         }
                     }

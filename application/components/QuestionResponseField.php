@@ -17,8 +17,8 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
 
     private $_relevanceEquation = true;
 
-    public function __construct($name, Question $question) {
-        parent::__construct($name);
+    public function __construct($name, $code, Question $question) {
+        parent::__construct($name, $code);
         $this->_question = $question;
     }
 
@@ -31,29 +31,8 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
     public function setValue($value) {
         $this->_value = $value;
     }
-    /**
-     * @return string The name of this field in sgqa format.
-     * Example: 13455X123X12other
-     */
-    public function getName() {
-        return $this->_name;
-    }
-
     public function getQuestion() {
         return $this->_question;
-    }
-    /**
-     * @return string The EM code for this field.
-     * Example: q1_other
-     */
-    public function getCode() {
-        $code = $this->question->title;
-        if (substr_compare($this->name, 'other', -5, 5) === 0) {
-            $code .= '_other';
-        } elseif (substr_compare($this->name, 'comment', -7, 7) === 0) {
-            $code .= '_comment';
-        }
-        return $code;
     }
 
     public function getRelevanceScript() {
@@ -63,8 +42,12 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
     /**
      * Check if this field only takes numerical values.
      */
-    public function isNumerical() {
-        return false;
+    public function getIsNumerical() {
+        return $this->_numerical;
+    }
+
+    public function setIsNumerical($value) {
+        return $this->_numerical = $value;
     }
 
 
@@ -78,8 +61,8 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
     function jsonSerialize()
     {
         return [
-            'code' => $this->code,
-            'numerical' => $this->isNumerical(),
+            'code' => $this->_code,
+            'numerical' => $this->isNumerical,
             'value' => $this->_value,
             'name' => $this->_name,
             'relevance' => $this->getRelevanceScript(),

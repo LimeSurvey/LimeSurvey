@@ -867,16 +867,10 @@ function ExpressionManager(vars) {
     // Evaluate all question visibility.
     this.updateVisibility = function() {
         console.log('Updating question visibility');
-        for(var code in vars) {
-            $elem = this.getElement(code);
-            if ($elem.length == 1) {
-                if (EM.isRelevant(code)) {
-                    $elem.show();
-                } else {
-                    $elem.hide();
-                }
-            }
-        }
+        $('[data-relevance-expression]').each(function(i, elem) {
+            var $elem = $(elem);
+            $elem.toggleClass('irrelevant', !that.evaluate($elem.attr('data-relevance-expression')));
+        });
     }
 
     // Update replacements.
@@ -897,8 +891,16 @@ function ExpressionManager(vars) {
         return $('[name=' + vars[code].name + ']').closest('.question-wrapper').parent();
     }
 
+    this.evaluate = function(expr) {
+        if (typeof expr == "boolean") {
+            return expr;
+        } else if (expr == "") {
+            return false;
+        }
+        return eval(expr);
+    }
     this.isRelevant = function(code) {
-        return eval(vars[code].relevance);
+        return this.evaluate(vars[code].relevance);
     }
 
     this.val = function(code) {

@@ -8,31 +8,39 @@
 /** @var TbActiveForm $form */
 /** @var \Answer $answer */
 
-// Table header
-echo TbHtml::tag('div', [
-    'class' => 'form-group'
-], TbHtml::activeLabel(new Answer(), "code", [
-    'class' => 'col-sm-1'
-]) . TbHtml::activeLabel(new Answer(), "answer", [
-    'class '=> 'col-sm-10',
-]) . TbHtml::label(gT('Actions'), null, ['class' => 'col-sm-1'])
-);
 
-echo TbHtml::openTag('div', ['class' => 'sortable']);
 $i = 0;
-if (empty($question->answers)) {
-    $answer = new Answer();
-    $answer->question_id = $question->primaryKey;
-    $answers = [$answer];
-} else {
-    $answers = $question->answers;
-}
-foreach ($answers as $answer) {
-    $answer->language = $language;
-    $attribute = "[{$i}]code";
-    echo TbHtml::openTag('div', array_merge(['class' => 'form-group', 'data-index' => $i],
+for ($scale = 0; $scale < $question->answerScales; $scale++) {
 
-        SamIT\Form\FormHelper::createAttributesForHighlight(TbHtml::resolveName($answer, $attribute))));
+    if ($question->answerScales > 1) {
+        echo TbHtml::tag('h1', [], $scale == 0 ? gT("Scale 1") : gT("Scale 2"));
+    }
+    // Table header
+    echo TbHtml::tag('div', [
+        'class' => 'form-group'
+    ], TbHtml::activeLabel(new Answer(), "code", [
+            'class' => 'col-sm-1'
+        ]) . TbHtml::activeLabel(new Answer(), "answer", [
+            'class '=> 'col-sm-10',
+        ]) . TbHtml::label(gT('Actions'), null, ['class' => 'col-sm-1'])
+    );
+
+    echo TbHtml::openTag('div', ['class' => 'sortable']);
+    $answers = array_filter($question->answers, function(Answer $answer) use ($scale) {
+        return $answer->scale_id == $scale;
+    });
+    if (empty($answers)) {
+        $answer = new Answer();
+        $answer->code = $question->answerScales == 1 ? "A1" : ($scale == 0 ? "L1" : "R1");
+        $answer->question_id = $question->primaryKey;
+        $answers = [$answer];
+    }
+    foreach ($answers as $answer) {
+        $answer->language = $language;
+        $attribute = "[{$i}]code";
+        echo TbHtml::openTag('div', array_merge(['class' => 'form-group', 'data-index' => $i, 'data-scale' => $scale],
+
+            SamIT\Form\FormHelper::createAttributesForHighlight(TbHtml::resolveName($answer, $attribute))));
         if ($first) {
             $validators = \SamIT\Form\ValidatorGenerator::createFromYii1Model($answer, 'code');
             $message = gT("Answer codes must be unique.");
@@ -53,17 +61,21 @@ foreach ($answers as $answer) {
             // TranslatableBehavior makes sure we copy the base language if no translation is found.
             'value' => $answer->answer
         ]);
-        echo TbHtml::tag('div', ['class' => 'col-sm-1'], TbHtml::linkButton("", ['icon' => 'trash', 'class' => 'remove']));
+        echo TbHtml::tag('div', ['class' => 'col-sm-1'],
+            TbHtml::linkButton("", ['icon' => 'trash', 'class' => 'remove']));
         $attribute = "[{$i}]code";
         echo TbHtml::tag('div', [
             'st-error' => TbHtml::resolveName($answer, $attribute),
             'class' => 'help-block'
         ], '');
+        echo TbHtml::closeTag('div');
+        $i++;
+    }
+
     echo TbHtml::closeTag('div');
-    $i++;
+
 }
 
 
-echo TbHtml::closeTag('div');
 
 ?>

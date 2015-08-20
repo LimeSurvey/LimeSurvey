@@ -463,65 +463,6 @@ class SurveyRuntimeHelper {
 
         $popups = [];
         $validationResults = [];
-        bP('build qanda');
-        foreach ($session->getGroups() as $seq => $group) {
-            $gid = $group->primaryKey;
-            /**
-             * @todo Make the loop conditional instead of skipping elements conditionally.
-             */
-            if ($session->format != Survey::FORMAT_ALL_IN_ONE
-                && ($session->step != $seq && $session->format == Survey::FORMAT_GROUP)
-            ) {
-                continue;
-            }
-
-            foreach ($session->getQuestions($group) as $i => $question) {
-                /**
-                 * @todo Make the loop conditional instead of skipping elements conditionally.
-                 */
-                if ($session->format == Survey::FORMAT_QUESTION
-                    && $session->step != $session->getQuestionIndex($question->primaryKey)
-                ) {
-                    continue;
-                }
-
-                if ($question->type != Question::TYPE_EQUATION && $question->bool_hidden) {
-                    continue;
-                }
-                //Get the answers/inputnames
-                // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
-                // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                list($plus_qanda, $plus_inputnames) = retrieveAnswers($question);
-                if ($plus_qanda) {
-                    $plus_qanda[] = $question->type;
-                    $plus_qanda[] = $question->bool_mandatory; // adds madatory identifyer for adding mandatory class to question wrapping div
-                    // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
-                    $plus_qanda['finalgroup'] = $question->gid;
-                }
-                if ($plus_inputnames) {
-                    $inputNames = addtoarray_single($inputNames, $plus_inputnames);
-                }
-
-                //Display the "mandatory" popup if necessary
-                // TMSW - get question-level error messages - don't call **_popup() directly
-                $validationResult = $question->validateResponse($session->response);
-                if ($session->getViewCount() > 1 && !$validationResult->getPassedMandatory()) {
-                    $popups[] = mandatory_popup($validationResult);
-                }
-
-                // Display the "file validation" popup if necessary
-                if ($session->getViewCount() > 1 && isset($filenotvalidated)) {
-                    ;
-                    if (null !== $message = file_validation_popup($question, $filenotvalidated)) {
-                        $popups[] = $message;
-                    };
-                }
-                $validationResults[] = $validationResult;
-            } //end iteration
-        }
-        eP('build qanda');
-
-
         if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->survey->bool_showprogress) {
             $percentcomplete = makegraph($session->step, $session->stepCount);
         }
@@ -546,8 +487,8 @@ class SurveyRuntimeHelper {
             CClientScript::POS_HEAD);
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
         if ($session->format != Survey::FORMAT_ALL_IN_ONE
-            && $session->getStep() != $session->getPrevStep()
-            || $session->getStep() % 2
+            && $session->step != $session->prevStep
+            || $session->step % 2
         ) {
             echo "<script type=\"text/javascript\">$(\"body\").addClass(\"page-odd\");</script>\n";
         }
@@ -558,9 +499,12 @@ class SurveyRuntimeHelper {
             'autocomplete' => 'off'
         ];
 
-        if ($question->type == Question::TYPE_UPLOAD) {
+        /**
+         * @Todo Check if any question on the current page is an upload question.
+         */
+//        if ($question->type == Question::TYPE_UPLOAD) {
             $formParams['enctype'] = 'multipart/form-data';
-        }
+//        }
 
         echo CHtml::beginForm('', 'post', $formParams);
         echo "<!-- INPUT NAMES -->";
@@ -627,7 +571,6 @@ class SurveyRuntimeHelper {
 
         LimeExpressionManager::registerScripts($session);
 
-        bP('iterate over groups');
         if ($session->format == Survey::FORMAT_ALL_IN_ONE) {
             foreach ($session->groups as $group) {
                 $this->renderGroup($session, $group);
@@ -639,7 +582,6 @@ class SurveyRuntimeHelper {
 
 
 
-        eP('iterate over groups');
         LimeExpressionManager::FinishProcessingPage();
 
         $navigator = surveymover(); //This gets globalised in the templatereplace function
@@ -707,7 +649,7 @@ class SurveyRuntimeHelper {
     * @param $aQuestionQanda : array from qanda helper
     * @return aray of replacement for question.psptl
     **/
-    public function getQuestionReplacement(array $aQuestionQanda, Question $question)
+    public function getQuestionReplacement(array $aQuestionQanda, Question $question, Response $response)
     {
         bP();
         $session = App()->surveySessionManager->current;
@@ -728,7 +670,6 @@ class SurveyRuntimeHelper {
             "QUESTION_TEXT"=>"",
             "QUESTIONHELP"=>"", // User help
             "QUESTIONHELPPLAINTEXT"=>"",
-            "QUESTION_CLASS"=>"",
             "QUESTION_MAN_CLASS"=>"",
             "QUESTION_INPUT_ERROR_CLASS"=>"",
             "ANSWER"=>"",
@@ -737,7 +678,6 @@ class SurveyRuntimeHelper {
             "QUESTION_FILE_VALID_MESSAGE"=>"",
             "QUESTION_MAN_MESSAGE"=>"",
             "QUESTION_MANDATORY"=>"",
-            "QUESTION_ESSENTIALS"=>"",
         );
         if(empty($aQuestionQanda[0]))
         {
@@ -801,7 +741,11 @@ class SurveyRuntimeHelper {
             $aReplacement['QUESTIONHELP']="<img src='{$helpicon}' alt='Help' align='left' />".$aReplacement['QUESTIONHELP'];
         }
         // Core value :the classes
-        $aReplacement['QUESTION_CLASS'] = \Question::getQuestionClass($question->type);
+        $classes = $question->classes;
+        if (!$question->isRelevant($response)) {
+            $classes[] = 'irrelevant';
+        }
+        $aReplacement['QUESTION_CLASS'] = implode(' ', $classes);
         $aMandatoryClass = [];
         if ($question->bool_mandatory) {
             $aMandatoryClass[]= 'mandatory';
@@ -820,9 +764,9 @@ class SurveyRuntimeHelper {
         $aReplacement['QUESTION_MAN_MESSAGE'] = $aQuestionQanda[0]['man_message'];
         $aReplacement['QUESTION_MANDATORY'] = $aQuestionQanda[0]['mandatory'];
         // For QUESTION_ESSENTIALS
-        $aHtmlOptions=array();
-        if (!$question->isRelevant($session->response) || $question->bool_hidden) {
-            $aHtmlOptions['style'] = 'display: none;';
+        $aHtmlOptions = [];
+        if (true !== $relevance = $question->getRelevanceScript()) {
+            $aHtmlOptions['data-relevance-expression'] = $relevance;
         }
 
         // Launch the event
@@ -886,7 +830,7 @@ class SurveyRuntimeHelper {
         echo "\n";
 
         echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
-        if ($session->format == Survey::FORMAT_GROUP) {
+        if ($session->format != Survey::FORMAT_QUESTION) {
             foreach ($group->questions as $question) {
                 $this->renderQuestion($session, $question);
             }
@@ -904,6 +848,7 @@ class SurveyRuntimeHelper {
         if ($question->bool_hidden || $question->type == Question::TYPE_EQUATION) {
             return;
         }
+
         $n_q_display = '';
 
         $aReplacement = [];
@@ -911,12 +856,14 @@ class SurveyRuntimeHelper {
 
         list($plus_qanda, $plus_inputnames) = retrieveAnswers($question);
         $plus_qanda[] = $question->type;
-        $plus_qanda[] = $question->bool_mandatory; // adds madatory identifyer for adding mandatory class to question wrapping div
-        // Add a finalgroup in qa array , needed for random attribute : TODO: find a way to have it in new quanda_helper in 2.1
+        $plus_qanda[] = $question->bool_mandatory;
         $plus_qanda['finalgroup'] = $question->gid;
-        $aQuestionReplacement = $this->getQuestionReplacement($plus_qanda, $question);
+        $aQuestionReplacement = $this->getQuestionReplacement($plus_qanda, $question, $session->response);
         echo templatereplace($question_template, $aQuestionReplacement, compact(array_keys(get_defined_vars())),
             false, $question->primaryKey);
+//        if ($question instanceof \ls\models\questions\LanguageQuestion) {
+//            vdd('ok');
+//        }
         eP();
     }
 }

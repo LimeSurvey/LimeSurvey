@@ -54,7 +54,6 @@ class GroupsController extends Controller {
                 return $this->redirect(['groups/update', 'id' => $group->primaryKey]);
             }
         } else {
-
             $lastTitle = ([] != $values = array_values($group->survey->groups)) ? $values[count($group->survey->groups) - 1]->group_name : "g0";
             if (isset($lastTitle) && preg_match('/^(.*?)(\d+)$/', $lastTitle, $matches)) {
                 $group->group_name = $matches[1] . ($matches[2] + 1);

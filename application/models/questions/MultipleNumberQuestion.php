@@ -1,11 +1,15 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: sam
+ * Date: 8/20/15
+ * Time: 11:19 AM
+ */
+
 namespace ls\models\questions;
 
-/**
- * Class ChoiceQuestion
- * @package ls\models\questions
- */
-class EquationQuestion extends \Question
+
+class MultipleNumberQuestion extends MultipleTextQuestion
 {
     /**
      * This function return the class by question type
@@ -14,7 +18,7 @@ class EquationQuestion extends \Question
      */
     public function getClasses()
     {
-        return ['equation'];
+        return ['numeric-multi'];
     }
 
 

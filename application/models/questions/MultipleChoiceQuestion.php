@@ -12,11 +12,15 @@ class MultipleChoiceQuestion extends ChoiceQuestion
         return 1;
     }
 
+    /**
+     * This function return the class by question type
+     * @param string question type
+     * @return string Question class to be added to the container
+     */
+    public function getClasses()
+    {
+        return ['multiple-opt'];
+    }
 
-//    public function relations()
-//    {
-//        return array_merge(parent::relations(), [
-//            'answers' => [self::HAS_MANY, \Answer::class, 'question_id', 'order' => 'sortorder', 'index' => 'code']
-//        ]);
-//    }
+
 }

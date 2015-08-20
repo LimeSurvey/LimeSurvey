@@ -437,16 +437,16 @@
         },
         {
             "name": "bower-asset/select2",
-            "version": "3.5.2",
+            "version": "3.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/select2/select2.git",
-                "reference": "6633cda9061d9fc65075dd140c63f9a6adbcbd72"
+                "reference": "a0ddc8c9466cb94a026e80b20264e8feacc4345b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/6633cda9061d9fc65075dd140c63f9a6adbcbd72",
-                "reference": "6633cda9061d9fc65075dd140c63f9a6adbcbd72",
+                "url": "https://api.github.com/repos/select2/select2/zipball/a0ddc8c9466cb94a026e80b20264e8feacc4345b",
+                "reference": "a0ddc8c9466cb94a026e80b20264e8feacc4345b",
                 "shasum": ""
             },
             "require": {
@@ -499,16 +499,16 @@
         },
         {
             "name": "bower-asset/tinymce",
-            "version": "4.2.3",
+            "version": "4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "1dac1eba2f84f52710b30c68ae2f571f739d01a2"
+                "reference": "aafc1144b1561d6c8485f81f9d63495b5db575c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/1dac1eba2f84f52710b30c68ae2f571f739d01a2",
-                "reference": "1dac1eba2f84f52710b30c68ae2f571f739d01a2",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/aafc1144b1561d6c8485f81f9d63495b5db575c8",
+                "reference": "aafc1144b1561d6c8485f81f9d63495b5db575c8",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -637,12 +637,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "fd861570a9c3c28d98f418feea1f43f6268bdfa0"
+                "reference": "8e6f5732242fe833eb5fd553648924a200e50492"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/fd861570a9c3c28d98f418feea1f43f6268bdfa0",
-                "reference": "fd861570a9c3c28d98f418feea1f43f6268bdfa0",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/8e6f5732242fe833eb5fd553648924a200e50492",
+                "reference": "8e6f5732242fe833eb5fd553648924a200e50492",
                 "shasum": ""
             },
             "require": {
@@ -681,7 +681,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2015-06-03 05:11:42"
+            "time": "2015-08-15 20:00:28"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -1377,12 +1377,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "4d5877eb597d6ac70b5e579605bf0f052a9a4172"
+                "reference": "5b570b0b17b7bef29140be3d59c1abfd6cf064e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/4d5877eb597d6ac70b5e579605bf0f052a9a4172",
-                "reference": "4d5877eb597d6ac70b5e579605bf0f052a9a4172",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/5b570b0b17b7bef29140be3d59c1abfd6cf064e4",
+                "reference": "5b570b0b17b7bef29140be3d59c1abfd6cf064e4",
                 "shasum": ""
             },
             "require": {
@@ -1421,7 +1421,7 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2015-08-11 04:31:06"
+            "time": "2015-08-19 01:51:30"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -1492,12 +1492,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "ab412b2404d12a3c55d1c4b798bd42ef32e80fab"
+                "reference": "767cbef6d43fc773461ab178162bdf3ace6e750c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/ab412b2404d12a3c55d1c4b798bd42ef32e80fab",
-                "reference": "ab412b2404d12a3c55d1c4b798bd42ef32e80fab",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/767cbef6d43fc773461ab178162bdf3ace6e750c",
+                "reference": "767cbef6d43fc773461ab178162bdf3ace6e750c",
                 "shasum": ""
             },
             "replace": {
@@ -1535,7 +1535,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-08-05 04:36:11"
+            "time": "2015-08-16 02:55:19"
         },
         {
             "name": "yiisoft/yii",

@@ -11,9 +11,21 @@ foreach ($survey->groups as $group) {
         'active' => isset($this->group) && $this->group->id === $group->id && !isset($this->question)
     ];
     foreach ($group->questions as $question) {
+        $title = '';
+        if ($question->hasSubQuestions && $question->hasAnswers) {
+            $title .= TbHtml::icon('th');
+        } elseif ($question->hasSubQuestions) {
+            $title .= TbHtml::icon('th-list');
+        } elseif ($question->hasAnswers) {
+            $title .= TbHtml::icon('tasks');
+        } else {
+            $title .= TbHtml::icon('pencil');
+        }
+        $title .= ' ' . \Cake\Utility\Text::truncate($question->displayLabel, 30);
+
         $items[] = [
-        'label' => \Cake\Utility\Text::truncate($question->displayLabel, 30),
-        'title' => $question->displayLabel,
+        'label' => $title,
+        'title' => $question->getDisplayLabel(),
         'url' => ['questions/update', 'id' => $question->qid],
         'class' => 'question',
         'active' => isset($this->question) && $this->question->qid === $question->qid,
@@ -22,10 +34,12 @@ foreach ($survey->groups as $group) {
     }
     $items[] = TbHtml::menuDivider();
 }
-$this->widget('TbNav', [
+$this->widget(TbNav::class, [
     'type' => TbHtml::NAV_TYPE_PILLS,
     'stacked' => true,
-    'items' => $items
+    'items' => $items,
+    'encodeLabel' => false
+
 ]);
 ?>
 </nav>

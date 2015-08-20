@@ -38,10 +38,21 @@ class MultipleChoiceWithCommentQuestion extends MultipleChoiceQuestion
             default:
                 break;
         }
-        if ($this->commented_checkbox != "allways") {
+        if ($this->commented_checkbox != "always") {
 
         }
         return $result;
     }
+
+    /**
+     * This function return the class by question type
+     * @param string question type
+     * @return string Question class to be added to the container
+     */
+    public function getClasses()
+    {
+        return ['multiple-opt-comments'];
+    }
+
 
 }

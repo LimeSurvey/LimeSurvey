@@ -16,7 +16,7 @@ class YesNoQuestion extends FixedChoiceQuestion
      * Must return an array of answer options.
      * @return array
      */
-    public function getAnswers()
+    public function getAnswers($scale = null)
     {
         $result = [
             'N' => gT('No'),
@@ -31,7 +31,15 @@ class YesNoQuestion extends FixedChoiceQuestion
 
     }
 
-
+    /**
+     * This function return the class by question type
+     * @param string question type
+     * @return string Question class to be added to the container
+     */
+    public function getClasses()
+    {
+        return ['yes-no'];
+    }
 
 
 }

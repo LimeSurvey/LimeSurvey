@@ -20,7 +20,13 @@ $this->widget(TbTabs::class, [
     'id' => 'answerTab',
     'htmlOptions' => \SamIT\Form\FormHelper::createAttributesForForm('has-error', 'has-success')
 ]);
-echo TbHtml::button('Add answer option', ['id' => 'addanswer']);
+if ($question->answerScales == 1) {
+    echo TbHtml::button('Add answer option', ['class' => 'addanswer', 'data-scale' => 0]);
+} else {
+    for ($i = 0; $i < $question->answerScales; $i++) {
+        echo TbHtml::button('Add answer (Scale ' . ($i + 1). ')', ['class' => 'addanswer', 'data-scale' => $i]);
+    }
+}
 
 /**
  * @todo Create a css file for page specific fixes.
@@ -70,10 +76,11 @@ App()->clientScript->registerCss('answer-form-margin-fix', '#answerTab .form-gro
         /**
          * Add an answer option.
          */
-        $('#addanswer').on('click', function (e) {
-            e.preventDefault();
+        $('.addanswer').on('click', function (e) {
+            var scale = $(this).attr('data-scale');
             $(this).closest('div').find('.tab-pane').each(function (i, pane) {
-                var $group = $(pane).find('.form-group:last');
+                var $group = $(pane).find('.form-group[data-index][data-scale=' + scale + ']:last');
+                var $form = $group.closest('form');
                 var i = parseInt($group.attr('data-index')) + 1;
                 var $clone = $group.clone();
 
@@ -87,6 +94,7 @@ App()->clientScript->registerCss('answer-form-margin-fix', '#answerTab .form-gro
                     $code.val(matches[1] + (1 + parseInt(matches[2])));
                 }
                 $clone.clone().appendTo($group.parent()).trigger('change');
+                $form.yiiactiveform($form.data('settings'));
             });
         });
 

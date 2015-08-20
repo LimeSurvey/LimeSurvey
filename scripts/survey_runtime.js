@@ -154,27 +154,21 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
     newval = new String(value);
 
-    /**
-     * If have to use parsed value.
-     */
-    if(!bNumRealValue)
-    {
-        if (typeof intonly !=='undefined' && intonly==1) {
-            newval = newval.replace(intRegex,'');
-        }
-        else {
-            newval = newval.replace(numRegex,'');
-        }
-        aNewval = newval.split(LEMradix);
-        if(aNewval.length>0){
-            newval=aNewval[0];
-        }
-        if(aNewval.length>1){
-            newval=newval+"."+aNewval[1];
-        }
-        if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
-            newval = '';
-        }
+    if (typeof intonly !=='undefined' && intonly==1) {
+        newval = newval.replace(intRegex,'');
+    }
+    else {
+        newval = newval.replace(numRegex,'');
+    }
+    aNewval = newval.split(LEMradix);
+    if(aNewval.length>0){
+        newval=aNewval[0];
+    }
+    if(aNewval.length>1){
+        newval=newval+"."+aNewval[1];
+    }
+    if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
+        newval = '';
     }
 
     /**

@@ -48,9 +48,19 @@ class RankingQuestion extends \Question
     {
         $result = [];
         for ($i = 1; $i <= count($this->answers); $i++) {
-            $result[] = new \QuestionResponseField($this->sgqa . $i, $this);
+            $result[] = new \QuestionResponseField($this->sgqa . $i, "{$this->title}_{$i}", $this);
         }
         return $result;
+    }
+
+    /**
+     * This function return the class by question type
+     * @param string question type
+     * @return string Question class to be added to the container
+     */
+    public function getClasses()
+    {
+        return ['ranking'];
     }
 
 

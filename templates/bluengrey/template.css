@@ -642,7 +642,7 @@ td.clearall-result .warning-text {
 ,.slider 
 ,.array-multi-flexi 
 ,.array-multi-flexi-text
-,.array-flexible-duel-scale 
+,.array-flexible-dual-scale
 */ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .answers ul,.list-radio-flexible .answers ul,.list-radio .answers ul,.list-with-comment .answers ul,.multiple-opt .answers ul,.multiple-opt-comments .answers ul,.multiple-short-txt .answers ul,.numeric-multi .answers ul,.yes-no .answers ul,.gender .answers ul
@@ -999,18 +999,18 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
   font-weight: bold;
 }
 
-#limesurvey .array-flexible-duel-scale table.question tr.repeat th {
+#limesurvey .array-flexible-dual-scale table.question tr.repeat th {
 	background-color: #F6F6F6;
 }
 
-#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
-#limesurvey .array-flexible-duel-scale table.question tr.repeat th.header_answer_text,
-#limesurvey .array-flexible-duel-scale table.question .header_separator,
-#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+#limesurvey .array-flexible-dual-scale table.question .header_answer_text,
+#limesurvey .array-flexible-dual-scale table.question tr.repeat th.header_answer_text,
+#limesurvey .array-flexible-dual-scale table.question .header_separator,
+#limesurvey .array-flexible-dual-scale table.question .header_answer_text_right {
 	background-color: #FFFFFF;
 }
 
-#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+#limesurvey .array-flexible-dual-scale table.question tr.repeat {
 	background-color: #F6F6F6;
 }
 

@@ -21,7 +21,12 @@ $this->widget(TbTabs::class, [
     'id' => 'subQuestionTab',
     'htmlOptions' => \SamIT\Form\FormHelper::createAttributesForForm('has-error', 'has-success')
 ]);
-echo TbHtml::button('Add question', ['id' => 'addquestion']);
+if ($question->subQuestionScales == 1) {
+    echo TbHtml::button('Add question', ['class' => 'addquestion', 'data-scale' => 0]);
+} else {
+    echo TbHtml::button('Add X question', ['class' => 'addquestion', 'data-scale' => 0]);
+    echo TbHtml::button('Add Y question', ['class' => 'addquestion', 'data-scale' => 1]);
+}
 
 /**
  * @todo Create a css file for page specific fixes.
@@ -71,9 +76,11 @@ App()->clientScript->registerCss('subquestion-form-margin-fix', '#subQuestionTab
         /**
          * Add an answer option.
          */
-        $('#addquestion').on('click', function (e) {
+        $('.addquestion').on('click', function (e) {
+            var scale = $(this).attr('data-scale');
             $(this).closest('div').find('.tab-pane').each(function (i, pane) {
-                var $group = $(pane).find('.form-group:last');
+
+                var $group = $(pane).find('.form-group[data-index][data-scale=' + scale + ']:last');
                 var $form = $group.closest('form');
                 var i = parseInt($group.attr('data-index')) + 1;
                 var $clone = $group.clone();

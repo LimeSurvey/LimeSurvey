@@ -8,10 +8,12 @@
 class ResponseField extends CComponent
 {
     protected $_name;
+    protected $_code;
     protected $_numerical = false;
 
-    public function __construct($name) {
+    public function __construct($name, $code) {
         $this->_name = $name;
+        $this->_code = $code;
     }
 
     /**
@@ -28,7 +30,7 @@ class ResponseField extends CComponent
      */
 
     public function getCode() {
-        return $this->_name;
+        return $this->_code;
     }
 
     public function isNumerical() {

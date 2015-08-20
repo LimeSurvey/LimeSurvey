@@ -27,14 +27,6 @@ abstract class FixedChoiceQuestion extends \Question
     }
 
     /**
-     * Must return an array of answer options.
-     * @return array
-     */
-    abstract public function getAnswers();
-
-
-
-    /**
      * @return array Keys: column name, values: column type.
      * @throws Exception
      */

@@ -1780,10 +1780,12 @@ class ExpressionManager {
                 if ($this->RDP_Evaluate($expr))
                 {
 
-                    $resolvedPart = $this->GetResult();
-                    vd($resolvedPart);
-                    vd($stringPart[0]);
-                    vdd($this->GetErrors());
+                    $resolvedParts[] = $this->GetResult();
+//                    vd($resolvedPart);
+//                    vd($stringPart[0]);
+//                    vd($this->GetErrors());
+//                    vdd($src);
+//                    throw new \Exception();
 
                 }
                 else
