@@ -339,6 +339,27 @@ class SurveysController extends Controller
         $this->redirect(['surveys/index']);
     }
 
+    public function actionDeactivateMultiple(array $ids) {
+        $count = 0;
+        foreach($ids as $id) {
+            $survey = $this->loadModel($id);
+            if ($survey->isActive
+                && App()->user->checkAccess('survey', [
+                    'entity' => 'survey',
+                    'entity_id' => $survey->primaryKey,
+                    'crud' => 'update'
+                ])) {
+                if ($survey->deactivate()) {
+                    $count++;
+                }
+
+            }
+
+        }
+        App()->user->setFlash('success', gT("Surveys deactivated") . " " . $count);
+        $this->redirect(['surveys/index']);
+    }
+
     /**
      * Renders the relevance and tailoring javascript for a survey.
      * @todo Add caching headers.

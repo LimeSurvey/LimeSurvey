@@ -29,7 +29,7 @@
             'color' => 'danger',
             'title' => gT("Stop selected surveys"),
             'formaction' => App()->createUrl('surveys/deactivateMultiple'),
-            'data-confirm' => gT("This will activate all selected surveys, are you sure?")
+            'data-confirm' => gT("This will deactivate all selected surveys, are you sure?")
         ]),
         TbHtml::endForm()
     ]));
