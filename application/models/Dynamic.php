@@ -4,7 +4,7 @@
 	 * In this implementation class definitions are generated dynamically.
 	 * This class and its descendants should be declared abstract!
 	 */
-	abstract class Dynamic extends LSActiveRecord
+	abstract class Dynamic extends ActiveRecord
 	{
         private static $valid = [];
 		/**

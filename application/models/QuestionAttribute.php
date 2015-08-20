@@ -19,21 +19,8 @@
  * @property string $attribute
  * @property string $value
  */
-class QuestionAttribute extends LSActiveRecord
+class QuestionAttribute extends ActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
-
 	/**
 	 * Returns the setting's table name to be used by the model
 	 *
@@ -65,12 +52,19 @@ class QuestionAttribute extends LSActiveRecord
     */
     public function rules()
     {
-        return array(
-            array('qid,attribute','required'),
-            array('value','LSYii_Validators'),
-        );
+        return [
+            [['qid', 'attribute'], 'required'],
+            ['value', 'LSYii_Validators'],
+        ];
     }
-    
+
+    /**
+     * @param $iQuestionID
+     * @param $sAttributeName
+     * @param $sValue
+     * @return mixed
+     * @deprecated
+     */
     public function setQuestionAttribute($iQuestionID,$sAttributeName, $sValue)
     {
         $oModel = new self;
@@ -93,87 +87,15 @@ class QuestionAttribute extends LSActiveRecord
             ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
             ->order('qaid asc')
             ->query();
-    }    
-
-    /**
-    * Returns Question attribute array name=>value
-    *
-    * @access public
-    * @param int $iQuestionID
-    * @return array
-    */
-    public function getQuestionAttributes($iQuestionID)
-    {
-        throw new \Exception("deprecated");
-        $iQuestionID=(int)$iQuestionID;
-        static $aQuestionAttributesStatic=array();// TODO : replace by Yii::app()->cache
-        // Limit the size of the attribute cache due to memory usage
-        $aQuestionAttributesStatic=array_splice($aQuestionAttributesStatic,-1000,null,true);
-        if(isset($aQuestionAttributesStatic[$iQuestionID]))
-        {
-            return $aQuestionAttributesStatic[$iQuestionID];
-        }
-        $aQuestionAttributes=array();
-        $oQuestion = Question::model()->find("qid=:qid",array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
-        if ($oQuestion)
-        {
-            $aLanguages = array_merge(array(Survey::model()->cache(1)->findByPk($oQuestion->sid)->language), Survey::model()->findByPk($oQuestion->sid)->additionalLanguages);
-
-            // Get all atribute set for this question
-            $sType=$oQuestion->type;
-            $aAttributeNames = questionAttributes();
-            $aAttributeNames = $aAttributeNames[$sType];
-            $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
-            $aAttributeValues=array();
-            foreach($oAttributeValues as $oAttributeValue)
-            {
-                if($oAttributeValue->language){
-                    $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]=$oAttributeValue->value;
-                }else{
-                    $aAttributeValues[$oAttributeValue->attribute]=$oAttributeValue->value;
-                }
-            }
-
-            // Fill with aQuestionAttributes with default attribute or with aAttributeValues
-            // Can not use array_replace due to i18n
-            foreach($aAttributeNames as $aAttribute)
-            {
-                if ($aAttribute['i18n'] == false)
-                {
-                    if(isset($aAttributeValues[$aAttribute['name']]))
-                    {
-                        $aQuestionAttributes[$aAttribute['name']]=$aAttributeValues[$aAttribute['name']];
-                    }
-                    else
-                    {
-                        $aQuestionAttributes[$aAttribute['name']]=$aAttribute['default'];
-                    }
-                }
-                else
-                {
-                    foreach ($aLanguages as $sLanguage)
-                    {
-                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage]))
-                        {
-                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                        }
-                        else
-                        {
-                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttribute['default'];
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
-        }
-        $aQuestionAttributesStatic[$iQuestionID]=$aQuestionAttributes;
-        return $aQuestionAttributes;
     }
 
-	public static function insertRecords($data)
+    /**
+     * @param $data
+     * @return bool
+     * @deprecated
+     */
+
+    public static function insertRecords($data)
     {
         $attrib = new self;
 		foreach ($data as $k => $v)
@@ -193,5 +115,6 @@ class QuestionAttribute extends LSActiveRecord
         }
         return $command->queryAll();
     }
+
 }
 

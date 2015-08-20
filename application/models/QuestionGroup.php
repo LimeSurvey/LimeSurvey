@@ -20,7 +20,7 @@
  * @property string $grelevance
  * @property Survey $survey
  */
-    class QuestionGroup extends LSActiveRecord
+    class QuestionGroup extends ActiveRecord
     {
         public $before;
         /**

@@ -18,14 +18,7 @@
  * and Contributors (http://phpjs.org/authors)
  */
 
-
-/**
- * LS3 will sync input values to the LEMvars array.
- */
-
-
-
-/* Default event to trigger on answer part 
+/* Default event to trigger on answer part
  * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations 
  * Actually only for list with comment and select in ranking
  **/
@@ -831,28 +824,38 @@ function LEMstrtolower(s)
 
 function ExpressionManager(vars) {
     var that = this;
+    var name2code = {};
     /**
      * Initialization
      */
     $(document).on('change', 'input, select, textarea', function(e) {
-        for (var code in vars) {
-            if (vars[code].name == $(this).attr('name')) {
-                vars[code].value = $(this).val();
-                console.log("Updated " + code);
-                that.updateVisibility();
-                that.updateReplacements();
-                return;
-            }
+        var code = name2code[$(this).attr('name')];
+        if (typeof code != 'undefined') {
+            vars[code].value = $(this).val();
+            console.log("Updated " + code);
+            that.updateVisibility();
+            that.updateReplacements();
+        } else {
+            console.log("Not updated, no code found for: " + $(this).attr('name'));
         }
-        console.log("Not updated, no code found for: " + $(this).attr('name'));
     });
 
-
+    for (var code in vars) {
+        name2code[vars[code].name] = code;
+    }
 
     /**
      * Public functions
      */
-
+    this.setValues = function(values) {
+        for (var key in values) {
+            vars[name2code[key]].value = values[key];
+        }
+    }
+    this.debug = function() {
+        console.log(EM);
+        console.log(vars);
+    }
     this.splitVar = function (code) {
         var parts = code.split('.', 2);
         if (parts.count == 1) {
@@ -880,7 +883,13 @@ function ExpressionManager(vars) {
     this.updateReplacements = function() {
         $('[data-expression]').each(function(e) {
             $this = $(this);
-            $this.html(eval($this.attr('data-expression')));
+            var html = eval($this.attr('data-expression'));
+            if (html === null) {
+                $this.html('');
+            } else {
+                $this.html(html);
+            }
+
         });
     }
 

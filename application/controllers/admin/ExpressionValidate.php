@@ -276,7 +276,8 @@ class ExpressionValidate extends Survey_Common_Action {
         // TODO : Find error in class name, style etc ....
         // need: templatereplace without any filter and find if there are error but $bHaveError=$LEM->em->HasErrors() is Private
         $oFilter = new CHtmlPurifier();
-        templatereplace($oFilter->purify(viewHelper::filterScript($sExpression)), $aReplacement,$aReData,$sDebugSource,false,null,array(),true);
+        templatereplace($oFilter->purify(viewHelper::filterScript($sExpression)), $aReplacement, $aReData,
+            $sDebugSource, null, true);
 
         return $LEM::GetLastPrettyPrintExpression();
     }

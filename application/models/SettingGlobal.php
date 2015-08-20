@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class SettingGlobal extends LSActiveRecord
+class SettingGlobal extends ActiveRecord
 {
     public function behaviors()
     {

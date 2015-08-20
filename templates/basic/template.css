@@ -195,6 +195,9 @@ span.qnumcode {
   font-weight: bold;
 }
 
+.questiontext > span {
+	display: block;
+}
 .survey-question-help img {
   margin-right: 5px;
 }

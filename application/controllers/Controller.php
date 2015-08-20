@@ -40,8 +40,7 @@ abstract class Controller extends \CController
 
         Yii::app()->session->init();
 		$this->loadLibrary('LS.LS');
-        $this->loadHelper('common');
-		$this->loadHelper('expressions.em_manager');
+        $this->loadHelper('expressions.em_manager');
 		$this->loadHelper('replacements');
 		$this->_init();
 	}

@@ -21,7 +21,7 @@ die("DEPRECATED");
  * @property string $attribute_type
  * @property string $visible
  */
-class ParticipantAttributeNameLang extends LSActiveRecord
+class ParticipantAttributeNameLang extends ActiveRecord
 {
 	/**
 	 * Returns the static model of Participant Attribute Names Lang table

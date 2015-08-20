@@ -13,7 +13,7 @@
   * 	Files Purpose: lots of common functions
  */
 
-class SurveyLink extends LSActiveRecord
+class SurveyLink extends ActiveRecord
 {
 
 	/**

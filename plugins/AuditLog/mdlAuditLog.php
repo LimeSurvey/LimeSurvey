@@ -16,7 +16,7 @@
 /**
  * This is the model class for table "{{plugins}}".
  */
-class mdlAuditlog extends LSActiveRecord {
+class mdlAuditlog extends ActiveRecord {
 
     /**
      * @param type $className

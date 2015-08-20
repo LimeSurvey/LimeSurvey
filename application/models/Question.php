@@ -30,7 +30,7 @@
  * @property-read string $sgqa
  * @property-read QuestionAttribute[] $questionAttributes
  */
-    class Question extends LSActiveRecord
+    class Question extends ActiveRecord
     {
         /**
          * Question type constants.
@@ -1146,6 +1146,7 @@
          * @return QuestionResponseField[]
          */
         public function getFields() {
+            bP();
             if (empty($this->_fields)) {
                 $this->_fields[] = $field = new QuestionResponseField($this->sgqa, $this);
                 if ($this->bool_other) {
@@ -1153,6 +1154,7 @@
                 }
 
             }
+            eP();
             return $this->_fields;
 
 
@@ -1310,10 +1312,17 @@
                             vd($name);
                             vdd($attribute);
                     }
+
                     return $result;
                 };
             }
             return new ExpressionManager($callback);
         }
+
+        public function getMandatoryMessage() {
+            return "<span class='errormandatory'>" . gT('This question is mandatory') . '</span>';
+        }
+
+
 
     }

@@ -15,7 +15,7 @@ if (!defined('BASEPATH'))
  *
   */
 
-class Template extends LSActiveRecord
+class Template extends ActiveRecord
 {
 
     /**

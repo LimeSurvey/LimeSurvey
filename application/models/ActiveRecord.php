@@ -12,7 +12,7 @@
  *
   * 	Extensions to the CActiveRecord class
  */
-class LSActiveRecord extends CActiveRecord
+class ActiveRecord extends CActiveRecord
 {
     
     /**
@@ -24,34 +24,14 @@ class LSActiveRecord extends CActiveRecord
      * @return array
      */
     public function behaviors(){
-        $aBehaviors=array();
-		$sCreateFieldName=($this->hasAttribute('created')?'created':null);
-        $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
-        $sDriverName = Yii::app()->db->getDriverName(); 
-        if ($sDriverName=='sqlsrv' || $sDriverName=='dblib')
-        {
-            $sTimestampExpression=new CDbExpression('GETDATE()');
-        }
-        else
-        {
-            $sTimestampExpression=new CDbExpression('NOW()');
-        }
-        $aBehaviors['CTimestampBehavior'] = array(
-            'class' => 'zii.behaviors.CTimestampBehavior',
-            'createAttribute' => $sCreateFieldName,
-            'updateAttribute' => $sUpdateFieldName,
-            'timestampExpression' =>  $sTimestampExpression
-        );
-        // Table plugins might not exist during a database upgrade so in that case disconnect events
-        if (Yii::app()->db->schema->getTable('{{plugins}}') !== null)
-        {
-            $aBehaviors['PluginEventBehavior']= array(
-				'class' => \ls\pluginmanager\PluginEventBehavior::class
-            );
-        }
-        return $aBehaviors;
+        $result = [
+            'PluginEventBehavior' => [
+                'class' => \ls\pluginmanager\PluginEventBehavior::class
+            ]
+        ];
+        return $result;
     }
-    
+
     /**
      * Modified version that default to do the same as the original, but allows via a
      * third parameter to retrieve the result as array instead of active records. This
@@ -203,4 +183,46 @@ class LSActiveRecord extends CActiveRecord
 
         return $result;
     }
+
+    /**
+     * unserialize() checks for the presence of a function with the magic name __wakeup.
+     * If present, this function can reconstruct any resources that the object may have.
+     * The intended use of __wakeup is to reestablish any database connections that may have been lost during
+     * serialization and perform other reinitialization tasks.
+     *
+     * @return void
+     * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.sleep
+     */
+    function __wakeup()
+    {
+        // Re-attach behaviors.
+        $this->attachBehaviors($this->behaviors());
+    }
+
+
+    public function __sleep()
+    {
+        $this->detachBehaviors();
+        foreach(get_class_methods($this) as $method) {
+            if (substr_compare($method, 'on', 0, 2) === 0) {
+                /** @var CList $list */
+                $list = $this->getEventHandlers($method);
+                if ($list->getCount() > 0) {
+                    vdd($list);
+                    throw new \Exception("Cannot serialize AR with events.");
+                }
+            }
+        }
+        $result = array_flip(parent::__sleep());
+
+        // Don't serialize validators.
+        unset($result[chr(0) . 'CModel' . chr(0) . '_validators']);
+        // Don't serialize behaviors.
+        unset($result[chr(0) . 'CComponent' . chr(0) . '_m']);
+        // Don't serialize events.
+        unset($result[chr(0) . 'CComponent' . chr(0) . '_e']);
+        return array_keys($result);
+        // TODO: Implement serialize() method.
+    }
+
 }

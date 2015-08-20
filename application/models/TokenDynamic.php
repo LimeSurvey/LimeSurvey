@@ -13,7 +13,7 @@
    *    Files Purpose: lots of common functions
 */
 
-class TokenDynamic extends LSActiveRecord
+class TokenDynamic extends ActiveRecord
 {
     protected static $sid = 0;
 

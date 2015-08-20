@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class ExpressionError extends LSActiveRecord
+class ExpressionError extends ActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table

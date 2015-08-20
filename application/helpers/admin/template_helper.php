@@ -15,7 +15,7 @@
 
 function doreplacement($file,$data) { //Produce sample page from template file
     $aReplacements=isset($data['aReplacements']) ? $data['aReplacements'] : array();
-    return (array)templatereplace(file_get_contents($file),$aReplacements,$data);
+    return (array)templatereplace(file_get_contents($file), $aReplacements, $data);
 }
 
 

@@ -382,6 +382,9 @@ td.questiontext {
   padding: 0.5em 1em;
 }
 
+.questiontext > span {
+  display: block;
+}
 .page-odd td.questiontext {
   background-color: #EFFFEE;
 }

@@ -13,7 +13,7 @@
  *
  */
 
-class LabelSet extends LSActiveRecord
+class LabelSet extends ActiveRecord
 {
 	/**
 	 * Returns the table's name

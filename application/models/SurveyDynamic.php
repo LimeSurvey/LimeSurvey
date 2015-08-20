@@ -12,7 +12,7 @@
  *
   * 	Files Purpose: lots of common functions
  */
-class SurveyDynamic extends LSActiveRecord
+class SurveyDynamic extends ActiveRecord
 {
     protected static $sid = 0;
 

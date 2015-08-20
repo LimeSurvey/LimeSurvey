@@ -5,7 +5,6 @@
  * Do not change these unless you know what you are doing.
  *
  */
-
 if (file_exists(__DIR__ . '/config.php')) {
     $userConfig = require(__DIR__ . '/config.php');
 } else {
@@ -95,15 +94,16 @@ $internalConfig = array(
                 'trace' => array(
                     'class'                      => 'CWebLogRoute', // you can include more levels separated by commas... trace is shown on debug only
                     'levels'                     => 'trace',        // you can include more separated by commas
-                    'enabled' => false && true || YII_DEBUG && false
+                    'enabled' => YII_DEBUG
                 ),
                 'profile' => [
-                    'class' => 'CProfileLogRoute'
+                    'class' => 'CProfileLogRoute',
+                    'enabled' => YII_DEBUG
                 ]
             )
         ),
         'cache'=>array(
-           'class' => false && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
+           'class' => false && YII_DEBUG ? 'system.caching.CDummyCache' : CFileCache::class,
         ),
         'db' => array(
             'schemaCachingDuration' => 3600,

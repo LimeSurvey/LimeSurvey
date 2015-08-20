@@ -13,64 +13,6 @@
 Yii::import('application.helpers.sanitize_helper', true);
 
 /**
- * Helperfunction for debugging.
- */
-function vd($arg) {
-    if (defined('YII_DEBUG') && YII_DEBUG) {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        if ($trace[1]['function'] == 'vdd') {
-            $details = $trace[2];
-            $file = $trace[1]['file'];
-            $line = $trace[1]['line'];
-        } else {
-            $details = $trace[1];
-            $file = $trace[0]['file'];
-            $line = $trace[0]['line'];
-
-        }
-        $class = \TbArray::getValue('class', $details, 'Global function');
-        $token = "{$class}::{$details['function']}, ({$file}:{$line})";
-        echo TbHtml::well("Dumped from: " . $token . '<br>'. CVarDumper::dumpAsString($arg, 10, true), [
-            'style' => 'text-align: left;'
-        ]);
-    }
-}
-
-function vdd($arg) {
-    vd($arg); die();
-}
-/**
- * Helper function for profiling.
- * @param string $key The key to be appended.
- */
-function bP($key = false) {
-    if (defined('YII_DEBUG') && YII_DEBUG) {
-        $details = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
-        $class = \TbArray::getValue('class', $details, 'Global function');
-        $token = "{$class}::{$details['function']}";
-        \Yii::beginProfile($token);
-        if ($key !== false) {
-            \Yii::beginProfile($token . ' - ' . (is_null($key) ? "null" : $key));
-        }
-    }
-}
-
-/**
- * Helper function for profiling.
- * @param string $key The key to be appended.
- */
-function eP($key = false) {
-    if (defined('YII_DEBUG') && YII_DEBUG) {
-        $details = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
-        $class = \TbArray::getValue('class', $details, 'Global function');
-        $token = "{$class}::{$details['function']}";
-        if ($key !== false) {
-            \Yii::endProfile($token . ' - ' . (is_null($key) ? "null" : $key));
-        }
-        \Yii::endProfile($token);
-    }
-}
-/**
  * Translation helper function
  * @param string $sToTranslate
  * @param string $sEscapeMode
@@ -1149,9 +1091,9 @@ function returnGlobal($stringname,$bRestrictToString=false)
         $stringname == "loadsecurity")
         {
             if($bUrlParamIsArray){
-                return array_map("sanitize_int",$urlParam);
+                return filter_var_array($urlParam, FILTER_SANITIZE_NUMBER_INT);
             }else{
-                return sanitize_int($urlParam);
+                return filter_var($urlParam, FILTER_SANITIZE_NUMBER_INT);
             }
         }
         elseif ($stringname =="lang" || $stringname =="adminlang")
@@ -1193,8 +1135,6 @@ function returnGlobal($stringname,$bRestrictToString=false)
 
 function sendCacheHeaders()
 {
-    global $embedded;
-    if ( $embedded ) return;
     if (!headers_sent())
     {
         header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');  // this line lets IE7 run LimeSurvey in an iframe
@@ -1203,7 +1143,6 @@ function sendCacheHeaders()
         header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
-        header('Content-Type: text/html; charset=utf-8');
     }
 }
 
@@ -1547,6 +1486,7 @@ return $allfields;
 * @return array
 */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage = null) {
+    throw new \Exception();
     global $aDuplicateQIDs;
     static $requestCache = [];
     $cacheKey = 'fieldmap' . md5(json_encode(func_get_args()));
@@ -6540,6 +6480,13 @@ function array_diff_assoc_recursive($array1, $array2) {
     }
 
 
+
+    function renderOldTemplate($fileName, $data = [], $replacements = []) {
+        bP();
+        echo templatereplace(file_get_contents($fileName), $data, $replacements);
+        eP();
+
+    }
 // Closing PHP tag intentionally omitted - yes, it is okay
 
 

@@ -67,7 +67,6 @@ class SurveySessionManager extends CApplicationComponent
     public function getSession($id)
     {
         return $this->sessions[$id];
-
     }
 
     public function newSession($surveyId, $responseId = null)

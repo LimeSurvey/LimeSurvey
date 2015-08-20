@@ -44,28 +44,7 @@
 * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 */
 
-/**
-* setNoAnswerMode
-*/
-function setNoAnswerMode($thissurvey)
-{
-    if (\SettingGlobal::get('shownoanswer') == 1)
-    {
-        define('SHOW_NO_ANSWER', 1);
-    }
-    elseif (\SettingGlobal::get('shownoanswer') == 0)
-    {
-        define('SHOW_NO_ANSWER', 0);
-    }
-    elseif ($thissurvey['shownoanswer'] == 'N')
-    {
-        define('SHOW_NO_ANSWER', 0);
-    }
-    else
-    {
-        define('SHOW_NO_ANSWER', 1);
-    }
-}
+
 
 /**
 * This function returns an array containing the "question/answer" html display
@@ -77,6 +56,7 @@ function setNoAnswerMode($thissurvey)
 */
 function retrieveAnswers(Question $question)
 {
+    bP();
     //globalise required config variables
 
     //QUESTION NAME
@@ -88,7 +68,7 @@ function retrieveAnswers(Question $question)
     //Create the question/answer html
     $answer = "";
 
-    $number = '';
+    $number = $session->getQuestionIndex($question->primaryKey) + 1;
 
     $em = $question->getExpressionManager($session->response);
     $parts = $em->asSplitStringOnExpressions($question->question);
@@ -286,8 +266,9 @@ function retrieveAnswers(Question $question)
 
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    if ($session->step != $session->maxStep || $session->viewCount > 1) {
-        $mandatory_msg = mandatory_message($question);
+    if (($session->step != $session->maxStep || $session->viewCount > 1)
+        && !$question->validateResponse($session->response)->getPassedMandatory()) {
+        $mandatory_msg = $question->getMandatoryMessage();
     }
     else {
         $mandatory_msg = '';
@@ -369,34 +350,18 @@ function retrieveAnswers(Question $question)
         };
 
         $question_text['all'] = $qtitle_custom;
-    }
-    else
-    {
+    } else {
         $question_text['all'] = $qtitle;
     };
     // END: legacy question_start.pstpl code
-    //===================================================================
-    $qtitle = $question_text;
-    // =====================================================
 
-    //New Return
-    return [
-        [$qtitle, $answer, 'help', "what is this variable?", $question->primaryKey, $question->title, $question->gid, $question->sgqa],
+    $result = [
+        [$question_text, $answer, 'help', "what is this variable?", $question->primaryKey, $question->title, $question->gid, $question->sgqa],
         $inputnames
     ];
+    eP();
+    return $result;
 }
-
-function mandatory_message(Question $question)
-{
-    $qinfo = LimeExpressionManager::GetQuestionStatus($question->primaryKey);
-    if ($qinfo['mandViolation']) {
-        return $qinfo['mandTip'];
-    }
-    else {
-        return "";
-    }
-}
-
 
 function validation_message(Question $question,$show)
 {
@@ -854,23 +819,23 @@ function do_5pointchoice(Question $question)
     for ($fp=1; $fp<=5; $fp++)
     {
         $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer$question->sgqa$fp\" value=\"$fp\"";
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $fp)
+        if ($session->response->{$question->sgqa} == $fp)
         {
             $answer .= CHECKED;
         }
         $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$question->sgqa$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
     }
-    if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
+    if ($ia[6] != "Y"  && $question->survey->bool_shownoanswer) // Add "No Answer" option if question is not mandatory
     {
         $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer".$question->sgqa."NANS\" value=\"\"";
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa])
+        if (!$session->response->{$question->sgqa})
         {
             $answer .= CHECKED;
         }
         $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$question->sgqa."NANS\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
 
     }
-    $answer .= "</ul>\n<input type=\"hidden\" name=\"java$question->sgqa\" id=\"java$question->sgqa\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]."\" />\n";
+    $answer .= "</ul>\n<input type=\"hidden\" name=\"java$question->sgqa\" id=\"java$question->sgqa\" value=\"".$session->response->{$question->sgqa}."\" />\n";
     $inputnames[]=$question->sgqa;
 
     if($question->slider_rating==1){
@@ -898,8 +863,6 @@ function do_5pointchoice(Question $question)
 // ---------------------------------------------------------------
 function do_date(Question $question)
 {
-    global $thissurvey;
-    $question = App()->surveySessionManager->current->getQuestion($ia[0]);
     $sDateLangvarJS=" translt = {
          alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
          infoCompleteAll: '" . gT('Please complete all parts of the date!','js') . "'
@@ -909,8 +872,8 @@ function do_date(Question $question)
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'jstoolbox/date.js');
     $checkconditionFunction = "checkconditions";
 
-    $dateformatdetails = getDateFormatDataForQID($question->qid, $thissurvey);
-    $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $dateformatdetails = getDateFormatDataForQID($question);
+    $numberformatdatat = getRadixPointData($question->survey->getLocalizedNumberFormat());
     $sMindatetailor='';
     $sMaxdatetailor='';
 
@@ -931,7 +894,7 @@ function do_date(Question $question)
         {
             $mindate='{'.$question->date_min.'}';
             // get the LEMtailor ID, remove the span tags
-            $sMindatespan=LimeExpressionManager::ProcessString($mindate, $ia[0],NULL, false, 1, 1);
+            $sMindatespan=LimeExpressionManager::ProcessString($mindate, $ia[0], null, false, 1, 1);
             preg_match("/LEMtailor_Q_[0-9]{1,7}_[0-9]{1,3}/", $sMindatespan, $matches);
             if (isset($matches[0]))
                 $sMindatetailor=$matches[0];
@@ -959,7 +922,7 @@ function do_date(Question $question)
         {
             $maxdate='{'.$question->date_max.'}';
             // get the LEMtailor ID, remove the span tags
-            $sMaxdatespan=LimeExpressionManager::ProcessString($maxdate, $ia[0],NULL, false, 1, 1);
+            $sMaxdatespan=LimeExpressionManager::ProcessString($maxdate, $ia[0], null, false, 1, 1);
             preg_match("/LEMtailor_Q_[0-9]{1,7}_[0-9]{1,3}/", $sMaxdatespan, $matches);
             if (isset($matches[0]))
                 $sMaxdatetailor=$matches[0];
@@ -971,10 +934,10 @@ function do_date(Question $question)
     }
 
     if (trim($question->dropdown_dates)==1) {
-        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) &
-           ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]!='INVALID'))
+        if (!empty($session->response->{$question->sgqa}) &
+           ($session->response->{$question->sgqa}!='INVALID'))
         {
-            $datetimeobj = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa], "Y-m-d H:i:s");
+            $datetimeobj = new Date_Time_Converter($session->response->{$question->sgqa}, "Y-m-d H:i:s");
             $currentyear = $datetimeobj->years;
             $currentmonth = $datetimeobj->months;
             $currentdate = $datetimeobj->days;
@@ -1179,7 +1142,7 @@ function do_date(Question $question)
         }
 
         // Format the date  for output
-        $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]);
+        $dateoutput=trim($session->response->{$question->sgqa});
         if ($dateoutput!='' & $dateoutput!='INVALID')
         {
             $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
@@ -1282,10 +1245,9 @@ function do_date(Question $question)
         if (trim($question->hide_tip)==1) {
             $answer.="<p class=\"tip\">".sprintf(gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
         }
-        //App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]})",CClientScript::POS_END);// Beter if just afetre answers part
         $answer .= "<script type='text/javascript'>\n"
         . "  /*<![CDATA[*/\n"
-        ." doPopupDate({$ia[0]});\n"
+        ." doPopupDate({$question->primaryKey});\n"
         ." /*]]>*/\n"
         ."</script>\n";
     }
@@ -1342,8 +1304,6 @@ function do_list_dropdown(Question $question)
     $session = App()->surveySessionManager->current;
     $checkconditionFunction = "checkconditions";
 
-    $question = App()->surveySessionManager->current->getQuestion($ia[0]);
-
     if (trim($question->other_replace_text[$session->language])!='')
     {
         $othertext=$question->other_replace_text[$session->language];
@@ -1367,23 +1327,21 @@ function do_list_dropdown(Question $question)
     }
     //End Time Limit Code
 
-    $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0];
-    $other = Yii::app()->db->createCommand($query)->queryScalar();     //Checked
-
+    
     //question attribute random order set?
     if ($question->random_order==1)
     {
-        $ansquery = "SELECT * FROM {{answers}} WHERE question_id=$ia[0] and scale_id=0 ORDER BY ".dbRandom();
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id={$question->primaryKey} and scale_id=0 ORDER BY ".dbRandom();
     }
     //question attribute alphasort set?
     elseif ($question->alphasort==1)
     {
-        $ansquery = "SELECT * FROM {{answers}} WHERE question_id=$ia[0] and scale_id=0 ORDER BY answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id={$question->primaryKey} and scale_id=0 ORDER BY answer";
     }
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {{answers}} WHERE question_id=$ia[0] and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE question_id={$question->primaryKey} and scale_id=0 ORDER BY sortorder, answer";
     }
 
     if (false == $ansresult = Yii::app()->db->createCommand($ansquery)->query()) {
@@ -1395,13 +1353,13 @@ function do_list_dropdown(Question $question)
     {
         $_height = sanitize_int($question->dropdown_size) ;
         $_maxHeight = count($ansresult);
-        if ((!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa])) && !$question->bool_mandatory && !$question->bool_mandatory && SHOW_NO_ANSWER == 1) {
+        if ((!empty($session->response->{$question->sgqa})) && !$question->bool_mandatory && !$question->bool_mandatory && $question->survey->bool_shownoanswer) {
             ++$_maxHeight;  // for No Answer
         }
-        if (isset($other) && $other=='Y') {
+        if ($question->bool_other) {
             ++$_maxHeight;  // for Other
         }
-        if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) {
+        if (!$session->response->{$question->sgqa}) {
             ++$_maxHeight;  // for 'Please choose:'
         }
 
@@ -1419,25 +1377,47 @@ function do_list_dropdown(Question $question)
     $_rowNum=0;
     $_prefix='';
 
+    $em = $question->getExpressionManager($session->response);
+
     if (!isset($optCategorySeparator))
     {
         foreach ($ansresult as $ansrow)
         {
-            $opt_select = '';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $ansrow['code'])
-            {
-                $opt_select = SELECTED;
-            }
             if ($prefixStyle == 1) {
                 $_prefix = ++$_rowNum . ') ';
             }
-            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>".flattenText($_prefix.$ansrow['answer'])."</option>\n";
+            // Get the parts for the answer, we construct one EM expression from the whole.
+            $parts = $em->asSplitStringOnExpressions(flattenText($_prefix.$ansrow['answer']));
+            $expressionParts = [];
+            $text = '';
+            foreach($parts as $part) {
+                switch ($part[2]) {
+                    case 'STRING':
+                        $expressionParts[] = "'{$part[0]}'";
+                        $text .= $part[0];
+                        break;
+                    case 'EXPRESSION':
+                        if ($em->RDP_Evaluate(substr($part[0], 1, -1))) {
+                            $value = $em->GetResult();
+                        } else {
+                            $value = '';
+                        }
+                        $text .= $value;
+                        $expressionParts[] = substr($part[0], 1, -1);
+                        $text .= $value;
+                }
+            }
+            $answer .= TbHtml::tag('option', [
+                'value' => $ansrow['code'],
+                'selected' => $session->response->{$question->sgqa} == $ansrow['code'],
+                'data-expression' => $em->getJavascript('join(' . implode(',', $expressionParts) . ')')
+            ], $text);
         }
     }
     else
     {
-        $defaultopts = Array();
-        $optgroups = Array();
+        $defaultopts = [];
+        $optgroups = [];
         foreach ($ansresult as $ansrow)
         {
             // Let's sort answers in an array indexed by subcategories
@@ -1445,22 +1425,27 @@ function do_list_dropdown(Question $question)
             // The blank category is left at the end outside optgroups
             if ($categorytext == '')
             {
-                $defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext);
+                $defaultopts[] = [
+                    'code' => $ansrow['code'],
+                    'answer' => $answertext
+                ];
             }
             else
             {
-                $optgroups[$categorytext][] = array ( 'code' => $ansrow['code'], 'answer' => $answertext);
+                $optgroups[$categorytext][] = [
+                    'code' => $ansrow['code'],
+                    'answer' => $answertext
+                ];
             }
         }
 
         foreach ($optgroups as $categoryname => $optionlistarray)
         {
-            $answer .= '                                   <optgroup class="dropdowncategory" label="'.flattenText($categoryname).'">
-            ';
+            $answer .= '<optgroup class="dropdowncategory" label="'.flattenText($categoryname).'">';
 
             foreach ($optionlistarray as $optionarray)
             {
-                if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $optionarray['code'])
+                if ($session->response->{$question->sgqa} == $optionarray['code'])
                 {
                     $opt_select = SELECTED;
                 }
@@ -1469,16 +1454,15 @@ function do_list_dropdown(Question $question)
                     $opt_select = '';
                 }
 
-                $answer .= '                         <option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>
-                ';
+                $answer .= '<option value="'.$optionarray['code'].'"'.$opt_select.'>'.flattenText($optionarray['answer']).'</option>';
             }
 
-            $answer .= '                                   </optgroup>';
+            $answer .= '</optgroup>';
         }
         $opt_select='';
         foreach ($defaultopts as $optionarray)
         {
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $optionarray['code'])
+            if ($session->response->{$question->sgqa} == $optionarray['code'])
             {
                 $opt_select = SELECTED;
             }
@@ -1492,14 +1476,14 @@ function do_list_dropdown(Question $question)
         }
     }
 
-    if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa])
+    if (!isset($session->response->{$question->sgqa}))
     {
         $answer = '                    <option value=""'.SELECTED.'>'.gT('Please choose...').'</option>'."\n".$answer;
     }
 
-    if (isset($other) && $other=='Y')
+    if ($question->bool_other)
     {
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == '-oth-')
+        if ($session->response->{$question->sgqa} == '-oth-')
         {
             $opt_select = SELECTED;
         }
@@ -1513,7 +1497,7 @@ function do_list_dropdown(Question $question)
         $answer .= '                    <option value="-oth-"'.$opt_select.'>'.flattenText($_prefix.$othertext)."</option>\n";
     }
 
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] != '') && !$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+    if (!empty($session->response->{$question->sgqa}) && !$question->bool_mandatory && $question->survey->bool_shownoanswer)
     {
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
@@ -1521,9 +1505,9 @@ function do_list_dropdown(Question $question)
         $answer .= '<option class="noanswer-item" value="">'.$_prefix.gT('No answer')."</option>\n";
     }
     $answer .= '                </select>
-    <input type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa].'" />';
+    <input type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa.'" value="'. $session->response->{$question->sgqa} .'" />';
 
-    if (isset($other) && $other=='Y')
+    if ($question->bool_other)
     {
         $sselect_show_hide = ' showhideother(this.name, this.value);';
     }
@@ -1537,7 +1521,7 @@ function do_list_dropdown(Question $question)
     ';
     $answer = $sselect.$answer;
 
-    if (isset($other) && $other=='Y')
+    if ($question->bool_other)
     {
         $answer = "\n<script type=\"text/javascript\">\n"
         ."<!--\n"
@@ -1560,7 +1544,7 @@ function do_list_dropdown(Question $question)
 
         $inputnames[]=$question->sgqa.'other';
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] != '-oth-')
+        if ($session->response->{$question->sgqa} != '-oth-')
         {
             $answer .= 'none';
         }
@@ -1644,7 +1628,7 @@ function do_list_radio(Question $question)
     }
 
     if ($question->bool_other) {$anscount++;} //Count up for the Other answer
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) {$anscount++;} //Count up if "No answer" is showing
 
     $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
     $answer = $wrapper['whole-start'];
@@ -1768,7 +1752,7 @@ function do_list_radio(Question $question)
         }
     }
 
-    if ($question->bool_mandatory && SHOW_NO_ANSWER == 1)
+    if ($question->bool_mandatory && $question->survey->bool_shownoanswer)
     {
         $answer .= $wrapper['item-start-noanswer'].'        <input class="radio" type="radio" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'NANS" value=""'.$check_ans.' onclick="\'$(this).closest(\'ul\').find(\'input[type=text]\').val(\'\').trigger(\'change\');'.$checkconditionFunction.'(this.value, this.name, this.type)" />
         <label for="answer'.$question->sgqa.'NANS" class="answertext">'.gT('No answer').'</label>
@@ -1793,7 +1777,7 @@ function do_list_radio(Question $question)
     }
     //END OF ITEMS
     $answer .= $wrapper['whole-end'].'
-    <input type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa."\" value=\"".App()->surveySessionManager->current->response->{$question->sgqa}."\" />\n";
+    <input type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa."\" value=\"". $session->response->{$question->sgqa}."\" />\n";
 
     $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
@@ -1864,7 +1848,7 @@ function do_listwithcomment(Question $question)
             ';
         }
 
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
         {
             if (empty($session->response[$question->sgqa]))
             {
@@ -1913,14 +1897,14 @@ function do_listwithcomment(Question $question)
         $answer .= '<p class="select answer-item dropdown-item">
         <select class="select" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
         ';
-        if (is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]))
+        if (is_null($session->response->{$question->sgqa}))
         {
             $answer .= '<option class="noanswer-item" value=""'.SELECTED.'>'.gT('Please choose...').'</option>'."\n";
         }
         foreach ($ansresult as $ansrow)
         {
             $check_ans = '';
-            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == $ansrow['code'])
+            if ($session->response->{$question->sgqa} == $ansrow['code'])
             {
                 $check_ans = SELECTED;
             }
@@ -1931,10 +1915,10 @@ function do_listwithcomment(Question $question)
                 $maxoptionsize = strlen($ansrow['answer']);
             }
         }
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]))
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer && !is_null($session->response->{$question->sgqa}))
         {
             $check_ans="";
-            if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) == '')
+            if (trim($session->response->{$question->sgqa}) == '')
             {
                 $check_ans = SELECTED;
             }
@@ -1958,7 +1942,7 @@ function do_listwithcomment(Question $question)
             $answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]);
         }
         $answer .= '</textarea>
-        <input class="radio" type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa.'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa].'" /></p>';
+        <input class="radio" type="hidden" name="java'.$question->sgqa.'" id="java'.$question->sgqa.'" value="'.$session->response->{$question->sgqa}.'" /></p>';
         $inputnames[]=$question->sgqa;
         $inputnames[]=$question->sgqa.'comment';
     }
@@ -3019,13 +3003,17 @@ function do_multiplenumeric(Question $question)
         $prefixclass="slider";
         $slider_layout=true;
         $extraclass .=" withslider";
-        $slider_step=trim(LimeExpressionManager::ProcessString("{{$question->slider_accuracy}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_step=trim(LimeExpressionManager::ProcessString("{{$question->slider_accuracy}}", $ia[0], array(), false,
+            1, 1, true));
         $slider_step =  (is_numeric($slider_step))?$slider_step:1;
-        $slider_min = trim(LimeExpressionManager::ProcessString("{{$question->slider_min}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_min = trim(LimeExpressionManager::ProcessString("{{$question->slider_min}}", $ia[0], array(), false, 1,
+            1, true));
         $slider_mintext = $slider_min =  (is_numeric($slider_min))?$slider_min:0;
-        $slider_max = trim(LimeExpressionManager::ProcessString("{{$question->slider_max}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_max = trim(LimeExpressionManager::ProcessString("{{$question->slider_max}}", $ia[0], array(), false, 1,
+            1, true));
         $slider_maxtext = $slider_max =  (is_numeric($slider_max))?$slider_max:100;
-        $slider_default=trim(LimeExpressionManager::ProcessString("{{$question->slider_default}}",$ia[0],array(),false,1,1,false,false,true));
+        $slider_default=trim(LimeExpressionManager::ProcessString("{{$question->slider_default}}", $ia[0], array(),
+            false, 1, 1, true));
         $slider_default =  (is_numeric($slider_default))?$slider_default:"";
 
         if ($slider_default == '' && $question->slider_middlestart==1)
@@ -3202,17 +3190,13 @@ function do_multiplenumeric(Question $question)
 // ---------------------------------------------------------------
 function do_numerical(Question $question)
 {
-    global $thissurvey;
-
-
     $extraclass ="";
     $answertypeclass = "numeric";
 
     $checkconditionFunction = "fixnum_checkconditions";
-    $question = App()->surveySessionManager->current->getQuestion($ia[0]);
     $session = App()->surveySessionManager->current;
     if (trim($question->prefix[$session->language])!='') {
-        $prefix=$question->prefix[$session];
+        $prefix=$question->prefix[$session->language];
         $extraclass .=" withprefix";
     }
     else
@@ -3253,31 +3237,26 @@ function do_numerical(Question $question)
         $tiwidth=10;
     }
 
-    if (trim($question->num_value_int_only)==1)
-    {
+    if (trim($question->num_value_int_only)==1) {
         $acomma="";
         $extraclass .=" integeronly";
         $answertypeclass .= " integeronly";
         $integeronly=1;
-    }
-    else
-    {
-        $acomma=getRadixPointData($thissurvey['surveyls_numberformat']);
-        $acomma = $acomma['separator'];
+    } else {
+        $acomma = getRadixPointData($question->survey->getLocalizedNumberFormat())['separator'];
         $integeronly=0;
     }
 
     $fValue= App()->surveySessionManager->current->response->{$question->sgqa};
-    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sSeparator = $sSeparator['separator'];
     // Fix the display value : Value is stored as decimal in SQL then return dot and 0 after dot. Seems only for numerical question type
     if(strpos($fValue,"."))
     {
         $fValue=rtrim(rtrim($fValue,"0"),".");
     }
-    $fValue = str_replace('.',$sSeparator,$fValue);
+    $fValue = str_replace('.',$acomma,$fValue);
 
-    if ($thissurvey['nokeyboard']=='Y')
+
+    if ($question->survey->bool_nokeyboard)
     {
         includeKeypad();
         $extraclass .=" inputkeypad";
@@ -3306,7 +3285,6 @@ function do_numerical(Question $question)
 // ---------------------------------------------------------------
 function do_shortfreetext(Question $question)
 {
-    global $thissurvey;
 
 
     $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
@@ -3315,8 +3293,7 @@ function do_shortfreetext(Question $question)
         $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
     }
     $extraclass ="";
-    $question = App()->surveySessionManager->current->getQuestion($ia[0]);
-    
+
     if ($question->numbers_only == 1)
     {
         $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -3364,7 +3341,7 @@ function do_shortfreetext(Question $question)
     {
         $suffix = '';
     }
-    if ($thissurvey['nokeyboard']=='Y')
+    if ($question->survey->bool_nokeyboard)
     {
         includeKeypad();
         $kpclass = "text-keypad";
@@ -3394,8 +3371,8 @@ function do_shortfreetext(Question $question)
         .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
         // --> END NEW FEATURE - SAVE
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) {
-            $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]);
+        if ($session->response->{$question->sgqa}) {
+            $dispVal = str_replace("\\", "", $session->response->{$question->sgqa});
             if ($question->numbers_only==1)
             {
                 $dispVal = str_replace('.',$sSeparator,$dispVal);
@@ -3407,7 +3384,7 @@ function do_shortfreetext(Question $question)
     }
     elseif((int)($question->location_mapservice)==1){
         $mapservice = $question->location_mapservice;
-        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa];
+        $currentLocation = $session->response->{$question->sgqa};
         $currentLatLong = null;
 
         $floatLat = 0;
@@ -3452,7 +3429,7 @@ function do_shortfreetext(Question $question)
         </script>
 
         <div class=\"question answer-item geoloc-item {$extraclass}\">
-        <input type=\"hidden\" name=\"$question->sgqa\" id=\"answer$question->sgqa\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]}\">
+        <input type=\"hidden\" name=\"$question->sgqa\" id=\"answer$question->sgqa\" value=\"{$session->response->{$question->sgqa}}\">
 
         <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$question->sgqa_c\"
         id=\"answer$question->sgqa_c\" value=\"$currentLocation\"
@@ -3484,7 +3461,7 @@ function do_shortfreetext(Question $question)
     elseif((int)($question->location_mapservice)==100)
     {
 
-        $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa];
+        $currentLocation = $session->response->{$question->sgqa};
         $currentCenter = $currentLatLong = null;
 
         // Get the latitude/longtitude for the point that needs to be displayed by default
@@ -3538,7 +3515,7 @@ function do_shortfreetext(Question $question)
 
         $answer = "
         <div class=\"question answer-item geoloc-item {$extraclass}\">
-            <input type=\"hidden\"  name=\"$question->sgqa\" id=\"answer$question->sgqa\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]}\"><!-- No javascript need a way to answer -->
+            <input type=\"hidden\"  name=\"$question->sgqa\" id=\"answer$question->sgqa\" value=\"{$session->response->{$question->sgqa}}\"><!-- No javascript need a way to answer -->
             <input type=\"hidden\" class=\"location\" name=\"$question->sgqa_c\" id=\"answer$question->sgqa_c\" value=\"{$currentLatLong[0]} {$currentLatLong[1]}\" />
 
             <ul class=\"coordinates-list\">
@@ -3748,7 +3725,7 @@ function do_hugefreetext(Question $question)
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]);}
+    if ($session->response->{$question->sgqa}) {$answer .= str_replace("\\", "", $session->response->{$question->sgqa});}
     $answer .= "</textarea>\n";
     $answer .="</p>";
     if (trim($question->time_limit) != '')
@@ -3786,7 +3763,7 @@ function do_yesno(Question $question)
     // --> START NEW FEATURE - SAVE
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$question->sgqa}N\" class=\"answertext\" >\n\t".gT('No')."\n</label>\n\t</li>\n";
     // --> END NEW FEATURE - SAVE
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
     {
         $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$question->sgqa}\" id=\"answer{$question->sgqa}\" value=\"\"";
         if (empty($session->response->{$question->sgqa}))
@@ -3815,7 +3792,7 @@ function do_gender(Question $question)
     $answer = "<ul class=\"answers-list radio-list\">\n"
     . "\t<li class=\"answer-item radio-item\">\n"
     . '        <input class="radio" type="radio" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'F" value="F"';
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == 'F')
+    if ($session->response->{$question->sgqa} == 'F')
     {
         $answer .= CHECKED;
     }
@@ -3824,16 +3801,16 @@ function do_gender(Question $question)
 
     $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer".$question->sgqa.'M" value="M"';
 
-    if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == 'M')
+    if ($session->response->{$question->sgqa} == 'M')
     {
         $answer .= CHECKED;
     }
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$question->sgqaM\" class=\"answertext\">".gT('Male')."</label>\n\t</li>\n";
 
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
     {
         $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer".$question->sgqa.'" value=""';
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa] == '')
+        if ($session->response->{$question->sgqa} == '')
         {
             $answer .= CHECKED;
         }
@@ -3842,7 +3819,7 @@ function do_gender(Question $question)
         // --> END NEW FEATURE - SAVE
 
     }
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$question->sgqa\" id=\"java$question->sgqa\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$question->sgqa]."\" />\n";
+    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$question->sgqa\" id=\"java$question->sgqa\" value=\"".$session->response->{$question->sgqa}."\" />\n";
 
     $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
@@ -3881,7 +3858,7 @@ function do_array_5point(Question $question)
     }
     $cellwidth  = 5; // number of columns
 
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         ++$cellwidth; // add another column
     }
@@ -3922,7 +3899,7 @@ function do_array_5point(Question $question)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -3935,7 +3912,7 @@ function do_array_5point(Question $question)
         $answer .= "\t<th>$xc</th>\n";
     }
     if ($right_exists) {$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";}
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
@@ -3997,7 +3974,7 @@ function do_array_5point(Question $question)
         }
 
 
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
         {
             $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
@@ -4052,7 +4029,7 @@ function do_array_10point(Question $question)
         $answerwidth = 20;
     }
     $cellwidth  = 10; // number of columns
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         ++$cellwidth; // add another column
         $caption.=gT("The last cell are for no answer. ");
@@ -4081,7 +4058,7 @@ function do_array_10point(Question $question)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4093,7 +4070,7 @@ function do_array_10point(Question $question)
     {
         $answer .= "\t<th>$xc</th>\n";
     }
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
@@ -4138,7 +4115,7 @@ function do_array_10point(Question $question)
             ."</td>\n";
             // --> END NEW FEATURE - SAVE
         }
-        if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1)
+        if ($ia[6] != "Y" && $question->survey->bool_shownoanswer)
         {
             $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
@@ -4185,7 +4162,7 @@ function do_array_yesnouncertain(Question $question)
         $answerwidth = 20;
     }
     $cellwidth  = 3; // number of columns
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         ++$cellwidth; // add another column
         $caption.=gT("The last cell are for no answer. ");
@@ -4212,7 +4189,7 @@ function do_array_yesnouncertain(Question $question)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4223,7 +4200,7 @@ function do_array_yesnouncertain(Question $question)
     . "\t<th class=\"dontread\">".gT('Yes')."</th>\n"
     . "\t<th class=\"dontread\">".gT('Uncertain')."</th>\n"
     . "\t<th class=\"dontread\">".gT('No')."</th>\n";
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         $answer .= "\t<th class=\"dontread\">".gT('No answer')."</th>\n";
     }
@@ -4298,7 +4275,7 @@ function do_array_yesnouncertain(Question $question)
             }
             $answer_t_content .= "\" />\n\t</td>\n";
 
-            if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+            if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
             {
                 $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
@@ -4344,7 +4321,7 @@ function do_array_increasesamedecrease(Question $question)
         $answerwidth = 20;
     }
     $cellwidth  = 3; // number of columns
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         ++$cellwidth; // add another column
         $caption.=gT("The last cell are for no answer. ");
@@ -4378,7 +4355,7 @@ function do_array_increasesamedecrease(Question $question)
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         $odd_even = alternation($odd_even);
         $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4390,7 +4367,7 @@ function do_array_increasesamedecrease(Question $question)
     . "\t<th>".gT('Increase')."</th>\n"
     . "\t<th>".gT('Same')."</th>\n"
     . "\t<th>".gT('Decrease')."</th>\n";
-    if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
     {
         $answer .= "\t<th>".gT('No answer')."</th>\n";
     }
@@ -4460,7 +4437,7 @@ function do_array_increasesamedecrease(Question $question)
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {$answer_body .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];}
         $answer_body .= "\" />\n\t</td>\n";
 
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
         {
             $answer_body .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
@@ -4567,7 +4544,7 @@ function do_array(Question $question)
             ++$numrows;
             $caption.=gT("After answers, a cell give some information. ");
         }
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
         {
             ++$numrows;
             $caption.=gT("The last cell are for no answer. ");
@@ -4581,7 +4558,7 @@ function do_array(Question $question)
                 $answer_head_line .= "\t<th>".$ld."</th>\n";
             }
             if ($right_exists) {$answer_head_line .= "\t<td>&nbsp;</td>\n";}
-            if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory and we can show "no answer"
+            if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory and we can show "no answer"
             {
                 $answer_head_line .= "\t<th>".gT('No answer')."</th>\n";
             }
@@ -4657,7 +4634,7 @@ function do_array(Question $question)
                 $answer .= "\t<td class=\"answertextright\">&nbsp;</td>\n";
             }
 
-            if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+            if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
             {
                 $answer .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" ";
@@ -4691,7 +4668,7 @@ function do_array(Question $question)
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
         }
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) //Question is not mandatory
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
         {
             $odd_even = alternation($odd_even);
             $answer_cols .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
@@ -4727,7 +4704,7 @@ function do_array(Question $question)
         $fn=1;
 
         $numrows = count($labels);
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
         {
             ++$numrows;
         }
@@ -4775,8 +4752,8 @@ function do_array(Question $question)
             $answer .= "\t<td >\n"
             . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\">\n";
 
-            // Dropdown representation is en exception - even if mandatory or  SHOW_NO_ANSWER is disable a neutral option needs to be shown where the mandatory case asks actively
-            if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+            // Dropdown representation is en exception - even if mandatory or  $question->survey->bool_shownoanswer is disable a neutral option needs to be shown where the mandatory case asks actively
+            if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
             {
                 $sOptionText=gT('No answer');
             }
@@ -5018,7 +4995,7 @@ function do_array_multitext(Question $question)
     }
     if ($numrows=count($labelans))
     {
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) {$numrows++;}
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) {$numrows++;}
         if( ($show_grand == true &&  $show_totals == 'col' ) || $show_totals == 'row' ||  $show_totals == 'both' )
         {
             ++$numrows;
@@ -5350,7 +5327,7 @@ function do_array_multiflexi(Question $question)
     }
     if ($numrows=count($labelans))
     {
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1) {$numrows++;}
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) {$numrows++;}
         $cellwidth=$columnswidth/$numrows;
 
         $cellwidth=sprintf('%02d', $cellwidth);
@@ -5618,7 +5595,7 @@ function do_arraycolumns(Question $question)
     }
     if (count($labelans) > 0)
     {
-        if (!$question->bool_mandatory && SHOW_NO_ANSWER == 1)
+        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
         {
             $labelcode[]='';
             $labelans[]=gT('No answer');
@@ -5862,7 +5839,7 @@ function do_array_dual(Question $question)
             }
             $numrows=count($labelans0) + count($labelans1);
             // Add needed row and fill some boolean: shownoanswer, rightexists, centerexists
-            $shownoanswer=($ia[6] != "Y" && SHOW_NO_ANSWER == 1);
+            $shownoanswer=($ia[6] != "Y" && $question->survey->bool_shownoanswer);
             if($shownoanswer) {
                 $numrows++;
                 $caption.=gT("The last cell are for no answer. ");
@@ -6235,7 +6212,7 @@ function do_array_dual(Question $question)
                     }
                     $answer .= '>'.flattenText($lrow['title'])."</option>\n";
                 }
-                if ($sActualAnswer0 != '' && !$question->bool_mandatory && SHOW_NO_ANSWER)
+                if ($sActualAnswer0 != '' && !$question->bool_mandatory && $question->survey->bool_shownoanswer)
                 {
                     $answer .= "\t<option value=\"\">".gT('No answer')."</option>\n";
                 }
@@ -6271,7 +6248,7 @@ function do_array_dual(Question $question)
                     }
                     $answer .= '>'.flattenText($lrow1['title'])."</option>\n";
                 }
-                if ($sActualAnswer1 != '' && !$question->bool_mandatory && SHOW_NO_ANSWER)
+                if ($sActualAnswer1 != '' && !$question->bool_mandatory && $question->survey->bool_shownoanswer)
                 {
                     $answer .= "\t<option value=\"\">".gT('No answer')."</option>\n";
                 }

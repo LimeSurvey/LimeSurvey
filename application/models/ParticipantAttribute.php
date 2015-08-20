@@ -20,7 +20,7 @@
  * @property int $attribute_id;
  * @property string $participant_id;
  */
-class ParticipantAttribute extends LSActiveRecord
+class ParticipantAttribute extends ActiveRecord
 {
 
     /**

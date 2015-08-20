@@ -117,57 +117,80 @@ class SurveySession extends CComponent {
     }
 
     /**
-     * This function gets the survey active record model for this survey session.
-     * @return Survey The survey for this session.
+     * This function loads a survey and makes sure all related AR objects have their relations filled.
+     * @todo Improve performance. Query takes a short time but AR object creation takes ~4s for large surveys.
+     * @param $id
      */
-    public function getSurvey() {
-        if (!isset($this->_survey)) {
-            bP($this->surveyId);
+    protected function loadSurvey($id) {
+        bP();
+        $cache = App()->cache;
+        $cache->hashKey = false;
+        $cacheKey = __CLASS__ . "loadSurvey{$this->id}-$id";
+        bP('unserialize');
+        $result = $cache->get($cacheKey);
+        eP('unserialize');
+        if (false === $result) {
+            bP('computing');
             /** @var Survey $survey */
-            /**
-             * We greedily load questions via groups.
-             */
-            $this->_survey = $survey = Survey::model()->with([
+            $survey = Survey::model()->with([
                 'groups' => [
                     'with' => [
                         'questions' => [
                             'with' => [
                                 'answers',
-                                'questionAttributes',
-                                'conditions',
-                                'conditionsAsTarget'
+//                                'questionAttributes',
+//                                'conditions',
+//                                'conditionsAsTarget'
                             ]
                         ]
                     ]
                 ]
-            ])->findByPk($this->surveyId);
-            if (!isset($this->_survey)) {
+            ])->findByPk($id);
+            if (!isset($survey)) {
                 throw new \Exception("Survey not found.");
             }
             /**
              * We manually set the questions in survey to the same objects as those in groups.
-             * Note that the $survey->questions relation is redundant.
+             * Note that the $survey->questions relation is redundant, but since we have defined it we will also fill it.
              */
+            $survey->groupCount = count($survey->groups);
             $questions = [];
-            foreach($survey->groups as $group) {
-                foreach($group->questions as $key => $question) {
+            foreach ($survey->groups as $group) {
+                foreach ($group->questions as $key => $question) {
                     $questions[$key] = $question;
 
-                    // Also manually fill the group relation, so $qroup->questions[0]->group === $group
+                    // Also manually fill the group relation, so $group->questions[0]->group === $group
                     $question->group = $group;
                     // And the survey relation
                     $question->survey = $survey;
                 }
             }
-
             $survey->questions = $questions;
+            if (!$cache->set($cacheKey, $survey)) {
+                throw new \Exception("Failed to cache survey");
+            }
+            // We do a get to make sure the object gets waken up properly.
+            // @todo Implement serializable instead.
+            // This is not too bad since it only happens once per session.
+            $result = $cache->get($cacheKey);
+            eP('computing');
+        }
+        eP();
+        if (!$result instanceof Survey) {
+            throw new \Exception("Something went wrong in loadSurvey.");
+        }
+        vdd($result);
+        return $result;
 
-            /**
-             * Manually set the group count.
-             */
-            $survey->groupCount = count($survey->groups);
 
-            eP($this->surveyId);
+    }
+    /**
+     * This function gets the survey active record model for this survey session.
+     * @return Survey The survey for this session.
+     */
+    public function getSurvey() {
+        if (!isset($this->_survey)) {
+            $this->_survey = $this->loadSurvey($this->surveyId);
         }
         return $this->_survey;
     }
@@ -178,8 +201,10 @@ class SurveySession extends CComponent {
      * @return Question
      */
     public function getQuestion($id) {
-
-        return isset($this->survey->questions[$id]) ? $this->survey->questions[$id] : null;
+        bP();
+        $result = isset($this->survey->questions[$id]) ? $this->survey->questions[$id] : null;
+        eP();
+        return $result;
     }
 
     public function getQuestionIndex($id) {
@@ -309,6 +334,10 @@ class SurveySession extends CComponent {
         return $this->_templateDir;
     }
 
+    public function getTemplateUrl() {
+        return \Template::getTemplateURL($this->survey->template) . '/';
+    }
+
     /**
      * @param int $id The group id.
      * @return QuestionGroup
@@ -399,6 +428,7 @@ class SurveySession extends CComponent {
 
     /**
      * Returns the questions in group $group, indexed by primary key, ordered as they are shown in the survey.
+     * @todo Implement randomization / check randomization code.
      * @param QuestionGroup $group
      * @return Question[]
      */
@@ -532,14 +562,16 @@ class SurveySession extends CComponent {
     }
 
     public function getCurrentGroup() {
-        if ($this->format == Survey::FORMAT_ALL_IN_ONE) {
-            throw new \UnexpectedValueException("An all in one survey does not have a current group.");
-        }
-
-        if ($this->format == Survey::FORMAT_GROUP) {
-            $result = $this->getGroupByIndex($this->step);
-        } else {
-            $result = $this->getGroup($this->getQuestionByIndex($this->step)->gid);
+        switch ($this->format) {
+            case Survey::FORMAT_ALL_IN_ONE:
+                throw new \UnexpectedValueException("An all in one survey does not have a current group.");
+                break; // for consistency.
+            case Survey::FORMAT_GROUP:
+                $result = $this->getGroupByIndex($this->step);
+                break;
+            case Survey::FORMAT_QUESTION:
+                $result = $this->getGroup($this->getQuestionByIndex($this->getStep())->gid);
+                break;
         }
         return $result;
     }

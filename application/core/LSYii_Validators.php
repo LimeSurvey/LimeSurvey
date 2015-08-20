@@ -19,11 +19,7 @@ class LSYii_Validators extends CValidator {
     * @var boolean
     */
     public $fixCKeditor=false;
-    /**
-    * Filter attribute for XSS
-    * @var boolean
-    */
-    public $xssfilter;
+
     /**
     * Filter attribute for url
     * @var boolean
@@ -40,14 +36,9 @@ class LSYii_Validators extends CValidator {
     */
     public $isLanguageMulti=false;
 
-    public function __construct()
-    {
-        $this->xssfilter = !App()->user->checkAccess('superadmin') && \SettingGlobal::get('filterxsshtml', true);
-    }
-
     protected function validateAttribute($object,$attribute)
     {
-        if($this->xssfilter)
+        if(!App()->user->checkAccess('superadmin') && \SettingGlobal::get('filterxsshtml', true))
         {
             $object->$attribute=$this->xssFilter($object->$attribute);
             if($this->isUrl)

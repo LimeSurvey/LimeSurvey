@@ -67,13 +67,15 @@ use \Yii;
             {
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/startpage.pstpl'),array());
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/startpage.pstpl'),
+                    array());
                 echo "<center><br />\n"
                 ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
                 ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
                 ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/endpage.pstpl'),array());
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/endpage.pstpl'),
+                    array());
                 doFooter();
                 exit;
             }
@@ -133,7 +135,7 @@ use \Yii;
                 }
                 $sOutput .= "</table>\n";
                 $sData['thissurvey']=$aSurveyInfo;
-                $sOutput=templatereplace($sOutput, array() , $sData, '', $aSurveyInfo['anonymized']=="Y",NULL, array(), true);// Do a static replacement
+                $sOutput=templatereplace($sOutput, array(), $sData, '', null, true);// Do a static replacement
                 ob_start(function($buffer, $phase) {
                     App()->getClientScript()->render($buffer);
                     App()->getClientScript()->reset();
@@ -143,9 +145,12 @@ use \Yii;
 
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/startpage.pstpl'),array(),$sData);
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$sData);
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate).'/endpage.pstpl'),array(),$sData);
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/startpage.pstpl'),
+                    array(), $sData);
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/printanswers.pstpl'),
+                    array('ANSWERTABLE' => $sOutput), $sData);
+                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/endpage.pstpl'),
+                    array(), $sData);
                 echo "</body></html>";
 
                 ob_flush();

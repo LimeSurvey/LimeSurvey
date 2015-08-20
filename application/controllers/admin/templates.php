@@ -1118,37 +1118,40 @@ class templates extends Survey_Common_Action
                 foreach (file("$templatedir/print_question.pstpl") as $op)
                 {
                     $questionoutput[] = templatereplace($op, array(
-                    'QUESTION_NUMBER' => '1',
-                    'QUESTION_CODE' => 'Q1',
-                    'QUESTION_MANDATORY' => gT('*'),
-                    // If there are conditions on a question, list the conditions.
-                    'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',
-                    'QUESTION_CLASS' => ' mandatory list-radio',
-                    'QUESTION_TYPE_HELP' => gT('Please choose *only one* of the following:'),
-                    // (not sure if this is used) mandatory error
-                    'QUESTION_MAN_MESSAGE' => '',
-                    // (not sure if this is used) validation error
-                    'QUESTION_VALID_MESSAGE' => '',
-                    // (not sure if this is used) file validation error
-                    'QUESTION_FILE_VALID_MESSAGE' => '',
-                    'QUESTION_TEXT' => gT('This is a sample question text. The user was asked to pick an entry.'),
-                    'QUESTIONHELP' => gT('This is some help text for this question.'),
-                    'ANSWER' =>
-                    $this->getController()->render('/admin/templates/templateeditor_printablesurvey_quesanswer_view', array(
-                    'templateurl' => $templateurl
-                    ), true),
+                        'QUESTION_NUMBER' => '1',
+                        'QUESTION_CODE' => 'Q1',
+                        'QUESTION_MANDATORY' => gT('*'),
+                        // If there are conditions on a question, list the conditions.
+                        'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',
+                        'QUESTION_CLASS' => ' mandatory list-radio',
+                        'QUESTION_TYPE_HELP' => gT('Please choose *only one* of the following:'),
+                        // (not sure if this is used) mandatory error
+                        'QUESTION_MAN_MESSAGE' => '',
+                        // (not sure if this is used) validation error
+                        'QUESTION_VALID_MESSAGE' => '',
+                        // (not sure if this is used) file validation error
+                        'QUESTION_FILE_VALID_MESSAGE' => '',
+                        'QUESTION_TEXT' => gT('This is a sample question text. The user was asked to pick an entry.'),
+                        'QUESTIONHELP' => gT('This is some help text for this question.'),
+                        'ANSWER' =>
+                            $this->getController()->render('/admin/templates/templateeditor_printablesurvey_quesanswer_view',
+                                array(
+                                    'templateurl' => $templateurl
+                                ), true),
                     ), $aData);
                 }
                 $groupoutput = array();
-                $groupoutput[] = templatereplace(file_get_contents("$templatedir/print_group.pstpl"), array('QUESTIONS' => implode(' ', $questionoutput)), $aData);
+                $groupoutput[] = templatereplace(file_get_contents("$templatedir/print_group.pstpl"),
+                    array('QUESTIONS' => implode(' ', $questionoutput)), $aData);
 
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), array('GROUPS' => implode(' ', $groupoutput),
-                'FAX_TO' => gT("Please fax your completed survey to:") . " 000-000-000",
-                'SUBMIT_TEXT' => gT("Submit your survey."),
-                'HEADELEMENTS' => getPrintableHeader(),
-                'SUBMIT_BY' => sprintf(gT("Please submit by %s"), date('d.m.y')),
-                'THANKS' => gT('Thank you for completing this survey.'),
-                'END' => gT('This is the survey end message.')
+                $myoutput[] = templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), array(
+                    'GROUPS' => implode(' ', $groupoutput),
+                    'FAX_TO' => gT("Please fax your completed survey to:") . " 000-000-000",
+                    'SUBMIT_TEXT' => gT("Submit your survey."),
+                    'HEADELEMENTS' => getPrintableHeader(),
+                    'SUBMIT_BY' => sprintf(gT("Please submit by %s"), date('d.m.y')),
+                    'THANKS' => gT('Thank you for completing this survey.'),
+                    'END' => gT('This is the survey end message.')
                 ), $aData);
                 break;
 
@@ -1160,7 +1163,8 @@ class templates extends Survey_Common_Action
                 }
 
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"), array('ANSWERTABLE' => $printoutput), $aData);
+                $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"),
+                    array('ANSWERTABLE' => $printoutput), $aData);
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
 
                 $myoutput[] = "\n";

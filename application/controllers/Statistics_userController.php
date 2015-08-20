@@ -353,7 +353,8 @@ class Statistics_userController extends Controller {
         //---------- CREATE STATISTICS ----------
         $redata = compact(array_keys(get_defined_vars()));
         doHeader();
-        echo templatereplace(file_get_contents(Template::getTemplatePath($data['sTemplatePath']).DIRECTORY_SEPARATOR."startpage.pstpl"),array(), $redata);
+        echo templatereplace(file_get_contents(Template::getTemplatePath($data['sTemplatePath']) . DIRECTORY_SEPARATOR . "startpage.pstpl"),
+            array(), $redata);
 
 
         //some progress bar stuff

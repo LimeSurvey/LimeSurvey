@@ -43,7 +43,7 @@ class ExpressionManager {
     private $RDP_tokens;    // the list of generated tokens
     private $RDP_count; // total number of $RDP_tokens
     private $RDP_pos;   // position within the $token array while processing equation
-    private $RDP_errs;    // array of syntax errors
+    private $RDP_errs = [];    // array of syntax errors
     private $RDP_onlyparse;
     private $RDP_stack; // stack of intermediate results
     private $RDP_result;    // final result of evaluating the expression;
@@ -1112,52 +1112,7 @@ class ExpressionManager {
         return array_unique($jsNames);
     }
 
-    /**
-     * Return the list of all of the JavaScript variables used by the most recent expression - only those that are set on the current page
-     * This is used to control static vs dynamic substitution.  If an expression is entirely made up of off-page changes, it can be statically replaced.
-     * @return <type>
-     */
-    public function GetOnPageJsVarsUsed()
-    {
-        if (is_null($this->varsUsed)){
-            return array();
-        }
-        if ($this->surveyMode=='survey')
-        {
-            return $this->GetJsVarsUsed();
-        }
-        $names = array_unique($this->varsUsed);
-        if (is_null($names)) {
-            return array();
-        }
-        $jsNames = array();
-        foreach ($names as $name)
-        {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/",$name))
-            {
-                continue;
-            }
-            $val = $this->GetVarAttribute($name,'jsName','');
-            switch ($this->surveyMode)
-            {
-                case 'group':
-                    $gseq = $this->GetVarAttribute($name,'gseq','');
-                    $onpage = ($gseq == $this->groupSeq);
-                    break;
-                case 'question':
-                    $qseq = $this->GetVarAttribute($name,'qseq','');
-                    $onpage = ($qseq == $this->questionSeq);
-                    break;
-                case 'survey':
-                    $onpage = true;
-                    break;
-            }
-            if ($val != '' && $onpage) {
-                $jsNames[] = $val;
-            }
-        }
-        return array_unique($jsNames);
-    }
+
 
     /**
      * Return the list of all of the JavaScript variables used by the most recent expression
@@ -1315,23 +1270,6 @@ class ExpressionManager {
             $result = '(' . $mainClause . ')';
         }
         return $result;
-    }
-
-    /**
-     * Generate the function needed to dynamically change the value of a <span> section
-     * @param <type> $name - the ID name for the function
-     * @return <type>
-     */
-    public function GetJavaScriptFunctionForReplacement($questionNum, $name, $eqn)
-    {
-        $jsParts = array();
-//        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
-        $jsParts[] = "  try{\n";
-        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=LEMfixnum(\n    ";
-        $jsParts[] = $this->getJavascript($eqn);
-        $jsParts[] = ");\n";
-        $jsParts[] = "  } catch (e) { }\n";
-        return implode('',$jsParts);
     }
 
     /**
@@ -1593,7 +1531,7 @@ class ExpressionManager {
      * @param <type> $varname
      * @return <type>
      */
-    private function GetVarAttribute($name, $attr = null,$default)
+    private function GetVarAttribute($name, $attr = null, $default = null)
     {
         $getter = $this->variableGetter;
         return $getter($name, $attr, $default, $this->groupSeq, $this->questionSeq);
@@ -1797,7 +1735,7 @@ class ExpressionManager {
         $this->groupSeq = $groupSeq;
         $result = $src;
         $prettyPrint = '';
-        $errors = array();
+        $errors = [];
 
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
@@ -1841,51 +1779,51 @@ class ExpressionManager {
                 $expr = $this->ExpandThisVar(substr($stringPart[0],1,-1));
                 if ($this->RDP_Evaluate($expr))
                 {
-                    $resolvedPart = $this->GetResult();
-                }
-                else
-                {
-                    // show original and errors in-line only if user have the rigth to update survey content
-                    if($this->sid && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $this->sid]))
-                    {
-                        $resolvedPart = $this->GetPrettyPrintString();
-                    }
-                    else
-                    {
-                        $resolvedPart = '';
-                    }
-                    $allErrors[] = $this->GetErrors();
-                }
-                $onpageJsVarsUsed = $this->GetOnPageJsVarsUsed();
-                $jsVarsUsed = $this->GetJsVarsUsed();
-                $prettyPrintParts[] = $this->GetPrettyPrintString();
-                $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
 
-                if (count($onpageJsVarsUsed) > 0 && !$staticReplacement)
-                {
-                    $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
-//                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
-                    $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
-                    $this->substitutionVars[$idName] = 1;
-                    $this->substitutionInfo[] = array(
-                        'questionNum' => $questionNum,
-                        'num' => $this->substitutionNum,
-                        'id' => $idName,
-                        'raw' => $stringPart[0],
-                        'result' => $resolvedPart,
-                        'vars' => implode('|',$jsVarsUsed),
-                        'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, $expr),
-                    );
+                    $resolvedPart = $this->GetResult();
+                    vd($resolvedPart);
+                    vd($stringPart[0]);
+                    vdd($this->GetErrors());
+
                 }
                 else
                 {
-                    $resolvedParts[] = $resolvedPart;
+                    $resolvedPart = $expr;
+                    // show original and errors in-line only if user have the rigth to update survey content
+//                    if($this->sid && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $this->sid]))
+//                    {
+//                        $resolvedPart = $this->GetPrettyPrintString();
+//                    }
+//                    else
+//                    {
+//                        $resolvedPart = '';
+//                    }
+//                    $allErrors[] = $this->GetErrors();
                 }
+//                $jsVarsUsed = $this->GetJsVarsUsed();
+//                $this->GetVarAttribute(substr($stringPart[0], 1, -1));
+//                $prettyPrintParts[] = $this->GetPrettyPrintString();
+//                $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
+//
+//
+//                $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
+////                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
+//                $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
+//                $this->substitutionVars[$idName] = 1;
+//                $this->substitutionInfo[] = array(
+//                    'questionNum' => $questionNum,
+//                    'num' => $this->substitutionNum,
+//                    'id' => $idName,
+//                    'raw' => $stringPart[0],
+//                    'result' => $resolvedPart,
+//                    'vars' => implode('|',$jsVarsUsed),
+//                    'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, $expr),
+//                );
             }
         }
-        $result = implode('',$this->flatten_array($resolvedParts));
-        $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
-        $this->RDP_errs = $allErrors;   // so that has all errors from this string
+        $result = implode('', $resolvedParts);
+//        $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
+//        $this->RDP_errs = $allErrors;   // so that has all errors from this string
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
     }
 
@@ -1921,25 +1859,6 @@ class ExpressionManager {
     {
         return $this->substitutionInfo;
     }
-
-    /**
-     * Flatten out an array, keeping it in the proper order
-     * @param array $a
-     * @return array
-     */
-
-    private function flatten_array(array $a) {
-        $i = 0;
-        while ($i < count($a)) {
-            if (is_array($a[$i])) {
-                array_splice($a, $i, 1, $a[$i]);
-            } else {
-                $i++;
-            }
-        }
-        return $a;
-    }
-
 
     /**
      * Run a registered function
@@ -2275,19 +2194,6 @@ class ExpressionManager {
         }
         return $tokens;
     }
-
-    /**
-     * Specify the survey  mode for this survey.  Options are 'survey', 'group', and 'question'
-     * @param type $mode
-     */
-    public function SetSurveyMode($mode)
-    {
-        if (preg_match('/^group|question|survey$/',$mode))
-        {
-            $this->surveyMode = $mode;
-        }
-    }
-
 
     /**
      * Pop a value token off of the stack

@@ -3,7 +3,7 @@
     /**
      * Dynamic model used by plugins to access their table(s).
      */
-    class PluginDynamic extends LSActiveRecord
+    class PluginDynamic extends ActiveRecord
     {
         private static $_models = array();
 

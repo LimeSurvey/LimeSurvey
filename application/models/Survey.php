@@ -19,14 +19,19 @@ if (!defined('BASEPATH'))
  * @property boolean $bool_usetokens
  * @property-read boolean $isExpired
  * @property-read SurveyLanguageSetting[] $languagesettings
- * @property-read QuestionGroup[] $groups
+ * @property QuestionGroup[] $groups
  * @property string $admin
  * @property string $adminEmail
  * @property int $questionCount
  * @property int $groupCount
  */
-class Survey extends LSActiveRecord
+class Survey extends ActiveRecord
 {
+    const QNUM_SHOW_NEITHER = 'X';
+    const QNUM_SHOW_CODE = 'C';
+    const QNUM_SHOW_NUM = 'N';
+    const QNUM_SHOW_BOTH = 'B';
+
     const STATUS_INACTIVE = 'inactive';
     const STATUS_EXPIRED = 'expired';
     const STATUS_ACTIVE = 'active';
@@ -39,8 +44,7 @@ class Survey extends LSActiveRecord
     const INDEX_INCREMENTAL = 1;
     const INDEX_FULL = 2;
     private $_fieldMap;
-    /* Set some setting not by default database */
-    public $format = self::FORMAT_GROUP;
+
 
     public function attributeLabels() {
         return [
@@ -73,7 +77,6 @@ class Survey extends LSActiveRecord
         $validator= new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
 
-        $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
     }
 
     /**
@@ -129,6 +132,12 @@ class Survey extends LSActiveRecord
      */
     public function getLocalizedEndUrl() {
         return $this->localizedProperty('url');
+    }
+    /**
+     * @return string
+     */
+    public function getLocalizedEndUrlDescription() {
+        return $this->localizedProperty('urldescription');
     }
 
     /**
@@ -275,15 +284,6 @@ class Survey extends LSActiveRecord
         ];
     }
 
-
-    /**
-    * fixSurveyAttribute to fix and/or add some survey attribute
-    * - Fix template name to be sure template exist
-    */
-    public function fixSurveyAttribute($event)
-    {
-        $this->template=Template::templateNameFilter($this->template);
-    }
 
     /**
     * filterTemplateSave to fix some template name 
@@ -611,6 +611,15 @@ class Survey extends LSActiveRecord
             self::FORMAT_QUESTION => gT("Question by Question"),
             self::FORMAT_GROUP => gT("Group by Group"),
             self::FORMAT_ALL_IN_ONE => gT("All in one"),
+        ];
+    }
+
+    public function getQnumOptions() {
+        return [
+            self::QNUM_SHOW_NEITHER => gT('Hide both'),
+            self::QNUM_SHOW_CODE => gT('Show question code only'),
+            self::QNUM_SHOW_NUM => gT('Show question number only'),
+            self::QNUM_SHOW_BOTH => gT('Show both')
         ];
     }
 

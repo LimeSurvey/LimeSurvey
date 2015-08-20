@@ -12,7 +12,7 @@
    *
    */
 
-class Permission extends LSActiveRecord
+class Permission extends ActiveRecord
 {
     /**
      * Returns the table's name

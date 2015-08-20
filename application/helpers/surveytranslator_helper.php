@@ -807,15 +807,11 @@
     * Get the date format details for a specific question.
     *
     * @param Question $question
-    * @param $mThisSurvey mixed Array of Survey attributes or surveyid
     * @returns array
     *
     */
-    function getDateFormatDataForQID($qid, $mThisSurvey)
+    function getDateFormatDataForQID(Question $question)
     {
-
-//        $question = Question::model()->with('questionAttributes')->findByPk();
-        $question = App()->surveySessionManager->current->getQuestion($qid);
         if (!isset($question)) {
             throw new \CHttpException(404, "Question not found.");
         }
@@ -828,11 +824,7 @@
         }
         else
         {
-            if(!is_array($mThisSurvey))
-            {
-                $mThisSurvey = array('surveyls_dateformat' => getDateFormatForSID($question->sid));
-            }
-            $aDateFormatDetails = getDateFormatData($mThisSurvey['surveyls_dateformat']);
+            $aDateFormatDetails = getDateFormatData(getDateFormatForSID($question->sid));
         }
         return $aDateFormatDetails;
     }

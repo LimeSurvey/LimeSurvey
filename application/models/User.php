@@ -12,7 +12,7 @@
 *
 */
 
-class User extends LSActiveRecord implements ls\pluginmanager\iUser
+class User extends ActiveRecord implements ls\pluginmanager\iUser
 {
     /**
      *

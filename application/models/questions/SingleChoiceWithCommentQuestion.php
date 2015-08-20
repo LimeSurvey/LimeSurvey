@@ -17,9 +17,8 @@ class SingleChoiceWithCommentQuestion extends SingleChoiceQuestion
     }
 
     public function getFields() {
+        bP();
         $result = parent::getFields();
-
-
         $result[$this->sgqa . 'other'] = [
             'fieldname' => $this->getSgqa() . 'other',
             'type' => $this->type,
@@ -37,6 +36,8 @@ class SingleChoiceWithCommentQuestion extends SingleChoiceQuestion
             'defaultvalue' => '@todo'
 
         ];
+        eP();
+        return $result;
     }
 
 

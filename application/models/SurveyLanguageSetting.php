@@ -24,7 +24,7 @@
  * @property int $surveyls_dateformat
  * @property int $surveyls_numberformat
  */
-class SurveyLanguageSetting extends LSActiveRecord
+class SurveyLanguageSetting extends ActiveRecord
 {
     public function attributeLabels()
     {

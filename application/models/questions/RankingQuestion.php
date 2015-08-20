@@ -29,7 +29,7 @@ class RankingQuestion extends \Question
     {
         $result = parent::getValidationExpressions();
         foreach($this->subQuestions as $subQuestion) {
-            $sq_names[] = $subq['varName'].".NAOK";
+            $sq_names[] = $subQuestion['varName'].".NAOK";
             $sq_eqPart[] = "intval(!is_empty({$subq['varName']}.NAOK))*{$subq['csuffix']}";
         }
         $result[] = [
@@ -38,6 +38,19 @@ class RankingQuestion extends \Question
             'eqn' =>  'unique(' . implode(',',$sq_names) . ') and count(' . implode(',',$sq_names) . ')==max('. implode(',',$sq_eqPart) .')',
         ];
 
+    }
+
+    /**
+     * Returns the fields for this question.
+     * @return QuestionResponseField[]
+     */
+    public function getFields()
+    {
+        $result = [];
+        for ($i = 1; $i <= count($this->answers); $i++) {
+            $result[] = new \QuestionResponseField($this->sgqa . $i, $this);
+        }
+        return $result;
     }
 
 

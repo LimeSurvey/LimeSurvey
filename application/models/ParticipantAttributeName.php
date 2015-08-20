@@ -19,7 +19,7 @@
  * @property string $attribute_type
  * @property string $visible
  */
-class ParticipantAttributeName extends LSActiveRecord
+class ParticipantAttributeName extends ActiveRecord
 {
 
     /**

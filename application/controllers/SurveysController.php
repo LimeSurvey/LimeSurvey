@@ -183,7 +183,7 @@ class SurveysController extends Controller
         }
     }
 
-   public function actionUnexpire($id) {
+    public function actionUnexpire($id) {
         $this->layout = 'survey';
 
         $survey = $this->loadModel($id);
@@ -338,4 +338,30 @@ class SurveysController extends Controller
         App()->user->setFlash('success', gT("Surveys deleted") . " " . $count);
         $this->redirect(['surveys/index']);
     }
+
+    /**
+     * Renders the relevance and tailoring javascript for a survey.
+     * @todo Add caching headers.
+     */
+    public function actionScript($id) {
+        $session = App()->surveySessionManager->getSession($id);
+        if (!isset($session)) {
+            throw new \CHttpException(404, "Session not found.");
+        }
+        header('Content-type: application/javascript');
+        header('Cache-control: public, max-age=7200');
+        header_remove('Pragma');
+        header_remove('Expires');
+        foreach (App()->log->routes as $route) {
+            if ($route instanceof \CWebLogRoute) {
+                $route->enabled = false;
+            }
+        }
+        echo \LimeExpressionManager::getScript($session);
+    }
+
+
+
+
+
 }

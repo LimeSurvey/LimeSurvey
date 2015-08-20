@@ -26,7 +26,7 @@
  * @property integer $owner_uid
  * @property ParticipantAttribute[] $customAttributes;
  */
-class Participant extends LSActiveRecord
+class Participant extends ActiveRecord
 {
     /**
      * Array that holds participant attribute models and saves them in before save.

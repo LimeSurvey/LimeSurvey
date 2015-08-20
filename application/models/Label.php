@@ -13,7 +13,7 @@
  *
  */
 
-class Label extends LSActiveRecord
+class Label extends ActiveRecord
 {
     /**
      * Used for some statistical queries

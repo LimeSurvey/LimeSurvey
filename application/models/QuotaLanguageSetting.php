@@ -13,7 +13,7 @@
      *	Files Purpose: lots of common functions
 */
 
-class QuotaLanguageSetting extends LSActiveRecord
+class QuotaLanguageSetting extends ActiveRecord
 {
 	/**
 	 * Returns the static model of Settings table

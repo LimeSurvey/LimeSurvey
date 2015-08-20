@@ -12,189 +12,159 @@
 *
 */
 /**
-* This function replaces keywords in a text and is mainly intended for templates
-* If you use this functions put your replacement strings into the $replacements variable
-* instead of using global variables
-* NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
-* they will be done in batch at the end
-*
-* @param mixed $line Text to search in
-* @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
-* @param boolean $anonymized Determines if token data is being used or just replaced with blanks
-* @param questionNum - needed to support dynamic JavaScript-based tailoring within questions
-* @param bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
-* @return string  Text with replaced strings
-*/
-function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array(), $bStaticReplacement = false)
+ * This function replaces keywords in a text and is mainly intended for templates
+ * If you use this functions put your replacement strings into the $replacements variable
+ * instead of using global variables
+ * NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
+ * they will be done in batch at the end
+ *
+ * @param mixed $line Text to search in
+ * @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+ * @param array $redata
+ * @param string $debugSrc
+ * @param $questionNum - needed to support dynamic JavaScript-based tailoring within questions
+ * @param bool $bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
+ * @return string Text with replaced strings
+ * @throws CException
+ * @throws Exception
+ * @internal param array $registerdata
+ */
+function templatereplace(
+    $line,
+    $replacements = [],
+    $redata = [],
+    $debugSrc = 'Unspecified',
+    $questionNum = null,
+    $bStaticReplacement = false
+)
 {
     $session = App()->surveySessionManager->current;
+    $survey = $session->survey;
     $clientScript = App()->clientScript;
 
-    /*
-    global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode;
-    global $s_lang,$errormsg,$saved_id, $languagechanger,$captchapath,$loadname;
-    */
-
-    $allowedvars = [
-        'assessments',
-        'captchapath',
-        'clienttoken',
-        'completed',
-        'errormsg',
-        'groupdescription',
-        'groupname',
-        'imageurl',
-        'languagechanger',
-        'loadname',
-        'move',
-        'navigator',
-        'percentcomplete',
-        'privacy',
-        'saved_id',
-        'showgroupinfo',
-        'showqnumcode',
-        'showxquestions',
-        'sitename',
-        'surveylist',
-        'templatedir',
-        'thissurvey',
-        'token',
-        'totalBoilerplatequestions',
-        'totalquestions',
-        'surveyId'
-    ];
-
-    $varsPassed = array();
-
-    foreach($allowedvars as $var)
+    foreach([
+                'assessments',
+                'captchapath',
+                'clienttoken',
+                'completed',
+                'errormsg',
+                'groupdescription',
+                'groupname',
+                'imageurl',
+                'languagechanger',
+                'loadname',
+                'move',
+                'navigator',
+                'percentcomplete',
+                'privacy',
+                'saved_id',
+                'showgroupinfo',
+                'showqnumcode',
+                'showxquestions',
+                'sitename',
+                'surveylist',
+                'templatedir',
+                'token',
+                'totalBoilerplatequestions',
+                'totalquestions',
+            ] as $var)
     {
         if(isset($redata[$var])) {
             $$var = $redata[$var];
-            $varsPassed[] = $var;
         }
     }
-    //    if (count($varsPassed) > 0) {
-    //        log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
-    //    }
-    //    if (isset($redata['question'])) {
-    //        LimeExpressionManager::ShowStackTrace('has QID and/or SGA',$allowedvars);
-    //    }
-    //    extract($redata);   // creates variables for each of the keys in the array
 
     // Local over-rides in case not set above
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
-    if($_surveyid && !isset($thissurvey))
-    {
-        $thissurvey=getSurveyInfo($_surveyid,$s_lang);
-    }
+
     if (!isset($captchapath)) { $captchapath = ''; }
-    if (!isset($sitename)) { $sitename=App()->name; }
+
     if (!isset($saved_id) && isset(Yii::app()->session['survey_'.$_surveyid]['srid'])) { $saved_id=Yii::app()->session['survey_'.$_surveyid]['srid'];}
 
 
-    Yii::app()->loadHelper('surveytranslator');
+    App()->loadHelper('surveytranslator');
 
-    if (!isset($surveyId) && isset($thissurvey['sid'])) {
-        $surveyId = $thissurvey['sid'];
-    }
-    // lets sanitize the survey template
-    if(isset($thissurvey['templatedir']))
-    {
-        $templatename=$thissurvey['templatedir'];
-    }
-    else
-    {
-        $templatename= SettingGlobal::get('defaulttemplate');
-    }
-    if(!isset($templatedir)) $templatedir = \Template::getTemplatePath($templatename);
-    if(!isset($templateurl)) $templateurl = \Template::getTemplateURL($templatename)."/";
-    if (!$anonymized && isset($thissurvey['anonymized'])) {
-        $anonymized=($thissurvey['anonymized']=="Y");
-    }
+    $templateDir = $session->templateDir;
+    $templateUrl = $session->templateUrl;
+
     // TEMPLATECSS
     $_templatecss="";
     if(stripos ($line,"{TEMPLATECSS}"))
     {
-        if (file_exists($templatedir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
+        if (file_exists($templateDir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
-            $clientScript->registerCssFile("{$templateurl}jquery-ui-custom.css");
+            $clientScript->registerCssFile("{$templateUrl}jquery-ui-custom.css");
         }
-        elseif(file_exists($templatedir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
+        elseif(file_exists($templateDir.DIRECTORY_SEPARATOR.'jquery-ui.css'))
         {
-            $clientScript->registerCssFile("{$templateurl}jquery-ui.css");
+            $clientScript->registerCssFile("{$templateUrl}jquery-ui.css");
         }
         else
         {
             $clientScript->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
         }
 
-        $clientScript->registerCssFile("{$templateurl}template.css");
+        $clientScript->registerCssFile("{$templateUrl}template.css");
 		if (getLanguageRTL(App()->language))
         {
-            $clientScript->registerCssFile("{$templateurl}template-rtl.css");
+            $clientScript->registerCssFile("{$templateUrl}template-rtl.css");
         }
     }
     // surveyformat
-    if (isset($thissurvey['format']))
+
+    $surveyFormat = str_replace(["A", "S", "G"], ["allinone", "questionbyquestion", "groupbygroup"], $session->format);
+
+    if ($session->getStep() % 2 && $surveyFormat != "allinone")
     {
-        $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), $thissurvey['format']);
-    }
-    else
-    {
-        $surveyformat = "";
-    }
-    if (isset(App()->surveySessionManager->current) && (App()->surveySessionManager->current->getStep() % 2) && $surveyformat!="allinone")
-    {
-        $surveyformat .= " page-odd";
+        $surveyFormat .= " page-odd";
     }
 
-    if (isset($thissurvey['questionindex']) && $thissurvey['questionindex'] > 0 && $surveyformat!="allinone" && App()->surveySessionManager->current->getStep() > 0){
-        $surveyformat .= " withindex";
+    if ($survey->questionindex > 0 && $session->format != Survey::FORMAT_ALL_IN_ONE && $session->getStep() > 0){
+        $surveyFormat .= " withindex";
     }
-    if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
-        $surveyformat .= " showprogress";
+
+    if ($survey->bool_showprogress) {
+        $surveyFormat .= " showprogress";
     }
-    if (isset($thissurvey['showqnumcode'])){
-        $surveyformat .= " showqnumcode-".$thissurvey['showqnumcode'];
+
+    if (isset($survey->showqnumcode)) {
+        $surveyFormat .= " showqnumcode-" . $survey->showqnumcode;
     }
     // real survey contact
     if (isset($surveylist) && isset($surveylist['contact']))
     {
-        $surveycontact = $surveylist['contact'];
+        $surveyContact = $surveylist['contact'];
     }
-    elseif (isset($surveylist) && isset($thissurvey['admin']) && $thissurvey['admin']!="")
+    elseif (isset($surveylist) && !empty($survey->admin))
     {
-        $surveycontact=sprintf(gT("Please contact %s ( %s ) for further assistance."),$thissurvey['admin'],$thissurvey['adminemail']);
+        $surveyContact = sprintf(gT("Please contact %s ( %s ) for further assistance."), $survey->admin, $survey->adminEmail);
     }
     else
     {
-        $surveycontact="";
+        $surveyContact="";
     }
 
     // If there are non-bracketed replacements to be made do so above this line.
     // Only continue in this routine if there are bracketed items to replace {}
     if (strpos($line, "{") === false) {
         // process string anyway so that it can be pretty-printed
-        return LimeExpressionManager::ProcessString($line, $questionNum, NULL, false, 1, 1, true);
+        return LimeExpressionManager::ProcessString($line, $questionNum, null, false, 1, 1);
     }
 
-    if (
-    $showgroupinfo == 'both' ||
-    $showgroupinfo == 'name' ||
-    ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
-    )
-    {
+    if ( $showgroupinfo == 'both'
+        || $showgroupinfo == 'name'
+        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
+        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
+        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
+    ) {
         $_groupname = isset($groupname) ? $groupname : '';
-    }
-    else
-    {
+    } else {
         $_groupname = '';
     };
+
     if (
     $showgroupinfo == 'both' ||
     $showgroupinfo == 'description' ||
@@ -252,39 +222,30 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     $_submitbutton = "<input class='submit' type='submit' value=' " . gT("Submit") . " ' name='move2' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" />";
 
-    if (isset($thissurvey['surveyls_url']) and $thissurvey['surveyls_url'] != "")
+    if (!empty($survey->localizedEndUrl))
     {
-        if (trim($thissurvey['surveyls_urldescription']) != '')
-        {
-            $_linkreplace = "<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";
+        if (!empty($survey->localizedEndUrlDescription)) {
+            $endLink = CHtml::link($survey->localizedEndUrlDescription, $survey->localizedEndUrl);
+        } else {
+            $endLink = CHtml::link($survey->localizedEndUrl, $survey->localizedEndUrl);
         }
-        else
-        {
-            $_linkreplace = "<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
-        }
-    }
-    else
-    {
-        $_linkreplace='';
+    } else {
+        $endLink='';
     }
 
 
-    $iscompleted = App()->surveySessionManager->active && App()->surveySessionManager->current->isFinished;
 
-    if (isset($surveyId) && !$iscompleted)
-    {
+    if (!$session->isFinished) {
         $_clearall = CHtml::htmlButton(gT("Exit and clear survey"), [
             'type'=> 'submit',
             'formaction' => App()->surveySessionManager->createUrl('surveys/abort'),
-            'id'=>"clearall",
-            'value'=>'clearall',
-            'name'=>'clearall',
-            'class'=>'clearall button',
-            'confirm'=> gT("Are you sure you want to clear all your responses?")
+            'id' => "clearall",
+            'value' => 'clearall',
+            'name' => 'clearall',
+            'class' => 'clearall button',
+            'confirm' => gT("Are you sure you want to clear all your responses?")
         ]);
-    }
-    else
-    {
+    } else {
         $_clearall = "";
     }
 
@@ -296,77 +257,40 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
-    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
-    {
-        $_saveall = doHtmlSaveAll(isset($move)?$move:NULL, $thissurvey['sid']);
-    }
-    else
-    {
-        $_saveall = "";
-    }
 
-    if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N")
-    {
+    if (!$survey->bool_allowprev) {
         $_strreview = "";
-    }
-    else
-    {
+    } else {
         $_strreview = gT("If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses.");
     }
 
-    if(isset($surveyId))
-    {
-        $restartparam = [];
-        $restartparam['id'] = $surveyId;
+    $restartParams = [];
+    $restartParams['id'] = $survey->primaryKey;
 
-        if(isset(App()->surveySessionManager->current->response->token)) {
-            $restartparam['token'] = App()->surveySessionManager->current->response->token;
-        }
-        if (null !== $lang = App()->request->getQuery('lang'))
-            $restartparam['lang'] = sanitize_languagecode($lang);
-        elseif (isset($session)) {
-            $restartparam['lang'] = $session->language;
-            $restartparam['id'] = $session->surveyId;
-        }
-        $restartparam['newtest']="Y";
+    if(isset($session->response->token)) {
+        $restartParams['token'] = $session->response->token;
+    }
+    if (null !== $lang = App()->request->getQuery('lang'))
+        $restartParams['lang'] = sanitize_languagecode($lang);
+    elseif (isset($session)) {
+        $restartParams['lang'] = $session->language;
+        $restartParams['id'] = $session->surveyId;
+    }
+    $restartParams['newtest']="Y";
 
-        $restarturl= App()->createUrl("surveys/start", $restartparam);
-        $_restart = "<a href='{$restarturl}'>".gT("Restart this Survey")."</a>";
-    }
-    else
-    {
-        $_restart = "";
-    }
-
-    if (isset($thissurvey['anonymized']) && $thissurvey['anonymized'] == 'Y')
-    {
-        $_savealert = gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.");
-    }
-    else
-    {
-        $_savealert = "";
-    }
-
-    if (isset($session->surveyId)) {
-        if(isset($session->response->token))
-        {
-            $url = App()->createUrl("survey/index", [
-                'sid' => $session->surveyId,
-                'token' => $session->response->token
-            ]);
-        }
-        else
-        {
-            $url = App()->createUrl("survey/index", [
-                'sid' => $session->surveyId,
-            ]);
-        }
-        $_return_to_survey = "<a href='{$url}'>".gT("Return to survey")."</a>";
+    if(isset($session->response->token)) {
+        $url = App()->createUrl("survey/index", [
+            'sid' => $session->surveyId,
+            'token' => $session->response->token
+        ]);
     } else {
-        $_return_to_survey = "";
+        $url = App()->createUrl("survey/index", [
+            'sid' => $session->surveyId,
+        ]);
     }
+    $_return_to_survey = "<a href='{$url}'>".gT("Return to survey")."</a>";
 
-    // Save Form
+   // Save Form
     $_saveform = "<table class='save-survey-form'><tr class='save-survey-row save-survey-name'><td class='save-survey-label label-cell' align='right'><label for='savename'>" . gT("Name") . "</label>:</td><td class='save-survey-input input-cell'><input type='text' name='savename' id='savename' value='";
     if (isset($_POST['savename']))
     {
@@ -519,7 +443,6 @@ EOD;
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
     $coreReplacements['CHECKJAVASCRIPT'] = "<noscript><span class='warningjs'>".gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>";
     $coreReplacements['CLEARALL'] = $_clearall;
-//    $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".gT("Close this window")."</a>";
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['ENDTEXT'] = $_endtext;
@@ -541,52 +464,60 @@ EOD;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span class='privacynote'>".gT("A Note On Privacy")."</span><br />".gT("This survey is anonymous.")."<br />".gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.");
-    $coreReplacements['RESTART'] = $_restart;
+    $coreReplacements['RESTART'] = TbHtml::link(gT("Restart this survey"), App()->createUrl("surveys/start", $restartParams));
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
-    $coreReplacements['SAVE'] = $_saveall;
-    $coreReplacements['SAVEALERT'] = $_savealert;
+    $coreReplacements['SAVE'] = $survey->bool_allowsave ? doHtmlSaveAll(isset($move) ? $move : null, $survey->primaryKey) : '';
+    $coreReplacements['SAVEALERT'] = $survey->bool_anonymized ? gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.") : '';
     $coreReplacements['SAVEDID'] = isset($saved_id) ? $saved_id : '';   // global
     $coreReplacements['SAVEERROR'] = isset($errormsg) ? $errormsg : ''; // global - same as LOADERROR
     $coreReplacements['SAVEFORM'] = $_saveform;
     $coreReplacements['SAVEHEADING'] = gT("Save your unfinished survey");
     $coreReplacements['SAVEMESSAGE'] = gT("Enter a name and password for this survey and click save below.")."<br />\n".gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n<span class='emailoptional'>".gT("If you give an email address, an email containing the details will be sent to you.")."</span><br /><br />\n".gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
     $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
-    $coreReplacements['SITENAME'] = isset($sitename) ? $sitename : '';  // global
+    $coreReplacements['SITENAME'] = App()->name;
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;
     $coreReplacements['SUBMITCOMPLETE'] = "<strong>".gT("Thank you!")."<br /><br />".gT("You have completed answering the questions in this survey.")."</strong><br /><br />".gT("Click on 'Submit' now to complete the process and save your answers.");
     $coreReplacements['SUBMITREVIEW'] = $_strreview;
-    $coreReplacements['SURVEYCONTACT'] = $surveycontact;
-    $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
-    $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : '';  // global
+    $coreReplacements['SURVEYCONTACT'] = $surveyContact;
+    $coreReplacements['SURVEYDESCRIPTION'] = $survey->localizedDescription;
+    $coreReplacements['SURVEYFORMAT'] = isset($surveyFormat) ? $surveyFormat : '';  // global
     $coreReplacements['SURVEYLANGUAGE'] = App()->language;
     $coreReplacements['SURVEYLIST'] = (isset($surveylist))?$surveylist['list']:'';
     $coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';
-    $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : '');
+    $coreReplacements['SURVEYNAME'] = $survey->getLocalizedTitle();
     $coreReplacements['TEMPLATECSS'] = $_templatecss;
-    $coreReplacements['TEMPLATEJS'] = CHtml::tag('script', array('type' => 'text/javascript', 'src' => $templateurl . 'template.js'), '');
-    $coreReplacements['TEMPLATEURL'] = $templateurl;
+    $coreReplacements['TEMPLATEJS'] = CHtml::tag('script', array('type' => 'text/javascript', 'src' => $templateUrl . 'template.js'), '');
+    $coreReplacements['TEMPLATEURL'] = $templateUrl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-    $coreReplacements['TOKEN'] = (!$anonymized && isset($session->response->token) ? $session->response->token : '');// Silently replace TOKEN by empty string
-    $coreReplacements['URL'] = $_linkreplace;
-    $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
-    if(!isset($replacements['QID']))
-    {
-        Yii::import('application.helpers.SurveyRuntimeHelper');
-        $coreReplacements = array_merge($coreReplacements, SurveyRuntimeHelper::getQuestionReplacement(null));   // so $replacements overrides core values
+    $coreReplacements['TOKEN'] = (!$survey->bool_anonymized && isset($session->response->token) ? $session->response->token : '');// Silently replace TOKEN by empty string
+    $coreReplacements['URL'] = $endLink;
+    $coreReplacements['WELCOME'] = $survey->getLocalizedWelcomeText();
+    $allReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
+
+    /**
+     * Manual replacements (always static).
+     */
+    $manual = ["{}" => ""];
+    foreach($allReplacements as $key => $value) {
+        $manual["{" . $key . "}" ] = $value;
     }
-    if (!is_null($replacements) && is_array($replacements))
-    {
-        $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
+    if (strpos($line, '{QID}') !== false) {
+        vd($manual);
+        vdd($line);
     }
-    else
-    {
-        $doTheseReplacements = $coreReplacements;
+    $oldLine = null;
+    $newLine = $line;
+    $i = 0;
+    while ($newLine != $oldLine && $i < 10) {
+        $oldLine = $newLine;
+        $newLine = strtr($oldLine, $manual);
+        $i++;
     }
 
     // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
-    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 3, 1, false, true, $bStaticReplacement);
-
-    return $line;
+    $result = LimeExpressionManager::ProcessString($newLine, $questionNum, $allReplacements, false, 3, 1,
+        $bStaticReplacement);
+    return $result;
 
 }
 
@@ -603,7 +534,7 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true, $staticRepl
         {
             $replacements[substr($key,1,-1)] = $value;
         }
-        $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1, false, false, $staticReplace);
+        $text = LimeExpressionManager::ProcessString($text, null, $replacements, false, 2, 1, $staticReplace);
     }
     else
     {
@@ -626,7 +557,7 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true, $staticRepl
 * @return string This string is returned containing the substituted responses
 *
 */
-function PassthruReplace($line, $thissurvey)
+function PassthruReplace($line, Survey $survey)
 {
     while (strpos($line,"{PASSTHRU:") !== false)
     {
@@ -639,9 +570,9 @@ function PassthruReplace($line, $thissurvey)
 
         // lookup for the fitting arg
         $sValue='';
-        if (isset($_SESSION['survey_'.$thissurvey['sid']]['urlparams'][$arg]))
+        if (isset($_SESSION['survey_'.$survey->sid]['urlparams'][$arg]))
         {
-            $sValue=urlencode($_SESSION['survey_'.$thissurvey['sid']]['urlparams'][$arg]);
+            $sValue=urlencode($_SESSION['survey_' . $survey->sid]['urlparams'][$arg]);
         }
         $line=str_replace($cmd, $sValue, $line); // replace
     }

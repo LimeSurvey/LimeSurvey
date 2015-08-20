@@ -18,7 +18,7 @@
  * @property Question $question
  * @property string $code
  */
-class Answer extends LSActiveRecord
+class Answer extends ActiveRecord
 {
     /**
      * Returns the setting's table name to be used by the model
