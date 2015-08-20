@@ -179,10 +179,7 @@ class SurveySession extends CComponent {
         if (!$result instanceof Survey) {
             throw new \Exception("Something went wrong in loadSurvey.");
         }
-        vdd($result);
         return $result;
-
-
     }
     /**
      * This function gets the survey active record model for this survey session.
