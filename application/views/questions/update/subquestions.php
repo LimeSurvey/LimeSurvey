@@ -24,8 +24,8 @@ $this->widget(TbTabs::class, [
 if ($question->subQuestionScales == 1) {
     echo TbHtml::button('Add question', ['class' => 'addquestion', 'data-scale' => 0]);
 } else {
-    echo TbHtml::button('Add X question', ['class' => 'addquestion', 'data-scale' => 0]);
-    echo TbHtml::button('Add Y question', ['class' => 'addquestion', 'data-scale' => 1]);
+    echo TbHtml::button('Add Y question', ['class' => 'addquestion', 'data-scale' => 0]);
+    echo TbHtml::button('Add X question', ['class' => 'addquestion', 'data-scale' => 1]);
 }
 
 /**
@@ -106,8 +106,9 @@ App()->clientScript->registerCss('subquestion-form-margin-fix', '#subQuestionTab
         var $subQuestionTab = $('#subQuestionTab');
         $subQuestionTab.on('change', '.code', function (e) {
             var i = $(this).closest('.form-group').attr('data-index');
+            var scale =$(this).closest('.form-group').attr('data-scale');
             // Update the other inputs.
-            $subQuestionTab.find('.form-group[data-index=' + i + '] .code').val($(this).val());
+            $subQuestionTab.find('.form-group[data-index=' + i + '][data-scale=' + scale + '] .code').val($(this).val());
         });
 
         /**
@@ -118,7 +119,8 @@ App()->clientScript->registerCss('subquestion-form-margin-fix', '#subQuestionTab
             $this = $(this);
             $this.find('.form-group').each(function(i, elem) {
                 var index = $(elem).attr('data-index');
-                $subQuestionTab.find('.sortable').not($this).find('.form-group[data-index=' + index + ']').each(function(j, group) {
+                var scale = $(elem).attr('data-scale');
+                $subQuestionTab.find('.sortable').not($this).find('.form-group[data-index=' + index + '][data-scale=' + scale + ']').each(function(j, group) {
                     var $group = $(group);
                     $group.appendTo($group.parent());
                 });
@@ -136,7 +138,8 @@ App()->clientScript->registerCss('subquestion-form-margin-fix', '#subQuestionTab
          */
         $subQuestionTab.on('click', 'a.remove', function(e) {
             var index = $(this).closest('.form-group').attr('data-index');
-            $subQuestionTab.find('.form-group[data-index="' + index + '"]').remove();
+            var scale = $(this).closest('.form-group').attr('data-scale');
+            $subQuestionTab.find('.form-group[data-index="' + index + '"][data-scale=' + scale + ']').remove();
             renumber($subQuestionTab.find('.sortable'));
         });
     });

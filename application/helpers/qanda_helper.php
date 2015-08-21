@@ -108,159 +108,146 @@ function retrieveAnswers(Question $question)
         'essentials' => ''
     ];
 
-    switch ($question->type)
-    {
-    case 'X': //BOILERPLATE QUESTION
-        $values = do_boilerplate($question);
-        break;
-    case '5': //5 POINT CHOICE radio-buttons
-        $values = do_5pointchoice($question, $response);
-        break;
-    case 'D': //DATE
-        $values = do_date($question);
-        // if a drop box style date was answered incompletely (dropbox), print an error/help message
-        if (($session->getStep() != $session->getMaxStep())
-            || $session->step == $session->prevStep)
-        {
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$question->sgqa]))
-            $question_text['help'] = '<span class="error">'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['qattribute_answer'.$question->sgqa].'</span>';
-        }
-        break;
-    case Question::TYPE_RADIO_LIST: //LIST drop-down/radio-button list
-        $values = do_list_radio($question, $response);
-        if ($question->hide_tip == 0)
-        {
-            $qtitle .= "<br />\n<span class=\"questionhelp\">"
-            . gT('Choose one of the following answers').'</span>';
-            $question_text['help'] = gT('Choose one of the following answers');
-        }
-        break;
-    case '!': //List - dropdown
-        $values=do_list_dropdown($question, $response);
-        if ($question->hide_tip == 0)
-        {
-            $qtitle .= "<br />\n<span class=\"questionhelp\">"
-            . gT('Choose one of the following answers').'</span>';
-            $question_text['help'] = gT('Choose one of the following answers');
-        }
-        break;
-    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-        $values=do_listwithcomment($question, $response);
-        if (count($values[1]) > 1 && $question->hide_tip == 0)
-        {
-            $qtitle .= "<br />\n<span class=\"questionhelp\">"
-            . gT('Choose one of the following answers').'</span>';
-            $question_text['help'] = gT('Choose one of the following answers');
-        }
-        break;
-    case 'R': //RANKING STYLE
-        $values=do_ranking($question);
-        break;
-    case 'M': //Multiple choice checkbox
-        $values=do_multiplechoice($question);
-        if (count($values[1]) > 1 && $question->hide_tip == 0)
-        {
-            $maxansw=trim($question->max_answers);
-            $minansw=trim($question->min_answers);
-            if (!($maxansw || $minansw))
-            {
-                $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Check any that apply').'</span>';
-                $question_text['help'] = gT('Check any that apply');
-            }
-        }
-        break;
+    if ($question instanceof \ls\interfaces\iRenderable) {
+        $html = $question->render($response, $session);
+    } else {
+        switch ($question->type) {
+            case 'X': //BOILERPLATE QUESTION
+                $values = do_boilerplate($question);
+                break;
+            case '5': //5 POINT CHOICE radio-buttons
+                $values = do_5pointchoice($question, $response);
+                break;
+            case 'D': //DATE
+                $values = do_date($question);
+                // if a drop box style date was answered incompletely (dropbox), print an error/help message
+                if (($session->getStep() != $session->getMaxStep())
+                    || $session->step == $session->prevStep
+                ) {
+                    if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['qattribute_answer' . $question->sgqa])) {
+                        $question_text['help'] = '<span class="error">' . $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['qattribute_answer' . $question->sgqa] . '</span>';
+                    }
+                }
+                break;
+            case Question::TYPE_RADIO_LIST: //LIST drop-down/radio-button list
+                $values = do_list_radio($question, $response);
+                if ($question->hide_tip == 0) {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose one of the following answers') . '</span>';
+                    $question_text['help'] = gT('Choose one of the following answers');
+                }
+                break;
+            case '!': //List - dropdown
+                $values = do_list_dropdown($question, $response);
+                if ($question->hide_tip == 0) {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose one of the following answers') . '</span>';
+                    $question_text['help'] = gT('Choose one of the following answers');
+                }
+                break;
+            case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                $values = do_listwithcomment($question, $response);
+                if (count($values[1]) > 1 && $question->hide_tip == 0) {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose one of the following answers') . '</span>';
+                    $question_text['help'] = gT('Choose one of the following answers');
+                }
+                break;
+            case 'R': //RANKING STYLE
+                $values = do_ranking($question);
+                break;
+            case 'M': //Multiple choice checkbox
+                $values = do_multiplechoice($question);
+                if (count($values[1]) > 1 && $question->hide_tip == 0) {
+                    $maxansw = trim($question->max_answers);
+                    $minansw = trim($question->min_answers);
+                    if (!($maxansw || $minansw)) {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                            . gT('Check any that apply') . '</span>';
+                        $question_text['help'] = gT('Check any that apply');
+                    }
+                }
+                break;
 
-    case 'I': //Language Question
-        $values = do_language($question, $session);
-        if (count($values[1]) > 1)
-        {
-            $qtitle .= "<br />\n<span class=\"questionhelp\">"
-            . gT('Choose your language').'</span>';
-            $question_text['help'] = gT('Choose your language');
-        }
-        break;
-    case 'P': //Multiple choice with comments checkbox + text
-        $values=do_multiplechoice_withcomments($question);
-        if (count($values[1]) > 1 && $question->hide_tip == 0)
-        {
-            $maxansw = intval($question->min_answers);
-            $minansw = intval($question->max_answers);
-            if (!($maxansw || $minansw))
-            {
-                $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                . gT('Check any that apply').'</span>';
-                $question_text['help'] = gT('Check any that apply');
-            }
-        }
-        break;
-    case '|': //File Upload
-        $values=do_file_upload($question, $response);
-        break;
-    case 'Q': //MULTIPLE SHORT TEXT
-        $values=do_multipleshorttext($question, $response);
-        break;
-    case 'K': //MULTIPLE NUMERICAL QUESTION
-        $values=do_multiplenumeric($question, $response);
-        break;
-    case 'N': //NUMERICAL QUESTION TYPE
-        $values=do_numerical($question, $response);
-        break;
-    case 'S': //SHORT FREE TEXT
-        $values=do_shortfreetext($question, $response);
-        break;
-    case 'T': //LONG FREE TEXT
-        $values=do_longfreetext($question, $response);
-        break;
-    case 'U': //HUGE FREE TEXT
-        $values=do_hugefreetext($question, $response);
-        break;
-    case 'Y': //YES/NO radio-buttons
-        $values=do_yesno($question, $response);
-        break;
-    case 'G': //GENDER drop-down list
-        $values=do_gender($question, $response);
-        break;
-    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-        $values=do_array_5point($question, $response);
-        break;
-    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-        $values=do_array_10point($question, $response);
-        break;
-    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-        $values=do_array_yesnouncertain($question, $response);
-        break;
-    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-        $values=do_array_increasesamedecrease($question, $response);
-        break;
-    case 'F': //ARRAY (Flexible) - Row Format
-        $values=do_array($question, $response);
-        break;
-    case 'H': //ARRAY (Flexible) - Column Format
-        $values=do_arraycolumns($question, $response);
-        break;
-    case ':': //ARRAY (Multi Flexi) 1 to 10
-        $values=do_array_multiflexi($question, $response);
-        break;
-    case ';': //ARRAY (Multi Flexi) Text
-        $values=do_array_multitext($question, $response);  //It's like the "5th element" movie, come to life
-        break;
-    case '1': //Array (Flexible Labels) dual scale
-        $values=do_array_dual($question, $response);
-        break;
-    case '*': // Equation
-        $values=do_equation($question, $response);
-        break;
-        default:
+            case 'I': //Language Question
+                $values = do_language($question, $session);
+                if (count($values[1]) > 1) {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . gT('Choose your language') . '</span>';
+                    $question_text['help'] = gT('Choose your language');
+                }
+                break;
+            case 'P': //Multiple choice with comments checkbox + text
+                $values = do_multiplechoice_withcomments($question);
+                if (count($values[1]) > 1 && $question->hide_tip == 0) {
+                    $maxansw = intval($question->min_answers);
+                    $minansw = intval($question->max_answers);
+                    if (!($maxansw || $minansw)) {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                            . gT('Check any that apply') . '</span>';
+                        $question_text['help'] = gT('Check any that apply');
+                    }
+                }
+                break;
+            case '|': //File Upload
+                $values = do_file_upload($question, $response);
+                break;
+            case 'Q': //MULTIPLE SHORT TEXT
+                $values = do_multipleshorttext($question, $response);
+                break;
+            case 'K': //MULTIPLE NUMERICAL QUESTION
+                $values = do_multiplenumeric($question, $response);
+                break;
+            case 'N': //NUMERICAL QUESTION TYPE
+                $values = do_numerical($question, $response);
+                break;
+            case 'S': //SHORT FREE TEXT
+                $values = do_shortfreetext($question, $response);
+                break;
+            case 'Y': //YES/NO radio-buttons
+                $values = do_yesno($question, $response);
+                break;
+            case 'G': //GENDER drop-down list
+                $values = do_gender($question, $response);
+                break;
+            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                $values = do_array_5point($question, $response);
+                break;
+            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                $values = do_array_10point($question, $response);
+                break;
+            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                $values = do_array_yesnouncertain($question, $response);
+                break;
+            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                $values = do_array_increasesamedecrease($question, $response);
+                break;
+            case 'F': //ARRAY (Flexible) - Row Format
+                $values = do_array($question, $response);
+                break;
+            case 'H': //ARRAY (Flexible) - Column Format
+                $values = do_arraycolumns($question, $response);
+                break;
+            case ':': //ARRAY (Multi Flexi) 1 to 10
+                $values = do_array_multiflexi($question, $response);
+                break;
+            case ';': //ARRAY (Multi Flexi) Text
+                $values = do_array_multitext($question, $response);  //It's like the "5th element" movie, come to life
+                break;
+            case '1': //Array (Flexible Labels) dual scale
+                $values = do_array_dual($question, $response);
+                break;
+            case '*': // Equation
+                $values = do_equation($question, $response);
+                break;
+            default:
 
-            throw new \Exception("Don't know how to render this.");
-} //End Switch
+                throw new \Exception("Don't know how to render this." . $question->type);
+        } //End Switch
+    }
 
-    if (isset($values)) //Break apart $values array returned from switch
-    {
-        //$answer is the html code to be printed
-        //$inputnames is an array containing the names of each input field
-        list($html, $inputnames)=$values;
+    if (isset($values)) {
+        $html = $values[0];
     }
 
     if ($question->bool_mandatory)
@@ -360,10 +347,7 @@ function retrieveAnswers(Question $question)
     };
     // END: legacy question_start.pstpl code
 
-    $result = [
-        [$question_text, $html, 'help', "what is this variable?", $question->primaryKey, $question->title, $question->gid, $question->sgqa],
-        $inputnames
-    ];
+    $result = [$question_text, $html, 'help', "what is this variable?", $question->primaryKey, $question->title, $question->gid, $question->sgqa];
     eP();
     return $result;
 }
@@ -2850,7 +2834,7 @@ function do_multiplenumeric(Question $question)
     $extraclass ="";
     $checkconditionFunction = "fixnum_checkconditions";
     
-    $answer='';
+    $html='';
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
     //Must turn on the "numbers only javascript"
@@ -3028,7 +3012,7 @@ function do_multiplenumeric(Question $question)
         . "$suffix</span>\n"
         . "\t</li>\n";
     }
-    $answer .= "<ul class=\"subquestions-list questions-list text-list {$prefixclass}-list\">\n".$answer_main."</ul>\n";
+    $html .= "<ul class=\"subquestions-list questions-list text-list {$prefixclass}-list\">\n".$answer_main."</ul>\n";
 
 
     if($question->slider_layout==1)
@@ -3070,15 +3054,14 @@ function do_multiplenumeric(Question $question)
             'slider_reset' => $slider_reset,
             'lang'=> $aJsLang,
             );
-        $answer .= "<script type='text/javascript'><!--\n"
+        $html .= "<script type='text/javascript'><!--\n"
                     . " doNumericSlider({$question->primaryKey},".ls_json_encode($aJsVar).");\n"
                     . " //--></script>";
     }
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
 
-
-    return array($answer, $inputnames);
+    return [$html, $inputnames];
 }
 
 
@@ -3527,7 +3510,7 @@ function do_longfreetext($question)
     }
     else
     {
-        $drows=5;
+        $drows= 5;
     }
     // <-- END ENHANCEMENT - DISPLAY ROWS
 
@@ -3562,77 +3545,6 @@ function do_longfreetext($question)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
-function do_hugefreetext(Question $question, Response $response)
-{
-    $extraclass ="";
-    if ($question->survey->bool_nokeyboard)
-    {
-        includeKeypad();
-        $kpclass = "text-keypad";
-        $extraclass .=" inputkeypad";
-    }
-    else
-    {
-        $kpclass = "";
-    }
-
-    $checkconditionFunction = "checkconditions";
-
-    
-
-    if (intval(trim($question->maximum_chars))>0)
-    {
-        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        $maximum_chars= intval(trim($question->maximum_chars));
-        $maxlength= "maxlength='{$maximum_chars}' ";
-        $extraclass .=" maxchars maxchars-".$maximum_chars;
-    }
-    else
-    {
-        $maxlength= "";
-    }
-
-    // --> START ENHANCEMENT - DISPLAY ROWS
-    if (trim($question->display_rows)!='')
-    {
-        $drows=$question->display_rows;
-    }
-    else
-    {
-        $drows=30;
-    }
-    // <-- END ENHANCEMENT - DISPLAY ROWS
-
-    // --> START ENHANCEMENT - TEXT INPUT WIDTH
-    if (trim($question->text_input_width)!='')
-    {
-        $tiwidth=$question->text_input_width;
-        $extraclass .=" inputwidth-".trim($question->text_input_width);
-    }
-    else
-    {
-        $tiwidth=70;
-    }
-    // <-- END ENHANCEMENT - TEXT INPUT WIDTH
-
-    // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question answer-item text-item {$extraclass}\"><label for='answer{$question->sgqa}' class='hide label'>".gT('Your answer')."</label>";
-    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$question->sgqa.'" id="answer'.$question->sgqa.'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
-    // --> END NEW FEATURE - SAVE
-
-    if ($response->{$question->sgqa}) {$answer .= str_replace("\\", "", $response->{$question->sgqa});}
-    $answer .= "</textarea>\n";
-    $answer .="</p>";
-    if (trim($question->time_limit) != '')
-    {
-        $answer .= return_timer_script($question, $ia, "answer".$question->sgqa);
-    }
-
-    $inputnames[]=$question->sgqa;
-    return array($answer, $inputnames);
-}
 
 // ---------------------------------------------------------------
 function do_yesno(Question $question, Response $response)
@@ -5010,9 +4922,8 @@ EOD;
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_multiflexi(Question $question)
+function do_array_multiflexi(Question $question, Response $response)
 {
-    global $thissurvey;
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
@@ -5131,256 +5042,217 @@ function do_array_multiflexi(Question $question)
     $columnswidth=100-($answerwidth*2);
 
 
-    $aQuestions = array_filter($question->subQuestions, function (Question $question) {
+    $rows = array_filter($question->subQuestions, function (Question $question) {
+        return $question->scale_id == 0;
+    });
+
+    $numrows = (!$question->bool_mandatory && $question->survey->bool_shownoanswer) ? count($rows) + 1 : count($rows);
+
+    $cellwidth=$columnswidth / $numrows;
+
+    $cellwidth=sprintf('%02d', $cellwidth);
+
+    /**
+     * @todo What is this?!
+     */
+    $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$question->primaryKey." AND scale_id=0 AND question like '%|%'";
+    $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
+    if ($iCount>0) {
+        $right_exists=true;
+        $answerwidth=$answerwidth/2;
+        $caption.=gT("The last cell give some information. ");
+    } else {
+        $right_exists=false;
+    }
+    // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+    $columns = array_filter($question->subQuestions, function (Question $question) {
         return $question->scale_id == 1;
     });
-    $labelans=array();
-    $labelcode=array();
-    foreach ($aQuestions as $lrow)
+
+
+    $fn=1;
+
+    $mycols = "\t<colgroup class=\"col-responses\">\n"
+    . "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
+    $answer_head_line = "\t<td >&nbsp;</td>\n";
+    $odd_even = '';
+    /** @var Question $column */
+    foreach ($columns as $column)
     {
-        $labelans[]=$lrow['question'];
-        $labelcode[]=$lrow['title'];
+        $answer_head_line .= TbHtml::tag('th', [], $column->question);
+        $odd_even = alternation($odd_even);
+        $mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
     }
-    if ($numrows=count($labelans))
+    if ($right_exists)
     {
-        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) {$numrows++;}
-        $cellwidth=$columnswidth/$numrows;
+        $answer_head_line .= "\t<td>&nbsp;</td>";
+        $odd_even = alternation($odd_even);
+        $mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+    }
+    $answer_head = "\n\t<thead>\n<tr class=\"dontread\">\n"
+    . $answer_head_line
+    . "</tr>\n\t</thead>\n";
+    $mycols .= "\t</colgroup>\n";
 
-        $cellwidth=sprintf('%02d', $cellwidth);
-
-        $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$question->primaryKey." AND scale_id=0 AND question like '%|%'";
-        $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-        if ($iCount>0) {
-            $right_exists=true;
-            $answerwidth=$answerwidth/2;
-            $caption.=gT("The last cell give some information. ");
-        } else {
-            $right_exists=false;
-        }
-        // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        $ansresult = array_filter($question->subQuestions, function (Question $question) {
-            return $question->scale_id == 1;
-        });
-
-        if ($question->random_order==1) {
-            shuffle($ansresult);
-        }
-
-        if (trim($question->parent_order!=''))
+    $trbc = '';
+    $html = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
+    . $mycols
+    . $answer_head . "\n";
+    $html .= "<tbody>";
+    /** @var Question $row */
+    foreach ($rows as $row)
+    {
+        if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
         {
-            $iParentQID=(int) $question->parent_order;
-            $aResult=array();
-            $sessionao = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['answer_order'];
-            foreach ($sessionao[$iParentQID] as $aOrigRow)
+            if ( ($anscount - $fn + 1) >= $minrepeatheadings )
             {
-                $sCode=$aOrigRow['title'];
-                foreach ($ansresult as $aRow)
-                {
-                    if ($sCode==$aRow['title'])
-                    {
-                        $aResult[]=$aRow;
-                    }
-                }
+                $html .= "</tbody>\n<tbody>";// Close actual body and open another one
+                $html .= "<tr class=\"repeat headings dontread\">\n"
+                . $answer_head_line
+                . "</tr>\n\n";
             }
-            $ansresult = $aResult;
         }
-        $anscount = count($ansresult);
-        $fn=1;
+        $myfname = $question->sgqa . $row->title;
+        $answertextsave = $answertext = $row->question;
 
-        $mycols = "\t<colgroup class=\"col-responses\">\n"
-        . "\n\t<col class=\"answertext\" width=\"$answerwidth%\" />\n";
-        $answer_head_line = "\t<td >&nbsp;</td>\n";
-        $odd_even = '';
-        foreach ($labelans as $ld)
+        /* Check the sub Q mandatory violation */
+        if ($row->bool_mandatory && !empty($aMandatoryViolationSubQ))
         {
-            $answer_head_line .= "\t<th>".$ld."</th>\n";
-            $odd_even = alternation($odd_even);
-            $mycols .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-        }
-        if ($right_exists)
-        {
-            $answer_head_line .= "\t<td>&nbsp;</td>";
-            $odd_even = alternation($odd_even);
-            $mycols .= "<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
-        }
-        $answer_head = "\n\t<thead>\n<tr class=\"dontread\">\n"
-        . $answer_head_line
-        . "</tr>\n\t</thead>\n";
-        $mycols .= "\t</colgroup>\n";
-
-        $trbc = '';
-        $answer = "\n<table class=\"question subquestions-list questions-list {$answertypeclass}-list {$extraclass}\" summary=\"{$caption}\">\n"
-        . $mycols
-        . $answer_head . "\n";
-        $answer .= "<tbody>";
-        foreach ($ansresult as $subQuestion)
-        {
-            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
+            //Go through each labelcode and check for a missing answer! Default :If any are found, highlight this line, checkbox : if one is not found : don't highlight
+            // PS : we really need a better system : event for EM !
+            $emptyresult=($question->multiflexible_checkbox!=0) ? 1 : 0;
+            foreach($labelcode as $ld)
             {
-                if ( ($anscount - $fn + 1) >= $minrepeatheadings )
+                $myfname2=$myfname.'_'.$ld;
+                if($question->multiflexible_checkbox!=0)
                 {
-                    $answer .= "</tbody>\n<tbody>";// Close actual body and open another one
-                    $answer .= "<tr class=\"repeat headings dontread\">\n"
-                    . $answer_head_line
-                    . "</tr>\n\n";
-                }
-            }
-            $myfname = $question->sgqa.$subQuestion->title;
-            $answertext = $subQuestion->question;
-            $answertextsave=$answertext;
-            /* Check the sub Q mandatory violation */
-            if ($subQuestion->bool_mandatory && !empty($aMandatoryViolationSubQ))
-            {
-                //Go through each labelcode and check for a missing answer! Default :If any are found, highlight this line, checkbox : if one is not found : don't highlight
-                // PS : we really need a better system : event for EM !
-                $emptyresult=($question->multiflexible_checkbox!=0) ? 1 : 0;
-                foreach($labelcode as $ld)
-                {
-                    $myfname2=$myfname.'_'.$ld;
-                    if($question->multiflexible_checkbox!=0)
+                    if(!in_array($myfname2, $aMandatoryViolationSubQ))
                     {
-                        if(!in_array($myfname2, $aMandatoryViolationSubQ))
-                        {
-                            $emptyresult=0;
-                        }
+                        $emptyresult=0;
                     }
-                    else
-                    {
-                        if(in_array($myfname2, $aMandatoryViolationSubQ))
-                        {
-                            $emptyresult=1;
-                        }
-                    }
-                }
-                if ($emptyresult == 1)
-                {
-                    $answertext = '<span class="errormandatory">'.$answertext.'</span>';
-                }
-            }
-
-            // Get array_filter stuff
-            $trbc = alternation($trbc , 'row');
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($question, $subQuestion, $myfname, $trbc,
-                $myfname, "tr", "$trbc subquestions-list questions-list {$answertypeclass}-list");
-
-            $answer .= $htmltbody2;
-
-            if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
-            $answer .= "\t<th class=\"answertext\" width=\"$answerwidth%\">\n"
-            . "$answertext\n"
-            . $hiddenfield
-            . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-            {
-                $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-            }
-            $answer .= "\" />\n\t</th>\n";
-            $first_hidden_field = '';
-            $thiskey=0;
-            foreach ($labelcode as $ld)
-            {
-                if ($checkboxlayout == false)
-                {
-                    $myfname2=$myfname."_$ld";
-
-                    if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]))
-                    {
-                        $myfname2_java_value = " value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]}\" ";
-                    }
-                    else
-                    {
-                        $myfname2_java_value = "";
-                    }
-                    $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item $extraclass\">\n"
-                    . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n"
-                    . "<label class=\"hide read\" for=\"answer{$myfname2}\">{$labelans[$thiskey]}</label>\n";
-                    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
-                    $sSeparator = $sSeparator['separator'];
-                    if($inputboxlayout == false) {
-                        $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\""
-                        . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
-                        . "<option value=\"\">".gT('...')."</option>\n";
-
-                        for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
-                            $answer .= '<option value="'.str_replace('.',$sSeparator,$ii).'"';
-                            if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && (string)$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == (string)$ii) {
-                                $answer .= SELECTED;
-                            }
-                            $answer .= ">".str_replace('.',$sSeparator,$ii)."</option>\n";
-                        }
-                        $answer .= "\t</select>\n";
-                    } elseif ($inputboxlayout == true)
-                    {
-                        $answer .= "\t<input type='text' class=\"multiflexitext text {$kpclass}\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 "
-                        . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
-                        . " value=\"";
-                        if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {
-                            $answer .= str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
-                        }
-                        $answer .= "\" />\n";
-                    }
-                    $answer .= "\t</td>\n";
-
-                    $inputnames[]=$myfname2;
-                    $thiskey++;
                 }
                 else
                 {
-                    $myfname2=$myfname."_$ld";
-                    if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '1')
+                    if(in_array($myfname2, $aMandatoryViolationSubQ))
                     {
-                        $myvalue = '1';
-                        $setmyvalue = CHECKED;
+                        $emptyresult=1;
                     }
-                    else
-                    {
-                        $myvalue = '';
-                        $setmyvalue = '';
-                    }
-                    $answer .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
-                    . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
-                    . "\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
-                    $answer .= "\t<input type=\"checkbox\" class=\"checkbox {$extraclass}\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
-                    . " onclick=\"cancelBubbleThis(event); "
-                    . " aelt=document.getElementById('answer{$myfname2}');"
-                    . " jelt=document.getElementById('java{$myfname2}');"
-                    . " if(this.checked) {"
-                    . "  aelt.value=1;jelt.value=1;$checkconditionFunction(1,'{$myfname2}',aelt.type);"
-                    . " } else {"
-                    . "  aelt.value='';jelt.value='';$checkconditionFunction('','{$myfname2}',aelt.type);"
-                    . " }; return true;\" "
-                    //                    . " onchange=\"checkconditions(this.value, this.name, this.type)\" "
-                    . " />\n";
-                    $answer .=  "<label class=\"hide read\" for=\"cbox_{$myfname2}\">{$labelans[$thiskey]}</label>\n";
-                    $inputnames[]=$myfname2;
-                    //                    $answer .= "</label>\n"
-                    $answer .= ""
-                    . "\t</td>\n";
-                    $thiskey++;
                 }
             }
-            if (strpos($answertextsave,'|'))
+            if ($emptyresult == 1)
             {
-                $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
+                $answertext = '<span class="errormandatory">'.$answertext.'</span>';
             }
-            elseif ($right_exists)
-            {
-                $answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
-            }
-
-            $answer .= "</tr>\n";
-            //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
-            $fn++;
         }
-        $answer .= "\t</tbody>\n</table>\n";
+
+        // Get array_filter stuff
+        $trbc = alternation($trbc , 'row');
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($question, $row, $myfname, $trbc,
+            $myfname, "tr", "$trbc subquestions-list questions-list {$answertypeclass}-list");
+
+        $html .= $htmltbody2;
+
+        if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+        $html .= "\t<th class=\"answertext\" width=\"$answerwidth%\">\n"
+        . "$answertext\n"
+        . $hiddenfield
+        . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
+        {
+            $html .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+        }
+        $html .= "\" />\n\t</th>\n";
+        $first_hidden_field = '';
+        $thiskey=0;
+        foreach ($columns as $column)
+        {
+            if ($checkboxlayout == false)
+            {
+                $myfname2=$myfname."_{$column->title}";
+
+                $html .= "\t<td class=\"answer_cell_00{$column->title} question-item answer-item {$answertypeclass}-item $extraclass\">\n"
+                . "<label class=\"hide read\" for=\"answer{$myfname2}\">{$column->question}</label>\n";
+                $sSeparator = getRadixPointData($question->survey->localizedNumberFormat)['separator'];
+                if($inputboxlayout == false) {
+                    $html .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\""
+                    . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
+                    . "<option value=\"\">".gT('...')."</option>\n";
+
+                    for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
+                        $html .= '<option value="'.str_replace('.',$sSeparator,$ii).'"';
+                        if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && (string)$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == (string)$ii) {
+                            $html .= SELECTED;
+                        }
+                        $html .= ">".str_replace('.',$sSeparator,$ii)."</option>\n";
+                    }
+                    $html .= "\t</select>\n";
+                } elseif ($inputboxlayout == true)
+                {
+                    $html .= "\t<input type='text' class=\"multiflexitext text {$kpclass}\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 "
+                    . " onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\""
+                    . " value=\"";
+                    if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && is_numeric($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {
+                        $html .= str_replace('.',$sSeparator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
+                    }
+                    $html .= "\" />\n";
+                }
+                $html .= "\t</td>\n";
+
+                $inputnames[]=$myfname2;
+                $thiskey++;
+            }
+            else
+            {
+                $myfname2=$myfname."_$ld";
+                if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '1')
+                {
+                    $myvalue = '1';
+                    $setmyvalue = CHECKED;
+                }
+                else
+                {
+                    $myvalue = '';
+                    $setmyvalue = '';
+                }
+                $html .= "\t<td class=\"answer_cell_00$ld question-item answer-item {$answertypeclass}-item\">\n"
+                . "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
+                . "\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
+                $html .= "\t<input type=\"checkbox\" class=\"checkbox {$extraclass}\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
+                . " onclick=\"cancelBubbleThis(event); "
+                . " aelt=document.getElementById('answer{$myfname2}');"
+                . " jelt=document.getElementById('java{$myfname2}');"
+                . " if(this.checked) {"
+                . "  aelt.value=1;jelt.value=1;$checkconditionFunction(1,'{$myfname2}',aelt.type);"
+                . " } else {"
+                . "  aelt.value='';jelt.value='';$checkconditionFunction('','{$myfname2}',aelt.type);"
+                . " }; return true;\" "
+                //                    . " onchange=\"checkconditions(this.value, this.name, this.type)\" "
+                . " />\n";
+                $html .=  "<label class=\"hide read\" for=\"cbox_{$myfname2}\">{$labelans[$thiskey]}</label>\n";
+                $inputnames[]=$myfname2;
+                //                    $answer .= "</label>\n"
+                $html .= ""
+                . "\t</td>\n";
+                $thiskey++;
+            }
+        }
+        if (strpos($answertextsave,'|'))
+        {
+            $answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
+            $html .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
+        }
+        elseif ($right_exists)
+        {
+            $html .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
+        }
+
+        $html .= "</tr>\n";
+        //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
+        $fn++;
     }
-    else
-    {
-        $answer = "\n<p class=\"error\">".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
-        $inputnames = '';
-    }
-    return array($answer, $inputnames);
+    $html .= "\t</tbody>\n</table>\n";
+
+    return [$html, $inputnames];
 }
 
 
@@ -5482,6 +5354,7 @@ function do_arraycolumns(Question $question, Response $response)
 // ---------------------------------------------------------------
 function do_array_dual(Question $question, Response $response)
 {
+    return ['ok'];
     $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
     $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
     $repeatheadings = Yii::app()->getConfig("repeatheadings");
@@ -5546,7 +5419,7 @@ function do_array_dual(Question $question, Response $response)
             $labelans1[]=$lrow['answer'];
             $labelcode1[]=$lrow['code'];
         }
-        $numrows = count($labelans0) + count($labelans1);
+        $numrows = count($question->subQuestions);
 
         // Add needed row and fill some boolean: shownoanswer, rightexists, centerexists
         $shownoanswer=(!$question->bool_mandatory && $question->survey->bool_shownoanswer);

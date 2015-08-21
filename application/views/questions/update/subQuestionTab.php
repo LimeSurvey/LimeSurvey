@@ -37,6 +37,7 @@ for ($scale = 0; $scale < $question->subQuestionScales; $scale++) {
     }
     // Take scales into account.
     foreach ($subQuestions as $subQuestion) {
+//        vdd($subQuestion);
         $subQuestion->language = $language;
         $attribute = "[{$i}]title";
         echo TbHtml::openTag('div', array_merge(['class' => 'form-group', 'data-index' => $i, 'data-scale' => $scale],

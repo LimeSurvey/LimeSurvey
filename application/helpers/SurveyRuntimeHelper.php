@@ -854,7 +854,7 @@ class SurveyRuntimeHelper {
         $aReplacement = [];
         $question_template = file_get_contents($session->templateDir .'question.pstpl');
 
-        list($plus_qanda, $plus_inputnames) = retrieveAnswers($question);
+        $plus_qanda = retrieveAnswers($question);
         $plus_qanda[] = $question->type;
         $plus_qanda[] = $question->bool_mandatory;
         $plus_qanda['finalgroup'] = $question->gid;

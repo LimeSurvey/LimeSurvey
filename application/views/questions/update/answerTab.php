@@ -32,6 +32,7 @@ for ($scale = 0; $scale < $question->answerScales; $scale++) {
     if (empty($answers)) {
         $answer = new Answer();
         $answer->code = $question->answerScales == 1 ? "A1" : ($scale == 0 ? "L1" : "R1");
+        $answer->scale_id = $scale;
         $answer->question_id = $question->primaryKey;
         $answers = [$answer];
     }
@@ -49,6 +50,7 @@ for ($scale = 0; $scale < $question->answerScales; $scale++) {
              * @todo Develop something proper that uses a collection model and validates that model.
              */
             $validators[] = "for (var key in values) { if (values[key] !== elem && values[key].value == value) return '$message'; } return true;";
+            echo $form->hiddenField($answer, "[{$i}]scale_id");
             echo $form->textField($answer, "[{$i}]code", array_merge([
                 'class' => 'col-sm-1 code',
             ], \SamIT\Form\FormHelper::createAttributesForInput($validators)));

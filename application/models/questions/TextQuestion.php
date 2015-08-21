@@ -6,7 +6,7 @@ namespace ls\models\questions;
  * "Long free text"
  * @package ls\models\questions
  */
-class TextQuestion extends \Question {
+class TextQuestion extends \Question{
     /**
      * This function return the class by question type
      * @param string question type

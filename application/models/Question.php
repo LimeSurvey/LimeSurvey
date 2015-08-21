@@ -69,7 +69,7 @@
          * @var ResponseField[]
          */
         protected $_fields = [];
-        protected $customAttributes = [];
+        protected $customAttributes;
         protected $customLocalizedAttributes = [];
 
         /**
@@ -78,22 +78,35 @@
          */
         public $before;
 
+        protected function loadCustomAttributes() {
+            if (!isset($this->customAttributeNames)) {
+                // Fill the question attributes.
+                foreach($this->questionAttributes as $questionAttribute) {
+                    if (!isset($questionAttribute->language)) {
+                        $this->customAttributes[$questionAttribute->attribute] = $questionAttribute->value;
+                    }
+                }
+            }
+        }
         protected function getCustomAttribute($name) {
+            $this->loadCustomAttributes();
             if (array_key_exists($name, $this->customAttributes)) {
                 return $this->customAttributes[$name];
-            }
-
-            // Fill the question attributes.
-            foreach($this->questionAttributes as $questionAttribute) {
-                if (!isset($questionAttribute->language) && $questionAttribute->attribute === $name) {
-                    $this->customAttributes[$name] = $questionAttribute->value;
-                    return $questionAttribute->value;
-                }
             }
 
             // Get default value.
             $config = questionAttributes(true)[$name];
             return isset($config['default']) ? $config['default'] : null;
+        }
+
+        protected function setCustomAttribute($name, $value) {
+            $this->loadCustomAttributes();
+            $this->customAttributes[$name] = $value;
+        }
+
+        protected function issetCustomAttribute($name) {
+            $this->loadCustomAttributes();
+            return isset($this->customAttributes[$name]);
         }
 
         protected function getCustomLocalizedAttribute($name) {
@@ -122,6 +135,11 @@
 
         }
 
+        /**
+         * Save the advanced question attributes.
+         * @throws CDbException
+         * @throws Exception
+         */
         protected function updateAttributes() {
             // Save the question attributes that do not use i18n.
             $db = self::getDbConnection();
@@ -272,12 +290,23 @@
             return $result;
         }
 
+        public function __isset($name)
+        {
+            if(in_array($name, $this->customAttributeNames())) {
+                $result = $this->issetCustomAttribute($name);
+            } else {
+                $result = parent::__isset($name);
+            }
+            return $result;
+        }
+
+
         public function __set($name, $value)
         {
             if (substr($name, 0, 5) == 'bool_') {
                 $this->__set(substr($name, 5), $value ? 'Y' : 'N');
             } elseif (in_array($name, $this->customAttributeNames())) {
-                $this->customAttributes[$name] = $value;
+                $this->setCustomAttribute($name, $value);
 
             } else {
                 parent::__set($name, $value);
@@ -828,8 +857,14 @@
                     $class = \ls\models\questions\DateTimeQuestion::class;
                     break;
                 case self::TYPE_HUGE_TEXT:
-                case self::TYPE_SHORT_TEXT:
+                    $class = \ls\models\questions\HugeTextQuestion::class;
+                    break;
                 case self::TYPE_LONG_TEXT:
+                    $class = \ls\models\questions\LongTextQuestion::class;
+                    break;
+
+                case self::TYPE_SHORT_TEXT:
+
                     $class = \ls\models\questions\TextQuestion::class;
                     break;
                 case self::TYPE_LIST_WITH_COMMENT:
