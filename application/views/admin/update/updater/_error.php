@@ -55,7 +55,7 @@ switch ($errorObject->error)
 
     case 'not_found':
         $title = gt("Unknown update key!");
-        $message = gt("Your key is unkown by the update server.");
+        $message = gt("Your key is unknown by the update server.");
         $buttons = 3;
         break;      
     
@@ -66,13 +66,13 @@ switch ($errorObject->error)
         break;
     
     case 'unknown_view': 
-        $title = gt("The server tried to call an unkown view!");
+        $title = gt("The server tried to call an unknown view!");
         $message = gt('Is your ComfortUpdate up to date?').' '.gT('Please contact the LimeSurvey team.');
         $buttons = 3;
         break;
             
-    case 'unkown_destination_build':
-        $title = gt("Unkown destination build!");
+    case 'unknown_destination_build':
+        $title = gt("Unknown destination build!");
         $message = gt("It seems that the ComfortUpdate doesn't know the version you're trying to update to. Please restart the process.");
         $buttons = 0;
         break;
@@ -102,7 +102,7 @@ switch ($errorObject->error)
         break;          
         
     case 'wrong_token': 
-        $title = gT('Unkown session');
+        $title = gT('Unknown session');
         $message = gT('Your session with the ComfortUpdate server is not valid or expired. Please restart the process.');
         $buttons = 0;
         break;

@@ -25,7 +25,7 @@ switch ($serverAnswer->error)
 
     case 'not_found':
         $title = "Unknown update key !";
-        $message = "Your key is unkown by the update server.";
+        $message = "Your key is unknown by the update server.";
         $buttons = 3;
         break;      
     
@@ -35,8 +35,8 @@ switch ($serverAnswer->error)
         $buttons = 3;
         break;
     
-    case 'unkown_destination_build':
-        $title = "Unkown destination build !";
+    case 'unknown_destination_build':
+        $title = "Unknown destination build !";
         $message = "It seems that the ComfortUpdate doesn't know to which version you're trying to update. Please, restart the process.";
         break;
     

@@ -120,7 +120,7 @@ class update extends Survey_Common_Action
             
             return $this->controller->renderPartial('update/updater/steps/_check_local_errors', $aData, false, false);
         }
-        return $this->_renderErrorString("unkown_destination_build");    
+        return $this->_renderErrorString("unknown_destination_build");
     }
 
     /**
@@ -154,7 +154,7 @@ class update extends Survey_Common_Action
                 }
                 return $this->controller->renderPartial('update/updater/steps/_change_log', $aData, false, false);
         }
-        return $this->_renderErrorString("unkown_destination_build");        
+        return $this->_renderErrorString("unknown_destination_build");
     }    
     
     /**
@@ -188,7 +188,7 @@ class update extends Survey_Common_Action
             }
             return $this->_renderError($changedFiles); 
         }
-        return $this->_renderErrorString("unkown_destination_build");
+        return $this->_renderErrorString("unknown_destination_build");
     }
 
     /**
@@ -235,7 +235,7 @@ class update extends Survey_Common_Action
         }
         else 
         {
-            $error = "unkown_destination_build";
+            $error = "unknown_destination_build";
         }
         return $this->_renderErrorString($error);
     }
@@ -298,7 +298,7 @@ class update extends Survey_Common_Action
         }
         else 
         {
-            $error = "unkown_destination_build";
+            $error = "unknown_destination_build";
         }
         return $this->_renderErrorString($error);                
     }
