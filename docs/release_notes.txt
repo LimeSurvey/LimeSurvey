@@ -59,6 +59,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.06+ (build 150824) to 2.06+ (build 150825) Aug 24, 2015
+-Fixed issue #9457: Error in integrity check when using MSSQL (Carsten Schmitz)
+-Fixed issue #9461: Can share a participant without selecting a user (Carsten Schmitz)
+-Fixed issue #9837: Quotes are removed in End URL field (Carsten Schmitz)
+-Updated translation: Spanish (Spain) by aesteban
+-Updated translation: French (France) by arnaud21
+-Updated translation: Norwegian (Bokmål) by pmonstad
+-Updated translation: Norwegian (Nynorsk) by pmonstad
+-Updated translation: Polish by borluuk, elisa
+-Updated translation: Russian by ddrmoscow, vipgroup
+-Updated translation: Thai by tomzt
+-Updated translation: Polish (Informal) by elisa
 
 Changes from 2.06+ (build 150812) to 2.06+ (build 150824) Aug 24, 2015
 -Fixed issue #9790: Use conditions to get a subset of list_participants (Jan-E)
