@@ -37,7 +37,7 @@
                         <span class="success resultLine"><?php eT('OK');?></span>
                 <?php else: ?>
                         <span class="errortitle resultLine"><?php eT('Not writable'); ?> !</span>
-                        <?php $errors = TRUE; ?>
+                        <?php $errors = true; $cant_ignore = true; ?>
                 <?php endif;?>
             </li>
         <?php endif;?>
@@ -62,7 +62,7 @@
             <span class="success resultLine" ><?php eT('OK');?></span>
         <?php else:?>
             <span class="errortitle resultLine"  ><?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?></span>
-            <?php $errors = TRUE; ?>
+            <?php $errors = TRUE; $cant_ignore = true;?>
         <?php endif;?>
     </li>
 
@@ -79,7 +79,7 @@
                 <?php else: ?>
                     <?php if(isset($module->required)): ?>
                         <span class="errortitle resultLine"  ><?php eT('No'); ?> !</span>
-                        <?php $errors = TRUE; ?>
+                        <?php $errors = TRUE; $cant_ignore = true; ?>
                     <?php elseif(isset($module->optional)): ?>
                         <span class="errortitle resultLine"  ><?php eT('No (but optional)'); ?></span>
                     <?php endif;?>                      
@@ -102,7 +102,7 @@
 </p>
 
     <?php 
-    if($ignore)
+    if($ignore && ! $cant_ignore )
     {
             $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/changeLog/");
             echo CHtml::beginForm($formUrl, 'post', array("id"=>"launchChangeLogForm"));
@@ -119,14 +119,14 @@
         <span class="ui-button-text"><?php eT('Check again');?></span>
     </a>
 
-    <?php if($ignore): ?>
+    <?php if($ignore  && ! $cant_ignore): ?>
 
         <?php 
             echo CHtml::submitButton(gT('Ignore'), array('id'=>'Ignorestep1launch', "class"=>"ui-button ui-widget ui-state-default ui-corner-all")); 
         ?>              
     <?php endif;?>
 </p>
-<?php if($ignore)
+<?php if($ignore  && ! $cant_ignore)
             echo CHtml::endForm();
 ?>            
 
