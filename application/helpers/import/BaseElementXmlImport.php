@@ -27,7 +27,7 @@ abstract class BaseElementXmlImport extends BaseXmlImport
         // Recursion create cleaner code at the cost of some speed (since the $data array is iterated a lot).
         foreach($data['groups']['rows'] as $group) {
             // Only handle the base language.
-            if ($group['language'] == $result['language']) {
+            if (!isset($group['language']) || $group['language'] == $result['language']) {
                 $result['groups'][] = $this->constructGroup($group, $result['language'], $data);
             }
         }
@@ -78,6 +78,7 @@ abstract class BaseElementXmlImport extends BaseXmlImport
         $questions = isset($data['subquestions']) ? array_merge($data['subquestions']['rows'], $data['questions']['rows']) : $data['questions']['rows'];
         foreach ($questions as $translatedQuestion) {
             if ($translatedQuestion['qid'] == $question['qid']
+                && isset($translatedQuestion['language'])
                 && $translatedQuestion['language'] != $language
             ) {
                 $question['translations'][] = $translatedQuestion;
@@ -86,16 +87,19 @@ abstract class BaseElementXmlImport extends BaseXmlImport
 
         // Add subquestions
         foreach (isset($data['subquestions']) ? $data['subquestions']['rows'] : [] as $subQuestion) {
-            if ($subQuestion['parent_qid'] == $question['qid'] && $subQuestion['language'] == $language) {
+            if ($subQuestion['parent_qid'] == $question['qid'] && (!isset($subQuestion['language']) || $subQuestion['language'] == $language)) {
                 $question['subquestions'][] = $this->constructQuestion($subQuestion, $language, $data);
             }
         }
 
         // Add answers
-        foreach ($data['answers']['rows'] as $answer) {
-            if ($answer['qid'] == $question['qid']
-                && $answer['language'] == $language) {
-                $question['answers'][] = $this->constructAnswer($answer, $language, $data);
+        if (isset($data['answers'])) {
+            foreach ($data['answers']['rows'] as $answer) {
+                if ($answer['qid'] == $question['qid']
+                    && $answer['language'] == $language
+                ) {
+                    $question['answers'][] = $this->constructAnswer($answer, $language, $data);
+                }
             }
         }
 
@@ -112,7 +116,6 @@ abstract class BaseElementXmlImport extends BaseXmlImport
                 $question[$attribute['attribute']] = $attribute['value'];
             }
         }
-
         return $question;
     }
 
@@ -128,17 +131,27 @@ abstract class BaseElementXmlImport extends BaseXmlImport
     protected function constructGroup($group, $language, $data) {
         // Add translations.
         foreach($data['groups']['rows'] as $translatedGroup) {
-            if ($translatedGroup['gid'] == $group['gid']
-                && $translatedGroup['language'] != $language) {
+
+            if (isset($translatedGroup['gid'],$group['gid'], $translatedGroup['language'])
+                && $translatedGroup['gid'] == $group['gid']
+                && $translatedGroup['language'] != $language
+            ) {
+                $group['translations'][] = $translatedGroup;
+            } elseif (
+                isset($translatedGroup['id'],$group['id'], $translatedGroup['language'])
+                && $translatedGroup['id'] == $group['id']
+                && $translatedGroup['language'] != $language
+            ) {
                 $group['translations'][] = $translatedGroup;
             }
+
         }
 
 
         // Add questions.
         foreach($data['questions']['rows'] as $question) {
             // Only handle the base language.
-            if ($question['gid'] == $group['gid'] && $question['language'] == $language) {
+            if ($question['gid'] == (isset($group['gid']) ? $group['gid'] : $group['id']) && (!isset($question['language']) || $question['language'] == $language)) {
 
                 $group['questions'][] = $this->constructQuestion($question, $language, $data);
             }

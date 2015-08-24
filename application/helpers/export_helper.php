@@ -631,7 +631,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 /**
 * from export_structure_xml.php
 */
-function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
+function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = [])
 {
     $sdump = "";
     if (!isset($exclude['answers']))
@@ -760,11 +760,11 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     $xml->writeElement('LimeSurveyDocType','Survey');
     $xml->writeElement('DBVersion',\SettingGlobal::get("DBVersion"));
     $xml->startElement('languages');
-    $surveylanguages=Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-    $surveylanguages[]=Survey::model()->findByPk($iSurveyID)->language;
-    foreach ($surveylanguages as $surveylanguage)
+    $languages = Survey::model()->findByPk($iSurveyID)->allLanguages;
+
+    foreach ($languages as $language)
     {
-        $xml->writeElement('language',$surveylanguage);
+        $xml->writeElement('language', $language);
     }
     $xml->endElement();
     surveyGetXMLStructure($iSurveyID, $xml,$exclude);

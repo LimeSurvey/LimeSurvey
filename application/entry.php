@@ -28,7 +28,7 @@
     }
 
     if (version_compare(PHP_VERSION, '5.5.0', '<'))
-        die('This version of LimeSurvey  requires PHP version 5.4.0 or later! Your version: '.PHP_VERSION);
+        die('This version of LimeSurvey  requires PHP version 5.5.0 or later! Your version: '.PHP_VERSION);
 
 
 class_exists('Yii');
@@ -36,6 +36,5 @@ Yii::$enableIncludePath = false;
 $config = require_once(__DIR__ . '/config/internal' . EXT);
 $config['loader'] = $loader;
 unset($loader);
-//var_dump($config['components']['themeManager']); die();
 
-Yii::createApplication('WebApplication', $config)->run();
+Yii::createApplication(WebApplication::class, $config)->run();

@@ -22,7 +22,7 @@
  * @property-read Translation[] $translations Relation added by translatable behavior
  * @property-read bool $hasSubQuestions
  * @property-read bool $hasAnswers
- * @property-read string $type
+ * @property string $type
  * @property QuestionGroup $group;
  * @property string $title
  * @property boolean $other
@@ -382,14 +382,14 @@
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
                 'on' => ['updatesub', 'insertsub']
             ];
-            $aRules[] = ['title', 'unique', 'caseSensitive'=>true,
+            $aRules[] = ['title', CUniqueValidator::class, 'caseSensitive'=>true,
                 'criteria'=>[
                     'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
                     // Use a deferred value since $this->sid might be set after validators are created.
                     'params' => [
-                        ':sid' => new DeferredValue(function() { return $this->sid; }),
-                        ':parent_qid' => new DeferredValue(function() { return $this->parent_qid; }),
-                        ':scale_id' => new DeferredValue(function() { return $this->scale_id; })
+                        ':sid' => new DeferredValue(function() { return $this->sid; }, 'sid'),
+                        ':parent_qid' => new DeferredValue(function() { return $this->parent_qid; }, 'parent_qid'),
+                        ':scale_id' => new DeferredValue(function() { return $this->scale_id; }, 'scale_id')
                     ]
                 ],
                 'message' => gT('Question codes must be unique.'),

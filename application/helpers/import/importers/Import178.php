@@ -65,7 +65,8 @@ class Import178 extends BaseElementXmlImport{
     }
     protected function prepareGroup(array $data, \Survey $survey) {
         // Translate gid.
-        $data['id'] = $data['gid'];
+
+        $data['id'] = isset($data['gid']) ? $data['gid'] : $data['id'];
         $data['sid'] = $survey->primaryKey;
         unset($data['gid']);
         unset($data['language']);
@@ -92,6 +93,7 @@ class Import178 extends BaseElementXmlImport{
                 $result = $result && $this->importTranslation($group->translatable, $translation, $group->primaryKey);
             }
             foreach($questions as $question) {
+                \Yii::trace('importQuestion');
                 $result = $result && $this->importQuestion($question, $group, $questionMap);
             }
 
@@ -128,6 +130,7 @@ class Import178 extends BaseElementXmlImport{
             foreach ($surveyTranslations as $surveyTranslation) {
                 $result = $result && $this->importSurveyTranslation($surveyTranslation, $survey);
             }
+
             foreach ($groups as $group) {
                 $result = $result && $this->importGroup($group, $survey, $questionMap);
             }
