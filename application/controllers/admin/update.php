@@ -273,6 +273,10 @@ class update extends Survey_Common_Action
                             $updateModel->removeTmpFile('update.zip');
                             $updateModel->removeTmpFile('comfort_updater_cookie.txt');
                             
+                            Yii::app()->session['update_result'] = null;
+                            Yii::app()->session['security_update'] = null;
+                            $next_update_check = null;                            
+                            
                             // TODO : aData should contains information about each step
                             return $this->controller->renderPartial('update/updater/steps/_final', array(), false, false);    
                         }

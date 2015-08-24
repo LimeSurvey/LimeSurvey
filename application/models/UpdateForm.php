@@ -541,27 +541,48 @@ class UpdateForm extends CFormModel
     public function getUpdateNotification()
     {
         $crosscheck = (getGlobalSetting('updatenotification')=="both")?1:0;
-        $updates = $this->getUpdateInfo($crosscheck="1");
+        $today = new DateTime("now");
+                
+        $next_update_check = Yii::app()->session['next_update_check'];
         
-        $update_available = FALSE;    
-        if($updates->result)
+        if (is_null($next_update_check) || ($next_update_check <  $today) )
         {
-            unset($updates->result);
-        
-            if( count($updates) > 0)
+            $updates = $this->getUpdateInfo($crosscheck="1");
+            $update_available = FALSE;    
+            if($updates->result)
             {
-                $update_available = TRUE;
-                $security_update_available = FALSE;
-                foreach( $updates as $update )
+                unset($updates->result);
+            
+                if( count($updates) > 0)
                 {
-                    if($update->security_update)
-                        $security_update_available = TRUE;
+                    $update_available = TRUE;
+                    $security_update_available = FALSE;
+                    foreach( $updates as $update )
+                    {
+                        if($update->security_update)
+                            $security_update_available = TRUE;
+                    }
                 }
+                Yii::app()->session['update_result'] = $update_available;
+                Yii::app()->session['security_update'] = $security_update_available;
+
+                $next_update_check = $today->add(new DateInterval('P1D'));
+                Yii::app()->session['next_update_check'] = $next_update_check;
+                $updates = array('result'=>$update_available , 'security_update'=>$security_update_available);
             }
-            $updates = array('result'=>$update_available , 'security_update'=>$security_update_available);
+            else 
+            {
+                $next_update_check = $today->add(new DateInterval('P1D'));
+                Yii::app()->session['next_update_check'] = $next_update_check;
+            }
         }
-        
-        
+        else 
+        {
+               $update_available = Yii::app()->session['update_result'];
+               $security_update_available = Yii::app()->session['security_update'];
+               $updates = array('result'=>$update_available , 'security_update'=>$security_update_available);
+        }
+
         return (object) $updates;        
         
     }
@@ -794,7 +815,7 @@ class UpdateForm extends CFormModel
             $check->writable = 'pass';
             
         if($obj->freespaceCheck)
-            $check->freespace = (disk_free_space( $obj->name ) > $obj->minfreespace );
+            $check->freespace = (disk_free_space( $obj->name ) < $obj->minfreespace );
         else
             $check->freespace = 'pass';        
         
