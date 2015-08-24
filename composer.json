@@ -32,7 +32,8 @@
         "bower-asset/select2-bootstrap-css": "1.*",
         "bower-asset/jquery-ui": "1.*",
         "bower-asset/jqueryui-timepicker-addon": "1.5.*",
-        "studio-42/elfinder": "2.1.x-dev"
+        "studio-42/elfinder": "2.1.x-dev",
+        "bower-asset/jsoneditor": "4.*"
     },
 	"require-dev" : {
 		

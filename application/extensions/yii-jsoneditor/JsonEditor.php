@@ -15,11 +15,9 @@
             'class' => 'jsoneditor-wrapper'
         );
 
-        protected $libraryDir = 'jsoneditor-2.3.6';
-		
-		public function init()
+        public function init()
 		{
-			$this->baseUrl = Yii::app()->assetManager->publish(__DIR__ . "/" . $this->libraryDir) . "/";
+			$this->baseUrl = \Yii::getPathOfAlias(App()->params['bower-asset']) . '/jsoneditor/dist/';
             $this->registerClientScript();
             
 		}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d5fed6c890dda620cb2393357d9a0c03",
+    "hash": "47ce42255ade3527f70aeb2af975cfe4",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -303,6 +303,40 @@
                     "dist/jquery-ui-timepicker-addon.css"
                 ]
             }
+        },
+        {
+            "name": "bower-asset/jsoneditor",
+            "version": "v4.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/josdejong/jsoneditor.git",
+                "reference": "c6642a7444bd92935fbfb0a71ca1e48c50444502"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/josdejong/jsoneditor/zipball/c6642a7444bd92935fbfb0a71ca1e48c50444502",
+                "reference": "c6642a7444bd92935fbfb0a71ca1e48c50444502",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "./dist/jsoneditor.min.js",
+                    "./dist/jsoneditor.min.css"
+                ],
+                "bower-asset-ignore": [
+                    "misc",
+                    "node_modules",
+                    "test",
+                    "tools",
+                    "gulpfile.js",
+                    "npm-debug.log",
+                    ".idea",
+                    ".npmignore",
+                    ".gitignore"
+                ]
+            },
+            "description": "A web-based tool to view, edit and format JSON"
         },
         {
             "name": "bower-asset/papaparse",
@@ -1084,7 +1118,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/8a719102d2c3ad496530db6f524da222bccf01d4",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/f90669c7dd41a858c4202ee5f20d714a4f3a4d67",
                 "reference": "8a719102d2c3ad496530db6f524da222bccf01d4",
                 "shasum": ""
             },
