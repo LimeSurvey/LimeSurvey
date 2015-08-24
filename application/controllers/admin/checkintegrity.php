@@ -252,7 +252,7 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
     * This function Deletes quota language settings without related main entries
-    * 
+    *
     */
     private function _deleteQuotaLanguageSettings()
     {
@@ -265,8 +265,8 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
     * This function deletes quota entries which not having a related survey entry
-    * 
-    * @param mixed $aData 
+    *
+    * @param mixed $aData
     */
     private function _deleteQuotas(array $aData)
     {
@@ -359,6 +359,8 @@ class CheckIntegrity extends Survey_Common_Action
         $sDBPrefix = Yii::app()->db->tablePrefix;
         $sQuery = dbSelectTablesLike('{{survey}}\_%');
         $aResult = dbQueryOrFalse($sQuery);
+        $sSurveyIDs = Yii::app()->db->createCommand('select sid from {{surveys}}')->queryColumn();
+
         foreach ($aResult->readAll() as $aRow)
         {
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
@@ -367,7 +369,7 @@ class CheckIntegrity extends Survey_Common_Action
             if (isset($aTableName[1]) && ctype_digit($aTableName[1]))
             {
                 $iSurveyID = $aTableName[1];
-                if (!in_array($iSurveyID, $sids)) {
+                if (!in_array($iSurveyID, $sSurveyIDs)) {
                     $sDate = date('YmdHis') . rand(1, 1000);
                     $sOldTable = "survey_{$iSurveyID}";
                     $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
@@ -386,7 +388,7 @@ class CheckIntegrity extends Survey_Common_Action
         {
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
             $iSurveyID = substr($sTableName, strpos($sTableName, '_') + 1);
-            if (!in_array($iSurveyID, $sids)) {
+            if (!in_array($iSurveyID, $sSurveyIDs)) {
                 $sDate = date('YmdHis') . rand(1, 1000);
                 $sOldTable = "tokens_{$iSurveyID}";
                 $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
