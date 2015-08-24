@@ -23,7 +23,7 @@ echo htmlspecialchars($existingfile['file'])."\n";
 ?>
 </textarea>
 <?php else:?>
-    <p class="success" style="text-align: left;">
+    <p class="success text-left">
         <?php  eT('No file added by the ComfortUpdate already exists.'); ?> 
     </p>                
 <?php endif;?>

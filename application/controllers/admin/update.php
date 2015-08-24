@@ -118,9 +118,9 @@ class update extends Survey_Common_Action
             $aData['destinationBuild'] = $destinationBuild;
             $aData['access_token'] = $access_token;
             
-            return $this->controller->renderPartial('update/updater/steps/_check_local_errors', $aData, false, true);
+            return $this->controller->renderPartial('update/updater/steps/_check_local_errors', $aData, false, false);
         }
-        return $this->_renderErrorString("unkown_destination_build");    
+        return $this->_renderErrorString("unknown_destination_build");
     }
 
     /**
@@ -152,9 +152,9 @@ class update extends Survey_Common_Action
                 {
                     return $this->_renderError($changelog);
                 }
-                return $this->controller->renderPartial('update/updater/steps/_change_log', $aData, false, true);
+                return $this->controller->renderPartial('update/updater/steps/_change_log', $aData, false, false);
         }
-        return $this->_renderErrorString("unkown_destination_build");        
+        return $this->_renderErrorString("unknown_destination_build");
     }    
     
     /**
@@ -184,11 +184,11 @@ class update extends Survey_Common_Action
                 $aData['updateinfo'] = $changedFiles->files;
                 $aData['access_token'] = $access_token;
                 
-                return $this->controller->renderPartial('update/updater/steps/_fileSystem', $aData, false, true);      
+                return $this->controller->renderPartial('update/updater/steps/_fileSystem', $aData, false, false);      
             }
             return $this->_renderError($changedFiles); 
         }
-        return $this->_renderErrorString("unkown_destination_build");
+        return $this->_renderErrorString("unknown_destination_build");
     }
 
     /**
@@ -220,7 +220,7 @@ class update extends Survey_Common_Action
                     $aData['datasupdateinfo'] = $this->_parseToView($updateinfos);
                     $aData['destinationBuild'] = $destinationBuild;
                     $aData['access_token'] = $access_token;
-                    return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, true);
+                    return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
                     
                 }
                 else 
@@ -235,7 +235,7 @@ class update extends Survey_Common_Action
         }
         else 
         {
-            $error = "unkown_destination_build";
+            $error = "unknown_destination_build";
         }
         return $this->_renderErrorString($error);
     }
@@ -273,8 +273,12 @@ class update extends Survey_Common_Action
                             $updateModel->removeTmpFile('update.zip');
                             $updateModel->removeTmpFile('comfort_updater_cookie.txt');
                             
+                            Yii::app()->session['update_result'] = null;
+                            Yii::app()->session['security_update'] = null;
+                            $next_update_check = null;                            
+                            
                             // TODO : aData should contains information about each step
-                            return $this->controller->renderPartial('update/updater/steps/_final', array(), false, true);    
+                            return $this->controller->renderPartial('update/updater/steps/_final', array(), false, false);    
                         }
                         else 
                         {
@@ -298,7 +302,7 @@ class update extends Survey_Common_Action
         }
         else 
         {
-            $error = "unkown_destination_build";
+            $error = "unknown_destination_build";
         }
         return $this->_renderErrorString($error);                
     }
@@ -327,7 +331,7 @@ class update extends Survey_Common_Action
                     $unzip = $updateModel->unzipUpdateUpdaterFile();
                     if( $unzip->result )
                     {
-                        return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, true);    
+                        return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, false);    
                     }
                     else 
                     {
@@ -341,7 +345,7 @@ class update extends Survey_Common_Action
             }
             else 
             {
-                return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks'=>$localChecks), false, true);
+                return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks'=>$localChecks), false, false);
             }
             
         }
@@ -440,10 +444,10 @@ class update extends Survey_Common_Action
         if( $serverAnswer->result )
         {
             unset($serverAnswer->result);
-            return $this->controller->renderPartial('//admin/update/check_updates/update_buttons/_updatesavailable', array('updateInfos' => $serverAnswer));
+            return $this->controller->renderPartial('//admin/update/check_updates/update_buttons/_updatesavailable', array('updateInfos' => $serverAnswer), false, false);
         }
         // Error : we build the error title and messages 
-        return $this->controller->renderPartial('//admin/update/check_updates/update_buttons/_updatesavailable_error', array('serverAnswer' => $serverAnswer));        
+        return $this->controller->renderPartial('//admin/update/check_updates/update_buttons/_updatesavailable_error', array('serverAnswer' => $serverAnswer), false, false);        
     } 
 
     /**
@@ -458,7 +462,7 @@ class update extends Survey_Common_Action
             $views = array('welcome', 'subscribe', 'key_updated', 'updater_update');
             if( in_array($serverAnswer->view, $views) ) 
             {
-                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer),  false, true);
+                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer),  false, false);
             }    
             else 
             {
@@ -478,7 +482,7 @@ class update extends Survey_Common_Action
      */
     private function _renderError($errorObject)
     {
-        echo $this->controller->renderPartial('//admin/update/updater/_error', array('errorObject' => $errorObject), false, true); 
+        echo $this->controller->renderPartial('//admin/update/updater/_error', array('errorObject' => $errorObject), false, false); 
     }
 
     /**

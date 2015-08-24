@@ -11,7 +11,6 @@
 <?php 
         $urlNew = Yii::app()->createUrl("admin/globalsettings", array("update"=>'checkLocalErrors', 'destinationBuild' => $destinationBuild, 'access_token' => $access_token));
         $errors = FALSE; 
-        //var_dump($localChecks); die();
 ?>
 
 <h2 class="maintitle"><?php eT('Checking basic requirements...'); ?></h2>
@@ -33,23 +32,23 @@
         <ul>
         <?php if($file->writable !== 'pass'): ?>
             <li>
-                <span style="float: left;"><?php eT('Writable'); ?> :</span>  
+                <span class="checkLine"><?php eT('Writable'); ?> :</span>  
                 <?php if($file->writable): ?>
-                        <span class="success" style="float: right;"><?php eT('OK');?></span>
+                        <span class="success resultLine"><?php eT('OK');?></span>
                 <?php else: ?>
-                        <span class="errortitle"  style="float: right;"><?php eT('Not writable'); ?> !</span>
-                        <?php $errors = TRUE; ?>
+                        <span class="errortitle resultLine"><?php eT('Not writable'); ?> !</span>
+                        <?php $errors = true; $cant_ignore = true; ?>
                 <?php endif;?>
             </li>
         <?php endif;?>
         <?php if($file->freespace !== 'pass'): ?>
             <li>
-                <span style="float: left;"><?php eT('Available space');?> :</span>
+                <span class="checkLine"><?php eT('Available space');?> :</span>
                 <?php if($file->freespace): ?>
-                    <span class="success" style="float: right;"><?php eT('OK');?></span>
+                    <span class="success resultLine"><?php eT('OK');?></span>
                 <?php else: ?>
-                    <span class="errortitle"  style="float: right;"> <?php eT('Not enough space'); ?> !</span>
-                    <?php $errors = TRUE; ?>
+                    <span class="errortitle resultLine"> <?php eT('Not enough space'); ?> !</span>
+                    <?php $errors = true; $ignore = true; ?>
                 <?php endif;?>
             </li>           
         <?php endif;?>
@@ -58,12 +57,12 @@
 <?php endforeach; ?>
     
     <li>
-        <span style="float: left;"><?php printf(gT('PHP version %s required'),$localChecks->php->php_ver);?> :</span>
+        <span class="checkLine"><?php printf(gT('PHP version %s required'),$localChecks->php->php_ver);?> :</span>
         <?php if($localChecks->php->result):?>
-            <span class="success" style="float: right;"><?php eT('OK');?></span>
+            <span class="success resultLine" ><?php eT('OK');?></span>
         <?php else:?>
-            <span class="errortitle"  style="float: right;"><?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?></span>
-            <?php $errors = TRUE; ?>
+            <span class="errortitle resultLine"  ><?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?></span>
+            <?php $errors = TRUE; $cant_ignore = true;?>
         <?php endif;?>
     </li>
 
@@ -74,15 +73,15 @@
     <li>
         <ul>
             <li>
-                <span style="float: left;"><?php eT('Installed'); ?> :</span>
+                <span class="checkLine"><?php eT('Installed'); ?> :</span>
                 <?php if($module->installed): ?>
-                        <span class="success" style="float: right;"><?php eT('OK');?></span>
+                        <span class="success resultLine" ><?php eT('OK');?></span>
                 <?php else: ?>
                     <?php if(isset($module->required)): ?>
-                        <span class="errortitle"  style="float: right;"><?php eT('No'); ?> !</span>
-                        <?php $errors = TRUE; ?>
+                        <span class="errortitle resultLine"  ><?php eT('No'); ?> !</span>
+                        <?php $errors = TRUE; $cant_ignore = true; ?>
                     <?php elseif(isset($module->optional)): ?>
-                        <span class="errortitle"  style="float: right;"><?php eT('No (but optional)'); ?></span>
+                        <span class="errortitle resultLine"  ><?php eT('No (but optional)'); ?></span>
                     <?php endif;?>                      
                 <?php endif;?>
             </li>
@@ -101,16 +100,35 @@
     <strong><?php eT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); ?></strong>
     <?php // TODO : a new step request by url... ?>
 </p>
-<p>
+
+    <?php 
+    if($ignore && ! $cant_ignore )
+    {
+            $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/changeLog/");
+            echo CHtml::beginForm($formUrl, 'post', array("id"=>"launchChangeLogForm"));
+            echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
+            echo CHtml::hiddenField('access_token' , $access_token);
+    }
+    ?>
+
+<p>          
     <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
         <span class="ui-button-text"><?php eT("Cancel"); ?></span>
     </a>    
     <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
         <span class="ui-button-text"><?php eT('Check again');?></span>
     </a>
+
+    <?php if($ignore  && ! $cant_ignore): ?>
+
+        <?php 
+            echo CHtml::submitButton(gT('Ignore'), array('id'=>'Ignorestep1launch', "class"=>"ui-button ui-widget ui-state-default ui-corner-all")); 
+        ?>              
+    <?php endif;?>
 </p>
-
-
+<?php if($ignore  && ! $cant_ignore)
+            echo CHtml::endForm();
+?>            
 
 <?php else:?>
 <p>

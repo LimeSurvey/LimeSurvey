@@ -133,14 +133,9 @@ function quickaddfunction(){
             k++;
         }
 
-        if (index!=0 || (!lsreplace && $("#tabs div[id^='newedit']:not(:last) tbody>tr").length > 0)){
-            event = {};
-            event.target = $(".btnaddanswer:last");
-            var retcode = add_label(event);
-        }
-        else{
-            var retcode = add_label();
-        }
+		event = {};
+		event.target = $(".btnaddanswer:last");
+		var retcode = add_label(event);
 
         if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);

@@ -27,29 +27,5 @@
 ?>
 
 <style media="screen" type="text/css">
-.on {
-   font-weight: bold;
-   font-size: 1em;
-   padding-left : 0.5em;
-   padding-top : 0.5em;
-}
 
-.off {
-    font-size: 0.9em;
-    padding-left : 0.5em;
-    padding-top : 0.5em;
-}
-
-#localChecksContainer {
-    min-height: 190px;
-}
-
-/*Quick hack for LS 2.06 surveys menu*/
-label, legend {
-    display : inline-block;
-    font-family: verdana, arial, sans-serif;
-    text-align: left;
-    background-color: #fefefe;
-    color: #666;
-}
 </style>

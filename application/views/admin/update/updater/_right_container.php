@@ -5,9 +5,9 @@
  */
 ?>
 
-<div style="width: 900px; float: left;">
+<div id="updaterContent">
     <!-- the ajax loader -->
-    <div id="ajaxContainerLoading" style="text-align : center; margin-top: 70px; margin-bottom: 100px; display: none">
+    <div id="ajaxContainerLoading">
         <p><?php eT('Please wait, loading data...');?></p>
         <img src="<?php echo Yii::app()->baseUrl;?>/images/ajax-loader.gif" alt="loading..."/>    <br/>
     </div>
