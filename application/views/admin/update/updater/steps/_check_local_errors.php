@@ -48,7 +48,7 @@
                     <span class="success resultLine"><?php eT('OK');?></span>
                 <?php else: ?>
                     <span class="errortitle resultLine"> <?php eT('Not enough space'); ?> !</span>
-                    <?php $errors = TRUE; ?>
+                    <?php $errors = true; $ignore = true; ?>
                 <?php endif;?>
             </li>           
         <?php endif;?>
@@ -100,16 +100,35 @@
     <strong><?php eT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); ?></strong>
     <?php // TODO : a new step request by url... ?>
 </p>
-<p>
+
+    <?php 
+    if($ignore)
+    {
+            $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/changeLog/");
+            echo CHtml::beginForm($formUrl, 'post', array("id"=>"launchChangeLogForm"));
+            echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
+            echo CHtml::hiddenField('access_token' , $access_token);
+    }
+    ?>
+
+<p>          
     <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
         <span class="ui-button-text"><?php eT("Cancel"); ?></span>
     </a>    
     <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
         <span class="ui-button-text"><?php eT('Check again');?></span>
     </a>
+
+    <?php if($ignore): ?>
+
+        <?php 
+            echo CHtml::submitButton(gT('Ignore'), array('id'=>'Ignorestep1launch', "class"=>"ui-button ui-widget ui-state-default ui-corner-all")); 
+        ?>              
+    <?php endif;?>
 </p>
-
-
+<?php if($ignore)
+            echo CHtml::endForm();
+?>            
 
 <?php else:?>
 <p>
