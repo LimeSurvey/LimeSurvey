@@ -491,6 +491,11 @@ $(document).ready(function() {
                     /* Needed because it's the only way to label a button with a variable */
                     var dialog_buttons={};
                     dialog_buttons[spAddBtn]=function(){
+                        if ($('#shareuser').val()=='')
+                        {
+                            alert(sSelectUserAlert);
+                            return;
+                        }
                         var row = myGrid .getGridParam('selarrrow');
                         shareParticipants(row);
                     };

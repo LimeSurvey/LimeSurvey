@@ -119,6 +119,7 @@ else
 
     var resetBtn = "<?php eT("Reset", 'js'); ?>";
     var exportToCSVTitle = "<?php eT("Export (filtered) participants to CSV", 'js'); ?>";
+    var sSelectUserAlert = "<?php eT("Please select a user first", 'js'); ?>";
     var noSearchResultsTxt = "<?php eT("Your search returned no results", 'js'); ?>";
     var accessDeniedTxt = "<?php eT("Access denied", 'js'); ?>";
     var closeTxt = "<?php eT("Close", 'js'); ?>";
