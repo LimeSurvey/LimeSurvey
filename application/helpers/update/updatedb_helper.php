@@ -1304,10 +1304,15 @@ function db_upgrade_all($iOldDBVersion) {
             upgradeSurveyTables181();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>181),"stg_name='DBVersion'");
         }        
-        if ($iOldDBVersion < 182)
+        if ($iOldDBVersion < 183)
         {
-            fixKCFinder182();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>182),"stg_name='DBVersion'");
+            upgradeSurveyTables183();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>183),"stg_name='DBVersion'");
+        }        
+        if ($iOldDBVersion < 184)
+        {
+            fixKCFinder184();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>184),"stg_name='DBVersion'");
         }        
         $oTransaction->commit();
         // Activate schema caching
@@ -1353,15 +1358,15 @@ function upgradeSurveyTables183()
 }
 
 
-function fixKCFinder182()
+function fixKCFinder184()
 {
-    $sThirdPartyDir=Yii::app()->getConfig('standardtemplaterootdir').DIRECTORY_SEPARATOR.'third_party'.DIRECTORY_SEPARATOR;
+    $sThirdPartyDir=Yii::app()->getConfig('homedir').DIRECTORY_SEPARATOR.'third_party'.DIRECTORY_SEPARATOR;
     rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar');
     rmdirr($sThirdPartyDir.'ckeditor/plugins/toolbar/ls-office2003');
     array_map('unlink', glob($sThirdPartyDir.'kcfinder/cache/*.js')); 
     array_map('unlink', glob($sThirdPartyDir.'kcfinder/cache/*.css')); 
     rmdirr($sThirdPartyDir.'kcfinder/upload/files'); 
-    rmdirr($sThirdPartyDir.'kcfinder/upload/.htumbs'); 
+    rmdirr($sThirdPartyDir.'kcfinder/upload/.thumbs'); 
 }
 
 
@@ -1430,8 +1435,15 @@ function upgradeTokenTables179()
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
-    if(Yii::app()->db->driverName=='mssql' || Yii::app()->db->driverName=='mysql') $sSubstringCommand='substring'; else $sSubstringCommand='substr';
-
+    switch (Yii::app()->db->driverName){
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+            $sSubstringCommand='substring';
+            break;
+        default:
+            $sSubstringCommand='substr';
+    }    
     $surveyidresult = dbGetTablesLike("tokens%");
     if ($surveyidresult)
     {
@@ -2194,6 +2206,9 @@ function alterLanguageCode($sOldLanguageCode,$sNewLanguageCode)
     }
 }
 
+/**
+ * @param string $sTablename
+ */
 function addPrimaryKey($sTablename, $aColumns)
 {
     return Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY', '{{'.$sTablename.'}}', $aColumns);
@@ -2218,6 +2233,7 @@ function dropPrimaryKey($sTablename)
             Yii::app()->db->createCommand($sQuery)->execute();
             break;
         case 'pgsql':
+        case 'sqlsrv':
         case 'mssql':
             $pkquery = "SELECT CONSTRAINT_NAME "
             ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
@@ -2290,6 +2306,10 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 }
 
 
+/**
+ * @param string $sTableName
+ * @param string $sColumnName
+ */
 function dropColumn($sTableName, $sColumnName)
 {
     if (Yii::app()->db->getDriverName()=='mssql' || Yii::app()->db->getDriverName()=='sqlsrv' || Yii::app()->db->getDriverName()=='dblib')
@@ -2303,6 +2323,9 @@ function dropColumn($sTableName, $sColumnName)
 
 
 
+/**
+ * @param string $sType
+ */
 function addColumn($sTableName, $sColumn, $sType)
 {
     Yii::app()->db->createCommand()->addColumn($sTableName,$sColumn,$sType);
