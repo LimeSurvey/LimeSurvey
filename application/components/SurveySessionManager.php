@@ -2,7 +2,7 @@
 
 /**
  * Class SurveySessionManager
- * @property-read SurveySession $current
+ * @property SurveySession $current
  * @property-read boolean $active
  * @property-read \CTypedMap $sessions
  */
@@ -55,6 +55,11 @@ class SurveySessionManager extends CApplicationComponent
             throw new \Exception("Invalid session object of type: '" . get_class($this->_current));
         }
         return $this->_current;
+    }
+
+
+    public function setCurrent(SurveySession $session) {
+        $this->_current = $session;
     }
 
     /**

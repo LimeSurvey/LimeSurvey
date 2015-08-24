@@ -103,7 +103,7 @@ $internalConfig = array(
             )
         ),
         'cache'=>array(
-           'class' => false && YII_DEBUG ? 'system.caching.CDummyCache' : CFileCache::class,
+           'class' => YII_DEBUG ? 'system.caching.CDummyCache' : CFileCache::class,
         ),
         'db' => array(
             'schemaCachingDuration' => 3600,

@@ -94,14 +94,11 @@ function retrieveAnswers(Question $question)
     }
     $question_text = [
         // Pass through EM.
-        'text' => $text,
         'code' => $question->title,
         'number' => $number,
         'help' => '',
         'mandatory' => '',
         'man_message' => '',
-        'valid_message' => '',
-        'file_valid_message' => '',
         'class' => '',
         'man_class' => '',
         'input_error_class' => '',
@@ -256,96 +253,17 @@ function retrieveAnswers(Question $question)
         $question_text['mandatory'] = gT('*');
     }
 
-    //If this question is mandatory but wasn't answered in the last page
-    //add a message HIGHLIGHTING the question
-    if (($session->step != $session->maxStep || $session->viewCount > 1)
-        && !$question->validateResponse($session->response)->getPassedMandatory()) {
-        $mandatory_msg = $question->getMandatoryMessage();
-    }
-    else {
-        $mandatory_msg = '';
-    }
-    $qtitle .= $mandatory_msg;
-    $question_text['man_message'] = $mandatory_msg;
-
     if (!isset($question->hide_tip) || $question->hide_tip==0) {
         $_vshow = true; // whether should initially be visible - TODO should also depend upon 'hidetip'?
     }
     else {
         $_vshow = false;
     }
-    list($validation_msg,$isValid) = validation_message($question,$_vshow);
+//    list($validation_msg,$isValid) = validation_message($question,$_vshow);
 
-    $qtitle .= $validation_msg;
-    $question_text['valid_message'] = $validation_msg;
-
-    if ($session->step != $session->maxStep || ($session->step == $session->prevStep)) {
-        $file_validation_msg = file_validation_message($question);
-    }
-    else {
-        $file_validation_msg = '';
-        $isValid = true;    // don't want to show any validation messages.
-    }
-    $qtitle .= $question_text['file_valid_message'] = $question->type == Question::TYPE_UPLOAD ? $file_validation_msg : "";
-
-    if(!empty($question_text['man_message']) || !$isValid || !empty($question_text['file_valid_message']))
-    {
-        $question_text['input_error_class'] = ' input-error';// provides a class to style question wrapper differently if there is some kind of user input error;
-    }
-
-    // =====================================================
-    // START: legacy question_start.pstpl code
-    // The following section adds to the templating system by allowing
-    // templaters to control where the various parts of the question text
-    // are put.
-
-    if(is_file($session->templateDir.'/question_start.pstpl'))
-    {
-        $qtitle_custom = '';
-
-        $replace=array();
-        foreach($question_text as $key => $value)
-        {
-            $find[] = '{QUESTION_'.strtoupper($key).'}'; // Match key words from template
-            $replace[] = $value; // substitue text
-        };
-        /**
-         * @todo Remove this; why is this a constant!?!?!?
-         */
-        if(!defined('QUESTION_START'))
-        {
-            define('QUESTION_START' , file_get_contents($session->templateDir . '/question_start.pstpl' , true));
-        };
-        $qtitle_custom = str_replace( $find , $replace , QUESTION_START);
-
-        $c = 1;
-        // START: <EMBED> work-around step 1
-        $qtitle_custom = preg_replace( '/(<embed[^>]+>)(<\/embed>)/i' , '\1NOT_EMPTY\2' , $qtitle_custom );
-        // END <EMBED> work-around step 1
-        while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
-        {
-            $matches = 0;
-            $oldtitle=$qtitle_custom;
-            $qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1); // I removed the $count param because it is PHP 5.1 only.
-
-            $c = ($qtitle_custom!=$oldtitle)?1:0;
-        };
-        // START <EMBED> work-around step 2
-        $qtitle_custom = preg_replace( '/(<embed[^>]+>)NOT_EMPTY(<\/embed>)/i' , '\1\2' , $qtitle_custom );
-        // END <EMBED> work-around step 2
-        while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
-        {
-            $matches = 0;
-            $oldtitle=$qtitle_custom;
-            $qtitle_custom = preg_replace( '/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i' , '' , $qtitle_custom , -1 ); // I removed the $count param because it is PHP 5.1 only.
-            $c = ($qtitle_custom!=$oldtitle)?1:0;
-        };
-
-        $question_text['all'] = $qtitle_custom;
-    } else {
-        $question_text['all'] = $qtitle;
-    };
-    // END: legacy question_start.pstpl code
+//    $qtitle .= $validation_msg;
+//    $question_text['valid_message'] = $validation_msg;
+//
 
     $result = [$question_text, $html, 'help', "what is this variable?", $question->primaryKey, $question->title, $question->gid, $question->sgqa];
     eP();
@@ -804,57 +722,6 @@ function do_equation(Question $question)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
-function do_5pointchoice(Question $question, Response $response)
-{
-    $imageurl = Yii::app()->getConfig("imageurl");
-    $checkconditionFunction = "checkconditions";
-    
-    $id = 'slider'.time().rand(0,100);
-    $answer = "\n<ul id=\"{$id}\" class=\"answers-list radio-list\">\n";
-    for ($fp=1; $fp<=5; $fp++)
-    {
-        $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer$question->sgqa$fp\" value=\"$fp\"";
-        if ($response->{$question->sgqa} == $fp)
-        {
-            $answer .= CHECKED;
-        }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$question->sgqa$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
-    }
-    if (!$question->bool_mandatory  && $question->survey->bool_shownoanswer) // Add "No Answer" option if question is not mandatory
-    {
-        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$question->sgqa\" id=\"answer".$question->sgqa."NANS\" value=\"\"";
-        if (!$response->{$question->sgqa})
-        {
-            $answer .= CHECKED;
-        }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$question->sgqa."NANS\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
-
-    }
-    $answer .= "</ul>\n<input type=\"hidden\" name=\"java$question->sgqa\" id=\"java$question->sgqa\" value=\"".$response->{$question->sgqa}."\" />\n";
-    $inputnames[]=$question->sgqa;
-
-    if($question->slider_rating==1){
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'star-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js");
-        $answer .= "<script type='text/javascript'>\n"
-        . "  <!--\n"
-        ." doRatingStar({$question->primaryKey});\n"
-        ." -->\n"
-        ."</script>\n";
-    }
-
-    if($question->slider_rating==2){
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'slider-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js");
-        $answer .= "<script type='text/javascript'>\n"
-        . " <!--\n"
-        ." doRatingSlider({$question->primaryKey});\n"
-        ." -->\n"
-        ."</script>\n";
-    }
-    return array($answer, $inputnames);
-}
 
 // ---------------------------------------------------------------
 function do_date(Question $question)
@@ -3646,152 +3513,7 @@ function do_gender(Question $question, Response $response)
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_5point(Question $question)
 {
-    global $thissurvey;
-    $aLastMoveResult=LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ=($aLastMoveResult['mandViolation'] && $question->bool_mandatory) ? explode("|",$aLastMoveResult['unansweredSQs']) : array();
-    $extraclass ="";
 
-    $caption=gT("An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. ");
-    $checkconditionFunction = "checkconditions";
-
-    
-
-    if (trim($question->answer_width)!='')
-    {
-        $answerwidth=$question->answer_width;
-        $extraclass .=" answerwidth-".trim($question->answer_width);
-    }
-    else
-    {
-        $answerwidth = 20;
-    }
-    $cellwidth  = 5; // number of columns
-
-    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
-    {
-        ++$cellwidth; // add another column
-    }
-    $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
-
-    $sQuery = "SELECT question FROM {{questions}} WHERE parent_qid=".$question->primaryKey." AND question like '%|%'";
-    $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
-
-    if ($iCount>0) {
-        $right_exists=true;
-        $answerwidth=$answerwidth/2;
-    } else {
-        $right_exists=false;
-    }
-    // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-
-
-    $fn = 1;
-    $answer = "\n<table class=\"question subquestion-list questions-list {$extraclass}\" summary=\"{$caption}\">\n"
-    . "\t<colgroup class=\"col-responses\">\n"
-    . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
-    $odd_even = '';
-
-    for ($xc=1; $xc<=5; $xc++)
-    {
-        $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-    }
-    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
-    {
-        $odd_even = alternation($odd_even);
-        $answer .= "<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-    }
-    $answer .= "\t</colgroup>\n\n"
-    . "\t<thead>\n<tr class=\"array1 dontread\">\n"
-    . "\t<td>&nbsp;</td>\n";
-    for ($xc=1; $xc<=5; $xc++)
-    {
-        $answer .= "\t<th>$xc</th>\n";
-    }
-    if ($right_exists) {$answer .= "\t<td width='$answerwidth%'>&nbsp;</td>\n";}
-    if (!$question->bool_mandatory && $question->survey->bool_shownoanswer) //Question is not mandatory
-    {
-        $answer .= "\t<th>".gT('No answer')."</th>\n";
-    }
-    $answer .= "</tr></thead>\n";
-
-    $answer_t_content = '<tbody>';
-    $trbc = '';
-    $n=0;
-    //return array($answer, $inputnames);
-    foreach ($question->subQuestions as $subQuestion)
-    {
-        $myfname = $question->sgqa.$subQuestion->title;
-
-        $answertext = $subQuestion->question;
-        if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
-
-        /* Check if this item has not been answered */
-        if ($subQuestion->bool_mandatory && in_array($myfname,$aMandatoryViolationSubQ))
-        {
-            $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
-        }
-
-        $trbc = alternation($trbc , 'row');
-
-        // Get array_filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($question, $myfname, $trbc, $myfname,
-            "tr", "$trbc answers-list radio-list");
-
-        $answer_t_content .= $htmltbody2
-        . "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
-        . $hiddenfield
-        . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
-        {
-            $answer_t_content .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
-        }
-        $answer_t_content .= "\" />\n\t</th>\n";
-        for ($i=1; $i<=5; $i++)
-        {
-            $answer_t_content .= "\t<td class=\"answer_cell_00$i answer-item radio-item\">\n"
-            ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\"";
-            if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i)
-            {
-                $answer_t_content .= CHECKED;
-            }
-            $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />"
-            . "<label class=\"hide read\" for=\"answer$myfname-$i\">{$i}</label>\n"
-            . "\n</td>\n";
-        }
-
-        $answertext2 = $subQuestion->question;
-        if (strpos($answertext2,'|'))
-        {
-            $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
-            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext2</td>\n";
-        }
-        elseif ($right_exists)
-        {
-            $answer_t_content .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
-        }
-
-
-        if (!$question->bool_mandatory && $question->survey->bool_shownoanswer)
-        {
-            $answer_t_content .= "\t<td class=\"answer-item radio-item noanswer-item\">\n"
-            ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" ";
-            if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
-            {
-                $answer_t_content .= CHECKED;
-            }
-            $answer_t_content .= " onclick='$checkconditionFunction(this.value, this.name, this.type)'  />\n"
-            ."<label class=\"hide read\" for=\"answer$myfname-\">".gT('No answer')."</label>"
-            ."</td>\n";
-        }
-
-        $answer_t_content .= "</tr>\n";
-        $fn++;
-        $inputnames[]=$myfname;
-    }
-
-    $answer .= $answer_t_content . "\n</tbody>\t</table>\n";
-    return array($answer, $inputnames);
 }
 
 

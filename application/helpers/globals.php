@@ -63,6 +63,8 @@ function vd($arg) {
 function vdd($arg) {
     vd($arg); die();
 }
+
+
 /**
  * Helper function for profiling.
  * @param string $key The key to be appended.
@@ -73,10 +75,12 @@ function bP($key = false) {
         $class = \TbArray::getValue('class', $details, 'Global function');
         $token = "{$class}::{$details['function']}";
         if ($key !== false) {
-            \Yii::beginProfile($token . ' - ' . (is_null($key) ? "null" : $key));
+            $identifier = $token . ' - ' . (is_null($key) ? "null" : $key);
         } else {
-            \Yii::beginProfile($token);
+            $identifier = $token;
         }
+        \Yii::beginProfile($identifier);
+
     }
 }
 
@@ -90,10 +94,12 @@ function eP($key = false) {
         $class = \TbArray::getValue('class', $details, 'Global function');
         $token = "{$class}::{$details['function']}";
         if ($key !== false) {
-            \Yii::endProfile($token . ' - ' . (is_null($key) ? "null" : $key));
+            $identifier = $token . ' - ' . (is_null($key) ? "null" : $key);
         } else {
-            \Yii::endProfile($token);
+            $identifier = $token;
         }
+
+        \Yii::endProfile($identifier);
 
     }
 }

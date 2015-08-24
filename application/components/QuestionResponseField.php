@@ -15,7 +15,11 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
 
     private $_value;
 
+    private $_labels = [];
+
     private $_relevanceEquation = true;
+
+    private $_relevanceScript;
 
     public function __construct($name, $code, Question $question) {
         parent::__construct($name, $code);
@@ -36,7 +40,14 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
     }
 
     public function getRelevanceScript() {
-        return $this->question->getRelevanceScript();
+        if (!isset($this->_relevanceScript)) {
+            throw new \Exception("Relevance must be set for every field.");
+        }
+        return $this->_relevanceScript;
+    }
+
+    public function setRelevanceScript($value) {
+        $this->_relevanceScript = $value;
     }
 
     /**
@@ -71,12 +82,11 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
     }
 
     public function getLabels() {
-        $result = [];
-        /** @var Answer $answer */
-        foreach($this->question->answers as $answer) {
-            $result[$answer->code] = $answer->answer;
-        }
-        return $result;
+        return $this->_labels;
+    }
+
+    public function setLabels(array $labels) {
+        $this->_labels = $labels;
     }
 
     public function getLabel($answer) {

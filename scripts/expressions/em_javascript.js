@@ -280,7 +280,7 @@ function LEMlist()
     j=1;    // keep track of how many non-null values seen
     for (i=0;i<arguments.length;++i) {
         var arg = arguments[i];
-        if (arg !== '') {
+        if (arg !== '' && arg !== null) {
             if (j > 1) {
                 result += joiner + arg;
             }
@@ -342,6 +342,11 @@ function LEMimplode()
     var joiner = arguments[0];
     for (i=1;i<arguments.length;++i) {
         var arg = arguments[i];
+        // Normalize argument (null shoudl be "" as it is in PHP).
+        if (arg === null) {
+            arg = "";
+
+        }
         if (i > 1) {
             result += joiner + arg;
         }
@@ -414,7 +419,7 @@ function LEMstrpos(haystack,needle,offset)
 
 function LEMempty(v)
 {
-    if (v === "" || v === false) {
+    if (v === "" || v === false || v === null) {
         return true;
     }
     return false;
@@ -820,117 +825,6 @@ function LEMstrtoupper(s)
 function LEMstrtolower(s)
 {
     return s.toLowerCase();
-}
-
-function ExpressionManager(vars) {
-    var that = this;
-    var name2code = {};
-    /**
-     * Initialization
-     */
-    $(document).on('change', 'input, select, textarea', function(e) {
-        var code = name2code[$(this).attr('name')];
-        if (typeof code != 'undefined') {
-            vars[code].value = $(this).val();
-            console.log("Updated " + code);
-            that.updateVisibility();
-            that.updateReplacements();
-        } else {
-            console.log("Not updated, no code found for: " + $(this).attr('name'));
-        }
-    });
-
-    for (var code in vars) {
-        name2code[vars[code].name] = code;
-    }
-
-    /**
-     * Public functions
-     */
-    this.setValues = function(values) {
-        for (var key in values) {
-            vars[name2code[key]].value = values[key];
-        }
-    }
-    this.debug = function() {
-        console.log(EM);
-        console.log(vars);
-    }
-    this.splitVar = function (code) {
-        var parts = code.split('.', 2);
-        if (parts.count == 1) {
-            parts[1] = 'value';
-        }
-        return parts;
-    };
-
-    // Evaluate all question visibility.
-    this.updateVisibility = function() {
-        console.log('Updating question visibility');
-        $('[data-relevance-expression]').each(function(i, elem) {
-            var $elem = $(elem);
-            $elem.toggleClass('irrelevant', !that.evaluate($elem.attr('data-relevance-expression')));
-        });
-    }
-
-    // Update replacements.
-    this.updateReplacements = function() {
-        $('[data-expression]').each(function(e) {
-            $this = $(this);
-            var html = eval($this.attr('data-expression'));
-            if (html === null) {
-                $this.html('');
-            } else {
-                $this.html(html);
-            }
-
-        });
-    }
-
-    this.getElement = function(code) {
-        return $('[name=' + vars[code].name + ']').closest('.question-wrapper').parent();
-    }
-
-    this.evaluate = function(expr) {
-        if (typeof expr == "boolean") {
-            return expr;
-        } else if (expr == "") {
-            return false;
-        }
-        return eval(expr);
-    }
-    this.isRelevant = function(code) {
-        return this.evaluate(vars[code].relevance);
-    }
-
-    this.val = function(code) {
-        var parts = this.splitVar(code);
-        if (parts.length == 1) {
-            code = parts[0];
-            var suffix = 'value';
-        } else {
-            code = parts[0];
-            var suffix = parts[1];
-        }
-
-        switch(suffix) {
-            case 'value':
-                if (this.isRelevant(code)) {
-                    return vars[code].value;
-                } else {
-                    return null;
-                }
-                break;
-            case 'shown':
-                if (this.isRelevant(code)) {
-                    return vars[code].labels[vars[code].value];
-                } else {
-                    return null;
-                }
-            default:
-                console.error('Unknown suffix: ' + suffix);
-        }
-    }
 }
 
 

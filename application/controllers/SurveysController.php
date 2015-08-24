@@ -20,7 +20,7 @@ class SurveysController extends Controller
     public function accessRules() {
         return array_merge([
             ['allow', 'actions' => ['index'], 'users' => ['@']],
-            ['allow', 'actions' => ['publicList', 'run' ,'start']],
+            ['allow', 'actions' => ['publicList', 'run' ,'start', 'script']],
 
         ], parent::accessRules());
     }
@@ -366,6 +366,7 @@ class SurveysController extends Controller
      */
     public function actionScript($id) {
         $session = App()->surveySessionManager->getSession($id);
+        App()->surveySessionManager->current = $session;
         if (!isset($session)) {
             throw new \CHttpException(404, "Session not found.");
         }

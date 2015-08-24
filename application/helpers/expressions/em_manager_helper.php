@@ -257,7 +257,7 @@
         {
             self::$instance =& $this;
 
-            $this->em = new ExpressionManager([$this, 'GetVarAttribute']);
+            $this->em = new ExpressionManager([$this, 'GetVarAttribute'], [App()->surveySessionManager->current, 'getQuestionByCode']);
         }
 
         /**
@@ -2922,108 +2922,7 @@
             return $LEM->em->GetLastPrettyPrintExpression();
         }
 
-        /**
-         * Expand "self.suffix" and "that.qcode.suffix" into canonical list of variable names
-         * @param type $qseq
-         * @param type $varname
-         */
-        static function GetAllVarNamesForQ($qseq, $varname)
-        {
-            $LEM =& LimeExpressionManager::singleton();
 
-            $parts = explode('.', $varname);
-            $qroot = '';
-            $suffix = '';
-            $sqpatts = array();
-            $nosqpatts = array();
-            $sqpatt = '';
-            $nosqpatt = '';
-            $comments = '';
-
-            if ($parts[0] == 'self') {
-                $question->type = 'self';
-            } else {
-                $question->type = 'that';
-                array_shift($parts);
-                if (isset($parts[0])) {
-                    $qroot = $parts[0];
-                } else {
-                    return $varname;
-                }
-            }
-            array_shift($parts);
-
-            if (count($parts) > 0) {
-                if (preg_match('/^' . ExpressionManager::$RDP_regex_var_attr . '$/', $parts[count($parts) - 1])) {
-                    $suffix = '.' . $parts[count($parts) - 1];
-                    array_pop($parts);
-                }
-            }
-
-            foreach ($parts as $part) {
-                if ($part == 'nocomments') {
-                    $comments = 'N';
-                } else {
-                    if ($part == 'comments') {
-                        $comments = 'Y';
-                    } else {
-                        if (preg_match('/^sq_.+$/', $part)) {
-                            $sqpatts[] = substr($part, 3);
-                        } else {
-                            if (preg_match('/^nosq_.+$/', $part)) {
-                                $nosqpatts[] = substr($part, 5);
-                            } else {
-                                return $varname;    // invalid
-                            }
-                        }
-                    }
-                }
-            }
-            $sqpatt = implode('|', $sqpatts);
-            $nosqpatt = implode('|', $nosqpatts);
-            $vars = array();
-            if (isset($LEM->knownVars)) {
-                foreach ($LEM->knownVars as $kv) {
-                    if ($question->type == 'self') {
-                        if (!isset($kv['qseq']) || $kv['qseq'] != $qseq || trim($kv['sgqa']) == '') {
-                            continue;
-                        }
-                    } else {
-                        if (!isset($kv['rootVarName']) || $kv['rootVarName'] != $qroot) {
-                            continue;
-                        }
-                    }
-                    if ($comments != '') {
-                        if ($comments == 'Y' && !preg_match('/comment$/', $kv['sgqa'])) {
-                            continue;
-                        }
-                        if ($comments == 'N' && preg_match('/comment$/', $kv['sgqa'])) {
-                            continue;
-                        }
-                    }
-                    $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
-                    $ext = substr($kv['sgqa'], strlen($sgq));
-
-                    if ($sqpatt != '') {
-                        if (!preg_match('/' . $sqpatt . '/', $ext)) {
-                            continue;
-                        }
-                    }
-                    if ($nosqpatt != '') {
-                        if (preg_match('/' . $nosqpatt . '/', $ext)) {
-                            continue;
-                        }
-                    }
-
-                    $vars[] = $kv['sgqa'] . $suffix;
-                }
-            }
-            if (count($vars) > 0) {
-                return implode(',', $vars);
-            }
-
-            return $varname;    // invalid
-        }
 
         /**
          * Should be first function called on each page - sets/clears internally needed variables
@@ -3140,7 +3039,7 @@
                         if (--$LEM->currentGroupSeq < 0) // Stop at start
                         {
                             $message .= $LEM->updateValuesInDatabase(false);
-                            $LEM->lastMoveResult = array(
+                            $LEM->lastMoveResult = $result = array(
                                 'at_start' => true,
                                 'finished' => false,
                                 'message' => $message,
@@ -3148,7 +3047,7 @@
                                 'invalidSQs' => (isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                             );
 
-                            return $LEM->lastMoveResult;
+                            return $result;
                         }
 
                         $result = $LEM->validateGroup($LEM->currentGroupSeq);
@@ -3162,7 +3061,7 @@
                         } else {
                             // display new group
                             $message .= $LEM->updateValuesInDatabase(false);
-                            $LEM->lastMoveResult = array(
+                            $LEM->lastMoveResult = $result = array(
                                 'at_start' => false,
                                 'finished' => false,
                                 'message' => $message,
@@ -3174,7 +3073,7 @@
                                 'invalidSQs' => $result['invalidSQs'],
                             );
 
-                            return $LEM->lastMoveResult;
+                            return $result;
                         }
                     }
                     break;
@@ -3254,9 +3153,8 @@
             $message = '';
             if (!$force) {
                 // Validate current page.
-                $validateResult = $this->validateQuestion($question);
-                $message .= $validateResult->getMessagesAsString();
-                if ($question->isRelevant($session->response) && !$validateResult->getSuccess()) {
+                $valid = $this->validateQuestion($question);
+                if ($question->isRelevant($session->response) && !$valid) {
                     // redisplay the current question with all error
                     $message .= $this->updateValuesInDatabase(false);
                     $result = [
@@ -3265,7 +3163,6 @@
                         'qseq' => $session->step,
                         'gseq' => $session->getGroupIndex($question->gid),
                         'seq' => $session->step,
-                        'validationResult' => $validateResult
                     ];
                 }
             }
@@ -3295,8 +3192,6 @@
                     // Set certain variables normally set by StartProcessingGroup()
                     $question = $session->getQuestionByIndex($step);
                     $this->_CreateSubQLevelRelevanceAndValidationEqns($question);
-                    $validateResult = $this->validateQuestion($question);
-                    $message .= $validateResult->getMessagesAsString();
                     $gRelInfo = $this->getGroupRelevanceInfo($question->group);
                     $grel = $gRelInfo['result'];
 
@@ -3555,11 +3450,10 @@
             $message = '';
             // Validate if moving forward.
             if (!$force && $seq > $session->step) {
-                $validateResult = $this->validateQuestion($session->step, $force);
-                $message .= $validateResult['message'];
+                $valid = $this->validateQuestion($session->step, $force);
                 $gRelInfo = $this->getGroupRelevanceInfo($session->getQuestion($session->step)->group);
                 $grel = $gRelInfo['result'];
-                if ($grel && ($validateResult['mandViolation'] || !$validateResult['valid'])) {
+                if ($grel && !$valid) {
                     // Redisplay the current question, qhowning error
                     $message .= $this->updateValuesInDatabase(false);
                     $result = $this->lastMoveResult = [
@@ -3576,15 +3470,14 @@
             for ($step = $seq; $step < $stepCount; $step++) {
                 $question = $session->getQuestionByIndex($step);
                 /** @var QuestionValidationResult $validationResult */
-                $validationResult = $this->validateQuestion($question, $force);
-                $message .= $validationResult->getMessagesAsString();
+                $valid = $this->validateQuestion($question, $force);
                 $gRelInfo = $this->getGroupRelevanceInfo($session->getQuestionByIndex($step)->group);
                 $grel = $gRelInfo['result'];
 
                 if (!$preview && ($question->bool_hidden || !$question->isRelevant($session->response))) {
                     // then skip this question
                     continue;
-                } elseif (!$preview && !$validationResult->getSuccess() && $step < $seq) {
+                } elseif (!$preview && !$valid && $step < $seq) {
                     // if there is a violation while moving forward, need to stop and ask that set of questions
                     // if there are no violations, can skip this group as long as changed values are saved.
                     die('skip2');
@@ -3633,7 +3526,7 @@
          */
         static function JumpTo($seq, $preview = false, $processPOST = true, $force = false, $changeLang = false)
         {
-            bP();
+//            bP();
             if ($seq < 0) {
                 throw new \InvalidArgumentException("Sequence must be >= 0");
             }
@@ -3653,14 +3546,12 @@
                     // This only happens if saving data so far, so don't want to submit it, just validate and return
                     $LEM->StartProcessingPage(true);
                     $updatedValues = $processPOST ? $LEM->ProcessCurrentResponses() : [];
-                    $validationResults = $LEM->validateSurvey($force);
+                    $valid = $LEM->validateSurvey($force);
                     $LEM->lastMoveResult = array(
                         'finished' => false,
-                        'message' => 'TODO',
                         'gseq' => 1,
                         'seq' => 1,
-                        'mandViolation' => $validationResults->getPassedMandatory(),
-                        'valid' => $validationResults->getSuccess(),
+                        'valid' => $valid,
                     );
 
                     $result = $LEM->lastMoveResult;
@@ -3676,7 +3567,6 @@
             }
 
 
-            eP();
             if ($result === null) {
                 throw new \UnexpectedValueException("Result should not be null");
             }
@@ -3691,15 +3581,16 @@
         private function validateSurvey($force = false)
         {
             $session = App()->surveySessionManager->current;
-            $validationResults = new QuestionValidationResultCollection();
+
             foreach($session->getGroups() as $group) {
                 if (!$group->isRelevant($session->response)) {
                     continue;
                 }
-
-                $validationResults->mergeWith($this->validateGroup($group, $force));
+                if (!$this->validateGroup($group, $force)) {
+                    return false;
+                }
             }
-            return $validationResults;
+            return true;
         }
 
         /**
@@ -3711,15 +3602,16 @@
         public function validateGroup(QuestionGroup $group, $force = false)
         {
             $session = App()->surveySessionManager->current;
-            $validationResults = new QuestionValidationResultCollection();
 
             foreach ($session->getQuestions($group) as $question) {
                 if (!$question->bool_hidden && $question->isRelevant($session->response)) {
-                    $validationResults->add($this->validateQuestion($question, $force));
+                    if (!$this->validateQuestion($question, $force)) {
+                        return false;
+                    }
                 }
             }
 
-            return $validationResults;
+            return true;
         }
 
 
@@ -4192,7 +4084,6 @@
                 'qcode' => $question->title,
                 'qhelp' => $question->help,
                 'gid' => $question->gid,
-                'mandViolation' => $question->validateResponse($session->response)->getPassedMandatory(),
                 'valid' => $this->em->ProcessBooleanExpression($validationEqn, $session->getGroupIndex($question->gid), $questionSeq)
             ];
             eP();
@@ -4296,7 +4187,7 @@
         public static function getScript(SurveySession $session) {
             $cache = App()->cache;
             $key = __CLASS__ . 'EM_script' . $session->id;
-            if (!$cache->offsetExists($key)) {
+            if (false === $result = $cache->get($key)) {
                 $fields = [];
                 foreach($session->getGroups() as $group) {
                     foreach($session->getQuestions($group) as $question) {
@@ -4311,8 +4202,9 @@
                 }
                 $script = "var EM = new ExpressionManager(" . json_encode($fields, JSON_PRETTY_PRINT) . ");";
                 $cache->set($key, $script);
+                $result = $script;
             }
-            return $cache->get($key);
+            return $result;
         }
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
@@ -4324,6 +4216,7 @@
             /** @var CClientScript $clientScript */
             $clientScript = App()->getClientScript();
             $clientScript->registerScriptFile(SettingGlobal::get('generalscripts', '/scripts') . "/expressions/em_javascript.js");
+            $clientScript->registerScriptFile(SettingGlobal::get('generalscripts', '/scripts') . "/expressions/ExpressionManager.js");
             $clientScript->registerScriptFile(App()->createUrl('surveys/script', ['id' => $session->id]));
             $values = [];
             foreach ($session->response->attributes as $name => $value) {

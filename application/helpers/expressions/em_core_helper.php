@@ -69,9 +69,20 @@ class ExpressionManager {
      * @var callable
      */
     protected $variableGetter;
-    public function __construct(callable $variableGetter)
+
+    /**
+     * @param callable $questionGetter
+     */
+    protected $questionGetter;
+
+    protected function getQuestionByCode($code) {
+        $getter = $this->questionGetter;
+        return $getter($code);
+    }
+    public function __construct(callable $variableGetter, callable $getQuestionByCode)
     {
         $this->variableGetter = $variableGetter;
+        $this->questionGetter = $getQuestionByCode;
         // List of token-matching regular expressions
         // Note, this is effectively a Lexer using Regular Expressions.  Don't change this unless you understand compiler design.
         $RDP_regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
@@ -1186,7 +1197,7 @@ class ExpressionManager {
      */
     public function getJavascript($expression)
     {
-        $tokens = $this->RDP_Tokenize($expression);
+        $tokens = $this->RDP_Tokenize($this->ExpandThisVar($expression));
 
         $varsUsed = [];
         $stringParts = [];
@@ -1659,7 +1670,7 @@ class ExpressionManager {
      * @param <type> $expr
      * @param <type> $groupSeq - needed to determine whether using variables before they are declared
      * @param <type> $questionSeq - needed to determine whether using variables before they are declared
-     * @return <type>
+     * @return boolean
      */
     public function ProcessBooleanExpression($expr,$groupSeq=-1,$questionSeq=-1)
     {
@@ -1833,7 +1844,7 @@ class ExpressionManager {
      * If the equation contains refernece to this, expand to comma separated list if needed.
      * @param type $eqn
      */
-    function ExpandThisVar($src)
+    protected function ExpandThisVar($src)
     {
         $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*';
         $parts = preg_split("/(" . $splitter . ")/i",$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
@@ -1842,7 +1853,7 @@ class ExpressionManager {
         {
             if (preg_match("/" . $splitter . "/",$part))
             {
-                $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq,$part);
+                $result .= $this->GetAllVarNamesForQ($part);
             }
             else
             {
@@ -1853,6 +1864,95 @@ class ExpressionManager {
         return $result;
     }
 
+    /**
+     * Expand "self.suffix" and "that.qcode.suffix" into canonical list of variable names
+     * @param type $qseq
+     * @param type $varName
+     */
+    protected function GetAllVarNamesForQ($varName)
+    {
+
+        $parts = explode('.', $varName);
+        $qroot = '';
+        $suffix = '';
+        $sqpatts = array();
+        $nosqpatts = array();
+        $sqpatt = '';
+        $nosqpatt = '';
+
+        if ($parts[0] == 'self') {
+            $type = 'self';
+        } else {
+            $type = 'that';
+            array_shift($parts);
+            if (isset($parts[0])) {
+                $qroot = $parts[0];
+            } else {
+                return $varName;
+            }
+        }
+        array_shift($parts);
+
+        if (count($parts) > 0) {
+            if (preg_match('/^' . self::$RDP_regex_var_attr . '$/', $parts[count($parts) - 1])) {
+                $suffix = '.' . $parts[count($parts) - 1];
+                array_pop($parts);
+            }
+        }
+
+        $question = $this->getQuestionByCode($qroot);
+
+        foreach ($parts as $part) {
+            if ($part == 'nocomments') {
+                $comments = false;
+            } else {
+                if ($part == 'comments') {
+                    $comments = true;
+                } else {
+                    if (preg_match('/^sq_.+$/', $part)) {
+                        $sqpatts[] = substr($part, 3);
+                    } else {
+                        if (preg_match('/^nosq_.+$/', $part)) {
+                            $nosqpatts[] = substr($part, 5);
+                        } else {
+                            return $varName;    // invalid
+                        }
+                    }
+                }
+            }
+        }
+        $sqpatt = implode('|', $sqpatts);
+        $nosqpatt = implode('|', $nosqpatts);
+        $vars = [];
+        foreach ($question->fields as $field) {
+            if (isset($comments)) {
+                if (($comments && !preg_match('/comment$/', $field->name))
+                    || (!$comments && preg_match('/comment$/', $field->name))
+                ) {
+                    continue;
+                }
+            }
+
+            $ext = substr($field->name, strlen($question->sgqa));
+
+            if ($sqpatt != '') {
+                if (!preg_match('/' . $sqpatt . '/', $ext)) {
+                    continue;
+                }
+            }
+            if ($nosqpatt != '') {
+                if (preg_match('/' . $nosqpatt . '/', $ext)) {
+                    continue;
+                }
+            }
+
+            $vars[] = $field->code . $suffix;
+        }
+        if (count($vars) > 0) {
+            return implode(',', $vars);
+        }
+        return $varName;    // invalid
+    }
     /**
      * Get info about all <span> elements needed for dynamic tailoring
      * @return <type>

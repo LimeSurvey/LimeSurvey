@@ -12,4 +12,12 @@ if ($question->hasAttribute('validation_sq')) {
     echo $form->textFieldControlGroup($question, 'validation_sq');
     echo $form->textFieldControlGroup($question, 'validation_sq_tip');
 }
+
+if ($question->hasAttribute('min_answers')) {
+    echo $form->numberFieldControlGroup($question, 'min_answers');
+}
+if ($question->hasAttribute('max_answers')) {
+    echo $form->numberFieldControlGroup($question, 'max_answers');
+}
+
 echo TbHtml::closeTag('fieldset');

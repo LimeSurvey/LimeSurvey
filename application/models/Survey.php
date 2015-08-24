@@ -77,6 +77,7 @@ class Survey extends ActiveRecord
         $validator= new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
 
+        $this->format = Survey::FORMAT_ALL_IN_ONE;
     }
 
     /**
@@ -260,7 +261,7 @@ class Survey extends ActiveRecord
             ['usecaptcha', 'in','range'=>['A','B','C','D','X','R','S','N'], 'allowEmpty'=>true],
             ['showgroupinfo', 'in','range'=>['B','N','D','X'], 'allowEmpty'=>true],
             ['showqnumcode', 'in','range'=>['B','N','C','X'], 'allowEmpty'=>true],
-            ['format', 'in','range' => array_keys($this->formatOptions), 'allowEmpty'=>true],
+            ['format', 'in','range' => array_keys($this->formatOptions), 'allowEmpty' => false],
             ['googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true],
             ['autonumber_start','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
             ['tokenlength','numerical', 'integerOnly'=>true,'allowEmpty'=>true, 'min'=>'5', 'max'=>'36'],

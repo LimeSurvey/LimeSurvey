@@ -30,7 +30,7 @@
  * @property-read string $sgqa
  * @property-read QuestionAttribute[] $questionAttributes
  */
-    class Question extends ActiveRecord
+    class Question extends ActiveRecord implements \ls\interfaces\iRenderable
     {
         /**
          * Question type constants.
@@ -79,7 +79,8 @@
         public $before;
 
         protected function loadCustomAttributes() {
-            if (!isset($this->customAttributeNames)) {
+            if (!isset($this->customAttributes)) {
+                $this->customAttributes = [];
                 // Fill the question attributes.
                 foreach($this->questionAttributes as $questionAttribute) {
                     if (!isset($questionAttribute->language)) {
@@ -142,37 +143,39 @@
          */
         protected function updateAttributes() {
             // Save the question attributes that do not use i18n.
-            $db = self::getDbConnection();
-            if (!isset($db->currentTransaction)) {
-                $transaction = $db->beginTransaction();
-            }
-            try {
-                QuestionAttribute::model()->deleteAllByAttributes([
-                    'qid' => $this->primaryKey,
-                    'language' => null
-
-                ]);
-                $rows = [];
-                foreach ($this->customAttributes as $key => $value) {
-                    $rows[] = [
+            if (!empty($this->customAttributes)) {
+                $db = self::getDbConnection();
+                if (!isset($db->currentTransaction)) {
+                    $transaction = $db->beginTransaction();
+                }
+                try {
+                    QuestionAttribute::model()->deleteAllByAttributes([
                         'qid' => $this->primaryKey,
-                        'attribute' => $key,
-                        'value' => $value,
                         'language' => null
-                    ];
+
+                    ]);
+                    $rows = [];
+                    foreach ($this->customAttributes as $key => $value) {
+                        $rows[] = [
+                            'qid' => $this->primaryKey,
+                            'attribute' => $key,
+                            'value' => $value,
+                            'language' => null
+                        ];
+                    }
+                    if (!empty($rows)) {
+                        $db->commandBuilder->createMultipleInsertCommand(QuestionAttribute::model()->tableName(),
+                            $rows)->execute();
+                    }
+                } catch (\Exception $e) {
+                    if (isset($transaction)) {
+                        $transaction->rollback();
+                    }
+                    throw $e;
                 }
-                if (!empty($rows)) {
-                    $db->commandBuilder->createMultipleInsertCommand(QuestionAttribute::model()->tableName(),
-                        $rows)->execute();
-                }
-            } catch (\Exception $e) {
                 if (isset($transaction)) {
-                    $transaction->rollback();
+                    $transaction->commit();
                 }
-                throw $e;
-            }
-            if (isset($transaction)) {
-                $transaction->commit();
             }
 
         }
@@ -307,7 +310,6 @@
                 $this->__set(substr($name, 5), $value ? 'Y' : 'N');
             } elseif (in_array($name, $this->customAttributeNames())) {
                 $this->setCustomAttribute($name, $value);
-
             } else {
                 parent::__set($name, $value);
             }
@@ -398,6 +400,9 @@
                 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'),
                 'on' => ['update', 'insert']
             ];
+
+            // Custom attributes are safe for now.
+            $aRules[] = [$this->customAttributeNames(), 'safe'];
             return $aRules;
         }
 
@@ -716,15 +721,13 @@
          */
         public function getClasses()
         {
-            $result = [];
+            $result = ['question'];
             switch($this->type)
             {
                 //case 'W': return 'list-dropdown-flexible'; //   LIST drop-down (flexible label)
                 case 'X':
                     $result[] = 'boilerplate';
                     break;
-                default:
-                    throw new \Exception('no');
             };
             return $result;
         }
@@ -738,7 +741,8 @@
         }
         
         public function getSgqa() {
-            return "{$this->sid}X{$this->gid}X{$this->qid}";
+            $result = "{$this->sid}X{$this->gid}X{$this->qid}";
+            return $result;
         }
 
         /**
@@ -956,6 +960,7 @@
                 'after' => gT('Position'),
                 'bool_mandatory' => gT('Mandatory'),
                 'bool_other' => gT("Option 'Other'"),
+                'exclude_all_others' => gT("Exclusive option"),
             ];
         }
 
@@ -1010,6 +1015,14 @@
                     return $attribute['i18n'] === false;
                 });
                 $result = array_keys($attributes);
+
+                /**
+                 * Add this to every question type; there is no technical reason not to have it.
+                 */
+                $result[] = 'em_validation_q';
+                $result[] = 'em_validation_q_tip';
+
+
             } else {
                 $result = [];
             }
@@ -1041,10 +1054,11 @@
          * @return QuestionResponseField[]
          */
         public function getFields() {
-            bP();
             $fields[] = $field = new QuestionResponseField($this->sgqa, $this->title, $this);
+            $field->setRelevanceScript($this->relevanceScript);
             if ($this->bool_other) {
-                $this->_fields[] = new QuestionResponseField($this->sgqa . 'other', $this->title . 'other', $this);
+                $this->_fields[] = $field = new QuestionResponseField($this->sgqa . 'other', $this->title . 'other', $this);
+                $field->setRelevanceScript($this->relevanceScript);
             }
 
             return $fields;
@@ -1067,30 +1081,18 @@
         /**
          * Check if the response passes mandatory requirements for this question.
          * By default a question passes this if any of it's fields have been filled.
-         * @return \QuestionValidationResult
+         * @return boolean
          */
         public function validateResponse(Response $response) {
-            bP($this->qid);
-            $result = new QuestionValidationResult($this);
-            if ($this->bool_mandatory) {
-                // Check if any field was filled.
-                $empty = true;
-                foreach ($this->columns as $name => $type) {
-                    $empty = $empty && empty($response->$name);
-                }
-                // Default implementation set field to the sgqa, this should be overwritten in subclasses.
-                if ($empty && count($this->columns) > 1) {
-                    $result->addMessage($this->sgqa, gT("At least one field must be filled."));
-                } elseif ($empty && count($this->columns == 1)) {
-                    $result->addMessage($this->sgqa, gT("This question is mandatory"));
-                }
 
-                $result->setPassedMandatory(!$empty);
-            } else {
-                $result->setPassedMandatory(true);
+            $em = $this->getExpressionManager($response);
+            $result = new QuestionValidationResult($this);
+            foreach($this->getValidationExpressions() as $expression => $message) {
+                if (!$em->ProcessBooleanExpression($expression)) {
+                    return false;
+                }
             }
-            eP($this->qid);
-            return $result;
+            return true;
         }
 
         /**
@@ -1098,7 +1100,25 @@
          * @return string[]
          */
         public function getValidationExpressions() {
-            return [];
+            $result = [];
+            if (!empty($this->em_validation_q)) {
+                $result[$this->em_validation_q] = $this->em_validation_q_tip;
+            }
+            if (!empty($this->preg)) {
+                $expression = "regexMatch('{$this->preg}', $this->title)";
+                $result[$expression] = "Value must match regular expression: " . $this->preg;
+            }
+
+            if ($this->bool_mandatory) {
+                // Default implementation set field to the sgqa, this should be overwritten in subclasses.
+                if (count($this->columns) > 1) {
+                    //@todo Provide default implementation.
+                } elseif (count($this->columns == 1)) {
+                    $result["!is_empty({$this->title})"] = gT("This question is mandatory");
+                }
+
+            }
+            return $result;
         }
 
 
@@ -1119,7 +1139,6 @@
                 $result = $em->getJavascript($emExpression);
 
                 if (empty($result)) {
-                    vdd($em);
                     throw new \Exception('NO jS created');
                 };
                 return $result;
@@ -1147,13 +1166,14 @@
 
 
         public function getExpressionManager(Response $response = null) {
+            $session = App()->surveySessionManager->current;
             if (!isset($response)) {
                 $callback = function($name, $attribute, $default, $groupSequence, $questionSequence) {
 
                 };
             } else {
-                $callback = function($name, $attribute, $default, $groupSequence, $questionSequence)  use ($response) {
-                    $session = App()->surveySessionManager->current;
+                $callback = function($name, $attribute, $default, $groupSequence, $questionSequence)  use ($response, $session) {
+
                     $parts = explode('.', $name);
                     if (count($parts) > 1) {
                         $attribute = $parts[1];
@@ -1206,7 +1226,13 @@
                     return $result;
                 };
             }
-            return new ExpressionManager($callback);
+
+            if (isset($session)) {
+                $questionGetter = function($code) use ($session) {
+                    return $session->getQuestionByCode($code);
+                };
+            }
+            return new ExpressionManager($callback, $questionGetter);
         }
 
         public function getMandatoryMessage() {
@@ -1236,4 +1262,58 @@
         }
 
 
+        /**
+         * This function renders the object.
+         * It MUST NOT produce any output.
+         * It should return a string or an object that can be converted to string.
+         * @param \ls\interfaces\Response $response
+         * @param \SurveySession $session
+         * @return \RenderedQuestion
+         */
+        public function render(\Response $response, \SurveySession $session)
+        {
+            $result = new \RenderedQuestion();
+
+            $em = $this->getExpressionManager($session->response);
+            $parts = $em->asSplitStringOnExpressions($this->question);
+            $text = '';
+
+            foreach ($parts as $part) {
+                switch ($part[2]) {
+                    case 'STRING':
+                        $text .= $part[0];
+                        break;
+                    case 'EXPRESSION':
+                        if ($em->RDP_Evaluate(substr($part[0], 1, -1))) {
+                            $value = $em->GetResult();
+                        } else {
+
+                            $value = '';
+                        }
+                        $text .= TbHtml::tag('span', [
+                            'data-expression' => $em->getJavascript(substr($part[0], 1, -1))
+                        ], $value);
+                }
+            }
+
+            $result->setQuestionText($text);
+
+            foreach ($this->getValidationExpressions() as $expression => $message) {
+                $result->addValidation($em->getJavascript($expression), $message);
+            }
+
+            return $result;
+        }
+
+
+        public function getArrayFilterStyleOptions()
+        {
+            return [
+                0 => gT('Hidden'),
+                1 => gT('Disabled')
+            ];
+
+        }
     }
+
+

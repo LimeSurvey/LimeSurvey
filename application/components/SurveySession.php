@@ -124,7 +124,6 @@ class SurveySession extends CComponent {
     protected function loadSurvey($id) {
         bP();
         $cache = App()->cache;
-        $cache->hashKey = false;
         $cacheKey = __CLASS__ . "loadSurvey{$this->id}-$id";
         bP('unserialize');
         $result = $cache->get($cacheKey);
@@ -169,10 +168,9 @@ class SurveySession extends CComponent {
             if (!$cache->set($cacheKey, $survey)) {
                 throw new \Exception("Failed to cache survey");
             }
-            // We do a get to make sure the object gets waken up properly.
-            // @todo Implement serializable instead.
-            // This is not too bad since it only happens once per session.
-            $result = $cache->get($cacheKey);
+            // We do this since $survey is changed (no behaviors / events) due to the serialize.
+            // @todo Implement Serializable interface so the AR objects are not altered and the line below is not needed.
+            $result = unserialize(serialize($survey));
             eP('computing');
         }
         eP();
@@ -231,6 +229,24 @@ class SurveySession extends CComponent {
         }
         if (!isset($result)) {
             throw new \Exception("Invalid step index: $index");
+        }
+        return $result;
+    }
+
+    public function getQuestionByCode($code) {
+        $i = 0;
+        // Get groups in order.
+        foreach($this->getGroups() as $group) {
+            foreach($this->getQuestions($group) as $question) {
+                if ($code == $question->title) {
+                    $result = $question;
+                    break 2;
+                }
+                $i++;
+            }
+        }
+        if (!isset($result)) {
+            throw new \Exception("Unknown code: $code");
         }
         return $result;
     }

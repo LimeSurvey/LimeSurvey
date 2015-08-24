@@ -585,9 +585,6 @@ class printablesurvey extends Survey_Common_Action
                         ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
                         ,'QUESTION_CLASS' => \Question::getQuestionClass( $deqrow['type'])    // classes to be added to wrapping question div
                         ,'QUESTION_TYPE_HELP' => $qinfo['validTip']   // ''        // instructions on how to complete the question // prettyValidTip is too verbose; assuming printable surveys will use static values
-                        ,'QUESTION_MAN_MESSAGE' => ''        // (not sure if this is used) mandatory error
-                        ,'QUESTION_VALID_MESSAGE' => ''        // (not sure if this is used) validation error
-                        ,'QUESTION_FILE_VALID_MESSAGE' => ''// (not sure if this is used) file validation error
                         ,'QUESTIONHELP' => ''            // content of the question help field.
                         ,'ANSWER' => ''                // contains formatted HTML answer
                         );

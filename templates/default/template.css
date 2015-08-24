@@ -382,9 +382,6 @@ td.questiontext {
   padding: 0.5em 1em;
 }
 
-.questiontext > span {
-  display: block;
-}
 .page-odd td.questiontext {
   background-color: #EFFFEE;
 }
@@ -1605,12 +1602,48 @@ span.hide-tip div.error {
     display: block;
 }
 
+/*******************************************************/
+/* BEGIN NEW STUFF FOR RELEVANCE ON PAGE
+/*******************************************************/
+/*
+  Instead of hiding we mark it as irrelevant for now.
+  */
 .irrelevant {
   border: 3px solid red !important;
+  background-color: rgba(255, 0, 0, 0.3);
   position: relative;
 }
 
-.irrelevant:before {
+/**
+ Hide irrelevant rows, unless the row uses disabled.
+*/
+tr.irrelevant:not([disabled]) {
+    display: none;
+}
+
+
+/*
+ - Hide validation messages by default.
+ - Hide validation messages if they are irrelevant, even for touched questions.
+*/
+.validation-message,
+.touched .validation-message.irrelevant,
+.validation-message.irrelevant
+
+{
+  display: none;
+
+}
+
+/*
+ - Show validation messages for touched questions.
+*/
+
+.touched .validation-message {
+  display: block;
+  border: 3px solid red !important;
+}
+.irrelevant:not('.validation-message'):before {
   right: 0px;
   left: 0px;
   top: 0px;
@@ -1621,4 +1654,9 @@ span.hide-tip div.error {
   font-size: 2em;
   font-weight: bold;
   line-height: 3em;
+}
+
+.touched .invalid input, .touched .invalid textarea, .touched .invalid select{
+  border: 1px solid red !important;
+  background-color: rgba(255, 0, 0, 0.5) !important;
 }

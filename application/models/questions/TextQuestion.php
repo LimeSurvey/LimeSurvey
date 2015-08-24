@@ -14,7 +14,7 @@ class TextQuestion extends \Question{
      */
     public function getClasses()
     {
-        $result = [];
+        $result = parent::getClasses();
         switch($this->type) {
             case self::TYPE_SHORT_TEXT:
                 $result[] = 'text-short';

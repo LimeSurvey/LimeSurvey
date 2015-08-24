@@ -33,8 +33,73 @@ abstract class BaseArrayQuestion extends \Question
         return $result;
     }
 
+    /**
+     * Returns the fields for this question.
+     * @return \QuestionResponseField[]
+     */
+    public function getFields() {
+        $result = [];
+        $em = $this->getExpressionManager();
+        foreach ($this->subQuestions as $subQuestion) {
+            $result[] = $field = new \QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
+
+            $filter = strtr($this->filterExpression, ['{VALUE}' => $subQuestion->question]);
+
+            $script = empty($filter) ? $this->getRelevanceScript(false) : "{$this->getRelevanceScript(false)} && " . $em->getJavascript($filter);
+            $field->setRelevanceScript($script);
+        }
+        return $result;
 
 
+    }
+
+    /**
+     * This function gets an EM expression to use for array filters.
+     */
+    protected function getFilterExpression() {
+        $relevance = [];
+        if (!empty($this->array_filter)) {
+
+            foreach (explode(',', $this->array_filter) as $code) {
+                // We add dashes so strpos is never 0.
+                $relevance[] = "strpos(list('---', that.$code.shown), '{VALUE}') != 0";
+            }
+        }
+
+        if (!empty($this->array_filter_exclude)) {
+
+            foreach (explode(',', $this->array_filter_exclude) as $code) {
+                // We add dashes so strpos is never 0.
+                $relevance[] = "strpos(list('---', that.$code.shown), '{VALUE}') == 0";
+            }
+        }
+
+
+        return implode('&&', $relevance);
+    }
+
+    /**
+     * @param bool|false $includeFields Whether to include the condition that at least one field must be relevant. (to prevent infinite recursion)
+     * @return bool|string
+     * @throws \Exception
+     */
+    public function getRelevanceScript($includeFields = true)
+    {
+        $result = parent::getRelevanceScript();
+        // This question is irrelevant if all subquestions are irrelevant.
+        if ($includeFields && (is_string($result) || $result === true)) {
+            foreach($this->getFields() as $field) {
+                $clauses[] = "EM.isRelevant('{$field->getCode()}')";
+            }
+
+            if (is_string($result)) {
+                $result .= implode(" || ", $clauses);
+            } else {
+                $result = implode(" || ", $clauses);
+            }
+        }
+        return $result;
+    }
 
 
 }

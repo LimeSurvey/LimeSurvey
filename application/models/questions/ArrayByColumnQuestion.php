@@ -18,7 +18,9 @@ class ArrayByColumnQuestion extends ArrayQuestion
      */
     public function getClasses()
     {
-        return ['array-flexible-column'];
+        $result = parent::getClasses();
+        $result[] = 'array-flexible-column';
+        return $result;
     }
 
 }

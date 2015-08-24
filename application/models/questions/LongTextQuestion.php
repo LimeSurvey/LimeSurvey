@@ -23,6 +23,8 @@ class LongTextQuestion extends TextQuestion implements iRenderable
      */
     public function render(\Response $response, \SurveySession $session)
     {
+        $result = parent::render($response, $session);
+
         $classes = ['question', 'answer-item', 'text-item'];
         if ($this->maximum_chars > 0 )
         {
@@ -41,18 +43,25 @@ class LongTextQuestion extends TextQuestion implements iRenderable
             $width = 40;
         }
 
+//        vdd($this->getValidationExpressions());
+        $inputOptions =  [
+            'class' => 'textarea',
+            'rows' => $rows,
+            'cols' => $width,
+            'maxlength' => isset($this->maximum_chars) ? $this->maximum_chars : null,
+            'id' => "answer{$this->sgqa}",
+            'data-validation-expression' => $this->getExpressionManager($response)->getJavascript(implode(' and ', array_keys($this->getValidationExpressions())))
+        ];
+
         $html = \TbHtml::tag('p', ['class' => implode(' ', $classes)],
             \TbHtml::label(gT('Your answer'), "answer{$this->sgqa}")
-            . \TbHtml::textArea($this->sgqa, $response->{$this->sgqa}, [
-                'class' => 'textarea',
-                'rows' => $rows,
-                'cols' => $width,
-                'maxlength' => isset($this->maximum_chars) ? $this->maximum_chars : 0,
-                'id' => "answer{$this->sgqa}"
-
-            ])
+            . \TbHtml::textArea($this->sgqa, $response->{$this->sgqa}, $inputOptions)
         );
 
-        return $html;
+        $result->setHtml($html);
+
+
+
+        return $result ;
     }
 }

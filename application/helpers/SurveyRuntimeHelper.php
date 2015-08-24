@@ -254,7 +254,6 @@ class SurveyRuntimeHelper {
                 $move = 'movesubmit';
             } else {
                 $session->setStep($moveResult['seq']);
-                $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
             }
             if ($move == "movesubmit" && $moveResult['finished'] == false) {
                 // then there are errors, so don't finalize the survey
@@ -300,7 +299,7 @@ class SurveyRuntimeHelper {
                 }
                 */
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
-                $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitEndtextI', null,
+                $completed = templatereplace($survey->getLocalizedEndText(), array(), $redata, 'SubmitEndtextI', null,
                     true);
                 $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                 $completed .= gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
@@ -325,8 +324,8 @@ class SurveyRuntimeHelper {
                     'SubmitStartpage', null, true);
 
                 //Check for assessments
-                if ($thissurvey['assessments'] == "Y") {
-                    $assessments = doAssessment($surveyid);
+                if ($survey->bool_assessments) {
+                    $assessments = doAssessment($survey->primaryKey);
                     if ($assessments) {
                         $content .= templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
                             $redata, 'SubmitAssessment', null, true);
@@ -362,11 +361,11 @@ class SurveyRuntimeHelper {
                 }
 
 
-                if (trim(str_replace(array('<p>', '</p>'), '', $thissurvey['surveyls_endtext'])) == '') {
+                if (trim(str_replace(array('<p>', '</p>'), '', $survey->getLocalizedEndText())) == '') {
                     $completed = "<br /><span class='success'>" . gT("Thank you!") . "</span><br /><br />\n\n"
                         . gT("Your survey responses have been recorded.") . "<br /><br />\n";
                 } else {
-                    $completed = templatereplace($thissurvey['surveyls_endtext'], array(), $redata, 'SubmitAssessment',
+                    $completed = templatereplace($survey->getLocalizedEndText(), array(), $redata, 'SubmitAssessment',
                         null, true);
                 }
 
@@ -420,14 +419,10 @@ class SurveyRuntimeHelper {
             }
 
             $redata['completed'] = implode("\n", $blocks) . "\n" . $redata['completed'];
-            $redata['thissurvey']['surveyls_url'] = $thissurvey['surveyls_url'];
 
             renderOldTemplate($templatePath . "completed.pstpl", array('completed' => $completed),
                 $redata, 'SubmitCompleted', null, true);
             echo "\n";
-            if ((($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)) {
-                echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>" . $moveResult['message'] . "</td></tr></table>\n";
-            }
             renderOldTemplate($templatePath . "endpage.pstpl", array(), $redata, 'SubmitEndpage',
                 null, true);
             doFooter();
@@ -440,15 +435,6 @@ class SurveyRuntimeHelper {
         }
 
         $redata = compact(array_keys(get_defined_vars()));
-
-        //GET GROUP DETAILS
-
-        if ($session->format == Survey::FORMAT_QUESTION) {
-            if (!isset($moveResult['seq'])) {
-                vdd($moveResult);
-            }
-            $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-        }
 
 
         //******************************************************************************************************
@@ -649,9 +635,10 @@ class SurveyRuntimeHelper {
     * @param $aQuestionQanda : array from qanda helper
     * @return aray of replacement for question.psptl
     **/
-    public function getQuestionReplacement(array $aQuestionQanda, Question $question, Response $response)
+    public function getQuestionReplacement(array $details, RenderedQuestion $renderedQuestion, Question $question, Response $response)
     {
         bP();
+
         $session = App()->surveySessionManager->current;
         if (!isset($session)) {
             return [];
@@ -679,7 +666,7 @@ class SurveyRuntimeHelper {
             "QUESTION_MAN_MESSAGE"=>"",
             "QUESTION_MANDATORY"=>"",
         );
-        if(empty($aQuestionQanda[0]))
+        if(empty($details))
         {
             return $aReplacement;
         }
@@ -688,33 +675,32 @@ class SurveyRuntimeHelper {
         $aReplacement['GID'] = $question->gid;
         $aReplacement['SGQ']= $question->sgqa;
 
-        $aReplacement['AID']=isset($aQuestionQanda[0]['aid']) ? $aQuestionQanda[0]['aid'] : "" ;
+        $aReplacement['AID']=isset($details['aid']) ? $details['aid'] : "" ;
 
-        $sCode=$aQuestionQanda[5];
 
-        $iNumber = $aQuestionQanda[0]['number'];
+        $iNumber = $details['number'];
 
         switch (SettingGlobal::get('showqnumcode', 'choose'))
         {
             case 'both':
-                $aReplacement['QUESTION_CODE']=$sCode;
+                $aReplacement['QUESTION_CODE'] = $question->title;
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
                 break;
             case 'number':
                 $aReplacement['QUESTION_NUMBER']=$iNumber;
-                $aReplacement['QUESTION_CODE']=$sCode;
+                $aReplacement['QUESTION_CODE'] = $question->title;
                 break;
             case 'choose':
                 switch($survey->showqnumcode) {
                     case 'B': // Both
-                        $aReplacement['QUESTION_CODE']=$sCode;
+                        $aReplacement['QUESTION_CODE'] = $question->title;
                         $aReplacement['QUESTION_NUMBER']=$iNumber;
                         break;
                     case 'N':
                         $aReplacement['QUESTION_NUMBER']=$iNumber;
                         break;
                     case 'C':
-                        $aReplacement['QUESTION_CODE']=$sCode;
+                        $aReplacement['QUESTION_CODE'] = $question->title;
                         break;
                     case 'X':
                     default:
@@ -723,7 +709,7 @@ class SurveyRuntimeHelper {
                 break;
         }
         // Core value : user text
-        $aReplacement['QUESTION_TEXT'] = $aQuestionQanda[0]['text'];
+        $aReplacement['QUESTION_TEXT'] = $renderedQuestion['text'];
         $aReplacement['QUESTIONHELP']= $question->help;// User help
         // To be moved in a extra plugin : QUESTIONHELP img adding
         $sTemplateDir = $session->templateDir;
@@ -755,14 +741,12 @@ class SurveyRuntimeHelper {
             $aMandatoryClass[]= 'missing';
         }
         $aReplacement['QUESTION_MAN_CLASS'] = " ".implode(" ",$aMandatoryClass);
-        $aReplacement['QUESTION_INPUT_ERROR_CLASS']=$aQuestionQanda[0]['input_error_class'];
+        $aReplacement['QUESTION_INPUT_ERROR_CLASS']=$details['input_error_class'];
         // Core value : LS text : EM and not
-        $aReplacement['ANSWER'] = $aQuestionQanda[1];
-        $aReplacement['QUESTION_HELP'] = $aQuestionQanda[0]['help'];// Core help only, not EM
-        $aReplacement['QUESTION_VALID_MESSAGE'] = $aQuestionQanda[0]['valid_message'];// $lemQuestionInfo['validTip']
-        $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $aQuestionQanda[0]['file_valid_message'];// $lemQuestionInfo['??']
-        $aReplacement['QUESTION_MAN_MESSAGE'] = $aQuestionQanda[0]['man_message'];
-        $aReplacement['QUESTION_MANDATORY'] = $aQuestionQanda[0]['mandatory'];
+        $aReplacement['ANSWER'] = $renderedQuestion['html'];
+        $aReplacement['QUESTION_HELP'] = $details['help'];// Core help only, not EM
+        $aReplacement['QUESTION_VALID_MESSAGE'] = $renderedQuestion->getMessages();
+        $aReplacement['QUESTION_MANDATORY'] = $details['mandatory'];
         // For QUESTION_ESSENTIALS
         $aHtmlOptions = [];
         if (true !== $relevance = $question->getRelevanceScript()) {
@@ -772,11 +756,7 @@ class SurveyRuntimeHelper {
         // Launch the event
         $event = new PluginEvent('beforeQuestionRender');
         // Some helper
-        $event->set('surveyId', $session->surveyId);
-        $event->set('type', $question->type);
-        $event->set('code', $sCode);
-        $event->set('qid', $question->qid);
-        $event->set('gid', $question->gid);
+        $event->set('question', $question);
         // User text
         $event->set('text', $aReplacement['QUESTION_TEXT']);
         $event->set('questionhelp', $aReplacement['QUESTIONHELP']);
@@ -805,9 +785,7 @@ class SurveyRuntimeHelper {
         // LS core text
         $aReplacement['ANSWER'] = $event->get('answers');
         $aReplacement['QUESTION_HELP'] = $event->get('help');
-        $aReplacement['QUESTION_MAN_MESSAGE'] = $event->get('man_message');
         $aReplacement['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
-        $aReplacement['QUESTION_FILE_VALID_MESSAGE'] = $event->get('file_valid_message');
         $aReplacement['QUESTION_MANDATORY'] = $event->get('mandatory',$aReplacement['QUESTION_MANDATORY']);
         // Always add id for QUESTION_ESSENTIALS
         $aHtmlOptions['id'] = "question{$question->primaryKey}";
@@ -854,16 +832,11 @@ class SurveyRuntimeHelper {
         $aReplacement = [];
         $question_template = file_get_contents($session->templateDir .'question.pstpl');
 
-        $plus_qanda = retrieveAnswers($question);
-        $plus_qanda[] = $question->type;
-        $plus_qanda[] = $question->bool_mandatory;
-        $plus_qanda['finalgroup'] = $question->gid;
-        $aQuestionReplacement = $this->getQuestionReplacement($plus_qanda, $question, $session->response);
+        list($details, $html) = retrieveAnswers($question);
+//        vdd($details);
+        $aQuestionReplacement = $this->getQuestionReplacement($details, $html, $question, $session->response);
         echo templatereplace($question_template, $aQuestionReplacement, compact(array_keys(get_defined_vars())),
             false, $question->primaryKey);
-//        if ($question instanceof \ls\models\questions\LanguageQuestion) {
-//            vdd('ok');
-//        }
         eP();
     }
 }
