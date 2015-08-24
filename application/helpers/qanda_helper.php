@@ -270,27 +270,6 @@ function retrieveAnswers(Question $question)
     return $result;
 }
 
-function validation_message(Question $question,$show)
-{
-    $session = App()->surveySessionManager->current;
-    $validationResult = $question->validateResponse($session->response);
-    $class = "questionhelp";
-    if (!$show) {
-        $class .= ' hide-tip';
-    }
-    $messages = '';
-    foreach($validationResult->getMessages() as $fieldName => $fieldMessages) {
-        foreach($fieldMessages as $message) {
-            $messages .= "\n" . $message;
-        }
-    }
-    $tip = CHtml::tag('div', [
-        'class' => $class,
-        'id' => "vmsg_{$question->primaryKey}"
-    ], $messages);
-    return [$tip, $validationResult->getSuccess()];
-}
-
 // TMSW Validation -> EM
 function file_validation_message(Question $question)
 {
@@ -3500,22 +3479,6 @@ function do_gender(Question $question, Response $response)
     $inputnames[]=$question->sgqa;
     return array($answer, $inputnames);
 }
-
-
-
-
-// ---------------------------------------------------------------
-/**
-* Construct answer part array_5point
-* @param $ia
-* @return unknown_type
-*/
-// TMSW TODO - Can remove DB query by passing in answer list from EM
-function do_array_5point(Question $question)
-{
-
-}
-
 
 
 

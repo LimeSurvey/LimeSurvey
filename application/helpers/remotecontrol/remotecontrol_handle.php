@@ -637,7 +637,6 @@ class remotecontrol_handle
                     foreach ($insertdata as $k => $v)
                     $setting->$k = $v;
                     $setting->save();
-                    fixLanguageConsistency($iSurveyID,$sLanguage);
                     return array('status' => 'OK');
                 }
                 catch(Exception $e)
@@ -1266,7 +1265,6 @@ class remotecontrol_handle
                 if (isset($aImportResults['fatalerror'])) return array('status' => 'Error: '.$aImportResults['fatalerror']);
                 else
                 {
-                    fixLanguageConsistency($iSurveyID);
                     $iNewqid = $aImportResults['newqid'];
 
                     $oQuestion = Question::model()->findByAttributes(array('sid' => $iSurveyID, 'gid' => $iGroupID, 'qid' => $iNewqid));

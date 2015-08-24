@@ -57,7 +57,6 @@ use \Yii;
                 $iSurveyID=0;
                 $sLanguage = Yii::app()->getConfig("defaultlang");
             }
-            SetSurveyLanguage($iSurveyID, $sLanguage);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             //SET THE TEMPLATE DIRECTORY
              $sTemplate = $aSurveyInfo['template'];

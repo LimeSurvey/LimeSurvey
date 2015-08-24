@@ -285,7 +285,7 @@ class SurveyRuntimeHelper {
                     'SubmitStartpageI', null, true);
 
                 //Check for assessments
-                if ($thissurvey['assessments'] == "Y" && $assessments) {
+                if ($survey->bool_assessments && $assessments) {
                     renderOldTemplate($templatePath . "assessment.pstpl", array(), $redata,
                         'SubmitAssessmentI', null, true);
                 }
@@ -427,10 +427,6 @@ class SurveyRuntimeHelper {
                 null, true);
             doFooter();
 
-            // The session cannot be killed until the page is completely rendered
-            if ($session->survey->bool_printanswers) {
-                killSurveySession($session->surveyId);
-            }
             exit;
         }
 
@@ -452,9 +448,7 @@ class SurveyRuntimeHelper {
         if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->survey->bool_showprogress) {
             $percentcomplete = makegraph($session->step, $session->stepCount);
         }
-        if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey')) {
-            $languagechanger = makeLanguageChangerSurvey($session->language);
-        }
+
 
         //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
         sendCacheHeaders();

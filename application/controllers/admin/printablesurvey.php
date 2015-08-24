@@ -43,7 +43,6 @@ class printablesurvey extends Survey_Common_Action
             $aSurveyInfo=getSurveyInfo($surveyid,$lang);
             if (!($aSurveyInfo))
                 $this->getController()->error('Invalid survey ID');
-            SetSurveyLanguage($surveyid,$lang);
             $sLanguageCode=App()->language;
 
             $templatename = $aSurveyInfo['template'];

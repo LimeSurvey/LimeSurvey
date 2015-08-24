@@ -29,18 +29,7 @@
         }
     }
     if(empty($list)) {
-        $list=CHtml::openTag('li',array('class'=>'surveytitle')).gT("No available surveys").CHtml::closeTag('li');
+        $list = CHtml::openTag('li',array('class'=>'surveytitle')).gT("No available surveys").CHtml::closeTag('li');
     }
     echo $list;
-    $data['surveylist'] = array(
-        "nosid"=> "",
-        "contact"=> sprintf(gT("Please contact %s ( %s ) for further assistance."),
-            Yii::app()->getConfig("siteadminname"),
-            encodeEmail(Yii::app()->getConfig("siteadminemail"))
-        ),
-        "listheading"=> gT("The following surveys are available:"),
-        "list"=> $list,
-    );
-    
-    $data['languagechanger'] = makeLanguageChanger(App()->language);
-    echo App()->format->format(trim(App()->getConfig("siteadminemail")), 'email');
+    echo App()->format->format(App()->getConfig("siteadminemail"), 'email');

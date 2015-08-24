@@ -5641,7 +5641,6 @@
                 if (trim($lang) == '') {
                     continue;
                 }
-                SetSurveyLanguage($sid, $lang);
                 LimeExpressionManager::StartSurvey($sid, Survey::FORMAT_ALL_IN_ONE,
                     array('sgqaNaming' => 'N', 'assessments' => $assessments), true);
                 $moveResult = LimeExpressionManager::NavigateForwards();

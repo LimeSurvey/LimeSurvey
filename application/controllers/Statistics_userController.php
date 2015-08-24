@@ -138,8 +138,6 @@ class Statistics_userController extends Controller {
         {
             $sLanguage=sanitize_languagecode($sLanguage);
         }
-        //set survey language for translations
-        SetSurveyLanguage($iSurveyID, $sLanguage);
         //Create header
         sendCacheHeaders();
         $condition = false;

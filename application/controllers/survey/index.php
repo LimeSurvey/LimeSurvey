@@ -67,8 +67,29 @@ class index extends CAction {
 
         header('X-ResponseId: ' . $session->responseId);
 
-
-        $move = getMove();
+        $validMoves = ['default','movenext','movesubmit','moveprev','saveall','loadall','clearall','changelang'];
+        // We can control is save and load are OK : todo fix according to survey settings
+        // Maybe allow $aAcceptedMove in Plugin
+        $move = $request->getParam('move');
+        foreach($validMoves as $validMove)
+        {
+            if($request->getParam($validMove))
+                $move = $validMove;
+        }
+        if($move=='default')
+        {
+            $session = App()->surveySessionManager->current;
+            $iSessionStep = $session->step;
+            $iSessionTotalSteps = $session->totalSteps;
+            if ($iSessionStep > 0 && ($iSessionStep == $iSessionTotalSteps) || $session->format == Survey::FORMAT_ALL_IN_ONE)
+            {
+                $move="movesubmit";
+            }
+            else
+            {
+                $move="movenext";
+            }
+        }
 
         if ($session->isFinished
             && (

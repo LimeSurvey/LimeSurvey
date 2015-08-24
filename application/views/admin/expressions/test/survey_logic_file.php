@@ -101,7 +101,6 @@ background-color:lightyellow;
 EOD;
 
 
-    SetSurveyLanguage($surveyid, $language);
     LimeExpressionManager::SetDirtyFlag();
     Yii::app()->setLanguage(Yii::app()->session['adminlang']);
     $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $gid, $qid,$LEMdebugLevel,$assessments);
