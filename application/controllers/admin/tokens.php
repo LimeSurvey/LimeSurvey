@@ -327,7 +327,7 @@ class tokens extends Survey_Common_Action
         $aLanguages=array();
         foreach ($aLanguageCodes as $aCode)
         {
-            $aLanguages[$aCode]=getLanguageNameFromCode($aCode,false);    
+            $aLanguages[$aCode]=getLanguageNameFromCode($aCode,false);
         }
         $aData['aLanguages'] = $aLanguages;
         $this->_renderWrappedTemplate('token', array('tokenbar', 'browse'), $aData);
@@ -478,9 +478,23 @@ class tokens extends Survey_Common_Action
                 $action .= '<div style="width: 20px; height: 16px; float: left;"></div>';
             }
             $action .= '</div>';
-            $aRowToAdd['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
+            $aRowToAdd['cell'] = array($token['tid'],
+                $action,
+                htmlspecialchars($token['firstname'],ENT_QUOTES),
+                htmlspecialchars($token['lastname'],ENT_QUOTES),
+                htmlspecialchars($token['email'],ENT_QUOTES),
+                htmlspecialchars($token['emailstatus'],ENT_QUOTES),
+                htmlspecialchars($token['token'],ENT_QUOTES),
+                htmlspecialchars($token['language'],ENT_QUOTES),
+                htmlspecialchars($token['sent'],ENT_QUOTES),
+                htmlspecialchars($token['remindersent'],ENT_QUOTES),
+                htmlspecialchars($token['remindercount'],ENT_QUOTES),
+                htmlspecialchars($token['completed'],ENT_QUOTES),
+                htmlspecialchars($token['usesleft'],ENT_QUOTES),
+                htmlspecialchars($token['validfrom'],ENT_QUOTES),
+                htmlspecialchars($token['validuntil'],ENT_QUOTES));
             foreach ($attributes as $attribute) {
-                $aRowToAdd['cell'][] = $token[$attribute];
+                $aRowToAdd['cell'][] = htmlspecialchars($token[$attribute],ENT_QUOTES);
             }
             $aData->rows[] = $aRowToAdd;
         }
@@ -1417,11 +1431,11 @@ class tokens extends Survey_Common_Action
                     $modmessage = Replacefields($sMessage[$emrow['language']], $fieldsarray);
                     if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
-                        $tokenoutput .= $emrow['tid'] . " " . ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.") . "<br />", $fieldsarray);
+                        $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.",'unescaped'), $fieldsarray)). "<br />";
                     }
                     elseif (trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
                     {
-                        $tokenoutput .= $emrow['tid'] . " " . ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.") . "<br />", $fieldsarray);
+                        $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.",'unescaped'), $fieldsarray)). "<br />";
                     }
                     else
                     {
@@ -1519,13 +1533,13 @@ class tokens extends Survey_Common_Action
                                     $slquery->save();
                                 }
                             }
-                            $tokenoutput .= "{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']})<br />\n";
+                            $tokenoutput .= htmlspecialchars(ReplaceFields("{$emrow['tid']}: {FIRSTNAME} {LASTNAME} ({EMAIL})", $fieldsarray)). "<br />\n";
                             if (Yii::app()->getConfig("emailsmtpdebug") == 2)
                             {
                                 $tokenoutput .= $maildebug;
                             }
                         } else {
-                            $tokenoutput .= ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:") . " " . $maildebug . "<br />", $fieldsarray);
+                            $tokenoutput .= htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error message:",'unescaped') . " " . $maildebug , $fieldsarray)). "<br />";
                         }
                     }
                     unset($fieldsarray);
@@ -1597,7 +1611,7 @@ class tokens extends Survey_Common_Action
         else
         {
             //$aData['resultr'] = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
-            
+
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
             $aData['sAction']=App()->createUrl("admin/tokens",array("sa"=>"exportdialog","surveyid"=>$iSurveyId));
