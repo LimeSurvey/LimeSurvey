@@ -52,13 +52,9 @@
                 'validfrom' => gT('Valid from'),
                 'validuntil' => gT('Valid until'),
             );
-            // Check if we have custom attributes.
-			if ($this->hasAttribute('attribute_1'))
+			foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
             {
-				foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
-                {
-                    $labels[$key] = $info['description'];
-                }
+                $labels[$key] = $info['description'];
             }
             return $labels;
         }
@@ -109,7 +105,7 @@
             foreach ($extraFields as $extraField) {
                 $fields[$extraField] = 'text';
             }
-            
+
             // create fields for the custom token attributes associated with this survey
             $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->tokenAttributes;
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
@@ -118,7 +114,7 @@
                     $fields[$attrname] = 'string(255)';
                 }
             }
-            
+
             $db = \Yii::app()->db;
             $sTableName = self::constructTableName($surveyId);
 
@@ -130,10 +126,10 @@
              * - MSSQL
              *
              */
-            $db->createCommand()->createIndex("token_unique",  $sTableName,'token');
+            $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1,50000),  $sTableName,'token');
             
             // Refresh schema cache just in case the table existed in the past, and return if table exist
-            return $db->schema->getTable($sTableName, true); 
+            return $db->schema->getTable($sTableName, true);
         }
         public function findByToken($token)
         {
@@ -161,7 +157,7 @@
                 }
             }
         }
-        
+
         /**
          * Generates a token for all token objects in this survey.
          * Syntax: Token::model(12345)->generateTokens();
@@ -177,14 +173,14 @@
 
             $surveyId = $this->dynamicId;
             $tokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
-            
+
             $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
             //Exit early if there are not empty tokens
             if (count($tkresult)===0) return array(0,0);
 
             //get token length from survey settings
             $tlrow = Survey::model()->findByAttributes(array("sid"=>$surveyId));
-            
+
             //Add some criteria to select only the token field
             $criteria = $this->getDbCriteria();
             $criteria->select = 'token';
@@ -239,7 +235,7 @@
         }
 
         /**
-         * 
+         *
          * @param int $surveyId
          * @param string $scenario
          * @return Token Description
@@ -278,10 +274,12 @@
         }
         public function rules()
         {
-            return [
+            $aRules= array(
                 array('token', 'unique', 'allowEmpty' => true),
+                array('firstname','LSYii_Validators'),
+                array('lastname','LSYii_Validators'),
                 array(implode(',', $this->tableSchema->columnNames), 'safe'),
-                array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
+                array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                 array('email','filter','filter'=>'trim'),
                 array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true,'except'=>'allowinvalidemail'),
                 array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
@@ -294,7 +292,12 @@
                 [['lastname', 'firstname'], 'safe', 'on' => 'register'],
                 ['captcha', 'captcha', 'on' => 'register'],
 
-            ];
+            );
+            foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
+            {
+                 $aRules[]=array($key,'LSYii_Validators');
+            }
+            return $aRules;
         }
 
         public function scopes()
