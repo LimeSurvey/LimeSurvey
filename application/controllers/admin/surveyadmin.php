@@ -1413,16 +1413,19 @@ class SurveyAdmin extends Survey_Common_Action
         $oSurvey->admin =  Yii::app()->request->getPost('admin');
         $oSurvey->expires =  $expires;
         $oSurvey->startdate =  $startdate;
-        $oSurvey->anonymized = App()->request->getPost('anonymized');
         $oSurvey->faxto = App()->request->getPost('faxto');
         $oSurvey->format = App()->request->getPost('format');
-        $oSurvey->savetimings = App()->request->getPost('savetimings');
         $oSurvey->template = Yii::app()->request->getPost('template');
         $oSurvey->assessments = App()->request->getPost('assessments');
         $oSurvey->additional_languages = implode(' ',Yii::app()->request->getPost('additional_languages',array()));
-        $oSurvey->datestamp = App()->request->getPost('datestamp');
-        $oSurvey->ipaddr = App()->request->getPost('ipaddr');
-        $oSurvey->refurl = App()->request->getPost('refurl');
+        if ($oSurvey->active!='Y')
+        {
+            $oSurvey->anonymized = App()->request->getPost('anonymized');
+            $oSurvey->savetimings = App()->request->getPost('savetimings');
+            $oSurvey->datestamp = App()->request->getPost('datestamp');
+            $oSurvey->ipaddr = App()->request->getPost('ipaddr');
+            $oSurvey->refurl = App()->request->getPost('refurl');
+        }
         $oSurvey->publicgraphs = App()->request->getPost('publicgraphs');
         $oSurvey->usecookie = App()->request->getPost('usecookie');
         $oSurvey->allowregister = App()->request->getPost('allowregister');
@@ -1499,7 +1502,7 @@ class SurveyAdmin extends Survey_Common_Action
         cleanLanguagesFromSurvey($iSurveyId,implode(" ",$oSurvey->additionalLanguages));
         fixLanguageConsistency($iSurveyId,implode(" ",$oSurvey->additionalLanguages));
 
-        // Url params in json 
+        // Url params in json
         $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
         SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyId));
         if(isset($aURLParams))
