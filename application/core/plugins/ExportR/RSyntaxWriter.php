@@ -32,14 +32,14 @@ class RSyntaxWriter extends Writer
         } elseif ($oOptions->output == 'file') {
             $this->handle = fopen($this->filename, 'w');
         }
-        
+
         $this->out('data <- read.csv("survey_' . $survey->id .'_R_data_file.csv", quote = "\'\"", na.strings=c("", "\"\""), stringsAsFactors=FALSE)');
         $this->out("");
         $this->out("");
-        
+
         $oOptions->headingFormat = 'code';  // Always use fieldcodes
-        
-        // R specific stuff        
+
+        // R specific stuff
         Yii::app()->loadHelper("export");
         $tmpFieldmap = SPSSFieldMap($survey->id);
         foreach ($tmpFieldmap as $field => $values)
@@ -51,23 +51,23 @@ class RSyntaxWriter extends Writer
         }
         $this->customFieldmap = $fieldmap;
     }
-    
+
     protected function out($content)
     {
         fwrite($this->handle, $content . "\n");
     }
-    
+
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         $this->headers = $oOptions->selectedColumns;
         foreach ($oOptions->selectedColumns as $id => $title)
         {
             $field = $this->customFieldmap[$title];
-            
+
             if ( ! isset($field['answers']) )
             {
                 $strTmp = mb_substr(stripTagsFull($values[$id]), 0, $this->maxLength);
-                
+
                 $len = mb_strlen($strTmp);
 
                 if ( $len > $field['size'] ) $field['size'] = $len;
@@ -148,7 +148,7 @@ class RSyntaxWriter extends Writer
                     $str .= '),labels=c(';
 
                     foreach ($answers as $answer) {
-                        $str .= "\"{$answer['value']}\", ";
+                        $str .= '"'.addslashes($answer['value']).'", ';
                     }
 
                     $str = mb_substr($str, 0, -2);
@@ -189,7 +189,7 @@ class RSyntaxWriter extends Writer
         if (!empty($errors)) {
             $this->out($errors);
         }
-        
+
         fclose($this->handle);
     }
 }
