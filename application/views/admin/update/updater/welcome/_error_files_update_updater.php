@@ -20,8 +20,6 @@
         <?php echo $readonly."<br/>";?>
     <?php endforeach; ?>
     <br/>
-    <?php eT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); ?>
-    
     <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo Yii::app()->createUrl("admin/globalsettings"); ?>" role="button" aria-disabled="false">
         <span class="ui-button-text"><?php eT("Cancel"); ?></span>
     </a>        

@@ -11,7 +11,7 @@
 <?php if (count($existingfiles)>0): ?>
     <?php eT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.'); ?>
     <br />
-    <?php  eT('We recommend that these files should be replaced by the update procedure.');?>
+    <?php  eT('These files will be backuped and then replaced by the update procedure.');?>
     <br />
 <textarea readonly="readonly" style="background-color: #FFF; width: 800px; height: 150px; font-family: Monospace; font-size: 11px;">            
 <?php
@@ -21,9 +21,5 @@ foreach ($existingfiles as $existingfile)
 echo htmlspecialchars($existingfile['file'])."\n";
 }
 ?>
-</textarea>
-<?php else:?>
-    <p class="success text-left">
-        <?php  eT('No file added by the ComfortUpdate already exists.'); ?> 
-    </p>                
+</textarea>           
 <?php endif;?>

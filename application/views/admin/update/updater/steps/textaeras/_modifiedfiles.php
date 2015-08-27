@@ -10,7 +10,7 @@
 <?php if (count($modifiedfiles)>0): ?>
     <?php eT('The following files will be modified or deleted but were already modified by someone else.');?>
     <br/>
-    <?php eT('We recommend that these files should be replaced by the update procedure.');?>
+    <?php eT('These files will be backuped and then replaced by the update procedure.');?>
     <br/>
 <textarea readonly="readonly" style="background-color: #FFF; width: 800px; height: 150px; font-family: Monospace; font-size: 11px;">
 <?php
@@ -20,9 +20,5 @@ foreach ($modifiedfiles as $modifiedfile)
     echo htmlspecialchars($modifiedfile['file'])."\n";
 }?>
 </textarea>
-<?php  else:?>
-    <p class="success text-left">
-        <?php eT("No files that will be modified/deleted by the updater are already modified in the local installation."); ?>
-    </p>    
 <?php endif;?>
 

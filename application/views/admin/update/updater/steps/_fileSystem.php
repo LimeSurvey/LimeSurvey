@@ -28,7 +28,6 @@
     
     <?php if (count($readonlyfiles)>0):?>
             <br />
-            <?php echo gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); ?>
             <p>
                 <!--
                 <a class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only limebutton" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
@@ -51,8 +50,6 @@
             </p>
     <?php else: ?>
         <p>
-            <?php echo eT('Please check any problems above and then proceed to the next step.').'<br />'; ?>
-                                    
             <?php 
                 $url = Yii::app()->createUrl('/admin/update/sa/backup');
                 echo CHtml::beginForm($url, 'post', array("id"=>"launchBackupForm"));

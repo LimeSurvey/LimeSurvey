@@ -108,10 +108,6 @@
 <ul>
 
 <?php if($errors): ?>
-<p>
-    <strong><?php eT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); ?></strong>
-</p>
-
     <?php
     if($ignore && ! $cant_ignore )
     {
