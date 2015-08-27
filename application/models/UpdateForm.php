@@ -761,7 +761,7 @@ class UpdateForm extends CFormModel
             $check->writable = 'pass';
             
         if($obj->freespaceCheck)
-            $check->freespace = (disk_free_space( $obj->name ) < $obj->minfreespace );
+            $check->freespace = (disk_free_space( $obj->name ) > $obj->minfreespace );
         else
             $check->freespace = 'pass';        
         
