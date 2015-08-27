@@ -1452,36 +1452,46 @@ label, legend {
 }
 
 #updaterContent{
-    width: 890px; 
+    width: 890px;
     float: left;
 }
 
 #progressContainer{
-    width: 220px; 
+    width: 220px;
     float: left;
 }
 
 #welcomeMessageContainer{
-    width: 410px; 
-    float: left; 
-    border-right:1px solid #EEE;    
+    width: 510px;
+    float: left;
+    border-right:1px solid #EEE;
+    padding-top:1em;
+}
+
+#welcomeMessageContainer p{
+    text-align:left;
+}
+
+#welcomeMessageContainer li{
+    list-style-type:square;
+    overflow:visible;
 }
 
 #welcomeMessageContainerButtons{
-	float: left;	
+	float: left;
 }
 
 #keyInfos{
-	width: 420px; 
-	float: left; 
-	padding-left: 20px; 
+	width: 320px;
+	float: left;
+	padding-left: 20px;
 	background-color: #fff;
 }
 
 #keyInfosbuttons{
-	float: right; 
-	clear: both; 
-	padding-top: 100px;	
+	float: right;
+	clear: both;
+	padding-top: 100px;
 }
 
 .checkLine{
@@ -1493,9 +1503,9 @@ label, legend {
 }
 
 #ajaxupdaterLayoutLoading{
-	text-align : center; 
-	margin-top: 200px; 
-	margin-bottom: 200px; 
+	text-align : center;
+	margin-top: 200px;
+	margin-bottom: 200px;
 	display: none;
 }
 
@@ -1504,9 +1514,9 @@ label, legend {
 }
 
 #ajaxContainerLoading{
-	text-align : center; 
-	margin-top: 70px; 
-	margin-bottom: 100px; 
+	text-align : center;
+	margin-top: 70px;
+	margin-bottom: 100px;
 	display: none;
 }
 
