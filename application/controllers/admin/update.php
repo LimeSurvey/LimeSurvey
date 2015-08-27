@@ -331,6 +331,8 @@ class update extends Survey_Common_Action
                     $unzip = $updateModel->unzipUpdateUpdaterFile();
                     if( $unzip->result )
                     {
+                        $updateModel->removeTmpFile('update_updater.zip');
+                        $updateModel->removeTmpFile('comfort_updater_cookie.txt');                        
                         return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, false);    
                     }
                     else 

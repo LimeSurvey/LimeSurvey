@@ -172,38 +172,19 @@ class UpdateForm extends CFormModel
      */
     public function getLocalChecksForUpdater()
     {
-        $toCheck = array( 
-                            'config'.DIRECTORY_SEPARATOR.'updater_version.php', 
-                            'controllers'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'update.php', 
-                            'models'.DIRECTORY_SEPARATOR.'UpdateForm.php', 
-                            '..'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'ajax-loader.gif',);
-                            
-        $toCheckRecurive = array(
-                                    'views'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'',
-                                    '..'.DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'comfortupdate'.DIRECTORY_SEPARATOR  );                            
-                            
+        
+        $getters = '/index.php?r=updates/filesystemchecklistforupdater';
+        $content = $this->_performRequest($getters);
+        $toCheck = $content->list;            
         $readOnly = array();
         
         // We check the write permission of files
+        $lsRootPath = dirname(Yii::app()->request->scriptFile).'/';
         foreach( $toCheck as $check )
         {
-            if( !is_writable( APPPATH . $check ) )
+            if( !is_writable( $lsRootPath . $check ) )
             {
-                $readOnly[] = APPPATH . $check ;        
-            }
-        }
-        
-        // We check the write permission of directories and their content 
-        // TODO : a beautifull recursive function
-        foreach( $toCheckRecurive as $check )
-        {
-            $start_directory = APPPATH . $check;
-            $readOnly = $this->_checkDirectoryAndItsFiles( $start_directory , $readOnly);
-            
-            $check_all_subdirectories = $this->_getAllSubDirectories( $start_directory, DIRECTORY_SEPARATOR );
-            foreach ($check_all_subdirectories as $directory) 
-            {
-                $readOnly = $this->_checkDirectoryAndItsFiles( $directory , $readOnly);
+                $readOnly[] = $lsRootPath . $check ;        
             }
         }
         
@@ -540,13 +521,15 @@ class UpdateForm extends CFormModel
     */
     public function getUpdateNotification()
     {
+        
         $crosscheck = (getGlobalSetting('updatenotification')=="both")?1:0;
         $today = new DateTime("now");
                 
         $next_update_check = Yii::app()->session['next_update_check'];
         
-        if (is_null($next_update_check) || ($next_update_check <  $today) )
+        if (is_null($next_update_check) || ($next_update_check <  $today) || is_null(Yii::app()->session['update_result']) )
         {
+            echo "processing";
             $updates = $this->getUpdateInfo($crosscheck="1");
             $update_available = FALSE;    
             if($updates->result)
@@ -676,7 +659,7 @@ class UpdateForm extends CFormModel
             $searchpath = $this->rootdir . $file['file'];
             $is_writable = is_writable(dirname($searchpath));
             
-            // LOUIS : snippet from the original code. It supposed to go up in the file sytem : if one directory need to be deleted... TODO : check if it works, if it's needed... 
+            // LOUIS : snippet from the original code. 
             while ( !$is_writable && strlen($searchpath) > strlen($this->rootdir) )
             {
                 $searchpath = dirname($searchpath);
@@ -701,41 +684,6 @@ class UpdateForm extends CFormModel
         return $checkedfile;
     }
     
-    /**
-     * Check if a given directory and its files are writable
-     * Used by the Updater of the Updater
-     */
-    private function _checkDirectoryAndItsFiles($start_directory , $readOnly)
-    {
-        if(! is_writable(  realpath ( $start_directory )) )
-            $readOnly[] =  realpath ( $start_directory ) ;            
-        
-        $pattern = '*.*';
-        $files = glob ( $start_directory.$pattern );
-        
-        foreach( $files as $file )
-        {
-            if(! is_writable( $file ))
-                $readOnly[] = $file ;    
-        }
-        return $readOnly;
-    }
-
-    /**
-     * Return a list of all the subdirectories (and their own subdirectories) of a given directory
-     * Used by the Updater of the Updater
-     */
-    private function _getAllSubDirectories( $directory, $directory_seperator )
-    {
-        $dirs = array_map( function($item)use($directory_seperator){ return $item . $directory_seperator;}, array_filter( glob( $directory . '*' ), 'is_dir') );
-    
-        foreach( $dirs AS $dir )
-        {
-            $dirs = array_merge( $dirs, $this->_getAllSubDirectories( $dir, $directory_seperator ) );
-        }
-    
-        return $dirs;
-    }
 
     
     /**
