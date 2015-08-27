@@ -12,21 +12,26 @@ use ls\interfaces\iResponse;
 class FivePointChoiceQuestion extends FixedChoiceQuestion
 {
 
-    /**
-     * Must return an array of answer options.
-     * @return array
-     */
     public function getAnswers($scale = null)
     {
-        // TODO: Implement getAnswers() method.
-    }
+        $result = [
+            1 => 1,
+            2 => 2,
+            3 => 3,
+            4 => 4,
+            5 => 5,
+        ];
 
+        if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
+            $result[""] = gT("No answer");
+        }
+        return $result;
+    }
     /**
      * This function return the class by question type
      * @param string question type
      * @return string Question class to be added to the container
      *
-     * @todo Move this to individual classes
      */
     public function getClasses()
     {
@@ -96,7 +101,6 @@ class FivePointChoiceQuestion extends FixedChoiceQuestion
         $result->setHtml($answer);
         return $result;
     }
-
 
 
 

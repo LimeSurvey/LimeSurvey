@@ -14,7 +14,7 @@
 
 function makegraph($step, $total)
 {
-    global $thissurvey;
+    bp();
 
 
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'lime-progress.css');
@@ -74,6 +74,7 @@ function makegraph($step, $total)
         </script>';
     }
 
+    eP();
     return $graph;
 }
 

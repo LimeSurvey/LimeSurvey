@@ -189,7 +189,7 @@ class SurveyRuntimeHelper {
         //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
         if ($session->step == 0) {
             LimeExpressionManager::StartSurvey($session->surveyId, false);
-            $moveResult = LimeExpressionManager::JumpTo(0, false, false, true);
+            $moveResult = LimeExpressionManager::JumpTo(0, false, true);
         }
 
 
@@ -198,7 +198,7 @@ class SurveyRuntimeHelper {
         }
 
         if (isset($move) && $move == "clearcancel") {
-            $moveResult = LimeExpressionManager::JumpTo($session->step, false, true, false, true);
+            $moveResult = LimeExpressionManager::JumpTo($session->step, true, false, true);
         }
 
 
@@ -215,21 +215,20 @@ class SurveyRuntimeHelper {
             } else {
                 // may be submitting from the navigation bar, in which case need to process all intervening questions
                 // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
-                $moveResult = LimeExpressionManager::JumpTo($session->getStepCount() + 1, false);
+                $moveResult = LimeExpressionManager::JumpTo($session->getStepCount() + 1);
             }
         }
         if (isset($move) && $move == 'changelang') {
             // jump to current step using new language, processing POST values
-            $moveResult = LimeExpressionManager::JumpTo($session->getStep(), false, true, true,
-                true);  // do process the POST data
+            $moveResult = LimeExpressionManager::JumpTo($session->getStep(), true, true, true);  // do process the POST data
         }
         if (isset($move) && isNumericInt($move) && $session->survey->questionindex == Survey::INDEX_INCREMENTAL) {
             $move = (int)$move;
             if ($move > 0 && ($move <= $session->getStep() || $move <= $session->getMaxStep())) {
-                $moveResult = LimeExpressionManager::JumpTo($move, false);
+                $moveResult = LimeExpressionManager::JumpTo($move);
             }
         } elseif (isset($move) && isNumericInt($move) && $session->survey->questionindex == Survey::INDEX_FULL) {
-            $moveResult = LimeExpressionManager::JumpTo($move, false, true, true);
+            $moveResult = LimeExpressionManager::JumpTo($move, true, true);
             $session->setStep($moveResult['seq'] + 1);
         }
         if (!isset($moveResult) && !($session->format != Survey::FORMAT_ALL_IN_ONE && $session->getStep() == 0)) {
@@ -245,8 +244,7 @@ class SurveyRuntimeHelper {
                 if ($session->survey->questionindex == Survey::INDEX_FULL) {
                     //LimeExpressionManager::JumpTo(-1, false, false, true);
                     LimeExpressionManager::StartSurvey($session->surveyId);
-                    $moveResult = LimeExpressionManager::JumpTo($session->getStepCount() + 1, false, false,
-                        false);// no preview, no save data and NO force
+                    $moveResult = LimeExpressionManager::JumpTo($session->getStepCount() + 1, false, false);// no preview, no save data and NO force
                     if (!$moveResult['mandViolation'] && $moveResult['valid'] && empty($moveResult['invalidSQs'])) {
                         $moveResult['finished'] = true;
                     }
@@ -318,9 +316,7 @@ class SurveyRuntimeHelper {
                 }
 
 
-                $content = '';
-                $content .= templatereplace(file_get_contents($templatePath . "startpage.pstpl"), array(), $redata,
-                    null);
+                $content = templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata, null, $session);
 
                 //Check for assessments
                 if ($survey->bool_assessments) {
@@ -346,9 +342,8 @@ class SurveyRuntimeHelper {
 
                 $content = '';
 
-                $content .= templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata, null);
+                $content .= templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata, null, $session);
 
-                //echo $thissurvey['url'];
                 //Check for assessments
                 if ($session->survey->bool_assessments) {
                     $assessments = doAssessment($session->surveyId);
@@ -434,14 +429,8 @@ class SurveyRuntimeHelper {
         //PRESENT SURVEY
         //******************************************************************************************************
         bP('Present Survey');
-        App()->loadHelper('qanda');
-
 
         //Iterate through the questions about to be displayed:
-        $inputNames = array();
-
-        $popups = [];
-        $validationResults = [];
         if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->survey->bool_showprogress) {
             $percentcomplete = makegraph($session->step, $session->stepCount);
         }
@@ -453,22 +442,6 @@ class SurveyRuntimeHelper {
         $survey = $session->survey;
         renderOldTemplate($session->templateDir . "/startpage.pstpl", array(),
             compact(array_keys(get_defined_vars())));
-
-        if (isset($backpopup)) {
-            $popups = [$backpopup];// If user click reload: no need other popup
-        }
-        Yii::app()->clientScript->registerScript("showpopup",
-            "showpopup=" . (int)SettingGlobal::get('showpopups', true) . ";", CClientScript::POS_HEAD);
-        //if(count($aPopup))
-        Yii::app()->clientScript->registerScript('startPopup', "startPopups=" . json_encode($popups) . ";",
-            CClientScript::POS_HEAD);
-        //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
-        if ($session->format != Survey::FORMAT_ALL_IN_ONE
-            && $session->step != $session->prevStep
-            || $session->step % 2
-        ) {
-            echo "<script type=\"text/javascript\">$(\"body\").addClass(\"page-odd\");</script>\n";
-        }
 
         $formParams = [
             'id' => 'limesurvey',
@@ -482,13 +455,10 @@ class SurveyRuntimeHelper {
 //        if ($question->type == Question::TYPE_UPLOAD) {
             $formParams['enctype'] = 'multipart/form-data';
 //        }
-
+        if ($session->getViewCount() > 1) {
+            $formParams['class'] = 'touched';
+        }
         echo CHtml::beginForm('', 'post', $formParams);
-        echo "<!-- INPUT NAMES -->";
-        echo CHtml::hiddenField('fieldnames', implode("|", $inputNames), ['id' => 'fieldnames']);
-
-
-
 
         // The default submit button
         echo CHtml::htmlButton("default", [
@@ -502,52 +472,19 @@ class SurveyRuntimeHelper {
 
         if ($session->format == Survey::FORMAT_ALL_IN_ONE)
         {
-            if (!$survey->bool_showwelcome) {
-                //Hide the welcome screen if explicitly set
-            } else {
-                renderOldTemplate($templatePath . "welcome.pstpl", array(), $redata) . "\n";
+            if ($survey->bool_showwelcome) {
+                renderOldTemplate($templatePath . "welcome.pstpl", [], $redata) . "\n";
             }
 
             if ($survey->bool_anonymized) {
-                renderOldTemplate($templatePath . "privacy.pstpl", array(), $redata) . "\n";
+                renderOldTemplate($templatePath . "privacy.pstpl", [], $redata) . "\n";
             }
         } else {
             // <-- START THE SURVEY -->
             renderOldTemplate($templatePath . "survey.pstpl", array(), $redata);
         }
 
-        $showpopups= SettingGlobal::get('showpopups', false);
-        //Display the "mandatory" message on page if necessary
-
-        if (!$showpopups
-            && $session->getViewCount() > 1
-            && count(array_filter($validationResults, function(QuestionValidationResult $result) {
-                // Count fields that do not pass mandatory criteria.
-                return !$result->getPassedMandatory();
-            })) > 0
-        ) {
-            echo "<p class='errormandatory'>" . gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</p>";
-        }
-
-        //Display the "validation" message on page if necessary
-        if (!$showpopups
-            && $session->getViewCount() > 1
-            && count(array_filter($validationResults, function(QuestionValidationResult $result) {
-                // Count fields that do not pass validation but do pass mandatory validation.
-                return $result->getPassedMandatory() && !$result->getSuccess();
-            })) > 0
-        ) {
-            echo "<p class='errormandatory'>" . gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</p>";
-        }
-
-        //Display the "file validation" message on page if necessary
-        if (!$showpopups && isset($filenotvalidated) && $filenotvalidated == true && $session->getViewCount() > 1)
-        {
-            echo "<p class='errormandatory'>" . gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</p>";
-        }
-
         LimeExpressionManager::registerScripts($session);
-
         if ($session->format == Survey::FORMAT_ALL_IN_ONE) {
             foreach ($session->groups as $group) {
                 $this->renderGroup($session, $group);
@@ -559,9 +496,6 @@ class SurveyRuntimeHelper {
 
 
 
-        LimeExpressionManager::FinishProcessingPage();
-
-        $navigator = surveymover(); //This gets globalised in the templatereplace function
         $redata = compact(array_keys(get_defined_vars()));
 
         echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
@@ -623,40 +557,63 @@ class SurveyRuntimeHelper {
 
 
     protected function renderGroup(SurveySession $session, QuestionGroup $group) {
+        bP();
         echo "\n\n<!-- START THE GROUP -->\n";
+        $replacements = $group->getReplacements();
         echo "\n\n<div id='group-{$session->getGroupIndex($group->primaryKey)}'";
         if  (!$group->isRelevant($session->response)) {
             echo " style='display: none;'";
         }
         echo ">\n";
-        renderOldTemplate($session->templateDir . "startgroup.pstpl");
+
+        renderOldTemplate($session->templateDir . "startgroup.pstpl", $replacements);
         echo "\n";
 
-        renderOldTemplate($session->templateDir . "groupdescription.pstpl");
+        renderOldTemplate($session->templateDir . "groupdescription.pstpl", $replacements);
         echo "\n";
 
         echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
         if ($session->format != Survey::FORMAT_QUESTION) {
             foreach ($group->questions as $question) {
-                echo $this->renderQuestion($session, $question)->render($session);
+                echo $this->renderQuestion($session, $question);
             }
         } else {
-            echo $this->renderQuestion($session, $session->getQuestionByIndex($session->step))->render($session);
+            echo $this->renderQuestion($session, $session->getQuestionByIndex($session->step));
         }
 
         echo "\n\n<!-- END THE GROUP -->\n";
-        renderOldTemplate($session->templateDir . "endgroup.pstpl");
+        renderOldTemplate($session->templateDir . "endgroup.pstpl", $replacements);
         echo "\n\n</div>\n";
+        eP();
     }
+
+    /**
+     * Render a question.
+     * @param SurveySession $session
+     * @param Question $question
+     * @return RenderedQuestion
+     * @throws Exception
+     */
 
     protected function renderQuestion(SurveySession $session, Question $question) {
         static $template;
-        if (!isset($template)) {
-            $template = file_get_contents($session->templateDir . 'question.pstpl');
+        bP();
+        if ($question->getRelevanceScript() !== false) {
+            if (!isset($template)) {
+                $template = file_get_contents($session->templateDir . 'question.pstpl');
+            }
+            /** @var RenderedQuestion $renderedQuestion */
+            bP(get_class($question));
+            $renderedQuestion = $question->render($session->response, $session);
+            eP(get_class($question));
+            $renderedQuestion->setTemplate($template);
+
+            $result = $renderedQuestion->render($session);
+        } else {
+            // If the relevance script === false then this question is never relevant.
+            $result = '';
         }
-        /** @var RenderedQuestion $renderedQuestion */
-        $renderedQuestion = retrieveAnswers($question);
-        $renderedQuestion->setTemplate($template);
-        return $renderedQuestion;
+        eP();
+        return $result;
     }
 }

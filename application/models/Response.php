@@ -11,6 +11,55 @@
 	{
         private $_attributeLabels = [];
         private $_questions;
+
+
+        public function __set($name, $value) {
+            if ($value instanceof \Psr\Http\Message\UploadedFileInterface) {
+                $this->setFile($name, $value);
+            } else {
+                parent::__set($name, $value);
+            }
+        }
+
+        /**
+         * Stores a file with the response.
+         * @param $field
+         * @param \Psr\Http\Message\UploadedFileInterface[] $file
+         */
+        public function setFiles($field, array $files) {
+            // First check if the question type for the field is actually an upload question.
+            // Get the question id from the field name.
+
+            if (preg_match('/^\\d+X\\d+X(\\d+)$/', $field, $matches)) {
+                $question = Question::model()->findByPk($matches[1]);
+                if ($question->type == Question::TYPE_UPLOAD) {
+                    $directory = App()->runtimePath . "/responses/{$this->dynamicId}";
+                    if (!is_dir($directory)) {
+                        vd(mkdir($directory, null, true));
+                    }
+                    $base = "$directory/{$this->getId()}_";
+                    /** @var \Psr\Http\Message\UploadedFileInterface $file */
+                    $meta = [];
+                    foreach($files as $file) {
+                        if ($file->getSize() > 0) {
+                            $extension = pathinfo($file->getClientFilename())['extension'];
+                            $targetPath = $base . App()->securityManager->generateRandomString(10) . '.' . strtolower($extension);
+                            $file->moveTo($targetPath);
+                            $meta[] = [
+                                'filename' => $targetPath,
+                                'size' => $file->getSize(),
+                                'name' => $file->getClientFilename()
+                            ];
+                        }
+                    }
+                    // Set count.
+                    $this->setAttribute($field . "_filecount", count($meta));
+                    // Set metadata
+                    $this->setAttribute($field, json_encode($meta));
+                }
+            }
+
+        }
         /**
          * @return Question[]
          */
@@ -62,31 +111,16 @@
             return $this->dynamicId;
         }
 
-        /**
-		 *
-		 * @param int $surveyId
-		 * @param string $scenario
-		 * @return Response Description
-		 */
-		public static function create($surveyId, $scenario = 'insert')
-        {
-            return parent::create($surveyId, $scenario);
-		}
 
 		/**
-         * Delete all files related to this repsonse.
+         * Delete all files related to this response.
          */
         public function getFiles()
         {
-            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|'));
-            $files = array();
-            foreach ($questions as $question)
-            {
-
-                $field = "{$question->sid}X{$question->gid}X{$question->qid}";
-                $data = json_decode(stripslashes($this->getAttribute($field)), true);
-                if (is_array($data))
-                {
+            $questions = Question::model()->findAllByAttributes(['sid' => $this->dynamicId,'type' => Question::TYPE_UPLOAD]);
+            $files = [];
+            foreach ($questions as $question) {
+                if (false !== $data = json_decode(stripslashes($this->getAttribute($question->sgqa)), true)) {
                     $files = array_merge($files, $data);
                 }
             }
@@ -96,10 +130,10 @@
 
         public function deleteFiles()
         {
-            $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
+            $dir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
             foreach ($this->getFiles() as $fileInfo)
             {
-                @unlink($uploaddir . basename($fileInfo['filename']));
+                @unlink($dir . basename($fileInfo['filename']));
             }
         }
         public function delete($deleteFiles = false) {
@@ -111,13 +145,11 @@
         }
 		public function relations()
 		{
-            $t = $this->getTableAlias();
-			$result = array(
+            return [
                 // Since we have a field named token as well.
-				'tokenObject' => array(self::BELONGS_TO, 'Token_' . $this->dynamicId, array('token' => 'token')),
-				'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}" ),
-			);
-			return $result;
+				'tokenObject' => [self::BELONGS_TO, 'Token_' . $this->dynamicId, ['token' => 'token']],
+				'survey' => [self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"],
+			];
 		}
 
         public function rules() {

@@ -43,6 +43,12 @@ class Survey extends ActiveRecord
     const INDEX_NONE = 0;
     const INDEX_INCREMENTAL = 1;
     const INDEX_FULL = 2;
+
+    const GINF_SHOW_NEITHER = 'X';
+    const GINF_SHOW_NAME = 'N';
+    const GINF_SHOW_DESC = 'D';
+    const GINF_SHOW_BOTH = 'B';
+
     private $_fieldMap;
 
 
@@ -624,6 +630,15 @@ class Survey extends ActiveRecord
         ];
     }
 
+
+    public function getGroupOptions() {
+        return [
+            self::GINF_SHOW_NEITHER => gT('Hide both'),
+            self::GINF_SHOW_NAME => gT('Show group name only'),
+            self::GINF_SHOW_DESC => gT('Show group description only'),
+            self::GINF_SHOW_BOTH => gT('Show both')
+        ];
+    }
     public function getIndexOptions() {
         return [
             self::INDEX_NONE => gT('Disabled'),

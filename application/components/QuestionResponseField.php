@@ -71,14 +71,14 @@ class QuestionResponseField extends ResponseField implements JsonSerializable
      */
     function jsonSerialize()
     {
-        return [
-            'code' => $this->_code,
-            'numerical' => $this->isNumerical,
-            'value' => $this->_value,
-            'name' => $this->_name,
-            'relevance' => $this->getRelevanceScript(),
-            'labels' => $this->getLabels()
-        ];
+            return [
+                'code' => $this->_code,
+                'numerical' => $this->isNumerical,
+                'value' => $this->_value,
+                'name' => $this->_name,
+                'relevance' => $this->getRelevanceScript(),
+                'labels' => $this->getLabels()
+            ];
     }
 
     public function getLabels() {

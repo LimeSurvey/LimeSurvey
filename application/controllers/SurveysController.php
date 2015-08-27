@@ -365,12 +365,9 @@ class SurveysController extends Controller
      * @todo Add caching headers.
      */
     public function actionScript($id) {
-        $session = App()->surveySessionManager->getSession($id);
-        App()->surveySessionManager->current = $session;
-        if (!isset($session)) {
-            throw new \CHttpException(404, "Session not found.");
-        }
-        $result = \LimeExpressionManager::getScript($session);
+        $survey = $this->loadModel($id);
+
+        $result = \LimeExpressionManager::getScript($survey);
         header('Content-type: application/javascript');
         header('Cache-control: public, max-age=7200');
         header_remove('Pragma');

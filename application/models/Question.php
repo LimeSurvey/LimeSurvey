@@ -69,6 +69,11 @@
          * @var ResponseField[]
          */
         protected $_fields = [];
+        /**
+         * @var ExpressionManager
+         */
+        protected $_expressionManager;
+
         protected $customAttributes;
         protected $customLocalizedAttributes = [];
 
@@ -267,6 +272,16 @@
             }
             return true;
         }
+
+        public function __sleep()
+        {
+            $result = array_flip(parent::__sleep());
+
+            unset($result[chr(0) . '*' . chr(0) . '_fields']);
+            unset($result[chr(0) . '*' . chr(0) . '_expressionManager']);
+            return array_keys($result);
+        }
+
 
         /**
          * @param string $name
@@ -757,11 +772,9 @@
                 ];
             };
             switch ($this->type) {
-                case "N":  //Numerical
                 case "K":  //Multiple Numerical
                     $result = [$this->sgqa => "decimal (30,10)"];
                     break;
-                case "S":  //SHORT TEXT
                 case "*":  //Equation
                     $result = [$this->sgqa => "text"];
                     break;
@@ -773,7 +786,6 @@
                     $result = [$this->sgqa => "string(5)", "{$this->sgqa}comment" => "text"];
                     break;
                 case "F": // Array
-                case "M": //Multiple choice
                 case "Q": //Multiple short text
                     if (count($this->subQuestions) > 0) {
                         $result = call_user_func_array('array_merge', array_map(function (self $subQuestion) {
@@ -798,28 +810,11 @@
                         return $subResult;
                     }, $this->subQuestions));
                     break;
-                case "U":  //Huge text
-                case "T":  //LONG TEXT
-                    $result = [$this->sgqa => "text"];
-                    break;
                 case "D":  //DATE
                     $result = [$this->sgqa => "datetime"];
                     break;
-                case "5":  //5 Point Choice
-                case "G":  //Gender
-                case "Y":  //YesNo
-                case "X":  //Boilerplate
-                    $result = [$this->sgqa => "string(1)"];
-                    break;
                 case "I":  //Language switch
                     $result = [$this->sgqa => "string(20)"];
-                    break;
-                case "|":
-                    $result = [
-                        $this->sgqa => "text",
-                        "{$this->sgqa}_filecount" => "int"
-                    ];
-                    
                     break;
                 default:
                     $class = get_class($this);
@@ -907,7 +902,7 @@
                     $class = \ls\models\questions\UploadQuestion::class;
                     break;
                 case self::TYPE_DISPLAY:
-                    $class = __CLASS__;
+                    $class = \ls\models\questions\DisplayQuestion::class;
                     break;
                 case self::TYPE_MULTIPLE_CHOICE:
                     $class = \ls\models\questions\MultipleChoiceQuestion::class;
@@ -1081,7 +1076,7 @@
          * By default a question passes this if any of it's fields have been filled.
          * @return boolean
          */
-        public function validateResponse(Response $response) {
+        final public function validateResponse(Response $response) {
 
             $em = $this->getExpressionManager($response);
             $result = new QuestionValidationResult($this);
@@ -1163,78 +1158,102 @@
         }
 
 
-        public function getExpressionManager(\ls\interfaces\iResponse $response = null) {
-            $session = App()->surveySessionManager->current;
-            if (!isset($response)) {
-                $callback = function($name, $attribute, $default, $groupSequence, $questionSequence) {
+        public function getExpressionManager(\ls\interfaces\iResponse $response = null)
+        {
+            bP();
+            if (!isset($this->_expressionManager)) {
 
-                };
-            } else {
-                $callback = function($name, $attribute, $default, $groupSequence, $questionSequence)  use ($response, $session) {
+                $session = App()->surveySessionManager->current;
+                if (!isset($response)) {
+                    $callback = function ($name, $attribute, $default, $groupSequence, $questionSequence) {
 
-                    $parts = explode('.', $name);
-                    if (count($parts) > 1) {
-                        $attribute = $parts[1];
-                        $name = $parts[0];
-                    }
-                    // Simple inefficient solution, not sure where this map should be implemented.
-                    // NOTE: the solution is not a precomputed array in some singleton class!!!
-                    // NOTE2: It is also not stuffing everything into $_SESSION.
-                    $found = false;
-                    foreach ($session->survey->questions as $question) {
-                        /** @var ResponseField $field */
-                        foreach ($question->getFields() as $field) {
-                            if ($field->getCode() === $name) {
-                                $found = true;
-                                break 2;
+                    };
+                } else {
+                    $callback = function ($name, $attribute, $default, $groupSequence, $questionSequence) use (
+                        $response,
+                        $session
+                    ) {
+
+                        $parts = explode('.', $name);
+                        if (count($parts) > 1) {
+                            $attribute = $parts[1];
+                            $name = $parts[0];
+                        }
+                        // Simple inefficient solution, not sure where this map should be implemented.
+                        // NOTE: the solution is not a precomputed array in some singleton class!!!
+                        // NOTE2: It is also not stuffing everything into $_SESSION.
+                        $found = false;
+                        foreach ($session->survey->questions as $question) {
+                            /** @var ResponseField $field */
+                            foreach ($question->getFields() as $field) {
+                                if ($field->getCode() === $name) {
+                                    $found = true;
+                                    break 2;
+                                }
                             }
                         }
-                    }
-                    if (!$found) {
-                        throw new \InvalidArgumentException("Unknown variable: $name");
-                    }
+                        if (!$found) {
+                            throw new \InvalidArgumentException("Unknown variable: $name");
+                        }
 
-                    switch ($attribute) {
-                        case 'relevanceStatus':
-                            $result = $field->question->isRelevant($response);
-                            break;
-                        case 'onlynum':
-                            $result = $field->isNumerical();
-                            break;
-                        case 'jsName':
-                            $result = $field->getJavascriptName();
-                            break;
-                        case 'code':
-                        case 'varName':
-                            $result = $field->getCode();
-                            break;
-                        case 'shown':
-                            $result = $field->getLabel($field->getName());
-                            break;
-                        case null:
-                            $result = $response->{$field->getName()};
-                            break;
+                        switch ($attribute) {
+                            case 'relevanceStatus':
+                                $result = $field->question->isRelevant($response);
+                                break;
+                            case 'onlynum':
+                                $result = $field->isNumerical();
+                                break;
+                            case 'jsName':
+                                $result = $field->getJavascriptName();
+                                break;
+                            case 'code':
+                            case 'varName':
+                                $result = $field->getCode();
+                                break;
+                            case 'shown':
+                                $result = $field->getLabel($field->getName());
+                                break;
+                            case null:
+                                $result = $response->{$field->getName()};
+                                break;
+                            case 'NAOK':
+                                $result = $field->getName();
+                                break;
+                            default:
+                                throw new \Exception('Unknown attribute: ' . $attribute);
+                                vd($name);
+                                vdd($attribute);
+                        }
 
-                        default:
-                            throw new \Exception('Unknown attribute: ' . $attribute);
-                            vd($name);
-                            vdd($attribute);
-                    }
+                        return $result;
+                    };
+                }
 
-                    return $result;
-                };
+                if (isset($session)) {
+                    $questionGetter = function ($code) use ($session) {
+                        return $session->getQuestionByCode($code);
+                    };
+                } else {
+                    $questionGetter = function ($code) {
+                        // Get groups in order.
+                        foreach ($this->survey->questions as $question) {
+                            if ($code == $question->title) {
+                                $result = $question;
+                                break 1;
+                            }
+                        }
+                        if (!isset($result)) {
+                            throw new \Exception("Unknown code: $code");
+                        }
+
+                        return $result;
+                    };
+                }
+
+                $this->_expressionManager = new ExpressionManager($callback, $questionGetter);
             }
-
-            if (isset($session)) {
-                $questionGetter = function($code) use ($session) {
-                    return $session->getQuestionByCode($code);
-                };
-            } else {
-                $questionGetter = function() {
-                    throw new \Exception("No getter for question.");
-                };
-            }
-            return new ExpressionManager($callback, $questionGetter);
+            eP();
+            return $this->_expressionManager;
         }
 
         public function getMandatoryMessage() {
@@ -1299,6 +1318,7 @@
                         ], $value);
                 }
             }
+
 
             $result->setQuestionText($text);
 

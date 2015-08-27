@@ -38,22 +38,6 @@ class QuestionValidationResult {
         return $this->_question;
     }
 
-    /**
-     * Temporary function, since LS for some reason handles mandatory validation different from other validation.
-     * @deprecated
-     */
-    public function getPassedMandatory() {
-        return $this->_mandatoryPassed;
-    }
-
-    /**
-     * Temporary function, since LS for some reason handles mandatory validation different from other validation.
-     * @deprecated
-     */
-    public function setPassedMandatory($value) {
-        $this->_mandatoryPassed = $value;
-    }
-
     public function getMessages() {
         return $this->_messages;
     }

@@ -7,6 +7,14 @@ $bowerAssetPath = 'components';
  * Defining them here allows for easy inclusion in views.
  */
 return array(
+    'ExpressionManager' => [
+        'baseUrl' => 'scripts/expressions',
+        'js' => [
+            'em_javascript.js',
+            'ExpressionManager.js'
+        ],
+        'depends' => ['jquery']
+    ],
     'jquery' => array(
         'baseUrl' => $bowerAssetPath . '/jquery/dist',
         'js' => array(

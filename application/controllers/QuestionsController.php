@@ -184,7 +184,7 @@ class QuestionsController extends Controller
     public function actionPreview($id) {
         $question = $this->loadModel($id);
         $this->layout = 'showsurvey';
-        $dummy = new \DummyResponse();
+        $dummy = new \DummyResponse($question->survey);
         $session = new \SurveySession($question->sid, $dummy, null);
         App()->surveySessionManager->setCurrent($session);
         $renderedQuestion = $question->render($dummy, $session);

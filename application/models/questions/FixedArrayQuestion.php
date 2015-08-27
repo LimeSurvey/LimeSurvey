@@ -103,12 +103,12 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
     }
 
     protected function renderSubQuestion(\Question $subQuestion, \Response $response, $relevance) {
+        bP();
         $result = [];
         $em = $this->getExpressionManager($response);
         $result[] = \TbHtml::openTag('tr', [
             'data-relevance-expression' => $em->getJavascript($relevance),
             'data-enabled-expression' => $this->array_filter_style == 1 ? $em->getJavascript($relevance) : null,
-            'class' => !$em->ProcessBooleanExpression($relevance) ? 'irrelevant' : ''
         ]);
         $fieldName = $this->sgqa . $subQuestion->title;
 
@@ -124,6 +124,7 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
             $answers = $answers + ['{TEXTRIGHT}' => true];
         }
 
+        bP('aloop');
         foreach($answers as $value => $answer)
         {
             if ($value == "{TEXTLEFT}") {
@@ -139,9 +140,11 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
                 $result[] = " /></td>\n";
             }
         }
+        eP('aloop');
 
 
         $result[] = \TbHtml::closeTag('tr');
+        eP();
         return implode("\n", $result);
     }
 

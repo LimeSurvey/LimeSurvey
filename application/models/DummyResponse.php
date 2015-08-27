@@ -10,12 +10,28 @@ class DummyResponse extends CFormModel implements \ls\interfaces\iResponse
 {
     protected $_id;
 
-    public function __construct() {
+    protected $fields = [];
+    public function __construct(Survey $survey) {
         $this->_id = \Cake\Utility\Text::uuid();
         $this->save();
+        foreach($survey->getColumns() as $field => $type) {
+            $this->fields[$field] = null;
+        }
     }
+
     public function __get($name) {
-        return null;
+        if (array_key_exists($name, $this->fields)) {
+            return $this->fields[$name];
+        }
+        parent::__get($name);
+    }
+
+    public function __set($name, $value) {
+        if (array_key_exists($name, $this->fields)) {
+            $this->fields[$name] = $value;
+        } else {
+            parent::__set($name, $value);
+        }
     }
 
     /**

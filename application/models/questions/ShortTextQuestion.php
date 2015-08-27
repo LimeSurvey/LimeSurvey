@@ -321,5 +321,15 @@ class ShortTextQuestion extends TextQuestion
 
     }
 
+    /**
+     * @todo Move individual cases to subclasses.
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function getColumns()
+    {
+        return [$this->sgqa => "string"];
+    }
+
 
 }

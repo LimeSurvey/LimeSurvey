@@ -10,5 +10,5 @@ interface iRenderable {
      * @param \SurveySession $session
      * @return string
      */
-    public function render(\iResponse $response, \SurveySession $session);
+    public function render(iResponse $response, \SurveySession $session);
 }

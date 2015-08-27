@@ -44,7 +44,7 @@ $(document).ready(function () {
     //    {
     //        return ls_represent($('#' + attr.jsName_on).val());
     //    }
-    //    return orgLEMval(alias);
+    //    return orgEM.val(alias);
     //};
 });
 

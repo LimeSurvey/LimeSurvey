@@ -142,13 +142,15 @@ class SurveySession extends CComponent {
                         'questions' => [
                             'with' => [
                                 'answers',
-//                                'questionAttributes',
+                                'subQuestions',
+                                'questionAttributes',
 //                                'conditions',
 //                                'conditionsAsTarget'
                             ]
                         ]
                     ]
-                ]
+                ],
+                'languagesettings'
             ])->findByPk($id);
             if (!isset($survey)) {
                 throw new \Exception("Survey not found.");

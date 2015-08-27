@@ -52,7 +52,6 @@ function templatereplace(
                 'languagechanger',
                 'loadname',
                 'move',
-                'navigator',
                 'percentcomplete',
                 'privacy',
                 'saved_id',
@@ -417,15 +416,13 @@ EOD;
             '');// Use the gid of the question, except if we are not in question (Randomization group name)
         $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
         $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
-        $coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
-        $coreReplacements['GROUPNAME'] = $_groupname;
         $coreReplacements['LANG'] = App()->language;
         $coreReplacements['LANGUAGECHANGER'] = isset($languagechanger) ? $languagechanger : '';    // global
         $coreReplacements['LOADERROR'] = isset($errormsg) ? $errormsg : ''; // global
         $coreReplacements['LOADFORM'] = $_loadform;
         $coreReplacements['LOADHEADING'] = gT("Load a previously saved survey");
         $coreReplacements['LOADMESSAGE'] = gT("You can load a survey that you have previously saved from this screen.") . "<br />" . gT("Type in the 'name' you used to save the survey, and the password.") . "<br />";
-        $coreReplacements['NAVIGATOR'] = isset($navigator) ? $navigator : '';    // global
+        $coreReplacements['NAVIGATOR'] = surveymover();
         $coreReplacements['NOSURVEYID'] = (isset($surveylist)) ? $surveylist['nosid'] : '';
         $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
         $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
@@ -462,7 +459,6 @@ EOD;
         $coreReplacements['URL'] = $endLink;
         $coreReplacements['WELCOME'] = $survey->getLocalizedWelcomeText();
         $allReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
-
         /**
          * Manual replacements (always static).
          */
@@ -482,7 +478,6 @@ EOD;
             $newLine = strtr($oldLine, $manual);
             $i++;
         }
-
         // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
         bP('replace-em');
         $result = LimeExpressionManager::ProcessString($newLine, $questionNum, $allReplacements, 3, 1);

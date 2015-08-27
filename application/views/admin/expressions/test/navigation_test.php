@@ -82,7 +82,6 @@ else {
         $now = microtime(true);
         $result = LimeExpressionManager::NavigateForwards(true);
         print $result['message'] . "<br/>";
-        LimeExpressionManager::FinishProcessingPage();
         if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
             print LimeExpressionManager::GetDebugTimingMessage();
         }

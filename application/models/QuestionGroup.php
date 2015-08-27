@@ -66,7 +66,7 @@
         public function relations()
         {
             return [
-                'questions' => [self::HAS_MANY, Question::class, 'gid', 'on' => 'parent_qid = 0', 'order' => 'question_order', 'index' => 'qid'],
+                'questions' => [self::HAS_MANY, Question::class, 'gid', 'on' => 'parent_qid = 0', 'order' => 'questions.question_order', 'index' => 'qid'],
                 'assessments' => [self::HAS_MANY, Assessment::class, 'gid'],
                 'survey' => [self::BELONGS_TO, 'Survey', 'sid']
             ];
@@ -163,6 +163,13 @@
 
         public function getRelevanceScript() {
             return true;
+        }
+
+        public function getReplacements() {
+            return [
+                'GROUPNAME' => $this->title,
+                'GROUPDESCRIPTION' => $this->description
+            ];
         }
     }
 

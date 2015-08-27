@@ -33,7 +33,8 @@
         "bower-asset/jquery-ui": "1.*",
         "bower-asset/jqueryui-timepicker-addon": "1.5.*",
         "studio-42/elfinder": "2.1.x-dev",
-        "bower-asset/jsoneditor": "4.*"
+        "bower-asset/jsoneditor": "4.*",
+        "bower-asset/webshim": "1.*"
     },
 	"require-dev" : {
 		

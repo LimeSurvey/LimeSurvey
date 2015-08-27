@@ -13,13 +13,15 @@ foreach ($survey->groups as $group) {
     foreach ($group->questions as $question) {
         $title = '';
         if ($question->hasSubQuestions && $question->hasAnswers) {
-            $title .= TbHtml::icon('th');
+            $title .= TbHtml::icon('th', ['title' => gT("This question uses subquestions with answers")]);
         } elseif ($question->hasSubQuestions) {
-            $title .= TbHtml::icon('th-list');
+            $title .= TbHtml::icon('th-list', ['title' => gT("This question uses open subquestions")]);
         } elseif ($question->hasAnswers) {
-            $title .= TbHtml::icon('tasks');
+            $title .= TbHtml::icon('tasks', ['title' => gT("This question uses answers")]);
+        } elseif (in_array($question->type, [Question::TYPE_EQUATION, Question::TYPE_DISPLAY])) {
+            $title .= TbHtml::icon('eye-open', ['title' => gT("This question does not accept user input")]);
         } else {
-            $title .= TbHtml::icon('pencil');
+            $title .= TbHtml::icon('pencil', ['title' => gT("This is an open question")]);
         }
         $title .= ' ' . \Cake\Utility\Text::truncate($question->displayLabel, 30);
 

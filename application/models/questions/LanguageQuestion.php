@@ -29,7 +29,9 @@ class LanguageQuestion extends FixedChoiceQuestion {
      */
     public function isRelevant(Response $response)
     {
-        return (count($this->survey->allLanguages) > 1) ? parent::isRelevant($response) : false;
+
+        $result = (count($this->survey->allLanguages) > 1) ? parent::isRelevant($response) : false;
+        vdd($result);
     }
 
     public function getRelevanceScript()

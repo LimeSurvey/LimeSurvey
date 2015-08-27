@@ -82,7 +82,7 @@
          * 'eqn' => // the raw relevance equation parsed -- e.g. "!is_empty(p2_sex)"
          * 'result' => // the Boolean result of parsing that equation in the current context -- e.g. 0
          * 'numJsVars' => // the number of dynamic JavaScript variables used in that equation -- e.g. 1
-         * 'relevancejs' => // the actual JavaScript to insert for that relevance equation -- e.g. "LEMif(LEManyNA('p2_sex'),'',( ! LEMempty(LEMval('p2_sex') )))"
+         * 'relevancejs' => // the actual JavaScript to insert for that relevance equation -- e.g. "LEMif(LEManyNA('p2_sex'),'',( ! LEMempty(EM.val('p2_sex') )))"
          * 'relevanceVars' => // a pipe-delimited list of JavaScript variables upon which that equation depends -- e.g. "java38612X12X153"
          * 'jsResultVar' => // the JavaScript variable in which that result will be stored -- e.g. "java38612X12X154"
          * 'type' => // the single character type of the question -- e.g. 'S'
@@ -164,7 +164,7 @@
          * 'prettyPrintEqn' => '' // only generated if there errors - shows syntax highlighting of them
          * 'result' => 0 // result of processing the sub-question-level relevance equation in the current context
          * 'numJsVars' => 1 // the number of on-page javascript variables in 'eqn'
-         * 'relevancejs' => // the generated javascript from 'eqn' -- e.g. "LEMif(LEManyNA('26626X34X702sq2'),'',(((LEMval('26626X34X702sq2')  != ""))))"
+         * 'relevancejs' => // the generated javascript from 'eqn' -- e.g. "LEMif(LEManyNA('26626X34X702sq2'),'',(((EM.val('26626X34X702sq2')  != ""))))"
          * 'relevanceVars' => "java26626X34X702sq2" // the pipe-separated list of on-page javascript variables in 'eqn'
          * 'rowdivid' => "26626X37X708sq2" // the javascript id of the question row (so can apply array_filter)
          * 'type' => 'array_filter' // semicolon delimited list of types of subquestion relevance filters applied
@@ -283,24 +283,6 @@
         public function __clone()
         {
             throw new \Exception('Clone is not allowed.');
-        }
-
-        /**
-         * Set the previewmode
-         */
-        public static function SetPreviewMode($previewmode = false)
-        {
-            $LEM =& LimeExpressionManager::singleton();
-            $LEM->sPreviewMode = $previewmode;
-        }
-
-        /**
-         * Tells Expression Manager that something has changed enough that needs to eliminate internal caching
-         */
-        public static function SetDirtyFlag()
-        {
-            $_SESSION['LEMdirtyFlag'] = true;// For fieldmap and other. question help {HELP} is taken from fieldmap
-            $_SESSION['LEMforceRefresh'] = true;// For Expression manager string
         }
 
 
@@ -3272,18 +3254,15 @@
                 case Survey::FORMAT_ALL_IN_ONE:
                     $LEM->StartProcessingPage();
                     $session = App()->surveySessionManager->current;
-                    $LEM->processData($session->response, $_POST);
+                    $LEM->processData($session->response, App()->request->psr7);
                     $message = '';
-                    $validationResults = $LEM->validateSurvey();
-                    $message .= $validationResults->getMessagesAsString();
-                    $finished = $validationResults->getSuccess();
+                    $valid = $LEM->validateSurvey();
+                    $finished = $valid;
                     $message .= $LEM->updateValuesInDatabase($finished);
                     $result = [
                         'finished' => $finished,
-                        'message' => $message,
                         'gseq' => 1,
                         'seq' => 1,
-                        'validationResults' => $validationResults,
                     ];
                     break;
                 case Survey::FORMAT_GROUP:
@@ -3352,8 +3331,12 @@
             return (isset($LEM->lastMoveResult) ? $LEM->lastMoveResult : null);
         }
 
-        private function processData(Response $response, array $data) {
-            $response->setAttributes($data);
+        private function processData(Response $response, \Psr\Http\Message\ServerRequestInterface $request) {
+
+            $response->setAttributes($request->getParsedBody());
+            foreach($request->getUploadedFiles() as $field => $files) {
+                $response->setFiles($field, $files);
+            }
             $response->save();
         }
 
@@ -3362,7 +3345,7 @@
             $this->StartProcessingPage();
             $session = App()->surveySessionManager->current;
             if ($processPOST) {
-                $this->processData($session->response, $_POST);
+                $this->processData($session->response, App()->request->psr7);
             } else {
                 $updatedValues = array();
             }
@@ -3516,14 +3499,17 @@
             }
             return $result;
         }
+
         /**
          * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
          * @param <type> $seq
-         * @param <type> $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
-         * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
-         * @return <type>
+         * @param bool $processPOST
+         * @param bool $force
+         * @param bool $changeLang
+         * @return array|type <type>
+         * @throws Exception
          */
-        static function JumpTo($seq, $preview = false, $processPOST = true, $force = false, $changeLang = false)
+        static function JumpTo($seq, $processPOST = true, $force = false, $changeLang = false)
         {
 //            bP();
             if ($seq < 0) {
@@ -3531,13 +3517,6 @@
             }
             $session = App()->surveySessionManager->current;
             $LEM =& LimeExpressionManager::singleton();
-            if (!$preview) {
-                $preview = $LEM->sPreviewMode;
-            }
-            if (!$LEM->sPreviewMode && $preview) {
-                $LEM->sPreviewMode = $preview;
-            }
-
             $LEM->ParseResultCache = [];    // to avoid running same test more than once for a given group
             $LEM->updatedValues = [];
             switch ($session->format) {
@@ -4131,7 +4110,7 @@
             $session = App()->surveySessionManager->current;
             switch ($session->format) {
                 case Survey::FORMAT_ALL_IN_ONE:
-                    $result = $LEM->lastMoveResult;
+                    throw new \Exception("Question indexes don't apply to all in one surveys.");
                     break;
                 case Survey::FORMAT_GROUP:
                     $result = null;
@@ -4172,31 +4151,24 @@
             return $LEM->em->asSplitStringOnExpressions($src);
         }
 
-        /**
-         * Should be called at end of each page
-         */
-        static function FinishProcessingPage()
-        {
-            $LEM =& LimeExpressionManager::singleton();
-
-            $LEM->initialized = false;    // so detect calls after done
-            $LEM->ParseResultCache = array(); // don't need to persist it in session
-        }
-
-        public static function getScript(SurveySession $session) {
+        public static function getScript(Survey $survey) {
             $cache = App()->cache;
-            $key = __CLASS__ . 'EM_script' . $session->id;
+            $key = __CLASS__ . 'EM_script' . $survey->primaryKey;
             if (false === $result = $cache->get($key)) {
                 $fields = [];
-                foreach($session->getGroups() as $group) {
-                    foreach($session->getQuestions($group) as $question) {
-                        foreach($question->getFields() as $field) {
-                            if (!$field instanceof QuestionResponseField) {
-                                vdd($question);
-                                throw new \Exception('no');
-                            }
-                            $fields[$field->code] = $field;
+                foreach($survey->questions as $question) {
+                    foreach($question->getFields() as $field) {
+                        if (!$field instanceof QuestionResponseField) {
+                            throw new \Exception("getFields() must return an array of QuestionResponseField");
                         }
+                        // @todo Remove this, this is only here for dev purposes.
+                        try {
+                            json_encode($field);
+                        } catch (\Exception $e) {
+                            var_dump($field);
+                            die();
+                        }
+                        $fields[$field->code] = $field;
                     }
                 }
                 $script = "var EM = new ExpressionManager(" . json_encode($fields, JSON_PRETTY_PRINT) . ");";
@@ -4214,9 +4186,9 @@
             bP();
             /** @var CClientScript $clientScript */
             $clientScript = App()->getClientScript();
+            $clientScript->registerCoreScript('ExpressionManager');
             $clientScript->registerScriptFile(SettingGlobal::get('generalscripts', '/scripts') . "/expressions/em_javascript.js");
-            $clientScript->registerScriptFile(SettingGlobal::get('generalscripts', '/scripts') . "/expressions/ExpressionManager.js");
-            $clientScript->registerScriptFile(App()->createUrl('surveys/script', ['id' => $session->id]));
+            $clientScript->registerScriptFile(App()->createUrl('surveys/script', ['id' => $session->surveyId]));
             $values = [];
             foreach ($session->response->attributes as $name => $value) {
                 if (isset($value) && strpos($name, 'X') !== false) {
@@ -4335,286 +4307,19 @@
             return Yii::app()->db->createCommand($query)->query();
         }
 
-        /**
-         * Deprecate obsolete question attributes.
-         * @param boolean $changedb - if true, updates parameters and deletes old ones
-         * @param type $iSureyID - if set, then only for that survey
-         * @param type $onlythisqid - if set, then only for this question ID
-         */
-        public static function UpgradeQuestionAttributes($changeDB = false, $iSurveyID = null, $onlythisqid = null)
-        {
-            $LEM =& LimeExpressionManager::singleton();
-            if (is_null($iSurveyID)) {
-                $sQuery = 'SELECT sid FROM {{surveys}}';
-                $aSurveyIDs = Yii::app()->db->createCommand($sQuery)->queryColumn();
-            } else {
-                $aSurveyIDs = array($iSurveyID);
-            }
 
-            $attibutemap = array(
-                'max_num_value_sgqa' => 'max_num_value',
-                'min_num_value_sgqa' => 'min_num_value',
-                'num_value_equals_sgqa' => 'equals_num_value',
-            );
-            $reverseAttributeMap = array_flip($attibutemap);
-            foreach ($aSurveyIDs as $iSurveyID) {
-                $qattrs = $LEM->getQuestionAttributesForEM($iSurveyID, $onlythisqid, $LEM->lang);
-                foreach ($qattrs as $qid => $qattr) {
-                    $updates = array();
-                    foreach ($attibutemap as $src => $target) {
-                        if (isset($qattr[$src]) && trim($qattr[$src]) != '') {
-                            $updates[$target] = $qattr[$src];
-                        }
-                    }
-                    if ($changeDB) {
-                        foreach ($updates as $key => $value) {
-                            $query = "UPDATE {{question_attributes}} SET value=" . Yii::app()->db->quoteValue($value) . " WHERE qid={$qid} and attribute=" . Yii::app()->db->quoteValue($key);
-                            Yii::app()->db->createCommand($query)->execute();
-                            $query = "DELETE FROM {{question_attributes}} WHERE qid={$qid} and attribute=" . Yii::app()->db->quoteValue($reverseAttributeMap[$key]);
-                            Yii::app()->db->createCommand($query)->execute();
 
-                        }
-                    }
-                }
-            }
 
-        }
 
-        /**
-         * Return array of language-specific answer codes
-         * @param int $surveyid
-         * @param int $qid
-         * @param string $lang
-         * @return <type>
-         */
-        private function getQuestionAttributesForEM($surveyid = 0, $qid = 0, $lang = '')
-        {
-            bP();
-            $session = App()->surveySessionManager->current;
-            if (is_null($qid)) {
-                $qid = 0;
-            }
 
-            $questions = $qid ? [$session->getQuestion($qid)] : $session->survey->questions;
 
-            /** @var Question $question */
-            foreach ($questions as $question) {
-                $aAttributesValues = [];
-                // Change array lang to value
-                foreach ($question->questionAttributes as $questionAttribute) {
-                    if ($questionAttribute->language == $session->language || !isset($aAttributesValues[$questionAttribute->attribute])) {
-                        $aAttributesValues[$questionAttribute->attribute] = $questionAttribute->value;
-                    }
-                }
-                $aQuestionAttributesForEM[$question->primaryKey] = $aAttributesValues;
-            }
-            eP();
-            return $aQuestionAttributesForEM;
-        }
 
-        /**
-         * Return array of language-specific answer codes
-         * @param int $surveyid
-         * @param int $qid
-         * @param string $lang
-         * @return <type>
-         */
-
-        private function getAnswerSetsForEM($surveyId, $questionId, $language) {
-            $session = App()->surveySessionManager->current;
-
-            $qans = [];
-            if (!isset($questionId)) { throw new \Exception('no");'); }
-            $useAssessments = ((isset($this->surveyOptions['assessments'])) ? $this->surveyOptions['assessments'] : false);
-            foreach ($session->getQuestion($questionId)->answers as $answer) {
-                $qans[$answer->question_id][$answer->scale_id . '~' . $answer->code] = ($useAssessments ? $answer->assessment_value : '0') . '|' . $answer->answer;
-
-            }
-
-            return $qans;
-        }
-
-        /**
-         * Returns group info needed for indexes
-         * @param <type> $surveyid
-         * @param string $lang
-         * @return <type>
-         */
-
-        function getGroupInfoForEM($surveyid, $lang = null)
-        {
-            if (is_null($lang) && isset($this->lang)) {
-                $lang = $this->lang;
-            } elseif (is_null($lang)) {
-                $lang = Survey::model()->findByPk($surveyid)->language;
-            }
-            $groups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid], ['order' => 'group_order']);
-            $qinfo = array();
-            $_order = 0;
-            foreach ($groups as $group) {
-                $gid[$group->primaryKey] = [
-                    'group_order' => $_order,
-                    'gid' => $group->primaryKey,
-                    'group_name' => $group->group_name,
-                    'description' => $group->description,
-                    'grelevance' => (!($this->sPreviewMode == 'question' || $this->sPreviewMode == 'group')) ? $group->grelevance : 1,
-                ];
-                $qinfo[$_order] = $gid[$group->primaryKey];
-                ++$_order;
-            }
-            // Needed for Randomization group.
-            $groupRemap = (!$this->sPreviewMode && !empty($_SESSION['survey_' . $surveyid]['groupReMap']) && !empty($_SESSION['survey_' . $surveyid]['grouplist']));
-            if ($groupRemap) {
-                $_order = 0;
-                $qinfo = array();
-                foreach ($_SESSION['survey_' . $surveyid]['grouplist'] as $info) {
-                    $gid[$info['gid']]['group_order'] = $_order;
-                    $qinfo[$_order] = $gid[$info['gid']];
-                    ++$_order;
-                }
-            }
-
-            return $qinfo;
-        }
-
-        /**
-         * Cleanse the $_POSTed data and update $_SESSION variables accordingly
-         */
-        static function ProcessCurrentResponses()
-        {
-            $LEM =& LimeExpressionManager::singleton();
-            $session = App()->surveySessionManager->current;
-            $updatedValues = [];
-            if (!isset($LEM->currentQset)) {
-                return $updatedValues;
-            }
-            $data = App()->request->psr7->getParsedBody();
-
-            $radixchange = ($session->survey->getLocalizedNumberFormat() == 2);
-            foreach ($LEM->currentQset as $qinfo) {
-                $relevant = false;
-                if (!isset($qinfo['info'])) {
-                    vdd($qinfo);
-                }
-                $qid = $qinfo['info']['qid'];
-                $gseq = $session->getGroupIndex($qinfo['info']['gid']);
-                $relevant = isset($data['relevance' . $qid]) && $data['relevance' . $qid] == 1;
-                $grelevant = isset($data['relevanceG' . $gseq]) && $data['relevanceG' . $gseq] == 1;
-                foreach (explode('|', $qinfo['sgqa']) as $sq) {
-                    $sqrelevant = true;
-                    if (isset($LEM->subQrelInfo[$qid][$sq]['rowdivid'])) {
-                        $rowdivid = $LEM->subQrelInfo[$qid][$sq]['rowdivid'];
-                        if ($rowdivid != '' && isset($data['relevance' . $rowdivid])) {
-                            $sqrelevant = ($data['relevance' . $rowdivid] == 1);
-                        }
-                    }
-                    $question->type = $qinfo['info']['type'];
-                    if (($relevant && $grelevant && $sqrelevant) || !$LEM->surveyOptions['deletenonvalues']) {
-                        if ($qinfo['info']['hidden'] && !isset($data[$sq])) {
-                            $value = $session->response->$sq;    // if always hidden, use the default value, if any
-                        } else {
-                            $value = (isset($data[$sq]) ? $data[$sq] : '');
-                        }
-                        if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum'] == '1') {
-                            // convert from comma back to decimal
-                            $value = strtr($value, [',' => '.']);
-                        }
-                        switch ($question->type) {
-                            case 'D': //DATE
-                                if (isset($data['qattribute_answer' . $sq]))       // push validation message (see qanda_helper) to $_SESSION
-                                {
-                                    $_SESSION[$LEM->sessid]['qattribute_answer' . $sq] = ($_POST['qattribute_answer' . $sq]);
-                                }
-                                $value = trim($value);
-                                if ($value != "" && $value != 'INVALID') {
-                                    $aDateFormatData = getDateFormatDataForQID($qid, $LEM->surveyOptions);
-                                    $oDateTimeConverter = new Date_Time_Converter(trim($value),
-                                        $aDateFormatData['phpdate']);
-                                    $value = $oDateTimeConverter->convert("Y-m-d H:i"); // TODO : control if inverse function original value
-                                }
-                                break;
-                            case '|': //File Upload
-                                if (!preg_match('/_filecount$/', $sq)) {
-                                    $json = $value;
-                                    $phparray = json_decode(stripslashes($json));
-
-                                    // if the files have not been saved already,
-                                    // move the files from tmp to the files folder
-
-                                    $tmp = $LEM->surveyOptions['tempdir'] . 'upload' . DIRECTORY_SEPARATOR;
-                                    if (!is_null($phparray) && count($phparray) > 0) {
-                                        // Move the (unmoved, temp) files from temp to files directory.
-                                        // Check all possible file uploads
-                                        for ($i = 0; $i < count($phparray); $i++) {
-                                            if (file_exists($tmp . $phparray[$i]->filename)) {
-                                                $sDestinationFileName = 'fu_' . randomChars(15);
-                                                if (!is_dir($LEM->surveyOptions['target'])) {
-                                                    mkdir($LEM->surveyOptions['target'], 0777, true);
-                                                }
-                                                if (!rename($tmp . $phparray[$i]->filename,
-                                                    $LEM->surveyOptions['target'] . $sDestinationFileName)
-                                                ) {
-                                                    echo "Error moving file to target destination";
-                                                }
-                                                $phparray[$i]->filename = $sDestinationFileName;
-                                            }
-                                        }
-                                        $value = ls_json_encode($phparray);  // so that EM doesn't try to parse it.
-                                    }
-                                }
-                                break;
-                        }
-                        $session->response->$sq = $value;
-                        $_update = array(
-                            'type' => $question->type,
-                            'value' => $value,
-                        );
-                        $updatedValues[$sq] = $_update;
-                    } else {  // irrelevant, so database will be NULLed separately
-                        // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
-                        unset($session->response->$sq);
-                        $_update = array(
-                            'type' => $question->type,
-                            'value' => null,
-                        );
-                        $updatedValues[$sq] = $_update;
-                    }
-                }
-            }
-            if (isset($_POST['timerquestion'])) {
-                $_SESSION[$LEM->sessid][$data['timerquestion']] = sanitize_float($data[$data['timerquestion']]);
-            }
-            echo "ProcessCurrentResponses<Br>";
-
-            return $updatedValues;
-        }
 
         static public function GetVarAttribute($name, $attr, $default, $gseq, $qseq)
         {
             return LimeExpressionManager::singleton()->_GetVarAttribute($name, $attr, $default, $gseq, $qseq);
         }
 
-        /**
-         * Gets the sgqa for a code, or null if code is not found.
-         * @param string $code
-         * @return string
-         */
-        private function getSgqa($code) {
-            // Use static var inside function for caching during single request.
-            static $requestCache = [];
-            bP();
-            if (empty($requestCache)) {
-
-                $session = App()->surveySessionManager->current;
-                $result = null;
-                foreach ($session->survey->questions as $question) {
-                    $requestCache[$code] = $question->sgqa;
-                }
-
-            }
-            eP();
-            return isset($requestCache[$code]) ? $requestCache[$code] : null;
-        }
 
         private function _GetVarAttribute($name, $attr, $default, $gseq, $qseq)
         {
@@ -4979,13 +4684,13 @@
                 $surveyMode = 'question';
                 LimeExpressionManager::StartSurvey($sid, Survey::FORMAT_QUESTION, $surveyOptions, false, $LEMdebugLevel);
                 $qseq = LimeExpressionManager::GetQuestionSeq($qid);
-                $moveResult = LimeExpressionManager::JumpTo($qseq + 1, true, false, true);
+                $moveResult = LimeExpressionManager::JumpTo($qseq + 1, false, true);
             } else {
                 if (!is_null($gid)) {
                     $surveyMode = 'group';
                     LimeExpressionManager::StartSurvey($sid, Survey::FORMAT_GROUP, $surveyOptions, false, $LEMdebugLevel);
                     $gseq = LimeExpressionManager::GetGroupSeq($gid);
-                    $moveResult = LimeExpressionManager::JumpTo($gseq + 1, true, false, true);
+                    $moveResult = LimeExpressionManager::JumpTo($gseq + 1, false, true);
                 } else {
                     $surveyMode = 'survey';
                     LimeExpressionManager::StartSurvey($sid, Survey::FORMAT_ALL_IN_ONE, $surveyOptions, false, $LEMdebugLevel);
@@ -5417,8 +5122,6 @@
                 }
             }
             $out .= "</table>";
-
-            LimeExpressionManager::FinishProcessingPage();
 
             if (count($allErrors) > 0) {
                 $out = "<p class='LEMerror'>" . sprintf($LEM->ngT("%s question contains errors that need to be corrected.|%s questions contain errors that need to be corrected.",
@@ -5873,427 +5576,8 @@
         }
 
 
-        /*
-         * Returns all known variables.
-         * * Actual variables are stored in this structure:
-         * $knownVars[$sgqa] = array(
-         * 'jsName_on' => // the name of the javascript variable if it is defined on the current page - often 'answerSGQA'
-         * 'jsName' => // the name of the javascript variable when referenced  on different pages - usually 'javaSGQA'
-         * 'readWrite' => // 'Y' for yes, 'N' for no - currently not used
-         * 'hidden' => // 1 if the question attribute 'hidden' is true, otherwise 0
-         * 'question' => // the text of the question (or sub-question)
-         * 'qid' => // the numeric question id - e.g. the Q part of the SGQA name
-         * 'gid' => // the numeric group id - e.g. the G part of the SGQA name
-         * 'grelevance' =>  // the group level relevance string
-         * 'relevance' => // the question level relevance string
-         * 'qcode' => // the qcode-style variable name for this question  (or sub-question)
-         * 'qseq' => // the 0-based index of the question within the survey
-         * 'gseq' => // the 0-based index of the group within the survey
-         * 'type' => // the single character type code for the question
-         * 'sgqa' => // the SGQA name for the variable
-         * 'ansList' => // ansArray converted to a JavaScript fragment - e.g. ",'answers':{ 'M':'Male','F':'Female'}"
-         * 'ansArray' => // PHP array of answer strings, keyed on the answer code = e.g. array['M']='Male';
-         * 'scale_id' => // '0' for most answers.  '1' for second scale within dual-scale questions
-         * 'rootVarName' => // the root code / name / title for the question, without any sub-question or answer-level suffix.  This is from the title column in the questions table
-         * 'subqtext' => // the sub-question text
-         * 'rowdivid' => // the JavaScript ID of the row identifier for a question.  This is used to show/hide entire question rows
-         * 'onlynum' => // 1 if only numbers are allowed for this variable.  If so, then extra processing is needed to ensure that can use comma as a decimal separator
-         * );
-         *
-         * Reserved variables (e.g. TOKEN:xxxx) are stored with this structure:
-         * $knownVars[$token] = array(
-         * 'code' => // the static value for the variable
-         * 'type' => // ''
-         * 'jsName_on' => // ''
-         * 'jsName' => // ''
-         * 'readWrite' => // 'N' - since these are always read-only variables
-         * );
-         *
-         */
+
         public function getKnownVars() {
-            static $requestCache = [];
-            // New implementation.
-            return $this->getKnownVars2();
-            $session = App()->surveySessionManager->current;
-            // Do we need to include the response - attributes in this cache key?
-            $cacheKey = $session->responseId;
-            bP($cacheKey);
-
-            if (!isset($requestCache[$cacheKey])) {
-                $fieldmap = createFieldMap($session->surveyId, 'full', false, false, $session->language);
-
-                $questionCounter = 0;
-                foreach ($fieldmap as $fielddata) {
-                    if (!isset($fielddata['fieldname']) || !preg_match('#^\d+X\d+X\d+#', $fielddata['fieldname'])) {
-                        continue;   // not an SGQA value
-                    }
-                    $sgqa = $fielddata['fieldname'];
-                    $fieldNameParts = explode('X', $sgqa);
-                    $groupNum = $fieldNameParts[1];
-                    $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
-                    $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
-                    if ($this->sPreviewMode == 'question') {
-                        $fielddata['relevance'] = 1;
-                    }
-                    if ($this->sPreviewMode == 'group') {
-                        $fielddata['grelevance'] = 1;
-                    }
-
-                    $questionId = $fieldNameParts[2];
-                    $question = $session->getQuestion($fielddata['qid']);
-                    $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
-                    $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
-                    $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
-                    $defaultValue = (isset($fielddata['defaultvalue']) ? $fielddata['defaultvalue'] : null);
-                    // Create list of codes associated with each question
-                    $codeList = (isset($this->qid2code[$question->primaryKey]) ? $this->qid2code[$question->primaryKey] : '');
-                    if ($codeList == '') {
-                        $codeList = $sgqa;
-                    } else {
-                        $codeList .= '|' . $sgqa;
-                    }
-                    $this->qid2code[$question->primaryKey] = $codeList;
-
-                    $readWrite = 'Y';
-
-                    // Set $ansArray
-                    switch ($question->type) {
-                        case '!': //List - dropdown
-                        case 'L': //LIST drop-down/radio-button list
-
-                        // Break
-                        case '1': //Array (Flexible Labels) dual scale  // need scale
-                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        case 'H': //ARRAY (Flexible) - Column Format
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'R': //RANKING STYLE
-                            $ansArray = (isset($this->qans[$question->primaryKey]) ? $this->qans[$question->primaryKey] : null);
-                        if ($question->bool_other && ($question->type == Question::TYPE_DROPDOWN_LIST || $question->type == Question::TYPE_RADIO_LIST)) {
-                            if (preg_match('/other$/', $sgqa)) {
-                                $ansArray = null;   // since the other variable doesn't need it
-                            } else {
-                                $ansArray['0~-oth-'] = '0|' . !empty($question->other_replace_text) ? trim($question->other_replace_text) : gT('Other:');
-                            }
-                        }
-                            break;
-                        case 'G': //GENDER drop-down list
-                        case 'Y': //YES/NO radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                            $ansArray = $question->answers;
-                            break;
-                        default:
-                            $ansArray = null;
-                    }
-
-                    // set $subqtext text - for display of primary sub-question
-                    $subqtext = '';
-                    switch ($question->type) {
-                        default:
-                            $subqtext = (isset($fielddata['subquestion']) ? $fielddata['subquestion'] : '');
-                            break;
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                        case ';': //ARRAY (Multi Flexi) Text
-                            $subqtext = (isset($fielddata['subquestion1']) ? $fielddata['subquestion1'] : '');
-                            $ansList = array();
-                            if (isset($fielddata['answerList'])) {
-                                foreach ($fielddata['answerList'] as $ans) {
-                                    $ansList['1~' . $ans['code']] = $ans['code'] . '|' . $ans['answer'];
-                                }
-                            }
-                            break;
-                    }
-
-                    // Set $varName (question code / questions.title), $rowdivid, $csuffix, $sqsuffix, and $question
-                    $rowdivid = null;   // so that blank for types not needing it.
-                    $sqsuffix = '';
-                    switch ($question->type) {
-                        case '!': //List - dropdown
-                        case '5': //5 POINT CHOICE radio-buttons
-                        case 'D': //DATE
-                        case 'G': //GENDER drop-down list
-                        case 'I': //Language Question
-                        case 'L': //LIST drop-down/radio-button list
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        case 'S': //SHORT FREE TEXT
-                        case 'T': //LONG FREE TEXT
-                        case 'U': //HUGE FREE TEXT
-                        case 'X': //BOILERPLATE QUESTION
-                        case 'Y': //YES/NO radio-buttons
-                        case '|': //File Upload
-                        case '*': //Equation
-                            $csuffix = '';
-                            $sqsuffix = '';
-                            $varName = $fielddata['title'];
-                            if ($fielddata['aid'] != '') {
-                                $varName .= '_' . $fielddata['aid'];
-                            }
-                            $questionText = $fielddata['question'];
-                            break;
-                        case '1': //Array (Flexible Labels) dual scale
-                            $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
-                            $sqsuffix = '_' . $fielddata['aid'];
-                            $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
-                            $questionText = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                            //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                            $rowdivid = substr($sgqa, 0, -2);
-                            break;
-                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'H': //ARRAY (Flexible) - Column Format    // note does not have javatbd equivalent - so array filters don't work on it
-                        case 'K': //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
-                        case 'Q': //MULTIPLE SHORT TEXT                 // note does not have javatbd equivalent - so array filters don't work on it
-                        case 'R': //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
-                            $csuffix = $fielddata['aid'];
-                            $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                            $questionText = $fielddata['subquestion'];
-                            //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                            if ($question->type != 'H') {
-                                if ($question->type == 'P' && preg_match("/comment$/", $sgqa)) {
-                                    //                            $rowdivid = substr($sgqa,0,-7);
-                                } else {
-                                    $sqsuffix = '_' . $fielddata['aid'];
-                                    $rowdivid = $sgqa;
-                                }
-                            }
-                            break;
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                        case ';': //ARRAY (Multi Flexi) Text
-                            $csuffix = $fielddata['aid'];
-                            $sqsuffix = '_' . substr($fielddata['aid'], 0, strpos($fielddata['aid'], '_'));
-                            $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                            $questionText = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                            //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                            $rowdivid = substr($sgqa, 0, strpos($sgqa, '_'));
-                            break;
-                    }
-
-                    // $onlynum
-                    $onlynum = false; // the default
-                    switch ($question->type) {
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                            $onlynum = true;
-                            break;
-                        case '*': // Equation
-                        case ';': //ARRAY (Multi Flexi) Text
-                        case 'Q': //MULTIPLE SHORT TEXT
-                        case 'S': //SHORT FREE TEXT
-                            if (isset($question->bool_numbers_only) && $question->bool_numbers_only) {
-                                $onlynum = true;
-                            }
-                            break;
-                        case 'L': //LIST drop-down/radio-button list
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
-                            $onlynum = $question->other_numbers_only && preg_match('/other$/', $sgqa);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
-                    switch ($question->type) {
-                        case 'R': //RANKING STYLE
-                            $jsVarName_on = 'answer' . $sgqa;
-                            $jsVarName = 'java' . $sgqa;
-                            break;
-                        case 'D': //DATE
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'S': //SHORT FREE TEXT
-                        case 'T': //LONG FREE TEXT
-                        case 'U': //HUGE FREE TEXT
-                        case 'Q': //MULTIPLE SHORT TEXT
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
-                        case 'X': //BOILERPLATE QUESTION
-                            $jsVarName_on = 'answer' . $sgqa;
-                            $jsVarName = 'java' . $sgqa;
-                            break;
-                        case '!': //List - dropdown
-                            if (preg_match("/other$/", $sgqa)) {
-                                $jsVarName = 'java' . $sgqa;
-                                $jsVarName_on = 'othertext' . substr($sgqa, 0, -5);
-                            } else {
-                                $jsVarName = 'java' . $sgqa;
-                                $jsVarName_on = $jsVarName;
-                            }
-                            break;
-                        case 'L': //LIST drop-down/radio-button list
-                            if (preg_match("/other$/", $sgqa)) {
-                                $jsVarName = 'java' . $sgqa;
-                                $jsVarName_on = 'answer' . $sgqa . "text";
-                            } else {
-                                $jsVarName = 'java' . $sgqa;
-                                $jsVarName_on = $jsVarName;
-                            }
-                            break;
-                        case '5': //5 POINT CHOICE radio-buttons
-                        case 'G': //GENDER drop-down list
-                        case 'I': //Language Question
-                        case 'Y': //YES/NO radio-buttons
-                        case '*': //Equation
-                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'H': //ARRAY (Flexible) - Column Format
-                        case 'M': //Multiple choice checkbox
-                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                            if ($question->type == 'O' && preg_match('/_comment$/', $varName)) {
-                                $jsVarName_on = 'answer' . $sgqa;
-                            } else {
-                                $jsVarName_on = 'java' . $sgqa;
-                            }
-                            $jsVarName = 'java' . $sgqa;
-                            break;
-                        case '1': //Array (Flexible Labels) dual scale
-                            $jsVarName = 'java' . str_replace('#', '_', $sgqa);
-                            $jsVarName_on = $jsVarName;
-                            break;
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                        case ';': //ARRAY (Multi Flexi) Text
-                            $jsVarName = 'java' . $sgqa;
-                            $jsVarName_on = 'answer' . $sgqa;;
-                            break;
-                        case '|': //File Upload
-                            $jsVarName = $sgqa;
-                            $jsVarName_on = $jsVarName;
-                            break;
-                        case 'P': //Multiple choice with comments checkbox + text
-                            if (preg_match("/(other|comment)$/", $sgqa)) {
-                                $jsVarName_on = 'answer' . $sgqa;  // is this true for survey.php and not for group.php?
-                                $jsVarName = 'java' . $sgqa;
-                            } else {
-                                $jsVarName = 'java' . $sgqa;
-                                $jsVarName_on = $jsVarName;
-                            }
-                            break;
-                    }
-                    // Hidden question are never on same page (except for equation)
-                    if ($question->hidden && $question->type != "*") {
-                        $jsVarName_on = '';
-                    }
-
-
-                    $ansList = '';
-                    if (isset($ansArray) && !is_null($ansArray)) {
-                        $answers = [];
-                        foreach ($ansArray as $key => $value) {
-                            $answers[] = "'" . $key . "':'" . htmlspecialchars(preg_replace('/[[:space:]]/', ' ',
-                                    $value),
-                                    ENT_QUOTES) . "'";
-                        }
-                        $ansList = ",'answers':{ " . implode(",", $answers) . "}";
-                    }
-
-                    // Set mappings of variable names to needed attributes
-                    $result[$sgqa] = [
-                        'jsName_on' => $jsVarName_on,
-                        'jsName' => $jsVarName,
-                        'readWrite' => $readWrite,
-                        'hidden' => $question->hidden,
-                        'question' => $questionText,
-                        'qid' => $question->primaryKey,
-                        'gid' => $groupNum,
-                        'grelevance' => $grelevance,
-                        'relevance' => $relevance,
-                        'SQrelevance' => $SQrelevance,
-                        'qcode' => $varName,
-                        'type' => $question->type,
-                        'sgqa' => $sgqa,
-                        'ansList' => $ansList,
-                        'ansArray' => $ansArray,
-                        'scale_id' => $question->scale_id,
-                        'default' => $defaultValue,
-                        'rootVarName' => $fielddata['title'],
-                        'subqtext' => $subqtext,
-                        'rowdivid' => (is_null($rowdivid) ? '' : $rowdivid),
-                        'onlynum' => $onlynum,
-                        'gseq' => $session->getGroupIndex($groupNum)
-                    ];
-
-
-                }
-
-
-                // Now set tokens
-                if (isset($session->token)) {
-                    //Gather survey data for tokenised surveys, for use in presenting questions
-                    $result['TOKEN:TOKEN'] = array(
-                        'code' => $session->token->token,
-                        'jsName_on' => '',
-                        'jsName' => '',
-                        'readWrite' => 'N',
-                    );
-
-                    foreach ($session->token as $key => $val) {
-                        $result["TOKEN:" . strtoupper($key)] = array(
-                            'code' => $anonymized ? '' : $val,
-                            'jsName_on' => '',
-                            'jsName' => '',
-                            'readWrite' => 'N',
-                        );
-                    }
-                } else {
-                    // Read list of available tokens from the tokens table so that preview and error checking works correctly
-                    $attrs = array_keys(getTokenFieldsAndNames($session->surveyId));
-
-                    $blankVal = array(
-                        'code' => '',
-                        'type' => '',
-                        'jsName_on' => '',
-                        'jsName' => '',
-                        'readWrite' => 'N',
-                    );
-
-                    foreach ($attrs as $key) {
-                        if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/', $key)) {
-                            $result['TOKEN:' . strtoupper($key)] = $blankVal;
-                        }
-                    }
-                }
-                // set default value for reserved 'this' variable
-                $result['this'] = [
-                    'jsName_on' => '',
-                    'jsName' => '',
-                    'readWrite' => '',
-                    'hidden' => '',
-                    'question' => 'this',
-                    'qid' => '',
-                    'gid' => '',
-                    'grelevance' => '',
-                    'relevance' => '',
-                    'SQrelevance' => '',
-                    'qcode' => 'this',
-                    'qseq' => '',
-                    'gseq' => '',
-                    'type' => '',
-                    'sgqa' => '',
-                    'rowdivid' => '',
-                    'ansList' => '',
-                    'ansArray' => [],
-                    'scale_id' => '',
-                    'default' => '',
-                    'rootVarName' => 'this',
-                    'subqtext' => '',
-                    'rowdivid' => '',
-                ];
-                $requestCache[$cacheKey] = $result;
-            }
-            eP($cacheKey);
-            return $requestCache[$cacheKey];
-        }
-
-
-        public function getKnownVars2() {
             $result = [];
             if (null !== $session = App()->surveySessionManager->current) {
                 foreach($session->getGroups() as $group) {
@@ -6308,148 +5592,9 @@
 
         }
 
-        public function getPageRelevanceInfo() {
-            $session = App()->surveySessionManager->current;
-            switch($session->format) {
-                case Survey::FORMAT_GROUP:
-                    $pageRelevanceInfo = [];
-                    foreach($session->getQuestions($session->getGroupByIndex($session->step)) as $question) {
-                        $pageRelevanceInfo[] = $this->processQuestionRelevance($question);
-
-                    }
-                    break;
-                case Survey::FORMAT_ALL_IN_ONE:
-                    $pageRelevanceInfo = [];
-                    foreach($session->groups as $group) {
-                        $pageRelevanceInfo[] = $this->getGroupRelevanceInfo($group);
-                    }
-                    break;
-                case Survey::FORMAT_QUESTION:
-                    $pageRelevanceInfo = [
-                    ];
-                    break;
-                default:
-                    throw new \Exception("Unknown survey format");
-            }
-
-            return $pageRelevanceInfo;
-        }
-
-        /**
-         * Process the relevance of a question
-         * @todo Remove all functions that return these kinds of arrays.
-         * @param Question $question
-         */
-        public function processQuestionRelevance(Question $question)
-        {
-            bP();
-            $session = App()->surveySessionManager->current;
-            // These will be called in the order that questions are supposed to be asked
-            // TODO - cache results and generated JavaScript equations?
-
-            $questionSeq = $session->getQuestionIndex($question->primaryKey);
-            $groupSeq = $session->getGroupIndex($question->gid);
-
-            $expression = htmlspecialchars_decode($question->relevance, ENT_QUOTES);
-            $result = [
-                'result' => $this->em->ProcessBooleanExpression($expression, $groupSeq, $questionSeq),
-                'relevancejs' => $this->em->GetJavaScriptEquivalentOfExpression(),
-                'qid' => $question->primaryKey,
-                'gid' => $question->gid,
-                'gseq' => $session->getGroupIndex($question->gid),
-                'type' => $question->type,
-                'hidden' => $question->bool_hidden,
-                'relevanceVars' => implode('|', $this->em->GetJSVarsUsed()),
-                'numJsVars' => count($this->em->GetJSVarsUsed()),
-            ];
-
-            $hasErrors = $this->em->HasErrors();
-            eP();
-            return $result;
-        }
-
-        public function getPageTailorInfo() {
-            return $this->em->GetCurrentSubstitutionInfo();
-        }
 
 
-        /**
-         * /**
-         * mapping of questions to information about their subquestions.
-         * One entry per question, indexed on qid
-         *
-         * @example [702] = array(
-         * 'qid' => 702 // the question id
-         * 'qseq' => 6 // the question sequence
-         * 'gseq' => 0 // the group sequence
-         * 'sgqa' => '26626X34X702' // the root of the SGQA code (reallly just the SGQ)
-         * 'varName' => 'afSrcFilter_sq1' // the full qcode variable name - note, if there are sub-questions, don't use this one.
-         * 'type' => 'M' // the one-letter question type
-         * 'fieldname' => '26626X34X702sq1' // the fieldname (used as JavaScript variable name, and also as database column name
-         * 'rootVarName' => 'afDS'  // the root variable name
-         * 'preg' => '/[A-Z]+/' // regular expression validation equation, if any
-         * 'subqs' => array() of sub-questions, where each contains:
-         *     'rowdivid' => '26626X34X702sq1' // the javascript id identifying the question row (so array_filter can hide rows)
-         *     'varName' => 'afSrcFilter_sq1' // the full variable name for the sub-question
-         *     'jsVarName_on' => 'java26626X34X702sq1' // the JavaScript variable name if the variable is defined on the current page
-         *     'jsVarName' => 'java26626X34X702sq1' // the JavaScript variable name to use if the variable is defined on a different page
-         *     'csuffix' => 'sq1' // the SGQ suffix to use for a fieldname
-         *     'sqsuffix' => '_sq1' // the suffix to use for a qcode variable name
-         *  );
-         *
-         * @var type
-         */
-        public function getSubQuestionInfo(Question $question) {
-            bP();
-            $result = [
-                'qid' => $question->primaryKey,
-                'gid' => $question->gid,
-                'sgqa' => $question->sgqa,
-                'varName' => $question->varName,
-                'type' => $question->type,
-                'preg' => $question->preg,
-//                'rootVarName' =>
 
 
-            ];
-
-            $subQuestions = [];
-            if ($question->hasSubQuestions) {
-                /** @var Question $subQuestion */
-                foreach($question->subQuestions as $subQuestion) {
-                    $subQuestions[] = [
-                        'rowdivid' => $question->sgqa . $subQuestion->title,
-                        'jsVarName_on' => 'java' . $question->sgqa . $subQuestion->title,
-                        'jsVarName' => 'java' . $question->sgqa . $subQuestion->title,
-                        'csuffix' => $subQuestion->title,
-                        'sqsuffix' => "_" . $subQuestion->title
-                    ];
-                }
-            }
-            $result['subqs'] = $subQuestions;
-            eP();
-            return $result;
-        }
-
-        /**
-         * Returns an array mapping variable names to field names.
-         * @return array
-         */
-        public function getAliases() {
-            $session = App()->surveySessionManager->current;
-            $result = [];
-            foreach($session->survey->questions as $question) {
-                /** @var QuestionResponseField $field */
-                foreach ($question->getFields() as $field) {
-
-                    if (substr_compare($field->name, 'other', -5, 5) != 0) {
-                        $result[$field->code] = 'java' . $field->name;
-                    }
-
-                    $result[$field->name] = 'java' . $field->name;
-                }
-            }
-            return $result;
-        }
     }
 

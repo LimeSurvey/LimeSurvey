@@ -1,24 +1,16 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: sam
+ * Date: 8/27/15
+ * Time: 2:18 PM
+ */
+
 namespace ls\models\questions;
 
-/**
- * Class ChoiceQuestion
- * @package ls\models\questions
- */
-class EquationQuestion extends \Question
-{
-    /**
-     * This function return the class by question type
-     * @param string question type
-     * @return string Question class to be added to the container
-     */
-    public function getClasses()
-    {
-        $result = parent::getClasses();
-        $result[] = 'equation';
-        return $result;
-    }
 
+class DisplayQuestion extends \Question
+{
     /**
      * This function renders the object.
      * It MUST NOT produce any output.
@@ -30,8 +22,17 @@ class EquationQuestion extends \Question
     public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
     {
         $result = parent::render($response, $session);
-        $result->setHtml(" ");
+        $result->setHtml(' ');
         return $result;
+    }
+
+    /**
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function getColumns()
+    {
+        return [];
     }
 
 

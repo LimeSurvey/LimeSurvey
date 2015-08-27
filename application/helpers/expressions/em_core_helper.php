@@ -1778,7 +1778,6 @@ class ExpressionManager {
 
     public function sProcessStringContainingExpressionsHelper($src)
     {
-        static $requestCache = [];
         bP();
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $stringParts = $this->asSplitStringOnExpressions($src);
@@ -1794,15 +1793,9 @@ class ExpressionManager {
                     $prettyPrintParts[] = $stringPart[0];
                     break;
                 case 'EXPRESSION':
+                    $expr = $this->ExpandThisVar(substr($stringPart[0], 1, -1));
+                    $resolvedParts[] = $this->RDP_Evaluate($expr) ? $this->GetResult() : $expr;
 
-//                    if (!isset($requestCache[$stringPart[0]])) {
-                        $expr = $this->ExpandThisVar(substr($stringPart[0], 1, -1));
-                        vd($expr);
-//                        bP('eval');
-                        $requestCache[$stringPart[0]] = $this->RDP_Evaluate($expr) ? $this->GetResult() : $expr;
-//                        eP('eval');
-//                    }
-                    $resolvedParts[] = $requestCache[$stringPart[0]];
                     break;
                 default:
                     throw new \Exception("Unknown token: {$stringPart[2]}");

@@ -2267,7 +2267,6 @@ class dataentry extends Survey_Common_Action
                 }
             }
 
-            LimeExpressionManager::FinishProcessingPage();
             $aDataentryoutput .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
             $aViewUrls['output'] = $aDataentryoutput;

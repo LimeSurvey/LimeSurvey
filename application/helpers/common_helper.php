@@ -4753,7 +4753,6 @@ function getQuotaInformation($surveyid,$language,$iQuotaID=null)
     $aSurveyQuotasInfo = array();
     $x=0;
 
-    $surveyinfo=getSurveyInfo($surveyid,$language);
 
     // Check all quotas for the current survey
     if (count($aQuotas) > 0)
@@ -5780,8 +5779,6 @@ function array_diff_assoc_recursive($array1, $array2) {
         $session = App()->surveySessionManager->current;
         try {
             echo templatereplace(file_get_contents($fileName), $data, $replacements, null, $session);
-        } catch(\Exception $e) {
-            vdd($e);
         } finally {
             eP();
         }

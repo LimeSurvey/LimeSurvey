@@ -20,7 +20,9 @@ if ($question->hasAttribute('max_answers')) {
     echo $form->numberFieldControlGroup($question, 'max_answers');
 }
 
-questionAttributes();
+if ($question->hasAttribute('max_num_of_files')) {
+    echo $form->numberFieldControlGroup($question, 'max_num_of_files');
+}
 
 if ($question->hasAttribute('date_min')) {
     echo $form->textFieldControlGroup($question, 'date_min');

@@ -18,10 +18,15 @@ function ExpressionManager(vars) {
         $(this).addClass('dirty');
         $(this).closest('div.question').addClass('dirty');
         var code = name2code[$(this).attr('name')];
+
         if (typeof code != 'undefined') {
 
-            // Get the value for a name.
-            if ($(this).is('[type=checkbox]:not(:checked)')) {
+            if ($(this).is('[type=file]')) {
+                // Update filecount.
+                countCode = code + "_filecount";
+                vars[countCode].value = this.files.length;
+
+            } else if ($(this).is('[type=checkbox]:not(:checked)')) {
                 // Replace this with something not hardcoded?
                 vars[code].value = 'N';
             } else {
@@ -96,13 +101,13 @@ function ExpressionManager(vars) {
 
     // Update replacements.
     this.updateReplacements = function() {
-        $('[data-expression]').each(function(e) {
-            $this = $(this);
-            var html = that.evaluate($this.attr('data-expression', $elem));
+        $('[data-expression]').each(function(i, elem) {
+            var $elem = $(elem);
+            var html = that.evaluate($elem.attr('data-expression'));
             if (html === null) {
-                $this.html('');
+                $elem.html('');
             } else {
-                $this.html(html);
+                $elem.html(html);
             }
 
         });
@@ -153,6 +158,10 @@ function ExpressionManager(vars) {
 
         switch(suffix) {
             case 'value':
+                // Allow for using EM.val() on numbers.
+                if (parseFloat(code).toString() == code) {
+                    return code;
+                }
                 if (this.isRelevant(code)) {
                     return vars[code].value;
                 } else {

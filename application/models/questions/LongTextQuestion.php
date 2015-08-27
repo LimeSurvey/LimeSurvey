@@ -77,4 +77,15 @@ class LongTextQuestion extends TextQuestion implements iRenderable
         $result[] = 'text-long';
         return $result;
     }
+
+    /**
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function getColumns()
+    {
+        return [$this->sgqa => "text"];
+    }
+
+
 }

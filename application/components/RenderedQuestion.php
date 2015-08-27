@@ -128,7 +128,7 @@ class RenderedQuestion implements ArrayAccess
         bP();
         $survey = $this->_question->survey;
 
-
+        $replacements = $this->_question->group->getReplacements();
         // Core value : not replaced
         $replacements['QID'] = $this->_question->primaryKey;
         $replacements['GID'] = $this->_question->gid;
@@ -136,15 +136,15 @@ class RenderedQuestion implements ArrayAccess
         $replacements['QUESTION_CODE'] = null;
         $replacements['QUESTION_NUMBER'] = null;
 
-        $iNumber = $this->_index; // @todo Implement this.
+        $iNumber = $this->_index + 1; // Nondevelopers people start counting from 1 for some reason..
         switch (SettingGlobal::get('showqnumcode', 'choose'))
         {
             case 'both':
                 $replacements['QUESTION_CODE'] = $this->_question->title;
-                $replacements['QUESTION_NUMBER']=$iNumber;
+                $replacements['QUESTION_NUMBER'] = $iNumber;
                 break;
             case 'number':
-                $replacements['QUESTION_NUMBER']=$iNumber;
+                $replacements['QUESTION_NUMBER'] = $iNumber;
                 $replacements['QUESTION_CODE'] = $this->_question->title;
                 break;
             case 'choose':
@@ -207,7 +207,7 @@ class RenderedQuestion implements ArrayAccess
         // htmlOptions for container
         $event->set('aHtmlOptions', $aHtmlOptions);
 
-        App()->getPluginManager()->dispatchEvent($event);
+        $event->dispatch();
         // User text
         $replacements['QUESTION_TEXT'] = $event->get('text');
         $replacements['QUESTIONHELP'] = $event->get('questionhelp');

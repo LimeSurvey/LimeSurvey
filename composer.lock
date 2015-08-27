@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "47ce42255ade3527f70aeb2af975cfe4",
+    "hash": "90facc896856fab99e2b13f04b9c5bca",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -568,6 +568,70 @@
             ]
         },
         {
+            "name": "bower-asset/webshim",
+            "version": "1.15.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aFarkas/webshim.git",
+                "reference": "82229e75e4482d496e8935b644c08c00019ae402"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/82229e75e4482d496e8935b644c08c00019ae402",
+                "reference": "82229e75e4482d496e8935b644c08c00019ae402",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.8.2"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "js-webshim/dev/polyfiller.js",
+                    "js-webshim/minified/polyfiller.js"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests",
+                    "swfs",
+                    "build",
+                    "src",
+                    "demos",
+                    "js-webshim/dev/extras",
+                    "js-webshim/minified/extras",
+                    "Gruntfile.js",
+                    "webshims.jquery.json"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Webshims Lib is a modular capability-based polyfill-loading library",
+            "keywords": [
+                "ES5",
+                "HTML5",
+                "UI",
+                "audio",
+                "canvas",
+                "colorpicker",
+                "datepicker",
+                "forms",
+                "formvalidation",
+                "geolocation",
+                "getUserMedia",
+                "mediaelement",
+                "polyfill",
+                "shim",
+                "slider",
+                "validation",
+                "video",
+                "widgets"
+            ]
+        },
+        {
             "name": "cakephp/utility",
             "version": "3.1.x-dev",
             "source": {
@@ -1114,12 +1178,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "8a719102d2c3ad496530db6f524da222bccf01d4"
+                "reference": "58a6a5cf1453789deff2ce74d2f1f90b7696d156"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/f90669c7dd41a858c4202ee5f20d714a4f3a4d67",
-                "reference": "8a719102d2c3ad496530db6f524da222bccf01d4",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/58a6a5cf1453789deff2ce74d2f1f90b7696d156",
+                "reference": "58a6a5cf1453789deff2ce74d2f1f90b7696d156",
                 "shasum": ""
             },
             "require": {
@@ -1161,7 +1225,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-08-07 09:57:43"
+            "time": "2015-08-25 10:06:47"
         },
         {
             "name": "psr/http-message",
@@ -1526,12 +1590,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "767cbef6d43fc773461ab178162bdf3ace6e750c"
+                "reference": "108173369d29f77645a12038ee3b2ccbfe5bea1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/767cbef6d43fc773461ab178162bdf3ace6e750c",
-                "reference": "767cbef6d43fc773461ab178162bdf3ace6e750c",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/108173369d29f77645a12038ee3b2ccbfe5bea1c",
+                "reference": "108173369d29f77645a12038ee3b2ccbfe5bea1c",
                 "shasum": ""
             },
             "replace": {
@@ -1569,7 +1633,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-08-16 02:55:19"
+            "time": "2015-08-20 02:30:48"
         },
         {
             "name": "yiisoft/yii",

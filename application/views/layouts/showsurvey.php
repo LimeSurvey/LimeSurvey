@@ -5,10 +5,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <?php
 			App()->bootstrap->register();
-            App()->clientScript->registerCssFile(App()->theme->baseUrl . '/css/style.css');
+        $cs = App()->clientScript;
+        $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
+        $cs->registerCoreScript('ExpressionManager');
+        $cs->registerScriptFile(App()->createUrl('surveys/script', ['id' => App()->surveySessionManager->current->surveyId]));
 		?>
         <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="<?php echo App()->baseUrl; ?>images/favicon.ico" type="image/x-icon" />
+
         <title>Limesurvey Administration</title>
     </head>
     <?php
