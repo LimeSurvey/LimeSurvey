@@ -287,7 +287,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
 
     public function beforeLogin()
     {
-        if ($this->get('is_default', null, null, false) == true) { 
+        if ($this->get('is_default', null, null, false) == true) {
             // This is configured to be the default login method
             $this->getEvent()->set('default', get_class($this));
         }
@@ -303,7 +303,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Modified getPluginSettings since we have a select box that autosubmits
      * and we only want to show the relevant options.
-     * 
+     *
      * @param boolean $getValues
      * @return array
      */
@@ -313,7 +313,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         if ($getValues) {
             $ldapmode = $aPluginSettings['ldapmode']['current'];
             $ldapver = $aPluginSettings['ldapversion']['current'];
-            
+
             // If it is a post request, it could be an autosubmit so read posted
             // value over the saved value
             if (App()->request->isPostRequest) {
@@ -322,9 +322,9 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $ldapver = App()->request->getPost('ldapversion', $ldapver);
                 $aPluginSettings['ldapversion']['current'] = $ldapver;
             }
-            
+
             if ($ldapver == '2' ) {
-               unset($aPluginSettings['ldaptls']); 
+               unset($aPluginSettings['ldaptls']);
             }
 
             if ($ldapmode == 'searchandbind') {
@@ -344,7 +344,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 unset($aPluginSettings['fullnameattribute']);
             }
         }
-        
+
         return $aPluginSettings;
     }
 
@@ -357,7 +357,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             return;
         }
 
-        // Here we do the actual authentication       
+        // Here we do the actual authentication
         $username = $this->getUsername();
         $password = $this->getPassword();
 
@@ -421,7 +421,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             // to foind the userDN and then we procced to the bind operation
             if (empty($binddn))
             {
-                // There is no account defined to do the LDAP search, 
+                // There is no account defined to do the LDAP search,
                 // let's use anonymous bind instead
                 $ldapbindsearch = @ldap_bind($ldapconn);
             }
@@ -434,7 +434,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $this->setAuthFailure(100, ldap_error($ldapconn));
                 ldap_close($ldapconn); // all done? close connection
                 return;
-            }        
+            }
             // Now prepare the search fitler
             if ( $extrauserfilter != "")
             {
@@ -470,7 +470,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $this->setAuthFailure(100, ldap_error($ldapconn));
             ldap_close($ldapconn); // all done? close connection
             return;
-        } 
+        }
 
         ldap_close($ldapconn); // all done? close connection
 
@@ -482,7 +482,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         $user = $this->api->getUserByName($username);
         if ($user === null)
         {
-            $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create user'));
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create a user'));
             return;
         }
 
