@@ -38,8 +38,14 @@ class YesNoUncertainArrayQuestion extends FixedArrayQuestion
      */
     public function getClasses()
     {
-        return ['array-yes-uncertain-no'];
+        $result = parent::getClasses();
+        $result[] = 'array-yes-uncertain-no';
+        return $result;
     }
 
+    protected function getSummary()
+    {
+        return gT("An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. ");
+    }
 
 }

@@ -463,6 +463,7 @@ class ExpressionManager {
 
     public function RDP_Evaluate($expr, $onlyparse=false)
     {
+        bP();
         $this->RDP_expr = $expr;
         $this->RDP_tokens = $this->RDP_Tokenize($expr);
         $this->RDP_count = count($this->RDP_tokens);
@@ -476,36 +477,30 @@ class ExpressionManager {
         $this->jsExpression = NULL;
 
         if ($this->HasSyntaxErrors()) {
-            return false;
-        }
-        elseif ($this->RDP_EvaluateExpressions())
-        {
+            $result = false;
+        } elseif ($this->RDP_EvaluateExpressions()) {
             if ($this->RDP_pos < $this->RDP_count)
             {
                 $this->RDP_AddError(gT("Extra tokens found"), $this->RDP_tokens[$this->RDP_pos]);
-                return false;
-            }
-            $this->RDP_result = $this->RDP_StackPop();
-            if (is_null($this->RDP_result))
-            {
-                return false;
-            }
-            if (count($this->RDP_stack) == 0)
-            {
+                $result = false;
+            } elseif (null === $this->RDP_result = $this->RDP_StackPop()) {
+                $result = false;
+            } elseif (count($this->RDP_stack) == 0) {
                 $this->RDP_evalStatus = true;
-                return true;
-            }
-            else
-            {
+                $result = true;
+            } else {
                 $this-RDP_AddError(gT("Unbalanced equation - values left on stack"),NULL);
-                return false;
+                $result = false;
             }
         }
         else
         {
             $this->RDP_AddError(gT("Not a valid expression"),NULL);
-            return false;
+            $result = false;
         }
+
+        eP();
+        return $result;
     }
 
 
@@ -1197,6 +1192,9 @@ class ExpressionManager {
      */
     public function getJavascript($expression)
     {
+        if (empty($expression)) {
+            return true;
+        }
         $tokens = $this->RDP_Tokenize($this->ExpandThisVar($expression));
 
         $varsUsed = [];
@@ -1730,18 +1728,25 @@ class ExpressionManager {
     /**
      * Process multiple substitution iterations of a full string, containing multiple expressions delimited by {}, return a consolidated string
      * @param <type> $src
-     * @param <type> $questionNum
-     * @param <type> $numRecursionLevels - number of levels of recursive substitution to perform
-     * @param <type> $whichPrettyPrintIteration - if recursing, specify which pretty-print iteration is desired
-     * @param <type> $groupSeq - needed to determine whether using variables before they are declared
-     * @param <type> $questionSeq - needed to determine whether using variables before they are declared
-     * @return <type>
+     * @param int $numRecursionLevels
+     * @param int $whichPrettyPrintIteration
+     * @param int $groupSeq
+     * @param int $questionSeq
+     * @return mixed|string <type>
+     * @throws Exception
+     * @internal param bool $staticReplacement
      */
 
-    public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $groupSeq=-1, $questionSeq=-1, $staticReplacement=false)
+    public function sProcessStringContainingExpressions(
+        $src,
+        $numRecursionLevels = 1,
+        $whichPrettyPrintIteration = 1,
+        $groupSeq = -1,
+        $questionSeq = -1
+    )
     {
-        // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
-        $this->allVarsUsed = array();
+        bP();
+        $this->allVarsUsed = [];
         $this->questionSeq = $questionSeq;
         $this->groupSeq = $groupSeq;
         $result = $src;
@@ -1750,8 +1755,7 @@ class ExpressionManager {
 
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
-            // TODO - Since want to use <span> for dynamic substitution, what if there are recursive substititons?
-            $result = $this->sProcessStringContainingExpressionsHelper($result ,$questionNum, $staticReplacement);
+            $result = $this->sProcessStringContainingExpressionsHelper($result);
             if ($i == $whichPrettyPrintIteration)
             {
                 $prettyPrint = $this->prettyPrintSource;
@@ -1760,7 +1764,8 @@ class ExpressionManager {
         }
         $this->prettyPrintSource = $prettyPrint;    // ensure that if doing recursive substition, can get original source to pretty print
         $this->RDP_errs = $errors;
-        $result = str_replace(array('\{', '\}',), array('{', '}'), $result);
+        $result = str_replace(['\{', '\}'], ['{', '}'], $result);
+        eP();
         return $result;
     }
 
@@ -1771,8 +1776,10 @@ class ExpressionManager {
      * @return <type>
      */
 
-    public function sProcessStringContainingExpressionsHelper($src, $questionNum, $staticReplacement=false)
+    public function sProcessStringContainingExpressionsHelper($src)
     {
+        static $requestCache = [];
+        bP();
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $stringParts = $this->asSplitStringOnExpressions($src);
         $resolvedParts = array();
@@ -1781,71 +1788,38 @@ class ExpressionManager {
 
         foreach ($stringParts as $stringPart)
         {
-            if ($stringPart[2] == 'STRING') {
-                $resolvedParts[] =  $stringPart[0];
-                $prettyPrintParts[] = $stringPart[0];
-            }
-            else {
-                ++$this->substitutionNum;
-                $expr = $this->ExpandThisVar(substr($stringPart[0],1,-1));
-                if ($this->RDP_Evaluate($expr))
-                {
+            switch($stringPart[2]) {
+                case 'STRING':
+                    $resolvedParts[] =  $stringPart[0];
+                    $prettyPrintParts[] = $stringPart[0];
+                    break;
+                case 'EXPRESSION':
 
-                    $resolvedParts[] = $this->GetResult();
-//                    vd($resolvedPart);
-//                    vd($stringPart[0]);
-//                    vd($this->GetErrors());
-//                    vdd($src);
-//                    throw new \Exception();
-
-                }
-                else
-                {
-                    $resolvedPart = $expr;
-                    // show original and errors in-line only if user have the rigth to update survey content
-//                    if($this->sid && App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $this->sid]))
-//                    {
-//                        $resolvedPart = $this->GetPrettyPrintString();
+//                    if (!isset($requestCache[$stringPart[0]])) {
+                        $expr = $this->ExpandThisVar(substr($stringPart[0], 1, -1));
+                        vd($expr);
+//                        bP('eval');
+                        $requestCache[$stringPart[0]] = $this->RDP_Evaluate($expr) ? $this->GetResult() : $expr;
+//                        eP('eval');
 //                    }
-//                    else
-//                    {
-//                        $resolvedPart = '';
-//                    }
-//                    $allErrors[] = $this->GetErrors();
-                }
-//                $jsVarsUsed = $this->GetJsVarsUsed();
-//                $this->GetVarAttribute(substr($stringPart[0], 1, -1));
-//                $prettyPrintParts[] = $this->GetPrettyPrintString();
-//                $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
-//
-//
-//                $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
-////                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
-//                $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
-//                $this->substitutionVars[$idName] = 1;
-//                $this->substitutionInfo[] = array(
-//                    'questionNum' => $questionNum,
-//                    'num' => $this->substitutionNum,
-//                    'id' => $idName,
-//                    'raw' => $stringPart[0],
-//                    'result' => $resolvedPart,
-//                    'vars' => implode('|',$jsVarsUsed),
-//                    'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, $expr),
-//                );
+                    $resolvedParts[] = $requestCache[$stringPart[0]];
+                    break;
+                default:
+                    throw new \Exception("Unknown token: {$stringPart[2]}");
             }
         }
         $result = implode('', $resolvedParts);
-//        $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
-//        $this->RDP_errs = $allErrors;   // so that has all errors from this string
+        eP();
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
     }
 
     /**
-     * If the equation contains refernece to this, expand to comma separated list if needed.
+     * If the equation contains reference to this, expand to comma separated list if needed.
      * @param type $eqn
      */
     protected function ExpandThisVar($src)
     {
+        bP();
         $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*';
         $parts = preg_split("/(" . $splitter . ")/i",$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
         $result = '';
@@ -1860,7 +1834,7 @@ class ExpressionManager {
                 $result .= $part;
             }
         }
-
+        eP();
         return $result;
     }
 
@@ -1871,87 +1845,95 @@ class ExpressionManager {
      */
     protected function GetAllVarNamesForQ($varName)
     {
+        static $requestCache = [];
+        bP();
 
-        $parts = explode('.', $varName);
-        $qroot = '';
-        $suffix = '';
-        $sqpatts = array();
-        $nosqpatts = array();
-        $sqpatt = '';
-        $nosqpatt = '';
+        if (!isset($requestCache[$varName])) {
 
-        if ($parts[0] == 'self') {
-            $type = 'self';
-        } else {
-            $type = 'that';
-            array_shift($parts);
-            if (isset($parts[0])) {
-                $qroot = $parts[0];
+            $parts = explode('.', $varName);
+            $qroot = '';
+            $suffix = '';
+            $sqpatts = array();
+            $nosqpatts = array();
+            $sqpatt = '';
+            $nosqpatt = '';
+
+            if ($parts[0] == 'self') {
+                $type = 'self';
             } else {
-                return $varName;
-            }
-        }
-        array_shift($parts);
-
-        if (count($parts) > 0) {
-            if (preg_match('/^' . self::$RDP_regex_var_attr . '$/', $parts[count($parts) - 1])) {
-                $suffix = '.' . $parts[count($parts) - 1];
-                array_pop($parts);
-            }
-        }
-
-        $question = $this->getQuestionByCode($qroot);
-
-        foreach ($parts as $part) {
-            if ($part == 'nocomments') {
-                $comments = false;
-            } else {
-                if ($part == 'comments') {
-                    $comments = true;
+                $type = 'that';
+                array_shift($parts);
+                if (isset($parts[0])) {
+                    $qroot = $parts[0];
                 } else {
-                    if (preg_match('/^sq_.+$/', $part)) {
-                        $sqpatts[] = substr($part, 3);
+                    return $varName;
+                }
+            }
+            array_shift($parts);
+
+            if (count($parts) > 0) {
+                if (preg_match('/^' . self::$RDP_regex_var_attr . '$/', $parts[count($parts) - 1])) {
+                    $suffix = '.' . $parts[count($parts) - 1];
+                    array_pop($parts);
+                }
+            }
+
+            $question = $this->getQuestionByCode($qroot);
+
+            foreach ($parts as $part) {
+                if ($part == 'nocomments') {
+                    $comments = false;
+                } else {
+                    if ($part == 'comments') {
+                        $comments = true;
                     } else {
-                        if (preg_match('/^nosq_.+$/', $part)) {
-                            $nosqpatts[] = substr($part, 5);
+                        if (preg_match('/^sq_.+$/', $part)) {
+                            $sqpatts[] = substr($part, 3);
                         } else {
-                            return $varName;    // invalid
+                            if (preg_match('/^nosq_.+$/', $part)) {
+                                $nosqpatts[] = substr($part, 5);
+                            } else {
+                                return $varName;    // invalid
+                            }
                         }
                     }
                 }
             }
-        }
-        $sqpatt = implode('|', $sqpatts);
-        $nosqpatt = implode('|', $nosqpatts);
-        $vars = [];
-        foreach ($question->fields as $field) {
-            if (isset($comments)) {
-                if (($comments && !preg_match('/comment$/', $field->name))
-                    || (!$comments && preg_match('/comment$/', $field->name))
-                ) {
-                    continue;
+            $sqpatt = implode('|', $sqpatts);
+            $nosqpatt = implode('|', $nosqpatts);
+            $vars = [];
+            foreach ($question->fields as $field) {
+                if (isset($comments)) {
+                    if (($comments && !preg_match('/comment$/', $field->name))
+                        || (!$comments && preg_match('/comment$/', $field->name))
+                    ) {
+                        continue;
+                    }
                 }
-            }
 
-            $ext = substr($field->name, strlen($question->sgqa));
+                $ext = substr($field->name, strlen($question->sgqa));
 
-            if ($sqpatt != '') {
-                if (!preg_match('/' . $sqpatt . '/', $ext)) {
-                    continue;
+                if ($sqpatt != '') {
+                    if (!preg_match('/' . $sqpatt . '/', $ext)) {
+                        continue;
+                    }
                 }
-            }
-            if ($nosqpatt != '') {
-                if (preg_match('/' . $nosqpatt . '/', $ext)) {
-                    continue;
+                if ($nosqpatt != '') {
+                    if (preg_match('/' . $nosqpatt . '/', $ext)) {
+                        continue;
+                    }
                 }
-            }
 
-            $vars[] = $field->code . $suffix;
+                $vars[] = $field->code . $suffix;
+            }
+            if (count($vars) > 0) {
+                $requestCache[$varName] = implode(',', $vars);
+            } else {
+                $requestCache[$varName] = $varName;    // invalid
+            }
         }
-        if (count($vars) > 0) {
-            return implode(',', $vars);
-        }
-        return $varName;    // invalid
+        eP();
+        return $requestCache[$varName];
     }
     /**
      * Get info about all <span> elements needed for dynamic tailoring
@@ -2136,7 +2118,7 @@ class ExpressionManager {
      */
     public function asSplitStringOnExpressions($src)
     {
-
+        bP();
         $parts = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
 
 
@@ -2294,6 +2276,7 @@ class ExpressionManager {
                 'STRING',
             );
         }
+        eP();
         return $tokens;
     }
 

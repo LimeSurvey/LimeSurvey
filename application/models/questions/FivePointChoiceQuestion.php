@@ -7,7 +7,7 @@
  */
 
 namespace ls\models\questions;
-
+use ls\interfaces\iResponse;
 
 class FivePointChoiceQuestion extends FixedChoiceQuestion
 {
@@ -43,7 +43,7 @@ class FivePointChoiceQuestion extends FixedChoiceQuestion
      * @param \SurveySession $session
      * @return string
      */
-    public function render(\Response $response, \SurveySession $session)
+    public function render(iResponse$response, \SurveySession $session)
     {
         $result = parent::render($response, $session);
 
@@ -57,7 +57,7 @@ class FivePointChoiceQuestion extends FixedChoiceQuestion
             $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$this->sgqa\" id=\"answer$this->sgqa$fp\" value=\"$fp\"";
             if ($response->{$this->sgqa} == $fp)
             {
-                $answer .= CHECKED;
+                $answer .= 'checked="checked"';
             }
             $answer .= "/>\n<label for=\"answer$this->sgqa$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
         }
@@ -66,7 +66,7 @@ class FivePointChoiceQuestion extends FixedChoiceQuestion
             $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$this->sgqa\" id=\"answer".$this->sgqa."NANS\" value=\"\"";
             if (!$response->{$this->sgqa})
             {
-                $answer .= CHECKED;
+                $answer .= 'checked="checked"';
             }
             $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$this->sgqa."NANS\" class=\"answertext\">".gT('No answer')."</label>\n\t</li>\n";
 

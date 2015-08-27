@@ -10,6 +10,7 @@ namespace ls\models\questions;
 
 
 use ls\interfaces\iRenderable;
+use ls\interfaces\iResponse;
 
 class LongTextQuestion extends TextQuestion implements iRenderable
 {
@@ -21,7 +22,7 @@ class LongTextQuestion extends TextQuestion implements iRenderable
      * @param \SurveySession $session
      * @return string
      */
-    public function render(\Response $response, \SurveySession $session)
+    public function render(iResponse $response, \SurveySession $session)
     {
         $result = parent::render($response, $session);
 
@@ -63,5 +64,17 @@ class LongTextQuestion extends TextQuestion implements iRenderable
 
 
         return $result ;
+    }
+
+    /**
+     * This function return the class by question type
+     * @param string question type
+     * @return string Question class to be added to the container
+     */
+    public function getClasses()
+    {
+        $result = parent::getClasses();
+        $result[] = 'text-long';
+        return $result;
     }
 }

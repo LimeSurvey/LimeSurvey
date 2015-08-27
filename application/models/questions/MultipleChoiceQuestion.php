@@ -1,6 +1,8 @@
 <?php
 namespace ls\models\questions;
 
+use ls\interfaces\iResponse;
+
 /**
  * Class MultipleChoiceQuestion
  * @package ls\models\questions
@@ -63,7 +65,7 @@ class MultipleChoiceQuestion extends ChoiceQuestion
      * @param \SurveySession $session
      * @return \RenderedQuestion
      */
-    public function render(\Response $response, \SurveySession $session)
+    public function render(iResponse $response, \SurveySession $session)
     {
         $result = parent::render($response, $session);
         // Find out if any questions have attributes which reference this questions
@@ -145,7 +147,7 @@ class MultipleChoiceQuestion extends ChoiceQuestion
             {
                 if ($response->$myfname == 'Y')
                 {
-                    $html .= CHECKED;
+                    $html .= 'checked="checked"';
                 }
             }
             $html .= ''
@@ -194,7 +196,7 @@ class MultipleChoiceQuestion extends ChoiceQuestion
 
             if (isset($response->$myfname) && !empty(trim($response->$myfname)))
             {
-                $html .= CHECKED;
+                $html .= 'checked="checked"';
             }
             $html .= " />
         <label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>

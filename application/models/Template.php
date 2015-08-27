@@ -17,20 +17,6 @@ if (!defined('BASEPATH'))
 
 class Template extends ActiveRecord
 {
-
-    /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return CActiveRecord
-     */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
-    }
-
     /**
      * Returns the setting's table name to be used by the model
      *
@@ -41,18 +27,6 @@ class Template extends ActiveRecord
     {
         return '{{templates}}';
     }
-
-    /**
-     * Returns this table's primary key
-     *
-     * @access public
-     * @return string
-     */
-    public function primaryKey()
-    {
-        return 'folder';
-    }
-
     /**
     * Filter the template name : test if template if exist
     *

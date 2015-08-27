@@ -5,13 +5,21 @@ if (!isset($model) || !$model instanceof Question) {
 }
 $menu = [[ // Left side
     [
+        'title' => gT('Preview question'),
+        'icon' => 'eye-open',
+        'linkOptions' => [
+            'target' => '_blank'
+        ],
+        'url' => ["questions/preview", 'id' => $model->primaryKey]
+    ],
+
+    [
         'title' => gT('Remove question'),
         'icon' => 'trash',
         'linkOptions' => [
             'confirm' => 'Are you sure?'
         ],
         'url' => ["questions/delete", 'id' => $model->primaryKey]
-//
     ],
 ], [ // Right side
     [

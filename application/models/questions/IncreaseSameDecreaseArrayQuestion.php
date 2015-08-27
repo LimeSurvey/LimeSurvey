@@ -39,7 +39,14 @@ class IncreaseSameDecreaseArrayQuestion extends FixedArrayQuestion
      */
     public function getClasses()
     {
-        return ['array-increase-same-decrease'];
+        $result = parent::getClasses();
+        $result[] = 'array-increase-same-decrease';
+        return $result;
+    }
+
+    protected function getSummary()
+    {
+        return gT("An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. ");
     }
 
 

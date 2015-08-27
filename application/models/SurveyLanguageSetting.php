@@ -53,30 +53,6 @@ class SurveyLanguageSetting extends ActiveRecord
     }
 
     /**
-     * Returns the table's primary key
-     *
-     * @access public
-     * @return array
-     */
-    public function primaryKey()
-    {
-        return array('surveyls_survey_id', 'surveyls_language');
-    }
-
-    /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return SurveyLanguageSetting
-     */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
-    }
-
-    /**
      * Returns the relations of this model
      *
      * @access public
@@ -176,28 +152,6 @@ class SurveyLanguageSetting extends ActiveRecord
     }
 
 
-    /**
-     * Returns the token's captions
-     *
-     * @access public
-     * @return array
-     */
-    public function getAttributeCaptions()
-    {
-        $captions = @json_decode($this->surveyls_attributecaptions,true);
-        return $captions !== false ? $captions : array();
-    }
-
-    function getAllRecords($condition=FALSE, $return_query = TRUE)
-    {
-        $query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
-        if ($condition != FALSE)
-        {
-            $query->where($condition);
-        }
-        return ( $return_query ) ? $query->queryAll() : $query;
-    }
-
     function getDateFormat($surveyid,$languagecode)
     {
         return Yii::app()->db->createCommand()->select('surveyls_dateformat')
@@ -209,50 +163,10 @@ class SurveyLanguageSetting extends ActiveRecord
             ->queryScalar();
     }
 
-    function getAllSurveys($hasPermission = FALSE)
-    {
-        $this->db->select('a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url');
-        $this->db->from('surveys AS a');
-        $this->db->join('surveys_languagesettings','surveyls_survey_id=a.sid AND surveyls_language=a.language');
-
-        if ($hasPermission)
-        {
-            $this->db->where('a.sid IN (SELECT sid FROM {{permissions}} WHERE uid=:uid AND permission=\'survey\' and read_p=1) ')->bindParam(":uid", $this->session->userdata("loginID"), PDO::PARAM_INT);
-        }
-        $this->db->order_by('active DESC, surveyls_title');
-        return $this->db->get();
-    }
-
-    function getAllData($sid,$lcode)
-    {
-        $query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
-        return $this->db->query($query, array($sid, $sid, $lcode));
-    }
 
     function insertNewSurvey($data)
     {
         return $this->insertSomeRecords($data);
-    }
-
-    /**
-     * Updates a single record identified by $condition with the
-     * key/value pairs in the $data array.
-     *
-     * @param type $data
-     * @param type $condition
-     * @param type $xssfiltering
-     * @return boolean
-     */
-    function updateRecord($data,$condition='', $xssfiltering = false)
-    {
-        $record = $this->findByPk($condition);
-        foreach ($data as $key => $value)
-        {
-            $record->$key = $value;
-        }
-        $record->save($xssfiltering);
-
-        return true;
     }
 
     function insertSomeRecords($data)

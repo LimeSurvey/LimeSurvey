@@ -803,32 +803,6 @@
     }
 
 
-    /**
-    * Get the date format details for a specific question.
-    *
-    * @param Question $question
-    * @returns array
-    *
-    */
-    function getDateFormatDataForQID(Question $question)
-    {
-        if (!isset($question)) {
-            throw new \CHttpException(404, "Question not found.");
-        }
-        if (isset($question->date_format) && trim($question->date_format)!='')
-        {
-            $aDateFormatDetails = [];
-            $aDateFormatDetails['dateformat'] = $question->date_format;
-            $aDateFormatDetails['phpdate'] = getPHPDateFromDateFormat($aDateFormatDetails['dateformat']);
-            $aDateFormatDetails['jsdate'] = getJSDateFromDateFormat($aDateFormatDetails['dateformat']);
-        }
-        else
-        {
-            $aDateFormatDetails = getDateFormatData(getDateFormatForSID($question->sid));
-        }
-        return $aDateFormatDetails;
-    }
-
 
     /**
     * Get the date format for a specified survey

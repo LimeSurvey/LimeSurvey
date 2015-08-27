@@ -299,8 +299,7 @@ class SurveyRuntimeHelper {
                 }
                 */
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
-                $completed = templatereplace($survey->getLocalizedEndText(), array(), $redata, 'SubmitEndtextI', null,
-                    true);
+                $completed = templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
                 $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                 $completed .= gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                 if ($thissurvey['printanswers'] == 'Y') {
@@ -321,14 +320,14 @@ class SurveyRuntimeHelper {
 
                 $content = '';
                 $content .= templatereplace(file_get_contents($templatePath . "startpage.pstpl"), array(), $redata,
-                    'SubmitStartpage', null, true);
+                    null);
 
                 //Check for assessments
                 if ($survey->bool_assessments) {
                     $assessments = doAssessment($survey->primaryKey);
                     if ($assessments) {
                         $content .= templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
-                            $redata, 'SubmitAssessment', null, true);
+                            $redata, null);
                     }
                 }
 
@@ -347,8 +346,7 @@ class SurveyRuntimeHelper {
 
                 $content = '';
 
-                $content .= templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata,
-                    'SubmitStartpage', null, true);
+                $content .= templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata, null);
 
                 //echo $thissurvey['url'];
                 //Check for assessments
@@ -356,7 +354,7 @@ class SurveyRuntimeHelper {
                     $assessments = doAssessment($session->surveyId);
                     if ($assessments) {
                         $content .= templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
-                            $redata, 'SubmitAssessment', null, true);
+                            $redata, null);
                     }
                 }
 
@@ -365,8 +363,7 @@ class SurveyRuntimeHelper {
                     $completed = "<br /><span class='success'>" . gT("Thank you!") . "</span><br /><br />\n\n"
                         . gT("Your survey responses have been recorded.") . "<br /><br />\n";
                 } else {
-                    $completed = templatereplace($survey->getLocalizedEndText(), array(), $redata, 'SubmitAssessment',
-                        null, true);
+                    $completed = templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
                 }
 
                 // Link to Print Answer Preview  **********
@@ -623,170 +620,7 @@ class SurveyRuntimeHelper {
         // Maybe remove one from index and allow empty $surveyid here.
     }
 
-    /**
-    * Construction of replacement array, actually doing it with redata
-    * 
-    * @param $aQuestionQanda : array from qanda helper
-    * @return aray of replacement for question.psptl
-    **/
-    public function getQuestionReplacement(array $details, RenderedQuestion $renderedQuestion, Question $question, Response $response)
-    {
-        bP();
 
-        $session = App()->surveySessionManager->current;
-        if (!isset($session)) {
-            return [];
-        }
-        $survey = $session->survey;
-
-        // Get the default replacement and set empty value by default
-        $aReplacement=array(
-            "QID"=>"",
-            //"GID"=>"", // Attention : set in replacement helper too (by gid).
-            "SGQ"=>"",
-            "AID"=>"",
-            "QUESTION_CODE"=>"",
-            "QUESTION_NUMBER"=>"",
-            "QUESTION"=>"",
-            "QUESTION_TEXT"=>"",
-            "QUESTIONHELP"=>"", // User help
-            "QUESTIONHELPPLAINTEXT"=>"",
-            "QUESTION_MAN_CLASS"=>"",
-            "QUESTION_INPUT_ERROR_CLASS"=>"",
-            "ANSWER"=>"",
-            "QUESTION_HELP"=>"", // Core help
-            "QUESTION_VALID_MESSAGE"=>"",
-            "QUESTION_FILE_VALID_MESSAGE"=>"",
-            "QUESTION_MAN_MESSAGE"=>"",
-            "QUESTION_MANDATORY"=>"",
-        );
-        if(empty($details))
-        {
-            return $aReplacement;
-        }
-        // Core value : not replaced
-        $aReplacement['QID'] = $question->primaryKey;
-        $aReplacement['GID'] = $question->gid;
-        $aReplacement['SGQ']= $question->sgqa;
-
-        $aReplacement['AID']=isset($details['aid']) ? $details['aid'] : "" ;
-
-
-        $iNumber = $details['number'];
-
-        switch (SettingGlobal::get('showqnumcode', 'choose'))
-        {
-            case 'both':
-                $aReplacement['QUESTION_CODE'] = $question->title;
-                $aReplacement['QUESTION_NUMBER']=$iNumber;
-                break;
-            case 'number':
-                $aReplacement['QUESTION_NUMBER']=$iNumber;
-                $aReplacement['QUESTION_CODE'] = $question->title;
-                break;
-            case 'choose':
-                switch($survey->showqnumcode) {
-                    case 'B': // Both
-                        $aReplacement['QUESTION_CODE'] = $question->title;
-                        $aReplacement['QUESTION_NUMBER']=$iNumber;
-                        break;
-                    case 'N':
-                        $aReplacement['QUESTION_NUMBER']=$iNumber;
-                        break;
-                    case 'C':
-                        $aReplacement['QUESTION_CODE'] = $question->title;
-                        break;
-                    case 'X':
-                    default:
-                        break;
-                }
-                break;
-        }
-        // Core value : user text
-        $aReplacement['QUESTION_TEXT'] = $renderedQuestion['text'];
-        $aReplacement['QUESTIONHELP']= $question->help;// User help
-        // To be moved in a extra plugin : QUESTIONHELP img adding
-        $sTemplateDir = $session->templateDir;
-        $sTemplateUrl = $session->templateUrl;
-        if(flattenText($aReplacement['QUESTIONHELP'], true,true) != '')
-        {
-            if (file_exists($sTemplateDir . '/help.gif')) {
-                $helpicon = $sTemplateUrl . '/help.gif';
-            }
-            elseif (file_exists($sTemplateDir . '/help.png')) {
-                $helpicon = $sTemplateUrl . '/help.png';
-            } else {
-                $helpicon = Yii::app()->getConfig('imageurl')."/help.gif";
-            }
-            $aReplacement['QUESTIONHELP']="<img src='{$helpicon}' alt='Help' align='left' />".$aReplacement['QUESTIONHELP'];
-        }
-        // Core value :the classes
-        $classes = $question->classes;
-        if (!$question->isRelevant($response)) {
-            $classes[] = 'irrelevant';
-        }
-        $aReplacement['QUESTION_CLASS'] = implode(' ', $classes);
-        $aMandatoryClass = [];
-        if ($question->bool_mandatory) {
-            $aMandatoryClass[]= 'mandatory';
-        }
-        $session = App()->surveySessionManager->current;
-        if ($session->maxStep != $session->step) {
-            $aMandatoryClass[]= 'missing';
-        }
-        $aReplacement['QUESTION_MAN_CLASS'] = " ".implode(" ",$aMandatoryClass);
-        $aReplacement['QUESTION_INPUT_ERROR_CLASS']=$details['input_error_class'];
-        // Core value : LS text : EM and not
-        $aReplacement['ANSWER'] = $renderedQuestion['html'];
-        $aReplacement['QUESTION_HELP'] = $details['help'];// Core help only, not EM
-        $aReplacement['QUESTION_VALID_MESSAGE'] = $renderedQuestion->getMessages();
-        $aReplacement['QUESTION_MANDATORY'] = $details['mandatory'];
-        // For QUESTION_ESSENTIALS
-        $aHtmlOptions = [];
-        if (true !== $relevance = $question->getRelevanceScript()) {
-            $aHtmlOptions['data-relevance-expression'] = $relevance;
-        }
-
-        // Launch the event
-        $event = new PluginEvent('beforeQuestionRender');
-        // Some helper
-        $event->set('question', $question);
-        // User text
-        $event->set('text', $aReplacement['QUESTION_TEXT']);
-        $event->set('questionhelp', $aReplacement['QUESTIONHELP']);
-        // The classes
-        $event->set('class', $aReplacement['QUESTION_CLASS']);
-        $event->set('man_class', $aReplacement['QUESTION_MAN_CLASS']);
-        $event->set('input_error_class', $aReplacement['QUESTION_INPUT_ERROR_CLASS']);
-        // LS core text
-        $event->set('answers', $aReplacement['ANSWER']);
-        $event->set('help', $aReplacement['QUESTION_HELP']);
-        $event->set('man_message', $aReplacement['QUESTION_MAN_MESSAGE']);
-        $event->set('valid_message', $aReplacement['QUESTION_VALID_MESSAGE']);
-        $event->set('file_valid_message', $aReplacement['QUESTION_FILE_VALID_MESSAGE']);
-        // htmlOptions for container
-        $event->set('aHtmlOptions', $aHtmlOptions);
-
-        App()->getPluginManager()->dispatchEvent($event);
-        // User text
-        $aReplacement['QUESTION_TEXT'] = $event->get('text');
-        $aReplacement['QUESTIONHELP'] = $event->get('questionhelp');
-        $aReplacement['QUESTIONHELPPLAINTEXT']=strip_tags(addslashes($aReplacement['QUESTIONHELP']));
-        // The classes
-        $aReplacement['QUESTION_CLASS'] = $event->get('class');
-        $aReplacement['QUESTION_MAN_CLASS'] = $event->get('man_class');
-        $aReplacement['QUESTION_INPUT_ERROR_CLASS'] = $event->get('input_error_class');
-        // LS core text
-        $aReplacement['ANSWER'] = $event->get('answers');
-        $aReplacement['QUESTION_HELP'] = $event->get('help');
-        $aReplacement['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
-        $aReplacement['QUESTION_MANDATORY'] = $event->get('mandatory',$aReplacement['QUESTION_MANDATORY']);
-        // Always add id for QUESTION_ESSENTIALS
-        $aHtmlOptions['id'] = "question{$question->primaryKey}";
-        $aReplacement['QUESTION_ESSENTIALS']= CHtml::renderAttributes($aHtmlOptions);
-        eP();
-        return $aReplacement;
-    }
 
     protected function renderGroup(SurveySession $session, QuestionGroup $group) {
         echo "\n\n<!-- START THE GROUP -->\n";
@@ -804,10 +638,10 @@ class SurveyRuntimeHelper {
         echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
         if ($session->format != Survey::FORMAT_QUESTION) {
             foreach ($group->questions as $question) {
-                $this->renderQuestion($session, $question);
+                echo $this->renderQuestion($session, $question)->render($session);
             }
         } else {
-            $this->renderQuestion($session, $session->getQuestionByIndex($session->step));
+            echo $this->renderQuestion($session, $session->getQuestionByIndex($session->step))->render($session);
         }
 
         echo "\n\n<!-- END THE GROUP -->\n";
@@ -816,21 +650,13 @@ class SurveyRuntimeHelper {
     }
 
     protected function renderQuestion(SurveySession $session, Question $question) {
-        bP();
-        if ($question->bool_hidden || $question->type == Question::TYPE_EQUATION) {
-            return;
+        static $template;
+        if (!isset($template)) {
+            $template = file_get_contents($session->templateDir . 'question.pstpl');
         }
-
-        $n_q_display = '';
-
-        $aReplacement = [];
-        $question_template = file_get_contents($session->templateDir .'question.pstpl');
-
-        list($details, $html) = retrieveAnswers($question);
-//        vdd($details);
-        $aQuestionReplacement = $this->getQuestionReplacement($details, $html, $question, $session->response);
-        echo templatereplace($question_template, $aQuestionReplacement, compact(array_keys(get_defined_vars())),
-            false, $question->primaryKey);
-        eP();
+        /** @var RenderedQuestion $renderedQuestion */
+        $renderedQuestion = retrieveAnswers($question);
+        $renderedQuestion->setTemplate($template);
+        return $renderedQuestion;
     }
 }

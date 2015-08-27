@@ -20,4 +20,9 @@ if ($question->hasAttribute('max_answers')) {
     echo $form->numberFieldControlGroup($question, 'max_answers');
 }
 
+questionAttributes();
+
+if ($question->hasAttribute('date_min')) {
+    echo $form->textFieldControlGroup($question, 'date_min');
+}
 echo TbHtml::closeTag('fieldset');

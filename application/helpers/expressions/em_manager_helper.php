@@ -2582,11 +2582,11 @@
          * @param string $string - the string to be replaced
          * @param integer $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
          * @param array $replacementFields - optional replacement values
-         * @param boolean $debug - deprecated
          * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
          * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
-         * @param boolean $staticReplacement - return HTML string without the system to update by javascript
          * @return string - the original $string with all replacements done.
+         * @internal param bool $debug - deprecated
+         * @internal param bool $staticReplacement - return HTML string without the system to update by javascript
          * @internal param bool $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
          * @internal param bool $timeit
          */
@@ -2595,11 +2595,10 @@
             $string,
             $questionNum = null,
             $replacementFields = [],
-            $debug = false,
             $numRecursionLevels = 1,
-            $whichPrettyPrintIteration = 1,
-            $staticReplacement = false
+            $whichPrettyPrintIteration = 1
         ) {
+            bP();
             $session = App()->surveySessionManager->current;
             $LEM =& LimeExpressionManager::singleton();
 
@@ -2624,9 +2623,10 @@
                 $groupSeq = -1;
             }
 
-            $result = $LEM->em->sProcessStringContainingExpressions($string, $questionNum, $numRecursionLevels,
-                $whichPrettyPrintIteration, $groupSeq, $questionSeq, $staticReplacement);
+            $result = $LEM->em->sProcessStringContainingExpressions($string, $numRecursionLevels,
+                $whichPrettyPrintIteration, $groupSeq, $questionSeq);
 //            vd($result);
+            eP();
             return $result;
         }
 
@@ -2959,7 +2959,6 @@
 
             $LEM->debugLevel = $debugLevel;
             $LEM->qrootVarName2arrayFilter = array();
-            templatereplace("{}"); // Needed for coreReplacements in relevance equation (in all mode)
 //            if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$surveyid]['startingValues']) && count($_SESSION[$surveyid]['startingValues']) > 0) {
 //                $startingValues = array();
 //                foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k => $value) {
@@ -4011,7 +4010,7 @@
                 $redata = array();
                 $result = flattenText(templatereplace( // Why flattenText ? htmlspecialchars($string,ENT_NOQUOTES) seem better ?
                     $textToParse, array('QID' => $question->primaryKey, 'GID' => $question->gid, 'SGQ' => $sgqa),
-                    $redata, '', $question->primaryKey, true // Static replace
+                    $redata, $question->primaryKey // Static replace
                 ));
                 if ($LEM->getKnownVars()[$sgqa]['onlynum']) {
                     $result = (is_numeric($result) ? $result : "");
@@ -5066,7 +5065,7 @@
                         . "<td>" . $gtext . "</td>"
                         . "</tr>\n";
 
-                    $LEM->ProcessString($groupRow, $qid, null, false, 1, 1);
+                    $LEM->ProcessString($groupRow, $qid, null, 1, 1);
                     $out .= $LEM->GetLastPrettyPrintExpression();
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
@@ -5082,7 +5081,7 @@
 
                 $sgqas = explode('|', $q['sgqa']);
                 if (count($sgqas) == 1 && !is_null($q['info']['default'])) {
-                    $LEM->ProcessString(htmlspecialchars($q['info']['default']), $qid, null, false, 1, 1);// Default value is Y or answer code or go to input/textarea, then we can filter it
+                    $LEM->ProcessString(htmlspecialchars($q['info']['default']), $qid, null, 1, 1);// Default value is Y or answer code or go to input/textarea, then we can filter it
                     $_default = $LEM->GetLastPrettyPrintExpression();
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
@@ -5181,7 +5180,7 @@
                     }
                 }
 
-                $LEM->ProcessString($qtext . $help . $prettyValidTip . $attrTable, $qid, null, false, 1, 1);
+                $LEM->ProcessString($qtext . $help . $prettyValidTip . $attrTable, $qid, null, 1, 1);
                 $qdetails = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                 if ($LEM->em->HasErrors()) {
                     ++$errorCount;
@@ -5316,7 +5315,7 @@
                     $sgqaInfo = $LEM->knownVars[$sgqa];
                     $subqText = $sgqaInfo['subqtext'];
                     if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '') {
-                        $LEM->ProcessString(htmlspecialchars($sgqaInfo['default']), $qid, null, false, 1, 1);
+                        $LEM->ProcessString(htmlspecialchars($sgqaInfo['default']), $qid, null, 1, 1);
                         $_default = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
@@ -5331,7 +5330,7 @@
                         . "<td>" . $subqText . "</td>"
                         . "</tr>";
                 }
-                $LEM->ProcessString($sqRows, $qid, null, false, 1, 1);
+                $LEM->ProcessString($sqRows, $qid, null, 1, 1);
                 $sqRows = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                 if ($LEM->em->HasErrors()) {
                     ++$errorCount;
@@ -5378,7 +5377,7 @@
                             . "<td>" . $valInfo[1] . "</td>"
                             . "</tr>\n";
                     }
-                    $LEM->ProcessString($answerRows, $qid, null, false, 1, 1);
+                    $LEM->ProcessString($answerRows, $qid, null, 1, 1);
                     $answerRows = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;

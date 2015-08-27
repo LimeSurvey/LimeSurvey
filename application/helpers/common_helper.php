@@ -946,9 +946,11 @@ function getGroupListLang($gid, $language, $surveyid)
 * @param int $surveyId  The survey ID
 * @param string $language The language code - if not given the base language of the particular survey is used
 * @return array Returns array with survey info or false, if survey does not exist
+ * @deprecated
 */
 function getSurveyInfo($surveyId, $language = null)
 {
+    throw new \Exception('deprecated');
     if (!is_numeric($surveyId)) {
         throw new Exception("Survey ids must be numerical.");
     }
@@ -4815,209 +4817,6 @@ function getQuotaInformation($surveyid,$language,$iQuotaID=null)
 }
 
 /**
-* This function replaces the old insertans tags with new ones across a survey
-*
-* @param string $newsid  Old SID
-* @param string $oldsid  New SID
-* @param mixed $fieldnames Array  array('oldfieldname'=>'newfieldname')
-*/
-function translateInsertansTags($newsid,$oldsid,$fieldnames)
-{
-    uksort($fieldnames, create_function('$a,$b', 'return strlen($a) < strlen($b);'));
-
-    Yii::app()->loadHelper('database');
-    $newsid=sanitize_int($newsid);
-    $oldsid=sanitize_int($oldsid);
-
-    # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
-    $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from {{surveys_languagesettings}}
-    WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{$oldsid}X%' OR surveyls_url LIKE '%{$oldsid}X%')";
-    $result = dbExecuteAssoc($sql) or show_error("Can't read groups table in transInsertAns ");     // Checked
-
-    //while ($qentry = $res->FetchRow())
-    foreach ($result->readAll() as $qentry)
-    {
-        $urldescription = $qentry['surveyls_urldescription'];
-        $endurl  = $qentry['surveyls_url'];
-        $language = $qentry['surveyls_language'];
-
-        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
-        {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
-            $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
-        }
-
-        if (strcmp($urldescription,$qentry['surveyls_urldescription']) !=0  ||
-        (strcmp($endurl,$qentry['surveyls_url']) !=0))
-        {
-
-            // Update Field
-
-            $data = array(
-            'surveyls_urldescription' => $urldescription,
-            'surveyls_url' => $endurl
-            );
-
-            $where = array(
-            'surveyls_survey_id' => $newsid,
-            'surveyls_language' => $language
-            );
-
-            SurveyLanguageSetting::model()->updateRecord($data,$where);
-
-        } // Enf if modified
-    } // end while qentry
-
-    # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
-    $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {{quota_languagesettings}} qls, {{quota}} q
-    WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')";
-    if (false == $result = dbExecuteAssoc($sql)) {
-        throw new \CHttpException(500, "Can't read quota table in transInsertAns");
-    }     // Checked
-
-    foreach ($result->readAll() as $qentry)
-    {
-        $urldescription = $qentry['quotals_urldescrip'];
-        $endurl  = $qentry['quotals_url'];
-
-        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
-        {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
-            $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
-        }
-
-        if (strcmp($urldescription,$qentry['quotals_urldescrip']) !=0  || (strcmp($endurl,$qentry['quotals_url']) !=0))
-        {
-            // Update Field
-            $sqlupdate = "UPDATE {{quota_languagesettings}} SET quotals_urldescrip='".$urldescription."', quotals_url='".$endurl."' WHERE quotals_id={$qentry['quotals_id']}";
-            if (false == $updateres=dbExecuteAssoc($sqlupdate)) {
-                throw new \CHttpException(500,
-                    "Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />");    //Checked
-            }
-        } // Enf if modified
-    } // end while qentry
-
-    # translate 'description' INSERTANS tags in groups
-    $sql = "SELECT gid, language, group_name, description from {{groups}}
-    WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
-    $res = dbExecuteAssoc($sql) or show_error("Can't read groups table in transInsertAns");     // Checked
-
-    //while ($qentry = $res->FetchRow())
-    foreach ($res->readAll() as $qentry)
-    {
-        $gpname = $qentry['group_name'];
-        $description = $qentry['description'];
-        $gid = $qentry['gid'];
-        $language = $qentry['language'];
-
-        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
-        {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $gpname = preg_replace('/'.$pattern.'/', $replacement, $gpname);
-            $description=preg_replace('/'.$pattern.'/', $replacement, $description);
-        }
-
-        if (strcmp($description,$qentry['description']) !=0  || strcmp($gpname,$qentry['group_name']) !=0)
-        {
-            // Update Fields
-            $where = array(
-            'gid' => $gid,
-            'language' => $language
-            );
-            $oGroup = QuestionGroup::model()->findByAttributes($where);
-            $oGroup->description= $description;
-            $oGroup->group_name= $gpname;
-            $oGroup->save();
-
-        } // Enf if modified
-    } // end while qentry
-
-    # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT qid, language, question, help from {{questions}}
-    WHERE sid=".$newsid." AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
-    $result = dbExecuteAssoc($sql) or die("Can't read question table in transInsertAns ");     // Checked
-
-    //while ($qentry = $res->FetchRow())
-    $aResultData=$result->readAll() ;
-    foreach ($aResultData as $qentry)
-    {
-        $question = $qentry['question'];
-        $help = $qentry['help'];
-        $qid = $qentry['qid'];
-        $language = $qentry['language'];
-
-        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
-        {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $question=preg_replace('/'.$pattern.'/', $replacement, $question);
-            $help=preg_replace('/'.$pattern.'/', $replacement, $help);
-        }
-
-        if (strcmp($question,$qentry['question']) !=0 ||
-        strcmp($help,$qentry['help']) !=0)
-        {
-            // Update Field
-
-            $data = array(
-            'question' => $question,
-            'help' => $help
-            );
-
-            $where = array(
-            'qid' => $qid,
-            'language' => $language
-            );
-
-            Question::model()->updateByPk($where,$data);
-
-        } // Enf if modified
-    } // end while qentry
-
-    # translate 'answer' INSERTANS tags in answers
-    $result=Answer::model()->oldNewInsertansTags($newsid,$oldsid);
-
-    //while ($qentry = $res->FetchRow())
-    foreach ($result as $qentry)
-    {
-        $answer = $qentry['answer'];
-        $code = $qentry['code'];
-        $qid = $qentry['qid'];
-        $language = $qentry['language'];
-
-        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
-        {
-            $pattern = $sOldFieldname;
-            $replacement = $sNewFieldname;
-            $answer=preg_replace('/'.$pattern.'/', $replacement, $answer);
-        }
-
-        if (strcmp($answer,$qentry['answer']) !=0)
-        {
-            // Update Field
-
-            $data = array(
-            'answer' => $answer,
-            'qid' => $qid
-            );
-
-            $where = array(
-            'code' => $code,
-            'language' => $language
-            );
-
-            Answer::model()->update($data,$where);
-
-        } // Enf if modified
-    } // end while qentry
-}
-
-/**
 * Replaces EM variable codes in a current survey with a new one
 *
 * @param mixed $iSurveyID The survey ID
@@ -5620,7 +5419,6 @@ function getHeader($meta = false)
 {
     global $embedded,$surveyid ;
     Yii::app()->loadHelper('surveytranslator');
-
     // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
 
     $languagecode = isset(App()->surveySessionManager->current) ?App()->surveySessionManager->current->language : App()->language;
@@ -5979,8 +5777,14 @@ function array_diff_assoc_recursive($array1, $array2) {
 
     function renderOldTemplate($fileName, $data = [], $replacements = []) {
         bP();
-        echo templatereplace(file_get_contents($fileName), $data, $replacements);
-        eP();
+        $session = App()->surveySessionManager->current;
+        try {
+            echo templatereplace(file_get_contents($fileName), $data, $replacements, null, $session);
+        } catch(\Exception $e) {
+            vdd($e);
+        } finally {
+            eP();
+        }
 
     }
 // Closing PHP tag intentionally omitted - yes, it is okay

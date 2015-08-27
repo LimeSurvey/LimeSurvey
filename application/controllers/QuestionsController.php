@@ -180,5 +180,24 @@ class QuestionsController extends Controller
         }
         return $result;
     }
+
+    public function actionPreview($id) {
+        $question = $this->loadModel($id);
+        $this->layout = 'showsurvey';
+        $dummy = new \DummyResponse();
+        $session = new \SurveySession($question->sid, $dummy, null);
+        App()->surveySessionManager->setCurrent($session);
+        $renderedQuestion = $question->render($dummy, $session);
+        $path = \Template::getTemplatePath($question->survey->template);
+        ob_start();
+        renderOldTemplate("$path/startpage.pstpl");
+        renderOldTemplate("$path/startgroup.pstpl");
+        $renderedQuestion->setTemplate(file_get_contents($path . '/question.pstpl'));
+        echo $renderedQuestion->render($session);
+        renderOldTemplate("$path/endgroup.pstpl");
+        renderOldTemplate("$path/endpage.pstpl");
+
+        $this->renderText(ob_get_clean());
+    }
 }
 

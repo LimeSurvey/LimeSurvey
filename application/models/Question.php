@@ -866,10 +866,8 @@
                 case self::TYPE_LONG_TEXT:
                     $class = \ls\models\questions\LongTextQuestion::class;
                     break;
-
                 case self::TYPE_SHORT_TEXT:
-
-                    $class = \ls\models\questions\TextQuestion::class;
+                    $class = \ls\models\questions\ShortTextQuestion::class;
                     break;
                 case self::TYPE_LIST_WITH_COMMENT:
                     $class = \ls\models\questions\SingleChoiceWithCommentQuestion::class;
@@ -1165,7 +1163,7 @@
         }
 
 
-        public function getExpressionManager(Response $response = null) {
+        public function getExpressionManager(\ls\interfaces\iResponse $response = null) {
             $session = App()->surveySessionManager->current;
             if (!isset($response)) {
                 $callback = function($name, $attribute, $default, $groupSequence, $questionSequence) {
@@ -1231,6 +1229,10 @@
                 $questionGetter = function($code) use ($session) {
                     return $session->getQuestionByCode($code);
                 };
+            } else {
+                $questionGetter = function() {
+                    throw new \Exception("No getter for question.");
+                };
             }
             return new ExpressionManager($callback, $questionGetter);
         }
@@ -1270,11 +1272,13 @@
          * @param \SurveySession $session
          * @return \RenderedQuestion
          */
-        public function render(\Response $response, \SurveySession $session)
+        public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
         {
-            $result = new \RenderedQuestion();
+            bP();
+            $result = new \RenderedQuestion($this);
+            $result->setIndex($session->getQuestionIndex($this->primaryKey));
 
-            $em = $this->getExpressionManager($session->response);
+            $em = $this->getExpressionManager($response);
             $parts = $em->asSplitStringOnExpressions($this->question);
             $text = '';
 
@@ -1302,6 +1306,7 @@
                 $result->addValidation($em->getJavascript($expression), $message);
             }
 
+            eP();
             return $result;
         }
 

@@ -59,6 +59,8 @@ $internalConfig = array(
 //            'compressJs'=>false,
             'packages' => require('third_party.php'),
         ],
+
+
         'urlManager' => [
             'urlFormat' => 'get',
             'rules' => require('routes.php'),

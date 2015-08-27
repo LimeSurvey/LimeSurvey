@@ -725,8 +725,8 @@ class pdf extends TCPDF {
     $sGroupName = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupName)),ENT_COMPAT);
     $sGroupDescription = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupDescription)),ENT_COMPAT);
     $sData['thissurvey']=$this->_aSurveyInfo;
-    $sGroupName = templatereplace($sGroupName, array(), $sData, '', null, array(), true);
-    $sGroupDescription = templatereplace($sGroupDescription, array(), $sData, '', null, true);
+    $sGroupName = templatereplace($sGroupName, array(), $sData, null, true);
+    $sGroupDescription = templatereplace($sGroupDescription, array(), $sData, null);
 
     $startPage = $this->getPage();
     $this->startTransaction();
@@ -769,7 +769,7 @@ class pdf extends TCPDF {
     if ($bReplaceExpressions)
     {
         $sData['thissurvey']=$this->_aSurveyInfo;
-        $sQuestionHTML = templatereplace($sQuestionHTML, array(), $sData, '', null, true);
+        $sQuestionHTML = templatereplace($sQuestionHTML, array(), $sData, null);
     }
     $sResponse = flattenText($sResponse, false, true, 'UTF-8', false);
 

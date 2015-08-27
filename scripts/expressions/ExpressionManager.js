@@ -79,16 +79,16 @@ function ExpressionManager(vars) {
         });
         $('[data-irrelevance-expression]').each(function(i, elem) {
             var $elem = $(elem);
-            var result = that.evaluate($elem.attr('data-irrelevance-expression'));
+            var result = that.evaluate($elem.attr('data-irrelevance-expression'), $elem);
             //console.log("Evaluated " + $elem.attr('data-irrelevance-expression') + " result:");
             //console.log(result);
             $elem.toggleClass('irrelevant', result);
         });
         $('[data-enabled-expression]').each(function(i, elem) {
             var $elem = $(elem);
-            var result = that.evaluate($elem.attr('data-enabled-expression'));
-            //console.log("Evaluated " + $elem.attr('data-irrelevance-expression') + " result:");
-            //console.log(result);
+            var result = that.evaluate($elem.attr('data-enabled-expression'), $elem);
+            console.log("Evaluated " + $elem.attr('data-enabled-expression') + " result:");
+            console.log(result);
             $elem.find('input, textarea, select').attr('disabled', !result);
             $elem.attr('disabled', !result);
         });
@@ -98,7 +98,7 @@ function ExpressionManager(vars) {
     this.updateReplacements = function() {
         $('[data-expression]').each(function(e) {
             $this = $(this);
-            var html = eval($this.attr('data-expression'));
+            var html = that.evaluate($this.attr('data-expression', $elem));
             if (html === null) {
                 $this.html('');
             } else {
@@ -111,7 +111,7 @@ function ExpressionManager(vars) {
     this.updateValidity = function() {
         $('[data-validation-expression]').each(function(i, elem) {
             var $elem = $(elem);
-            $elem.closest('.answer').toggleClass('invalid', !that.evaluate($elem.attr('data-validation-expression')));
+            $elem.closest('.answer').toggleClass('invalid', !that.evaluate($elem.attr('data-validation-expression'), $elem));
 
         })
     }
@@ -121,16 +121,24 @@ function ExpressionManager(vars) {
         return $('[name=' + vars[code].name + ']').closest('.question-wrapper').parent();
     }
 
-    this.evaluate = function(expr) {
+    this.evaluate = function(expr, reference) {
         if (typeof expr == "boolean") {
             return expr;
         } else if (expr == "") {
             return false;
         }
-        return eval(expr);
+        try {
+            var result = eval(expr);
+        } catch (e) {
+            if (e instanceof SyntaxError) {
+                console.log(reference);
+                console.error(e.message);
+            }
+        }
+        return result;
     }
     this.isRelevant = function(code) {
-        return this.evaluate(vars[code].relevance);
+        return this.evaluate(vars[code].relevance, code);
     }
 
     this.val = function(code) {
@@ -148,7 +156,7 @@ function ExpressionManager(vars) {
                 if (this.isRelevant(code)) {
                     return vars[code].value;
                 } else {
-                    return null;
+                    return {"irrelevant" : true};
                 }
                 break;
             case 'shown':
@@ -160,10 +168,14 @@ function ExpressionManager(vars) {
                         return shown;
                     }
                 } else {
-                    return null;
+                    return {"irrelevant" : true};
                 }
+            case 'NAOK':
+                return vars[code].value;
+                break;
             default:
                 console.error('Unknown suffix: ' + suffix);
         }
     }
 }
+

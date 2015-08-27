@@ -263,15 +263,14 @@ function submittokens($quotaexit=false)
                 $dateformatdatat = getDateFormatData($survey->getLocalizedDateFormat());
                 $numberformatdatat = getRadixPointData($survey->getLocalizedNumberFormat());
                 $redata = [];
-                $subject=templatereplace($subject, $aReplacementVars, $redata, 'email_confirm_subj', null, true);
+                $subject=templatereplace($subject, $aReplacementVars, $redata, null);
 
                 $subject = html_entity_decode($subject,ENT_QUOTES);
 
                 $ishtml = $survey->bool_htmlemail;
 
                 $message = html_entity_decode(
-                    templatereplace($survey->getLocalizedConfirmationEmail(), $aReplacementVars, $redata,
-                        'email_confirm', null, true),
+                    templatereplace($survey->getLocalizedConfirmationEmail(), $aReplacementVars, $redata, null),
                     ENT_QUOTES
                 );
                 if (!$ishtml)
@@ -455,10 +454,8 @@ function sendSubmitNotifications($surveyid)
     $redata=compact(array_keys(get_defined_vars()));
     if (count($aEmailNotificationTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata,
-            'admin_notification', null, true);
-        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata,
-            'admin_notification_subj', null, true);
+        $sMessage=templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata, null);
+        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata, null);
         foreach ($aEmailNotificationTo as $sRecipient)
         {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
@@ -489,10 +486,8 @@ function sendSubmitNotifications($surveyid)
     }
     if (count($aEmailResponseTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata,
-            'detailed_admin_notification', null, true);
-        $sSubject=templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata,
-            'detailed_admin_notification_subj', null, true);
+        $sMessage=templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, null);
+        $sSubject=templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, null);
         foreach ($aEmailResponseTo as $sRecipient)
         {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
@@ -826,10 +821,10 @@ function checkCompletedQuota($return=false)
     if ($sAction == "1" && $sClientToken)
         submittokens(true);
     // Construct the default message
-    $sMessage = templatereplace($sMessage, array(), $aDataReplacement, 'QuotaMessage', null, true);
+    $sMessage = templatereplace($sMessage, array(), $aDataReplacement, null);
     $sUrl = passthruReplace($sUrl, $aSurveyInfo);
-    $sUrl = templatereplace($sUrl, array(), $aDataReplacement, 'QuotaUrl', null, true);
-    $sUrlDescription = templatereplace($sUrlDescription, array(), $aDataReplacement, 'QuotaUrldescription', null, true);
+    $sUrl = templatereplace($sUrl, array(), $aDataReplacement, null);
+    $sUrlDescription = templatereplace($sUrlDescription, array(), $aDataReplacement, null);
 
     // Construction of default message inside quotamessage class
     $sHtmlQuotaMessage = "<div class='quotamessage limesurveycore'>\n";

@@ -14,18 +14,29 @@ class TenPointArrayQuestion extends FixedArrayQuestion
 
     public function getAnswers($scale = null)
     {
-        // TODO: Implement getAnswers() method.
+        $result = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $result[$i] = $i;
+        }
+
+        if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
+            $result[""] = gT("No answer");
+        }
+        return $result;
     }
 
-    /**
-     * This function return the class by question type
-     * @param string question type
-     * @return string Question class to be added to the container
-     */
     public function getClasses()
     {
-        return ['array-10-pt'];
+        $result = parent::getClasses();
+        $result[] = 'array-10-pt';
+        return $result;
     }
+
+    protected function getSummary()
+    {
+        return gT("An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. ");
+    }
+
 
 
 }

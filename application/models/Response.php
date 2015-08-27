@@ -7,7 +7,7 @@
      * @property Question[] $questions
 	 * @property Survey $survey
 	 */
-	abstract class Response extends Dynamic
+	abstract class Response extends Dynamic implements \ls\interfaces\iResponse
 	{
         private $_attributeLabels = [];
         private $_questions;
@@ -61,19 +61,8 @@
         {
             return $this->dynamicId;
         }
-        /**
-		 *
-		 * @param mixed $className Either the classname or the survey id.
-		 * @return Response
-		 */
-		public static function model($surveyId = null) {
-            if (!is_numeric($surveyId)) {
-                throw new \InvalidArgumentException("Survey ID must be numeric");
-            }
-			return parent::model($surveyId);
-		}
 
-		/**
+        /**
 		 *
 		 * @param int $surveyId
 		 * @param string $scenario
@@ -498,6 +487,24 @@
                 ];
             }
             return $behaviors;
+        }
+
+        /**
+         * Must be implemented because of iResponse.
+         * @return string The UUID for this response.
+         */
+        public function getId() {
+            return $this->getAttribute('id');
+        }
+
+        public static function loadById($id) {
+            return static::model()->findByPk($id);
+        }
+
+        public function getToken() {
+            if ($this->hasAttribute('token')) {
+                return $this->getAttribute('token');
+            }
         }
     }
 

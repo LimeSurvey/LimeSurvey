@@ -134,7 +134,7 @@ use \Yii;
                 }
                 $sOutput .= "</table>\n";
                 $sData['thissurvey']=$aSurveyInfo;
-                $sOutput=templatereplace($sOutput, array(), $sData, '', null, true);// Do a static replacement
+                $sOutput=templatereplace($sOutput, array(), $sData, null);// Do a static replacement
                 ob_start(function($buffer, $phase) {
                     App()->getClientScript()->render($buffer);
                     App()->getClientScript()->reset();

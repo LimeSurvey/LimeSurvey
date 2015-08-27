@@ -74,23 +74,18 @@ class SurveySessionManager extends CApplicationComponent
         return $this->sessions[$id];
     }
 
-    public function newSession($surveyId, $responseId = null)
+    public function newSession($surveyId, \ls\interfaces\iResponse $response)
     {
         /** @var SurveySession $session */
-        if (!isset($responseId)) {
-            $response = Response::create($surveyId);
-            $response->save();
-            $responseId = $response->id;
-        }
 
         foreach($this->sessions as $session) {
-            if ($session->getSurveyId() == $surveyId && $session->getResponseId() == $responseId) {
+            if ($session->getSurveyId() == $surveyId && $session->getResponseId() == $response->getId()) {
                 throw new \Exception("Duplicate session detected.");
             }
         }
         // Doesn't really need to be random
         $sessionId = rand(1, 1000);
-        $this->_current = $this->sessions[$sessionId] = new SurveySession($surveyId, $responseId, $sessionId);
+        $this->_current = $this->sessions[$sessionId] = new SurveySession($surveyId, $response, $sessionId);
         return $this->current;
     }
 

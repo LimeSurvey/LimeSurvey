@@ -170,7 +170,7 @@ class SurveysController extends Controller
             }
             $response->save();
 
-            $session = App()->surveySessionManager->newSession($survey->primaryKey, $response->id);
+            $session = App()->surveySessionManager->newSession($survey->primaryKey, $response);
             if (isset($token)) {
                 $session->setToken($token);
             }

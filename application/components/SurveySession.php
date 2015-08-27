@@ -24,7 +24,7 @@ class SurveySession extends CComponent {
      * These variables are not serialized.
      */
     /**
-     * @var Response
+     * @var \ls\interfaces\iResponse
      */
     private $_response;
     /**
@@ -39,6 +39,7 @@ class SurveySession extends CComponent {
     protected $id;
 
     protected $_responseId;
+    protected $_responseClass;
     protected $_language = 'en';
     protected $_prevStep = 0;
     protected $_step = 0;
@@ -58,13 +59,13 @@ class SurveySession extends CComponent {
      * @param int $responseId
      * @param integer $id
      */
-    public function __construct($surveyId, $responseId, $id)
+    public function __construct($surveyId, \ls\interfaces\iResponse $response, $id)
     {
         $this->surveyId = $surveyId;
-        $this->_responseId = $responseId;
+        $this->_responseId = $response->getId();
+        $this->_response = $response;
+        $this->_responseClass = get_class($response);
         $this->id = $id;
-        // Need isset since the token property does not exist for surveys without token.
-        $this->_token = isset($this->response->token) ? $this->response->token : null;
     }
 
     public function getSurveyId() {
@@ -87,7 +88,7 @@ class SurveySession extends CComponent {
     }
 
     public function getToken() {
-        return $this->_token;
+        return $this->_response->getToken();
     }
 
     public function setToken($value) {
@@ -109,12 +110,16 @@ class SurveySession extends CComponent {
         return $this->id;
     }
 
+
     public function getResponse() {
+
         if (!isset($this->_response)) {
-            $this->_response = Response::model($this->surveyId)->findByPk($this->_responseId);
+            $responseClass = $this->_responseClass;
+            $this->_response = $responseClass::loadById($this->_responseId);
         }
         return $this->_response;
     }
+
 
     /**
      * This function loads a survey and makes sure all related AR objects have their relations filled.
@@ -324,6 +329,7 @@ class SurveySession extends CComponent {
             '_maxStep',
             '_prevStep',
             '_responseId',
+            '_responseClass',
             '_finished',
             '_language',
             '_postKey',
