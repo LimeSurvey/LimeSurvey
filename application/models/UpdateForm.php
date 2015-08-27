@@ -582,9 +582,7 @@ class UpdateForm extends CFormModel
                $security_update_available = Yii::app()->session['security_update'];
                $updates = array('result'=>$update_available , 'security_update'=>$security_update_available);
         }
-
         return (object) $updates;        
-        
     }
 
 
