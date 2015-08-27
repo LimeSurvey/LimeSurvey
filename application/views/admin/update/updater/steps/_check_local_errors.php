@@ -20,85 +20,96 @@
         echo $localChecks->html;
 ?>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th class="span10"><?php eT('Available space in directory:');?></th>
+            <th class="span2"  style="text-align: right"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($localChecks->files as $file):?>
+            <?php if($file->freespace !== 'pass'): ?>
+                <tr>
+                    <td><?php echo $file->name;?></td>
+                    <td class="<?php if($file->freespace){echo "success" ;}else{echo "error";}?>" style="text-align: right">
+                        <?php if($file->freespace): ?>
+                            <?php eT('OK');?>
+                        <?php else: ?>
+                            <?php eT('Not enough space'); ?>
+                            <?php $errors = true; $ignore = true; ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php if($errors): ?>
+    <div>
+    <em>
+        <?php eT("Note : In some hosting, like shared hosting, it can happen that the available free space is not correctly evaluated. If you checked manually that you have enough free space to update, please, just ignore this error."); ?>
+    </em>
+    <br/><br/>
+    </div>
+<?php endif;?>
 
-<ul>
-<?php // foreach($localChecks as $check):?>
-
-<?php foreach($localChecks->files as $file):?>
-    <li>
-        <strong><?php echo $file->name;?> :</strong>
-    </li>
-    <li>
-        <ul>
-        <?php if($file->writable !== 'pass'): ?>
-            <li>
-                <span class="checkLine"><?php eT('Writable'); ?>:</span>
-                <?php if($file->writable): ?>
-                        <span class="success resultLine"><?php eT('OK');?></span>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="span10"><?php eT('PHP version required');?></th>
+            <th class="span2"  style="text-align: right"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><?php echo $localChecks->php->php_ver;?></td>
+            <td class="<?php if($localChecks->php->result){echo "success" ;}else{echo "error";}?>" style="text-align: right">
+                <?php if($localChecks->php->result): ?>
+                    <?php eT('OK');?>
                 <?php else: ?>
-                        <span class="errortitle resultLine"><?php eT('Not writable'); ?></span>
-                        <?php $errors = true; $cant_ignore = true; ?>
-                <?php endif;?>
-            </li>
-        <?php endif;?>
-        <?php if($file->freespace !== 'pass'): ?>
-            <li>
-                <span class="checkLine"><?php eT('Available space');?>:</span>
-                <?php if($file->freespace): ?>
-                    <span class="success resultLine"><?php eT('OK');?></span>
-                <?php else: ?>
-                    <span class="errortitle resultLine"> <?php eT('Not enough space'); ?></span>
-                    <?php $errors = true; $ignore = true; ?>
-                <?php endif;?>
-            </li>
-        <?php endif;?>
-        </ul>
-    </li>
-<?php endforeach; ?>
+                    <?php eT('Not enough space'); ?>
+                    <?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?>
+                    <?php $errors = TRUE; $cant_ignore = true;?>
+                <?php endif; ?>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-    <li>
-        <span class="checkLine"><?php printf(gT('PHP version %s required'),$localChecks->php->php_ver);?>:</span>
-        <?php if($localChecks->php->result):?>
-            <span class="success resultLine" ><?php eT('OK');?></span>
-        <?php else:?>
-            <span class="errortitle resultLine"  ><?php printf(gT('PHP version is only %s'),$localChecks->php->local_php_ver);?></span>
-            <?php $errors = TRUE; $cant_ignore = true;?>
-        <?php endif;?>
-    </li>
-
-<?php foreach($localChecks->php_modules as $name => $module):?>
-    <li>
-        <strong><?php echo $name;?> :</strong>
-    </li>
-    <li>
-        <ul>
-            <li>
-                <span class="checkLine"><?php eT('Installed'); ?>:</span>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="span10"><?php eT('Required PHP modules:');?></th>
+            <th class="span2"  style="text-align: right"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($localChecks->php_modules as $name => $module):?>
+        <tr>
+            <td><?php echo $name;?></td>
+            <td class="<?php if($module->installed){echo "success" ;}else{ if(isset($module->required)){echo "error";}else{echo "warning";}}?>" style="text-align: right">
                 <?php if($module->installed): ?>
-                        <span class="success resultLine" ><?php eT('OK');?></span>
+                    <?php eT('OK');?>
                 <?php else: ?>
                     <?php if(isset($module->required)): ?>
-                        <span class="errortitle resultLine"  ><?php eT('No'); ?> !</span>
+                        <?php eT('No'); ?> !
                         <?php $errors = TRUE; $cant_ignore = true; ?>
                     <?php elseif(isset($module->optional)): ?>
-                        <span class="warningtitle resultLine"  ><?php eT('No (but optional)'); ?></span>
+                        <?php eT('No (but optional)'); ?>
                     <?php endif;?>
-                <?php endif;?>
-            </li>
-        </ul>
-    </li>
-<?php endforeach; ?>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-
-</ul>
-
-
-
+<ul>
 
 <?php if($errors): ?>
 <p>
     <strong><?php eT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); ?></strong>
-    <?php // TODO : a new step request by url... ?>
 </p>
 
     <?php
