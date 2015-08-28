@@ -1160,6 +1160,11 @@ div.partialheader{
     padding:1% 10%;
 }
 
+.updater-background p,
+#updaterContent p {
+    text-align:left;
+}
+
 textarea.updater-changelog {
     width:800px;
     height:300px;

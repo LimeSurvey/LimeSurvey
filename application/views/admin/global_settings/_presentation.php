@@ -1,8 +1,8 @@
 <?php
 /**
  * This view generate the presentation tab inside global settings.
- * 
- *  
+ *
+ *
  */
 ?>
 <ul>
@@ -18,7 +18,7 @@
 
     <?php $thisrepeatheadings=getGlobalSetting('repeatheadings'); ?>
     <li><label for='repeatheadings'><?php eT("Repeating headings in array questions every X subquestions:"); ?></label>
-        <input id='repeatheadings' name='repeatheadings' value='<?php echo $thisrepeatheadings; ?>' size='4' maxlength='4' /></li>
+        <input type='text' id='repeatheadings' name='repeatheadings' value='<?php echo $thisrepeatheadings; ?>' size='4' maxlength='4' /></li>
 
     <?php
         // showxquestions

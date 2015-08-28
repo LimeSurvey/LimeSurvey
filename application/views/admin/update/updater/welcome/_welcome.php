@@ -46,10 +46,10 @@
     <p></p>
     <div>
         <h4><?php eT('ComfortUpdate key information'); ?></h4>
-        <strong><?php printf(gT('Your update key is %s.'),$serverAnswer->key_infos->keyid); ?></strong><br/>
-        <strong><?php printf(gT('Your key is valid until %s.'),$serverAnswer->key_infos->validuntil); ?></strong><br/>
+        <strong><?php eT('Your update key:');?> <?php echo $serverAnswer->key_infos->keyid; ?></strong><br/>
+        <strong><?php eT('Valid until:');?> <?php echo $serverAnswer->key_infos->validuntil; ?></strong><br/>
         <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
-            <strong><?php printf(ngT('It still has %s remaining updates.',$serverAnswer->key_infos->remaining_updates),$serverAnswer->key_infos->remaining_updates); ?> </strong><br/>
+            <strong><?php eT('Remaining updates:');?> <?php echo $serverAnswer->key_infos->remaining_updates;?></strong><br/>
         <?php } ?>
     </div>
     <div id="keyInfosbuttons">
