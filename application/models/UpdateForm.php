@@ -765,8 +765,9 @@ class UpdateForm extends CFormModel
         else
             $check->freespace = 'pass';        
         
-        return $check;        
+        $check->name = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $check->name);
         
+        return $check;        
     }
 
     /**
