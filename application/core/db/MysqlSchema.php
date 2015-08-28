@@ -38,7 +38,8 @@ class MysqlSchema extends CMysqlSchema
             }
             else
             { // Else join the yii type and the param ( decimal don't have params, other ?)
-                $result = $baseType.$param;
+                preg_match('/^([[:alpha:]]+)\s*(.*)$/', $baseType, $baseMatches);
+                $result = join(" ",array($baseMatches[1],$param,$baseMatches[2]));
             }
         }
         else
