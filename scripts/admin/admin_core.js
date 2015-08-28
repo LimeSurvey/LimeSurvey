@@ -163,8 +163,8 @@ function qTypeDropdownInit()
             {
                 $($(e.currentTarget).data().select2Data.element).qtip('hide');
             }
-            
-            
+
+
         });
         $('#question_type').on('close', function(e) {
             $('#question_type option').qtip('hide');
@@ -289,7 +289,7 @@ function doToolTip()
         }
     });
     $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
-    
+
     // Call the popuptip hover rel attribute
     $('.popuptip').each(function(){
         if($(this).attr('rel')){
@@ -427,7 +427,6 @@ function ev_gecko_select_keyup_ev(Ev) {
 }
 
 function init_gecko_select_hack() {
-    return true;
     var selects = document.getElementsByTagName("SELECT");
     for(i=0; i<selects.length; i++)
         selects.item(i).addEventListener("keyup", ev_gecko_select_keyup_ev, false);
@@ -666,7 +665,7 @@ if ('ab'.substr(-1) != 'b') {
 }
 
 /**
-* Yii CSRF protection divs breaks this script so this function moves the 
+* Yii CSRF protection divs breaks this script so this function moves the
 * hidden CSRF field out of the div and remove it if needed
 * 140207 : Why this function is needed ? Where is the script broken ?
 */
@@ -723,7 +722,7 @@ function initializeAjaxProgress()
     });
     $('#ajaxprogress').bind('ajaxStop', function()
     {
-        
+
         $(this).dialog('close');
     });
 }
@@ -775,7 +774,7 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
-function onlyUnique(value, index, self) { 
+function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 

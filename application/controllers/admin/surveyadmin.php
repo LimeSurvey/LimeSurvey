@@ -47,11 +47,11 @@ class SurveyAdmin extends Survey_Common_Action
     public function index()
     {
         App()->getClientScript()->registerPackage('jqgrid');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
         if (count(getSurveyList(true)) == 0)
         {
             $this->_renderWrappedTemplate('super', 'firststeps');
         } else {
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "listsurvey.js");
             Yii::app()->loadHelper('surveytranslator');
 
             $aData['issuperadmin'] = false;
