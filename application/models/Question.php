@@ -800,16 +800,6 @@
                         $result = [];
                     }
                     break;
-                case "P":  //Multiple choice with comment
-                    $result = call_user_func_array('array_merge', array_map(function(self $subQuestion) {
-                        $subResult = [];
-                        foreach ($subQuestion->columns as $name => $type) {
-                            $subResult[$this->sgqa . $name] = $type;
-                            $subResult[$this->sgqa . $name . 'comment'] = 'text';
-                        }
-                        return $subResult;
-                    }, $this->subQuestions));
-                    break;
                 case "D":  //DATE
                     $result = [$this->sgqa => "datetime"];
                     break;

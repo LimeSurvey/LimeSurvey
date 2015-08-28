@@ -165,6 +165,10 @@
             return true;
         }
 
+        /**
+         * Gets the replacements for group info.
+         * @return array
+         */
         public function getReplacements() {
             return [
                 'GROUPNAME' => $this->title,

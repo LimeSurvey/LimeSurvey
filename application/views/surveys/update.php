@@ -56,6 +56,10 @@
                     'label' => 'Access control',
                     'content' => $this->renderPartial('update/access', ['survey' => $survey, 'form' => $form], true),
 
+                ], [
+                    'label' => 'File management',
+                    'content' => $this->renderPartial('update/files', ['survey' => $survey], true),
+
                 ]
 
             ]
