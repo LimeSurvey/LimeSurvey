@@ -36,21 +36,21 @@ $.fn.displayComfortStep = function(options)
 	switch(params.step) {
 		
 	    case "newKey":
-	        $url = $("#newkeyurl").attr('aria-data-url');
+	        $url = $("#newkeyurl").attr('data-url');
 	        $("#welcome").hide();
 	        $("#newKey").show();	        
 	        break;
 	    
 	    case "checkFiles":
-	    	$url = $("#filesystemurl").attr('aria-data-url');
+	    	$url = $("#filesystemurl").attr('data-url');
 	    	break;
 	    
 	    case "checkLocalErrors":
-	    	$url = $("#checklocalerrorsurl").attr('aria-data-url');
+	    	$url = $("#checklocalerrorsurl").attr('data-url');
 	    	break;
 	    
 	    case "welcome":
-	    	$url = $("#welcomeurl").attr('aria-data-url');
+	    	$url = $("#welcomeurl").attr('data-url');
 	        break;
 	      
 	}

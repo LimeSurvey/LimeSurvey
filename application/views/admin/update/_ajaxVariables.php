@@ -34,12 +34,12 @@
     <input type="hidden" id="access_tokenForAjax" value="<?php echo $_REQUEST['access_token']; ?>"/>
 <?php endif;?>
 
- <input id="updatebothbranchdatas" type="hidden" aria-data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getbothbuttons"); ?>"/>
- <input id="updatestrablebranchdatas" type="hidden" aria-data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getstablebutton"); ?>"/>
+ <input id="updatebothbranchdatas" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getbothbuttons"); ?>"/>
+ <input id="updatestrablebranchdatas" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getstablebutton"); ?>"/>
  
- <input id="newkeyurl" type="hidden" aria-data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getnewkey"); ?>"/>        
- <input id="filesystemurl" type="hidden" aria-data-url="<?php echo Yii::app()->createUrl("admin/update/sa/fileSystem"); ?>"/>
- <input id="checklocalerrorsurl" type="hidden" aria-data-url="<?php echo Yii::app()->createUrl("admin/update/sa/checkLocalErrors"); ?>"/>
- <input id="welcomeurl" type="hidden" aria-data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getwelcome"); ?>"/>
+ <input id="newkeyurl" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getnewkey"); ?>"/>        
+ <input id="filesystemurl" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/fileSystem"); ?>"/>
+ <input id="checklocalerrorsurl" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/checkLocalErrors"); ?>"/>
+ <input id="welcomeurl" type="hidden" data-url="<?php echo Yii::app()->createUrl("admin/update/sa/getwelcome"); ?>"/>
  
  
