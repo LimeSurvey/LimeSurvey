@@ -15,17 +15,32 @@ class PgsqlSchema extends CPgsqlSchema
 
     /**
     * Adds support for replacing default arguments.
-    * @param type $type
+    * @param string $type
+    * @return string
     */
     public function getColumnType($type)
     {
-        if (preg_match('/^([[:alpha:]]+)\s*(\(.+?\))(.*)$/', $type, $matches)) {
+        if(isset(Yii::app()->db->schema->columnTypes[$type]))
+        { // Do it only if is not find directly
+            $result = parent::getColumnType($type);
+        }
+        elseif (preg_match('/^([[:alpha:]]+)\s*(\(.+?\))(.*)$/', $type, $matches))
+        {
             $baseType = parent::getColumnType($matches[1] . ' ' . $matches[3]);
             $param = $matches[2];
-            $result = preg_replace('/\(.+?\)/', $param, $baseType, 1);
-        } else {
+            if(preg_match('/^([[:alpha:]]+)\s*(\(.+?\))(.*)$/', $baseType))
+            { // If Yii type have default params, replace it
+                $result = preg_replace('/\(.+?\)/', $param, $baseType, 1);
+            }
+            else
+            { // Else join the yii type and the param ( decimal don't have params, other ?)
+                $result = $baseType.$param;
+            }
+        }
+        else
+        {
             $result = parent::getColumnType($type);
         }
         return $result;
-    }    
+    }
 }
