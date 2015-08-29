@@ -793,6 +793,10 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin: 1em;
 }
 
+ul.checkbox-text-list {
+    width: 99%;
+}
+
 .numeric-multi td.answer ul {
   margin: 0 1em 1.5em 1em;
 }

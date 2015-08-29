@@ -1003,6 +1003,14 @@ ul.cols-8 li,ul.cols-8-ul,table.cols-8 td {
   margin: 1em;
 }
 
+ul.checkbox-text-list {
+    width: 99%;
+}
+
+ul.checkbox-text-list span {
+	vertical-align: top !important;
+}
+
 .numeric-multi ul {
   margin: 0 1em 1.5em 1em;
 }

@@ -884,6 +884,15 @@ table.rank td.helptext {
   margin: 1em;
 }
 
+ul.checkbox-text-list {
+    width: 99%;
+}
+
+ul.checkbox-text-list span {
+	vertical-align: top !important;
+	width: 50%;
+}
+
 .numeric-multi ul {
   margin: 0 1em 1.5em 1em;
 }

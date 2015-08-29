@@ -905,6 +905,15 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
   margin: 1em;
 }
 
+ul.checkbox-text-list {
+    width: 99%;
+}
+
+ul.checkbox-text-list span {
+	vertical-align: top !important;
+	width: 50%;
+}
+
 .numeric-multi ul {
   margin: 0 1em 1.5em 1em;
 }
