@@ -1926,6 +1926,8 @@ function checkCompletedQuota($surveyid,$return=false)
         $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
         foreach ($aQuotasInfo as $aQuotaInfo)
         {
+            if(count($aQuotaInfo['members'])===0))
+                continue;
             $iMatchedAnswers=0;
             $bPostedField=false;
             // Array of field with quota array value
