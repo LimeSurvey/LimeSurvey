@@ -12,6 +12,7 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
     $userConfig = require(dirname(__FILE__) . '/config.php');
 }
 @date_default_timezone_set(@date_default_timezone_get());
+
 $internalConfig = array(
     'basePath' => dirname(dirname(__FILE__)),
     'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
@@ -39,6 +40,10 @@ $internalConfig = array(
             'combineJs'=>$userConfig['config']['debug']>0?false:true,
             'compressJs'=>false,
             'packages' => require('third_party.php'),
+            'excludeFiles'=>array(
+              dirname($_SERVER['SCRIPT_NAME']).'/third_party/leaflet/leaflet.js',
+              dirname($_SERVER['SCRIPT_NAME']).'/scripts/map.js',
+            ),
         ),
         'urlManager' => array(
             'urlFormat' => 'get',
