@@ -107,7 +107,7 @@ $(document).ready(function(){
     $('#attmap').click(function(){
         var anewcurrentarray = {};
         newcurrentarray = new Array();
-        $('#newcreated .attribute-item').each(function(i) {
+        $('#newcreated .attribute-item[id]').each(function(i) {
             newcurrentarray.push($(this).attr('id'));
         });
         $.each(newcurrentarray, function(index,value) {
@@ -117,7 +117,7 @@ $(document).ready(function(){
         });
         var mappedarray = {};
         tokencurrentarray = new Array();
-        $('#centralattribute .attribute-item').each(function(i) {
+        $('#centralattribute .attribute-item[id]').each(function(i) {
             tokencurrentarray.push($(this).attr('id'));
         });
         $.each(tokencurrentarray, function(index,value) {
