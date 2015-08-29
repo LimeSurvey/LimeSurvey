@@ -9,8 +9,8 @@ class PgsqlSchema extends CPgsqlSchema
         * Auto increment.
         */
         $this->columnTypes['autoincrement'] = 'serial';
-
         $this->columnTypes['longbinary'] = 'bytea';
+        $this->columnTypes['decimal'] = 'numeric (10,0)'; // Same default than MySql (not used)
     }
 
     /**
@@ -20,28 +20,26 @@ class PgsqlSchema extends CPgsqlSchema
     */
     public function getColumnType($type)
     {
-        if(isset(Yii::app()->db->schema->columnTypes[$type]))
-        { // Do it only if is not find directly
-            $result = parent::getColumnType($type);
+        if (isset(Yii::app()->db->schema->columnTypes[$type]))
+        { // Direct : get it
+            $sResult=Yii::app()->db->schema->columnTypes[$type];
         }
-        elseif (preg_match('/^([[:alpha:]]+)\s*(\(.+?\))(.*)$/', $type, $matches))
-        {
-            $baseType = parent::getColumnType($matches[1] . ' ' . $matches[3]);
-            $param = $matches[2];
-            if(preg_match('/^([[:alpha:]]+)\s*(\(.+?\))(.*)$/', $baseType))
-            { // If Yii type have default params, replace it
-                $result = preg_replace('/\(.+?\)/', $param, $baseType, 1);
+        elseif (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $type, $matches)) 
+        { // With params : some test to do
+            $baseType = parent::getColumnType($matches[1]);
+            if(preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $baseType, $baseMatches))
+            { // Replace the default Yii param
+                $sResult=preg_replace('/\(.+\)/', "(".$matches[2].")",parent::getColumnType($matches[1]." ".$matches[3]));
             }
             else
-            { // Else join the yii type and the param ( decimal don't have params, other ?)
-                preg_match('/^([[:alpha:]]+)\s*(.*)$/', $baseType, $baseMatches);
-                $result = join(" ",array($baseMatches[1],$param,$baseMatches[2]));
+            { // Get the base type and join
+                $sResult=join(" ",array($baseType,"(".$matches[2].")",$matches[3]));
             }
         }
         else
         {
-            $result = parent::getColumnType($type);
+            $sResult = parent::getColumnType($type);
         }
-        return $result;
+        return $sResult;
     }
 }
