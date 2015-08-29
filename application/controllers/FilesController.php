@@ -87,7 +87,7 @@ class FilesController extends Controller
 
         $finder = new elFinder([
             'debug' => true,
-            'roots' => isset($surveyId) ? [$this->getRootForSurvey($surveyId)] : $this->getRoots()
+            'roots' => is_numeric($surveyId) ? [$this->getRootForSurvey($surveyId)] : $this->getRoots()
 
         ]);
 
@@ -102,7 +102,8 @@ class FilesController extends Controller
      * @todo Add permission check and set appropriate rights.
      */
     protected function getRootForSurvey($surveyId) {
-        $relative = "/upload/surveys/{$surveyId}";
+
+        $relative = "/upload/surveys/$surveyId";
         $dir = Yii::getPathOfAlias('webroot') . $relative;
         if (!is_dir($dir)) {
             mkdir($dir);
@@ -126,7 +127,7 @@ class FilesController extends Controller
 
     protected function getAssetsUrl() {
         $dir = __DIR__ . '/../vendor/studio-42/elfinder/';
-        $url = App()->assetManager->getPublishedPath($dir);
+        $url = App()->assetManager->getPublishedUrl($dir);
         return $url;
     }
     protected function getRoots()
@@ -137,6 +138,7 @@ class FilesController extends Controller
         foreach (\Survey::model()->accessible()->findAll() as $survey) {
             $result[] = $this->getRootForSurvey($survey->primaryKey);
         }
+//        vdd($result);
 //        $result[] = [
 //            'alias' => "All surveys",
 //            'driver' => 'LocalFileSystem',

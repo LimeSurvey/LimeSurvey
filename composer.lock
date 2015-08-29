@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "90facc896856fab99e2b13f04b9c5bca",
+    "hash": "a5d769d932bcee7c1cba730dcb673952",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -91,6 +91,22 @@
             "description": "helper libaray for dealing with arabic language",
             "homepage": "http://www.ar-php.org/",
             "time": "2012-11-03 12:29:33"
+        },
+        {
+            "name": "bower-asset/TinyMCE-Placeholder",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SAM-IT/TinyMCE-Placeholder.git",
+                "reference": "329d2b196f792862de8e273a26e4124aa806eebb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SAM-IT/TinyMCE-Placeholder/zipball/329d2b196f792862de8e273a26e4124aa806eebb",
+                "reference": "329d2b196f792862de8e273a26e4124aa806eebb",
+                "shasum": ""
+            },
+            "type": "bower-asset-library"
         },
         {
             "name": "bower-asset/ajaxq",
@@ -1793,7 +1809,8 @@
         "zendframework/zend-diactoros": 20,
         "bower-asset/ajaxq": 20,
         "bower-asset/tinymce": 20,
-        "studio-42/elfinder": 20
+        "studio-42/elfinder": 20,
+        "bower-asset/tinymce-placeholder": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

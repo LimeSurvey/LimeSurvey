@@ -7,7 +7,10 @@
     {
         public function run()
         {
-            App()->getClientScript()->registerScriptFile(App()->getAssetManager()->publish(Yii::getPathOfAlias('ext.LimeScript.assets'). '/script.js'));
+            $cs = App()->clientScript;
+            $cs->registerScriptFile(App()->getAssetManager()->publish(
+                __DIR__ . '/assets/script.js')
+            );
             
             $data = array();
             $data['baseUrl']                    = Yii::app()->getBaseUrl(true);
@@ -18,9 +21,10 @@
             $data['language']                   = Yii::app()->language;
             $data['replacementFields']['path']  = App()->createUrl("admin/limereplacementfields/sa/index/");
             $json = json_encode($data, JSON_FORCE_OBJECT);
-            $script = "LS.data = $json;\n"
-                    . "$.ajaxSetup({data: {YII_CSRF_TOKEN: LS.data.csrfToken}});";
-            App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
+            $script = "LS = new LimeSurvey($json);\n"
+                    . "$.ajaxSetup({data: {YII_CSRF_TOKEN: LS.getToken() }});";
+
+            $cs->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }
     }
 

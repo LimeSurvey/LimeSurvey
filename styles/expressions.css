@@ -10,3 +10,26 @@
 .em-var-error,a.em-var-error{color: #ff0000 /* red */}
 .em-assign{color: #ff4500 /* orangered */}
 .em-error{border: 2px solid #ff0000; /* red */;}
+
+
+.expression{
+    background-color: green;
+    font-weight: bold;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+
+}
+
+.expression[contenteditable=true] {
+    background-color: red;
+}
+.expression::before {
+    content : '{' attr(title);
+}
+
+.expression::after {
+ content : '}';
+}
+

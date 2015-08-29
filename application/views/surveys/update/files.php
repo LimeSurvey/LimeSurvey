@@ -31,5 +31,6 @@ echo CHtml::tag('div', [
     'class' => 'col-md-12'
 ], CHtml::tag('div', [
     'id' => 'elfinder',
-    'style' => 'height: 200px;'
+    'style' => 'min-height: 200px; padding-bottom: 20px;'
+
 ]));
