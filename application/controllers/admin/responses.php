@@ -413,6 +413,7 @@ class responses extends Survey_Common_Action
             'align'=>'center',
             'label' => gt("Completed"),
         );
+        // defaultSearch is the default search done before send request in json. Actually : completed and token only. Can be extended ( js is ready) ?
         $defaultSearch=array();
         if (incompleteAnsFilterState() == "incomplete")
         {
@@ -426,7 +427,6 @@ class responses extends Survey_Common_Action
         {
             $defaultSearch['completed']="";
         }
-
         //add token to top of list if survey is not private
         if ($aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId)) //add token to top of list if survey is not private
         {
@@ -465,6 +465,11 @@ class responses extends Survey_Common_Action
                 'align'=>'left',
                 'title'=>gt('Email'),
             );
+            // If token exist, test if token is set in params, add it to defaultSearch
+            if($sTokenSearch= Yii::app()->request->getQuery('token'))
+            {
+                $defaultSearch['token']=$sTokenSearch;
+            }
         }
 
 
