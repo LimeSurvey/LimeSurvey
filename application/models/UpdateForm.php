@@ -696,11 +696,13 @@ class UpdateForm extends CFormModel
      */
     private function _getCheckedFile($file)
     {
+
+        $checkedfile = new stdClass();
+        $checkedfile->type = ''; 
+        $checkedfile->file = '';
+
         if($file['file']!='/application/config/version.php')
         {
-            $checkedfile = new stdClass();
-            $checkedfile->type = ''; 
-            $checkedfile->file = '';
     
             // We check if the file exist
             if ( $file['type'] == 'A' && file_exists($this->rootdir . $file['file']) ) 
