@@ -529,7 +529,9 @@ class UpdateForm extends CFormModel
         
         if (is_null($next_update_check) || ($next_update_check <  $today) || is_null(Yii::app()->session['update_result']) )
         {
-            echo "processing";
+            // Turn on the alert notification
+            Yii::app()->session['notificationstate']=1;
+            
             $updates = $this->getUpdateInfo($crosscheck="1");
             $update_available = FALSE;    
             if($updates->result)

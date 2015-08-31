@@ -435,6 +435,15 @@ class update extends Survey_Common_Action
     }
 
     /**
+     * This function change the notification state : big alert notification 1, or small one 0
+     * It's called via ajax from view adminmenu
+     */
+    public function notificationstate($state='0')
+    {
+        Yii::app()->session['notificationstate'] = $state;
+        return '1';
+    }
+    /**
      * this function render the update buttons 
      * @param object $serverAnswer the update server answer (getInfo)  
      */

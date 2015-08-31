@@ -381,17 +381,10 @@ class AdminController extends LSYii_Controller
             Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
         }
 
-        $aData['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && getGlobalSetting("updatenotification")!='never' && getGlobalSetting("updateavailable")==1 && Yii::app()->getConfig("updatable") );
-        if($aData['showupdate'])
-        {
-        $aData['aUpdateVersions'] = json_decode(getGlobalSetting("updateversions"),true);
-            $aUpdateTexts=array();
-            foreach ($aData['aUpdateVersions'] as $aVersion)
-            {
-               $aUpdateTexts[]=$aVersion['versionnumber'].'('.$aVersion['build'].')';
-            }
-            $aData['sUpdateText']=implode(' '.gT('or').' ',$aUpdateTexts);
-        }
+        $updateModel = new UpdateForm();
+        $updateNotification = $updateModel->updateNotification;
+        $aData['showupdate'] = $updateNotification->result;
+
         $aData['surveyid'] = $surveyid;
         $aData['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');

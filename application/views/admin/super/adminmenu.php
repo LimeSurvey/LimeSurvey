@@ -11,11 +11,12 @@
                 </strong>
                 <?php } ?>
         </div>
-        <?php
-            if($showupdate)
-            { ?>
-            <div class='menubar-title-right'><a href='<?php echo $this->createUrl("admin/globalsettings");?>'><?php echo sprintf(ngT('Update available: %s|Updates available: %s',count($aUpdateVersions)),$sUpdateText);?></a></div>
-            <?php } ?>
+
+        <?php if($showupdate): ?>
+            <div id="update-small-notification" class='menubar-title-right <?php if(Yii::app()->session['notificationstate']=='1'){echo 'hidden';};?> fade in'>
+                        <strong><?php eT('New update available:');?></strong> <a href="<?php echo Yii::app()->createUrl("admin/globalsettings", array("update"=>'updatebuttons')); ?>"><?php eT('Click here to use ComfortUpdate or to download it.');?></a>
+            </div>
+        <?php endif; ?>                        
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
@@ -120,3 +121,26 @@
     </div>
 </div>
 <p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>
+
+<script>
+$(document).ready(function(){
+    $('#update-alert').on('closed.bs.alert', function () {
+        $('#update-small-notification').removeClass('hidden');
+        
+
+        // The ajax request call an action to update controller. This action is defined inside the form.
+        // For example, the forms .launchUpdateForm inside the view _updatesavailable calls update/sa/getwelcome wich will itself calls the update server to get the welcome message.
+        $.ajax({
+            url: $(this).attr('data-url-notification-state'),
+            type: 'GET',
+            success: function(html) {
+            },
+            error :  function(html, statut){
+            },
+            
+        });
+        
+      
+    });
+});    
+</script>

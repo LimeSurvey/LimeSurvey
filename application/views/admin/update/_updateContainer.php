@@ -19,13 +19,3 @@
     <!-- The updater  -->
     <?php $this->renderPartial("./update/updater/_updater"); ?>
 </div>
-
-<?php
-/**
- * TODO : move to CSS file, with all the inline styles
- */
-?>
-
-<style media="screen" type="text/css">
-
-</style>

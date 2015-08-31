@@ -1160,10 +1160,7 @@ div.partialheader{
     padding:1% 10%;
 }
 
-.updater-background p,
-#updaterContent p {
-    text-align:left;
-}
+
 
 textarea.updater-changelog {
     width:800px;
@@ -1428,7 +1425,12 @@ div.right {
 
 
 
-/* New ComfrtUpdate */
+/* New ComfortUpdate */
+
+.updater-background p,
+#updaterContent p {
+    text-align:left;
+}
 
 .on {
    font-weight: bold;
