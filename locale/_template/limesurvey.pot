@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2015-08-27 08:51:18+00:00\n"
+"POT-Creation-Date: 2015-08-31 11:09:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -108,27 +108,20 @@ msgstr ""
 #: application/extensions/Menu/MenuWidget.php:142
 #: application/views/admin/conditions/conditionshead_view.php:25
 #: application/views/admin/index.php:4
-#: application/views/admin/super/adminmenu.php:118
+#: application/views/admin/super/adminmenu.php:119
 #: plugins/Demo/Example/Example.php:53
 msgid "LimeSurvey online manual"
 msgstr ""
 
 #: application/controllers/AdminController.php:339
 #: application/extensions/AdminFooter/AdminFooter.php:30
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:15
 msgid "Version"
 msgstr ""
 
 #: application/controllers/AdminController.php:381
 #: application/core/LSUserIdentity.php:130
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
-msgstr ""
-
-#: application/controllers/AdminController.php:393
-#: application/controllers/admin/conditionsaction.php:1356
-#: application/controllers/admin/printablesurvey.php:226
-#: application/controllers/admin/printablesurvey.php:517
-#: application/helpers/SurveyRuntimeHelper.php:641
-msgid "or"
 msgstr ""
 
 #: application/controllers/InstallerController.php:138
@@ -482,7 +475,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:163
 #: application/controllers/admin/responses.php:130
 #: application/controllers/admin/responses.php:131
-#: application/controllers/admin/responses.php:1006
+#: application/controllers/admin/responses.php:1011
 #: application/controllers/admin/tokens.php:1626
 #: application/models/Token.php:47
 #: application/views/admin/quotas/viewquotas_view.php:17
@@ -529,7 +522,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:287
 #: application/controllers/admin/responses.php:159
-#: application/controllers/admin/responses.php:1036
+#: application/controllers/admin/responses.php:1041
 #: application/helpers/qanda_helper.php:2768
 #: application/views/admin/assessments_view.php:13
 #: application/views/admin/labels/labelview_view.php:41
@@ -542,7 +535,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:288
 #: application/controllers/admin/responses.php:162
-#: application/controllers/admin/responses.php:1038
+#: application/controllers/admin/responses.php:1043
 #: application/helpers/common_helper.php:2018
 #: application/helpers/common_helper.php:2237
 #: application/helpers/qanda_helper.php:2769
@@ -754,7 +747,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:37
 #: application/controllers/admin/responses.php:295
 #: application/controllers/admin/responses.php:336
-#: application/controllers/admin/responses.php:1163
+#: application/controllers/admin/responses.php:1168
 #: application/controllers/admin/surveyadmin.php:71
 #: application/controllers/admin/tokens.php:38
 #: application/controllers/admin/tokens.php:258
@@ -1041,9 +1034,9 @@ msgstr ""
 #: application/helpers/export_helper.php:1400
 #: application/helpers/expressions/em_manager_helper.php:3568
 #: application/helpers/expressions/em_manager_helper.php:3572
-#: application/helpers/qanda_helper.php:3883
-#: application/helpers/qanda_helper.php:4328
-#: application/helpers/qanda_helper.php:4372
+#: application/helpers/qanda_helper.php:3885
+#: application/helpers/qanda_helper.php:4330
+#: application/helpers/qanda_helper.php:4374
 #: application/views/admin/dataentry/content_view.php:495
 #: application/views/admin/dataentry/content_view.php:548
 #: application/views/admin/export/statistics_view.php:504
@@ -1052,9 +1045,9 @@ msgstr ""
 #: application/views/admin/global_settings/_presentation.php:14
 #: application/views/admin/global_settings/_presentation.php:35
 #: application/views/admin/global_settings/_presentation.php:85
-#: application/views/admin/global_settings/_security.php:14
-#: application/views/admin/global_settings/_security.php:25
-#: application/views/admin/global_settings/_security.php:36
+#: application/views/admin/global_settings/_security.php:15
+#: application/views/admin/global_settings/_security.php:26
+#: application/views/admin/global_settings/_security.php:37
 #: application/views/admin/participants/blacklist_view.php:23
 #: application/views/admin/participants/userControl_view.php:23
 #: application/views/admin/survey/Question/editQuestion_view.php:204
@@ -1132,13 +1125,13 @@ msgstr ""
 #: application/views/admin/update/updater/_error.php:162
 #: application/views/admin/update/updater/steps/_backup.php:71
 #: application/views/admin/update/updater/steps/_change_log.php:57
-#: application/views/admin/update/updater/steps/_check_local_errors.php:116
-#: application/views/admin/update/updater/steps/_check_local_errors.php:144
-#: application/views/admin/update/updater/steps/_fileSystem.php:46
-#: application/views/admin/update/updater/steps/_fileSystem.php:63
+#: application/views/admin/update/updater/steps/_check_local_errors.php:117
+#: application/views/admin/update/updater/steps/_check_local_errors.php:145
+#: application/views/admin/update/updater/steps/_fileSystem.php:45
+#: application/views/admin/update/updater/steps/_fileSystem.php:60
 #: application/views/admin/update/updater/welcome/_error.php:87
-#: application/views/admin/update/updater/welcome/_error_files_update_updater.php:26
-#: application/views/admin/update/updater/welcome/_subscribe.php:27
+#: application/views/admin/update/updater/welcome/_error_files_update_updater.php:24
+#: application/views/admin/update/updater/welcome/_subscribe.php:36
 #: application/views/admin/update/updater/welcome/_updater_update.php:28
 #: application/views/admin/update/updater/welcome/_welcome.php:37
 #: application/views/plugins/configure.php:22
@@ -1223,8 +1216,8 @@ msgstr ""
 #: application/helpers/export_helper.php:301
 #: application/helpers/export_helper.php:1400
 #: application/helpers/expressions/em_manager_helper.php:3574
-#: application/helpers/qanda_helper.php:4329
-#: application/helpers/qanda_helper.php:4384
+#: application/helpers/qanda_helper.php:4331
+#: application/helpers/qanda_helper.php:4386
 #: application/views/admin/dataentry/content_view.php:549
 #: application/views/admin/export/statistics_view.php:675
 msgid "Uncertain"
@@ -1294,9 +1287,9 @@ msgstr ""
 #: application/helpers/export_helper.php:1400
 #: application/helpers/expressions/em_manager_helper.php:3569
 #: application/helpers/expressions/em_manager_helper.php:3573
-#: application/helpers/qanda_helper.php:3892
-#: application/helpers/qanda_helper.php:4330
-#: application/helpers/qanda_helper.php:4396
+#: application/helpers/qanda_helper.php:3894
+#: application/helpers/qanda_helper.php:4332
+#: application/helpers/qanda_helper.php:4398
 #: application/views/admin/dataentry/content_view.php:496
 #: application/views/admin/dataentry/content_view.php:550
 #: application/views/admin/export/statistics_view.php:510
@@ -1305,9 +1298,9 @@ msgstr ""
 #: application/views/admin/global_settings/_presentation.php:15
 #: application/views/admin/global_settings/_presentation.php:36
 #: application/views/admin/global_settings/_presentation.php:91
-#: application/views/admin/global_settings/_security.php:17
-#: application/views/admin/global_settings/_security.php:28
-#: application/views/admin/global_settings/_security.php:39
+#: application/views/admin/global_settings/_security.php:18
+#: application/views/admin/global_settings/_security.php:29
+#: application/views/admin/global_settings/_security.php:40
 #: application/views/admin/participants/blacklist_view.php:23
 #: application/views/admin/participants/userControl_view.php:23
 #: application/views/admin/survey/Question/editQuestion_view.php:209
@@ -1353,7 +1346,7 @@ msgstr ""
 #: application/views/admin/token/managetokenattributes.php:55
 #: application/views/admin/token/managetokenattributes.php:56
 #: application/views/admin/token/remind.php:70
-#: application/views/admin/update/updater/steps/_check_local_errors.php:81
+#: application/views/admin/update/updater/steps/_check_local_errors.php:92
 msgid "No"
 msgstr ""
 
@@ -1367,8 +1360,8 @@ msgstr ""
 #: application/helpers/export_helper.php:304
 #: application/helpers/export_helper.php:1405
 #: application/helpers/expressions/em_manager_helper.php:3577
-#: application/helpers/qanda_helper.php:4495
-#: application/helpers/qanda_helper.php:4540
+#: application/helpers/qanda_helper.php:4497
+#: application/helpers/qanda_helper.php:4542
 #: application/views/admin/dataentry/content_view.php:566
 #: application/views/admin/export/statistics_view.php:725
 msgid "Increase"
@@ -1384,8 +1377,8 @@ msgstr ""
 #: application/helpers/export_helper.php:305
 #: application/helpers/export_helper.php:1405
 #: application/helpers/expressions/em_manager_helper.php:3578
-#: application/helpers/qanda_helper.php:4496
-#: application/helpers/qanda_helper.php:4551
+#: application/helpers/qanda_helper.php:4498
+#: application/helpers/qanda_helper.php:4553
 #: application/views/admin/dataentry/content_view.php:567
 #: application/views/admin/export/statistics_view.php:730
 msgid "Same"
@@ -1401,8 +1394,8 @@ msgstr ""
 #: application/helpers/export_helper.php:306
 #: application/helpers/export_helper.php:1405
 #: application/helpers/expressions/em_manager_helper.php:3579
-#: application/helpers/qanda_helper.php:4497
-#: application/helpers/qanda_helper.php:4562
+#: application/helpers/qanda_helper.php:4499
+#: application/helpers/qanda_helper.php:4564
 #: application/views/admin/dataentry/content_view.php:568
 #: application/views/admin/export/statistics_view.php:735
 msgid "Decrease"
@@ -1432,27 +1425,27 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1855
 #: application/helpers/qanda_helper.php:1959
 #: application/helpers/qanda_helper.php:2021
-#: application/helpers/qanda_helper.php:3902
-#: application/helpers/qanda_helper.php:3946
-#: application/helpers/qanda_helper.php:4045
-#: application/helpers/qanda_helper.php:4114
-#: application/helpers/qanda_helper.php:4203
-#: application/helpers/qanda_helper.php:4255
-#: application/helpers/qanda_helper.php:4333
-#: application/helpers/qanda_helper.php:4416
-#: application/helpers/qanda_helper.php:4500
-#: application/helpers/qanda_helper.php:4577
-#: application/helpers/qanda_helper.php:4688
-#: application/helpers/qanda_helper.php:4772
-#: application/helpers/qanda_helper.php:4883
-#: application/helpers/qanda_helper.php:5726
-#: application/helpers/qanda_helper.php:5727
-#: application/helpers/qanda_helper.php:6012
-#: application/helpers/qanda_helper.php:6147
-#: application/helpers/qanda_helper.php:6181
-#: application/helpers/qanda_helper.php:6190
-#: application/helpers/qanda_helper.php:6342
-#: application/helpers/qanda_helper.php:6378
+#: application/helpers/qanda_helper.php:3904
+#: application/helpers/qanda_helper.php:3948
+#: application/helpers/qanda_helper.php:4047
+#: application/helpers/qanda_helper.php:4116
+#: application/helpers/qanda_helper.php:4205
+#: application/helpers/qanda_helper.php:4257
+#: application/helpers/qanda_helper.php:4335
+#: application/helpers/qanda_helper.php:4418
+#: application/helpers/qanda_helper.php:4502
+#: application/helpers/qanda_helper.php:4579
+#: application/helpers/qanda_helper.php:4690
+#: application/helpers/qanda_helper.php:4774
+#: application/helpers/qanda_helper.php:4885
+#: application/helpers/qanda_helper.php:5728
+#: application/helpers/qanda_helper.php:5729
+#: application/helpers/qanda_helper.php:6014
+#: application/helpers/qanda_helper.php:6149
+#: application/helpers/qanda_helper.php:6183
+#: application/helpers/qanda_helper.php:6192
+#: application/helpers/qanda_helper.php:6344
+#: application/helpers/qanda_helper.php:6380
 #: application/views/admin/dataentry/content_view.php:29
 msgid "No answer"
 msgstr ""
@@ -1484,7 +1477,7 @@ msgstr ""
 #: application/helpers/export_helper.php:291
 #: application/helpers/export_helper.php:1385
 #: application/helpers/expressions/em_manager_helper.php:3565
-#: application/helpers/qanda_helper.php:3928
+#: application/helpers/qanda_helper.php:3930
 #: application/views/admin/dataentry/content_view.php:53
 #: application/views/admin/export/statistics_view.php:486
 msgid "Female"
@@ -1501,7 +1494,7 @@ msgstr ""
 #: application/helpers/export_helper.php:292
 #: application/helpers/export_helper.php:1385
 #: application/helpers/expressions/em_manager_helper.php:3564
-#: application/helpers/qanda_helper.php:3936
+#: application/helpers/qanda_helper.php:3938
 #: application/views/admin/dataentry/content_view.php:54
 #: application/views/admin/export/statistics_view.php:492
 msgid "Male"
@@ -1591,6 +1584,13 @@ msgstr ""
 msgid "and"
 msgstr ""
 
+#: application/controllers/admin/conditionsaction.php:1356
+#: application/controllers/admin/printablesurvey.php:226
+#: application/controllers/admin/printablesurvey.php:517
+#: application/helpers/SurveyRuntimeHelper.php:641
+msgid "or"
+msgstr ""
+
 #: application/controllers/admin/conditionsaction.php:1391
 #: application/controllers/admin/conditionsaction.php:1464
 msgid "From token table"
@@ -1665,7 +1665,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:1739
 #: application/controllers/admin/conditionsaction.php:2099
 #: application/controllers/admin/conditionsaction.php:2102
-#: application/controllers/admin/responses.php:1212
+#: application/controllers/admin/responses.php:1217
 #: application/views/admin/export/statistics_view.php:1286
 #: application/views/admin/export/statistics_view.php:1289
 #: application/views/admin/survey/Question/questionbar_view.php:5
@@ -2019,7 +2019,7 @@ msgstr ""
 #: application/views/admin/survey/organizeGroupsAndQuestions_view.php:35
 #: application/views/admin/token/managetokenattributes.php:87
 #: application/views/admin/translate/translatefooter_view.php:1
-#: application/views/admin/update/updater/welcome/_subscribe.php:23
+#: application/views/admin/update/updater/welcome/_subscribe.php:33
 #: application/views/admin/user/modifyuser.php:42
 #: application/views/admin/user/setuserpermissions.php:61
 msgid "Save"
@@ -2062,7 +2062,7 @@ msgid "View This Record"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1464
-#: application/controllers/admin/responses.php:1415
+#: application/controllers/admin/responses.php:1420
 #: application/views/admin/dataentry/delete.php:5
 #: application/views/admin/dataentry/vvimport_result.php:31
 #: application/views/admin/responses/browseallfiltered_view.php:3
@@ -2226,7 +2226,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:77
 #: application/controllers/admin/responses.php:294
 #: application/controllers/admin/responses.php:335
-#: application/controllers/admin/responses.php:1162
+#: application/controllers/admin/responses.php:1167
 #: application/helpers/common_helper.php:5976
 msgid "Access denied!"
 msgstr ""
@@ -2425,10 +2425,9 @@ msgstr ""
 #: application/views/admin/participants/participantsPanel_view.php:5
 #: application/views/admin/token/browse.php:64
 #: application/views/admin/token/browse.php:76
-#: application/views/admin/update/updater/steps/_check_local_errors.php:37
-#: application/views/admin/update/updater/steps/_check_local_errors.php:48
-#: application/views/admin/update/updater/steps/_check_local_errors.php:62
-#: application/views/admin/update/updater/steps/_check_local_errors.php:78
+#: application/views/admin/update/updater/steps/_check_local_errors.php:33
+#: application/views/admin/update/updater/steps/_check_local_errors.php:65
+#: application/views/admin/update/updater/steps/_check_local_errors.php:89
 msgid "OK"
 msgstr ""
 
@@ -2806,14 +2805,14 @@ msgid "This survey has not been activated. There are no results to browse."
 msgstr ""
 
 #: application/controllers/admin/responses.php:125
-#: application/controllers/admin/responses.php:999
+#: application/controllers/admin/responses.php:1004
 #: application/models/Token.php:35
 #: application/views/admin/participants/displayParticipants_view.php:95
 msgid "Token ID"
 msgstr ""
 
 #: application/controllers/admin/responses.php:126
-#: application/controllers/admin/responses.php:1000
+#: application/controllers/admin/responses.php:1005
 #: application/helpers/common_helper.php:4993 application/models/Token.php:37
 #: application/views/admin/export/exportresults_view.php:163
 #: application/views/admin/participants/displayParticipants_view.php:72
@@ -2828,7 +2827,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:127
-#: application/controllers/admin/responses.php:1001
+#: application/controllers/admin/responses.php:1006
 #: application/helpers/common_helper.php:4998 application/models/Token.php:38
 #: application/views/admin/export/exportresults_view.php:164
 #: application/views/admin/participants/displayParticipants_view.php:73
@@ -2843,7 +2842,7 @@ msgid "Last name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:128
-#: application/controllers/admin/responses.php:1002
+#: application/controllers/admin/responses.php:1007
 #: application/controllers/admin/useraction.php:150
 #: application/views/admin/authentication/forgotpassword.php:9
 #: application/views/admin/participants/displayParticipants_view.php:71
@@ -2865,24 +2864,24 @@ msgid "Submission date"
 msgstr ""
 
 #: application/controllers/admin/responses.php:157
-#: application/controllers/admin/responses.php:1034
+#: application/controllers/admin/responses.php:1039
 msgid "File %s"
 msgstr ""
 
 #: application/controllers/admin/responses.php:164
-#: application/controllers/admin/responses.php:1040
+#: application/controllers/admin/responses.php:1045
 #: application/helpers/qanda_helper.php:2770
 #: application/views/admin/emailtemplates/email_language_template_tab.php:30
 msgid "File name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:165
-#: application/controllers/admin/responses.php:1041
+#: application/controllers/admin/responses.php:1046
 msgid "File size"
 msgstr ""
 
 #: application/controllers/admin/responses.php:172
-#: application/controllers/admin/responses.php:1048
+#: application/controllers/admin/responses.php:1053
 msgid "File count"
 msgstr ""
 
@@ -2890,48 +2889,48 @@ msgstr ""
 msgid "This response ID is invalid."
 msgstr ""
 
-#: application/controllers/admin/responses.php:738
+#: application/controllers/admin/responses.php:743
 #: application/controllers/admin/tokens.php:445
 #: application/views/admin/responses/browseallrow_view.php:4
 #: application/views/admin/responses/browsetimerow_view.php:4
 msgid "View response details"
 msgstr ""
 
-#: application/controllers/admin/responses.php:740
+#: application/controllers/admin/responses.php:745
 #: application/views/admin/responses/browseallrow_view.php:7
 #: application/views/admin/responses/browsetimerow_view.php:8
 msgid "Edit this response"
 msgstr ""
 
-#: application/controllers/admin/responses.php:745
+#: application/controllers/admin/responses.php:750
 #: application/views/admin/responses/browseallrow_view.php:10
 msgid "Download all files in this response as a zip file"
 msgstr ""
 
-#: application/controllers/admin/responses.php:750
+#: application/controllers/admin/responses.php:755
 msgid "Delete response %s"
 msgstr ""
 
-#: application/controllers/admin/responses.php:922
+#: application/controllers/admin/responses.php:927
 msgid "Sorry, this file was not found."
 msgstr ""
 
-#: application/controllers/admin/responses.php:966
+#: application/controllers/admin/responses.php:971
 msgid "The requested files do not exist on the server."
 msgstr ""
 
-#: application/controllers/admin/responses.php:1208
+#: application/controllers/admin/responses.php:1213
 #: application/helpers/common_helper.php:2371
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/admin/responses.php:1210
+#: application/controllers/admin/responses.php:1215
 #: application/helpers/admin/export/HtmlWriter.php:78
 #: application/views/admin/assessments_view.php:75
 msgid "Group"
 msgstr ""
 
-#: application/controllers/admin/responses.php:1400
+#: application/controllers/admin/responses.php:1405
 msgid "Sorry, there are no files for this response."
 msgstr ""
 
@@ -3318,8 +3317,8 @@ msgstr ""
 #: application/views/admin/token/emailwarning.php:8
 #: application/views/admin/update/updater/steps/_backup.php:73
 #: application/views/admin/update/updater/steps/_change_log.php:61
-#: application/views/admin/update/updater/steps/_check_local_errors.php:148
-#: application/views/admin/update/updater/steps/_fileSystem.php:65
+#: application/views/admin/update/updater/steps/_check_local_errors.php:149
+#: application/views/admin/update/updater/steps/_fileSystem.php:62
 #: application/views/admin/update/updater/steps/_updater_updated.php:21
 #: application/views/admin/update/updater/welcome/_key_updated.php:16
 #: application/views/admin/update/updater/welcome/_updater_update.php:30
@@ -4009,9 +4008,9 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1525
 #: application/helpers/qanda_helper.php:1998
 #: application/helpers/qanda_helper.php:2112
-#: application/helpers/qanda_helper.php:4887
-#: application/helpers/qanda_helper.php:6329
-#: application/helpers/qanda_helper.php:6365
+#: application/helpers/qanda_helper.php:4889
+#: application/helpers/qanda_helper.php:6331
+#: application/helpers/qanda_helper.php:6367
 #: application/views/admin/dataentry/content_view.php:83
 #: application/views/admin/dataentry/content_view.php:93
 #: application/views/admin/labels/labelsetsbar_view.php:24
@@ -4650,12 +4649,12 @@ msgid "Edit your personal preferences"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:54
-#: application/views/admin/super/adminmenu.php:23
+#: application/views/admin/super/adminmenu.php:24
 msgid "Default administration page"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:62
-#: application/views/admin/super/adminmenu.php:29
+#: application/views/admin/super/adminmenu.php:30
 msgid "Manage survey administrators"
 msgstr ""
 
@@ -4673,7 +4672,7 @@ msgid "Expired"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:115
-#: application/views/admin/super/adminmenu.php:96
+#: application/views/admin/super/adminmenu.php:97
 msgid "Surveys:"
 msgstr ""
 
@@ -4682,13 +4681,13 @@ msgid "No surveys available."
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:126
-#: application/views/admin/super/adminmenu.php:101
+#: application/views/admin/super/adminmenu.php:102
 msgid "Detailed list of surveys"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:136
 #: application/views/admin/labels/labelsetsbar_view.php:43
-#: application/views/admin/super/adminmenu.php:115
+#: application/views/admin/super/adminmenu.php:116
 #: application/views/admin/templates/templateeditorbar_view.php:154
 msgid "Logout"
 msgstr ""
@@ -4793,53 +4792,53 @@ msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:539
 #: application/views/admin/globalSettings_view.php:12
-#: application/views/admin/super/adminmenu.php:40
+#: application/views/admin/super/adminmenu.php:41
 msgid "Global settings"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:551
-#: application/views/admin/super/adminmenu.php:46
+#: application/views/admin/super/adminmenu.php:47
 msgid "Check Data Integrity"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:564
-#: application/views/admin/super/adminmenu.php:109
+#: application/views/admin/super/adminmenu.php:110
 msgid "Create, import, or copy a survey"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:577
-#: application/views/admin/super/adminmenu.php:58
+#: application/views/admin/super/adminmenu.php:59
 msgid "Backup Entire Database"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:584
-#: application/views/admin/super/adminmenu.php:62
+#: application/views/admin/super/adminmenu.php:63
 msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:598
-#: application/views/admin/super/adminmenu.php:74
+#: application/views/admin/super/adminmenu.php:75
 msgid "Edit label sets"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:609
-#: application/views/admin/super/adminmenu.php:80
+#: application/views/admin/super/adminmenu.php:81
 msgid "Template Editor"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:621
-#: application/views/admin/super/adminmenu.php:34
+#: application/views/admin/super/adminmenu.php:35
 msgid "Create/edit user groups"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:632
-#: application/views/admin/super/adminmenu.php:87
+#: application/views/admin/super/adminmenu.php:88
 #: application/views/admin/token/tokenbar.php:71
 msgid "Central participant database/panel"
 msgstr ""
 
 #: application/extensions/Menu/MenuWidget.php:645
-#: application/views/admin/super/adminmenu.php:92
+#: application/views/admin/super/adminmenu.php:93
 msgid "Plugin manager"
 msgstr ""
 
@@ -4938,7 +4937,7 @@ msgid "One or more uploaded files are not in proper format/size. You cannot proc
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1123
-#: application/helpers/frontend_helper.php:2143
+#: application/helpers/frontend_helper.php:2145
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr ""
 
@@ -6077,7 +6076,7 @@ msgstr ""
 #: application/views/admin/global_settings/_email.php:40
 #: application/views/admin/global_settings/_email.php:53
 #: application/views/admin/global_settings/_interfaces.php:14
-#: application/views/admin/global_settings/_security.php:63
+#: application/views/admin/global_settings/_security.php:64
 msgid "Off"
 msgstr ""
 
@@ -7985,7 +7984,7 @@ msgid "There are empty question groups in this survey - please create at least o
 msgstr ""
 
 #: application/helpers/frontend_helper.php:1657
-#: application/helpers/frontend_helper.php:2020
+#: application/helpers/frontend_helper.php:2022
 #: application/views/admin/templates/templateeditor_navigator_view.php:5
 #: application/views/installer/dbconfig_view.php:61
 #: application/views/installer/dbsettings_view.php:13
@@ -8243,7 +8242,7 @@ msgstr ""
 
 #: application/helpers/qanda_helper.php:2949
 #: application/helpers/qanda_helper.php:3172
-#: application/helpers/qanda_helper.php:4340
+#: application/helpers/qanda_helper.php:4342
 msgid "Error: This question has no answers."
 msgstr ""
 
@@ -8277,9 +8276,9 @@ msgstr ""
 
 #: application/helpers/qanda_helper.php:3395
 #: application/helpers/qanda_helper.php:3495
-#: application/helpers/qanda_helper.php:3679
-#: application/helpers/qanda_helper.php:3777
-#: application/helpers/qanda_helper.php:3851
+#: application/helpers/qanda_helper.php:3681
+#: application/helpers/qanda_helper.php:3779
+#: application/helpers/qanda_helper.php:3853
 #: application/views/admin/templates/templateeditor_printoutput_view.php:3
 msgid "Your answer"
 msgstr ""
@@ -8289,122 +8288,122 @@ msgstr ""
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3671
-#: application/helpers/qanda_helper.php:3672
+#: application/helpers/qanda_helper.php:3673
+#: application/helpers/qanda_helper.php:3674
 msgid "Click to set the location or drag and drop the pin. You may may also enter coordinates"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3973
+#: application/helpers/qanda_helper.php:3975
 msgid "An array with sub-question on each line. The answers are value from 1 to 5 and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4144
+#: application/helpers/qanda_helper.php:4146
 msgid "An array with sub-question on each line. The answers are value from 1 to 10 and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4163
-#: application/helpers/qanda_helper.php:4296
-#: application/helpers/qanda_helper.php:4455
-#: application/helpers/qanda_helper.php:4675
-#: application/helpers/qanda_helper.php:5970
+#: application/helpers/qanda_helper.php:4165
+#: application/helpers/qanda_helper.php:4298
+#: application/helpers/qanda_helper.php:4457
+#: application/helpers/qanda_helper.php:4677
+#: application/helpers/qanda_helper.php:5972
 msgid "The last cell are for no answer. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4276
+#: application/helpers/qanda_helper.php:4278
 msgid "An array with sub-question on each line. The answers are yes, no, uncertain and are in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4437
+#: application/helpers/qanda_helper.php:4439
 msgid "An array with sub-question on each line. The answers are increase, same, decrease and are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4619
+#: application/helpers/qanda_helper.php:4621
 msgid "An array with sub-question on each line. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4624
+#: application/helpers/qanda_helper.php:4626
 msgid "An array with sub-question on each line. The answers are contained in the table header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4670
+#: application/helpers/qanda_helper.php:4672
 msgid "After answers, a cell give some information. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4926
-#: application/helpers/qanda_helper.php:5314
-#: application/helpers/qanda_helper.php:5688
-#: application/helpers/qanda_helper.php:5840
-#: application/helpers/qanda_helper.php:6396
+#: application/helpers/qanda_helper.php:4928
+#: application/helpers/qanda_helper.php:5316
+#: application/helpers/qanda_helper.php:5690
+#: application/helpers/qanda_helper.php:5842
+#: application/helpers/qanda_helper.php:6398
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4946
-#: application/helpers/qanda_helper.php:5332
+#: application/helpers/qanda_helper.php:4948
+#: application/helpers/qanda_helper.php:5334
 msgid "An array of sub-question on each cell. The sub-question text are in the table header and concerns line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5007
+#: application/helpers/qanda_helper.php:5009
 msgid "Each answer is a number. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5017
-#: application/helpers/qanda_helper.php:5062
+#: application/helpers/qanda_helper.php:5019
+#: application/helpers/qanda_helper.php:5064
 #: application/views/admin/assessments_view.php:41
 #: application/views/admin/assessments_view.php:72
 #: application/views/admin/survey/listSurveys_view.php:46
 msgid "Total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5021
+#: application/helpers/qanda_helper.php:5023
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5029
+#: application/helpers/qanda_helper.php:5031
 msgid "The last row shows the total for the column. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5049
+#: application/helpers/qanda_helper.php:5051
 msgid "The last column shows the total for the row. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5077
+#: application/helpers/qanda_helper.php:5079
 msgid "The last row shows the total for the column and the last column shows the total for the row. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5138
-#: application/helpers/qanda_helper.php:5465
+#: application/helpers/qanda_helper.php:5140
+#: application/helpers/qanda_helper.php:5467
 msgid "The last cell give some information. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5391
+#: application/helpers/qanda_helper.php:5393
 msgid "Check or uncheck the answer for each subquestion. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5398
+#: application/helpers/qanda_helper.php:5400
 msgid "Each answers are a number. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5403
+#: application/helpers/qanda_helper.php:5405
 msgid "Select the answer for each subquestion. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5610
+#: application/helpers/qanda_helper.php:5612
 msgid "..."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5703
+#: application/helpers/qanda_helper.php:5705
 msgid "An array with sub-question on each column. The sub-question are on table header, the answers are in each line header. "
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5834
+#: application/helpers/qanda_helper.php:5836
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5888
+#: application/helpers/qanda_helper.php:5890
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. You have to select the answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5896
+#: application/helpers/qanda_helper.php:5898
 msgid "An array with sub-question on each line, with 2 answers to provide on each line. The answers are contained in the table header. "
 msgstr ""
 
@@ -8957,7 +8956,7 @@ msgstr ""
 
 #: application/helpers/update/update_helper.php:36
 #: application/views/admin/token/tokenwarning.php:31
-#: application/views/admin/update/updater/steps/_final.php:19
+#: application/views/admin/update/updater/steps/_final.php:23
 #: application/views/admin/update/updater/steps/_old_step4b.php:40
 msgid "Back to main menu"
 msgstr ""
@@ -9450,6 +9449,7 @@ msgstr ""
 #: application/views/admin/responses/browsetimeheader_view.php:51
 #: application/views/admin/saved/savedlist_view.php:6
 #: application/views/admin/survey/Question/answerOptions_view.php:79
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:15
 msgid "Actions"
 msgstr ""
 
@@ -9712,9 +9712,9 @@ msgid "Check database again?"
 msgstr ""
 
 #: application/views/admin/checkintegrity/fix_view.php:13
-#: application/views/admin/update/updater/steps/_check_local_errors.php:119
-#: application/views/admin/update/updater/steps/_fileSystem.php:35
-#: application/views/admin/update/updater/steps/_fileSystem.php:48
+#: application/views/admin/update/updater/steps/_check_local_errors.php:120
+#: application/views/admin/update/updater/steps/_fileSystem.php:34
+#: application/views/admin/update/updater/steps/_fileSystem.php:47
 #: application/views/installer/precheck_view.php:153
 msgid "Check again"
 msgstr ""
@@ -10610,7 +10610,7 @@ msgstr ""
 #: application/views/admin/global_settings/_interfaces.php:35
 #: application/views/admin/global_settings/_language.php:53
 #: application/views/admin/global_settings/_presentation.php:106
-#: application/views/admin/global_settings/_security.php:70
+#: application/views/admin/global_settings/_security.php:71
 #: application/views/admin/user/personalsettings.php:79
 #: application/views/admin/user/setusertemplates.php:25
 msgid "Save settings"
@@ -10622,7 +10622,7 @@ msgstr ""
 #: application/views/admin/global_settings/_interfaces.php:37
 #: application/views/admin/global_settings/_language.php:55
 #: application/views/admin/global_settings/_presentation.php:108
-#: application/views/admin/global_settings/_security.php:72
+#: application/views/admin/global_settings/_security.php:73
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr ""
 
@@ -10842,8 +10842,7 @@ msgid "Show PHPInfo"
 msgstr ""
 
 #: application/views/admin/global_settings/_overview.php:57
-#: application/views/admin/update/_update_notification.php:14
-#: application/views/admin/update/_update_notification.php:19
+#: application/views/admin/update/_update_notification.php:18
 msgid "Click here to use ComfortUpdate."
 msgstr ""
 
@@ -10927,43 +10926,43 @@ msgstr ""
 msgid "PDF header string (if empty, survey name will be used)"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:9
+#: application/views/admin/global_settings/_security.php:10
 msgid "Survey preview only for administration users"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:21
+#: application/views/admin/global_settings/_security.php:22
 msgid "Filter HTML for XSS:"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:29
+#: application/views/admin/global_settings/_security.php:30
 msgid "(XSS filtering is always disabled for the superadministrator.)"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:32
+#: application/views/admin/global_settings/_security.php:33
 msgid "Group member can only see own group:"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:44
+#: application/views/admin/global_settings/_security.php:45
 msgid "Warning: Before turning on HTTPS,%s check if this link works.%s"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:44
+#: application/views/admin/global_settings/_security.php:45
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:46
+#: application/views/admin/global_settings/_security.php:47
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:60
+#: application/views/admin/global_settings/_security.php:61
 msgid "Force HTTPS:"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:62
+#: application/views/admin/global_settings/_security.php:63
 msgid "On"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:64
+#: application/views/admin/global_settings/_security.php:65
 msgid "Don't force on or off"
 msgstr ""
 
@@ -12758,6 +12757,16 @@ msgstr ""
 
 #: application/views/admin/saved/savedlist_view.php:29
 msgid "Delete entry"
+msgstr ""
+
+#: application/views/admin/super/adminmenu.php:17
+#: application/views/admin/update/_update_notification.php:23
+msgid "New update available:"
+msgstr ""
+
+#: application/views/admin/super/adminmenu.php:17
+#: application/views/admin/update/_update_notification.php:23
+msgid "Click here to use ComfortUpdate or to download it."
 msgstr ""
 
 #: application/views/admin/super/firststeps.php:2
@@ -15312,10 +15321,6 @@ msgstr ""
 msgid "Auto Translate"
 msgstr ""
 
-#: application/views/admin/update/_update_notification.php:19
-msgid "New update available:"
-msgstr ""
-
 #: application/views/admin/update/check_updates/_checkButtons.php:15
 msgid "Please wait, connecting to server...."
 msgstr ""
@@ -15324,73 +15329,28 @@ msgstr ""
 msgid "Updates"
 msgstr ""
 
-#: application/views/admin/update/check_updates/_checkButtons.php:25
-msgid "Automatically check for updates:"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:29
-#: application/views/admin/update/check_updates/_checkButtons.php:51
-msgid "Never"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:32
-msgid "Every day"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:35
-msgid "Every week"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:38
-msgid "Every 2 weeks"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:41
-msgid "Every month"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:43
-msgid "Check now"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:43
-msgid "Last check: %s"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:47
-msgid "Show update notifications:"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:54
-msgid "For stable versions"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:57
-msgid "For stable and unstable versions"
-msgstr ""
-
-#: application/views/admin/update/check_updates/_checkButtons.php:68
+#: application/views/admin/update/check_updates/_checkButtons.php:70
 msgid "Please wait, looking for updates...."
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:10
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:11
 msgid "The following LimeSurvey updates are available:"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:34
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:37
 msgid "(unstable)"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:34
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:37
 msgid "(stable)"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:44
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:47
 msgid "Use ComfortUpdate"
 msgstr ""
 
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:48
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:50
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:51
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:53
 msgid "Download"
 msgstr ""
 
@@ -15641,66 +15601,49 @@ msgstr ""
 msgid "Please check any problems above and then proceed to the final step."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:16
+#: application/views/admin/update/updater/steps/_check_local_errors.php:14
 msgid "Checking basic requirements..."
 msgstr ""
 
+#: application/views/admin/update/updater/steps/_check_local_errors.php:22
+msgid "Available space in directory:"
+msgstr ""
+
 #: application/views/admin/update/updater/steps/_check_local_errors.php:35
-#: application/views/installer/precheck_view.php:19
-msgid "Writable"
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_check_local_errors.php:39
-msgid "Not writable"
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_check_local_errors.php:46
-msgid "Available space"
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_check_local_errors.php:50
+#: application/views/admin/update/updater/steps/_check_local_errors.php:67
 msgid "Not enough space"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:60
-msgid "PHP version %s required"
+#: application/views/admin/update/updater/steps/_check_local_errors.php:47
+msgid "Note : In some hosting, like shared hosting, it can happen that the available free space is not correctly evaluated. If you checked manually that you have enough free space to update, please, just ignore this error."
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:64
+#: application/views/admin/update/updater/steps/_check_local_errors.php:56
+msgid "PHP version required"
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_check_local_errors.php:68
 msgid "PHP version is only %s"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:76
-msgid "Installed"
+#: application/views/admin/update/updater/steps/_check_local_errors.php:79
+msgid "Required PHP modules:"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:84
+#: application/views/admin/update/updater/steps/_check_local_errors.php:95
 msgid "No (but optional)"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:100
-#: application/views/admin/update/updater/welcome/_error_files_update_updater.php:23
-msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_check_local_errors.php:125
+#: application/views/admin/update/updater/steps/_check_local_errors.php:126
 msgid "Ignore"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_check_local_errors.php:135
+#: application/views/admin/update/updater/steps/_check_local_errors.php:136
 msgid "Everything looks alright. Please proceed to the next step."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_fileSystem.php:13
 msgid "Checking existing LimeSurvey files..."
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_fileSystem.php:31
-msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr ""
-
-#: application/views/admin/update/updater/steps/_fileSystem.php:54
-msgid "Please check any problems above and then proceed to the next step."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/_final.php:8
@@ -15717,7 +15660,11 @@ msgstr ""
 msgid "The update is now complete!"
 msgstr ""
 
-#: application/views/admin/update/updater/steps/_final.php:15
+#: application/views/admin/update/updater/steps/_final.php:16
+msgid "if needed the database will be updated as a last step."
+msgstr ""
+
+#: application/views/admin/update/updater/steps/_final.php:19
 #: application/views/admin/update/updater/steps/_old_step4b.php:37
 msgid "As a last step you should clear your browser cache now."
 msgstr ""
@@ -15757,24 +15704,16 @@ msgid "You can now continue updating your LimeSurvey Installation."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_existingfiles.php:12
-msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
+msgid "The following files would be added by the update but already exist. This is unusual and may result from an earlier update attempt."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_existingfiles.php:14
+#: application/views/admin/update/updater/steps/textaeras/_modifiedfiles.php:15
+msgid "These files will be backed up and then replaced by the update procedure."
+msgstr ""
+
 #: application/views/admin/update/updater/steps/textaeras/_modifiedfiles.php:13
-msgid "We recommend that these files should be replaced by the update procedure."
-msgstr ""
-
-#: application/views/admin/update/updater/steps/textaeras/_existingfiles.php:27
-msgid "No file added by the ComfortUpdate already exists."
-msgstr ""
-
-#: application/views/admin/update/updater/steps/textaeras/_modifiedfiles.php:11
 msgid "The following files will be modified or deleted but were already modified by someone else."
-msgstr ""
-
-#: application/views/admin/update/updater/steps/textaeras/_modifiedfiles.php:25
-msgid "No files that will be modified/deleted by the updater are already modified in the local installation."
 msgstr ""
 
 #: application/views/admin/update/updater/steps/textaeras/_readonlyfiles.php:12
@@ -15805,6 +15744,26 @@ msgstr ""
 msgid "Your key has been updated and validated! You can now use ComfortUpdate."
 msgstr ""
 
+#: application/views/admin/update/updater/welcome/_subscribe.php:7
+msgid "Subscribe to ComfortUpdate!"
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_subscribe.php:16
+msgid "The LimeSurvey ComfortUpdate is a great feature to easily update to the latest version of LimeSurvey. To use it you will need an update key."
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_subscribe.php:21
+msgid "You can get free trial update key from %syour account on the limesurvey.org website%s."
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_subscribe.php:26
+msgid "If you don't have an account on limesurvey.org, please %sregister first%s."
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_subscribe.php:31
+msgid "Enter your update key:"
+msgstr ""
+
 #: application/views/admin/update/updater/welcome/_updater_update.php:14
 msgid "It seems you didn't update your LimeSurvey installation regularly."
 msgstr ""
@@ -15817,16 +15776,24 @@ msgstr ""
 msgid "At the end of the process we'll proceed to the LimeSurvey update."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:23
+#: application/views/admin/update/updater/welcome/_welcome.php:12
+msgid "Welcome to the LimeSurvey ComfortUpdate!"
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_welcome.php:22
 msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:24
+#: application/views/admin/update/updater/welcome/_welcome.php:23
 msgid "The following steps will be done by this update:"
 msgstr ""
 
-#: application/views/admin/update/updater/welcome/_welcome.php:25
+#: application/views/admin/update/updater/welcome/_welcome.php:24
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_welcome.php:25
+msgid "A backup of your old files will be created."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:26
@@ -15834,7 +15801,7 @@ msgid "New files will be downloaded and installed."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:27
-msgid "If necessary the database will be updated."
+msgid "The database will be updated (if necessary)."
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:48
@@ -15842,11 +15809,15 @@ msgid "ComfortUpdate key information"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:49
-msgid "Your update key is %s."
+msgid "Your update key:"
 msgstr ""
 
 #: application/views/admin/update/updater/welcome/_welcome.php:50
-msgid "Your key is valid until %s."
+msgid "Valid until:"
+msgstr ""
+
+#: application/views/admin/update/updater/welcome/_welcome.php:52
+msgid "Remaining updates:"
 msgstr ""
 
 #: application/views/admin/user/deluser.php:1
@@ -16127,6 +16098,10 @@ msgstr ""
 
 #: application/views/installer/precheck_view.php:10
 msgid "Found"
+msgstr ""
+
+#: application/views/installer/precheck_view.php:19
+msgid "Writable"
 msgstr ""
 
 #: application/views/installer/precheck_view.php:23
