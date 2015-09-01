@@ -3,21 +3,30 @@
 trait SmartColumnTypeTrait {
     /**
     * Adds support for replacing default arguments.
-    * @param type $type
+    * @param string $type
+    * @return string
     */
     public function getColumnType($type)
     {
-        $sResult=$type;
-        if (isset($this->columnTypes[$type])) {
-            $sResult=$this->columnTypes[$type];
-        } elseif (preg_match('/^(\w+)\((.+?)\)(.*)$/', $type, $matches)) {
-            if (isset($this->columnTypes[$matches[1]])) {
-                $sResult=preg_replace('/\(.+\)/', '(' . $matches[2] . ')', $this->columnTypes[$matches[1]]) . $matches[3];
+        if (isset(Yii::app()->db->schema->columnTypes[$type]))
+        { // Direct : get it
+            $sResult=Yii::app()->db->schema->columnTypes[$type];
+        }
+        elseif (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $type, $matches)) 
+        { // With params : some test to do
+            $baseType = $this->getColumnType($matches[1]);
+            if(preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $baseType, $baseMatches))
+            { // Replace the default Yii param
+                $sResult=preg_replace('/\(.+\)/', "(".$matches[2].")",parent::getColumnType($matches[1]." ".$matches[3]));
             }
-        } elseif (preg_match('/^(\w+)\s+/', $type, $matches)) {
-            if (isset($this->columnTypes[$matches[1]])) {
-                $sResult=preg_replace('/^\w+/', $this->columnTypes[$matches[1]], $type);
+            else
+            { // Get the base type and join
+                $sResult=join(" ",array($baseType,"(".$matches[2].")",$matches[3]));
             }
         }
-        return $sResult;	}
-}
+        else
+        {
+            $sResult = $this->getColumnType($type);
+        }
+        return $sResult;
+    }
