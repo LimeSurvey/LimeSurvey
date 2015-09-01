@@ -478,6 +478,12 @@ class UpdateForm extends CFormModel
         {
             // This function will call the server to get the requirement about DB, such as max size
             $dbChecks = $this->_getDbChecks($destionationBuild); 
+            
+            // Test if user defined by himself a max size for dbBackup
+            if (Yii::app()->getConfig("maxdbsizeforbackup"))
+            {
+                $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
+            }
 
             if( $dbChecks->result )
             {
@@ -485,6 +491,7 @@ class UpdateForm extends CFormModel
                 if( $currentDbVersion < $dbChecks->dbVersion )
                 {
                     $dbSize = $this->_getDbTotalSize();
+                    
                     if( $dbSize <= $dbChecks->dbSize )
                     {
                         return $this->_createDbBackup();    
