@@ -34,7 +34,6 @@ return [
         'depends' => [
             'jquery'
         ]
-
     ],
     'jqgrid.addons' => [
         'baseUrl' => $bowerAssetPath . '/jqgrid/plugins/',
@@ -125,6 +124,12 @@ return [
             'jqueryui'
         ]
     ],
+    'jquery-price-format' => array(
+        'baseUrl' => 'third_party/jquery-price-format/',
+        'js' => array(
+            'jquery_price_format.js'
+        ),
+    ),
     'leaflet' => [
         'baseUrl' => $bowerAssetPath . '/leaflet/dist/',
         'js' => [

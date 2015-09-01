@@ -38,7 +38,7 @@ class NumericalQuestion extends \Question {
         }
         if ($this->thousands_separator == 1) {
             App()->clientScript->registerPackage('jquery-price-format');
-            App()->clientScript->registerScriptFile('scripts/numerical_input.js');
+            App()->clientScript->registerScriptFile(App()->getConfig('generalscripts').'numerical_input.js');
             $extraclass .= " thousandsseparator";
         }
         if (trim($this->suffix[$session])!='') {
