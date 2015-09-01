@@ -44,7 +44,7 @@ class RegisterController extends Controller {
         Yii::app()->loadHelper('replacements');
         $redata = compact(array_keys(get_defined_vars()));
         $iSurveyId = $surveyid;
-        $oSurvey = Survey::model()->find('sid=:sid',array(':sid' => $iSurveyId));
+        $oSurvey = Survey::model()->find('sid=:sid', [':sid' => $iSurveyId]);
         if (!$oSurvey){
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         }
@@ -75,7 +75,7 @@ class RegisterController extends Controller {
             $iSurveyId=$sid;
         else
             $iSurveyId=Yii::app()->request->getPost('sid');
-        $oSurvey=Survey::model()->find("sid=:sid",array(':sid'=>$iSurveyId));
+        $oSurvey=Survey::model()->find("sid=:sid", [':sid'=>$iSurveyId]);
 
         $sLanguage = Yii::app()->request->getParam('lang');
         if (!$sLanguage)
@@ -89,7 +89,7 @@ class RegisterController extends Controller {
             throw new CHttpException(404,"The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
         }
         elseif(!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))){
-            $this->redirect(array('survey/index','sid'=>$iSurveyId,'lang'=>$sLanguage));
+            $this->redirect(['survey/index','sid'=>$iSurveyId,'lang'=>$sLanguage]);
         }
 
         Yii::app()->setLanguage($sLanguage);
@@ -181,7 +181,7 @@ class RegisterController extends Controller {
         $aData['sEmail'] = $aFieldValue['sEmail'];
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes']=$aRegisterAttributes;
-        $aData['urlAction']=App()->createUrl('register/index',array('sid'=>$iSurveyId));
+        $aData['urlAction']=App()->createUrl('register/index', ['sid'=>$iSurveyId]);
         $aData['bCaptcha'] = function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha']);
         $aReplacement['REGISTERFORM']=$this->renderPartial('registerForm',$aData,true);
         if(is_array($this->aRegisterErrors))
@@ -214,7 +214,7 @@ class RegisterController extends Controller {
 
         $aMail['subject']=$aSurveyInfo['email_register_subj'];
         $aMail['message']=$aSurveyInfo['email_register'];
-        $aReplacementFields=array();
+        $aReplacementFields= [];
         $aReplacementFields["{ADMINNAME}"]=$aSurveyInfo['adminname'];
         $aReplacementFields["{ADMINEMAIL}"]=$aSurveyInfo['adminemail'];
         $aReplacementFields["{SURVEYNAME}"]=$aSurveyInfo['name'];
@@ -228,10 +228,13 @@ class RegisterController extends Controller {
         $useHtmlEmail = (getEmailFormat($iSurveyId) == 'html');
         $aMail['subject']=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$aMail['subject']);
         $aMail['message']=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$aMail['message']);
-        $aReplacementFields["{SURVEYURL}"] = App()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}",array('lang'=>$sLanguage,'token'=>$sToken));
-        $aReplacementFields["{OPTOUTURL}"] = App()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
-        $aReplacementFields["{OPTINURL}"] = App()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=>$sToken));
-        foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
+        $aReplacementFields["{SURVEYURL}"] = App()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}",
+            ['lang'=>$sLanguage,'token'=>$sToken]);
+        $aReplacementFields["{OPTOUTURL}"] = App()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}",
+            ['langcode'=>$sLanguage,'token'=>$sToken]);
+        $aReplacementFields["{OPTINURL}"] = App()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}",
+            ['langcode'=>$sLanguage,'token'=>$sToken]);
+        foreach(['OPTOUT', 'OPTIN', 'SURVEY'] as $key)
         {
             $url = $aReplacementFields["{{$key}URL}"];
             if ($useHtmlEmail)
@@ -305,9 +308,9 @@ class RegisterController extends Controller {
 
         $aFieldValue=$this->getFieldValue($iSurveyId);
         // Now construct the text returned
-        $oToken=Token::model($iSurveyId)->findByAttributes(array(
+        $oToken=Token::model($iSurveyId)->findByAttributes([
             'email' => $aFieldValue['sEmail']
-        ));
+        ]);
         if ($oToken)
          {
             if($oToken->usesleft<1 && $aSurveyInfo['alloweditaftercompletion']!='Y')
@@ -363,12 +366,12 @@ class RegisterController extends Controller {
         //static $aFiledValue; ?
         $sLanguage=Yii::app()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
-        $aFieldValue=array();
+        $aFieldValue= [];
         $aFieldValue['sFirstName']=Yii::app()->request->getPost('register_firstname','');
         $aFieldValue['sLastName']=Yii::app()->request->getPost('register_lastname','');
         $aFieldValue['sEmail']=Yii::app()->request->getPost('register_email','');
         $aRegisterAttributes=$aSurveyInfo['attributedescriptions'];
-        $aFieldValue['aAttribute']=array();
+        $aFieldValue['aAttribute']= [];
         foreach($aRegisterAttributes as $key=>$aRegisterAttribute){
             if($aRegisterAttribute['show_register']=='Y'){
                 $aFieldValue['aAttribute'][$key]= Yii::app()->request->getPost('register_'.$key,'');

@@ -52,9 +52,9 @@ class emailtemplates extends Survey_Common_Action {
         array_unshift($grplangs,$baselang);
 
         $sEditScript = PrepareEditorScript(false, $this->getController());
-        $aData['attrib'] = array();
-        $aData['bplangs'] = array();
-        $aData['defaulttexts'] = array();
+        $aData['attrib'] = [];
+        $aData['bplangs'] = [];
+        $aData['defaulttexts'] = [];
         if ($ishtml)
         {
             $sEscapeMode='html';
@@ -66,7 +66,7 @@ class emailtemplates extends Survey_Common_Action {
         foreach ($grplangs as $key => $grouplang)
         {
             $aData['bplangs'][$key] = $grouplang;
-            $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
+            $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', [':ssid' => $iSurveyId, ':ls' => $grouplang]);
             $aData['attrib'][$key]['attachments'] = unserialize($aData['attrib'][$key]['attachments']);
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key],$sEscapeMode);
         }
@@ -74,7 +74,7 @@ class emailtemplates extends Survey_Common_Action {
         $aData['surveyid'] = $iSurveyId;
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
-        $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);
+        $this->_renderWrappedTemplate('emailtemplates', ['output' => $sEditScript, 'emailtemplates_view'], $aData);
     }
 
     /**
@@ -124,10 +124,10 @@ class emailtemplates extends Survey_Common_Action {
                 }
                 else
                 {
-                    $_POST['attachments'][$langname] = array();
+                    $_POST['attachments'][$langname] = [];
                 }
 
-                $attributes = array(
+                $attributes = [
                     'surveyls_email_invite_subj' => $_POST['email_invitation_subj_'.$langname],
                     'surveyls_email_invite' => $_POST['email_invitation_'.$langname],
                     'surveyls_email_remind_subj' => $_POST['email_reminder_subj_'.$langname],
@@ -141,14 +141,14 @@ class emailtemplates extends Survey_Common_Action {
                     'email_admin_responses_subj' => $_POST['email_admin_detailed_notification_subj_'.$langname],
                     'email_admin_responses' => $_POST['email_admin_detailed_notification_'.$langname],
                     'attachments' => serialize($_POST['attachments'][$langname])
-                );
-                $usquery = SurveyLanguageSetting::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
+                ];
+                $usquery = SurveyLanguageSetting::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', [':ssid' => $iSurveyId, ':sl' => $langname]);
             }
             Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
-            $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/'.$iSurveyId));
+            $this->getController()->redirect(['admin/emailtemplates/sa/index/surveyid/'.$iSurveyId]);
         }
         if($sSaveMethod=='saveclose')
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
+            $this->getController()->redirect(['admin/survey/sa/view/surveyid/'.$iSurveyId]);
         else
             self::index($iSurveyId);
     }
@@ -161,7 +161,7 @@ class emailtemplates extends Survey_Common_Action {
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = [], $aData = [])
     {
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
 

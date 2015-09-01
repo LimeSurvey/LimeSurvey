@@ -245,7 +245,7 @@ class InstallerController extends \CController {
                         // Save user
                         $user=new User;
                         // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
-                        if (in_array(App()->db->getDriverName(), array('mysql', 'mysqli'))) {
+                        if (in_array(App()->db->getDriverName(), ['mysql', 'mysqli'])) {
                             $user->uid=1;
                         }
                         $user->users_name=$sAdminUserName;
@@ -265,12 +265,12 @@ class InstallerController extends \CController {
                         $permission->save();
                         // Save  global settings
                         $db = App()->db;
-                        $db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => App()->securityManager->generateRandomString(64)));
-                        $db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'sitename', 'stg_value' => $sSiteName));
-                        $db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName));
-                        $db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail));
-                        $db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail));
-                        $db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage));
+                        $db->createCommand()->insert("{{settings_global}}", ['stg_name' => 'SessionName', 'stg_value' => App()->securityManager->generateRandomString(64)]);
+                        $db->createCommand()->insert("{{settings_global}}", ['stg_name' => 'sitename', 'stg_value' => $sSiteName]);
+                        $db->createCommand()->insert("{{settings_global}}", ['stg_name' => 'siteadminname', 'stg_value' => $sAdminRealName]);
+                        $db->createCommand()->insert("{{settings_global}}", ['stg_name' => 'siteadminemail', 'stg_value' => $sAdminEmail]);
+                        $db->createCommand()->insert("{{settings_global}}", ['stg_name' => 'siteadminbounce', 'stg_value' => $sAdminEmail]);
+                        $db->createCommand()->insert("{{settings_global}}", ['stg_name' => 'defaultlang', 'stg_value' => $sSiteLanguage]);
                         // only continue if we're error free otherwise setup is broken.
                     } catch (Exception $e) {
                         throw new Exception(sprintf('Could not add optional settings: %s.', $e));
@@ -404,7 +404,7 @@ class InstallerController extends \CController {
         ."\t\t\t" . "'charset' => 'utf8',"                      . "\n"
         ."\t\t\t" . "'tablePrefix' => '{$config->dbprefix}',"      . "\n";
 
-        if (in_array($config->dbtype, array('mssql', 'sqlsrv', 'dblib'))) {
+        if (in_array($config->dbtype, ['mssql', 'sqlsrv', 'dblib'])) {
             $sConfig .="\t\t\t" ."'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),"    . "\n";
         }
 

@@ -27,9 +27,9 @@ class SurveysController extends Controller
     public function actionOrganize($surveyId)
     {
         $this->layout = 'main';
-        $groups = QuestionGroup::model()->findAllByAttributes(array(
+        $groups = QuestionGroup::model()->findAllByAttributes([
             'sid' => $surveyId
-        ));
+        ]);
         $this->render('organize', compact('groups'));
     }
 

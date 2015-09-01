@@ -130,10 +130,10 @@ class UploaderController extends Controller
             // check to see that this file type is allowed
             // it is also  checked at the client side, but jst double checking
             if (!in_array($ext, $valid_extensions_array)) {
-                $return = array(
+                $return = [
                     "success" => false,
                     "msg" => sprintf(gT("Sorry, this file extension (%s) is not allowed!"), $ext)
-                );
+                ];
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
@@ -142,18 +142,18 @@ class UploaderController extends Controller
             // If this is just a preview, don't save the file
             if ($preview) {
                 if ($size > $maxfilesize) {
-                    $return = array(
+                    $return = [
                         "success" => false,
                         "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."),
                             $maxfilesize)
-                    );
+                    ];
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 } else {
                     if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
 
-                        $return = array(
+                        $return = [
                             "success" => true,
                             "file_index" => $filecount,
                             "size" => $size,
@@ -161,7 +161,7 @@ class UploaderController extends Controller
                             "ext" => $ext,
                             "filename" => $randfilename,
                             "msg" => gT("The file has been successfuly uploaded.")
-                        );
+                        ];
                         // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
                         // Maybe use a javascript 'onunload' on preview question/group
                         // unlink($randfileloc)
@@ -174,32 +174,32 @@ class UploaderController extends Controller
                 // send the file related info back to the client
                 $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
                 if ($size > $maxfilesize) {
-                    $return = array(
+                    $return = [
                         "success" => false,
                         "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed.",
                             'unescaped'), $maxfilesize)
-                    );
+                    ];
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 } elseif ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB)) {
-                    $return = array(
+                    $return = [
                         "success" => false,
                         "msg" => gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",
                             'unescaped')
-                    );
+                    ];
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 } elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
-                    $return = array(
+                    $return = [
                         "success" => true,
                         "size" => $size,
                         "name" => rawurlencode(basename($filename)),
                         "ext" => $ext,
                         "filename" => $randfilename,
                         "msg" => gT("The file has been successfuly uploaded.")
-                    );
+                    ];
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
@@ -207,29 +207,29 @@ class UploaderController extends Controller
                 else {
                     // check for upload error
                     if ($_FILES['uploadfile']['error'] > 2) {
-                        $return = array(
+                        $return = [
                             "success" => false,
                             "msg" => gT("Sorry, there was an error uploading your file")
-                        );
+                        ];
                         //header('Content-Type: application/json');
                         echo ls_json_encode($return);
                         Yii::app()->end();
                     } // check to ensure that the file does not cross the maximum file size
                     else {
                         if ($_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2 || $size > $maxfilesize) {
-                            $return = array(
+                            $return = [
                                 "success" => false,
                                 "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."),
                                     $maxfilesize)
-                            );
+                            ];
                             //header('Content-Type: application/json');
                             echo ls_json_encode($return);
                             Yii::app()->end();
                         } else {
-                            $return = array(
+                            $return = [
                                 "success" => false,
                                 "msg" => gT("Unknown error")
-                            );
+                            ];
                             //header('Content-Type: application/json');
                             echo ls_json_encode($return);
                             Yii::app()->end();

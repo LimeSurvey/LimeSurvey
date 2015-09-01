@@ -159,7 +159,7 @@ class TokensController extends Controller
         $aSurveyInfo=getSurveyInfo($iSurveyId ,$sLanguage);
         $aMail['subject']=$aSurveyInfo['email_register_subj'];
         $aMail['message']=$aSurveyInfo['email_register'];
-        $aReplacementFields=array();
+        $aReplacementFields= [];
         $aReplacementFields["{ADMINNAME}"]=$aSurveyInfo['adminname'];
         $aReplacementFields["{ADMINEMAIL}"]=$aSurveyInfo['adminemail'];
         $aReplacementFields["{SURVEYNAME}"]=$aSurveyInfo['name'];
@@ -171,10 +171,13 @@ class TokensController extends Controller
         $useHtmlEmail = (getEmailFormat($iSurveyId) == 'html');
         $aMail['subject']=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$aMail['subject']);
         $aMail['message']=preg_replace("/{TOKEN:([A-Z0-9_]+)}/","{"."$1"."}",$aMail['message']);
-        $aReplacementFields["{SURVEYURL}"] = App()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}",array('lang'=>$sLanguage,'token'=> $token->token));
-        $aReplacementFields["{OPTOUTURL}"] = App()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=> $token->token));
-        $aReplacementFields["{OPTINURL}"] = App()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}",array('langcode'=>$sLanguage,'token'=> $token->token));
-        foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
+        $aReplacementFields["{SURVEYURL}"] = App()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}",
+            ['lang'=>$sLanguage,'token'=> $token->token]);
+        $aReplacementFields["{OPTOUTURL}"] = App()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}",
+            ['langcode'=>$sLanguage,'token'=> $token->token]);
+        $aReplacementFields["{OPTINURL}"] = App()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}",
+            ['langcode'=>$sLanguage,'token'=> $token->token]);
+        foreach(['OPTOUT', 'OPTIN', 'SURVEY'] as $key)
         {
             $url = $aReplacementFields["{{$key}URL}"];
             if ($useHtmlEmail)

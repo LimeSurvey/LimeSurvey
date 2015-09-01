@@ -96,7 +96,7 @@ class OptoutController extends Controller {
 
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
-            $this->redirect(array('/'));
+            $this->redirect(['/']);
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
         //Check that there is a SID
@@ -120,7 +120,7 @@ class OptoutController extends Controller {
         else
         {
             LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$sToken,false);
-            $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $sToken));
+            $oToken = Token::model($iSurveyID)->findByAttributes(['token' => $sToken]);
             if (!isset($oToken))
             {
                 $sMessage = gT('You are not a participant in this survey.');
@@ -173,13 +173,13 @@ class OptoutController extends Controller {
     {
         sendCacheHeaders();
         doHeader();
-        $aSupportData=array('thissurvey'=>$aSurveyInfo);
-        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'startpage.pstpl'), array(),
+        $aSupportData= ['thissurvey'=>$aSurveyInfo];
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'startpage.pstpl'), [],
             $aSupportData);
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;
         $this->render('/opt_view',$aData);
-        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'endpage.pstpl'), array(),
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'endpage.pstpl'), [],
             $aSupportData);
         doFooter();
     }

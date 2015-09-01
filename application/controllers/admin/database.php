@@ -46,9 +46,9 @@ class database extends Survey_Common_Action
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             array_unshift($aSurveyLanguages,$sBaseLanguage);
 
-            Question::model()->updateAll(array('same_default'=> Yii::app()->request->getPost('samedefault')?1:0), 'sid=:sid ANd qid=:qid', array(':sid'=>$iSurveyID, ':qid'=>$iQuestionID));
+            Question::model()->updateAll(['same_default'=> Yii::app()->request->getPost('samedefault')?1:0], 'sid=:sid ANd qid=:qid', [':sid'=>$iSurveyID, ':qid'=>$iQuestionID]);
 
-            $arQuestion = Question::model()->findByAttributes(array('qid'=>$iQuestionID));
+            $arQuestion = Question::model()->findByAttributes(['qid'=>$iQuestionID]);
             $sQuestionType = $arQuestion['type'];
 
             $aQuestionTypeList=getQuestionTypeList('','array');
@@ -75,7 +75,7 @@ class database extends Survey_Common_Action
                 foreach ($aSurveyLanguages as $sLanguage)
                 {
 
-                    $arQuestions = Question::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$iQuestionGroupID, 'parent_qid'=>$iQuestionID, 'language'=>$sLanguage, 'scale_id'=>0));
+                    $arQuestions = Question::model()->findAllByAttributes(['sid'=>$iSurveyID, 'gid'=>$iQuestionGroupID, 'parent_qid'=>$iQuestionID, 'language'=>$sLanguage, 'scale_id'=>0]);
 
                     for ($iScaleID=0;$iScaleID<$aQuestionTypeList[$sQuestionType]['subquestions'];$iScaleID++)
                     {
@@ -128,7 +128,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                $this->getController()->redirect(['admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID]);
             }
         }
 
@@ -139,12 +139,12 @@ class database extends Survey_Common_Action
             $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             array_unshift($aSurveyLanguages,$sBaseLanguage);
-            $arQuestion = Question::model()->findByAttributes(array('qid'=>$iQuestionID));
+            $arQuestion = Question::model()->findByAttributes(['qid'=>$iQuestionID]);
             $sQuestionType = $arQuestion['type'];    // Checked)
             $aQuestionTypeList=getQuestionTypeList('','array');
             $iScaleCount=$aQuestionTypeList[$sQuestionType]['answerscales'];
             //First delete all answers
-            Answer::model()->deleteAllByAttributes(array('qid'=>$iQuestionID));
+            Answer::model()->deleteAllByAttributes(['qid'=>$iQuestionID]);
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
             for ($iScaleID=0;$iScaleID<$iScaleCount;$iScaleID++)
             {
@@ -162,13 +162,15 @@ class database extends Survey_Common_Action
                         // Fix bug with FCKEditor saving strange BR types
                         $sAnswerText=$oFixCKeditor->fixCKeditor($sAnswerText);
                         // Now we insert the answers
-                        $iInsertCount=Answer::model()->insertRecords(array('code'=>$sCode,
+                        $iInsertCount=Answer::model()->insertRecords([
+                            'code'=>$sCode,
                         'answer'=>$sAnswerText,
                         'qid'=>$iQuestionID,
                         'sortorder'=>$iSortOrderID,
                         'language'=>$sLanguage,
                         'assessment_value'=>$iAssessmentValue,
-                        'scale_id'=>$iScaleID));
+                        'scale_id'=>$iScaleID
+                        ]);
                         if (!$iInsertCount) // Checked
                         {
                             Yii::app()->setFlashMessage(gT("Failed to update answers"),'error');
@@ -177,7 +179,7 @@ class database extends Survey_Common_Action
                     // Updating code (oldcode!==null) => update condition with the new code
                     $sOldCode=Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);
                     if(isset($sOldCode) && $sCode !== $sOldCode) {
-                        Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$iQuestionID, ':value'=>$sOldCode));
+                        Condition::model()->updateAll(['value'=>$sCode], 'cqid=:cqid AND value=:value', [':cqid'=>$iQuestionID, ':value'=>$sOldCode]);
                     }
                 }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
             }  //  for ($scale_id=0;
@@ -198,7 +200,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                $this->getController()->redirect(['/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID]);
             }
         }
 
@@ -208,7 +210,7 @@ class database extends Survey_Common_Action
             $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             array_unshift($aSurveyLanguages,$sBaseLanguage);
-            $arQuestion = Question::model()->findByAttributes(array('qid'=>$iQuestionID));
+            $arQuestion = Question::model()->findByAttributes(['qid'=>$iQuestionID]);
             $sQuestionType = $arQuestion['type'];    // Checked
             $aQuestionTypeList=getQuestionTypeList('','array');
             $iScaleCount=$aQuestionTypeList[$sQuestionType]['subquestions'];
@@ -222,7 +224,7 @@ class database extends Survey_Common_Action
                 $iDeletedQID=(int)$iDeletedQID;
                 if ($iDeletedQID>0)
                 { // don't remove undefined
-                    $iInsertCount = Question::model()->deleteAllByAttributes(array('qid'=>$iDeletedQID));
+                    $iInsertCount = Question::model()->deleteAllByAttributes(['qid'=>$iDeletedQID]);
                     if (!$iInsertCount)
                     {
                         Yii::app()->setFlashMessage(gT("Failed to delete answer"),'error');
@@ -231,10 +233,10 @@ class database extends Survey_Common_Action
             }
 
             //Determine ids by evaluating the hidden field
-            $aRows=array();
-            $aCodes=array();
-            $aOldCodes=array();
-            $aRelevance=array();
+            $aRows= [];
+            $aCodes= [];
+            $aOldCodes= [];
+            $aRelevance= [];
             foreach ($_POST as $sPOSTKey=>$sPOSTValue)
             {
                 $sPOSTKey=explode('_',$sPOSTKey);
@@ -255,7 +257,7 @@ class database extends Survey_Common_Action
                     $aRelevance[$sPOSTKey[2]][]=$sPOSTValue;
                 }
             }
-            $aInsertQID =array();
+            $aInsertQID = [];
             for ($iScaleID=0;$iScaleID<$iScaleCount;$iScaleID++)
             {
                 foreach ($aSurveyLanguages as $sLanguage)
@@ -265,7 +267,8 @@ class database extends Survey_Common_Action
                     {
                         if (substr($subquestionkey,0,3)!='new')           //update record
                         {
-                            $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$subquestionkey,':language'=>$sLanguage));
+                            $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",
+                                [":qid"=>$subquestionkey,':language'=>$sLanguage]);
                             $oSubQuestion->question_order=$iPosition+1;
                             $oSubQuestion->title=$aCodes[$iScaleID][$iPosition];
                             $oSubQuestion->question=$subquestionvalue;
@@ -290,7 +293,8 @@ class database extends Survey_Common_Action
                             }
                             else                                                //new record: additional language
                             {
-                                $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",array(":qid"=>$aInsertQID[$iScaleID][$iPosition],':language'=>$sLanguage));
+                                $oSubQuestion=Question::model()->find("qid=:qid AND language=:language",
+                                    [":qid"=>$aInsertQID[$iScaleID][$iPosition],':language'=>$sLanguage]);
                                 if(!$oSubQuestion)
                                     $oSubQuestion=new Question;
                                 $oSubQuestion->sid=$iSurveyID;
@@ -317,7 +321,7 @@ class database extends Survey_Common_Action
                         {
                             if(substr($subquestionkey,0,3)!='new' && isset($aOldCodes[$iScaleID][$iPosition]) && $aCodes[$iScaleID][$iPosition] !== $aOldCodes[$iScaleID][$iPosition])
                             {
-                                Condition::model()->updateAll(array('cfieldname'=>'+'.$iSurveyID.'X'.$iQuestionGroupID.'X'.$iQuestionID.$aCodes[$iScaleID][$iPosition], 'value'=>$aCodes[$iScaleID][$iPosition]), 'cqid=:cqid AND cfieldname=:cfieldname AND value=:value', array(':cqid'=>$iQuestionID, ':cfieldname'=>$iSurveyID.'X'.$iQuestionGroupID.'X'.$iQuestionID, ':value'=>$aOldCodes[$iScaleID][$iPosition]));
+                                Condition::model()->updateAll(['cfieldname'=>'+'.$iSurveyID.'X'.$iQuestionGroupID.'X'.$iQuestionID.$aCodes[$iScaleID][$iPosition], 'value'=>$aCodes[$iScaleID][$iPosition]], 'cqid=:cqid AND cfieldname=:cfieldname AND value=:value', [':cqid'=>$iQuestionID, ':cfieldname'=>$iSurveyID.'X'.$iQuestionGroupID.'X'.$iQuestionID, ':value'=>$aOldCodes[$iScaleID][$iPosition]]);
                             }
                             if (!isset($aInsertQID[$iScaleID][$iPosition]))
                             {
@@ -367,11 +371,11 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect(array('/admin/questions/sa/subquestions/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                $this->getController()->redirect(['/admin/questions/sa/subquestions/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID]);
             }
         }
 
-        if (in_array($sAction, array('insertquestion', 'copyquestion')) && App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
+        if (in_array($sAction, ['insertquestion', 'copyquestion']) && App()->user->checkAccess('surveycontent', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
@@ -385,7 +389,7 @@ class database extends Survey_Common_Action
                     $iQuestionOrder= intval(Yii::app()->request->getPost('questionposition'));
                     //Need to renumber all questions on or after this
                     $sQuery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=:gid AND question_order >= :order";
-                    Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$iQuestionGroupID, ':order'=>$iQuestionOrder))->query();
+                    Yii::app()->db->createCommand($sQuery)->bindValues([':gid'=>$iQuestionGroupID, ':order'=>$iQuestionOrder])->query();
                 } else {
                     $iQuestionOrder=(getMaxQuestionOrder($iQuestionGroupID,$iSurveyID));
                     $iQuestionOrder++;
@@ -480,7 +484,7 @@ class database extends Survey_Common_Action
                     if ($sAction == 'copyquestion') {
                         if (returnGlobal('copysubquestions') == "Y")
                         {
-                            $aSQIDMappings = array();
+                            $aSQIDMappings = [];
                             $r1 = Question::model()->getSubQuestions(returnGlobal('oldqid'));
                             $aSubQuestions = $r1->readAll();
                             foreach ($aSubQuestions as $qr1)
@@ -507,7 +511,7 @@ class database extends Survey_Common_Action
                             $aAnswerOptions = $r1->readAll();
                             foreach ($aAnswerOptions as $qr1)
                             {
-                                Answer::model()->insertRecords(array(
+                                Answer::model()->insertRecords([
                                 'qid' => $iQuestionID,
                                 'code' => $qr1['code'],
                                 'answer' => $qr1['answer'],
@@ -515,12 +519,13 @@ class database extends Survey_Common_Action
                                 'sortorder' => $qr1['sortorder'],
                                 'language' => $qr1['language'],
                                 'scale_id' => $qr1['scale_id']
-                                ));
+                                ]);
                             }
                         }
                         if (returnGlobal('copyattributes') == "Y")
                         {
-                            $oOldAttributes = QuestionAttribute::model()->findAll("qid=:qid",array("qid"=>returnGlobal('oldqid')));
+                            $oOldAttributes = QuestionAttribute::model()->findAll("qid=:qid",
+                                ["qid"=>returnGlobal('oldqid')]);
                             foreach($oOldAttributes as $oOldAttribute)
                             {
                                 $attribute = new QuestionAttribute;
@@ -534,7 +539,7 @@ class database extends Survey_Common_Action
                     } else {
                         $qattributes = questionAttributes();
                         $validAttributes = $qattributes[Yii::app()->request->getPost('type')];
-                        $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+                        $aLanguages=array_merge([Survey::model()->findByPk($iSurveyID)->language],Survey::model()->findByPk($iSurveyID)->additionalLanguages);
 
                         foreach ($validAttributes as $validAttribute)
                         {
@@ -543,16 +548,16 @@ class database extends Survey_Common_Action
                                 foreach ($aLanguages as $sLanguage)
                                 {
                                     $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID, 'language'=>$sLanguage));
+                                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(['attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID, 'language'=>$sLanguage]);
                                     if (count($iInsertCount)>0)
                                     {
                                         if ($value!='')
                                         {
-                                            QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage));
+                                            QuestionAttribute::model()->updateAll(['value'=>$value], 'attribute=:attribute AND qid=:qid AND language=:language', [':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage]);
                                         }
                                         else
                                         {
-                                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage));
+                                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', [':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage]);
                                         }
                                     }
                                     elseif($value!='')
@@ -575,16 +580,16 @@ class database extends Survey_Common_Action
                                     if ($value==0) $value=1;
                                 };
 
-                                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID));
+                                $iInsertCount = QuestionAttribute::model()->findAllByAttributes(['attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID]);
                                 if (count($iInsertCount)>0)
                                 {
                                     if($value!=$validAttribute['default'] && trim($value)!="")
                                     {
-                                        QuestionAttribute::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
+                                        QuestionAttribute::model()->updateAll(['value'=>$value],'attribute=:attribute AND qid=:qid', [':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID]);
                                     }
                                     else
                                     {
-                                        QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
+                                        QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', [':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID]);
                                     }
                                 }
                                 elseif($value!=$validAttribute['default'] && trim($value)!="")
@@ -614,7 +619,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                $this->getController()->redirect(['admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID]);
             }
         }
 
@@ -622,7 +627,7 @@ class database extends Survey_Common_Action
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
 
-            $cqr=Question::model()->findByAttributes(array('qid'=>$iQuestionID));
+            $cqr=Question::model()->findByAttributes(['qid'=>$iQuestionID]);
             $oldtype=$cqr['type'];
             $oldgid=$cqr['gid'];
 
@@ -640,7 +645,7 @@ class database extends Survey_Common_Action
             }
             QuestionAttribute::model()->deleteAll($criteria);
 
-            $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+            $aLanguages=array_merge([Survey::model()->findByPk($iSurveyID)->language],Survey::model()->findByPk($iSurveyID)->additionalLanguages);
 
 
             //now save all valid attributes
@@ -653,16 +658,16 @@ class database extends Survey_Common_Action
                     foreach ($aLanguages as $sLanguage)
                     {// TODO sanitise XSS
                         $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                        $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID, 'language'=>$sLanguage));
+                        $iInsertCount = QuestionAttribute::model()->findAllByAttributes(['attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID, 'language'=>$sLanguage]);
                         if (count($iInsertCount)>0)
                         {
                             if ($value!='')
                             {
-                                QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage));
+                                QuestionAttribute::model()->updateAll(['value'=>$value], 'attribute=:attribute AND qid=:qid AND language=:language', [':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage]);
                             }
                             else
                             {
-                                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage));
+                                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', [':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID, ':language'=>$sLanguage]);
                             }
                         }
                         elseif($value!='')
@@ -685,16 +690,16 @@ class database extends Survey_Common_Action
                         if ($value==0) $value=1;
                     };
 
-                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID));
+                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(['attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID]);
                     if (count($iInsertCount)>0)
                     {
                         if($value!=$validAttribute['default'] && trim($value)!="")
                         {
-                            QuestionAttribute::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
+                            QuestionAttribute::model()->updateAll(['value'=>$value],'attribute=:attribute AND qid=:qid', [':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID]);
                         }
                         else
                         {
-                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
+                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', [':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID]);
                         }
                     }
                     elseif($value!=$validAttribute['default'] && trim($value)!="")
@@ -740,7 +745,7 @@ class database extends Survey_Common_Action
             {
                 // TMSW Condition->Relevance:  Do similar check via EM, but do allow such a change since will be easier to modify relevance
                 //Make sure there are no conditions based on this question, since we are changing the type
-                $ccresult = Condition::model()->findAllByAttributes(array('cqid'=>$iQuestionID));
+                $ccresult = Condition::model()->findAllByAttributes(['cqid'=>$iQuestionID]);
                 $cccount=count($ccresult);
                 foreach ($ccresult as $ccr) {$qidarray[]=$ccr['qid'];}
                 if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
@@ -772,7 +777,7 @@ class database extends Survey_Common_Action
                             // Fix bug with FCKEditor saving strange BR types : in rules ?
                             $sQuestionText=$oFixCKeditor->fixCKeditor($sQuestionText);
                             $sQuestionHelp=$oFixCKeditor->fixCKeditor($sQuestionHelp);
-                            $udata = array(
+                            $udata = [
                             'type' => Yii::app()->request->getPost('type'),
                             'title' => Yii::app()->request->getPost('title'),
                             'question' => $sQuestionText,
@@ -782,7 +787,7 @@ class database extends Survey_Common_Action
                             'other' => Yii::app()->request->getPost('other'),
                             'mandatory' => Yii::app()->request->getPost('mandatory'),
                             'relevance' => Yii::app()->request->getPost('relevance'),
-                            );
+                            ];
 
                             if ($oldgid!=$iQuestionGroupID)
                             {
@@ -795,18 +800,18 @@ class database extends Survey_Common_Action
                                     // insert question at the end of the destination group
                                     // this prevent breaking conditions if the target qid is in the dest group
                                     $insertorder = getMaxQuestionOrder($iQuestionGroupID,$iSurveyID) + 1;
-                                    $udata = array_merge($udata,array('question_order' => $insertorder));
+                                    $udata = array_merge($udata, ['question_order' => $insertorder]);
                                 }
                                 else
                                 {
                                     // Moving question to a 'lower' group
                                     // insert question at the beginning of the destination group
                                     shiftOrderQuestions($iSurveyID,$iQuestionGroupID,1); // makes 1 spare room for new question at top of dest group
-                                    $udata = array_merge($udata,array('question_order' => 0));
+                                    $udata = array_merge($udata, ['question_order' => 0]);
                                 }
                             }
                             //$condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
-                            $oQuestion = Question::model()->findByPk(array("qid"=>$iQuestionID,'language'=>$qlang));
+                            $oQuestion = Question::model()->findByPk(["qid"=>$iQuestionID,'language'=>$qlang]);
                             foreach ($udata as $k => $v)
                                 $oQuestion->$k = $v;
 
@@ -835,7 +840,7 @@ class database extends Survey_Common_Action
                     // Update the group ID on subquestions, too
                     if ($oldgid!=$iQuestionGroupID)
                     {
-                        Question::model()->updateAll(array('gid'=>$iQuestionGroupID), 'qid=:qid and parent_qid>0', array(':qid'=>$iQuestionID));
+                        Question::model()->updateAll(['gid'=>$iQuestionGroupID], 'qid=:qid and parent_qid>0', [':qid'=>$iQuestionID]);
                         // if the group has changed then fix the sortorder of old and new group
                         Question::model()->updateQuestionOrder($oldgid, $iSurveyID);
                         Question::model()->updateQuestionOrder($iQuestionGroupID, $iSurveyID);
@@ -845,13 +850,13 @@ class database extends Survey_Common_Action
                     }
                     if ($oldtype != Yii::app()->request->getPost('type'))
                     {
-                        Question::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':qid'=>$iQuestionID));
+                        Question::model()->updateAll(['type'=>Yii::app()->request->getPost('type')], 'parent_qid=:qid', [':qid'=>$iQuestionID]);
                     }
 
-                    Answer::model()->deleteAllByAttributes(array('qid' => $iQuestionID), 'scale_id >= :scale_id', array(':scale_id' => $iAnswerScales));
+                    Answer::model()->deleteAllByAttributes(['qid' => $iQuestionID], 'scale_id >= :scale_id', [':scale_id' => $iAnswerScales]);
 
                     // Remove old subquestion scales
-                    Question::model()->deleteAllByAttributes(array('parent_qid' => $iQuestionID), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
+                    Question::model()->deleteAllByAttributes(['parent_qid' => $iQuestionID], 'scale_id >= :scale_id', [':scale_id' => $iSubquestionScales]);
                     if(!isset($bOnError) || !$bOnError)// This really a quick hack and need a better system
                         Yii::app()->setFlashMessage(gT("Question was successfully saved."));
                     //                    }
@@ -902,9 +907,9 @@ class database extends Survey_Common_Action
             else
             {
                 if(Yii::app()->request->getPost('redirection') == "edit") {
-                    $this->getController()->redirect(array('admin/questions/sa/editquestion/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                    $this->getController()->redirect(['admin/questions/sa/editquestion/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID]);
                 } else {
-                    $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                    $this->getController()->redirect(['admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID]);
                 }
             }
         }
@@ -938,7 +943,7 @@ class database extends Survey_Common_Action
                     $welcome=$oFixCKeditor->fixCKeditor($welcome);
                     $endtext=$oFixCKeditor->fixCKeditor($endtext);
 
-                    $data = array(
+                    $data = [
                     'surveyls_title' => $short_title,
                     'surveyls_description' => $description,
                     'surveyls_welcometext' => $welcome,
@@ -947,8 +952,8 @@ class database extends Survey_Common_Action
                     'surveyls_urldescription' => $sURLDescription,
                     'surveyls_dateformat' => Yii::app()->request->getPost('dateformat_'.$langname),
                     'surveyls_numberformat' => Yii::app()->request->getPost('numberformat_'.$langname)
-                    );
-                    $SurveyLanguageSetting=SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
+                    ];
+                    $SurveyLanguageSetting=SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname]);
                     $SurveyLanguageSetting->attributes=$data;
                     $SurveyLanguageSetting->save(); // save the change to database
 
@@ -962,11 +967,11 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(['admin/survey/sa/view/surveyid/'.$iSurveyID]);
             }
         }
 
-        $this->getController()->redirect(array("/admin"),"refresh");
+        $this->getController()->redirect(["/admin"],"refresh");
 
     }
 
@@ -985,20 +990,20 @@ class database extends Survey_Common_Action
     {
         if ($defaultvalue=='')  // Remove the default value if it is empty
         {
-            DefaultValue::model()->deleteByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
+            DefaultValue::model()->deleteByPk(['sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language]);
         }
         else
         {
-            $arDefaultValue = DefaultValue::model()->findByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language));
+            $arDefaultValue = DefaultValue::model()->findByPk(['sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language]);
 
             if (is_null($arDefaultValue))
             {
-                $data=array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
+                $data= ['sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language, 'defaultvalue'=>$defaultvalue];
                 DefaultValue::model()->insertRecords($data);
             }
             else
             {
-                DefaultValue::model()->updateByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language), array('defaultvalue'=>$defaultvalue));
+                DefaultValue::model()->updateByPk(['sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language], ['defaultvalue'=>$defaultvalue]);
             }
         }
     }

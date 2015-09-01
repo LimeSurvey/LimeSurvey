@@ -35,7 +35,7 @@ class OptinController extends Controller {
 
         if (!$iSurveyID)
         {
-            $this->redirect(array('/'));
+            $this->redirect(['/']);
         }
         $iSurveyID = (int)$iSurveyID;
 
@@ -61,7 +61,7 @@ class OptinController extends Controller {
         else
         {
             LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$token,false);
-            $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
+            $oToken = Token::model($iSurveyID)->findByAttributes(['token' => $token]);
 
             if (!isset($oToken))
             {
@@ -102,13 +102,13 @@ class OptinController extends Controller {
     {
         sendCacheHeaders();
         doHeader();
-        $aSupportData=array('thissurvey'=>$aSurveyInfo);
-        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'startpage.pstpl'), array(),
+        $aSupportData= ['thissurvey'=>$aSurveyInfo];
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'startpage.pstpl'), [],
             $aSupportData);
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;
         $this->render('/opt_view',$aData);
-        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'endpage.pstpl'), array(),
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'endpage.pstpl'), [],
             $aSupportData);
         doFooter();
     }

@@ -25,7 +25,7 @@ class saved extends Survey_Common_Action
     public function view($iSurveyId)
     {
         $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
-        $aViewUrls = array();
+        $aViewUrls = [];
 
         if (!App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
@@ -49,10 +49,10 @@ class saved extends Survey_Common_Action
      */
     public function delete($iSurveyId, $iSurveyResponseId, $iSavedControlId)
     {
-        SavedControl::model()->deleteAllByAttributes(array('scid' => $iSavedControlId, 'sid' => $iSurveyId)) or die(gT("Couldn't delete"));
-        Yii::app()->db->createCommand()->delete("{{survey_".intval($iSurveyId)."}}", 'id=:id', array('id' => $iSurveyResponseId)) or die(gT("Couldn't delete"));
+        SavedControl::model()->deleteAllByAttributes(['scid' => $iSavedControlId, 'sid' => $iSurveyId]) or die(gT("Couldn't delete"));
+        Yii::app()->db->createCommand()->delete("{{survey_".intval($iSurveyId)."}}", 'id=:id', ['id' => $iSurveyResponseId]) or die(gT("Couldn't delete"));
 
-        $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$iSurveyId}"));
+        $this->getController()->redirect(["admin/saved/sa/view/surveyid/{$iSurveyId}"]);
     }
 
     /**
@@ -62,7 +62,7 @@ class saved extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = [], $aData = [])
     {
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
@@ -74,19 +74,19 @@ class saved extends Survey_Common_Action
      */
     private function _showSavedList($iSurveyId)
     {
-        $aResults = SavedControl::model()->findAll(array(
-            'select' => array('scid', 'srid', 'identifier', 'ip', 'saved_date', 'email', 'access_code'),
+        $aResults = SavedControl::model()->findAll([
+            'select' => ['scid', 'srid', 'identifier', 'ip', 'saved_date', 'email', 'access_code'],
             'condition' => 'sid=:sid',
             'order' => 'saved_date desc',
-            'params' => array(':sid' => $iSurveyId),
-        ));
+            'params' => [':sid' => $iSurveyId],
+        ]);
 
         if (!empty($aResults))
         {
             return compact('aResults');
         }
         else
-        {return array('aResults'=>array());}
+        {return ['aResults'=> []];}
     }
 
 }

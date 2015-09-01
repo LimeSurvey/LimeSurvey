@@ -10,7 +10,7 @@ class index extends CAction {
 		 * it happens.)
 		 */
         // Ensure to set some var, but script are replaced in SurveyRuntimeHelper
-        $aLSJavascriptVar=array();
+        $aLSJavascriptVar= [];
         $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
         $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
         $aLangData=\ls\helpers\SurveyTranslator::getLanguageData();
@@ -117,9 +117,9 @@ class index extends CAction {
         }
     }
 
-    function _getParameters($args = array(), $post = array())
+    function _getParameters($args = [], $post = [])
     {
-        $param = array();
+        $param = [];
         if(@$args[0]==__CLASS__) array_shift($args);
         if(count($args)%2 == 0) {
             for ($i = 0; $i < count($args); $i+=2) {
@@ -129,7 +129,7 @@ class index extends CAction {
         }
 
         // Need some $param (else PHP notice)
-        foreach(array('lang','action','newtest','qid','gid','sid','loadname','loadpass','scid','thisstep','move','token') as $sNeededParam)
+        foreach(['lang','action','newtest','qid','gid','sid','loadname','loadpass','scid','thisstep','move','token'] as $sNeededParam)
         {
             $param[$sNeededParam]=returnGlobal($sNeededParam,true);
         }
@@ -155,7 +155,7 @@ class index extends CAction {
        return App()->user->checkAccess('surveycontent', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
     }
 
-    function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
+    function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = [])
     {
 
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
@@ -178,7 +178,7 @@ class index extends CAction {
 		exit;
     }
 
-    function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = array())
+    function _createNewUserSessionAndRedirect($surveyid, &$redata, $iDebugLine, $asMessage = [])
     {
 
         $thissurvey=getSurveyInfo($surveyid);
@@ -219,7 +219,7 @@ class index extends CAction {
 
     function _printTemplateContent($sTemplateFile, &$redata, $iDebugLine = -1)
     {
-        echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplateFile), array(), $redata, 'survey[' . $iDebugLine . ']');
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplateFile), [], $redata, 'survey[' . $iDebugLine . ']');
     }
 
 

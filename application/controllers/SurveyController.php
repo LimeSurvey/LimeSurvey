@@ -68,7 +68,7 @@ class SurveyController extends Controller
 
     public function actions()
     {
-        return array(
+        return [
             'index' => 'application.controllers.survey.index',
             'optin' => 'application.controllers.optin',
             'optout' => 'application.controllers.optout',
@@ -78,7 +78,7 @@ class SurveyController extends Controller
             'tcpdf_check' => 'application.controllers.tcpdf_check',
             'uploader' => 'application.controllers.uploader',
             'verification' => 'application.controllers.verification'
-        );
+        ];
     }
 
 }

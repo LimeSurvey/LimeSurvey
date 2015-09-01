@@ -70,7 +70,7 @@ class Assessments extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = [], $aData = [])
     {
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'assessments.js');
         App()->getClientScript()->registerPackage('jquery-tablesorter');
@@ -81,9 +81,9 @@ class Assessments extends Survey_Common_Action
 
     private function _showAssessments($iSurveyID, $action)
     {
-        $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID));
+        $oAssessments = Assessment::model()->findAllByAttributes(['sid' => $iSurveyID]);
         $aData = $this->_collectGroupData($iSurveyID);
-        $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
+        $aHeadings = [gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum")];
         $aData['actiontitle'] = gT("Add");
         $aData['actionvalue'] = "assessmentadd";
         $aData['editId'] = '';
@@ -105,15 +105,15 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
         if ($surveyinfo['assessments']!='Y')
-            $urls['message'] = array('title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
+            $urls['message'] = ['title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader'];
         $urls['assessments_view'][]= $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
     }
 
     private function _collectGroupData($iSurveyID)
     {
-        $aData = array();
-        $groups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
+        $aData = [];
+        $groups = QuestionGroup::model()->findAllByAttributes(['sid' => $iSurveyID]);
         foreach ($groups as $group) {
             $groupId = $group->attributes['gid'];
             $groupName = $group->attributes['group_name'];
@@ -124,7 +124,7 @@ class Assessments extends Survey_Common_Action
 
     private function _collectEditData(array $aData)
     {
-        $oAssessment = Assessment::model()->find("id=:id",array(':id' => App()->request->getParam('id')));
+        $oAssessment = Assessment::model()->find("id=:id", [':id' => App()->request->getParam('id')]);
         if(!$oAssessment)
             throw new CHttpException(500);// 404 ?
 
@@ -184,7 +184,7 @@ class Assessments extends Survey_Common_Action
     private function _delete($iSurveyID, $assessmentId)
     {
         if (App()->user->checkAccess('assessments', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID])) {
-            Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
+            Assessment::model()->deleteAllByAttributes(['id' => $assessmentId, 'sid' => $iSurveyID]);
         }
     }
 
@@ -193,7 +193,7 @@ class Assessments extends Survey_Common_Action
         if (!isset($_POST['gid']))
             $_POST['gid'] = 0;
 
-        return array(
+        return [
             'sid' => $iSurveyID,
             'scope' => \ls\helpers\Sanitize::paranoid_string($_POST['scope']),
             'gid' => \ls\helpers\Sanitize::int($_POST['gid']),
@@ -202,6 +202,6 @@ class Assessments extends Survey_Common_Action
             'name' => $_POST['name_' . $language],
             'language' => $language,
             'message' => $_POST['assessmentmessage_' . $language]
-        );
+        ];
     }
 }

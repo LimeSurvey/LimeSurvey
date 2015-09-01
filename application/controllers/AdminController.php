@@ -62,7 +62,7 @@ class AdminController extends Controller
     * @param string|array $url URL. Either a string. Or array with keys url and title
     * @return void
     */
-    public function error($message, $sURL = array())
+    public function error($message, $sURL = [])
     {
 
         $this->_getAdminHeader();
@@ -143,7 +143,7 @@ class AdminController extends Controller
         {
             $sDBVersion = \SettingGlobal::get('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
-                $this->redirect(array('/admin/update/sa/db'));
+                $this->redirect(['/admin/update/sa/db']);
         }
 
 //        if ($action != "update" && $action != "db")
@@ -190,7 +190,7 @@ class AdminController extends Controller
 
     public function getActionClasses()
     {
-        return array(
+        return [
         'assessments'      => 'assessments',
         'authentication'   => 'authentication',
         'checkintegrity'   => 'checkintegrity',
@@ -223,7 +223,7 @@ class AdminController extends Controller
         'tokens'           => 'tokens',
         'translate'        => 'translate',
         'update'           => 'update',
-        );
+        ];
     }
 
     /**
@@ -243,7 +243,7 @@ class AdminController extends Controller
 
         // Let's check if I am the Initial SuperAdmin
 
-        $oUser = User::model()->findByAttributes(array('parent_id' => 0));
+        $oUser = User::model()->findByAttributes(['parent_id' => 0]);
 
         if (!is_null($oUser) && $oUser->uid == $loginID)
             Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 1;
@@ -264,7 +264,7 @@ class AdminController extends Controller
         if (empty(Yii::app()->session['adminlang']))
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
-        $aData = array();
+        $aData = [];
         $aData['adminlang'] = Yii::app()->language;
         $aData['languageRTL']="";
         $aData['styleRTL']="";
@@ -388,7 +388,7 @@ class AdminController extends Controller
         if($aData['showupdate'])
         {
         $aData['aUpdateVersions'] = json_decode(\SettingGlobal::get("updateversions"),true);
-            $aUpdateTexts=array();
+            $aUpdateTexts= [];
             foreach ($aData['aUpdateVersions'] as $aVersion)
             {
                $aUpdateTexts[]=$aVersion['versionnumber'].'('.$aVersion['build'].')';
@@ -413,6 +413,6 @@ class AdminController extends Controller
 
         unset(Yii::app()->session['metaHeader']);
 
-        return $this->renderPartial('/admin/endScripts_view', array());
+        return $this->renderPartial('/admin/endScripts_view', []);
     }
 }

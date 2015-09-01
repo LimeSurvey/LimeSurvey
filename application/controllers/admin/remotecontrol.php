@@ -67,22 +67,22 @@ class remotecontrol extends Survey_Common_Action
             exit;
         } else {
             // Disabled output of API methods for now
-            if (Yii::app()->getConfig("rpc_publish_api") == true && in_array($RPCType, array('xml', 'json'))) {
+            if (Yii::app()->getConfig("rpc_publish_api") == true && in_array($RPCType, ['xml', 'json'])) {
                 $reflector = new ReflectionObject($oHandler);
                 foreach ($reflector->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                     /* @var $method ReflectionMethod */
                     if (substr($method->getName(),0,1) !== '_') {
-                        $list[$method->getName()] = array(
-                            'description' => str_replace(array("\r", "\r\n", "\n"), "<br/>", $method->getDocComment()),
+                        $list[$method->getName()] = [
+                            'description' => str_replace(["\r", "\r\n", "\n"], "<br/>", $method->getDocComment()),
                             'parameters'  => $method->getParameters()
-                        );
+                        ];
                     }
                 }
                 ksort($list);
                 $aData['method'] = $RPCType;
                 $aData['list'] = $list;
                 $aData['display']['menu_bars'] = false; // Hide normal menu bar
-                $this->_renderWrappedTemplate('remotecontrol', array('index_view'), $aData);
+                $this->_renderWrappedTemplate('remotecontrol', ['index_view'], $aData);
             }
         }
     }
@@ -111,7 +111,7 @@ class remotecontrol extends Survey_Common_Action
         else die('RPC interface not activated in global settings');
         
 
-        $sSessionKey= $client->call('get_session_key', array('admin','password'));
+        $sSessionKey= $client->call('get_session_key', ['admin','password']);
         if (is_array($sSessionKey)) {echo $sSessionKey['status']; die();}
         else
         {
@@ -119,36 +119,39 @@ class remotecontrol extends Survey_Common_Action
         }
         
         $sLSSData=base64_encode(file_get_contents($sFileToImport));
-        $iSurveyID=$client->call('import_survey', array($sSessionKey, $sLSSData, 'lss','Test import by JSON_RPC',1000));
+        $iSurveyID=$client->call('import_survey', [$sSessionKey, $sLSSData, 'lss','Test import by JSON_RPC',1000]);
         echo 'Created new survey SID:'.$iSurveyID.'<br>';
 
-        $aResult=$client->call('activate_survey', array($sSessionKey, $iSurveyID));
+        $aResult=$client->call('activate_survey', [$sSessionKey, $iSurveyID]);
         if ($aResult['status']=='OK')
         {
             echo 'Survey '.$iSurveyID.' successfully activated.<br>';
         }
-        $aResult=$client->call('activate_tokens', array($sSessionKey, $iSurveyID,array(1,2)));
+        $aResult=$client->call('activate_tokens', [$sSessionKey, $iSurveyID, [1,2]]);
         if ($aResult['status']=='OK')
         {
             echo 'Tokens for Survey ID '.$iSurveyID.' successfully activated.<br>';
         }
-        $aResult=$client->call('set_survey_properties', array($sSessionKey, $iSurveyID,array('faxto'=>'0800-LIMESURVEY')));
+        $aResult=$client->call('set_survey_properties', [$sSessionKey, $iSurveyID, ['faxto'=>'0800-LIMESURVEY']]);
         if (!array_key_exists('status', $aResult))
         {
             echo 'Modified survey settings for survey '.$iSurveyID.'<br>';
         }
-        $aResult=$client->call('add_language', array($sSessionKey, $iSurveyID,'ar'));
+        $aResult=$client->call('add_language', [$sSessionKey, $iSurveyID,'ar']);
         if ($aResult['status']=='OK')
         {
             echo 'Added Arabian as additional language'.'<br>';
         }
-        $aResult=$client->call('set_language_properties', array($sSessionKey, $iSurveyID,array('surveyls_welcometext'=>'An Arabian welcome text!'),'ar'));
+        $aResult=$client->call('set_language_properties', [
+            $sSessionKey, $iSurveyID,
+            ['surveyls_welcometext'=>'An Arabian welcome text!'],'ar'
+        ]);
         if ($aResult['status']=='OK')
         {
             echo 'Modified survey locale setting welcometext for Arabian in survey ID '.$iSurveyID.'<br>';
         }
 
-        $aResult=$client->call('delete_language', array($sSessionKey, $iSurveyID,'ar'));
+        $aResult=$client->call('delete_language', [$sSessionKey, $iSurveyID,'ar']);
         if ($aResult['status']=='OK')
         {
             echo 'Removed Arabian as additional language'.'<br>';
@@ -158,14 +161,14 @@ class remotecontrol extends Survey_Common_Action
         //$aResult=$client->call('export_responses', array($sSessionKey,$iSurveyID,'xls'));
         //$aResult=$client->call('export_responses', array($sSessionKey,$iSurveyID,'pdf'));
         //$aResult=$client->call('export_responses', array($sSessionKey,$iSurveyID,'doc'));
-        $aResult=$client->call('export_responses', array($sSessionKey,$iSurveyID,'csv'));
+        $aResult=$client->call('export_responses', [$sSessionKey,$iSurveyID,'csv']);
         //file_put_contents('test.xls',base64_decode(chunk_split($aResult)));
 
-        $aResult=$client->call('delete_survey', array($sSessionKey, $iSurveyID));
+        $aResult=$client->call('delete_survey', [$sSessionKey, $iSurveyID]);
         echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
 
         // Release the session key - close the session
-        $Result= $client->call('release_session_key', array($sSessionKey));
+        $Result= $client->call('release_session_key', [$sSessionKey]);
         echo 'Closed the session'.'<br>';
 
     }

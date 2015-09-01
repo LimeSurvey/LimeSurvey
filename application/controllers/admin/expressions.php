@@ -14,7 +14,7 @@
 class Expressions extends Survey_Common_Action {
 	function index()
 	{
-	    $aData=array();
+	    $aData= [];
         $needpermission=false;
         $aData['surveyid']=$surveyid=\ls\helpers\Sanitize::int(Yii::app()->request->getQuery('sid'));
         $aData['sa']=$sa=\ls\helpers\Sanitize::paranoid_string(Yii::app()->request->getQuery('sa','index'));
@@ -28,7 +28,7 @@ class Expressions extends Survey_Common_Action {
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have sufficient rights to access this page.');
             $message['class']= "error";
-            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
+            $this->_renderWrappedTemplate('survey', ["message"=>$message], $aData);
         }
         else
         {
@@ -132,7 +132,7 @@ class Expressions extends Survey_Common_Action {
     * @param string|array $aViewUrls View url(s)
     * @param array $aData Data to be passed on. Optional.
     */
-    protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = [], $aData = [])
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         //$aData['display']['header']=false;

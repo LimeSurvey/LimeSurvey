@@ -46,42 +46,43 @@ class ExpressionValidate extends Survey_Common_Action {
         if(is_string($lang))
         {
             $oValidator= new LSYii_Validators;
-            $aLangs=array($oValidator->languageFilter($lang));
+            $aLangs= [$oValidator->languageFilter($lang)];
         }
         else
         {
             $aLangs = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
         }
-        $aExpressions=array();
+        $aExpressions= [];
         $this->iSurveyId=$iSurveyId;
         foreach($aLangs as $sLang)
         {
-            $oQuotaLanguageSetting=QuotaLanguageSetting::model()->find("quotals_quota_id =:quota_id and quotals_language=:language",array(':quota_id'=>$iQuotaId,':language'=>$sLang));
+            $oQuotaLanguageSetting=QuotaLanguageSetting::model()->find("quotals_quota_id =:quota_id and quotals_language=:language",
+                [':quota_id'=>$iQuotaId,':language'=>$sLang]);
             // We don't need to go to step since new feature #8823, maybe need to be fixed ?
             if($oQuotaLanguageSetting)
             {
                 $this->sLang=$sLang;
-                $aExpressions['name_'.$sLang]=array(
+                $aExpressions['name_'.$sLang]= [
                     'title'=>sprintf("Quota name (%s)",$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_name,array(),__METHOD__), 
-                );
-                $aExpressions['message_'.$sLang]=array(
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_name, [],__METHOD__),
+                ];
+                $aExpressions['message_'.$sLang]= [
                     'title'=>sprintf("Quota message (%s)",$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_message,array(),__METHOD__), 
-                );
-                $aExpressions['url_'.$sLang]=array(
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_message, [],__METHOD__),
+                ];
+                $aExpressions['url_'.$sLang]= [
                     'title'=>sprintf("URL (%s)",$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url,array(),__METHOD__), 
-                );
-                $aExpressions['urldescrip_'.$sLang]=array(
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url, [],__METHOD__),
+                ];
+                $aExpressions['urldescrip_'.$sLang]= [
                     'title'=>sprintf("URL description (%s)",$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_urldescrip,array(),__METHOD__), 
-                );
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_urldescrip, [],__METHOD__),
+                ];
             }
         }
-        $aData=array(
+        $aData= [
             'aExpressions'=>$aExpressions,
-        );
+        ];
         $this->getController()->layout=$this->layout;
         $this->getController()->pageTitle=gt("Validate quota");
 
@@ -103,74 +104,74 @@ class ExpressionValidate extends Survey_Common_Action {
         $this->sLang=$sLang=$lang;
         $this->iSurveyId=$iSurveyId; // This start the survey before Expression : is this allways needed ?
 
-        $aTypeAttributes=array(
-            'invitation'=>array(
-                'subject'=>array(
+        $aTypeAttributes= [
+            'invitation'=> [
+                'subject'=> [
                     'attribute'=>'surveyls_email_invite_subj',
                     'title'=>gt('Invitation email subject'),
-                ),
-                'message'=>array(
+                ],
+                'message'=> [
                     'attribute'=>'surveyls_email_invite',
                     'title'=>gt('Invitation email body'),
-                ),
-            ),
-            'reminder'=>array(
-                'subject'=>array(
+                ],
+            ],
+            'reminder'=> [
+                'subject'=> [
                     'attribute'=>'surveyls_email_remind_subj',
                     'title'=>gt('Reminder email subject'),
-                ),
-                'message'=>array(
+                ],
+                'message'=> [
                     'attribute'=>'surveyls_email_remind',
                     'title'=>gt('Reminder email body'),
-                ),
-            ),
-            'confirmation'=>array(
-                'subject'=>array(
+                ],
+            ],
+            'confirmation'=> [
+                'subject'=> [
                     'attribute'=>'surveyls_email_confirm_subj',
                     'title'=>gt('Confirmation email subject'),
-                ),
-                'message'=>array(
+                ],
+                'message'=> [
                     'attribute'=>'surveyls_email_confirm',
                     'title'=>gt('Confirmation email body'),
-                ),
-            ),
-            'registration'=>array(
-                'subject'=>array(
+                ],
+            ],
+            'registration'=> [
+                'subject'=> [
                     'attribute'=>'surveyls_email_register_subj',
                     'title'=>gt('Registration email subject'),
-                ),
-                'message'=>array(
+                ],
+                'message'=> [
                     'attribute'=>'surveyls_email_register',
                     'title'=>gt('Registration email body'),
-                ),
-            ),
-            'admin_notification'=>array(
-                'subject'=>array(
+                ],
+            ],
+            'admin_notification'=> [
+                'subject'=> [
                     'attribute'=>'email_admin_notification_subj',
                     'title'=>gt('Basic admin notification subject'),
-                ),
-                'message'=>array(
+                ],
+                'message'=> [
                     'attribute'=>'email_admin_notification',
                     'title'=>gt('Basic admin notification body'),
-                ),
-            ),
-            'admin_detailed_notification'=>array(
-                'subject'=>array(
+                ],
+            ],
+            'admin_detailed_notification'=> [
+                'subject'=> [
                     'attribute'=>'email_admin_responses_subj',
                     'title'=>gt('Detailed admin notification subject'),
-                ),
-                'message'=>array(
+                ],
+                'message'=> [
                     'attribute'=>'email_admin_responses',
                     'title'=>gt('Detailed admin notification body'),
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLang);
         // Replaced before email edit
-        $aReplacement=array(
+        $aReplacement= [
             'ADMINNAME'=> $aSurveyInfo['admin'],
             'ADMINEMAIL'=> $aSurveyInfo['adminemail'],
-        );
+        ];
         // Not needed : \ls\helpers\Replacements::templatereplace do the job : but this can/must be fixed for invitaton/reminder/registration (#9424)
         $aReplacement["SURVEYNAME"] = gT("Name of the survey");
         $aReplacement["SURVEYDESCRIPTION"] =  gT("Description of the survey");
@@ -230,18 +231,18 @@ class ExpressionValidate extends Survey_Common_Action {
                 break;
         }
 
-        $aData=array();
+        $aData= [];
         //$oSurveyLanguage=SurveyLanguageSetting::model()->find("surveyls_survey_id=:sid and surveyls_language=:language",array(":sid"=>$iSurveyId,":language"=>$sLang));
-        $aExpressions=array();
+        $aExpressions= [];
         foreach($aTypeAttributes[$sType] as $key=>$aAttribute)
         {
             $sAttribute=$aAttribute['attribute'];
             // Email send do : \ls\helpers\Replacements::templatereplace + ReplaceField to the Templatereplace done : we need 2 in one
             // $LEM::ProcessString($oSurveyLanguage->$sAttribute,null,$aReplacement,false,1,1,false,false,true); // This way : ProcessString don't replace coreReplacements
-            $aExpressions[$key]=array(
+            $aExpressions[$key]= [
                 'title'=>$aAttribute['title'],
                 'expression'=> $this->getHtmlExpression($aSurveyInfo[$sAttribute],$aReplacement,__METHOD__),
-            );
+            ];
         }
         $aData['aExpressions']=$aExpressions;
         $this->getController()->layout=$this->layout;
@@ -261,16 +262,16 @@ class ExpressionValidate extends Survey_Common_Action {
     * @author Denis Chenu
     * @version 1.0
     */
-    private function getHtmlExpression($sExpression,$aReplacement=array(),$sDebugSource=__CLASS__)
+    private function getHtmlExpression($sExpression,$aReplacement= [],$sDebugSource=__CLASS__)
     {
         $LEM =LimeExpressionManager::singleton();
         $LEM::SetDirtyFlag();// Not sure it's needed
         $LEM::SetPreviewMode('logic');
 
-        $aReData=array();
+        $aReData= [];
         if($this->iSurveyId)
         {
-            $LEM::StartSurvey($this->iSurveyId, 'survey', array('hyperlinkSyntaxHighlighting'=>true));// replace QCODE
+            $LEM::StartSurvey($this->iSurveyId, 'survey', ['hyperlinkSyntaxHighlighting'=>true]);// replace QCODE
             $aReData['thissurvey']=getSurveyInfo($this->iSurveyId,$this->sLang);
         }
         // TODO : Find error in class name, style etc ....

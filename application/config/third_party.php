@@ -6,7 +6,7 @@ $bowerAssetPath = 'components';
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
  */
-return array(
+return [
     'ExpressionManager' => [
         'baseUrl' => 'scripts/expressions',
         'js' => [
@@ -15,156 +15,123 @@ return array(
         ],
         'depends' => ['jquery']
     ],
-    'jquery' => array(
+    'jquery' => [
         'baseUrl' => $bowerAssetPath . '/jquery/dist',
-        'js' => array(
+        'js' => [
             'jquery.min.js'
-        )
-    ),
-    'jqgrid' => array(
-        'baseUrl' => 'third_party/jqgrid/',
-        'js' => array(
-            'js/jquery.jqGrid.min.js',
-            'js/i18n/grid.locale-en.js',
+        ]
+    ],
+    'jqgrid' => [
+        'baseUrl' => $bowerAssetPath . '/jqgrid/',
+        'js' => [
+            'js/minified/jquery.jqGrid.min.js',
+            'js/minified/i18n/grid.locale-en.js',
             'plugins/jquery.searchFilter.js'
-        ),
-        'css' => array(
+        ],
+        'css' => [
             'css/ui.jqgrid.css'
-        ),
-        'depends' => array(
+        ],
+        'depends' => [
             'jquery'
-        )
+        ]
 
-    ),
-    'jqgrid.addons' => array(
-        'baseUrl' => 'third_party/jqgrid/plugins/',
-        'js' => array(
+    ],
+    'jqgrid.addons' => [
+        'baseUrl' => $bowerAssetPath . '/jqgrid/plugins/',
+        'js' => [
             'grid.addons.js'
-        ),
-        'depends' => array(
+        ],
+        'depends' => [
             'jqgrid'
-        )
-        
-    ),
-    'jqueryui' => array(
-        'baseUrl' => $bowerAssetPath . '/jquery-ui/',
-        'js' => array(
-            'jquery-ui.min.js'
-        ),
-        'depends' => array(
-            'jquery',
-        )
-    ),
+        ]
 
-    'jquery-cookie' => array(
-        'baseUrl' => 'third_party/jquery-cookie',
-        'js' => array(
-            'jquery.cookie.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-    'jquery-superfish' => array(
-        'baseUrl' => 'third_party/jquery-superfish',
-        'js' => array(
-            'js/superfish.js',
-            'js/hoverIntent.js'
-        ),
-        'css' => array(
-            'css/superfish.css'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-        
-    ),
-    'jquery-json' => array(
-        'baseUrl' => 'third_party/jquery-json',
-        'js' => array(
-            'jquery.json-2.4.min.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-    'qTip2' => array(
-        'baseUrl' => 'third_party/qTip2',
-        'js' => array(
-            'dist/jquery.qtip.min.js'
-        ),
-        'css' => array(
-            'dist/jquery.qtip.min.css'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-        
-    ),
-    'jquery-tablesorter' => array(
-        'baseUrl' => 'third_party/jquery-tablesorter',
-        'js' => array(
-            'jquery.tablesorter.min.js'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-    'ace' => array(
-        'baseUrl' => 'third_party/ace',
-        'js' => array(
-            'ace.js'
-        ),
-        'depends' => array(
-            'jquery-ace'
-        )
-    ),
-     'jquery-ace' => array(
-        'baseUrl' => 'third_party/jquery-ace',
-        'js' => array(
-            'jquery.ace.js',
-        ),
-        'depends' => array(
+    ],
+    'jqueryui' => [
+        'baseUrl' => $bowerAssetPath . '/jquery-ui/',
+        'js' => [
+            'jquery-ui.min.js'
+        ],
+        'depends' => [
             'jquery',
-        )
-    ),
-    'jquery-actual' => array(
-        'baseUrl' => $bowerAssetPath . '/jquery.actual/',
-        'js' => array(
-            'jquery.actual.min.js'
-        ),
-        'depends' => array(
+        ]
+    ],
+
+
+    'qTip2' => [
+        'baseUrl' => $bowerAssetPath. '/qtip2',
+        'js' => [
+            'jquery.qtip.min.js'
+        ],
+        'css' => [
+            'jquery.qtip.min.css'
+        ],
+        'depends' => [
             'jquery'
-        )
-    ),
-    'jquery-touch-punch' => array(
-        'baseUrl' => 'third_party/jquery-touch-punch/',
-        'js' => array(
+        ]
+
+    ],
+    'jquery-tablesorter' => [
+        'baseUrl' => $bowerAssetPath . '/tablesorter',
+        'js' => [
+            'jquery.tablesorter.min.js'
+        ],
+        'depends' => [
+            'jquery'
+        ]
+    ],
+    'ace' => [
+        'baseUrl' => $bowerAssetPath . '/ace-builds-bower-patched/src',
+        'js' => [
+            'ace.js'
+        ],
+    ],
+     'jquery-ace' => [
+        'baseUrl' => 'third_party/jquery-ace',
+        'js' => [
+            'jquery.ace.js',
+        ],
+        'depends' => [
+            'jquery',
+            'ace'
+        ]
+     ],
+    'jquery-actual' => [
+        'baseUrl' => $bowerAssetPath . '/jquery.actual/',
+        'js' => [
+            'jquery.actual.min.js'
+        ],
+        'depends' => [
+            'jquery'
+        ]
+    ],
+    'jquery-touch-punch' => [
+        'baseUrl' => $bowerAssetPath . '/components/jqueryui-touch-punch/',
+        'js' => [
             'jquery.ui.touch-punch.min.js'
-        ),
-        'depends' => array(
+        ],
+        'depends' => [
             'jqueryui'
-        )
-    ),
-    'jqueryui-timepicker' => array(
+        ]
+    ],
+    'jqueryui-timepicker' => [
         'baseUrl' => $bowerAssetPath . '/jqueryui-timepicker-addon/dist/',
-        'js' => array(
+        'js' => [
             'jquery-ui-timepicker-addon.js'
-        ),
-        'css' => array(
+        ],
+        'css' => [
             'jquery-ui-timepicker-addon.css'
-        ),
-        'depends' => array(
+        ],
+        'depends' => [
             'jqueryui'
-        )
-    ),
-    'leaflet' => array(
-        'baseUrl' => 'third_party/leaflet/',
-        'js' => array(
+        ]
+    ],
+    'leaflet' => [
+        'baseUrl' => $bowerAssetPath . '/leaflet/dist/',
+        'js' => [
             'leaflet.js'
-        ),
-        'css' => array(
+        ],
+        'css' => [
             'leaflet.css'
-        ),
-    ),
-);
+        ],
+    ],
+];

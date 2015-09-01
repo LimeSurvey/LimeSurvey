@@ -26,7 +26,7 @@ abstract class Controller extends \CController
      * This array contains the survey / group / question id used by the menu widget.
      * @var array
      */
-    public $navData = array();
+    public $navData = [];
 	/**
 	 * Basic initialiser to the base controller class
 	 *
@@ -134,7 +134,7 @@ abstract class Controller extends \CController
      * Adds support for creating an action using PSR4 autoloading.
      *
      */
-    protected function createActionFromMap($actionMap, $actionID, $requestActionID, $config = array())
+    protected function createActionFromMap($actionMap, $actionID, $requestActionID, $config = [])
     {
         $result = parent::createActionFromMap($actionMap, $actionID, $requestActionID, $config);
         if (!isset($result)) {

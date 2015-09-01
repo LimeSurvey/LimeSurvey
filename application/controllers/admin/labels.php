@@ -34,7 +34,7 @@ class labels extends Survey_Common_Action
     public function run($sa=null)
     {
         if ($sa == 'newlabelset' || $sa == 'editlabelset')
-            $this->route('index', array('sa', 'lid'));
+            $this->route('index', ['sa', 'lid']);
     }
 
     /**
@@ -69,8 +69,8 @@ class labels extends Survey_Common_Action
             if (!is_dir($destdir))
                 mkdir($destdir);
 
-            $aImportedFilesInfo = array();
-            $aErrorFilesInfo = array();
+            $aImportedFilesInfo = [];
+            $aErrorFilesInfo = [];
 
             if (is_file($zipfilename))
             {
@@ -78,7 +78,7 @@ class labels extends Survey_Common_Action
                     $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
 
                 // now read tempdir and copy authorized files only
-                $folders = array('flash', 'files', 'images');
+                $folders = ['flash', 'files', 'images'];
                 foreach ($folders as $folder)
                 {
                     list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
@@ -98,11 +98,11 @@ class labels extends Survey_Common_Action
             else
                 $this->getController()->error(sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
 
-            $aData = array(
+            $aData = [
                 'aErrorFilesInfo' => $aErrorFilesInfo,
                 'aImportedFilesInfo' => $aImportedFilesInfo,
                 'lid' => $lid
-            );
+            ];
 
             $this->_renderWrappedTemplate('labels', 'importlabelresources_view', $aData);
         }
@@ -117,7 +117,7 @@ class labels extends Survey_Common_Action
     public function import()
     {
         $action = returnGlobal('action');
-        $aViewUrls = array();
+        $aViewUrls = [];
 
         if ($action == 'importlabels')
         {
@@ -141,7 +141,7 @@ class labels extends Survey_Common_Action
 
             unlink($sFullFilepath);
 
-            $aViewUrls['import_view'][] = array('aImportResults' => $aImportResults);
+            $aViewUrls['import_view'][] = ['aImportResults' => $aImportResults];
         }
 
         $this->_renderWrappedTemplate('labels', $aViewUrls);
@@ -160,13 +160,13 @@ class labels extends Survey_Common_Action
 
 
         $lid = \ls\helpers\Sanitize::int($lid);
-        $aViewUrls = array();
+        $aViewUrls = [];
 
         if (App()->user->checkAccess('labelsets'))
         {
             if ($sa == "editlabelset" && App()->user->checkAccess('labelsets', ['crud' => 'update']))
             {
-                $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
+                $result = LabelSet::model()->findAllByAttributes(['lid' => $lid]);
                 foreach ($result as $row)
                 {
                     $row = $row->attributes;
@@ -224,8 +224,8 @@ class labels extends Survey_Common_Action
 
         // Gets the current language
         $action = 'labels';
-        $aViewUrls = array();
-        $aData = array();
+        $aViewUrls = [];
+        $aData = [];
 
         // Includes some javascript files
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
@@ -234,7 +234,7 @@ class labels extends Survey_Common_Action
         if (App()->user->checkAccess('labelsets'))
         {
             // Get a result containing labelset with the specified id
-            $result = LabelSet::model()->findByAttributes(array('lid' => $lid));
+            $result = LabelSet::model()->findByAttributes(['lid' => $lid]);
 
             // If there is label id in the variable $lid and there are labelset records in the database
             $labelset_exists = !empty($result);
@@ -261,7 +261,7 @@ class labels extends Survey_Common_Action
                 $criteria->select = 'max(sortorder) as maxsortorder, sortorder';
                 $criteria->addCondition('lid = :lid');
                 $criteria->addCondition('language = :language');
-                $criteria->params = array(':lid' => $lid, ':language' => $lslanguages[0]);
+                $criteria->params = [':lid' => $lid, ':language' => $lslanguages[0]];
                 $criteria->group = 'sortorder';
                 $maxresult = Label::model()->find($criteria);
                 $maxsortorder = 1;
@@ -269,17 +269,17 @@ class labels extends Survey_Common_Action
                     $maxsortorder = $maxresult->maxsortorder + 1;
 
                 $i = 0;
-                $results = array();
+                $results = [];
                 foreach ($lslanguages as $lslanguage)
                 {
-                    $result = Label::model()->findAllByAttributes(array('lid' => $lid, 'language' => $lslanguage), array('order' => 'sortorder, code'));
+                    $result = Label::model()->findAllByAttributes(['lid' => $lid, 'language' => $lslanguage], ['order' => 'sortorder, code']);
                     $criteria = new CDbCriteria;
                     $criteria->order = 'sortorder, code';
                     $criteria->condition = 'lid = :lid AND language = :language';
-                    $criteria->params = array(':lid' => $lid, ':language' => $lslanguage);
+                    $criteria->params = [':lid' => $lid, ':language' => $lslanguage];
                     $labelcount = Label::model()->count($criteria);
 
-                    $results[$i] = array();
+                    $results[$i] = [];
 
                     foreach ($result as $row)
                         $results[$i][] = $row->attributes;
@@ -287,14 +287,14 @@ class labels extends Survey_Common_Action
                     $i++;
                 }
 
-                $aViewUrls['labelview_view'][] = array(
+                $aViewUrls['labelview_view'][] = [
                     'results' => $results,
                     'lslanguages' => $lslanguages,
                     'lid' => $lid,
                     'maxsortorder' => $maxsortorder,
                 //    'msorow' => $maxresult->sortorder,
                     'action' => $action,
-                );
+                ];
             }
         }
 
@@ -331,9 +331,9 @@ class labels extends Survey_Common_Action
                 }
             }
             if ($lid)
-                $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
+                $this->getController()->redirect(["admin/labels/sa/view/lid/" . $lid]);
             else
-                $this->getController()->redirect(array("admin/labels/sa/view"));
+                $this->getController()->redirect(["admin/labels/sa/view"]);
     }
 
     /**
@@ -355,7 +355,7 @@ class labels extends Survey_Common_Action
     {
         $results = LabelSet::model()->findAll();
 
-        $output = array();
+        $output = [];
 
         foreach($results as $row)
         {
@@ -370,7 +370,7 @@ class labels extends Survey_Common_Action
         $lid = Yii::app()->getRequest()->getPost('lid');
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
-        $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues',array());
+        $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues', []);
         //Create new label set
         $language = "";
         foreach ($answers as $lang => $answer) {
@@ -388,7 +388,7 @@ class labels extends Survey_Common_Action
         }
         else
         {
-            Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
+            Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
         }
         $res = 'ok'; //optimistic
         foreach($answers as $lang => $answer) {
@@ -415,7 +415,7 @@ class labels extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = [], $aData = [])
     {
         if (!isset($aData['display']['menu_bars']['labels']) || $aData['display']['menu_bars']['labels'] != false)
         {

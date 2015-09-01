@@ -30,7 +30,7 @@ class statistics extends Survey_Common_Action {
     {
         $surveyid = \ls\helpers\Sanitize::int($surveyid);
         $imageurl = Yii::app()->getConfig("imageurl");
-        $aData = array('imageurl' => $imageurl);
+        $aData = ['imageurl' => $imageurl];
 
         /*
         * We need this later:
@@ -111,7 +111,7 @@ class statistics extends Survey_Common_Action {
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
         //Select public language file
-        $row  = Survey::model()->find('sid = :sid', array(':sid' => $surveyid));
+        $row  = Survey::model()->find('sid = :sid', [':sid' => $surveyid]);
 
         /*
         * check if there is a datestamp available for this survey
@@ -150,16 +150,18 @@ class statistics extends Survey_Common_Action {
         usort($rows, 'groupOrderThenQuestionOrder');
 
         //put the question information into the filter array
-        $filters = array();
+        $filters = [];
         foreach ($rows as $row)
         {
             //store some column names in $filters array
-            $filters[]=array($row['qid'],
+            $filters[]= [
+                $row['qid'],
                 $row['gid'],
                 $row['type'],
                 $row['title'],
                 $row['group_name'],
-                flattenText($row['question']));
+                flattenText($row['question'])
+            ];
         }
         $aData['filters'] = $filters;
 
@@ -530,12 +532,12 @@ class statistics extends Survey_Common_Action {
                 case 'showmap':
                     if (isset($aattr['location_mapservice'])) {
 
-                        $aData['mapdata'] = array (
+                        $aData['mapdata'] = [
                             "coord" => getQuestionMapData($field, $qsid),
                             "zoom" => $aattr['location_mapzoom'],
                             "width" => $aattr['location_mapwidth'],
                             "height" => $aattr['location_mapheight']
-                        );
+                        ];
                         QuestionAttribute::model()->setQuestionAttribute($qqid, 'statistics_showmap', 1);
                     } else {
                         $aData['success'] = 0;
@@ -551,12 +553,12 @@ class statistics extends Survey_Common_Action {
                     break;
                 case 'showgraph':
                     if (isset($aattr['location_mapservice'])) {
-                        $aData['mapdata'] = array (
+                        $aData['mapdata'] = [
                             "coord" => getQuestionMapData($field, $qsid),
                             "zoom" => $aattr['location_mapzoom'],
                             "width" => $aattr['location_mapwidth'],
                             "height" => $aattr['location_mapheight']
-                        );
+                        ];
                     }
 
                     $bChartType = $qtype != "M" && $qtype != "P" && $aattr["statistics_graphtype"] == "1";
@@ -614,7 +616,7 @@ class statistics extends Survey_Common_Action {
     * @param string|array $aViewUrls View url(s)
     * @param array $aData Data to be passed on. Optional.
     */
-    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = [], $aData = [])
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

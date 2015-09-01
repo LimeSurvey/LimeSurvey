@@ -23,14 +23,14 @@ class ParticipantsController extends Controller
         $this->render('index', ['dataProvider' => $dataProvider]);
     }
     public function actionSummary() {
-        $data = array(
+        $data = [
             'totalrecords' => false && App()->user->checkAccess('superadmin') ? Participant::model()->count() : Participant::model()->accessibleTo(App()->user->id)->count(),
             'owned' => Participant::model()->ownedBy(App()->user->id)->count(),
             'shared' => Participant::model()->ownedBy(App()->user->id)->count(),
 //            'attributes' => \ParticipantAttributeName::model()->findAll(),
             'attributecount' => \ParticipantAttributeName::model()->count(),
             'blacklisted' => Participant::model()->ownedBy(App()->user->id)->blacklisted()->count()
-        );
+        ];
         // loads the participant panel and summary view
         $this->render('summary', ['data' => $data]);
     }

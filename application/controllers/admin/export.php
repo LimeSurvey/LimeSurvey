@@ -54,7 +54,7 @@ class export extends Survey_Common_Action {
         }
 
         $aSurveyIDs = $this->session->flashdata('sids');
-        $aExportedFiles = array();
+        $aExportedFiles = [];
 
         foreach ($aSurveyIDs as $iSurveyID)
         {
@@ -70,17 +70,18 @@ class export extends Survey_Common_Action {
         {
             $aZIPFileName=$this->config->item("tempdir") . DIRECTORY_SEPARATOR . randomChars(30);
 
-            $this->load->library("admin/pclzip", array('p_zipname' => $aZIPFileName));
+            $this->load->library("admin/pclzip", ['p_zipname' => $aZIPFileName]);
 
             $zip = new PclZip($aZIPFileName);
             foreach ($aExportedFiles as $iSurveyID=>$sFileName)
             {
                 $zip->add(
-                array(
-                array(
+                [
+                [
                 PCLZIP_ATT_FILE_NAME => $sFileName,
-                PCLZIP_ATT_FILE_NEW_FULL_NAME => 'survey_archive_' . $iSurveyID . '.zip')
-                )
+                PCLZIP_ATT_FILE_NEW_FULL_NAME => 'survey_archive_' . $iSurveyID . '.zip'
+                ]
+                ]
                 );
 
                 unlink($sFileName);
@@ -192,12 +193,15 @@ class export extends Survey_Common_Action {
                 $selectshow = "selected='selected'";
             }
 
-            $aFields=array();
+            $aFields= [];
             foreach($aFieldMap as $sFieldName=>$fieldinfo)
             {
                 $sCode=viewHelper::getFieldCode($fieldinfo);
                 $aFields[$sFieldName]=$sCode.' - '.htmlspecialchars(ellipsize(html_entity_decode(viewHelper::getFieldText($fieldinfo)),30,.6,'...'));
-                $aFieldsOptions[$sFieldName]=array('title'=>viewHelper::getFieldText($fieldinfo),'data-fieldname'=>$fieldinfo['fieldname'],'data-emcode'=>viewHelper::getFieldCode($fieldinfo,array('LEMcompat'=>true))); // No need to filter title : Yii do it (remove all tag)
+                $aFieldsOptions[$sFieldName]= [
+                    'title'=>viewHelper::getFieldText($fieldinfo),'data-fieldname'=>$fieldinfo['fieldname'],'data-emcode'=>viewHelper::getFieldCode($fieldinfo,
+                        ['LEMcompat'=>true])
+                ]; // No need to filter title : Yii do it (remove all tag)
             }
 
             $data['SingleResponse']=(int)returnGlobal('id');
@@ -218,29 +222,29 @@ class export extends Survey_Common_Action {
 
             // Export plugins, leave out all entries that are not plugin
             $exports = array_filter($exports);
-            $exportData = array();
+            $exportData = [];
             foreach ($exports as $key => $plugin) {
                 $event = new PluginEvent('listExportOptions');
                 $event->set('type', $key);
                 $oPluginManager = App()->getPluginManager();
                 $oPluginManager->dispatchEvent($event, $plugin);
-                $exportData[$key] = array(
+                $exportData[$key] = [
                     'onclick' => $event->get('onclick'),
                     'label'   => $event->get('label'),
                     'checked' => $event->get('default', false),
                     'tooltip' => $event->get('tooltip', null)
-                    );
+                ];
             }
             $data['exports'] = $exportData;    // Pass available exports
-            $data['headexports'] =array(
-                'code'=>array('label'=>gT("Question code"),'help'=>null,'checked'=>false),
-                'abbreviated'=>array('label'=>gT("Abbreviated question text"),'help'=>null,'checked'=>false),
-                'full'=>array('label'=>gT("Full question text"),'help'=>null,'checked'=>true),
-                'codetext'=>array('label'=>gT("Question code and question text"),'help'=>null,'checked'=>false),
-            );
+            $data['headexports'] = [
+                'code'=> ['label'=>gT("Question code"),'help'=>null,'checked'=>false],
+                'abbreviated'=> ['label'=>gT("Abbreviated question text"),'help'=>null,'checked'=>false],
+                'full'=> ['label'=>gT("Full question text"),'help'=>null,'checked'=>true],
+                'codetext'=> ['label'=>gT("Question code and question text"),'help'=>null,'checked'=>false],
+            ];
             // Add a plugin for adding headexports : a public function getRegistereddPlugins($event) can help here.
             $aLanguagesCode=Survey::model()->findByPk($iSurveyID)->getAllLanguages();
-            $aLanguages=array();
+            $aLanguages= [];
             foreach ($aLanguagesCode as $sLanguage){
                 $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
             }
@@ -279,24 +283,24 @@ class export extends Survey_Common_Action {
         $options->output = 'display';
 
         // Replace token information by the column name
-        if ( in_array('first_name', Yii::app()->request->getPost('attribute_select', array())) )
+        if ( in_array('first_name', Yii::app()->request->getPost('attribute_select', [])) )
         {
             $options->selectedColumns[]="firstname";
         }
 
-        if ( in_array('last_name', Yii::app()->request->getPost('attribute_select', array())) )
+        if ( in_array('last_name', Yii::app()->request->getPost('attribute_select', [])) )
         {
             $options->selectedColumns[]="lastname";
         }
 
-        if ( in_array('email_address', Yii::app()->request->getPost('attribute_select', array())) )
+        if ( in_array('email_address', Yii::app()->request->getPost('attribute_select', [])) )
         {
             $options->selectedColumns[]="email";
         }
         $attributeFields = array_keys(getTokenFieldsAndNames($iSurveyID, TRUE));
         foreach ($attributeFields as $attr_name)
         {
-            if ( in_array($attr_name, Yii::app()->request->getPost('attribute_select',array())) )
+            if ( in_array($attr_name, Yii::app()->request->getPost('attribute_select', [])) )
             {
                 $options->selectedColumns[]=$attr_name;
             }
@@ -600,7 +604,7 @@ class export extends Survey_Common_Action {
                         $ftitle = "q_" . $ftitle;
                     }
 
-                    $ftitle = str_replace(array(" ","-",":",";","!","/","\\","'"), array("_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_",'_qu_'), $ftitle);
+                    $ftitle = str_replace([" ","-",":",";","!","/","\\","'"], ["_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_",'_qu_'], $ftitle);
 
                     if ( $ftitle != $field['title'] )
                     {
@@ -641,7 +645,7 @@ class export extends Survey_Common_Action {
             foreach ( $fieldnames as $field )
             {
                 $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
-                $fieldcode[]=viewHelper::getFieldCode($fielddata,array("LEMcompat"=>true));
+                $fieldcode[]=viewHelper::getFieldCode($fielddata, ["LEMcompat"=>true]);
             }
             $aData['uniquefieldcode']=(count(array_unique ($fieldcode))==count($fieldcode)); // Did we need more control ?
             $aData['vvversionseleted']=($aData['uniquefieldcode'])?2:1;
@@ -652,7 +656,7 @@ class export extends Survey_Common_Action {
             //Export is happening
             $extension = \ls\helpers\Sanitize::paranoid_string(returnGlobal('extension'));
             $vvVersion = (int) Yii::app()->request->getPost('vvversion');
-            $vvVersion = (in_array($vvVersion,array(1,2)))?$vvVersion:2;// Only 2 version actually, default to 2
+            $vvVersion = (in_array($vvVersion, [1,2]))?$vvVersion:2;// Only 2 version actually, default to 2
             $fn = "vvexport_$iSurveyId." . $extension;
 
             $this->_addHeaders($fn, "text/comma-separated-values", 0, "cache");
@@ -683,7 +687,7 @@ class export extends Survey_Common_Action {
                 }
                 $firstline .= $s;
                 if($vvVersion==2){
-                    $fieldcode=viewHelper::getFieldCode($fielddata,array("LEMcompat"=>true));
+                    $fieldcode=viewHelper::getFieldCode($fielddata, ["LEMcompat"=>true]);
                     $fieldcode=($fieldcode)?$fieldcode:$field;// $fieldcode is empty for token if there are no token table
                 }else{
                     $fieldcode=$field;
@@ -721,16 +725,18 @@ class export extends Survey_Common_Action {
                         // careful about the order of these arrays:
                         // lbrace has to be substituted *first*
                         $value = str_replace(
-                        array(
+                        [
                         "{",
                         "\n",
                         "\r",
-                        "\t"),
-                        array("{lbrace}",
+                        "\t"
+                        ],
+                        [
+                            "{lbrace}",
                         "{newline}",
                         "{cr}",
                         "{tab}"
-                        ),
+                        ],
                         $value
                         );
                     }
@@ -783,8 +789,8 @@ class export extends Survey_Common_Action {
             $zipfilepath = $tmpdir . $zipfilename;
             Yii::app()->loadLibrary('admin.pclzip');
             $zip = new PclZip($zipfilepath);
-            $zipdirs = array();
-            foreach (array('files', 'flash', 'images') as $zipdir)
+            $zipdirs = [];
+            foreach (['files', 'flash', 'images'] as $zipdir)
             {
                 if (is_dir($resourcesdir . $zipdir))
                     $zipdirs[] = $resourcesdir . $zipdir . '/';
@@ -821,7 +827,7 @@ class export extends Survey_Common_Action {
 
         if ( $lid )
         {
-            $lids = array($lid);
+            $lids = [$lid];
         }
 
         $lids = array_map('\ls\helpers\Sanitize::int', $lids);
@@ -926,12 +932,12 @@ class export extends Survey_Common_Action {
     private function _addToZip($zip, $name, $full_name)
     {
         $zip->add(
-        array(
-        array(
+        [
+        [
         PCLZIP_ATT_FILE_NAME => $name,
         PCLZIP_ATT_FILE_NEW_FULL_NAME => $full_name
-        )
-        )
+        ]
+        ]
         );
     }
 
@@ -996,7 +1002,8 @@ class export extends Survey_Common_Action {
      */  
     private function _quexmlsettings()
     {
-        return array('queXMLBackgroundColourQuestion',            
+        return [
+            'queXMLBackgroundColourQuestion',
             'queXMLPageFormat',
             'queXMLPageOrientation',
             'queXMLEdgeDetectionFormat',
@@ -1012,7 +1019,8 @@ class export extends Survey_Common_Action {
             'queXMLAllowSplittingVas',
             'queXMLAllowSplittingMatrixText',
             'queXMLAllowSplittingSingleChoiceVertical',
-            'queXMLAllowSplittingSingleChoiceHorizontal');
+            'queXMLAllowSplittingSingleChoiceHorizontal'
+        ];
     }
 
     /**
@@ -1044,7 +1052,7 @@ class export extends Survey_Common_Action {
         $iSurveyID = (int) $iSurveyID;
 
         $queXMLSettings = $this->_quexmlsettings();
-        $aData = array();
+        $aData = [];
         $aData['surveyid'] = $iSurveyID;
         $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
@@ -1159,10 +1167,10 @@ class export extends Survey_Common_Action {
 
         $data =& LimeExpressionManager::TSVSurveyExport($surveyid);
 
-        $lines = array();
+        $lines = [];
         foreach($data as $row)
         {
-            $lines[] = implode("\t",str_replace(array("\t","\n","\r"),array(" "," "," "),$row));
+            $lines[] = implode("\t",str_replace(["\t","\n","\r"], [" "," "," "],$row));
         }
         $output = implode("\n",$lines);
 //        echo "\xEF\xBB\xBF"; // UTF-8 BOM
@@ -1181,7 +1189,7 @@ class export extends Survey_Common_Action {
     }
 
     private function _xmlToJson($fileContents) {
-        $fileContents = str_replace(array("\n", "\r", "\t"), '', $fileContents);
+        $fileContents = str_replace(["\n", "\r", "\t"], '', $fileContents);
         $fileContents = trim(str_replace('"', "'", $fileContents));
         $simpleXml = simplexml_load_string($fileContents,'SimpleXMLElement', LIBXML_NOCDATA);
         $json = json_encode($simpleXml);
@@ -1195,7 +1203,7 @@ class export extends Survey_Common_Action {
     * @param string|array $aViewUrls View url(s)
     * @param array $aData Data to be passed on. Optional.
     */
-    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = [], $aData = [])
     {
         
 

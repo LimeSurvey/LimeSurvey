@@ -66,14 +66,14 @@ use \Yii;
                 sendCacheHeaders();
                 doHeader();
                 echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/startpage.pstpl'),
-                    array());
+                    []);
                 echo "<center><br />\n"
                 ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
                 ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
                 ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
                 echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/endpage.pstpl'),
-                    array());
+                    []);
                 doFooter();
                 exit;
             }
@@ -92,7 +92,7 @@ use \Yii;
             //SHOW HEADER
             if ($sExportType != 'pdf')
             {
-                $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
+                $sOutput = CHtml::form(["printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"], 'post')
                 ."<center><input type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
                 $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
@@ -133,7 +133,7 @@ use \Yii;
                 }
                 $sOutput .= "</table>\n";
                 $sData['thissurvey']=$aSurveyInfo;
-                $sOutput=\ls\helpers\Replacements::templatereplace($sOutput, array(), $sData, null);// Do a static replacement
+                $sOutput=\ls\helpers\Replacements::templatereplace($sOutput, [], $sData, null);// Do a static replacement
                 ob_start(function($buffer, $phase) {
                     App()->getClientScript()->render($buffer);
                     App()->getClientScript()->reset();
@@ -144,11 +144,11 @@ use \Yii;
                 sendCacheHeaders();
                 doHeader();
                 echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/startpage.pstpl'),
-                    array(), $sData);
+                    [], $sData);
                 echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/printanswers.pstpl'),
-                    array('ANSWERTABLE' => $sOutput), $sData);
+                    ['ANSWERTABLE' => $sOutput], $sData);
                 echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/endpage.pstpl'),
-                    array(), $sData);
+                    [], $sData);
                 echo "</body></html>";
 
                 ob_flush();

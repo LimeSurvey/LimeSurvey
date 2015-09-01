@@ -29,10 +29,10 @@ use \Yii;
 class Statistics_userController extends Controller {
 
 
-    public function _remap($method, $params = array())
+    public function _remap($method, $params = [])
     {
         array_unshift($params, $method);
-        return call_user_func_array(array($this, "action"), $params);
+        return call_user_func_array([$this, "action"], $params);
     }
 
     function actionAction($surveyid,$language=null)
@@ -53,7 +53,7 @@ class Statistics_userController extends Controller {
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-touch-punch');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-        $data = array();
+        $data = [];
 
         if(!isset($iSurveyID))
         {
@@ -72,7 +72,7 @@ class Statistics_userController extends Controller {
 
         if ($iSurveyID)
         {
-            $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $iSurveyID, ':active' => 'Y'));      //Checked
+            $actresult = Survey::model()->findAll('sid = :sid AND active = :active', [':sid' => $iSurveyID, ':active' => 'Y']);      //Checked
             if (count($actresult) == 0)
             {
                 throw new \CHttpException(500, 'You have to provide a valid survey ID.');
@@ -178,12 +178,14 @@ class Statistics_userController extends Controller {
         foreach ($rows as $row)
         {
             //store some column names in $filters array
-            $filters[]=array($row['qid'],
+            $filters[]= [
+                $row['qid'],
             $row['gid'],
             $row['type'],
             $row['title'],
             $row['group_name'],
-            flattenText($row['question']));
+            flattenText($row['question'])
+            ];
         }
 
         //number of records for this survey
@@ -208,9 +210,9 @@ class Statistics_userController extends Controller {
 
 
         //this is the array which we need later...
-        $summary = array();
+        $summary = [];
         //...while this is the array from copy/paste which we don't want to replace because this is a nasty source of error
-        $allfields = array();
+        $allfields = [];
 
 
         //---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
@@ -352,7 +354,7 @@ class Statistics_userController extends Controller {
         $redata = compact(array_keys(get_defined_vars()));
         doHeader();
         echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($data['sTemplatePath']) . DIRECTORY_SEPARATOR . "startpage.pstpl"),
-            array(), $redata);
+            [], $redata);
 
 
         //some progress bar stuff
