@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a5d769d932bcee7c1cba730dcb673952",
+    "hash": "35d11872b5d8f8e1cf6c0d9b364d913c",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -109,6 +109,38 @@
             "type": "bower-asset-library"
         },
         {
+            "name": "bower-asset/ace-builds-bower-patched",
+            "version": "v1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/echoAlexey/ace-builds.git",
+                "reference": "96719409198fd5599ffbd131096c2fdc5086e17e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/echoAlexey/ace-builds/zipball/96719409198fd5599ffbd131096c2fdc5086e17e",
+                "reference": "96719409198fd5599ffbd131096c2fdc5086e17e",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "./src/ace.js",
+                    "./src/mode-xml.js",
+                    "./src/theme-eclipse.js",
+                    "./src/ext-language_tools.js",
+                    "./src/snippets/xml.js"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Patched Ace Builds with Bower.json"
+        },
+        {
             "name": "bower-asset/ajaxq",
             "version": "dev-master",
             "source": {
@@ -198,6 +230,71 @@
                 "web"
             ],
             "time": "2015-04-30 10:11:19"
+        },
+        {
+            "name": "bower-asset/font-awesome",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "bf5831dd83fbf587431546d051b978ff7fc5acdf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/bf5831dd83fbf587431546d051b978ff7fc5acdf",
+                "reference": "bf5831dd83fbf587431546d051b978ff7fc5acdf",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "less/font-awesome.less",
+                    "scss/font-awesome.scss"
+                ],
+                "bower-asset-ignore": [
+                    "*/.*",
+                    "*.json",
+                    "src",
+                    "*.yml",
+                    "Gemfile",
+                    "Gemfile.lock",
+                    "*.md"
+                ]
+            },
+            "license": [
+                "OFL-1.1",
+                "MIT",
+                "CC-BY-3.0"
+            ],
+            "description": "Font Awesome",
+            "time": "2015-08-19 18:38:02"
+        },
+        {
+            "name": "bower-asset/jqgrid",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tonytomov/jqGrid.git",
+                "reference": "72bbef8ab049738162f4ee39a4f8c3bbb01149e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tonytomov/jqGrid/zipball/72bbef8ab049738162f4ee39a4f8c3bbb01149e0",
+                "reference": "72bbef8ab049738162f4ee39a4f8c3bbb01149e0",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.7.0",
+                "bower-asset/jquery-ui": ">=1.7.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "js/i18n/grid.locale-en.js",
+                    "js/jquery.jqGrid.js",
+                    "css/ui.jqgrid.css"
+                ]
+            }
         },
         {
             "name": "bower-asset/jquery",
@@ -321,6 +418,56 @@
             }
         },
         {
+            "name": "bower-asset/jqueryui-touch-punch",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/furf/jquery-ui-touch-punch.git",
+                "reference": "4bc009145202d9c7483ba85f3a236a8f3470354d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/furf/jquery-ui-touch-punch/zipball/4bc009145202d9c7483ba85f3a236a8f3470354d",
+                "reference": "4bc009145202d9c7483ba85f3a236a8f3470354d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.6",
+                "bower-asset/jquery-ui": ">=1.8"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "jquery.ui.touch-punch.min.js",
+                "bower-asset-ignore": [],
+                "branch-alias": {
+                    "dev-master": "0.2.3-dev"
+                }
+            },
+            "time": "2014-12-18 23:23:56"
+        },
+        {
+            "name": "bower-asset/js-cookie",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/js-cookie/js-cookie.git",
+                "reference": "d827e087e1f919a4cd106ebe8542f3408d8fe124"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/js-cookie/js-cookie/zipball/d827e087e1f919a4cd106ebe8542f3408d8fe124",
+                "reference": "d827e087e1f919a4cd106ebe8542f3408d8fe124",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "src/js.cookie.js"
+                ],
+                "bower-asset-ignore": []
+            }
+        },
+        {
             "name": "bower-asset/jsoneditor",
             "version": "v4.2.1",
             "source": {
@@ -408,6 +555,46 @@
             ]
         },
         {
+            "name": "bower-asset/qtip2",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qTip2/bower.git",
+                "reference": "f5300e9a698f203d47307cfdf90399504fd2f6b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qTip2/bower/zipball/f5300e9a698f203d47307cfdf90399504fd2f6b2",
+                "reference": "f5300e9a698f203d47307cfdf90399504fd2f6b2",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "./jquery.qtip.js",
+                    "./basic/jquery.qtip.js"
+                ],
+                "bower-asset-ignore": [
+                    "bin"
+                ]
+            },
+            "license": [
+                "MIT",
+                "GPL"
+            ],
+            "description": "Introducing... qTip2. The second generation of the advanced qTip plugin for the ever popular jQuery framework.",
+            "keywords": [
+                "craig",
+                "craigsworks",
+                "jquery",
+                "qtip",
+                "qtip2",
+                "thompson",
+                "tooltip",
+                "tooltips"
+            ]
+        },
+        {
             "name": "bower-asset/remarkable-bootstrap-notify",
             "version": "dev-master",
             "source": {
@@ -487,16 +674,16 @@
         },
         {
             "name": "bower-asset/select2",
-            "version": "3.5.3",
+            "version": "3.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/select2/select2.git",
-                "reference": "a0ddc8c9466cb94a026e80b20264e8feacc4345b"
+                "reference": "95a977f674b6938af55ec5f28b7772df93786c5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/a0ddc8c9466cb94a026e80b20264e8feacc4345b",
-                "reference": "a0ddc8c9466cb94a026e80b20264e8feacc4345b",
+                "url": "https://api.github.com/repos/select2/select2/zipball/95a977f674b6938af55ec5f28b7772df93786c5c",
+                "reference": "95a977f674b6938af55ec5f28b7772df93786c5c",
                 "shasum": ""
             },
             "require": {
@@ -548,17 +735,59 @@
             }
         },
         {
-            "name": "bower-asset/tinymce",
-            "version": "4.2.4",
+            "name": "bower-asset/tablesorter",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tinymce/tinymce-dist.git",
-                "reference": "aafc1144b1561d6c8485f81f9d63495b5db575c8"
+                "url": "https://github.com/christianbach/tablesorter.git",
+                "reference": "b70ba2498dd23d9d97605ff386cdd67ff6bd9140"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/aafc1144b1561d6c8485f81f9d63495b5db575c8",
-                "reference": "aafc1144b1561d6c8485f81f9d63495b5db575c8",
+                "url": "https://api.github.com/repos/christianbach/tablesorter/zipball/b70ba2498dd23d9d97605ff386cdd67ff6bd9140",
+                "reference": "b70ba2498dd23d9d97605ff386cdd67ff6bd9140",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "jquery.metadata.js",
+                    "jquery.tablesorter.min.js"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests"
+                ],
+                "branch-alias": {
+                    "dev-master": "2.0.5-dev"
+                }
+            },
+            "license": [
+                "MIT,GPL"
+            ],
+            "description": "Flexible client-side table sorting",
+            "keywords": [
+                "client-side",
+                "sort",
+                "table"
+            ],
+            "time": "2015-02-07 09:15:01"
+        },
+        {
+            "name": "bower-asset/tinymce",
+            "version": "4.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tinymce/tinymce-dist.git",
+                "reference": "9bdc89da4f72a5f11a3cc6bb1373e1a898876628"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tinymce/tinymce-dist/zipball/9bdc89da4f72a5f11a3cc6bb1373e1a898876628",
+                "reference": "9bdc89da4f72a5f11a3cc6bb1373e1a898876628",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -653,12 +882,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/utility.git",
-                "reference": "4d16e1fb52d62bef3ee2cba618718769d70653cf"
+                "reference": "99ab48ebd9bf31792f8cb72286c97f3511d15ddc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/utility/zipball/4d16e1fb52d62bef3ee2cba618718769d70653cf",
-                "reference": "4d16e1fb52d62bef3ee2cba618718769d70653cf",
+                "url": "https://api.github.com/repos/cakephp/utility/zipball/99ab48ebd9bf31792f8cb72286c97f3511d15ddc",
+                "reference": "99ab48ebd9bf31792f8cb72286c97f3511d15ddc",
                 "shasum": ""
             },
             "type": "library",
@@ -681,7 +910,7 @@
                 }
             ],
             "description": "CakePHP Utility classes such as Inflector, String, Hash, and Security",
-            "time": "2015-07-23 16:38:36"
+            "time": "2015-08-26 06:14:36"
         },
         {
             "name": "crisu83/yiistrap",
@@ -744,6 +973,101 @@
                 "yii"
             ],
             "time": "2015-02-27 14:48:18"
+        },
+        {
+            "name": "guzzle/guzzle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle3.git",
+                "reference": "b3f5050cb6270c7a728a0b74ac2de50a262b3e02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/b3f5050cb6270c7a728a0b74ac2de50a262b3e02",
+                "reference": "b3f5050cb6270c7a728a0b74ac2de50a262b3e02",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "replace": {
+                "guzzle/batch": "self.version",
+                "guzzle/cache": "self.version",
+                "guzzle/common": "self.version",
+                "guzzle/http": "self.version",
+                "guzzle/inflection": "self.version",
+                "guzzle/iterator": "self.version",
+                "guzzle/log": "self.version",
+                "guzzle/parser": "self.version",
+                "guzzle/plugin": "self.version",
+                "guzzle/plugin-async": "self.version",
+                "guzzle/plugin-backoff": "self.version",
+                "guzzle/plugin-cache": "self.version",
+                "guzzle/plugin-cookie": "self.version",
+                "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-error-response": "self.version",
+                "guzzle/plugin-history": "self.version",
+                "guzzle/plugin-log": "self.version",
+                "guzzle/plugin-md5": "self.version",
+                "guzzle/plugin-mock": "self.version",
+                "guzzle/plugin-oauth": "self.version",
+                "guzzle/service": "self.version",
+                "guzzle/stream": "self.version"
+            },
+            "require-dev": {
+                "doctrine/cache": "~1.3",
+                "monolog/monolog": "~1.0",
+                "phpunit/phpunit": "3.7.*",
+                "psr/log": "~1.0",
+                "symfony/class-loader": "~2.1",
+                "zendframework/zend-cache": "2.*,<2.3",
+                "zendframework/zend-log": "2.*,<2.3"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Guzzle 5 has moved to a new package name. The package you have installed, Guzzle 3, is deprecated."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Guzzle": "src/",
+                    "Guzzle\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Guzzle Community",
+                    "homepage": "https://github.com/guzzle/guzzle/contributors"
+                }
+            ],
+            "description": "PHP HTTP client. This library is deprecated in favor of https://packagist.org/packages/guzzlehttp/guzzle",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2015-04-29 17:06:53"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1151,6 +1475,67 @@
             "time": "2013-04-12 10:33:44"
         },
         {
+            "name": "league/oauth2-client",
+            "version": "0.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/oauth2-client.git",
+                "reference": "cd2e968b494641c1fd2b852691d000cd95e560de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-client/zipball/cd2e968b494641c1fd2b852691d000cd95e560de",
+                "reference": "cd2e968b494641c1fd2b852691d000cd95e560de",
+                "shasum": ""
+            },
+            "require": {
+                "guzzle/guzzle": "~3.7",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.8.*",
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "0.6.*",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.10.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\OAuth2\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Bilbie",
+                    "email": "hello@alexbilbie.com",
+                    "homepage": "http://www.alexbilbie.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "OAuth 2.0 Client Library",
+            "keywords": [
+                "Authentication",
+                "SSO",
+                "authorization",
+                "identity",
+                "idp",
+                "oauth",
+                "oauth2",
+                "single sign on"
+            ],
+            "time": "2015-04-02 15:09:47"
+        },
+        {
             "name": "mk-j/php_xlsxwriter",
             "version": "0.21",
             "source": {
@@ -1194,15 +1579,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "58a6a5cf1453789deff2ce74d2f1f90b7696d156"
+                "reference": "7830cb9a761d974e58e3173137eac93da1cd715a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/58a6a5cf1453789deff2ce74d2f1f90b7696d156",
-                "reference": "58a6a5cf1453789deff2ce74d2f1f90b7696d156",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/7830cb9a761d974e58e3173137eac93da1cd715a",
+                "reference": "7830cb9a761d974e58e3173137eac93da1cd715a",
                 "shasum": ""
             },
             "require": {
+                "guzzle/guzzle": "~3.7",
+                "league/oauth2-client": "0.10.*",
                 "php": ">=5.0.0"
             },
             "require-dev": {
@@ -1213,6 +1600,8 @@
             "autoload": {
                 "classmap": [
                     "class.phpmailer.php",
+                    "class.phpmaileroauth.php",
+                    "class.oauth.php",
                     "class.smtp.php",
                     "class.pop3.php",
                     "extras/EasyPeasyICS.php",
@@ -1241,7 +1630,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-08-25 10:06:47"
+            "time": "2015-08-31 10:37:13"
         },
         {
             "name": "psr/http-message",
@@ -1538,6 +1927,64 @@
             "time": "2015-08-19 01:51:30"
         },
         {
+            "name": "symfony/event-dispatcher",
+            "version": "2.8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/EventDispatcher.git",
+                "reference": "d7246885b7fe4cb5a2786bda34362d2f0e40b730"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/d7246885b7fe4cb5a2786bda34362d2f0e40b730",
+                "reference": "d7246885b7fe4cb5a2786bda34362d2f0e40b730",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/config": "~2.0,>=2.0.5|~3.0.0",
+                "symfony/dependency-injection": "~2.6|~3.0.0",
+                "symfony/expression-language": "~2.6|~3.0.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0.0",
+                "symfony/stopwatch": "~2.3|~3.0.0"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "https://symfony.com",
+            "time": "2015-06-24 15:32:32"
+        },
+        {
             "name": "tecnick.com/tcpdf",
             "version": "dev-master",
             "source": {
@@ -1810,7 +2257,11 @@
         "bower-asset/ajaxq": 20,
         "bower-asset/tinymce": 20,
         "studio-42/elfinder": 20,
-        "bower-asset/tinymce-placeholder": 20
+        "bower-asset/tinymce-placeholder": 20,
+        "bower-asset/qtip2": 20,
+        "bower-asset/jqueryui-touch-punch": 20,
+        "bower-asset/ace-builds-bower-patched": 20,
+        "bower-asset/font-awesome": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

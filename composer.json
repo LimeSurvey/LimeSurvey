@@ -35,11 +35,16 @@
         "studio-42/elfinder": "2.1.x-dev",
         "bower-asset/jsoneditor": "4.*",
         "bower-asset/webshim": "1.*",
-        "bower-asset/TinyMCE-Placeholder": "^1.0@dev"
+        "bower-asset/TinyMCE-Placeholder": "^1.0@dev",
+        "bower-asset/qtip2": "^2.2@dev",
+        "bower-asset/jqueryui-touch-punch": "^0.2.3@dev",
+        "bower-asset/ace-builds-bower-patched": "^1.2@dev",
+        "bower-asset/font-awesome": "dev-master",
+        "bower-asset/jqGrid" : "5.*",
+        "bower-asset/js-cookie" : "2.*",
+        "bower-asset/tablesorter" : "2.*"
+
     },
-	"require-dev" : {
-		
-	},
     "autoload" : {
         "classmap" : [
             "application/extensions/SettingsWidget",
