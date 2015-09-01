@@ -29,7 +29,6 @@ $(document).ready(function(){
             case 'nn': sToLang='no'; break;
             case 'pt-BR': sToLang='pt'; break;
             case 'es-MX': sToLang='es'; break;
-            zh-Hans
         }
 
         $("._from_",$(ui.target).parent()).each(function(index,element)
@@ -54,7 +53,7 @@ $(document).ready(function(){
 
 
                 if (!sTargetInnerText)
-                    sTargetInnerText = ""
+                    sTargetInnerText = "";
 
                 if (sTargetInnerText.length > 0){
                     bIgnore = true;
@@ -69,7 +68,7 @@ $(document).ready(function(){
 
                 sToConvert = sToConvert.replace( new RegExp( "\\n", "g" ),'\\n');
                 sToConvert = sToConvert.replace(/"/g,'\\"');
-                setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate)
+                setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate);
             }
 
         });

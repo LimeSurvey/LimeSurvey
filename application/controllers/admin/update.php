@@ -275,7 +275,8 @@ class update extends Survey_Common_Action
                             
                             Yii::app()->session['update_result'] = null;
                             Yii::app()->session['security_update'] = null;
-                            Yii::app()->session['next_update_check'] = $today->add(new DateInterval('P6h'));                            
+                            $today = new DateTime("now");
+                            Yii::app()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));                            
                             
                             // TODO : aData should contains information about each step
                             return $this->controller->renderPartial('update/updater/steps/_final', array(), false, false);    

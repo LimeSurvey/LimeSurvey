@@ -478,6 +478,12 @@ class UpdateForm extends CFormModel
         {
             // This function will call the server to get the requirement about DB, such as max size
             $dbChecks = $this->_getDbChecks($destionationBuild); 
+            
+            // Test if user defined by himself a max size for dbBackup
+            if (Yii::app()->getConfig("maxdbsizeforbackup"))
+            {
+                $dbChecks->dbSize = Yii::app()->getConfig("maxdbsizeforbackup");
+            }
 
             if( $dbChecks->result )
             {
@@ -485,6 +491,7 @@ class UpdateForm extends CFormModel
                 if( $currentDbVersion < $dbChecks->dbVersion )
                 {
                     $dbSize = $this->_getDbTotalSize();
+                    
                     if( $dbSize <= $dbChecks->dbSize )
                     {
                         return $this->_createDbBackup();    
@@ -631,7 +638,8 @@ class UpdateForm extends CFormModel
             else
             {
                 $backupDb->result = TRUE;
-                $backupDb->message = htmlspecialchars($dfilename);                
+                $backupDb->message = htmlspecialchars($dfilename);
+                $backupDb->fileurl = Yii::app()->getBaseUrl(true) . '/tmp/LimeSurvey_database_backup_' . $basefilename . '.zip'; 
             }                                                                                                                                                                                  
         }                                                                                                                                                                                         
         else                                                                                                                                                                                      
@@ -696,11 +704,13 @@ class UpdateForm extends CFormModel
      */
     private function _getCheckedFile($file)
     {
+
+        $checkedfile = new stdClass();
+        $checkedfile->type = ''; 
+        $checkedfile->file = '';
+
         if($file['file']!='/application/config/version.php')
         {
-            $checkedfile = new stdClass();
-            $checkedfile->type = ''; 
-            $checkedfile->file = '';
     
             // We check if the file exist
             if ( $file['type'] == 'A' && file_exists($this->rootdir . $file['file']) ) 
