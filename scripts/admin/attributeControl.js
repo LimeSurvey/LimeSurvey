@@ -137,7 +137,7 @@ $(document).ready(function() {
 function checkboxFormatter(cellvalue, options) {
     cellvalue = cellvalue + "";
     var bchk = cellvalue.toLowerCase() == 'true' ? " checked=\"checked\"" : "";
-    return "<input type='checkbox' name='visible_"+options.rowId+"' id='visible_"+options.rowId+"' onclick=\"ajaxSave('" + options.rowId + "');\" " + bchk + " value='" + cellvalue + "' />"
+    return "<input type='checkbox' name='visible_"+options.rowId+"' id='visible_"+options.rowId+"' onclick=\"ajaxSave('" + options.rowId + "');\" " + bchk + " value='" + cellvalue + "' />";
 }
 
 function ajaxSave(rowid) {

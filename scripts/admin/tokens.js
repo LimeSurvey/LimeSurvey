@@ -170,7 +170,7 @@ $(document).ready(function() {
                     row.find('.drop_editing').remove();
                     row.find('.save').remove();
                     window.editing = false;
-                }
+                };
 
                 jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
                 row.find('.inputbuttons').hide();
@@ -245,7 +245,7 @@ $(document).ready(function() {
                 e.metaKey = false;
             }).selectable({
                 tolerance: 'fit'
-            })
+            });
         }
     },{
         multipleSearch:true,

@@ -56,13 +56,13 @@ $(document).ready(function(){
                 }
               }
         }
-    )
+    );
     $('#radiototal,#radiogroup').change();
     $('.numbersonly').keypress(
         function(e){
             return jquery_goodchars(e,'1234567890-');    
         }
-    )
+    );
   }
  
 );
@@ -179,7 +179,7 @@ $(document).ready(function(){
 		$('#canswers option').remove();
 		selectTabFromOper();
 		$('#method').find('option').each( function() {
-			$(this).attr('disabled','')
+			$(this).attr('disabled','');
 		});
 		
 	});
