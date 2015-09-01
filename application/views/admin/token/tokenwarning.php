@@ -1,6 +1,6 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Token control"); ?> </strong> <?php echo htmlspecialchars($thissurvey['surveyls_title']); ?>
+        <strong><?php eT("Token control"); ?> </strong> <?php echo htmlspecialchars($thissurvey['surveyls_title'])." (".gT("ID")." ".htmlspecialchars($thissurvey['surveyls_survey_id']).")"; ?>
     </div></div><div class='messagebox ui-corner-all'>
     <div class='warningheader'><?php eT("Warning"); ?></div>
     <br /><strong><?php eT("Tokens have not been initialised for this survey."); ?></strong><br /><br />
