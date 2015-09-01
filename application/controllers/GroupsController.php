@@ -77,7 +77,7 @@ class GroupsController extends Controller {
         }
         $this->render('update', ['group' => $group]);
     }
-    protected function loadModel($id)
+    public function loadModel($id)
     {
         return \QuestionGroup::model()->findByPk($id);
     }

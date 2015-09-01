@@ -242,7 +242,7 @@ class TokensController extends Controller
      * @return Token
      * @throws \CHttpException
      */
-    protected function loadModel($id, $surveyId = null)
+    public function loadModel($id, $surveyId = null)
     {
         if (!isset($surveyId)) {
             throw new \InvalidArgumentException("SurveyID is required when loading token.");
