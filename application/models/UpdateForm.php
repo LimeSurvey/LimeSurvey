@@ -638,7 +638,8 @@ class UpdateForm extends CFormModel
             else
             {
                 $backupDb->result = TRUE;
-                $backupDb->message = htmlspecialchars($dfilename);                
+                $backupDb->message = htmlspecialchars($dfilename);
+                $backupDb->fileurl = Yii::app()->getBaseUrl(true) . '/tmp/LimeSurvey_database_backup_' . $basefilename . '.zip'; 
             }                                                                                                                                                                                  
         }                                                                                                                                                                                         
         else                                                                                                                                                                                      
