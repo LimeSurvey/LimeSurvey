@@ -3061,7 +3061,7 @@ function do_multiplenumeric($ia)
     $extraclass .=" numberonly";
     if ($aQuestionAttributes['thousands_separator'] == 1) {
         App()->clientScript->registerPackage('jquery-price-format');
-        App()->clientScript->registerScriptFile('scripts/numerical_input.js');
+        App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }
 
@@ -3324,7 +3324,7 @@ function do_numerical($ia)
     }
     if ($aQuestionAttributes['thousands_separator'] == 1) {
         App()->clientScript->registerPackage('jquery-price-format');
-        App()->clientScript->registerScriptFile('scripts/numerical_input.js');
+        App()->clientScript->registerScriptFile(Yii::app()->getConfig('generalscripts').'numerical_input.js');
         $extraclass .= " thousandsseparator";
     }
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {

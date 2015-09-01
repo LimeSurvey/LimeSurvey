@@ -223,6 +223,12 @@ return array(
             'jqueryui'
         )
     ),
+    'jquery-price-format' => array(
+        'baseUrl' => 'third_party/jquery-price-format/',
+        'js' => array(
+            'jquery_price_format.js'
+        ),
+    ),
     'leaflet' => array(
         'baseUrl' => 'third_party/leaflet/',
         'js' => array(
