@@ -256,7 +256,7 @@ $(document).ready(function() {
                 edit:false,
                 add:false,
                 del:false,
-                search:false})
+                search:false});
             jQuery("#"+subgrid_table_id).jqGrid('filterToolbar', {searchOnEnter : false, defaultSearch: 'cn'});
         }
     });

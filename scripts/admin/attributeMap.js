@@ -41,7 +41,7 @@ $(document).ready(function(){
         appendTo: 'body',
         receive: function(event,ui) {
             newcurrentarray = $(this).sortable('toArray');
-            var cpdbattpos = jQuery.inArray($(ui.item).attr('id'),newcurrentarray)
+            var cpdbattpos = jQuery.inArray($(ui.item).attr('id'),newcurrentarray);
             cpdbattpos = cpdbattpos+1;
             $('ul#cpdbatt > li:nth-child('+cpdbattpos+')').css("color", "black");
             $('ul#cpdbatt > li:nth-child('+cpdbattpos+')').css("background-color","white");
@@ -120,11 +120,11 @@ $(document).ready(function(){
         receive: function(event,ui) {
             if($(ui.item).attr('id')[0]=='t')
             {
-                alert(cannotAcceptTokenAttributesText)
+                alert(cannotAcceptTokenAttributesText);
                 $(ui.sender).sortable('cancel');
             }
                 newcurrentarray = $(this).sortable('toArray');
-                var cpdbattpos = jQuery.inArray($(ui.item).attr('id'),newcurrentarray)
+                var cpdbattpos = jQuery.inArray($(ui.item).attr('id'),newcurrentarray);
                 cpdbattpos = cpdbattpos+1;
                 $('ul.newcreate > li:nth-child('+cpdbattpos+')').css("color", "white");
                 $('ul.newcreate > li:nth-child('+cpdbattpos+')').css("background-color","#696565");

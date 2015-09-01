@@ -118,7 +118,7 @@ function quickaddfunction(){
     lsrows=$('#quickaddarea').val().split("\n");
     var separatorchar="\t";
     if (lsrows[0].indexOf("\t")==-1){
-        separatorchar=';'
+        separatorchar=';';
     }
 
 
@@ -366,7 +366,7 @@ function code_duplicates_check()
         sValue=$.trim($(this).val());
         $(this).val(sValue);
         codearray.push(sValue);
-    })
+    });
     if ($.inArray('other', codearray)!=-1)
     {
         alert(otherisreserved);

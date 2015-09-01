@@ -70,7 +70,7 @@ $(document).ready(function(){
             "height": "toggle", "opacity": "toggle"
         });
 
-    })
+    });
     $('#hideadvancedattributes').click(function(){
         $('#showadvancedattributes').show();
         $('#hideadvancedattributes').hide();
@@ -78,7 +78,7 @@ $(document).ready(function(){
             "height": "toggle", "opacity": "toggle"
         });
 
-    })
+    });
     $('#question_type').change(updatequestionattributes);
 
     $('#MinimizeGroupWindow').click(function(){
@@ -651,7 +651,7 @@ jQuery.fn.center = function () {
     this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
     this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
     return this;
-}
+};
 
 // Fix broken substr function with negative start value (in older IE)
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
@@ -660,7 +660,7 @@ if ('ab'.substr(-1) != 'b') {
 		return function(start, length) {
 			if (start < 0) start = this.length + start;
 			return substr.call(this, start, length);
-		}
+		};
 	}(String.prototype.substr);
 }
 
