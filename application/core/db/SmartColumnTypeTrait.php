@@ -1,32 +1,47 @@
 <?php
 
-trait SmartColumnTypeTrait {
+trait SmartColumnTypeTrait
+{
+
     /**
-    * Adds support for replacing default arguments.
-    * @param string $type
-    * @return string
-    */
+     * Splits a column type into 3 parts:
+     * - The base type.
+     * - Any parameters that must be passed between brackets (brackets are ommitted).
+     * - Any arguments that must be appended.
+     * @param string $type
+     */
+    protected function splitColumnType($type) {
+        $regex = '/^([a-zA-Z ]+)\s*(\(.+\))?\s*(.*)$/';
+        if (preg_match($regex, $type, $matches)) {
+            return [
+                'base' => trim($matches[1]),
+                'arguments' => substr($matches[2], 1, -1),
+                'suffix' => $matches[3]
+            ];
+        }
+        throw new \Exception("Could not parse type.");
+    }
+
+    protected function parseType($type, callable $baseParser) {
+        $parts = $this->splitColumnType($type);
+        $base = $baseParser($parts['base']);
+//        vd($base);
+        $baseParts = $this->splitColumnType($base);
+        if (!empty($parts['arguments'])) {
+            $baseParts['arguments'] = $parts['arguments'];
+        }
+
+        $result = $baseParts['base'] . (!empty($baseParts['arguments']) ? "({$baseParts['arguments']}) " : " ") . $parts['suffix'];
+        return $result;
+    }
+    /**
+     * Adds support for replacing default arguments.
+     * @param string $type
+     * @return string
+     */
     public function getColumnType($type)
     {
-        if (isset(Yii::app()->db->schema->columnTypes[$type]))
-        { // Direct : get it
-            $sResult=Yii::app()->db->schema->columnTypes[$type];
-        }
-        elseif (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $type, $matches)) 
-        { // With params : some test to do
-            $baseType = $this->getColumnType($matches[1]);
-            if(preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $baseType, $baseMatches))
-            { // Replace the default Yii param
-                $sResult=preg_replace('/\(.+\)/', "(".$matches[2].")",parent::getColumnType($matches[1]." ".$matches[3]));
-            }
-            else
-            { // Get the base type and join
-                $sResult=join(" ",array($baseType,"(".$matches[2].")",$matches[3]));
-            }
-        }
-        else
-        {
-            $sResult = $this->getColumnType($type);
-        }
-        return $sResult;
+        // This is bad practice, it assumes knowledge about the traits' parent.
+        return $this->parseType($type, function($type) { return parent::getColumnType($type); });
     }
+}

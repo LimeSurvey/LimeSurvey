@@ -33,4 +33,11 @@ interface iResponse {
      * @return [] An array containing the response data.
      */
     public function getAttributes($names = null);
+
+    /**
+     * Stores a file with the response.
+     * @param $field
+     * @param \Psr\Http\Message\UploadedFileInterface[] $file
+     */
+    public function setFiles($field, array $files);
 }

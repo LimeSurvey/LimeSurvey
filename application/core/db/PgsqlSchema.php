@@ -22,4 +22,7 @@ class PgsqlSchema extends CPgsqlSchema
         }
         return true;        
     }
+
+
+
 }

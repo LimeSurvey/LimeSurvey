@@ -3305,9 +3305,9 @@
                 Yii::app()->db->createCommand($query)->execute();
 
                 // Check Quotas
-                $aQuotas = checkCompletedQuota('return');
+                $aQuotas = \ls\helpers\FrontEnd::checkCompletedQuota('return');
                 if ($aQuotas && !empty($aQuotas)) {
-                    checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
+                    \ls\helpers\FrontEnd::checkCompletedQuota($this->sid);  // will create a page and quit: why not use it directly ?
                 } elseif ($finished) {
                     $session->response->markAsFinished();
                     $session->response->save();
@@ -3331,7 +3331,7 @@
             return (isset($LEM->lastMoveResult) ? $LEM->lastMoveResult : null);
         }
 
-        private function processData(Response $response, \Psr\Http\Message\ServerRequestInterface $request) {
+        private function processData(\ls\interfaces\iResponse $response, \Psr\Http\Message\ServerRequestInterface $request) {
 
             $response->setAttributes($request->getParsedBody());
             foreach($request->getUploadedFiles() as $field => $files) {

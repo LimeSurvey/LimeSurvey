@@ -312,11 +312,11 @@ class Replacements
 
             // Assessments
             $assessmenthtml = "";
-            if (isset($surveyId) && !is_null($surveyId) && function_exists('doAssessment')) {
-                $assessmentdata = doAssessment($surveyId, true);
+            if (isset($surveyId) && !is_null($surveyId) && function_exists('\ls\helpers\FrontEnd::doAssessment')) {
+                $assessmentdata = \ls\helpers\FrontEnd::doAssessment($surveyId, true);
                 $_assessment_current_total = $assessmentdata['total'];
                 if (stripos($line, "{ASSESSMENTS}")) {
-                    $assessmenthtml = doAssessment($surveyId, false);
+                    $assessmenthtml = \ls\helpers\FrontEnd::doAssessment($surveyId, false);
                 }
             } else {
                 $_assessment_current_total = '';
@@ -485,9 +485,9 @@ EOD;
     }
 
 
-// This function replaces field names in a text with the related values
-// (e.g. for email and template functions)
-    function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticReplace = true)
+    // This function replaces field names in a text with the related values
+    // (e.g. for email and template functions)
+    public static function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticReplace = true)
     {
 
         if ($bReplaceInsertans) {
@@ -515,7 +515,7 @@ EOD;
      * @return string This string is returned containing the substituted responses
      *
      */
-    function PassthruReplace($line, Survey $survey)
+    public static function passthruReplace($line, Survey $survey)
     {
         while (strpos($line, "{PASSTHRU:") !== false) {
             $p1 = strpos($line, "{PASSTHRU:"); // startposition

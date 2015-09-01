@@ -186,8 +186,8 @@ class TokensController extends Controller
             $aMail['message'] = str_replace("@@{$key}URL@@", $url, $aMail['message']);
         }
         // Replace the fields
-        $aMail['subject']=ReplaceFields($aMail['subject'], $aReplacementFields);
-        $aMail['message']=ReplaceFields($aMail['message'], $aReplacementFields);
+        $aMail['subject']=\ls\helpers\Replacements::ReplaceFields($aMail['subject'], $aReplacementFields);
+        $aMail['message']=\ls\helpers\Replacements::ReplaceFields($aMail['message'], $aReplacementFields);
         $sFrom = "{$aSurveyInfo['adminname']} <{$aSurveyInfo['adminemail']}>";
         $sBounce=getBounceEmail($iSurveyId);
         $sTo=$token->email;

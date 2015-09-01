@@ -66,9 +66,9 @@ class FrontEnd
     }
 
     /**
-     * checkUploadedFileValidity used in SurveyRuntimeHelper
+     * @todo Move this to UploadQuestion.
      */
-    function checkUploadedFileValidity($surveyid, $move, $backok = null)
+    private static function checkUploadedFileValidity($surveyid, $move, $backok = null)
     {
         return false;
         $session = App()->surveySessionManager->current;
@@ -164,7 +164,7 @@ class FrontEnd
      *
      * @param mixed $quotaexit
      */
-    function submittokens($quotaexit = false)
+    public static function submittokens($quotaexit = false)
     {
         $session = App()->surveySessionManager->current;
         $survey = $session->survey;
@@ -232,14 +232,14 @@ class FrontEnd
                 $dateformatdatat = \ls\helpers\SurveyTranslator::getDateFormatData($survey->getLocalizedDateFormat());
                 $numberformatdatat = \ls\helpers\SurveyTranslator::getRadixPointData($survey->getLocalizedNumberFormat());
                 $redata = [];
-                $subject = \ls\helpers\Replacements::templatereplace($subject, $aReplacementVars, $redata, null);
+                $subject = Replacements::templatereplace($subject, $aReplacementVars, $redata, null);
 
                 $subject = html_entity_decode($subject, ENT_QUOTES);
 
                 $ishtml = $survey->bool_htmlemail;
 
                 $message = html_entity_decode(
-                    \ls\helpers\Replacements::templatereplace($survey->getLocalizedConfirmationEmail(), $aReplacementVars, $redata, null),
+                    Replacements::templatereplace($survey->getLocalizedConfirmationEmail(), $aReplacementVars, $redata, null),
                     ENT_QUOTES
                 );
                 if (!$ishtml) {
@@ -277,7 +277,7 @@ class FrontEnd
     /**
      * Send a submit notification to the email address specified in the notifications tab in the survey settings
      */
-    function sendSubmitNotifications($surveyid)
+    public static function sendSubmitNotifications($surveyid)
     {
         // @todo: Remove globals
         global $thissurvey, $maildebug, $tokensexist;
@@ -326,7 +326,7 @@ class FrontEnd
 
         if (!empty($thissurvey['emailnotificationto'])) {
             $aRecipient = explode(";",
-                ReplaceFields($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']),
+                Replacements::ReplaceFields($thissurvey['emailnotificationto'], array('ADMINEMAIL' => $thissurvey['adminemail']),
                     true));
             foreach ($aRecipient as $sRecipient) {
                 $sRecipient = trim($sRecipient);
@@ -343,7 +343,7 @@ class FrontEnd
             }
             //Make an array of email addresses to send to
             $aRecipient = explode(";",
-                ReplaceFields($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), true));
+                Replacements::ReplaceFields($thissurvey['emailresponseto'], array('ADMINEMAIL' => $thissurvey['adminemail']), true));
             foreach ($aRecipient as $sRecipient) {
                 $sRecipient = trim($sRecipient);
                 if (validateEmailAddress($sRecipient)) {
@@ -399,8 +399,8 @@ class FrontEnd
 
         $redata = compact(array_keys(get_defined_vars()));
         if (count($aEmailNotificationTo) > 0) {
-            $sMessage = \ls\helpers\Replacements::templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata, null);
-            $sSubject = \ls\helpers\Replacements::templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata, null);
+            $sMessage = Replacements::templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata, null);
+            $sSubject = Replacements::templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata, null);
             foreach ($aEmailNotificationTo as $sRecipient) {
                 if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true,
                     getBounceEmail($surveyid), $aRelevantAttachments)
@@ -426,8 +426,8 @@ class FrontEnd
             }
         }
         if (count($aEmailResponseTo) > 0) {
-            $sMessage = \ls\helpers\Replacements::templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, null);
-            $sSubject = \ls\helpers\Replacements::templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, null);
+            $sMessage = Replacements::templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, null);
+            $sSubject = Replacements::templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, null);
             foreach ($aEmailResponseTo as $sRecipient) {
                 if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true,
                     getBounceEmail($surveyid), $aRelevantAttachments)
@@ -524,7 +524,7 @@ class FrontEnd
      * @param mixed $surveyid
      * @param mixed $returndataonly - only returns an array with data
      */
-    function doAssessment(Survey $survey, $returndataonly = false)
+    public static function doAssessment(Survey $survey, $returndataonly = false)
     {
         $session = App()->surveySessionManager->current;
 
@@ -662,7 +662,7 @@ class FrontEnd
      * @param bool $return - set to true to return information, false do the quota
      * @return array - nested array, Quotas->Members->Fields, includes quota information matched in session.
      */
-    function checkCompletedQuota($return = false)
+    public static function checkCompletedQuota($return = false)
     {
         bP();
         static $aMatchedQuotas; // EM call 2 times quotas with 3 lines of php code, then use static.
@@ -726,7 +726,7 @@ class FrontEnd
         $aSurveyInfo = getSurveyInfo($session->surveyId, $session->language);
         $sTemplatePath = Template::getTemplatePath($aSurveyInfo['template']);
         $sClientToken = isset($_SESSION['survey_' . $session->surveyId]['token']) ? $_SESSION['survey_' . $session->surveyId]['token'] : "";
-        // $redata for \ls\helpers\Replacements::templatereplace
+        // $redata for Replacements::templatereplace
         $aDataReplacement = array(
             'thissurvey' => $aSurveyInfo,
             'clienttoken' => $sClientToken,
@@ -759,10 +759,10 @@ class FrontEnd
             submittokens(true);
         }
         // Construct the default message
-        $sMessage = \ls\helpers\Replacements::templatereplace($sMessage, array(), $aDataReplacement, null);
-        $sUrl = passthruReplace($sUrl, $aSurveyInfo);
-        $sUrl = \ls\helpers\Replacements::templatereplace($sUrl, array(), $aDataReplacement, null);
-        $sUrlDescription = \ls\helpers\Replacements::templatereplace($sUrlDescription, array(), $aDataReplacement, null);
+        $sMessage = Replacements::templatereplace($sMessage, array(), $aDataReplacement, null);
+        $sUrl = Replacements::passthruReplace($sUrl, $aSurveyInfo);
+        $sUrl = Replacements::templatereplace($sUrl, array(), $aDataReplacement, null);
+        $sUrlDescription = Replacements::templatereplace($sUrlDescription, array(), $aDataReplacement, null);
 
         // Construction of default message inside quotamessage class
         $sHtmlQuotaMessage = "<div class='quotamessage limesurveycore'>\n";
@@ -813,7 +813,7 @@ class FrontEnd
      * Resets all question timers by expiring the related cookie - this needs to be called before any output is done
      * @todo Make cookie survey ID aware
      */
-    function resetTimers()
+    public static function resetTimers()
     {
         $cookie = new CHttpCookie('limesurvey_timers', '');
         $cookie->expire = time() - 3600;

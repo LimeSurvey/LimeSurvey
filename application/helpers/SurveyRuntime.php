@@ -5,7 +5,7 @@ use \SurveySession;
 use \Survey;
 use \Yii;
 use \CClientScript;
-use \CHtml;
+use \TbHtml;
 use LimeExpressionManager;
 use \QuestionGroup;
 use \Question;
@@ -29,10 +29,10 @@ class SurveyRuntime {
     {
         $ssm = App()->surveySessionManager;
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
-        echo CHtml::openTag('div', array('id' => 'index'));
-        echo CHtml::openTag('div', array('class' => 'container'));
-        echo CHtml::tag('h2', array(), gT("Question index"));
-        echo CHtml::openTag('ol');
+        echo TbHtml::openTag('div', array('id' => 'index'));
+        echo TbHtml::openTag('div', array('class' => 'container'));
+        echo TbHtml::tag('h2', array(), gT("Question index"));
+        echo TbHtml::openTag('ol');
         /**
          * @var int $key
          * @var QuestionGroup $group
@@ -50,29 +50,29 @@ class SurveyRuntime {
                     $session->getStep() == $step ? 'current' : ''
 
                 ));
-                $sButtonSubmit=CHtml::htmlButton(gT('Go to this group'), ['type'=>'submit','value'=> $step, 'name'=>'move','class'=>'jshide']);
-                echo CHtml::tag('li', array(
+                $sButtonSubmit=TbHtml::htmlButton(gT('Go to this group'), ['type'=>'submit','value'=> $step, 'name'=>'move','class'=>'jshide']);
+                echo TbHtml::tag('li', array(
                     'data-id' => $group->primaryKey,
                     'title' => $group->description,
                     'class' => $classes,
                     ), $group->group_name .$sButtonSubmit);
             }
         }
-        echo CHtml::closeTag('ol');
-        echo CHtml::closeTag('div');
-        echo CHtml::closeTag('div');
+        echo TbHtml::closeTag('ol');
+        echo TbHtml::closeTag('div');
+        echo TbHtml::closeTag('div');
 
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
     }
 
     protected function createFullQuestionIndexByQuestion(SurveySession $session)
     {
-        echo CHtml::openTag('div', array('id' => 'index'));
-        echo CHtml::openTag('div', array('class' => 'container'));
-        echo CHtml::tag('h2', array(), gT("Question index"));
+        echo TbHtml::openTag('div', array('id' => 'index'));
+        echo TbHtml::openTag('div', array('class' => 'container'));
+        echo TbHtml::tag('h2', array(), gT("Question index"));
         echo 'Question by question not yet supported, use incremental index.';
-        echo CHtml::closeTag('div');
-        echo CHtml::closeTag('div');
+        echo TbHtml::closeTag('div');
+        echo TbHtml::closeTag('div');
 
         App()->getClientScript()->registerScript('manageIndex',"manageIndex()\n",CClientScript::POS_END);
     }
@@ -142,13 +142,13 @@ class SurveyRuntime {
             echo "<div class=\"row $class\">";
             echo "<span class=\"hdr\">$v</span>";
             echo "<span title=\"$sText\">$sText</span>";
-            echo CHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide'));
+            echo TbHtml::htmlButton($sButtonText,array('type'=>'submit','value'=>$s,'name'=>'move','class'=>'jshide'));
             echo "</div>";
         }
 
         if ($session->maxStep == $session->stepCount)
         {
-            echo CHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
+            echo TbHtml::htmlButton(gT('Submit'),array('type'=>'submit','value'=>'movesubmit','name'=>'move','class'=>'submit button'));
         }
 
         echo '</div></div>';
@@ -264,14 +264,14 @@ class SurveyRuntime {
 
         //SUBMIT ###############################################################################
         if ((isset($move) && $move == "movesubmit")) {
-            resetTimers();
+            FrontEnd::resetTimers();
 
 
             //END PAGE - COMMIT CHANGES TO DATABASE
             if (!$survey->bool_active) //If survey is not active, don't really commit
             {
                 if ($survey->bool_assessments) {
-                    $assessments = doAssessment($survey);
+                    $assessments = \ls\helpers\FrontEnd::doAssessment($survey);
                 }
                 sendCacheHeaders();
                 doHeader();
@@ -317,7 +317,7 @@ class SurveyRuntime {
 
                 //Check for assessments
                 if ($survey->bool_assessments) {
-                    $assessments = doAssessment($survey->primaryKey);
+                    $assessments = \ls\helpers\FrontEnd::doAssessment($survey->primaryKey);
                     if ($assessments) {
                         $content .= \ls\helpers\Replacements::templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
                             $redata, null);
@@ -329,7 +329,7 @@ class SurveyRuntime {
                     throw new \ErrorException($errstr, $errno, 1, $errfile, $errline);
                 });
                 if (isset($session->response->token)) {
-                    submittokens();
+                    FrontEnd::submittokens();
                 }
 
                 //Send notifications
@@ -343,7 +343,7 @@ class SurveyRuntime {
 
                 //Check for assessments
                 if ($session->survey->bool_assessments) {
-                    $assessments = doAssessment($session->surveyId);
+                    $assessments = \ls\helpers\FrontEnd::doAssessment($session->surveyId);
                     if ($assessments) {
                         $content .= \ls\helpers\Replacements::templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
                             $redata, null);
@@ -402,7 +402,7 @@ class SurveyRuntime {
 
             foreach ($event->getAllContent() as $blockData) {
                 /* @var $blockData PluginEventContent */
-                $blocks[] = CHtml::tag('div',
+                $blocks[] = TbHtml::tag('div',
                     array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()),
                     $blockData->getContent());
             }
@@ -455,10 +455,10 @@ class SurveyRuntime {
         if ($session->getViewCount() > 1) {
             $formParams['class'] = 'touched';
         }
-        echo CHtml::beginForm('', 'post', $formParams);
+        echo TbHtml::beginForm('', 'post', $formParams);
 
         // The default submit button
-        echo CHtml::htmlButton("default", [
+        echo TbHtml::htmlButton("default", [
             'type' => 'submit',
             'id' => "defaultbtn",
             'value' => "default",
