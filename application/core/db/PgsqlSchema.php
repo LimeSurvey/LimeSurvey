@@ -10,8 +10,8 @@ class PgsqlSchema extends CPgsqlSchema
          * Auto increment.
          */
         $this->columnTypes['autoincrement'] = 'serial';
-        
         $this->columnTypes['longbinary'] = 'bytea';
+        $this->columnTypes['decimal'] = 'numeric (10,0)'; // Same default than MySql (not used)
     }
     
     public function createDatabase($name) {
