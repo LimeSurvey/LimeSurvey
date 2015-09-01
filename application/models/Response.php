@@ -352,7 +352,7 @@
                     switch ($answerCode)
                     {
                         case 'Y':
-                            $fullAnswer = $translator->translate('Yes', $sLanguageCode);
+                            $fullAnswer  = $translator->translate('Yes', $sLanguageCode);
                             break;
 
                         case 'N':

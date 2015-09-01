@@ -28,7 +28,7 @@
     </li>
     <li><label for='dateformat_<?php echo $esrow['surveyls_language']; ?>'><?php eT("Date format:"); ?></label>
         <select size='1' id='dateformat_<?php echo $esrow['surveyls_language']; ?>' name='dateformat_<?php echo $esrow['surveyls_language']; ?>'>
-            <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata)
+            <?php foreach (\ls\helpers\SurveyTranslator::getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata)
                 { ?>
                 <option value='<?php echo $index; ?>'
                     <?php if ($esrow['surveyls_dateformat']==$index) { ?>
@@ -40,7 +40,7 @@
     </li>
     <li><label for='numberformat_<?php echo $esrow['surveyls_language']; ?>'><?php eT("Decimal mark:"); ?></label>
         <select size='1' id='numberformat_<?php echo $esrow['surveyls_language']; ?>' name='numberformat_<?php echo $esrow['surveyls_language']; ?>'>
-            <?php foreach (getRadixPointData() as $index=>$radixptdata)
+            <?php foreach (\ls\helpers\SurveyTranslator::getRadixPointData() as $index=>$radixptdata)
                 { ?>
                 <option value='<?php echo $index; ?>'
                     <?php if ($esrow['surveyls_numberformat']==$index) { ?>

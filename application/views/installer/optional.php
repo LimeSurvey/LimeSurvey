@@ -35,7 +35,7 @@
         'description' => gT("This name will appear in the survey list overview and in the administration header."),
         'control' => TbHtml::activeTextField($model, 'siteName')
     );
-    foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
+    foreach(\ls\helpers\SurveyTranslator::getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
     {
         $languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
     }

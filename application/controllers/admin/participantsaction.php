@@ -1132,14 +1132,14 @@ class participantsaction extends Survey_Common_Action
         $sAttributeMapJS="var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
                         ."var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
                         ."var mapCSVcancelled = '".App()->createUrl("admin/participants/sa/mapCSVcancelled")."';\n"
-                        ."var characterset = '".sanitize_paranoid_string($_POST['characterset'])."';\n"
+                        ."var characterset = '".\ls\helpers\Sanitize::paranoid_string($_POST['characterset'])."';\n"
                         ."var okBtn = '".gT("OK")."';\n"
                         ."var processed = '".gT("Summary")."';\n"
                         ."var summary = '".gT("Upload summary")."';\n"
                         ."var notPairedErrorTxt = '".gT("You have to pair this field with an existing attribute.")."';\n"
                         ."var onlyOnePairedErrorTxt = '".gT("Only one CSV attribute is mapped with central attribute.")."';\n"
                         ."var cannotAcceptErrorTxt='".gT("This list cannot accept token attributes.")."';\n"
-                        ."var separator = '".sanitize_paranoid_string($_POST['separatorused'])."';\n"
+                        ."var separator = '".\ls\helpers\Sanitize::paranoid_string($_POST['separatorused'])."';\n"
                         ."var thefilepath = '".$sRandomFileName."';\n"
                         ."var filterblankemails = '".$filterblankemails."';\n";
         App()->getClientScript()->registerScript("sAttributeMapJS",$sAttributeMapJS,CClientScript::POS_BEGIN);

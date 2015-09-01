@@ -43,9 +43,9 @@ class htmleditor_pop extends Survey_Common_Action
         {
             $aData['sFieldType'] = $sFieldType = preg_replace("/[^_.a-zA-Z0-9-]/", "", $sFieldType);
             $aData['sAction'] = preg_replace("/[^_.a-zA-Z0-9-]/", "", $sAction);
-            $aData['iSurveyId'] = sanitize_int($iSurveyId);
-            $aData['iGroupId'] = sanitize_int($iGroupId);
-            $aData['iQuestionId'] = sanitize_int($iQuestionId);
+            $aData['iSurveyId'] = \ls\helpers\Sanitize::int($iSurveyId);
+            $aData['iGroupId'] = \ls\helpers\Sanitize::int($iGroupId);
+            $aData['iQuestionId'] = \ls\helpers\Sanitize::int($iQuestionId);
             $aData['sControlIdEna'] = $sFieldName . '_popupctrlena';
             $aData['sControlIdDis'] = $sFieldName . '_popupctrldis';
             $aData['ckLanguage'] = $ckLanguage;

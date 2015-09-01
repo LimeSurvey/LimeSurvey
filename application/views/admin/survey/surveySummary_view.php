@@ -39,7 +39,7 @@
             <?php
                 if (trim($surveyinfo['surveyls_description']) != '')
                 {
-                    templatereplace(flattenText($surveyinfo['surveyls_description']));
+                    \ls\helpers\Replacements::templatereplace(flattenText($surveyinfo['surveyls_description']));
                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
                 }
             ?>
@@ -51,7 +51,7 @@
         </td>
         <td>
             <?php
-                templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
+                \ls\helpers\Replacements::templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
             ?>
         </td>
@@ -62,7 +62,7 @@
         </td>
         <td>
             <?php
-                templatereplace(flattenText($surveyinfo['surveyls_endtext']));
+                \ls\helpers\Replacements::templatereplace(flattenText($surveyinfo['surveyls_endtext']));
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
             ?>
         </td>

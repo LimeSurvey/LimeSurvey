@@ -63,7 +63,7 @@ class InstallerConfigForm extends CFormModel
 
     public function rules()
     {
-        App()->loadHelper('surveytranslator');
+
         return [
 			// Database
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
@@ -72,7 +72,7 @@ class InstallerConfigForm extends CFormModel
 			//Optional
 			array('adminLoginName, adminName, siteName, confirmPwd', 'safe', 'on' => 'optional'),
 			array('adminEmail', 'email', 'on' => 'optional'),
-			array('surveylang', 'in', 'range' => array_keys(getLanguageData(true, Yii::app()->session['installerLang'])), 'on' => 'optional'),
+			array('surveylang', 'in', 'range' => array_keys(\ls\helpers\SurveyTranslator::getLanguageData(true, Yii::app()->session['installerLang'])), 'on' => 'optional'),
             array('adminLoginPwd', 'compare', 'compareAttribute' => 'confirmPwd', 'message' => gT('Passwords do not match!'), 'strict' => true, 'on' => 'optional'),
             
             ['dsn', 'validateDsn', 'on' => 'database'], // Validate connection without database.

@@ -9,10 +9,9 @@
 namespace ls\models\questions;
 
 
-use ls\interfaces\iRenderable;
 use ls\interfaces\iResponse;
 
-class HugeTextQuestion extends LongTextQuestion implements iRenderable
+class HugeTextQuestion extends LongTextQuestion
 {
     /**
      * This function renders the object.

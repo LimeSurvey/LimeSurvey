@@ -33,7 +33,6 @@ class OptoutController extends Controller {
     function actiontokens($token, $surveyid, $langcode = null)
     {
         Yii::app()->loadHelper('database');
-        Yii::app()->loadHelper('sanitize');
 
         //Check that there is a SID
         // Get passed language from form, so that we dont lose this!
@@ -94,7 +93,7 @@ class OptoutController extends Controller {
         $sLanguageCode=Yii::app()->request->getQuery('langcode');
         $sToken=sanitize_token(Yii::app()->request->getQuery('token'));
         Yii::app()->loadHelper('database');
-        Yii::app()->loadHelper('sanitize');
+
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
         {
             $this->redirect(array('/'));
@@ -175,12 +174,12 @@ class OptoutController extends Controller {
         sendCacheHeaders();
         doHeader();
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
-        echo templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'startpage.pstpl'), array(),
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'startpage.pstpl'), array(),
             $aSupportData);
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;
         $this->render('/opt_view',$aData);
-        echo templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'endpage.pstpl'), array(),
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'endpage.pstpl'), array(),
             $aSupportData);
         doFooter();
     }

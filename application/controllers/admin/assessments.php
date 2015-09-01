@@ -32,7 +32,7 @@ class Assessments extends Survey_Common_Action
      */
     public function index($iSurveyID)
     {
-        $iSurveyID = sanitize_int($iSurveyID);
+        $iSurveyID = \ls\helpers\Sanitize::int($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
 
         $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -101,7 +101,7 @@ class Assessments extends Survey_Common_Action
         $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
         $aData['baselang'] = $surveyinfo['language'];
         $aData['action'] = $action;
-        $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
+        $aData['gid'] = empty($_POST['gid']) ? '' : \ls\helpers\Sanitize::int($_POST['gid']);
 
         Yii::app()->loadHelper('admin/htmleditor');
         if ($surveyinfo['assessments']!='Y')
@@ -168,7 +168,7 @@ class Assessments extends Survey_Common_Action
     {
         if (App()->user->checkAccess('assessments', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]) && isset($_POST['id'])) {
 
-            $aid = sanitize_int($_POST['id']);
+            $aid = \ls\helpers\Sanitize::int($_POST['id']);
             $languages = Yii::app()->getConfig("assessmentlangs");
             foreach ($languages as $language)
             {
@@ -195,8 +195,8 @@ class Assessments extends Survey_Common_Action
 
         return array(
             'sid' => $iSurveyID,
-            'scope' => sanitize_paranoid_string($_POST['scope']),
-            'gid' => sanitize_int($_POST['gid']),
+            'scope' => \ls\helpers\Sanitize::paranoid_string($_POST['scope']),
+            'gid' => \ls\helpers\Sanitize::int($_POST['gid']),
             'minimum' => intval($_POST['minimum']),
             'maximum' => intval($_POST['maximum']),
             'name' => $_POST['name_' . $language],

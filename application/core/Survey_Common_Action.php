@@ -738,7 +738,7 @@ class Survey_Common_Action extends CAction
             $surveysummary2 .= gT("Detailed email notification with response data is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
         }
 
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatData(Yii::app()->session['dateformat']);
         if (trim($aSurveyInfo['startdate']) != '')
         {
             Yii::import('application.libraries.Date_Time_Converter');

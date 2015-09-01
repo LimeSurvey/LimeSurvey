@@ -258,7 +258,7 @@ class UserAction extends Survey_Common_Action
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         if (isset($_POST['transfer_surveys_to'])) {
-            $transfer_surveys_to = sanitize_int(Yii::app()->request->getPost("transfer_surveys_to"));
+            $transfer_surveys_to = \ls\helpers\Sanitize::int(Yii::app()->request->getPost("transfer_surveys_to"));
         }
         if ($transfer_surveys_to > 0) {
             $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transfer_surveys_to), 'owner_id='.$postuserid);
@@ -634,7 +634,7 @@ class UserAction extends Survey_Common_Action
 
     private function _getUserNameFromUid($uid)
     {
-        $uid = sanitize_int($uid);
+        $uid = \ls\helpers\Sanitize::int($uid);
         $result = User::model()->findByPk($uid);
 
         if (!empty($result)) {

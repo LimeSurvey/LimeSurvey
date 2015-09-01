@@ -269,9 +269,8 @@ class AdminController extends Controller
         $aData['languageRTL']="";
         $aData['styleRTL']="";
 
-        Yii::app()->loadHelper("surveytranslator");
 
-        if (getLanguageRTL(Yii::app()->language))
+        if (\ls\helpers\SurveyTranslator::getLanguageRTL(Yii::app()->language))
         {
             $aData['languageRTL'] = " dir=\"rtl\" ";
             $aData['bIsRTL']=true;
@@ -298,7 +297,7 @@ class AdminController extends Controller
         $aData['admintheme'] = Yii::app()->getConfig("admintheme");
 
         if (!empty(Yii::app()->session['dateformat']))
-            $aData['formatdata'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['formatdata'] = \ls\helpers\SurveyTranslator::getDateFormatData(Yii::app()->session['dateformat']);
 
         $sOutput = $this->renderPartial("/admin/super/header", $aData, true);
 

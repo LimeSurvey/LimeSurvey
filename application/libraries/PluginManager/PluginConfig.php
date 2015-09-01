@@ -89,7 +89,6 @@ public function setEvents($value) {
                 }
             }
         }
-//        var_dump($this->path);
     }
 
             

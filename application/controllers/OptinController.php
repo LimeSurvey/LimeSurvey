@@ -30,7 +30,6 @@ class OptinController extends Controller {
     function actiontokens($surveyid, $token, $langcode = '')
     {
         Yii::app()->loadHelper('database');
-        Yii::app()->loadHelper('sanitize');
         $sLanguageCode = $langcode;
         $iSurveyID = $surveyid;
 
@@ -104,12 +103,12 @@ class OptinController extends Controller {
         sendCacheHeaders();
         doHeader();
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
-        echo templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'startpage.pstpl'), array(),
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'startpage.pstpl'), array(),
             $aSupportData);
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;
         $this->render('/opt_view',$aData);
-        echo templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'endpage.pstpl'), array(),
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($thistpl . DIRECTORY_SEPARATOR . 'endpage.pstpl'), array(),
             $aSupportData);
         doFooter();
     }

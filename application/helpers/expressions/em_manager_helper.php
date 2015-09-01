@@ -22,8 +22,8 @@
     */
     include_once('em_core_helper.php');
     Yii::app()->loadHelper('database');
-    Yii::app()->loadHelper('frontend');
-    Yii::app()->loadHelper('surveytranslator');
+
+
     Yii::import("application.libraries.Date_Time_Converter");
     define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
     define('LEM_DEBUG_VALIDATION_DETAIL',4);
@@ -62,7 +62,7 @@
          /**
          * variables temporarily set for substitution purposes
          *
-         * These are typically the LimeReplacement Fields passed in via templatereplace()
+         * These are typically the LimeReplacement Fields passed in via \ls\helpers\Replacements::templatereplace()
          * Each has the following structure:  array(
          * 'code' => // the static value of the variable
          * 'jsName_on' => // ''
@@ -2264,7 +2264,7 @@
             //Get date format of current question and convert date in help text accordingly
             $LEM =& LimeExpressionManager::singleton();
             $aAttributes = $session->getQuestion($questionNum)->questionAttributes;
-            $aDateFormatData = getDateFormatDataForQID($aAttributes[$questionNum], $LEM->surveyOptions);
+            $aDateFormatData = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($aAttributes[$questionNum], $LEM->surveyOptions);
             $_minV = (($date_min == '') ? "''" : "if((strtotime(" . $date_min . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_min . ")),'')");
             $_maxV = (($date_max == '') ? "''" : "if((strtotime(" . $date_max . ")), date('" . $aDateFormatData['phpdate'] . "', strtotime(" . $date_max . ")),'')");
             $qtips['value_range'] =
@@ -2965,7 +2965,7 @@
 //                            if (trim($value) == "" | $value=='INVALID') {
 //                                $value = null;
 //                            } else {
-//                                $dateformatdatat = getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+//                                $dateformatdatat = \ls\helpers\SurveyTranslator::getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
 //                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
 //                                $value = $datetimeobj->convert("Y-m-d H:i");
 //                            }
@@ -3987,7 +3987,7 @@
                 $result = flattenText($LEM->ProcessString($textToParse, $question->primaryKey,NULL,false,1,1,false,false,true));// More numRecursionLevels ?
                 $sgqa = $question->sgqa;
                 $redata = array();
-                $result = flattenText(templatereplace( // Why flattenText ? htmlspecialchars($string,ENT_NOQUOTES) seem better ?
+                $result = flattenText(\ls\helpers\Replacements::templatereplace( // Why flattenText ? htmlspecialchars($string,ENT_NOQUOTES) seem better ?
                     $textToParse, array('QID' => $question->primaryKey, 'GID' => $question->gid, 'SGQ' => $sgqa),
                     $redata, $question->primaryKey // Static replace
                 ));
@@ -4161,13 +4161,6 @@
                         if (!$field instanceof QuestionResponseField) {
                             throw new \Exception("getFields() must return an array of QuestionResponseField");
                         }
-                        // @todo Remove this, this is only here for dev purposes.
-                        try {
-                            json_encode($field);
-                        } catch (\Exception $e) {
-                            var_dump($field);
-                            die();
-                        }
                         $fields[$field->code] = $field;
                     }
                 }
@@ -4236,7 +4229,7 @@
                 $LEM->debugStack = array();
 
                 $subargs = array();
-                if (!is_null($args) && $log['function'] == 'templatereplace') {
+                if (!is_null($args) && $log['function'] == '\ls\helpers\Replacements::templatereplace') {
                     foreach ($args as $arg) {
                         if (isset($log['args'][2][$arg])) {
                             $subargs[$arg] = $log['args'][2][$arg];
@@ -4503,7 +4496,7 @@
                                 break;
                             case 'D': //DATE
                                 $LEM =& LimeExpressionManager::singleton();
-                                $aDateFormatData = getDateFormatDataForQID($var['qid'], $LEM->surveyOptions);
+                                $aDateFormatData = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($var['qid'], $LEM->surveyOptions);
                                 $shown = '';
                                 if (strtotime($code)) {
                                     $shown = date($aDateFormatData['phpdate'], strtotime($code));
@@ -4708,7 +4701,7 @@
                 );
             }
 
-            $surveyname = templatereplace('{SURVEYNAME}', array('SURVEYNAME' => $aSurveyInfo['surveyls_title']));
+            $surveyname = \ls\helpers\Replacements::templatereplace('{SURVEYNAME}', array('SURVEYNAME' => $aSurveyInfo['surveyls_title']));
 
             $out = '<div id="showlogicfilediv" ><H3>' . gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</H3>\n";
             $out .= "<table id='logicfiletable'>";

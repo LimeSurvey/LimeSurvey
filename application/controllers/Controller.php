@@ -13,6 +13,7 @@
  */
 
 namespace ls\controllers;
+use ls\controllers\surveys\Index;
 use \Yii;
 abstract class Controller extends \CController
 {
@@ -39,9 +40,6 @@ abstract class Controller extends \CController
 		parent::__construct($id, $module);
 
         Yii::app()->session->init();
-		$this->loadLibrary('LS.LS');
-        $this->loadHelper('expressions.em_manager');
-		$this->loadHelper('replacements');
 		$this->_init();
 	}
 
@@ -52,52 +50,9 @@ abstract class Controller extends \CController
         ], parent::accessRules());
     }
 	
-	/**
-	 * Loads a helper
-	 *
-	 * @access public
-	 * @param string $helper
-	 * @return void
-	 */
-	public function loadHelper($helper)
-	{
-		Yii::app()->loadHelper($helper);
-	}
-
-	/**
-	 * Loads a library
-	 *
-	 * @access public
-	 * @param string $helper
-	 * @return void
-	 */
-	public function loadLibrary($library)
-	{
-		Yii::app()->loadLibrary($library);
-	}
 
 	protected function _init()
 	{
-		// Check for most necessary requirements
-		// Now check for PHP & db version
-		// Do not localize/translate this!
-
-		$dieoutput='';
-		if (version_compare(PHP_VERSION, '5.3.0', '<'))
-			$dieoutput .= 'This script can only be run on PHP version 5.3.0 or later! Your version: '.PHP_VERSION.'<br />';
-
-		if (!function_exists('mb_convert_encoding'))
-			$dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://manual.limesurvey.org/wiki/Installation_FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
-
-		if ($dieoutput != '')
-			throw new CException($dieoutput);
-
-   		if (ini_get("max_execution_time") < 1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
-        if ((int)substr(ini_get("memory_limit"),0,-1) < (int) Yii::app()->getConfig('memory_limit')) @ini_set("memory_limit",Yii::app()->getConfig('memory_limit').'M'); // Set Memory Limit for big surveys
-
-		// The following function (when called) includes FireBug Lite if true
-		defined('FIREBUG') or define('FIREBUG' , Yii::app()->getConfig('use_firebug_lite'));
-
 		//Every 50th time clean up the temp directory of old files (older than 1 day)
 		//depending on the load the  probability might be set higher or lower
 		if (rand(1,50)==1)
@@ -105,8 +60,6 @@ abstract class Controller extends \CController
 			cleanTempDirectory();
 		}
 
-		//GlobalSettings Helper
-		Yii::import("application.helpers.globalsettings");
 
 		enforceSSLMode();// This really should be at the top but for it to utilise \SettingGlobal::get() it has to be here
 
@@ -124,40 +77,14 @@ abstract class Controller extends \CController
 	}
 
     /**
-     * Creates an absolute URL based on the given controller and action information.
-     * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
-     * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.
-     * @param string $schema schema to use (e.g. http, https). If empty, the schema used for the current request will be used.
-     * @param string $ampersand the token separating name-value pairs in the URL.
-     * @return string the constructed URL
-     */
-    public function createAbsoluteUrl($route,$params=array(),$schema='',$ampersand='&')
-    {
-        $sPublicUrl=Yii::app()->getConfig("publicurl");
-        // Control if public url are really public : need scheme and host
-        // If yes: use it 
-        $aPublicUrl=parse_url($sPublicUrl);
-        if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
-        {
-            $url=parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
-            $sActualBaseUrl=Yii::app()->getBaseUrl(true);
-            if (substr($url, 0, strlen($sActualBaseUrl)) == $sActualBaseUrl) {
-                $url = substr($url, strlen($sActualBaseUrl));
-            }
-            return trim($sPublicUrl,"/").$url;
-        }
-        else 
-            return parent::createAbsoluteUrl($route,$params,$schema,$ampersand);
-    }
-    /**
      * Base implementation for load model.
      * Should be overwritten if the model for the controller is not standard or
      * has no single PK.
-     * @param type $id
-     * @return type
+     * @param int $id
+     * @return \CModel
      * @throws \CHttpException
      */
-    protected function loadModel($id) {
+    public function loadModel($id) {
         // Get the model name.
         $modelClass = substr(get_class($this), 0, -strlen('sController'));
         if (class_exists($modelClass)) {
@@ -201,6 +128,24 @@ abstract class Controller extends \CController
 
     public function filters() {
         return ['accessControl'];
+    }
+
+    /**
+     * Adds support for creating an action using PSR4 autoloading.
+     *
+     */
+    protected function createActionFromMap($actionMap, $actionID, $requestActionID, $config = array())
+    {
+        $result = parent::createActionFromMap($actionMap, $actionID, $requestActionID, $config);
+        if (!isset($result)) {
+
+            $class = __NAMESPACE__ . "\\{$this->id}\\" . ucfirst($actionID);
+            if (class_exists($class)) {
+                $result = Yii::createComponent(['class' => $class], $this, $requestActionID);
+            }
+
+        }
+        return $result;
     }
 
 

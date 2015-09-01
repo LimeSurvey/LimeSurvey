@@ -152,7 +152,7 @@ class database extends Survey_Common_Action
 
                 for ($iSortOrderID=1;$iSortOrderID<$iMaxCount;$iSortOrderID++)
                 {
-                    $sCode=sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
+                    $sCode=\ls\helpers\Sanitize::paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
 
                     $iAssessmentValue=(int) Yii::app()->request->getPost('assessment_'.$iSortOrderID.'_'.$iScaleID);
                     foreach ($aSurveyLanguages as $sLanguage)
@@ -754,7 +754,7 @@ class database extends Survey_Common_Action
                 if (isset($iQuestionGroupID) && $iQuestionGroupID != "")
                 {
 
-                    //                    $array_result=checkMoveQuestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
+                    //                    $array_result=checkMoveQuestionConstraintsForConditions(\ls\helpers\Sanitize::int($surveyid),\ls\helpers\Sanitize::int($qid), \ls\helpers\Sanitize::int($gid));
                     //                    // If there is no blocking conditions that could prevent this move
                     //
                     //                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))

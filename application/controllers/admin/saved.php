@@ -24,7 +24,7 @@ class saved extends Survey_Common_Action
 
     public function view($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $aViewUrls = array();
 
         if (!App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyId]))

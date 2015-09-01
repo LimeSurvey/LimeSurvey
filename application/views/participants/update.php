@@ -15,7 +15,7 @@ $form = $this->beginWidget(TbActiveForm::class, [
 echo $form->textFieldControlGroup($participant, 'firstname');
 echo $form->textFieldControlGroup($participant, 'lastname');
 echo $form->emailFieldControlGroup($participant, 'email');
-echo $form->dropDownListControlGroup($participant, 'language', Html::listData(getLanguageData(), 'code', 'description'), [
+echo $form->dropDownListControlGroup($participant, 'language', Html::listData(\ls\helpers\SurveyTranslator::getLanguageData(), 'code', 'description'), [
     'empty' => gT('Choose language')
 ]);
 echo $form->checkBoxControlGroup($participant, 'blacklisted', ['uncheckValue' => 'N', 'value' => 'Y']);

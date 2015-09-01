@@ -942,10 +942,21 @@
         {
             return [
                 'after' => gT('Position'),
-                'bool_mandatory' => gT('Mandatory'),
-                'bool_other' => gT("Option 'Other'"),
+                'mandatory' => gT('Mandatory'),
+                'other' => gT("Option 'Other'"),
                 'exclude_all_others' => gT("Exclusive option"),
             ];
+        }
+
+        /**
+         * Map bool_ prefix to their underlying properties.
+         */
+        public function getAttributeLabel($attribute)
+        {
+            if (substr_compare('bool_', $attribute, 0, 5) === 0) {
+                return parent::getAttributeLabel(substr($attribute, 5));
+            }
+            return parent::getAttributeLabel($attribute);
         }
 
 

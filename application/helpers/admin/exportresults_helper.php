@@ -80,7 +80,7 @@ class ExportSurveyResultsService
         //echo $oOptions->toString().PHP_EOL;
         $writer = null;
 
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         if ($oOptions->output=='display')
         {
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");

@@ -79,11 +79,11 @@
                 <ul>
                     <li>
                         <label for='idG'><?php eT("Greater than:"); ?></label>
-                        <input type='text' id='idG' name='idG' size='10' value='<?php if (isset($_POST['idG'])){ echo  sanitize_int($_POST['idG']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
+                        <input type='text' id='idG' name='idG' size='10' value='<?php if (isset($_POST['idG'])){ echo  \ls\helpers\Sanitize::int($_POST['idG']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
                     </li>
                     <li>
                         <label for='idL'><?php eT("Less than:"); ?></label>
-                        <input type='text' id='idL' name='idL' size='10' value='<?php if (isset($_POST['idL'])) { echo sanitize_int($_POST['idL']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
+                        <input type='text' id='idL' name='idL' size='10' value='<?php if (isset($_POST['idL'])) { echo \ls\helpers\Sanitize::int($_POST['idL']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
                     </li>
                 </ul>
             </fieldset>

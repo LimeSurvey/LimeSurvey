@@ -146,7 +146,7 @@
     </td>
     <td>
         <?php if (trim($grow['description'])!='') {
-                templatereplace($grow['description']);
+                \ls\helpers\Replacements::templatereplace($grow['description']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
         } ?>
     </td>
@@ -158,7 +158,7 @@
         </td>
         <td>
             <?php
-                templatereplace('{' . $grow['grelevance'] . '}');
+                \ls\helpers\Replacements::templatereplace('{' . $grow['grelevance'] . '}');
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
             ?>
         </td>

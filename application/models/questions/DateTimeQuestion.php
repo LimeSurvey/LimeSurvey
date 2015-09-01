@@ -68,7 +68,7 @@ class DateTimeQuestion extends TextQuestion
         }
         else
         {
-            $aDateFormatDetails = getDateFormatData(getDateFormatForSID($this->sid));
+            $aDateFormatDetails = \ls\helpers\SurveyTranslator::getDateFormatData(getDateFormatForSID($this->sid));
         }
         return $aDateFormatDetails;
     }

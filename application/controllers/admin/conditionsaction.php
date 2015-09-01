@@ -23,9 +23,9 @@ class conditionsaction extends Survey_Common_Action {
 
     function index($subaction, $iSurveyID=null, $gid=null, $qid=null)
     {
-        $iSurveyID = sanitize_int($iSurveyID);
-        $gid = sanitize_int($gid);
-        $qid = sanitize_int($qid);
+        $iSurveyID = \ls\helpers\Sanitize::int($iSurveyID);
+        $gid = \ls\helpers\Sanitize::int($gid);
+        $qid = \ls\helpers\Sanitize::int($qid);
         $imageurl = Yii::app()->getConfig("adminimageurl");
         Yii::app()->loadHelper("database");
 
@@ -105,7 +105,7 @@ class conditionsaction extends Survey_Common_Action {
 
         if (isset($_POST['newscenarionum']))
         {
-            $p_newscenarionum = sanitize_int($_POST['newscenarionum']);
+            $p_newscenarionum = \ls\helpers\Sanitize::int($_POST['newscenarionum']);
         }
         //END Sanitizing POSTed data
 
@@ -1931,7 +1931,7 @@ class conditionsaction extends Survey_Common_Action {
             {
                 $submitLabel = gT("Update condition");
                 $submitSubaction = "updatecondition";
-                $submitcid = sanitize_int($p_cid);
+                $submitcid = \ls\helpers\Sanitize::int($p_cid);
             }
             else
             {

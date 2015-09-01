@@ -15,7 +15,7 @@
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "adminstyle.css" );
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle.css" );
-        if (getLanguageRTL($_SESSION['adminlang']))
+        if (\ls\helpers\SurveyTranslator::getLanguageRTL($_SESSION['adminlang']))
         {        
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') . "adminstyle-rtl.css" );
         }

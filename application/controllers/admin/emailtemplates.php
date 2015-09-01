@@ -29,11 +29,11 @@ class emailtemplates extends Survey_Common_Action {
      */
     function index($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         
 
         Yii::app()->loadHelper('admin.htmleditor');
-        Yii::app()->loadHelper('surveytranslator');
+
 
         Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
         initKcfinder();

@@ -88,7 +88,7 @@ class MultipleTextQuestion extends TextQuestion
 
         if ($this->numbers_only == 1)
         {
-            $sSeparator = getRadixPointData($this->survey->localizedNumberFormat)['separator'];
+            $sSeparator = \ls\helpers\SurveyTranslator::getRadixPointData($this->survey->localizedNumberFormat)['separator'];
             $extraclass .=" numberonly";
         }
         if (intval(trim($this->maximum_chars))>0)

@@ -1,16 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-* LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
-
+<?php
 class index extends CAction {
 
     public function run()
@@ -25,8 +13,8 @@ class index extends CAction {
         $aLSJavascriptVar=array();
         $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
         $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
-        $aLangData=getLanguageData();
-        $aRadix=getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);
+        $aLangData=\ls\helpers\SurveyTranslator::getLanguageData();
+        $aRadix=\ls\helpers\SurveyTranslator::getRadixPointData($aLangData[ Yii::app()->getConfig('defaultlang')]['radixpoint']);
         $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
         $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
         $clientScript = App()->clientScript;
@@ -121,7 +109,7 @@ class index extends CAction {
         //Send local variables to the appropriate survey type
         Yii::import('application.helpers.SurveyRuntimeHelper');
         bP('runtimehelper');
-        (new SurveyRuntimeHelper())->run($session, $move);
+        (new \ls\helpers\SurveyRuntime())->run($session, $move);
         eP('runtimehelper');
         if (isset($_POST['saveall']) || isset($flashmessage))
         {
@@ -153,8 +141,6 @@ class index extends CAction {
     {
         //Load helpers, libraries and config vars
         App()->loadHelper("database");
-        App()->loadHelper("frontend");
-        App()->loadHelper("surveytranslator");
     }
 
 
@@ -233,7 +219,7 @@ class index extends CAction {
 
     function _printTemplateContent($sTemplateFile, &$redata, $iDebugLine = -1)
     {
-        echo templatereplace(file_get_contents($sTemplateFile), array(), $redata, 'survey[' . $iDebugLine . ']');
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplateFile), array(), $redata, 'survey[' . $iDebugLine . ']');
     }
 
 

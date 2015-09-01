@@ -54,7 +54,7 @@ class MultipleNumberQuestion extends MultipleTextQuestion
         $checkconditionFunction = "fixnum_checkconditions";
 
         $html='';
-        $sSeparator = getRadixPointData($this->survey->getLocalizedNumberFormat())['separator'];
+        $sSeparator = \ls\helpers\SurveyTranslator::getRadixPointData($this->survey->getLocalizedNumberFormat())['separator'];
 
         //Must turn on the "numbers only javascript"
         $extraclass .=" numberonly";
@@ -256,7 +256,7 @@ class MultipleNumberQuestion extends MultipleTextQuestion
                 . " doNumericSlider({$this->primaryKey},".ls_json_encode($aJsVar).");\n"
                 . " //--></script>";
         }
-        $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+        $sSeparator = \ls\helpers\SurveyTranslator::getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator = $sSeparator['separator'];
 
         return [$html, $inputnames];

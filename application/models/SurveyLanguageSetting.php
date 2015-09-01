@@ -178,9 +178,9 @@ class SurveyLanguageSetting extends ActiveRecord
     }
 
     public function getDateFormatOptions() {
-        return array_map(function($e) { return $e['dateformat']; }, getDateFormatData());
+        return array_map(function($e) { return $e['dateformat']; }, \ls\helpers\SurveyTranslator::getDateFormatData());
     }
     public function getNumberFormatOptions() {
-        return array_map(function($e) { return $e['desc']; }, getRadixPointData());
+        return array_map(function($e) { return $e['desc']; }, \ls\helpers\SurveyTranslator::getRadixPointData());
     }
 }

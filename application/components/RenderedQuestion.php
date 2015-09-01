@@ -236,7 +236,7 @@ class RenderedQuestion implements ArrayAccess
      * @throws CHttpException
      */
     public function render(SurveySession $session) {
-        return \templatereplace($this->_template, $this->getReplacements(), [], $this->_question->qid, $session);
+        return \ls\helpers\Replacements::templatereplace($this->_template, $this->getReplacements(), [], $this->_question->qid, $session);
     }
 
     public function setIndex($i) {

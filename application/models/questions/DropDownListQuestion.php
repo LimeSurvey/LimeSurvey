@@ -138,7 +138,7 @@ class DropDownListQuestion extends SingleChoiceQuestion
 
         if ($this->bool_other) {
 
-            $sSeparator = getRadixPointData($session->survey->getLocalizedNumberFormat());
+            $sSeparator = \ls\helpers\SurveyTranslator::getRadixPointData($session->survey->getLocalizedNumberFormat());
             $sSeparator = $sSeparator['separator'];
 
             if ($this->other_numbers_only==1)

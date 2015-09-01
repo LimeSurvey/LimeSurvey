@@ -76,7 +76,7 @@ class NumericalQuestion extends \Question {
             $answertypeclass .= " integeronly";
             $integeronly=1;
         } else {
-            $acomma = getRadixPointData($this->survey->getLocalizedNumberFormat())['separator'];
+            $acomma = \ls\helpers\SurveyTranslator::getRadixPointData($this->survey->getLocalizedNumberFormat())['separator'];
             $integeronly=0;
         }
 

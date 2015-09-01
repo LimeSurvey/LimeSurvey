@@ -167,7 +167,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                     }
                 }
             }
-            elseif (getLanguageRTL($sLanguageCode))
+            elseif (\ls\helpers\SurveyTranslator::getLanguageRTL($sLanguageCode))
             {
                 foreach($lbl as $kkey => $kval){
                     $lblout[]= UTF8Strrev($kkey.' )'.$kval.'(');
@@ -261,7 +261,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                     }
                 }
             }
-            elseif (getLanguageRTL($sLanguageCode))
+            elseif (\ls\helpers\SurveyTranslator::getLanguageRTL($sLanguageCode))
             {
                 foreach($lbl as $kkey => $kval){
                     $lblout[]= UTF8Strrev(html_entity_decode($kkey,null,'UTF-8').' )'.$kval.'(');
@@ -452,13 +452,13 @@ function buildSelects($allfields, $surveyid, $language) {
                         //value greater than
                         if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                         {
-                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".\ls\helpers\Sanitize::int($_POST[$pv]);
                         }
 
                         //value less than
                         if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                         {
-                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".\ls\helpers\Sanitize::int($_POST[$pv]);
                         }
                     }
 
@@ -467,11 +467,11 @@ function buildSelects($allfields, $surveyid, $language) {
                     {
                         // no. of files greater than
                         if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
-                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." > ".\ls\helpers\Sanitize::int($_POST[$pv]);
 
                         // no. of files less than
                         if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".\ls\helpers\Sanitize::int($_POST[$pv]);
                     }
 
                     //"id" is a built in field, the unique database id key of each response row
@@ -479,11 +479,11 @@ function buildSelects($allfields, $surveyid, $language) {
                     {
                         if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
                         {
-                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > ".sanitize_int($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > ".\ls\helpers\Sanitize::int($_POST[$pv]);
                         }
                         if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
                         {
-                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < ".sanitize_int($_POST[$pv]);
+                            $selects[]=Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < ".\ls\helpers\Sanitize::int($_POST[$pv]);
                         }
                     }
 
@@ -522,7 +522,7 @@ function buildSelects($allfields, $surveyid, $language) {
                     elseif (substr($pv, 0, 9) == "datestamp")
                     {
                         //timestamp equals
-                        $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
+                        $formatdata=\ls\helpers\SurveyTranslator::getDateFormatData(Yii::app()->session['dateformat']);
                         if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
                         {
                             $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
@@ -1760,16 +1760,16 @@ class statistics_helper {
                     if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib')
                     {
                         // mssql cannot compare text blobs so we have to cast here
-                        //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
+                        //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".\ls\helpers\Sanitize::int($rt)." IS NULL "
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                        //                                    . "OR cast(".sanitize_int($rt)." as varchar) = '' "
+                        //                                    . "OR cast(".\ls\helpers\Sanitize::int($rt)." as varchar) = '' "
                         . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
                         . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
                     }
                     else
-                        //                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
+                        //                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".\ls\helpers\Sanitize::int($rt)." IS NULL "
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                        //                                    . "OR ".sanitize_int($rt)." = '' "
+                        //                                    . "OR ".\ls\helpers\Sanitize::int($rt)." = '' "
                         . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
                         . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
                 }
@@ -2800,8 +2800,6 @@ class statistics_helper {
     {
 
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
-        //load surveytranslator helper
-        Yii::import('application.helpers.surveytranslator_helper', true);
 
         $statisticsoutput = ""; //This string carries all the actual HTML code to print.
         $imagedir = Yii::app()->getConfig("imagedir");

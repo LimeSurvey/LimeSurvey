@@ -28,9 +28,9 @@ class quotas extends Survey_Common_Action
         parent::__construct($controller, $id);
 
         // Load helpers
-        Yii::app()->loadHelper('surveytranslator');
+
         // Sanitize/get globals/variables
-        $_POST['quotamax'] = sanitize_int(Yii::app()->request->getPost('quotamax'));
+        $_POST['quotamax'] = \ls\helpers\Sanitize::int(Yii::app()->request->getPost('quotamax'));
 
         if (empty($_POST['autoload_url']))
         {
@@ -81,7 +81,7 @@ class quotas extends Survey_Common_Action
 
     function index($iSurveyId, $quickreport = false)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'read');
         $aData = $this->_getData($iSurveyId);
         $aViewUrls = array();
@@ -171,7 +171,7 @@ class quotas extends Survey_Common_Action
 
     function insertquota($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'create');
         $aData = $this->_getData($iSurveyId);
         $aLangs = $aData['aLangs'];
@@ -226,7 +226,7 @@ class quotas extends Survey_Common_Action
 
     function modifyquota($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
         $aLangs = $aData['aLangs'];
@@ -277,7 +277,7 @@ class quotas extends Survey_Common_Action
 
     function insertquotaanswer($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
 
         $oQuotaMembers = new QuotaMember('create');  // Trigger the 'create' rules
@@ -308,7 +308,7 @@ class quotas extends Survey_Common_Action
 
     function delans($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
 
         QuotaMember::model()->deleteAllByAttributes(array(
@@ -322,7 +322,7 @@ class quotas extends Survey_Common_Action
 
     function delquota($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'delete');
 
         Quota::model()->deleteByPk(Yii::app()->request->getPost('quota_id'));
@@ -334,7 +334,7 @@ class quotas extends Survey_Common_Action
 
     function editquota($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
         $aLangs = $aData['aLangs'];
@@ -366,7 +366,7 @@ class quotas extends Survey_Common_Action
 
     function new_answer($iSurveyId, $sSubAction = 'new_answer')
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
         $sBaseLang = $aData['sBaseLang'];
@@ -419,7 +419,7 @@ class quotas extends Survey_Common_Action
 
     function newquota($iSurveyId)
     {
-        $iSurveyId = sanitize_int($iSurveyId);
+        $iSurveyId = \ls\helpers\Sanitize::int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'create');
         $aData = $this->_getData($iSurveyId);
 
@@ -439,9 +439,9 @@ class quotas extends Survey_Common_Action
      */
     function getQuotaAnswers($iQuestionId, $iSurveyId, $iQuotaId)
     {
-        $iQuestionId = sanitize_int($iQuestionId);
-        $iSurveyId   = sanitize_int($iSurveyId);
-        $iQuotaId    = sanitize_int($iQuotaId);
+        $iQuestionId = \ls\helpers\Sanitize::int($iQuestionId);
+        $iSurveyId   = \ls\helpers\Sanitize::int($iSurveyId);
+        $iQuotaId    = \ls\helpers\Sanitize::int($iQuotaId);
         $aData       = $this->_getData($iSurveyId);
         $sBaseLang   = $aData['sBaseLang'];
         $this->_checkPermissions($iSurveyId, 'read');

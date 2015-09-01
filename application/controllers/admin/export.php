@@ -32,7 +32,7 @@ class export extends Survey_Common_Action {
     public function survey()
     {
         $action = Yii::app()->request->getParam('action');
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $iSurveyID = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('surveyid'));
 
         if ( App()->user->checkAccess('surveycontent', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]) )
         {
@@ -107,8 +107,8 @@ class export extends Survey_Common_Action {
 
     public function group()
     {
-        $gid = sanitize_int(Yii::app()->request->getParam('gid'));
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $gid = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('gid'));
+        $iSurveyID = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('surveyid'));
 
         group_export("exportstructurecsvGroup", $iSurveyID, $gid);
 
@@ -117,15 +117,15 @@ class export extends Survey_Common_Action {
 
     public function question()
     {
-        $gid = sanitize_int(Yii::app()->request->getParam('gid'));
-        $qid = sanitize_int(Yii::app()->request->getParam('qid'));
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $gid = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('gid'));
+        $qid = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('qid'));
+        $iSurveyID = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('surveyid'));
         questionExport("exportstructurecsvQuestion", $iSurveyID, $gid, $qid);
     }
 
     public function exportresults()
     {
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $iSurveyID = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('surveyid'));
 
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
@@ -262,8 +262,8 @@ class export extends Survey_Common_Action {
         //function.
         $options = new FormattingOptions();
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
-        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from'));
-        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to'));
+        $options->responseMinRecord = \ls\helpers\Sanitize::int(Yii::app()->request->getPost('export_from'));
+        $options->responseMaxRecord = \ls\helpers\Sanitize::int(Yii::app()->request->getPost('export_to'));
         $options->answerFormat = $sAnswerFormat;
         $options->convertY = $bConvertY;
         $options->yValue = ($bConvertY)?$sYValue:null;
@@ -333,7 +333,7 @@ class export extends Survey_Common_Action {
     public function exportspss()
     {
         global $length_vallabel;
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
+        $iSurveyID = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('sid'));
         //for scale 1=nominal, 2=ordinal, 3=scale
 
         //		$typeMap = $this->_getTypeMap();
@@ -617,7 +617,7 @@ class export extends Survey_Common_Action {
 
     public function vvexport()
     {
-        $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $iSurveyId = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('surveyid'));
         $subaction = Yii::app()->request->getParam('subaction');
 
         //Exports all responses to a survey in special "Verified Voting" format.
@@ -650,7 +650,7 @@ class export extends Survey_Common_Action {
         elseif ( isset($iSurveyId) && $iSurveyId )
         {
             //Export is happening
-            $extension = sanitize_paranoid_string(returnGlobal('extension'));
+            $extension = \ls\helpers\Sanitize::paranoid_string(returnGlobal('extension'));
             $vvVersion = (int) Yii::app()->request->getPost('vvversion');
             $vvVersion = (in_array($vvVersion,array(1,2)))?$vvVersion:2;// Only 2 version actually, default to 2
             $fn = "vvexport_$iSurveyId." . $extension;
@@ -765,12 +765,12 @@ class export extends Survey_Common_Action {
         switch ( Yii::app()->request->getParam('export') )
         {
             case 'survey' :
-                $iSurveyID = sanitize_int(Yii::app()->getRequest()->getParam('surveyid'));
+                $iSurveyID = \ls\helpers\Sanitize::int(Yii::app()->getRequest()->getParam('surveyid'));
                 $resourcesdir = 'surveys/' . $iSurveyID;
                 $zipfilename = "resources-survey-$iSurveyID.zip";
                 break;
             case 'label' :
-                $lid = sanitize_int(Yii::app()->getRequest()->getParam('lid'));
+                $lid = \ls\helpers\Sanitize::int(Yii::app()->getRequest()->getParam('lid'));
                 $resourcesdir = 'labels/' . $lid;
                 $zipfilename = "resources-labelset-$lid.zip";
                 break;
@@ -806,7 +806,7 @@ class export extends Survey_Common_Action {
     public function dumplabel()
     {
         if (!Permission::model()->hasGlobalPermission('labelsets','export')) die ('No permission.');
-        $lid = sanitize_int(Yii::app()->request->getParam('lid'));
+        $lid = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('lid'));
         // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
         // ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
         // 1. questions
@@ -824,7 +824,7 @@ class export extends Survey_Common_Action {
             $lids = array($lid);
         }
 
-        $lids = array_map('sanitize_int', $lids);
+        $lids = array_map('\ls\helpers\Sanitize::int', $lids);
 
         $fn = "limesurvey_labelset_" . implode('_', $lids) . ".lsl";
         $xml = new XMLWriter();

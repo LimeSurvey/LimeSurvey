@@ -117,8 +117,6 @@ class Parser{
                 $result = (
                     $tokens->begin() && $stack->begin()
                     && $this->parseToken('EQ_OP', $tokens, $stack)
-//                    && (var_dump($tokens->getIndex()) || var_dump($tokens->getItems())|| true)
-
                     && $this->parseAddExpression($tokens, $stack)
                     && $tokens->commit() && $stack->commit()
                 )

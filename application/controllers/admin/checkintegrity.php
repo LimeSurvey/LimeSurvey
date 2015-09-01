@@ -32,7 +32,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         Yii::app()->loadHelper('database');
-        Yii::app()->loadHelper('surveytranslator');
+
     }
 
     public function index()

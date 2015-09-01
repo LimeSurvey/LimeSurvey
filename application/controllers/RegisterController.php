@@ -199,7 +199,7 @@ class RegisterController extends Controller {
         $aData['thissurvey'] = $aSurveyInfo;
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
         $aData['languagechanger'] = makeLanguageChangerSurvey(App()->language);
-        return templatereplace(file_get_contents("$sTemplate/register.pstpl"), $aReplacement, $aData);
+        return \ls\helpers\Replacements::templatereplace(file_get_contents("$sTemplate/register.pstpl"), $aReplacement, $aData);
     }
 
     /**
@@ -405,8 +405,7 @@ class RegisterController extends Controller {
         $aSurveyInfo=getSurveyInfo($iSurveyId,Yii::app()->language);
         if(empty($aSurveyInfo['startdate']) ||  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))>=$aSurveyInfo['startdate'])
             return;
-        Yii::app()->loadHelper("surveytranslator");
-        $aDateFormat=getDateFormatData(getDateFormatForSID($iSurveyId,Yii::app()->language),Yii::app()->language);
+        $aDateFormat=\ls\helpers\SurveyTranslator::getDateFormatData(getDateFormatForSID($iSurveyId,Yii::app()->language),Yii::app()->language);
         $datetimeobj = new Date_Time_Converter($aSurveyInfo['startdate'], 'Y-m-d H:i:s');
         return $datetimeobj->convert($aDateFormat['phpdate']);
     }
@@ -432,7 +431,7 @@ class RegisterController extends Controller {
             $aData['languagechanger']=makeLanguageChangerSurvey($sLanguage);
             $aViewData['content']=self::getRegisterForm($iSurveyId);
         }else{
-            $aViewData['content']=templatereplace($this->sMessage);
+            $aViewData['content']=\ls\helpers\Replacements::templatereplace($this->sMessage);
         }
         $aViewData['aData']=$aData;
         // Test if we come from index or from register

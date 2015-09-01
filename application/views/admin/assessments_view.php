@@ -50,11 +50,11 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['maximum'];?></td>
 <td><?php 
     $aReplacement=array('PERC'=>gt('Score of the current group'),'TOTAL'=>gt('Total score'));
-    templatereplace($assess['name'], $aReplacement);
+    \ls\helpers\Replacements::templatereplace($assess['name'], $aReplacement);
     echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
     ?></td>
 <td><?php 
-    templatereplace($assess['message'], $aReplacement);
+    \ls\helpers\Replacements::templatereplace($assess['message'], $aReplacement);
     echo FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), true);
     ?></td>
 

@@ -32,5 +32,5 @@ interface iResponse {
     /**
      * @return [] An array containing the response data.
      */
-    public function getAttributes();
+    public function getAttributes($names = null);
 }

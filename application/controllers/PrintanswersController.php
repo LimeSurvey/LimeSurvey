@@ -34,7 +34,6 @@ use \Yii;
         */
         function actionView($surveyid,$printableexport=FALSE)
         {
-            Yii::app()->loadHelper("frontend");
             Yii::import('application.libraries.admin.pdf');
 
             $iSurveyID = (int)$surveyid;
@@ -66,14 +65,14 @@ use \Yii;
             {
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/startpage.pstpl'),
+                echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/startpage.pstpl'),
                     array());
                 echo "<center><br />\n"
                 ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
                 ."\t".gT("We are sorry but your session has expired.")."<br />".gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
                 ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/endpage.pstpl'),
+                echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/endpage.pstpl'),
                     array());
                 doFooter();
                 exit;
@@ -134,7 +133,7 @@ use \Yii;
                 }
                 $sOutput .= "</table>\n";
                 $sData['thissurvey']=$aSurveyInfo;
-                $sOutput=templatereplace($sOutput, array(), $sData, null);// Do a static replacement
+                $sOutput=\ls\helpers\Replacements::templatereplace($sOutput, array(), $sData, null);// Do a static replacement
                 ob_start(function($buffer, $phase) {
                     App()->getClientScript()->render($buffer);
                     App()->getClientScript()->reset();
@@ -144,11 +143,11 @@ use \Yii;
 
                 sendCacheHeaders();
                 doHeader();
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/startpage.pstpl'),
+                echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/startpage.pstpl'),
                     array(), $sData);
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/printanswers.pstpl'),
+                echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/printanswers.pstpl'),
                     array('ANSWERTABLE' => $sOutput), $sData);
-                echo templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/endpage.pstpl'),
+                echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($sTemplate) . '/endpage.pstpl'),
                     array(), $sData);
                 echo "</body></html>";
 
@@ -204,7 +203,7 @@ use \Yii;
 
                 header("Pragma: public");
                 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                $sExportFileName = sanitize_filename($sSurveyName);
+                $sExportFileName = \ls\helpers\Sanitize::filename($sSurveyName);
                 $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf","D");
             }
 

@@ -51,7 +51,7 @@ class InstallerController extends \CController {
             App()->setLanguage(App()->request->getPost('installerLang'));
             return $this->redirect(['installer/license']);
         }
-        App()->loadHelper('surveytranslator');
+
 
         $this->stepTitle = gT('Welcome');
         $aData['descp'] = gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
@@ -64,7 +64,7 @@ class InstallerController extends \CController {
         else
             $sCurrentLanguage='en';
 
-        foreach(getLanguageData(true, $sCurrentLanguage) as $sKey => $aLanguageInfo)
+        foreach(\ls\helpers\SurveyTranslator::getLanguageData(true, $sCurrentLanguage) as $sKey => $aLanguageInfo)
         {
             $aLanguages[htmlspecialchars($sKey)] = sprintf('%s - %s', $aLanguageInfo['nativedescription'], $aLanguageInfo['description']);
         }

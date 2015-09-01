@@ -112,7 +112,7 @@ class templates extends Survey_Common_Action
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
 
             // Create temporary directory so that if dangerous content is unzipped it would be unaccessible
-            $sNewDirectoryName=sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME ));
+            $sNewDirectoryName=\ls\helpers\Sanitize::dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME ));
             $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
             if (!is_writeable(dirname($destdir)))
@@ -247,7 +247,7 @@ class templates extends Survey_Common_Action
         $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
         $tempdir = Yii::app()->getConfig('tempdir');
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
-        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
+        $filename=\ls\helpers\Sanitize::filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
         $fullfilepath=$basedestdir."/".$templatename . "/" . $filename;
 
         if($action=="templateuploadfile")
@@ -434,8 +434,8 @@ class templates extends Survey_Common_Action
         }
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
 
-            $sOldName = sanitize_dirname(returnGlobal('copydir'));
-            $sNewName = sanitize_dirname(returnGlobal('newname'));
+            $sOldName = \ls\helpers\Sanitize::dirname(returnGlobal('copydir'));
+            $sNewName = \ls\helpers\Sanitize::dirname(returnGlobal('newname'));
             $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
             $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
             if (isStandardTemplate(returnGlobal('newname')))
@@ -468,8 +468,8 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
-        $newname=sanitize_dirname(Yii::app()->request->getPost("newname"));
-        $copydir=sanitize_dirname(Yii::app()->request->getPost("copydir"));
+        $newname=\ls\helpers\Sanitize::dirname(Yii::app()->request->getPost("newname"));
+        $copydir=\ls\helpers\Sanitize::dirname(Yii::app()->request->getPost("copydir"));
         $action=Yii::app()->request->getPost("action");
         if ($newname && $copydir) {
             // Copies all the files from one template directory to a new one
@@ -781,7 +781,7 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         App()->getClientScript()->reset();
-        Yii::app()->loadHelper('surveytranslator');
+
         Yii::app()->loadHelper('admin/template');
 
         $files = $this->_initfiles($templatename);
@@ -861,7 +861,7 @@ class templates extends Survey_Common_Action
         $file_version = "LimeSurvey template editor " . Yii::app()->getConfig('versionnumber');
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
-        $templatename = sanitize_dirname($templatename);
+        $templatename = \ls\helpers\Sanitize::dirname($templatename);
         $screenname = autoUnescape($screenname);
 
         // Checks if screen name is in the list of allowed screen names
@@ -869,16 +869,16 @@ class templates extends Survey_Common_Action
             $this->getController()->error('Invalid screen name');
 
         if (!isset($action))
-            $action = sanitize_paranoid_string(returnGlobal('action'));
+            $action = \ls\helpers\Sanitize::paranoid_string(returnGlobal('action'));
 
         if (!isset($subaction))
-            $subaction = sanitize_paranoid_string(returnGlobal('subaction'));
+            $subaction = \ls\helpers\Sanitize::paranoid_string(returnGlobal('subaction'));
 
         if (!isset($newname))
-            $newname = sanitize_dirname(returnGlobal('newname'));
+            $newname = \ls\helpers\Sanitize::dirname(returnGlobal('newname'));
 
         if (!isset($copydir))
-            $copydir = sanitize_dirname(returnGlobal('copydir'));
+            $copydir = \ls\helpers\Sanitize::dirname(returnGlobal('copydir'));
 
         if (is_file(Yii::app()->getConfig('usertemplaterootdir') . '/' . $templatename . '/question_start.pstpl')) {
             $files[] = array('name' => 'question_start.pstpl');
@@ -933,7 +933,7 @@ class templates extends Survey_Common_Action
         $thissurvey['surveyls_url'] = "http://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
         $thissurvey['usecaptcha'] = "A";
-        $percentcomplete = makegraph(6, 10);
+        $percentcomplete = \ls\helpers\FrontEnd::makegraph(6, 10);
 
         $groupname = gT("Group 1: The first lot of questions");
         $groupdescription = gT("This group description is fairly vacuous, but quite important.");
@@ -1057,10 +1057,10 @@ class templates extends Survey_Common_Action
                 foreach ($Register as $qs)
                     $files[] = array("name" => $qs);
 
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/survey.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/register.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/survey.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/register.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
                 $myoutput[] = "\n";
                 break;
 
@@ -1069,9 +1069,9 @@ class templates extends Survey_Common_Action
                 foreach ($Save as $qs)
                     $files[] = array("name" => $qs);
 
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/save.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/save.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
                 $myoutput[] = "\n";
                 break;
 
@@ -1080,9 +1080,9 @@ class templates extends Survey_Common_Action
                 foreach ($Load as $qs)
                     $files[] = array("name" => $qs);
 
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/load.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/load.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
                 $myoutput[] = "\n";
                 break;
 
@@ -1091,9 +1091,9 @@ class templates extends Survey_Common_Action
                 foreach ($Clearall as $qs)
                     $files[] = array("name" => $qs);
 
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/clearall.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/clearall.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
                 $myoutput[] = "\n";
                 break;
 
@@ -1117,7 +1117,7 @@ class templates extends Survey_Common_Action
                 $questionoutput = array();
                 foreach (file("$templatedir/print_question.pstpl") as $op)
                 {
-                    $questionoutput[] = templatereplace($op, array(
+                    $questionoutput[] = \ls\helpers\Replacements::templatereplace($op, array(
                         'QUESTION_NUMBER' => '1',
                         'QUESTION_CODE' => 'Q1',
                         'QUESTION_MANDATORY' => gT('*'),
@@ -1141,10 +1141,10 @@ class templates extends Survey_Common_Action
                     ), $aData);
                 }
                 $groupoutput = array();
-                $groupoutput[] = templatereplace(file_get_contents("$templatedir/print_group.pstpl"),
+                $groupoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/print_group.pstpl"),
                     array('QUESTIONS' => implode(' ', $questionoutput)), $aData);
 
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), array(
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), array(
                     'GROUPS' => implode(' ', $groupoutput),
                     'FAX_TO' => gT("Please fax your completed survey to:") . " 000-000-000",
                     'SUBMIT_TEXT' => gT("Submit your survey."),
@@ -1162,10 +1162,10 @@ class templates extends Survey_Common_Action
                     $files[] = array("name" => $qs);
                 }
 
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"),
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/printanswers.pstpl"),
                     array('ANSWERTABLE' => $printoutput), $aData);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
+                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData);
 
                 $myoutput[] = "\n";
                 break;

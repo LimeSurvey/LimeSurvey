@@ -23,7 +23,7 @@ class translate extends Survey_Common_Action {
 
     public function index()
     {
-        $iSurveyID = sanitize_int($_REQUEST['surveyid']);
+        $iSurveyID = \ls\helpers\Sanitize::int($_REQUEST['surveyid']);
         $tolang = Yii::app()->getRequest()->getParam('lang');
         $action = Yii::app()->getRequest()->getParam('action');
 		$actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
@@ -54,8 +54,7 @@ class translate extends Survey_Common_Action {
         $surveyinfo = getSurveyInfo($iSurveyID);
         $survey_title = $surveyinfo['name'];
 
-        Yii::app()->loadHelper("surveytranslator");
-        $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
+        $supportedLanguages = \ls\helpers\SurveyTranslator::getLanguageData(FALSE,Yii::app()->session['adminlang']);
 
         $baselangdesc = $supportedLanguages[$baselang]['description'];
 
@@ -366,7 +365,7 @@ class translate extends Survey_Common_Action {
 
 
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
+        $supportedLanguages = \ls\helpers\SurveyTranslator::getLanguageData(FALSE,Yii::app()->session['adminlang']);
 
 		$language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
 		$language_list .= CHtml::tag('label', array('for'=>'translationlanguage'), gT("Translate to") . ":");

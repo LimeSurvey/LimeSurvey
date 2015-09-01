@@ -318,7 +318,7 @@ class Permission extends ActiveRecord
     */
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck=false)
     {
-        $iUserID = sanitize_int($iUserID);
+        $iUserID = \ls\helpers\Sanitize::int($iUserID);
         // Filter global permissions on save
         if ($sEntityName=='global')
         {

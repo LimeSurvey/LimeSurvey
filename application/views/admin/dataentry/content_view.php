@@ -35,7 +35,7 @@
             <?php break;
             case "D": //DATE
                 //                            $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'], $deqrow['type']);
-                $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
+                $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $thissurvey);
                 if(canShowDatePicker($dateformatdetails))
                 {
                     $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
@@ -371,7 +371,7 @@
             if (trim($qidattributes['num_value_int_only']) == 1) {
                 $acomma = "";
             } else {
-                $acomma = getRadixPointData($thissurvey['surveyls_numberformat']);
+                $acomma = \ls\helpers\SurveyTranslator::getRadixPointData($thissurvey['surveyls_numberformat']);
                 $acomma = $acomma['separator'];
             }
             $title = gT('Only numbers may be entered in this field.');
@@ -407,7 +407,7 @@
 
             if ($qidattributes['numbers_only']==1)
             {
-                $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+                $sSeparator = \ls\helpers\SurveyTranslator::getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
                 $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeparator.'\')"';
             }

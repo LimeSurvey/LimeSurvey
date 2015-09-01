@@ -15,7 +15,6 @@ class m150615_114842_use_innodb_mysql extends CDbMigration
         if ($schema instanceof \MysqlSchema) {
 
             $prefix = App()->db->tablePrefix;
-//            var_dump($prefix);
             foreach(App()->db->schema->tableNames as $tableName) {
                 // Check if we "own" this table.
                 if (strncmp($prefix, $tableName, strlen($prefix)) === 0) {

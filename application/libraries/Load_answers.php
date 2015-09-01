@@ -19,7 +19,7 @@ class Load_answers {
         $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
 		sendCacheHeaders();
 		doHeader();
-		echo templatereplace(file_get_contents($sTemplatePath . "startpage.pstpl"), array(), $redata);
+		echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplatePath . "startpage.pstpl"), array(), $redata);
 
 		echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 		."\t<script type='text/javascript'>\n"
@@ -29,7 +29,7 @@ class Load_answers {
 		."\t</script>\n\n";
 
         echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post')."\n";
-		echo templatereplace(file_get_contents($sTemplatePath . "load.pstpl"), array(), $redata);
+		echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplatePath . "load.pstpl"), array(), $redata);
 		//PRESENT OPTIONS SCREEN (Replace with Template Later)
 		//END
 		echo "<input type='hidden' name='loadall' value='reload' />\n";
@@ -39,7 +39,7 @@ class Load_answers {
 		}
 		echo "</form>";
 
-		echo templatereplace(file_get_contents($sTemplatePath . "endpage.pstpl"), array(), $redata);
+		echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplatePath . "endpage.pstpl"), array(), $redata);
 		doFooter();
 		exit;
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "35d11872b5d8f8e1cf6c0d9b364d913c",
+    "hash": "4554a9ec74dc5583f28c73119adf166b",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -500,6 +500,44 @@
                 ]
             },
             "description": "A web-based tool to view, edit and format JSON"
+        },
+        {
+            "name": "bower-asset/leaflet",
+            "version": "v0.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Leaflet/Leaflet.git",
+                "reference": "8a5fdfc6e3db2807b8f0dd617474e4ab2949142b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Leaflet/Leaflet/zipball/8a5fdfc6e3db2807b8f0dd617474e4ab2949142b",
+                "reference": "8a5fdfc6e3db2807b8f0dd617474e4ab2949142b",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/leaflet.js",
+                    "dist/leaflet.css",
+                    "dist/leaflet-src.js",
+                    "dist/images/layers-2x.png",
+                    "dist/images/layers.png",
+                    "dist/images/marker-icon-2x.png",
+                    "dist/images/marker-icon.png",
+                    "dist/images/marker-shadow.png"
+                ],
+                "bower-asset-ignore": [
+                    ".*",
+                    "CHANGELOG.json",
+                    "FAQ.md",
+                    "debug",
+                    "spec",
+                    "src",
+                    "build"
+                ]
+            },
+            "description": "JavaScript library for mobile-friendly interactive maps"
         },
         {
             "name": "bower-asset/papaparse",

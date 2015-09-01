@@ -1,18 +1,15 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-* LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-*/
+<?php
 
-class SurveyRuntimeHelper {
+namespace ls\helpers;
+use \SurveySession;
+use \Survey;
+use \Yii;
+use \CClientScript;
+use \CHtml;
+use LimeExpressionManager;
+use \QuestionGroup;
+use \Question;
+class SurveyRuntime {
 
 
     protected function createFullQuestionIndex(SurveySession $session)
@@ -179,7 +176,7 @@ class SurveyRuntimeHelper {
 
         $templatePath = $session->templateDir;
 
-        $radix = getRadixPointData($survey->getLocalizedNumberFormat())['separator'];
+        $radix = \ls\helpers\SurveyTranslator::getRadixPointData($survey->getLocalizedNumberFormat())['separator'];
 
         //        if (isset($param['newtest']) && $param['newtest'] == "Y")
         //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
@@ -297,7 +294,7 @@ class SurveyRuntimeHelper {
                 }
                 */
                 // can't kill session before end message, otherwise INSERTANS doesn't work.
-                $completed = templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
+                $completed = \ls\helpers\Replacements::templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
                 $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                 $completed .= gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
                 if ($thissurvey['printanswers'] == 'Y') {
@@ -316,13 +313,13 @@ class SurveyRuntimeHelper {
                 }
 
 
-                $content = templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata, null, $session);
+                $content = \ls\helpers\Replacements::templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata, null, $session);
 
                 //Check for assessments
                 if ($survey->bool_assessments) {
                     $assessments = doAssessment($survey->primaryKey);
                     if ($assessments) {
-                        $content .= templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
+                        $content .= \ls\helpers\Replacements::templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
                             $redata, null);
                     }
                 }
@@ -342,13 +339,13 @@ class SurveyRuntimeHelper {
 
                 $content = '';
 
-                $content .= templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata, null, $session);
+                $content .= \ls\helpers\Replacements::templatereplace(file_get_contents($templatePath . "startpage.pstpl"), [], $redata, null, $session);
 
                 //Check for assessments
                 if ($session->survey->bool_assessments) {
                     $assessments = doAssessment($session->surveyId);
                     if ($assessments) {
-                        $content .= templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
+                        $content .= \ls\helpers\Replacements::templatereplace(file_get_contents($templatePath . "assessment.pstpl"), array(),
                             $redata, null);
                     }
                 }
@@ -358,7 +355,7 @@ class SurveyRuntimeHelper {
                     $completed = "<br /><span class='success'>" . gT("Thank you!") . "</span><br /><br />\n\n"
                         . gT("Your survey responses have been recorded.") . "<br /><br />\n";
                 } else {
-                    $completed = templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
+                    $completed = \ls\helpers\Replacements::templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
                 }
 
                 // Link to Print Answer Preview  **********
@@ -432,7 +429,7 @@ class SurveyRuntimeHelper {
 
         //Iterate through the questions about to be displayed:
         if ($session->format != Survey::FORMAT_ALL_IN_ONE && $session->survey->bool_showprogress) {
-            $percentcomplete = makegraph($session->step, $session->stepCount);
+            $percentcomplete = \ls\helpers\FrontEnd::makegraph($session->step, $session->stepCount);
         }
 
 
@@ -546,7 +543,7 @@ class SurveyRuntimeHelper {
             $aLSJavascriptVar=array();
             $aLSJavascriptVar['bFixNumAuto']=(int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
             $aLSJavascriptVar['bNumRealValue']=(int)(bool)Yii::app()->getConfig('bNumRealValue',0);
-            $aRadix=getRadixPointData($survey->localizedNumberFormat);
+            $aRadix=\ls\helpers\SurveyTranslator::getRadixPointData($survey->localizedNumberFormat);
             $aLSJavascriptVar['sLEMradix']=$aRadix['separator'];
             $sLSJavascriptVar="LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
@@ -575,7 +572,6 @@ class SurveyRuntimeHelper {
         echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
         if ($session->format != Survey::FORMAT_QUESTION) {
             foreach ($group->questions as $question) {
-                vd($question->bool_hidden);
                 if (!$question->bool_hidden) {
                     echo $this->renderQuestion($session, $question);
                 }

@@ -63,7 +63,7 @@ class DummyResponse extends CFormModel implements \ls\interfaces\iResponse
         return null;
     }
 
-    public function getAttributes() {
+    public function getAttributes($names = null) {
         return $this->fields;
     }
 }

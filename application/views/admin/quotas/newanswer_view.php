@@ -34,7 +34,7 @@
                         <input type="hidden" name="sid" value="'.$iSurveyId.'" />
                         <input type="hidden" name="action" value="quotas" />
                         <input type="hidden" name="subaction" value="new_answer_two" />
-                        <input type="hidden" name="quota_id" value="<?php echo sanitize_int($_POST['quota_id']);?>" />
+                        <input type="hidden" name="quota_id" value="<?php echo \ls\helpers\Sanitize::int($_POST['quota_id']);?>" />
                     </td>
                 </tr>
             </tbody>

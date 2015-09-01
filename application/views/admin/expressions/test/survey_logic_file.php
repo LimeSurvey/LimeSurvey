@@ -10,7 +10,7 @@ if (count($_GET) > 0) {
 }
 
 
-Yii::app()->loadHelper('frontend');
+
 
 if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
 {
@@ -43,7 +43,7 @@ EOD;
 }
 else {
     $surveyInfo = (array) explode('|', $_REQUEST['sid']);
-    $surveyid = sanitize_int($surveyInfo[0]);
+    $surveyid = \ls\helpers\Sanitize::int($surveyInfo[0]);
     $thissurvey=getSurveyInfo($surveyid);
     if (isset($_REQUEST['assessments']))
     {
@@ -61,8 +61,8 @@ else {
             );
 
     $language = (isset($_REQUEST['lang']) ? sanitize_languagecode($_REQUEST['lang']) : NULL);
-    $gid = (isset($_REQUEST['gid']) ? sanitize_int($_REQUEST['gid']) : NULL);
-    $qid = (isset($_REQUEST['qid']) ? sanitize_int($_REQUEST['qid']) : NULL);
+    $gid = (isset($_REQUEST['gid']) ? \ls\helpers\Sanitize::int($_REQUEST['gid']) : NULL);
+    $qid = (isset($_REQUEST['qid']) ? \ls\helpers\Sanitize::int($_REQUEST['qid']) : NULL);
 
     print <<< EOD
 <html>

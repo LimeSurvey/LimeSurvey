@@ -1,77 +1,47 @@
 <?php
-    if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-    /*
-    * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
-    * All rights reserved.
-    * License: GNU/GPL License v2 or later, see LICENSE.php
-    * LimeSurvey is free software. This version may have been modified pursuant
-    * to the GNU General Public License, and as distributed it includes or
-    * is derivative of works licensed under the GNU General Public License or
-    * other free or open source software licenses.
-    * See COPYRIGHT.php for copyright notices and details.
-    *
-       */
+/*
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*/
 
-
-    /*
-    * Internationalization and Localization utilities
-    *
-    * @package LimeSurvey
-    * @subpackage Helpers
-    */
-
-
+class Locale extends \CLocale {
     /**
-    * Returns all available dateformats in a structured aray
-    * If $iDateFormat is given only the particual dateformat will be returned
-    *
-    * @param $iDateFormat integer
-    * @returns array
-    *
+    * Converts a locale ID to its canonical form.
+    * In canonical form, a locale ID consists of only underscores and lower-case letters.
+    * @param string $id the locale ID to be converted
+    * @return string the locale ID in canonical form
     */
-    function getDateFormatData($iDateFormat=0)
+
+    public static function getInstance($id)
     {
-        $aDateFormats= array(
-        1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'dd.mm.yy', 'dateformat' => gT('dd.mm.yyyy')),
-        2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'dd-mm-yy', 'dateformat' => gT('dd-mm-yyyy')),
-        3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'yy.mm.dd', 'dateformat' => gT('yyyy.mm.dd')),
-        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'd.m.yy',   'dateformat' => gT('d.m.yyyy')),
-        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'dd/mm/yy', 'dateformat' => gT('dd/mm/yyyy')),
-        6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'yy-mm-dd', 'dateformat' => gT('yyyy-mm-dd')),
-        7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'yy/mm/dd', 'dateformat' => gT('yyyy/mm/dd')),
-        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yy',   'dateformat' => gT('d/m/yyyy')),
-        9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'mm-dd-yy', 'dateformat' => gT('mm-dd-yyyy')),
-        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yy', 'dateformat' => gT('mm.dd.yyyy')),
-        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yy', 'dateformat' => gT('mm/dd/yyyy')),
-        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'd-m-yy',   'dateformat' => gT('d-m-yyyy'))
-        );
-
-        if ($iDateFormat > 12 || $iDateFormat<0) {
-            $iDateFormat = 11;   // TODO - what should default be?
-        }
-        if ($iDateFormat >0)
+        // Fix up the LimeSurvey language code for Yii
+        $data = self::data();
+        if (isset($data[$id]['cldr']))
         {
-            return $aDateFormats[$iDateFormat];
+            $id = $data[$id]['cldr'];
         }
-        else
-            return $aDateFormats;
 
+        return new Locale($id);
     }
 
-    function getLanguageData($bOrderByNative=false,$sLanguageCode='en') {
 
-        static $result = array();
-
-        if (isset($result[$sLanguageCode][$bOrderByNative])) return $result[$sLanguageCode][$bOrderByNative];
-
+    public static function data()
+    {
         // Afrikaans
         $supportedLanguages['af']['description'] = gT('Afrikaans');
         $supportedLanguages['af']['nativedescription'] = 'Afrikaans';
         $supportedLanguages['af']['rtl'] = false;
         $supportedLanguages['af']['dateformat'] = 1;
         $supportedLanguages['af']['radixpoint'] = 1;
-        
+
         // Albanian
         $supportedLanguages['sq']['description'] = gT('Albanian');
         $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
@@ -192,13 +162,13 @@
         $supportedLanguages['cs-informal']['dateformat'] = 4;
         $supportedLanguages['cs-informal']['radixpoint'] = 1;
         $supportedLanguages['cs-informal']['cldr'] = 'cs';
-        
-        
+
+
         // Danish
         $supportedLanguages['da']['description'] = gT('Danish');
         $supportedLanguages['da']['nativedescription'] = 'Dansk';
         $supportedLanguages['da']['rtl'] = false;
-        $supportedLanguages['da']['dateformat'] =  2;
+        $supportedLanguages['da']['dateformat'] = 2;
         $supportedLanguages['da']['radixpoint'] = 1;
 
         // Dari
@@ -288,7 +258,7 @@
         $supportedLanguages['de-informal']['dateformat'] = 1;
         $supportedLanguages['de-informal']['radixpoint'] = 1;
         $supportedLanguages['de-informal']['cldr'] = 'de';
-        
+
         // Gujarati
         $supportedLanguages['gu']['description'] = gT('Gujarati');
         $supportedLanguages['gu']['nativedescription'] = '&#2711;&#2753;&#2716;&#2736;&#2750;&#2724;&#2752;';
@@ -375,7 +345,7 @@
         $supportedLanguages['kk']['dateformat'] = 1;
         $supportedLanguages['kk']['radixpoint'] = 1;
 
-        // Kinyarwanda 
+        // Kinyarwanda
         $supportedLanguages['rw']['description'] = gT('Kinyarwanda');
         $supportedLanguages['rw']['nativedescription'] = 'Kinyarwanda';
         $supportedLanguages['rw']['rtl'] = false;
@@ -393,15 +363,15 @@
         $supportedLanguages['ckb']['description'] = gT('Kurdish (Sorani)');
         $supportedLanguages['ckb']['nativedescription'] = '&#1705;&#1608;&#1585;&#1583;&#1740;&#1740; &#1606;&#1575;&#1608;&#1749;&#1606;&#1583;&#1740;';
         $supportedLanguages['ckb']['rtl'] = true;
-        $supportedLanguages['ckb']['dateformat'] = 1;                        
+        $supportedLanguages['ckb']['dateformat'] = 1;
         $supportedLanguages['ckb']['radixpoint'] = 1;
         $supportedLanguages['ckb']['cldr'] = 'ku';
-        
+
         // Kyrgyz
         $supportedLanguages['ky']['description'] = gT('Kyrgyz');
         $supportedLanguages['ky']['nativedescription'] = '&#1050;&#1099;&#1088;&#1075;&#1099;&#1079;&#1095;&#1072;';
         $supportedLanguages['ky']['rtl'] = false;
-        $supportedLanguages['ky']['dateformat'] = 1;                        
+        $supportedLanguages['ky']['dateformat'] = 1;
         $supportedLanguages['ky']['radixpoint'] = 1;
 
         // Lithuanian
@@ -452,7 +422,7 @@
         $supportedLanguages['mr']['rtl'] = false;
         $supportedLanguages['mr']['dateformat'] = 2;
         $supportedLanguages['mr']['radixpoint'] = 0;
-        
+
         // Norwegian Bokmal
         $supportedLanguages['nb']['description'] = gT('Norwegian (Bokmal)');
         $supportedLanguages['nb']['nativedescription'] = 'Norsk Bokm&#229;l';
@@ -518,7 +488,7 @@
         $supportedLanguages['pl-informal']['dateformat'] = 1;
         $supportedLanguages['pl-informal']['radixpoint'] = 1;
         $supportedLanguages['pl-informal']['cldr'] = 'pl';
-        
+
         // Portuguese
         $supportedLanguages['pt']['description'] = gT('Portuguese');
         $supportedLanguages['pt']['nativedescription'] = 'Portugu&#234;s';
@@ -588,14 +558,14 @@
         $supportedLanguages['sr-Latn']['rtl'] = false;
         $supportedLanguages['sr-Latn']['dateformat'] = 4;
         $supportedLanguages['sr-Latn']['radixpoint'] = 1;
-        
+
         // Spanish
         $supportedLanguages['es']['description'] = gT('Spanish');
         $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
         $supportedLanguages['es']['rtl'] = false;
         $supportedLanguages['es']['dateformat'] = 5;
         $supportedLanguages['es']['radixpoint'] = 1;
-        
+
         // Spanish (Argentina)
         $supportedLanguages['es-AR']['description'] = gT('Spanish (Argentina)');
         $supportedLanguages['es-AR']['nativedescription'] = 'Espa&#241;ol rioplatense';
@@ -660,11 +630,11 @@
         $supportedLanguages['th']['rtl'] = false;
         $supportedLanguages['th']['dateformat'] = 5;
         $supportedLanguages['th']['radixpoint'] = 0;
-        
+
         //Ukrainian
         $supportedLanguages['uk']['description'] = gT('Ukrainian');
         $supportedLanguages['uk']['nativedescription'] = 'ukrayins&#x2B9;kyy';
-      	$supportedLanguages['uk']['rtl'] = false;
+        $supportedLanguages['uk']['rtl'] = false;
         $supportedLanguages['uk']['dateformat'] = 1;
         $supportedLanguages['uk']['radixpoint'] = 1;
 
@@ -689,331 +659,9 @@
         $supportedLanguages['zu']['dateformat'] = 5;
         $supportedLanguages['zu']['radixpoint'] = 1;
 
-        if ($bOrderByNative)
-        {
-            uasort($supportedLanguages,"userSortNative");
+        foreach($supportedLanguages as $key => &$details) {
+            $details['code'] = $key;
         }
-        else
-        {
-            uasort($supportedLanguages,"userSort");
-        }
-        foreach($supportedLanguages as $key => &$languageDetails) {
-            $languageDetails['code'] = $key;
-        }
-
-        $result[$sLanguageCode][$bOrderByNative] = $supportedLanguages;
-
-        Return $supportedLanguages;
+        return $supportedLanguages;
     }
-
-
-    /**
-    *  Returns avaliable formats for Radix Points (Decimal Separators) or returns
-    *  radix point info about a specific format.
-    *
-    *  @param int $format Format ID/Number [optional]
-    */
-    function getRadixPointData($format=-1)
-    {
-        $aRadixFormats = array (
-        0=>array('separator'=> '.', 'desc'=> gT('Dot (.)')),
-        1=>array('separator'=> ',', 'desc'=> gT('Comma (,)'))
-        );
-
-        // hack for fact that null sometimes sent to this function
-        if (is_null($format)) {
-            $format = 0;
-        }
-
-        if ($format >= 0)
-            return $aRadixFormats[$format];
-        else
-            return $aRadixFormats;
-    }
-
-
-    /**
-    * Convert a 'dateformat' format string to a 'phpdate' format.
-    *
-    * @param $sDateformat string
-    * @returns string
-    *
-    */
-    function getPHPDateFromDateFormat($sDateformat)
-    {
-        // Note that order is relevant (longer strings first)
-        $aFmts = array(
-        // With leading zero
-        "dd"   => "d",
-        "mm"   => "m",
-        "yyyy" => "Y",
-        "HH"   => "H",
-        "MM"   => "i",
-        // Without leading zero
-        "d"    => "j",
-        "m"    => "n",
-        "yy"   => "y",
-        "H"    => "G",
-        "M"    => "i");
-
-        // Extra allowed characters
-        $aAllowed = array('-', '.', '/', ':', ' ');
-
-        // Convert
-        $tmp = array();
-        foreach ($aAllowed as $k)
-        {
-            $tmp[$k] = true;
-        }
-        foreach (array_values($aFmts) as $k)
-        {
-            for ($i = 0; $i < strlen($k); $i++)
-            {
-                $tmp[$k[$i]] = true;
-            }
-        }
-        $aAllowed = $tmp;
-
-        $tmp = strtr($sDateformat, $aFmts);
-        $sPhpdate = "";
-        for ($i = 0; $i < strlen($tmp); $i++)
-        {
-            $c = $tmp[$i];
-            if(isset($aAllowed[$c]))
-            {
-                $sPhpdate .= $c;
-            }
-        }
-
-        return $sPhpdate;
-    }
-
-
-    /**
-    * Convert a 'dateformat' format string to a 'jsdate' format.
-    *
-    * @param $sDateformat string
-    * @returns string
-    *
-    */
-    function getJSDateFromDateFormat($sDateformat)
-    {
-        // The only difference from dateformat is that Jsdate does not support truncated years
-        return str_replace(array('yy'), array('y'), $sDateformat);
-    }
-
-
-
-    /**
-    * Get the date format for a specified survey
-    *
-    * @param $surveyid integer Survey id
-    * @param $languagecode string Survey language code (optional)
-    * @returns integer
-    *
-    */
-    function getDateFormatForSID($surveyid, $languagecode='')
-    {
-        if (!isset($languagecode) || $languagecode=='')
-        {
-            $languagecode=Survey::model()->findByPk($surveyid)->language;
-        }
-        $data = SurveyLanguageSetting::model()->getDateFormat($surveyid,$languagecode);
-
-        if(empty($data))
-        {
-            $dateformat = 0;
-        }
-        else
-        {
-            $dateformat = (int) $data;
-        }
-        return (int) $dateformat;
-    }
-
-
-    /**
-    * Check whether we can show the JS date picker with the current format
-    *
-    * @param $dateformatdetails array Date format details for the question
-    * @param $dateformats array Available date formats
-    * @returns integer
-    *
-    */
-    function canShowDatePicker($dateformatdetails, $dateformats=null)
-    {
-        if(is_null($dateformats))
-        {
-            $dateformats = getDateFormatData();
-        }
-        $showpicker = false;
-        foreach($dateformats as $format)
-        {
-            if($format['jsdate'] == $dateformatdetails['jsdate'])
-            {
-                $showpicker = true;
-                break;
-            }
-        }
-        return $showpicker;
-    }
-
-
-    function getLanguageCodefromLanguage($languagetosearch)
-    {
-        $detaillanguages = getLanguageData(false,Yii::app()->session['adminlang']);
-        foreach ($detaillanguages as $key2=>$languagename)
-        {
-            if ($languagetosearch==$languagename['description'])
-            {
-                return $key2;
-            }
-        }
-        // else return default en code
-        return "en";
-    }
-
-
-
-
-    function getLanguageNameFromCode($codetosearch, $withnative=true, $sTranslationLanguage=null)
-    {
-        if (is_null($sTranslationLanguage))
-        {
-            $sTranslationLanguage=Yii::app()->session['adminlang'];
-        }
-        $detaillanguages = getLanguageData(false,$sTranslationLanguage);
-        if (isset($detaillanguages[$codetosearch]['description']))
-        {
-            if ($withnative) {
-                return array($detaillanguages[$codetosearch]['description'], $detaillanguages[$codetosearch]['nativedescription']);
-            }
-            else { return $detaillanguages[$codetosearch]['description'];}
-        }
-        else
-            // else return default en code
-            return false;
-    }
-
-
-    function getLanguageRTL($sLanguageCode)
-    {
-        $aLanguageData= getLanguageData(false,$sLanguageCode);
-        if (isset($aLanguageData[$sLanguageCode]['rtl']))
-        {
-            return $aLanguageData[$sLanguageCode]['rtl'];
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
-    * Returns the locale settings for a certain language code
-    *
-    * @param string $codetosearch
-    * @return array Array with locale details
-    *
-    */
-    function getLanguageDetails($codetosearch)
-    {
-        $detaillanguages = getLanguageData(false,Yii::app()->session['adminlang']);
-        if (isset($detaillanguages[$codetosearch]))
-        {
-            return $detaillanguages[$codetosearch];
-        }
-        else
-        {
-            return $detaillanguages['en'];
-        }
-    }
-
-    /**
-    * This functions translates LimeSurvey specific locale code to match a Yii locale
-    * 
-    * @param mixed $sLocale LimeSurvey locale code
-    */
-    function translateLStoYiiLocale($sLocale)
-    {
-        // Strip informal string
-        $sLocale=str_replace('-informal','',$sLocale);
-        return $sLocale;
-    }
-    
-    function getLanguageDataRestricted($bOrderByNative=false,$sLanguageCode='en') {
-        $aLanguageData = getLanguageData($bOrderByNative, $sLanguageCode);
-        $result = [];
-
-        $activeLanguages = SettingGlobal::get('restrictToLanguages');
-
-        if (!empty($activeLanguages)) {
-            foreach($activeLanguages as $language) {
-                $result[$language] = $aLanguageData[$language];
-            }
-        } else {
-            $result = $aLanguageData;
-        }
-
-        return $result;
-    }
-
-
-    function userSort($a, $b) {
-
-        // smarts is all-important, so sort it first
-        if($a['description'] >$b['description']) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
-    }
-
-
-    function userSortNative($a, $b) {
-
-        // smarts is all-important, so sort it first
-        if($a['nativedescription'] >$b['nativedescription']) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
-    }
-
-
-    /**
-    * This function  support the ability NOT to reverse numbers (for example when you output
-    * a phrase as a parameter for a SWF file that can't handle RTL languages itself, but
-    * obviously any numbers should remain the same as in the original phrase).
-    * Note that it can be used just as well for UTF-8 usages if you want the numbers to remain intact
-    *
-    * @param string $str
-    * @param boolean $reverse_numbers
-    * @return string
-    */
-    function UTF8Strrev($str, $reverse_numbers=false) {
-        preg_match_all('/./us', $str, $ar);
-        if ($reverse_numbers)
-            return join('',array_reverse($ar[0]));
-        else {
-            $temp = array();
-            foreach ($ar[0] as $value) {
-                if (is_numeric($value) && !empty($temp[0]) && is_numeric($temp[0])) {
-                    foreach ($temp as $key => $value2) {
-                        if (is_numeric($value2))
-                            $pos = ($key + 1);
-                        else
-                            break;
-                    }
-                    $temp2 = array_splice($temp, $pos);
-                    $temp = array_merge($temp, array($value), $temp2);
-                } else
-                    array_unshift($temp, $value);
-            }
-            return implode('', $temp);
-        }
-    }
-
-
+}

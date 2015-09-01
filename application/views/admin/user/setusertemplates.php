@@ -5,7 +5,7 @@
 	<thead>
 	<tr>
 	<th colspan="2" class="header">
-    <?php eT('Set templates that this user may access');?>: <?php echo htmlspecialchars(sanitize_user($_POST['user']));?></th>
+    <?php eT('Set templates that this user may access');?>: <?php echo htmlspecialchars(\ls\helpers\Sanitize::user($_POST['user']));?></th>
 	</tr>
 	<?php
     foreach ($list as $data)

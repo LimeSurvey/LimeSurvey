@@ -52,7 +52,7 @@ class pdfHelper
         }
         $lg=array();
         $lg['a_meta_charset'] = 'UTF-8';
-        if (getLanguageRTL($language))
+        if (\ls\helpers\SurveyTranslator::getLanguageRTL($language))
         {
             $lg['a_meta_dir'] = 'rtl';
         }

@@ -60,7 +60,7 @@ class dataentry extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        Yii::app()->loadHelper('surveytranslator');
+
     }
 
     /**
@@ -72,7 +72,7 @@ class dataentry extends Survey_Common_Action
     {
         $aData = array();
 
-        $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $iSurveyId = \ls\helpers\Sanitize::int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         if( App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]) )
         {
@@ -108,7 +108,7 @@ class dataentry extends Survey_Common_Action
     {
         $aData = array();
 
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = \ls\helpers\Sanitize::int($surveyid);
         $aData['surveyid'] = $surveyid;
         $aData['success'] = false;
         if (App()->user->checkAccess('surveyactivation', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $surveyid]))
@@ -239,7 +239,7 @@ class dataentry extends Survey_Common_Action
     */
     public function import($surveyid)
     {
-        $iSurveyId = sanitize_int($surveyid);
+        $iSurveyId = \ls\helpers\Sanitize::int($surveyid);
 
         if(App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyId]))
         {
@@ -462,8 +462,8 @@ class dataentry extends Survey_Common_Action
             $language = Survey::model()->findByPk($surveyid)->language;
         }
 
-        $surveyid = sanitize_int($surveyid);
-        $id = sanitize_int($id);
+        $surveyid = \ls\helpers\Sanitize::int($surveyid);
+        $id = \ls\helpers\Sanitize::int($id);
         $aViewUrls = array();
 
         if (!isset($sDataEntryLanguage))
@@ -669,7 +669,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "D": //DATE
                             $thisdate='';
-                            $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid)
+                            $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $surveyid)
                             ;
                             if ($idrow[$fname['fieldname']]!='')
                             {
@@ -1329,7 +1329,7 @@ class dataentry extends Survey_Common_Action
         }
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
 
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = \ls\helpers\Sanitize::int($surveyid);
         $id = $_REQUEST['id'];
 
         $aData = array(
@@ -1361,7 +1361,7 @@ class dataentry extends Survey_Common_Action
         $subaction = Yii::app()->request->getPost('subaction');
         if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = \ls\helpers\Sanitize::int($surveyid);
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');
 
@@ -1413,7 +1413,7 @@ class dataentry extends Survey_Common_Action
                     else
                     {
                         $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($irow['qid'], $irow['type']);
-                        $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
+                        $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $thissurvey);
 
                         $this->getController()->loadLibrary('Date_Time_Converter');
                         $datetimeobj = new date_time_converter($thisvalue,$dateformatdetails['phpdate']) ;
@@ -1679,7 +1679,7 @@ class dataentry extends Survey_Common_Action
                             {
                                 Yii::app()->loadLibrary('Date_Time_Converter');
                                 $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($irow['qid'], $irow['type']);
-                                $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
+                                $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $thissurvey);
                                 $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                                 $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
                             }
@@ -1860,7 +1860,7 @@ class dataentry extends Survey_Common_Action
     */
     public function view($surveyid, $lang=NULL)
     {
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = \ls\helpers\Sanitize::int($surveyid);
         $lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();

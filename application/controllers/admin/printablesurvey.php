@@ -28,7 +28,7 @@ class printablesurvey extends Survey_Common_Action
      */
     function index($surveyid, $lang = null)
     {
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = \ls\helpers\Sanitize::int($surveyid);
         if(!App()->user->checkAccess('surveycontent', ['entity' => 'survey', 'entity_id' => $surveyid]))
         {
             $aData['surveyid'] = $surveyid;
@@ -55,11 +55,11 @@ class printablesurvey extends Survey_Common_Action
             $surveyexpirydate = $aSurveyInfo['expires'];
             $surveyfaxto = $aSurveyInfo['faxto'];
             $dateformattype = $aSurveyInfo['surveyls_dateformat'];
-            Yii::app()->loadHelper('surveytranslator');
+
 
             if (!is_null($surveyexpirydate))
             {
-                $dformat=getDateFormatData($dateformattype);
+                $dformat=\ls\helpers\SurveyTranslator::getDateFormatData($dateformattype);
                 $dformat=$dformat['phpdate'];
 
                 $expirytimestamp = strtotime($surveyexpirydate);

@@ -7,7 +7,7 @@
 <?php
     $aOptions = array();
     $aOptions[''] = gT('Select...');
-    foreach (getLanguageData(false, Yii::app()->session['adminlang']) as $langkey2 => $langname)
+    foreach (\ls\helpers\SurveyTranslator::getLanguageData(false, Yii::app()->session['adminlang']) as $langkey2 => $langname)
     {
         $aOptions[$langkey2] = $langname['description'];
     }

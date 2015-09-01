@@ -617,7 +617,7 @@ function getGroupOrder($surveyid,$gid)
 */
 function getMaxQuestionOrder($gid,$surveyid)
 {
-    $gid=sanitize_int($gid);
+    $gid=\ls\helpers\Sanitize::int($gid);
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='$gid' AND language='$s_lang'";
 
@@ -876,8 +876,8 @@ function getGroupList($gid,$surveyid)
 {
 
     $groupselecter="";
-    $gid=sanitize_int($gid);
-    $surveyid=sanitize_int($surveyid);
+    $gid=\ls\helpers\Sanitize::int($gid);
+    $surveyid=\ls\helpers\Sanitize::int($surveyid);
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
     $s_lang = Survey::model()->findByPk($surveyid)->language;
 
@@ -1057,9 +1057,9 @@ function groupOrderThenQuestionOrder($a, $b)
 function fixMovedQuestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
 {
     $surveyid = Yii::app()->getConfig('sid');
-    $qid=sanitize_int($qid);
-    $oldgid=sanitize_int($oldgid);
-    $newgid=sanitize_int($newgid);
+    $qid=\ls\helpers\Sanitize::int($qid);
+    $oldgid=\ls\helpers\Sanitize::int($oldgid);
+    $newgid=\ls\helpers\Sanitize::int($newgid);
     Condition::model()->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
     // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
 }
@@ -1113,9 +1113,9 @@ function returnGlobal($stringname,$bRestrictToString=false)
         )
         {
             if($bUrlParamIsArray){
-                return array_map("sanitize_paranoid_string",$urlParam);
+                return array_map("\ls\helpers\Sanitize::paranoid_string",$urlParam);
             }else{
-                return sanitize_paranoid_string($urlParam);
+                return \ls\helpers\Sanitize::paranoid_string($urlParam);
             }
         }
         elseif ( $stringname =="cquestions")
@@ -1179,7 +1179,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 if (trim($sValue)!='')
                 {
                     $qidattributes = \QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
-                    $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
+                    $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
                 break;
@@ -1305,7 +1305,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
         case 'datestamp':
             if (trim($sValue)!='')
             {
-                $dateformatdetails = getDateFormatDataForQID(null, $iSurveyID);
+                $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatDataForQID(null, $iSurveyID);
                 $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate'].' H:i:s');
             }
             break;
@@ -1365,7 +1365,6 @@ function validateEmailAddresses($aEmailAddressList){
 
  foreach ($aFilters as $flt)
  {
-    Yii::app()->loadHelper("surveytranslator");
     $myfield = "{$iSurveyID}X{$flt['gid']}X{$flt['qid']}";
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
@@ -1496,7 +1495,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
         bP($cacheKey);
         $sLanguage = sanitize_languagecode($sLanguage);
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = \ls\helpers\Sanitize::int($surveyid);
 
 
         App()->setLanguage($sLanguage);
@@ -2071,7 +2070,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     static $timingsFieldMap;
 
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
-    $surveyid = sanitize_int($surveyid);
+    $surveyid = \ls\helpers\Sanitize::int($surveyid);
     $sOldLanguage=App()->language;
     App()->setLanguage($sLanguage);
 
@@ -3747,8 +3746,8 @@ function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
 */
 function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid")
 {
-    $surveyid=sanitize_int($surveyid);
-    $gid=sanitize_int($gid);
+    $surveyid=\ls\helpers\Sanitize::int($surveyid);
+    $gid=\ls\helpers\Sanitize::int($gid);
 
     $cascaded=array();
     $sources=array();
@@ -4875,7 +4874,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 
     Yii::app()->loadHelper('database');
     //
-    $sid=sanitize_int($sid);
+    $sid=\ls\helpers\Sanitize::int($sid);
     $baselang = Survey::model()->findByPk($sid)->language;
 
     if (!empty($availlangs) && $availlangs != " ")
@@ -4962,12 +4961,12 @@ function getLastInsertID($sTableName)
 
 function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
 {
-    $sid=sanitize_int($sid);
+    $sid=\ls\helpers\Sanitize::int($sid);
     $condarray = Array();
     $sqldepgid="";
     $sqltarggid="";
-    if ($depgid != "all") { $depgid = sanitize_int($depgid); $sqldepgid="AND tq.gid=$depgid";}
-    if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid="AND tq2.gid=$targgid";}
+    if ($depgid != "all") { $depgid = \ls\helpers\Sanitize::int($depgid); $sqldepgid="AND tq.gid=$depgid";}
+    if ($targgid != "all") {$targgid = \ls\helpers\Sanitize::int($targgid); $sqltarggid="AND tq2.gid=$targgid";}
 
     $baselang = Survey::model()->findByPk($sid)->language;
     $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
@@ -5057,9 +5056,9 @@ function getQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
     $sqldepqid="";
     $sqltargqid="";
     $sqlsearchscope="";
-    if ($gid != "all") {$gid = sanitize_int($gid); $sqlgid="AND tq.gid=$gid";}
-    if ($depqid != "all") {$depqid = sanitize_int($depqid); $sqldepqid="AND tq.qid=$depqid";}
-    if ($targqid != "all") {$targqid = sanitize_int($targqid); $sqltargqid="AND tq2.qid=$targqid";}
+    if ($gid != "all") {$gid = \ls\helpers\Sanitize::int($gid); $sqlgid="AND tq.gid=$gid";}
+    if ($depqid != "all") {$depqid = \ls\helpers\Sanitize::int($depqid); $sqldepqid="AND tq.qid=$depqid";}
+    if ($targqid != "all") {$targqid = \ls\helpers\Sanitize::int($targqid); $sqltargqid="AND tq2.qid=$targqid";}
     if ($searchscope == "samegroup") {$sqlsearchscope="AND tq2.gid=tq.gid";}
 
     $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid
@@ -5121,12 +5120,12 @@ function checkMoveQuestionConstraintsForConditions($sid,$qid,$newgid="all")
     $resarray=Array();
     $resarray['notAbove']=null; // defaults to no constraint
     $resarray['notBelow']=null; // defaults to no constraint
-    $sid=sanitize_int($sid);
-    $qid=sanitize_int($qid);
+    $sid=\ls\helpers\Sanitize::int($sid);
+    $qid=\ls\helpers\Sanitize::int($qid);
 
     if ($newgid != "all")
     {
-        $newgid=sanitize_int($newgid);
+        $newgid=\ls\helpers\Sanitize::int($newgid);
         $newgorder=getGroupOrder($sid,$newgid);
     }
     else
@@ -5268,7 +5267,7 @@ function getGroupUserList($ugid)
     Yii::app()->loadHelper('database');
 
 
-    $ugid=sanitize_int($ugid);
+    $ugid=\ls\helpers\Sanitize::int($ugid);
     $surveyidquery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
     $surveyidresult = dbExecuteAssoc($surveyidquery);  //Checked
@@ -5417,14 +5416,14 @@ function getLabelSets($languages = null)
 function getHeader($meta = false)
 {
     global $embedded,$surveyid ;
-    Yii::app()->loadHelper('surveytranslator');
+
     // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
 
     $languagecode = isset(App()->surveySessionManager->current) ?App()->surveySessionManager->current->language : App()->language;
 
     $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
     . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"{$languagecode}\" lang=\"{$languagecode}\"";
-    if (getLanguageRTL($languagecode))
+    if (\ls\helpers\SurveyTranslator::getLanguageRTL($languagecode))
     {
         $header.=" dir=\"rtl\" ";
     }
@@ -5674,8 +5673,7 @@ function getIPAddress()
 function getBrowserLanguage()
 {
     $sLanguage=Yii::app()->getRequest()->getPreferredLanguage();
-    Yii::app()->loadHelper("surveytranslator");
-    $aLanguages=getLanguageData();
+    $aLanguages=\ls\helpers\SurveyTranslator::getLanguageData();
     if (!isset($aLanguages[$sLanguage]))
     {
         $sLanguage=str_replace('_','-',$sLanguage);
@@ -5778,7 +5776,7 @@ function array_diff_assoc_recursive($array1, $array2) {
         bP();
         $session = App()->surveySessionManager->current;
         try {
-            echo templatereplace(file_get_contents($fileName), $data, $replacements, null, $session);
+            echo \ls\helpers\Replacements::templatereplace(file_get_contents($fileName), $data, $replacements, null, $session);
         } finally {
             eP();
         }

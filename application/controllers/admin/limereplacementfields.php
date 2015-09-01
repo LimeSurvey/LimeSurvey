@@ -17,13 +17,13 @@ class limereplacementfields extends Survey_Common_Action
     public function index()
     {
         if (isset($_GET['surveyid'])) {
-            $surveyid = sanitize_int($_GET['surveyid']);
+            $surveyid = \ls\helpers\Sanitize::int($_GET['surveyid']);
         }
         if (isset($_GET['gid'])) {
-            $gid = sanitize_int($_GET['gid']);
+            $gid = \ls\helpers\Sanitize::int($_GET['gid']);
         }
         if (isset($_GET['qid'])) {
-            $qid = sanitize_int($_GET['qid']);
+            $qid = \ls\helpers\Sanitize::int($_GET['qid']);
         }
         if (isset($_GET['fieldtype'])) {
             $fieldtype = $_GET['fieldtype'];

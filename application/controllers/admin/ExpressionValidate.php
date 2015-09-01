@@ -171,7 +171,7 @@ class ExpressionValidate extends Survey_Common_Action {
             'ADMINNAME'=> $aSurveyInfo['admin'],
             'ADMINEMAIL'=> $aSurveyInfo['adminemail'],
         );
-        // Not needed : templatereplace do the job : but this can/must be fixed for invitaton/reminder/registration (#9424)
+        // Not needed : \ls\helpers\Replacements::templatereplace do the job : but this can/must be fixed for invitaton/reminder/registration (#9424)
         $aReplacement["SURVEYNAME"] = gT("Name of the survey");
         $aReplacement["SURVEYDESCRIPTION"] =  gT("Description of the survey");
         // Replaced when sending email with Survey 
@@ -236,7 +236,7 @@ class ExpressionValidate extends Survey_Common_Action {
         foreach($aTypeAttributes[$sType] as $key=>$aAttribute)
         {
             $sAttribute=$aAttribute['attribute'];
-            // Email send do : templatereplace + ReplaceField to the Templatereplace done : we need 2 in one
+            // Email send do : \ls\helpers\Replacements::templatereplace + ReplaceField to the Templatereplace done : we need 2 in one
             // $LEM::ProcessString($oSurveyLanguage->$sAttribute,null,$aReplacement,false,1,1,false,false,true); // This way : ProcessString don't replace coreReplacements
             $aExpressions[$key]=array(
                 'title'=>$aAttribute['title'],
@@ -254,7 +254,7 @@ class ExpressionValidate extends Survey_Common_Action {
     * Get the complete HTML from a string
     * @param string $sExpression : the string to parse
     * @param array $aReplacement : optionnal array of replacemement
-    * @param string $sDebugSource : optionnal debug source (for templatereplace)
+    * @param string $sDebugSource : optionnal debug source (for \ls\helpers\Replacements::templatereplace)
     * @uses ExpressionValidate::$iSurveyId
     * @uses ExpressionValidate::$sLang
     *
@@ -274,9 +274,9 @@ class ExpressionValidate extends Survey_Common_Action {
             $aReData['thissurvey']=getSurveyInfo($this->iSurveyId,$this->sLang);
         }
         // TODO : Find error in class name, style etc ....
-        // need: templatereplace without any filter and find if there are error but $bHaveError=$LEM->em->HasErrors() is Private
+        // need: \ls\helpers\Replacements::templatereplace without any filter and find if there are error but $bHaveError=$LEM->em->HasErrors() is Private
         $oFilter = new CHtmlPurifier();
-        templatereplace($oFilter->purify(viewHelper::filterScript($sExpression)), $aReplacement, $aReData, null);
+        \ls\helpers\Replacements::templatereplace($oFilter->purify(viewHelper::filterScript($sExpression)), $aReplacement, $aReData, null);
 
         return $LEM::GetLastPrettyPrintExpression();
     }

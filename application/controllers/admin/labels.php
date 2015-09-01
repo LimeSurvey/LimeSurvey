@@ -157,9 +157,9 @@ class labels extends Survey_Common_Action
      */
     public function index($sa, $lid=0)
     {
-        Yii::app()->loadHelper('surveytranslator');
 
-        $lid = sanitize_int($lid);
+
+        $lid = \ls\helpers\Sanitize::int($lid);
         $aViewUrls = array();
 
         if (App()->user->checkAccess('labelsets'))
@@ -218,7 +218,7 @@ class labels extends Survey_Common_Action
     {
         // Escapes the id variable
         if ($lid != false)
-            $lid = sanitize_int($lid);
+            $lid = \ls\helpers\Sanitize::int($lid);
 
         Yii::app()->session['FileManagerContext'] = "edit:label:{$lid}";
 
@@ -269,7 +269,6 @@ class labels extends Survey_Common_Action
                     $maxsortorder = $maxresult->maxsortorder + 1;
 
                 $i = 0;
-                Yii::app()->loadHelper("surveytranslator");
                 $results = array();
                 foreach ($lslanguages as $lslanguage)
                 {

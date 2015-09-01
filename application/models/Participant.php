@@ -847,7 +847,7 @@ class Participant extends ActiveRecord
         $iBlacklistSkipped = 0;
         $participantid = explode(",", $participantid); //List of participant ids to add to tokens table
         if ($participantid[0] == "") { $participantid = array_slice($participantid, 1); }
-        $number2add = sanitize_int(count($newcreate)); //Number of tokens being created
+        $number2add = \ls\helpers\Sanitize::int(count($newcreate)); //Number of tokens being created
         $tokenattributefieldnames=array(); //Will contain descriptions of existing token attribute fields
         $tokenfieldnames=array(); //Will contain the actual field names of existing token attribute fields
         $attributesadded = array(); //Will contain the actual field name of any new token attribute fields

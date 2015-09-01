@@ -597,7 +597,6 @@ class Survey extends ActiveRecord
         $sResult= $survey->save();
         if (!$sResult)
         {
-            tracevar($survey->getErrors());
             return false;
         }
         else return $aData['sid'];

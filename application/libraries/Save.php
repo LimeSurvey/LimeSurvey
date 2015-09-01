@@ -62,7 +62,7 @@ class Save {
         $sTemplatePath = $_SESSION['survey_'.$surveyid]['templatepath'];
         sendCacheHeaders();
         doHeader();
-		echo templatereplace(file_get_contents($sTemplatePath . "startpage.pstpl"), array(), $redata);
+		echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplatePath . "startpage.pstpl"), array(), $redata);
         echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
         ."\t<script type='text/javascript'>\n"
         ."\t<!--\n"
@@ -79,14 +79,14 @@ class Save {
         {
             $errormsg .= "<p>".gT("Please try again.")."</p>";
         }
-		echo templatereplace(file_get_contents($sTemplatePath . "save.pstpl"), array(), $redata);
+		echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplatePath . "save.pstpl"), array(), $redata);
         //END
         echo "<input type='hidden' name='thisstep' value='$thisstep' />\n";
         echo CHtml::hiddenField('token',$clienttoken)."\n";
         echo "<input type='hidden' name='saveprompt' value='Y' />\n";
         echo "</form>";
 
-		echo templatereplace(file_get_contents($sTemplatePath . "endpage.pstpl"), array(), $redata);
+		echo \ls\helpers\Replacements::templatereplace(file_get_contents($sTemplatePath . "endpage.pstpl"), array(), $redata);
         echo "</html>\n";
         exit;
     }

@@ -111,12 +111,12 @@ class remotecontrol_handle
     */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
     {
-        Yii::app()->loadHelper("surveytranslator");
+        
         if ($this->_checkSessionKey($sSessionKey))
         {
             if (App()->user->checkAccess('surveys', ['crud' => 'create']))
             {
-                if( $sSurveyTitle=='' || $sSurveyLanguage=='' || !array_key_exists($sSurveyLanguage,getLanguageDataRestricted()) || !in_array($sformat, array('A','G','S')))
+                if( $sSurveyTitle=='' || $sSurveyLanguage=='' || !array_key_exists($sSurveyLanguage,\ls\helpers\SurveyTranslator::getLanguageDataRestricted()) || !in_array($sformat, array('A','G','S')))
                     return array('status' => 'Faulty parameters');
 
                 $aInsertData = array('template' => 'default',
@@ -240,7 +240,7 @@ class remotecontrol_handle
     */
     public function get_survey_properties($sSessionKey,$iSurveyID, $aSurveySettings)
     {
-        Yii::app()->loadHelper("surveytranslator");
+        
         if ($this->_checkSessionKey($sSessionKey))
         {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -606,8 +606,8 @@ class remotecontrol_handle
             }
             if (App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
-                Yii::app()->loadHelper('surveytranslator');
-                $aLanguages=getLanguageData();
+
+                $aLanguages=\ls\helpers\SurveyTranslator::getLanguageData();
 
                 if(!isset($aLanguages[$sLanguage]))
                 {
@@ -672,8 +672,8 @@ class remotecontrol_handle
             if (App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
             {
 
-                Yii::app()->loadHelper('surveytranslator');
-                $aLanguages=getLanguageData();
+
+                $aLanguages=\ls\helpers\SurveyTranslator::getLanguageData();
 
                 if(!isset($aLanguages[$sLanguage]))
                 {
@@ -718,7 +718,7 @@ class remotecontrol_handle
     */
     public function get_language_properties($sSessionKey,$iSurveyID, $aSurveyLocaleSettings, $sLang=NULL)
     {
-        Yii::app()->loadHelper("surveytranslator");
+        
         if ($this->_checkSessionKey($sSessionKey))
         {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -731,7 +731,7 @@ class remotecontrol_handle
                 $aBasicDestinationFields=SurveyLanguageSetting::model()->tableSchema->columnNames;
                 $aSurveyLocaleSettings=array_intersect($aSurveyLocaleSettings,$aBasicDestinationFields);
 
-                if ($sLang == NULL || !array_key_exists($sLang,getLanguageDataRestricted()))
+                if ($sLang == NULL || !array_key_exists($sLang,\ls\helpers\SurveyTranslator::getLanguageDataRestricted()))
                     $sLang = $oSurvey->language;
 
 
@@ -767,7 +767,7 @@ class remotecontrol_handle
     */
     public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage=NULL)
     {
-        Yii::app()->loadHelper("surveytranslator");
+        
         if ($this->_checkSessionKey($sSessionKey))
         {
             $oSurvey=Survey::model()->findByPk($iSurveyID);
@@ -781,7 +781,7 @@ class remotecontrol_handle
                 $sLanguage=$oSurvey->language;
             }
 
-            if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+            if (!array_key_exists($sLanguage,\ls\helpers\SurveyTranslator::getLanguageDataRestricted()))
                 return array('status' => 'Error: Invalid language');
 
             if (App()->user->checkAccess('surveylocale', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
@@ -888,8 +888,8 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID = sanitize_int($iSurveyID);
-            $iGroupID = sanitize_int($iGroupID);
+            $iSurveyID = \ls\helpers\Sanitize::int($iSurveyID);
+            $iGroupID = \ls\helpers\Sanitize::int($iGroupID);
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1313,7 +1313,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            Yii::app()->loadHelper("surveytranslator");
+            
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion))
                 return array('status' => 'Error: Invalid questionid');
@@ -1325,7 +1325,7 @@ class remotecontrol_handle
                 if (is_null($sLanguage))
                     $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
 
-                if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+                if (!array_key_exists($sLanguage,\ls\helpers\SurveyTranslator::getLanguageDataRestricted()))
                     return array('status' => 'Error: Invalid language');
 
                 $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
@@ -1447,7 +1447,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            Yii::app()->loadHelper("surveytranslator");
+            
             $oQuestion=Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion))
                 return array('status' => 'Error: Invalid group ID');
@@ -1459,7 +1459,7 @@ class remotecontrol_handle
                 if (is_null($sLanguage))
                     $sLanguage=Survey::model()->findByPk($iSurveyID)->language;
 
-                if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+                if (!array_key_exists($sLanguage,\ls\helpers\SurveyTranslator::getLanguageDataRestricted()))
                     return array('status' => 'Error: Invalid language');
 
                 $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
@@ -1589,7 +1589,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID = sanitize_int($iSurveyID);
+            $iSurveyID = \ls\helpers\Sanitize::int($iSurveyID);
 
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
@@ -1845,7 +1845,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            Yii::app()->loadHelper("surveytranslator");
+            
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1855,7 +1855,7 @@ class remotecontrol_handle
                 if (is_null($sLanguage))
                     $sLanguage=$oSurvey->language;
 
-                if (!array_key_exists($sLanguage,getLanguageDataRestricted()))
+                if (!array_key_exists($sLanguage,\ls\helpers\SurveyTranslator::getLanguageDataRestricted()))
                     return array('status' => 'Error: Invalid language');
 
                 if($iGroupID!=NULL)
@@ -2492,7 +2492,7 @@ class remotecontrol_handle
     */
     protected function _doLogin($sUsername, $sPassword)
     {
-        $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
+        $identity = new UserIdentity(\ls\helpers\Sanitize::user($sUsername), $sPassword);
 
         if (!$identity->authenticate())
         {

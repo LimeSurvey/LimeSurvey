@@ -946,7 +946,7 @@ function do_array_multitext(Question $question)
     }
 
     $checkconditionFunction = "checkconditions";
-    $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator = \ls\helpers\SurveyTranslator::getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
 
     $defaultvaluescript = "";
@@ -1542,7 +1542,7 @@ function do_array_multiflexi(Question $question, Response $response)
 
                 $html .= "\t<td class=\"answer_cell_00{$column->title} question-item answer-item {$answertypeclass}-item $extraclass\">\n"
                 . "<label class=\"hide read\" for=\"answer{$myfname2}\">{$column->question}</label>\n";
-                $sSeparator = getRadixPointData($question->survey->localizedNumberFormat)['separator'];
+                $sSeparator = \ls\helpers\SurveyTranslator::getRadixPointData($question->survey->localizedNumberFormat)['separator'];
                 if($inputboxlayout == false) {
                     $html .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\""
                     . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"

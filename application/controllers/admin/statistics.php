@@ -22,19 +22,13 @@
 */
 class statistics extends Survey_Common_Action {
 
-    function __construct($controller, $id)
-    {
-        parent::__construct($controller, $id);
-
-        Yii::app()->loadHelper("surveytranslator");
-    }
 
     /**
     * Constructor
     */
     public function run($surveyid = 0, $subaction = null)
     {
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = \ls\helpers\Sanitize::int($surveyid);
         $imageurl = Yii::app()->getConfig("imageurl");
         $aData = array('imageurl' => $imageurl);
 
@@ -505,7 +499,6 @@ class statistics extends Survey_Common_Action {
     function graph()
     {
         Yii::app()->loadHelper('admin/statistics');
-        Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
         require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pChart.class');

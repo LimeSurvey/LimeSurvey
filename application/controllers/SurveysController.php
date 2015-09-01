@@ -33,30 +33,6 @@ class SurveysController extends Controller
         $this->render('organize', compact('groups'));
     }
 
-    public function actionIndex() {
-        $this->layout = 'main';
-        $filter = new \ls\models\filter\Survey();
-        $filter->setAttributes(App()->request->getParam(\CHtml::modelName($filter)));
-        $surveys = Survey::model()->accessible();
-        $surveys->getDbCriteria()->mergeWith($filter->search());
-        $surveys->with('languagesettings');
-        $dataProvider = new \CActiveDataProvider($surveys);
-        $dataProvider->pagination->pageSize = 100;
-        $this->render('index', ['surveys' => $dataProvider, 'filter' => $filter]);
-    }
-
-    public function actionPublicList($sLanguage = null)
-    {
-        if (isset($sLanguage))
-        {
-            App()->setLanguage($sLanguage);
-        }
-        $this->render('publicSurveyList', array(
-            'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
-            'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
-
-        ));
-    }
 
     public function actionUpdate($id) {
         $survey = $this->loadModel($id, 'groups.questions');
@@ -107,7 +83,7 @@ class SurveysController extends Controller
      * @throws CHttpException
      * @throws \CHttpException
      */
-    protected function loadModel($id, $with = null) {
+    public function loadModel($id, $with = null) {
         $survey = Survey::model()->with($with)->findByPk($id);
         if (!isset($survey)) {
             throw new \CHttpException(404, "Survey not found.");

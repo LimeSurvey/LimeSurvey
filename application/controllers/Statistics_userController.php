@@ -49,7 +49,7 @@ class Statistics_userController extends Controller {
         Yii::import('application.libraries.admin.progressbar',true);
         Yii::app()->loadHelper("admin/statistics");
         Yii::app()->loadHelper('database');
-        Yii::app()->loadHelper('surveytranslator');
+
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-touch-punch');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
@@ -351,7 +351,7 @@ class Statistics_userController extends Controller {
         //---------- CREATE STATISTICS ----------
         $redata = compact(array_keys(get_defined_vars()));
         doHeader();
-        echo templatereplace(file_get_contents(Template::getTemplatePath($data['sTemplatePath']) . DIRECTORY_SEPARATOR . "startpage.pstpl"),
+        echo \ls\helpers\Replacements::templatereplace(file_get_contents(Template::getTemplatePath($data['sTemplatePath']) . DIRECTORY_SEPARATOR . "startpage.pstpl"),
             array(), $redata);
 
 

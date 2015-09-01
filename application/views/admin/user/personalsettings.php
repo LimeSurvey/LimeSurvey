@@ -8,7 +8,7 @@
             <li>
                 <?php 
                 echo CHtml::label(gT("Interface language"), 'lang');
-                $options = CHtml::listData(getLanguageData(true, App()->language), 'code', function($model) {
+                $options = CHtml::listData(\ls\helpers\SurveyTranslator::getLanguageData(true, App()->language), 'code', function($model) {
                     return html_entity_decode($model['nativedescription']);
                 });
                 echo TbHtml::dropDownList('lang', App()->user->model->getLanguage(), $options, ['id' => 'lang']);
@@ -53,7 +53,7 @@
                 <?php echo CHtml::label(gT("Date format"), 'dateformat'); ?>:
                 <select name='dateformat' id='dateformat'>
                 <?php
-                foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index => $dateformatdata)
+                foreach (\ls\helpers\SurveyTranslator::getDateFormatData(0,Yii::app()->session['adminlang']) as $index => $dateformatdata)
                 {
                     echo "<option value='{$index}'";
                     if ($index == Yii::app()->session['dateformat'])

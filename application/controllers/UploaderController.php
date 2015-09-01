@@ -108,7 +108,7 @@ class UploaderController extends Controller
             }
             $filename = $_FILES['uploadfile']['name'];
             // Do we filter file name ? It's used on displaying only , but not save like that.
-            //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
+            //$filename = \ls\helpers\Sanitize::filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
             $size = 0.001 * $_FILES['uploadfile']['size'];
             $preview = Yii::app()->session['preview'];
             $aFieldMap = createFieldMap($sid, 'short', false, false, $sLanguage);

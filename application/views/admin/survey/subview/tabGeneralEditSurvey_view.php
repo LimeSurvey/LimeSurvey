@@ -1,6 +1,6 @@
 <?php
     // Get the array language
-    $aAvailableLang=getLanguageDataRestricted (false, Yii::app()->session['adminlang']);
+    $aAvailableLang=\ls\helpers\SurveyTranslator::getLanguageDataRestricted (false, Yii::app()->session['adminlang']);
     unset($aAvailableLang[$esrow['language']]);
     $aLang=array();
     foreach ($aAvailableLang as $lang => $aLanguage) {

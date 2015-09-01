@@ -7,7 +7,7 @@
 <?php } else { ?>
 <div class="header ui-widget-header"><?php eT("Survey quota");?>: <?php eT("Add answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
-        <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']))); ?>
+        <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.\ls\helpers\Sanitize::int($_POST['quota_id']))); ?>
 			<table class="addquotaanswer">
 				<tbody>
 					<thead>
@@ -46,8 +46,8 @@
 							<input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
 							<input type="hidden" name="action" value="quotas" />
 							<input type="hidden" name="subaction" value="insertquotaanswer" />
-							<input type="hidden" name="quota_qid" value="<?php echo sanitize_int($_POST['quota_qid']);?>" />
-							<input type="hidden" name="quota_id" value="<?php echo sanitize_int($_POST['quota_id']);?>" />
+							<input type="hidden" name="quota_qid" value="<?php echo \ls\helpers\Sanitize::int($_POST['quota_qid']);?>" />
+							<input type="hidden" name="quota_id" value="<?php echo \ls\helpers\Sanitize::int($_POST['quota_id']);?>" />
 						</td>
 					</tr>
 				</tbody>

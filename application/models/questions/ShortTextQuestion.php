@@ -35,7 +35,7 @@ class ShortTextQuestion extends TextQuestion
 
         if ($this->numbers_only == 1)
         {
-            $sSeparator = getRadixPointData($this->survey->localizedNumberFormat)['separator'];
+            $sSeparator = \ls\helpers\SurveyTranslator::getRadixPointData($this->survey->localizedNumberFormat)['separator'];
             $extraclass .=" numberonly";
             $checkconditionFunction = "fixnum_checkconditions";
         }
