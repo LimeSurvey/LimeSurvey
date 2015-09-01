@@ -390,7 +390,8 @@
                 ['same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
                 /** @todo Create EM validator that validates syntax only. */
                 ['relevance', 'safe'],
-                [['bool_mandatory', 'bool_other'], 'boolean'],
+                [['bool_mandatory', 'bool_other', 'bool_hidden'], 'boolean'],
+
             ];
 
             $aRules[] = ['title', 'match', 'pattern' => '/^[a-z0-9]*$/i',
@@ -1066,7 +1067,7 @@
          * By default a question passes this if any of it's fields have been filled.
          * @return boolean
          */
-        final public function validateResponse(Response $response) {
+        final public function validateResponse(\ls\interfaces\iResponse $response) {
 
             $em = $this->getExpressionManager($response);
             $result = new QuestionValidationResult($this);
@@ -1130,10 +1131,10 @@
         }
         /**
          * Checks if the question is relevant for the current response.
-         * @param Response $response
+         * @param \ls\interfaces\iResponse $response
          * @return boolean
          */
-        public function isRelevant(Response $response) {
+        public function isRelevant(\ls\interfaces\iResponse $response) {
             // Check if the group is relevant first.
             if (!$this->group->isRelevant($response)) {
                 $result = false;
@@ -1327,6 +1328,22 @@
                 0 => gT('Hidden'),
                 1 => gT('Disabled')
             ];
+
+        }
+
+        /**
+         * Specify data which should be serialized to JSON
+         * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+         * @return mixed data which can be serialized by <b>json_encode</b>,
+         * which is a value of any type other than a resource.
+         * @since 5.4.0
+         */
+        function jsonSerialize()
+        {
+            $result = parent::jsonSerialize();
+            $this->loadCustomAttributes();
+            // Merge, custom first so "real" attributes always override custom attributes.
+            return array_merge($this->customAttributes, $result);
 
         }
     }

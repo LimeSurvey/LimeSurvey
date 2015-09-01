@@ -55,7 +55,20 @@ class SingleChoiceQuestion extends ChoiceQuestion
 
     }
 
-
+    /**
+     * This function renders the object.
+     * It MUST NOT produce any output.
+     * It should return a string or an object that can be converted to string.
+     * @param \ls\interfaces\Response $response
+     * @param \SurveySession $session
+     * @return \RenderedQuestion
+     */
+    public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
+    {
+        $result = parent::render($response, $session);
+        $result->setHtml('TODO');
+        return $result;
+    }
 
 
 }

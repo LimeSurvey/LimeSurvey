@@ -9,6 +9,7 @@ if ($question->hasAttribute('random_group')) {
     echo $form->textFieldControlGroup($question, 'random_group');
 }
 echo $form->checkBoxControlGroup($question, 'bool_mandatory');
+echo $form->checkBoxControlGroup($question, 'bool_hidden');
 if ($question->hasAttribute('other_comment_mandatory')) {
     echo $form->checkBoxControlGroup($question, 'bool_other_comment_mandatory');
 }

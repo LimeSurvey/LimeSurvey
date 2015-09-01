@@ -16,7 +16,7 @@
  * @property int $step;
  * @property mixed $format;
  * @property int $maxStep;
- * @property Response $response;
+ * @property \ls\interfaces\iResponse $response;
  * @property string $templateDir;
  */
 class SurveySession extends CComponent {

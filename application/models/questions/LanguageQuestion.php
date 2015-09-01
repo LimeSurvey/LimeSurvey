@@ -27,7 +27,7 @@ class LanguageQuestion extends FixedChoiceQuestion {
      * @param Response $response
      * @return boolean
      */
-    public function isRelevant(Response $response)
+    public function isRelevant(\ls\interfaces\iResponse $response)
     {
 
         $result = (count($this->survey->allLanguages) > 1) ? parent::isRelevant($response) : false;

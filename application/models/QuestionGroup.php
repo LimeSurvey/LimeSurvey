@@ -152,7 +152,7 @@
             }
         }
 
-        public function isRelevant(Response $response) {
+        public function isRelevant(\ls\interfaces\iResponse $response) {
             if (empty($this->grelevance)) {
                 $result = true;
             } else {

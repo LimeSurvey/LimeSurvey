@@ -575,7 +575,10 @@ class SurveyRuntimeHelper {
         echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
         if ($session->format != Survey::FORMAT_QUESTION) {
             foreach ($group->questions as $question) {
-                echo $this->renderQuestion($session, $question);
+                vd($question->bool_hidden);
+                if (!$question->bool_hidden) {
+                    echo $this->renderQuestion($session, $question);
+                }
             }
         } else {
             echo $this->renderQuestion($session, $session->getQuestionByIndex($session->step));

@@ -62,4 +62,8 @@ class DummyResponse extends CFormModel implements \ls\interfaces\iResponse
     public function getToken() {
         return null;
     }
+
+    public function getAttributes() {
+        return $this->fields;
+    }
 }

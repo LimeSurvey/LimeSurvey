@@ -85,7 +85,10 @@ class MultipleChoiceQuestion extends ChoiceQuestion
         // Render a line in the multiple choice question.
         $result = '';
         $field = $this->sgqa . $question->title;
-        $result .= \TbHtml::checkBox($field, $response->$field == 'Y', ['id' => "answer$field"]);
+        $result .= \TbHtml::checkBox($field, $response->$field == 'Y', [
+            'id' => "answer$field",
+            'value' => 'Y'
+        ]);
         $result .= \TbHtml::label($question->question, "answer$field");
         return $result;
 

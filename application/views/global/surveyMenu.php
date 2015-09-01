@@ -21,12 +21,19 @@ $menu = [[ // Left side
         'icon' => 'stop',
         'disabled' => !$model->isActive
     ], [
-        'title' => gT('Execute survey.'),
+        'title' => gT('Execute survey'),
         'icon' => 'certificate',
         'disabled' => !$model->isActive || $model->isExpired || $model->bool_usetokens,
         'linkOptions' => ['target' => '_blank'],
         'url' => !$model->isActive || $model->isExpired ? '#' : ["surveys/start", 'id' => $model->sid]
     ], [
+        'title' => gT('Preview survey'),
+        'icon' => 'eye-open',
+        'linkOptions' => [
+            'target' => '_blank'
+        ],
+        'url' => ["surveys/preview", 'id' => $model->primaryKey]
+    ],[
         'title' => gT('Survey settings'),
         'icon' => 'wrench',
 //        'disabled' => $model->responseCount == 0,

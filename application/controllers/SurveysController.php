@@ -362,7 +362,6 @@ class SurveysController extends Controller
 
     /**
      * Renders the relevance and tailoring javascript for a survey.
-     * @todo Add caching headers.
      */
     public function actionScript($id) {
         $survey = $this->loadModel($id);
@@ -378,6 +377,15 @@ class SurveysController extends Controller
             }
         }
         echo $result;
+    }
+
+    public function actionPreview($id) {
+        $survey = $this->loadModel($id);
+        $dummy = new \DummyResponse($survey);
+        $session = App()->surveySessionManager->newSession($survey->primaryKey, $dummy);
+        return $this->redirect(['survey/index', 'SSM' => $session->getId()]);
+
+
     }
 
 

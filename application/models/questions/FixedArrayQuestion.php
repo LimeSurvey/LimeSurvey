@@ -93,7 +93,8 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
 
         foreach ($this->subQuestions as $subQuestion)
         {
-            $relevance = strtr($this->getFilterExpression(), ['{VALUE}' => $subQuestion->question]);
+            // We explode to make sure we only get the left part.
+            $relevance = strtr($this->getFilterExpression(), ['{VALUE}' => explode('|', $subQuestion->question)[0]]);
             $tableContent .= $this->renderSubQuestion($subQuestion, $response, $relevance, count($rightQuestions) > 0);
         }
 
@@ -102,7 +103,7 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
         return $result;
     }
 
-    protected function renderSubQuestion(\Question $subQuestion, \Response $response, $relevance) {
+    protected function renderSubQuestion(\Question $subQuestion, iResponse $response, $relevance) {
         bP();
         $result = [];
         $em = $this->getExpressionManager($response);

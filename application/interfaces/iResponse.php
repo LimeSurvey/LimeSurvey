@@ -1,6 +1,14 @@
 <?php
 namespace ls\interfaces;
 
+
+/**
+ * Interface iResponse
+ * @package ls\interfaces
+ * Objects implementing this interface can be used to store response data.
+ * The default implementation store it in database (for live surveys)
+ * Or in session (for previews).
+ */
 interface iResponse {
 
     /**
@@ -20,4 +28,9 @@ interface iResponse {
      */
     public static function loadById($id);
 
+
+    /**
+     * @return [] An array containing the response data.
+     */
+    public function getAttributes();
 }

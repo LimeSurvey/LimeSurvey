@@ -85,7 +85,8 @@ class SurveySessionManager extends CApplicationComponent
         }
         // Doesn't really need to be random
         $sessionId = rand(1, 1000);
-        $this->_current = $this->sessions[$sessionId] = new SurveySession($surveyId, $response, $sessionId);
+        $this->_current = new SurveySession($surveyId, $response, $sessionId);
+        $this->sessions->add($sessionId, $this->_current);
         return $this->current;
     }
 

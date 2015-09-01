@@ -4190,7 +4190,7 @@
             $clientScript->registerScriptFile(SettingGlobal::get('generalscripts', '/scripts') . "/expressions/em_javascript.js");
             $clientScript->registerScriptFile(App()->createUrl('surveys/script', ['id' => $session->surveyId]));
             $values = [];
-            foreach ($session->response->attributes as $name => $value) {
+            foreach ($session->response->getAttributes() as $name => $value) {
                 if (isset($value) && strpos($name, 'X') !== false) {
                     $values[$name] = $value;
                 }
