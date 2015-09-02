@@ -15,18 +15,23 @@
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
 var labelcache=[];
+
+/* Event added on document for all button (new one added in js too)*/
+$(document).on("click",'.btntogglerelevance',function(){
+    togglerelevance();
+});
+$(document).on("click","#editsubquestionsform :submit", function() {//Validate duplicate before try to submit: surely some other javascript elsewhere
+    return code_duplicates_check();
+});
+
 $(document).ready(function(){
     removeCSRFDivs();
-    $(document).on("click","#editsubquestionsform :submit", function() {//Validate duplicate before try to submit: surely some other javascript elsewhere
-        return code_duplicates_check();
-    });
 
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
         start:startmove,
         update:aftermove,
         distance:3});
-    $('.btntogglerelevance').click(togglerelevance);
     $('.btnaddanswer').click(addinput);
     $('.btndelanswer').click(deleteinput);
     $('#labelsetbrowser').dialog({
