@@ -8,7 +8,6 @@ class MysqlSchema extends CMysqlSchema
         * Auto increment.
         */
         $this->columnTypes['autoincrement'] = 'int(11) NOT NULL AUTO_INCREMENT';
-
         $this->columnTypes['longbinary'] = 'longblob';
     }
 
@@ -24,9 +23,9 @@ class MysqlSchema extends CMysqlSchema
     */
     public function getColumnType($type)
     {
-        if (isset(Yii::app()->db->schema->columnTypes[$type]))
+        if (isset($this->columnTypes[$type]))
         { // Direct : get it
-            $sResult=Yii::app()->db->schema->columnTypes[$type];
+            $sResult=$this->columnTypes[$type];
         }
         elseif (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $type, $matches)) 
         { // With params : some test to do
