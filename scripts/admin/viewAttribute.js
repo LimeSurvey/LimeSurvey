@@ -12,7 +12,7 @@ $(document).ready(function() {
         } else {
             $('#ddtable').css('display','none');
         }
-    })
+    });
     $("#tabs").tabs({
         add: function(event, ui) {
             $("#tabs").tabs('select', '#' + ui.panel.id);
@@ -88,7 +88,7 @@ $(document).ready(function() {
     $('.languagesetting').click(function(){
         $(".languagesetting").css('border', '1px solid black');
         $(".languagesetting").css('background-color', 'white');
-    })
+    });
 });
 
 
