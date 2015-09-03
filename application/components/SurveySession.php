@@ -197,6 +197,9 @@ class SurveySession extends CComponent {
         return $this->_survey;
     }
 
+    public function setSurvey(\Survey $survey) {
+        $this->_survey = $survey;
+    }
     /**
      * Wrapper function that returns the question given by qid to make sure we always get the same object.
      * @param int $id The primary key of the question.

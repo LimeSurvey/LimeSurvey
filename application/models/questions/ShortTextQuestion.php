@@ -102,7 +102,7 @@ class ShortTextQuestion extends TextQuestion
             // --> START NEW FEATURE - SAVE
             $html ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$this->sgqa}' class='hide label'>".gT('Your answer')."</label>"
                 . '<textarea class="textarea '.$kpclass.'" name="'.$this->sgqa.'" id="answer'.$this->sgqa.'" '
-                .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);">';
+                .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.'>';
             // --> END NEW FEATURE - SAVE
 
             if ($response->{$this->sgqa}) {
@@ -166,8 +166,7 @@ class ShortTextQuestion extends TextQuestion
             <input type=\"hidden\" name=\"$this->sgqa\" id=\"answer$this->sgqa\" value=\"{$response->{$this->sgqa}}\">
 
             <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$this->sgqa_c\"
-            id=\"answer$this->sgqa_c\" value=\"$currentLocation\"
-            onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+            id=\"answer$this->sgqa_c\" value=\"$currentLocation\"/>
 
             <input type=\"hidden\" name=\"boycott_$this->sgqa\" id=\"boycott_$this->sgqa\"
             value = \"{$strBuild}\" >
@@ -284,24 +283,18 @@ class ShortTextQuestion extends TextQuestion
         else
         {
             //no question attribute set, use common input text field
+            $inputOptions = [
+                'size' => $tiwidth,
+                'id' => "answer$this->sgqa",
+                'class' => 'text',
+                'data-validation-expression' => $this->getExpressionManager($response)->getJavascript(implode(' and ', array_keys($this->getValidationExpressions())))
+            ];
             $html = "<p class=\"question answer-item text-item {$extraclass}\">\n"
                 ."<label for='answer{$this->sgqa}' class='hide label'>".gT('Your answer')."</label>"
-                ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$this->sgqa\" id=\"answer$this->sgqa\"";
-
-            $dispVal = App()->surveySessionManager->current->response->{$this->sgqa};
-            if ($this->numbers_only==1)
-            {
-                $dispVal = str_replace('.',$sSeparator,$dispVal);
-            }
-            $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
-            $html .= " value=\"$dispVal\"";
-
-            $html .=" {$maxlength} />\n\t$suffix\n</p>\n";
-        }
-
-        if (trim($this->time_limit)!='')
-        {
-            $html .= return_timer_script($this, $ia, "answer".$this->sgqa);
+                ."$prefix\t"
+                . \CHtml::textField(
+                    $this->sgqa, $response->{$this->sgqa}, $inputOptions);
+            $html .="\n\t$suffix\n</p>\n";
         }
 
         $result->setHtml($html);

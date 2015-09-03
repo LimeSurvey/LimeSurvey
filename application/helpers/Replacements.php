@@ -39,7 +39,6 @@ class Replacements
         foreach ([
                      'assessments',
                      'captchapath',
-                     'clienttoken',
                      'completed',
                      'errormsg',
                      'groupdescription',
@@ -140,7 +139,7 @@ class Replacements
         // Only continue in this routine if there are bracketed items to replace {}
         if (strpos($line, "{") === false) {
             // process string anyway so that it can be pretty-printed
-            $result = LimeExpressionManager::ProcessString($line, $questionNum, null, 1, 1);
+            $result = LimeExpressionManager::ProcessString($line, $questionNum, null, 1, 1, $session);
         } else {
 
             if ($showgroupinfo == 'both'
@@ -265,22 +264,22 @@ class Replacements
             // Save Form
             $_saveform = "<table class='save-survey-form'><tr class='save-survey-row save-survey-name'><td class='save-survey-label label-cell' align='right'><label for='savename'>" . gT("Name") . "</label>:</td><td class='save-survey-input input-cell'><input type='text' name='savename' id='savename' value='";
             if (isset($_POST['savename'])) {
-                $_saveform .= HTMLEscape(autoUnescape($_POST['savename']));
+                $_saveform .= HTMLEscape($_POST['savename']);
             }
             $_saveform .= "' /></td></tr>\n"
                 . "<tr class='save-survey-row save-survey-password-1'><td class='save-survey-label label-cell' align='right'><label for='savepass'>" . gT("Password") . "</label>:</td><td class='save-survey-input input-cell'><input type='password' id='savepass' name='savepass' value='";
             if (isset($_POST['savepass'])) {
-                $_saveform .= HTMLEscape(autoUnescape($_POST['savepass']));
+                $_saveform .= HTMLEscape($_POST['savepass']);
             }
             $_saveform .= "' /></td></tr>\n"
                 . "<tr class='save-survey-row save-survey-password-2'><td class='save-survey-label label-cell' align='right'><label for='savepass2'>" . gT("Repeat password") . "</label>:</td><td class='save-survey-input input-cell'><input type='password' id='savepass2' name='savepass2' value='";
             if (isset($_POST['savepass2'])) {
-                $_saveform .= HTMLEscape(autoUnescape($_POST['savepass2']));
+                $_saveform .= HTMLEscape($_POST['savepass2']);
             }
             $_saveform .= "' /></td></tr>\n"
                 . "<tr class='save-survey-row save-survey-email'><td class='save-survey-label label-cell' align='right'><label for='saveemail'>" . gT("Your email address") . "</label>:</td><td class='save-survey-input input-cell'><input type='text' id='saveemail' name='saveemail' value='";
             if (isset($_POST['saveemail'])) {
-                $_saveform .= HTMLEscape(autoUnescape($_POST['saveemail']));
+                $_saveform .= HTMLEscape($_POST['saveemail']);
             }
             $_saveform .= "' /></td></tr>\n";
             if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',
@@ -295,12 +294,12 @@ class Replacements
             // Load Form
             $_loadform = "<table class='load-survey-form'><tr class='load-survey-row load-survey-name'><td class='load-survey-label label-cell' align='right'><label for='loadname'>" . gT("Saved name") . "</label>:</td><td class='load-survey-input input-cell'><input type='text' id='loadname' name='loadname' value='";
             if (isset($loadname)) {
-                $_loadform .= HTMLEscape(autoUnescape($loadname));
+                $_loadform .= HTMLEscape($loadname);
             }
             $_loadform .= "' /></td></tr>\n"
                 . "<tr class='load-survey-row load-survey-password'><td class='load-survey-label label-cell' align='right'><label for='loadpass'>" . gT("Password") . "</label>:</td><td class='load-survey-input input-cell'><input type='password' id='loadpass' name='loadpass' value='";
             if (isset($loadpass)) {
-                $_loadform .= HTMLEscape(autoUnescape($loadpass));
+                $_loadform .= HTMLEscape($loadpass);
             }
             $_loadform .= "' /></td></tr>\n";
             if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',
@@ -392,7 +391,13 @@ EOD;
             }
 
             // Set the array of replacement variables here - don't include curly braces
-            $coreReplacements = array();
+            $coreReplacements = [];
+            if(!empty($survey->startdate))
+                $coreReplacements['REGISTERMESSAGE2'] = sprintf(gT("You may register for this survey but you have to wait for the %s before starting the survey."), $survey->startdate)."<br />\n".gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
+            else
+                $coreReplacements['REGISTERMESSAGE2'] = gT("You may register for this survey if you wish to take part.")."<br />\n".gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.");
+
+
             $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !(!$survey->bool_active));
             $coreReplacements['ANSWERSCLEARED'] = gT("Answers cleared");
             $coreReplacements['ASSESSMENTS'] = $assessmenthtml;
@@ -404,6 +409,10 @@ EOD;
             $coreReplacements['DATESTAMP'] = $_datestamp;
             $coreReplacements['ENDTEXT'] = $_endtext;
             $coreReplacements['EXPIRY'] = $_dateoutput;
+            $coreReplacements['REGISTERERROR']  = '';
+            $coreReplacements['REGISTERMESSAGE1'] = gT("You must be registered to complete this survey");
+            $coreReplacements['CLOSEWINDOW']  =  "<a href='javascript:%20self.close()'>".gT("Close this window")."</a>";
+            $coreReplacements['REGISTERFORM'] = '';
             $coreReplacements['GID'] = Yii::app()->getConfig('gid',
                 '');// Use the gid of the question, except if we are not in question (Randomization group name)
             $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
@@ -414,7 +423,7 @@ EOD;
             $coreReplacements['LOADFORM'] = $_loadform;
             $coreReplacements['LOADHEADING'] = gT("Load a previously saved survey");
             $coreReplacements['LOADMESSAGE'] = gT("You can load a survey that you have previously saved from this screen.") . "<br />" . gT("Type in the 'name' you used to save the survey, and the password.") . "<br />";
-            $coreReplacements['NAVIGATOR'] = FrontEnd::surveymover();
+            $coreReplacements['NAVIGATOR'] = FrontEnd::surveymover($session);
             $coreReplacements['NOSURVEYID'] = (isset($surveylist)) ? $surveylist['nosid'] : '';
             $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
             $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
@@ -444,8 +453,7 @@ EOD;
             $coreReplacements['SURVEYLISTHEADING'] = (isset($surveylist)) ? $surveylist['listheading'] : '';
             $coreReplacements['SURVEYNAME'] = $survey->getLocalizedTitle();
             $coreReplacements['TEMPLATECSS'] = $_templatecss;
-            $coreReplacements['TEMPLATEJS'] = CHtml::tag('script',
-                array('type' => 'text/javascript', 'src' => $templateUrl . 'template.js'), '');
+            $coreReplacements['TEMPLATEJS'] = CHtml::tag('script', ['type' => 'text/javascript', 'src' => $templateUrl . 'template.js'], '');
             $coreReplacements['TEMPLATEURL'] = $templateUrl;
             $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
             $coreReplacements['TOKEN'] = !$survey->bool_anonymized ? $session->getToken() : null;// Silently replace TOKEN by empty string
@@ -469,12 +477,12 @@ EOD;
             $i = 0;
             while ($newLine != $oldLine && $i < 10) {
                 $oldLine = $newLine;
-                $newLine = strtr($oldLine, $manual);
+                $newLine = str_replace(array_keys($manual), array_values($manual), $oldLine);
                 $i++;
             }
             // Now do all of the replacements - In rare cases, need to do 3 deep recursion, that that is default
             bP('replace-em');
-            $result = LimeExpressionManager::ProcessString($newLine, $questionNum, $allReplacements, 3, 1);
+            $result = LimeExpressionManager::ProcessString($newLine, $questionNum, $allReplacements, 3, 1, $session);
             eP('replace-em');
         }
         \Yii::trace('\ls\helpers\Replacements::templatereplace');
@@ -495,7 +503,7 @@ EOD;
             foreach ($fieldsarray as $key => $value) {
                 $replacements[substr($key, 1, -1)] = $value;
             }
-            $text = LimeExpressionManager::ProcessString($text, null, $replacements, 2, 1);
+            $text = LimeExpressionManager::ProcessString($text, null, $replacements, 2, 1, $session);
         } else {
             foreach ($fieldsarray as $key => $value) {
                 $text = str_replace($key, $value, $text);

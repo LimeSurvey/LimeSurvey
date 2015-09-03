@@ -958,8 +958,10 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
 
 
+        $model = new SurveyLanguageSetting();
+        $model->setAttributes($insertdata, false);
 
-        if (false == $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata)) {
+        if (!$model->save()) {
             throw new \CHttpException(500, gT("Error").": Failed to insert data [2]<br />");
         }
     }
@@ -2246,8 +2248,13 @@ function TSVImportSurvey($sFullFilePath)
             $insertdata['surveyls_title'] = $_title;
         }
 
-
-        $result = SurveyLanguageSetting::model()->insertNewSurvey($insertdata);//
+        /**
+         * @todo Check why we also set usafe attributes
+         * Note that the original implementation used a custom setAttributes and ignored Yii altogether.
+         */
+        $model = new SurveyLanguageSetting();
+        $model->setAttributes($insertdata, false);
+        $result = $model->save();
         if(!$result){
             $results['error'][] = gT("Error")." : ".gT("Failed to insert survey language");
             break;

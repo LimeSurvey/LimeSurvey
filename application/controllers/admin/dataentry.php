@@ -2271,7 +2271,7 @@ class dataentry extends Survey_Common_Action
 
                     $cdata['sDataEntryLanguage'] = $sDataEntryLanguage;
                     $viewdata = $this->getController()->renderPartial("/admin/dataentry/content_view",$cdata,TRUE);
-                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], null, 1, 1);
+                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], null, 1, 1, $session);
                     $aDataentryoutput .= $viewdata_em;
                 }
             }

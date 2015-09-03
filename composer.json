@@ -48,6 +48,7 @@
     },
     "autoload" : {
         "classmap" : [
+            "application/extensions",
             "application/extensions/SettingsWidget",
             "application/core/db",
             "application/core",

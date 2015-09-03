@@ -76,6 +76,7 @@ class WebApplication extends CWebApplication
         }
         return parent::processRequest();
     }
+
     public function setSupportedLanguages($value) {
         foreach($value as $code => $language) {
             $language['code'] = $code;
@@ -121,10 +122,6 @@ class WebApplication extends CWebApplication
 	public function init() {
 		parent::init();
         $this->name = SettingGlobal::get('sitename', 'LimeSurvey');
-//        $this->session;
-//        $swn = new SessionWriteNotifier();
-//        unset($_SESSION);
-//        $_SESSION = $swn;
         $this->initLanguage();
         // These take care of dynamically creating a class for each token / response table.
 		ClassFactory::registerClass('Token_', 'Token');
@@ -264,6 +261,11 @@ class WebApplication extends CWebApplication
         return $this->getComponent('pluginManager');
     }
 
-   
+   public function disableWebLogRoutes() {
+       foreach ($this->log->routes as $route)
+       {
+           $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
+       }
+   }
 }
 

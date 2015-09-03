@@ -1,9 +1,10 @@
 <?php
 Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$sEditorFileType."';",CClientScript::POS_HEAD); // Is this deprecated (2013-09-25) ?
+App()->getClientScript()->registerPackage('jquery-ace');
 ?>
 <?php if (is_template_editable($templatename)==true)
 {
-    App()->getClientScript()->registerPackage('jquery-ace');
+
     ?>
     <div class='header'>
         <?php echo sprintf(gT("Editing template '%s' - File '%s'"),$templatename,$editfile); ?>
@@ -123,7 +124,11 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
     </div>
     <?php }
 else
-{ ?>
-    <p><iframe id='previewiframe' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe></p>
+{
+?>
+    <p><iframe id='previewiframe' src='<?php echo $this->createUrl('templates/preview', [
+        'name' => $templatename,
+        'page' => $screenname
+    ]); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe></p>
     </div>
     <?php } ?>

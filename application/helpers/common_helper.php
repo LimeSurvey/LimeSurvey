@@ -3457,25 +3457,6 @@ function categorySort($a, $b)
     return $result;
 }
 
-// make sure the given string (which comes from a POST or GET variable)
-// is safe to use in MySQL.  This does nothing if gpc_magic_quotes is on.
-function autoEscape($str) {
-    if (!get_magic_quotes_gpc()) {
-        return addslashes ($str);
-    }
-    return $str;
-}
-
-// the opposite of the above: takes a POST or GET variable which may or
-// may not have been 'auto-quoted', and return the *unquoted* version.
-// this is useful when the value is destined for a web page (eg) not
-// a SQL query.
-function autoUnescape($str) {
-    if (!isset($str)) {return null;};
-    if (!get_magic_quotes_gpc())
-        return $str;
-    return stripslashes($str);
-}
 
 // make a string safe to include in an HTML 'value' attribute.
 function HTMLEscape($str) {
@@ -5232,7 +5213,6 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
     }
 
 
-    //$groupnames = $sresult->GetRows();
     $simplegidarray=array();
     if (isset($groupnames))
     {
@@ -5772,11 +5752,10 @@ function array_diff_assoc_recursive($array1, $array2) {
 
 
 
-    function renderOldTemplate($fileName, $data = [], $replacements = []) {
+    function renderOldTemplate($fileName, $data = [], $replacements = [], SurveySession $session = null) {
         bP();
-        $session = App()->surveySessionManager->current;
         try {
-            echo \ls\helpers\Replacements::templatereplace(file_get_contents($fileName), $data, $replacements, null, $session);
+            echo \ls\helpers\Replacements::templatereplace(file_get_contents($fileName), $replacements, $data, null, $session ?: App()->surveySessionManager->current);
         } finally {
             eP();
         }

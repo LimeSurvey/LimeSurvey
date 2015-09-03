@@ -529,7 +529,6 @@ class Survey_Common_Action extends CAction
         $activated = ($surveyinfo['active'] == 'Y');
 
         
-        App()->getClientScript()->registerPackage('jquery-cookie');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveytoolbar.js');
 
         //Parse data to send to view

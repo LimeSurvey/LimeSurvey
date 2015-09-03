@@ -104,7 +104,7 @@ return [
         ]
     ],
     'jquery-touch-punch' => [
-        'baseUrl' => $bowerAssetPath . '/components/jqueryui-touch-punch/',
+        'baseUrl' => $bowerAssetPath . '/jqueryui-touch-punch/',
         'js' => [
             'jquery.ui.touch-punch.min.js'
         ],

@@ -448,9 +448,8 @@ class FrontEnd
      * Adding a hidden input for default behaviour without javascript
      * Use button name="move" for real browser (with or without javascript) and IE6/7/8 with javascript
      */
-    public static function surveymover()
+    public static function surveymover(\SurveySession $session)
     {
-        $session = App()->surveySessionManager->current;
         $surveyid = $session->surveyId;
 
         $sMoveNext = "movenext";

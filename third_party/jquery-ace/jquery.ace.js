@@ -37,6 +37,7 @@
 
                     var editorDiv = $('<div/>').appendTo(wrapperDiv).attr('id', id).height(h).width(w);
                     var editor = ace.edit(id);
+                    editor.setTheme('ace/theme/github');
                     if (typeof config.toolbarCallback == 'function')
                     {
                         var toolbarDiv = $('<div/>').prependTo(wrapperDiv).width(w);
@@ -64,10 +65,11 @@
                     textarea.ace('val', textarea.val());
                     editor.setHighlightActiveLine(config.highlightActiveLine);
                     editor.clearSelection();
-                    session.on('change', function(e) {
-                        textarea.val(e.target.getValue());
-                    });
 
+                    // 2 way sync.
+                    editor.on('change', function(e) {
+                        textarea.val(editor.getValue()).change();
+                    });
                 }
 
             });

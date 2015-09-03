@@ -234,4 +234,17 @@ class DropDownListQuestion extends SingleChoiceQuestion
             $result->setHtml($html);
         return $result;
     }
+
+    /**
+     * Return the classes to be added to the question wrapper.
+     * @return []
+     */
+    public function getClasses()
+    {
+        $result = parent::getClasses();
+        $result[] = 'list-dropdown';
+        return $result;
+    }
+
+
 }

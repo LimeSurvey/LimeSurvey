@@ -835,99 +835,46 @@
             return new $class(null);
         }
 
+        protected static function map() {
+            return [
+                self::TYPE_ARRAY_TEN_POINT => \ls\models\questions\TenPointArrayQuestion::class,
+                self::TYPE_NUMERICAL_INPUT => \ls\models\questions\NumericalQuestion::class,
+                self::TYPE_DATE_TIME => \ls\models\questions\DateTimeQuestion::class,
+                self::TYPE_HUGE_TEXT => \ls\models\questions\HugeTextQuestion::class,
+                self::TYPE_LONG_TEXT => \ls\models\questions\LongTextQuestion::class,
+                self::TYPE_SHORT_TEXT => \ls\models\questions\ShortTextQuestion::class,
+                self::TYPE_LIST_WITH_COMMENT => \ls\models\questions\SingleChoiceWithCommentQuestion::class,
+                self::TYPE_DROPDOWN_LIST => \ls\models\questions\DropDownListQuestion::class,
+                self::TYPE_RADIO_LIST => \ls\models\questions\RadioListQuestion::class,
+                self::TYPE_MULTIPLE_SHORT_TEXT => \ls\models\questions\MultipleTextQuestion::class,
+                self::TYPE_RANKING => \ls\models\questions\RankingQuestion::class,
+                self::TYPE_ARRAY => \ls\models\questions\ArrayQuestion::class,
+                self::TYPE_ARRAY_TEXTS => \ls\models\questions\OpenArrayQuestion::class,
+                self::TYPE_ARRAY_NUMBERS => \ls\models\questions\NumericalArrayQuestion::class,
+                self::TYPE_YES_NO => \ls\models\questions\YesNoQuestion::class,
+                self::TYPE_ARRAY_INCREASE_SAME_DECREASE => \ls\models\questions\IncreaseSameDecreaseArrayQuestion::class,
+                self::TYPE_ARRAY_YES_NO_UNCERTAIN => \ls\models\questions\YesNoUncertainArrayQuestion::class,
+                self::TYPE_ARRAY_FIVE_POINT => \ls\models\questions\FivePointArrayQuestion::class,
+                self::TYPE_UPLOAD => \ls\models\questions\UploadQuestion::class,
+                self::TYPE_DISPLAY => \ls\models\questions\DisplayQuestion::class,
+                self::TYPE_MULTIPLE_CHOICE => \ls\models\questions\MultipleChoiceQuestion::class,
+                self::TYPE_MULTIPLE_CHOICE_WITH_COMMENT => \ls\models\questions\MultipleChoiceWithCommentQuestion::class,
+                self::TYPE_GENDER => \ls\models\questions\GenderQuestion::class,
+                self::TYPE_LANGUAGE_SWITCH => \ls\models\questions\LanguageQuestion::class,
+                self::TYPE_MULTIPLE_NUMERICAL_INPUT => \ls\models\questions\MultipleNumberQuestion::class,
+                self::TYPE_FIVE_POINT_CHOICE => \ls\models\questions\FivePointChoiceQuestion::class,
+                self::TYPE_ARRAY_BY_COLUMN => \ls\models\questions\ArrayByColumnQuestion::class,
+                self::TYPE_ARRAY_DUAL_SCALE => \ls\models\questions\DualScaleArrayQuestion::class,
+                self::TYPE_EQUATION => \ls\models\questions\EquationQuestion::class
+            ];
+        }
+
         public static function resolveClass($type) {
-            switch ($type) {
-                case self::TYPE_ARRAY_TEN_POINT:
-                    $class = \ls\models\questions\TenPointArrayQuestion::class;
-                    break;
-                case self::TYPE_NUMERICAL_INPUT:
-                    $class = \ls\models\questions\NumericalQuestion::class;
-                    break;
-                case self::TYPE_DATE_TIME:
-                    $class = \ls\models\questions\DateTimeQuestion::class;
-                    break;
-                case self::TYPE_HUGE_TEXT:
-                    $class = \ls\models\questions\HugeTextQuestion::class;
-                    break;
-                case self::TYPE_LONG_TEXT:
-                    $class = \ls\models\questions\LongTextQuestion::class;
-                    break;
-                case self::TYPE_SHORT_TEXT:
-                    $class = \ls\models\questions\ShortTextQuestion::class;
-                    break;
-                case self::TYPE_LIST_WITH_COMMENT:
-                    $class = \ls\models\questions\SingleChoiceWithCommentQuestion::class;
-                    break;
-                case self::TYPE_DROPDOWN_LIST:
-                case self::TYPE_RADIO_LIST:
-                    $class = \ls\models\questions\SingleChoiceQuestion::class;
-                    break;
-                case self::TYPE_MULTIPLE_SHORT_TEXT:
-                    $class = \ls\models\questions\MultipleTextQuestion::class;
-                    break;
-                case self::TYPE_RANKING:
-                    $class = \ls\models\questions\RankingQuestion::class;
-                    break;
-                case self::TYPE_ARRAY:
-                    $class = \ls\models\questions\ArrayQuestion::class;
-                    break;
-                case self::TYPE_ARRAY_TEXTS:
-                    $class = \ls\models\questions\OpenArrayQuestion::class;
-                    break;
-                case self::TYPE_ARRAY_NUMBERS:
-                    $class = \ls\models\questions\NumericalArrayQuestion::class;
-                    break;
-                case self::TYPE_YES_NO:
-                    $class = \ls\models\questions\YesNoQuestion::class;
-                    break;
-                case self::TYPE_ARRAY_INCREASE_SAME_DECREASE:
-                    $class = \ls\models\questions\IncreaseSameDecreaseArrayQuestion::class;
-                    break;
-                case self::TYPE_ARRAY_YES_NO_UNCERTAIN:
-                    $class = \ls\models\questions\YesNoUncertainArrayQuestion::class;
-                    break;
-                case self::TYPE_ARRAY_FIVE_POINT:
-                    $class = \ls\models\questions\FivePointArrayQuestion::class;
-                    break;
-                case self::TYPE_UPLOAD:
-                    $class = \ls\models\questions\UploadQuestion::class;
-                    break;
-                case self::TYPE_DISPLAY:
-                    $class = \ls\models\questions\DisplayQuestion::class;
-                    break;
-                case self::TYPE_MULTIPLE_CHOICE:
-                    $class = \ls\models\questions\MultipleChoiceQuestion::class;
-                    break;
-                case self::TYPE_MULTIPLE_CHOICE_WITH_COMMENT:
-                    $class = \ls\models\questions\MultipleChoiceWithCommentQuestion::class;
-                    break;
-                case self::TYPE_GENDER:
-                    $class = \ls\models\questions\GenderQuestion::class;
-                    break;
-                case self::TYPE_LANGUAGE_SWITCH:
-                    $class = \ls\models\questions\LanguageQuestion::class;
-                    break;
-
-                case self::TYPE_MULTIPLE_NUMERICAL_INPUT:
-                    $class = \ls\models\questions\MultipleNumberQuestion::class;
-                    break;
-                case self::TYPE_FIVE_POINT_CHOICE:
-                    $class = \ls\models\questions\FivePointChoiceQuestion::class;
-                    break;
-                case self::TYPE_ARRAY_BY_COLUMN:
-                    $class = \ls\models\questions\ArrayByColumnQuestion::class;
-                    break;
-                case self::TYPE_ARRAY_DUAL_SCALE:
-                    $class = \ls\models\questions\DualScaleArrayQuestion::class;
-                    break;
-                case '*':
-                    $class = \ls\models\questions\EquationQuestion::class;
-                    break;
-                default:
-                    throw new \Exception("No class for question type {$type}");
-
+            $map = self::map();
+            if (isset($map[$type])) {
+                return $map[$type];
             }
-            return $class;
+            throw new \Exception("No class for question type {$type}");
         }
 
         public function getTypeName() {
@@ -1357,6 +1304,15 @@
             return array_merge($this->customAttributes, $result);
 
         }
+
+        public function __construct($scenario = 'insert')
+        {
+            parent::__construct($scenario);
+            $map = array_flip(self::map());
+            $this->type = isset($map[static::class]) ? $map[static::class] : null;
+        }
+
+
     }
 
 

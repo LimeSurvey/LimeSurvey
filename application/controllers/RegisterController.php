@@ -1,6 +1,8 @@
 <?php
 namespace ls\controllers;
 use \Yii;
+use \CHttpException;
+use \Survey;
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -68,54 +70,39 @@ class RegisterController extends Controller {
     * @param $aRegisterErrors array of errors when try to register
     * @return
     */
-    public function actionIndex($sid = null)
+    public function actionIndex($id)
     {
+        $survey = Survey::model()->findByPk($id);
 
-        if(!is_null($sid))
-            $iSurveyId=$sid;
-        else
-            $iSurveyId=Yii::app()->request->getPost('sid');
-        $oSurvey=Survey::model()->find("sid=:sid", [':sid'=>$iSurveyId]);
+        if (!isset($survey)) {
+            throw new \CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
 
-        $sLanguage = Yii::app()->request->getParam('lang');
-        if (!$sLanguage)
-        {
-            $sLanguage = Survey::model()->findByPk($iSurveyId)->language;
+        } elseif (!$survey->bool_allowregister) {
+            throw new CHttpException(401,"The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
         }
-
-        if (!$oSurvey){
-            throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }elseif($oSurvey->allowregister!='Y' || !tableExists("{{tokens_{$iSurveyId}}}")){
-            throw new CHttpException(404,"The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
-        }
-        elseif(!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))){
-            $this->redirect(['survey/index','sid'=>$iSurveyId,'lang'=>$sLanguage]);
-        }
-
-        Yii::app()->setLanguage($sLanguage);
-
 
         $event = new PluginEvent('beforeRegister');
-        $event->set('surveyid', $iSurveyId);
-        $event->set('lang', $sLanguage);
-        App()->getPluginManager()->dispatchEvent($event);
+        $event->set('survey', $survey);
+        $event->set('lang', App()->language);
+        $event->dispatch();
+
 
         $this->sMessage=$event->get('sMessage');
         $this->aRegisterErrors=$event->get('aRegisterErrors');
         $iTokenId=$event->get('iTokenId');
         // Test if we come from register form (and submit)
         if((Yii::app()->request->getPost('register')) && !$iTokenId){
-            self::getRegisterErrors($iSurveyId);
+            $this->getRegisterErrors($iSurveyId);
             if(empty($this->aRegisterErrors)){
-                $iTokenId=self::getTokenId($iSurveyId);
+                $iTokenId = $this->getTokenId($iSurveyId);
             }
         }
         if(empty($this->aRegisterErrors) && $iTokenId && $this->sMessage===null){
-            self::sendRegistrationEmail($iSurveyId,$iTokenId);
+            $this->sendRegistrationEmail($survey, $iTokenId);
         }
 
         // Display the page
-        self::display($iSurveyId);
+        $this->display($iSurveyId);
     }
 
     /**

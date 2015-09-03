@@ -256,8 +256,12 @@
         private function __construct()
         {
             self::$instance =& $this;
-
-            $this->em = new ExpressionManager([$this, 'GetVarAttribute'], [App()->surveySessionManager->current, 'getQuestionByCode']);
+            if (null !== $session = App()->surveySessionManager->current) {
+                $callback = [$session, 'getQuestionByCode'];
+            } else {
+                $callback = function() {};
+            }
+            $this->em = new ExpressionManager([$this, 'GetVarAttribute'], $callback);
         }
 
         /**
@@ -2566,11 +2570,8 @@
          * @param array $replacementFields - optional replacement values
          * @param integer $numRecursionLevels - the number of times to recursively subtitute values in this string
          * @param integer $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
+         * @param $session
          * @return string - the original $string with all replacements done.
-         * @internal param bool $debug - deprecated
-         * @internal param bool $staticReplacement - return HTML string without the system to update by javascript
-         * @internal param bool $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
-         * @internal param bool $timeit
          */
 
         public static function ProcessString(
@@ -2578,10 +2579,10 @@
             $questionNum = null,
             $replacementFields = [],
             $numRecursionLevels = 1,
-            $whichPrettyPrintIteration = 1
+            $whichPrettyPrintIteration = 1,
+            SurveySession $session
         ) {
             bP();
-            $session = App()->surveySessionManager->current;
             $LEM =& LimeExpressionManager::singleton();
 
             if (count($replacementFields) > 0) {
@@ -4708,25 +4709,25 @@
 
             if (is_null($gid) && is_null($qid)) {
                 if ($aSurveyInfo['surveyls_description'] != '') {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_description'], 0);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_description'], 0, null);
                     $sPrint = $LEM->GetLastPrettyPrintExpression();
                     $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . gT("Description:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_welcometext'] != '') {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_welcometext'], 0);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_welcometext'], 0, null);
                     $sPrint = $LEM->GetLastPrettyPrintExpression();
                     $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . gT("Welcome:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_endtext'] != '') {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_endtext']);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_endtext'], null);
                     $sPrint = $LEM->GetLastPrettyPrintExpression();
                     $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . gT("End message:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_url'] != '') {
-                    $LEM->ProcessString($aSurveyInfo['surveyls_urldescription'] . " - " . $aSurveyInfo['surveyls_url']);
+                    $LEM->ProcessString($aSurveyInfo['surveyls_urldescription'] . " - " . $aSurveyInfo['surveyls_url'], null);
                     $sPrint = $LEM->GetLastPrettyPrintExpression();
                     $errClass = ($LEM->em->HasErrors() ? 'LEMerror' : '');
                     $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . gT("End URL:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
@@ -4763,7 +4764,7 @@
                         . "<td>" . $gtext . "</td>"
                         . "</tr>\n";
 
-                    $LEM->ProcessString($groupRow, $qid, null, 1, 1);
+                    $LEM->ProcessString($groupRow, $qid, null, 1, 1, null);
                     $out .= $LEM->GetLastPrettyPrintExpression();
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
@@ -4779,7 +4780,7 @@
 
                 $sgqas = explode('|', $q['sgqa']);
                 if (count($sgqas) == 1 && !is_null($q['info']['default'])) {
-                    $LEM->ProcessString(htmlspecialchars($q['info']['default']), $qid, null, 1, 1);// Default value is Y or answer code or go to input/textarea, then we can filter it
+                    $LEM->ProcessString(htmlspecialchars($q['info']['default']), $qid, null, 1, 1, null);// Default value is Y or answer code or go to input/textarea, then we can filter it
                     $_default = $LEM->GetLastPrettyPrintExpression();
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
@@ -4878,7 +4879,7 @@
                     }
                 }
 
-                $LEM->ProcessString($qtext . $help . $prettyValidTip . $attrTable, $qid, null, 1, 1);
+                $LEM->ProcessString($qtext . $help . $prettyValidTip . $attrTable, $qid, null, 1, 1, null);
                 $qdetails = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                 if ($LEM->em->HasErrors()) {
                     ++$errorCount;
@@ -5013,7 +5014,7 @@
                     $sgqaInfo = $LEM->knownVars[$sgqa];
                     $subqText = $sgqaInfo['subqtext'];
                     if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '') {
-                        $LEM->ProcessString(htmlspecialchars($sgqaInfo['default']), $qid, null, 1, 1);
+                        $LEM->ProcessString(htmlspecialchars($sgqaInfo['default']), $qid, null, 1, 1, null);
                         $_default = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
@@ -5028,7 +5029,7 @@
                         . "<td>" . $subqText . "</td>"
                         . "</tr>";
                 }
-                $LEM->ProcessString($sqRows, $qid, null, 1, 1);
+                $LEM->ProcessString($sqRows, $qid, null, 1, 1, null);
                 $sqRows = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                 if ($LEM->em->HasErrors()) {
                     ++$errorCount;
@@ -5075,7 +5076,7 @@
                             . "<td>" . $valInfo[1] . "</td>"
                             . "</tr>\n";
                     }
-                    $LEM->ProcessString($answerRows, $qid, null, 1, 1);
+                    $LEM->ProcessString($answerRows, $qid, null, 1, 1, null);
                     $answerRows = viewHelper::filterScript($LEM->GetLastPrettyPrintExpression());
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;

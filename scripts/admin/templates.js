@@ -1,30 +1,19 @@
-// based on TTabs from http://interface.eyecon.ro/
-
 $(document).ready(function(){
 
-    $('.ace:not(.none)').ace({
-        'mode' : editorfiletype,
-        'toolbarCallback' : createToolbar
+    $('.ace').each(function(i, elem) {
+        $(elem).ace({
+            'mode' : $(elem).attr('data-type') || 'html',
+            'toolbarCallback' : createToolbar
+        });
     });
-    $('#iphone').click(function(){
-      $('#previewiframe').css("width", "320px");
-      $('#previewiframe').css("height", "396px");
-    });
-    $('#x640').click(function(){
-      $('#previewiframe').css("width", "640px");
-      $('#previewiframe').css("height", "480px");
-    });
-    $('#x800').click(function(){
-      $('#previewiframe').css("width", "800px");
-      $('#previewiframe').css("height", "600px");
-    });
-    $('#x1024').click(function(){
-      $('#previewiframe').css("width", "1024px");
-      $('#previewiframe').css("height", "768px");
-    });
-    $('#full').click(function(){
-      $('#previewiframe').css("width", "95%");
-      $('#previewiframe').css("height", "768px");
+
+    $('a.resize').click(function(e) {
+        e.preventDefault();
+        var $elem = $(this);
+        $('#preview').animate({
+            "width": $elem.attr('data-width'),
+            "height": $elem.attr('data-height')
+        });
     });
 });
 
@@ -53,4 +42,54 @@ function createToolbar(element, editor)
 
 
 
+}
+
+$('#save').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var $editor = $('#editor');
+    $('#yw0').elfinder('instance').request({
+        options: {type: 'post'},
+        data: {
+            cmd: 'put',
+            target: $editor.attr('data-hash'),
+            content: $editor.val()
+        },
+        notify: {type: 'save', cnt: 1},
+        syncOnFail: true
+    }).done(function(data) {
+        $.notify({
+            // options
+            message: 'File saved'
+        }, {
+            // settings
+            type: 'success'
+        });
+    });
+});
+
+
+function loadFile(file, elFinder) {
+    var $editor = $('#editor');
+    var session = $editor.ace('get').session;
+    if ($.inArray(file.mime, ["text/html", "text/css", "text/plain"]) > -1) {
+        $editor.attr('data-hash', file.hash);
+        elFinder.request({
+            data: {cmd: 'get', target: file.hash, current: file.phash, conv: 1},
+            preventDefault: true
+        }).done(function (data) {
+            switch(file.mime) {
+                case 'text/html':
+                    session.setMode('ace/mode/html');
+                    break;
+                case 'text/css':
+                    session.setMode('ace/mode/css');
+                    break;
+                case 'text/plain':
+                    session.setMode('ace/mode/text');
+                    break;
+            }
+            $editor.ace('val', data.content);
+        });
+    }
 }

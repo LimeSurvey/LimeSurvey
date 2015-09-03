@@ -3,7 +3,7 @@
     <tr>
         <td class="assessment-heading">
             {ASSESSMENT_HEADING}
-        </td>
+        </td> 
     </tr>
     <tr>
         <td class="assessments-container">

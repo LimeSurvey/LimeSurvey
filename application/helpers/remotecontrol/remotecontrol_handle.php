@@ -150,8 +150,9 @@ class remotecontrol_handle
                         'surveyls_language' => $sSurveyLanguage,
                     );
 
-                    $langsettings = new SurveyLanguageSetting;
-                    $langsettings->insertNewSurvey($aInsertData);
+                    $langsettings = new SurveyLanguageSetting();
+                    $langsettings->setAttributes($aInsertData, false);
+                    $langsettings->save();
                     Permission::model()->giveAllSurveyPermissions(App()->user->id, $iNewSurveyid);
 
                     return (int)$iNewSurveyid;

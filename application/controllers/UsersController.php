@@ -30,6 +30,7 @@ class UsersController extends Controller
             $identity = new PluginIdentity($plugin);
             if ($identity->authenticate()) {
                 App()->user->login($identity);
+                App()->setLanguage(App()->user->getModel()->getLanguage());
                 $this->redirect(App()->user->getReturnUrl(['admin/']));
             } else {
                 App()->user->setFlash(\TbHtml::ALERT_COLOR_DANGER, gT("Authentication failed."));

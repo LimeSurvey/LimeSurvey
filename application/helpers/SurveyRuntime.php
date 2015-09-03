@@ -98,7 +98,7 @@ class SurveyRuntime {
                     $g = $session->getGroups()[$gseq];
                     if ($g->isRelevant($session->response))
                     {
-                        $gtitle = LimeExpressionManager::ProcessString($g['group_name']);
+                        $gtitle = LimeExpressionManager::ProcessString($g['group_name'], $session);
                         echo '<h3>' . flattenText($gtitle) . "</h3>";
                     }
                     $lastGseq = $stepInfo['gseq'];
@@ -121,12 +121,12 @@ class SurveyRuntime {
 
             if ($session->getFormat() == Survey::FORMAT_GROUP)
             {
-                $indexlabel = LimeExpressionManager::ProcessString($g['group_name']);
+                $indexlabel = LimeExpressionManager::ProcessString($g['group_name'], $session);
                 $sButtonText=gT('Go to this group');
             }
             else
             {
-                $indexlabel = LimeExpressionManager::ProcessString($q[3]);
+                $indexlabel = LimeExpressionManager::ProcessString($q[3], $session);
                 $sButtonText=gT('Go to this question');
             }
 

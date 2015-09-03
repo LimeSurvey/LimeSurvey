@@ -80,7 +80,7 @@ class templates extends Survey_Common_Action
     public function tmp($id)
     {
       $iTime= preg_replace("/[^0-9]$/", '', $id);
-      $sFile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."template_temp_{$iTime}.html";
+      $sFile = App()->runtimePath . "/template_temp_{$iTime}.html";
 
       if(!is_file($sFile) || !file_exists($sFile)) die();
       readfile($sFile);
@@ -623,7 +623,6 @@ class templates extends Survey_Common_Action
     }
 
     /**
-    * Load CodeMirror editor and various files information.
     *
     * @access protected
     * @param string $templatename
@@ -636,11 +635,9 @@ class templates extends Survey_Common_Action
     * @param array $myoutput
     * @return void
     */
-    protected function _templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput)
+    protected function _templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles)
     {
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $tempurl = Yii::app()->getConfig("tempurl");
-
+        $tempdir = App()->runtimePath;
         Yii::app()->loadHelper("admin/template");
         $aData = [];
         $time = date("ymdHis");
@@ -653,29 +650,9 @@ class templates extends Survey_Common_Action
         $aData['templateclasseditormode'] = $templateclasseditormode;
 
         // The following lines are forcing the browser to refresh the templates on each save
-        @$fnew = fopen("$tempdir/template_temp_$time.html", "w+");
         $aData['time'] = $time;
 
-        if (!$fnew) {
-            $aData['filenotwritten'] = true;
-        }
-        else
-        {
-            @fwrite($fnew, getHeader());
-            foreach ($cssfiles as $cssfile)
-            {
-                $myoutput = str_replace($cssfile['name'], $cssfile['name'] . "?t=$time", $myoutput);
-            }
-            $myoutput = implode("\n", $myoutput);
 
-            App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-
-            App()->getClientScript()->render($myoutput);
-            @fwrite($fnew, $myoutput);
-            @fclose($fnew);
-        }
         if (Yii::app()->session['templateeditormode'] !== 'default') {
             $sTemplateEditorMode = Yii::app()->session['templateeditormode'];
         } else {
@@ -701,7 +678,6 @@ class templates extends Survey_Common_Action
         $aData['files'] = $files;
         $aData['cssfiles'] = $cssfiles;
         $aData['otherfiles'] = $otherfiles;
-        $aData['tempurl'] = $tempurl;
         $aData['time'] = $time;
         $aData['sEditorFileType'] = $sEditorFileType;
         $aData['sTemplateEditorMode'] = $sTemplateEditorMode;
@@ -871,7 +847,6 @@ class templates extends Survey_Common_Action
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
         $templatename = \ls\helpers\Sanitize::dirname($templatename);
-        $screenname = autoUnescape($screenname);
 
         // Checks if screen name is in the list of allowed screen names
         if (multiarray_search($screens, 'id', $screenname) === false)
@@ -923,25 +898,32 @@ class templates extends Survey_Common_Action
         $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
         // Set this so common.php doesn't throw notices about undefined variables
-        $thissurvey['active'] = 'N';
+        $survey = new Survey();
+        $survey->format = \Survey::FORMAT_GROUP;
+        $session = new SurveySession(null, new DummyResponse($survey), 0);
+        $session->setSurvey($survey);
+        $survey->languagesettings = [
+            App()->language => $languageSettings = new SurveyLanguageSetting()
+        ];
+
 
         // FAKE DATA FOR TEMPLATES
-        $thissurvey['sid'] = 12345;
-        $thissurvey['name'] = gT("Template Sample");
-        $thissurvey['description'] =
+        $survey['sid'] = 12345;
+        $languageSettings->title = gT("Template Sample");
+        $languageSettings->description =
             "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
             "<p>".gT("But this one isn't.")."<p>";
-        $thissurvey['welcome'] =
+        $languageSettings->welcometext =
             "<p>".gT('Welcome to this sample survey')."<p>" .
             "<p>".gT('You should have a great time doing this')."<p>";
-        $thissurvey['allowsave'] = "Y";
-        $thissurvey['active'] = "Y";
-        $thissurvey['tokenanswerspersistence'] = "Y";
-        $thissurvey['templatedir'] = $templatename;
-        $thissurvey['format'] = "G";
-        $thissurvey['surveyls_url'] = "http://www.limesurvey.org/";
-        $thissurvey['surveyls_urldescription'] = gT("Some URL description");
-        $thissurvey['usecaptcha'] = "A";
+        $survey->bool_allowsave = true;
+        $survey->bool_active = true;
+        $survey['tokenanswerspersistence'] = "Y";
+
+
+        $languageSettings->url = "http://www.limesurvey.org/";
+        $languageSettings->urldescription = gT("Some URL description");
+        $survey->usecaptcha = "A";
         $percentcomplete = \ls\helpers\FrontEnd::makegraph(6, 10);
 
         $groupname = gT("Group 1: The first lot of questions");
@@ -968,7 +950,6 @@ class templates extends Survey_Common_Action
         $templateurl = \Template::getTemplateURL($templatename);
 
         // Save these variables in an array
-        $aData['thissurvey'] = $thissurvey;
         $aData['percentcomplete'] = $percentcomplete;
         $aData['groupname'] = $groupname;
         $aData['groupdescription'] = $groupdescription;
@@ -990,196 +971,6 @@ class templates extends Survey_Common_Action
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
 
-        $myoutput[] = "";
-        switch ($screenname)
-        {
-            case 'surveylist':
-                unset($files);
-                $surveylist = [
-                "nosid" => gT("You have not provided a survey identification number"),
-                "contact" => sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
-                "listheading" => gT("The following surveys are available:"),
-                "list" => $this->getController()->render('/admin/templates/templateeditor_surveylist_view', [], true),
-                ];
-                $aData['surveylist'] = $surveylist;
-
-                $myoutput[] = "";
-                foreach ($SurveyList as $qs)
-                {
-                    $files[] = ["name" => $qs];
-                    $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/$qs", $aData));
-                }
-                break;
-
-            case 'question':
-                unset($files);
-                foreach ($Question as $qs)
-                    $files[] = ["name" => $qs];
-
-                $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', [], true);
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/startpage.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/survey.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/startgroup.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/groupdescription.pstpl", $aData));
-
-                $aReplacements = [
-                'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
-                'QUESTION_CODE' => '1a',
-                'QUESTIONHELP' => 'helpful text',
-                'QUESTION_MANDATORY' => gT("*"),
-                'QUESTION_MAN_CLASS' => ' mandatory',
-                'QUESTION_ESSENTIALS' => 'id="question1"',
-                'QUESTION_CLASS' => 'list-radio',
-                'QUESTION_NUMBER' => '1',
-                ];
-                $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', [], true);
-                $aData['aReplacements'] = $aReplacements;
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/question.pstpl", $aData));
-
-                $aReplacements = [
-                'QUESTION_TEXT' => gT('Please explain something in detail:'),
-                'QUESTION_CODE' => '2a',
-                'QUESTION_ESSENTIALS' => 'id="question2"',
-                'QUESTION_CLASS' => 'text-long',
-                'QUESTION_NUMBER' => '2',
-                ];
-                $aReplacements['ANSWER'] = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', ['alt' => true], true);
-                $aData['aReplacements'] = $aReplacements;
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/question.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/endgroup.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/navigator.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/endpage.pstpl", $aData));
-                break;
-
-            case 'welcome':
-                unset($files);
-                $myoutput[] = "";
-                foreach ($Welcome as $qs)
-                {
-                    $files[] = ["name" => $qs];
-                    $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/$qs", $aData));
-                }
-                break;
-
-            case 'register':
-                unset($files);
-                foreach ($Register as $qs)
-                    $files[] = ["name" => $qs];
-
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/survey.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/register.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), [], $aData);
-                $myoutput[] = "\n";
-                break;
-
-            case 'save':
-                unset($files);
-                foreach ($Save as $qs)
-                    $files[] = ["name" => $qs];
-
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/save.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), [], $aData);
-                $myoutput[] = "\n";
-                break;
-
-            case 'load':
-                unset($files);
-                foreach ($Load as $qs)
-                    $files[] = ["name" => $qs];
-
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/load.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), [], $aData);
-                $myoutput[] = "\n";
-                break;
-
-            case 'clearall':
-                unset($files);
-                foreach ($Clearall as $qs)
-                    $files[] = ["name" => $qs];
-
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/clearall.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), [], $aData);
-                $myoutput[] = "\n";
-                break;
-
-            case 'completed':
-                unset($files);
-                $myoutput[] = "";
-                foreach ($CompletedTemplate as $qs)
-                {
-                    $files[] = ["name" => $qs];
-                    $myoutput = array_merge($myoutput, doreplacement(Template::getTemplatePath($templatename) . "/$qs", $aData));
-                }
-                break;
-
-            case 'printablesurvey':
-                unset($files);
-                foreach ($printablesurveytemplate as $qs)
-                {
-                    $files[] = ["name" => $qs];
-                }
-
-                $questionoutput = [];
-                foreach (file("$templatedir/print_question.pstpl") as $op)
-                {
-                    $questionoutput[] = \ls\helpers\Replacements::templatereplace($op, [
-                        'QUESTION_NUMBER' => '1',
-                        'QUESTION_CODE' => 'Q1',
-                        'QUESTION_MANDATORY' => gT('*'),
-                        // If there are conditions on a question, list the conditions.
-                        'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',
-                        'QUESTION_CLASS' => ' mandatory list-radio',
-                        'QUESTION_TYPE_HELP' => gT('Please choose *only one* of the following:'),
-                        // (not sure if this is used) mandatory error
-                        'QUESTION_MAN_MESSAGE' => '',
-                        // (not sure if this is used) validation error
-                        'QUESTION_VALID_MESSAGE' => '',
-                        // (not sure if this is used) file validation error
-                        'QUESTION_FILE_VALID_MESSAGE' => '',
-                        'QUESTION_TEXT' => gT('This is a sample question text. The user was asked to pick an entry.'),
-                        'QUESTIONHELP' => gT('This is some help text for this question.'),
-                        'ANSWER' =>
-                            $this->getController()->render('/admin/templates/templateeditor_printablesurvey_quesanswer_view',
-                                [
-                                    'templateurl' => $templateurl
-                                ], true),
-                    ], $aData);
-                }
-                $groupoutput = [];
-                $groupoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/print_group.pstpl"),
-                    ['QUESTIONS' => implode(' ', $questionoutput)], $aData);
-
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/print_survey.pstpl"), [
-                    'GROUPS' => implode(' ', $groupoutput),
-                    'FAX_TO' => gT("Please fax your completed survey to:") . " 000-000-000",
-                    'SUBMIT_TEXT' => gT("Submit your survey."),
-                    'HEADELEMENTS' => getPrintableHeader(),
-                    'SUBMIT_BY' => sprintf(gT("Please submit by %s"), date('d.m.y')),
-                    'THANKS' => gT('Thank you for completing this survey.'),
-                    'END' => gT('This is the survey end message.')
-                ], $aData);
-                break;
-
-            case 'printanswers':
-                unset($files);
-                foreach ($printtemplate as $qs)
-                {
-                    $files[] = ["name" => $qs];
-                }
-
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/startpage.pstpl"), [], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/printanswers.pstpl"),
-                    ['ANSWERTABLE' => $printoutput], $aData);
-                $myoutput[] = \ls\helpers\Replacements::templatereplace(file_get_contents("$templatedir/endpage.pstpl"), [], $aData);
-
-                $myoutput[] = "\n";
-                break;
-        }
-        $myoutput[] = "</html>";
 
         if (is_array($files)) {
             $match = 0;
@@ -1226,7 +1017,7 @@ class templates extends Survey_Common_Action
         $aViewUrls['templateeditorbar_view'][] = $aData;
 
         if ($showsummary)
-            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles, $myoutput));
+            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $otherfiles));
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'admin_core.js');
         return $aViewUrls;

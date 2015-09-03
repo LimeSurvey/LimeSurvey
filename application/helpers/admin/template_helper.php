@@ -13,9 +13,9 @@
 */
 
 
-function doreplacement($file,$data) { //Produce sample page from template file
+function doreplacement($file,$data, SurveySession $session) { //Produce sample page from template file
     $aReplacements=isset($data['aReplacements']) ? $data['aReplacements'] : array();
-    return (array)\ls\helpers\Replacements::templatereplace(file_get_contents($file), $aReplacements, $data);
+    return (array)\ls\helpers\Replacements::templatereplace(file_get_contents($file), $aReplacements, $data, null, $session);
 }
 
 

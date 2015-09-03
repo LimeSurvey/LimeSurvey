@@ -18,7 +18,7 @@ if (!defined('BASEPATH'))
  * @property Question[] $questions
  * @property boolean $bool_usetokens
  * @property-read boolean $isExpired
- * @property-read SurveyLanguageSetting[] $languagesettings
+ * @property SurveyLanguageSetting[] $languagesettings
  * @property QuestionGroup[] $groups
  * @property string $admin
  * @property string $adminEmail
@@ -155,6 +155,7 @@ class Survey extends ActiveRecord
     public function getAdminEmail() {
         return $this->attributes['adminemail'];
     }
+
     protected function localizedProperty($name, $prefix = 'surveyls_') {
         $property = $prefix . $name;
         if (isset($this->languagesettings[App()->language])) {
