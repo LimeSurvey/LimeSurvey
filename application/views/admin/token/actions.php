@@ -1,2 +1,0 @@
-<a class="ui-icon ui-icon-pencil" onclick="if (confirm('<?php eT("Are you sure you want to delete the selected entries?","js");?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/tokens/sa/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=$id&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}" title="<?php eT("Delete the selected entries");?>"></a>
-<a class="ui-icon"></a>
