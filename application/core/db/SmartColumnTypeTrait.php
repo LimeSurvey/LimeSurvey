@@ -11,7 +11,7 @@ trait SmartColumnTypeTrait
      * @param string $type
      */
     protected function splitColumnType($type) {
-        $regex = '/^([a-zA-Z ]+)\s*(\(.+\))?\s*(.*)$/';
+        $regex = '/^([a-zA-Z]+ ?)\s*(\(.+\))?\s*(.*)$/';
         if (preg_match($regex, $type, $matches)) {
             return [
                 'base' => trim($matches[1]),
@@ -25,7 +25,6 @@ trait SmartColumnTypeTrait
     protected function parseType($type, callable $baseParser) {
         $parts = $this->splitColumnType($type);
         $base = $baseParser($parts['base']);
-//        vd($base);
         $baseParts = $this->splitColumnType($base);
         if (!empty($parts['arguments'])) {
             $baseParts['arguments'] = $parts['arguments'];
