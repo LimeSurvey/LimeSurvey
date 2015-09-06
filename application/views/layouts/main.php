@@ -12,7 +12,6 @@
             $cs->registerScriptFile(App()->params['bower-asset'] . '/jquery-ui/jquery-ui.min.js');
             $cs->registerScriptFile(App()->params['bower-asset'] . '/remarkable-bootstrap-notify/bootstrap-notify.min.js');
             $cs->registerScriptFile('/scripts/unobtrusive.js');
-//            $cs->registerCssFile('https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/darkly/bootstrap.min.css');
             $cs->registerCssFile(App()->theme->baseUrl . '/css/style.css');
 
         ?>

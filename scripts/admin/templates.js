@@ -7,14 +7,32 @@ $(document).ready(function(){
         });
     });
 
-    $('a.resize').click(function(e) {
+
+    $('#save').on('click', function(e) {
         e.preventDefault();
-        var $elem = $(this);
-        $('#preview').animate({
-            "width": $elem.attr('data-width'),
-            "height": $elem.attr('data-height')
+        e.stopPropagation();
+        var $editor = $('#editor');
+        $('#fileBrowser').elfinder('instance').request({
+            options: {type: 'post'},
+            data: {
+                cmd: 'put',
+                target: $editor.attr('data-hash'),
+                content: $editor.val()
+            },
+            notify: {type: 'save', cnt: 1},
+            syncOnFail: true
+        }).done(function(data) {
+            $(document).trigger('saveFile');
+            $.notify({
+                // options
+                message: 'File saved'
+            }, {
+                // settings
+                type: 'success'
+            });
         });
     });
+
 });
 
 // Creates a toolbar.
@@ -40,33 +58,15 @@ function createToolbar(element, editor)
         editor.commands.exec('replace', editor);
     });
 
+    $('<button/>').text('Replace (ctrl + H)').attr('type', 'button').appendTo(element).on('click', function()
+    {
+        editor.commands.exec('goto', editor);
+    });
+
 
 
 }
 
-$('#save').on('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var $editor = $('#editor');
-    $('#yw0').elfinder('instance').request({
-        options: {type: 'post'},
-        data: {
-            cmd: 'put',
-            target: $editor.attr('data-hash'),
-            content: $editor.val()
-        },
-        notify: {type: 'save', cnt: 1},
-        syncOnFail: true
-    }).done(function(data) {
-        $.notify({
-            // options
-            message: 'File saved'
-        }, {
-            // settings
-            type: 'success'
-        });
-    });
-});
 
 
 function loadFile(file, elFinder) {

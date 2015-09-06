@@ -5,9 +5,21 @@ class FileManagerWidget extends CWidget{
     public $context;
     public $dialog = false;
     public $key;
-    public $height = 500;
     public $callback;
-
+    public $htmlOptions = [];
+    public $clientOptions = [
+        'ui' => [
+            ['toolbar', 'places', 'tree', 'path', 'stat']
+        ],
+        'uiOptions' => [
+            'cwd' => [
+                'listView' => [
+                    'columns' => ['name', 'perm', 'date', 'size', 'kind'],
+                ],
+                'oldSchool' => false
+            ]
+        ]
+    ];
     /**
      * All these options are copies from elFinder.options.js.
      *
@@ -15,8 +27,7 @@ class FileManagerWidget extends CWidget{
     public $toolbar = [
         ['back', 'forward'],
         ['netmount'],
-        // ['reload'],
-        // ['home', 'up'],
+        ['reload'], ['home', 'up'],
         ['mkdir', 'mkfile', 'upload'],
         ['open', 'download', 'getfile'],
         ['info', 'chmod'],
@@ -39,7 +50,6 @@ class FileManagerWidget extends CWidget{
     public $disabledCommands = [
         'archive',
         'download',
-        'view',
         'quicklook',
         'open',
         'edit'
@@ -91,8 +101,7 @@ class FileManagerWidget extends CWidget{
     {
         parent::run();
 //        vdd(array_diff($this->commands, $this->disabledCommands));
-        $clientOptions = [
-            'height' => $this->height,
+        $clientOptions = \TbArray::merge($this->clientOptions, [
             'url' => App()->createUrl('files/browse', ['context' => $this->context, 'key' => $this->key]),
             'lang' => App()->language,
 //            'resizable' => !$dialog,
@@ -138,7 +147,7 @@ class FileManagerWidget extends CWidget{
 //            'handlers' => [
 //                'open' => new CJavaScriptExpression('function() { debugger; }')
 //            ]
-        ];
+        ]);
         if ($this->dialog) {
             $clientOptions['getFileCallback'] = new \CJavaScriptExpression('function(file) {
             debugger;
@@ -177,12 +186,15 @@ class FileManagerWidget extends CWidget{
         ]) as $file) {
             $cs->registerCssFile($url . '/css/' . $file);
         }
+
+
+        $htmlOptions = $this->htmlOptions;
+        $htmlOptions['id'] = $this->getId();
+
         $cs->registerScript('init',
             "$('#{$this->getId()}').elfinder(" . \CJavaScript::encode($clientOptions) . ");",
             \CClientScript::POS_READY);
-        echo CHtml::tag('div', [
-            'id' => $this->getId(),
-        ], '');
+        echo CHtml::tag('div', $htmlOptions, '');
     }
 
 

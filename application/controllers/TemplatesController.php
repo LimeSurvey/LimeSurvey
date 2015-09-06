@@ -13,21 +13,23 @@ use Cake\Utility\Hash;
 class TemplatesController extends Controller
 {
     public $layout = 'main';
-    public function actionIndex($name = 'default', $page = 'welcome')
+    public function actionIndex($name = 'default', $screen = 'welcome')
     {
         $template = [
             'name' => \Template::templateNameFilter($name),
             'writable' => \Template::isStandardTemplate(\Template::templateNameFilter($name))
         ];
-        $screen = Hash::get(Hash::extract($this->screens(), "{n}[id=$page]"), 0, null);
-        $this->menus['template'] = [
+        $screen = Hash::get(Hash::extract($this->screens(), "{n}[id=$screen]"), 0, null);
+//        $this->menus['template'] = [
+//            'template' => $template,
+//            'screen' => $screen,
+//            'screens' => $this->screens()
+//        ];
+        return $this->render('editor', [
             'template' => $template,
             'screen' => $screen,
             'screens' => $this->screens()
-        ];
-        return $this->render('editor', [
-            'template' => $template,
-            'screen' => $screen
+
         ]);
 
     }

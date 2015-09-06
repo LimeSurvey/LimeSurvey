@@ -136,10 +136,10 @@ $internalConfig = array(
             'loader' => $loader // Composer classloader.
         ],
         'yiiwheels' => [
-            'class' => 'YiiWheels'
+            'class' => \YiiWheels::class
         ],
         'authManager' => [
-            'class' => 'AuthManager'
+            'class' => \AuthManager::class
         ],
         'themeManager' => [
             'class' => ThemeManager::class,

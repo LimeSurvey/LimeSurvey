@@ -53,6 +53,7 @@
             "application/core/db",
             "application/core",
             "application/vendor/2amigos/yiiwheels",
+            "application/vendor/crisu83/yiistrap/widgets",
             "application/vendor/yiisoft/yii/framework/cli/commands",
             "application/components",
             "application/helpers"

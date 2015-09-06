@@ -67,3 +67,11 @@ table.upgrade tr.disabled {
 .tab-pane {
     margin-top: 20px;
 }
+
+.navbar:not(:last-of-type) {
+    margin-bottom: 0px;
+}
+
+body {
+    margin-top: 50px;
+}

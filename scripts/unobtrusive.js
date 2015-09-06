@@ -65,4 +65,15 @@
     });
 
 
+    // Support for animated resizing of some target element.
+    $(document).on('click', '[data-width][data-height][data-target]', function(e) {
+        e.preventDefault();
+        var $elem = $(this);
+        $($elem.attr('data-target')).animate({
+            "width": $elem.attr('data-width'),
+            "height": $elem.attr('data-height')
+        });
+    })
+
+
 })(jQuery);

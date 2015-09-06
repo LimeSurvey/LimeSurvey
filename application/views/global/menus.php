@@ -2,7 +2,7 @@
 $items = require __DIR__ . '/../global/menu.php';
 $this->widget(\TbNavbar::class, [
     'brandUrl' => ['surveys/index'],
-    'display' => null,
+    'display' => TbHtml::NAVBAR_DISPLAY_FIXEDTOP,
     'fluid' => true,
     'items' => [
         [
