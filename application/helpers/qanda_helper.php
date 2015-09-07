@@ -940,8 +940,6 @@ function do_date($ia)
 
     $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
     $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
-    $sMindatetailor='';
-    $sMaxdatetailor='';
 
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='')
