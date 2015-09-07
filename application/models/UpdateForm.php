@@ -566,6 +566,8 @@ class UpdateForm extends CFormModel
             {
                 $next_update_check = $today->add(new DateInterval('P1D'));
                 Yii::app()->session['next_update_check'] = $next_update_check;
+                Yii::app()->session['update_result'] = false;
+                
             }
         }
         else 
