@@ -974,7 +974,7 @@ function do_date($ia)
         {
             $maxdate=$date_max;
         }
-        elseif (ctype_digit($date_min) && (strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
+        elseif (ctype_digit($date_max) && (strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
         {
             // backward compatibility: if only a year is given, add month and day
             $maxdate=$date_max.'-12-31';
