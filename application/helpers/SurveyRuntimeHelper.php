@@ -262,8 +262,8 @@ class SurveyRuntimeHelper {
                 }
                 elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
-                    LimeExpressionManager::JumpTo(1, false, false, true);
-                    $_SESSION[$LEMsessid]['step']=1;
+                    $moveResult = LimeExpressionManager::NavigateForwards();
+                    //$_SESSION[$LEMsessid]['step']=1;
                 }
             }
             elseif($surveyid != LimeExpressionManager::getLEMsurveyId())

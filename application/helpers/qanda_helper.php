@@ -951,7 +951,7 @@ function do_date($ia)
         {
             $mindate=$date_min;
         }
-        elseif ((strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
+        elseif (ctype_digit($date_min) && (strlen($date_min)==4) && ($date_min>=1900) && ($date_min<=2099))
         {
             // backward compatibility: if only a year is given, add month and day
             $mindate=$date_min.'-01-01';
@@ -959,16 +959,11 @@ function do_date($ia)
         else
         {
             $mindate='{'.$aQuestionAttributes['date_min'].'}';
-            // get the LEMtailor ID, remove the span tags
-            $sMindatespan=LimeExpressionManager::ProcessString($mindate, $ia[0],NULL, false, 1, 1);
-            preg_match("/LEMtailor_Q_[0-9]{1,7}_[0-9]{1,3}/", $sMindatespan, $matches);
-            if (isset($matches[0]))
-                $sMindatetailor=$matches[0];
         }
     }
     else
     {
-        $mindate='1900-01-01';
+        $mindate='1900-01-01'; // Why 1900 ? 
     }
 
     // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
@@ -979,7 +974,7 @@ function do_date($ia)
         {
             $maxdate=$date_max;
         }
-        elseif ((strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
+        elseif (ctype_digit($date_min) && (strlen($date_max)==4) && ($date_max>=1900) && ($date_max<=2099))
         {
             // backward compatibility: if only a year is given, add month and day
             $maxdate=$date_max.'-12-31';
@@ -987,16 +982,11 @@ function do_date($ia)
         else
         {
             $maxdate='{'.$aQuestionAttributes['date_max'].'}';
-            // get the LEMtailor ID, remove the span tags
-            $sMaxdatespan=LimeExpressionManager::ProcessString($maxdate, $ia[0],NULL, false, 1, 1);
-            preg_match("/LEMtailor_Q_[0-9]{1,7}_[0-9]{1,3}/", $sMaxdatespan, $matches);
-            if (isset($matches[0]))
-                $sMaxdatetailor=$matches[0];
         }
     }
     else
     {
-        $maxdate='2037-12-31';
+        $maxdate='2037-12-31'; // Why 2037 ? 
     }
 
     if (trim($aQuestionAttributes['dropdown_dates'])==1) {
@@ -1259,54 +1249,13 @@ function do_date($ia)
         <input class='popupdate' type=\"text\" size=\"{$iLength}\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"{$iLength}\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='".App()->language."'  />
-        <input  type='hidden' name='datemin{$ia[1]}' id='datemin{$ia[1]}' value=\"{$mindate}\"    />
-        <input  type='hidden' name='datemax{$ia[1]}' id='datemax{$ia[1]}' value=\"{$maxdate}\"   />
         </p>";
 
         // adds min and max date as a hidden element to the page so EM creates the needed LEM_tailor_Q_XX sections
-        $sHiddenHtml="";
-        if (!empty($sMindatetailor))
-        {
-            $sHiddenHtml.=$sMindatespan;
-        }
-        if (!empty($sMaxdatetailor))
-        {
-            $sHiddenHtml.=$sMaxdatespan;
-        }
-        if (!empty($sHiddenHtml))
-        {
-            $answer.="<div class='hidden nodisplay' style='display:none'>{$sHiddenHtml}</div>";
-        }
-
-        // following JS is for setting datepicker limits on-the-fly according to variables given in date_min/max attributes
-        // works with full dates (format: YYYY-MM-DD, js not needed), only a year, for backward compatibility (YYYY, js not needed),
-        // variable names which refer to another date question or expressions.
-        // Actual conversion of date formats is handled in LEMval()
-
-
-        if (!empty($sMindatetailor) || !empty($sMaxdatetailor))
-        {
-            $answer.="<script>
-                $(document).ready(function() {
-                        $('.popupdate').change(function() {
-
-                            ";
-                if (!empty($sMindatetailor))
-                    $answer.="
-                        $('#datemin{$ia[1]}').attr('value',
-                        document.getElementById('{$sMindatetailor}').innerHTML);
-                    ";
-                if (!empty($sMaxdatetailor))
-                    $answer.="
-                        $('#datemax{$ia[1]}').attr('value',
-                        document.getElementById('{$sMaxdatetailor}').innerHTML);
-                    ";
-
-            $answer.="
-                        });
-                    });
-                </script>";
-        }
+        $answer.="<div class='hidden nodisplay' style='display:none'>"
+               . "<div id='datemin{$ia[1]}'>{$mindate}</div>"
+               . "<div id='datemax{$ia[1]}'>{$maxdate}</div>"
+               . "</div>";
 
         if (trim($aQuestionAttributes['hide_tip'])==0) {
             $answer.="<p class=\"tip\">".sprintf(gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
