@@ -330,12 +330,22 @@ class CheckIntegrity extends Survey_Common_Action
         $oCriteria = new CDbCriteria;
         $oCriteria->join = 'LEFT JOIN {{users}} u ON {{permissions}}.uid=u.uid';
         $oCriteria->condition = '(u.uid IS NULL)';
+        if (App()->db->driverName=='pgsql')
+        {
+            $oCriteria->join = 'USING {{users}} u';
+            $oCriteria->condition = '{{permissions}}.uid=u.uid AND (u.uid IS NULL)';
+        }
         Permission::model()->deleteAll($oCriteria);
 
         // Delete survey permissions if the survey does not exist
         $oCriteria = new CDbCriteria;
         $oCriteria->join = 'LEFT JOIN {{surveys}} s ON {{permissions}}.entity_id=s.sid';
         $oCriteria->condition = "(s.sid IS NULL AND entity='survey')";
+        if (App()->db->driverName=='pgsql')
+        {
+            $oCriteria->join = 'USING {{surveys}} s';
+            $oCriteria->condition = "{{permissions}}.entity_id=s.sid AND (s.sid IS NULL AND entity='survey')";
+        }
         Permission::model()->deleteAll($oCriteria);
 
 
