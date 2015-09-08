@@ -1420,15 +1420,17 @@ class tokens extends Survey_Common_Action
                     $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
                     '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
                     global $maildebug;
+                    $modsubject = $sSubject[$emrow['language']];
+                    $modmessage = $sMessage[$emrow['language']];
                     foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {
                         $url = $fieldsarray["{{$key}URL}"];
                         if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
-                        $sSubject[$emrow['language']] = str_replace("@@{$key}URL@@", $url, $sSubject[$emrow['language']]);
-                        $sMessage[$emrow['language']] = str_replace("@@{$key}URL@@", $url, $sMessage[$emrow['language']]);
+                        $modsubject = str_replace("@@{$key}URL@@", $url, $modsubject);
+                        $modmessage = str_replace("@@{$key}URL@@", $url, $modmessage);
                     }
-                    $modsubject = Replacefields($sSubject[$emrow['language']], $fieldsarray);
-                    $modmessage = Replacefields($sMessage[$emrow['language']], $fieldsarray);
+                    $modsubject = Replacefields($modsubject, $fieldsarray);
+                    $modmessage = Replacefields($modmessage, $fieldsarray);
                     if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
                         $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.",'unescaped'), $fieldsarray)). "<br />";
