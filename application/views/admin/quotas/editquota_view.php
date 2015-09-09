@@ -8,6 +8,7 @@
             <option value ="2" <?php if($quotainfo['action'] == 2) echo "selected='selected'"; ?>><?php eT("Terminate survey with warning");?></option>
         </select></li>
         <li><label for='autoload_url'><?php eT("Autoload URL:");?></label><input id="autoload_url" name="autoload_url" type="checkbox" value="1"<?php if($quotainfo['autoload_url'] == "1") {echo " checked";}?> /></li>
+        <li><label for='active'><?php eT("Active:");?></label><input id="active" name="active" type="checkbox" value="1"<?php if($quotainfo['active']) {echo " checked";}?> /></li>
     </ul>
         <div id="tabs">
             <ul>

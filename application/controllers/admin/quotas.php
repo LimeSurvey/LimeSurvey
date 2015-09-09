@@ -126,18 +126,26 @@ class quotas extends Survey_Common_Action
                 $aData['completed'] = $completed;
                 $aData['totalquotas'] = $totalquotas;
                 $aData['totalcompleted'] = $totalcompleted;
+                $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
+                $aData['totalquestion'] = count($aResults2);
                 $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
 
                 //check how many sub-elements exist for a certain quota
-                $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
 
-                //loop through all sub-parts
-                foreach ($aResults2 as $aQuotaQuestions)
+                if(count($aResults2)==0)
                 {
-                    $aQuestionAnswers = self::getQuotaAnswers($aQuotaQuestions['qid'], $iSurveyId, $aQuotaListing['id']);
-                    $aData['question_answers'] = $aQuestionAnswers;
-                    $aData['quota_questions'] = $aQuotaQuestions;
-                    $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
+                    $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewemptyquotasrowsub_view', $aData, true);
+                }
+                else
+                {
+                    //loop through all sub-parts
+                    foreach ($aResults2 as $aQuotaQuestions)
+                    {
+                        $aQuestionAnswers = self::getQuotaAnswers($aQuotaQuestions['qid'], $iSurveyId, $aQuotaListing['id']);
+                        $aData['question_answers'] = $aQuestionAnswers;
+                        $aData['quota_questions'] = $aQuotaQuestions;
+                        $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
+                    }
                 }
             }
         }
@@ -236,6 +244,7 @@ class quotas extends Survey_Common_Action
         $oQuota->qlimit = Yii::app()->request->getPost('quota_limit');
         $oQuota->action = Yii::app()->request->getPost('quota_action');
         $oQuota->autoload_url = Yii::app()->request->getPost('autoload_url');
+        $oQuota->active = Yii::app()->request->getPost('active',0);
         $oQuota->save();
 
         //Iterate through each language posted, and make sure there is a quota message for it
@@ -265,9 +274,9 @@ class quotas extends Survey_Common_Action
 
                 $oQuotaLanguageSettings = QuotaLanguageSetting::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLang));
                 $oQuotaLanguageSettings->quotals_name = Yii::app()->request->getPost('quota_name');
-                $oQuotaLanguageSettings->quotals_message = $_POST['quotals_message_' . $sLang];
-                $oQuotaLanguageSettings->quotals_url = $_POST['quotals_url_' . $sLang];
-                $oQuotaLanguageSettings->quotals_urldescrip = $_POST['quotals_urldescrip_' . $sLang];
+                $oQuotaLanguageSettings->quotals_message = Yii::app()->request->getPost('quotals_message_' . $sLang);
+                $oQuotaLanguageSettings->quotals_url = Yii::app()->request->getPost('quotals_url_' . $sLang);
+                $oQuotaLanguageSettings->quotals_urldescrip = Yii::app()->request->getPost('quotals_urldescrip_' . $sLang);
                 $oQuotaLanguageSettings->save();
             }
         } //End insert language based components

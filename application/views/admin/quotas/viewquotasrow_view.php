@@ -7,9 +7,9 @@
     <td>
         <?php if ($quotalisting['active'] == 1)
             {
-                echo '<font color="#48B150">'.gT("Active").'</font>';
+                echo '<span class="success">'.gT("Active").'</span>';
             } else {
-                echo '<font color="#B73838">'.gT("Not Active").'</font>';
+                echo '<span class="warning">'.gT("Not Active").'</span>';
             }
         ?>
     </td>
@@ -45,22 +45,23 @@
             echo CHtml::link(gT("Validate"),array('admin/validate','sa'=>'quota','sid'=>$surveyid,'quota'=>$quotalisting['id']),array('class'=>'btn btn-link','title'=>sprintf(gT("Validation of quota %s"),$quotalisting['name']),"target"=>"dialog"));
         } ?>
     </td></tr>
-
-<tr class="evenrow">
-    <td>&nbsp;</td>
-    <td><strong><?php eT("Questions");?></strong></td>
-    <td><strong><?php eT("Answers");?></strong></td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td style="padding: 3px;">
-        <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
-            <?php echo CHtml::form(array("admin/quotas/sa/new_answer/surveyid/{$iSurveyId}"), 'post'); ?>
-                <input name="submit" type="submit" class="quota_new" value="<?php eT("Add answer");?>" />
-                <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
-                <input type="hidden" name="action" value="quotas" />
-                <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
-                <input type="hidden" name="subaction" value="new_answer" />
-            </form>
-            <?php } ?>
-    </td>
-</tr>
+    <?php if ($totalquestion > 0 ) { ?>
+    <tr class="evenrow">
+            <td>&nbsp;</td>
+            <td><strong><?php eT("Questions");?></strong></td>
+            <td><strong><?php eT("Answers");?></strong></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td style="padding: 3px;">
+                <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+                    <?php echo CHtml::form(array("admin/quotas/sa/new_answer/surveyid/{$iSurveyId}"), 'post'); ?>
+                        <input name="submit" type="submit" class="quota_new" value="<?php eT("Add answer");?>" />
+                        <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
+                        <input type="hidden" name="action" value="quotas" />
+                        <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
+                        <input type="hidden" name="subaction" value="new_answer" />
+                    </form>
+                    <?php } ?>
+            </td>
+    </tr>
+    <?php } ?>
