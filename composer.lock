@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f5cb1074e9caf4706afe7d198ab31061",
+    "hash": "88eb850e613be3b2853dfc8c47003559",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -1461,12 +1461,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "5dd754112d07ab7480824c2916689ce06f83a842"
+                "reference": "3fb22c5c01a9d3a74aa35e92a85c2d173b1518a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/5dd754112d07ab7480824c2916689ce06f83a842",
-                "reference": "5dd754112d07ab7480824c2916689ce06f83a842",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/3fb22c5c01a9d3a74aa35e92a85c2d173b1518a9",
+                "reference": "3fb22c5c01a9d3a74aa35e92a85c2d173b1518a9",
                 "shasum": ""
             },
             "require": {
@@ -1513,7 +1513,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-09-02 10:40:37"
+            "time": "2015-09-04 09:05:32"
         },
         {
             "name": "psr/http-message",
@@ -1878,12 +1878,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "3293350780300138b70aae9a7e454787945e6686"
+                "reference": "911312d61ee27eda034346dfe717d989cc92d1a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/3293350780300138b70aae9a7e454787945e6686",
-                "reference": "3293350780300138b70aae9a7e454787945e6686",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/911312d61ee27eda034346dfe717d989cc92d1a4",
+                "reference": "911312d61ee27eda034346dfe717d989cc92d1a4",
                 "shasum": ""
             },
             "replace": {
@@ -1921,7 +1921,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-09-02 03:27:19"
+            "time": "2015-09-06 04:33:21"
         },
         {
             "name": "yiisoft/yii",
