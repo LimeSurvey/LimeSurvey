@@ -429,7 +429,7 @@ class FrontEnd
             $sMessage = Replacements::templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, null);
             $sSubject = Replacements::templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, null);
             foreach ($aEmailResponseTo as $sRecipient) {
-                if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true,
+                if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML,
                     getBounceEmail($surveyid), $aRelevantAttachments)
                 ) {
                     if ($debug > 0) {
