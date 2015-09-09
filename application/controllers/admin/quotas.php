@@ -190,6 +190,7 @@ class quotas extends Survey_Common_Action
         $oQuota->qlimit = Yii::app()->request->getPost('quota_limit');
         $oQuota->action = Yii::app()->request->getPost('quota_action');
         $oQuota->autoload_url = Yii::app()->request->getPost('autoload_url');
+        $oQuota->active = Yii::app()->request->getPost('active',0);
         $oQuota->save();
         $iQuotaId = $oQuota->id;
 

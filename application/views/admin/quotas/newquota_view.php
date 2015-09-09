@@ -20,6 +20,10 @@
             <label for="autoload_url"><?php eT("Autoload URL");?>:</label>
             <input id="autoload_url" name="autoload_url" type="checkbox" value="1" />
         </li>
+        <li>
+            <label for="active"><?php eT("Active");?>:</label>
+            <input id="active" name="active" type="checkbox" value="1" checked/>
+        </li>
     </ul>
     <div id="tabs"><ul>
             <?php foreach ($langs as $lang) { ?>
