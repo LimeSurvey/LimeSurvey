@@ -1,68 +1,47 @@
 <?php
+
 /**
  * TbDetailView class file.
- * @author Christoffer Niska <ChristofferNiska@gmail.com>
- * @copyright Copyright &copy; Christoffer Niska 2011-
+ * @author Sam Stenvall <sam@supportersplace.com>
+ * @author Christoffer Niska <christoffer.niska@gmail.com>
+ * @copyright Copyright &copy; Sam Stenvall 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.widgets
  */
-
 Yii::import('zii.widgets.CDetailView');
 
 /**
- * Bootstrap Zii detail view.
+ * Bootstrap Zii detail widget.
  */
 class TbDetailView extends CDetailView
 {
-	// Table types.
-	const TYPE_STRIPED = 'striped';
-	const TYPE_BORDERED = 'bordered';
-	const TYPE_CONDENSED = 'condensed';
+    /**
+     * @var string|array the detail view style.
+     * Valid values are TbHtml::DETAIL_STRIPED, TbHtml::DETAIL_BORDERED, TbHtml::DETAIL_CONDENSED and/or TbHtml::DETAIL_HOVER.
+     */
+    public $type = array(TbHtml::DETAIL_TYPE_STRIPED, TbHtml::DETAIL_TYPE_CONDENSED);
+    /**
+     * @var string the URL of the CSS file used by this grid view.
+     * Defaults to false, meaning that no CSS will be included.
+     */
+    public $cssFile = false;
 
-	/**
-	 * @var string|array the table type.
-	 * Valid values are 'striped', 'bordered' and/or 'condensed'.
-	 */
-	public $type = array(self::TYPE_STRIPED, self::TYPE_CONDENSED);
-	/**
-	 * @var string the URL of the CSS file used by this detail view.
-	 * Defaults to false, meaning that no CSS will be included.
-	 */
-	public $cssFile = false;
+    /**
+     * Initializes the widget.
+     */
+    public function init()
+    {
+        parent::init();
+        $classes = array('table');
+        if (!empty($this->type)) {
+            if (is_string($this->type)) {
+                $this->type = explode(' ', $this->type);
+            }
 
-	/**
-	 * Initializes the widget.
-	 */
-	public function init()
-	{
-		parent::init();
-
-		$classes = array('table');
-
-		if (isset($this->type))
-		{
-			if (is_string($this->type))
-				$this->type = explode(' ', $this->type);
-
-			$validTypes = array(self::TYPE_STRIPED, self::TYPE_BORDERED, self::TYPE_CONDENSED);
-
-			if (!empty($this->type))
-			{
-				foreach ($this->type as $type)
-				{
-					if (in_array($type, $validTypes))
-						$classes[] = 'table-'.$type;
-				}
-			}
-		}
-
-		if (!empty($classes))
-		{
-			$classes = implode(' ', $classes);
-			if (isset($this->htmlOptions['class']))
-				$this->htmlOptions['class'] .= ' '.$classes;
-			else
-				$this->htmlOptions['class'] = $classes;
-		}
-	}
+            foreach ($this->type as $type) {
+                $classes[] = 'table-' . $type;
+            }
+        }
+        TbHtml::addCssClass($classes, $this->htmlOptions);
+    }
 }

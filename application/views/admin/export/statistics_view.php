@@ -1,24 +1,35 @@
-<?php
-    if (!$surveyid)
-    {
-        //need to have a survey id
-        echo "<center>You have not selected a survey!</center>";
-        exit;
-    }
-?>
 <script type='text/javascript'>
     var graphUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/graph"); ?>";
     var sStatisticsLanguage="<?php echo $sStatisticsLanguage; ?>";
     var listColumnUrl="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/listcolumn/surveyid/".$surveyid."/column/"); ?>";
     var showTextInline="<?php echo $showtextinline ?>";
 </script>
-<?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start'));?>
-    <div class='header ui-widget-header header_statistics'>
-        <div style='float:right;'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php eT("Minimize"); ?>'/></div>
+
+<?php 
+App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/chartjs/Chart.min.js');
+?>
+
+<script>
+    var CSS_COLOR_NAMES = ["AliceBlue","AntiqueWhite","Aqua","Aquamarine","Azure","Beige","Bisque","Black","BlanchedAlmond","Blue","BlueViolet","Brown","BurlyWood","CadetBlue","Chartreuse","Chocolate","Coral","CornflowerBlue","Cornsilk","Crimson","Cyan","DarkBlue","DarkCyan","DarkGoldenRod","DarkGray","DarkGrey","DarkGreen","DarkKhaki","DarkMagenta","DarkOliveGreen","Darkorange","DarkOrchid","DarkRed","DarkSalmon","DarkSeaGreen","DarkSlateBlue","DarkSlateGray","DarkSlateGrey","DarkTurquoise","DarkViolet","DeepPink","DeepSkyBlue","DimGray","DimGrey","DodgerBlue","FireBrick","FloralWhite","ForestGreen","Fuchsia","Gainsboro","GhostWhite","Gold","GoldenRod","Gray","Grey","Green","GreenYellow","HoneyDew","HotPink","IndianRed","Indigo","Ivory","Khaki","Lavender","LavenderBlush","LawnGreen","LemonChiffon","LightBlue","LightCoral","LightCyan","LightGoldenRodYellow","LightGray","LightGrey","LightGreen","LightPink","LightSalmon","LightSeaGreen","LightSkyBlue","LightSlateGray","LightSlateGrey","LightSteelBlue","LightYellow","Lime","LimeGreen","Linen","Magenta","Maroon","MediumAquaMarine","MediumBlue","MediumOrchid","MediumPurple","MediumSeaGreen","MediumSlateBlue","MediumSpringGreen","MediumTurquoise","MediumVioletRed","MidnightBlue","MintCream","MistyRose","Moccasin","NavajoWhite","Navy","OldLace","Olive","OliveDrab","Orange","OrangeRed","Orchid","PaleGoldenRod","PaleGreen","PaleTurquoise","PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum","PowderBlue","Purple","Red","RosyBrown","RoyalBlue","SaddleBrown","Salmon","SandyBrown","SeaGreen","SeaShell","Sienna","Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow","SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato","Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"];
+</script>
+
+<div class="side-body">
+    <h3><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp; <?php eT("Statistics"); ?></h3>
+        <div class="row">
+            
+            <div class="col-lg-12 content-right">
+<?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start', 'class'=>'form-horizontal'));?>
+
+    <div class='header statistics col-lg-12 box text-left'>
+        <div style='float:right;'>
+            <img src='<?php echo $sImageURL; ?>/maximize.png' id='showgfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidegfilter' alt='<?php eT("Minimize"); ?>'/>
+        </div>
+        <div style='float:left;'>
         <?php eT("General filters"); ?>
+        </div>
     </div>
     <!-- AUTOSCROLLING DIV CONTAINING GENERAL FILTERS -->
-    <div id='statisticsgeneralfilters' class='statisticsfilters' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
+    <div id='statisticsgeneralfilters' class='statisticsfilters jumbotron message-box box col-lg-12' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
 
         <div id='statistics_general_filter'>
             <?php
@@ -34,22 +45,26 @@
             ?>
             <fieldset style='clear:both;'>
                 <legend><?php eT("Data selection"); ?></legend>
-                <ul>
+                <ul class='list-unstyled'>
                     <li>
                         <label for='completionstate'><?php eT("Include:"); ?> </label>
-                        <select name='completionstate' id='completionstate'>
+                        <select name='completionstate' id='completionstate' class='form-control'> 
                             <option value='all' <?php echo $selectshow; ?>><?php eT("All responses"); ?></option>
                             <option value='complete' <?php echo $selecthide; ?> > <?php eT("Completed responses only"); ?></option>
                             <option value='incomplete' <?php echo $selectinc; ?> > <?php eT("Incomplete responses only"); ?></option>
                         </select>
                     </li>
                     <li>
-                        <label for='viewsummaryall'><?php eT("View summary of all available fields"); ?></label>
-                        <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
+                        <div class='checkbox'>
+                            <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
+                            <label for='viewsummaryall'><?php eT("View summary of all available fields"); ?></label>
+                        </div>
                     </li>
                     <li id='vertical_slide'>
-                        <label id='noncompletedlbl' for='noncompleted' title='<?php eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php eT("Subtotals based on displayed questions"); ?></label>
-                        <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
+                        <div class='checkbox'>
+                            <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
+                            <label id='noncompletedlbl' for='noncompleted' title='<?php eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php eT("Subtotals based on displayed questions"); ?></label>
+                        </div>                            
                     </li>
                     <?php
 
@@ -69,14 +84,14 @@
                     ?>
                     <li>
                         <label for='statlang'><?php eT("Statistics report language"); ?></label>
-                        <select name="statlang" id="statlang"><?php echo $language_options; ?></select>
+                        <select name="statlang" id="statlang" class="form-control"><?php echo $language_options; ?></select>
                     </li>
                 </ul>
             </fieldset>
 
             <fieldset id='left'>
                 <legend><?php eT("Response ID"); ?></legend>
-                <ul>
+                <ul class="list-unstyled">
                     <li>
                         <label for='idG'><?php eT("Greater than:"); ?></label>
                         <input type='text' id='idG' name='idG' size='10' value='<?php if (isset($_POST['idG'])){ echo  sanitize_int($_POST['idG']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
@@ -112,44 +127,84 @@
 
             <fieldset>
                 <legend><?php eT("Output options"); ?></legend>
-                <ul>
+                <ul class="list-unstyled">
                     <li>
-                        <label for='showtextinline'><?php eT("Show text responses inline:") ?></label>
-                        <input type='checkbox' id='showtextinline' name='showtextinline'<?php if(isset($showtextinline) && $showtextinline == 1) {echo "checked='checked'"; } ?> /><br />
+                        <div class="checkbox">
+                            <input type='checkbox' id='showtextinline' name='showtextinline'<?php if(isset($showtextinline) && $showtextinline == 1) {echo "checked='checked'"; } ?> />
+                            <label for='showtextinline'><?php eT("Show text responses inline:") ?></label>
+                        </div>
                     </li>
                     <li>
-                        <label for='usegraph'><?php eT("Show graphs"); ?></label>
-                        <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> /><br />
-                        <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
+                        <div class="checkbox">
+                            <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> />
+                            <label for='usegraph'><?php eT("Show graphs"); ?></label>
+                            <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="form-group col-sm-12">
+
+                            <div class="alert alert-info alert-dismissible" role="alert">
+                                <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                <?php eT("Each question has its own graph type defined in its advanced settings.");?>
+                                <br/>
+                                <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>                            
+                            </div>
+
+                            
+                            <label for='charttype' class='control-label'>
+                                <?php eT('Chart type:');?>
+                            </label>
+                                <select name="charttype" id='charttype' class="form-control">
+                                    <option value="default" selected="selected"><?php eT('as defined in questions\'s advanced setting');?></option>
+                                    <option value="bar" ><?php eT('bar chart');?></option>
+                                    <option value="radar"><?php eT('radar chart');?></option>
+                                    <option value="line"><?php eT('line chart');?></option>
+                                    <option value="polar"><?php eT('polar chart');?></option>
+                                    <option value="pie"><?php eT('pie chart');?></option>
+                                    <option value="doughnut"><?php eT('doughnut chart');?></option>
+                                </select>
+                        </div>
                     </li>
 
                     <li>
                         <label><?php eT("Select output format"); ?>:</label>
-                        <input type='radio' id="outputtypehtml" name='outputtype' value='html' checked='checked' />
-                        <label for='outputtypehtml'>HTML</label>
-                        <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
-                        <label for='outputtypepdf'>PDF</label>
-                        <input type='radio' id="outputtypexls" onclick='nographs();' name='outputtype' value='xls' />
-                        <label for='outputtypexls'>Excel</label>
+                        <div class="radio">
+                            <input type='radio' id="outputtypehtml" name='outputtype' value='html' checked='checked' />
+                            <label for='outputtypehtml'>HTML</label>
+                        </div>
+                        <div class="radio">
+                            <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
+                            <label for='outputtypepdf'>PDF</label>
+                        </div>
+                        <div class="radio">                            
+                            <input type='radio' id="outputtypexls" onclick='nographs();' name='outputtype' value='xls' />
+                            <label for='outputtypexls'>Excel</label>
+                       </div>
                     </li>
                 </ul>
             </fieldset>
         </div>
         <p>
-            <input type='submit' value='<?php eT("View statistics"); ?>' />
-            <input type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+            <input class="hidden" type='submit' value='<?php eT("View statistics"); ?>' />
+            <input class="hidden" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
         </p>
     </div>
     <div style='clear: both'></div>
-    <div class='header header_statistics'>
+    
+    
+    <div class='header statistics col-lg-12 box text-left' id="response-filter-header">
         <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidefilter' alt='<?php eT("Minimize"); ?>'/></div>
-        <?php eT("Response filters"); ?>
+        <div style='float:left'>
+            <?php eT("Response filters"); ?>
+        </div>
     </div>
     <!-- AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
     <div id='statisticsresponsefilters' class='statisticsfilters scrollheight_400' <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
     <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
 
-    <table id='filterchoices' <?php if ($filterchoice_state!='') { echo " style='display:none' "; } ?> >
+    <table id='filterchoices' <?php if ($filterchoice_state!='') { echo " style='display:none' "; } ?> class="table">
         <?php
         $currentgroup='';
         foreach ($filters as $key1 => $flt) {
@@ -162,9 +217,9 @@
                 }
             ?>
             <!-- GROUP TITLE -->
-            <tr>
+            <tr class="danger">
                 <td>
-                    <div class='header ui-widget-header'>
+                    <div class='header'>
                         <input type="checkbox"
                                  id='btn_<?php echo $flt[1]; ?>'
                             onclick="selectCheckboxes('grp_<?php echo $flt[1] ?>', 'summary[]', 'btn_<?php echo $flt[1]; ?>');"
@@ -181,7 +236,7 @@
             <tr>
             <td>
                 <div id='grp_<?php echo $flt[1]; ?>'>
-                    <table class='filtertable'>
+                    <table class='filtertable table-boxed'>
                         <tr>
                 <?php
                 $counter=0;
@@ -210,7 +265,7 @@
         if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
             || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!')
         { ?>
-            <td>
+            <td><div class='inerTableBox'>
         <?php
             //Multiple choice:
             if ($flt[2] == "M") {$myfield = "M$myfield";}
@@ -238,7 +293,7 @@
                 <select name='<?php
                     if ($flt[2] == "M" ) { echo "M";};
                     if ($flt[2] == "P" ) { echo "P";};
-                    echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?>' multiple='multiple'>
+                    echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]'";?>' multiple='multiple' class='form-control'>
                 <?php
                 }
         }?>
@@ -273,7 +328,7 @@
                             if ($counter2 == 4) { echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
                             //start new TD
-                            echo "\t<td>";
+                            echo "\t<td><div class='inerTableBox'>";
 
                             //checkbox
                             echo "<input type='checkbox'  name='summary[]' value='$myfield1'";
@@ -321,7 +376,7 @@
                         $myfield2 = "Q".$myfield."$row[0]";
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
-                        echo "\t<td>";
+                        echo "\t<td><div class='inerTableBox'>";
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
                         if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
                         {echo " checked='checked'";}
@@ -331,7 +386,7 @@
                         ."<br />\n"
                         ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n";
                         echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array())
-                        ."\t</td>\n";
+                        ."\t</div></td>\n";
                         $counter2++;
                     }
                     echo "\t</tr>\n\t<tr>\n";
@@ -347,7 +402,7 @@
                 case "U": // Huge free text
 
                     $myfield2="T$myfield";
-                    echo "\t<td>\n";
+                    echo "\t<td><div class='inerTableBox'>\n";
                     echo "\t<input type='checkbox'  name='summary[]' value='$myfield2'";
                     if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
                     {echo " checked='checked'";}
@@ -357,7 +412,7 @@
                     ."<br />\n"
                     ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n" 
                     .CHtml::textArea($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('rows'=>'3','cols'=>'80'))
-                    ."\t</td>\n";
+                    ."\t</div></td>\n";
                     break;
 
 
@@ -365,7 +420,7 @@
                 case "S": // Short free text
 
                     $myfield2="T$myfield";
-                    echo "\t<td>";
+                    echo "\t<td><div class='inerTableBox'>";
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                     if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
@@ -376,7 +431,7 @@
                     ."<br />\n"
                     ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                     .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array())
-                    ."\t</td>\n";
+                    ."\t</div></td>\n";
                     break;
 
 
@@ -433,7 +488,7 @@
                     $myfield3=$myfield2."eq";
                     $myfield4=$myfield2."less";
                     $myfield5=$myfield2."more";
-                    echo "\t<td>";
+                    echo "\t<td><div class='inerTableBox'>";
 
                     echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
@@ -490,7 +545,7 @@
                     if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {echo " selected";}
 
                     echo ">".gT("Male")."</option>\n\t</select>\n";
-                    echo "\t</td>\n";
+                    echo "\t</div></td>\n";
                     break;
 
 
@@ -552,7 +607,7 @@
 
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
-                        echo "\t<td align='center'>"
+                        echo "\t<td align='center'><div class='inerTableBox'>"
                         ."<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                         //pre-check
@@ -561,7 +616,7 @@
                         echo " />&nbsp;"
                         ._showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                         ."<br />\n"
-                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
+                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n";
 
                         //there are always exactly 5 values which have to be listed
                         for ($i=1; $i<=5; $i++)
@@ -575,7 +630,7 @@
                             echo ">$i</option>\n";
                         }
 
-                        echo "\t</select>\n\t</td>\n";
+                        echo "\t</select>\n\t</div></td>\n";
                         $counter2++;
 
                         //add this to all the other fields
@@ -604,7 +659,7 @@
 
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
-                        echo "\t<td align='center'>"; //heading
+                        echo "\t<td align='center'><div class='inerTableBox'>"; //heading
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
@@ -612,7 +667,7 @@
                         echo " />&nbsp;"
                         ._showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                         ."<br />\n"
-                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
+                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n";
 
                         //here wo loop through 10 entries to create a larger output form
                         for ($i=1; $i<=10; $i++)
@@ -623,7 +678,7 @@
                             echo ">$i</option>\n";
                         }
 
-                        echo "\t</select>\n\t</td>\n";
+                        echo "\t</select>\n\t</div></td>\n";
                         $counter2++;
                     }
 
@@ -651,7 +706,7 @@
 
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
-                        echo "\t<td align='center'>"
+                        echo "\t<td align='center'><div class='inerTableBox'>"
                         ."<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE)
@@ -660,7 +715,7 @@
                         echo " />&nbsp;<strong>"
                         ._showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                         ."</strong><br />\n"
-                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
+                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n"
                         ."\t<option value='Y'";
 
                         //pre-select "yes"
@@ -679,7 +734,7 @@
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {echo " selected";}
 
                         echo ">".gT("No")."</option>\n"
-                        ."\t</select>\n\t</td>\n";
+                        ."\t</select>\n\t</div></td>\n";
                         $counter2++;
 
                         //add to array
@@ -709,7 +764,7 @@
 
                         if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
 
-                        echo "\t<td align='center'>"
+                        echo "\t<td align='center'><div class='inerTableBox'>"
                         ."<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
@@ -717,7 +772,7 @@
                         echo " />&nbsp;<strong>"
                         ._showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                         ."</strong><br />\n"
-                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
+                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'  class='form-control'>\n"
                         ."\t<option value='I'";
 
                         if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {echo " selected";}
@@ -733,7 +788,7 @@
                         if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {echo " selected";}
 
                         echo ">".gT("Decrease")."</option>\n"
-                        ."\t</select>\n\t</td>\n";
+                        ."\t</select>\n\t</div></td>\n";
                         $counter2++;
                     }
 
@@ -756,7 +811,7 @@
                             if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
                             echo " -->\n";
                             if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
-                            echo "\t<td align='center'>"
+                            echo "\t<td align='center'><div class='inerTableBox'>"
                             ."<input type='checkbox'  name='summary[]' value='$myfield2'";
                             if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
                             echo " />&nbsp;<strong>"
@@ -765,11 +820,11 @@
                             //echo $fquery;
                             echo "\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
                             .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array() )
-                            ."</td>\n";
+                            ."</div></td>\n";
                             $counter2++;
                         }
                     }
-                    echo "\t<td>\n";
+                    echo "\t<td><div class='inerTableBox'>\n";
                     $counter=0;
                     break;
 
@@ -820,25 +875,25 @@
                             if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
                             echo " -->\n";
                             if ($counter2 == 4) {echo "\t</tr>\n\t<tr>\n"; $counter2=0;}
-                            echo "\t<td align='center'>"
+                            echo "\t<td align='center'><div class='inerTableBox'>"
                             ."<input type='checkbox'  name='summary[]' value='$myfield2'";
                             if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
                             echo " />&nbsp;<strong>"
                             ._showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
                             ."</strong><br />\n";
                             //echo $fquery;
-                            echo "\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5'>\n";
+                            echo "\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5' class='form-control'>\n";
                             for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
                             {
                                 echo "\t<option value='$ii'";
                                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
                                 echo ">$ii</option>\n";
                             }
-                            echo "\t</select>\n\t</td>\n";
+                            echo "\t</select>\n\t</div></td>\n";
                             $counter2++;
                         }
                     }
-                    echo "\t<td>\n";
+                    echo "\t<td><div class='inerTableBox'>\n";
                     $counter=0;
                     break;
                     /*
@@ -867,7 +922,7 @@
                             $counter2=0;
                         }
 
-                        echo "\t<td align='center'>"
+                        echo "\t<td align='center'><div class='inerTableBox'>"
                         ."<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
@@ -894,7 +949,7 @@
                         //echo $fquery;
 
                         //creating form
-                        echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
+                        echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple' class='form-control'>\n";
 
                         //loop through all possible answers
                         foreach($fresult as $frow)
@@ -907,7 +962,7 @@
                             echo ">({$frow['code']}) ".flattenText($frow['answer'],true)."</option>\n";
                         }
 
-                        echo "\t</select>\n\t</td>\n";
+                        echo "\t</select>\n\t</div></td>\n";
                         $counter2++;
 
                         //add fields to main array
@@ -952,7 +1007,7 @@
                         if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
 
                         echo " -->\n"
-                        ."\t<td align='center'>"
+                        ."\t<td align='center'><div class='inerTableBox'>"
                         ."<input type='checkbox'  name='summary[]' value='$myfield2'";
 
                         //pre-check
@@ -963,7 +1018,7 @@
                         echo " />&nbsp;<strong>"
                         ._showSpeaker($niceqtext." ".str_replace("'", "`", $trow[1])." - # ".$flt[3])
                         ."</strong><br />\n"
-                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple'>\n";
+                        ."\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple' class='form-control'>\n";
 
                         //output lists of ranking items
                         foreach ($answers as $ans)
@@ -976,7 +1031,7 @@
                             echo ">".flattenText($ans[1])."</option>\n";
                         }
 
-                        echo "\t</select>\n\t</td>\n";
+                        echo "\t</select>\n\t</div></td>\n";
                         $counter2++;
 
                         //add averything to main array
@@ -1029,7 +1084,7 @@
                         }
 
                         //output checkbox and question/label text
-                        echo "\t<td align='center'>";
+                        echo "\t<td align='center'><div class='inerTableBox'>";
                         echo "<input type='checkbox' name='summary[]' value='$myfield2'";
 
                         //pre-check
@@ -1071,7 +1126,7 @@
                         //this is for debugging only
                         //echo $fquery;
 
-                        echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{0}[]' multiple='multiple'>\n";
+                        echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{0}[]' multiple='multiple' class='form-control'>\n";
 
                         //list answers
                         foreach($fresult as $frow)
@@ -1085,7 +1140,7 @@
 
                         }
 
-                        echo "\t</select>\n\t</td>\n";
+                        echo "\t</select>\n\t</div></td>\n";
                         $counter2++;
 
 
@@ -1113,7 +1168,7 @@
                         }
 
                         //output checkbox and question/label text
-                        echo "\t<td align='center'>";
+                        echo "\t<td align='center'><div class='inerTableBox'>";
                         echo "<input type='checkbox' name='summary[]' value='$myfield2'";
                         //pre-check
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
@@ -1147,7 +1202,7 @@
                         //this is for debugging only
                         //echo $fquery;
 
-                        echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{1}[]' multiple='multiple'>\n";
+                        echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{1}[]' multiple='multiple' class='form-control'>\n";
 
                         //list answers
                         foreach($fresult as $frow)
@@ -1161,12 +1216,12 @@
 
                         }
 
-                        echo "\t</select>\n\t</td>\n";
+                        echo "\t</select>\n\t</div></td>\n";
                         $counter2++;
 
                     }   //end WHILE -> loop through all answers
 
-                    echo "\t<td>\n";
+                    echo "\t<td><div class='inerTableBox'>\n";
 
 
                     $counter=0;
@@ -1187,7 +1242,7 @@
                         echo '>'.flattenText($row[1],true)."</option>\n";
                     }
 
-                    echo "\t</select>\n\t</td>\n";
+                    echo "\t</select>\n\t</div></td>\n";
                     break;
 
 
@@ -1212,7 +1267,7 @@
                         echo '>'.flattenText($row[1],true)."</option>\n";
                     }
 
-                    echo "\t</select>\n\t</td>\n";
+                    echo "\t</select>\n\t</td><div class='inerTableBox'>\n";
                     break;
 
             }   //end switch -> check question types and create filter forms
@@ -1236,8 +1291,8 @@
     </table>
 
     <p id='vertical_slide2'>
-    <input type='submit' value='<?php eT("View statistics"); ?>' />
-    <input type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
+    <input type='submit' class="hidden" value='<?php eT("View statistics"); ?>' />
+    <input type='button'class="hidden"  value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='display' value='stats' />
     </p>
@@ -1247,9 +1302,13 @@
 <?php
 flush(); //Let's give the user something to look at while they wait for the pretty pictures
 ?>
-<div class='header ui-widget-header header_statistics'>
+
+
+<div class='header statistics col-lg-12 box text-left'>
     <div style='float:right'><img src='<?php echo $sImageURL; ?>/maximize.png' id='showsfilter' alt='<?php eT("Maximize"); ?>'/><img src='<?php echo $sImageURL; ?>/minimize.png' id='hidesfilter' alt='<?php eT("Minimize"); ?>'/></div>
-    <?php eT("Statistics"); ?>
+    <div style='float:left'>
+        <?php eT("Statistics"); ?>
+        </div>
 </div>
 
 <div id='statisticsoutput' class='statisticsfilters'>
@@ -1296,3 +1355,4 @@ flush(); //Let's give the user something to look at while they wait for the pret
     }
 
 ?>
+</div></div></div>

@@ -1,4 +1,4 @@
-<div class='menubar'>
+<!-- <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
         <span style='font-weight:bold;'><?php eT('Saved Responses'); ?></span>
         <?php echo $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>
@@ -14,4 +14,4 @@
 </div>
 <div class='header ui-widget-header'>
     <?php eT('Saved Responses:'); ?> <?php echo getSavedCount($iSurveyId); ?>
-</div>
+</div> -->

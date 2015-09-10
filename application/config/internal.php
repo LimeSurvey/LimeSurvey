@@ -14,6 +14,7 @@ if (!file_exists(dirname(__FILE__) .  '/config.php')) {
 @date_default_timezone_set(@date_default_timezone_get());
 $internalConfig = array(
     'basePath' => dirname(dirname(__FILE__)),
+
     'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime',
     'name' => 'LimeSurvey',
     'localeClass' =>  'LSYii_Locale',
@@ -24,14 +25,34 @@ $internalConfig = array(
         'application.models.*',
         'application.controllers.*',
         'application.modules.*',
+
+    	'bootstrap.helpers.*',
+    	'bootstrap.widgets.*',
+    	'bootstrap.behaviors.*', 
+    	'yiiwheels.widgets.select2.WhSelect2',
+		       
+
+        //'bootstrap.helpers.TbHtml',
     ),
     'preload' => array ('log'),
     'components' => array(
+    /*
         'bootstrap' => array(
             'class' => 'application.core.LSBootstrap',
             'responsiveCss' => false,
             'jqueryCss' => false
         ),
+	 */
+
+	  // yiistrap configuration
+        'bootstrap' => array(
+            'class' => 'bootstrap.components.TbApi',
+        ),
+        // yiiwheels configuration
+        'yiiwheels' => array(
+            'class' => 'yiiwheels.YiiWheels',   
+        ),
+	 	 
         'clientScript'=>array(
             'class'=>'ext.ExtendedClientScript.ExtendedClientScript',
             'combineCss'=>false,
@@ -39,7 +60,6 @@ $internalConfig = array(
             'combineJs'=>$userConfig['config']['debug']>0?false:true,
             'compressJs'=>false,
             'packages' => require('third_party.php'),
-            'excludeFiles' => array(), // empty array to add more easily files to exclude
         ),
         'urlManager' => array(
             'urlFormat' => 'get',

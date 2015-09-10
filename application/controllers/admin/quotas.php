@@ -91,6 +91,18 @@ class quotas extends Survey_Common_Action
             $aViewUrls[] = 'viewquotas_view';
         }
 
+	        $aData['surveyid'] = $iSurveyID = $surveyid =  sanitize_int($iSurveyId);
+
+			$aData['sidebar']['state'] = "close";
+			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";			
+			
+			//$aData['surveybar']['active_survey_properties'] = 'quotas';
+			$aData['surveybar']['buttons']['view']= TRUE;
+		    $aData['surveybar']['active_survey_properties']['img'] = 'quota_30.png';
+			$aData['surveybar']['active_survey_properties']['txt'] = gT("Quotas");			
+			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;			        	
+
         $totalquotas = 0;
         $totalcompleted = 0;
         $csvoutput = array();
@@ -104,9 +116,11 @@ class quotas extends Survey_Common_Action
         $aResult = Quota::model()->findAll($criteria);
 
         //if there are quotas let's proceed
+        $aViewUrls['output'] = '';	
         if (count($aResult) > 0)
         {
-            $aViewUrls['output'] = '';
+            $aData['output'] = '';
+			
             //loop through all quotas
             foreach ($aResult as $aQuotaListing)
             {
@@ -127,7 +141,8 @@ class quotas extends Survey_Common_Action
                 $aData['totalquotas'] = $totalquotas;
                 $aData['totalcompleted'] = $totalcompleted;
                 $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
-
+				$aData['output'] .= $this->getController()->renderPartial("/admin/quotas/viewquotasrow_view", $aData, true);
+				
                 //check how many sub-elements exist for a certain quota
                 $aResults2 = QuotaMember::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
 
@@ -138,13 +153,16 @@ class quotas extends Survey_Common_Action
                     $aData['question_answers'] = $aQuestionAnswers;
                     $aData['quota_questions'] = $aQuotaQuestions;
                     $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
+                    //$aData['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasrowsub_view', $aData, true);
                 }
+                
             }
         }
         else
         {
             // No quotas have been set for this survey
-            $aViewUrls[] = 'viewquotasempty_view';
+            //$aViewUrls[] = 'viewquotasempty_view';
+			$aData['output'] = $this->getController()->renderPartial('/admin/quotas/viewquotasempty_view', $aData, true);
         }
 
         $aData['totalquotas'] = $totalquotas;
@@ -152,11 +170,15 @@ class quotas extends Survey_Common_Action
 
         if ($quickreport == false)
         {
-            $aViewUrls[] = 'viewquotasfooter_view';
+            //$aViewUrls[] = 'viewquotasfooter_view';
+			$aViewUrls['output'] .= $this->getController()->renderPartial('/admin/quotas/viewquotasfooter_view', $aData, true);
             $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
         }
         else
         {
+        	
+			//// WHY ???????
+			
             header("Content-Disposition: attachment; filename=results-survey" . $iSurveyId . ".csv");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
             header("Pragma: public");
@@ -361,6 +383,14 @@ class quotas extends Survey_Common_Action
 
         $aViewUrls[] = 'editquota_view';
 
+			$aData['sidebar']['state'] = "close";
+			$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";			
+			
+			//$aData['surveybar']['active_survey_properties'] = 'quotas';
+			$aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;
+			$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';			        	
+
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
@@ -389,13 +419,14 @@ class quotas extends Survey_Common_Action
             {
                 $aData['newanswer_result'] = $result;
                 $aData['quota_name'] = $quota_name;
+				
                 $aViewUrls[] = 'newanswer_view';
             }
         }
 
         if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
-            $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_qid'));
+            $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
             $sQuotaName = $aResults['name'];
 
             $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));
@@ -414,6 +445,12 @@ class quotas extends Survey_Common_Action
             $aViewUrls[] = 'newanswertwo_view';
         }
 
+				$aData['sidebar']['state'] = "close";
+				$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+				$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";			
+				$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+				$aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;			
+		
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
@@ -426,6 +463,12 @@ class quotas extends Survey_Common_Action
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['langs'] = $aData['aLangs'];
         $aData['baselang'] = $aData['sBaseLang'];
+
+				$aData['sidebar']['state'] = "close";
+				$surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+				$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyId.")";			
+				$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+				$aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;			
 
         $this->_renderWrappedTemplate('quotas', 'newquota_view', $aData);
     }

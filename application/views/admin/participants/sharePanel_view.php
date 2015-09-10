@@ -45,11 +45,18 @@
     
 
 </script>
-<div class='header ui-widget-header'><strong><?php eT("Share panel"); ?> </strong></div>
-<br/>
+
+<div class="col-lg-12 list-surveys">
+    <h3><?php eT("Share panel"); ?> </h3>
+
+    <div class="row">
+        <div class="col-lg-12 content-right">
 <table id="sharePanel">
     <tr><td>&nbsp;</td></tr>
 </table>
 <div id="pager">
-</div>
-<br/>
+</div>            
+        </div>
+    </div>
+</div>            
+

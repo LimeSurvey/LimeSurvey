@@ -251,7 +251,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     } elseif ($field['LStype'] == ':') {
         $displayvaluelabel = 0;
         //Get the labels that could apply!
-        if (is_null($qidattributes)) $qidattributes=getQuestionAttributeValues($field["qid"]);
+        if (is_null($qidattributes)) $qidattributes=getQuestionAttributeValues($field["qid"], $field['LStype']);
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
         } else {
@@ -477,7 +477,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
                 //Get default scale for this type
                 if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
                 //But allow override
-                $aQuestionAttribs = getQuestionAttributeValues($qid);
+                $aQuestionAttribs = getQuestionAttributeValues($qid,$ftype);
                 if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
             }
 
@@ -905,7 +905,7 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
     global $dom;
 
     global $quexmllang;
-    App()->setLanguage($quexmllang);
+    $qlang = new limesurvey_lang($quexmllang);
 
     if ($labels)
         $Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
@@ -945,7 +945,7 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
     {
         $category = $dom->createElement("category");
 
-        $label = $dom->createElement("label",quexml_get_lengthth($qid,"other_replace_text",gT("Other")));
+        $label = $dom->createElement("label",quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
         $value= $dom->createElement("value",'-oth-');
 
@@ -954,7 +954,7 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
 
         $contingentQuestion = $dom->createElement("contingentQuestion");
         $length = $dom->createElement("length",24);
-        $text = $dom->createElement("text",quexml_get_lengthth($qid,"other_replace_text",gT("Other")));
+        $text = $dom->createElement("text",quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
         $contingentQuestion->appendChild($text);
         $contingentQuestion->appendChild($length);
@@ -1000,7 +1000,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
     global $dom;
     global $quexmllang ;
     global $iSurveyID;
-    App()->setLanguage($quexmllang);
+    $qlang = new limesurvey_lang($quexmllang);
 
 
     $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
@@ -1053,7 +1053,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
         $fixed = $dom->createElement("fixed");
         $category = $dom->createElement("category");
 
-        $label = $dom->createElement("label",quexml_get_lengthth($qid,"other_replace_text",gT("Other")));
+        $label = $dom->createElement("label",quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
         $value= $dom->createElement("value",1);
 
@@ -1068,7 +1068,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 
         $contingentQuestion = $dom->createElement("contingentQuestion");
         $length = $dom->createElement("length",24);
-        $text = $dom->createElement("text",quexml_get_lengthth($qid,"other_replace_text",gT("Other")));
+        $text = $dom->createElement("text",quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
         $contingentQuestion->appendChild($text);
         $contingentQuestion->appendChild($length);
@@ -1124,7 +1124,7 @@ function quexml_export($surveyi, $quexmllan)
     $quexmllang = $quexmllan;
     $iSurveyID = $surveyi;
 
-    App()->setLanguage($quexmllang);
+    $qlang = new limesurvey_lang($quexmllang);
 
     $dom = new DOMDocument('1.0','UTF-8');
 
@@ -1285,7 +1285,7 @@ function quexml_export($surveyi, $quexmllan)
 				{
 					$directive = $dom->createElement("directive");
 					$position = $dom->createElement("position","before");
-					$text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
+					$text = $dom->createElement("text", '['.$qlang->gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
 					$administration = $dom->createElement("administration","self");
 					$directive->appendChild($position);
 					$directive->appendChild($text);
@@ -1378,11 +1378,11 @@ function quexml_export($surveyi, $quexmllan)
                     $question->appendChild($response);
                     break;
                 case "Y": //YES/NO radio-buttons
-                    $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y',gT("No") => 'N')));
+                    $response->appendChild(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
                     $question->appendChild($response);
                     break;
                 case "G": //GENDER drop-down list
-                    $response->appendChild(QueXMLFixedArray(array(gT("Female") => 'F',gT("Male") => 'M')));
+                    $response->appendChild(QueXMLFixedArray(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
                     $question->appendChild($response);
                     break;
                 case "A": //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1397,12 +1397,12 @@ function quexml_export($surveyi, $quexmllan)
                     break;
                 case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y',gT("Uncertain") => 'U',gT("No") => 'N')));
+                    $response->appendChild(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("Uncertain") => 'U',$qlang->gT("No") => 'N')));
                     $question->appendChild($response);
                     break;
                 case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLFixedArray(array(gT("Increase") => 'I',gT("Same") => 'S',gT("Decrease") => 'D')));
+                    $response->appendChild(QueXMLFixedArray(array($qlang->gT("Increase") => 'I',$qlang->gT("Same") => 'S',$qlang->gT("Decrease") => 'D')));
                     $question->appendChild($response);
                     break;
                 case "F": //ARRAY (Flexible) - Row Format

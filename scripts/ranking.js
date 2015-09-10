@@ -1,14 +1,3 @@
-/*
- * This file is part of LimeSurvey
- * See COPYRIGHT.php for copyright notices and details.
- * @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
- */
-
-/**
- * Update answers part for ranking function
- *
- * @param {number} qId The qid of the question where apply.
- */
 function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
 // TODO : advanced setting in attributes
   if (typeof showpopups === 'undefined'){showpopups=true;}
@@ -19,19 +8,16 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   var rankingnamewidth=rankingname.length;
   //Add a class to the question
   $('#question'+qID+'').addClass('dragDropRanking');
-  // Hide the default answers list but display for media oral or screen reader
+  // Hide the default answers list
+  // Display for media oral, maybe use !window.matchMedia("(oral)").matches but still hidden if user use default browser with screen reader ?
   $('#question'+qID+' .answers-list').addClass("hide");
   // We are in javascript, then default tip can be replaced
-  $('#question'+qID+' .em_default').html("<div class='hide'>"+$('#question'+qID+' .em_default').html()+"</div><div aria-hidden='true'>"+aRankingTranslations.rankhelp+"</div>");
-  $('#question'+qID+' .answers-list').on("change",".select-item",{source:false},function(event,data){
-    data = data || event.data;
-    if(data.source!='dragdrop')
-      loadDragDropRank(qID);;
-  });
+  $('#question'+qID+' .em_default').html(aRankingTranslations.rankhelp);
+
 
   // Add connected sortables elements to the question
   // Actually a table : move it to a list is a good idea, but need reviewing template a lot.
-  var htmlCode = '<div class="dragDropTable" aria-hidden="true"> \
+  var htmlCode = '<div class="dragDropTable"> \
       <div class="columns2">\
         <strong class="SortableTitle">'+aRankingTranslations.choicetitle+'</strong>\
         <div class="ui-state-default dragDropChoices"> \
@@ -119,11 +105,6 @@ function doDragDropRank(qID, showpopups, samechoiceheight, samelistheight) {
   }); 
   }
 
-/**
- * Update answers after updating drag and drop part
- *
- * @param {number} qId The qid of the question where apply.
- */
 function updateDragDropRank(qID){
   var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
   var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
@@ -140,22 +121,16 @@ function updateDragDropRank(qID){
   $("[id^=" + relevancename + "]").val('0');
   $('#question'+qID+' .select-item select:lt('+maxanswers+')').each(function(index){
       number=index+1;
-      if($(this).val()!="")
-      {
+      if($(this).val()!=""){
           $("#"+relevancename+number).val("1");
       }
-      $(this).trigger("change",{ source : 'dragdrop'});
+      checkconditions($(this).val(),$(this).attr("name"),'select-one','onchange');
   });
     $('#sortable-rank-'+qID+' li').removeClass("error");
     $('#sortable-choice-'+qID+' li').removeClass("error");
     $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("error");
 }
-/**
- * Show an alert if needed
- *
- * @param {number} qId The qid of the question where apply.
- * @param {bool} showpopups Show or not the alert
- */
+
 function sortableAlert (qID,showpopups)
 {
     if(showpopups){
@@ -163,11 +138,6 @@ function sortableAlert (qID,showpopups)
         alert(txtAlert);
     }
 }
-/**
- * Set the drag and drop according to existing answers
- *
- * @param {number} qId The qid of the question where apply.
- */
 function loadDragDropRank(qID){
   var maxanswers= parseInt($("#ranking-"+qID+"-maxans").text(),10);
   var rankingname= "javatbd"+$("#ranking-"+qID+"-name").text();
@@ -175,29 +145,20 @@ function loadDragDropRank(qID){
   var rankingnamewidth=rankingname.length;
   // Update #relevance 
   $("[id^=" + relevancename + "]").val('0');
-  $('#sortable-rank-'+qID+' li').each(function(){
-    $(this).appendTo('#sortable-choice-'+qID+'');
-  });
   $('#question'+qID+' .select-item select').each(function(index){
     if($(this).val()!=''){
-      number=index+1;
-      $("#"+relevancename+number).val("1");
-      $('#sortable-choice-'+qID+' li#'+rankingname+$(this).val()).appendTo('#sortable-rank-'+qID);
+        number=index+1;
+        $("#"+relevancename+number).val("1");
+        $('#sortable-choice-'+qID+' li#'+rankingname+$(this).val()).appendTo('#sortable-rank-'+qID);
     }
   });
-  updateDragDropRank(qID);// Update to reorder select
+
   $('#sortable-rank-'+qID+' li').removeClass("error");
   $('#sortable-choice-'+qID+' li').removeClass("error");
   $('#sortable-rank-'+qID+' li:gt('+(maxanswers*1-1)+')').addClass("error");
 }
 
-/**
- * Fix height of drag and drop according to question settings
- *
- * @param {number} qId The qid of the question where apply.
- * @param {bool} samechoiceheight
- * @param {bool} samelistheight
- */
+// Fix choix and list heigth according to parameter
 function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
   if(samechoiceheight)
   {
@@ -218,3 +179,5 @@ function fixChoiceListHeight(qID,samechoiceheight,samelistheight){
     $('.connectedSortable'+qID).css('min-height',totalHeight+'px');
   }
 }
+
+

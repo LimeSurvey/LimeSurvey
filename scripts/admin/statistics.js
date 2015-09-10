@@ -28,6 +28,7 @@ $(document).ready(function(){
 
      function loadBrowse(id,extra) {
          var destinationdiv=$('#columnlist_'+id);
+         console.log('#columnlist_'+id);
          if(extra=='') {
              destinationdiv.parents("td:first").toggle();
          } else {
@@ -61,23 +62,23 @@ $(document).ready(function(){
     /* Show and hide the three major sections of the statistics page */
     /* The response filters */
     $('#hidefilter').click( function(){
-        $('#statisticsresponsefilters').hide(1000);
+        $('#statisticsresponsefilters').hide();
         $('#filterchoices').hide();
         $('#filterchoice_state').val('1');
         $('#vertical_slide2').hide();
     });
     $('#showfilter').click( function(){
-        $('#statisticsresponsefilters').show(1000);
+        $('#statisticsresponsefilters').show();
         $('#filterchoices').show();
         $('#filterchoice_state').val('');
         $('#vertical_slide2').show();
     });
     /* The general settings/filters */
     $('#hidegfilter').click( function(){
-        $('#statisticsgeneralfilters').hide(1000);
+        $('#statisticsgeneralfilters').hide();
     });
     $('#showgfilter').click( function(){
-        $('#statisticsgeneralfilters').show(1000);
+        $('#statisticsgeneralfilters').show();
     });
     /* The actual statistics results */
     $('#hidesfilter').click( function(){

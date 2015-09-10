@@ -31,6 +31,9 @@ class saved extends Survey_Common_Action
         {
             die();
         }
+        
+
+
 
         $aThisSurvey = getSurveyInfo($iSurveyId);
         $aData['sSurveyName'] = $aThisSurvey['name'];
@@ -38,13 +41,13 @@ class saved extends Survey_Common_Action
         $aViewUrls[] = 'savedbar_view';
         $aViewUrls['savedlist_view'][] = $this->_showSavedList($iSurveyId);
 
-        // saved.js bugs if table is empty
+
         if (count($aViewUrls['savedlist_view'][0]['aResults']))
         {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'saved.js');            
         }
-
+        
 
         $this->_renderWrappedTemplate('saved', $aViewUrls, $aData);
     }
@@ -69,7 +72,12 @@ class saved extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array())
     {
-        $aData['display']['menu_bars'] = false;
+        $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
+        $aData['surveyid'] = $aData['iSurveyId'];
+        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+        $aData["surveyinfo"] = $surveyinfo;     
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];        
+        
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

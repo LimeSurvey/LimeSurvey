@@ -3,9 +3,9 @@
 <!--
     var strnogroup='<?php eT("There are no groups available.", "js");?>';
 --></script>
-<div class='header ui-widget-header'><?php eT("Assessment rules");?></div>
+<h4><?php eT("Assessment rules");?></h4>
 
-<table class='assessmentlist'><thead>
+<table class='table'><thead>
 <tr><th><?php eT("ID");?></th><th><?php eT("Actions");?></th><th><?php eT("SID");?></th>
 <?php foreach ($headings as $head) {
 	echo "<th>$head</th>\n";
@@ -65,8 +65,8 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")) { ?>
 <br />
 <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form30','id'=>'assessmentsform','name'=>'assessmentsform'));?>
-	<div class='header ui-widget-header'><?php echo $actiontitle;?></div>
-	<ul class="assessmentscope"><li><label><?php eT("Scope");?></label>
+	<h4><?php echo $actiontitle;?></h4>
+	<ul class="assessmentscope list-unstyled"><li><label><?php eT("Scope");?></label>
 	<input type='radio' id='radiototal' name='scope' value='T' <?php
     if (!isset($editdata) || $editdata['scope'] == "T") {echo "checked='checked' ";} ?>/>
     <label for='radiototal'><?php eT("Total");?></label>
@@ -96,7 +96,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
     if (isset($editdata)) {echo " value='{$editdata['maximum']}' ";} ?>/></li>
 
 	</ul><div id="languagetabs">
-    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all  list-unstyled">
     <?php foreach ($assessmentlangs as $assessmentlang)
     {
 	    $position=0;
@@ -119,7 +119,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 		    $message=htmlspecialchars($editdata['message']);
 	    } ?>
 	    <div id="tablang<?php echo $assessmentlang;?>">
-	    <ul><li><label for='name_<?php echo $assessmentlang;?>'><?php eT("Heading");?>:</label>
+	    <ul class="list-unstyled"><li><label for='name_<?php echo $assessmentlang;?>'><?php eT("Heading");?>:</label>
 	    <input type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/></li>
 	    <li><label for='assessmentmessage_<?php echo $assessmentlang;?>'><?php eT("Message");?>:</label>
 	    <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea>
@@ -138,3 +138,5 @@ else {echo "<tr class='evenrow'>\n";} ?>
     </form>
     <?php 
 } ?>
+
+</div></div></div>

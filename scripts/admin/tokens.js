@@ -170,7 +170,7 @@ $(document).ready(function() {
                     row.find('.drop_editing').remove();
                     row.find('.save').remove();
                     window.editing = false;
-                };
+                }
 
                 jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
                 row.find('.inputbuttons').hide();
@@ -245,7 +245,7 @@ $(document).ready(function() {
                 e.metaKey = false;
             }).selectable({
                 tolerance: 'fit'
-            });
+            })
         }
     },{
         multipleSearch:true,
@@ -341,19 +341,14 @@ $(document).ready(function() {
                 else
                 {
                     var newForm = jQuery('<form>', {
-                        'action': inviteurl,
-                        'method': 'POST',
-                        'target': '_blank',
+                        'action': remindurl,
+                        'target': 'inviteurl'
                     }).append(jQuery('<input>', {
-                        'name': 'YII_CSRF_TOKEN',
-                        'value': LS.data.csrfToken,
-                        'type': 'hidden'
-                    })).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
                     })).appendTo('body');
-                    newForm.submit();
+                    newForm.submit();                        
                 }
             }
         });
@@ -372,18 +367,13 @@ $(document).ready(function() {
                 {
                     var newForm = jQuery('<form>', {
                         'action': remindurl,
-                        'method': 'POST',
                         'target': '_blank'
                     }).append(jQuery('<input>', {
-                        'name': 'YII_CSRF_TOKEN',
-                        'value': LS.data.csrfToken,
-                        'type': 'hidden'
-                    })).append(jQuery('<input>', {
                         'name': 'tokenids',
                         'value': $("#displaytokens").getGridParam("selarrrow").join("|"),
                         'type': 'hidden'
                     })).appendTo('body');
-                    newForm.submit();
+                    newForm.submit();                    
                 }
             }
         });

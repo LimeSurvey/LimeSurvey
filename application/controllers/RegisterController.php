@@ -419,6 +419,7 @@ class RegisterController extends LSYii_Controller {
         $aData['thissurvey']=getSurveyInfo($iSurveyId,$sLanguage);
         $sTemplate=getTemplatePath($aData['thissurvey']['template']);
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
+        $aData['languagechanger']=makeLanguageChangerSurvey($sLanguage);
         $aData['sitename']=Yii::app()->getConfig('sitename');
         $aData['aRegisterErrors']=$this->aRegisterErrors;
         $aData['sMessage']=$this->sMessage;
@@ -426,13 +427,12 @@ class RegisterController extends LSYii_Controller {
         sendCacheHeaders();
         doHeader();
         $aViewData['sTemplate']=$sTemplate;
+        $aViewData['aData']=$aData;
         if(!$this->sMessage){
-            $aData['languagechanger']=makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
             $aViewData['content']=self::getRegisterForm($iSurveyId);
         }else{
             $aViewData['content']=templatereplace($this->sMessage);
         }
-        $aViewData['aData']=$aData;
         // Test if we come from index or from register
         if(empty(App()->clientScript->scripts)){
             App()->getClientScript()->registerPackage('jqueryui');

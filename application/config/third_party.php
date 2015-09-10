@@ -193,7 +193,7 @@ return array(
             'jquery'
         )
     ),
-    'jquery-actual' => array(
+	'jquery-actual' => array(
         'baseUrl' => 'third_party/jquery-actual/',
         'js' => array(
             'jquery.actual.min.js'
@@ -202,16 +202,17 @@ return array(
             'jquery'
         )
     ),
-    'jquery-touch-punch' => array(
-        'baseUrl' => 'third_party/jquery-touch-punch/',
-        'js' => array(
-            'jquery.ui.touch-punch.min.js'
-        ),
-        'depends' => array(
-            'jqueryui'
-        )
-    ),
-    'jqueryui-timepicker' => array(
+	'jquery-touch-punch' => array(
+		'baseUrl' => 'third_party/jquery-touch-punch/',
+		'js' => array(
+			'jquery.ui.touch-punch.min.js'
+		),
+		'depends' => array(
+			'jqueryui'
+		)
+	),
+
+	'jqueryui-timepicker' => array(
         'baseUrl' => 'third_party/jquery-ui-timepicker-addon/',
         'js' => array(
             'jquery-ui-timepicker-addon.js'
@@ -223,19 +224,11 @@ return array(
             'jqueryui'
         )
     ),
-    'jquery-price-format' => array(
-        'baseUrl' => 'third_party/jquery-price-format/',
+
+    'jquery-horizontal-scroll' => array(
+        'baseUrl' => 'third_party/jquery.horizontal.scroll',
         'js' => array(
-            'jquery_price_format.js'
+            'jquery.horizontal.scroll.js'
         ),
-    ),
-    'leaflet' => array(
-        'baseUrl' => 'third_party/leaflet/',
-        'js' => array(
-            'leaflet.js'
-        ),
-        'css' => array(
-            'leaflet.css'
-        ),
-    ),
+    ),    
 );

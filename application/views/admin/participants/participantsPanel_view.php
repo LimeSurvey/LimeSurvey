@@ -11,116 +11,104 @@
     var sNSelectedText = "<?php eT("selected", 'js') ?>";
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
 </script>
-<div class="menubar">
-    <div class='menubar-title ui-widget-header'>
-        <strong><?php eT("Participant panel"); ?> </strong>
-    </div>
-    <?php
-        $home = array('src' => $sImageURL.'home.png',
-            'alt' => gT("Main admin screen"), 
-            'title' => gT("Main admin screen"),  
-            'style' => 'margin-left:2px');
 
-        $information = array('src' => $sImageURL.'summary.png',
-            'alt' => gT("Information"),  
-            'title' => gT("Information"), 
-            'style' => 'margin-left:2px');
 
-        $import = array('src' => $sImageURL.'importcsv.png',
-            'alt' => gT("Import from CSV file"), 
-            'title' => gT("Import from CSV file"), 
-            'style' => 'margin-left:0px',
-            'style' => 'margin-right:1px');
 
-        $export = array('src' => $sImageURL.'exportcsv.png',
-            'alt' => gT("Export to CSV file"), 
-            'title' => gT("Export to CSV file"),
-            'name' => 'export',
-            'id' => 'export',
-            'style' => 'margin-left:0px',
-            'style' => 'margin-right:1px');
 
-        $display = array('src' => $sImageURL.'document.png',
-            'alt' => gT("Display participants"),
-            'title' => gT("Display participants"),
-            'style' => 'margin-left:5px');
 
-        $blacklist = array('src' => $sImageURL.'trafficred.png',
-            'alt' => gT("Blacklist control"),
-            'title' => gT("Blacklist control"),
-            'style' => 'margin-left:1px',
-            'style' => 'margin-right:1px');
 
-        $globalsettings = array('src' => $sImageURL.'global.png',
-            'alt' => gT("Global participant settings"),
-            'title' => gT("Global participant settings"),
-            'style' => 'margin-left:5px',
-            'style' => 'margin-right:1px');
 
-        $attributecontrol = array('src' => $sImageURL.'tag.png',
-            'alt' => gT("Attribute management"),
-            'title' => gT("Attribute management"),
-            'width' => 50,
-            'height' => 35,
-            'style' => 'margin-left:0px',
-            'style' => 'margin-right:1px');
 
-        $sharepanel = array('src' => $sImageURL.'share.png',
-            'alt' => gT("Share panel"), 
-            'title' => gT("Share panel"),
-            'height' => 35,
-            'width' => 35,
-            'style' => 'margin-left:5px');
 
-        $separator = array('src' => $sImageURL.'separator.gif',
-            'alt' => '',
-            'options'=> array(
-                'class' => 'separator'),
-            'title' => '');
 
-        $ajaxloader = array('src' => $sImageURL.'ajax-loader.gif',
-            'alt' => 'AJAX loader',
-            'title' => 'AJAX loader');
-    ?>
-    <div class='menubar-main'>
-        <div class='menubar-left'>
-            <?php
-                echo CHtml::link(CHtml::image($home['src'], $home['alt']), Yii::app()->getController()->createUrl("/admin"));
-                echo CHtml::link(CHtml::image($information['src'], $information['alt']), $this->createUrl('admin/participants/sa/index'));
-                echo CHtml::link(CHtml::image($display['src'], $display['alt']), $this->createUrl('admin/participants/sa/displayParticipants'));
-                echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
-                echo CHtml::link(CHtml::image($import['src'], $import['alt']), $this->createUrl('admin/participants/sa/importCSV'));
-                echo CHtml::link(CHtml::image($export['src'], $export['alt']), '#',array('id'=>$export['id']));
-                echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
-                echo CHtml::link(CHtml::image($blacklist['src'], $blacklist['alt']), $this->createUrl('admin/participants/sa/blacklistControl'));
-                if (Permission::model()->hasGlobalPermission('superadmin','read'))
-                {
-                    echo CHtml::link(CHtml::image($globalsettings['src'], $globalsettings['alt']), $this->createUrl('admin/participants/sa/userControl'));
-                }
-                echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
-                echo CHtml::link(CHtml::image($attributecontrol['src'], $attributecontrol['alt']), $this->createUrl('admin/participants/sa/attributeControl'));
-                echo CHtml::image($separator['src'], $separator['alt'], $separator['options']);
-                echo CHtml::link(CHtml::image($sharepanel['src'], $sharepanel['alt']), $this->createUrl('admin/participants/sa/sharePanel'));
-            ?>
+
+<div class='menubar' id="participantbar">
+    <div class='row container-fluid'>
+        
+        <div class="col-md-8">
+                <!-- Information -->
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/summary.png" />
+                    <?php eT("Information");?>
+                </a>
+
+                <!-- Display participants -->
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/surveylist.png" />
+                    <?php eT("List");?>
+                </a>
+
+                <!-- Import from CSV file -->
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/importCSV"); ?>" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/importcsv.png" />
+                    <?php eT("Import");?>
+                </a>
+
+                <!-- Export to CSV file -->
+                <a id="export" class="btn btn-default" href="#" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/exportcsv.png" />
+                    <?php eT("Export");?>
+                </a>
+
+                <!-- Blacklist control -->
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/trafficred.png" />
+                    <?php eT("Blacklist");?>
+                </a>                
+
+                <!-- Global participant settings -->
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/userControl"); ?>" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/global.png" />
+                    <?php eT("Settings");?>
+                </a>
+
+                <!-- Attribute management -->
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/tag.png" />
+                    <?php eT("Attributes");?>
+                </a>                
+
+                <!-- Share panel -->
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" role="button">
+                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/share.png" />
+                    <?php eT("Share panel");?>
+                </a>                                                
+
+        </div>
+
+
+
+
+        <div class="col-md-4 text-right">
+            <a class="btn btn-default" href="<?php echo $this->createUrl('admin/survey/sa/index'); ?>" role="button">
+                <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                &nbsp;&nbsp;
+                <?php eT('return to admin pannel'); ?>
+            </a>
         </div>
     </div>
-    <div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
-        <?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
-    </div>
-    <div id='exportcsvallnorow' title='exportcsvallnorow' style='display:none'>
-        <?php eT("There are no participants to be exported."); ?>
-    </div>
-    <div id="exportcsv" title="exportcsv" style="display:none" class='form30'>
-        <ul><li><label for='attributes'><?php eT("Attributes to export:"); ?></label>
-                <select id="attributes" name="attributes" multiple="multiple" style='width: 350px' size=7>
+</div>
+
+
+<!-- TODO : check and refactore -->
+<div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
+    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/ajax-loader.gif" alt="AJAX loader" />    
+</div>
+<div id='exportcsvallnorow' title='exportcsvallnorow' style='display:none'>
+    <?php eT("There are no participants to be exported."); ?>    
+</div>
+<div id="exportcsv" title="exportcsv" style="display:none" class='form30'>
+    <ul>
+        <li>
+            <label for='attributes'>Attributes to export:</label>
+            <select id="attributes" name="attributes" multiple="multiple" style='width: 350px' size=7>
                     <?php
                         foreach ($aAttributes as $value)
                         {
                             echo "<option value=" . $value['attribute_id'] . ">" . $value['defaultname'] . "</option>\n";
                         }
-                    ?>
-                </select>
-            </li>
-        </ul>
-    </div>    
-</div>
+                    ?>                
+            </select>
+        </li>
+    </ul>
+</div>    

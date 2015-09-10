@@ -25,9 +25,15 @@
     var cancel = '<?php eT('Cancel'); ?>';
 </script>
 <?php echo PrepareEditorScript(); ?>
-<div class='header ui-widget-header'>
-    <?php eT("Edit subquestions"); ?>
-</div>
+
+
+<div class="side-body" id="edit-question-body">
+    <h3>
+        <?php eT("Edit subquestions"); ?>               
+    </h3>
+    <div class="row">
+        <div class="col-lg-8 content-right">
+
 <?php echo CHtml::form(array("admin/database"), 'post', array('id'=>'editsubquestionsform', 'name'=>'editsubquestionsform')); ?>
 
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
@@ -36,12 +42,13 @@
     <input type='hidden' id='action' name='action' value='updatesubquestions' />
     <input type='hidden' id='sortorder' name='sortorder' value='' />
     <input type='hidden' id='deletedqids' name='deletedqids' value='' />
-    <div id='tabs'>
-        <ul>
-            <?php foreach ($anslangs as $anslang)
+        <ul class="nav nav-tabs">
+            <?php foreach ($anslangs as $i => $anslang)
                 { ?>
-                <li><a href='#tabpage_<?php echo $anslang; ?>'><?php echo getLanguageNameFromCode($anslang, false); ?>
-                        <?php if ($anslang==Survey::model()->findByPk($surveyid)->language) { ?> (<?php echo gT("Base language"); ?>) <?php } ?></a>
+                <li role="presentation" <?php if($i==0){echo 'class="active"';}?>>
+                    <a data-toggle="tab" href='#tabpage_<?php echo $anslang; ?>'><?php echo getLanguageNameFromCode($anslang, false); ?>
+                        <?php if ($anslang==Survey::model()->findByPk($surveyid)->language) { ?> (<?php echo gT("Base language"); ?>) <?php } ?>
+                    </a>
                 </li>
                 <?php } ?>
         </ul>
@@ -50,10 +57,11 @@
             $sortorderids='';
             $codeids='';
         ?>
-
-        <?php foreach ($anslangs as $anslang)
+        
+        <div class="tab-content">
+        <?php foreach ($anslangs as $i => $anslang)
             { ?>
-            <div id='tabpage_<?php echo $anslang; ?>' class='tab-page'>
+            <div id='tabpage_<?php echo $anslang; ?>' class='tab-page tab-pane fade in <?php if($i==0){echo 'active';}?>'>
                 <?php for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
                     {
                         $position=0;
@@ -171,10 +179,11 @@
                             $disabled="disabled='disabled'";
                     } ?>
                     <div class="action-buttons">
-                        <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php eT('Predefined label sets...'); ?></button>
-                        <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php eT('Quick add...'); ?></button>
+                        <br/>
+                        <button class='btnlsbrowser btn btn-default' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php eT('Predefined label sets...'); ?></button>
+                        <button class='btnquickadd btn btn-default' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php eT('Quick add...'); ?></button>
                         <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')){ ?>
-                        <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php eT('Save as label set'); ?></button>
+                        <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php eT('Save as label set'); ?></button>
                         <?php } ?>
                     </div>
 
@@ -183,6 +192,8 @@
                     $first=false; ?>
             </div>
             <?php } ?>
+        </div>
+        
         <div id='labelsetbrowser' class='labelsets-update' style='display:none;'>
             <div style='float:left; width:260px;'>
                 <label for='labelsets'><?php eT('Available label sets:'); ?></label>
@@ -233,7 +244,7 @@
 
         </div>
         <p>
-            <input type='submit' id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
+            <input type='submit' class="hidden" id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
             <?php $position=sprintf("%05d", $position); ?>
             <?php if ($activated == 'Y')
                 { ?>
@@ -242,6 +253,13 @@
                         <?php eT("Warning"); ?></strong>: <?php eT("You cannot add/remove subquestions or edit their codes because the survey is active."); ?></i></font>
                 <?php } ?>
         </p>
-    </div>
     <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
 </form>
+
+
+            
+        </div>
+    </div>
+</div>    
+
+

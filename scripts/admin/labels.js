@@ -74,14 +74,17 @@ $(document).ready(function(){
         dataToSend['langs'] = [];
         dataToSend['codelist'] = [];
 
-        $("#tabs>form>div").each(function(divindex,divelement){
+        $(".tab-pane").each(function(divindex,divelement){
             var div_language = $(".lslanguage",divelement).val();
 
             if (typeof(div_language)!="undefined")
                 dataToSend['langs'].push(div_language);
         });
 
-        $("tbody>tr",$("#tabs>form>div:first")).each(function(trindex,trelement){
+		// This is probably not working... 
+		//$("tbody>tr",$("#tabs>form>div:first")).each(function(trindex,trelement){
+
+        $(".labelDatas").each(function(trindex,trelement){
 
             var tr_code = $(trelement).attr('id');
             tr_code=tr_code.split('_');// first is row, second langage and last the row number
@@ -125,7 +128,7 @@ function quickaddfunction(){
 
     $(lsrows).each(function(index,element){
         code = undefined;
-
+        
         params = element.split(separatorchar);
         k = 0;
         if (params.length > $(".lslanguage").length){
@@ -133,15 +136,33 @@ function quickaddfunction(){
             k++;
         }
 
-		event = {};
-		event.target = $(".btnaddanswer:last");
-		var retcode = add_label(event);
 
+
+
+            event = {};
+            event.target = $(".btnaddanswer:last");
+            var retcode = add_label(event);
+		/*
+        if (index!=0 || (!lsreplace && $("div[id^='newedit']:not(:last) tbody>tr").length > 0)){
+            event = {};
+            event.target = $(".btnaddanswer:last");
+            var retcode = add_label(event);
+        }
+        else{
+            var retcode = add_label();
+        }
+		*/
+		
+		
+		
+		
+		
         if (typeof(code)!="undefined") {
             $("#code_"+retcode).val(code);
 		}
 
         $(".lslanguage").each(function(i){
+        	console.log("input[name=title_"+$(this).val()+"_"+retcode+"]");
             $("input[name=title_"+$(this).val()+"_"+retcode+"]").val(params[k]);
 			if (typeof(code)!="undefined" && i > 0) {
 				$("#row_"+$(this).val()+"_"+retcode+" td:first").text(code);
@@ -173,7 +194,7 @@ function sort_complete(event, ui){
     if (originalposition.top > position.top) newposition = newposition - 1;
 
 
-    $("#tabs div:not(:first) [name="+$(item).attr('name')+"]").each(function(index,element){
+    $(".not_first [name="+$(item).attr('name')+"]").each(function(index,element){
         var backup = "<tr id='row"+$(item).attr('name')+"'>"+$(element).html()+"</tr>";
 
         if (newposition >= 0)
@@ -190,6 +211,7 @@ function sort_complete(event, ui){
 
 function add_label(event)
 {
+	console.log(event);
     if(event!=undefined)
     {
         if ($(event.target).closest('tr').find('.codeval').size()>0)
@@ -210,6 +232,8 @@ function add_label(event)
         next_code='L001';
     }
 
+	console.log(next_code);
+
     var html = createNewLabelTR(true,true);
 
     if (typeof(event)=="undefined")
@@ -222,11 +246,11 @@ function add_label(event)
     html = str_replace("###assessmentval###",'0',html);
     html = str_replace("###codeval###",next_code,html);
     html = str_replace("###next###",randomid,html);
-    html = str_replace("###lang###",$("#tabs div:first .lslanguage").val(),html);
+    html = str_replace("###lang###",$("#lslanguagemain").val(),html);
 
 
     if (typeof(event) == "undefined")
-        $("#tabs div:first tbody").append(html);
+        $(".first tbody").append(html);
     else
         $(event.target).parent().parent().after(html);
 
@@ -236,7 +260,7 @@ function add_label(event)
     html = str_replace("###codeval###",next_code,html);
     html = str_replace("###next###",randomid,html);
 
-    $("#tabs div:not(:first)").each(function(index,element){
+    $(".not_first").each(function(index,element){
 
         var temp_html = str_replace("###lang###",$(".lslanguage",element).val(),html);
         if (row_id >= 0){
@@ -275,10 +299,10 @@ function fix_highlighting(){
 }
 
 function createNewLabelTR(alternate,first){
-    x = "<tr ";
+    x = "<tr class='labelDatas ";
     if (alternate)
-        x = x + "class= 'highlight' ";
-    x = x + "style = 'white-space: nowrap;' id='row_###lang###_###next###'>";
+        x = x + "highlight";
+    x = x + "' style = 'white-space: nowrap;' id='row_###lang###_###next###'>";
 
     if (!first)
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
@@ -362,7 +386,7 @@ function getNextCode(sourcecode)
 function code_duplicates_check()
 {
     var codearray=[];
-    $('#tabs>form>div:first input.codeval').each(function(){
+    $('.first input.codeval').each(function(){
         sValue=$.trim($(this).val());
         $(this).val(sValue);
         codearray.push(sValue);

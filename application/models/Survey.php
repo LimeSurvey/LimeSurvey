@@ -27,6 +27,8 @@ class Survey extends LSActiveRecord
     protected $findByPkCache = array();
     /* Set some setting not by default database */
     public $format = 'G';
+	public $full_answers_account; 
+	public $partial_answers_account;	
 
     /**
      * init to set default
@@ -127,7 +129,11 @@ class Survey extends LSActiveRecord
         return array(
             'languagesettings' => array(self::HAS_MANY, 'SurveyLanguageSetting', 'surveyls_survey_id', 'index' => 'surveyls_language'),
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
-            'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
+            'owner' => array(self::BELONGS_TO, 'User', 'owner_id'),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid'),
+            // ????????
+			// 'owner' => array(self::BELONGS_TO, 'User', '', 'on' => "$alias.owner_id = owner.uid"),
+            
         );
     }
 
@@ -318,7 +324,6 @@ class Survey extends LSActiveRecord
         {
             return array();
         }
-
         // Catches malformed data
         if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)),'attribute_')===false)
         {
@@ -360,15 +365,12 @@ class Survey extends LSActiveRecord
         foreach ($attdescriptiondata as $sKey=>$aValues)
         {
             if (!is_array($aValues)) $aValues=array();
-            if(preg_match("/^attribute_[0-9]$/",$sKey))
-            {
-              $aCompleteData[$sKey]= array_merge(array(
-                      'description' => '',
-                      'mandatory' => 'N',
-                      'show_register' => 'N',
-                      'cpdbmap' =>''
-                      ),$aValues);
-            }
+            $aCompleteData[$sKey]= array_merge(array(
+                    'description' => '',
+                    'mandatory' => 'N',
+                    'show_register' => 'N',
+                    'cpdbmap' =>''
+                    ),$aValues);
         }
         return $aCompleteData;
     }
@@ -522,4 +524,187 @@ class Survey extends LSActiveRecord
             $this->questionindex = 0;
         }
     }
+	
+	public function getSurveyinfo()
+	{
+		$iSurveyID = $this->sid;
+		$baselang = $this->language;
+		
+		$condition = array('sid' => $iSurveyID, 'language' => $baselang);
+			
+		//// TODO : replace this with a HAS MANY relation !	
+		$sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
+		if (is_null($sumresult1))
+		{
+		    Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
+		    $this->getController()->redirect(array("admin/index"));
+		} //  if surveyid is invalid then die to prevent errors at a later time
+		$surveyinfo = $sumresult1->attributes;
+		$surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
+		$surveyinfo = array_map('flattenText', $surveyinfo);
+        //$surveyinfo["groups"] = $this->groups;
+		return $surveyinfo;
+	}	
+	
+	
+	public function getCreationDate()
+	{
+		$dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
+		return convertDateTimeFormat($this->datecreated, 'Y-m-d', $dateformatdata['phpdate']);
+	}
+
+	public function getAnonymizedResponses()
+	{
+		$anonymizedResponses = ($this->anonymized == 'Y')?gT('Yes'):gT('No');
+		return $anonymizedResponses;
+	}	
+
+	public function getActiveWord()
+	{
+		$activeword = ($this->active == 'Y')?gT('Yes'):gT('No');
+		return $activeword;
+	}	
+
+	public function getPartialAnswers()
+	{
+		$table = '{{survey_' . $this->sid . '}}';
+		
+		if (Yii::app()->db->schema->getTable($table) === null)
+		{
+			return null;
+		}
+		else 
+		{
+			$answers = Yii::app()->db->createCommand()
+			    ->select('*')
+			    ->from($table)
+			    ->where('submitdate IS NULL')
+			    ->queryAll();	
+	
+	        return $answers;			
+		}
+	}
+	
+	public function getFullAnswers()
+	{
+		$table = '{{survey_' . $this->sid . '}}';
+		
+		if (Yii::app()->db->schema->getTable($table) === null)
+		{
+			return null;
+		}
+		else 
+		{
+			$answers = Yii::app()->db->createCommand()
+			    ->select('*')
+			    ->from($table)
+			    ->where('submitdate IS NOT NULL')
+			    ->queryAll();	
+	
+	        return $answers;			
+		}
+	}
+
+	public function getCountFullAnswers()
+	{
+		return count($this->fullAnswers);		
+	}
+	
+	public function getCountPartialAnswers()
+	{
+		return count($this->partialAnswers);		
+	}
+
+	public function getCountTotalAnswers()
+	{
+		return ($this->countFullAnswers + $this->countPartialAnswers);		
+	}
+
+	public function getbuttons()
+	{
+		
+							 
+		$url = Yii::app()->createUrl("/admin/survey/sa/view/surveyid/");
+		$url .= '/'.$this->sid;
+		$button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
+	
+		$previewUrl = Yii::app()->createUrl("survey/index/sid/");
+		$previewUrl .= '/'.$this->sid;			
+		
+		//$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open" aria-hidden="true" ></span></a> ';
+		$button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
+		return $button;
+	}		
+
+	public function search()
+	{
+		$criteria=new CDbCriteria;
+ 
+ 		
+		
+
+ 
+		// select
+		$criteria->select = array(
+		    '*',
+		    $this->getCountFullAnswers() . " as full_answers_account",
+		    $this->getCountPartialAnswers() . " as partial_answers_account",
+		);
+		
+
+		$criteria->join = 'LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
+		$criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
+		
+		
+		// where
+		//$criteria->compare($this->getCountTotalAnswers, $this->full_answers_account);
+
+
+		$sort = new CSort();
+		$sort->attributes = array(
+		  'Survey id'=>array(
+		    'asc'=>'sid',
+		    'desc'=>'sid desc',
+		  ),
+		  'Title'=>array(
+		    'asc'=>'surveys_languagesettings.surveyls_title',
+		    'desc'=>'surveys_languagesettings.surveyls_title desc',
+		  ),
+		
+		  'Creation date'=>array(
+		    'asc'=>'datecreated',
+		    'desc'=>'datecreated desc',
+		  ),
+		
+		  'Owner'=>array(
+		    'asc'=>'users.users_name',
+		    'desc'=>'users.users_name desc',
+		  ),
+		
+		  'Anonymized responses'=>array(
+		    'asc'=>'anonymized',
+		    'desc'=>'anonymized desc',
+		  ),
+		
+		  'Full Answers'=>array(
+		    'asc'=>'full_answers_account',
+		    'desc'=>'full_answers_account desc',
+		  ),			  			  			  			  
+		);
+
+		
+		return new CActiveDataProvider(get_class($this), array(
+		    'criteria' => $criteria,
+			'sort'=>$sort,
+			
+		    'pagination'=>array(
+		        'pageSize'=>15,
+		    ),
+
+		    'pagination' => array(
+		        'pageSize' => 20,
+		    ),
+		));
+		}
+		
 }

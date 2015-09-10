@@ -738,7 +738,7 @@ function sendSubmitNotifications($surveyid)
         $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'admin_notification_subj',($thissurvey['anonymized'] == "Y"),NULL, array(), true);
         foreach ($aEmailNotificationTo as $sRecipient)
         {
-        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments))
+        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
             {
                 if ($debug>0)
                 {
@@ -770,7 +770,7 @@ function sendSubmitNotifications($surveyid)
         $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,'detailed_admin_notification_subj',$thissurvey['anonymized'] == "Y",NULL, array(), true);
         foreach ($aEmailResponseTo as $sRecipient)
         {
-        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments))
+        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, true, getBounceEmail($surveyid), $aRelevantAttachments))
             {
                 if ($debug>0)
                 {
@@ -1185,8 +1185,11 @@ function buildsurveysession($surveyid,$preview=false)
     {
         $language_to_set = $thissurvey['language'];
     }
-    // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
-    SetSurveyLanguage($surveyid, $language_to_set);
+
+    if (!isset($_SESSION['survey_'.$surveyid]['s_lang']))
+    {
+        SetSurveyLanguage($surveyid, $language_to_set);
+    }
 
 
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
@@ -1232,6 +1235,8 @@ function buildsurveysession($surveyid,$preview=false)
         case "S":
             $_SESSION['survey_'.$surveyid]['totalsteps']=$totalquestions;
     }
+
+
     if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions>0)    //break out and crash if there are no questions!
     {
         sendCacheHeaders();
@@ -1247,7 +1252,7 @@ function buildsurveysession($surveyid,$preview=false)
         if ($totalquestions == 0){
             echo '<li>'.gT("There are no questions in this survey.").'</li>';
         }
-        if ($iTotalGroupsWithoutQuestions > 0){
+        if ($iTotalGroupsWithoutQuestions == 0){
             echo '<li>'.gT("There are empty question groups in this survey - please create at least one question within a question group.").'</li>';
         }
         echo "</ul>"
@@ -1735,7 +1740,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         {
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                             {
-                                $aAttributes=getQuestionAttributeValues($field['qid']);
+                                $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
                                 $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
                                 $total=$total+(int)$aAttributes['assessment_value'];
                             }
@@ -1926,8 +1931,6 @@ function checkCompletedQuota($surveyid,$return=false)
         $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update 
         foreach ($aQuotasInfo as $aQuotaInfo)
         {
-            if(count($aQuotaInfo['members'])===0)
-                continue;
             $iMatchedAnswers=0;
             $bPostedField=false;
             // Array of field with quota array value

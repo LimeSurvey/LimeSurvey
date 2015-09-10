@@ -6,6 +6,14 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     static protected $description = 'Core: LDAP authentication';
     static protected $name = 'LDAP';
 
+    /**
+     * Can we autocreate users? For the moment this is disabled, will be moved 
+     * to a setting when we have more robust user creation system.
+     * 
+     * @var boolean
+     */
+    protected $autoCreate = false;
+
     protected $settings = array(
         'server' => array(
             'type' => 'string',
@@ -83,10 +91,6 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         'is_default' => array(
                 'type' => 'checkbox',
                 'label' => 'Check to make default authentication method'
-                ),
-        'autocreate' => array(
-                'type' => 'checkbox',
-                'label' => 'Automatically create user if it exists in LDAP server'
                 )
     );
 
@@ -115,17 +119,8 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             return;
         }
 
-        $this->_createNewUser(flattenText(Yii::app()->request->getPost('new_user'), false, true));
-    }
-
-    /**
-     * Create a LDAP user
-     *
-     * @return unknown_type
-     */
-    private function _createNewUser($new_user)
-    {
         $oEvent = $this->getEvent();
+        $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
 
         // Get configuration settings:
         $ldapserver     = $this->get('server');
@@ -211,16 +206,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             return;
         }
         $new_pass = createPassword();
-        // If user is being auto created we set parent ID to 1 (admin user)
-        if (isset(Yii::app()->session['loginID']))
-        {
-            $parentID = Yii::app()->session['loginID'];
-        }
-        else
-        {
-            $parentID = 1;
-        }
-        $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
+        $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
         if (!$iNewUID)
         {
             $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
@@ -237,6 +223,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         $oEvent->set('newFullName',$new_full_name);
         $oEvent->set('errorCode',self::ERROR_NONE);
     }
+
 
     /**
      * Create LDAP connection
@@ -259,7 +246,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         // Try to connect
         $ldapconn = ldap_connect($ldapserver, (int) $ldapport);
         if (false == $ldapconn) {
-            return array( "errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection') );
+            return [ "errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection') ];
         }
 
         // using LDAP version
@@ -278,7 +265,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             if(!ldap_start_tls($ldapconn))
             {
                 ldap_close($ldapconn); // all done? close connection
-                return array( "errorCode" => 100, 'errorMessage' => ldap_error($ldapconn) );
+                return [ "errorCode" => 100, 'errorMessage' => ldap_error($ldapconn) ];
             }
         }
 
@@ -287,7 +274,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
 
     public function beforeLogin()
     {
-        if ($this->get('is_default', null, null, false) == true) {
+        if ($this->get('is_default', null, null, false) == true) { 
             // This is configured to be the default login method
             $this->getEvent()->set('default', get_class($this));
         }
@@ -303,7 +290,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Modified getPluginSettings since we have a select box that autosubmits
      * and we only want to show the relevant options.
-     *
+     * 
      * @param boolean $getValues
      * @return array
      */
@@ -313,7 +300,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         if ($getValues) {
             $ldapmode = $aPluginSettings['ldapmode']['current'];
             $ldapver = $aPluginSettings['ldapversion']['current'];
-
+            
             // If it is a post request, it could be an autosubmit so read posted
             // value over the saved value
             if (App()->request->isPostRequest) {
@@ -322,9 +309,9 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $ldapver = App()->request->getPost('ldapversion', $ldapver);
                 $aPluginSettings['ldapversion']['current'] = $ldapver;
             }
-
+            
             if ($ldapver == '2' ) {
-               unset($aPluginSettings['ldaptls']);
+               unset($aPluginSettings['ldaptls']); 
             }
 
             if ($ldapmode == 'searchandbind') {
@@ -344,7 +331,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 unset($aPluginSettings['fullnameattribute']);
             }
         }
-
+        
         return $aPluginSettings;
     }
 
@@ -357,26 +344,19 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             return;
         }
 
-        // Here we do the actual authentication
+        // Here we do the actual authentication       
         $username = $this->getUsername();
         $password = $this->getPassword();
 
-        $autoCreateFlag = false;
         $user = $this->api->getUserByName($username);
+
         if ($user === null)
         {
-            if ($this->get('autocreate', null, null, false) == true)
-            {
-                $autoCreateFlag = true;
-            }
-            else
-            {
-              // If the user doesnt exist in the LS database, he can not login
-              $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
-              return;
-            }
+            // If the user doesnt exist in the LS database, he can not login
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+            return;
         }
-        if ($user !== null && ($user->uid == 1 || !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid)))
+        if ($user->uid == 1 || !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid))
         {
             $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
             return;
@@ -421,7 +401,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             // to foind the userDN and then we procced to the bind operation
             if (empty($binddn))
             {
-                // There is no account defined to do the LDAP search,
+                // There is no account defined to do the LDAP search, 
                 // let's use anonymous bind instead
                 $ldapbindsearch = @ldap_bind($ldapconn);
             }
@@ -434,7 +414,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $this->setAuthFailure(100, ldap_error($ldapconn));
                 ldap_close($ldapconn); // all done? close connection
                 return;
-            }
+            }        
             // Now prepare the search fitler
             if ( $extrauserfilter != "")
             {
@@ -470,21 +450,30 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $this->setAuthFailure(100, ldap_error($ldapconn));
             ldap_close($ldapconn); // all done? close connection
             return;
+        } 
+
+        // Authentication was successful, now see if we have a user or that we should create one
+        if (is_null($user)) {
+            if ($this->autoCreate === true)  {
+                /*
+                 * Dispatch the newUserLogin event, and hope that after this we can find the user
+                 * this allows users to create their own plugin for handling the user creation
+                 * we will need more methods to pass username, rdn and ldap connection.
+                 */                
+                $this->pluginManager->dispatchEvent(new PluginEvent('newUserLogin', $this));
+
+                // Check ourselves, we do not want fake responses from a plugin
+                $user = $this->api->getUserByName($username);
+            }
+
+            if (is_null($user)) {
+                $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+                ldap_close($ldapconn); // all done? close connection
+                return;
+            }
         }
 
         ldap_close($ldapconn); // all done? close connection
-
-        // Finally, if user didn't exist and auto creation is enabled, we create it
-        if ($autoCreateFlag)
-        {
-            $this->_createNewUser($username);
-        }
-        $user = $this->api->getUserByName($username);
-        if ($user === null)
-        {
-            $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create a user'));
-            return;
-        }
 
         // If we made it here, authentication was a success and we do have a valid user
         $this->setAuthSuccess($user);

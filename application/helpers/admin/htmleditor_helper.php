@@ -271,6 +271,12 @@
         . $htmlformatoption
         . $toolbaroption
         ."});
+
+CKEDITOR.editorConfig = function( config )
+{
+    config.uiColor = '#FFF';
+};        
+                
         \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
         });";
 

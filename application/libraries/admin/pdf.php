@@ -698,11 +698,7 @@ class pdf extends TCPDF {
   function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
   {
     $sLogoFileName = Yii::app()->getConfig('pdflogofile');
-    if (!file_exists(K_PATH_IMAGES.$sLogoFileName))
-    {
-      $sLogoFileName = '';
-    }
-    if (Yii::app()->getConfig('pdfshowheader')=='Y')
+    if (Yii::app()->getConfig('pdfshowheader')=='Y' && file_exists(K_PATH_IMAGES.$sLogoFileName))
     {
       $sHeaderTitle = Yii::app()->getConfig('pdfheadertitle');
       if ($sHeaderTitle == '') $sHeaderTitle = $sSiteName;

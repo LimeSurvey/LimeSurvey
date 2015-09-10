@@ -256,7 +256,7 @@ $(document).ready(function() {
                 edit:false,
                 add:false,
                 del:false,
-                search:false});
+                search:false})
             jQuery("#"+subgrid_table_id).jqGrid('filterToolbar', {searchOnEnter : false, defaultSearch: 'cn'});
         }
     });
@@ -491,11 +491,6 @@ $(document).ready(function() {
                     /* Needed because it's the only way to label a button with a variable */
                     var dialog_buttons={};
                     dialog_buttons[spAddBtn]=function(){
-                        if ($('#shareuser').val()=='')
-                        {
-                            alert(sSelectUserAlert);
-                            return;
-                        }
                         var row = myGrid .getGridParam('selarrrow');
                         shareParticipants(row);
                     };

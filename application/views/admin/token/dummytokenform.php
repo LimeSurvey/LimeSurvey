@@ -1,6 +1,11 @@
-<div class='header ui-widget-header'>
-    <?php eT("Create dummy tokens"); ?>
-</div>
+<div class="side-body">                           
+	<h3><?php eT("Create dummy tokens"); ?></h3>        
+                                                  
+	<div class="row">                             
+		<div class="col-lg-12 content-right">     
+
+
+
 <?php echo CHtml::form(array("admin/tokens/sa/adddummies/surveyid/{$surveyid}/subaction/add"), 'post', array('id'=>'edittoken', 'name'=>'edittoken', 'class'=>'form30')); ?>
     <ul>
         <li><label>ID:</label>
@@ -55,3 +60,7 @@
         <input type='submit' value='<?php eT("Add dummy tokens"); ?>' />
         <input type='hidden' name='sid' value='$surveyid' /></p>
 </form>
+
+		</div>
+	</div>
+</div>

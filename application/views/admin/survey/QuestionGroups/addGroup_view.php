@@ -2,7 +2,15 @@
     var sEnterTitle = '<?php eT('Error: You have to enter a group title for each language.','js'); ?>';
 </script>
 <?php echo PrepareEditorScript(false, $this);?>
-<div class='header ui-widget-header'><?php eT("Add question group"); ?></div>
+
+
+<div class="side-body" id="edit-survey-text-element">
+	<h3><?php eT("Add question group"); ?></h3>
+	
+	<div class="row">
+		<div class="col-lg-12 content-right">
+
+
 <div id='tabs'><ul>
         <?php foreach ($grplangs as $grouplang)
             { ?>
@@ -65,3 +73,10 @@
         <?php } ?>
 
     </div>
+
+
+
+			
+		</div>
+	</div>
+</div>

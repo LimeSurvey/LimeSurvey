@@ -1,4 +1,6 @@
-<div class='header ui-widget-header'>
+<div class="side-body">                           
+	<h3>
+		
     <?php
         if ($subaction == "edit")
         {
@@ -13,8 +15,15 @@
             eT("Add token entry");
             $tokenid = "";
         }
-    ?>
-</div>
+    ?>		
+		
+	</h3>        
+
+
+                                                  
+	<div class="row">                             
+		<div class="col-lg-12 content-right">
+
 <?php echo CHtml::form(array("admin/tokens/sa/{$subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'form30')); ?>
     <ul>
         <li><label>ID:</label>
@@ -180,3 +189,10 @@
         } ?>
         <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' /></p>
 </form>
+			
+			
+			
+			     
+		</div>
+	</div>
+</div>

@@ -14,14 +14,13 @@
 
 class UploaderController extends SurveyController {
     function run($actionID)
-    {   
+    {
         $surveyid=Yii::app()->session['LEMsid'];
         $oSurvey=Survey::model()->findByPk($surveyid);
         if(!$oSurvey)
             throw new CHttpException(400);// See for debug > 1
 
         $sLanguage=isset(Yii::app()->session['survey_'.$surveyid]['s_lang']) ? Yii::app()->session['survey_'.$surveyid]['s_lang']: "";
-        Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
         Yii::app()->loadHelper("database");
@@ -134,7 +133,7 @@ class UploaderController extends SurveyController {
             {
                 throw new CHttpException(400);// See for debug > 1
             }
-            $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
+            $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid'],$aFieldMap[$sFieldName]['type']);
 
             $maxfilesize = (int) $aAttributes['max_filesize'];
             $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);

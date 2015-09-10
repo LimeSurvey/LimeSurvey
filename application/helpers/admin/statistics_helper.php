@@ -896,8 +896,8 @@ class statistics_helper {
                     break;
 
                 case 'html':
-                    $statisticsoutput .= "\n<table class='statisticstable' >\n"
-                    ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf(gT("Field summary for %s"),$qtitle).":</strong>"
+                    $statisticsoutput .= "\n<table class='statisticstable table table-bordered >\n"
+                    ."\t<thead><tr class='success'><th style='text-align: center; '><strong>".sprintf(gT("Field summary for %s"),$qtitle).":</strong>"
                     ."</th></tr>\n"
                     ."\t<tr><th colspan='2' align='center'><strong>$qquestion</strong></th></tr>\n"
                     ."\t<tr>\n\t\t<th width='50%' align='center' ><strong>"
@@ -978,8 +978,8 @@ class statistics_helper {
                         break;
                     case 'html':
 
-                        $statisticsoutput .= "\n<table class='statisticstable' >\n"
-                        ."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf(gT("Field summary for %s"),$qtitle).":</strong>"
+                        $statisticsoutput .= "\n<table class='statisticstable table table-bordered' >\n"
+                        ."\t<thead><tr  class='success'><th colspan='2' align='center'  class='success'><strong>".sprintf(gT("Field summary for %s"),$qtitle).":</strong>"
                         ."</th></tr>\n"
                         ."\t<tr><th colspan='2' align='center'><strong>$qquestion</strong></th></tr>\n"
                         ."\t<tr>\n\t\t<th width='50%' align='center' ><strong>"
@@ -1153,8 +1153,8 @@ class statistics_helper {
                     case 'html':
 
                         //footer of question type "N"
-                        $statisticsoutput .= "\t<tr>\n"
-                        ."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
+                        $statisticsoutput .= "\t<tr class='info'>\n"
+                        ."\t\t<td colspan='4' align='center'>\n"
                         ."\t\t\t<font size='1'>".gT("Null values are ignored in calculations")."<br />\n"
                         ."\t\t\t".sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".gT("minitab method")."</a>")
                         ."</font>\n"
@@ -1164,7 +1164,7 @@ class statistics_helper {
                         {
                             $statisticsoutput .= "\t<tr>\n"
                             ."\t\t<td align='center'  colspan='4'>
-                            <input type='button' class='statisticsbrowsebutton numericalbrowse' value='"
+                            <input type='button' class='statisticsbrowsebutton numericalbrowse btn btn-default btn-large' value='"
                             .gT("Browse")."' id='$fieldname' /></td>\n</tr>";
                             $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
@@ -1603,6 +1603,8 @@ class statistics_helper {
     * @param mixed $surveyid
     * @param mixed $sql
     * @param mixed $usegraph
+     * 
+     * 
     */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage) {
 
@@ -1612,6 +1614,7 @@ class statistics_helper {
         $sDatabaseType = Yii::app()->db->getDriverName();
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
+        $firstletter = substr($rt, 0, 1);
         $astatdata=array();
 
         if ($usegraph==1)
@@ -1655,13 +1658,13 @@ class statistics_helper {
                 break;
             case 'html':
                 //output
-                $statisticsoutput .= "<table class='statisticstable'>\n"
-                ."\t<thead><tr><th colspan='4' align='center'><strong>"
+                $statisticsoutput .= "<table class='statisticstable table table-bordered'>\n"
+                ."\t<thead><tr class='success'><th colspan='4' align='center' style='text-align: center; '><strong>"
 
                 //headline
                 .sprintf(gT("Field summary for %s"),$outputs['qtitle'])."</strong>"
                 ."</th></tr>\n"
-                ."\t<tr><th colspan='4' align='center'><strong>"
+                ."\t<tr><th colspan='4' align='center' style='text-align: center; '><strong>"
 
                 //question title
                 .$outputs['qquestion']."</strong></th></tr>\n"
@@ -1820,7 +1823,7 @@ class statistics_helper {
                     $TotalCompleted -=$row;
                 }
                 $fname="$al[1]";
-                if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton' value='"
+                if ($browse===true) $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-default btn-large' value='"
                     .gT("Browse")."' id='$sColumnName' />";
 
                 if ($browse===true && isset($_POST['showtextinline']) && $outputType=='pdf') {
@@ -1869,7 +1872,7 @@ class statistics_helper {
                 if ($al[0] == "Answer")
                 {
                     $fname= "$al[1]";
-                    if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton' value='"
+                    if ($browse===true) $fname .= " <input type='button'  class='statisticsbrowsebutton btn btn-default btn-large' value='"
                         . gT("Browse")."' id='$sColumnName' />";
                 }
                 elseif ($al[0] == "NoAnswer")
@@ -2147,7 +2150,7 @@ class statistics_helper {
             }    //end else -> noncompleted NOT checked
         }
 
-        // For multiple choice question type, we have to check non completed with ALL sub question set to NULL
+        // For multi question type, we have to check non completed with ALL sub question set to NULL
         if(($outputs['qtype'] == "M") or ($outputs['qtype'] == "P"))
         {
             $criteria = new CDbCriteria;
@@ -2193,7 +2196,6 @@ class statistics_helper {
                         $fname=gT("Not displayed");
                     }
                     $label[]= $fname;
-                    $lbl[$fname] = $multiNotDisplayed;
                     //we need some data
                     if ($results > 0)
                     {
@@ -2239,7 +2241,7 @@ class statistics_helper {
             * to store the columnlist
             *
             * */
-            if(strpos($label[$i], "class='statisticsbrowsebutton'"))
+            if(strpos($label[$i], "statisticsbrowsebutton"))
             {
                 $extraline="<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>";
                 if ($outputs['qtype']=='P')
@@ -2694,7 +2696,7 @@ class statistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($outputs['parentqid']);
+        $aattr = getQuestionAttributeValues($outputs['parentqid'], substr($rt, 0, 1));
 
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
@@ -2723,7 +2725,10 @@ class statistics_helper {
 
             if ($bShowGraph == true)
             {
+                
                 $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                
+                
                 if($cachefilename) // Add the image only if constructed
                 {
                     //introduce new counter
@@ -2734,7 +2739,6 @@ class statistics_helper {
                     switch($outputType)
                     {
                         case 'xls':
-
                             /**
                             * No Image for Excel...
                             */
@@ -2749,9 +2753,94 @@ class statistics_helper {
 
                             break;
                         case 'html':
-                            $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
+                            
+                            // This QD code generate the chart.js. 
+                            // for more details, read : http://goo.gl/ylbikt
 
-                            $aattr = getQuestionAttributeValues($qqid);
+                            // $bShowPieChart = ($bAllowPieChart && (isset($aattr["statistics_graphtype"]) && $aattr["statistics_graphtype"] == "1"));
+    
+                            $pie_visibility = $radar_visibility = $line_visibility = $polar__visibility = $doughnut_visibility = $bar_visibility = 'hidden' ;                        
+                            if(!$bAllowPieChart)
+                            {
+                                $charttype = 'bar';
+                                $bar_visibility = ' active ';
+                            }
+                            else 
+                            {
+                                    if(isset($aattr["statistics_graphtype"]))
+                                    {
+                                        
+                                        switch ($aattr["statistics_graphtype"]) {
+                                            case '1':
+                                                    $charttype = "pie";
+                                                    $pie_visibility = ' active ';
+                                                break;
+                                            
+                                            case '2':
+                                                $charttype = "radar";
+                                                $radar_visibility = ' active ';
+                                                break;
+                                            
+                                            case '3':
+                                            	$charttype = "line";
+                                                $line_visibility = ' active ';
+                                            	break;    
+
+                                            case '4':
+                                                $charttype = "polar";
+                                                $polar__visibility = ' active ';
+                                                break;    
+
+                                            case '5':
+                                                $charttype = "doughnut";
+                                                $doughnut_visibility = ' active ';
+                                                break;    
+                                                                                            
+                                            default:
+                                                $charttype = "bar";
+                                                $bar_visibility = ' active ';
+                                                break;
+                                        }    
+                                    }
+                            }
+
+
+                          //  $pie_visibility = $radar_visibility = $line_visibility = $polar__visibility = $doughnut_visibility = $bar_visibility = '' ;
+
+                            // If user forced the chartype from statistics_view
+                            if ($_POST['charttype'] != 'default' && $outputs['qtype'] != "M" && $outputs['qtype'] != "P")
+                            {
+                                $charttype = $_POST['charttype'];    
+                            }
+                            
+                            $COLORS_FOR_SURVEY = array('20,130,200','232,95,51','34,205,33','210,211,28','134,179,129','201,171,131','251,231,221','23,169,161','167,187,213','211,151,213','147,145,246','147,39,90','250,250,201','201,250,250','94,0,94','250,125,127','0,96,201','201,202,250','0,0,127','250,0,250','250,250,0','0,250,250','127,0,127','127,0,0','0,125,127','0,0,250','0,202,250','201,250,250','201,250,201','250,250,151','151,202,250','251,149,201','201,149,250','250,202,151','45,96,250','45,202,201','151,202,0','250,202,0','250,149,0','250,96,0','184,230,115','102,128,64','220,230,207','134,191,48','184,92,161','128,64,112','230,207,224','191,48,155','230,138,115','128,77,64','230,211,207','191,77,48','80,161,126','64,128,100','207,230,220','48,191,130','25,25,179','18,18,125','200,200,255','145,145,255','255,178,0','179,125,0','255,236,191','255,217,128','255,255,0','179,179,0','255,255,191','255,255,128','102,0,153','71,0,107','234,191,255','213,128,255'); 
+
+                            // We get the label names
+                             $labels = array();
+                             foreach($lbl as $name => $lb)
+                                   $labels[] = $name;
+
+                            $statisticsoutput .= '<br>qid = '.$qqid.'<br/>$aattr["statistics_graphtype"] : '.$aattr["statistics_graphtype"].'<br/>';
+                            $statisticsoutput .= '<div class="col-sm-12">
+                                                    <div class="col-sm-10 vcenter">
+                                                        <canvas class="canvas-chart '.$bar_visibility.'" id="chartjs-Bar-'.$qqid.'" width="400" height="150"></canvas>
+                                                        <canvas class="canvas-chart '.$pie_visibility.'" id="chartjs-Pie-'.$qqid.'" width="400" height="150"></canvas>
+                                                        <canvas class="canvas-chart '.$radar_visibility.'" id="chartjs-Radar-'.$qqid.'" width="400" height="150"></canvas>
+                                                        <canvas class="canvas-chart '.$line_visibility.'" id="chartjs-Line-'.$qqid.'" width="400" height="150"></canvas>
+                                                        <canvas class="canvas-chart '.$polar__visibility.'" id="chartjs-PolarArea-'.$qqid.'" width="400" height="150"></canvas>
+                                                        <canvas class="canvas-chart '.$doughnut_visibility.'" id="chartjs-Doughnut-'.$qqid.'" width="400" height="150"></canvas>
+                                                    </div>';
+                            $statisticsoutput .= $this->get_chartjs_legend($labels, $COLORS_FOR_SURVEY);
+                            
+                            //TODO : Load on click, animate on scroll
+                            $statisticsoutput .= $this->init_chart_js_graph_with_datasets('Bar',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);                        
+                            $statisticsoutput .= $this->init_chart_js_graph_with_datasets('Radar',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);        
+                            $statisticsoutput .= $this->init_chart_js_graph_with_datasets('Line',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);
+                            $statisticsoutput .= $this->init_chart_js_graph_with_datas('PolarArea',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);
+                            $statisticsoutput .= $this->init_chart_js_graph_with_datas('Pie',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);
+                            $statisticsoutput .= $this->init_chart_js_graph_with_datas('Doughnut',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);                                                        
+                            
+                            $aattr = getQuestionAttributeValues($qqid, $firstletter);
                             if ($bShowMap) {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
@@ -2777,6 +2866,11 @@ class statistics_helper {
             if ($usegraph==1 && get_class(Yii::app()->getController()) !== 'Statistics_userController') {
                 $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
+               $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">";
+               ///////////////////////////////////////////////////////////////
+               $statisticsoutput .= "";
+               $statisticsoutput .= "</div></td></tr>"; 
+/*
                 $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
                 ."<img class='stats-hidegraph' src='$sImgUrl/chart_disabled.png' title='". gT("Disable chart") ."' />"
                 ."<img class='stats-showgraph' src='$sImgUrl/chart.png' title='". gT("Enable chart") ."' />"
@@ -2785,7 +2879,7 @@ class statistics_helper {
                 ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png' title='". gT("Disable map display") ."' />"
                 ."<img class='stats-hidemap' src='$sImgUrl/map.png' title='". gT("Enable map display") ."' />"
                 ."</div></td></tr>";
-
+*/
             }
             $statisticsoutput .= "</td></tr></table><br /> \n";
         }
@@ -2793,6 +2887,101 @@ class statistics_helper {
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);
 
     }
+
+
+    /**
+     * Generate legend for statistcs
+     * @param array $labels 
+     * @param array $COLORS_FOR_SURVEY
+     */
+     private function get_chartjs_legend($labels, $COLORS_FOR_SURVEY)
+     {
+        $statisticsoutput = '<div class="legend col-sm-2 vcenter">';
+        foreach($labels as $i=>$label)
+        {
+            $statisticsoutput .= '<div class="row" style="margin-bottom: 10px;">';
+            $statisticsoutput .= '<div class="col-sm-1">
+                                    <span style="background-color:rgba('.$COLORS_FOR_SURVEY[$i].',0.6); display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
+                                    </span>
+                                  </div>';
+            $statisticsoutput .= '<div class="col-sm-10">'.$label.'</div>';
+            $statisticsoutput .= '</div>';
+        }
+        $statisticsoutput .= '</div>';
+        return $statisticsoutput;
+     }
+     
+     private function init_chart_js_graph_with_datasets($type,$labels,$qqid,$grawdata, $colors=null)
+     {
+
+        $COLORS_FOR_SURVEY = $colors;
+        $statisticsoutput = '<script>/*<![CDATA[*/';         
+        $statisticsoutput .= '       
+                             var ctx = document.getElementById("chartjs-'.$type.'-'.$qqid.'").getContext("2d");
+                             var chartjs'.$qqid.' = new Chart(ctx).'.$type.'({
+                                 labels: '.json_encode($labels).',
+                                 datasets: [{
+                                     label: "'.$qqid.'",
+                                     data: '.json_encode($grawdata).',';
+        if($colors && $type!='Bar' )
+        {
+            $colorId = rand ( 0, 72 ); 
+            $statisticsoutput .= '
+                                            fillColor: "rgba('.$COLORS_FOR_SURVEY[$colorId].',0.2)",
+                                            strokeColor: "rgba('.$COLORS_FOR_SURVEY[$colorId].',1)",
+                                            pointColor: "rgba('.$COLORS_FOR_SURVEY[$colorId].',1)",
+                                            pointStrokeColor: "#fff",
+                                            pointHighlightFill: "#fff",
+                                            pointHighlightStroke: "rgba('.$COLORS_FOR_SURVEY[$colorId].',1)",
+            ';
+        }
+        $statisticsoutput .= '}],
+                             });';
+
+        if($type=='Bar')
+        {
+            foreach($labels as $i => $name )
+            {
+                $statisticsoutput .= 'chartjs'.$qqid.'.datasets[0].bars['.$i.'].fillColor = "rgba('.$COLORS_FOR_SURVEY[$i].',0.6)";'; // or : "rgb(20,130,200)" 
+                $statisticsoutput .= 'chartjs'.$qqid.'.datasets[0].bars['.$i.'].highlightFill = "rgba('.$COLORS_FOR_SURVEY[$i].',0.9)";'; // or : "rgb(20,130,200)"
+            }                                                        
+            $statisticsoutput .= 'chartjs'.$qqid.'.update();';
+        }
+        $statisticsoutput .= ' /*]]>*/ </script></div>';
+        return $statisticsoutput;
+     }
+
+
+
+    private function init_chart_js_graph_with_datas($type,$labels,$qqid,$grawdata, $COLORS_FOR_SURVEY)
+    {
+
+        $statisticsoutput = '<script>/*<![CDATA[*/';
+        $statisticsoutput .= '
+                              var ctx = document.getElementById("chartjs-'.$type.'-'.$qqid.'").getContext("2d");
+                              var chartjs'.$qqid.' = new Chart(ctx).'.$type.'(
+                                        ['; 
+                                            foreach($labels as $i => $label)
+                                            {
+                                                $cleanLabel = str_replace('"', " ", $label);
+                                                $cleanLabel = preg_replace( "/\r|\n/", "", $cleanLabel );
+                                                $statisticsoutput .= '
+                                                                        {
+                                                                            value: '.$grawdata[$i].',
+                                                                            color:"rgba('.$COLORS_FOR_SURVEY[$i].',0.6)",
+                                                                            highlight: "rgba('.$COLORS_FOR_SURVEY[$i].',0.9)",
+                                                                            label: "'.$cleanLabel.'",                                                                
+                                                                        },
+                                                ';    
+                                            }
+        $statisticsoutput .=           ']
+                                    );';
+        
+        $statisticsoutput .= ' /*]]>*/ </script></div>';
+        return $statisticsoutput;
+    }
+
+
 
     /**
     * Generates statistics
@@ -3067,30 +3256,16 @@ class statistics_helper {
 
             case 'html':
 
-                $sOutputHTML .= "<br />\n<table class='statisticssummary' >\n"
-                ."\t<thead><tr><th colspan='2'>".gT("Results")."</th></tr></thead>\n"
-                ."\t<tr><th >".gT("Number of records in this query:").'</th>'
-                ."<td>$results</td></tr>\n"
-                ."\t<tr><th>".gT("Total records in survey:").'</th>'
-                ."<td>$total</td></tr>\n";
+                $sOutputHTML .= '<div style="clear: both; margin-bottom: 10px;"></div><div class="jumbotron message-box">'; 
+                $sOutputHTML .= '<h2>'.gT("Results")."</h2>";
+                $sOutputHTML .= '<p>'.gT("Number of records in this query:").''.$results.'</p>';
+                $sOutputHTML .= '<p>'.gT("Total records in survey:").''.$total.'</p>';
 
-                //only calculate percentage if $total is set
                 if ($total)
                 {
                     $percent=sprintf("%01.2f", ($results/$total)*100);
-                    $sOutputHTML .= "\t<tr><th align='right'>".gT("Percentage of total:").'</th>'
-                    ."<td>$percent%</td></tr>\n";
+                    $sOutputHTML .= "<p>".gT("Percentage of total:").''.$percent.'%</p>';
                 }
-                if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))
-                {
-                    //add a buttons to browse results
-                    $sOutputHTML .= "<tr><td clospan='2' style='text-align:center'>";
-                    $sOutputHTML .= CHtml::link(gT("Browse"),array("admin/responses","sa"=>'browse','surveyid'=>$surveyid,'statfilter'=>1),array('class'=>'button btn-link'));
-                    $sOutputHTML .= CHtml::link(gT("Export"),array("admin/export","sa"=>'exportresults','surveyid'=>$surveyid,'statfilter'=>1),array('class'=>'button btn-link'));
-                    $sOutputHTML .= "</td></tr>";
-
-                }
-                $sOutputHTML .="</table>\n";
 
                 break;
             default:
@@ -3111,6 +3286,24 @@ class statistics_helper {
             $sql= null;
         }
 
+        //only continue if we have something to output
+        if ($results > 0)
+        {
+            if($outputType=='html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid,'responses','read'))
+            {
+                //add a buttons to browse results
+                $sOutputHTML .= CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post',array('target'=>'_blank'))."\n"
+                ."\t\t<p>"
+                ."\t\t\t<input type='submit' class='btn btn-default' value='".gT("Browse")."'  />\n"
+                ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+                ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
+                ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
+                ."\t\t</p>"
+                ."\t\t</form>\n";
+            }
+        }    //end if (results > 0)
+        $sOutputHTML .= '</div>';
+        
         /* Show Summary results
         * The $summary array contains each fieldname that we want to display statistics for
         *

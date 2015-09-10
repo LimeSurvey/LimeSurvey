@@ -40,15 +40,12 @@ class LSYii_Application extends CWebApplication
     public function __construct($config = null)
     {
         parent::__construct($config);
-        Yii::setPathOfAlias('bootstrap' , Yii::getPathOfAlias('ext.bootstrap'));
         // Load the default and environmental settings from different files into self.
         $ls_config = require(__DIR__ . '/../config/config-defaults.php');
         $email_config = require(__DIR__ . '/../config/email.php');
         $version_config = require(__DIR__ . '/../config/version.php');
-
 	$updater_version_config = require(__DIR__ . '/../config/updater_version.php');
         $settings = array_merge($ls_config, $version_config, $email_config, $updater_version_config);
-
 
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
@@ -193,7 +190,7 @@ class LSYii_Application extends CWebApplication
     {
         if (!isset($this->api))
         {
-            $this->api = new \ls\pluginmanager\LimesurveyApi();
+            $this->api = new  \ls\pluginmanager\LimesurveyApi();
         }
         return $this->api;
     }

@@ -127,7 +127,8 @@ class LSUserIdentity extends CUserIdentity {
 
         // Check for default password
         if ($this->password === 'password') {
-            App()->user->setFlash('pwdnotify', gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.'));
+            App()->user->setFlash('warning', gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.'));
+            //App()->user->setFlash('pwdnotify', gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.'));
         }
 
         // Do session setup

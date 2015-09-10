@@ -221,6 +221,12 @@ class AdminController extends LSYii_Controller
         );
     }
 
+
+	public function getGroupName($var)
+	{
+		echo $var;
+	}
+
     /**
     * Set Session User Rights
     *
@@ -363,34 +369,6 @@ class AdminController extends LSYii_Controller
         $this->renderPartial('/admin/super/messagebox', $aData);
     }
 
-    /**
-    * _showadminmenu() function returns html text for the administration button bar
-    *
-    * @access public
-    * @global string $homedir
-    * @global string $scriptname
-    * @global string $surveyid
-    * @global string $setfont
-    * @global string $imageurl
-    * @param int $surveyid
-    * @return string $adminmenu
-    */
-    public function _showadminmenu($surveyid = false)
-    {
-        if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
-            Yii::app()->session['flashmessage'] = gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
-        }
-
-        $updateModel = new UpdateForm();
-        $updateNotification = $updateModel->updateNotification;
-        $aData['showupdate'] = $updateNotification->result;
-
-        $aData['surveyid'] = $surveyid;
-        $aData['iconsize'] = Yii::app()->getConfig('adminthemeiconsize');
-        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-        $this->renderPartial("/admin/super/adminmenu", $aData);
-
-    }
 
     public function _loadEndScripts()
     {

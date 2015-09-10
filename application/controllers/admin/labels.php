@@ -204,6 +204,10 @@ class labels extends Survey_Common_Action
             $aViewUrls['editlabel_view'][] = $aData;
         }
 
+        $aData['labelbar']['buttons']['edition']= TRUE;
+        $aData['labelbar']['savebutton']['form'] = 'labelsetform';
+        $aData['labelbar']['savebutton']['text'] = gT("Save"); 
+        $aData['labelbar']['closebutton']['url'] = 'admin/labels/sa/view';
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
 
     }
@@ -300,6 +304,18 @@ class labels extends Survey_Common_Action
             }
         }
 
+        if($lid==0)
+        {
+            $aData['labelbar']['buttons']['view'] = TRUE;
+        }
+        else 
+        {
+            $aData['labelbar']['savebutton']['form'] = 'mainform';
+            $aData['labelbar']['savebutton']['text'] = gT("Save changes");
+            $aData['labelbar']['closebutton']['url'] = 'admin/labels/sa/view';
+            $aData['labelbar']['buttons']['edition'] = TRUE;            
+        }
+        
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
@@ -349,7 +365,12 @@ class labels extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('labelsets','export'))
         {
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'labels.js');
-            $this->_renderWrappedTemplate('labels', 'exportmulti_view');
+            
+            $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
+            $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
+            $aData['labelbar']['closebutton']['url'] = 'admin/labels/sa/view';
+            $aData['labelbar']['buttons']['edition'] = TRUE;
+            $this->_renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
     }
 
@@ -425,12 +446,10 @@ class labels extends Survey_Common_Action
             {
                 $aData['labelsets'] = getLabelSets();
             }
-
             if (empty($aData['lid']))
             {
                 $aData['lid'] = 0;
             }
-
             $aViewUrls = (array) $aViewUrls;
 
             array_unshift($aViewUrls, 'labelsetsbar_view');

@@ -182,14 +182,11 @@ class index extends CAction {
         {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
         }
-        elseif(Survey::model()->findByPk($surveyid))
-        {
-            $sDisplayLanguage=Survey::model()->findByPk($surveyid)->language;
-        }
         else
         {
             $sDisplayLanguage=Yii::app()->getConfig('defaultlang');
         }
+
         //CHECK FOR REQUIRED INFORMATION (sid)
         if ($surveyid && $surveyExists)
         {

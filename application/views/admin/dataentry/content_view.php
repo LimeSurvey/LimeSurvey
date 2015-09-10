@@ -1,7 +1,7 @@
 <?php
     if (!empty($explanation))
     { ?>
-    <tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'><?php echo $explanation; ?></td></tr>
+    <tr class ='data-entry-explanation text-info'><td class='data-entry-small-text' colspan='3' align='left'><?php echo $explanation; ?></td></tr>
     <?php } ?>
 
 <tr class='<?php echo $bgc; ?>'>
@@ -25,7 +25,7 @@
         switch($deqrow['type'])
         {
             case "5": //5 POINT CHOICE radio-buttons ?>
-            <select name='<?php echo $fieldname; ?>'>
+            <select name='<?php echo $fieldname; ?>' class='form-control'>
                 <option value=''><?php eT("No answer",'html',$sDataEntryLanguage); ?></option>
                 <?php for ($x=1; $x<=5; $x++)
                     { ?>
@@ -34,6 +34,7 @@
             </select>
             <?php break;
             case "D": //DATE
+                //                            $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                 if(canShowDatePicker($dateformatdetails))
                 {
@@ -48,7 +49,7 @@
                 <?php }
                 break;
             case "G":  //GENDER drop-down list ?>
-            <select name='<?php echo $fieldname; ?>'>
+            <select name='<?php echo $fieldname; ?>'  class='form-control'>
                 <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                 <option value='F'><?php eT("Female",'html',$sDataEntryLanguage); ?></option>
                 <option value='M'><?php eT("Male",'html',$sDataEntryLanguage); ?></option>
@@ -79,7 +80,7 @@
                     $delquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=0 ORDER BY sortorder, code";
                     $delresult = dbExecuteAssoc($delquery); ?>
                 <tr><td><?php echo $dearow['question']; ?></td><td>
-                        <select name='<?php echo $fieldname.$dearow['title']; ?>#0'>
+                        <select name='<?php echo $fieldname.$dearow['title']; ?>#0'  class='form-control'>
                             <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                             <?php foreach ($delresult as $delrow)
                                 { ?>
@@ -89,7 +90,7 @@
                     <?php $delquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=1 ORDER BY sortorder, code";
                         $delresult = dbExecuteAssoc($delquery); ?>
                     <td>
-                        <select name='<?php echo $fieldname.$dearow['title']; ?>#1'>
+                        <select name='<?php echo $fieldname.$dearow['title']; ?>#1'  class='form-control'>
                             <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                             <?php foreach ($delresult as $delrow)
                                 { ?>
@@ -112,7 +113,7 @@
 
         case "L": //LIST drop-down/radio-button list
         case "!": ?>
-        <select name='<?php echo $fieldname; ?>'>
+        <select name='<?php echo $fieldname; ?>'  class='form-control'>
             <?php if ($defexists=="") { ?>
                 <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option><?php echo $datatemp; }
                 else  { echo $datatemp;} ?>
@@ -129,7 +130,7 @@
             <?php }
             break;
         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea ?>
-        <select name='<?php echo $fieldname; ?>'>
+        <select name='<?php echo $fieldname; ?>'  class='form-control'>
 
             <?php if ($defexists=="") { ?>
                 <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option><?php echo $datatemp; }
@@ -151,7 +152,7 @@
                     eT('Next choice','html',$sDataEntryLanguage);
                 }
             ?>
-            <select name="<?php echo $fieldname.$i ?>" id="answer<?php echo $fieldname.$i ?>">";
+            <select name="<?php echo $fieldname.$i ?>"  class='form-control' id="answer<?php echo $fieldname.$i ?>">";
                 <option value=""><?php eT('None','html',$sDataEntryLanguage) ?></option>
                 <?php
                     foreach ($answers as $ansrow)
@@ -233,7 +234,7 @@
             }
             break;
         case "I": //Language Switch ?>
-        <select name='<?php echo $fieldname; ?>'>
+        <select name='<?php echo $fieldname; ?>'  class='form-control'>
             <option value='' selected='selected'><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
 
             <?php foreach ($slangs as $lang)
@@ -490,7 +491,7 @@
 
         case "Y": //YES/NO radio-buttons
         ?>
-        <select name='<?php echo $fieldname; ?>'>
+        <select name='<?php echo $fieldname; ?>'  class='form-control'>
             <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
             <option value='Y'><?php eT("Yes",'html',$sDataEntryLanguage); ?></option>
             <option value='N'><?php eT("No",'html',$sDataEntryLanguage); ?></option>
@@ -504,7 +505,7 @@
                 <tr>
                     <td align='right'><?php echo $mearow['question']; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>' class='form-control'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                             <?php for ($i=1; $i<=5; $i++)
                                 { ?>
@@ -523,7 +524,7 @@
                 <tr>
                     <td align='right'><?php echo $mearow['question']; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                             <?php for ($i=1; $i<=10; $i++)
                                 { ?>
@@ -543,7 +544,7 @@
                 <tr>
                     <td align='right'><?php echo $mearow['question']; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                             <option value='Y'><?php eT("Yes",'html',$sDataEntryLanguage); ?></option>
                             <option value='U'><?php eT("Uncertain",'html',$sDataEntryLanguage); ?></option>
@@ -561,7 +562,7 @@
                 <tr>
                     <td align='right'><?php echo $mearow['question']; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
                             <option value='I'><?php eT("Increase",'html',$sDataEntryLanguage); ?></option>
                             <option value='S'><?php eT("Same",'html',$sDataEntryLanguage); ?></option>
@@ -607,7 +608,7 @@
                             <?php if ($qidattributes['input_boxes']!=0) { ?>
                                 <input type='text' name='<?php echo $fieldname.$mearow['title']."_".$ld;?>' size=4 />
                                 <?php } else { ?>
-                                <select name='<?php echo $fieldname.$mearow['title']."_$ld"; ?>'>
+                                <select name='<?php echo $fieldname.$mearow['title']."_$ld"; ?>'  class='form-control'>
                                     <option value=''>...</option>
                                     <?php for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
                                         { ?>
@@ -684,7 +685,7 @@
                 <tr>
                     <td align='right'><?php echo $answerleft; ?></td>
                     <td>
-                        <select name='<?php echo $fieldname.$mearow['title']; ?>'>
+                        <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
 
                             <?php foreach ($fresult as $frow)

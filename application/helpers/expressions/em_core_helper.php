@@ -213,17 +213,17 @@ class ExpressionManager {
 'strcasecmp' => array('strcasecmp', 'strcasecmp', gT('Binary safe case-insensitive string comparison'), 'int strcasecmp(str1, str2)', 'http://www.php.net/manual/en/function.strcasecmp.php', 2),
 'strcmp' => array('strcmp', 'strcmp', gT('Binary safe string comparison'), 'int strcmp(str1, str2)', 'http://www.php.net/manual/en/function.strcmp.php', 2),
 'strip_tags' => array('strip_tags', 'strip_tags', gT('Strip HTML and PHP tags from a string'), 'string strip_tags(str, allowable_tags)', 'http://www.php.net/manual/en/function.strip-tags.php', 1,2),
-'stripos' => array('exprmgr_stripos', 'stripos', gT('Find position of first occurrence of a case-insensitive string'), 'int stripos(haystack, needle [, offset=0])', 'http://www.php.net/manual/en/function.stripos.php', 2,3),
+'stripos' => array('stripos', 'stripos', gT('Find position of first occurrence of a case-insensitive string'), 'int stripos(haystack, needle [, offset=0])', 'http://www.php.net/manual/en/function.stripos.php', 2,3),
 'stripslashes' => array('stripslashes', 'stripslashes', gT('Un-quotes a quoted string'), 'string stripslashes(string)', 'http://www.php.net/manual/en/function.stripslashes.php', 1),
-'stristr' => array('exprmgr_stristr', 'stristr', gT('Case-insensitive strstr'), 'string stristr(haystack, needle [, before_needle=false])', 'http://www.php.net/manual/en/function.stristr.php', 2,3),
-'strlen' => array('exprmgr_strlen', 'LEMstrlen', gT('Get string length'), 'int strlen(string)', 'http://www.php.net/manual/en/function.strlen.php', 1),
-'strpos' => array('exprmgr_strpos', 'LEMstrpos', gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://www.php.net/manual/en/function.strpos.php', 2,3),
+'stristr' => array('stristr', 'stristr', gT('Case-insensitive strstr'), 'string stristr(haystack, needle [, before_needle=false])', 'http://www.php.net/manual/en/function.stristr.php', 2,3),
+'strlen' => array('strlen', 'LEMstrlen', gT('Get string length'), 'int strlen(string)', 'http://www.php.net/manual/en/function.strlen.php', 1),
+'strpos' => array('strpos', 'LEMstrpos', gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://www.php.net/manual/en/function.strpos.php', 2,3),
 'strrev' => array('strrev', 'strrev', gT('Reverse a string'), 'string strrev(string)', 'http://www.php.net/manual/en/function.strrev.php', 1),
-'strstr' => array('exprmgr_strstr', 'strstr', gT('Find first occurrence of a string'), 'string strstr(haystack, needle [, before_needle=false])', 'http://www.php.net/manual/en/function.strstr.php', 2,3),
-'strtolower' => array('exprmgr_strtolower', 'LEMstrtolower', gT('Make a string lowercase'), 'string strtolower(string)', 'http://www.php.net/manual/en/function.strtolower.php', 1),
+'strstr' => array('strstr', 'strstr', gT('Find first occurrence of a string'), 'string strstr(haystack, needle)', 'http://www.php.net/manual/en/function.strstr.php', 2),
+'strtolower' => array('strtolower', 'LEMstrtolower', gT('Make a string lowercase'), 'string strtolower(string)', 'http://www.php.net/manual/en/function.strtolower.php', 1),
 'strtotime' => array('strtotime', 'strtotime', gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://www.php.net/manual/de/function.strtotime.php', 1),
-'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
-'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
+'strtoupper' => array('strtoupper', 'LEMstrtoupper', gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
+'substr' => array('substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
 'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
 'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
 'tan' => array('tan', 'Math.tan', gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
@@ -2538,92 +2538,7 @@ function exprmgr_countifop($args)
     }
     return $j;
 }
-/**
- * Find position of first occurrence of unicode string in a unicode string, case insensitive
- * @param string $haystack : checked string
- * @param string $needle : string to find
- * @param $offset : offset
- * @return int|false : position or false if not found
- */
-function exprmgr_stripos($haystack , $needle ,$offset=0)
-{
-    if($offset > mb_strlen($haystack))
-        return false;
-    return mb_stripos($haystack , $needle ,$offset,'UTF-8');
-}
-/**
- * Finds first occurrence of a unicode string within another, case-insensitive
- * @param string $haystack : checked string
- * @param string $needle : string to find
- * @param boolean $before_needle : portion to return
- * @return string|false 
- */
-function exprmgr_stristr($haystack,$needle,$before_needle=false)
-{
-    return mb_stristr($haystack,$needle,$before_needle,'UTF-8');
-}
-/**
- * Get unicode string length 
- * @param string $string
- * @return int
- */
-function exprmgr_strlen($string)
-{
-    return mb_strlen ($string,'UTF-8');
-}
-/**
- * Find position of first occurrence of unicode string in a unicode string
- * @param string $haystack : checked string
- * @param string $needle : string to find
- * @param $offset : offset
- * @return int|false : position or false if not found
- */
-function exprmgr_strpos($haystack , $needle ,$offset=0)
-{
-    if($offset > mb_strlen($haystack))
-        return false;
-    return mb_strpos($haystack , $needle ,$offset,'UTF-8');
-}
-/**
- * Finds first occurrence of a unicode string within another
- * @param string $haystack : checked string
- * @param string $needle : string to find
- * @param boolean $before_needle : portion to return
- * @return string|false 
- */
-function exprmgr_strstr($haystack,$needle,$before_needle=false)
-{
-    return mb_strstr($haystack,$needle,$before_needle,'UTF-8');
-}
-/**
- * Make an unicode string lowercase 
- * @param string $string
- * @return string
- */
-function exprmgr_strtolower($string)
-{
-    return mb_strtolower ($string,'UTF-8');
-}
-/**
- * Make an unicode string uppercase 
- * @param string $string
- * @return string
- */
-function exprmgr_strtoupper($string)
-{
-    return mb_strtoupper ($string,'UTF-8');
-}
-/**
- * Get part of unicode string
- * @param string $string
- * @param int $start
- * @param int $end
- * @return string
- */
-function exprmgr_substr($string,$start,$end=null)
-{
-    return mb_substr($string,$start,$end,'UTF-8');
-}
+
 /**
  * Sum of values of answered questions which meet the criteria (arg op value)
  * @param <type> $args
@@ -2903,10 +2818,10 @@ function exprmgr_fixnum($value)
     }
     return $value;
 }
+
 /**
  * Returns true if all non-empty values are unique
  * @param type $args
- * @return boolean
  */
 function exprmgr_unique($args)
 {

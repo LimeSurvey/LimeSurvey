@@ -2953,7 +2953,7 @@ function questionAttributes($returnByName=false)
         'category'=>gT('Statistics'),
         'inputtype'=>'singleselect',
         'sortorder'=>102,
-        'options'=>array(0=>gT('Bar chart'), 1=>gT('Pie chart')),
+        'options'=>array(0=>gT('Bar chart'), 1=>gT('Pie chart'), 2=>gT('Radar chart'),3=>gT('Line chart'),4=>gT('Polar chart'),5=>gT('Doughnut chart')),
         'help'=>gT("Select the type of chart to be displayed"),
         'caption'=>gT("Chart type"),
         'default'=>0
@@ -4195,7 +4195,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = getQuestionAttributeValues($qrow['qid']);
+        $qresult = getQuestionAttributeValues($qrow['qid'],$qrow['type']);
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -5136,7 +5136,7 @@ function cleanTempDirectory()
         }
     }
     $dir=  Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR;
-    $dp = opendir($dir) or die ('Could not open temporary upload directory');
+    $dp = opendir($dir) or die ('Could not open temporary upload directory :'.$dir);
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
             @unlink($dir.$file);

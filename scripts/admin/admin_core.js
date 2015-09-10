@@ -61,7 +61,9 @@ $(document).ready(function(){
     });
 
 
-    if ($('#showadvancedattributes').length>0) updatequestionattributes();
+    if ($('#advancedquestionsettingswrapper').length>0){
+    	updatequestionattributes();
+    } 
 
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();
@@ -71,6 +73,7 @@ $(document).ready(function(){
         });
 
     });
+    
     $('#hideadvancedattributes').click(function(){
         $('#showadvancedattributes').show();
         $('#hideadvancedattributes').hide();
@@ -104,20 +107,13 @@ $(document).ready(function(){
         expires: 5000
         });
     });
-    if ($("#question_type").not('.none').length > 0 && $("#question_type").attr('type')!='hidden'){
+    if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden'){
 
-        /*
-        $("#question_type").msDropDown({
-            'on' : {
-                'create' :qTypeDropdownInit
-            }
-        });
-        */
        qTypeDropdownInit();
-        $("#question_type").change(function(event){
+        $("#question_type_button").change(function(event){
             OtherSelection(this.value);
         });
-        $("#question_type").change();
+        $("#question_type_button").change();
     }
     else
     {
@@ -131,19 +127,19 @@ $(document).ready(function(){
 function qTypeDropdownInit()
 {
     $(document).ready(function () {
-        $("#question_type option").each(function(index,element){
+        $("#question_type_button .questionType").each(function(index,element){
             $(element).qtip({
                 style: {
-                    classes: 'qtip-questiontype'
+                    classes: 'qtip-bootstrap'
                 },
                 content: getToolTip($(element).text()),
                 position: {
-                    my : 'top left',
-                    at: 'top right',
+                    my : 'center right',
+                    at: 'center left',
                     target: $('label[for=question_type]'),
                     viewport: $(window),
                     adjust: {
-                        x: 20
+                        x: 0
                     }
 
                 }
@@ -152,23 +148,35 @@ function qTypeDropdownInit()
         });
     });
     $(document).ready(function() {
-        $('body').on('mouseenter mouseleave', 'li.questionType', function(e) {
+    	
+    	$('.questionType').on('mouseenter', function(e){
+    		//alert($(this).attr('class'));
+    		$('.questionType').qtip('hide');
+    		$(this).qtip('option', 'position.target', $(this).qtip('show'));
+    	});
+    	
+    	$('.questionType').on('mouseleave', function(e){
+    		$(this).qtip('hide');
+    	});
+    	/*
+        $('#question_type').on('mouseenter mouseleave', '.questionType', function(e) {
             if (e.type == 'mouseenter')
             {
 				// Hide all others if we show a new one.
-                $('#question_type option').qtip('hide');
-                $($(e.currentTarget).data().select2Data.element).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
+                $('.questionType').qtip('hide');
+                $(this).qtip('option', 'position.target', $(e.currentTarget)).qtip('show');
             }
             else
             {
                 $($(e.currentTarget).data().select2Data.element).qtip('hide');
             }
-
-
+            
+            
         });
         $('#question_type').on('close', function(e) {
             $('#question_type option').qtip('hide');
         });
+        */
     });
 }
 
@@ -289,7 +297,7 @@ function doToolTip()
         }
     });
     $("a > img[alt]").data("hasqtip", true ).removeAttr('title');
-
+    
     // Call the popuptip hover rel attribute
     $('.popuptip').each(function(){
         if($(this).attr('rel')){
@@ -427,6 +435,7 @@ function ev_gecko_select_keyup_ev(Ev) {
 }
 
 function init_gecko_select_hack() {
+    return true;
     var selects = document.getElementsByTagName("SELECT");
     for(i=0; i<selects.length; i++)
         selects.item(i).addEventListener("keyup", ev_gecko_select_keyup_ev, false);
@@ -651,7 +660,7 @@ jQuery.fn.center = function () {
     this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
     this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
     return this;
-};
+}
 
 // Fix broken substr function with negative start value (in older IE)
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
@@ -660,12 +669,12 @@ if ('ab'.substr(-1) != 'b') {
 		return function(start, length) {
 			if (start < 0) start = this.length + start;
 			return substr.call(this, start, length);
-		};
+		}
 	}(String.prototype.substr);
 }
 
 /**
-* Yii CSRF protection divs breaks this script so this function moves the
+* Yii CSRF protection divs breaks this script so this function moves the 
 * hidden CSRF field out of the div and remove it if needed
 * 140207 : Why this function is needed ? Where is the script broken ?
 */
@@ -722,7 +731,7 @@ function initializeAjaxProgress()
     });
     $('#ajaxprogress').bind('ajaxStop', function()
     {
-
+        
         $(this).dialog('close');
     });
 }
@@ -774,7 +783,7 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
-function onlyUnique(value, index, self) {
+function onlyUnique(value, index, self) { 
     return self.indexOf(value) === index;
 }
 

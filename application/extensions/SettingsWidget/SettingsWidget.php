@@ -396,7 +396,19 @@
             if (isset($metaData['submitonchange']) && $metaData['submitonchange']) {
                 $properties['events']['change']='js: function(e) { this.form.submit();}';
             }
-            return App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', $properties, true);
+            //return App()->getController()->widget('ext.bootstrap.widgets.TbSelect2', $properties, true);
+            
+                return App()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                    'name' => $name,
+                        'data' => $metaData['options'],                    
+                    'pluginOptions' => array(
+                        'value' => $value,
+
+                        'options' => $select2Options,                    
+                    ),
+
+                    'htmlOptions' => $htmlOptions
+                ), true);            
         }
 
         public function renderString($name, array $metaData, $form = null)

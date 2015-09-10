@@ -1,3 +1,44 @@
+// Louis : We need to overwrite jQuery tabs to make it compatible with bootstrap
+(function($)
+{
+	jQuery.fn.bootTabs=function(fonc, value, ovalue)
+	{
+		this.each(function()
+		{
+			if(fonc=='enable')
+			{
+				value = value + 1;
+				$tab = $(this).children('ul').children(':nth-child('+value+')');
+				$tab.removeClass("disabled");
+				$tab.children('a').attr('data-toggle', 'tab');
+			}
+			if(fonc=='disable')
+			{
+				value = value + 1;
+				$tab = $(this).children('ul').children(':nth-child('+value+')');
+				$tab.addClass("disabled");
+				$tab.children('a').removeAttr('data-toggle');
+			}
+			
+			if(fonc=='option')
+			{
+				if(value == 'active')
+				{
+					if($.isNumeric(ovalue))
+					{
+						$(this).children('ul').children(':nth-child('+ovalue+')').children('a').tab('show');
+					}
+					else
+					{
+						$('a[href$="'+ovalue+'"]').tab('show');						
+					}
+				}
+			}
+			
+		});
+		return this;
+	};
+})(jQuery);
 
 function jquery_goodchars(e, goods)
 {
@@ -36,7 +77,7 @@ $(document).ready(function(){
             return false;  
         }
 });
-    //$('#languagetabs').tabs();
+    //$('#languagetabs').bootTabs();
     $('#radiototal,#radiogroup').change(
         function()
         {
@@ -84,12 +125,12 @@ function populateCanswersSelect(evt) {
 			$('#cqid').val(Qcqids[i]);
 			if (Qtypes[i] == 'P' || Qtypes[i] == 'M')
 			{
-				$('#conditiontarget').tabs('enable', 0);
-				$('#conditiontarget').tabs('option','active', 0);
-				$('#conditiontarget').tabs('enable', 1);
-				$('#conditiontarget').tabs('disable', 2);
-				$('#conditiontarget').tabs('disable', 3);
-				$('#conditiontarget').tabs('disable', 4);
+				$('#conditiontarget').bootTabs('enable', 0);
+				$('#conditiontarget').bootTabs('option','active', 0);
+				$('#conditiontarget').bootTabs('enable', 1);
+				$('#conditiontarget').bootTabs('disable', 2);
+				$('#conditiontarget').bootTabs('disable', 3);
+				$('#conditiontarget').bootTabs('disable', 4);
 				if ($('#method').val() != '==' || $('#method').val() != '!=')
 				{
 					$('#method').val('==');
@@ -98,11 +139,11 @@ function populateCanswersSelect(evt) {
 			}
 			else
 			{
-				$('#conditiontarget').tabs('enable', 0);
-				$('#conditiontarget').tabs('enable', 1);
-				$('#conditiontarget').tabs('enable', 2);
-				if (!isAnonymousSurvey) $('#conditiontarget').tabs('enable', 3);
-				$('#conditiontarget').tabs('enable', 4);
+				$('#conditiontarget').bootTabs('enable', 0);
+				$('#conditiontarget').bootTabs('enable', 1);
+				$('#conditiontarget').bootTabs('enable', 2);
+				if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
+				$('#conditiontarget').bootTabs('enable', 4);
 				selectTabFromOper();
 				$('#method option').removeAttr('disabled');
 			}
@@ -129,51 +170,39 @@ function populateCanswersSelect(evt) {
 function selectTabFromOper() {
 	var val = $('#method').val();
 	if(val == 'RX') {
-		$('#conditiontarget').tabs('enable', 4);
-		$('#conditiontarget').tabs('option','active', 4);
-		$('#conditiontarget').tabs('disable', 0);
-		$('#conditiontarget').tabs('disable', 1);
-		$('#conditiontarget').tabs('disable', 2);
-		$('#conditiontarget').tabs('disable', 3);
+		$('#conditiontarget').bootTabs('enable', 4);
+		$('#conditiontarget').bootTabs('option','active', 4);
+		$('#conditiontarget').bootTabs('disable', 0);
+		$('#conditiontarget').bootTabs('disable', 1);
+		$('#conditiontarget').bootTabs('disable', 2);
+		$('#conditiontarget').bootTabs('disable', 3);
 	}
 	else {
-		$('#conditiontarget').tabs('enable', 0);
-		$('#conditiontarget').tabs('enable', 1);
-		$('#conditiontarget').tabs('enable', 2);
-		if (!isAnonymousSurvey) $('#conditiontarget').tabs('enable', 3);
-		$('#conditiontarget').tabs('option','active', 0);
-		$('#conditiontarget').tabs('disable', 4);
+		$('#conditiontarget').bootTabs('enable', 0);
+		$('#conditiontarget').bootTabs('enable', 1);
+		$('#conditiontarget').bootTabs('enable', 2);
+		if (!isAnonymousSurvey) $('#conditiontarget').bootTabs('enable', 3);
+		$('#conditiontarget').bootTabs('option','active', 0);
+		$('#conditiontarget').bootTabs('disable', 4);
 	}
 }
 
 $(document).ready(function(){
-	$('#conditiontarget').tabs({
-		fx: {
-			opacity: 'toggle',
-       		duration: 100
-		}
-	});
-    
 	$('#conditiontarget').on('tabsactivate', function(event, ui) {
 		$('#editTargetTab').val('#' + ui.newPanel.prop("id"));	
 	});
 
-	$('#conditionsource').tabs({
-		fx: {
-			opacity: 'toggle',
-       		     duration: 100
-		}
-	});
 
 	$('#conditionsource').on('tabsactivate', function(event, ui) {
 		$('#editSourceTab').val('#' + ui.newPanel.prop("id"));	
 	});
 
 	// disable RegExp tab onload (new condition)
-	$('#conditiontarget').tabs('disable', 4);
+	
+	$('#conditiontarget').bootTabs('disable', 4);
 	// disable TokenAttribute tab onload if survey is anonymous
-	if (isAnonymousSurvey) $('#conditiontarget').tabs('disable', 3);
-	if (isAnonymousSurvey) $('#conditionsource').tabs('disable', 1);
+	if (isAnonymousSurvey) $('#conditiontarget').bootTabs('disable', 3);
+	if (isAnonymousSurvey) $('#conditionsource').bootTabs('disable', 1);
 
 	$('#resetForm').click( function() {
 		$('#canswers option').remove();
@@ -243,12 +272,13 @@ $(document).ready(function(){
 	});
 
 	// At edition time, a hidden field gives the Tab that should be selected
+	// Louis : that suppose to be a numerical input not a string !!!
 	if ($('#editTargetTab').val() != '') {
-		$('#conditiontarget').tabs('option','active', $('#editTargetTab').val());
+		$('#conditiontarget').bootTabs('option','active', $('#editTargetTab').val());
 	}
 	// At edition time, a hidden field gives the Tab that should be selected
 	if ($('#editSourceTab').val() != '') {
-		$('#conditionsource').tabs('option','active', $('#editSourceTab').val());
+		$('#conditionsource').bootTabs('option','active', $('#editSourceTab').val());
 	}
 	
 	// At edition time, if cquestions is set, populate answers
@@ -256,7 +286,7 @@ $(document).ready(function(){
 		populateCanswersSelect(null);
 	}
 	
-
+	$('#conditiontarget').bootTabs('option','active', 1);
 });
 
 

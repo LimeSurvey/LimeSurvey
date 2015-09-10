@@ -1,8 +1,9 @@
-
-<div class='header ui-widget-header'><?php printf(gT("Edit user permissions for user %s"),"<span style='font-style:italic'>".$oUser->users_name."</span>"); ?></div>
-<br />
-<?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post');?>
-<table style='margin:0 auto;' class='userpermissions activecell'><thead>
+<h3 class="pagetitle"><?php printf(gT("Edit user permissions for user %s"),"<span style='font-style:italic'>".$oUser->users_name."</span>"); ?></h3>
+        
+<div class="row" style="margin-bottom: 100px">
+    <div class="col-lg-12 content-right">
+<?php echo CHtml::form(array("admin/user/sa/savepermissions"), 'post', array('id'=>'savepermissions'));?>
+<table style='margin:0 auto;' class='userpermissions activecell table'><thead>
 
         <tr><th></th><th><?php eT("Permission");?></th>
             <th><input type='button' id='btnToggleAdvanced' value='<<' /></th>
@@ -58,9 +59,13 @@
     } ?>
 
     </table>
-    <p><input type='submit' value='<?php eT("Save");?>' />
+    <p><input type='submit' class="hidden"  value='<?php eT("Save");?>' />
     <input type='hidden' name='action' value='surveyrights' />
     <input type='hidden' name='uid' value='<?php echo $oUser->uid;?>' />
 </form>
+        
+    </div>
+</div>  
+  
 
 

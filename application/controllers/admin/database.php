@@ -29,8 +29,10 @@ class database extends Survey_Common_Action
     */
     function index($sa = null)
     {
+        
         $sAction=Yii::app()->request->getPost('action');
-        $iSurveyID=returnGlobal('sid');
+        $iSurveyID = (isset($_POST['sid'])) ? $_POST['sid'] : returnGlobal('sid') ;
+        
         $iQuestionGroupID=returnGlobal('gid');
         $iQuestionID=returnGlobal('qid');
         $sDBOutput = '';
@@ -127,8 +129,8 @@ class database extends Survey_Common_Action
                 echo $sDBOutput;
             }
             else
-            {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+            {                                           
+                $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
             }
         }
 
@@ -380,6 +382,17 @@ class database extends Survey_Common_Action
             }
             else
             {
+                    
+                // For Bootstrap Version usin YiiWheels switch :
+                if( Yii::app()->request->getPost('mandatory') == '1' || Yii::app()->request->getPost('mandatory') == '0' )
+                {
+                    $_POST['mandatory'] = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
+                }
+                else
+                {
+                    $_POST['mandatory'] = Yii::app()->request->getPost('mandatory');
+                }                
+                
                 if (Yii::app()->request->getPost('questionposition',"")!="")
                 {
                     $iQuestionOrder= intval(Yii::app()->request->getPost('questionposition'));
@@ -406,7 +419,18 @@ class database extends Survey_Common_Action
                 $oQuestion->preg = Yii::app()->request->getPost('preg');
                 $oQuestion->help = $sQuestionHelp;
                 $oQuestion->other = Yii::app()->request->getPost('other');
-                $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
+                
+                // For Bootstrap Version usin YiiWheels switch :
+                if( Yii::app()->request->getPost('mandatory') == '1' || Yii::app()->request->getPost('mandatory') == '0' )
+                {
+                    $oQuestion->mandatory = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
+                }
+                else
+                {
+                    $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
+                }
+                
+                
                 $oQuestion->relevance = Yii::app()->request->getPost('relevance');
                 $oQuestion->question_order = $iQuestionOrder;
                 $oQuestion->language = $sBaseLanguage;
@@ -482,8 +506,8 @@ class database extends Survey_Common_Action
                         {
                             $aSQIDMappings = array();
                             $r1 = Question::model()->getSubQuestions(returnGlobal('oldqid'));
-                            $aSubQuestions = $r1->readAll();
-                            foreach ($aSubQuestions as $qr1)
+
+                            while ($qr1 = $r1->read())
                             {
                                 $qr1['parent_qid'] = $iQuestionID;
                                 if (isset($aSQIDMappings[$qr1['qid']]))
@@ -504,8 +528,7 @@ class database extends Survey_Common_Action
                         if (returnGlobal('copyanswers') == "Y")
                         {
                             $r1 = Answer::model()->getAnswers(returnGlobal('oldqid'));
-                            $aAnswerOptions = $r1->readAll();
-                            foreach ($aAnswerOptions as $qr1)
+                            while ($qr1 = $r1->read())
                             {
                                 Answer::model()->insertRecords(array(
                                 'qid' => $iQuestionID,
@@ -614,12 +637,14 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                                                        //admin/survey/sa/view/surveyid/                
+                $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
             }
         }
 
         if ($sAction == "updatequestion" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
         {
+            
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
 
             $cqr=Question::model()->findByAttributes(array('qid'=>$iQuestionID));
@@ -639,7 +664,6 @@ class database extends Survey_Common_Action
                 }
             }
             QuestionAttribute::model()->deleteAll($criteria);
-
             $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
 
 
@@ -729,6 +753,17 @@ class database extends Survey_Common_Action
                 $_POST['preg']='';
             }
 
+
+            // For Bootstrap Version usin YiiWheels switch :
+            if( Yii::app()->request->getPost('mandatory') == '1' || Yii::app()->request->getPost('mandatory') == '0' )
+            {
+                $_POST['mandatory'] = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
+            }
+            else
+            {
+                $_POST['mandatory'] = Yii::app()->request->getPost('mandatory');
+            }
+
             // These are the questions types that have no mandatory property - so zap it accordingly
             if (Yii::app()->request->getPost('type')== "X" || Yii::app()->request->getPost('type')== "|")
             {
@@ -807,6 +842,10 @@ class database extends Survey_Common_Action
                             }
                             //$condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
                             $oQuestion = Question::model()->findByPk(array("qid"=>$iQuestionID,'language'=>$qlang));
+                            
+                            
+                            
+                            
                             foreach ($udata as $k => $v)
                                 $oQuestion->$k = $v;
 
@@ -904,7 +943,7 @@ class database extends Survey_Common_Action
                 if(Yii::app()->request->getPost('redirection') == "edit") {
                     $this->getController()->redirect(array('admin/questions/sa/editquestion/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
                 } else {
-                    $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
+                    $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$iQuestionGroupID.'/qid/'.$iQuestionID));
                 }
             }
         }

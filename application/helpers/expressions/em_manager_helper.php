@@ -1445,11 +1445,9 @@
                         if ($hasSubqs) {
                             $subqs = $qinfo['subqs'];
                             $sq_names=array();
-                            $sq_eqPart=array();
                             foreach($subqs as $subq)
                             {
                                 $sq_names[] = $subq['varName'].".NAOK";
-                                $sq_eqPart[] = "intval(!is_empty({$subq['varName']}.NAOK))*{$subq['csuffix']}";
                             }
                             if (!isset($validationEqn[$questionNum]))
                             {
@@ -1459,7 +1457,7 @@
                             'qtype' => $type,
                             'type' => 'default',
                             'class' => 'default',
-                            'eqn' =>  'unique(' . implode(',',$sq_names) . ') and count(' . implode(',',$sq_names) . ')==max('. implode(',',$sq_eqPart) .')',
+                            'eqn' =>  'unique(' . implode(',',$sq_names) . ')',
                             'qid' => $questionNum,
                             );
                         }
@@ -3089,7 +3087,7 @@
                         $qtips['default']=$this->gT("Only numbers may be entered in these fields.");
                         break;
                     case 'R':
-                        $qtips['default']=$this->gT("All your answers must be different and you must rank in order.");
+                        $qtips['default']=$this->gT("All your answers must be different.");
                         break;
 // Helptext is added in qanda_help.php
 /*                  case 'D':
@@ -3160,7 +3158,7 @@
                             'atleast_1' => $this->gT("Please select at least one answer"),
                             'atmost_m' => $this->gT("Please select at most %s answers"),
                             'atmost_1' => $this->gT("Please select at most one answer"),
-                            '1' => $this->gT("Please select one answer"),
+                            '1' => $this->gT("Please select at most one answer"),
                             'n' => $this->gT("Please select %s answers"),
                             'between' => $this->gT("Please select between %s and %s answers")
                         );
@@ -4840,11 +4838,11 @@
                     switch ($knownVar['type'])
                     {
                         case 'D': //DATE
-                            if (trim($value)=="" | $value=='INVALID')
+                            if (trim($value)=="")
                             {
                                 $value = NULL;
                             }
-                            else
+                            elseif ($value!='INVALID')
                             {
                                 $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
                                 $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
@@ -7197,14 +7195,6 @@
                                 $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
                                 $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
                                 $relParts[] = "    }\n";
-                                break;
-                            case 'R':
-                                $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));
-                                $relParts[] = " $('#question{$arg['qid']} .select-list select').each(function(){ \n";
-                                $relParts[] = "   if($(this).val()=='{$listItem}'){ \n";
-                                $relParts[] = "     $(this).val('').trigger('change'); \n";
-                                $relParts[] = "   }; \n";
-                                $relParts[] = " }); \n";
                                 break;
                             default:
                                 break;

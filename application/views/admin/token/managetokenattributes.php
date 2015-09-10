@@ -1,5 +1,9 @@
-<?php if( count($tokenfieldlist)) { ?>
-    <div class='header ui-widget-header'><?php eT("Manage token attribute fields"); ?></div>
+<div class="side-body">
+<?php if( count($tokenfieldlist)) : ?>
+	<h3><?php eT("Manage token attribute fields"); ?></h3>        
+                                                  
+	<div class="row">                             
+		<div class="col-lg-12 content-right">
     <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributedescriptions/surveyid/{$surveyid}"), 'post'); ?>
     <div id="tabs">
         <ul>
@@ -90,34 +94,46 @@
     </p>
     </form>
 
-    <br /><br />
-    <?php } ?>
-<div class='header ui-widget-header'><?php eT("Add or delete token attributes"); ?></div>
-<p><?php echo sprintf(gT('There are %s user attribute fields in this token table'), $nrofattributes); ?></p>
-<?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
-<p>
-    <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>
-    <input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
-</p>
-<p>
-    <?php echo CHtml::submitButton(gT('Add fields')); ?>
-    <?php echo CHtml::hiddenField('action','tokens'); ?>
-    <?php echo CHtml::hiddenField('subaction','updatetokenattributes'); ?>
-    <?php echo CHtml::hiddenField('sid',$surveyid); ?>
-</p>
-<?php echo CHtml::endForm() ?>
-<?php if( count($tokenfieldlist)) { ?>
-    <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'attributenumber')); ?>
-    <p>
-        <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
-        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => gT('none'))); ?>
-    </p>
-    <p>
-        <?php echo CHtml::submitButton(gT('Delete attribute')); ?>
-        <?php echo CHtml::hiddenField('action','tokens'); ?>
-        <?php echo CHtml::hiddenField('subaction','deletetokenattributes'); ?>
-        <?php echo CHtml::hiddenField('sid',$surveyid); ?>
-    </p>
-    <?php echo CHtml::endForm() ?>
-    <?php } ?>
-<br /><br />
+		</div>
+	</div>
+
+<?php endif; ?>
+<h3><?php eT("Add or delete token attributes"); ?></h3>
+
+	<div class="row">                             
+		<div class="col-lg-12 content-right">
+			<p><?php echo sprintf(gT('There are %s user attribute fields in this token table'), $nrofattributes); ?></p>
+			<?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
+			<p>
+			    <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>
+			    <input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
+			</p>
+			<p>
+			    <?php echo CHtml::submitButton(gT('Add fields')); ?>
+			    <?php echo CHtml::hiddenField('action','tokens'); ?>
+			    <?php echo CHtml::hiddenField('subaction','updatetokenattributes'); ?>
+			    <?php echo CHtml::hiddenField('sid',$surveyid); ?>
+			</p>
+			<?php echo CHtml::endForm() ?>
+			<?php if( count($tokenfieldlist)) { ?>
+			    <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'attributenumber')); ?>
+			    <p>
+			        <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
+			        <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => gT('none'))); ?>
+			    </p>
+			    <p>
+			        <?php echo CHtml::submitButton(gT('Delete attribute')); ?>
+			        <?php echo CHtml::hiddenField('action','tokens'); ?>
+			        <?php echo CHtml::hiddenField('subaction','deletetokenattributes'); ?>
+			        <?php echo CHtml::hiddenField('sid',$surveyid); ?>
+			    </p>
+			    <?php echo CHtml::endForm() ?>
+			    <?php } ?>
+		</div>
+	</div>
+
+
+</div>
+
+
+

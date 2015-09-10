@@ -1160,8 +1160,6 @@ div.partialheader{
     padding:1% 10%;
 }
 
-
-
 textarea.updater-changelog {
     width:800px;
     height:300px;
@@ -1420,111 +1418,6 @@ div.right {
 
 #statistics_general_filter #right li label:first-child {
     width:33%;
-}
-
-
-
-
-/* New ComfortUpdate */
-
-.updater-background p,
-#updaterContent p {
-    text-align:left;
-}
-
-.on {
-   font-weight: bold;
-   font-size: 1em;
-   padding-left : 0.5em;
-   padding-top : 0.5em;
-}
-
-.off {
-    font-size: 0.9em;
-    padding-left : 0.5em;
-    padding-top : 0.5em;
-}
-
-#localChecksContainer {
-    min-height: 190px;
-}
-
-/*Quick hack for LS 2.06 surveys menu*/
-label, legend {
-    display : inline-block;
-    font-family: verdana, arial, sans-serif;
-    text-align: left;
-    background-color: #fefefe;
-    color: #666;
-}
-
-#updaterContent{
-    width: 890px;
-    float: left;
-}
-
-#progressContainer{
-    width: 220px;
-    float: left;
-}
-
-#welcomeMessageContainer{
-    width: 510px;
-    float: left;
-    border-right:1px solid #EEE;
-    padding-top:1em;
-}
-
-#welcomeMessageContainer p{
-    text-align:left;
-}
-
-#welcomeMessageContainer li{
-    list-style-type:square;
-    overflow:visible;
-}
-
-#welcomeMessageContainerButtons{
-	float: left;
-}
-
-#keyInfos{
-	width: 320px;
-	float: left;
-	padding-left: 20px;
-	background-color: #fff;
-}
-
-#keyInfosbuttons{
-	float: right;
-	clear: both;
-	padding-top: 100px;
-}
-
-.checkLine{
-	float: left;
-}
-
-.resultLine{
-	float: right;
-}
-
-#ajaxupdaterLayoutLoading{
-	text-align : center;
-	margin-top: 200px;
-	margin-bottom: 200px;
-	display: none;
-}
-
-#udapteButtonsContainer{
-	text-align: center;
-}
-
-#ajaxContainerLoading{
-	text-align : center;
-	margin-top: 70px;
-	margin-bottom: 100px;
-	display: none;
 }
 
 /* Statistics filter */

@@ -1,7 +1,13 @@
+<div class="side-body">                           
+	<h3>
+		<?php eT("Send email invitations"); ?>
+	</h3>        
+                                                  
+	<div class="row">                             
+		<div class="col-lg-12 content-right">
+
 <?php echo PrepareEditorScript(true, $this); ?>
-<div class='header ui-widget-header'>
-    <?php eT("Send email invitations"); ?>
-</div>
+
 <div>
     <?php if ($thissurvey[$baselang]['active'] != 'Y') { ?>
         <div class='messagebox ui-corner-all'><div class='warningheader'><?php eT('Warning!'); ?></div><?php eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?></div>
@@ -78,4 +84,8 @@
             </p>
         </form>
     </div>
+</div>
+
+</div>
+</div>
 </div>

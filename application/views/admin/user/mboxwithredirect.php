@@ -1,12 +1,11 @@
-<div class="<?php echo $classMbTitle; ?>"><?php echo $title; ?></div>
-<div class="messagebox">
-    <div class="<?php echo $classMsg; ?>"><?php echo $message; ?></div>
-    <br />
-    <?php echo $extra; ?>
-    <br />
+<div class="jumbotron message-box">
+        <h2><?php echo $title; ?></h2>
+        <p class="lead <?php echo $classMsg; ?>"><?php echo $message; ?></p>
+        <p><?php echo $extra; ?></p>
+        <p>
     <?php echo CHtml::form($url, 'post'); ?>
     
-        <input type="submit" value="<?php echo $urlText; ?>" />
+        <input type="submit" class="btn btn-default" value="<?php echo $urlText; ?>" />
         <?php
         if (!empty($hiddenVars))
         {
@@ -18,5 +17,7 @@
             }
         }
         ?>
-    </form>
+    </form>            
+        </p>
 </div>
+

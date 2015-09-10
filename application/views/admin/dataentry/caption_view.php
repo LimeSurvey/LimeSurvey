@@ -1,7 +1,13 @@
-<div class='header ui-widget-header'><?php eT("Data entry"); ?></div>
-
+<!--
+    dataentry/caption_view.php
+-->
+<div class="side-body">
+    <h3><?php eT('Question Groups in this survey'); ?></h3>
+    <div class="row">
+        <div class="col-lg-12 content-right">
+                    
         <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data'));?>
-            <table class='data-entry-tbl'>
+            <table class='data-entry-tbl table'>
             <tr>
             <td colspan='3'>
             <strong><?php echo stripJavaScript($thissurvey['name']); ?></strong>
@@ -39,10 +45,12 @@
                     if (me.value != '')
                     {
                         $('#submitdata').button("option", "disabled", false);
+                        $('#save-button').prop('disabled', false);
                     }
                     else
                     {
                         $('#submitdata').button("option", "disabled", true);
+                        $('#save-button').prop('disabled', true);
                     }
                 }
                 //--></script>

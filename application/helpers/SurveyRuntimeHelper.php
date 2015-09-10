@@ -262,16 +262,16 @@ class SurveyRuntimeHelper {
                 }
                 elseif (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
-                    $moveResult = LimeExpressionManager::NavigateForwards();
-                    //$_SESSION[$LEMsessid]['step']=1;
+                    LimeExpressionManager::JumpTo(1, false, false, true);
+                    $_SESSION[$LEMsessid]['step']=1;
                 }
             }
             elseif($surveyid != LimeExpressionManager::getLEMsurveyId())
             {
-                $_SESSION[$LEMsessid]['step']=$_SESSION[$LEMsessid]['step']<0 ? 0 : $_SESSION[$LEMsessid]['step'];//$_SESSION[$LEMsessid]['step'] can not be less than 0, fix it always #09772
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
                 LimeExpressionManager::JumpTo($_SESSION[$LEMsessid]['step'], false, false);
             }
+
             $totalquestions = $_SESSION['survey_'.$surveyid]['totalquestions'];
 
             if (!isset($_SESSION[$LEMsessid]['totalsteps']))
@@ -838,7 +838,7 @@ class SurveyRuntimeHelper {
                     {
                         continue;
                     }
-                    $qidattributes = getQuestionAttributeValues($ia[0]);
+                    $qidattributes = getQuestionAttributeValues($ia[0], $ia[4]);
                     if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
                     {
                         continue;

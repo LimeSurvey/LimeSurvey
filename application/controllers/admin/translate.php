@@ -27,8 +27,6 @@ class translate extends Survey_Common_Action {
         $tolang = Yii::app()->getRequest()->getParam('lang');
         $action = Yii::app()->getRequest()->getParam('action');
 		$actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
-        //echo $this->query('title','querybase');
-        //die();
 
         if ( $action == "ajaxtranslategoogleapi" )
         {
@@ -50,7 +48,6 @@ class translate extends Survey_Common_Action {
             $tolang = $langs[0];
         }
 
-        // TODO need to do some validation here on surveyid
         $surveyinfo = getSurveyInfo($iSurveyID);
         $survey_title = $surveyinfo['name'];
 
@@ -63,6 +60,7 @@ class translate extends Survey_Common_Action {
 			"surveyid" => $iSurveyID,
 			"survey_title" => $survey_title,
 			"tolang" => $tolang,
+			//////////////////
 			"adminmenu" => $this->showTranslateAdminmenu($iSurveyID, $survey_title, $tolang)
 		);
         $aViewUrls['translateheader_view'][] = $aData;
@@ -83,6 +81,13 @@ class translate extends Survey_Common_Action {
 			$aViewUrls = array_merge($aViewUrls, $this->_displayUntranslatedFields($iSurveyID, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc));
             //var_dump(array_keys($aViewUrls));die();
         }
+
+			$aData['sidebar']['state'] = "close";
+			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";			
+			
+			$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;		
 
         $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
@@ -245,38 +250,7 @@ class translate extends Survey_Common_Action {
 		$menuitem_url = "{$publicurl}/index.php?sid={$iSurveyID}&newtest=Y&lang=";
 
 		$adminmenu = "";
-        $adminmenu .= CHtml::openTag('div', array('class'=>'menubar'));
-        $adminmenu .= CHtml::openTag('div', array('class'=>'menubar-title ui-widget-header'));
-        $adminmenu .= CHtml::tag('strong', array(), gT("Translate survey") . ": $survey_title");
-        $adminmenu .= CHtml::closeTag("div");
-        $adminmenu .= CHtml::openTag('div', array('class'=>'menubar-main'));
-        $adminmenu .= CHtml::openTag('div', array('class'=>'menubar-left'));
-
-        // Return to survey administration button
-        $adminmenu .= $this->menuItem(
-							gT("Return to survey administration"),
-							"Administration",
-							"home.png",
-							$this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}/")
-						);
-
-        // Separator
-        $adminmenu .= $this->menuSeparator();
-
-        // Test / execute survey button
-        if ( ! empty ($tolang) )
-        {
-			$adminmenu .= $this->_getSurveyButton($iSurveyID, $menuitem_url);
-		}
-
-        // End of survey-bar-left
-		$adminmenu .= CHtml::closeTag('div');
-
-
-        // Survey language list
 		$adminmenu .= $this->_getLanguageList($iSurveyID, $tolang);
-		$adminmenu .= CHtml::closeTag('div');
-		$adminmenu .= CHtml::closeTag('div');
 
         return $adminmenu;
     }
@@ -369,16 +343,26 @@ class translate extends Survey_Common_Action {
         $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
 
 		$language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
-		$language_list .= CHtml::tag('label', array('for'=>'translationlanguage'), gT("Translate to") . ":");
+		$language_list .= CHtml::openTag('div', array('class'=>'row'));
+        $language_list .= CHtml::openTag('div', array('class'=>'col-sm-12'));
+		
+		$language_list .= CHtml::tag('label', array('for'=>'translationlanguage', 'class' => 'col-sm-1  control-label'), gT("Translate to") . ":");
+        
+        $language_list .= CHtml::openTag('div', array('class'=>'col-sm-2')); 
 		$language_list .= CHtml::openTag(
 							'select',
 							array(
 								'id' => 'translationlanguage',
 								'name' => 'translationlanguage',
+								'class' => 'form-control',
 								'onchange' => "window.open(this.options[this.selectedIndex].value,'_top')"
 							)
 						);
-
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= '';
         if ( count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) > 1 )
         {
 			$selected = ( ! isset($tolang) ) ? "selected" : "";
@@ -903,7 +887,7 @@ class translate extends Survey_Common_Action {
 								),
 								showJavaScript($textfrom)
 							);
-        $translateoutput .= CHtml::openTag('td');
+        $translateoutput .= CHtml::openTag('td', array('valign'=>'middle'));
 		$translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
 		$translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
         if ($iScaleID!='') $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
@@ -913,6 +897,7 @@ class translate extends Survey_Common_Action {
 		$translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
 		$translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
 								array(
+								    'class' => 'col-sm-10',
 									'cols' => '75',
 									'rows' => $nrows,
 								)

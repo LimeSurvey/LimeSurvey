@@ -1,0 +1,126 @@
+// Grid view
+// -------------------------
+
+.grid-view {
+  font-size: 13px;
+
+  .table {
+    th > .sort-link {
+      color: #333;
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      position: relative;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      .caret {
+        border-color: transparent;
+        border-style: solid;
+        border-width: 4px;
+        display: none;
+        position: absolute;
+        right: 5px;
+      }
+
+      &.asc .caret {
+        border-bottom-color: #333;
+        display: block;
+        top: 4px;
+      }
+
+      &.desc .caret {
+        border-top-color: #333;
+        display: block;
+        top: 8px;
+      }
+    }
+
+    .filters {
+      > td {
+        .filter-container {
+          padding: 0 16px 0 0; // compensate for the margin on the input
+
+          input[type="text"], select {
+            margin-bottom: 0;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    tr.selected td {
+      background: #eee;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+
+    .checkbox-column {
+      width: 15px;
+    }
+
+    .number-column {
+      text-align: right;
+    }
+
+    .button-column {
+      text-align: right;
+      min-width: 50px;
+    }
+  }
+
+  .summary {
+    color: lighten(#000, 60%);
+    font-size: 12px;
+    padding: 6px 0;
+    text-align: right;
+  }
+
+  .empty {
+    font-style: italic;
+  }
+
+  &.grid-view-loading {
+    background: url(../img/loader.gif) no-repeat 100% 10px;
+
+    .table {
+      opacity: 0.5;
+
+      th > .sort-link .caret {
+        display: none;
+      }
+    }
+  }
+}
+
+// Detail view
+// -------------------------
+.detail-view {
+  .null {
+    color: #FFC0CB;
+  }
+
+  th {
+    text-align: right;
+    width: 160px;
+  }
+}
+
+// Form
+// -------------------------
+
+span.required {
+  color: #b94a48;
+  font-weight: bold;
+}
+
+// Icon
+// -------------------------
+
+.glyphicon-white {
+  color: #ffffff;
+}

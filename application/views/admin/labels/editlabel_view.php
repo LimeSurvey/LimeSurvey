@@ -1,19 +1,33 @@
-<div class='header'>
-    <input type='image' src='<?php echo $sImageURL; ?>close.png' style='float:right;'
-        onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lid); ?>', '_top')" alt='<?php eT("Close"); ?>'/>
-    <?php if ($action == "newlabelset") { eT("Create or import new label set(s)");}
-        else {eT("Edit label set"); } ?>
-</div>
+<script type="text/javascript">
+    var sImageURL = '<?php echo $sImageURL ?>';
+    var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.','js'); ?>';
+    var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.",'js'); ?>';
+    var quickaddtitle='<?php eT('Quick-add subquestion or answer items','js'); ?>';
+</script>
 
-<div id='tabs'>
-    <ul>
-        <li><a href='#neweditlblset0'><?php echo $tabitem; ?>
-            </a></li>
-        <?php if ($action == "newlabelset"){ ?>
-            <li><a href='#neweditlblset1'><?php eT("Import label set(s)"); ?></a></li>
-            <?php } ?>
-    </ul>
-    <div id='neweditlblset0'>
+<div class="col-lg-12 list-surveys">
+    <h3>            <?php if ($action == "newlabelset") { eT("Create or import new label set(s)");} else {eT("Edit label set"); } ?></h3>
+
+    <div class="row">
+        <div class="col-lg-12 content-right">
+
+
+
+<ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
+    <li role="presentation" class="active">
+        <a data-toggle="tab" href='#neweditlblset0'>
+            <?php echo $tabitem; ?>
+        </a>
+    </li>
+    <?php if ($action == "newlabelset"): ?>
+        <li>
+            <a data-toggle="tab"  href='#neweditlblset1'><?php eT("Import label set(s)"); ?></a>
+        </li>
+    <?php endif; ?>
+</ul>
+
+<div class="tab-content">
+    <div id='neweditlblset0' class="tab-pane fade in active">
         <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form30','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
             <ul>
                 <li><label for='label_name'><?php eT("Set name:"); ?></label>
@@ -46,7 +60,7 @@
 
                                 </select></td>
                         </tr></table></li></ul>
-            <p><input type='submit' value='<?php if ($action == "newlabelset") {eT("Save");}
+            <p><input type='submit' class="hidden" value='<?php if ($action == "newlabelset") {eT("Save");}
                     else {eT("Update");} ?>' />
             <input type='hidden' name='action' value='<?php if ($action == "newlabelset") {echo "insertlabelset";} else {echo "updateset";} ?>' />
 
@@ -58,7 +72,7 @@
 
     </div>
     <?php if ($action == "newlabelset"){ ?>
-        <div id='neweditlblset1'>
+        <div id='neweditlblset1' class="tab-pane fade in" >
             <?php echo CHtml::form(array("admin/labels/sa/import"), 'post',array('enctype'=>'multipart/form-data','id'=>'importlabels','name'=>"importlabels")); ?>
                 <div class='header ui-widget-header'>
                     <?php eT("Import label set(s)"); ?>
@@ -79,8 +93,24 @@
                 <input type='hidden' name='action' value='importlabels' />
             </form></div>
 
+<?php } ?>
+
+</div>    
 
 
-    </div>
-    <?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+            
         </div>
+    </div>
+</div>
+

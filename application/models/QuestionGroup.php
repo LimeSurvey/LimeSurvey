@@ -77,7 +77,7 @@
         */
         public function relations()
         {
-            return array('questions' => array(self::HAS_MANY, 'Question', 'gid'));
+            return array('questions' => array(self::HAS_MANY, 'Question', 'gid, language'));
         }
 
         function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
@@ -188,5 +188,13 @@
             }
             return $command->query();
         }
+		
+		public function getbuttons()
+		{
+			$url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
+			$url .= '/'.$this->sid.'/gid/'.$this->gid;
+			$button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
+			return $button;
+		}
     }
 ?>

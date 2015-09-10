@@ -49,9 +49,13 @@
                 'validfrom' => gT('Valid from'),
                 'validuntil' => gT('Valid until'),
             );
-            foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
+            // Check if we have custom attributes.
+			if ($this->hasAttribute('attribute_1'))
             {
-                $labels[$key] = $info['description'];
+				foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
+                {
+                    $labels[$key] = $info['description'];
+                }
             }
             return $labels;
         }
@@ -79,7 +83,7 @@
             }
             if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
                 $sCollation="COLLATE SQL_Latin1_General_CP1_CS_AS";
-            }
+            }             
             $fields = array(
                 'tid' => 'pk',
                 'participant_id' => 'string(50)',
@@ -102,28 +106,28 @@
             foreach ($extraFields as $extraField) {
                 $fields[$extraField] = 'text';
             }
-
+            
             // create fields for the custom token attributes associated with this survey
-            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
+            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->tokenAttributes;
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
                 if (!isset($fields[$attrname])) {
                     $fields[$attrname] = 'string(255)';
                 }
             }
-
+            
             $db = \Yii::app()->db;
             $sTableName="{{tokens_{$surveyId}}}";
-
+            
             $db->createCommand()->createTable($sTableName, $fields);
             /**
              * @todo Check if this random component in the index name is needed.
              * As far as I (sam) know index names need only be unique per table.
              */
             $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1,50000),  $sTableName,'token');
-
+            
             // Refresh schema cache just in case the table existed in the past, and return if table exist
-            return $db->schema->getTable($sTableName, true);
+            return $db->schema->getTable($sTableName, true); 
         }
         public function findByToken($token)
         {
@@ -151,7 +155,7 @@
                 }
             }
         }
-
+        
         /**
          * Generates a token for all token objects in this survey.
          * Syntax: Token::model(12345)->generateTokens();
@@ -162,14 +166,14 @@
             }
             $surveyId = $this->dynamicId;
             $tokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
-
+            
             $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
             //Exit early if there are not empty tokens
             if (count($tkresult)===0) return array(0,0);
 
             //get token length from survey settings
             $tlrow = Survey::model()->findByAttributes(array("sid"=>$surveyId));
-
+            
             //Add some criteria to select only the token field
             $criteria = $this->getDbCriteria();
             $criteria->select = 'token';
@@ -224,7 +228,7 @@
         }
 
         /**
-         *
+         * 
          * @param int $surveyId
          * @param string $scenario
          * @return Token Description
@@ -245,12 +249,10 @@
 
         public function rules()
         {
-            $aRules= array(
+            return array(
                 array('token', 'unique', 'allowEmpty' => true),
-                array('firstname','LSYii_Validators'),
-                array('lastname','LSYii_Validators'),
                 array(implode(',', $this->tableSchema->columnNames), 'safe'),
-                array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true), 
                 array('email','filter','filter'=>'trim'),
                 array('email','LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true,'except'=>'allowinvalidemail'),
                 array('usesleft','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
@@ -258,11 +260,6 @@
                 array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
                 array('emailstatus', 'default', 'value' => 'OK'),
             );
-            foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
-            {
-                 $aRules[]=array($key,'LSYii_Validators');
-            }
-            return $aRules;
         }
 
         public function scopes()

@@ -19,11 +19,9 @@ $(window).scroll(function(){
     });
 });
 
-// Trace firstload of grid
-firstload=true;
 $(document).on("click","[data-delete]",function(event){
     event.preventDefault();
-    var responseid=$(this).data("delete");
+    var responseid=$(this).data("delete")
     var url=$(this).attr("href"); // Or replace responseid  by post if needed
     var buttons = {};
     buttons[sDelCaption] = function(){
@@ -61,21 +59,19 @@ $(function() {
         height : "100%",
         //shrinkToFit : false,
         ignoreCase : true,
-        rowNum : rows,
-        page : page,
+        rowNum : 25,
         editable : false,
         scrollOffset : 0,
         sortable : true,
         hidegrid : false,
         sortname : 'id',
-        sortorder : sortorder,
+        sortorder : 'asc',
         viewrecords : true,
         rowList : [ 25, 50, 100, 250, 500, 1000 ],
         multiselect : true,
         loadonce : false, // use ajax request
         pager : "#pager",
         caption : sCaption,
-        postData: defaultSearch ,
         beforeRequest: function(){
             /* activate tooltip on header */
             for (i = 0; i < colModels.length; i++) {
@@ -143,13 +139,6 @@ $(function() {
         searchOnEnter : false,
         defaultSearch : 'cn'
     });
-    if(firstload)
-    {
-        jQuery.each(defaultSearch, function(index, value) {
-          $("#gs_"+index).val(value);
-        });
-        firstload=false;
-    }
     /* Column button */
     jQuery("#displayresponses").jqGrid(
         'navButtonAdd',

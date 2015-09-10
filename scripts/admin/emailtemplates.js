@@ -1,11 +1,11 @@
 // $Id: saved.js 9330 2010-10-24 22:23:56Z c_schmitz $
 
 $(document).ready(function(){
-    handle=$('.tabsinner').tabs(
+   /* handle=$('.tabsinner').tabs(
     {
          show: loadHTMLEditor
     });
-
+*/
     // Binds the Default value buttons for each email template subject and body text
     $('.fillin').bind('click', function(e) { 
         e.preventDefault; 
@@ -15,27 +15,6 @@ $(document).ready(function(){
         updateCKeditor($(this).attr('data-target'),newval);
     });
 });
-
-/**
-* This function loads each FCKeditor only when the tab is clicked and only if it is not already loaded
-*/
-function loadHTMLEditor(event, ui) 
-{ 
-    return;
-   if (typeof ui.panel.selector != 'undefined')
-   {
-       sSelector=ui.panel.selector;
-   }
-   else
-   {
-       sSelector='#'+ui.panel.id;
-   }
-   if ($(sSelector+' iframe').size()==0)
-   {
-        sCKEditorInstanceName='oFCKeditor_'+$(sSelector+' textarea').attr('id').replace(/-/i, "_");
-        eval("if (typeof "+sCKEditorInstanceName+" != 'undefined')"+sCKEditorInstanceName+".ReplaceTextarea();");
-   }
-}
 
 function KCFinder_callback(url)
 {

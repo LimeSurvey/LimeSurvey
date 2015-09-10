@@ -1,3 +1,9 @@
+<div class="side-body">                           
+	<h3><?php eT("Import tokens from LDAP"); ?></h3>        
+                                                  
+	<div class="row">                             
+		<div class="col-lg-12 content-right">
+			
 <?php if (!empty($sError)) { ?>
     <strong><font color='red'><?php eT("Error"); ?></font>: <?php echo $sError; ?></strong><br /><br />
 <?php } ?>
@@ -45,4 +51,9 @@ else
 <div class='messagebox ui-corner-all'>
     <div class='header ui-widget-header'><?php echo eT("Note"); ?></div><br />
     <?php eT("LDAP queries are defined by the administrator in the configuration file /application/config/ldap.php ."); ?>
+</div>
+			
+			     
+		</div>
+	</div>
 </div>

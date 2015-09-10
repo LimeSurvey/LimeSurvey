@@ -52,7 +52,7 @@
     );
         */
         
-    $this->widget('bootstrap.widgets.TbExtendedGridView', array(
+    $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,
         'columns'=>$gridColumns,
         'rowCssClassExpression'=> function ($data, $row) { return ($row % 2 ? 'even' : 'odd') . ' ' . ($data['new']==1 ? "new" : "old"); },

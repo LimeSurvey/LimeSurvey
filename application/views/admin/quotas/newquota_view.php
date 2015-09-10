@@ -1,4 +1,10 @@
-<div class='header ui-widget-header'><?php eT("New quota");?></div>
+<div class="side-body col-lg-8">
+	<div class="row">                             
+		<div class="col-lg-12 content-right">
+			<h3>
+				<?php eT("New quota");?>
+			</h3>
+
 <?php echo CHtml::form(array("admin/quotas/sa/insertquota/surveyid/{$iSurveyId}"), 'post', array('class'=>'form30', 'id'=>'addnewquotaform', 'name'=>'addnewquotaform')); ?>
     <ul>
         <li>
@@ -11,7 +17,7 @@
         </li>
         <li>
             <label for="quota_action"><?php eT("Quota action");?>:</label>
-            <select id="quota_action" name="quota_action">
+            <select id="quota_action" name="quota_action" class="form-control">
                 <option value ="1"><?php eT("Terminate survey");?></option>
                 <option value ="2"><?php eT("Terminate survey with warning");?></option>
             </select>
@@ -51,5 +57,6 @@
         <input type="hidden" name="action" value="quotas" />
         <input type="hidden" name="subaction" value="insertquota" />
     </div>
-    <p><input name="submit" type="submit" value="<?php eT("Add New Quota");?>" />
+    
 	</form>
+</div></div></div>

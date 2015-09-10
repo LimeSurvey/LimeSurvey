@@ -25,6 +25,105 @@ if (!defined('BASEPATH'))
 */
 class questions extends Survey_Common_Action
 {
+	
+	public function view($surveyid, $gid, $qid)
+	{
+		$aData = array();
+		$aData['surveyid'] = $iSurveyID = $surveyid;
+		$aData['gid'] = $gid;
+		$aData['qid'] = $qid;
+
+
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+
+        //Show Question Details
+        //Count answer-options for this question
+        $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid, 'language' => $baselang));
+
+        $aData['qct'] = $qct = count($qrr);
+
+        //Count sub-questions for this question
+        $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
+        $aData['sqct'] = $sqct = count($sqrq);
+
+        $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
+        if (is_null($qrrow)) return;
+        $questionsummary = "<div class='menubar'>\n";
+
+        // Check if other questions in the Survey are dependent upon this question
+        $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
+
+        $sumresult1 = Survey::model()->findByPk($iSurveyID);
+        if (is_null($sumresult1))
+        {
+            Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
+            $this->getController()->redirect(array("admin/index"));
+        } //  if surveyid is invalid then die to prevent errors at a later time
+        $surveyinfo = $sumresult1->attributes;
+
+        $surveyinfo = array_map('flattenText', $surveyinfo);
+        $aData['activated'] = $surveyinfo['active'];
+
+        $qrrow = $qrrow->attributes;
+        $aData['languagelist'] = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
+        $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
+
+            $qshowstyle = "";
+
+        $aData['qshowstyle'] = $qshowstyle;
+        $aData['surveyid'] = $iSurveyID;
+        $aData['qid'] = $qid;
+        $aData['gid'] = $gid;
+        $aData['qrrow'] = $qrrow;
+        $aData['baselang'] = $baselang;
+        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
+        $DisplayArray = array();
+        foreach ($aAttributesWithValues as $aAttribute)
+        {
+            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default']) || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default']))
+            {
+                if ($aAttribute['inputtype'] == 'singleselect')
+                {
+                    $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+                }
+                /*
+                if ($aAttribute['name']=='relevance')
+                {
+                $sRelevance = $aAttribute['value'];
+                if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
+                {
+                LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
+                $aAttribute['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
+                }
+                }
+                */
+                $DisplayArray[] = $aAttribute;
+            }
+        }
+        $aData['advancedsettings'] = $DisplayArray;
+        $aData['condarray'] = $condarray;
+        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
+        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
+        $questionsummary .= $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
+        $finaldata['display'] = $questionsummary;
+		$aData['display']['menu_bars']['gid_action'] = 'viewquestion';
+
+		$aData['sidebar']['questiongroups'] = true;
+		$aData['sidebar']['listquestions'] = true;
+		
+		$aData['sidebar']['question'] = true;
+		$aData['sidebar']['question_name'] = $qrrow['title'].' : '.$qrrow['question'];
+		$aData['questionbar']['buttons']['view'] = TRUE;
+
+		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+		
+		//$aData['questionbar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listquestions/", array('surveyid'=>$surveyid));		
+		//$aData['questionbar']['returnbutton']['text'] = gT('return to question list');			
+		
+		$this->_renderWrappedTemplate('survey/Question', 'question_view', $aData);
+	}
+	
 
     /**
     * Function responsible to import a question.
@@ -102,10 +201,9 @@ class questions extends Survey_Common_Action
     */
     public function editdefaultvalues($surveyid, $gid, $qid)
     {
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = $iSurveyID = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
-
 
         Yii::app()->loadHelper('surveytranslator');
 
@@ -230,6 +328,15 @@ class questions extends Survey_Common_Action
         'qtproperties' => $qtproperties,
         'baselang' => $baselang,
         );
+
+
+		$aData['sidebar']['state'] = "close";
+		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+		$aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
+		$aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;			
+
+		
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
         $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
 
@@ -426,6 +533,12 @@ class questions extends Survey_Common_Action
         $aData['display']['menu_bars']['qid_action'] = 'editsubquestions';
         $aViewUrls = $this->_editsubquestion($surveyid, $gid, $qid);
 
+        $aData['sidebar']['state'] = "close";
+        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
+        $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;         
+
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -619,6 +732,105 @@ class questions extends Survey_Common_Action
     }
 
     /**
+     * Add a new question
+     * @param $surveyid int the sid
+     * @return html
+     */
+    public function newquestion($surveyid)
+    {
+        Yii::app()->loadHelper('admin/htmleditor');
+        $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
+
+        $aData['sidebar']['state'] = "close";
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestions/surveyid/'.$surveyid;         
+
+        Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
+
+        $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($surveyid)->language;
+        $questlangs[] = $baselang;
+        $questlangs = array_flip($questlangs);
+
+        $qtypelist = getQuestionTypeList('', 'array');
+        $qDescToCode = 'qDescToCode = {';
+        $qCodeToInfo = 'qCodeToInfo = {';
+        foreach ($qtypelist as $qtype => $qdesc)
+        {
+            $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
+            $qCodeToInfo .= " '{$qtype}' : '" . ls_json_encode($qdesc) . "', \n";
+        }
+        $aData['ajaxDatas']['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
+
+        $eqrow['language'] = $baselang;
+        $eqrow['title'] = '';
+        $eqrow['question'] = '';
+        $eqrow['help'] = '';
+        $eqrow['type'] = 'T';
+        $eqrow['lid'] = 0;
+        $eqrow['lid1'] = 0;
+        $eqrow['gid'] = NULL;
+        $eqrow['other'] = 'N';
+        $eqrow['mandatory'] = 'N';
+        $eqrow['preg'] = '';
+        $eqrow['relevance'] = 1;
+        $eqrow['group_name'] = '';                        
+
+        $aData['eqrow'] = $eqrow;
+
+        $sumresult1 = Survey::model()->findByPk($surveyid);
+        if (is_null($sumresult1))
+            $this->getController()->error('Invalid Survey ID');
+
+        $surveyinfo = $sumresult1->attributes;
+        $surveyinfo = array_map('flattenText', $surveyinfo);
+        $aData['activated'] = $activated = $surveyinfo['active'];
+        
+        if ($activated != "Y")
+        {
+            // Prepare selector Class for javascript function
+            if (Yii::app()->session['questionselectormode'] !== 'default') {
+                $selectormodeclass = Yii::app()->session['questionselectormode'];
+            } else {
+                $selectormodeclass = getGlobalSetting('defaultquestionselectormode', 'default');
+            }
+        
+            $aData['accordionDatas']['selectormodeclass'] = $selectormodeclass;
+            $aData['selectormodeclass'] = $selectormodeclass;
+
+            /*
+            foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
+            {
+                if (!isset($groups[$questionType['group']]))
+                {
+                    $groups[$questionType['group']] = array();
+                }
+                $groups[$questionType['group']][$key] = $questionType['description'];
+            }            
+            
+            $aData['accordionDatas']['groups'] = $groups;
+             */
+        }
+        
+        
+        $aData['accordionDatas']['eqrow'] = $eqrow;
+        $aData['ajaxDatas']['sValidateUrl']=$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid));
+        $aData['addlanguages']=Survey::model()->findByPk($surveyid)->additionalLanguages;        
+        $qattributes = array();
+        
+            // Get the questions for this group
+            $aData['oqresult'] = NULL;
+
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'questions.js');
+        
+        $aViewUrls['newQuestion_view'][] = $aData;
+        $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
+        $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);        
+    }
+
+    /**
     * Load edit/new question screen depending on $action.
     *
     * @access public
@@ -631,7 +843,7 @@ class questions extends Survey_Common_Action
     public function index($sa, $surveyid, $gid, $qid=null)
     {
         $action = $sa;
-        $surveyid = sanitize_int($surveyid);
+        $surveyid = $iSurveyID = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         if (isset($qid))
             $qid = sanitize_int($qid);
@@ -642,11 +854,19 @@ class questions extends Survey_Common_Action
         $aData['qid'] = $qid;
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
+
+
+		$aData['sidebar']['state'] = "close";
+		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+		$aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
+		$aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;			
+		
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            $surveyinfo = getSurveyInfo($surveyid);
+            //$surveyinfo = getSurveyInfo($surveyid);
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
 
@@ -820,6 +1040,8 @@ class questions extends Survey_Common_Action
         else
             include('accessDenied.php');
 
+        $aData['ajaxDatas']['sValidateUrl']=$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid));
+        $aData['ajaxDatas']['qTypeOutput'] = $aData['qTypeOutput'];
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 

@@ -1,6 +1,12 @@
+<div class="side-body">                           
+	<h3>
+		<?php eT("Send email reminder"); ?>
+	</h3>        
+                                                  
+	<div class="row">                             
+		<div class="col-lg-12 content-right">
+			
 <?php echo PrepareEditorScript(true, $this); ?>
-<div class='header ui-widget-header'>
-    <?php eT("Send email reminder"); ?></div><br />
 
 <?php if ($thissurvey['active'] != 'Y') { ?>
     <div class='messagebox ui-corner-all'><div class='warningheader'><?php eT('Warning!'); ?></div><?php eT("This survey is not yet activated and so your participants won't be able to fill out the survey."); ?></div>
@@ -88,4 +94,6 @@
         ?>
     </p>
     </form>
+</div>
+</div>
 </div>

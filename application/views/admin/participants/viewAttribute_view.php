@@ -3,7 +3,7 @@
     var attname = "<?php eT("Attribute name:"); ?>";
     removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
-<div class='header ui-widget-header'><strong><?php eT("Attribute settings"); ?></strong></div><br/>
+
 <?php
     $aOptions = array();
     $aOptions[''] = gT('Select...');
@@ -11,30 +11,43 @@
     {
         $aOptions[$langkey2] = $langname['description'];
     }
-    echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>'form44'));
 ?>
-<ul>
-    <li><label for="atttype"><?php eT('Default attribute name:'); ?></label>
+
+<div class="col-lg-12 list-surveys">
+    <h3><?php eT("Attribute settings"); ?></h3>
+
+    <div class="row">
+        <div class="col-lg-12 content-right">
+
+    <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>'form-inline col-md-6  col-md-offset-3')); ?>
+
+    <div class="form-group"><label for="atttype"><?php eT('Default attribute name:'); ?></label>
         <?php echo CHtml::textField('defaultname', $attributes['defaultname'],array('required'=>'required')); ?>
-    </li>
-    <li><label for="atttype"><?php eT('Attribute type:'); ?></label>
+    </div>
+    <div class="form-group "><label for="atttype"><?php eT('Attribute type:'); ?></label>
         <?php 
             echo CHtml::dropDownList('attribute_type', $attributes['attribute_type'], array(
                 'TB' => 'Text box',
                 'DD' => 'Drop-down list',
-                'DP' => 'Date'));
+                'DP' => 'Date'),
+                array('class'=>'form-control')
+                
+                );
         ?>
-    </li>
-    <li><label for='attvisible' id='attvisible'><?php eT('Attribute visible:') ?></label>
+    </div>
+    <div class="form-group"><label for='attvisible' id='attvisible'><?php eT('Attribute visible:') ?></label>
         <?php  echo CHtml::checkbox('visible', ($attributes['visible'] == "TRUE"),array('value'=>'TRUE','uncheckValue'=>'FALSE')); ?>
-    </li>
-</ul>
+    </div>
+    
 
 <div id='ddtable' style='display: none'>
-    <table class='hovertable'>
-        <tr>
-            <th colspan='2'><?php eT('Values:'); ?></th>
-        </tr>
+    <br/><br/>
+    <table class='hovertable table table-striped'>
+        <thead>
+            <tr>
+                <th colspan='2'><?php eT('Values:'); ?></th>
+            </tr>
+        </thead>            
         <?php
             foreach ($attributevalues as $row => $value)
             {
@@ -106,7 +119,7 @@
                         'hspace' => 2,
                         'vspace' => -6);
 
-                    echo CHtml::dropDownList('langdata', '', $aOptions);
+                    echo CHtml::dropDownList('langdata', '', $aOptions, array('class'=>'form-control'));
                 ?>
             </td>
             <td class='actions'>
@@ -117,59 +130,59 @@
         </tr>
     </table>
 </div>
-<div id='tabs'>
-    <ul>
-        <?php
-            foreach ($attributenames as $key => $value)
-            {
-            ?>
-            <li>
-                <a href="#<?php echo $value['lang']; ?>">
+
+
+<ul class="nav nav-tabs" id="">
+        <?php foreach ($attributenames as $key => $value): ?>
+            <li role="presentation" <?php if($key==0){ echo 'class="active"'; }?>>
+                <a data-toggle="tab" href='#<?php echo $value['lang']; ?>'>
                     <?php echo $aOptions[$value['lang']] ?>
                 </a>
+                <script type='text/javascript'>
+                    removeitem.push('<?php echo $value['lang'] ?>');
+                </script>            
             </li>
-            <script type='text/javascript'>
-                removeitem.push('<?php echo $value['lang'] ?>');
-            </script>
-            <?php
-            }
-        ?>
-    </ul>
-    <?php
-        foreach ($attributenames as $key => $value)
-        {
-        ?>
-        <div class='commonsettings'>
-            <div id="<?php echo $value['lang'] ?>">
-                <table width='400' class='nudgeleft'>
-                    <tr>
-                        <th>
-                            <label for='attname' id='attname'>
-                                <?php eT('Attribute name:'); ?>
-                            </label>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td class='data'>
-                            <?php echo CHtml::textField($value['lang'], $value['attribute_name'], array('class'=>'languagesetting', 'style'=>'border: 1px solid #ccc')); ?>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+        <?php endforeach;?>
+</ul>
 
-        <?php
-        }
-        echo CHtml::hiddenField('attname', $value['attribute_name']);
-    ?>
-    <br />
+
+
+<div class="tab-content">
+        <?php foreach ($attributenames as $key => $value): ?>
+                <div id="<?php echo $value['lang'] ?>" class="tab-pane fade in <?php if($key==0){ echo 'active'; }?>">
+                    <table width='400' class='nudgeleft'>
+                        <tr>
+                            <th>
+                                <label for='attname' id='attname'>
+                                    <?php eT('Attribute name:'); ?>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class='data'>
+                                <?php echo CHtml::textField($value['lang'], $value['attribute_name'], array('class'=>'languagesetting', 'style'=>'border: 1px solid #ccc')); ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            <?php echo CHtml::hiddenField('attname', $value['attribute_name']); ?>
+        <?php endforeach;?>
 </div>
 
-<br/>
+
+
 <p>
     <?php
         echo CHtml::submitButton('submit', array('value' => gT('Save')));
         echo CHtml::endForm();
     ?>
 </p>
+
+
+
+        </div>
+    </div>
+</div>
+            
+
 

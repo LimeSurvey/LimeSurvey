@@ -1,3 +1,8 @@
+<div class="side-body">                           
+	<h3><?php eT("Import tokens from CSV file"); ?></h3>        
+                                                  
+	<div class="row">                             
+		<div class="col-lg-12 content-right">     
 <?php echo CHtml::form(array("admin/tokens/sa/import/surveyid/{$iSurveyId}"), 'post', array('id'=>'tokenimport', 'name'=>'tokenimport', 'enctype'=>'multipart/form-data')); ?>
 
     <ul>
@@ -45,3 +50,7 @@
     <span style="font-weight:bold;"><?php eT("Mandatory fields:"); ?></span> firstname, lastname, email<br />
     <span style="font-weight:bold;"><?php eT('Optional fields:'); ?></span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, usesleft, ... .
 </div>
+		</div>
+	</div>
+</div>	
+

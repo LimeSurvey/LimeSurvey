@@ -20,7 +20,7 @@
 
 /* Default event to trigger on answer part 
  * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations 
- * Actually only for list with comment and select in ranking
+ * Actually only for list with comment
  **/
 $(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not([onkeyup])",function(event){
     // 'keyup' can be replaced by event.type (but not really needed)
@@ -33,11 +33,6 @@ $(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not(
     {
         checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
     }
-});
-$(document).on("change",".select-item select:not([onchange])",function(event){
-    //$('#java'+$(this).attr("name")).val($(this).val()); Not needed for ranking, needed for ? select already have val() and are unique by name
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
-        ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
 });
 
 function LEMcount()
@@ -401,15 +396,10 @@ function LEMstr_replace (search, replace, subject) {
 
 
 
-function LEMstrpos(haystack,needle,offset)
+function LEMstrpos(haystack,needle)
 {
-    var haystack = haystack + '';
-    var needle = needle + '';
-    var index = 0;
-    if ((index = haystack.indexOf(needle, offset)) !== -1) {
-        return index;
-    }
-    return false;
+    var str = new String(haystack);
+    return str.search(needle);
 }
 
 function LEMempty(v)

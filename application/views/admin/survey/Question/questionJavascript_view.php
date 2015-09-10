@@ -10,6 +10,7 @@
 
         function OtherSelection(QuestionType)
         {
+            console.log(QuestionType);
         if (QuestionType == '') { QuestionType=document.getElementById('question_type').value;}
         if (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')
         {
@@ -74,5 +75,7 @@
             document.getElementById('MandatorySelection').style.display='';
         }
         }
+        
+        
         OtherSelection('<?php echo $type; ?>');
 </script>

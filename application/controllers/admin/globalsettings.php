@@ -102,6 +102,12 @@ class GlobalSettings extends Survey_Common_Action
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
+        // Boxes
+        $data['boxes'] = Boxes::model()->findAll();
+        
+        $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
+        $data['fullpagebar']['closebutton']['url'] = 'admin/';               
+
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
 
@@ -224,10 +230,21 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('timeadjust', $savetime);
         setGlobalSetting('usercontrolSameGroupPolicy', strip_tags($_POST['usercontrolSameGroupPolicy']));
 
-        Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
 
-        $url = htmlspecialchars_decode(Yii::app()->session['refurl']);
-        if($url){Yii::app()->getController()->redirect($url);}
+        // Boxes
+        for ($i=1; $i < 7; $i++) 
+        {
+            $box = Boxes::model()->find(array('condition'=>'position=:positionId', 'params'=>array(':positionId'=>$i)));
+            $box->url = sanitize_html_string($_POST['box-url-'.$i]);
+            $box->title = sanitize_html_string($_POST['box-title-'.$i]);
+            $box->img = sanitize_html_string($_POST['box-img-'.$i]);
+            $box->desc = sanitize_html_string($_POST['box-desc-'.$i]);
+            $box->save();    
+        }
+        
+
+        Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
+        Yii::app()->getController()->redirect('globalsettings');
     }
 
     private function _checkSettings()
