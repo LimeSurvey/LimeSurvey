@@ -107,7 +107,7 @@
             }
 
             // create fields for the custom token attributes associated with this survey
-            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->tokenAttributes;
+            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
                 if (!isset($fields[$attrname])) {
