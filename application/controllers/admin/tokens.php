@@ -2488,7 +2488,7 @@ class tokens extends Survey_Common_Action
         }
         // The user have rigth to create token, then don't test right after
         Yii::import('application.helpers.admin.token_helper', true);
-        if (Yii::app()->request->getQuery('createtable') == "Y")
+        if (Yii::app()->request->getPost('createtable') == "Y") // Update table, must be CRSF controlled
         {
             Token::createTable($iSurveyId);
             LimeExpressionManager::SetDirtyFlag();  // LimeExpressionManager needs to know about the new token table

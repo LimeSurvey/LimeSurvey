@@ -49,7 +49,7 @@
                 'validfrom' => gT('Valid from'),
                 'validuntil' => gT('Valid until'),
             );
-			foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
+            foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
             {
                 $labels[$key] = $info['description'];
             }
@@ -104,7 +104,7 @@
             }
 
             // create fields for the custom token attributes associated with this survey
-            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->tokenAttributes;
+            $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
                 if (!isset($fields[$attrname])) {
