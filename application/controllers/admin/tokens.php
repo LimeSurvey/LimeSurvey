@@ -2124,7 +2124,7 @@ class tokens extends Survey_Common_Action
                                 if (isset($aWriteArray[$field]))
                                 {
                                     $oCriteria->addCondition("{$field} = :{$field}");
-                                    $aParams[":{$field}"]=$writearray[$field];
+                                    $aParams[":{$field}"]=$aWriteArray[$field];
                                 }
                             }
                             if(!empty($aParams))
@@ -2133,7 +2133,7 @@ class tokens extends Survey_Common_Action
                             if ($dupresult > 0)
                             {
                                 $bDuplicateFound = true;
-                                $aDuplicateList[] = sprintf(gt("Line %s : %s %s (%s)"),$recordcount,$writearray['firstname'],$writearray['lastname'],$writearray['email']);
+                                $aDuplicateList[] = sprintf(gt("Line %s : %s %s (%s)"),$iRecordCount,$aWriteArray['firstname'],$aWriteArray['lastname'],$aWriteArray['email']);
                             }
                         }
 
