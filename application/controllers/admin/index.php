@@ -40,7 +40,7 @@ class Index extends Survey_Common_Action
             unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
         }
         elseif (count(getSurveyList(true)) == 0)
-        {
+		{
             if(!is_null($event->get('viewName')))
             {
                 $this->_renderWrappedTemplate($event->get('viewUrl'), $event->get('viewName'));
@@ -49,7 +49,7 @@ class Index extends Survey_Common_Action
                 $this->_renderWrappedTemplate('super', 'firststeps');
 
             }
-        }
+		}
         else
         {
             $this->getController()->redirect(array('admin/survey/sa/index'));
