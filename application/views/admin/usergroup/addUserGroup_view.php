@@ -1,19 +1,72 @@
-<div class='header ui-widget-header'><?php eT("Add user group"); ?></div>
-<br />
-<?php echo CHtml::form(array("admin/usergroups/sa/add"), 'post', array('class'=>'form30', 'id'=>'usergroupform')); ?>
-    <ul>
-        <li>
-            <label for='group_name'><?php eT("Name:"); ?></label>
-            <input type='text' size='50' maxlength='20' id='group_name' name='group_name' required="required" autofocus="autofocus" />
-            <font color='red' face='verdana' size='1'> <?php eT("Required"); ?></font>
-        </li>
-        <li>
-            <label for='group_description'><?php eT("Description:"); ?></label>
-            <textarea cols='50' rows='4' id='group_description' name='group_description'></textarea>
-        </li>
-    </ul>
-    <p>
-        <input type='submit' value='<?php eT("Add group"); ?>' />
-        <input type='hidden' name='action' value='usergroupindb' />
-    </p>
-</form>
+<?php
+/**
+ * This view uses the settings widget
+ *
+ * TODO do we need the required postfix <font color='red' face='verdana' size='1'> <?php eT("Required"); ?></font> ??
+ * TODO Are there new solutions?? What about CHtml::errorSummary($model); in SettingsWidget for error display?
+ */
+
+
+/**
+ * Form settings
+ */
+
+$aSettings = [
+    'group_name' => [
+        'type' => 'string',
+        'label' => gT('Name'),
+        'htmlOptions' => [
+            'size' => 50,
+            'maxlength' => 20,
+            'id' => 'group_name',
+            'name' => 'group_name',
+            'required' => 'required',
+            'autofocus' => 'autofocus',
+        ]
+    ],
+
+    'group_description' => [
+        'type' => 'text',
+        'label' => gT('Description'),
+        'htmlOptions' => [
+            'cols' => 50,
+            'rows' => 4,
+            'id' => 'group_description',
+            'name' => 'group_description',
+        ],
+    ],
+];
+
+
+/**
+ * Form submit button
+ */
+
+$aButtons = [
+    gT('Add group') => [
+        'type' => 'submit',
+        'htmlOptions' => [
+            'name' => 'action',
+            'value' => 'usergroupindb',
+        ],
+    ],
+];
+
+/**
+ * Call the settings widget
+ */
+
+$this->widget('ext.SettingsWidget.SettingsWidget', array(
+    'title' => gT("Add user group"),
+    'form' => true,
+    'action' => '/index.php/admin/usergroups/sa/add',
+    'formHtmlOptions' => array(
+        'id' => 'usergroupform',
+        'class' => 'form30',
+    ),
+    'settings' => $aSettings,
+    'buttons' => $aButtons,
+));
+
+
+?>
