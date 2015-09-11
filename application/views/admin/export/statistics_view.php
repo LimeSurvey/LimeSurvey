@@ -158,12 +158,12 @@ App()->getClientScript()->registerScriptFile(Yii::app()->baseUrl.'/third_party/c
                             </label>
                                 <select name="charttype" id='charttype' class="form-control">
                                     <option value="default" selected="selected"><?php eT('as defined in questions\'s advanced setting');?></option>
-                                    <option value="bar" ><?php eT('bar chart');?></option>
-                                    <option value="radar"><?php eT('radar chart');?></option>
-                                    <option value="line"><?php eT('line chart');?></option>
-                                    <option value="polar"><?php eT('polar chart');?></option>
-                                    <option value="pie"><?php eT('pie chart');?></option>
-                                    <option value="doughnut"><?php eT('doughnut chart');?></option>
+                                    <option value="0" ><?php eT('bar chart');?></option>
+                                    <option value="1"><?php eT('pie chart');?></option>
+                                    <option value="2"><?php eT('radar chart');?></option>
+                                    <option value="3"><?php eT('line chart');?></option>
+                                    <option value="4"><?php eT('polar chart');?></option>
+                                    <option value="5"><?php eT('doughnut chart');?></option>
                                 </select>
                         </div>
                     </li>

@@ -2728,7 +2728,6 @@ class statistics_helper {
                 
                 $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 
-                
                 if($cachefilename) // Add the image only if constructed
                 {
                     //introduce new counter
@@ -2754,75 +2753,73 @@ class statistics_helper {
                             break;
                         case 'html':
                             
-                            // This QD code generate the chart.js. 
-                            // for more details, read : http://goo.gl/ylbikt
+                            //// This QD code generate the chart.js.
+                            //// It's mixing PHP, JS and painfull from hell.   
+                            //// for more details, read : http://goo.gl/ylbikt
 
-                            // $bShowPieChart = ($bAllowPieChart && (isset($aattr["statistics_graphtype"]) && $aattr["statistics_graphtype"] == "1"));
-    
+                            //// TODO : this is a rest of the first cycle of dev
+                            //// Should be possible to use only one canvas now...
                             $pie_visibility = $radar_visibility = $line_visibility = $polar__visibility = $doughnut_visibility = $bar_visibility = 'hidden' ;                        
-                            if(!$bAllowPieChart)
+                            if(isset($aattr["statistics_graphtype"]))
                             {
-                                $charttype = 'bar';
-                                $bar_visibility = ' active ';
-                            }
-                            else 
-                            {
-                                    if(isset($aattr["statistics_graphtype"]))
-                                    {
-                                        
-                                        switch ($aattr["statistics_graphtype"]) {
-                                            case '1':
-                                                    $charttype = "pie";
-                                                    $pie_visibility = ' active ';
-                                                break;
-                                            
-                                            case '2':
-                                                $charttype = "radar";
-                                                $radar_visibility = ' active ';
-                                                break;
-                                            
-                                            case '3':
-                                            	$charttype = "line";
-                                                $line_visibility = ' active ';
-                                            	break;    
-
-                                            case '4':
-                                                $charttype = "polar";
-                                                $polar__visibility = ' active ';
-                                                break;    
-
-                                            case '5':
-                                                $charttype = "doughnut";
-                                                $doughnut_visibility = ' active ';
-                                                break;    
-                                                                                            
-                                            default:
-                                                $charttype = "bar";
-                                                $bar_visibility = ' active ';
-                                                break;
-                                        }    
-                                    }
-                            }
-
-
-                          //  $pie_visibility = $radar_visibility = $line_visibility = $polar__visibility = $doughnut_visibility = $bar_visibility = '' ;
-
-                            // If user forced the chartype from statistics_view
-                            if ($_POST['charttype'] != 'default' && $outputs['qtype'] != "M" && $outputs['qtype'] != "P")
-                            {
-                                $charttype = $_POST['charttype'];    
+                                $req_chart_type = $aattr["statistics_graphtype"];
                             }
                             
+                            //// If user forced the chartype from statistics_view
+                            if ($_POST['charttype'] != 'default' )
+                            {
+                                $req_chart_type = $_POST['charttype'];    
+                            }
+                            
+                            //// The value of the select box in the question advanced setting is numerical. So we need to translate it. 
+                            if(isset($req_chart_type))
+                            {
+                                
+                                switch ($req_chart_type) {
+                                    case '1':
+                                            $charttype = "Pie";
+                                            $pie_visibility = ' active ';
+                                        break;
+                                    
+                                    case '2':
+                                        $charttype = "Radar";
+                                        $radar_visibility = ' active ';
+                                        break;
+                                    
+                                    case '3':
+                                    	$charttype = "Line";
+                                        $line_visibility = ' active ';
+                                    	break;    
+                            
+                                    case '4':
+                                        $charttype = "PolarArea";
+                                        $polar__visibility = ' active ';
+                                        break;    
+                            
+                                    case '5':
+                                        $charttype = "Doughnut";
+                                        $doughnut_visibility = ' active ';
+                                        break;    
+                                                                                    
+                                    default:
+                                        $charttype = "Bar";
+                                        $bar_visibility = ' active ';
+                                        break;
+                                }    
+                            }
+
+                            //// Here the 72 colors of the original limesurvey palette. 
+                            //// This could be change by some user palette coming from database.  
                             $COLORS_FOR_SURVEY = array('20,130,200','232,95,51','34,205,33','210,211,28','134,179,129','201,171,131','251,231,221','23,169,161','167,187,213','211,151,213','147,145,246','147,39,90','250,250,201','201,250,250','94,0,94','250,125,127','0,96,201','201,202,250','0,0,127','250,0,250','250,250,0','0,250,250','127,0,127','127,0,0','0,125,127','0,0,250','0,202,250','201,250,250','201,250,201','250,250,151','151,202,250','251,149,201','201,149,250','250,202,151','45,96,250','45,202,201','151,202,0','250,202,0','250,149,0','250,96,0','184,230,115','102,128,64','220,230,207','134,191,48','184,92,161','128,64,112','230,207,224','191,48,155','230,138,115','128,77,64','230,211,207','191,77,48','80,161,126','64,128,100','207,230,220','48,191,130','25,25,179','18,18,125','200,200,255','145,145,255','255,178,0','179,125,0','255,236,191','255,217,128','255,255,0','179,179,0','255,255,191','255,255,128','102,0,153','71,0,107','234,191,255','213,128,255'); 
 
-                            // We get the label names
+                            //// $lbl is generated somewhere upthere by the original code. We translate it for chartjs. 
                              $labels = array();
                              foreach($lbl as $name => $lb)
                                    $labels[] = $name;
 
-                            $statisticsoutput .= '<br>qid = '.$qqid.'<br/>$aattr["statistics_graphtype"] : '.$aattr["statistics_graphtype"].'<br/>';
+                            //// As said before, one canva should be enough now. Just need to modify the init_chart functions, and to remove the visibility logic.  
                             $statisticsoutput .= '<div class="col-sm-12">
-                                                    <div class="col-sm-10 vcenter">
+                                                    <div class="col-sm-10 vcenter" id="chartjs-container-'.$qqid.'">
                                                         <canvas class="canvas-chart '.$bar_visibility.'" id="chartjs-Bar-'.$qqid.'" width="400" height="150"></canvas>
                                                         <canvas class="canvas-chart '.$pie_visibility.'" id="chartjs-Pie-'.$qqid.'" width="400" height="150"></canvas>
                                                         <canvas class="canvas-chart '.$radar_visibility.'" id="chartjs-Radar-'.$qqid.'" width="400" height="150"></canvas>
@@ -2832,14 +2829,13 @@ class statistics_helper {
                                                     </div>';
                             $statisticsoutput .= $this->get_chartjs_legend($labels, $COLORS_FOR_SURVEY);
                             
-                            //TODO : Load on click, animate on scroll
-                            $statisticsoutput .= $this->init_chart_js_graph_with_datasets('Bar',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);                        
-                            $statisticsoutput .= $this->init_chart_js_graph_with_datasets('Radar',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);        
-                            $statisticsoutput .= $this->init_chart_js_graph_with_datasets('Line',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);
-                            $statisticsoutput .= $this->init_chart_js_graph_with_datas('PolarArea',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);
-                            $statisticsoutput .= $this->init_chart_js_graph_with_datas('Pie',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);
-                            $statisticsoutput .= $this->init_chart_js_graph_with_datas('Doughnut',$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY);                                                        
+                            ////TODO : animate on scroll
+                            //// Here, we directly insert a <script> generating the chart for $qqid. Of course, this chart is generated on page load. 
+                            //// So, it could be hard for navigator if hundreds of charts are loaded... A lazy load, with nice animation on scroll will be needed
+                            //// See : http://stackoverflow.com/questions/18772547/how-to-make-the-chart-js-animate-when-scrolled-to-that-section
+                            $statisticsoutput .=  $this->init_chart_js_graph($charttype,$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY, false);
                             
+                            //// This is from the old code. Don't know if still used. 
                             $aattr = getQuestionAttributeValues($qqid, $firstletter);
                             if ($bShowMap) {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
@@ -2866,9 +2862,78 @@ class statistics_helper {
             if ($usegraph==1 && get_class(Yii::app()->getController()) !== 'Statistics_userController') {
                 $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
-               $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">";
-               ///////////////////////////////////////////////////////////////
-               $statisticsoutput .= "";
+               $statisticsoutput .= "</td></tr><tr><td colspan='4'>";
+
+               //// The buttons to switch the graph type                
+               $statisticsoutput .= '<div class="chartjs-buttons" style=\"text-align:center\">'; 
+
+               //// Bar chart
+               $statisticsoutput .= '    <button type="button" id="button-chartjs-Bar-'.$qqid.'" class="btn btn-default chart-type-control" data-canva-id="chartjs-Bar-'.$qqid.'" aria-label="Left Align">
+                                            <i class="fa fa-bar-chart"></i>
+                                            '.gT('Bar chart').'
+                                         </button>';
+               //// Pie chart                           
+               $statisticsoutput .= '    <button type="button" id="button-chartjs-Pie-'.$qqid.'" class="btn btn-default chart-type-control" data-canva-id="chartjs-Pie-'.$qqid.'" aria-label="Left Align">
+                                            <i class="fa fa-pie-chart"></i>
+                                            '.gT('Pie chart').'
+                                         </button>';                                         
+
+
+               //// Radar chart                                              
+               $statisticsoutput .= '    <button type="button" id="button-chartjs-Radar-'.$qqid.'" class="btn btn-default chart-type-control" data-canva-id="chartjs-Radar-'.$qqid.'" aria-label="Left Align">
+                                            <i class="fa fa-crosshairs"></i>
+                                            '.gT('Radar chart').'
+                                         </button>'; 
+
+
+               //// Line chart  
+               $statisticsoutput .= '    <button type="button" id="button-chartjs-Line-'.$qqid.'" class="btn btn-default chart-type-control" data-canva-id="chartjs-Line-'.$qqid.'" aria-label="Left Align">
+                                            <i class="fa fa-line-chart"></i>
+                                            '.gT('Line chart').'
+                                         </button>';
+
+               //// Polar chart
+               $statisticsoutput .= '    <button type="button" id="button-chartjs-PolarArea-'.$qqid.'" class="btn btn-default chart-type-control" data-canva-id="chartjs-PolarArea-'.$qqid.'" aria-label="Left Align">
+                                            <i class="fa fa-sun-o"></i>
+                                            '.gT('Polar chart').'
+                                         </button>';
+
+    
+               //// Doughnut chart
+               $statisticsoutput .= '    <button type="button" id="button-chartjs-Doughnut-'.$qqid.'" class="btn btn-default chart-type-control" data-canva-id="chartjs-Doughnut-'.$qqid.'" aria-label="Left Align">
+                                            <i class="fa fa fa-circle-o"></i>
+                                            '.gT('Doughnut chart').'
+                                         </button>';                                         
+
+               //// Here, we directly insert the script to handle each button. 
+               //// Sure, we could have use statistic.js, to get the click on chart-type-control, etc etc : but we did it the fast way
+               //// TODO : refactore that on a jQuery plugin, more general.           
+               $statisticsoutput .= '<script>/*<![CDATA[*/';   
+               $statisticsoutput .= '$(document).ready(function(){';
+               
+               //// each button will have its own 'onclick' event, wich generate a new chartjs object
+               //// the hidden and active class togle should be replaced by a single canva being cleared.  
+               foreach( array('Bar', 'Radar', 'Line', 'Doughnut', 'PolarArea', 'Pie' ) as $ctype)
+               {
+                   $statisticsoutput .= ' $("#button-chartjs-'.$ctype.'-'.$qqid.'").click(function(){
+                           $("#chartjs-container-'.$qqid.' .active").addClass("hidden").removeClass("active");
+                           $("#chartjs-'.$ctype.'-'.$qqid.'").removeClass("hidden");
+                           $("#chartjs-'.$ctype.'-'.$qqid.'").addClass("active");
+                           $("#chartjs-'.$ctype.'-'.$qqid.'").width("100%");
+                           $("#chartjs-'.$ctype.'-'.$qqid.'").height("441px");';
+                           //// We call the PHP function wich will build the javascript wich will build the js object.
+                           //// for details, see : http://goo.gl/JtnOsZ   
+                           $statisticsoutput .=  $this->init_chart_js_graph($ctype,$labels,$qqid,$grawdata,$COLORS_FOR_SURVEY, true);
+                   $statisticsoutput .= '});';
+               }
+
+                   
+               $statisticsoutput .= '})';
+               $statisticsoutput .= ' /*]]>*/ </script></div>';
+                                                                  
+               $statisticsoutput .=  "<div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">";
+
+                                        
                $statisticsoutput .= "</div></td></tr>"; 
 /*
                 $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
@@ -2910,19 +2975,53 @@ class statistics_helper {
         $statisticsoutput .= '</div>';
         return $statisticsoutput;
      }
+
+     /**
+      * This function will call init_chart_js_graph_with_datasets or init_chart_js_graph_with_datas depending of the graph type
+      * @param $type string       the type of the graph (Pie, Bar, Radar, Line, PolarArea, Donut)
+      * @param $labels array      the labels of the graph
+      * @param $qqid int          the question id
+      * @param $grawdata array    the values to build the graph
+      * @param $colors array      the palette of color
+      * @param $noscript boolean  if the function should render the <script> tags containers
+      * 
+      * @return html the script generating the chartjs object      
+      */
+     private function init_chart_js_graph($type,$labels,$qqid,$grawdata, $colors=null, $noscript=false)
+     {
+         if($type == 'Bar' || $type == 'Radar' || $type == 'Line' )
+         {
+             $statisticsoutput = $this->init_chart_js_graph_with_datasets($type,$labels,$qqid,$grawdata,$colors, $noscript);
+         }
+         else 
+         {
+            $statisticsoutput = $this->init_chart_js_graph_with_datas($type, $labels, $qqid, $grawdata, $colors, $noscript); 
+         }
+         
+         return $statisticsoutput;
+     }
      
-     private function init_chart_js_graph_with_datasets($type,$labels,$qqid,$grawdata, $colors=null)
+     /**
+      * see init_chart_js_graph
+      */
+     private function init_chart_js_graph_with_datasets($type,$labels,$qqid,$grawdata, $colors=null, $noscript=false)
      {
 
         $COLORS_FOR_SURVEY = $colors;
-        $statisticsoutput = '<script>/*<![CDATA[*/';         
-        $statisticsoutput .= '       
+        if(!$noscript)
+            $statisticsoutput = '<script>/*<![CDATA[*/';
+
+        //// This is the classical way to build a charjs object. See http://www.chartjs.org/docs/                 
+        $statisticsoutput .= '    
                              var ctx = document.getElementById("chartjs-'.$type.'-'.$qqid.'").getContext("2d");
-                             var chartjs'.$qqid.' = new Chart(ctx).'.$type.'({
+                             window.chartjs'.$type.$qqid.' = new Chart(ctx).'.$type.'({
                                  labels: '.json_encode($labels).',
                                  datasets: [{
                                      label: "'.$qqid.'",
                                      data: '.json_encode($grawdata).',';
+
+        //// Radar and line use a single color. We choose it randomly
+        //// TODO : give some control to user. Maybe from question advanced attribute ?                                      
         if($colors && $type!='Bar' )
         {
             $colorId = rand ( 0, 72 ); 
@@ -2938,28 +3037,39 @@ class statistics_helper {
         $statisticsoutput .= '}],
                              });';
 
+        //// By default, chartjs colorize differently only the different bars of a same label.
+        //// This code colorize each bar in a different color. Yes, over 72, it will make problem
+        //// TODO : over 72 
         if($type=='Bar')
         {
             foreach($labels as $i => $name )
             {
-                $statisticsoutput .= 'chartjs'.$qqid.'.datasets[0].bars['.$i.'].fillColor = "rgba('.$COLORS_FOR_SURVEY[$i].',0.6)";'; // or : "rgb(20,130,200)" 
-                $statisticsoutput .= 'chartjs'.$qqid.'.datasets[0].bars['.$i.'].highlightFill = "rgba('.$COLORS_FOR_SURVEY[$i].',0.9)";'; // or : "rgb(20,130,200)"
+                $statisticsoutput .= 'chartjs'.$type.$qqid.'.datasets[0].bars['.$i.'].fillColor = "rgba('.$COLORS_FOR_SURVEY[$i].',0.6)";'; // or : "rgb(20,130,200)" 
+                $statisticsoutput .= 'chartjs'.$type.$qqid.'.datasets[0].bars['.$i.'].highlightFill = "rgba('.$COLORS_FOR_SURVEY[$i].',0.9)";'; // or : "rgb(20,130,200)"
             }                                                        
-            $statisticsoutput .= 'chartjs'.$qqid.'.update();';
+            $statisticsoutput .= 'chartjs'.$type.$qqid.'.update();';
         }
-        $statisticsoutput .= ' /*]]>*/ </script></div>';
+
+        if(!$noscript)
+            $statisticsoutput .= ' /*]]>*/ </script></div>';
+        
         return $statisticsoutput;
      }
 
 
-
-    private function init_chart_js_graph_with_datas($type,$labels,$qqid,$grawdata, $COLORS_FOR_SURVEY)
+    /**
+     * see init_chart_js_graph
+     */
+    private function init_chart_js_graph_with_datas($type,$labels,$qqid,$grawdata, $COLORS_FOR_SURVEY, $noscript=false)
     {
 
-        $statisticsoutput = '<script>/*<![CDATA[*/';
+        if(!$noscript)
+            $statisticsoutput = '<script>/*<![CDATA[*/';
+        
+        //// This is the classical way to build a charjs object. See http://www.chartjs.org/docs/
         $statisticsoutput .= '
                               var ctx = document.getElementById("chartjs-'.$type.'-'.$qqid.'").getContext("2d");
-                              var chartjs'.$qqid.' = new Chart(ctx).'.$type.'(
+                              window.chartjs'.$type.$qqid.' = new Chart(ctx).'.$type.'(
                                         ['; 
                                             foreach($labels as $i => $label)
                                             {
@@ -2977,7 +3087,9 @@ class statistics_helper {
         $statisticsoutput .=           ']
                                     );';
         
-        $statisticsoutput .= ' /*]]>*/ </script></div>';
+        if(!$noscript)
+            $statisticsoutput .= ' /*]]>*/ </script></div>';
+        
         return $statisticsoutput;
     }
 
