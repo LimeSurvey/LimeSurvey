@@ -35,7 +35,7 @@ class Index extends Survey_Common_Action
                     'message' => Yii::app()->session['loginsummary']
 
                 ));
-                $this->_renderWrappedTemplate('super', $aViewUrls);
+                $this->_renderWrappedTemplate('/admin/super', $aViewUrls);
             }
             unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
         }
@@ -46,7 +46,7 @@ class Index extends Survey_Common_Action
                 $this->_renderWrappedTemplate($event->get('viewUrl'), $event->get('viewName'));
 
             }else{
-                $this->_renderWrappedTemplate('super', 'firststeps');
+                $this->_renderWrappedTemplate('/admin/super', 'firststeps');
 
             }
 		}

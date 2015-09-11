@@ -224,7 +224,7 @@ class Survey_Common_Action extends CAction
 
         $aData = $this->_addPseudoParams($aData);
         $aViewUrls = (array) $aViewUrls;
-        $sViewPath = '/admin/';
+        $sViewPath = '';
 
         if (!empty($sAction))
         {
