@@ -59,7 +59,39 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.06+ (build 150825) to 2.06+ (build 150825) Aug 31, 2015
+Changes from 2.06+ (build 150831) to 2.06+ (build 150911) Sept 11, 2015
+-Fixed issue #9848: Missinterpretation of tips with survey without welcome page (Denis Chenu)
+-Fixed issue #9859: Broken javascript with thousands_separator (Denis Chenu)
+-Fixed issue #9862: Invitations substitute wrong token into barebone URL (Denis Chenu)
+-Fixed issue #9863: plain text email setting doesn't properly affect admin notification email (Denis Chenu)
+-Fixed issue #9870: RemoteControl export_responses fails with <script> tag in question and "full" question header export (Carsten Schmitz)
+-Fixed issue #9872: PostgreSQL database integity check fails (Carsten Schmitz)
+-Fixed issue #9875: token CSV import : the control for duplicate emails no longer works (Denis Chenu)
+-Fixed issue #9877: Possible issue with activation of token with malformed attributedescriptions (Denis Chenu)
+-Fixed issue: date and time picker are not translated (Denis Chenu)
+-Fixed issue: New sub question button for relevance is inactive (Denis Chenu)
+-Fixed issue: [security] Control CRSF when create token table (Denis Chenu)
+#Updated translation: Bulgarian by YanaTsoneva
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Taiwan) (Traditional) by Alwaystar
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: Italian by lfanfoni, ritapas, arioli
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Korean by spn
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elisa
+#Updated translation: Polish (Informal) by elisa
+#Updated translation: Portuguese (Brazil) by samirfor, rubensqueiroz, hugomusetti, paulohpmoraes, mauriciofurtado
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Spanish (Argentina) (Informal) by feippe
+#Updated translation: Spanish (Spain) by aesteban, cbrito
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.06+ (build 150825) to 2.06+ (build 150831) Aug 31, 2015
 -Fixed issue #9836: Multiple choice with comments Label misalignment in multiple templates (tpartner)
 -Fixed issue #9840: XSS possible where token variables are used (Carsten Schmitz)
 -Fixed issue #9842: Error in R export plugin - Quotation marks in answer options are not escaped (Carsten Schmitz)
