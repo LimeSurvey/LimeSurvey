@@ -8,6 +8,9 @@ class EventTest extends PluginBase
 
     public function __construct(PluginManager $manager, $id)
     {
+
+        Yii::setPathOfAlias('EventTest', dirname(__FILE__));
+
         parent::__construct($manager, $id);
 
 
@@ -24,12 +27,7 @@ class EventTest extends PluginBase
     public function modifyStartpage()
     {
 
-        Yii::setPathOfAlias('EventTest', dirname(__FILE__));
-
-        $test = Yii::getPathOfAlias('EventTest');
-
-        var_dump($test);
-        $sViewPath = '/../../plugins/xolair/assets/views';
+        $sViewPath = '/../../plugins/EventTest/assets/views';
         $sViewName = 'myView';
 
         $event = $this->getEvent();
