@@ -107,6 +107,9 @@ return array(
         'baseUrl' => 'third_party/jquery-blockui',
         'js' => array(
             'jquery.blockUI.js'
+        ),
+        'depends' => array(
+            'jquery'
         )
     ),
     'qTip2' => array(
