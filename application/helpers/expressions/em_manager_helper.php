@@ -1882,11 +1882,11 @@
 
                             // Unset all checkboxes and hidden values for this question (irregardless of whether they are array filtered)
                             $eosaJS = "if (" . $relevanceJS . ") {\n";
-                            $eosaJS .="  $('#question" . $questionNum . " [type=checkbox]').attr('checked',false);\n";
+                            $eosaJS .="  $('#question" . $questionNum . " [type=checkbox]').prop('checked',false);\n";
                             $eosaJS .="  $('#java" . $qinfo['sgqa'] . "other').val('');\n";
                             $eosaJS .="  $('#answer" . $qinfo['sgqa'] . "other').val('');\n";
                             $eosaJS .="  $('[id^=java" . $qinfo['sgqa'] . "]').val('');\n";
-                            $eosaJS .="  $('#answer" . $eoVarName . "').attr('checked',true);\n";
+                            $eosaJS .="  $('#answer" . $eoVarName . "').prop('checked',true);\n";
                             $eosaJS .="  $('#java" . $eoVarName . "').val('Y');\n";
                             $eosaJS .="  LEMrel" . $questionNum . "();\n";
                             $eosaJS .="  relChange" . $questionNum ."=true;\n";
