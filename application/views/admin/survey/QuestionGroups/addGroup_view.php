@@ -1,7 +1,7 @@
 <script type='text/javascript'>
     var sEnterTitle = '<?php eT('Error: You have to enter a group title for each language.','js'); ?>';
 </script>
-<?php echo PrepareEditorScript(false, $this);?>
+<?php echo PrepareEditorScript(false, $this); $active = 1;?>
 
 
 <div class="side-body" id="edit-survey-text-element">
@@ -10,27 +10,27 @@
 	<div class="row">
 		<div class="col-lg-12 content-right">
 
-
-<div id='tabs'><ul>
-        <?php foreach ($grplangs as $grouplang)
-            { ?>
-            <li><a href="#<?php echo $grouplang; ?>"><?php echo getLanguageNameFromCode($grouplang,false);
+    
+    <ul class="nav nav-tabs" >
+        <?php foreach ($grplangs as $grouplang): ?>
+            <li role="presentation" class="<?php if($active){ echo 'active'; $active=0; }?>"> 
+                <a data-toggle="tab" href="#<?php echo $grouplang; ?>">
+                        <?php echo getLanguageNameFromCode($grouplang,false);
                         if ($grouplang==$baselang) { ?>(<?php eT("Base language"); ?>) <?php } ?>
-                </a></li>
-            <?php }
-            if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
-            { ?>
-            <li><a href="#import"><?php eT("Import question group"); ?></a></li>
+                </a>
+            </li>
+        <?php endforeach; ?>
 
-            <?php } ?>
     </ul>
-
+    
     <?php echo CHtml::form(array("admin/questiongroups/sa/insert/surveyid/{$surveyid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30')); ?>
+    <div class="tab-content">
         <?php
+            $active=1;
             foreach ($grplangs as $grouplang)
             { ?>
-            <div id="<?php echo $grouplang; ?>">
-                <ul>
+            <div id="<?php echo $grouplang; ?>" class="tab-pane fade in <?php if($active){ echo 'active'; $active=0; }?> ">
+                <ul class="list-unstyled">
                     <li>
                         <label for='group_name_<?php echo $grouplang; ?>'><?php eT("Title:"); ?></label>
                         <input type='text' size='80' maxlength='100' class='group_title' name='group_name_<?php echo $grouplang; ?>' id='group_name_<?php echo $grouplang; ?>' /><span class='annotation'> <?php eT("Required"); ?></span></li>
@@ -48,33 +48,11 @@
                         </li>
                         <?php } ?>
                 </ul>
-                <p><input type='submit' value='<?php eT("Save question group"); ?>' />
+                <p><input type='submit' class="hidden" value='<?php eT("Save question group"); ?>' />
             </div>
             <?php } ?>
-
-    </form>
-
-    <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
-        { ?>
-        <div id="import">
-            <?php echo CHtml::form(array("admin/questiongroups/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!','js').'");')); ?>
-                <ul>
-                    <li>
-                        <label for='the_file'><?php eT("Select question group file (*.lsg):"); ?></label>
-                        <input id='the_file' name="the_file" type="file" /></li>
-                    <li><label for='translinksfields'><?php eT("Convert resource links?"); ?></label>
-                        <input id='translinksfields' name="translinksfields" type="checkbox" checked="checked"/></li></ul>
-                <p><input type='submit' value='<?php eT("Import question group"); ?>' />
-                <input type='hidden' name='action' value='importgroup' />
-                <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
-            </form>
-
         </div>
-        <?php } ?>
-
-    </div>
-
-
+       </form>
 
 			
 		</div>

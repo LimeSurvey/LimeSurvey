@@ -361,9 +361,15 @@ class questions extends Survey_Common_Action
         //App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
 
-        $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-        $aData['display']['menu_bars']['gid_action'] = 'addquestion';
-        $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
+        //$aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
+        //$aData['display']['menu_bars']['gid_action'] = 'addquestion';
+        //$aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
+
+        $aData['sidebar']['state'] = "close";
+        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
+        $aData['questiongroupbar']['savebutton']['form'] = true;
+        $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid;                         
 
         $aData['surveyid'] = $surveyid;
         $aData['gid']      = $gid;
@@ -1118,12 +1124,12 @@ class questions extends Survey_Common_Action
 
             Yii::app()->session['flashmessage'] = gT("Question was successfully deleted.");
 
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
         }
         else
         {
             Yii::app()->session['flashmessage'] = gT("You are not authorized to delete questions.");
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));
+            $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/' . $surveyid ));
         }
     }
 

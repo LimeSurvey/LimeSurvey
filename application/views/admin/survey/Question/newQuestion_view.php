@@ -172,7 +172,6 @@
                 
             </div>
                                     <input type='hidden' name='action' value='insertquestion' />
-                                    <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
                                     <input type='submit' value='<?php eT("Add question"); ?>' />
                                     <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />                                
         </form>

@@ -1,7 +1,10 @@
+<div class="side-body" id="edit-question-body">
+    <h3>
+        <?php eT("Edit answer options"); ?>
+    </h3>
+    <div class="row">
 <?php echo PrepareEditorScript(true, $this); ?>
-<div class='header ui-widget-header'>
-    <?php eT("Edit answer options"); ?>
-</div>
+
 <?php echo CHtml::form(array("admin/database"), 'post', array('id'=>'editanswersform', 'name'=>'editanswersform')); ?>
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
@@ -216,3 +219,7 @@
     </div>
     <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
 </form>
+
+        
+    </div>
+</div>    

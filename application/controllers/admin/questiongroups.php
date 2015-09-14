@@ -124,7 +124,7 @@ class questiongroups extends Survey_Common_Action
 			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;			
-
+            $aData['surveybar']['savebutton']['form'] = true;
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'addGroup_view', $aData);
         }
     }
@@ -248,7 +248,7 @@ class questiongroups extends Survey_Common_Action
             else
                 Yii::app()->setFlashMessage(gT('Group could not be deleted'),'error');
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iSurveyId));
+            $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/' . $iSurveyId ));
         }
     }
 
