@@ -1869,7 +1869,7 @@
                                 }
                             }
                         }
-                        if (count($sq_names) > 0) {
+                        if (count($sq_names) > 0 && isset($eoVarName)) { // eoVarName not set : exclude option don't exist in sub question code
                             $relpart = "sum(" . implode(".relevanceStatus, ", $sq_names) . ".relevanceStatus)";
                             $checkedpart = "count(" . implode(".NAOK, ", $sq_names) . ".NAOK)";
                             $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && is_empty(" . $eoVarName . "))";
