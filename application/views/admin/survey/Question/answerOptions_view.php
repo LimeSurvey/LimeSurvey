@@ -150,11 +150,11 @@
                     <input type='hidden' id='answercount_<?php echo $scale_id; ?>' name='answercount_<?php echo $scale_id; ?>' value='<?php echo $anscount; ?>' />
                     <?php } ?>
                 <div class="action-buttons">
-                    <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser' type='button'><?php eT('Predefined label sets...'); ?></button>
-                    <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnquickadd' type='button'><?php eT('Quick add...'); ?></button>
+                    <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'><?php eT('Predefined label sets...'); ?></button>
+                    <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnquickadd btn btn-default' type='button'><?php eT('Quick add...'); ?></button>
 
                     <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')) { //){ ?>
-                    <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php eT('Save as label set'); ?></button>
+                    <button class='bthsaveaslabel  btn btn-default' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php eT('Save as label set'); ?></button>
 
                    <?php } ?>
                 </div>
@@ -215,7 +215,7 @@
 
         </div>
 
-        <p><input type='submit' id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
+        <p><input type='submit' class="hidden" id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
     </div>
     <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
 </form>
