@@ -7,7 +7,7 @@
 <div class='menubar' id="labelbar">
     <div class='row container-fluid'>
         
-        <div class="col-md-6">
+        <div class="col-md-4">
             <?php if (isset($labelbar['buttons']['view'])):?>
                 <!-- Add -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button">
@@ -52,7 +52,7 @@
             <?php endif; ?>              
         </div>
         
-        <div class="col-md-6 text-right">
+        <div class="col-md-8 text-right">
             <?php if (isset($labelbar['buttons']['view'])):?>
                 <!-- return to admin pannel -->
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block">
@@ -62,7 +62,7 @@
                 </a>
                     
                 <!-- labelsetchanger -->
-                <div class="form-group form-inline col-md-4 pull-right">
+                <div class="form-group form-inline col-md-8 pull-right">
                     <label for='labelsetchanger'><?php eT("Label sets:");?> </label>
                     <select id='labelsetchanger' onchange="window.open(this.options[this.selectedIndex].value,'_top')" class="form-control">
                         <option value=''

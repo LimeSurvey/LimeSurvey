@@ -273,7 +273,7 @@ class Survey_Common_Action extends CAction
 
 	
 			//// TODO : Move this div inside each correct view ASAP !
-			echo '<div class="container-fluid"><div class="row">';
+			echo '<div class="container-fluid" id="in_survey_common"><div class="row">';
 
 			$this->_updatenotification();
             $this->_notifications();
@@ -292,7 +292,7 @@ class Survey_Common_Action extends CAction
 			$this->_updatenotification();
             $this->_notifications();
 			//// TODO : Move this div inside each correct view ASAP ! 
-			echo '<div class="container-fluid"><div class="row">';
+			echo '<div class="container-fluid full-page-wrapper" id="in_survey_common_action"><div class="row">';
 		}
 		
 		

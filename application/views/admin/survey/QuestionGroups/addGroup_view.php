@@ -8,7 +8,6 @@
 	<h3><?php eT("Add question group"); ?></h3>
 	
 	<div class="row">
-		<div class="col-lg-12 content-right">
 
     
     <ul class="nav nav-tabs" >
@@ -55,6 +54,4 @@
        </form>
 
 			
-		</div>
-	</div>
 </div>

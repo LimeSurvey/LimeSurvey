@@ -38,28 +38,8 @@
         </div>    
     </div>
             
-    <?php
 
-        $thisadmintheme=getGlobalSetting('admintheme');
-        $adminthemes=array_keys(getAdminThemeList());
-
-    ?>
-    <div class="form-group">
-        <label class="col-sm-4 control-label"  for="admintheme"><?php eT("Administration template:"); ?></label>
-            <div class="col-sm-6">
-                <select class="form-control"  name="admintheme" id="admintheme">
-            <?php
-                foreach ($adminthemes as $templatename)
-                {
-                    echo "<option value='{$templatename}'";
-                    if ($thisadmintheme==$templatename) { echo " selected='selected' ";}
-                    echo ">{$templatename}</option>";
-                }
-            ?>
-        </select>
-        
-        </div>    
-    </div>
+        <input type="hidden" name='admintheme' value='gringegreen' />
             
 
 

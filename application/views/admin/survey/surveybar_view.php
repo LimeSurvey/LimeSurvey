@@ -1,6 +1,6 @@
 <div class='menubar surveybar' id="surveybarid">
     <div class='row container-fluid'>
-    	<div class="col-md-8">
+    	<div class="col-md-12">
 
 		<?php if(isset($surveybar['buttons']['newgroup'])):?>
 			<?php if ($activated == "Y"): ?>
@@ -370,7 +370,7 @@
     	</div>
     	
     	
-    	<div class="col-md-4 text-right">
+    	<div class="col-md-offset-8 col-md-4 text-right">
     		<?php if(isset($surveybar['savebutton']['form'])):?>
             	<a class="btn btn-success" href="#" role="button" id="save-button">
             		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>

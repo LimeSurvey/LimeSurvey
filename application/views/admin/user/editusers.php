@@ -6,10 +6,10 @@
 <table id='users' class='users table table-striped'>
     <thead>
         <tr>
-            <th class="col-md-1"><?php eT("Action");?></th>
+            <th class="col-md-2"><?php eT("Action");?></th>
             <th class="col-md-1" ><?php eT("User ID");?></th>
             <th class="col-md-2" ><?php eT("Username");?></th>
-            <th class="col-md-2"><?php eT("Email");?></th>
+            <th class="col-md-3"><?php eT("Email");?></th>
             <th class="col-md-2"><?php eT("Full name");?></th>
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
                 <th ><?php eT("No of surveys");?></th>

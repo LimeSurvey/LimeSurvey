@@ -191,12 +191,12 @@ echo $colModels;
 <script src="<?php echo Yii::app()->getConfig('generalscripts') . "admin/participantdisplay.js" ?>" type="text/javascript"></script>
 
 
-<div class="col-lg-12 list-surveys">
+<div class="col-lg-12 list-surveys" >
     <h3><?php eT('Display Participants'); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            
+
 <div id ="search" style="display:none">
     <?php
     $optionsearch = array('' => gT("Select..."),
@@ -241,7 +241,9 @@ echo $colModels;
 
 </div>
 <br/>
-<table id="displayparticipants"></table> 
+<div style="overflow-x: scroll">
+<table id="displayparticipants"  class="table table-responsive"></table>
+</div>
 <div id="pager"></div>
 <div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
     <p>
@@ -292,6 +294,9 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
   </div>
 </div>
 <!--<div id="addsurvey" title="addsurvey" style="display:none">-->
+
+
+
 
 <!-- Add To Survey Popup Window -->
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">

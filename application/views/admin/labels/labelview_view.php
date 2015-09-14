@@ -4,7 +4,7 @@
         var quickaddtitle='<?php eT('Quick-add subquestion or answer items','js'); ?>';
     </script>
 <div class="col-lg-8 labels">
-    <h3><?php eT("Labels") ?></h3>
+    <h3 class="pagetitle"><?php eT("Labels") ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right text-center">
@@ -215,5 +215,6 @@
                 </div>
             </div>
         </div>            
+</div>   
 </div>   
 

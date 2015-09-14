@@ -1,6 +1,6 @@
 <div class='menubar surveybar' id="questiongroupbarid">
     <div class='row container-fluid'>
-    	<div class="col-md-9">
+    	<div class="col-md-12">
 		<?php if(isset($questiongroupbar['buttons']['view'])):?>
 	
 			<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
@@ -85,7 +85,7 @@
 				
 
     	</div>
-    	<div class="col-md-3 text-right">
+    	<div class="col-md-4 col-md-offset-8 text-right">
     			<?php if(isset($questiongroupbar['savebutton']['form'])):?>
 	            	<a class="btn btn-success" href="#" role="button" id="save-button">
 	            		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>

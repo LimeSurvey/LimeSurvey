@@ -1,4 +1,4 @@
-<div class="col-lg-2 <?php echo $offset; ?>">
+<div class="col-lg-2 col-sm-3 <?php echo $offset; ?>">
     <div class="panel panel-primary panel-clickable" id="pannel-<?php echo $position;?>" aria-data-url="<?php echo $url; ?>" >
     <div class="panel-heading">
         <h3 class="panel-title"><?php echo $title;?></h3>

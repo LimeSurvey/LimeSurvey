@@ -48,7 +48,7 @@
                 
         protected function renderContent()
         {
-            $offset = ($this->offset != '') ? 'col-md-offset-'.$this->offset : '' ;
+            $offset = ($this->offset != '') ? 'col-sm-offset-1 col-lg-offset-'.$this->offset : '' ;
             
             $this->render('box', array(
                 'position'=> $this->position,

@@ -63,7 +63,7 @@
                     <?php } ?>
 
 
-                <table class='answertable' id='answers_<?php echo $anslang; ?>_<?php echo $scale_id; ?>'>
+                <table class='answertable table table-responsive' id='answers_<?php echo $anslang; ?>_<?php echo $scale_id; ?>'>
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
@@ -109,7 +109,7 @@
                                     <?php } ?>
 
                             </td>
-                            <td
+                            <td 
 
                                 <?php if ($assessmentvisible && $first)
                                     { ?>
@@ -133,7 +133,7 @@
                                     <?php } ?>
 
                             </td><td>
-                                <input type='text' class='answer' id='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' size='100' placeholder='<?php eT("Some example answer option","js") ?>' value="<?php echo $row['answer']; ?>" />
+                                <input type='text' class='answer' style="width: 94%" id='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['sortorder']; ?>_<?php echo $scale_id; ?>' size='100' placeholder='<?php eT("Some example answer option","js") ?>' value="<?php echo $row['answer']; ?>" />
                                 <?php echo  getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
 
 

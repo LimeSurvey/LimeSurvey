@@ -620,8 +620,7 @@ table.cke_editor
 
 /* Main body section */
 .side-body {
-  margin-left: 310px;
-  padding : 0 1em;
+  margin-left: 290px;
 }
 /* small screen */
 @media (max-width: 768px) {
@@ -780,6 +779,7 @@ table.cke_editor
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
   }
+  
   .body-slide-in {
     -moz-animation: bodyslidein 300ms forwards;
     -o-animation: bodyslidein 300ms forwards;
@@ -847,13 +847,20 @@ table.cke_editor
 }
 
 .tab-content{
-	padding: 2em;
+	padding-top: 2em;
 }
+
+span.cke_skin_kama
+{
+    padding-left : 0px;
+    width: 625px !important;    
+}
+
 
 .content-right
 {
-	padding-left: 2em;
-
+	padding-left: 0em;
+    padding-right: 0em;
     -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 1s; /* Firefox < 16 */
         -ms-animation: fadein 1s; /* Internet Explorer */

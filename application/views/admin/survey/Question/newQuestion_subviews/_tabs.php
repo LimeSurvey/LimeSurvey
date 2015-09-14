@@ -38,14 +38,11 @@
         </div>
 
 
-        <div class="form-group">
-            <label for='question_<?php echo $eqrow['language']; ?>' class="col-sm-2 control-label"><?php eT("Question:"); ?></label>
-            
-            <div class='htmleditor col-sm-offset-2' style="position: relative; top: -8px; left: 7px;" >
+            <label for='question_<?php echo $eqrow['language']; ?>' class=""> <?php eT("Question:"); ?></label>
+            <div class='htmleditor' style="position: relative; top: -8px; left:0px;" >
                 <textarea cols='80' rows='100' id='question_<?php echo $eqrow['language']; ?>' name='question_<?php echo $eqrow['language']; ?>'><?php echo $eqrow['question']; ?></textarea>                
             </div>
             <?php echo getEditor("question-text","question_".$eqrow['language'], "[".gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>                  
-        </div>
 
         <div class="form-group">
             <label for='help_<?php echo $eqrow['language']; ?>' class="col-sm-2 control-label"><?php eT("Help:"); ?></label>

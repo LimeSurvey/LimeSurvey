@@ -12,20 +12,10 @@
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
 </script>
 
-
-
-
-
-
-
-
-
-
-
 <div class='menubar' id="participantbar">
     <div class='row container-fluid'>
         
-        <div class="col-md-8">
+        <div class="col-md-9">
                 <!-- Information -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
                     <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/summary.png" />
@@ -79,7 +69,7 @@
 
 
 
-        <div class="col-md-4 text-right">
+        <div class="col-md-3 text-right">
             <a class="btn btn-default" href="<?php echo $this->createUrl('admin/survey/sa/index'); ?>" role="button">
                 <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
                 &nbsp;&nbsp;

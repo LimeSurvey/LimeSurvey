@@ -1,6 +1,6 @@
 <div class='menubar' id="usergroupbar">
     <div class='row container-fluid'>
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-4">
 
             <!-- Add -->
             <?php if (Permission::model()->hasGlobalPermission('usergroups','create') && isset($usergroupbar['returnbutton']['url'])):?>
@@ -35,7 +35,7 @@
             <?php endif;?>
         </div>
         
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 col-sm-8 text-right">
 
             <?php if(isset($usergroupbar['savebutton']['form'])):?>
                 <a class="btn btn-default" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
@@ -61,7 +61,7 @@
 
             <!-- labelsetchanger -->
             <?php if(isset($usergroupbar['returnbutton']['url'])):?>
-                <div class="form-group form-inline col-md-4 pull-right">
+                <div class="form-group form-inline col-md-7 pull-right">
                     <label for='labelsetchanger'><?php eT("User groups"); ?>:</label>
                     <select id='labelsetchanger' onchange="window.open(this.options[this.selectedIndex].value,'_top')" class="form-control">
                         <?php echo getUserGroupList($ugid,'optionlist'); ?>
