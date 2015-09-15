@@ -276,12 +276,12 @@ class SurveyRuntime {
                 sendCacheHeaders();
                 doHeader();
 
-                renderOldTemplate($templatePath . "startpage.pstpl", array(), $redata,
+                renderOldTemplate($templatePath . "startpage.pstpl", [], $redata,
                     'SubmitStartpageI', null, true);
 
                 //Check for assessments
                 if ($survey->bool_assessments && $assessments) {
-                    renderOldTemplate($templatePath . "assessment.pstpl", array(), $redata,
+                    renderOldTemplate($templatePath . "assessment.pstpl", [], $redata,
                         'SubmitAssessmentI', null, true);
                 }
 
@@ -297,10 +297,10 @@ class SurveyRuntime {
                 $completed = \ls\helpers\Replacements::templatereplace($survey->getLocalizedEndText(), array(), $redata, null);
                 $completed .= "<br /><strong><font size='2' color='red'>" . gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                 $completed .= gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
-                if ($thissurvey['printanswers'] == 'Y') {
+                if ($survey->bool_printanswers) {
                     // 'Clear all' link is only relevant for survey with printanswers enabled
                     // in other cases the session is cleared at submit time
-                    $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}/move/clearall") . "'>" . gT("Clear Responses") . "</a><br /><br />\n";
+                    $completed .= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/{$survey->primaryKey}/move/clearall") . "'>" . gT("Clear Responses") . "</a><br /><br />\n";
                 }
 
 
@@ -308,7 +308,7 @@ class SurveyRuntime {
             {
                 if ($session->survey->bool_usetokens && $session->survey->bool_usecookie) //don't use cookies if tokens are being used
                 {
-                    setcookie("LS_" . $surveyid . "_STATUS", "COMPLETE",
+                    setcookie("LS_" . $survey->primaryKey . "_STATUS", "COMPLETE",
                         time() + 31536000); //Cookie will expire in 365 days
                 }
 
@@ -360,7 +360,7 @@ class SurveyRuntime {
 
                 // Link to Print Answer Preview  **********
                 if ($session->survey->bool_printanswers) {
-                    $url = App()->createUrl("/printanswers/view", ['surveyid' => $surveyid]);
+                    $url = App()->createUrl("/printanswers/view", ['surveyid' => $survey->primaryKey]);
                     $completed .= "<br /><br />"
                         . "<a class='printlink' href='$url'  target='_blank'>"
                         . gT("Print your answers.")
@@ -437,8 +437,7 @@ class SurveyRuntime {
         sendCacheHeaders();
         doHeader();
         $survey = $session->survey;
-        renderOldTemplate($session->templateDir . "/startpage.pstpl", array(),
-            compact(array_keys(get_defined_vars())));
+        renderOldTemplate($session->templateDir . "/startpage.pstpl", [], [], $session);
 
         $formParams = [
             'id' => 'limesurvey',
@@ -470,15 +469,15 @@ class SurveyRuntime {
         if ($session->format == Survey::FORMAT_ALL_IN_ONE)
         {
             if ($survey->bool_showwelcome) {
-                renderOldTemplate($templatePath . "welcome.pstpl", [], $redata) . "\n";
+                renderOldTemplate($templatePath . "welcome.pstpl", [], [], $session);
             }
 
             if ($survey->bool_anonymized) {
-                renderOldTemplate($templatePath . "privacy.pstpl", [], $redata) . "\n";
+                renderOldTemplate($templatePath . "privacy.pstpl", [], [], $session);
             }
         } else {
             // <-- START THE SURVEY -->
-            renderOldTemplate($templatePath . "survey.pstpl", array(), $redata);
+            renderOldTemplate($templatePath . "survey.pstpl", [], [], $session);
         }
 
         LimeExpressionManager::registerScripts($session);
@@ -493,10 +492,8 @@ class SurveyRuntime {
 
 
 
-        $redata = compact(array_keys(get_defined_vars()));
-
         echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-        renderOldTemplate($templatePath . "navigator.pstpl", array(), $redata);
+        renderOldTemplate($templatePath . "navigator.pstpl", [], [], $session);
         echo "\n";
 
         if (!$session->survey->bool_active)
@@ -563,10 +560,10 @@ class SurveyRuntime {
         }
         echo ">\n";
 
-        renderOldTemplate($session->templateDir . "startgroup.pstpl", $replacements);
+        renderOldTemplate($session->templateDir . "startgroup.pstpl", [], $replacements);
         echo "\n";
 
-        renderOldTemplate($session->templateDir . "groupdescription.pstpl", $replacements);
+        renderOldTemplate($session->templateDir . "groupdescription.pstpl", [], $replacements);
         echo "\n";
 
         echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
@@ -581,7 +578,7 @@ class SurveyRuntime {
         }
 
         echo "\n\n<!-- END THE GROUP -->\n";
-        renderOldTemplate($session->templateDir . "endgroup.pstpl", $replacements);
+        renderOldTemplate($session->templateDir . "endgroup.pstpl", [], $replacements);
         echo "\n\n</div>\n";
         eP();
     }

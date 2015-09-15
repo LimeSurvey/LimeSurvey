@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "88eb850e613be3b2853dfc8c47003559",
+    "hash": "0837de8f5f36fad669c960546cfa0db6",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -230,6 +230,51 @@
                 "web"
             ],
             "time": "2015-04-30 10:11:19"
+        },
+        {
+            "name": "bower-asset/bootstrap-treeview",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jonmiles/bootstrap-treeview.git",
+                "reference": "542f57eab636e14417216e95fa7f7049bbf3d69f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jonmiles/bootstrap-treeview/zipball/542f57eab636e14417216e95fa7f7049bbf3d69f",
+                "reference": "542f57eab636e14417216e95fa7f7049bbf3d69f",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap": ">=3.0.0",
+                "bower-asset/jquery": ">=1.9.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/bootstrap-treeview.min.js",
+                    "dist/bootstrap-treeview.min.css"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests"
+                ]
+            },
+            "description": "Tree View for Twitter Bootstrap",
+            "keywords": [
+                "bootstrap",
+                "javascript",
+                "jquery",
+                "jquery-plugin",
+                "navigation",
+                "tree",
+                "tree-view",
+                "treeview",
+                "twitter"
+            ]
         },
         {
             "name": "bower-asset/font-awesome",
@@ -852,16 +897,16 @@
         },
         {
             "name": "bower-asset/webshim",
-            "version": "1.15.8",
+            "version": "1.15.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aFarkas/webshim.git",
-                "reference": "82229e75e4482d496e8935b644c08c00019ae402"
+                "reference": "79046464b16d773f29c9531be388386eedfe18d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/82229e75e4482d496e8935b644c08c00019ae402",
-                "reference": "82229e75e4482d496e8935b644c08c00019ae402",
+                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/79046464b16d773f29c9531be388386eedfe18d3",
+                "reference": "79046464b16d773f29c9531be388386eedfe18d3",
                 "shasum": ""
             },
             "require": {
@@ -1461,12 +1506,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "3fb22c5c01a9d3a74aa35e92a85c2d173b1518a9"
+                "reference": "20b705353a3ea6ca6dc9b245fcf7e999d78728b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/3fb22c5c01a9d3a74aa35e92a85c2d173b1518a9",
-                "reference": "3fb22c5c01a9d3a74aa35e92a85c2d173b1518a9",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/20b705353a3ea6ca6dc9b245fcf7e999d78728b6",
+                "reference": "20b705353a3ea6ca6dc9b245fcf7e999d78728b6",
                 "shasum": ""
             },
             "require": {
@@ -1474,7 +1519,7 @@
             },
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "*",
-                "phpunit/phpunit": "4.3.*"
+                "phpunit/phpunit": "4.7.*"
             },
             "suggest": {
                 "league/oauth2-client": "Needed for Gmail's XOAUTH2 authentication system"
@@ -1484,7 +1529,7 @@
                 "classmap": [
                     "class.phpmailer.php",
                     "class.phpmaileroauth.php",
-                    "class.oauth.php",
+                    "class.phpmaileroauthgoogle.php",
                     "class.smtp.php",
                     "class.pop3.php",
                     "extras/EasyPeasyICS.php",
@@ -1513,7 +1558,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-09-04 09:05:32"
+            "time": "2015-09-15 06:09:22"
         },
         {
             "name": "psr/http-message",
@@ -1682,6 +1727,44 @@
             "time": "2015-03-19 09:14:48"
         },
         {
+            "name": "sam-it/yii1-bootstrap-treeview",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SAM-IT/yii1-bootstrap-treeview.git",
+                "reference": "43b6e771fc7e2908bf3ccf23f91a2d446c613058"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SAM-IT/yii1-bootstrap-treeview/zipball/43b6e771fc7e2908bf3ccf23f91a2d446c613058",
+                "reference": "43b6e771fc7e2908bf3ccf23f91a2d446c613058",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap-treeview": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SamIT\\Yii1\\Widgets\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam",
+                    "email": "sam@mousa.nl"
+                }
+            ],
+            "description": "Yii1 widget wrapper for Bootstrap-TreeView",
+            "time": "2015-09-15 09:29:54"
+        },
+        {
             "name": "sam-it/yii1-json-behavior",
             "version": "v1.0.0",
             "source": {
@@ -1763,12 +1846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "bed31a09a39894208988db221d173aab208e2576"
+                "reference": "b22e36842b70a360766d5f518ec2b6054164ef2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/bed31a09a39894208988db221d173aab208e2576",
-                "reference": "bed31a09a39894208988db221d173aab208e2576",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/b22e36842b70a360766d5f518ec2b6054164ef2f",
+                "reference": "b22e36842b70a360766d5f518ec2b6054164ef2f",
                 "shasum": ""
             },
             "require": {
@@ -1807,7 +1890,7 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2015-09-02 01:34:45"
+            "time": "2015-09-08 15:27:45"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -2086,7 +2169,8 @@
         "bower-asset/qtip2": 20,
         "bower-asset/jqueryui-touch-punch": 20,
         "bower-asset/ace-builds-bower-patched": 20,
-        "bower-asset/font-awesome": 20
+        "bower-asset/font-awesome": 20,
+        "sam-it/yii1-bootstrap-treeview": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

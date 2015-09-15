@@ -167,7 +167,7 @@ class FileManagerWidget extends CWidget{
 
         $dir = dirname(dirname($r->getFileName()));
         $cs = App()->clientScript;
-        $url = App()->assetManager->publish($dir, false, -1, YII_DEBUG);
+        $url = App()->assetManager->publish($dir);
         $cs->registerScriptFile($url . '/js/elFinder.js');
         $cs->registerPackage('jqueryui');
         $cs->registerPackage('jquery-ace');

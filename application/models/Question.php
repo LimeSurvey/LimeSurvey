@@ -881,8 +881,13 @@
             return $this->typeList()[$this->type]['description'];
         }
 
+        /**
+         * Strip tags, and line breaks.
+         * @return string
+         */
         public function getDisplayLabel() {
-            return strip_tags("{$this->title} - {$this->question}");
+            $question = preg_replace('/\s+/', ' ',str_replace(['&nbsp;',"\r", "\n"], [' ', ' ', ' '], strip_tags($this->question)));
+            return "{$this->title} - {$question}";
         }
 
         public function attributeLabels()

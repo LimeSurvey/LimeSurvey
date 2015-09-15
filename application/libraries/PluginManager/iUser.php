@@ -18,12 +18,12 @@ interface iUser {
     public function getLanguage();
     
     /**
-     * @return array Returns the (admin) updateable settings.
+     * @return array Returns the settings that can be updated by an admin.
      */
     public function getSettings();
     
     /**
-     * @return array Returns the (self) updateable settings.
+     * @return array Returns the settings that can be updated by the user
      */
     public function getProfileSettings();
     

@@ -36,54 +36,46 @@ class Replacements
         $survey = $session->survey;
         $clientScript = App()->clientScript;
 
-        foreach ([
-                     'assessments',
-                     'captchapath',
-                     'completed',
-                     'errormsg',
-                     'groupdescription',
-                     'groupname',
-                     'imageurl',
-                     'languagechanger',
-                     'loadname',
-                     'move',
-                     'percentcomplete',
-                     'privacy',
-                     'saved_id',
-                     'showgroupinfo',
-                     'showqnumcode',
-                     'showxquestions',
-                     'sitename',
-                     'surveylist',
-                     'templatedir',
-                     'token',
-                     'totalBoilerplatequestions',
-                     'totalquestions',
-                 ] as $var) {
-            if (isset($redata[$var])) {
-                $$var = $redata[$var];
+
+        if (!empty($redata)) {
+            throw new \Exception();
+            vd($replacements);
+            vdd($redata);
+
+            foreach ([
+                         'assessments',
+                         'captchapath',
+                         'completed',
+                         'errormsg',
+                         'groupdescription',
+                         'groupname',
+                         'imageurl',
+                         'languagechanger',
+                         'loadname',
+                         'move',
+                         'percentcomplete',
+                         'privacy',
+                         'saved_id',
+                         'showgroupinfo',
+                         'showqnumcode',
+                         'showxquestions',
+                         'sitename',
+                         'surveylist',
+                         'templatedir',
+                         'token',
+                         'totalBoilerplatequestions',
+                         'totalquestions',
+                     ] as $var) {
+                if (isset($redata[$var])) {
+                    $$var = $redata[$var];
+                }
             }
         }
 
-        // Local over-rides in case not set above
-        if (!isset($showgroupinfo)) {
-            $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
-        }
-        if (!isset($showqnumcode)) {
-            $showqnumcode = Yii::app()->getConfig('showqnumcode');
-        }
-        $_surveyid = Yii::app()->getConfig('surveyID');
         if (!isset($showxquestions)) {
             $showxquestions = Yii::app()->getConfig('showxquestions');
         }
 
-        if (!isset($captchapath)) {
-            $captchapath = '';
-        }
-
-        if (!isset($saved_id) && isset(Yii::app()->session['survey_' . $_surveyid]['srid'])) {
-            $saved_id = Yii::app()->session['survey_' . $_surveyid]['srid'];
-        }
 
 
         $templateDir = $session->templateDir;
@@ -142,37 +134,14 @@ class Replacements
             $result = LimeExpressionManager::ProcessString($line, $questionNum, null, 1, 1, $session);
         } else {
 
-            if ($showgroupinfo == 'both'
-                || $showgroupinfo == 'name'
-                || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
-                || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
-                || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
-            ) {
-                $_groupname = isset($groupname) ? $groupname : '';
-            } else {
-                $_groupname = '';
-            };
-
-            if (
-                $showgroupinfo == 'both' ||
-                $showgroupinfo == 'description' ||
-                ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-                ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-                ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
-            ) {
-                $_groupdescription = isset($groupdescription) ? $groupdescription : '';
-            } else {
-                $_groupdescription = '';
-            };
-
             if (!isset($totalquestions)) {
                 $totalquestions = 0;
             }
             $_totalquestionsAsked = $totalquestions;
             if (
                 $showxquestions == 'show' ||
-                ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) ||
-                ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y')
+                ($showxquestions == 'choose' && !isset($survey->showxquestions)) ||
+                ($showxquestions == 'choose' && $survey->bool_showxquestions)
             ) {
                 if ($_totalquestionsAsked < 1) {
                     $_therearexquestions = gT("There are no questions in this survey"); // Singular
@@ -188,9 +157,9 @@ class Replacements
 
             // Expiry
             if (isset($thissurvey['expiry'])) {
-                $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatData($thissurvey['surveyls_dateformat']);
+                $dateformatdetails = \ls\helpers\SurveyTranslator::getDateFormatData($survey->getLocalizedDateFormat());
                 Yii::import('application.libraries.Date_Time_Converter', true);
-                $datetimeobj = new Date_Time_Converter($thissurvey['expiry'], "Y-m-d");
+                $datetimeobj = new Date_Time_Converter($survey->expiry, "Y-m-d");
                 $_dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
             } else {
                 $_dateoutput = '-';
@@ -466,6 +435,9 @@ EOD;
              */
             $manual = ["{}" => ""];
             foreach ($allReplacements as $key => $value) {
+                if (is_object($value)) {
+                    $value = (string)$value;
+                }
                 $manual["{" . $key . "}"] = $value;
             }
             if (strpos($line, '{QID}') !== false) {

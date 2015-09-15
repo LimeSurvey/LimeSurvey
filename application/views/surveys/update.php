@@ -57,11 +57,6 @@
 
                 ],
                 [
-                    'label' => gT('Resources'),
-                    'content' => "@todo",
-
-                ],
-                [
                     'label' => 'Optional features',
                     'content' => $this->renderPartial('update/features', ['survey' => $survey, 'form' => $form], true),
                 ],
@@ -71,7 +66,7 @@
 
                 ],
                 [
-                    'label' => 'File management',
+                    'label' => 'Resources',
                     'content' => $this->renderPartial('update/files', ['survey' => $survey], true),
 
                 ]

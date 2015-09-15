@@ -12,7 +12,7 @@ $this->widget(\FileManagerWidget::class, [
 //        'style' => 'height: 500px;'
     ],
     'clientOptions' => [
-        'height' => 500,
+        'height' => 400,
 //        'defaultView' => 'list',
 //        'resizable' => false,
         'uiOptions' => [
