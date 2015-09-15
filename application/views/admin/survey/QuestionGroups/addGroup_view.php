@@ -43,7 +43,7 @@
                         <li><label for='randomization_group'><?php eT("Randomization group:"); ?></label><input type='text' size='20' maxlength='20' name='randomization_group' id='randomization_group' /></li>
                         <li>
                             <label for='grelevance'><?php eT("Relevance equation:"); ?></label>
-                            <textarea cols='50' rows='1' id='grelevance' name='grelevance'></textarea>
+                            <textarea cols='1' class="form-control" rows='1' id='grelevance' name='grelevance'></textarea>
                         </li>
                         <?php } ?>
                 </ul>

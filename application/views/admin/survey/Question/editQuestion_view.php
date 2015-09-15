@@ -2,14 +2,12 @@
 
 <?php
 // Surely better in controller
-if ($adding || $copying) {
+if ($adding || $copying) 
+{
     $sValidateUrl=$this->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid));
 }else{
     $sValidateUrl=$this->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid,'qid'=>$qid));
 }
-
-
-
 ?>
 
 
@@ -181,7 +179,7 @@ if ($adding || $copying) {
                                         
                                         <div  class="form-group">
                                             <label for='relevance'><?php eT("Relevance equation:"); ?></label>
-                                            <textarea cols='45' rows='1' id='relevance' name='relevance' ></textarea>
+                                            <textarea  class="form-control" rows='1' id='relevance' name='relevance' ></textarea>
                                         </div>
                                         
                                         <div id='Validation'  class="form-group">

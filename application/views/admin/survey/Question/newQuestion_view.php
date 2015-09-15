@@ -121,7 +121,7 @@
                                         
                                         <div  class="form-group">
                                             <label for='relevance'><?php eT("Relevance equation:"); ?></label>
-                                            <textarea cols='45' rows='1' id='relevance' name='relevance' ></textarea>
+                                            <textarea cols='1' class="form-control" rows='1' id='relevance' name='relevance' ></textarea>
                                         </div>
                                         
                                         <div id='Validation'  class="form-group">

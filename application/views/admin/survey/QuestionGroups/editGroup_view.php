@@ -55,7 +55,7 @@
 			<div class="col-lg-6 pull-left">
 					<div class="input-group">
 					  <span class="input-group-addon" id="randomization-group"><?php eT("Relevance equation:"); ?></span>
-					  <textarea cols='50' rows='1' id='grelevance' class=" form-control" name='grelevance'><?php echo $aGroupData[$aBaseLanguage]['grelevance']; ?></textarea>
+					  <textarea cols='1' class="form-control" rows='1' id='grelevance' class=" form-control" name='grelevance'><?php echo $aGroupData[$aBaseLanguage]['grelevance']; ?></textarea>
 					</div>									
 			</div>
 

@@ -1,20 +1,23 @@
 <div class="container-fluid welcome">
     <div class="row text-center">
-		<div class="col-lg-3 col-md-offset-4">
+		<div class="col-lg-3 col-lg-offset-4 col-sm-6 col-sm-offset-3">
 			<div class="panel panel-primary login-pannel" id="pannel-1">
-
 			<div class="panel-body">
 				<div class="row">
-            		<img id="profile-img" class="profile-img-card" src="<?php echo Yii::app()->getBaseUrl(true);?>/images/Limesurvey_logo.png" style="height: 100px; "/>
-        			<p>Dashboard</p>					
+				    <div class="col-lg-12">
+            		  <img id="profile-img" style="min-height: 100px" class="profile-img-card img-responsive center-block" src="<?php echo Yii::app()->getBaseUrl(true);?>/images/Limesurvey_logo.png" />
+        			     <p>Dashboard</p>
+        			</div>					
 				</div>
 
       			</div>
       			<div class="row login-title login-content">
-					<h3><?php eT("Log In");?></h3>
+      			    <div class="col-lg-12">
+					   <h3><?php eT("Log In");?></h3>
+					</div>
 				</div>
 				<div class="row login-content login-content-form">
-					
+					<div class="col-lg-12">
 
 					<?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform'));?>
 					        
@@ -100,10 +103,10 @@
 					        <p><?php eT("Demo mode: Login credentials are prefilled - just click the Login button."); ?></p>
 					        <?php } ?>
 					
-					
+				    </div>	
 				</div>			
 				<div class="row login-submit login-content">
-
+                    <div class="col-lg-12">
 					        <p><input type='hidden' name='action' value='login' />
 					            <button type="submit" class="btn btn-default" name='login_submit' value='<?php eT("Login"); ?>' >Submit</button><br />
 					            <br/>
@@ -116,7 +119,7 @@
 					            }
 					            ?>
 					        </p>
-
+                    </div>
 
 				</div>
 				<?php echo CHtml::endForm(); ?>							
