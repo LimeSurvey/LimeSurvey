@@ -10,7 +10,7 @@
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('While survey is activated, you can\'t add or remove group or question');?>
                             </div>                                
-                        <?php elseif(!$sumcount3 > 0):?>
+                        <?php elseif(!$groups_count > 0):?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('To add questions, first, you must add a question group.');?>
@@ -37,23 +37,21 @@
                 </div>
                 
                 <div class="row">
-                    
-                    <div class="col-lg-2">
-                        <div class="panel panel-primary panel-clickable" id="pannel-1" aria-data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><?php eT('Add group');?></h4>
-                        </div>
-                        <div class="panel-body">
-                            <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
-                                <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
-                            </a>
-                            <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group to survey');?></a></p>
-                        </div>          
-                        </div>
-                    </div>
-                
-                
                     <?php if ($activated == "Y"): ?>
+
+                            <div class="col-lg-2">
+                                <div class="panel panel-primary disabled" id="pannel-1">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><?php eT('Add group');?></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
+                                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
+                                    </a>
+                                    <p><a href="#"><?php eT('Add new group to survey');?></a></p>
+                                </div>          
+                                </div>
+                            </div>                        
                 
                             <div class="col-lg-2" >
                                 <div class="panel panel-primary disabled" id="pannel-2">
@@ -61,7 +59,7 @@
                                         <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
                                     </div>
                                     <div class="panel-body  ">
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                             <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
                                         </a>
                                         <p>
@@ -74,8 +72,22 @@
                             </div>            
                                   
                     <?php elseif(Permission::model()->hasSurveyPermission($surveyinfo['sid'],'surveycontent','create')): ?>
+
+                        <div class="col-lg-2">
+                            <div class="panel panel-primary panel-clickable" id="pannel-1" aria-data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><?php eT('Add group');?></h4>
+                            </div>
+                            <div class="panel-body">
+                                <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
+                                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/big/328637/add.png" class="responsive"/>
+                                </a>
+                                <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group to survey');?></a></p>
+                            </div>          
+                            </div>
+                        </div>
                         
-                        <?php if(!$sumcount3 > 0): ?>
+                        <?php if(!$groups_count > 0): ?>
                             
                             <div class="col-lg-2" >
                                 <div class="panel panel-primary disabled" id="pannel-2">

@@ -1,30 +1,38 @@
 <?php 
 /**
  * This view display the page to add a new question to a controller, and to choose its group.
- * It will have to be merged with other question function such as "edit" or "copy". 
+ * TODO : It will have to be merged with other question function such as "edit" or "copy". 
  * 
  */
 ?>
+
 <?php $this->renderPartial("./survey/Question/newQuestion_subviews/_ajax_variables", $ajaxDatas); ?>
 
 <div class="side-body" id="edit-question-body">
-    <h3>
-        <?php eT("Add a new question"); ?>
-    </h3>
+    <h3><?php eT("Add a new question"); ?></h3>
+    
     <div class="row">
+        <!-- Form for the whole page-->
         <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
+        
+            <!-- The tabs & tab-fanes -->
             <div class="col-lg-8 content-right">
                 <?php $this->renderPartial('./survey/Question/newQuestion_subviews/_tabs',array('eqrow'=>$eqrow,'addlanguages'=>$addlanguages, 'surveyid'=>$surveyid, 'gid'=>NULL, 'qid'=>NULL, 'action'=>'addquestion' ));?>
             </div>
 
-            <div class="col-lg-4">
+            <!-- The Accordion -->
+            <div class="col-lg-4" style="padding-left: 0px; padding-right: 0px;">
                 <?php
-                // TODO : find why the $groups can't be generated from controller 
-                // $this->renderPartial('./survey/Question/newQuestion_subviews/_accordion_container', $accordionDatas); 
-                ?>                
+                    // TODO : find why the $groups can't be generated from controller 
+                    // $this->renderPartial('./survey/Question/newQuestion_subviews/_accordion_container', $accordionDatas); 
+                ?>
                 <div id='questionbottom'>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    
+                        <!-- General Options -->
                         <div class="panel panel-default" id="questionTypeContainer">
+                            
+                            <!-- General Options : Header  -->
                             <div class="panel-heading" role="tab" id="headingOne">
                               <h4 class="panel-title">
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -32,6 +40,8 @@
                                 </a>
                               </h4>
                             </div>
+                            
+                            <!-- General Options : Body  -->
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
                                     <div>
@@ -133,7 +143,7 @@
                             </div>
                         </div>
                     
-                    
+                        <!-- Advanced Settings-->
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingTwo">
                                 <h4 class="panel-title">
@@ -171,9 +181,9 @@
                 
                 
             </div>
-                                    <input type='hidden' name='action' value='insertquestion' />
-                                    <input type='submit' value='<?php eT("Add question"); ?>' />
-                                    <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />                                
+            <input type='hidden' name='action' value='insertquestion' />
+            <input type='submit' class="hidden" value='<?php eT("Add question"); ?>' />
+            <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />                                
         </form>
         <script type='text/javascript'>
             <!--

@@ -395,19 +395,21 @@ class SurveyAdmin extends Survey_Common_Action
 
         $survey = Survey::model()->findByPk($iSurveyID);
 		$surveyinfo = $survey->surveyinfo;
-        
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 		$aData["surveyinfo"] = $surveyinfo;
         $aData['surveyid'] = $iSurveyID;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
-		if($gid==null)
-        $aData['display']['surveysummary'] = true;
-		$aData['surveybar']['buttons']['view']= true;
 
+		if($gid==null)
+        {
+            $aData['display']['surveysummary'] = true;
+        }
+
+            
+		$aData['surveybar']['buttons']['view']= true;
 		$aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
 		$aData['surveybar']['returnbutton']['text'] = gT('return to survey list');
-		
 		$aData['sidebar']["survey_menu"]=TRUE;
 		
 		

@@ -733,7 +733,9 @@ class Survey_Common_Action extends CAction
 	        //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$iSurveyID} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
 	        $sumresult3 = Question::model()->findAllByAttributes($condition); //Checked
 	        $sumcount3 = count($sumresult3);
-	
+            
+
+	           
 	        $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
 	        $aData['candeactivate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
 	        $aData['expired'] = $surveyinfo['expires'] != '' && ($surveyinfo['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
@@ -1155,6 +1157,7 @@ class Survey_Common_Action extends CAction
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
         $aData['surveyinfo'] = $aSurveyInfo;
 
+        $aData['groups_count'] = $sumcount2;
         $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData);
     }
 
