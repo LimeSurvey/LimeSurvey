@@ -4,10 +4,14 @@
     var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.",'js'); ?>';
     var quickaddtitle='<?php eT('Quick-add subquestion or answer items','js'); ?>';
 </script>
+
+<!-- Label Bar menu -->
 <div class='menubar' id="labelbar">
     <div class='row container-fluid'>
         
-        <div class="col-md-4">
+        <div class="col-lg-6">
+            
+            <!-- View buttons -->
             <?php if (isset($labelbar['buttons']['view'])):?>
                 <!-- Add -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button">
@@ -23,12 +27,12 @@
                         <?php eT("Export multiple label sets"); ?>
                     </a>
                 <?php endif; ?>
-    
             <?php endif; ?>  
 
-
-                                  
+            <!-- Edition buttons -->                                  
             <?php if (isset($labelbar['buttons']['edit'])):?>
+                
+                <!-- Edit label set -->
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button">
                         <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/edit.png" />
@@ -36,6 +40,7 @@
                     </a>
                 <?php endif; ?>
 
+                <!-- Delete label set -->
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
                     <a class="btn btn-default" href='#' data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' role="button">
                         <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/delete.png" />
@@ -43,6 +48,7 @@
                     </a>
                 <?php endif; ?>
 
+                <!-- Export this label set -->    
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>" role="button">
                         <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/dumplabel.png" />
@@ -52,8 +58,13 @@
             <?php endif; ?>              
         </div>
         
-        <div class="col-md-8 text-right">
+        
+        <!-- Right action buttons --> 
+        <div class="col-lg-6 text-right">
+            
+            <!-- view action buttons-->
             <?php if (isset($labelbar['buttons']['view'])):?>
+                
                 <!-- return to admin pannel -->
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block">
                     <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
@@ -62,7 +73,7 @@
                 </a>
                     
                 <!-- labelsetchanger -->
-                <div class="form-group form-inline col-md-8 pull-right">
+                <div class="form-group form-inline col-md-6 pull-right">
                     <label for='labelsetchanger'><?php eT("Label sets:");?> </label>
                     <select id='labelsetchanger' onchange="window.open(this.options[this.selectedIndex].value,'_top')" class="form-control">
                         <option value=''
@@ -82,6 +93,7 @@
                 </div>
             <?php endif; ?>    
             
+            <!-- edition action buttons -->
             <?php if (isset($labelbar['buttons']['edition'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $labelbar['savebutton']['form']; ?>">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>

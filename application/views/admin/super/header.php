@@ -879,6 +879,8 @@ span.cke_skin_kama
 /**
  * 	Welcome page
  */
+
+
 .jumbotron
 {
 	background-color : transparent;
@@ -912,6 +914,15 @@ span.cke_skin_kama
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
+
+@media screen and (min-width: 1280px) and (max-width: 1440px) 
+{
+    .welcome .panel 
+    {
+        min-height: 188px;    
+    }
+}
+
 .welcome .panel-body
 {
 	text-align : center;
@@ -936,6 +947,23 @@ div.panel.disabled, div.panel.disabled  *{
 div.panel.disabled a{
     cursor:default;
     
+}
+
+/**
+ *     User control
+ */
+
+@media screen and (min-width: 1280px) and (max-width: 1366px) 
+{
+    #user-control-table .form-group label
+    {
+          min-width: 80px;
+    }
+    
+    #add_user_btn
+    {
+        margin-top: 1.5em;
+    }
 }
 
 /**
@@ -1030,6 +1058,20 @@ div.panel.disabled a{
 /**
  * 	Login
  */
+
+#profile-img
+{
+    min-height : 80px;    
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1680px) {
+    #profile-img
+    {
+        min-height : 0;    
+    }
+}
+
+
 .login-pannel{
 	margin-top: 40px;
 }

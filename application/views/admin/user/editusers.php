@@ -133,7 +133,7 @@
     </tbody></table><br />
 <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','create')) { ?>
     <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>'form-inline'));?>            
-        <table class='users table table-responsive'><tr class='oddrow'>
+        <table class='users table table-responsive' id="user-control-table"><tr class='oddrow'>
                 <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
                           echo "<td  class='col-md-1'>";
                           echo CHtml::dropDownList('user_type', 'DB', array('DB' => gT("Internal database authentication"), 'LDAP' => gT("LDAP authentication")));
@@ -149,7 +149,7 @@
 
 
                 
-                <td class="col-md-2">
+                <td class="col-lg-2">
                     <div class="form-group">
                         <label for="new_user"><?php eT("Username");?></label>
                         <input type='text' id='new_user' name='new_user' />
@@ -157,7 +157,7 @@
                 </td>
                 <td class="col-md-2">
                     <div class="form-group">
-                        <label for="new_email"><?php eT("Email");?></label>                    
+                        <label for="new_email" ><?php eT("Email");?></label>                    
                         <input type='text' id='new_email' name='new_email' />
                     </div>
                 </td>
@@ -168,7 +168,7 @@
                     </div>
                 </td>
                 <td class="col-md-2">
-                    <input type='submit' class="btn btn-default" value='<?php eT("Add user");?>' />
+                    <input type='submit' id='add_user_btn' class="btn btn-default" value='<?php eT("Add user");?>' />
                     <input type='hidden' name='action' value='adduser' /></td>
                 <td style='width:5%'>&nbsp;</td>
              </tr>

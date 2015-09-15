@@ -1,6 +1,6 @@
 <div class='menubar' id="usergroupbar">
     <div class='row container-fluid'>
-        <div class="col-md-6 col-sm-4">
+        <div class="col-lg-6 col-sm-8">
 
             <!-- Add -->
             <?php if (Permission::model()->hasGlobalPermission('usergroups','create') && isset($usergroupbar['returnbutton']['url'])):?>
@@ -35,7 +35,7 @@
             <?php endif;?>
         </div>
         
-        <div class="col-md-6 col-sm-8 text-right">
+        <div class="col-lg-6 col-sm-4 text-right">
 
             <?php if(isset($usergroupbar['savebutton']['form'])):?>
                 <a class="btn btn-default" href="#" role="button" id="save-form-button" aria-data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
