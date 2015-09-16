@@ -25,7 +25,7 @@ class RankingQuestion extends \Question
     public function getSubQuestions($scale = null) {
         $result = [];
         for ($i = 1; $i <= count($this->answers); $i++) {
-            $result[] = new \SubQuestion($i, $i);
+            $result[] = new \SubQuestion("{$this->title}$i", $i);
         }
         return $result;
     }
