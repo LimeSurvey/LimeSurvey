@@ -103,11 +103,11 @@ function ExpressionManager(vars) {
     this.updateReplacements = function() {
         $('[data-expression]').each(function(i, elem) {
             var $elem = $(elem);
-            var html = that.evaluate($elem.attr('data-expression'));
-            if (html === null) {
+            var text = that.evaluate($elem.attr('data-expression'));
+            if (text === null) {
                 $elem.html('');
             } else {
-                $elem.html(html);
+                $elem.text(text);
             }
 
         });
@@ -182,6 +182,8 @@ function ExpressionManager(vars) {
             case 'NAOK':
                 return vars[code].value;
                 break;
+            case 'relevance':
+                return vars[code].relevance;
             default:
                 console.error('Unknown suffix: ' + suffix);
         }

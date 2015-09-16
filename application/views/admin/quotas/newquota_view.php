@@ -23,7 +23,7 @@
     </ul>
     <div id="tabs"><ul>
             <?php foreach ($langs as $lang) { ?>
-                <li><a href="#tabpage_<?php echo $lang ?>"><?php echo getLanguageNameFromCode($lang,false);
+                <li><a href="#tabpage_<?php echo $lang ?>"><?php $lang;
                         if ($lang==$baselang) {echo '('.gT("Base language").')';} ;?></a></li>
                 <?php } ?>
         </ul>
@@ -38,11 +38,11 @@
                     </li>
                     <li>
                         <label for="quotals_url_<?php echo $lang;?>"><?php eT("URL");?>:</label>
-                        <input id="quotals_url_<?php echo $lang;?>" name="quotals_url_<?php echo $lang;?>" type="text" size="50" maxlength="255" value="<?php echo $thissurvey['url'];?>" />
+                        <input id="quotals_url_<?php echo $lang;?>" name="quotals_url_<?php echo $lang;?>" type="text" size="50" maxlength="255" value="<?php echo '$survey->url';?>" />
                     </li>
                     <li>
                         <label for="quotals_urldescrip_<?php echo $lang;?>"><?php eT("URL description");?>:</label>
-                        <input id="quotals_urldescrip_<?php echo $lang;?>" name="quotals_urldescrip_<?php echo $lang;?>" type="text" size="50" maxlength="255" value="<?php echo $thissurvey['urldescrip'];?>" />
+                        <input id="quotals_urldescrip_<?php echo $lang;?>" name="quotals_urldescrip_<?php echo $lang;?>" type="text" size="50" maxlength="255" value="<?php echo '$survey->url';?>" />
                     </li>
                 </ul>
             </div>

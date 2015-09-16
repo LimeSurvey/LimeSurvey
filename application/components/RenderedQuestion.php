@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: sam
- * Date: 8/22/15
- * Time: 2:31 PM
+ *
+ * This class manages all information needed to render a question.
+ * @todo Remove dependency on $_question.
+ * @todo Remove array access (this was added because it was the way replacements used to work).
  */
 class RenderedQuestion implements ArrayAccess
 {
@@ -35,6 +35,13 @@ class RenderedQuestion implements ArrayAccess
      * @var \Question
      */
     private $_question;
+
+    /**
+     * The html options for this question.
+     * @var array
+     */
+    public $htmlOptions = [];
+
     public function __construct(\Question $question) {
         $this->_question = $question;
     }
@@ -123,6 +130,12 @@ class RenderedQuestion implements ArrayAccess
         $this->_html = $html;
     }
 
+    /**
+     * Gets the replacements for rendering this question.
+     * @return array
+     * @throws CHttpException
+     * @throws Exception
+     */
     protected function getReplacements()
     {
         bP();
@@ -186,9 +199,9 @@ class RenderedQuestion implements ArrayAccess
         $replacements['QUESTION_VALID_MESSAGE'] = $this->getMessages();
 
         // For QUESTION_ESSENTIALS
-        $aHtmlOptions = [];
+        $htmlOptions = $this->htmlOptions;
         if (true !== $relevance = $this->_question->getRelevanceScript()) {
-            $aHtmlOptions['data-relevance-expression'] = $relevance;
+            $htmlOptions['data-relevance-expression'] = $relevance;
         }
 
         // Launch the event
@@ -205,7 +218,7 @@ class RenderedQuestion implements ArrayAccess
         $event->set('help', $replacements['QUESTION_HELP']);
         $event->set('valid_message', $replacements['QUESTION_VALID_MESSAGE']);
         // htmlOptions for container
-        $event->set('aHtmlOptions', $aHtmlOptions);
+        $event->set('htmlOptions', $htmlOptions);
 
         $event->dispatch();
         // User text
@@ -219,8 +232,8 @@ class RenderedQuestion implements ArrayAccess
         $replacements['QUESTION_HELP'] = $event->get('help');
         $replacements['QUESTION_VALID_MESSAGE'] = $event->get('valid_message');
         // Always add id for QUESTION_ESSENTIALS
-        $aHtmlOptions['id'] = "question{$this->_question->primaryKey}";
-        $replacements['QUESTION_ESSENTIALS']= CHtml::renderAttributes($aHtmlOptions);
+        $htmlOptions['id'] = "question{$this->_question->primaryKey}";
+        $replacements['QUESTION_ESSENTIALS']= CHtml::renderAttributes($htmlOptions);
 
         eP();
         return $replacements;

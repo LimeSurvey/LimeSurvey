@@ -89,7 +89,8 @@ class MultipleChoiceQuestion extends ChoiceQuestion
             'id' => "answer$field",
             'value' => 'Y'
         ]);
-        $result .= \TbHtml::label($question->question, "answer$field");
+
+        $result .= \TbHtml::label($this->createReplacements($response, $question->question), "answer$field");
         return $result;
 
     }

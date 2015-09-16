@@ -73,10 +73,6 @@ class Survey_Common_Action extends CAction
             {
                 $this->getController()->error('No permission');
             }
-            else
-            {
-                LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
-            }
         }
 
         // Check if the method is public and of the action class, not its parents
@@ -253,7 +249,6 @@ class Survey_Common_Action extends CAction
 
                 LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl,true);  // so can click on syntax highlighting to edit questions
 
-                $this->_surveybar($aData['surveyid'], !empty($aData['gid']) ? $aData['gid'] : null);
 
                 if (isset($aData['display']['menu_bars']['surveysummary']))
                 {
@@ -280,7 +275,6 @@ class Survey_Common_Action extends CAction
                     }
                 }
 
-                LimeExpressionManager::FinishProcessingPage();
 
             }
         }
@@ -507,141 +501,6 @@ class Survey_Common_Action extends CAction
         $this->getController()->renderPartial('/survey_view', $finaldata);
     }
 
-    /**
-    * Shows admin menu for surveys
-    * @param int Survey id
-    */
-    function _surveybar($iSurveyID, $gid=null)
-    {
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        $condition = array('sid' => $iSurveyID, 'language' => $baselang);
-
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
-        if (is_null($sumresult1))
-        {
-            Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            $this->getController()->redirect(array("admin/index"));
-        } //  if surveyid is invalid then die to prevent errors at a later time
-        $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-        $surveyinfo = array_map('flattenText', $surveyinfo);
-        //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
-        $activated = ($surveyinfo['active'] == 'Y');
-
-        
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveytoolbar.js');
-
-        //Parse data to send to view
-        $aData['surveyinfo'] = $surveyinfo;
-        $aData['surveyid'] = $iSurveyID;
-
-        // ACTIVATE SURVEY BUTTON
-        $aData['activated'] = $activated;
-
-        $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
-
-        //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$iSurveyID} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
-        $sumresult3 = Question::model()->findAllByAttributes($condition); //Checked
-        $sumcount3 = count($sumresult3);
-
-        $aData['canactivate'] = $sumcount3 > 0 && App()->user->checkAccess('surveyactivation', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        $aData['candeactivate'] = App()->user->checkAccess('surveyactivation', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        $aData['expired'] = $surveyinfo['expires'] != '' && ($surveyinfo['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
-        $aData['notstarted'] = ($surveyinfo['startdate'] != '') && ($surveyinfo['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
-
-        // Start of suckerfish menu
-        // TEST BUTTON
-        if (!$activated)
-        {
-            $aData['icontext'] = gT("Test this survey");
-        }
-        else
-        {
-            $aData['icontext'] = gT("Execute this survey");
-        }
-
-        $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
-        $aData['additionallanguages'] = Survey::model()->findByPk($iSurveyID)->getAdditionalLanguages();
-        $aData['languagelist'] =  Survey::model()->findByPk($iSurveyID)->getAllLanguages();
-        $aData['onelanguage']=(count($aData['languagelist'])==1);
-
-
-        $aData['hasadditionallanguages'] = (count($aData['additionallanguages']) > 0);
-
-        // EDIT SURVEY TEXT ELEMENTS BUTTON
-        $aData['surveylocale'] = App()->user->checkAccess('surveylocale', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // EDIT SURVEY SETTINGS BUTTON
-        $aData['surveysettings'] = App()->user->checkAccess('surveysettings', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // Survey permission item
-        $aData['surveysecurity'] = App()->user->checkAccess('surveysecurity', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // CHANGE QUESTION GROUP ORDER BUTTON
-        $aData['surveycontent'] = App()->user->checkAccess('surveycontent', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        $aData['groupsum'] = (getGroupSum($iSurveyID, $surveyinfo['language']) > 1);
-        // SET SURVEY QUOTAS BUTTON
-        $aData['quotas'] = App()->user->checkAccess('quotas', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // Assessment menu item
-        $aData['assessments'] = App()->user->checkAccess('assessments', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // EDIT SURVEY TEXT ELEMENTS BUTTON
-        // End if survey properties
-        // Tools menu item
-        // Delete survey item
-        $aData['surveydelete'] = App()->user->checkAccess('survey', ['crud' => 'delete', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // Translate survey item
-        $aData['surveytranslate'] = App()->user->checkAccess('translations', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // RESET SURVEY LOGIC BUTTON
-        //$sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$iSurveyID"; //Getting a count of conditions for this survey
-        // TMSW Condition->Relevance:  How is conditionscount used?  Should Relevance do the same?
-
-        $iConditionCount = Condition::model()->with(Array('questions'=>array('condition'=>'sid ='.$iSurveyID)))->count();
-
-        $aData['surveycontent'] = App()->user->checkAccess('surveycontent', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        $aData['conditionscount'] = ($iConditionCount > 0);
-        // Eport menu item
-        $aData['surveyexport'] = App()->user->checkAccess('surveycontent', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // PRINTABLE VERSION OF SURVEY BUTTON
-        // SHOW PRINTABLE AND SCANNABLE VERSION OF SURVEY BUTTON
-        //browse responses menu item
-        $aData['respstatsread'] = App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('statistics', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('responses', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // Data entry screen menu item
-        $aData['responsescreate'] = App()->user->checkAccess('responses', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        $aData['responsesread'] = App()->user->checkAccess('responses', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        // TOKEN MANAGEMENT BUTTON
-        $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
-        if(!$bTokenExists)
-            $aData['tokenmanagement'] = App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]);
-        else
-            $aData['tokenmanagement'] = App()->user->checkAccess('surveysettings', ['crud' => 'update', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'create', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'export', 'entity' => 'survey', 'entity_id' => $iSurveyID]) || App()->user->checkAccess('tokens', ['crud' => 'import', 'entity' => 'survey', 'entity_id' => $iSurveyID]); // and export / import ?
-
-        $aData['gid'] = $gid; // = $this->input->post('gid');
-
-        if (App()->user->checkAccess('surveycontent', ['crud' => 'read', 'entity' => 'survey', 'entity_id' => $iSurveyID]))
-        {
-            $aData['permission'] = true;
-        }
-        else
-        {
-            $aData['gid'] = $gid = null;
-            $qid = null;
-            $aData['permission'] = false;
-        }
-
-        if (getGroupListLang($gid, $baselang, $iSurveyID))
-        {
-            $aData['groups'] = getGroupListLang($gid, $baselang, $iSurveyID);
-        }
-        else
-        {
-            $aData['groups'] = "<option>" . gT("None") . "</option>";
-        }
-
-        $aData['GidPrev'] = $GidPrev = getGidPrevious($iSurveyID, $gid);
-
-        $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
-        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
-        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-
-        $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
-    }
 
     /**
     * Show survey summary

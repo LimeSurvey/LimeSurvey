@@ -5,6 +5,7 @@ namespace ls\models\questions;
  * Base class for array questions
  * Class ArrayQuestion
  * @package ls\models\questions
+ * @property string $filterExpression
  */
 abstract class BaseArrayQuestion extends \Question
 {
@@ -43,7 +44,7 @@ abstract class BaseArrayQuestion extends \Question
         foreach ($this->subQuestions as $subQuestion) {
             $result[] = $field = new \QuestionResponseField($this->sgqa . $subQuestion->title, "{$this->title}_{$subQuestion->title}", $this);
 
-            $filter = strtr($this->filterExpression, ['{VALUE}' => $subQuestion->question]);
+            $filter = strtr($this->filterExpression, ['{VALUE}' => explode('|', $subQuestion->question, 2)[0]]);
 
             $script = empty($filter) ? $this->getRelevanceScript(false) : "{$this->getRelevanceScript(false)} && " . $em->getJavascript($filter);
             $field->setRelevanceScript($script);

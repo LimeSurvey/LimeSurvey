@@ -33,7 +33,8 @@
                     'content' => $this->renderPartial('update/presentation', ['question' => $question, 'form' => $form], true),
                 ], [
                     'label' => gT('Timers'),
-                    'content' => "@todo",
+                    'content' => $this->renderPartial('update/timers', ['question' => $question, 'form' => $form], true),
+
                 ], [
                     'label' => gT('Statistics'),
                     'content' => $question->hasProperty('statistics_graphtype') ? $this->renderPartial('update/statistics', ['question' => $question, 'form' => $form], true) : '',

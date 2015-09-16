@@ -383,8 +383,7 @@
                 ['gid', 'exist', 'className' => QuestionGroup::class, 'attributeName' => 'id', 'allowEmpty' => false, 'on' => ['insert', 'update']],
                 ['title', 'required', 'on' => ['update', 'insert']],
                 ['title','length', 'min' => 1, 'max'=>20,'on' => ['update', 'insert']],
-                ['title,question,help', 'LSYii_Validators'],
-                ['other', 'in', 'range' => ['Y','N'], 'allowEmpty' => true],
+                ['title,question,help', LSYii_Validators::class],
                 ['question_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
                 ['scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
                 ['same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true],
@@ -394,10 +393,6 @@
 
             ];
 
-            $aRules[] = ['title', 'match', 'pattern' => '/^[a-z0-9]*$/i',
-                'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
-                'on' => ['updatesub', 'insertsub']
-            ];
             $aRules[] = ['title', CUniqueValidator::class, 'caseSensitive'=>true,
                 'criteria'=>[
                     'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
@@ -1236,7 +1231,35 @@
             return $result;
         }
 
+        /**
+         * Will create span replacements for EM expressions.
+         * @param string $text
+         */
+        protected function createReplacements(\ls\interfaces\iResponse $response, $text) {
+            $em = $this->getExpressionManager($response);
+            $parts = $em->asSplitStringOnExpressions($text);
+            $result = '';
 
+            foreach ($parts as $part) {
+                switch ($part[2]) {
+                    case 'STRING':
+                        $result .= $part[0];
+                        break;
+                    case 'EXPRESSION':
+                        if ($em->RDP_Evaluate(substr($part[0], 1, -1))) {
+                            $value = $em->GetResult();
+                        } else {
+
+                            $value = '';
+                        }
+                        $result .= TbHtml::tag('span', [
+                            'data-expression' => $em->getJavascript(substr($part[0], 1, -1))
+                        ], $value);
+                }
+            }
+            return $result;
+
+        }
         /**
          * This function renders the object.
          * It MUST NOT produce any output.
@@ -1250,36 +1273,18 @@
             bP();
             $result = new \RenderedQuestion($this);
             $result->setIndex($session->getQuestionIndex($this->primaryKey));
-
             $em = $this->getExpressionManager($response);
-            $parts = $em->asSplitStringOnExpressions($this->question);
-            $text = '';
-
-            foreach ($parts as $part) {
-                switch ($part[2]) {
-                    case 'STRING':
-                        $text .= $part[0];
-                        break;
-                    case 'EXPRESSION':
-                        if ($em->RDP_Evaluate(substr($part[0], 1, -1))) {
-                            $value = $em->GetResult();
-                        } else {
-
-                            $value = '';
-                        }
-                        $text .= TbHtml::tag('span', [
-                            'data-expression' => $em->getJavascript(substr($part[0], 1, -1))
-                        ], $value);
-                }
-            }
 
 
-            $result->setQuestionText($text);
+            $result->setQuestionText($this->createReplacements($response, $this->question));
 
             foreach ($this->getValidationExpressions() as $expression => $message) {
                 $result->addValidation($em->getJavascript($expression), $message);
             }
 
+            if ($this->hasAttribute('time_limit')) {
+                $result->htmlOptions['data-time-limit'] = $this->time_limit;
+            }
             eP();
             return $result;
         }
@@ -1315,6 +1320,14 @@
             parent::__construct($scenario);
             $map = array_flip(self::map());
             $this->type = isset($map[static::class]) ? $map[static::class] : null;
+        }
+
+        public function getTimeLimitOptions() {
+            return [
+                1 => gT('Warn and move on'),
+                2 => gT('Move on without warning'),
+                3 => gT('Disable only')
+            ];
         }
 
 

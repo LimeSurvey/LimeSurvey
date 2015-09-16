@@ -26,4 +26,20 @@ class ChoiceQuestion extends \Question
             [['bool_other_comment_mandatory'], 'boolean'],
         ]);
     }
+
+    /**
+     * Returns the fields for this question.
+     * @return QuestionResponseField[]
+     */
+    public function getFields()
+    {
+        $result = parent::getFields();
+        if ($result[0]->getQuestion() == $this) {
+            $result[0]->setLabels(\CHtml::listData($this->answers, 'code', 'answer'));
+        }
+        return $result;
+
+    }
+
+
 }

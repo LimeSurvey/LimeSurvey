@@ -423,7 +423,6 @@ class quotas extends Survey_Common_Action
         $this->_checkPermissions($iSurveyId, 'create');
         $aData = $this->_getData($iSurveyId);
 
-        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['langs'] = $aData['aLangs'];
         $aData['baselang'] = $aData['sBaseLang'];
 
