@@ -759,6 +759,7 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType','Survey');
     $xml->writeElement('DBVersion',\SettingGlobal::get("DBVersion"));
+    $xml->writeElement('version', App()->params['version']);
     $xml->startElement('languages');
     $languages = Survey::model()->findByPk($iSurveyID)->allLanguages;
 
