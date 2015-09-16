@@ -9,6 +9,22 @@ use ls\interfaces\iResponse;
  */
 class MultipleChoiceQuestion extends ChoiceQuestion
 {
+    /**
+     * @param null $scale
+     * @return \ls\interfaces\iAnswer[]
+     */
+    public function getAnswers($scale = null)
+    {
+        $result = [
+            new \QuestionAnswer('N', gT('No')),
+            new \QuestionAnswer('Y', gT('Yes')),
+            new \QuestionAnswer("", gT('No answer'))
+        ];
+
+        return $result;
+    }
+
+
     public function getSubQuestionScales()
     {
         return 1;
@@ -95,6 +111,14 @@ class MultipleChoiceQuestion extends ChoiceQuestion
 
     }
 
+    /**
+     * Does this question support custom subquestions?
+     * @return boolean
+     */
+    public function getHasCustomSubQuestions()
+    {
+        return true;
+    }
 
 
 }

@@ -12,21 +12,23 @@ namespace ls\models\questions;
 class FivePointArrayQuestion extends FixedArrayQuestion
 {
 
+    protected function createAnswers($count = 5) {
+        $answers = [];
+        for ($i = 1; $i <= $count; $i++) {
+            $answers[] = $answer = new \QuestionAnswer($i, $i);
+        }
+        if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
+            $answers[] = new \QuestionAnswer("", gT("No answer"));
+        }
+        return $answers;
+    }
+    /**
+     * @param null $scale
+     * @return \QuestionAnswer[]
+     */
     public function getAnswers($scale = null)
     {
-        $result = [
-            1 => 1,
-            2 => 2,
-            3 => 3,
-            4 => 4,
-            5 => 5,
-            "{TEXTRIGHT}" => true, // right text is placed before no answer column.
-        ];
-
-        if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
-            $result[""] = gT("No answer");
-        }
-        return $result;
+        return $this->createAnswers();
     }
 
     /**

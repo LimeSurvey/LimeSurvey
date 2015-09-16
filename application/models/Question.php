@@ -1,7 +1,4 @@
 <?php
-
-    if (!defined('BASEPATH'))
-        exit('No direct script access allowed');
     /*
     * LimeSurvey
     * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -28,6 +25,7 @@
  * @property boolean $other
  * @property Survey $survey
  * @property-read string $sgqa
+ * @property-read string $displayLabel
  * @property-read QuestionAttribute[] $questionAttributes
  */
     class Question extends ActiveRecord implements \ls\interfaces\iRenderable
@@ -351,7 +349,7 @@
             $alias = $this->getTableAlias();
             return array(
                 'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'on' => "$alias.gid = groups.gid AND $alias.language = groups.language"),
-                'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
+                'parent' => array(self::BELONGS_TO, 'Question', 'parent_qid'),
                 'subQuestions' => array(self::HAS_MANY, 'Question', 'parent_qid'),
                 'questionAttributes' => [self::HAS_MANY, QuestionAttribute::class, 'qid', 'index' => 'attribute'],
                 'group' => [self::BELONGS_TO, 'QuestionGroup', 'gid'],
@@ -881,8 +879,11 @@
          * @return string
          */
         public function getDisplayLabel() {
-            $question = preg_replace('/\s+/', ' ',str_replace(['&nbsp;',"\r", "\n"], [' ', ' ', ' '], strip_tags($this->question)));
-            return "{$this->title} - {$question}";
+            return "{$this->title} - {$this->getShortText()}";
+        }
+
+        public function getShortText() {
+            return preg_replace('/\s+/', ' ',str_replace(['&nbsp;',"\r", "\n"], [' ', ' ', ' '], strip_tags($this->question)));
         }
 
         public function attributeLabels()
@@ -1209,7 +1210,11 @@
             return "<span class='errormandatory'>" . gT('This question is mandatory') . '</span>';
         }
 
-        public function getSubQuestions($scale = null) {
+        /**
+         * @param int $scale
+         * @return \ls\interfaces\iSubQuestion[]
+         */
+        public function getSubQuestions($scale = 0) {
             if (isset($scale)) {
                 $result = array_filter($this->getRelated('subQuestions'), function(Question $subQuestion) use ($scale) {
                     return $scale == $subQuestion->scale_id;
@@ -1220,6 +1225,11 @@
             return $result;
         }
 
+        /**
+         * @param null $scale
+         * @return \ls\interfaces\iAnswer[]
+         * @throws CDbException
+         */
         public function getAnswers($scale = null) {
             if (isset($scale)) {
                 $result = array_filter($this->getRelated('answers'), function(Answer $answer) use ($scale) {
@@ -1330,6 +1340,21 @@
             ];
         }
 
+        /**
+         * Does this question support custom answers?
+         * @return boolean
+         */
+        public function getHasCustomAnswers() {
+            return false;
+        }
+
+        /**
+         * Does this question support custom subquestions?
+         * @return boolean
+         */
+        public function getHasCustomSubQuestions() {
+            return false;
+        }
 
     }
 

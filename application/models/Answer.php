@@ -18,7 +18,7 @@
  * @property Question $question
  * @property string $code
  */
-class Answer extends ActiveRecord
+class Answer extends ActiveRecord implements \ls\interfaces\iAnswer
 {
     /**
      * Returns the setting's table name to be used by the model
@@ -177,6 +177,23 @@ class Answer extends ActiveRecord
         ->where($condition)
         ->order($orderby)
         ->queryAll();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->answer;
+        // TODO: Implement getLabel() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }
 

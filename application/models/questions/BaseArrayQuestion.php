@@ -102,5 +102,14 @@ abstract class BaseArrayQuestion extends \Question
         return $result;
     }
 
+    /**
+     * Does this question support custom subquestions?
+     * @return boolean
+     */
+    public function getHasCustomSubQuestions()
+    {
+        return true;
+    }
+
 
 }

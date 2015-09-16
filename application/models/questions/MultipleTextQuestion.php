@@ -227,5 +227,14 @@ class MultipleTextQuestion extends TextQuestion
         return $html;
     }
 
+    /**
+     * Does this question support custom subquestions?
+     * @return boolean
+     */
+    public function getHasCustomSubQuestions()
+    {
+        return true;
+    }
+
 
 }

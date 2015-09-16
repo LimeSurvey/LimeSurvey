@@ -7,25 +7,27 @@
  */
 
 namespace ls\models\questions;
+use ls\interfaces\iAnswer;
 use ls\interfaces\iResponse;
 
 class FivePointChoiceQuestion extends FixedChoiceQuestion
 {
 
+    /**
+     * @param null $scale
+     * @return iAnswer[];
+     */
     public function getAnswers($scale = null)
     {
-        $result = [
-            1 => 1,
-            2 => 2,
-            3 => 3,
-            4 => 4,
-            5 => 5,
-        ];
 
-        if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
-            $result[""] = gT("No answer");
+        $answers = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $answers[] = $answer = new \QuestionAnswer($i, $i);
         }
-        return $result;
+        if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
+            $result[] = new \QuestionAnswer("", gT("No answer"));
+        }
+        return $answers;
     }
     /**
      * This function return the class by question type

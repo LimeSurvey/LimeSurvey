@@ -8,6 +8,7 @@
 
 namespace ls\models\questions;
 use ls\interfaces\iResponse;
+use ls\interfaces\iSubQuestion;
 
 /**
  * Class FixedArrayQuestion
@@ -24,7 +25,7 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
      */
     public function getAnswerScales()
     {
-        return 0;
+        return 1;
     }
 
 
@@ -70,7 +71,7 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
             . "\t<col class=\"col-answers\" width=\"$width%\" />\n";
 
         $i = 0;
-        foreach($this->getAnswers() as $value => $answer) {
+        foreach($this->getAnswers() as $dummy) {
             $i++;
             $html .= \TbHtml::tag('col', [
                 'class' => $i % 2 ? "odd" : "even",
@@ -82,8 +83,8 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
             . "\t<thead>\n<tr class=\"array1 dontread\">\n"
             . "\t<td>&nbsp;</td>\n";
 
-        foreach($this->getAnswers() as $value => $answer) {
-            $html .= \TbHtml::tag('th', [], $answer);
+        foreach($this->getAnswers() as $answer) {
+            $html .= \TbHtml::tag('th', ['data-code' => $answer->getCode()], $answer->getLabel());
         }
         $html .= "\t<td width='$width%'>&nbsp;</td>\n";
         $html .= "</tr></thead>\n";
@@ -91,10 +92,11 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
         $tableContent = '<tbody>';
         $n=0;
 
+        /** @var iSubQuestion $subQuestion */
         foreach ($this->subQuestions as $subQuestion)
         {
             // We explode to make sure we only get the left part.
-            $relevance = strtr($this->getFilterExpression(), ['{VALUE}' => explode('|', $subQuestion->question)[0]]);
+            $relevance = strtr($this->getFilterExpression(), ['{VALUE}' => explode('|', $subQuestion->getLabel())[0]]);
             $tableContent .= $this->renderSubQuestion($subQuestion, $response, $relevance, count($rightQuestions) > 0);
         }
 
@@ -103,7 +105,7 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
         return $result;
     }
 
-    protected function renderSubQuestion(\Question $subQuestion, iResponse $response, $relevance) {
+    protected function renderSubQuestion(iSubQuestion $subQuestion, iResponse $response, $relevance) {
         bP();
         $result = [];
         $em = $this->getExpressionManager($response);
@@ -111,31 +113,32 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
             'data-relevance-expression' => $em->getJavascript($relevance),
             'data-enabled-expression' => $this->array_filter_style == 1 ? $em->getJavascript($relevance) : null,
         ]);
-        $fieldName = $this->sgqa . $subQuestion->title;
+        $fieldName = $this->sgqa . $subQuestion->getCode();
 
-        $parts = explode('|', $subQuestion->question, 2);
+        $parts = explode('|', $subQuestion->getLabel(), 2);
         $answerText = $parts[0];
 
         // Get array_filter stuff
         $answers = $this->getAnswers();
-        if (!array_key_exists('{TEXTLEFT}', $answers)) {
-            $answers = ['{TEXTLEFT}' => true] + $answers;
-        }
-        if (!array_key_exists('{TEXTRIGHT}', $answers)) {
-            $answers = $answers + ['{TEXTRIGHT}' => true];
-        }
+//        if (!array_key_exists('{TEXTLEFT}', $answers)) {
+//            $answers = ['{TEXTLEFT}' => true] + $answers;
+//        }
+//        if (!array_key_exists('{TEXTRIGHT}', $answers)) {
+//            $answers = $answers + ['{TEXTRIGHT}' => true];
+//        }
 
         bP('aloop');
-        foreach($answers as $value => $answer)
+        $result[] = \TbHtml::tag('th', ['class' => 'answertext'], $answerText);
+        foreach($answers as $answer)
         {
-            if ($value == "{TEXTLEFT}") {
+            if ($answer->getCode() == "{TEXTLEFT}") {
                 $result[] = \TbHtml::tag('th', ['class' => 'answertext'], $answerText);
-            } elseif ($value == "{TEXTRIGHT}") {
+            } elseif ($answer->getCode() == "{TEXTRIGHT}") {
                 $result[] = \TbHtml::tag('th', ['class' => 'answertext'], isset($parts[1]) ? $parts[1] : '');
             } else {
-                $result[] = "\t<td class=\"answer_cell_00$value answer-item radio-item\">\n"
-                    . "\n\t<input class=\"radio\" type=\"radio\" name=\"$fieldName\" id=\"answer$fieldName-$value\" value=\"$value\"";
-                if ($response->$fieldName == $value) {
+                $result[] = "\t<td class=\"answer_cell_00{$answer->getCode()} answer-item radio-item\">\n"
+                    . "\n\t<input class=\"radio\" type=\"radio\" name=\"$fieldName\" id=\"answer$fieldName-{$answer->getCode()}\" value=\"{$answer->getCode()}\"";
+                if ($response->$fieldName == $answer->getCode()) {
                     $result[] = 'checked="checked"';
                 }
                 $result[] = " /></td>\n";
@@ -148,5 +151,15 @@ abstract class FixedArrayQuestion extends BaseArrayQuestion
         eP();
         return implode("\n", $result);
     }
+
+    /**
+     * Does this question support custom answers?
+     * @return boolean
+     */
+    public function getHasCustomAnswers()
+    {
+        return false;
+    }
+
 
 }

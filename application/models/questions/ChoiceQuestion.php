@@ -35,7 +35,7 @@ class ChoiceQuestion extends \Question
     {
         $result = parent::getFields();
         if ($result[0]->getQuestion() == $this) {
-            $result[0]->setLabels(\CHtml::listData($this->answers, 'code', 'answer'));
+            $result[0]->setLabels(\CHtml::listData($this->getAnswers(), 'code', 'answer'));
         }
         return $result;
 

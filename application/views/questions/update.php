@@ -41,12 +41,12 @@
                     'visible' => $question->hasProperty('statistics_graphtype')
                 ], [
                     'label' => gT('Subquestions'),
-                    'visible' => $question->hasSubQuestions,
+                    'visible' => $question->hasCustomSubQuestions,
                     // This will make sure we don't render if the tab is not visible.
                     'content' => $this->renderPartial('update/subquestions', ['question' => $question, 'form' => $form], true),
                 ], [
                     'label' => gT('Answers'),
-                    'visible' => $question->hasAnswers,
+                    'visible' => $question->hasCustomAnswers,
                     // This will make sure we don't render if the tab is not visible.
                     'content' => $this->renderPartial('update/answers', ['question' => $question, 'form' => $form], true),
                 ]

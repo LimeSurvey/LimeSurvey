@@ -8,6 +8,8 @@
 
 namespace ls\models\questions;
 
+use ls\interfaces\iAnswer;
+
 /**
  * Base class for single choice questions without custom answers:
  * (Yes/No, 5 point scale .. )
@@ -23,7 +25,7 @@ abstract class FixedChoiceQuestion extends \Question
      */
     public function getAnswerScales()
     {
-        return 0;
+        return 1;
     }
 
     /**
@@ -47,11 +49,22 @@ abstract class FixedChoiceQuestion extends \Question
     public function render(\ls\interfaces\iResponse $response, \SurveySession $session)
     {
         $result = parent::render($response, $session);
-
-
-        $html = \TbHtml::radioButtonList($this->sgqa, $response->{$this->sgqa}, $this->getAnswers());
+        $html = \TbHtml::radioButtonList($this->sgqa, $response->{$this->sgqa}, \TbHtml::listData($this->getAnswers(), function(iAnswer $answer) {
+            return $answer->getCode();
+        }, function(iAnswer $answer) {
+            return $answer->getLabel();
+        }));
         $result->setHtml($html);
         return $result;
+    }
+
+    /**
+     * Does this question support custom answers?
+     * @return boolean
+     */
+    public function getHasCustomAnswers()
+    {
+        return false;
     }
 
 

@@ -9,22 +9,24 @@
 namespace ls\models\questions;
 
 
+use ls\interfaces\iAnswer;
+
 class YesNoUncertainArrayQuestion extends FixedArrayQuestion
 {
     /**
      * Must return an array of answer options.
-     * @return array
+     * @return iAnswer
      */
     public function getAnswers($scale = null)
     {
         $result = [
-            'Y' => gT("Yes"),
-            'N' => gT("No"),
-            'U' => gT("Uncertain"),
+            new \QuestionAnswer('Y', gT("Yes")),
+            new \QuestionAnswer('N', gT("No")),
+            new \QuestionAnswer('U', gT("Uncertain"))
         ];
 
         if (!$this->bool_mandatory) {
-            $result[""] = gT('No answer');
+            $result[] = new \QuestionAnswer('', gT('No answer'));
         }
 
         return $result;

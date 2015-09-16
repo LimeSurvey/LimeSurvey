@@ -19,13 +19,13 @@ class IncreaseSameDecreaseArrayQuestion extends FixedArrayQuestion
     public function getAnswers($scale = null)
     {
         $result = [
-            'I' => gT("Increase"),
-            'S' => gT("Same"),
-            'D' => gT("Decrease"),
+            new \QuestionAnswer('I', gT("Increase")),
+            new \QuestionAnswer('S', gT("Same")),
+            new \QuestionAnswer('D', gT("Decrease")),
         ];
 
         if (!$this->bool_mandatory) {
-            $result[""] = gT('No answer');
+            $result[] = new \QuestionAnswer('', gT('No answer'));
         }
 
         return $result;

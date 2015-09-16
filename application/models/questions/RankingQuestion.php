@@ -9,6 +9,26 @@ class RankingQuestion extends \Question
         return 1;
     }
 
+    /**
+     * Returns the number of scales for subquestions.
+     * @return int Range: {0, 1, 2}
+     */
+    public function getSubQuestionScales()
+    {
+        return 1;
+    }
+
+
+    /**
+     * @return iSubQuestion[]
+     */
+    public function getSubQuestions($scale = null) {
+        $result = [];
+        for ($i = 1; $i <= count($this->answers); $i++) {
+            $result[] = new \SubQuestion($i, $i);
+        }
+        return $result;
+    }
 
     public function getColumns()
     {

@@ -19,7 +19,9 @@ class LanguageQuestion extends FixedChoiceQuestion {
      */
     public function getAnswers($scale = null)
     {
-        return $this->survey->getAllLanguages();
+        return array_map(function($language) {
+            return new \QuestionAnswer($language, $language);
+        }, $this->survey->getAllLanguages());
     }
 
     /**

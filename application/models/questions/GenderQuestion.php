@@ -9,22 +9,24 @@
 namespace ls\models\questions;
 
 
+use ls\interfaces\iAnswer;
+
 class GenderQuestion extends FixedChoiceQuestion
 {
 
     /**
      * Must return an array of answer options.
-     * @return array
+     * @return iAnswer[]
      */
     public function getAnswers($scale = null)
     {
         $result = [
-            'M' => gT("Male"),
-            'F' => gT("Female"),
+            new \QuestionAnswer('M', gT("Male")),
+            new \QuestionAnswer('F', gT("Female")),
         ];
 
         if (!$this->bool_mandatory) {
-            $result[""] = gT('No answer');
+            $result[] = new \QuestionAnswer('', gT('No answer'));
         }
 
         return $result;

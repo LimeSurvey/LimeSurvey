@@ -9,7 +9,9 @@
 namespace ls\models\questions;
 
 
-class SubQuestion extends \Question {
+use ls\interfaces\iSubQuestion;
+
+class SubQuestion extends \Question implements iSubQuestion {
     /**
      * Returns this model's validation rules
      *
@@ -29,4 +31,19 @@ class SubQuestion extends \Question {
         ];
     }
 
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->getShortText();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return "{$this->parent->title}_{$this->title}";
+    }
 }

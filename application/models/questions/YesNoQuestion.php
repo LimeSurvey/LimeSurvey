@@ -14,17 +14,17 @@ class YesNoQuestion extends FixedChoiceQuestion
 
     /**
      * Must return an array of answer options.
-     * @return array
+     * @return iAnswer
      */
     public function getAnswers($scale = null)
     {
         $result = [
-            'N' => gT('No'),
-            'Y' => gT('Yes'),
+            new \QuestionAnswer('N', gT('No')),
+            new \QuestionAnswer('Y', gT('Yes')),
         ];
 
         if (!$this->bool_mandatory) {
-            $result[""] = gT('No answer');
+            $result[] = new \QuestionAnswer("", gT('No answer'));
         }
 
         return $result;

@@ -9,20 +9,16 @@
 namespace ls\models\questions;
 
 
-class TenPointArrayQuestion extends FixedArrayQuestion
+class TenPointArrayQuestion extends FivePointArrayQuestion
 {
 
+    /**
+     * @param int $scale
+     * @return iAnswer
+     */
     public function getAnswers($scale = null)
     {
-        $result = [];
-        for ($i = 1; $i <= 10; $i++) {
-            $result[$i] = $i;
-        }
-
-        if (!$this->bool_mandatory && $this->survey->bool_shownoanswer) {
-            $result[""] = gT("No answer");
-        }
-        return $result;
+        return $this->createAnswers(10);
     }
 
     public function getClasses()
