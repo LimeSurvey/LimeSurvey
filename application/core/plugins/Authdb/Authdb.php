@@ -58,7 +58,7 @@ class Authdb extends AuthPluginBase
             return;
         }
 
-        $this->setAuthPermission($iNewUID,'auth_db');
+        Permission::model()->setGlobalPermission($iNewUID,'auth_db');
 
         $oEvent->set('newUserID',$iNewUID);
         $oEvent->set('newPassword',$new_pass);

@@ -121,7 +121,7 @@ class Authwebserver extends ls\pluginmanager\AuthPluginBase
             {
                 $permission=new Permission;
                 $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
-                $this->setAuthPermission($oUser->uid,'auth_webserver');
+                Permission::model()->setGlobalPermission($oUser->uid,'auth_webserver');
 
                 // read again user from newly created entry
                 $this->setAuthSuccess($oUser);
