@@ -42,7 +42,7 @@ class Import178 extends BaseElementXmlImport{
     }
 
     protected function importTranslation(TranslatableBehavior $translatable, array $data) {
-        \Yii::beginProfile('importTranslation');
+        bP();
         $translatedFields = [];
         foreach ($translatable->attributes as $attribute) {
             if (isset($data[$attribute])) {
@@ -60,7 +60,7 @@ class Import178 extends BaseElementXmlImport{
             }
 
         }
-        \Yii::endProfile('importTranslation');
+        eP();
         return true;
     }
     protected function prepareGroup(array $data, \Survey $survey) {
@@ -195,7 +195,7 @@ class Import178 extends BaseElementXmlImport{
         /**
          * If we only have 1 language, use it even if it is not the "base" language.
          */
-        \Yii::beginProfile('importQuestion');
+        bP();
         $translations = \TbArray::popValue('translations', $data, []);
         $subQuestions = \TbArray::popValue('subquestions', $data, []);
         $conditions = \TbArray::popValue('conditions', $data, []);
@@ -245,7 +245,7 @@ class Import178 extends BaseElementXmlImport{
             var_dump($question->errors);
             die('failed importing question');
         }
-        \Yii::endProfile('importQuestion');
+        eP();
         return $result;
     }
 

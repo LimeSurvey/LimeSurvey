@@ -1,6 +1,8 @@
 <?php
 namespace ls\import;
 
+use Cake\Utility\Hash;
+
 /**
  * Class BaseElementXmlImport
  * Base class for XML files that use elements only. (Current LSS format)
@@ -21,6 +23,7 @@ abstract class BaseElementXmlImport extends BaseXmlImport
      * @param $data
      */
     protected function constructTree($data) {
+        bP();
         $result = $data['surveys']['rows'][0];
         $result['languagesettings'] = $data['surveys_languagesettings']['rows'];
         $languages = isset($result['additional_languages']) && !empty($result['additional_languages']) ? array_merge([$result['language']], array_filter(explode(' ', $result['additional_languages']))) : [$result['language']];
@@ -31,6 +34,7 @@ abstract class BaseElementXmlImport extends BaseXmlImport
                 $result['groups'][] = $this->constructGroup($group, $result['language'], $data);
             }
         }
+        eP();
         return $result;
     }
 
@@ -60,20 +64,23 @@ abstract class BaseElementXmlImport extends BaseXmlImport
     }
 
     protected  function constructAnswer($answer, $language, $data) {
+        bP();
         // Add translations.
         foreach ($data['answers']['rows'] as $translatedAnswer) {
-            if ($translatedAnswer['qid'] == $answer['qid']
+            if ($this->getCascade($translatedAnswer, ['qid', 'question_id']) == $this->getCascade($answer, ['question_id', 'qid'])
                 && $translatedAnswer['code'] == $answer['code']
-                && $translatedAnswer['language'] != $language
+                && isset($translatedAnswer['language'])
+                && ($translatedAnswer['language']) != $language
             ) {
                 $answer['translations'][] = $translatedAnswer;
             }
         }
+        eP();
         return $answer;
     }
     protected function constructQuestion($question, $language, $data)
     {
-
+        bP();
         // Add translations.
         $questions = isset($data['subquestions']) ? array_merge($data['subquestions']['rows'], $data['questions']['rows']) : $data['questions']['rows'];
         foreach ($questions as $translatedQuestion) {
@@ -95,8 +102,8 @@ abstract class BaseElementXmlImport extends BaseXmlImport
         // Add answers
         if (isset($data['answers'])) {
             foreach ($data['answers']['rows'] as $answer) {
-                if ($answer['qid'] == $question['qid']
-                    && $answer['language'] == $language
+                if ($this->getCascade($answer, ['qid', 'question_id']) == $question['qid']
+                    && (!isset($answer['language']) || $answer['language']) == $language
                 ) {
                     $question['answers'][] = $this->constructAnswer($answer, $language, $data);
                 }
@@ -116,6 +123,7 @@ abstract class BaseElementXmlImport extends BaseXmlImport
                 $question[$attribute['attribute']] = $attribute['value'];
             }
         }
+        eP();
         return $question;
     }
 
@@ -129,6 +137,7 @@ abstract class BaseElementXmlImport extends BaseXmlImport
      * @param $data
      */
     protected function constructGroup($group, $language, $data) {
+        bP();
         // Add translations.
         foreach($data['groups']['rows'] as $translatedGroup) {
 
@@ -161,7 +170,18 @@ abstract class BaseElementXmlImport extends BaseXmlImport
 
 
         }
+        eP();
         return $group;
 
+    }
+
+    // Some helper functions.
+    protected function getCascade(array $array, array $keys) {
+        foreach($keys as $key) {
+            if (isset($array[$key])) {
+                return $array[$key];
+            }
+        }
+        throw new \Exception('Key not found');
     }
 }
