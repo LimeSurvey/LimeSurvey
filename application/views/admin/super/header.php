@@ -906,11 +906,8 @@ table.cke_editor
   }
 }	
 
-
-
-
-
-.side-menu{
+.side-menu
+{
     left: 0px;
 }
 
@@ -924,16 +921,15 @@ table.cke_editor
 	position : relative;
 	color: #fff;
 	padding: 0.5em;
-	background-color: #328637;
+	/* background-color: #328637; */
+	color: #333333;
+	border-bottom: solid 2px #328637;
 	margin-bottom : 1em;
-
     -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 1s; /* Firefox < 16 */
         -ms-animation: fadein 1s; /* Internet Explorer */
          -o-animation: fadein 1s; /* Opera < 12.1 */
             animation: fadein 1s;
-
-	
 }
 
 .tab-content{
