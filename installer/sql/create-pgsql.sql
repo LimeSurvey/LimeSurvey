@@ -288,7 +288,7 @@ CREATE TABLE prefix_questions (
     scale_id integer DEFAULT 0 NOT NULL,
     same_default integer DEFAULT 0 NOT NULL,
     relevance text,
-    CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language")
+    CONSTRAINT prefix_questions_pkey PRIMARY KEY ("language",qid)
 );
 
 
@@ -576,4 +576,4 @@ create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, u
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '178');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '179');

@@ -283,7 +283,7 @@ CREATE TABLE [prefix_questions] (
 [scale_id] int NOT NULL default '0',
 [same_default] int NOT NULL default '0',
 [relevance] varchar(max) NULL,
-PRIMARY KEY  ([qid],[language])
+PRIMARY KEY  ([language],[qid])
 );
 
 --
@@ -566,4 +566,4 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '178');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '179');
