@@ -626,7 +626,7 @@ class dataentry extends Survey_Common_Action
                     //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                     if(isset($fname['qid']) && isset($fname['type']))
                     {
-                        $qidattributes = getQuestionAttributeValues($fname['qid'], $fname['type']);
+                        $qidattributes = getQuestionAttributeValues($fname['qid']);
                     }
                     switch ($fname['type'])
                     {
@@ -1420,7 +1420,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     {
-                        $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
+                        $qidattributes = getQuestionAttributeValues($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
                         $this->getController()->loadLibrary('Date_Time_Converter');
@@ -1685,7 +1685,7 @@ class dataentry extends Survey_Common_Action
                             elseif ($irow['type'] == 'D')
                             {
                                 Yii::app()->loadLibrary('Date_Time_Converter');
-                                $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
+                                $qidattributes = getQuestionAttributeValues($irow['qid']);
                                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                                 $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                                 $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
@@ -1938,7 +1938,7 @@ class dataentry extends Survey_Common_Action
                 foreach ($deqrows as $deqrow)
                 {
                     $cdata = array();
-                    $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
+                    $qidattributes = getQuestionAttributeValues($deqrow['qid']);
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?

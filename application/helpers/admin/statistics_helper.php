@@ -2697,7 +2697,7 @@ class statistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($outputs['parentqid'], substr($rt, 0, 1));
+        $aattr = getQuestionAttributeValues($outputs['parentqid']);
 
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
@@ -2754,7 +2754,7 @@ class statistics_helper {
                         case 'html':
                             $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
 
-                            $aattr = getQuestionAttributeValues($qqid, $firstletter);
+                            $aattr = getQuestionAttributeValues($qqid);
                             if ($bShowMap) {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 

@@ -1737,7 +1737,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         {
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y")
                             {
-                                $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
+                                $aAttributes=getQuestionAttributeValues($field['qid']);
                                 $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
                                 $total=$total+(int)$aAttributes['assessment_value'];
                             }

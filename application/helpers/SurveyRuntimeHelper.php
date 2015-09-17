@@ -830,7 +830,7 @@ class SurveyRuntimeHelper {
                     {
                         continue;
                     }
-                    $qidattributes = getQuestionAttributeValues($ia[0], $ia[4]);
+                    $qidattributes = getQuestionAttributeValues($ia[0]);
                     if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
                     {
                         continue;
