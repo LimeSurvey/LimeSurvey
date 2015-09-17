@@ -2150,7 +2150,7 @@ class statistics_helper {
             }    //end else -> noncompleted NOT checked
         }
 
-        // For multi question type, we have to check non completed with ALL sub question set to NULL
+        // For multiple choice question type, we have to check non completed with ALL sub question set to NULL
         if(($outputs['qtype'] == "M") or ($outputs['qtype'] == "P"))
         {
             $criteria = new CDbCriteria;
@@ -2196,6 +2196,7 @@ class statistics_helper {
                         $fname=$statlang->gT("Not displayed");
                     }
                     $label[]= $fname;
+                    $lbl[$fname] = $multiNotDisplayed;
                     //we need some data
                     if ($results > 0)
                     {
