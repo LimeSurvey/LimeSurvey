@@ -36,7 +36,7 @@ class questiongroups extends Survey_Common_Action
     function import()
     {
         $action = $_POST['action'];
-        $surveyid = $_POST['sid'];
+        $surveyid = (int)$_POST['sid'];
         $clang = $this->getController()->lang;
 
         if ($action == 'importgroup')

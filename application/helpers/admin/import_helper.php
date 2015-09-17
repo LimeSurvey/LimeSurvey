@@ -779,7 +779,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $clang = Yii::app()->lang;
 
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
-
+    $iNewSID = (int)$iNewSID;
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
     $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($iNewSID)->additionalLanguages);
