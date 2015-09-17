@@ -35,7 +35,7 @@ class RDataWriter extends CsvWriter {
      */
     protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions, $column = null) {
         switch ($fieldType) {
-            case 'C':       // Yes/no/uncertain
+            case 'C':       // Yes/No/Uncertain
                 if ($value == 'Y') {
                     return 1;
                 } elseif ($value == 'N') {
@@ -45,7 +45,7 @@ class RDataWriter extends CsvWriter {
                 }
                 break;
 
-            case 'E':       // Increase/same/decrease
+            case 'E':       // Increase/Same/Decrease
                 if ($value == 'I') {
                     return 1;
                 } elseif ($value == 'S') {
@@ -82,11 +82,11 @@ class RDataWriter extends CsvWriter {
                 }
                 break;
 
-            case 'Y':       // Yes no question
+            case 'Y':       // Yes/No question
                 if ($value == 'Y') {
-                    return 2;
-                } elseif ($value == 'N') {
                     return 1;
+                } elseif ($value == 'N') {
+                    return 2;
                 } else {
                     // No data, probably a hidden question
                     return $this->na;
