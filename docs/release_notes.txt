@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.05+! 
+Welcome to LimeSurvey v2.051+! 
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -9,6 +9,7 @@ incidental or consequential damages arising out of the use or inability to use t
 (including but not limited to loss of data or data being rendered inaccurate or losses sustained 
 by you or third parties or a failure of the program to operate with any other programs).
 
+Will maintain compatibility with PHP 5.3.0 / 5.3.1
 
 HOW TO INSTALL
 ---------------
@@ -59,6 +60,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.05+ (unreleased build 20150606) to 2.051 (unreleased build 20150917)
+
+2015-09-17 Bug #8446 fixed. Forum topic https://www.limesurvey.org/en/forum/can-i-do-this-with-limesurvey/95421-bug-in-second-language-need-help-we-must-go-online-soon
+2015-09-17 Set version to 2.051 in new branch
+
+Changes from 2.05+ (build 150520) to 2.05+ (unreleased build 20150606) just before merge of v2.06 into the master branch
+2015-06-06 Dev: fixed PHP notice $clang (always) Dev: Polish (Informal) is pl-informal
+2015-06-04 Fixed issue #08554: Hover over answers no longer showing value
+2015-06-04 Fixed issue #09660: Outdated title and broken title in Array question type
+2015-05-31 Fixed issue #9625: Missing the Group Description in Print/Export PDF
+2015-05-22 Updated translations for various languages
+2015-05-22 Fixed issue #09399: Slide bar hide the last participant record. Dev: Remove borders from table rows (causing overflow)
+2015-05-21 Dev: Allow upload of txt and md files
 
 Changes from 2.05+ (build 150508) to 2.05+ (build 150520) May 20, 2015
 -New translation: Kyrgyz (Carsten Schmitz)
