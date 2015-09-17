@@ -1339,7 +1339,7 @@ function do_date($ia)
                 </script>";
         }
 
-        if (trim($aQuestionAttributes['hide_tip'])==1) {
+        if (trim($aQuestionAttributes['hide_tip'])==0) {
             $answer.="<p class=\"tip\">".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."</p>";
         }
         //App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]})",CClientScript::POS_END);// Beter if just afetre answers part
