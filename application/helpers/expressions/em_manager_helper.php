@@ -3102,7 +3102,7 @@
                             'atleast_1' => $this->gT("Please select at least one answer"),
                             'atmost_m' => $this->gT("Please select at most %s answers"),
                             'atmost_1' => $this->gT("Please select at most one answer"),
-                            '1' => $this->gT("Please select at most one answer"),
+                            '1' => $this->gT("Please select one answer"),
                             'n' => $this->gT("Please select %s answers"),
                             'between' => $this->gT("Please select between %s and %s answers")
                         );
