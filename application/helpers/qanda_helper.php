@@ -966,7 +966,7 @@ function do_date($ia)
         };";
     App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'/jstoolbox/date.js');
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("third_party").'jstoolbox/date.js');
     $checkconditionFunction = "checkconditions";
 
     $dateformatdetails = getDateFormatDataForQID($aQuestionAttributes,$thissurvey);
