@@ -102,7 +102,7 @@ tr.info, tr.danger {
  */
 
 .navbar-brand, .navbar a, .navbar .dropdown-menu > li > a {
-  font-weight: 200;
+  font-weight: 400;
 }
 
 /**
@@ -347,6 +347,10 @@ body {
   background-color : #fff;
  		  
 }
+
+.side-menu .navbar-default .navbar-nav > li > a {
+ color: rgb(0, 46, 3);    
+}
 .side-menu .navbar {
   border: none;
 	background-color : #fff;
@@ -369,7 +373,7 @@ body {
 .side-menu .navbar-nav li a .glyphicon {
   padding-right: 10px;
 }
-.side-menu #dropdown {
+.side-menu #dropdown, #explorer, .dropdownstyle {
   border: 0;
   margin-bottom: 0;
   border-radius: 0;
@@ -377,15 +381,96 @@ body {
   box-shadow: none;
 }
 
-.side-menu #dropdown>a:hover, .sidemenuscontainer li:hover, .side-menu #dropdown a[aria-expanded="true"] {
-  color: #fff;
+
+
+.side-menu .navbar-nav .active a, .side-menu #dropdown li.active:hover {
+  cursor : default;
+  background-color: transparent;
+  color : #19691E;
+  margin-right: -1px;
+  border-right: 5px solid #e7e7e7;
+}
+
+/* Collapse active, hover, etc.  */
+.side-menu .navbar-nav .active a:hover, 
+#sideMenu .side-menu .dropdownlvl1 > a:hover, 
+#sideMenu .sidemenuscontainer li:hover,  
+#sideMenu .sidemenuscontainer li:hover>a, 
+#sideMenu  a[aria-expanded="true"] {
+  color: #ffffff;
   font-weight: 700;
   background-color: #19691E;
 }
 
+#explorer-container {
+    max-height: 270px; 
+    overflow-y: scroll;    
+}
 
-.side-menu #dropdown > a{
-	color: #19691E;
+#sideMenu, .side-body {
+    min-height: 700px;
+}
+
+
+/* Collapse 2nd level Explorer */
+#sideMenu #dropdown li .active a:hover, 
+#sideMenu #dropdown li > a:hover, 
+#sideMenu #dropdown li:hover,  
+#sideMenu #dropdown li:hover>a, 
+#sideMenu #dropdown li a[aria-expanded="true"] 
+{
+  width: 100%
+  font-weight: 700;
+  background-color:  #4d8c55;
+}
+
+ #explorer ul{
+     font-size: 0.9em;
+ }
+
+#explorer .questiongroupdropdown li a
+{
+    color: black;
+}
+/* Collapse 2nd level Explorer */
+#sideMenu #dropdown #explorer li .active a:hover, 
+#sideMenu #dropdown #explorer li > a:hover, 
+#sideMenu #dropdown #explorer li:hover,  
+#sideMenu #dropdown #explorer li:hover>a, 
+#sideMenu #dropdown #explorer li a[aria-expanded="true"] 
+{
+  font-weight: 700;
+  background-color: #659c6c;
+   
+}
+
+/* Collapse 2nd level Explorer */
+#sideMenu #dropdown #explorer .questiongroupdropdown li .active a:hover, 
+#sideMenu #dropdown #explorer .questiongroupdropdown li > a:hover, 
+#sideMenu #dropdown #explorer .questiongroupdropdown li:hover,  
+#sideMenu #dropdown #explorer .questiongroupdropdown li:hover>a, 
+#sideMenu #dropdown #explorer .questiongroupdropdown li a[aria-expanded="true"] 
+{
+  font-weight: 700;
+  background-color: #a6c4a9;
+/*rgba(19, 102, 29, 0.2)*/
+}
+
+
+#sideMenu {
+    overflow: hidden;
+}
+
+.question-group-collapse-title 
+{
+    display: block;
+    padding-left: 20px;
+} 
+
+.question-collapse-title
+{
+    display: block;
+    padding-left: 30px;    
 }
 
 .side-menu #dropdown li:hover, .toWhite a:hover{
@@ -401,16 +486,6 @@ body {
 	background-color: transparent;
 }
 
-
-.side-menu .navbar-nav .active a,.side-menu .navbar-nav .active a:hover, .side-menu #dropdown li.active:hover {
-  cursor : default;
-  background-color: transparent;
-  color : #19691E;
-  font-weight: 300;
-  margin-right: -1px;
-  border-right: 5px solid #e7e7e7;
-}
-
 .side-menu .navbar-nav .active, .side-menu .navbar-nav .active:hover {
   background-color: transparent;
   margin-right: -1px;
@@ -422,6 +497,19 @@ body {
   float: right;
   margin: 9px 5px 0;
 }
+
+.side-menu #explorer-collapse .caret, .side-menu #dropdown .question-group-collapse .caret {
+    float: none;
+    margin-bottom: 9px;
+}
+
+.caret-right {
+  border-left: 4px solid @black;
+  border-right: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
 
  #sort-questions-button {
   float: right;
@@ -467,7 +555,9 @@ body {
   margin-left: -15px;
 }
 .side-menu #dropdown .panel-body .panel-body li {
-  padding-left: 30px;
+ /* margin-left: 30px;
+  IKII
+  * */
 }
 .side-menu #dropdown .panel-body .panel-body li:last-child {
   border-bottom: 1px solid #e7e7e7;

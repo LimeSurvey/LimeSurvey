@@ -15,6 +15,8 @@
 
     class QuestionGroup extends LSActiveRecord
     {
+        
+        public $aQuestions; // to stock array of questions of the group
         /**
         * Returns the static model of Settings table
         *

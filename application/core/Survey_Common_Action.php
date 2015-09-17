@@ -844,11 +844,8 @@ class Survey_Common_Action extends CAction
 	 */
 	function _surveysidemenu($aData)
 	{
-			
 		$iSurveyID = $aData['surveyid'];
-		
 		// TODO : create subfunctions
-		
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
@@ -861,15 +858,12 @@ class Survey_Common_Action extends CAction
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $aData['activated'] = ($surveyinfo['active'] == 'Y');
 
-
-
         $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
+
         if(!$bTokenExists)
             $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
         else
             $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export') || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'import'); // and export / import ?
-
-            
             
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
@@ -882,9 +876,18 @@ class Survey_Common_Action extends CAction
             $qid = null;
             $aData['permission'] = false;
         }            
-        		
-        		
-		
+
+        // Question explorer
+        
+        $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
+        if(count($aGroups))
+        {
+            foreach($aGroups as $group)
+            {
+                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$sumresult1->defaultlanguage->surveyls_language));
+            }
+        }
+        $aData['aGroups'] = $aGroups;		
 		$aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
 		$this->getController()->renderPartial("/admin/super/sidemenu", $aData);
 	}

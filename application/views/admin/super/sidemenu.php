@@ -3,17 +3,14 @@
     * This file render the sidemenu
     */
 ?>
+    <!-- State when page is loaded : for JavaScript-->
+	<?php if(isset($sidebar['state'])):?>
+	   <input type="hidden" id="close-side-bar" />
+	<?php endif;?>
 
-
-			<!-- State when page is loaded : for JavaScript-->
-			<?php if(isset($sidebar['state'])):?>
-				<input type="hidden" id="close-side-bar" />
-			<?php endif;?>
-
-    <!-- uncomment code for absolute positioning tweek see top comment in css -->
     <div class="absolute-wrapper"> </div> 
     <!-- Menu -->
-    <div class="side-menu col-lg-4 offset-0">
+    <div class="side-menu col-lg-4 offset-0" id="sideMenu">
     
     <nav class="navbar navbar-default" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -53,28 +50,79 @@
 			</li>			
 
             <!-- Question & Groups-->
-            <li class="panel panel-default" id="dropdown">
+            <li class="panel panel-default dropdownlvl1" id="dropdown">
                 <a data-toggle="collapse" id="questions-groups-collapse" href="#dropdown-lvl1" <?php if( isset($sidebar["questiongroups"]) ) echo 'aria-expanded="true"'; ?>  >
                     <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Question and Groups:');?> 
                     <!-- <span class="glyphicon glyphicon-sort-by-order" id="sort-questions-button" aria-url="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>" ></span>-->
                    <span class="caret"></span>
                 </a>
+                
                 <!-- Dropdown level 1 -->
                 <div id="dropdown-lvl1" class="panel-collapse collapse <?php if( isset($sidebar["questiongroups"]) || isset($sidebar["listquestions"]) || 1==1 ) echo 'in'; ?>"  <?php if( isset($sidebar["questiongroups"]) || isset($sidebar["listquestions"]) ) echo 'aria-expanded="true"'; ?> >
                     <div class="panel-body">
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav dropdown-first-level">
 
-						<?php if(isset($sidebar['group_name'])):?>
-							<li class="toWhite active">
-								<a href="#">
-									<?php eT("Question group :");?><br/>
-									&nbsp; <?php echo $sidebar['group_name'];?>
-								</a>
-							</li>
-						<?php endif;?>
-                        	
+                            <!-- Explorer -->
+                            <li class="panel panel-default" id="explorer" class="dropdownlvl2 dropdownstyle">
+                                <a data-toggle="collapse" id="explorer-collapse" href="#explorer-lvl1">
+                                    <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions explorer');?> 
+                                   <span class="caret" ></span>
+                                </a>
+                            
+                                <div id="explorer-lvl1" class="panel-collapse collapse" >
+                                    <div class="panel-body">
+                                        <ul class="nav navbar-nav dropdown-first-level" id="explorer-container">
+                                            <?php if(count($aGroups)):?>
+                                                <?php foreach($aGroups as $aGroup):?>
+                                                    <li class="panel panel-default dropdownstyle" id="">
+                                                        <!-- Group Name -->
+                                                        <a data-toggle="collapse" id="" href="#questiongroup-<?php echo $aGroup->gid; ?>" class="question-group-collapse">
+                                                           <span class="question-group-collapse-title"><?php echo $aGroup->group_name;?><span class="caret"></span></span>
+                                                        </a>
+                                    
+                                                        <div id="questiongroup-<?php echo $aGroup->gid; ?>" class="panel-collapse collapse questiongroupdropdown" >
+                                                            <div class="panel-body">
+                                                                <ul class="nav navbar-nav dropdown-first-level">
+                                                                    
+                                                                    <?php if(count($aGroup['aQuestions'])):?>
+                                                                        <?php foreach($aGroup['aQuestions'] as $question):?>
+                                                                        
+                                                                        <!-- Question  -->
+                                                                        <li class="toWhite">
+                                                                            <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$surveyid/gid/".$aGroup->gid."/qid/".$question->qid); ?>"">
+                                                                                <span class="question-collapse-title">
+                                                                                    <span class="glyphicon glyphicon-list"></span>
+                                                                                    <?php echo $question->title;?> 
+                                                                                </span>
+                                                                            </a>
+                                                                        </li>
+                                                                        <?php endforeach; ?>
+                                                                    <?php else:?>
+                                                                        <li class="toWhite">
+                                                                            <a href="" onclick="event.preventDefault();" style="cursor: default;">
+                                                                                <?php eT('no questions in this group');?>
+                                                                            </a>
+                                                                        </li>
+                                                                    <?php endif;?>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach;?>
+                                            <?php else:?>
+                                            <li class="toWhite">
+                                                <a href="" onclick="event.preventDefault();" style="cursor: default;">
+                                                    <?php eT('No question group in this survey');?>
+                                                </a>
+                                            </li>                    
+                                            <?php endif;?>
+                                        </ul>
+                                    </div>    
+                            </li>
+                            
+
 			            <?php if($permission):?>
-			            	<!-- Groups -->
+			            	<!-- List Groups -->
 			            	<li class="toWhite <?php if( isset($sidebar["listquestiongroups"]) ) echo 'active'; ?>">
 			            		<!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
 				            	<a href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
@@ -83,7 +131,7 @@
 				            	</a>
 			            	</li>
 			            	
-							<!-- Questions -->
+							<!-- List Questions -->
 							<li class="toWhite <?php if( isset($sidebar["listquestions"]) ) echo 'active'; ?>">
 								<a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
 									<span class="glyphicon glyphicon-list"></span>
@@ -92,8 +140,9 @@
 							</li>			            	
 			            <?php endif; ?>			                                  	
 
+                        <!-- Organize questions -->
 			            <?php if($surveycontent):?>
-			            <?php if ($activated):?>
+                            <?php if ($activated):?>
 			                    <li class="disabled">
 			                    	<a href='#'>
 			                    		<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/organize_disabled.png" title='' alt='<?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>' />
@@ -107,7 +156,7 @@
 			                            <?php eT("Reorder question groups / questions"); ?>
 			                        </a>
 			                    </li>
-			                    <?php endif; ?>
+                            <?php endif; ?>
 			            <?php endif;?>  
                         	
                             
@@ -115,7 +164,6 @@
                     </div>
                 </div>
             </li>
-
 
 			<!-- Token -->
             <?php if($tokenmanagement):?> 
@@ -126,7 +174,6 @@
 	            	</a>
             	</li>
             <?php endif; ?>			            
-
 
 			<!-- Survey List -->
             	<li class="toWhite" >
