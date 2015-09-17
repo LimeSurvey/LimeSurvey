@@ -4,13 +4,33 @@
     */
     
 ?>
+
         <div class="side-body">
         	<h3><?php eT('Question Groups in this survey'); ?></h3>
 			<div class="row">
 				<div class="col-lg-12 content-right">
+				    
+
+<div class="form">
+<?php $form=$this->beginWidget('CActiveForm', array(
+    'action' => Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid),
+    'method' => 'get',
+)); ?>
+<div class="row">
+<?php echo $form->label($model, 'name'); ?>
+<?php echo $form->textField($model, 'group_name'); ?>
+</div>
+<div class="row buttons">
+<?php echo CHtml::submitButton('Search'); ?>
+</div>
+<?php $this->endWidget(); ?>
+</div><!-- form -->				    
+				    
+				    
+				    
 		        	<?php
 						$this->widget('bootstrap.widgets.TbGridView', array(
-							'dataProvider' => $groupsDatas,
+							'dataProvider' => $model->search(),
 							'columns' => array(
 
 								array(            

@@ -1,4 +1,4 @@
-<div id="notif-container" class="col-lg-12 content-right" style="padding-top: 1em; z-index: 10100">
+<div id="notif-container" class="col-lg-12 content-right" style="z-index: 10100">
     <?php foreach($aMessage as $message):?>
         <?php if(!isset($message['type'])): ?>
             <div class="alert alert-success alert-dismissible" role="alert">

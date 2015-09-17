@@ -27,30 +27,27 @@
 
 	<div class="row">
 		<div class="col-lg-12 content-right">
-
-
-<div id="updaterWrap">
-	<div id="preUpdaterContainer">
-	<!-- The check buttons : render by ajax only if no step is required by url or post -->
-	<?php // $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
-	<?php 	
-		if( $serverAnswer->result )
-		{
-			unset($serverAnswer->result);
-			$this->renderPartial('./update/check_updates/update_buttons/_updatesavailable', array('updateInfos' => $serverAnswer));
-		}
-		else 
-		{
-			// Error : we build the error title and messages 
-			$this->renderPartial('./update/check_updates/update_buttons/_updatesavailable_error', array('serverAnswer' => $serverAnswer));			
-		}
-	?>
-	</div>
-	
-	<!-- The updater  -->
-	<?php $this->renderPartial("./update/updater/_updater"); ?> 
-</div>
-
+            <div id="updaterWrap">
+            	<div id="preUpdaterContainer">
+            	<!-- The check buttons : render by ajax only if no step is required by url or post -->
+            	<?php // $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
+            	<?php 	
+            		if( $serverAnswer->result )
+            		{
+            			unset($serverAnswer->result);
+            			$this->renderPartial('./update/check_updates/update_buttons/_updatesavailable', array('updateInfos' => $serverAnswer));
+            		}
+            		else 
+            		{
+            			// Error : we build the error title and messages 
+            			$this->renderPartial('./update/check_updates/update_buttons/_updatesavailable_error', array('serverAnswer' => $serverAnswer));			
+            		}
+            	?>
+            	</div>
+            	
+            	<!-- The updater  -->
+            	<?php $this->renderPartial("./update/updater/_updater"); ?> 
+            </div>
 		</div>
 	</div>
 </div>

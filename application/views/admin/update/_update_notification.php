@@ -9,7 +9,7 @@
 ?>
 <?php $urlUpdate = Yii::app()->createUrl("admin/update"); ?>
 
-<div class="col-lg-12 content-right" id="update-container">
+<div class="col-lg-12" id="update-container">
 
 <?php if($security_update_available):?>
 <div class="alert alert-warning alert-dismissible" role="alert" id="alert-security-update">

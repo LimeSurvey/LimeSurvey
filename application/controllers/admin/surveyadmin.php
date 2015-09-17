@@ -64,7 +64,9 @@ class SurveyAdmin extends Survey_Common_Action
         if (count(getSurveyList(true)) == 0)
         {
             $this->_renderWrappedTemplate('super', 'firststeps');
-        } else {
+        } 
+        else 
+        {
             Yii::app()->loadHelper('surveytranslator');
 
             $aData['issuperadmin'] = false;
@@ -72,7 +74,6 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 $aData['issuperadmin'] = true;
             }
-
 
 			$sort = new CSort();
 			$sort->attributes = array(
@@ -441,46 +442,20 @@ class SurveyAdmin extends Survey_Common_Action
 		$aData['sidebar']['questiongroups'] = true;
 		$aData['sidebar']['listquestiongroups'] = true;
 		$aData['surveybar']['buttons']['newgroup']=true;
-//		$aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
-//		$aData['surveybar']['returnbutton']['text'] = gT('return to survey list');		
-
-		$baselang = Survey::model()->findByPk($iSurveyID)->language;
-
-		$sort = new CSort();
-		$sort->attributes = array(
-		  'Group id'=>array(
-		    'asc'=>'gid',
-		    'desc'=>'gid desc',
-		  ),
-		  'Group Order'=>array(
-		    'asc'=>'group_order',
-		    'desc'=>'group_order desc',
-		  ),
-		  'Group Name'=>array(
-		    'asc'=>'group_name',
-		    'desc'=>'group_name desc',
-		  ),		  
-		);
-
-		$dataProvider=new CActiveDataProvider('QuestionGroup', array(
-		    'criteria'=>array(
-		        'condition'=>'sid=:surveyid AND language=:language',
-		        'params'=>array(':surveyid'=>$iSurveyID,':language'=>$baselang)
-		    ),
-		    
-			'sort'=>$sort,
-			
-		    'pagination'=>array(
-		        'pageSize'=>10,
-		    ),
-		));
-
-
-		$aData['groupsDatas'] = $dataProvider;
-
 		$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 		$aData["surveyinfo"] = $surveyinfo;		
 		$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        $model = new QuestionGroup('search');
+
+        if (isset($_GET['QuestionGroup'])) 
+        {
+            $model->attributes = $_GET['QuestionGroup'];
+        }
+
+        $model['sid'] = $iSurveyID;
+        $model['language'] = $baselang;
+        $aData['model']=$model;
 
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }

@@ -198,5 +198,43 @@
 			$button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
 			return $button;
 		}
+
+
+
+        public function search()
+        {
+            $sort = new CSort();
+            $sort->attributes = array(
+              'Group id'=>array(
+                'asc'=>'gid',
+                'desc'=>'gid desc',
+              ),
+              'Group Order'=>array(
+                'asc'=>'group_order',
+                'desc'=>'group_order desc',
+              ),
+              'Group Name'=>array(
+                'asc'=>'group_name',
+                'desc'=>'group_name desc',
+              ),          
+            );
+            
+            $criteria = new CDbCriteria;
+            $criteria->condition='sid=:surveyid AND language=:language';
+            $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
+            $criteria->compare('group_name', $this->group_name, true);
+                                    
+            $dataProvider=new CActiveDataProvider(get_class($this), array(
+                    'criteria'=>$criteria,
+                    
+                'sort'=>$sort,
+                
+                'pagination'=>array(
+                    'pageSize'=>10,
+                ),
+            ));
+            return $dataProvider;
+        }
+
     }
 ?>
