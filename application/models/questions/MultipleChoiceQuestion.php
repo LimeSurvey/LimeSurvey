@@ -18,10 +18,18 @@ class MultipleChoiceQuestion extends ChoiceQuestion
         $result = [
             new \QuestionAnswer('N', gT('No')),
             new \QuestionAnswer('Y', gT('Yes')),
-            new \QuestionAnswer("", gT('No answer'))
         ];
 
         return $result;
+    }
+
+    /**
+     * Returns the number of scales for answers.
+     * @return int Range: {0, 1, 2}
+     */
+    public function getAnswerScales()
+    {
+        return 1;
     }
 
 

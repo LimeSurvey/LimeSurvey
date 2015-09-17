@@ -44,7 +44,7 @@
         "bower-asset/js-cookie" : "2.*",
         "bower-asset/tablesorter" : "2.*",
         "bower-asset/leaflet": "0.7.3",
-        "sam-it/yii1-bootstrap-treeview": "dev-master"
+        "sam-it/yii1-bootstrap-treeview": "0.*"
     },
     "autoload" : {
         "classmap" : [
