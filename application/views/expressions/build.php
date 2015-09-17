@@ -1,3 +1,6 @@
+<div class="row">
+    <div class="col-md-3">
+
 <?php
 $tree = [];
 /** @var Survey $survey */
@@ -15,16 +18,16 @@ foreach($survey->groups as $group) {
                         return [
                             'text' => $answer->getLabel(),
                             'icon' => 'asterisk',
-                            'tags' => ["{$subQuestion->getCode()} == \"{$answer->getCode()}\""]
+                            'data' => "({$subQuestion->getCode()} == \"{$answer->getCode()}\")"
                         ];
 
                     }, $question->getAnswers()));
                 }
-
                 $node = [
                     'text' => $subQuestion->getLabel(),
                     'children' => $question->hasAnswers ? $children : null,
-                    'icon' => !$question->hasAnswers ? 'pencil' : 'th-list'
+                    'icon' => !$question->hasAnswers ? 'pencil' : 'th-list',
+                    'data' => !$question->hasAnswers ? "({$subQuestion->getCode()} == \"{VALUE}\")" : null
                 ];
 
                 $subQuestions[] = $node;
@@ -38,7 +41,7 @@ foreach($survey->groups as $group) {
                 return [
                     'text' => $answer->getLabel(),
                     'icon' => 'asterisk',
-                    'tags' => ["{$question->title} == \"{$answer->getCode()}\""]
+                    'data' => "({$question->title} == \"{$answer->getCode()}\")"
                 ];
 
             }, $question->getAnswers()));
@@ -51,7 +54,8 @@ foreach($survey->groups as $group) {
         } else {
             $groupTree[] = [
                 'text' => $question->getDisplayLabel(),
-                'icon' => 'pencil'
+                'icon' => 'pencil',
+                'data' => "({$question->title} == \"{VALUE}\")"
             ];
 
         }
@@ -64,9 +68,57 @@ foreach($survey->groups as $group) {
 //vdd($tree);
 //
 $this->widget(\SamIT\Yii1\Widgets\BootstrapTreeView::class, [
-    'data' => [[
-        'text' => 'Survey',
-        'children' => $tree,
-    ]],
-    'enableLinks' => false
-]);
+    'data' => $tree,
+    'enableLinks' => false,
+    'levels' => 1,
+    'id' => 'tree',
+    'multiSelect' => true,
+    'htmlOptions' => [
+        'data-test' => '123'
+    ]
+]);?>
+    </div>
+    <div class="col-md-6 expressions" id="expressions">
+<?php
+
+
+
+?>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        console.log('adding event');
+        function addExpression(expression, nodeId) {
+            console.log('Adding expression');
+            $('<span>').text(expression).attr('id', "expression" + nodeId).appendTo('#expressions');
+        }
+        $('#tree').on('nodeSelected', function (e, node) {
+            if (node.data.indexOf('{VALUE}') > -1) {
+                var $tree = $(this);
+                bootbox.prompt("Please enter a value for " + node.text + ":", function (result) {
+                    if (result == null) {
+                        $tree.treeview('unselectNode', node.nodeId, {silent: true});
+                    } else {
+                        addExpression(node.data.replace('{VALUE}', result), node.nodeId);
+                    }
+                });
+            } else {
+                addExpression(node.data, node.nodeId);
+            }
+        });
+        $('#tree').on('nodeUnselected', function (e, node) {
+            $('#expression' + node.nodeId).remove();
+        });
+
+
+
+    });
+</script>
+<style>
+    .expressions span:not(:first-child)::before {
+        content: " && ";
+    }
+
+</style>
