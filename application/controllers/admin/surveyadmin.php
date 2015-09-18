@@ -453,6 +453,11 @@ class SurveyAdmin extends Survey_Common_Action
             $model->attributes = $_GET['QuestionGroup'];
         }
 
+        if (isset($_GET['pageSize'])) 
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+        }
+
         $model['sid'] = $iSurveyID;
         $model['language'] = $baselang;
         $aData['model']=$model;

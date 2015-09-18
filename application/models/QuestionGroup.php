@@ -203,6 +203,8 @@
 
         public function search()
         {
+            $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+            
             $sort = new CSort();
             $sort->attributes = array(
               'Group id'=>array(
@@ -230,7 +232,7 @@
                 'sort'=>$sort,
                 
                 'pagination'=>array(
-                    'pageSize'=>10,
+                    'pageSize'=>$pageSize,
                 ),
             ));
             return $dataProvider;

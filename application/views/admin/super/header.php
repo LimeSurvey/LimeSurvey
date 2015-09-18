@@ -1055,7 +1055,6 @@ div.panel.disabled a{
 /**
  * 	Edit group
  */
-
 #edit-group .tab-pane
 {
 	padding: 1em;
@@ -1069,73 +1068,79 @@ div.panel.disabled a{
 /**
  * 	Edit question
  */
-
 #edit-question-body
 {
 	min-height: 1200px;
 }
 
+
+
 /**
  * 	Animations
  */
-
-
-@keyframes fadein {
+@keyframes fadein 
+{
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
 /* Firefox < 16 */
-@-moz-keyframes fadein {
+@-moz-keyframes fadein 
+{
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
 /* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadein {
+@-webkit-keyframes fadein 
+{
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
 /* Internet Explorer */
-@-ms-keyframes fadein {
+@-ms-keyframes fadein 
+{
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
 /* Opera < 12.1 */
-@-o-keyframes fadein {
+@-o-keyframes fadein 
+{
     from { opacity: 0; }
     to   { opacity: 1; }
 }
 
-
-
-
-@keyframes slidefromtop {
+@keyframes slidefromtop 
+{
 	from { top: -15px;}
 	to { top: 0px;}
 }
 
 /* Firefox < 16 */
-@-moz-keyframes  slidefromtop {
+@-moz-keyframes  slidefromtop 
+{
 	from { top: -15px;}
 	to { top: 0px;}
 }
 
-@-webkit-keyframes  slidefromtop {
+@-webkit-keyframes  slidefromtop 
+{
 	from { top: -15px;}
 	to { top: 0px;}
 }
  
 /* Internet Explorer */
-@-ms-keyframes  slidefromtop {
+@-ms-keyframes  slidefromtop 
+{
 	from { top: -15px;}
 	to { top: 0px;}
 }
 
 /* Opera < 12.1 */
-@-o-keyframes  slidefromtop {
+@-o-keyframes  slidefromtop 
+{
 	from { top: -15px;}
 	to { top: 0px;}
 }
@@ -1150,7 +1155,8 @@ div.panel.disabled a{
     min-height : 80px;    
 }
 
-@media screen and (min-width: 1280px) and (max-width: 1680px) {
+@media screen and (min-width: 1280px) and (max-width: 1680px) 
+{
     #profile-img
     {
         min-height : 0;    
@@ -1158,7 +1164,8 @@ div.panel.disabled a{
 }
 
 
-.login-pannel{
+.login-pannel
+{
 	margin-top: 40px;
 }
 
@@ -1166,18 +1173,21 @@ div.panel.disabled a{
 	margin-bottom: 0px;
 }
 
-.login-title {
+.login-title 
+{
 	border-bottom : solid 1px #DADADA; 
 }
 
-.login-content {
+.login-content 
+{
 	
 	text-align : left;
 	padding : 1em;
 }
 
 
-.login-submit {
+.login-submit 
+{
 	border-top : solid 1px #DADADA;
 	text-align: right; 
 }
@@ -1189,13 +1199,15 @@ div.panel.disabled a{
 }
 
 
-.side-body, .full-page-wrapper{
+.side-body, .full-page-wrapper
+{
 	position : relative;
 	margin-bottom : 65px;
 }
 
 
-.message-box{
+.message-box
+{
 	border : 1px solid #89C68D;
 	color : #2D2D2D;
 
@@ -1215,11 +1227,13 @@ div.panel.disabled a{
 }
 
 
-.panel-clickable:hover{
+.panel-clickable:hover
+{
     cursor: pointer; cursor: hand; 
 }
 
-.pagination {
+.pagination 
+{
     font-size: 1.2em;
 }
 </style>
@@ -1233,7 +1247,6 @@ div.panel.disabled a{
 
 
 <script>
-
 // MegaMenu
 $(document).ready(function(){
     
@@ -1451,16 +1464,6 @@ $('#collapseOne').on('hide.bs.collapse', function () {
 
 
 var frameSrc = "/login";
-
-$('#openBtn').click(function(){
-
-});
-	
-	
-	
-
-
-
 </script>
 
 
