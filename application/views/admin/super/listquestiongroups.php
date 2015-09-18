@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <?php echo CHtml::submitButton('Search', array('class'=>'btn btn-success')); ?>
-                                    <input type="button" class="btn btn-warning" value="reset" />
+                                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('reset');?></a>
                                 </div>
                             </div>
                         <?php $this->endWidget(); ?>

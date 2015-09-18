@@ -4,93 +4,125 @@
     */
     
 ?>
-        <div class="side-body">
-        	<h3><?php eT('Questions in this survey'); ?></h3>
-		
-			<div class="row">
-				<div class="col-lg-12 content-right">
-		        	<?php
-						$this->widget('bootstrap.widgets.TbGridView', array(
-							'dataProvider' => $questionsDatas,
-							'columns' => array(
-								array(
-									'name' => 'Question id',
-									'value'=>'$data->qid',
-									'htmlOptions' => array('class' => 'col-md-1'),
-								),
-								array(
-									'name' => 'Question order',
-									'value'=>'$data->question_order',
-									'htmlOptions' => array('class' => 'col-md-2'),
-								),															
-								array(
-									'name' => 'Title',
-									'value'=>'$data->title',
-									'htmlOptions' => array('class' => 'col-md-1'),
-								),
-								array(
-									'name' => 'Question',
-									'value'=>'$data->question',
-								),
-								array(
-									'name' => 'Group',
-									//'value'=>'$data->groupName',
-									'value'=>'$data->groups->group_name',
-									'htmlOptions' => array('class' => 'col-md-2'),
-								),				
+<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
-								array(            
-								    'name'=>'',
-								    'type'=>'raw',
-								    'value'=>'$data->buttons',
-								    'htmlOptions' => array('class' => 'col-md-2 text-right'),
-								),	
-																												
-							),
-							'ajaxUpdate' => false,
-							/*
-							'columns' => array(
+<div class="side-body">
+	<h3><?php eT('Questions in this survey'); ?></h3>
 
-								array(            
-								    'name'=>'Group id',
-								    'value'=>'$data->gid',
-								    'htmlOptions' => array('class' => 'col-md-1'),
-								),
+	<div class="row">
+		<div class="col-lg-12 content-right">
+
+            <!-- Search Box -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form">
+                        <!-- Begin Form -->
+                        <?php $form=$this->beginWidget('CActiveForm', array(
+                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid),
+                            'method' => 'get',
+                                'htmlOptions'=>array(
+                                    'class'=>'form-horizontal',
+                                ),
+                        )); ?>
+                        
+                            <!-- search input -->
+                            <div class="form-group">
+                                <?php echo $form->label($model, 'filter: ', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
+                                <div class="col-sm-2 text-right">
+                                    <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
+                                </div>
+                            </div>
+
+                            <!-- select group -->
+                            <div class="form-group">
+                                <?php echo $form->label($model, 'Group:', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
+                                <div class="col-sm-2 text-right">
+                                    <select name="group_name" class="form-control">
+                                        <option value=""><?php eT('select a question group');?></option>
+                                        <?php foreach($model->AllGroups as $group): ?>
+                                            <option value="<?php echo $group->group_name;?>" <?php if( $group->group_name == $model->group_name){echo 'selected';} ?>>
+                                                <?php echo $group->group_name;?>
+                                            </option>
+                                        <?php endforeach?>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <?php echo CHtml::submitButton('Search', array('class'=>'btn btn-success')); ?>
+                                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('reset');?></a>
+                                </div>
+                            </div>
+                            
+                        <?php $this->endWidget(); ?>
+                    </div><!-- form -->                 
+                </div>
+            </div>
+		    
+		    <!-- Grid -->
+        	<?php
+				$this->widget('bootstrap.widgets.TbGridView', array(
+					'dataProvider' => $model->search(),
+					'id' => 'question-grid',
+                    
+                    // Number of row per page selection
+                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .
+                        CHtml::dropDownList(
+                            'pageSize',
+                            $pageSize,
+                            Yii::app()->params['pageSizeOptions'],
+                            array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')) .
+                        gT(' rows per page'),					
+					
+					'columns' => array(
+						array(
+							'name' => 'Question id',
+							'value'=>'$data->qid',
+							'htmlOptions' => array('class' => 'col-md-1'),
+						),
+						array(
+							'name' => 'Question order',
+							'value'=>'$data->question_order',
+							'htmlOptions' => array('class' => 'col-md-2'),
+						),															
+						array(
+							'name' => 'Title',
+							'value'=>'$data->title',
+							'htmlOptions' => array('class' => 'col-md-1'),
+						),
+						array(
+							'name' => 'Question',
+							'value'=>'$data->question',
+						),
+						array(
+							'name' => 'Group',
+							//'value'=>'$data->groupName',
+							'value'=>'$data->groups->group_name',
+							'htmlOptions' => array('class' => 'col-md-2'),
+						),				
+
+						array(            
+						    'name'=>'',
+						    'type'=>'raw',
+						    'value'=>'$data->buttons',
+						    'htmlOptions' => array('class' => 'col-md-2 text-right'),
+						),	
+																										
+					),
+					'ajaxUpdate' => false,
+   				)); 
+        	?>
+		</div>
+	</div>
+</div>
 
 
-								array(            
-								    'name'=>'Group Order',
-								    'value'=>'$data->group_order',
-								    'htmlOptions' => array('class' => 'col-md-1'),
-								),
-
-								array(            
-								    'name'=>'Group Name',
-								    'value'=>'$data->group_name',
-								    'htmlOptions' => array('class' => 'col-md-2'),
-								),
-
-								array(            
-								    'name'=>'Description',
-								    'type'=>'raw',
-								    'value'=>'$data->description',
-								    'htmlOptions' => array('class' => 'col-md-2'),
-								),
-																								
-		  					),
-
-							'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
-							'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-		  					'ajaxUpdate' => true,
-		  					 */
-		   				)); 
-		        	?>
-				</div>
-			</div>
-        </div>
-
-
-
+<!-- To update rows per page via ajax -->
+<script type="text/javascript">
+jQuery(function($) {
+jQuery(document).on("change", '#pageSize', function(){
+    $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
+    });
+});
+</script>    
 
 
 

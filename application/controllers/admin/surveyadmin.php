@@ -486,8 +486,6 @@ class SurveyAdmin extends Survey_Common_Action
 
 		$survey = Survey::model()->findByPk($iSurveyID);
 
-		
-
         $aData['surveyid'] = $iSurveyID;
 		$aData['display']['menu_bars']['listquestions'] = true;
 		$aData['sidebar']['listquestions'] = true;

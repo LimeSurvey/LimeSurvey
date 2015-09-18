@@ -18,6 +18,9 @@
 
     class Question extends LSActiveRecord
     {
+        
+        // Stock the active group_name for questions list filtering
+        public $group_name; 
 
         /**
         * Returns the static model of Settings table
@@ -702,6 +705,15 @@
             };
         }
 
+        /**
+         * Return all group of the active survey
+         * Used to render group filter in questions list
+         */        
+        public function getAllGroups()
+        {
+             return QuestionGroup::model()->findAll("sid=:sid",array(':sid'=>$this->sid));
+        }
+
 		public function getbuttons()
 		{
 			
@@ -716,6 +728,58 @@
 			$button .= '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
 			return $button;
 		}
-    }
 
-?>
+
+        public function search()
+        {
+            $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
+            $sort = new CSort();
+            $sort->attributes = array(
+              'Question id'=>array(
+                'asc'=>'qid',
+                'desc'=>'qid desc',
+              ),
+              'Question order'=>array(
+                'asc'=>'question_order',
+                'desc'=>'question_order desc',
+              ),
+              'Title'=>array(
+                'asc'=>'title',
+                'desc'=>'title desc',
+              ),
+              'Question'=>array(
+                'asc'=>'question',
+                'desc'=>'question desc',
+              ),         
+    
+              'Group'=>array(
+                'asc'=>'groups.group_name',
+                'desc'=>'groups.group_name desc',
+              ),                          
+            );
+
+            $criteria = new CDbCriteria;
+            $criteria->condition='t.sid=:surveyid AND t.language=:language';
+            $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language));
+            $criteria->join='LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language )';
+            
+            if($this->group_name != '')
+            {
+                $criteria->addCondition('groups.group_name = :group_name');
+                $criteria->params=(array(':surveyid'=>$this->sid,':language'=>$this->language, ':group_name'=>$this->group_name));
+            }
+            
+            $criteria->compare('title', $this->title, true, 'AND');
+            $criteria->compare('question', $this->title, true, 'OR');
+            
+            $dataProvider=new CActiveDataProvider('Question', array(
+                'criteria'=>$criteria,
+                'sort'=>$sort,
+                'pagination'=>array(
+                    'pageSize'=>$pageSize,
+                ),
+            ));
+            return $dataProvider;
+        }
+    }

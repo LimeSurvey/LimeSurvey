@@ -908,50 +908,32 @@ class Survey_Common_Action extends CAction
 			$iSurveyID = $aData['surveyid'];
 			$baselang = Survey::model()->findByPk($iSurveyID)->language;
 	
-			$sort = new CSort();
-			$sort->attributes = array(
-			  'Question id'=>array(
-			    'asc'=>'qid',
-			    'desc'=>'qid desc',
-			  ),
-			  'Question order'=>array(
-			    'asc'=>'question_order',
-			    'desc'=>'question_order desc',
-			  ),
-			  'Title'=>array(
-			    'asc'=>'title',
-			    'desc'=>'title desc',
-			  ),
-			  'Question'=>array(
-			    'asc'=>'question',
-			    'desc'=>'question desc',
-			  ),		 
-	
-			  'Group'=>array(
-			    'asc'=>'groups.group_name',
-			    'desc'=>'groups.group_name desc',
-			  ),		 		   		  
-			);
-		
+            // The DataProvider will be build from the Question model, search method
+            $model = new Question('search');
+    
+            // Global filter
+            if (isset($_GET['Question'])) 
+            {
+                $model->attributes = $_GET['Question'];
+            }
 
-
-			$dataProvider=new CActiveDataProvider('Question', array(
-			    'criteria'=>array(
-			        'condition'=>'t.sid=:surveyid AND t.language=:language',
-			        'params'=>array(':surveyid'=>$iSurveyID,':language'=>$baselang),
-					'join' => 'LEFT JOIN {{groups}} AS groups ON ( groups.gid = t.gid AND t.language = groups.language )',
-			    ),
-			    
-				'sort'=>$sort,
-				
-			    'pagination'=>array(
-			        'pageSize'=>15,
-			    ),
-			));
-	
-	
-	
-			$aData['questionsDatas'] = $dataProvider;
+            // Filter group
+            if (isset($_GET['group_name']))
+            {
+                $model->group_name = $_GET['group_name'];
+            }   
+             
+            // Set number of page             
+            if (isset($_GET['pageSize'])) 
+            {
+                Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            }
+    
+            // We filter the current survey id
+            $model['sid'] = $iSurveyID;
+            $model['language'] = $baselang;
+            $aData['model']=$model;	
+	        
 			$this->getController()->renderPartial("/admin/super/listquestions", $aData);		
 		}
 	}
