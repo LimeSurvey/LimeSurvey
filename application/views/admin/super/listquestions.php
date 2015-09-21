@@ -27,7 +27,7 @@
                         
                             <!-- search input -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'filter: ', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
+                                <?php echo $form->label($model, 'search: ', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
                                 <div class="col-sm-2 text-right">
                                     <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
                                 </div>
@@ -38,7 +38,7 @@
                                 <?php echo $form->label($model, 'Group:', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
                                 <div class="col-sm-2 text-right">
                                     <select name="group_name" class="form-control">
-                                        <option value=""><?php eT('select a question group');?></option>
+                                        <option value=""><?php eT('any group');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
                                             <option value="<?php echo $group->group_name;?>" <?php if( $group->group_name == $model->group_name){echo 'selected';} ?>>
                                                 <?php echo $group->group_name;?>
@@ -61,9 +61,9 @@
         	<?php
 				$this->widget('bootstrap.widgets.TbGridView', array(
 					'dataProvider' => $model->search(),
-					'id' => 'question-grid',
-                    
+
                     // Number of row per page selection
+                    'id' => 'question-grid',
                     'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .
                         CHtml::dropDownList(
                             'pageSize',

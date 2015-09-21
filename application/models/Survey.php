@@ -27,8 +27,9 @@ class Survey extends LSActiveRecord
     protected $findByPkCache = array();
     /* Set some setting not by default database */
     public $format = 'G';
-	public $full_answers_account; 
-	public $partial_answers_account;	
+	public $full_answers_account=null; 
+	public $partial_answers_account=null;	
+    public $searched_value;
 
     /**
      * init to set default
@@ -636,75 +637,71 @@ class Survey extends LSActiveRecord
 		return $button;
 	}		
 
-	public function search()
-	{
-		$criteria=new CDbCriteria;
- 
- 		
-		
+    public function search()
+    {
+        $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+        
+        $sort = new CSort();
+        $sort->attributes = array(
+          'Survey id'=>array(
+            'asc'=>'sid',
+            'desc'=>'sid desc',
+          ),
+          'Title'=>array(
+            'asc'=>'surveys_languagesettings.surveyls_title',
+            'desc'=>'surveys_languagesettings.surveyls_title desc',
+          ),
+        
+          'Creation date'=>array(
+            'asc'=>'datecreated',
+            'desc'=>'datecreated desc',
+          ),
+        
+          'Owner'=>array(
+            'asc'=>'users.users_name',
+            'desc'=>'users.users_name desc',
+          ),
+        
+          'Anonymized responses'=>array(
+            'asc'=>'anonymized',
+            'desc'=>'anonymized desc',
+          ),
+        
+          'Active'=>array(
+            'asc'=>'active',
+            'desc'=>'active desc',
+          ),
+          
+        );
+        
+        $criteria = new CDbCriteria;
 
- 
-		// select
-		$criteria->select = array(
-		    '*',
-		    $this->getCountFullAnswers() . " as full_answers_account",
-		    $this->getCountPartialAnswers() . " as partial_answers_account",
-		);
-		
+        // select
+        $criteria->select = array(
+            '*',
+            $this->getCountFullAnswers() . " as full_answers_account",
+            $this->getCountPartialAnswers() . " as partial_answers_account",
+        );
+        
 
-		$criteria->join = 'LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
-		$criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
-		
-		
-		// where
-		//$criteria->compare($this->getCountTotalAnswers, $this->full_answers_account);
-
-
-		$sort = new CSort();
-		$sort->attributes = array(
-		  'Survey id'=>array(
-		    'asc'=>'sid',
-		    'desc'=>'sid desc',
-		  ),
-		  'Title'=>array(
-		    'asc'=>'surveys_languagesettings.surveyls_title',
-		    'desc'=>'surveys_languagesettings.surveyls_title desc',
-		  ),
-		
-		  'Creation date'=>array(
-		    'asc'=>'datecreated',
-		    'desc'=>'datecreated desc',
-		  ),
-		
-		  'Owner'=>array(
-		    'asc'=>'users.users_name',
-		    'desc'=>'users.users_name desc',
-		  ),
-		
-		  'Anonymized responses'=>array(
-		    'asc'=>'anonymized',
-		    'desc'=>'anonymized desc',
-		  ),
-		
-		  'Full Answers'=>array(
-		    'asc'=>'full_answers_account',
-		    'desc'=>'full_answers_account desc',
-		  ),			  			  			  			  
-		);
-
-		
-		return new CActiveDataProvider(get_class($this), array(
-		    'criteria' => $criteria,
-			'sort'=>$sort,
-			
-		    'pagination'=>array(
-		        'pageSize'=>15,
-		    ),
-
-		    'pagination' => array(
-		        'pageSize' => 20,
-		    ),
-		));
-		}
-		
+        $criteria->join  ='LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
+        $criteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
+        $criteria->compare('active', $this->active, true, 'AND');
+        $criteria->compare('surveys_languagesettings.surveyls_title', $this->searched_value, true, 'AND');
+        $criteria->compare('sid', $this->searched_value, true, 'OR');
+        $criteria->compare('admin', $this->searched_value, true, 'OR');
+       
+                    
+        $dataProvider=new CActiveDataProvider('Survey', array(
+        
+            'sort'=>$sort,
+            'criteria'=>$criteria,
+        
+            'pagination'=>array(
+                'pageSize'=>$pageSize,
+            ),
+        ));
+        
+        return $dataProvider;        
+    }
 }

@@ -7,7 +7,6 @@
  * @var $surveyid int 
  */
 ?>
-
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="side-body">
 	<h3><?php eT('Question Groups in this survey'); ?></h3>

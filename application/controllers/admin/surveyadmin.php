@@ -75,86 +75,28 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['issuperadmin'] = true;
             }
 
-			$sort = new CSort();
-			$sort->attributes = array(
-			  'Survey id'=>array(
-			    'asc'=>'sid',
-			    'desc'=>'sid desc',
-			  ),
-			  'Title'=>array(
-			    'asc'=>'surveys_languagesettings.surveyls_title',
-			    'desc'=>'surveys_languagesettings.surveyls_title desc',
-			  ),
+			$aData['model'] = $model =  new Survey('search');
 
-			  'Creation date'=>array(
-			    'asc'=>'datecreated',
-			    'desc'=>'datecreated desc',
-			  ),
-
-			  'Owner'=>array(
-			    'asc'=>'users.users_name',
-			    'desc'=>'users.users_name desc',
-			  ),
-
-			  'Anonymized responses'=>array(
-			    'asc'=>'anonymized',
-			    'desc'=>'anonymized desc',
-			  ),
-
-			  'Active'=>array(
-			    'asc'=>'active',
-			    'desc'=>'active desc',
-			  ),
-			  
-			  'Partial'=>array(
-			    'asc'=>'countPartialAnswers',
-			    'desc'=>'CountPartialAnswers desc',
-			  ),			  			  			  			  
-			);
-
-			$criteria = new CDbCriteria;
-			//$criteria->addCondition("active = 'Y'");
-			$criteria->join  ='LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
-			$criteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
-
-			$dataProvider=new CActiveDataProvider('Survey', array(
+            // Search
+            if (isset($_GET['Survey']['searched_value']))
+            {
+                $model->searched_value = $_GET['Survey']['searched_value'];
+            }
+            
+            // Filter state
+            if (isset($_GET['active']))
+            {
+                $model->active = $_GET['active'];
+            }
+                           
+            // Set number of page             
+            if (isset($_GET['pageSize'])) 
+            {
+                Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            }
+            
 			
-				'sort'=>$sort,
-				'criteria'=>$criteria,
-
-			    'pagination'=>array(
-			        'pageSize'=>10,
-			    ),
-			));
-			
-			$aData['surveysDatas'] = $dataProvider;
-			
-			$aData['model'] = Survey::model();
-			
-			$ucriteria = new CDbCriteria;
-		    $ucriteria->select = array(
-		        '*',
-		    );			
-			$ucriteria->addCondition("active = 'N'");
-			$ucriteria->join  ='LEFT JOIN {{surveys_languagesettings}} AS surveys_languagesettings ON ( surveys_languagesettings.surveyls_language = t.language AND t.sid = surveys_languagesettings.surveyls_survey_id )';
-			$ucriteria->join .='LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
-
-
-			$udataProvider=new CActiveDataProvider('Survey', array(
-			
-				'sort'=>$sort,
-				'criteria'=>$ucriteria,
-
-			    'pagination'=>array(
-			        'pageSize'=>10,
-			    ),
-			));
-			
-			$aData['usurveysDatas'] = $udataProvider;
-
             $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
-
-
 			
         }		
 	}

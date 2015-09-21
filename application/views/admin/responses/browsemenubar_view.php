@@ -73,14 +73,11 @@
             <?php endif;?>
 
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')): ?>
-       
-                
                 <!-- Get statistics from these responses -->                
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>' role="button">
                     <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/statistics.png" />
                     <?php eT("Statistics"); ?>
                 </a>                                
-                
                 
                 <!-- Get time statistics from these responses -->
                 <?php if ($thissurvey['savetimings'] == "Y"):?>
