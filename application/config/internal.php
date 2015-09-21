@@ -19,6 +19,22 @@ $internalConfig = array(
     'name' => 'LimeSurvey',
     'localeClass' =>  'LSYii_Locale',
     'defaultController' => 'surveys',
+
+    'aliases' => array(
+        // yiistrap configuration
+        'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
+        'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../extensions/bootstrap'),
+        // yiiwheels configuration
+        'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
+        
+        'vendor.twbs.bootstrap.dist'        
+    ),
+
+    'params'=>array(
+        'defaultPageSize'=>5,
+        'pageSizeOptions'=>array(5=>5,10=>10,20=>20,50=>50,100=>100),    
+    ),
+    
     'import' => array(
         'application.core.*',
         'application.core.db.*',
