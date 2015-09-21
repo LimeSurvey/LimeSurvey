@@ -5236,30 +5236,7 @@ function updateCheck()
         Yii::app()->setFlashMessage(sprintf(gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
         $aUpdateVersions=array();
     }
-    if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
-    {
-        $sUpdateNotificationType = getGlobalSetting('updatenotification');
-        switch ($sUpdateNotificationType)
-        {
-            case 'stable':
-                // Only show update if in stable (master) branch
-                if (isset($aUpdateVersions['master'])) {
-                    $aUpdateVersion=$aUpdateVersions['master'];
-                    $aUpdateVersions=array_intersect_key($aUpdateVersions,array('master'=>'1'));
-                }
-                break;
 
-            case 'both':
-                // Show first available update
-                $aUpdateVersion=reset($aUpdateVersions);
-                break;
-
-            default:
-                // Never show a notification
-                $aUpdateVersions=array();
-                break;
-        }
-    }
 
     setGlobalSetting('updateversions',json_encode($aUpdateVersions));
 
