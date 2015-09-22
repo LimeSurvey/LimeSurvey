@@ -6066,7 +6066,8 @@
                     {
                         // Relevance of subquestion for ranking question depend of the count of relevance of answers.
                         $iCountRank=(isset($iCountRank) ? $iCountRank+1 : 1);
-                        $iCountRelevant=isset($iCountRelevant) ? $iCountRelevant : count(array_filter($LEM->subQrelInfo[$qid],function($sqRankAnwsers){ return $sqRankAnwsers['result']; }));
+                        // Relevant count is : Total answers less Unrelevant answers. subQrelInfo give only array with relevance equation, not this without any relevance.
+                        $iCountRelevant=isset($iCountRelevant) ? $iCountRelevant : count($sgqas)-count(array_filter($LEM->subQrelInfo[$qid],function($sqRankAnwsers){ return !$sqRankAnwsers['result']; })); 
                         if($iCountRank >  $iCountRelevant)
                         {
                             $foundSQrelevance=true;
@@ -6076,6 +6077,7 @@
                         {
                             $relevantSQs[] = $sgqa;
                         }
+                        // This just remove the last ranking : don't control validity of answers done: user can rank unrelevant answers .... See Bug #09774
                         continue;
                     }
 
