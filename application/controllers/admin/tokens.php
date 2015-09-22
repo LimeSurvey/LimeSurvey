@@ -1210,6 +1210,7 @@ class tokens extends Survey_Common_Action
 
         // find out the existing token attribute fieldnames
         $tokenattributefieldnames = getAttributeFieldNames($iSurveyId);
+
         $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
         $fieldcontents = array();
         $captions = array();
@@ -1222,9 +1223,8 @@ class tokens extends Survey_Common_Action
             'cpdbmap' => Yii::app()->request->getPost('cpdbmap_' . $fieldname)
             );
             foreach ($languages as $language)
-                $captions[$language][$fieldname] = $_POST["caption_{$fieldname}_$language"];
+                $captions[$language][$fieldname] = Yii::app()->request->getPost("caption_{$fieldname}_$language");
         }
-
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
         foreach ($languages as $language)
         {
@@ -1515,7 +1515,7 @@ class tokens extends Survey_Common_Action
                         if ($success)
                         {
                             // Put date into sent
-							$token = Token::model($iSurveyId)->findByPk($emrow['tid']);
+                            $token = Token::model($iSurveyId)->findByPk($emrow['tid']);
                             if ($bEmail)
                             {
                                 $tokenoutput .= $clang->gT("Invitation sent to:");
@@ -1530,7 +1530,7 @@ class tokens extends Survey_Common_Action
                             $token->save();
 
                             //Update central participant survey_links
-							if(!empty($emrow['participant_id']))
+                            if(!empty($emrow['participant_id']))
                             {
                                 $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid',array(':pid'=>$emrow['participant_id'],':sid'=>$iSurveyId,':tid'=>$emrow['tid']));
                                 if (!is_null($slquery))
