@@ -201,6 +201,8 @@ class SurveysController extends Controller
                 $this->redirect(['surveys/update', 'id' => $survey->primaryKey]);
             } else {
                 App()->user->setFlash('error', "Survey not imported.");
+                $this->redirect(['surveys/index']);
+
             }
         } else {
             $this->redirect(['surveys/create']);
