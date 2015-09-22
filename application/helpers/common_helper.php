@@ -4432,21 +4432,24 @@ function showJavaScript($sContent){
 */
 function cleanTempDirectory()
 {
+
     $dir =  Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR;
-    $dp = opendir($dir) or show_error('Could not open temporary directory');
-    while ($file = readdir($dp)) {
-        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
-            @unlink($dir.$file);
+    if (is_dir($dir)) {
+        $dp = opendir($dir) or show_error('Could not open temporary directory');
+        while ($file = readdir($dp)) {
+            if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
+                @unlink($dir . $file);
+            }
         }
-    }
-    $dir=  Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR;
-    $dp = opendir($dir) or die ('Could not open temporary upload directory');
-    while ($file = readdir($dp)) {
-        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='.gitignore' && $file!='readme.txt') {
-            @unlink($dir.$file);
+        $dir = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR;
+        $dp = opendir($dir) or die ('Could not open temporary upload directory');
+        while ($file = readdir($dp)) {
+            if (is_file($dir . $file) && (filemtime($dir . $file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
+                @unlink($dir . $file);
+            }
         }
+        closedir($dp);
     }
-    closedir($dp);
 }
 
 /**
