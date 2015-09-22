@@ -15,13 +15,13 @@ $(document).ready(function(){
     $("#urlparams").jqGrid({ url:jsonUrl,
         datatype: "json",
         colNames:[sAction,'','',sParameter,'','',sTargetQuestion],
-        colModel:[ {name:'act',index:'act', width:50,sortable:false},
+        colModel:[ {name:'act',index:'act', width:80,sortable:false},
                    {name:'id',index:'id', hidden:true},
                    {name:'sid',index:'sid', hidden:true},
-                   {name:'parameter',index:'parameter', width:120},
+                   {name:'parameter',index:'parameter', width:100},
                    {name:'targetqid',index:'targetqid', hidden:true},
                    {name:'targetsqid',index:'targetsqid', hidden:true},
-                   {name:'title',index:'title', width:400}
+                   {name:'title',index:'title', width:240}
                    ],
         direction: $('html').attr('dir'),
         sortname: 'parameter',
@@ -31,6 +31,8 @@ $(document).ready(function(){
         pginput: false,
         pgbuttons: false,
         viewrecords: true,
+        width: 420,
+        shrinkToFit: true,
         rowNum: 100,
         sortorder: "asc",
         editurl: jsonUrl, // this is dummy existing url

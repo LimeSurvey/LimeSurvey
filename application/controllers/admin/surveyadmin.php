@@ -926,6 +926,8 @@ class SurveyAdmin extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read'))
         {
+            $this->_registerScriptFiles();
+            
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
             {
                 Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
@@ -995,7 +997,8 @@ class SurveyAdmin extends Survey_Common_Action
 			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";			
 			
-			$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+			$aData['surveybar']['savebutton']['form'] = 'globalsetting';
+            $aData['surveybar']['savebutton']['useformid'] = 'true';
 			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;			
 
             $aViewUrls[] = 'editLocalSettings_main_view';

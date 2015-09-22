@@ -1275,10 +1275,18 @@ $(document).ready(function(){
 	});
 		
 	
-	$('#save-button').on('click', function(){
-		$form = $('.side-body').find('form');
-		//alert($form.attr('id'));
-		$form.submit();
+	$('#save-button').on('click', function()
+	{
+	    if($(this).attr('data-use-form-id')==1)
+	    {
+	        formId = '#'+$(this).attr('data-form-to-save');
+	        $(formId).submit();
+	    }
+	    else
+	    {
+		  $form = $('.side-body').find('form');
+		  $form.submit();
+		}
 		
 	});
 	

@@ -1,7 +1,14 @@
+<?php
+/**
+ * Display the survey bar. 
+ * Used for all survey editing action, and group / questions lists.
+ */
+?>
 <div class='menubar surveybar' id="surveybarid">
     <div class='row container-fluid'>
     	<div class="col-md-12">
 
+        <!-- Add a new group --> 
 		<?php if(isset($surveybar['buttons']['newgroup'])):?>
 			<?php if ($activated == "Y"): ?>
 				<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
@@ -18,6 +25,7 @@
 			<?php endif;?>				
 		<?php endif;?>    		
 
+        <!-- Add a new question --> 
 		<?php if(isset($surveybar['buttons']['newquestion'])):?>
 			<?php if ($activated == "Y"): ?>
 				<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
@@ -27,7 +35,6 @@
 					</button>
 				</span>				
 			<?php elseif(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create')): ?>
-				
 				<?php if(!$surveyHasGroup): ?>
 					<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
 						<button type="button" class="btn btn-default btntooltip" disabled="disabled">
@@ -41,145 +48,138 @@
 					<?php eT("Add new question"); ?>
 				</a>
 				<?php endif; ?>
-						
 			<?php endif; ?>
-
-
-
-
-
-
-
-
 		<?php endif;?>
-    		
+
+        <!-- Left buttons for survey summary -->    		
     	<?php if(isset($surveybar['buttons']['view'])):?>
-
-                           
-		<?php if(!$activated): ?>
-			<?php if($canactivate): ?>
-				<a class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>" role="button">
-					<?php eT("Activate this Survey"); ?>
-				</a>		
-			    <?php else : ?>
-			    	<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
-				    	<button type="button" class="btn btn-success btntooltip" disabled="disabled">
-				    		<?php eT("Activate this Survey"); ?>
-				    	</button>
-			    	</span>
-			<?php endif; ?>
-		<?php else : ?>
-			<?php if($expired) : ?>
-		    	<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('This survey is active but expired.'); ?>">				
-					<button type="button" class="btn btn-success  btntooltip" disabled="disabled">
-						<?php eT("Activate this Survey"); ?>
-					</button>
-				</span>		
-			<?php elseif($notstarted) : ?>
-		    	<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>				
-					<button type="button" class="btn btn-success  btntooltip" disabled="disabled" >
-						<?php eT("Activate this Survey"); ?>
-					</button>		
-				</span>
-			<?php else : ?>
-				<!--
-				<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is currently active."); ?>' style="display: inline-block">
-					<button type="button" class="btn btn-success" disabled="disabled" >
-						<?php eT("Activate this Survey"); ?>
-					</button>
-				</span> -->			    	
-			<?php endif; ?>
-			
-			<?php if($canactivate): ?>
-				<a class="btn btn-danger btntooltip" href="<?php echo $this->createUrl("admin/survey/sa/deactivate/surveyid/$surveyid"); ?>" role="button">
-					<?php eT("Stop this survey"); ?>
-				</a>	    	
-			<?php endif; ?>
-		<?php endif; ?>
-
-
-		<?php if($activated || $surveycontent) : ?>
-		    <?php if(count($languagelist)>1): ?>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/preview.png" />
-                    <?php echo $icontext;?> <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" style="min-width : 252px;">
-                    <?php foreach ($languagelist as $tmp_lang): ?>
-                        <li>
-                            <a target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
-                                <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
-                            </a>
-                        </li>   
-                    <?php endforeach; ?>
-                  </ul>
-                </div>		        
-		    <?php else: ?>
-                <a accesskey='d' class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" role="button"  accesskey='d' target='_blank'>
-                    <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/do.png" />
-                    <?php echo $icontext;?>
-                </a>
-		    <?php endif;?>
-		    			
-		<?php endif; ?>
+    	    
+            <!-- survey activation -->            
+    		<?php if(!$activated): ?>
+    		    
+    		    <!-- activate -->
+    			<?php if($canactivate): ?>
+    				<a class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$surveyid"); ?>" role="button">
+    					<?php eT("Activate this Survey"); ?>
+    				</a>	
+    		    
+    		    <!-- can't activate -->	
+    			<?php else : ?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                    	<button type="button" class="btn btn-success btntooltip" disabled="disabled">
+                    		<?php eT("Activate this Survey"); ?>
+                    	</button>
+                    </span>
+    			<?php endif; ?>
+    		<?php else : ?>
+    		    
+    		    <!-- activate expired survey -->
+    			<?php if($expired) : ?>
+    		    	<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('This survey is active but expired.'); ?>">				
+    					<button type="button" class="btn btn-success  btntooltip" disabled="disabled">
+    						<?php eT("Activate this Survey"); ?>
+    					</button>
+    				</span>		
+    			<?php elseif($notstarted) : ?>
+    		    	<span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title='<?php eT("This survey is active but has a start date."); ?>'>				
+    					<button type="button" class="btn btn-success  btntooltip" disabled="disabled" >
+    						<?php eT("Activate this Survey"); ?>
+    					</button>		
+    				</span>			    	
+    			<?php endif; ?>
+                
+                <!-- Stop survey -->    			
+    			<?php if($canactivate): ?>
+    				<a class="btn btn-danger btntooltip" href="<?php echo $this->createUrl("admin/survey/sa/deactivate/surveyid/$surveyid"); ?>" role="button">
+    					<?php eT("Stop this survey"); ?>
+    				</a>	    	
+    			<?php endif; ?>
+    		<?php endif; ?>
 
 
+            <!-- Preview/Execute survey -->
+    		<?php if($activated || $surveycontent) : ?>
+    		    
+    		    <!-- Multinlinguage -->
+    		    <?php if(count($languagelist)>1): ?>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/preview.png" />
+                        <?php echo $icontext;?> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" style="min-width : 252px;">
+                        <?php foreach ($languagelist as $tmp_lang): ?>
+                            <li>
+                                <a target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
+                                    <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                </a>
+                            </li>   
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>		
+                
+                <!-- uniq language -->        
+    		    <?php else: ?>
+                    <a accesskey='d' class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" role="button"  accesskey='d' target='_blank'>
+                        <img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/do.png" />
+                        <?php echo $icontext;?>
+                    </a>
+    		    <?php endif;?>
+    		<?php endif; ?>
 
 			<!-- Survey Properties -->
 			<?php if( !isset($surveybar['active_survey_properties']) ):?>
 			<div class="btn-group">
-			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  	<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/edit.png" />
-			    <?php eT("Survey properties");?> <span class="caret"></span>
-			  </button>
-			  
-			  <ul class="dropdown-menu">
-			                    <?php if($surveylocale && $surveysettings) { ?>
-			                        <li><a href='<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/$surveyid");?>'>
-			                            <img src='<?php echo $sImageURL;?>edit_30.png' alt=''/> <?php eT("Edit text elements and general settings");?></a></li>
-			                        <?php } ?>
-			                    <?php if($surveysecurity) { ?>
-			                        <li><a href='<?php echo $this->createUrl("admin/surveypermission/sa/view/surveyid/$surveyid");?>' >
-			                            <img src='<?php echo $sImageURL;?>survey_security_30.png' alt=''/> <?php eT("Survey permissions");?></a></li>
-			                        <?php } ?>
-			
-			                    <?php if($quotas) { ?>
-			                        <li><a href='<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/");?>' >
-			                            <img src='<?php echo $sImageURL;?>quota_30.png' alt=''/> <?php eT("Quotas");?></a></li>
-			                        <?php } ?>
-			                    <?php if($assessments) { ?>
-			                        <li><a href='<?php echo $this->createUrl("admin/assessments/sa/index/surveyid/$surveyid");?>' >
-			                            <img src='<?php echo $sImageURL;?>assessments_30.png' alt=''/> <?php eT("Assessments");?></a></li>
-			                        <?php } ?>
-			                    <?php if($surveylocale) { ?>
-			                        <li><a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid");?>' >
-			                            <img src='<?php echo $sImageURL;?>emailtemplates_30.png' alt=''/> <?php eT("Email templates");?></a></li>
-			                        <?php } ?>
-
-			                    <?php if($surveycontent): ?>
-			                        <?php if($onelanguage): ?>
-			                            <li>
-			                            	<a href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
-			                                	<img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php eT("Survey logic file");?>
-			                                </a>
-			                            </li>
-			                            <?php else : ?>
-			                            <li role="separator" class="divider"></li>
-                    					<li class="dropdown-header"><?php eT("Survey logic file");?></li>
-											<?php foreach ($languagelist as $tmp_lang): ?>
-											    <li>
-											    	<a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
-											       		<img src='<?php echo $sImageURL;?>quality_assurance.png' alt='' /> 
-											       		<?php echo getLanguageNameFromCode($tmp_lang,false);?>
-											       	</a>
-											   	</li>
-											<?php endforeach; ?>
-			                            <?php endif; ?>
-								<?php endif; ?>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                	<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/edit.png" />
+                  <?php eT("Survey properties");?> <span class="caret"></span>
+                </button>
+                
+                <ul class="dropdown-menu">
+                    <?php if($surveylocale && $surveysettings) { ?>
+                        <li><a href='<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/$surveyid");?>'>
+                            <img src='<?php echo $sImageURL;?>edit_30.png' alt=''/> <?php eT("Edit text elements and general settings");?></a></li>
+                        <?php } ?>
+                    <?php if($surveysecurity) { ?>
+                        <li><a href='<?php echo $this->createUrl("admin/surveypermission/sa/view/surveyid/$surveyid");?>' >
+                            <img src='<?php echo $sImageURL;?>survey_security_30.png' alt=''/> <?php eT("Survey permissions");?></a></li>
+                        <?php } ?>
+                    
+                    <?php if($quotas) { ?>
+                        <li><a href='<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/");?>' >
+                            <img src='<?php echo $sImageURL;?>quota_30.png' alt=''/> <?php eT("Quotas");?></a></li>
+                        <?php } ?>
+                    <?php if($assessments) { ?>
+                        <li><a href='<?php echo $this->createUrl("admin/assessments/sa/index/surveyid/$surveyid");?>' >
+                            <img src='<?php echo $sImageURL;?>assessments_30.png' alt=''/> <?php eT("Assessments");?></a></li>
+                        <?php } ?>
+                    <?php if($surveylocale) { ?>
+                        <li><a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid");?>' >
+                            <img src='<?php echo $sImageURL;?>emailtemplates_30.png' alt=''/> <?php eT("Email templates");?></a></li>
+                        <?php } ?>
+                    
+                    <?php if($surveycontent): ?>
+                        <?php if($onelanguage): ?>
+                            <li>
+                            	<a href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/");?>' >
+                                	<img src='<?php echo $sImageURL;?>quality_assurance_30.png' alt='' /> <?php eT("Survey logic file");?>
+                                </a>
+                            </li>
+                            <?php else : ?>
+                            <li role="separator" class="divider"></li>
+                    		<li class="dropdown-header"><?php eT("Survey logic file");?></li>
+                    			<?php foreach ($languagelist as $tmp_lang): ?>
+                    			    <li>
+                    			    	<a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
+                    			       		<img src='<?php echo $sImageURL;?>quality_assurance.png' alt='' /> 
+                    			       		<?php echo getLanguageNameFromCode($tmp_lang,false);?>
+                    			       	</a>
+                    			   	</li>
+                    			<?php endforeach; ?>
+                            <?php endif; ?>
+                    <?php endif; ?>
 			  </ul>
 			</div>
-			
 			<?php else:?>
 					<button type="button" class="btn btn-default btntooltip active">
 						<img src="<?php echo Yii::app()->getBaseUrl(true);?>/images/lime-icons/328637/<?php echo $surveybar['active_survey_properties']['img'];?>" />
@@ -369,10 +369,10 @@
     	<?php endif;?>	
     	</div>
     	
-    	
+        <!-- right action buttons -->      
     	<div class="col-md-offset-8 col-md-4 text-right">
     		<?php if(isset($surveybar['savebutton']['form'])):?>
-            	<a class="btn btn-success" href="#" role="button" id="save-button">
+            	<a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($surveybar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($surveybar['savebutton']['form'])) {echo $surveybar['savebutton']['form']; }?>">
             		<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
             		<?php eT("Save");?>
             	</a>
