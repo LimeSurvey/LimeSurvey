@@ -1205,6 +1205,7 @@ class tokens extends Survey_Common_Action
 
         // find out the existing token attribute fieldnames
         $tokenattributefieldnames = getAttributeFieldNames($iSurveyId);
+
         $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
         $fieldcontents = array();
         $captions = array();
@@ -1217,9 +1218,8 @@ class tokens extends Survey_Common_Action
             'cpdbmap' => Yii::app()->request->getPost('cpdbmap_' . $fieldname)
             );
             foreach ($languages as $language)
-                $captions[$language][$fieldname] = $_POST["caption_{$fieldname}_$language"];
+                $captions[$language][$fieldname] = Yii::app()->request->getPost("caption_{$fieldname}_$language");
         }
-
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
         foreach ($languages as $language)
         {
@@ -1431,13 +1431,16 @@ class tokens extends Survey_Common_Action
                     }
                     $modsubject = Replacefields($modsubject, $fieldsarray);
                     $modmessage = Replacefields($modmessage, $fieldsarray);
-                    if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
+
+                    if (!App()->request->getPost('bypassdatecontrol') && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
                         $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.",'unescaped'), $fieldsarray)). "<br />";
+                        $bInvalidDate=true;
                     }
-                    elseif (trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
+                    elseif (!App()->request->getPost('bypassdatecontrol') && trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
                     {
                         $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.",'unescaped'), $fieldsarray)). "<br />";
+                        $bInvalidDate=true;
                     }
                     else
                     {
@@ -1511,7 +1514,7 @@ class tokens extends Survey_Common_Action
                         if ($success)
                         {
                             // Put date into sent
-							$token = Token::model($iSurveyId)->findByPk($emrow['tid']);
+                            $token = Token::model($iSurveyId)->findByPk($emrow['tid']);
                             if ($bEmail)
                             {
                                 $tokenoutput .= gT("Invitation sent to:");
@@ -1526,7 +1529,7 @@ class tokens extends Survey_Common_Action
                             $token->save();
 
                             //Update central participant survey_links
-							if(!empty($emrow['participant_id']))
+                            if(!empty($emrow['participant_id']))
                             {
                                 $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid',array(':pid'=>$emrow['participant_id'],':sid'=>$iSurveyId,':tid'=>$emrow['tid']));
                                 if (!is_null($slquery))
@@ -1568,7 +1571,10 @@ class tokens extends Survey_Common_Action
                 }
                 else
                 {
-                    $aData['tokenoutput'].="<strong class='result success text-success'>".gT("All emails were sent.")."<strong>";
+                    if(isset($bInvalidDate))
+                      $aData['tokenoutput'].="<strong class='result success text-success'>".gT("Except those with invalid date, all emails were sent.")."<strong>";
+                    else
+                      $aData['tokenoutput'].="<strong class='result success text-success'>".gT("All emails were sent.")."<strong>";
                 }
 
                 $this->_renderWrappedTemplate('token', $aViewUrls, $aData);
