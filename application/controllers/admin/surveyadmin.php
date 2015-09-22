@@ -95,7 +95,8 @@ class SurveyAdmin extends Survey_Common_Action
                 Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
             }
             
-			
+            $aData['fullpagebar']['button']['newsurvey'] = true;
+            
             $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
 			
         }		

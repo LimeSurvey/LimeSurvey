@@ -660,7 +660,6 @@ class UserAction extends Survey_Common_Action
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $aData['sSavedLanguage'] = $user->lang;
         
-        $aData['title_bar']['title'] = gT('Your personal settings');         
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['closebutton']['url'] = 'admin/survey/sa/index';               
 
