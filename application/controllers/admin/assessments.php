@@ -73,7 +73,8 @@ class Assessments extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
         $aData['sidebar']['state'] = "close";
-        $surveyinfo = Survey::model()->findByPk($aData['surveyid'])->surveyinfo;
+        $iSurveyID=$aData['surveyid'];
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";           
         $aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;            
