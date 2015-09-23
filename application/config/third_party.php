@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 // This should use app->params[bower-asset] but that's not yet avialable at this point.
-$bowerAssetPath = 'components';
+$bowerAssetPath = 'application/vendor/bower-asset';
 /**
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
