@@ -687,8 +687,6 @@ class Survey_Common_Action extends CAction
 	        $sumresult3 = Question::model()->findAllByAttributes($condition); //Checked
 	        $sumcount3 = count($sumresult3);
             
-
-	           
 	        $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
 	        $aData['candeactivate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
 	        $aData['expired'] = $surveyinfo['expires'] != '' && ($surveyinfo['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
@@ -784,7 +782,6 @@ class Survey_Common_Action extends CAction
 	        $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
 	        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 	        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-	
 			if($aData['gid']==null)        
 	        	$this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
 		}

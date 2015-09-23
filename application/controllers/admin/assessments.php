@@ -72,10 +72,13 @@ class Assessments extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
+        $aData['sidebar']['state'] = "close";
+        $surveyinfo = Survey::model()->findByPk($aData['surveyid'])->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";           
+        $aData['surveybar']['savebutton']['form'] = true;
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;            
+        $aData['gid']=null;
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'assessments.js');
-        App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerPackage('jquery-superfish');
-
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
@@ -103,13 +106,6 @@ class Assessments extends Survey_Common_Action
         $aData['action'] = $action;
         $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
-			$aData['sidebar']['state'] = "close";
-			$surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-			$aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";			
-			
-			$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-			$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;			
-			
         Yii::app()->loadHelper('admin/htmleditor');
 		
 		$urls['output'] = '        <div class="side-body">
