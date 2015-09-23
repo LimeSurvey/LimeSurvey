@@ -409,35 +409,6 @@ class Permission extends ActiveRecord
         return true;
     }
 
-    /**
-     * Set global permissions to the user id
-     *
-     * @param int $iNewUID
-     * @param string $sAuthType
-     * @param array $aPermissions
-     */
-    public function setGlobalPermission($iNewUID,$sPermType,array $aPermissions=array('read_p'))
-    {
-        $aPerm = array(
-            'entity_id' => 0,
-            'entity' => 'global',
-            'uid' => $iNewUID,
-            'permission' => $sPermType,
-            'create_p' => 0,
-            'read_p' => 0,
-            'update_p' => 0,
-            'delete_p' => 0,
-            'import_p' => 0,
-            'export_p' => 0
-        );
-
-        foreach ($aPermissions as $sPermType)
-        {
-            $aPerm[$sPermType] = 1;
-        }
-
-        $this->insertSomeRecords($aPerm);
-    }
 
     function giveAllSurveyPermissions($iUserID, $iSurveyID)
     {
@@ -457,48 +428,8 @@ class Permission extends ActiveRecord
         $this->setPermissions($iUserID, $iSurveyID, 'survey', $aPermissionsToSet);
     }
 
-    function insertRecords($data)
-    {
-        foreach ($item as $data)
-            $this->insertSomeRecords($item);
-    }
 
-    function insertSomeRecords($data)
-    {
-        $permission = new self;
-        foreach ($data as $k => $v)
-            $permission->$k = $v;
-        return $permission->save();
-    }
 
-    function getUserDetails($surveyid)
-    {
-        $sQuery = "SELECT p.entity_id, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
-            WHERE p.entity_id = :surveyid AND u.uid != :userid and p.entity='survey'
-            GROUP BY p.entity_id, p.uid, u.users_name, u.full_name
-            ORDER BY u.users_name";
-        $iUserID=Yii::app()->user->getId();
-        return Yii::app()->db->createCommand($sQuery)->bindParam(":userid", $iUserID, PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query()->readAll(); //Checked
-    }
-
-    function copySurveyPermissions($iSurveyIDSource,$iSurveyIDTarget)
-    {
-        $aRows=self::model()->findAll("entity_id=:sid AND entity='survey'", array(':sid'=>$iSurveyIDSource));
-        foreach ($aRows as $aRow)
-        {
-            $aRow = $aRow->getAttributes();
-            $aRow['entity_id']=$iSurveyIDTarget;    // Set the new survey ID
-            unset($aRow['id']);                     // To insert, we reset the id
-            try  {
-                $this->insertSomeRecords($aRow);
-            }
-            catch (Exception $e)
-            {
-                //Ignore
-            }
-        }
-    }
-    
     
     /**
     * Checks if a user has a certain permission
@@ -510,7 +441,7 @@ class Permission extends ActiveRecord
     * @param $iUserID integer User ID - if not given the one of the current user is used
     * @return bool True if user has the permission
     */
-    function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
+    public static function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
     {
         static $aPermissionStatic;
 
@@ -538,7 +469,7 @@ class Permission extends ActiveRecord
         // Check if superadmin and cache it
         if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']))
         {
-            $aPermission = $this->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
+            $aPermission = self::model()->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
             $bPermission = is_null($aPermission) ? array() : $aPermission->attributes;
             if (!isset($bPermission['read_p']) || $bPermission['read_p']==0)
             {
@@ -554,7 +485,7 @@ class Permission extends ActiveRecord
         if ($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) return true;
         if (!isset($aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD]))
         {
-            $query = $this->findByAttributes(array("entity_id"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
+            $query = self::model()->findByAttributes(array("entity_id"=> $iEntityID, "uid"=> $iUserID, "entity"=>$sEntityName, "permission"=>$sPermission));
             $bPermission = is_null($query) ? array() : $query->attributes;
             if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
             {

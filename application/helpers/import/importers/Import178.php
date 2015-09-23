@@ -61,7 +61,6 @@ class Import178 extends BaseElementXmlImport{
 
         }
         eP();
-        return true;
     }
     protected function prepareGroup(array $data, \Survey $survey) {
         // Translate gid.
@@ -87,22 +86,17 @@ class Import178 extends BaseElementXmlImport{
         $group->setAttributes($data, false);
         $oldKey = $group->primaryKey;
         $group->primaryKey = null;
-        if ($result = $group->save()) {
-            $group->survey = $survey;
-            foreach($translations as $translation) {
-                $result = $result && $this->importTranslation($group->translatable, $translation, $group->primaryKey);
-            }
-            foreach($questions as $question) {
-                \Yii::trace('importQuestion');
-                $result = $result && $this->importQuestion($question, $group, $questionMap);
-            }
-
-        } else {
-            var_dump($group->errors);
-            die();
+        if (!$group->save()) {
+            throw new \Exception("Could not save group. " . print_r($data, true));
         }
-        return $result;
+        $group->survey = $survey;
+        foreach($translations as $translation) {
+            $this->importTranslation($group->translatable, $translation, $group->primaryKey);
+        }
 
+        foreach($questions as $question) {
+            $this->importQuestion($question, $group, $questionMap);
+        }
     }
 
     /**
@@ -125,18 +119,18 @@ class Import178 extends BaseElementXmlImport{
         $oldKey = $survey->primaryKey;
         $survey->primaryKey = null;
         $questionMap = [];
-        if ($result = $survey->save()) {
-
-            foreach ($surveyTranslations as $surveyTranslation) {
-                $result = $result && $this->importSurveyTranslation($surveyTranslation, $survey);
-            }
-
-            foreach ($groups as $group) {
-                $result = $result && $this->importGroup($group, $survey, $questionMap);
-            }
+        if (!$survey->save()) {
+            throw new \Exception("Could not save survey." . print_r($survey->errors, true));
+        }
+        foreach ($surveyTranslations as $surveyTranslation) {
+            $this->importSurveyTranslation($surveyTranslation, $survey);
         }
 
-        return $result ? $survey : null;
+        foreach ($groups as $group) {
+            $this->importGroup($group, $survey, $questionMap);
+        }
+
+        return $survey;
     }
 
     protected function importSurveyTranslation($data, \Survey $survey) {
@@ -144,10 +138,9 @@ class Import178 extends BaseElementXmlImport{
         $languageSetting->survey = $survey;
         $languageSetting->setAttributes($data, false);
         $languageSetting->surveyls_survey_id = $survey->primaryKey;
-        if (false === $result = $languageSetting->save()) {
+        if (!$languageSetting->save()) {
             throw new \Exception("Failed to save survey translation.");
         }
-        return $result;
     }
 
     protected function prepareQuestion($data, \QuestionGroup $group, \Question $parent = null) {

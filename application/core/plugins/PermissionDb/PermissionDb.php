@@ -12,6 +12,14 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
         
     }
 
+    /**
+     * @todo Save the assignment to the permissions table.
+     *
+     * @param string $itemName
+     * @param mixed $userId
+     * @param null $bizRule
+     * @param null $data
+     */
     public function assign($itemName, $userId, $bizRule = null, $data = null) {
         
     }
@@ -25,7 +33,7 @@ class PermissionDb extends PluginBase implements \ls\pluginmanager\iAuthorizatio
         $params = array_merge($defaults, $params);
         // Check superadmin first.
         $superAdmin = ($itemName != 'superadmin') && $this->checkAccess('superadmin', $userId);
-        return $superAdmin ?: \Permission::model()->hasPermission($params['entity_id'], $params['entity'], $itemName, $params['crud'], $userId);
+        return $superAdmin ?: \Permission::hasPermission($params['entity_id'], $params['entity'], $itemName, $params['crud'], $userId);
     }
 
     public function clearAll() {
