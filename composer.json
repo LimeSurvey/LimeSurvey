@@ -4,7 +4,7 @@
     "license" : "GPL-2.0",
     "minimum-stability": "dev",
     "config": {
-        "vendor-dir": "application/vendor"
+        "vendor-dir": "protected/vendor"
     },
     "require": {
 		"2amigos/yiiwheels": "2.*",
@@ -48,39 +48,39 @@
     },
     "autoload" : {
         "classmap" : [
-            "application/extensions",
-            "application/extensions/SettingsWidget",
-            "application/core/db",
-            "application/core",
-            "application/vendor/2amigos/yiiwheels",
-            "application/vendor/crisu83/yiistrap/widgets",
-            "application/vendor/yiisoft/yii/framework/cli/commands",
-            "application/components",
-            "application/helpers"
+            "protected/extensions",
+            "protected/extensions/SettingsWidget",
+            "protected/core/db",
+            "protected/core",
+            "protected/vendor/2amigos/yiiwheels",
+            "protected/vendor/crisu83/yiistrap/widgets",
+            "protected/vendor/yiisoft/yii/framework/cli/commands",
+            "protected/components",
+            "protected/helpers"
         ],
         "psr-4" : {
             "ls\\" : [
-                "application"
+                "protected"
             ],
             "ls\\cli\\" : [
-                "application/commands"
+                "protected/commands"
             ],
             "ls\\expressionmanager\\" : [
-                "application/libraries/ExpressionManager"
+                "protected/libraries/ExpressionManager"
             ],
             "ls\\pluginmanager\\" : [
-                "application/libraries/PluginManager",
-                "application/libraries/PluginManager/Storage"
+                "protected/libraries/PluginManager",
+                "protected/libraries/PluginManager/Storage"
             ],
             "ls\\import\\" : [
-              "application/helpers/import"
+              "protected/helpers/import"
             ]
         }
     },
     "extra" : {
         "asset-installer-paths": {
-            "bower-asset-library" : "components",
-            "npm-asset-library" : "components"
+            "bower-asset-library" : "public/components",
+            "npm-asset-library" : "public/components"
         }
     }
 

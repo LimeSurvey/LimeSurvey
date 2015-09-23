@@ -3341,7 +3341,7 @@
             $response->save();
         }
 
-        private function jumpToGroup($seq, $preview, $processPOST, $force) {
+        private function jumpToGroup($seq, $processPOST, $force) {
             // First validate the current group
             $this->StartProcessingPage();
             $session = App()->surveySessionManager->current;
@@ -3380,10 +3380,10 @@
                 $group = $session->getGroupByIndex($step);
                 $validationResults = $this->validateGroup($group);
                 $message .= $validationResults->getMessagesAsString();
-                if (!$preview && !$group->isRelevant($session->response)) {
+                if (!$group->isRelevant($session->response)) {
                     // then skip this group
                     continue;
-                } elseif (!$preview && !$validationResults->getSuccess() && $step < $seq) {
+                } elseif (!$validationResults->getSuccess() && $step < $seq) {
                     // if there is a violation while moving forward, need to stop and ask that set of questions
                     // if there are no violations, can skip this group as long as changed values are saved.
                     die('skip2');
@@ -3422,7 +3422,7 @@
             return $result;
         }
 
-        private function jumpToQuestion($seq, $preview, $processPOST, $force) {
+        private function jumpToQuestion($seq, $processPOST, $force) {
             $this->StartProcessingPage();
             $session = App()->surveySessionManager->current;
             if ($processPOST) {
@@ -3457,10 +3457,10 @@
                 $gRelInfo = $this->getGroupRelevanceInfo($session->getQuestionByIndex($step)->group);
                 $grel = $gRelInfo['result'];
 
-                if (!$preview && ($question->bool_hidden || !$question->isRelevant($session->response))) {
+                if (($question->bool_hidden || !$question->isRelevant($session->response))) {
                     // then skip this question
                     continue;
-                } elseif (!$preview && !$valid && $step < $seq) {
+                } elseif (!$valid && $step < $seq) {
                     // if there is a violation while moving forward, need to stop and ask that set of questions
                     // if there are no violations, can skip this group as long as changed values are saved.
                     die('skip2');
@@ -3536,10 +3536,10 @@
                     $result = $LEM->lastMoveResult;
                     break;
                 case Survey::FORMAT_GROUP:
-                    $result = $LEM->jumpToGroup($seq, $preview, $processPOST, $force);
+                    $result = $LEM->jumpToGroup($seq, $processPOST, $force);
                     break;
                 case Survey::FORMAT_QUESTION:
-                    $result = $LEM->jumpToQuestion($seq, $preview, $processPOST, $force);
+                    $result = $LEM->jumpToQuestion($seq, $processPOST, $force);
                     break;
                 default:
                     throw new \Exception("Unknown survey mode: " . $session->format);
@@ -4163,6 +4163,9 @@
                             throw new \Exception("getFields() must return an array of QuestionResponseField");
                         }
                         $fields[$field->code] = $field;
+                        if (YII_DEBUG) {
+                            $field->jsonSerialize();
+                        }
                     }
                 }
                 $script = "var EM = new ExpressionManager(" . json_encode($fields, JSON_PRETTY_PRINT) . ");";

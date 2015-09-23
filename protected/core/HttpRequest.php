@@ -7,6 +7,8 @@
  */
 class HttpRequest extends \CHttpRequest
 {
+
+
     /**
      * A request object implementing the PSR-7 specification.
      * Using specific implementation: \Zend\Diactoros\ServerRequest
@@ -14,6 +16,9 @@ class HttpRequest extends \CHttpRequest
      *
      */
     protected $_request;
+
+
+    public $noCsrfValidationRoutes = [];
 
     public function __construct() {
         $this->initRequest();
@@ -52,6 +57,23 @@ class HttpRequest extends \CHttpRequest
     {
         $body = $this->_request->getParsedBody();
         return isset($body[$name]) ? $body[$name] : $defaultValue;
+    }
+
+
+    protected function normalizeRequest(){
+//        if (strcasecmp('post', $this->psr7->getMethod()) === 0) return;
+
+        $route = Yii::app()->getUrlManager()->parseUrl($this);
+        if($this->enableCsrfValidation){
+            foreach($this->noCsrfValidationRoutes as $cr){
+                if(preg_match('#'.$cr.'#', $route)){
+                    Yii::app()->detachEventHandler('onBeginRequest',
+                        array($this,'validateCsrfToken'));
+                    Yii::trace('Route "'.$route.' passed without CSRF validation');
+                    break; // found first route and break
+                }
+            }
+        }
     }
 
 
