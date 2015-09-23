@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -579,18 +579,6 @@ $config['proxy_host_port'] = 80;
 // In this case, don't forget to backup your config-defaults.php settings when upgrading LS
 // and report them to the new config-defaults.php file (Do not simply overwrite the new
 // config-defaults file with your old one
-
-//The following url and dir locations do not need to be modified unless you have a non-standard
-//LimeSurvey installation. Do not change unless you know what you are doing.
-
-if(!isset($argv[0]))
-{
-    $config['publicurl'] = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
-}
-else
-{
-    $config['publicurl'] =  '/';
-}
 
 $config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
 $config['tempurl']                 = $config['publicurl'].'tmp';

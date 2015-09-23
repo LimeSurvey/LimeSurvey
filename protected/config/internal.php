@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 /**
  * This file contains configuration parameters for the Yii framework.

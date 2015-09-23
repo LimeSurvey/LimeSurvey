@@ -1,5 +1,10 @@
 <?php
-class RSyntaxWriter extends Writer
+
+/**
+ * Class RSyntaxWriter
+ * @todo Implement abstract methods.
+ */
+abstract class RSyntaxWriter extends Writer
 {
     private $output;
     private $separator;
@@ -13,12 +18,19 @@ class RSyntaxWriter extends Writer
     protected $customFieldmap = array();
     protected $headers = array();
 
-    function __construct()
+
+
+    /**
+     * @param FormattingOptions $options
+     */
+    public function __construct(\ls\models\forms\FormattingOptions $options)
     {
+        parent::__construct($options);
         $this->output = '';
         $this->separator = ',';
         $this->hasOutputHeader = false;
     }
+
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {

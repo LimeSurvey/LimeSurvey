@@ -1,9 +1,15 @@
 <?php
 namespace ls\core\plugins;
 
+use ls\pluginmanager\PluginBase;
 use \ls\pluginmanager\PluginEvent;
 
-class AuthWebServer implements \ls\pluginmanager\iAuthenticationPlugin
+/**
+ * Class AuthWebServer
+ * @package ls\core\plugins
+ * @todo Implement abstract methods
+ */
+abstract class AuthWebServer extends PluginBase implements \ls\pluginmanager\iAuthenticationPlugin
 {
     protected $storage = 'DbStorage';    
     

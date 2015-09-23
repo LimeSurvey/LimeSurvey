@@ -5,7 +5,7 @@ use ls\pluginmanager\PluginBase;
 
         protected $storage = 'DbStorage';    
         static protected $description = 'Core: Create an audit log of changes';
-        static protected $name = 'auditlog';
+        public $name = 'auditlog';
        
         
         public function init() {

@@ -4,7 +4,7 @@ class ExportSTATAxml extends \ls\pluginmanager\PluginBase {
     protected $storage = 'DbStorage';
        
     static protected $description = 'Core: Export survey results to a STATA xml file';
-    static protected $name = 'STATA Export';
+    public $name = 'STATA Export';
     
     public function init() {
         

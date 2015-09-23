@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /**
  *		Date and Time Converter by Elac v0.9.3
  *		elacdude@gmail.com

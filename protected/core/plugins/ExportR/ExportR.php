@@ -4,7 +4,7 @@ class ExportR extends \ls\pluginmanager\PluginBase {
     protected $storage = 'DbStorage';
        
     static protected $description = 'Core: R-export';
-    static protected $name = 'Export results to R';
+    public $name = 'Export results to R';
     
     public function init() {
         

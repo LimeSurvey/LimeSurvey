@@ -1,10 +1,15 @@
 <?php
-class AuthLDAP extends ls\pluginmanager\AuthPluginBase
+
+/**
+ * Class AuthLDAP
+ * @tod Implement this. (and remove abstract)
+ */
+abstract class AuthLDAP extends PluginBase implements \ls\pluginmanager\iAuthenticationPlugin
 {
     protected $storage = 'DbStorage';
 
     static protected $description = 'Core: LDAP authentication';
-    static protected $name = 'LDAP';
+    public $name = 'LDAP';
 
     protected $settings = array(
         'server' => array(

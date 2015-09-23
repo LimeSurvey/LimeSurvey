@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
+<?php
 /*
  * LimeSurvey (tm)
  * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz

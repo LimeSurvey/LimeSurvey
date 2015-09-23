@@ -1,5 +1,4 @@
 <?php
-Yii::import('application.helpers.admin.export.*');
 class RDataWriter extends CsvWriter {
     /**
      * The value to use when no data is present (for example unanswered because

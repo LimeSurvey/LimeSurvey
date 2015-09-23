@@ -39,7 +39,6 @@
 *
 * - elameno
 */
-Yii::import('application.helpers.admin.export.*');
 class ExportSurveyResultsService
 {
     /**

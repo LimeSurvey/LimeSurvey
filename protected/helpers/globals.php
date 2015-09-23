@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
     /**
      * This file contains global helper function used in LS.
      * This file MUST NOT depend on any other files, except those available in Yii

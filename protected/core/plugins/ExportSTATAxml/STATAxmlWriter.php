@@ -11,7 +11,11 @@
  *  If non-numerical answer codes are used (A=Totally agree), then the complete answer text will be used as answer (eg.: 'Totally agree').
  */
 
-class STATAxmlWriter extends Writer
+/**
+ * Class STATAxmlWriter
+ * @todo IMplement abstract methods
+ */
+abstract class STATAxmlWriter extends Writer
 {
     private $output;
     private $separator;
@@ -31,8 +35,12 @@ class STATAxmlWriter extends Writer
     protected $headersSGQA = array();
     protected $aQIDnonumericalAnswers = array();
 
-    function __construct($pluginsettings)
+    /**
+     * @param FormattingOptions $options
+     */
+    public function __construct(\ls\models\forms\FormattingOptions $options)
     {
+        parent::__construct($options);
         $this->output          = '';
         $this->separator       = ',';
         $this->hasOutputHeader = false;

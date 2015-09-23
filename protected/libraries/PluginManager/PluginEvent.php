@@ -2,7 +2,6 @@
 namespace ls\pluginmanager;
 use Yii;
 use Cake\Utility\Hash;
-Yii::import('application.helpers.Hash');
 
 class PluginEvent extends \CComponent
 {

@@ -1,8 +1,4 @@
 <?php
-use ls\pluginmanager\AuthPluginBase;
-
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 /*
 * LimeSurvey
 * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz

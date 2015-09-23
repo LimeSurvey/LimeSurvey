@@ -4,8 +4,6 @@
      * Load the globals helper as early as possible. Only earlier solution is to use
      * index.php
      */
-    require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
-
     class ConsoleApplication extends CConsoleApplication
     {
         protected $config = array();

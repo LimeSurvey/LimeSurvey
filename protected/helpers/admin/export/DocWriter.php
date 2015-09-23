@@ -1,5 +1,10 @@
 <?php
-class DocWriter extends Writer
+
+/**
+ * Class DocWriter
+ * @todo Implement abstract methods
+ */
+abstract class DocWriter extends Writer
 {
     private $output;
     private $separator;
@@ -9,11 +14,17 @@ class DocWriter extends Writer
      */
     private $file = null;
 
-    public function __construct()
+
+    /**
+     * @param FormattingOptions $options
+     */
+    public function __construct(\ls\models\forms\FormattingOptions $options)
     {
+        parent::__construct($options);
         $this->separator = "\t";
         $this->output = '';
         $this->isBeginning = true;
+
     }
 
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)

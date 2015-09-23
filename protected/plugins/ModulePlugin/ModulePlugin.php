@@ -5,7 +5,7 @@
     class ModulePlugin extends \ls\pluginmanager\PluginBase
     {
         static protected $description = 'Demo: This plugins registers a module.';
-        static protected $name = 'ModulePlugin';
+        public $name = 'ModulePlugin';
 
         public function init()
         {
