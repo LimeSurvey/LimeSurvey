@@ -659,7 +659,6 @@ class tokens extends Survey_Common_Action
 		$aData['sidebar']["token_menu"]=TRUE;
 		$aData['token_bar']['buttons']['view']=TRUE;
 				
-
         if (Yii::app()->request->getPost('subaction') == 'inserttoken')
         {
 
@@ -685,27 +684,6 @@ class tokens extends Survey_Common_Action
             }
 
             $sanitizedtoken = sanitize_token(Yii::app()->request->getPost('token'));
-
-            /* Mdekker: commented out this block as it doesn't respect tokenlength
-             * or existing tokens and was always handled by the tokenify action as
-             * the ui still suggests
-            if (empty($sanitizedtoken))
-            {
-                $isvalidtoken = false;
-                while ($isvalidtoken == false)
-                {
-                    $newtoken = randomChars(15);
-                    if (!isset($existingtokens[$newtoken]))
-                    {
-                        $isvalidtoken = true;
-                        $existingtokens[$newtoken] = null;
-                    }
-                }
-                $sanitizedtoken = $newtoken;
-            }
-            */
-
-
 
             $aData = array_merge ( $aData, array(
             'firstname' => Yii::app()->request->getPost('firstname'),
