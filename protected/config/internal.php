@@ -73,7 +73,6 @@ $internalConfig = array(
             'showScriptName' => true,
         ],
         'assetManager' => [
-            'class' => \AssetManager::class,
             'basePath' => __DIR__ . '/../../public/tmp/assets',
             'baseUrl' => str_replace($webroot . '/', '', realpath(__DIR__ . '/../../public/tmp/assets'))
 
