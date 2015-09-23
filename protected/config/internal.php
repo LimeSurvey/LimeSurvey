@@ -17,7 +17,6 @@ $internalConfig = array(
     'controllerNamespace' => '\\ls\\controllers',
     'supportedLanguages' => include('locales.php'),
     'theme' => 'default',
-	'runtimePath' => __DIR__ . '/../runtime',
 	'name' => 'LimeSurvey',
     'localeClass' =>  \ls\core\Locale::class,
 	'defaultController' => 'surveys',
@@ -68,17 +67,20 @@ $internalConfig = array(
         ],
         'assetManager' => [
             'class' => \AssetManager::class,
-            'baseUrl' => '{baseUrl}/tmp/assets',
-            'basePath'=> __DIR__ . '/../../tmp/assets'
+            'basePath'=> __DIR__ . '/../../public/tmp/assets',
+            'relativeUrl' => 'tmp/assets'
+
         ],
         'request' => [
-            'class'=>'LSHttpRequest',
+            'class'=> HttpRequest::class,
             'noCsrfValidationRoutes' => ['remotecontrol'],
-            'enableCsrfValidation' => true,    // CSRF protection
-            'enableCookieValidation' => false   // Enable to activate cookie protection
+            // CSRF protection
+            'enableCsrfValidation' => true,
+            // Enable to activate cookie protection
+            'enableCookieValidation' => false
         ],
         'user' => [
-            'class' => 'WebUser',
+            'class' => WebUser::class,
             'stateKeyPrefix' => 'LSWebUser',
             'loginUrl' => ['users/login']
         ],

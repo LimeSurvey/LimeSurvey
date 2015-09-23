@@ -2,13 +2,27 @@
 
 class AssetManager extends CAssetManager {
 
+    public $relativeUrl;
+
+    private $_baseUrl;
 
     public function getBaseUrl() {
 
-        /**
-         * @todo Solve this in a more efficient way, for example by storing the result.
-         *
-         */
-        return strtr(parent::getBaseUrl(), ['{baseUrl}' => App()->baseUrl]);
+        if($this->_baseUrl===null)
+        {
+            $request = Yii::app()->getRequest();
+            $this->setBaseUrl($request->getBaseUrl() .'/'. $this->relativeUrl);
+        }
+        return $this->_baseUrl;
     }
+
+    /**
+     * @param string $value the base url that the published asset files can be accessed
+     */
+    public function setBaseUrl($value)
+    {
+        $this->_baseUrl = rtrim($value,'/');
+    }
+
+
 }
