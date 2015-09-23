@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "59352d47be4c8e808cfd6093fb8cd7fb",
+    "hash": "69e9a634100beeba852b5d7090175f9f",
     "packages": [
         {
             "name": "2amigos/yiiwheels",
@@ -1506,12 +1506,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "acaeaa9dd360daacf1c1bd2234d86d36ce1bae2f"
+                "reference": "b6f421c5ff02531390d6cb1e4d9780d765b664cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/acaeaa9dd360daacf1c1bd2234d86d36ce1bae2f",
-                "reference": "acaeaa9dd360daacf1c1bd2234d86d36ce1bae2f",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/b6f421c5ff02531390d6cb1e4d9780d765b664cc",
+                "reference": "b6f421c5ff02531390d6cb1e4d9780d765b664cc",
                 "shasum": ""
             },
             "require": {
@@ -1558,7 +1558,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2015-09-17 09:52:54"
+            "time": "2015-09-22 06:16:40"
         },
         {
             "name": "psr/http-message",
@@ -1846,12 +1846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "b22e36842b70a360766d5f518ec2b6054164ef2f"
+                "reference": "a3da55cdb3d82fd9452fc3988bde8686f9ac0e69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/b22e36842b70a360766d5f518ec2b6054164ef2f",
-                "reference": "b22e36842b70a360766d5f518ec2b6054164ef2f",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/a3da55cdb3d82fd9452fc3988bde8686f9ac0e69",
+                "reference": "a3da55cdb3d82fd9452fc3988bde8686f9ac0e69",
                 "shasum": ""
             },
             "require": {
@@ -1890,7 +1890,7 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2015-09-08 15:27:45"
+            "time": "2015-09-13 11:22:08"
         },
         {
             "name": "tecnick.com/tcpdf",
