@@ -263,7 +263,8 @@
                                     }
                             }?>
                             <?php if($surveyexport) { ?>
-                                <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/$surveyid");?>' >
+                                <li>
+                                    <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/$surveyid");?>' >
                                     <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("queXML format (*.xml)");?></a>
                                 </li>
                                 <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/$surveyid");?>' >
@@ -290,25 +291,6 @@
                             <?php } ?>
                         <?php } ?>
                         
-                    <?php if($surveyexport) {
-                            if($onelanguage) { ?>
-                            <li>
-                            	<a href='<?php echo $this->createUrl("admin/export/sa/showquexmlsurvey/surveyid/$surveyid");?>' >
-                                	<img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("QueXML export");?>
-                                </a>
-                            </li>
-                            <?php } else { ?>
-							<li role="separator" class="divider"></li>
-							<li class="dropdown-header"><?php eT("QueXML export");?></li>                            	                            	
-                                    <?php foreach ($languagelist as $tmp_lang) { ?>
-                                        <li>
-                                        	<a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/export/sa/showquexmlsurvey/surveyid/$surveyid/lang/$tmp_lang");?>'>
-                                            	<img src='<?php echo $sImageURL;?>export_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?>
-                                            </a>
-                                        </li>
-                                        <?php } ?>
-                            <?php }
-                    } ?>
 			  	
 			  </ul>
 			</div>
